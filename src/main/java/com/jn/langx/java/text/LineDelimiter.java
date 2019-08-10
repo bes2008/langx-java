@@ -1,0 +1,86 @@
+package com.jn.langx.java.text;
+
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+
+public class LineDelimiter {
+    public static char CR = '\r';
+    public static char LF = '\n';
+    public static String CR_LF = "" + CR + LF;
+
+    /**
+     * the line delimiter constant of the current O/S.
+     */
+    public static final LineDelimiter DEFAULT;
+
+    static {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        PrintWriter out = new PrintWriter(bout, true);
+        out.println();
+        DEFAULT = new LineDelimiter(new String(bout.toByteArray()));
+    }
+
+    public static final LineDelimiter CRLF = new LineDelimiter(CR_LF);
+
+    public static final LineDelimiter UNIX = new LineDelimiter("\n");
+    public static final LineDelimiter WINDOWS = CRLF;
+    public static final LineDelimiter MAC = new LineDelimiter("\r");
+    public static final LineDelimiter NUL = new LineDelimiter("\0");
+
+    private final String value;
+
+    public LineDelimiter(String delimiter) {
+        this.value = delimiter;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof LineDelimiter)) {
+            return false;
+        }
+
+        LineDelimiter that = (LineDelimiter) o;
+
+        return this.value.equals(that.value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        if (value.length() == 0) {
+            return "delimiter: auto";
+        } else {
+            StringBuilder buf = new StringBuilder();
+            buf.append("delimiter:");
+
+            for (int i = 0; i < value.length(); i++) {
+                buf.append(" 0x");
+                buf.append(Integer.toHexString(value.charAt(i)));
+            }
+
+            return buf.toString();
+        }
+    }
+}

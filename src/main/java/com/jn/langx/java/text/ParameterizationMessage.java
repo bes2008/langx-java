@@ -1,4 +1,4 @@
-package com.jn.langx.java.util;
+package com.jn.langx.java.text;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * </code> <br>那么结果就是：
  * "hello zhang san, welcome you to BeiJing ."
  *
- * @author fjn
+ * @author fangjinuo
  */
 public class ParameterizationMessage {
     protected final static Pattern pattern = Pattern.compile("\\{\\d+\\}");
