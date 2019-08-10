@@ -19,11 +19,4 @@ public class Holder<V> {
         return this.v;
     }
 
-    public void setV(final V value) {
-        this.v = value;
-    }
-
-    public V getV() {
-        return this.v;
-    }
 }

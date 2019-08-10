@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.fangjinuo.langx</groupId>
-    <artifactId>langx</artifactId>
+    <artifactId>langx-java</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1</version>
 
