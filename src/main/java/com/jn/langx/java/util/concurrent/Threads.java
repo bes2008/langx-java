@@ -1,4 +1,4 @@
-package com.jn.langx.java.util;
+package com.jn.langx.java.util.concurrent;
 
 import com.jn.langx.java.exception.ExceptionMessage;
 import com.jn.langx.java.exception.IllegalParameterException;
