@@ -1,5 +1,5 @@
 
-package com.jn.langx.struct;
+package com.jn.langx.util.struct;
 
 public class Holder<V> {
     private V v;
