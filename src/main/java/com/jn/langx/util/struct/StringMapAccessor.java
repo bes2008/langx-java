@@ -1,6 +1,6 @@
 package com.jn.langx.util.struct;
 
-import com.jn.langx.util.Accessor;
+import com.jn.langx.Accessor;
 
 public class StringMapAccessor implements Accessor<StringMap> {
     private StringMap map;

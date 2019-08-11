@@ -1,4 +1,4 @@
-package com.jn.langx.util;
+package com.jn.langx;
 
 /**
  * Get value from T object;

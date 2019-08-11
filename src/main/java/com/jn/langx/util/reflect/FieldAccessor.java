@@ -1,6 +1,6 @@
 package com.jn.langx.util.reflect;
 
-import com.jn.langx.util.Accessor;
+import com.jn.langx.Accessor;
 
 public class FieldAccessor implements Accessor<Object> {
     private Object target;

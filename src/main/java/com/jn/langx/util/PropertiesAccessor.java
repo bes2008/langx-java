@@ -1,5 +1,7 @@
 package com.jn.langx.util;
 
+import com.jn.langx.Accessor;
+
 import java.util.Properties;
 
 public class PropertiesAccessor implements Accessor<Properties> {
