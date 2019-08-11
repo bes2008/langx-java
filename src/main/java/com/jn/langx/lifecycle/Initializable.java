@@ -1,4 +1,4 @@
-package com.jn.langx.java.lifecycle;
+package com.jn.langx.lifecycle;
 
 public interface Initializable {
     void init();

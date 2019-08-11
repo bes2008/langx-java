@@ -1,4 +1,4 @@
-package com.jn.langx.java.util;
+package com.jn.langx.util;
 
 public class Calenders {
     private static int[] arr = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};

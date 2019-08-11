@@ -1,4 +1,4 @@
-package com.jn.langx.java.util;
+package com.jn.langx.util;
 
 
 import java.math.BigDecimal;

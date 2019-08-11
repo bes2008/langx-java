@@ -1,4 +1,4 @@
-package com.jn.langx.java.util.reflect;
+package com.jn.langx.util.reflect;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

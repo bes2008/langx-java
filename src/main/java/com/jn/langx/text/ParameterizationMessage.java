@@ -1,4 +1,4 @@
-package com.jn.langx.java.text;
+package com.jn.langx.text;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

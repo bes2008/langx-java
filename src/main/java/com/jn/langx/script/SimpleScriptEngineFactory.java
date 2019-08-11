@@ -1,4 +1,4 @@
-package com.jn.langx.java.script;
+package com.jn.langx.script;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;

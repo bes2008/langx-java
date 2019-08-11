@@ -1,7 +1,7 @@
-package com.jn.langx.java.util.concurrent;
+package com.jn.langx.util.concurrent;
 
-import com.jn.langx.java.exception.ExceptionMessage;
-import com.jn.langx.java.exception.IllegalParameterException;
+import com.jn.langx.exception.ExceptionMessage;
+import com.jn.langx.exception.IllegalParameterException;
 
 public class Threads {
 

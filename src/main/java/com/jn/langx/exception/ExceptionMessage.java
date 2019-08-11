@@ -1,6 +1,6 @@
-package com.jn.langx.java.exception;
+package com.jn.langx.exception;
 
-import com.jn.langx.java.text.ParameterizationMessage;
+import com.jn.langx.text.ParameterizationMessage;
 
 public class ExceptionMessage extends ParameterizationMessage {
     public ExceptionMessage (String msg){

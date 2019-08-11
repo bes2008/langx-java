@@ -1,4 +1,4 @@
-package com.jn.langx.java.exception;
+package com.jn.langx.exception;
 
 public class IllegalParameterException extends IllegalArgumentException {
     public IllegalParameterException() {

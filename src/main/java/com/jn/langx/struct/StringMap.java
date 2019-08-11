@@ -1,4 +1,4 @@
-package com.jn.langx.java.struct;
+package com.jn.langx.struct;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.jn.langx.java.util.regexp;
+package com.jn.langx.util.regexp;
 
 public class RegexpPatternException extends RuntimeException {
     private static final long serialVersionUID = 3078609769667671693L;

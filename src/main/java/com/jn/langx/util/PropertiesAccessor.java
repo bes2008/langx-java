@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.jn.langx.java.util;
+package com.jn.langx.util;
 
 import java.util.Properties;
 
