@@ -3,18 +3,63 @@ package com.jn.langx.util.reflect;
 import com.jn.langx.exception.ExceptionMessage;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class Reflects {
-    public static Annotation getDeclaredAnnotation(Class clazz, Class<? extends Annotation> annotationClazz) {
-        Annotation[] annotations = clazz.getDeclaredAnnotations();
-        for (Annotation anno : annotations) {
-            if (annotationClazz.isInstance(anno)) {
-                return anno;
-            }
-        }
-        return null;
+
+    public static String getSimpleClassName(Class clazz){
+        return clazz.getSimpleName();
+    }
+
+    public static String getFQNClassName(Class clazz){
+        return clazz.getName();
+    }
+
+    public static String getPackageName(Class clazz){
+        return clazz.getPackage().getName();
+    }
+
+
+    /**
+     * Returns true if an annotation for the specified type
+     * is present on this element, else false.  This method
+     * is designed primarily for convenient access to marker annotations.
+     */
+    public static boolean isAnnotationPresent(AnnotatedElement annotatedElement, Class<? extends Annotation> annotationClass) {
+        return annotatedElement.isAnnotationPresent(annotationClass);
+    }
+
+
+    /**
+     * Returns this element's annotation for the specified type if
+     * such an annotation is present, else null.
+     */
+    public static <T extends Annotation> T getAnnotation(AnnotatedElement annotatedElement, Class<T> annotationClass) {
+        return annotatedElement.getAnnotation(annotationClass);
+    }
+
+    /**
+     * Returns all annotations present on this element.  (Returns an array
+     * of length zero if this element has no annotations.)  The caller of
+     * this method is free to modify the returned array; it will have no
+     * effect on the arrays returned to other callers.
+     */
+    public static Annotation[] getAnnotations(AnnotatedElement annotatedElement) {
+        return annotatedElement.getAnnotations();
+    }
+
+    /**
+     * Returns all annotations that are directly present on this
+     * element.  Unlike the other methods in this interface, this method
+     * ignores inherited annotations.  (Returns an array of length zero if
+     * no annotations are directly present on this element.)  The caller of
+     * this method is free to modify the returned array; it will have no
+     * effect on the arrays returned to other callers.
+     */
+    public static Annotation[] getDeclaredAnnotations(AnnotatedElement annotatedElement) {
+        return annotatedElement.getDeclaredAnnotations();
     }
 
     public static boolean isInnerClass(Class<?> clazz) {
