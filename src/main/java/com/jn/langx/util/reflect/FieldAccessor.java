@@ -13,7 +13,6 @@ public class FieldAccessor implements Accessor<Object> {
         this.target = target;
     }
 
-
     private <V> V getFieldValue(String fieldName, V defaultValue) {
         try {
             return (V) Reflects.getAnyFieldValue(target, fieldName, true, true);
@@ -22,6 +21,11 @@ public class FieldAccessor implements Accessor<Object> {
         } catch (IllegalAccessException ex) {
             return defaultValue;
         }
+    }
+
+    @Override
+    public Object get(String field) {
+        return getFieldValue(field, null);
     }
 
     @Override

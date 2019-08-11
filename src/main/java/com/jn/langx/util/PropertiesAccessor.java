@@ -9,6 +9,11 @@ public class PropertiesAccessor implements Accessor<Properties> {
         setTarget(properties);
     }
 
+    @Override
+    public Object get(String key) {
+        return getString(key);
+    }
+
     public String getString(String key) {
         return props.getProperty(key, "0");
     }
@@ -22,7 +27,7 @@ public class PropertiesAccessor implements Accessor<Properties> {
     }
 
     public Integer getInteger(String key, Integer defaultValue) {
-        return Integer.parseInt(props.getProperty(key, "" + defaultValue));
+        return Integer.parseInt(getString(key, "" + defaultValue));
     }
 
     public Short getShort(String key) {
@@ -30,7 +35,7 @@ public class PropertiesAccessor implements Accessor<Properties> {
     }
 
     public Short getShort(String key, Short defaultValue) {
-        return Short.parseShort(props.getProperty(key, "" + defaultValue));
+        return Short.parseShort(getString(key, "" + defaultValue));
     }
 
     public Double getDouble(String key) {
@@ -38,7 +43,7 @@ public class PropertiesAccessor implements Accessor<Properties> {
     }
 
     public Double getDouble(String key, Double defaultValue) {
-        return Double.parseDouble(props.getProperty(key, "" + defaultValue));
+        return Double.parseDouble(getString(key, "" + defaultValue));
     }
 
     public Float getFloat(String key) {
@@ -46,7 +51,7 @@ public class PropertiesAccessor implements Accessor<Properties> {
     }
 
     public Float getFloat(String key, Float defaultValue) {
-        return Float.parseFloat(props.getProperty(key, "" + defaultValue));
+        return Float.parseFloat(getString(key, "" + defaultValue));
     }
 
     public Long getLong(String key) {
@@ -54,7 +59,7 @@ public class PropertiesAccessor implements Accessor<Properties> {
     }
 
     public Long getLong(String key, Long defaultValue) {
-        return Long.parseLong(props.getProperty(key, "" + defaultValue));
+        return Long.parseLong(getString(key, "" + defaultValue));
     }
 
     public Boolean getBoolean(String key) {
@@ -62,7 +67,7 @@ public class PropertiesAccessor implements Accessor<Properties> {
     }
 
     public Boolean getBoolean(String key, Boolean defaultValue) {
-        return Boolean.parseBoolean(props.getProperty(key, "" + defaultValue));
+        return Boolean.parseBoolean(getString(key, "" + defaultValue));
     }
 
     @Override

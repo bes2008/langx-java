@@ -11,6 +11,8 @@ package com.jn.langx.util;
 public interface Accessor<T> {
     void setTarget(T target);
 
+    Object get(String key);
+
     String getString(String key);
 
     String getString(String key, String defaultValue);
