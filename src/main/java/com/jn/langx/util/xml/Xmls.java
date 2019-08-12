@@ -16,6 +16,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
+@SuppressWarnings({"unchecked","unused"})
 public class Xmls {
     private static final String NULL_XML_STR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
@@ -31,8 +32,7 @@ public class Xmls {
         entityResolver = ((entityResolver == null) ? new NullEntityResolver() : entityResolver);
         builder.setEntityResolver(entityResolver);
         builder.setErrorHandler(new ErrorHandler());
-        final Document doc = builder.parse(xml);
-        return doc;
+        return builder.parse(xml);
     }
 
     public static Document getXmlDoc(final InputStream dtdInputStream, final String src, final boolean srcIsPath) throws Exception {
@@ -70,8 +70,7 @@ public class Xmls {
             }
             input = new FileInputStream(file);
             doc = getXmlDoc(null, input);
-            final T ret = handler.handle(doc);
-            return ret;
+            return handler.handle(doc);
         } catch (Exception ex) {
             throw ex;
         } finally {
@@ -85,7 +84,7 @@ public class Xmls {
     }
 
     public static class DTDEntityResolver implements EntityResolver {
-        public InputStream dtdInputStream;
+        private InputStream dtdInputStream;
 
         public DTDEntityResolver(final InputStream dtdInputStream) {
             this.dtdInputStream = dtdInputStream;

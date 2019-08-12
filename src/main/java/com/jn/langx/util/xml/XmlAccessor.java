@@ -20,7 +20,7 @@ public class XmlAccessor {
         }
         try {
             final Element element = this.getElement(doc, factory, elementXpath);
-            if (element == null) {
+            if (Emptys.isEmpty(element)) {
                 return;
             }
             element.setAttribute(attributeName, attributeValue);
@@ -40,12 +40,12 @@ public class XmlAccessor {
     }
 
     public void setElementAttributes(final Document doc, final XPathFactory factory, final String elementXpath, final Map<String, String> attrs) throws Exception {
-        if (attrs == null || attrs.isEmpty()) {
+        if (Emptys.isEmpty(attrs)) {
             return;
         }
         try {
             final Element element = this.getElement(doc, factory, elementXpath);
-            if (element == null) {
+            if (Emptys.isEmpty(element)) {
                 return;
             }
             for (final String attributeName : attrs.keySet()) {
@@ -61,12 +61,12 @@ public class XmlAccessor {
     }
 
     public void setElementsAttributes(final Document doc, final XPathFactory factory, final String elementXpath, final Map<String, String> attrs) throws Exception {
-        if (attrs == null || attrs.isEmpty()) {
+        if (Emptys.isEmpty(attrs)) {
             return;
         }
         try {
             final NodeList elements = this.getNodeList(doc, factory, elementXpath);
-            if (elements == null || elements.getLength() == 0) {
+            if (Emptys.isEmpty(elements)) {
                 return;
             }
             for (int i = 0; i < elements.getLength(); ++i) {
@@ -79,7 +79,7 @@ public class XmlAccessor {
                 }
             }
         } catch (Exception ex) {
-            logger.error("Error occur when set attribute for element {}", (Object) elementXpath);
+            logger.error("Error occur when set attribute for element {}", elementXpath);
             throw ex;
         }
     }
@@ -89,7 +89,7 @@ public class XmlAccessor {
             @Override
             public String handle(final Document doc) throws Exception {
                 final XPathFactory factory = XPathFactory.newInstance();
-                return XmlAccessor.this.getElementAttribute(doc, factory, elementXpath, attributeName);
+                return getElementAttribute(doc, factory, elementXpath, attributeName);
             }
         });
     }
@@ -101,18 +101,13 @@ public class XmlAccessor {
             }
             final Element element = this.getElement(doc, factory, elementXpath);
             final Attr attr = element.getAttributeNode(attributeName);
-            String ret = null;
-            if (attr == null) {
-                ret = "";
-            } else {
-                ret = attr.getValue();
-            }
+            String ret = Emptys.isEmpty(attr) ? "" : attr.getValue();
             if (logger.isDebugEnabled()) {
                 logger.debug("get attribute " + attributeName + " from " + elementXpath + " is " + ret);
             }
             return ret;
         } catch (Exception ex) {
-            logger.error("Error occur when get attribute {} from element {}", (Object) attributeName, (Object) elementXpath);
+            logger.error("Error occur when get attribute {} from element {}", attributeName, (Object) elementXpath);
             throw ex;
         }
     }
