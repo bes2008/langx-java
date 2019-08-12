@@ -14,4 +14,8 @@ public class Throwables {
             IOs.close(printWriter);
         }
     }
+
+    public static void log(Throwable ex){
+        // it;
+    }
 }
