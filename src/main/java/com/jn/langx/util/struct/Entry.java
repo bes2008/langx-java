@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Entry<K, V> implements Map.Entry<K, V> {
+public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
     private K key;
     private V value;
 
@@ -19,26 +19,10 @@ public class Entry<K, V> implements Map.Entry<K, V> {
     }
 
     @Override
-    public K getKey() {
-        return key;
-    }
-
-    @Override
-    public V getValue() {
-        return value;
-    }
-
-    @Override
-    public V setValue(V value) {
-        V result = this.value;
-        this.value = value;
-        return result;
-    }
-
-    @Override
     public boolean equals(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return false;
+        }
         if (!(obj instanceof Entry)) {
             return false;
         }
