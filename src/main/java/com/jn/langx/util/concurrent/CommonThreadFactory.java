@@ -26,15 +26,15 @@ public class CommonThreadFactory implements ThreadFactory {
     }
 
     public CommonThreadFactory(String prefix, boolean daemon) {
-        if(Strings.isBlank(prefix)){
+        if (Strings.isBlank(prefix)) {
             prefix = "COMMON";
         }
         this.daemon = daemon;
         this.prefix = prefix;
 
-        if(threadNumber.containsKey(prefix)){
+        if (threadNumber.containsKey(prefix)) {
             factoryNo = factoryToNumber.get(prefix);
-        }else{
+        } else {
             factoryNo = factoryNumber.getAndIncrement();
             factoryToNumber.put(prefix, factoryNo);
         }
@@ -46,16 +46,16 @@ public class CommonThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
-        Thread thread = new LogableThread(r, nextThreadName());
+        Thread thread = new WrappedThread(r, nextThreadName());
         thread.setDaemon(daemon);
         return thread;
     }
 
-    public static ThreadFactory create(String prefix, boolean daemon){
+    public static ThreadFactory create(String prefix, boolean daemon) {
         return new CommonThreadFactory(prefix, daemon);
     }
 
-    public static ThreadFactory create(String prefix){
+    public static ThreadFactory create(String prefix) {
         return new CommonThreadFactory(prefix, false);
     }
 }
