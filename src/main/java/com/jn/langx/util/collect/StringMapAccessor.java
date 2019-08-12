@@ -1,4 +1,4 @@
-package com.jn.langx.util.struct;
+package com.jn.langx.util.collect;
 
 import com.jn.langx.Accessor;
 
