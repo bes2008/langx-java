@@ -12,6 +12,11 @@ public class PropertiesAccessor implements Accessor<Properties> {
     }
 
     @Override
+    public Properties getTarget() {
+        return props;
+    }
+
+    @Override
     public Object get(String key) {
         return getString(key);
     }

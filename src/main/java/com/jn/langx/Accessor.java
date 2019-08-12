@@ -10,6 +10,7 @@ package com.jn.langx;
  */
 public interface Accessor<T> {
     void setTarget(T target);
+    T getTarget();
 
     Object get(String key);
 

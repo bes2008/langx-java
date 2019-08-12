@@ -14,6 +14,11 @@ public class FieldAccessor implements Accessor<Object> {
         this.target = target;
     }
 
+    @Override
+    public Object getTarget() {
+        return target;
+    }
+
     private <V> V getFieldValue(String fieldName, V defaultValue) {
         try {
             return (V) Reflects.getAnyFieldValue(target, fieldName, true, true);

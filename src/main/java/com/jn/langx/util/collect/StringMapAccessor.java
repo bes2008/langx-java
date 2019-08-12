@@ -5,9 +5,21 @@ import com.jn.langx.Accessor;
 public class StringMapAccessor implements Accessor<StringMap> {
     private StringMap map;
 
+    public StringMapAccessor(){}
+
+    public StringMapAccessor(StringMap target){
+        this();
+        setTarget(target);
+    }
+
     @Override
     public void setTarget(StringMap target) {
         this.map = target;
+    }
+
+    @Override
+    public StringMap getTarget() {
+        return map;
     }
 
     @Override
