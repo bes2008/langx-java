@@ -1,5 +1,6 @@
 package com.jn.langx.util.concurrent;
 
+import com.jn.langx.factory.Factory;
 import com.jn.langx.util.Strings;
 
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class CommonThreadFactory implements ThreadFactory {
+public class CommonThreadFactory implements ThreadFactory, Factory<Runnable,Thread> {
     // key: prefix
     // value: thread N.O.
     private static final Map<String, AtomicLong> threadNumber = new ConcurrentHashMap<String, AtomicLong>();
@@ -49,6 +50,11 @@ public class CommonThreadFactory implements ThreadFactory {
         Thread thread = new WrappedThread(r, nextThreadName());
         thread.setDaemon(daemon);
         return thread;
+    }
+
+    @Override
+    public Thread create(Runnable runnable) {
+        return newThread(runnable);
     }
 
     public static ThreadFactory create(String prefix, boolean daemon) {
