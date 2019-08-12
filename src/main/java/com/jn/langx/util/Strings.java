@@ -44,6 +44,10 @@ public class Strings {
         return str == null || str.trim().isEmpty();
     }
 
+    public static boolean isNotBlank(String str){
+        return !isBlank(str);
+    }
+
     public static String truncate(final String string, final int length) {
         if (string.length() <= length) {
             return string;
