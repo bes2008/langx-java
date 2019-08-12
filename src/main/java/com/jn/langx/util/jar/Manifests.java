@@ -1,6 +1,7 @@
 package com.jn.langx.util.jar;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.IOs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,9 @@ public class Manifests {
         } catch (Throwable ex) {
             logger.warn("Can't find the jar : {}", path0);
             return null;
+        }
+        finally {
+            IOs.close(jarFile);
         }
     }
 }

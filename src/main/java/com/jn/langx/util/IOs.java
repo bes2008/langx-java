@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.Reader;
 
 public class IOs {
-    public void close(Object target) {
+    public static void close(Object target) {
         if (target == null) {
             return;
         }
