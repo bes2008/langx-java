@@ -49,8 +49,7 @@ public class Manifests {
         } catch (Throwable ex) {
             logger.warn("Can't find the jar : {}", path0);
             return null;
-        }
-        finally {
+        } finally {
             IOs.close(jarFile);
         }
     }

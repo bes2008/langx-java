@@ -9,6 +9,7 @@ public class FieldAccessor implements Accessor<Object> {
         setTarget(target);
     }
 
+    @Override
     public void setTarget(Object target) {
         this.target = target;
     }

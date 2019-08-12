@@ -11,10 +11,9 @@ public abstract class WrappedTask<V> extends TaskInterceptorChain {
             v = run0();
         } catch (Throwable ex) {
             doError(ex);
-            if(ex instanceof Exception){
-                throw (Exception)ex;
-            }
-            else{
+            if (ex instanceof Exception) {
+                throw (Exception) ex;
+            } else {
                 throw new RuntimeException(ex);
             }
         } finally {
