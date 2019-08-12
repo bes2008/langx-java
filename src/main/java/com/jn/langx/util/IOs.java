@@ -1,10 +1,27 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.reflect.Reflects;
+
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
 public class IOs {
+    public void close(Object target) {
+        if (target == null) {
+            return;
+        }
+        if (target instanceof Closeable) {
+            try {
+                ((Closeable) target).close();
+            } catch (IOException ex) {
+                // ignore it
+            }
+        }
+        Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
+    }
+
     public static String readAsString(Reader reader) throws IOException {
         StringBuilder stringBuilder = new StringBuilder(256);
         char[] chars = new char[1024];
