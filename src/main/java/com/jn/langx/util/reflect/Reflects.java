@@ -1,23 +1,47 @@
 package com.jn.langx.util.reflect;
 
+import com.jn.langx.annotation.NotNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Strings;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 
 public class Reflects {
 
-    public static String getSimpleClassName(Class clazz){
+    public static boolean isInnerClass(Class<?> clazz) {
+        return clazz.isMemberClass() && !isStatic(clazz);
+    }
+
+    public static boolean isStatic(Class<?> clazz) {
+        return (clazz.getModifiers() & Modifier.STATIC) != 0;
+    }
+
+    public static boolean isAnonymousOrLocal(Class<?> clazz) {
+        return isAnonymous(clazz) || isLocal(clazz);
+    }
+
+    public static boolean isAnonymous(Class clazz) {
+        return !Enum.class.isAssignableFrom(clazz) && clazz.isAnonymousClass();
+    }
+
+
+    public static boolean isLocal(Class clazz) {
+        return !Enum.class.isAssignableFrom(clazz) && clazz.isLocalClass();
+    }
+
+
+    public static String getSimpleClassName(Class clazz) {
         return clazz.getSimpleName();
     }
 
-    public static String getFQNClassName(Class clazz){
+    public static String getFQNClassName(Class clazz) {
         return clazz.getName();
     }
 
-    public static String getPackageName(Class clazz){
+    public static String getPackageName(Class clazz) {
         return clazz.getPackage().getName();
     }
 
@@ -62,26 +86,6 @@ public class Reflects {
         return annotatedElement.getDeclaredAnnotations();
     }
 
-    public static boolean isInnerClass(Class<?> clazz) {
-        return clazz.isMemberClass() && !isStatic(clazz);
-    }
-
-    public static boolean isStatic(Class<?> clazz) {
-        return (clazz.getModifiers() & Modifier.STATIC) != 0;
-    }
-
-    public static boolean isAnonymousOrLocal(Class<?> clazz) {
-        return isAnonymous(clazz) || isLocal(clazz);
-    }
-
-    public static boolean isAnonymous(Class clazz) {
-        return !Enum.class.isAssignableFrom(clazz) && clazz.isAnonymousClass();
-    }
-
-
-    public static boolean isLocal(Class clazz) {
-        return !Enum.class.isAssignableFrom(clazz) && clazz.isLocalClass();
-    }
 
     public static Field getPublicField(Class clazz, String fieldName) {
         Field field = null;
@@ -115,10 +119,10 @@ public class Reflects {
         return field;
     }
 
-    public static <V> V getPublicFieldValueForcedIfPresent(Object object, String fieldName){
+    public static <V> V getPublicFieldValueForcedIfPresent(Object object, String fieldName) {
         try {
             return getPublicFieldValue(object, fieldName, false);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -126,19 +130,19 @@ public class Reflects {
     public static <V> V getPublicFieldValue(Object object, String fieldName, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getPublicField(object.getClass(), fieldName);
         if (field == null) {
-            if(throwException) {
+            if (throwException) {
                 throw new NoSuchFieldException(new ExceptionMessage("Can't find public field {0} in the class {1}", fieldName, object.getClass().getCanonicalName()).getMessage());
             }
             return null;
-        }else {
+        } else {
             return (V) field.get(object);
         }
     }
 
-    public static <V> V getDeclaredFieldValueForcedIfPresent(Object object, String fieldName){
+    public static <V> V getDeclaredFieldValueForcedIfPresent(Object object, String fieldName) {
         try {
             return getDeclaredFieldValue(object, fieldName, true, false);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             return null;
         }
     }
@@ -146,52 +150,202 @@ public class Reflects {
     public static <V> V getDeclaredFieldValue(Object object, String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getDeclaredField(object.getClass(), fieldName);
         if (field == null) {
-            if(throwException) {
+            if (throwException) {
                 throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1}", fieldName, object.getClass().getCanonicalName()).getMessage());
             }
             return null;
-        }else {
-            return getFieldValue(object, field, force, throwException);
+        } else {
+            return getFieldValue(field, object, force, throwException);
         }
     }
 
-    public static <V> V getAnyFieldValueForcedIfPresent(Object object, String fieldName){
-        try{
+    public static <V> V getAnyFieldValueForcedIfPresent(Object object, String fieldName) {
+        try {
             return getAnyFieldValue(object, fieldName, true, false);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             return null;
         }
     }
 
-    public static <V> V getAnyFieldValue(Object object, String fieldName, boolean force, boolean throwException)  throws NoSuchFieldException, IllegalAccessException {
+    public static <V> V getAnyFieldValue(Object object, String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getAnyField(object.getClass(), fieldName);
-        if(field==null){
-            if(throwException){
+        if (field == null) {
+            if (throwException) {
                 throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
             }
             return null;
-        }else{
-            return getFieldValue(object, field, force, throwException);
+        } else {
+            return getFieldValue(field, object, force, throwException);
         }
     }
 
-    private static <V> V getFieldValue(Object object, Field field, boolean force, boolean throwException) throws IllegalAccessException{
+    public static <V> V getFieldValue(Field field, Object object, boolean force, boolean throwException) throws IllegalAccessException {
         if (!force && !field.isAccessible()) {
-            if(throwException) {
+            if (throwException) {
                 throw new IllegalAccessException();
             }
             return null;
         }
+
         // accessible
         if (field.isAccessible()) {
-            return (V) field.get(object);
+            try {
+                return (V) field.get(object);
+            } catch (IllegalArgumentException ex) {
+                if (throwException) {
+                    throw ex;
+                }
+                return null;
+            }
         }
 
         // unaccessible && force
         field.setAccessible(true);
-        V v = (V) field.get(object);
-        field.setAccessible(false);
-        return v;
+        try {
+            return (V) field.get(object);
+        } catch (IllegalArgumentException ex) {
+            if (throwException) {
+                throw ex;
+            }
+            return null;
+        } finally {
+            field.setAccessible(false);
+        }
+    }
 
+    public static Method getPublicMethod(Class clazz, String methodName, Class[] parameterTypes) {
+        Method method = null;
+        try {
+            method = clazz.getMethod(methodName, parameterTypes);
+        } catch (NoSuchMethodException ex) {
+            method = null;
+        }
+        return method;
+    }
+
+    public static Method getDeclaredMethod(Class clazz, String methodName, Class[] parameterTypes) {
+        Method method = null;
+        try {
+            method = clazz.getDeclaredMethod(methodName, parameterTypes);
+        } catch (NoSuchMethodException ex) {
+            method = null;
+        }
+        return method;
+    }
+
+    public static Method getAnyMethod(Class clazz, String methodName, Class[] parameterTypes) {
+        Method method = getDeclaredMethod(clazz, methodName, parameterTypes);
+        if (method == null) {
+            Class parent = clazz.getSuperclass();
+            if (parent != null) {
+                return getAnyMethod(parent, methodName, parameterTypes);
+            }
+            return null;
+        }
+        return method;
+    }
+
+    public static <V> V invokePublicMethod(Object object, String methodName, Class[] parameterTypes, Object parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Method method = getPublicMethod(object.getClass(), methodName, parameterTypes);
+        if (method == null) {
+            if (throwException) {
+                throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+            }
+            return null;
+        }
+
+        try {
+            return (V) method.invoke(object, parameters);
+        } catch (InvocationTargetException ex) {
+            if (throwException) {
+                throw ex;
+            }
+            return null;
+        }
+    }
+
+    public static <V> V invoke(Method method, Object object, Object[] parameters, boolean force, boolean throwException) throws IllegalAccessException, InvocationTargetException {
+        if (!force && !method.isAccessible()) {
+            if (throwException) {
+                throw new IllegalAccessException(new ExceptionMessage("Method {0} is not accessible", method.toString()).getMessage());
+            }
+            return null;
+        }
+
+        if (method.isAccessible()) {
+            try {
+                return (V) method.invoke(object, parameters);
+            } catch (InvocationTargetException ex) {
+                if (throwException) {
+                    throw ex;
+                }
+                return null;
+            }
+        }
+
+        // force && unaccessible
+        method.setAccessible(true);
+        try {
+            return (V) method.invoke(object, parameters);
+        } catch (InvocationTargetException ex) {
+            if (throwException) {
+                throw ex;
+            }
+            return null;
+        } finally {
+            method.setAccessible(false);
+        }
+    }
+
+    public static String getMethodString(@Nullable String clazzFQN,
+                                         @NotNull String methodName,
+                                         @Nullable Class returnType,
+                                         @Nullable Class[] parameterTypes) {
+        try {
+            StringBuffer sb = new StringBuffer();
+            if (returnType != null) {
+                sb.append(getTypeName(returnType) + " ");
+            }
+            if (Strings.isNotBlank(clazzFQN)) {
+                sb.append(clazzFQN + ".");
+            }
+            sb.append(methodName + "(");
+            if(!Emptys.isEmpty(parameterTypes)) {
+                Class[] params = parameterTypes; // avoid clone
+                for (int j = 0; j < params.length; j++) {
+                    sb.append(getTypeName(params[j]));
+                    if (j < (params.length - 1))
+                        sb.append(",");
+                }
+            }
+            sb.append(")");
+            return sb.toString();
+        } catch (Exception e) {
+            return "<" + e + ">";
+        }
+    }
+
+    public static String getMethodString(Method method) {
+        return method.toString();
+    }
+
+    public static String getTypeName(Class type) {
+        if (type.isArray()) {
+            try {
+                Class cl = type;
+                int dimensions = 0;
+                while (cl.isArray()) {
+                    dimensions++;
+                    cl = cl.getComponentType();
+                }
+                StringBuffer sb = new StringBuffer();
+                sb.append(cl.getName());
+                for (int i = 0; i < dimensions; i++) {
+                    sb.append("[]");
+                }
+                return sb.toString();
+            } catch (Throwable e) { /*FALLTHRU*/ }
+        }
+        return type.getName();
     }
 }
