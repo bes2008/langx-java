@@ -4,6 +4,7 @@ import com.jn.langx.util.Emptys;
 
 import java.util.*;
 
+@SuppressWarnings({"unchecked"})
 public class Collects {
     /**
      * Get a empty, mutable java.util.Hashtable
@@ -232,5 +233,48 @@ public class Collects {
         }
     }
 
+    public static <E> List<E> asList(E[] array) {
+        return asList(array, true, ListType.ArrayList);
+    }
 
+    public static <E> List<E> asList(E[] array, ListType listType) {
+        return asList(array, true, listType);
+    }
+
+    public static <E> List<E> asList(E[] array, boolean mutable, ListType listType) {
+        List<E> immutableList = Emptys.isEmpty(array) ? Collections.<E>emptyList() : Arrays.asList(array);
+        if (listType == null) {
+            listType = ListType.ArrayList;
+        }
+        List<E> list;
+        switch (listType) {
+            case LinkedList:
+                list = new LinkedList<E>(immutableList);
+                break;
+            case ArrayList:
+                list = new ArrayList<E>(immutableList);
+                break;
+            default:
+                list = new ArrayList<E>(immutableList);
+                break;
+        }
+        if (!mutable) {
+            list = Collections.unmodifiableList(list);
+        }
+        return list;
+    }
+
+    public static <E> E[] toArray(List<E> list) {
+        if (Emptys.isEmpty(list)) {
+            list = Collections.emptyList();
+        }
+        return (E[]) list.toArray();
+    }
+
+    public static <E> E[] toArray(Set<E> set){
+        if (Emptys.isEmpty(set)) {
+            set = Collections.emptySet();
+        }
+        return (E[]) set.toArray();
+    }
 }

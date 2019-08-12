@@ -5,11 +5,13 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collect.Collects;
 import com.jn.langx.util.reflect.type.Types;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.net.URL;
+import java.util.List;
 
 @SuppressWarnings({"unused", "unchecked"})
 public class Reflects {
@@ -52,7 +54,7 @@ public class Reflects {
         return clazz.getPackage().getName();
     }
 
-    public static URL getCodeLocation(Class clazz){
+    public static URL getCodeLocation(Class clazz) {
         return clazz.getProtectionDomain().getCodeSource().getLocation();
     }
 
@@ -92,8 +94,8 @@ public class Reflects {
      * this method is free to modify the returned array; it will have no
      * effect on the arrays returned to other callers.
      */
-    public static Annotation[] getDeclaredAnnotations(AnnotatedElement annotatedElement) {
-        return annotatedElement.getDeclaredAnnotations();
+    public static List<Annotation> getDeclaredAnnotations(AnnotatedElement annotatedElement) {
+        return Collects.asList(annotatedElement.getDeclaredAnnotations());
     }
 
     public static Field getPublicField(Class clazz, String fieldName) {
