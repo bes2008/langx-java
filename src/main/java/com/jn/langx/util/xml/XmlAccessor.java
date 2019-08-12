@@ -24,7 +24,9 @@ public class XmlAccessor {
                 return;
             }
             element.setAttribute(attributeName, attributeValue);
-            logger.debug("set attribute " + attributeName + "=" + attributeValue + "for element " + elementXpath);
+            if (logger.isDebugEnabled()) {
+                logger.debug("set attribute " + attributeName + "=" + attributeValue + "for element " + elementXpath);
+            }
         } catch (Exception ex) {
             logger.error("Error occured when set attribute {} for element {}", (Object) attributeName, (Object) elementXpath);
             throw ex;
@@ -47,7 +49,9 @@ public class XmlAccessor {
                 return;
             }
             for (final String attributeName : attrs.keySet()) {
-                logger.debug("set attribute " + attributeName + "=" + attrs.get(attributeName) + "for element " + elementXpath);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("set attribute " + attributeName + "=" + attrs.get(attributeName) + "for element " + elementXpath);
+                }
                 element.setAttribute(attributeName, attrs.get(attributeName));
             }
         } catch (Exception ex) {
@@ -68,7 +72,9 @@ public class XmlAccessor {
             for (int i = 0; i < elements.getLength(); ++i) {
                 final Element element = (Element) elements.item(i);
                 for (final String attributeName : attrs.keySet()) {
-                    logger.debug("set attribute " + attributeName + "=" + attrs.get(attributeName) + "for element " + elementXpath);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("set attribute " + attributeName + "=" + attrs.get(attributeName) + "for element " + elementXpath);
+                    }
                     element.setAttribute(attributeName, attrs.get(attributeName));
                 }
             }
@@ -101,7 +107,9 @@ public class XmlAccessor {
             } else {
                 ret = attr.getValue();
             }
-            logger.debug("get attribute " + attributeName + " from " + elementXpath + " is " + ret);
+            if (logger.isDebugEnabled()) {
+                logger.debug("get attribute " + attributeName + " from " + elementXpath + " is " + ret);
+            }
             return ret;
         } catch (Exception ex) {
             logger.error("Error occured when get attribute {} from element {}", (Object) attributeName, (Object) elementXpath);
