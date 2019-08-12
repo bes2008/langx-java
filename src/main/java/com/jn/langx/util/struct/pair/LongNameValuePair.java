@@ -1,4 +1,4 @@
-package com.jn.langx.util.struct;
+package com.jn.langx.util.struct.pair;
 
 public class LongNameValuePair extends NameValuePair<Long> {
     public LongNameValuePair() {

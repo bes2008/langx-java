@@ -1,4 +1,6 @@
-package com.jn.langx.util.struct;
+package com.jn.langx.util.struct.pair;
+
+import com.jn.langx.util.struct.Pair;
 
 /**
  * @param <V> any type
