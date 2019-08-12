@@ -5,11 +5,17 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.reflect.type.Types;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 
+@SuppressWarnings({"unused", "unchecked"})
 public class Reflects {
+
+    public static String getTypeName(Class type) {
+        return Types.typeToString(type);
+    }
 
     public static boolean isInnerClass(Class<?> clazz) {
         return clazz.isMemberClass() && !isStatic(clazz);
@@ -245,7 +251,15 @@ public class Reflects {
         return method;
     }
 
-    public static <V> V invokePublicMethod(Object object, String methodName, Class[] parameterTypes, Object parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static <V> V invokePublicMethodForcedIfPresent(Object object, String methodName, Class[] parameterTypes, Object[] parameters) {
+        try {
+            return (V) invokePublicMethod(object, methodName, parameterTypes, parameters, true, false);
+        } catch (Throwable ex) {
+            return null;
+        }
+    }
+
+    public static <V> V invokePublicMethod(Object object, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = getPublicMethod(object.getClass(), methodName, parameterTypes);
         if (method == null) {
             if (throwException) {
@@ -253,15 +267,45 @@ public class Reflects {
             }
             return null;
         }
+        return (V) invokeMethodOrNull(method, object, parameters, throwException);
+    }
 
+    public static <V> V invokeDeclaredMethodForcedIfPresent(Object object, String methodName, Class[] parameterTypes, Object[] parameters) {
         try {
-            return (V) method.invoke(object, parameters);
-        } catch (InvocationTargetException ex) {
+            return (V) invokeDeclaredMethod(object, methodName, parameterTypes, parameters, true, false);
+        } catch (Throwable ex) {
+            return null;
+        }
+    }
+
+    public static <V> V invokeDeclaredMethod(Object object, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Method method = getDeclaredMethod(object.getClass(), methodName, parameterTypes);
+        if (method == null) {
             if (throwException) {
-                throw ex;
+                throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
             }
             return null;
         }
+        return (V) invokeMethodOrNull(method, object, parameters, throwException);
+    }
+
+    public static <V> V invokeAnyMethodForcedIfPresent(Object object, String methodName, Class[] parameterTypes, Object[] parameters) {
+        try {
+            return (V) invokeAnyMethod(object, methodName, parameterTypes, parameters, true, false);
+        } catch (Throwable ex) {
+            return null;
+        }
+    }
+
+    public static <V> V invokeAnyMethod(Object object, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Method method = getAnyMethod(object.getClass(), methodName, parameterTypes);
+        if (method == null) {
+            if (throwException) {
+                throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+            }
+            return null;
+        }
+        return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
     public static <V> V invoke(Method method, Object object, Object[] parameters, boolean force, boolean throwException) throws IllegalAccessException, InvocationTargetException {
@@ -273,27 +317,31 @@ public class Reflects {
         }
 
         if (method.isAccessible()) {
-            try {
-                return (V) method.invoke(object, parameters);
-            } catch (InvocationTargetException ex) {
-                if (throwException) {
-                    throw ex;
-                }
-                return null;
-            }
+            return (V) invokeMethodOrNull(method, object, parameters, throwException);
         }
 
         // force && unaccessible
         method.setAccessible(true);
         try {
+            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+        } finally {
+            method.setAccessible(false);
+        }
+    }
+
+    private static <V> V invokeMethodOrNull(Method method, Object object, Object[] parameters, boolean throwException) throws IllegalAccessException, InvocationTargetException {
+        try {
             return (V) method.invoke(object, parameters);
+        } catch (IllegalAccessException ex) {
+            if (throwException) {
+                throw ex;
+            }
+            return null;
         } catch (InvocationTargetException ex) {
             if (throwException) {
                 throw ex;
             }
             return null;
-        } finally {
-            method.setAccessible(false);
         }
     }
 
@@ -310,12 +358,13 @@ public class Reflects {
                 sb.append(clazzFQN + ".");
             }
             sb.append(methodName + "(");
-            if(!Emptys.isEmpty(parameterTypes)) {
+            if (!Emptys.isEmpty(parameterTypes)) {
                 Class[] params = parameterTypes; // avoid clone
                 for (int j = 0; j < params.length; j++) {
                     sb.append(getTypeName(params[j]));
-                    if (j < (params.length - 1))
+                    if (j < (params.length - 1)) {
                         sb.append(",");
+                    }
                 }
             }
             sb.append(")");
@@ -329,23 +378,15 @@ public class Reflects {
         return method.toString();
     }
 
-    public static String getTypeName(Class type) {
-        if (type.isArray()) {
-            try {
-                Class cl = type;
-                int dimensions = 0;
-                while (cl.isArray()) {
-                    dimensions++;
-                    cl = cl.getComponentType();
-                }
-                StringBuffer sb = new StringBuffer();
-                sb.append(cl.getName());
-                for (int i = 0; i < dimensions; i++) {
-                    sb.append("[]");
-                }
-                return sb.toString();
-            } catch (Throwable e) { /*FALLTHRU*/ }
+
+    public static String getMethodString(Class clazz, String methodName, Class[] parameterTypes) {
+        Method method = getAnyMethod(clazz, methodName, parameterTypes);
+        if (method != null) {
+            return getMethodString(method);
+        } else {
+            return getMethodString(getTypeName(clazz), methodName, null, parameterTypes);
         }
-        return type.getName();
     }
+
+
 }

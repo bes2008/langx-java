@@ -31,7 +31,28 @@ public class Types {
     }
 
     public static String typeToString(Type type) {
-        return type instanceof Class ? ((Class<?>) type).getName() : type.toString();
+        if (type instanceof Class) {
+            Class ctype = (Class) type;
+            if (ctype.isArray()) {
+                try {
+                    Class cl = ctype;
+                    int dimensions = 0;
+                    while (cl.isArray()) {
+                        dimensions++;
+                        cl = cl.getComponentType();
+                    }
+                    StringBuffer sb = new StringBuffer();
+                    sb.append(cl.getName());
+                    for (int i = 0; i < dimensions; i++) {
+                        sb.append("[]");
+                    }
+                    return sb.toString();
+                } catch (Throwable e) { /*FALLTHRU*/ }
+            } else {
+                return ctype.getName();
+            }
+        }
+        return type.toString();
     }
 
 
