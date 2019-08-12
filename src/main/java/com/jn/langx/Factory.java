@@ -1,4 +1,4 @@
-package com.jn.langx.factory;
+package com.jn.langx;
 
 public interface Factory<I,O> {
     O create(I input);

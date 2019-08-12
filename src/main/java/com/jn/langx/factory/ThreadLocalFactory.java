@@ -1,5 +1,7 @@
 package com.jn.langx.factory;
 
+import com.jn.langx.Factory;
+
 public class ThreadLocalFactory<I, E> implements Factory<I, E> {
     private final ThreadLocal<E> valueCache;
     private final ThreadLocal<I> inputCache = new ThreadLocal<I>();
