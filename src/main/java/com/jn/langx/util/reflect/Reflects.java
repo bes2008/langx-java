@@ -66,7 +66,7 @@ public class Reflects {
      * Returns this element's annotation for the specified type if
      * such an annotation is present, else null.
      */
-    public static <T extends Annotation> T getAnnotation(AnnotatedElement annotatedElement, Class<T> annotationClass) {
+    public static <E extends Annotation> E getAnnotation(AnnotatedElement annotatedElement, Class<E> annotationClass) {
         return annotatedElement.getAnnotation(annotationClass);
     }
 
@@ -91,7 +91,6 @@ public class Reflects {
     public static Annotation[] getDeclaredAnnotations(AnnotatedElement annotatedElement) {
         return annotatedElement.getDeclaredAnnotations();
     }
-
 
     public static Field getPublicField(Class clazz, String fieldName) {
         Field field = null;
