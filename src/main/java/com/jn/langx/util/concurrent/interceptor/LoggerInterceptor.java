@@ -4,7 +4,7 @@ import com.jn.langx.util.concurrent.TaskInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LoggerInterceptor implements TaskInterceptor {
+class LoggerInterceptor implements TaskInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggerInterceptor.class);
 

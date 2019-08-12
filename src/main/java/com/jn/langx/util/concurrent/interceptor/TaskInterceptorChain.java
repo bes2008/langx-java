@@ -3,15 +3,21 @@ package com.jn.langx.util.concurrent.interceptor;
 import com.jn.langx.util.collect.Collects;
 import com.jn.langx.util.concurrent.TaskInterceptor;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TaskInterceptorChain implements TaskInterceptor {
-    private List<TaskInterceptor> interceptors = new ArrayList<TaskInterceptor>();
+    private LinkedList<TaskInterceptor> interceptors = new LinkedList<TaskInterceptor>();
+
+    public TaskInterceptorChain() {
+        interceptors.add(new LoggerInterceptor());
+    }
 
     public void addInterceptor(TaskInterceptor interceptor) {
         if (interceptor != null) {
-            interceptors.add(interceptor);
+            TaskInterceptor loggerInterceptor = interceptors.remove(interceptors.size() - 1);
+            interceptors.addLast(interceptor);
+            interceptors.addLast(loggerInterceptor);
         }
     }
 
