@@ -28,7 +28,7 @@ public class XmlAccessor {
                 logger.debug("set attribute " + attributeName + "=" + attributeValue + "for element " + elementXpath);
             }
         } catch (Exception ex) {
-            logger.error("Error occured when set attribute {} for element {}", (Object) attributeName, (Object) elementXpath);
+            logger.error("Error occur when set attribute {} for element {}", (Object) attributeName, (Object) elementXpath);
             throw ex;
         }
     }
@@ -55,7 +55,7 @@ public class XmlAccessor {
                 element.setAttribute(attributeName, attrs.get(attributeName));
             }
         } catch (Exception ex) {
-            logger.error("Error occured when set attribute for element {}", (Object) elementXpath);
+            logger.error("Error occur when set attribute for element {}", (Object) elementXpath);
             throw ex;
         }
     }
@@ -79,7 +79,7 @@ public class XmlAccessor {
                 }
             }
         } catch (Exception ex) {
-            logger.error("Error occured when set attribute for element {}", (Object) elementXpath);
+            logger.error("Error occur when set attribute for element {}", (Object) elementXpath);
             throw ex;
         }
     }
@@ -112,7 +112,7 @@ public class XmlAccessor {
             }
             return ret;
         } catch (Exception ex) {
-            logger.error("Error occured when get attribute {} from element {}", (Object) attributeName, (Object) elementXpath);
+            logger.error("Error occur when get attribute {} from element {}", (Object) attributeName, (Object) elementXpath);
             throw ex;
         }
     }
