@@ -9,6 +9,7 @@ import com.jn.langx.util.reflect.type.Types;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.net.URL;
 
 @SuppressWarnings({"unused", "unchecked"})
 public class Reflects {
@@ -51,6 +52,9 @@ public class Reflects {
         return clazz.getPackage().getName();
     }
 
+    public static URL getCodeLocation(Class clazz){
+        return clazz.getProtectionDomain().getCodeSource().getLocation();
+    }
 
     /**
      * Returns true if an annotation for the specified type
