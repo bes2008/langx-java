@@ -1,12 +1,17 @@
 package com.jn.langx;
 
 /**
- * Get value from T object;
- * <p>
+ * A object's accessor, use it, you can get value from T object;
+ * <pre>
  * getXxx(String key): get the Xxx value association to specified key from target
  * getXxx(String key, Xxx default): get the Xxx value association to specified key from target, if can't find the key, return the specified default value
- *
+ * </pre>
  * @param <T> the target
+ *
+ * @see com.jn.langx.util.collect.StringMapAccessor
+ * @see com.jn.langx.util.reflect.FieldAccessor
+ * @see com.jn.langx.util.PropertiesAccessor
+ * @see com.jn.langx.parser.HttpQueryStringAccessor
  */
 public interface Accessor<T> {
     void setTarget(T target);

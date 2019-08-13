@@ -6,6 +6,31 @@ import com.jn.langx.util.concurrent.TaskInterceptor;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Interceptor chain for task execute.
+ *
+ * Usage:
+ * method1:
+ * <pre>
+ *  Callable task0 = new Callable(){run(){...}};
+ *  WrapedCallable task00 = new WrapedCallable(task0);
+ *  executor.submit(task00);
+ *
+ *  Runnable task1 = new Runnable(){run(){...}};
+ *  WrappedRunnable task11 = new WrappedRunnable(task1);
+ *  executor.submit(task11);
+ * </pre>
+ *
+ * method2:
+ * <pre>
+ *     using WrapedThread
+ * </pre>
+ *
+ * method3:
+ * <pre>
+ *     using CommonThreadFactory
+ * </pre>
+ */
 public class TaskInterceptorChain implements TaskInterceptor {
     private LinkedList<TaskInterceptor> interceptors = new LinkedList<TaskInterceptor>();
 

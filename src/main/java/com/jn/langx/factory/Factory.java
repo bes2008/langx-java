@@ -1,5 +1,6 @@
 package com.jn.langx.factory;
 
-public interface Factory<I,O> {
-    O create(I input);
+import com.jn.langx.util.collect.function.Supplier;
+
+public interface Factory<I,O> extends Supplier<I,O>{
 }

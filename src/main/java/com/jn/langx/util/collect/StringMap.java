@@ -1,10 +1,11 @@
 package com.jn.langx.util.collect;
 
-import com.jn.langx.util.struct.Entry;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A map with key, value are String.
+ */
 public class StringMap extends HashMap<String, String> {
     public static final StringMap EMPTY = new StringMap(0);
 
@@ -25,7 +26,7 @@ public class StringMap extends HashMap<String, String> {
     }
 
     public StringMap(String src, String keyValueSpec, String entrySpec) {
-        this(Entry.getMap(src, keyValueSpec, entrySpec));
+        this(com.jn.langx.util.struct.Entry.getMap(src, keyValueSpec, entrySpec));
     }
 
     public static StringMap httpUrlParameters(String url) {

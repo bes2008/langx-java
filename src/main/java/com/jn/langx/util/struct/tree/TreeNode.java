@@ -7,8 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class TreeNode<T extends TreeNode>
-        implements Serializable {
+public class TreeNode<T extends TreeNode> implements Serializable {
     private static final long serialVersionUID = 3465696230080207245L;
     private String id;
     private String pid;

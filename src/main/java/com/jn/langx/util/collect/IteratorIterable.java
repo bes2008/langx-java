@@ -2,6 +2,10 @@ package com.jn.langx.util.collect;
 
 import java.util.Iterator;
 
+/**
+ * Wrap an Iterator to an Iterable
+ * @param <E>
+ */
 public class IteratorIterable<E> implements Iterable<E>{
     private Iterator<E> iterator;
     public IteratorIterable(Iterator<E> iterator){

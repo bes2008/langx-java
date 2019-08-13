@@ -15,11 +15,10 @@ public class ThreadLocalFactory<I, E> implements Factory<I, E>, Delegatable<Fact
         this.valueCache = new ThreadLocal<E>() {
             @Override
             protected E initialValue() {
-                return ThreadLocalFactory.this.delegate.create(inputCache.get());
+                return ThreadLocalFactory.this.delegate.get(inputCache.get());
             }
         };
     }
-
 
     @Override
     public Factory<I, E> getDelegate() {
@@ -32,7 +31,7 @@ public class ThreadLocalFactory<I, E> implements Factory<I, E>, Delegatable<Fact
     }
 
     @Override
-    public E create(I input) {
+    public E get(I input) {
         inputCache.set(input);
         try {
             return valueCache.get();

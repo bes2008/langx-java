@@ -2,6 +2,9 @@ package com.jn.langx.util.collect;
 
 import com.jn.langx.Accessor;
 
+/**
+ * A accessor for a StringMap
+ */
 public class StringMapAccessor implements Accessor<StringMap> {
     private StringMap map;
 

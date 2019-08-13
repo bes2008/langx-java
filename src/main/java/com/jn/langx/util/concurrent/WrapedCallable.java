@@ -5,12 +5,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
 
-public class WrappedCallable<V> extends WrappedTask<V> implements Callable<V> {
-    private static final Logger logger = LoggerFactory.getLogger(WrappedCallable.class);
+public class WrapedCallable<V> extends WrapedTask<V> implements Callable<V> {
+    private static final Logger logger = LoggerFactory.getLogger(WrapedCallable.class);
 
     private Callable<V> task;
 
-    public WrappedCallable() {
+    public WrapedCallable() {
 
     }
 
@@ -18,7 +18,7 @@ public class WrappedCallable<V> extends WrappedTask<V> implements Callable<V> {
         this.task = task;
     }
 
-    public WrappedCallable(Callable<V> callable) {
+    public WrapedCallable(Callable<V> callable) {
         this.task = callable;
     }
 

@@ -1,10 +1,13 @@
 package com.jn.langx.io.resource;
 
-import java.io.InputStream;
-
-public class ResourceLoaderRegistry implements ResourceLoader{
+public class ResourceLoaderRegistry implements ResourceLoader {
     @Override
-    public InputStream load(String path) {
+    public Resource loadResource(String path) {
+        return null;
+    }
+
+    @Override
+    public ClassLoader getClassLoader() {
         return null;
     }
 }

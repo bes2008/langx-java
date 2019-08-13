@@ -14,22 +14,47 @@ import java.util.NoSuchElementException;
 public class Types {
     private static final Type[] EMPTY_TYPE_ARRAY = new Type[]{};
 
+    /**
+     * judge a type is a primitive type or not
+     */
     public static boolean isPrimitive(Type type) {
         return Primitives.isPrimitive(type);
     }
 
+    /**
+     * judge a type is a array or not
+     */
+    public static boolean isArray(Type type){
+        return isClass(type) && ((Class)type).isArray();
+    }
+
+    /**
+     * judge a type is a class or not
+     */
     public static boolean isClass(Type type) {
         return type instanceof Class;
     }
 
+    /**
+     * judge a type is a ParameterizedType
+     */
     public static boolean isParameterizedType(Type type) {
         return (type instanceof ParameterizedType);
     }
 
+    /**
+     * get the wrap class for a primitive type
+     */
     public static Class getPrimitiveWrapClass(Type type) {
         return Primitives.wrap(type);
     }
 
+    /**
+     * show a type as a string, for examples:
+     * <pre>
+     *     // TODO show an example for typeToString
+     * </pre>
+     */
     public static String typeToString(Type type) {
         if (type instanceof Class) {
             Class ctype = (Class) type;
@@ -41,7 +66,7 @@ public class Types {
                         dimensions++;
                         cl = cl.getComponentType();
                     }
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     sb.append(cl.getName());
                     for (int i = 0; i < dimensions; i++) {
                         sb.append("[]");
@@ -162,6 +187,11 @@ public class Types {
         }
     }
 
+    /**
+     * convert any type to Class
+     * @param o
+     * @return
+     */
     public static Class<?> toClass(Type o) {
         if (o instanceof GenericArrayType) {
             return Array.newInstance(toClass(((GenericArrayType) o).getGenericComponentType()),
@@ -181,10 +211,20 @@ public class Types {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * <pre>
+     *     List<E>
+     * </pre>
+     */
     public static ParameterizedType getListParameterizedType(Type elementType) {
         return getParameterizedType(List.class, elementType);
     }
 
+    /**
+     * <pre>
+     *     Map<K,V>
+     * </pre>
+     */
     public static ParameterizedType getMapParameterizedType(Type keyType, Type valueType) {
         return getParameterizedType(Map.class, keyType, valueType);
     }
@@ -193,6 +233,11 @@ public class Types {
         return new ParameterizedTypeImpl(null, rawType);
     }
 
+    /**
+     *
+     * @see #getListParameterizedType(Type)
+     * @see #getMapParameterizedType(Type, Type)
+     */
     public static ParameterizedType getParameterizedType(Type rawType, Type... typeArguments) {
         return getParameterizedTypeWithOwnerType(null, rawType, typeArguments);
     }

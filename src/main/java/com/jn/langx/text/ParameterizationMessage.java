@@ -1,6 +1,5 @@
 package com.jn.langx.text;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -16,38 +15,30 @@ import java.util.regex.Pattern;
  */
 public class ParameterizationMessage {
     protected final static Pattern pattern = Pattern.compile("\\{\\d+\\}");
-    private volatile String msg = "";
+    private volatile String template;
+    private Object[] args = null;
 
     public ParameterizationMessage() {
     }
 
-    public ParameterizationMessage(String msg) {
-        this.msg = msg;
+    public ParameterizationMessage(String template) {
+        this.template = template;
     }
 
-    public ParameterizationMessage(String msg, Object... object) {
-        this.msg = msg;
-        Matcher matcher = pattern.matcher(this.msg);
-        StringBuffer sb = new StringBuffer();
-        int i = 0;
-        while (matcher.find()) {
-            matcher.appendReplacement(sb, object[i++].toString());
-        }
-        matcher.appendTail(sb);
-        this.msg = sb.toString();
+    public ParameterizationMessage(String template, Object... args) {
+        this.template = template;
+        this.args = args;
     }
 
     public String getMessage() {
-        return msg;
-    }
-
-
-    public void setMessage(String msg) {
-        this.msg = msg;
+        if (template != null) {
+            return StringTemplates.format(template, args);
+        }
+        return "";
     }
 
     @Override
     public String toString() {
-        return this.msg;
+        return getMessage();
     }
 }

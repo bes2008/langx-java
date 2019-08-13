@@ -1,11 +1,10 @@
 package com.jn.langx.parser;
 
 import com.jn.langx.Accessor;
-import com.jn.langx.factory.Factory;
 import com.jn.langx.util.collect.StringMap;
 import com.jn.langx.util.collect.StringMapAccessor;
 
-public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAccessor>, Accessor<String>, Factory<String, HttpQueryStringAccessor> {
+public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAccessor>, Accessor<String> {
     private String url;
     private StringMapAccessor delegate;
 
@@ -111,11 +110,6 @@ public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAc
     public HttpQueryStringAccessor parse(String url) {
         setTarget(url);
         return this;
-    }
-
-    @Override
-    public HttpQueryStringAccessor create(String url) {
-        return parse(url);
     }
 
     public static HttpQueryStringAccessor access(String url) {

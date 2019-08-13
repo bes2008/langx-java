@@ -1,5 +1,8 @@
 package com.jn.langx.util.struct;
 
+/**
+ * Key value pair
+ */
 public abstract class Pair<K, V> {
     private K key;
     private V value;
