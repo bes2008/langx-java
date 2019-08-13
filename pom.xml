@@ -6,7 +6,7 @@
 
     <groupId>com.github.fangjinuo.langx</groupId>
     <artifactId>langx-java</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>0.0.1</version>
 
     <dependencies>

@@ -25,7 +25,7 @@ public class StringMap extends HashMap<String, String> {
     }
 
     public StringMap(String src, String keyValueSpec, String entrySpec) {
-        this(Entry.getMap(src, keyValueSpec, entrySpec));
+        this(com.jn.langx.util.struct.Entry.getMap(src, keyValueSpec, entrySpec));
     }
 
     public static StringMap httpUrlParameters(String url) {
