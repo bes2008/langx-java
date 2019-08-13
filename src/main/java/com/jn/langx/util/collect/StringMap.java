@@ -3,6 +3,9 @@ package com.jn.langx.util.collect;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A map with key, value are String.
+ */
 public class StringMap extends HashMap<String, String> {
     public static final StringMap EMPTY = new StringMap(0);
 

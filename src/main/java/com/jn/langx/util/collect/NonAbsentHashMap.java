@@ -20,12 +20,20 @@ import java.util.Map;
  * <p>
  * using this class, your code will be:
  * <pre>
- *     Suppller
+ *     Supplier<K,List<E>> supplier = new Supplier<K,List<E>>(){
+ *         public List<E> get(K key){
+ *             return new ArrayList<E>();
+ *         }
+ *     };
  *     Map<K,List<E>> map = new NonAbsentHashMap<K,List<E>>();
+ *     map.get(key).add(e);
  * </pre>
  *
- * @param <K>
- * @param <V>
+ * @param <K> key
+ * @param <V> value
+ * @see java.util.Map
+ * @see java.util.HashMap
+ * @see com.jn.langx.util.collect.WrappedNonAbsentMap
  */
 public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
     private Supplier<K, V> supplier;

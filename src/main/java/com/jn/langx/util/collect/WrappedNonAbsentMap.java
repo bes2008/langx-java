@@ -7,6 +7,36 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Avoid the follower code:
+ * <pre>
+ *     Map<K,List<E>> map = new HashMap<K,List<E>>();
+ *     List<E> list = map.get(key);
+ *     if(list==null){
+ *         list = new ArrayList<E>();
+ *         map.put(key, list);
+ *     }
+ *     list.add(e);
+ * </pre>
+ * <p>
+ * using this class, your code will be:
+ * <pre>
+ *     Supplier<K,List<E>> supplier = new Supplier<K,List<E>>(){
+ *         public List<E> get(K key){
+ *             return new ArrayList<E>();
+ *         }
+ *     };
+ *     Map<K,List<E>> map0 = new HashMap<K,List<E>>();
+ *     Map<K,List<E>> map = WrappedNonAbsentMap.wrap(map0, supplier);
+ *     map.get(key).add(e);
+ * </pre>
+ *
+ * @param <K> key
+ * @param <V> value
+ * @see java.util.Map
+ * @see java.util.HashMap
+ * @see com.jn.langx.util.collect.WrappedNonAbsentMap
+ */
 public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
     private Map<K, V> delegate;
     private Supplier<K, V> supplier;
@@ -98,5 +128,9 @@ public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
     @Override
     public Set<Entry<K, V>> entrySet() {
         return delegate.entrySet();
+    }
+
+    public static <K,V> WrappedNonAbsentMap<K,V> wrap(Map<K,V> map, Supplier<K,V> supplier){
+        return new WrappedNonAbsentMap<K,V>(map, supplier);
     }
 }
