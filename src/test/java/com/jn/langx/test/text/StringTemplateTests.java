@@ -1,4 +1,4 @@
-package com.jn.langx.test.test;
+package com.jn.langx.test.text;
 
 import com.jn.langx.text.StringTemplates;
 import org.junit.Test;
