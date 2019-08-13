@@ -1,7 +1,5 @@
 package com.jn.langx.util.collect;
 
-import com.jn.langx.util.struct.Entry;
-
 import java.util.HashMap;
 import java.util.Map;
 
