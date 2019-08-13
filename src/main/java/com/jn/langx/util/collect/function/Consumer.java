@@ -1,4 +1,4 @@
-package com.jn.langx.util.collect.interfacefunction;
+package com.jn.langx.util.collect.function;
 
 public interface Consumer<E> {
     void accept(E e);

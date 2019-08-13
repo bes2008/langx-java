@@ -1,7 +1,7 @@
 package com.jn.langx.util.collect;
 
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.collect.interfacefunction.Suppller;
+import com.jn.langx.util.collect.function.Suppller;
 
 import java.util.Collection;
 import java.util.Map;

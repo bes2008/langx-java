@@ -1,4 +1,4 @@
-package com.jn.langx.util.collect.interfacefunction;
+package com.jn.langx.util.collect.function;
 
 public interface Predicate2<K, V> {
     boolean test(K key, V value);
