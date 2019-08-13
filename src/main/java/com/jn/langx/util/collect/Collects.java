@@ -277,4 +277,69 @@ public class Collects {
         }
         return (E[]) set.toArray();
     }
+
+    public static <E> void forEach(E anyObject){
+
+    }
+
+    public static <E> void forEach(String array){
+
+    }
+
+    public static <E> void forEach(E[] array){
+
+    }
+
+    public static <E> Iterable<E> asIterable(Object object){
+        if(Emptys.isNull(object)){
+            return asList(null);
+        }
+        if(object instanceof Iterable){
+            return (Iterable)object;
+        }
+
+        if(object instanceof Map){
+            return ((Map)object).entrySet();
+        }
+
+        if(object instanceof Iterator){
+            return new IteratorIterable<E>((Iterator<E>) object);
+        }
+
+        if(object instanceof Enumeration){
+            return new EnumerationIterable<E>((Enumeration<E>)object);
+        }
+
+        if(object instanceof Number){
+            return (Iterable<E>)asList(Arrs.wrapAsArray((Number) object));
+        }
+
+        if(object instanceof String){
+            return (Iterable<E>)asList(Arrs.wrapAsArray((String)object));
+        }
+
+        return (Iterable<E>)asList(Arrs.wrapAsArray(object));
+
+    }
+
+    public static <E> void forEach(Enumeration<E> iterator, Consumer<E> consumer){
+        while (iterator.hasMoreElements()){
+            E e = iterator.nextElement();
+            consumer.accept(e);
+        }
+    }
+
+
+    public static <E> void forEach(Iterator<E> iterator, Consumer<E> consumer){
+        while (iterator.hasNext()){
+            E e = iterator.next();
+            consumer.accept(e);
+        }
+    }
+
+    public static <E> void forEach(Iterable<E> iterable, Consumer<E> consumer){
+        for(E e : iterable){
+            consumer.accept(e);
+        }
+    }
 }

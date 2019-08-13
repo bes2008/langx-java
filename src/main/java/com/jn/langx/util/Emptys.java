@@ -4,23 +4,23 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Emptys {
-    public static boolean isEmpty(String str) {
+    private static boolean isEmpty(String str) {
         return Strings.isEmpty(str);
     }
 
-    public static boolean isEmpty(Object[] array) {
+    private static boolean isEmpty(Object[] array) {
         return array == null || array.length == 0;
     }
 
-    public static boolean isEmpty(Collection collection) {
+    private static boolean isEmpty(Collection collection) {
         return collection == null || collection.isEmpty();
     }
 
-    public static boolean isEmpty(Map map) {
+    private static boolean isEmpty(Map map) {
         return map == null || map.isEmpty();
     }
 
-    public static boolean isZero(Number number) {
+    private static boolean isZero(Number number) {
         if (number == null) {
             return true;
         }
@@ -74,4 +74,17 @@ public class Emptys {
 
         return false;
     }
+
+    public static boolean isNotEmpty(Object o) {
+        return !isEmpty(o);
+    }
+
+    public static boolean isNull(Object o) {
+        return o == null;
+    }
+
+    public static boolean isNotNull(Object o) {
+        return o != null;
+    }
+
 }
