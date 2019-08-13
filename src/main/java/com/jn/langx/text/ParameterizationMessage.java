@@ -25,13 +25,16 @@ public class ParameterizationMessage {
         this.template = template;
     }
 
-    public ParameterizationMessage(String template, Object... object) {
+    public ParameterizationMessage(String template, Object... args) {
         this.template = template;
         this.args = args;
     }
 
     public String getMessage() {
-        return StringTemplates.format(template, args);
+        if (template != null) {
+            return StringTemplates.format(template, args);
+        }
+        return "";
     }
 
     @Override
