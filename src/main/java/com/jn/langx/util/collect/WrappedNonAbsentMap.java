@@ -36,14 +36,19 @@ public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
         return delegate.containsValue(value);
     }
 
-    @Override
-    public V get(Object key) {
+    public V get(Object key, Suppller<K, V> suppller) {
         K key0 = (K) key;
         V v = getIfPresent(key0);
         if (v == null) {
+            suppller = suppller != null ? suppller : this.suppller;
             return putIfAbsent(key0, suppller.get(key0));
         }
         return v;
+    }
+
+    @Override
+    public V get(Object key) {
+        return get(key, null);
     }
 
     public V getIfPresent(Object key) {

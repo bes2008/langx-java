@@ -27,13 +27,18 @@ public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
         this.suppller = suppller;
     }
 
-    @Override
-    public V get(Object key) {
+    public V get(Object key, Suppller<K, V> suppller) {
         V v = getIfPresent(key);
         if (v == null) {
+            suppller = suppller != null ? suppller : this.suppller;
             v = putIfAbsent((K) key, suppller.get((K) key));
         }
         return v;
+    }
+
+    @Override
+    public V get(Object key) {
+        return get(key, null);
     }
 
     public V getIfPresent(Object key) {
