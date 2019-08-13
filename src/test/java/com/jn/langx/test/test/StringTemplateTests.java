@@ -14,14 +14,6 @@ public class StringTemplateTests {
     }
 
     @Test
-    public void test0(){
-        test(new Object[0]);
-    }
-
-    public void test1(){
-        test(new Object[]{1,"hello"});
-    }
-
     public void test2(){
         test(new Object[]{1,"hello","world","build"});
     }
