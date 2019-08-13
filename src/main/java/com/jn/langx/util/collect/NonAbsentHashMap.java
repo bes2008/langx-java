@@ -1,5 +1,6 @@
 package com.jn.langx.util.collect;
 
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collect.function.Suppller;
 
 import java.util.HashMap;
@@ -25,6 +26,10 @@ public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
     public NonAbsentHashMap(Map<? extends K, ? extends V> m, Suppller<K, V> suppller) {
         super(m);
         this.suppller = suppller;
+    }
+
+    private void setSuppller(Suppller<K, V> suppller){
+        Preconditions.checkNotNull(suppller);
     }
 
     public V get(Object key, Suppller<K, V> suppller) {

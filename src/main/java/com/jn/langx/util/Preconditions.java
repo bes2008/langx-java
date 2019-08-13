@@ -14,6 +14,8 @@
 
 package com.jn.langx.util;
 
+import com.jn.langx.util.collect.function.Predicate;
+
 public class Preconditions {
     private Preconditions() {
         throw new UnsupportedOperationException();
@@ -28,6 +30,12 @@ public class Preconditions {
 
     public static void checkArgument(boolean condition) {
         if (!condition) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public static <V> void checkExpression(Predicate<V> condition, V value) {
+        if (!condition.test(value)) {
             throw new IllegalArgumentException();
         }
     }
