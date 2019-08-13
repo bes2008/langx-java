@@ -43,7 +43,7 @@ public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
     public V putIfAbsent(K key, V value) {
         V v = super.get(key);
         if (v == null) {
-            return super.put(key, value);
+            super.put(key, value);
         }
         return v;
     }

@@ -53,7 +53,7 @@ public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
     public V putIfAbsent(K key, V value) {
         V v = delegate.get(key);
         if (v == null) {
-            return delegate.put(key, value);
+            delegate.put(key, value);
         }
         return v;
     }
