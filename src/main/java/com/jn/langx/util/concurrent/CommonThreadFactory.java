@@ -53,7 +53,7 @@ public class CommonThreadFactory implements ThreadFactory, Factory<Runnable,Thre
     }
 
     @Override
-    public Thread create(Runnable runnable) {
+    public Thread get(Runnable runnable) {
         return newThread(runnable);
     }
 
