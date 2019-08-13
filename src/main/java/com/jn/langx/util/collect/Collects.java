@@ -279,21 +279,26 @@ public class Collects {
     }
 
     public static <E> void forEach(E anyObject){
-
+        forEach(asIterable(anyObject));
     }
 
-    public static <E> void forEach(String array){
-
+    public static <E> void forEach(String string){
+        forEach(asIterable(string));
     }
 
     public static <E> void forEach(E[] array){
-
+        forEach(asList(array));
     }
 
     public static <E> Iterable<E> asIterable(Object object){
         if(Emptys.isNull(object)){
             return asList(null);
         }
+
+        if(Arrs.isArray(object)){
+            return asList((E[])object);
+        }
+
         if(object instanceof Iterable){
             return (Iterable)object;
         }

@@ -3,6 +3,10 @@ package com.jn.langx.util.collect;
 import com.jn.langx.util.Emptys;
 
 public class Arrs {
+    public static boolean isArray(Object o){
+        return Emptys.isNull(o) ? false : o.getClass().isArray();
+    }
+
     public static String[] wrapAsArray(String string){
         if(Emptys.isNull(string)){
             return new String[0];
