@@ -1,7 +1,7 @@
 package com.jn.langx.util.collect;
 
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.collect.function.Suppller;
+import com.jn.langx.util.collect.function.Supplier;
 
 import java.util.Collection;
 import java.util.Map;
@@ -9,11 +9,11 @@ import java.util.Set;
 
 public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
     private Map<K, V> delegate;
-    private Suppller<K, V> suppller;
+    private Supplier<K, V> supplier;
 
-    public WrappedNonAbsentMap(Map<K, V> map, Suppller<K, V> suppller) {
+    public WrappedNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
         this.delegate = map;
-        this.suppller = suppller;
+        this.supplier = supplier;
     }
 
     @Override
@@ -36,12 +36,12 @@ public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
         return delegate.containsValue(value);
     }
 
-    public V get(Object key, Suppller<K, V> suppller) {
+    public V get(Object key, Supplier<K, V> supplier) {
         K key0 = (K) key;
         V v = getIfPresent(key0);
         if (v == null) {
-            suppller = suppller != null ? suppller : this.suppller;
-            return putIfAbsent(key0, suppller.get(key0));
+            supplier = supplier != null ? supplier : this.supplier;
+            return putIfAbsent(key0, supplier.get(key0));
         }
         return v;
     }

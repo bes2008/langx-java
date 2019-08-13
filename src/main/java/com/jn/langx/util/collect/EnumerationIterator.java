@@ -3,6 +3,10 @@ package com.jn.langx.util.collect;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+/**
+ * Wrap an Enumeration to an Iterator
+ * @param <E>
+ */
 public class EnumerationIterator<E> implements Iterator<E> {
     Enumeration<E> enumeration;
 

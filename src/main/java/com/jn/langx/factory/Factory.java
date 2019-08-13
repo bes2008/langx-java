@@ -1,6 +1,6 @@
 package com.jn.langx.factory;
 
-import com.jn.langx.util.collect.function.Suppller;
+import com.jn.langx.util.collect.function.Supplier;
 
-public interface Factory<I,O> extends Suppller<I,O>{
+public interface Factory<I,O> extends Supplier<I,O>{
 }

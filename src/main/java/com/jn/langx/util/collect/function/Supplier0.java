@@ -1,5 +1,5 @@
 package com.jn.langx.util.collect.function;
 
-public interface Suppller0<O> {
+public interface Supplier0<O> {
     O get();
 }

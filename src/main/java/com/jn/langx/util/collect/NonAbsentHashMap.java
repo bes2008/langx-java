@@ -1,42 +1,63 @@
 package com.jn.langx.util.collect;
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collect.function.Suppller;
+import com.jn.langx.util.collect.function.Supplier;
 
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Avoid the follower code:
+ * <pre>
+ *     Map<K,List<E>> map = new HashMap<K,List<E>>();
+ *     List<E> list = map.get(key);
+ *     if(list==null){
+ *         list = new ArrayList<E>();
+ *         map.put(key, list);
+ *     }
+ *     list.add(e);
+ * </pre>
+ * <p>
+ * using this class, your code will be:
+ * <pre>
+ *     Suppller
+ *     Map<K,List<E>> map = new NonAbsentHashMap<K,List<E>>();
+ * </pre>
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
-    private Suppller<K, V> suppller;
+    private Supplier<K, V> supplier;
 
-    public NonAbsentHashMap(Suppller<K, V> suppller) {
+    public NonAbsentHashMap(Supplier<K, V> supplier) {
         super();
-        this.suppller = suppller;
+        setSupplier(supplier);
     }
 
-    public NonAbsentHashMap(int initialCapacity, Suppller<K, V> suppller) {
-        this(initialCapacity, initialCapacity, suppller);
+    public NonAbsentHashMap(int initialCapacity, Supplier<K, V> supplier) {
+        this(initialCapacity, initialCapacity, supplier);
     }
 
-    public NonAbsentHashMap(int initialCapacity, float loadFactor, Suppller<K, V> suppller) {
+    public NonAbsentHashMap(int initialCapacity, float loadFactor, Supplier<K, V> supplier) {
         super(initialCapacity, loadFactor);
-        this.suppller = suppller;
+        setSupplier(supplier);
     }
 
-    public NonAbsentHashMap(Map<? extends K, ? extends V> m, Suppller<K, V> suppller) {
+    public NonAbsentHashMap(Map<? extends K, ? extends V> m, Supplier<K, V> supplier) {
         super(m);
-        this.suppller = suppller;
+        setSupplier(supplier);
     }
 
-    private void setSuppller(Suppller<K, V> suppller){
-        Preconditions.checkNotNull(suppller);
+    private void setSupplier(Supplier<K, V> supplier) {
+        Preconditions.checkNotNull(supplier);
     }
 
-    public V get(Object key, Suppller<K, V> suppller) {
+    public V get(Object key, Supplier<K, V> supplier) {
         V v = getIfPresent(key);
         if (v == null) {
-            suppller = suppller != null ? suppller : this.suppller;
-            v = putIfAbsent((K) key, suppller.get((K) key));
+            supplier = supplier != null ? supplier : this.supplier;
+            v = putIfAbsent((K) key, supplier.get((K) key));
         }
         return v;
     }
