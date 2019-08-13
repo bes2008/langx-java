@@ -10,12 +10,12 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
     private V value;
 
     public Entry(K key) {
-        this.key = key;
+        setKey(key);
     }
 
     public Entry(K key, V value) {
-        this.key = key;
-        this.value = value;
+        setKey(key);
+        setValue(value);
     }
 
     @Override
