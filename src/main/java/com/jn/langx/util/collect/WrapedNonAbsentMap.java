@@ -27,7 +27,7 @@ import java.util.Set;
  *         }
  *     };
  *     Map<K,List<E>> map0 = new HashMap<K,List<E>>();
- *     Map<K,List<E>> map = WrappedNonAbsentMap.wrap(map0, supplier);
+ *     Map<K,List<E>> map = WrapedNonAbsentMap.wrap(map0, supplier);
  *     map.get(key).add(e);
  * </pre>
  *
@@ -35,13 +35,13 @@ import java.util.Set;
  * @param <V> value
  * @see java.util.Map
  * @see java.util.HashMap
- * @see com.jn.langx.util.collect.WrappedNonAbsentMap
+ * @see WrapedNonAbsentMap
  */
-public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
+public class WrapedNonAbsentMap<K, V> implements Map<K, V> {
     private Map<K, V> delegate;
     private Supplier<K, V> supplier;
 
-    public WrappedNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
+    public WrapedNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
         this.delegate = map;
         this.supplier = supplier;
     }
@@ -130,7 +130,7 @@ public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
         return delegate.entrySet();
     }
 
-    public static <K,V> WrappedNonAbsentMap<K,V> wrap(Map<K,V> map, Supplier<K,V> supplier){
-        return new WrappedNonAbsentMap<K,V>(map, supplier);
+    public static <K,V> WrapedNonAbsentMap<K,V> wrap(Map<K,V> map, Supplier<K,V> supplier){
+        return new WrapedNonAbsentMap<K,V>(map, supplier);
     }
 }

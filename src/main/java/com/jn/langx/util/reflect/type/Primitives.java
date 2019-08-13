@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class Primitives {
     private Primitives() {
-        throw new UnsupportedOperationException();
     }
 
     /**
@@ -80,6 +79,9 @@ public class Primitives {
         return (wrapped == null) ? type : wrapped;
     }
 
+    /**
+     * wrap a primitive type to warped class
+     */
     public static Class wrap(Type type) {
         if (isPrimitive(type)) {
             return PRIMITIVE_TO_WRAPPER_TYPE.get(checkNotNull(type));

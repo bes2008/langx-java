@@ -2,6 +2,10 @@ package com.jn.langx.util.reflect;
 
 import com.jn.langx.Accessor;
 
+/**
+ * A field accessor based on reflect
+ * @author jinuo.fang
+ */
 public class FieldAccessor implements Accessor<Object> {
     private Object target;
 

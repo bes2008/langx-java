@@ -47,7 +47,7 @@ public class CommonThreadFactory implements ThreadFactory, Factory<Runnable,Thre
 
     @Override
     public Thread newThread(Runnable r) {
-        Thread thread = new WrappedThread(r, nextThreadName());
+        Thread thread = new WrapedThread(r, nextThreadName());
         thread.setDaemon(daemon);
         return thread;
     }

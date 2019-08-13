@@ -13,7 +13,7 @@ import java.util.List;
  * method1:
  * <pre>
  *  Callable task0 = new Callable(){run(){...}};
- *  WrappedCallable task00 = new WrappedCallable(task0);
+ *  WrapedCallable task00 = new WrapedCallable(task0);
  *  executor.submit(task00);
  *
  *  Runnable task1 = new Runnable(){run(){...}};
@@ -23,7 +23,7 @@ import java.util.List;
  *
  * method2:
  * <pre>
- *     using WrappedThread
+ *     using WrapedThread
  * </pre>
  *
  * method3:
