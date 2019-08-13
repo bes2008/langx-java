@@ -39,7 +39,7 @@ public class StringTemplate {
         if (valueGetter != null) {
             this.valueGetter = valueGetter;
         }
-        if(variablePattern == defaultPattern){
+        if (variablePattern == defaultPattern) {
             this.valueGetter = defaultValueGetter;
         }
         return this;
@@ -52,7 +52,6 @@ public class StringTemplate {
 
         Matcher matcher = variablePattern.matcher(this.template);
         StringBuffer b = new StringBuffer();
-        int i = 0;
         while (matcher.find()) {
             String matched = matcher.group();
             matcher.appendReplacement(b, valueGetter.apply(matched, args));
