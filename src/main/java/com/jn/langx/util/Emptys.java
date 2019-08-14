@@ -2,8 +2,12 @@ package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Emptys {
 
@@ -28,6 +32,18 @@ public class Emptys {
         }
         if (number instanceof Double) {
             return number.doubleValue() == 0D;
+        }
+        if(number instanceof AtomicInteger){
+            return ((AtomicInteger) number).get()==0;
+        }
+        if(number instanceof BigInteger){
+            return ((BigInteger)number).intValue()==0;
+        }
+        if(number instanceof AtomicLong){
+            return number.longValue()==0L;
+        }
+        if(number instanceof BigDecimal){
+            return new BigDecimal(0).equals(number);
         }
         return false;
     }
