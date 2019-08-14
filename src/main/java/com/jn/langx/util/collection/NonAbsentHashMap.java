@@ -59,6 +59,7 @@ public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
 
     private void setSupplier(Supplier<K, V> supplier) {
         Preconditions.checkNotNull(supplier);
+        this.supplier = supplier;
     }
 
     public V get(Object key, Supplier<K, V> supplier) {
@@ -83,6 +84,7 @@ public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
         V v = super.get(key);
         if (v == null) {
             super.put(key, value);
+            v = value;
         }
         return v;
     }

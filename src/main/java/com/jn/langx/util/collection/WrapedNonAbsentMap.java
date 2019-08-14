@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier;
 
 import java.util.Collection;
@@ -43,6 +44,11 @@ public class WrapedNonAbsentMap<K, V> implements Map<K, V> {
 
     public WrapedNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
         this.delegate = map;
+        setSupplier(supplier);
+    }
+
+    private void setSupplier(Supplier<K, V> supplier) {
+        Preconditions.checkNotNull(supplier);
         this.supplier = supplier;
     }
 
@@ -89,6 +95,7 @@ public class WrapedNonAbsentMap<K, V> implements Map<K, V> {
         V v = delegate.get(key);
         if (v == null) {
             delegate.put(key, value);
+            v = value;
         }
         return v;
     }
@@ -130,7 +137,7 @@ public class WrapedNonAbsentMap<K, V> implements Map<K, V> {
         return delegate.entrySet();
     }
 
-    public static <K,V> WrapedNonAbsentMap<K,V> wrap(Map<K,V> map, Supplier<K,V> supplier){
-        return new WrapedNonAbsentMap<K,V>(map, supplier);
+    public static <K, V> WrapedNonAbsentMap<K, V> wrap(Map<K, V> map, Supplier<K, V> supplier) {
+        return new WrapedNonAbsentMap<K, V>(map, supplier);
     }
 }
