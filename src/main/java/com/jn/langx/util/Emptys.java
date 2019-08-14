@@ -1,24 +1,11 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.collection.Arrs;
+
 import java.util.Collection;
 import java.util.Map;
 
 public class Emptys {
-    private static boolean isEmpty(String str) {
-        return Strings.isEmpty(str);
-    }
-
-    private static boolean isEmpty(Object[] array) {
-        return array == null || array.length == 0;
-    }
-
-    private static boolean isEmpty(Collection collection) {
-        return collection == null || collection.isEmpty();
-    }
-
-    private static boolean isEmpty(Map map) {
-        return map == null || map.isEmpty();
-    }
 
     private static boolean isZero(Number number) {
         if (number == null) {
@@ -50,7 +37,7 @@ public class Emptys {
             return true;
         }
         if (object instanceof String) {
-            return isEmpty((String) object);
+            return Strings.isEmpty((String) object);
         }
 
         if (object instanceof Number) {
@@ -58,14 +45,14 @@ public class Emptys {
         }
 
         if (object instanceof Collection) {
-            return isEmpty((Collection) object);
+            return ((Collection) object).isEmpty();
         }
 
         if (object instanceof Map) {
-            return isEmpty((Map) object);
+            return ((Map) object).isEmpty();
         }
         if (object.getClass().isArray()) {
-            return isEmpty((Object[]) object);
+            return Arrs.getLengthIfIsArray(object) <= 0;
         }
 
         if (object.getClass().isEnum()) {
