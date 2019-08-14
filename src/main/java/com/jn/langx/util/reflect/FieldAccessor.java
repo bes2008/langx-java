@@ -6,7 +6,7 @@ import com.jn.langx.Accessor;
  * A field accessor based on reflect
  * @author jinuo.fang
  */
-public class FieldAccessor implements Accessor<Object> {
+public class FieldAccessor implements Accessor<String, Object> {
     private Object target;
 
     public FieldAccessor(Object target) {

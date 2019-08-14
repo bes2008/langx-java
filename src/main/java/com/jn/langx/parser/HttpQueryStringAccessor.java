@@ -4,7 +4,7 @@ import com.jn.langx.Accessor;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.StringMapAccessor;
 
-public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAccessor>, Accessor<String> {
+public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAccessor>, Accessor<String, String> {
     private String url;
     private StringMapAccessor delegate;
 

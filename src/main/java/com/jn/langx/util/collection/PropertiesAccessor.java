@@ -4,7 +4,7 @@ import com.jn.langx.Accessor;
 
 import java.util.Properties;
 
-public class PropertiesAccessor implements Accessor<Properties> {
+public class PropertiesAccessor implements Accessor<String, Properties> {
     private Properties props;
 
     public PropertiesAccessor(Properties properties) {

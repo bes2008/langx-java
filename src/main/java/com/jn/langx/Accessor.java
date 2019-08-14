@@ -5,8 +5,8 @@ import com.jn.langx.util.collection.PropertiesAccessor;
 /**
  * A object's accessor, use it, you can get value from T object;
  * <pre>
- * getXxx(String key): get the Xxx value association to specified key from target
- * getXxx(String key, Xxx default): get the Xxx value association to specified key from target, if can't find the key, return the specified default value
+ * getXxx(K key): get the Xxx value association to specified key from target
+ * getXxx(K key, Xxx default): get the Xxx value association to specified key from target, if can't find the key, return the specified default value
  * </pre>
  * @param <T> the target
  *
@@ -15,37 +15,37 @@ import com.jn.langx.util.collection.PropertiesAccessor;
  * @see PropertiesAccessor
  * @see com.jn.langx.parser.HttpQueryStringAccessor
  */
-public interface Accessor<T> {
+public interface Accessor<K, T> {
     void setTarget(T target);
     T getTarget();
 
-    Object get(String key);
+    Object get(K key);
 
-    String getString(String key);
+    String getString(K key);
 
-    String getString(String key, String defaultValue);
+    String getString(K key, String defaultValue);
 
-    Integer getInteger(String key);
+    Integer getInteger(K key);
 
-    Integer getInteger(String key, Integer defaultValue);
+    Integer getInteger(K key, Integer defaultValue);
 
-    Short getShort(String key);
+    Short getShort(K key);
 
-    Short getShort(String key, Short defaultValue);
+    Short getShort(K key, Short defaultValue);
 
-    Double getDouble(String key);
+    Double getDouble(K key);
 
-    Double getDouble(String key, Double defaultValue);
+    Double getDouble(K key, Double defaultValue);
 
-    Float getFloat(String key);
+    Float getFloat(K key);
 
-    Float getFloat(String key, Float defaultValue);
+    Float getFloat(K key, Float defaultValue);
 
-    Long getLong(String key);
+    Long getLong(K key);
 
-    Long getLong(String key, Long defaultValue);
+    Long getLong(K key, Long defaultValue);
 
-    Boolean getBoolean(String key);
+    Boolean getBoolean(K key);
 
-    Boolean getBoolean(String key, Boolean defaultValue);
+    Boolean getBoolean(K key, Boolean defaultValue);
 }

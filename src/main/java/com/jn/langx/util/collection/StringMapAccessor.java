@@ -5,7 +5,7 @@ import com.jn.langx.Accessor;
 /**
  * A accessor for a StringMap
  */
-public class StringMapAccessor implements Accessor<StringMap> {
+public class StringMapAccessor implements Accessor<String, StringMap> {
     private StringMap map;
 
     public StringMapAccessor(){}
