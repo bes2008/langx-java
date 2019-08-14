@@ -352,14 +352,14 @@ public class Collects {
         return list;
     }
 
-    public static <E> E[] toArray(List<E> list) {
+    public static <E> E[] toArray(Collection<E> list) {
         return toArray(list, null);
     }
 
     /**
      * Convert a list to an array
      */
-    public static <E> E[] toArray(List<E> list, @Nullable Class<E[]> clazz) {
+    public static <E> E[] toArray(Collection<E> list, @Nullable Class<E[]> clazz) {
         if (Emptys.isEmpty(list)) {
             list = Collections.emptyList();
         }
@@ -369,24 +369,6 @@ public class Collects {
         // Make a new array of a's runtime type, but my contents:
         return (E[]) Arrays.copyOf(list.toArray(), list.size(), clazz);
     }
-
-    public static <E> E[] toArray(Set<E> set) {
-        return toArray(set, null);
-    }
-
-    /**
-     * Convert a set to an array
-     */
-    public static <E> E[] toArray(Set<E> set, @Nullable Class<E[]> clazz) {
-        if (Emptys.isEmpty(set)) {
-            set = Collections.emptySet();
-        }
-        if (clazz == null) {
-            return (E[]) set.toArray();
-        }
-        return (E[]) Arrays.copyOf(set.toArray(), set.size(), clazz);
-    }
-
 
     /**
      * Convert any object to an immutable Iterable
