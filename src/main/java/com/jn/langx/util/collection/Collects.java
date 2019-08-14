@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.*;
@@ -372,52 +373,50 @@ public class Collects {
 
 
     /**
-     * Convert any object to Iterable
-     *
-     * @param object
-     * @param <E>
-     * @return
+     * Convert any object to an immutable Iterable
      */
-    private static <E> Iterable<E> asIterable(Object object) {
+    public static <E> Iterable<E> asIterable(Object object) {
+        return asIterable(object, false);
+    }
+
+    /**
+     * Convert any object to Iterable
+     */
+    public static <E> Iterable<E> asIterable(Object object, boolean removable) {
         if (Emptys.isNull(object)) {
-            return asList(null);
+            return asList(null, removable, null);
         }
 
         if (Arrs.isArray(object)) {
-            return asList((E[]) object);
+            return asList((E[]) object, removable, null);
         }
 
         if (object instanceof Iterable) {
+            if (!removable) {
+                return new WrapedIterable<E>((Iterable) object, removable);
+            }
             return (Iterable) object;
         }
 
         if (object instanceof Map) {
-            return (Iterable<E>) asList(Arrs.wrapAsArray(object));
+            return (Iterable<E>) asList(Arrs.wrapAsArray(object), removable, null);
         }
 
         if (object instanceof Iterator) {
-            return new IteratorIterable<E>((Iterator<E>) object, false);
+            return new IteratorIterable<E>((Iterator<E>) object, removable);
         }
 
         if (object instanceof Enumeration) {
             return new EnumerationIterable<E>((Enumeration<E>) object);
         }
 
-        if (object instanceof Number) {
-            return (Iterable<E>) asList(Arrs.wrapAsArray((Number) object));
-        }
-
-        if (object instanceof String) {
-            return (Iterable<E>) asList(Arrs.wrapAsArray((String) object));
-        }
-
-        return (Iterable<E>) asList(Arrs.wrapAsArray(object));
+        return (Iterable<E>) asList(Arrs.wrapAsArray(object), removable, null);
     }
 
     /**
      * Filter any object with the specified predicate
      */
-    public static <E> List<E> filter(Object anyObject, Predicate<E> predicate) {
+    public static <E> List<E> filter(Object anyObject, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         List<E> result = new ArrayList<E>();
@@ -432,7 +431,7 @@ public class Collects {
     /**
      * Filter a map with the specified predicate
      */
-    public static <K, V> Map<K, V> filter(Map<K, V> map, Predicate2<K, V> predicate) {
+    public static <K, V> Map<K, V> filter(Map<K, V> map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         Map<K, V> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
@@ -448,7 +447,7 @@ public class Collects {
     /**
      * mapping a to b
      */
-    public static <E, R> List<R> map(Object anyObject, Function<E, R> mapper) {
+    public static <E, R> List<R> map(Object anyObject, @NonNull Function<E, R> mapper) {
         Preconditions.checkNotNull(mapper);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         List<R> result = new ArrayList<R>();
@@ -461,7 +460,7 @@ public class Collects {
     /**
      * mapping aMap to bMap
      */
-    public static <R, K, V> List<R> map(Map<K, V> map, Function<Map.Entry<K, V>, R> mapper) {
+    public static <K, V, R> List<R> map(Map<K, V> map, @NonNull Function<Map.Entry<K, V>, R> mapper) {
         Preconditions.checkNotNull(mapper);
         List<R> result = new ArrayList<R>();
         for (Map.Entry<K, V> entry : map.entrySet()) {
@@ -470,7 +469,7 @@ public class Collects {
         return result;
     }
 
-    public static <K, V, K1, V1> Map<K1, V1> map(Map<K, V> map, Function2<K, V, Map.Entry<K1, V1>> mapper) {
+    public static <K, V, K1, V1> Map<K1, V1> map(Map<K, V> map, @NonNull Function2<K, V, Map.Entry<K1, V1>> mapper) {
         Preconditions.checkNotNull(mapper);
         Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
@@ -485,7 +484,7 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <E> void forEach(Object anyObject, Consumer<E> consumer) {
+    public static <E> void forEach(Object anyObject, @NonNull Consumer<E> consumer) {
         Preconditions.checkNotNull(consumer);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         for (E e : iterable) {
@@ -496,7 +495,7 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <K, V> void forEach(Map<K, V> map, Consumer2<K, V> consumer) {
+    public static <K, V> void forEach(Map<K, V> map, @NonNull Consumer2<K, V> consumer) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<K, V> entry : map.entrySet()) {
@@ -508,7 +507,7 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <E> E findFirst(Object anyObject, Predicate<E> predicate) {
+    public static <E> E findFirst(Object anyObject, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         for (E e : iterable) {
@@ -522,7 +521,7 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <K, V> Map.Entry<K, V> findFirst(Map<K, V> map, Predicate2<K, V> predicate) {
+    public static <K, V> Map.Entry<K, V> findFirst(Map<K, V> map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<K, V> entry : map.entrySet()) {
@@ -533,4 +532,201 @@ public class Collects {
         }
         return null;
     }
+
+    /**
+     * remove all elements that match the condition
+     *
+     * @return whether has any element removed
+     * @throws UnsupportedOperationException, NullPointException
+     */
+    public static <E> boolean removeIf(Collection<E> collection, Predicate<E> predicate) {
+        Preconditions.checkNotNull(predicate);
+        boolean hasRemoved = false;
+        if (Emptys.isNotEmpty(collection)) {
+            Iterator<E> iterator = collection.iterator();
+            while (iterator.hasNext()) {
+                E e = iterator.next();
+                if (predicate.test(e)) {
+                    iterator.remove();
+                    hasRemoved = true;
+                }
+            }
+        }
+        return hasRemoved;
+    }
+
+    /**
+     * remove all elements that match the map
+     *
+     * @return whether has any element removed
+     * @throws UnsupportedOperationException, NullPointException
+     */
+    public static <K, V> boolean removeIf(Map<K, V> map, Predicate2<K, V> predicate) {
+        Preconditions.checkNotNull(predicate);
+        boolean hasRemoved = false;
+        if (Emptys.isNotEmpty(map)) {
+            Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<K, V> e = iterator.next();
+                if (predicate.test(e.getKey(), e.getValue())) {
+                    iterator.remove();
+                    hasRemoved = true;
+                }
+            }
+        }
+        return hasRemoved;
+    }
+
+
+    /**
+     * has any element match the specified condition
+     *
+     * @return whether has any element removed
+     */
+    public static <E> boolean anyMatch(Collection<E> collection, Predicate<E> predicate) {
+        Preconditions.checkNotNull(predicate);
+        if (Emptys.isNotEmpty(collection)) {
+            Iterator<E> iterator = collection.iterator();
+            while (iterator.hasNext()) {
+                E e = iterator.next();
+                if (predicate.test(e)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * has any element match the specified condition
+     *
+     * @return whether has any element removed
+     */
+    public static <K, V> boolean anyMatch(Map<K, V> map, Predicate2<K, V> predicate) {
+        Preconditions.checkNotNull(predicate);
+        if (Emptys.isNotEmpty(map)) {
+            Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<K, V> e = iterator.next();
+                if (predicate.test(e.getKey(), e.getValue())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * whether all elements match the specified condition or not
+     *
+     * @return whether has any element removed
+     */
+    public static <E> boolean allMatch(Collection<E> collection, Predicate<E> predicate) {
+        Preconditions.checkNotNull(predicate);
+        if (Emptys.isNotEmpty(collection)) {
+            Iterator<E> iterator = collection.iterator();
+            while (iterator.hasNext()) {
+                E e = iterator.next();
+                if (!predicate.test(e)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * whether all elements match the specified condition or not
+     *
+     * @return whether has any element removed
+     */
+    public static <K, V> boolean allMatch(Map<K, V> map, Predicate2<K, V> predicate) {
+        Preconditions.checkNotNull(predicate);
+        if (Emptys.isNotEmpty(map)) {
+            Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<K, V> e = iterator.next();
+                if (!predicate.test(e.getKey(), e.getValue())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * has no any element match the specified condition ?
+     *
+     * @return whether has any element removed
+     */
+    public static <E> boolean noneMatch(Collection<E> collection, Predicate<E> predicate) {
+        Preconditions.checkNotNull(predicate);
+        if (Emptys.isNotEmpty(collection)) {
+            Iterator<E> iterator = collection.iterator();
+            while (iterator.hasNext()) {
+                E e = iterator.next();
+                if (predicate.test(e)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * has no any element match the specified condition ?
+     *
+     * @return whether has any element removed
+     */
+    public static <K, V> boolean noneMatch(Map<K, V> map, Predicate2<K, V> predicate) {
+        Preconditions.checkNotNull(predicate);
+        if (Emptys.isNotEmpty(map)) {
+            Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<K, V> e = iterator.next();
+                if (predicate.test(e.getKey(), e.getValue())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static <E> Set<E> distinct(Collection<E> collection) {
+        return new LinkedHashSet<E>(Emptys.isEmpty(collection) ? Collections.EMPTY_LIST : collection);
+    }
+
+    /**
+     * truncate a collection using subList(0, length)
+     */
+    public static <E> List<E> limit(Collection<E> collection, int length) {
+        if (Emptys.isEmpty(collection)) {
+            return emptyLinkedList();
+        }
+        List<E> list = (collection instanceof List) ? (List<E>) collection : new LinkedList<E>(collection);
+        if (list.size() <= length) {
+            return list;
+        }
+        return list.subList(0, length);
+    }
+
+    public static <E> Collection<E> concat(Collection<E> c1, Collection<E> c2, boolean newOne) {
+        if (newOne) {
+            List<E> l = emptyArrayList();
+            if (Emptys.isNotEmpty(c1)) {
+                l.addAll(c1);
+            }
+            if (Emptys.isNotEmpty(c2)) {
+                l.addAll(c2);
+            }
+            return l;
+        } else {
+            Preconditions.checkNotNull(c1);
+            if (Emptys.isNotEmpty(c2)) {
+                c1.addAll(c2);
+            }
+            return c1;
+        }
+    }
+
 }
