@@ -14,7 +14,7 @@
 
 package com.jn.langx.util;
 
-import com.jn.langx.util.collect.function.Predicate;
+import com.jn.langx.util.function.Predicate;
 
 public class Preconditions {
     private Preconditions() {

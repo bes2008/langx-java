@@ -1,4 +1,4 @@
-package com.jn.langx.util.collect;
+package com.jn.langx.util.collection;
 
 import java.util.HashMap;
 import java.util.Map;

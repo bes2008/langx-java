@@ -1,4 +1,4 @@
-package com.jn.langx.util.struct.tree;
+package com.jn.langx.util.collection.tree;
 
 import java.io.Serializable;
 import java.util.Collection;

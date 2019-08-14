@@ -1,4 +1,4 @@
-package com.jn.langx.util.struct.tree;
+package com.jn.langx.util.collection.tree;
 
 
 public class TreeStackNode extends TreeNode {

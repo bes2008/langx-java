@@ -8,7 +8,7 @@ package com.jn.langx;
  * </pre>
  * @param <T> the target
  *
- * @see com.jn.langx.util.collect.StringMapAccessor
+ * @see com.jn.langx.util.collection.StringMapAccessor
  * @see com.jn.langx.util.reflect.FieldAccessor
  * @see com.jn.langx.util.PropertiesAccessor
  * @see com.jn.langx.parser.HttpQueryStringAccessor
