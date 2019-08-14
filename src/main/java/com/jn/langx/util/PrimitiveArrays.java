@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection;
+package com.jn.langx.util;
 
 /**
  * Primitive array wrapper

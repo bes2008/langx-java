@@ -1,6 +1,6 @@
 package com.jn.langx.test.util.collection;
 
-import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.Arrs;
 import org.junit.Assert;
 import org.junit.Test;
 

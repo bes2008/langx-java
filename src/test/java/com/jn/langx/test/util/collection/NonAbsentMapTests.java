@@ -1,7 +1,7 @@
 package com.jn.langx.test.util.collection;
 
 import com.jn.langx.util.collection.NonAbsentHashMap;
-import com.jn.langx.util.collection.WrapedNonAbsentMap;
+import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.function.Supplier;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class NonAbsentMapTests {
 
     @Test
     public void testWrapedNonAbsentMap() {
-        Map<String, List<String>> map = new WrapedNonAbsentMap<String, List<String>>(new HashMap<String, List<String>>(), new Supplier<String, List<String>>() {
+        Map<String, List<String>> map = new WrappedNonAbsentMap<String, List<String>>(new HashMap<String, List<String>>(), new Supplier<String, List<String>>() {
             @Override
             public List<String> get(String input) {
                 return new ArrayList<String>();

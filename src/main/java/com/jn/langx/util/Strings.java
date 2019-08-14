@@ -24,7 +24,6 @@
 
 package com.jn.langx.util;
 
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 

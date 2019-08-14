@@ -36,13 +36,13 @@ import java.util.Set;
  * @param <V> value
  * @see java.util.Map
  * @see java.util.HashMap
- * @see WrapedNonAbsentMap
+ * @see WrappedNonAbsentMap
  */
-public class WrapedNonAbsentMap<K, V> implements Map<K, V> {
+public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
     private Map<K, V> delegate;
     private Supplier<K, V> supplier;
 
-    public WrapedNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
+    public WrappedNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
         this.delegate = map;
         setSupplier(supplier);
     }
@@ -137,7 +137,7 @@ public class WrapedNonAbsentMap<K, V> implements Map<K, V> {
         return delegate.entrySet();
     }
 
-    public static <K, V> WrapedNonAbsentMap<K, V> wrap(Map<K, V> map, Supplier<K, V> supplier) {
-        return new WrapedNonAbsentMap<K, V>(map, supplier);
+    public static <K, V> WrappedNonAbsentMap<K, V> wrap(Map<K, V> map, Supplier<K, V> supplier) {
+        return new WrappedNonAbsentMap<K, V>(map, supplier);
     }
 }

@@ -33,7 +33,7 @@ import java.util.Map;
  * @param <V> value
  * @see java.util.Map
  * @see java.util.HashMap
- * @see WrapedNonAbsentMap
+ * @see WrappedNonAbsentMap
  */
 public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
     private Supplier<K, V> supplier;
