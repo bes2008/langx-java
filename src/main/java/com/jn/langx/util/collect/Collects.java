@@ -1,10 +1,14 @@
 package com.jn.langx.util.collect;
 
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.collect.function.Consumer;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collect.function.*;
 
 import java.util.*;
 
+/**
+ * Collection utilities
+ */
 @SuppressWarnings({"unchecked"})
 public class Collects {
     /**
@@ -110,13 +114,47 @@ public class Collects {
         LinkedHashMap,
         IdentityHashMap,
         Hashtable,
-        Properties
+        Properties;
+
+        public static MapType ofMap(Map map) {
+            if (map == null) {
+                return HashMap;
+            }
+            if (map instanceof StringMap) {
+                return StringMap;
+            }
+            if (map instanceof Properties) {
+                return Properties;
+            }
+            if (map instanceof Hashtable) {
+                return Hashtable;
+            }
+            if (map instanceof IdentityHashMap) {
+                return IdentityHashMap;
+            }
+            if (map instanceof LinkedHashMap) {
+                return LinkedHashMap;
+            }
+            if (map instanceof TreeMap) {
+                return TreeMap;
+            }
+            return HashMap;
+        }
     }
 
+    /**
+     * Create an empty map when the specified map is null.
+     * using it, you can avoid NPE
+     *
+     * @return a new, empty map when the specified is null, others, return the argument
+     */
     public static <K, V> Map<K, V> getEmptyMapIfNull(Map<K, V> map) {
         return getEmptyMapIfNull(map, null);
     }
 
+    /**
+     * @see #getEmptyMapIfNull(Map, MapType)
+     */
     public static <K, V> Map<K, V> getEmptyMapIfNull(Map<K, V> map, MapType mapType) {
         if (map == null) {
             if (mapType == null) {
@@ -157,13 +195,32 @@ public class Collects {
     public enum SetType {
         HashSet,
         LinkedHashSet,
-        TreeSet
+        TreeSet;
+
+        public static SetType ofSet(Set set) {
+            if (set == null) {
+                return HashSet;
+            }
+            if (set instanceof TreeSet) {
+                return TreeSet;
+            }
+            if (set instanceof LinkedHashSet) {
+                return LinkedHashSet;
+            }
+            return HashSet;
+        }
     }
 
+    /**
+     * Avoid NPE, create an empty, new set when the specified set is null
+     */
     public static <E> Set<E> getEmptySetIfNull(Set<E> set) {
         return getEmptySetIfNull(set);
     }
 
+    /**
+     * @see #getEmptySetIfNull(Set)
+     */
     public static <E> Set<E> getEmptySetIfNull(Set<E> set, SetType setType) {
         if (set == null) {
             if (setType == null) {
@@ -189,13 +246,29 @@ public class Collects {
 
     public enum ListType {
         ArrayList,
-        LinkedList
+        LinkedList;
+
+        public static ListType ofList(List list) {
+            if (list == null) {
+                return ArrayList;
+            }
+            if (list instanceof LinkedList) {
+                return LinkedList;
+            }
+            return ArrayList;
+        }
     }
 
+    /**
+     * Avoid NPE, create an empty, new list when the specified list is null
+     */
     public static <E> List<E> getEmptyListIfNull(List<E> list) {
         return getEmptyListIfNull(list, null);
     }
 
+    /**
+     * @see #getEmptyListIfNull(List)
+     */
     public static <E> List<E> getEmptyListIfNull(List<E> list, ListType listType) {
         if (list == null) {
             if (listType == null) {
@@ -216,6 +289,9 @@ public class Collects {
         return list;
     }
 
+    /**
+     * Reverse a list, return an new list when the argument 'newOne' is true
+     */
     public static <E> List<E> reverse(List<E> list, boolean newOne) {
         if (Emptys.isEmpty(list)) {
             return (list == null || newOne) ? new ArrayList<E>() : list;
@@ -234,14 +310,23 @@ public class Collects {
         }
     }
 
+    /**
+     * Convert an array to a ArrayList
+     */
     public static <E> List<E> asList(E[] array) {
         return asList(array, true, ListType.ArrayList);
     }
 
+    /**
+     * Convert an array to a ArrayList or a LinkedList
+     */
     public static <E> List<E> asList(E[] array, ListType listType) {
         return asList(array, true, listType);
     }
 
+    /**
+     * Convert an array to a List, if the 'mutable' argument is true, will return an unmodifiable List
+     */
     public static <E> List<E> asList(E[] array, boolean mutable, ListType listType) {
         List<E> immutableList = Emptys.isEmpty(array) ? Collections.<E>emptyList() : Arrays.asList(array);
         if (listType == null) {
@@ -265,6 +350,9 @@ public class Collects {
         return list;
     }
 
+    /**
+     * Convert a list to an array
+     */
     public static <E> E[] toArray(List<E> list) {
         if (Emptys.isEmpty(list)) {
             list = Collections.emptyList();
@@ -272,80 +360,177 @@ public class Collects {
         return (E[]) list.toArray();
     }
 
-    public static <E> E[] toArray(Set<E> set){
+    /**
+     * Convert a set to an array
+     */
+    public static <E> E[] toArray(Set<E> set) {
         if (Emptys.isEmpty(set)) {
             set = Collections.emptySet();
         }
         return (E[]) set.toArray();
     }
 
-    public static <E> void forEach(E anyObject){
-        forEach(asIterable(anyObject));
-    }
 
-    public static <E> void forEach(String string){
-        forEach(asIterable(string));
-    }
-
-    public static <E> void forEach(E[] array){
-        forEach(asList(array));
-    }
-
-    public static <E> Iterable<E> asIterable(Object object){
-        if(Emptys.isNull(object)){
+    /**
+     * Convert any object to Iterable
+     *
+     * @param object
+     * @param <E>
+     * @return
+     */
+    private static <E> Iterable<E> asIterable(Object object) {
+        if (Emptys.isNull(object)) {
             return asList(null);
         }
 
-        if(Arrs.isArray(object)){
-            return asList((E[])object);
+        if (Arrs.isArray(object)) {
+            return asList((E[]) object);
         }
 
-        if(object instanceof Iterable){
-            return (Iterable)object;
+        if (object instanceof Iterable) {
+            return (Iterable) object;
         }
 
-        if(object instanceof Map){
-            return ((Map)object).entrySet();
+        if (object instanceof Map) {
+            return (Iterable<E>) asList(Arrs.wrapAsArray(object));
         }
 
-        if(object instanceof Iterator){
+        if (object instanceof Iterator) {
             return new IteratorIterable<E>((Iterator<E>) object);
         }
 
-        if(object instanceof Enumeration){
-            return new EnumerationIterable<E>((Enumeration<E>)object);
+        if (object instanceof Enumeration) {
+            return new EnumerationIterable<E>((Enumeration<E>) object);
         }
 
-        if(object instanceof Number){
-            return (Iterable<E>)asList(Arrs.wrapAsArray((Number) object));
+        if (object instanceof Number) {
+            return (Iterable<E>) asList(Arrs.wrapAsArray((Number) object));
         }
 
-        if(object instanceof String){
-            return (Iterable<E>)asList(Arrs.wrapAsArray((String)object));
+        if (object instanceof String) {
+            return (Iterable<E>) asList(Arrs.wrapAsArray((String) object));
         }
 
-        return (Iterable<E>)asList(Arrs.wrapAsArray(object));
-
+        return (Iterable<E>) asList(Arrs.wrapAsArray(object));
     }
 
-    public static <E> void forEach(Enumeration<E> iterator, Consumer<E> consumer){
-        while (iterator.hasMoreElements()){
-            E e = iterator.nextElement();
+    /**
+     * Filter any object with the specified predicate
+     */
+    public static <E> List<E> filter(Object anyObject, Predicate<E> predicate) {
+        Preconditions.checkNotNull(predicate);
+        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
+        List<E> result = new ArrayList<E>();
+        for (E e : iterable) {
+            if (predicate.test(e)) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Filter a map with the specified predicate
+     */
+    public static <K, V> Map<K, V> filter(Map<K, V> map, Predicate2<K, V> predicate) {
+        Preconditions.checkNotNull(predicate);
+        Map<K, V> result = getEmptyMapIfNull(null, MapType.ofMap(map));
+        if (Emptys.isNotEmpty(map)) {
+            for (Map.Entry<K, V> entry : map.entrySet()) {
+                if (predicate.test(entry.getKey(), entry.getValue())) {
+                    result.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * mapping a to b
+     */
+    public static <E, R> List<R> map(Object anyObject, Function<E, R> mapper) {
+        Preconditions.checkNotNull(mapper);
+        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
+        List<R> result = new ArrayList<R>();
+        for (E e : iterable) {
+            result.add(mapper.apply(e));
+        }
+        return result;
+    }
+
+    /**
+     * mapping aMap to bMap
+     */
+    public static <R, K, V> List<R> map(Map<K, V> map, Function<Map.Entry<K, V>, R> mapper) {
+        Preconditions.checkNotNull(mapper);
+        List<R> result = new ArrayList<R>();
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            result.add(mapper.apply(entry));
+        }
+        return result;
+    }
+
+    public static <K, V, K1, V1> Map<K1, V1> map(Map<K, V> map, Function2<K, V, Map.Entry<K1, V1>> mapper) {
+        Preconditions.checkNotNull(mapper);
+        Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
+        if (Emptys.isNotEmpty(map)) {
+            for (Map.Entry<K, V> entry : map.entrySet()) {
+                Map.Entry<K1, V1> e = mapper.apply(entry.getKey(), entry.getValue());
+                result.put(e.getKey(), e.getValue());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Iterate every element
+     */
+    public static <E> void forEach(Object anyObject, Consumer<E> consumer) {
+        Preconditions.checkNotNull(consumer);
+        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
+        for (E e : iterable) {
             consumer.accept(e);
         }
     }
 
-
-    public static <E> void forEach(Iterator<E> iterator, Consumer<E> consumer){
-        while (iterator.hasNext()){
-            E e = iterator.next();
-            consumer.accept(e);
+    /**
+     * Iterate every element
+     */
+    public static <K, V> void forEach(Map<K, V> map, Consumer2<K, V> consumer) {
+        Preconditions.checkNotNull(consumer);
+        if (Emptys.isNotEmpty(map)) {
+            for (Map.Entry<K, V> entry : map.entrySet()) {
+                consumer.accept(entry.getKey(), entry.getValue());
+            }
         }
     }
 
-    public static <E> void forEach(Iterable<E> iterable, Consumer<E> consumer){
-        for(E e : iterable){
-            consumer.accept(e);
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <E> E findFirst(Object anyObject, Predicate<E> predicate) {
+        Preconditions.checkNotNull(predicate);
+        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
+        for (E e : iterable) {
+            if (predicate.test(e)) {
+                return e;
+            }
         }
+        return null;
+    }
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <K, V> Map.Entry<K, V> findFirst(Map<K, V> map, Predicate2<K, V> predicate) {
+        Preconditions.checkNotNull(predicate);
+        if (Emptys.isNotEmpty(map)) {
+            for (Map.Entry<K, V> entry : map.entrySet()) {
+                if (predicate.test(entry.getKey(), entry.getValue())) {
+                    return entry;
+                }
+            }
+        }
+        return null;
     }
 }
