@@ -6,6 +6,10 @@ import com.jn.langx.util.Preconditions;
 
 import java.lang.reflect.Array;
 
+/**
+ * An array accessor
+ * @param <E> an array
+ */
 public class ArrayAccessor<E> implements Accessor<Integer, E> {
     private E target;
 
