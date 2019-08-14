@@ -1,6 +1,8 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.reflect.Reflects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -8,18 +10,22 @@ import java.io.InputStream;
 import java.io.Reader;
 
 public class IOs {
+    private static final Logger logger = LoggerFactory.getLogger(IOs.class);
+
     public static void close(Object target) {
         if (target == null) {
             return;
         }
-        if (target instanceof Closeable) {
-            try {
+
+        try {
+            if (target instanceof Closeable) {
                 ((Closeable) target).close();
-            } catch (IOException ex) {
-                // ignore it
+            } else {
+                Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
             }
+        } catch (Throwable ex) {
+            logger.warn(ex.getMessage(), ex);
         }
-        Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
     }
 
     public static String readAsString(Reader reader) throws IOException {
