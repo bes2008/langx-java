@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
-    private K key;
-    private V value;
-
     public Entry(K key) {
         setKey(key);
     }
@@ -28,12 +25,12 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
         }
         @SuppressWarnings("rawtypes")
         Entry o = (Entry) obj;
-        return key.equals(o.key) && value.equals(o.value);
+        return getKey().equals(o.getKey()) && getValue().equals(o.getValue());
     }
 
     @Override
     public int hashCode() {
-        return key.hashCode() ^ value.hashCode();
+        return getKey().hashCode() ^ 4 + getValue().hashCode();
     }
 
     public static Entry<String, String> newEntry(String keyValue, String spec)
@@ -67,7 +64,7 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
                 entry = null;
             }
             if (entry != null) {
-                map.put(entry.key, entry.value);
+                map.put(entry.getKey(), entry.getValue());
             }
         }
 
