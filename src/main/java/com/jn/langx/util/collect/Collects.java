@@ -396,7 +396,7 @@ public class Collects {
         }
 
         if (object instanceof Iterator) {
-            return new IteratorIterable<E>((Iterator<E>) object);
+            return new IteratorIterable<E>((Iterator<E>) object, false);
         }
 
         if (object instanceof Enumeration) {
