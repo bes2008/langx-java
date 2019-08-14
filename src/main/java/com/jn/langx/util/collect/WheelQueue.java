@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection;
+package com.jn.langx.util.collect;
 
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;

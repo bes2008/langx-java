@@ -1,4 +1,4 @@
-package com.jn.langx.util.function;
+package com.jn.langx.util.collect.function;
 
 /**
  * Pre-condition, it is similar to Java 8 Predicate

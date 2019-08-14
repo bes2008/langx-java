@@ -1,6 +1,6 @@
 package com.jn.langx.util.concurrent.interceptor;
 
-import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collect.Collects;
 import com.jn.langx.util.concurrent.TaskInterceptor;
 
 import java.util.LinkedList;

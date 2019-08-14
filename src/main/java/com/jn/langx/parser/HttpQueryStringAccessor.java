@@ -1,8 +1,8 @@
 package com.jn.langx.parser;
 
 import com.jn.langx.Accessor;
-import com.jn.langx.util.collection.StringMap;
-import com.jn.langx.util.collection.StringMapAccessor;
+import com.jn.langx.util.collect.StringMap;
+import com.jn.langx.util.collect.StringMapAccessor;
 
 public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAccessor>, Accessor<String> {
     private String url;

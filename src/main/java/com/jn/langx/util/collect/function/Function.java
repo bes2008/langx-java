@@ -1,4 +1,4 @@
-package com.jn.langx.util.function;
+package com.jn.langx.util.collect.function;
 
 /**
  * Any function, it is similar to Java 8 Function.

@@ -2,7 +2,7 @@ package com.jn.langx.text;
 
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.collect.function.Function2;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

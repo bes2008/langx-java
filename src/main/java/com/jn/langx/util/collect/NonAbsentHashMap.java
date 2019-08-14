@@ -1,7 +1,7 @@
-package com.jn.langx.util.collection;
+package com.jn.langx.util.collect;
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.collect.function.Supplier;
 
 import java.util.HashMap;
 import java.util.Map;

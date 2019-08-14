@@ -5,7 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collect.Collects;
 import com.jn.langx.util.reflect.type.Types;
 
 import java.lang.annotation.Annotation;
