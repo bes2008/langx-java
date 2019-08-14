@@ -178,7 +178,7 @@ public class Collects {
                     map1 = new IdentityHashMap();
                     break;
                 case Hashtable:
-                    map1 = new Hashtable<K, V>();
+                    map1 = emptyHashtable();
                     break;
                 case Properties:
                     map1 = new Properties();
