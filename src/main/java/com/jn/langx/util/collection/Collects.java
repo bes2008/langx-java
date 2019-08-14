@@ -1,7 +1,7 @@
-package com.jn.langx.util.collect;
+package com.jn.langx.util.collection;
 
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.collect.function.Consumer;
+import com.jn.langx.util.function.Consumer;
 
 import java.util.*;
 
