@@ -1,6 +1,6 @@
 package com.jn.langx.util.reflect;
 
-import com.jn.langx.annotation.NotNull;
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.util.Emptys;
@@ -351,7 +351,7 @@ public class Reflects {
     }
 
     public static String getMethodString(@Nullable String clazzFQN,
-                                         @NotNull String methodName,
+                                         @NonNull String methodName,
                                          @Nullable Class returnType,
                                          @Nullable Class[] parameterTypes) {
         try {
