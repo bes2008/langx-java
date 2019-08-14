@@ -66,7 +66,7 @@ public class Emptys {
             return ((Map) object).isEmpty();
         }
         if (object.getClass().isArray()) {
-            return Arrs.getLengthIfIsArray(object) <= 0;
+            return Arrs.getLength(object) <= 0;
         }
 
         if (object.getClass().isEnum()) {

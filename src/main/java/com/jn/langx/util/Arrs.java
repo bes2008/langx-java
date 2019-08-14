@@ -15,7 +15,7 @@ public class Arrs {
      * @param object any object
      * @return the length if argument is an array, else -1
      */
-    public static int getLengthIfIsArray(Object object) {
+    public static int getLength(Object object) {
         if (isArray(object)) {
             return Array.getLength(object);
         }
