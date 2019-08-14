@@ -35,6 +35,12 @@ public class StringsTests {
         Assert.assertTrue(Strings.truncate(str, 3).equals("123"));
         Assert.assertTrue(Strings.truncate(str, 9).equals("123456789"));
         Assert.assertTrue(Strings.truncate(str, 20).equals("123456789"));
+    }
 
+    @Test
+    public void splitTest(){
+        String string = "a, b, 23, af, (, {, }, 323";
+        Assert.assertTrue(Strings.split(string,",").length==8);
+        Assert.assertTrue(Strings.split(string," ").length==8);
     }
 }

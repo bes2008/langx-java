@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.util.Preconditions;
+
 import java.util.Iterator;
 
 public class WrapedIterator<E> implements Iterator<E> {
@@ -7,18 +9,19 @@ public class WrapedIterator<E> implements Iterator<E> {
     private boolean mutable;
 
     public WrapedIterator(Iterator<E> delegate, boolean mutable) {
+        Preconditions.checkNotNull(delegate);
         this.delegate = delegate;
         this.mutable = mutable;
     }
 
     @Override
     public boolean hasNext() {
-        return false;
+        return delegate.hasNext();
     }
 
     @Override
     public E next() {
-        return null;
+        return delegate.next();
     }
 
     @Override

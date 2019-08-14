@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.*;
@@ -351,24 +352,39 @@ public class Collects {
         return list;
     }
 
+    public static <E> E[] toArray(List<E> list) {
+        return toArray(list, null);
+    }
+
     /**
      * Convert a list to an array
      */
-    public static <E> E[] toArray(List<E> list) {
+    public static <E> E[] toArray(List<E> list, @Nullable Class<E[]> clazz) {
         if (Emptys.isEmpty(list)) {
             list = Collections.emptyList();
         }
-        return (E[]) list.toArray();
+        if (clazz == null) {
+            return (E[]) list.toArray();
+        }
+        // Make a new array of a's runtime type, but my contents:
+        return (E[]) Arrays.copyOf(list.toArray(), list.size(), clazz);
+    }
+
+    public static <E> E[] toArray(Set<E> set) {
+        return toArray(set, null);
     }
 
     /**
      * Convert a set to an array
      */
-    public static <E> E[] toArray(Set<E> set) {
+    public static <E> E[] toArray(Set<E> set, @Nullable Class<E[]> clazz) {
         if (Emptys.isEmpty(set)) {
             set = Collections.emptySet();
         }
-        return (E[]) set.toArray();
+        if (clazz == null) {
+            return (E[]) set.toArray();
+        }
+        return (E[]) Arrays.copyOf(set.toArray(), set.size(), clazz);
     }
 
 

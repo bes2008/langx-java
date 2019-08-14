@@ -24,7 +24,13 @@
 
 package com.jn.langx.util;
 
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Predicate;
+
 import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 @SuppressWarnings({"unused"})
 public class Strings {
@@ -91,6 +97,30 @@ public class Strings {
             buf.append(separator).append(objects.next());
         }
         return buf.toString();
+    }
+
+    /**
+     * split a string, the returned array is not contains: "", null
+     */
+    public static String[] split(String string, String separator) {
+        if (Emptys.isEmpty(string) || Emptys.isEmpty(separator)) {
+            return new String[0];
+        }
+
+        StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
+        List<String> array = Collects.map(tokenizer, new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return input.trim();
+            }
+        });
+        array = Collects.filter(array, new Predicate<String>() {
+            @Override
+            public boolean test(String value) {
+                return Strings.isNotBlank(value);
+            }
+        });
+        return Collects.toArray(array, String[].class);
     }
 
 }
