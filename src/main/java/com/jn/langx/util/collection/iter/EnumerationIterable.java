@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection;
+package com.jn.langx.util.collection.iter;
 
 import java.util.Enumeration;
 import java.util.Iterator;
