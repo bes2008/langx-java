@@ -100,7 +100,8 @@ public class Strings {
     }
 
     /**
-     * split a string, the returned array is not contains: "", null
+     * split a string, the returned array is not contains: whitespace, null.
+     * every element in string[] has the trim() invoked
      */
     public static String[] split(String string, String separator) {
         if (Emptys.isEmpty(string) || Emptys.isEmpty(separator)) {
