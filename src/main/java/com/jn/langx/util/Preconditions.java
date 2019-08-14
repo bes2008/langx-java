@@ -34,6 +34,12 @@ public class Preconditions {
         }
     }
 
+    public static void checkTrue(boolean expression){
+        if(!expression){
+            throw new IllegalArgumentException();
+        }
+    }
+
     public static <V> void checkExpression(Predicate<V> condition, V value) {
         if (!condition.test(value)) {
             throw new IllegalArgumentException();

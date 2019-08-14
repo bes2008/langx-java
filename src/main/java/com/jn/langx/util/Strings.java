@@ -33,6 +33,7 @@ public class Strings {
 
     /**
      * judge a string is null or ""
+     *
      * @param str the specified string
      * @return whether is null or ""
      */
@@ -46,7 +47,8 @@ public class Strings {
 
     /**
      * judge a string has some whitespace at most
-     * @param str  the specified string
+     *
+     * @param str the specified string
      * @return the judge result
      */
     public static boolean isBlank(String str) {
@@ -60,11 +62,13 @@ public class Strings {
     /**
      * Get substring from 0 to a specified length
      * equals: string.substring(0, length)
+     *
      * @param string a string will be truncated
      * @param length new string's length
      * @return the new string
      */
     public static String truncate(final String string, final int length) {
+        Preconditions.checkTrue(length >= 0);
         if (string.length() <= length) {
             return string;
         }
@@ -73,8 +77,9 @@ public class Strings {
 
     /**
      * append all objects with the specified separator
+     *
      * @param separator the specified separator
-     * @param objects the dbjects that will be append
+     * @param objects   the dbjects that will be append
      * @return the new string
      */
     public static String join(final String separator, final Iterator objects) {
