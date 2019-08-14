@@ -1,5 +1,7 @@
 package com.jn.langx.util.struct;
 
+import com.jn.langx.util.Emptys;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +37,10 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
 
     public static Entry<String, String> newEntry(String keyValue, String spec)
             throws IllegalArgumentException {
-        if (spec == null || spec.isEmpty()) {
+        if (Emptys.isEmpty(spec)) {
             throw new IllegalArgumentException("argument 'spec' is null .");
         }
-        if (keyValue == null || keyValue.isEmpty()) {
+        if (Emptys.isEmpty(keyValue)) {
             throw new IllegalArgumentException("argument 'keyValue' is null .");
         }
         int index = keyValue.indexOf(spec);
@@ -52,7 +54,7 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
     public static Map<String, String> getMap(String str, String keyValueSpec,
                                              String entrySpec) {
         Map<String, String> map = new HashMap<String, String>();
-        if (str == null || str.isEmpty()) {
+        if (Emptys.isEmpty(str)) {
             return map;
         }
         String[] entryArray = str.split(entrySpec);
@@ -75,7 +77,7 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
                                                        String keyValueSpec, String entrySpec, String listSpecFlag) {
         List<String> strList = new ArrayList<String>();
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        if (listSpecFlag == null || listSpecFlag.isEmpty()) {
+        if (Emptys.isEmpty(listSpecFlag)) {
             strList.add(src);
         } else {
             int index = src.indexOf(listSpecFlag);
@@ -84,8 +86,7 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
             }
 
             int nextIndex = -1;
-            while ((nextIndex = src.indexOf(listSpecFlag,
-                    index + listSpecFlag.length())) != -1) {
+            while ((nextIndex = src.indexOf(listSpecFlag,index + listSpecFlag.length())) != -1) {
                 strList.add(src.substring(index, nextIndex));
                 index = nextIndex;
             }
