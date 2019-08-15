@@ -74,6 +74,7 @@ public class Arrs {
      * Create an array with the specified length
      */
     public static <E> E[] createArray(Class<E> clazz, int length) {
+        Preconditions.checkNotNull(clazz);
         return (E[]) Array.newInstance(clazz, length);
     }
 
@@ -81,6 +82,7 @@ public class Arrs {
      * Create an array with the specified length and every element's value is the specified initValue
      */
     public static <E> E[] createArray(Class<E> clazz, int length, final E initValue) {
+        Preconditions.checkNotNull(clazz);
         return createArray(clazz, length, new Supplier<Integer, E>() {
             @Override
             public E get(Integer index) {
@@ -93,6 +95,7 @@ public class Arrs {
      * Create an array with the specified length and every element's value is supplied by the specified initSupplier
      */
     public static <E> E[] createArray(Class<E> clazz, int length, Supplier<Integer, E> initSupplier) {
+        Preconditions.checkNotNull(clazz);
         Preconditions.checkNotNull(initSupplier);
         if (Primitives.isPrimitive(clazz)) {
             clazz = Primitives.wrap(clazz);

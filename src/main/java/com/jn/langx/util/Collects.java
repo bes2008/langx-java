@@ -7,6 +7,7 @@ import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
 import com.jn.langx.util.function.*;
+import com.jn.langx.util.reflect.type.Primitives;
 
 import java.util.*;
 
@@ -112,7 +113,8 @@ public class Collects {
     }
 
     public static <E> E[] emptyArray(Class<E> clazz) {
-        return Arrs.createArray(clazz, 0);
+        Preconditions.checkNotNull(clazz);
+        return Arrs.createArray(Primitives.wrap(clazz), 0);
     }
 
 
