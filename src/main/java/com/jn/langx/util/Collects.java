@@ -113,7 +113,6 @@ public class Collects {
     }
 
     public static <E> E[] emptyArray(Class<E> clazz) {
-        Preconditions.checkNotNull(clazz);
         return Arrs.createArray(Primitives.wrap(clazz), 0);
     }
 
@@ -736,4 +735,22 @@ public class Collects {
         }
     }
 
+    /**
+     * sort a collection, return an new list. it is different to
+     * Collections.sort(list) is that : Collections.sort() return void
+     */
+    public static <E> List<E> sort(Collection<E> collection, Comparator<E> comparator) {
+        return sort(collection, comparator, false);
+    }
+
+    public static <E> List<E> sort(Collection<E> collection, Comparator<E> comparator, boolean reverse) {
+        Preconditions.checkNotNull(comparator);
+        List<E> newList = new LinkedList<E>();
+        if (Emptys.isEmpty(collection)) {
+            return newList;
+        } else {
+            Collections.sort(newList, reverse ? Collections.reverseOrder(comparator) : comparator);
+            return newList;
+        }
+    }
 }
