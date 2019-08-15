@@ -63,27 +63,50 @@ public class Arrs {
     /**
      * Wrap any object using new Object[]{object};
      */
-    public static Object[] wrapAsArray(Object o) {
+    public static <E> E[] wrapAsArray(E o) {
         if (Emptys.isNull(o)) {
-            return new Object[0];
+            return (E[]) new Object[0];
         }
-        return new Object[]{o};
+        E[] array = (E[]) createArray(o.getClass(), 1);
+        initArray(array, o);
+        return array;
     }
 
     /**
      * Create an array with the specified length
      */
-    public static <E> E[] createArray(Class<E> clazz, int length) {
-        Preconditions.checkNotNull(clazz);
-        return (E[]) Array.newInstance(clazz, length);
+    public static <E extends Object> E[] createArray(Class<E> componentType, int length) {
+        if (componentType == null) {
+            return (E[]) Array.newInstance(Object.class, length);
+        }
+        if (Primitives.isPrimitive(componentType)) {
+            componentType = Primitives.wrap(componentType);
+        }
+        return (E[]) Array.newInstance(componentType, length);
     }
 
     /**
      * Create an array with the specified length and every element's value is the specified initValue
      */
-    public static <E> E[] createArray(Class<E> clazz, int length, final E initValue) {
-        Preconditions.checkNotNull(clazz);
-        return createArray(clazz, length, new Supplier<Integer, E>() {
+    public static <E extends Object> E[] createArray(Class<E> componentType, int length, final E initValue) {
+        E[] array = createArray(componentType, length);
+        initArray(array, initValue);
+        return array;
+    }
+
+
+    /**
+     * Create an array with the specified length and every element's value is supplied by the specified initSupplier
+     */
+    public static <E extends Object> E[] createArray(Class<E> componentType, int length, Supplier<Integer, E> initSupplier) {
+        E[] array = createArray(componentType, length);
+        initArray(array, initSupplier);
+        return array;
+    }
+
+    public static <E> void initArray(E[] array, final E initValue) {
+        Preconditions.checkNotNull(array);
+        initArray(array, new Supplier<Integer, E>() {
             @Override
             public E get(Integer index) {
                 return initValue;
@@ -91,21 +114,13 @@ public class Arrs {
         });
     }
 
-    /**
-     * Create an array with the specified length and every element's value is supplied by the specified initSupplier
-     */
-    public static <E> E[] createArray(Class<E> clazz, int length, Supplier<Integer, E> initSupplier) {
-        Preconditions.checkNotNull(clazz);
+    public static <E> void initArray(E[] array, Supplier<Integer, E> initSupplier) {
         Preconditions.checkNotNull(initSupplier);
-        if (Primitives.isPrimitive(clazz)) {
-            clazz = Primitives.wrap(clazz);
-        }
-        E[] array = (E[]) Array.newInstance(clazz, length);
         for (int i = 0; i < array.length; i++) {
             array[i] = initSupplier.get(i);
         }
-        return array;
     }
+
 
     /**
      * It is similar to Python's range(start, end, step)

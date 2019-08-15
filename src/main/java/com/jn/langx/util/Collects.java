@@ -300,27 +300,6 @@ public class Collects {
     }
 
     /**
-     * Reverse a list, return an new list when the argument 'newOne' is true
-     */
-    public static <E> List<E> reverse(List<E> list, boolean newOne) {
-        if (Emptys.isEmpty(list)) {
-            return (list == null || newOne) ? new ArrayList<E>() : list;
-        }
-        if (!newOne) {
-            Collections.reverse(list);
-            return list;
-        } else {
-            List<E> newList = new ArrayList<E>();
-            int i = list.size() - 1;
-            while (i >= 0) {
-                newList.add(list.get(i));
-                i--;
-            }
-            return newList;
-        }
-    }
-
-    /**
      * Convert an array to a ArrayList
      */
     public static <E> List<E> asList(E[] array) {
@@ -374,7 +353,7 @@ public class Collects {
         if (clazz == null) {
             return (E[]) list.toArray();
         }
-        // Make a new array of a's runtime type, but my contents:
+        // Make a new array of the specified class
         return (E[]) Arrays.copyOf(list.toArray(), list.size(), clazz);
     }
 
@@ -388,35 +367,35 @@ public class Collects {
     /**
      * Convert any object to Iterable
      */
-    public static <E> Iterable<E> asIterable(Object object, boolean removable) {
+    public static <E> Iterable<E> asIterable(Object object, boolean mutable) {
         if (Emptys.isNull(object)) {
-            return asList(null, removable, null);
+            return asList(null, mutable, null);
         }
 
         if (Arrs.isArray(object)) {
-            return asList((E[]) object, removable, null);
+            return asList((E[]) object, mutable, null);
         }
 
         if (object instanceof Iterable) {
-            if (!removable) {
-                return new WrappedIterable<E>((Iterable) object, removable);
+            if (!mutable) {
+                return new WrappedIterable<E>((Iterable) object, mutable);
             }
             return (Iterable) object;
         }
 
         if (object instanceof Map) {
-            return (Iterable<E>) asList(Arrs.wrapAsArray(object), removable, null);
+            return (Iterable<E>) asList(Arrs.wrapAsArray(object), mutable, null);
         }
 
         if (object instanceof Iterator) {
-            return new IteratorIterable<E>((Iterator<E>) object, removable);
+            return new IteratorIterable<E>((Iterator<E>) object, mutable);
         }
 
         if (object instanceof Enumeration) {
             return new EnumerationIterable<E>((Enumeration<E>) object);
         }
 
-        return (Iterable<E>) asList(Arrs.wrapAsArray(object), removable, null);
+        return (Iterable<E>) asList(Arrs.wrapAsArray(object), mutable, null);
     }
 
     /**
@@ -495,6 +474,18 @@ public class Collects {
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         for (E e : iterable) {
             consumer.accept(e);
+        }
+    }
+
+    /**
+     * Iterate every element
+     */
+    public static <E> void forEach(E[] array, @NonNull Consumer2<Integer, E> consumer) {
+        Preconditions.checkNotNull(consumer);
+        if (Emptys.isNotEmpty(array)) {
+            for (int i = 0; i < array.length; i++) {
+                consumer.accept(i, array[i]);
+            }
         }
     }
 
@@ -749,7 +740,29 @@ public class Collects {
         if (Emptys.isEmpty(collection)) {
             return newList;
         } else {
+            newList.addAll(collection);
             Collections.sort(newList, reverse ? Collections.reverseOrder(comparator) : comparator);
+            return newList;
+        }
+    }
+
+    /**
+     * Reverse a list, return an new list when the argument 'newOne' is true
+     */
+    public static <E> List<E> reverse(List<E> list, boolean newOne) {
+        if (Emptys.isEmpty(list)) {
+            return (list == null || newOne) ? Collects.<E>emptyArrayList() : list;
+        }
+        if (!newOne) {
+            Collections.reverse(list);
+            return list;
+        } else {
+            List<E> newList = new ArrayList<E>();
+            int i = list.size() - 1;
+            while (i >= 0) {
+                newList.add(list.get(i));
+                i--;
+            }
             return newList;
         }
     }

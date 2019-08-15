@@ -32,4 +32,18 @@ public class CollectsTest {
         String[] arr = Collects.emptyArray(String.class);
         Assert.assertArrayEquals(Arrs.createArray(String.class, 0), arr);
     }
+
+    @Test
+    public void listToArrayAndBackTest() {
+        Integer[] array = Arrs.range(10);
+        List<Integer> list = Collects.asList(array, true, Collects.ListType.ArrayList);
+        Integer[] array1 = Collects.toArray(list, Integer[].class);
+        Assert.assertArrayEquals(array, array1);
+    }
+
+    public void foreachTest(){
+
+    }
+
+
 }
