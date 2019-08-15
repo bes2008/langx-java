@@ -3,9 +3,10 @@ package com.jn.langx.util.reflect;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Strings;
 import com.jn.langx.util.Collects;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.type.Types;
 
 import java.lang.annotation.Annotation;
@@ -221,6 +222,78 @@ public class Reflects {
             return null;
         } finally {
             field.setAccessible(false);
+        }
+    }
+
+    public static void setFieldValue(Field field, Object target, Object value, boolean force, boolean throwException) throws NullPointerException, IllegalAccessException {
+        if (Emptys.isEmpty(field)) {
+            if (throwException) {
+                Preconditions.checkNotNull(field);
+            }
+        } else {
+            if (!force && !field.isAccessible()) {
+                if (throwException) {
+                    throw new IllegalAccessException();
+                }
+                return;
+            }
+
+            if (field.isAccessible()) {
+                if (throwException) {
+                    field.set(target, value);
+                } else {
+                    try {
+                        field.set(target, value);
+                    } catch (Throwable ex) {
+                        // ignore it
+                    }
+                }
+                return;
+            }
+
+            field.setAccessible(true);
+            try {
+                field.set(field, value);
+            } catch (Throwable ex) {
+                if (throwException) {
+                    throw new RuntimeException(ex);
+                }
+            } finally {
+                field.setAccessible(false);
+            }
+        }
+    }
+
+    public static void setPublicFieldValue(Object object, String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+        Field field = getPublicField(object.getClass(), fieldName);
+        if (field == null) {
+            if (throwException) {
+                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+            }
+        } else {
+            setFieldValue(field, object, value, force, throwException);
+        }
+    }
+
+    public static void setDeclaredFieldValue(Object object, String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+        Field field = getDeclaredField(object.getClass(), fieldName);
+        if (field == null) {
+            if (throwException) {
+                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+            }
+        } else {
+            setFieldValue(field, object, value, force, throwException);
+        }
+    }
+
+    public static void setAnyFieldValue(Object object, String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+        Field field = getAnyField(object.getClass(), fieldName);
+        if (field == null) {
+            if (throwException) {
+                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+            }
+        } else {
+            setFieldValue(field, object, value, force, throwException);
         }
     }
 
