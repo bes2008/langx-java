@@ -4,6 +4,9 @@ import com.jn.langx.Accessor;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.StringMapAccessor;
 
+/**
+ * @author jinuo.fang
+ */
 public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAccessor>, Accessor<String, String> {
     private String url;
     private StringMapAccessor delegate;
@@ -41,6 +44,28 @@ public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAc
     public String getString(String key, String defaultValue) {
         return delegate.getString(key, defaultValue);
     }
+
+
+    @Override
+    public Character getCharacter(String key) {
+        return delegate.getCharacter(key);
+    }
+
+    @Override
+    public Character getCharacter(String key, Character defaultValue) {
+        return delegate.getCharacter(key, defaultValue);
+    }
+
+    @Override
+    public Byte getByte(String key) {
+        return delegate.getByte(key);
+    }
+
+    @Override
+    public Byte getByte(String key, Byte defaultValue) {
+        return delegate.getByte(key, defaultValue);
+    }
+
 
     @Override
     public Integer getInteger(String key) {
@@ -124,5 +149,55 @@ public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAc
         } else {
             return StringMap.EMPTY;
         }
+    }
+
+    @Override
+    public void set(String key, Object value) {
+        delegate.set(key, value);
+    }
+
+    @Override
+    public void setString(String key, String value) {
+        delegate.setString(key, value);
+    }
+
+    @Override
+    public void setByte(String key, byte value) {
+        delegate.setByte(key, value);
+    }
+
+    @Override
+    public void setShort(String key, short value) {
+        delegate.setShort(key, value);
+    }
+
+    @Override
+    public void setInteger(String key, int value) {
+        delegate.setInteger(key, value);
+    }
+
+    @Override
+    public void setLong(String key, long value) {
+        delegate.setLong(key, value);
+    }
+
+    @Override
+    public void setFloat(String key, float value) {
+        delegate.setFloat(key, value);
+    }
+
+    @Override
+    public void setDouble(String key, double value) {
+        delegate.setDouble(key, value);
+    }
+
+    @Override
+    public void setBoolean(String key, boolean value) {
+        delegate.setBoolean(key, value);
+    }
+
+    @Override
+    public void setChar(String key, char value) {
+        delegate.setChar(key, value);
     }
 }

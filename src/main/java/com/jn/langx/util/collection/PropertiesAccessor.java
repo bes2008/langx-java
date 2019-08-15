@@ -1,11 +1,16 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.Accessor;
+import com.jn.langx.exception.IllegalValueException;
+import com.jn.langx.text.StringTemplates;
 
 import java.util.Properties;
 
+/**
+ * @author jinuo.fang
+ */
 public class PropertiesAccessor implements Accessor<String, Properties> {
-    private Properties props;
+    private Properties target;
 
     public PropertiesAccessor(Properties properties) {
         setTarget(properties);
@@ -13,8 +18,14 @@ public class PropertiesAccessor implements Accessor<String, Properties> {
 
     @Override
     public Properties getTarget() {
-        return props;
+        return target;
     }
+
+    @Override
+    public void setTarget(Properties target) {
+        this.target = target;
+    }
+
 
     @Override
     public Object get(String key) {
@@ -23,13 +34,42 @@ public class PropertiesAccessor implements Accessor<String, Properties> {
 
     @Override
     public String getString(String key) {
-        return props.getProperty(key, "0");
+        return target.getProperty(key, "0");
     }
 
     @Override
     public String getString(String key, String defaultValue) {
-        return props.getProperty(key, defaultValue);
+        return target.getProperty(key, defaultValue);
     }
+
+
+    @Override
+    public Character getCharacter(String key) {
+        return getCharacter(key, null);
+    }
+
+    @Override
+    public Character getCharacter(String key, Character defaultValue) {
+        String string = getString(key);
+        if (string == null) {
+            return defaultValue;
+        }
+        if (string.length() != 1) {
+            throw new IllegalValueException(StringTemplates.formatWithoutIndex("'{}' is a string not a character", string));
+        }
+        return string.charAt(0);
+    }
+
+    @Override
+    public Byte getByte(String key) {
+        return getByte(key, null);
+    }
+
+    @Override
+    public Byte getByte(String key, Byte defaultValue) {
+        return Byte.parseByte(getString(key, "" + defaultValue));
+    }
+
 
     @Override
     public Integer getInteger(String key) {
@@ -92,7 +132,56 @@ public class PropertiesAccessor implements Accessor<String, Properties> {
     }
 
     @Override
-    public void setTarget(Properties target) {
-        this.props = target;
+    public void set(String key, Object value) {
+        if (value == null) {
+            target.remove(key);
+            return;
+        }
+        target.setProperty(key, value.toString());
+    }
+
+    @Override
+    public void setString(String key, String value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setByte(String key, byte value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setShort(String key, short value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setInteger(String key, int value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setLong(String key, long value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setFloat(String key, float value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setDouble(String key, double value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setBoolean(String key, boolean value) {
+        set(key, value);
+    }
+
+    @Override
+    public void setChar(String key, char value) {
+        set(key, value);
     }
 }

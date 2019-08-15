@@ -1,6 +1,8 @@
 package com.jn.langx.util.reflect;
 
 import com.jn.langx.Accessor;
+import com.jn.langx.exception.IllegalValueException;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Arrs;
 import com.jn.langx.util.Preconditions;
 
@@ -8,11 +10,14 @@ import java.lang.reflect.Array;
 
 /**
  * An array accessor
+ *
  * @param <E> an array
+ * @author jinuo.fang
  */
 public class ArrayAccessor<E> implements Accessor<Integer, E> {
     private E target;
 
+    @Override
     public void setTarget(E target) {
         Preconditions.checkNotNull(target);
         Preconditions.checkArgument(Arrs.isArray(target));
@@ -41,14 +46,42 @@ public class ArrayAccessor<E> implements Accessor<Integer, E> {
     }
 
     @Override
+    public Character getCharacter(Integer index) {
+        return Array.getChar(target, index);
+    }
+
+    @Override
+    public Character getCharacter(Integer index, Character defaultValue) {
+        String str = getString(index, "" + defaultValue);
+        if (str == null) {
+            return defaultValue;
+        }
+
+        if (str.length() != 1) {
+            throw new IllegalValueException(StringTemplates.formatWithoutIndex("'{}' is a string not a character", str));
+        }
+
+        return str.charAt(0);
+    }
+
+    @Override
+    public Byte getByte(Integer index) {
+        return Array.getByte(target, index);
+    }
+
+    @Override
+    public Byte getByte(Integer index, Byte defaultValue) {
+        return Byte.parseByte(getString(index, "" + defaultValue));
+    }
+
+    @Override
     public Integer getInteger(Integer index) {
         return Array.getInt(target, index);
     }
 
     @Override
     public Integer getInteger(Integer index, Integer defaultValue) {
-        String str = getString(index, "" + defaultValue);
-        return Integer.parseInt(str);
+        return Integer.parseInt(getString(index, "" + defaultValue));
     }
 
     @Override
@@ -58,8 +91,7 @@ public class ArrayAccessor<E> implements Accessor<Integer, E> {
 
     @Override
     public Short getShort(Integer index, Short defaultValue) {
-        String str = getString(index, "" + defaultValue);
-        return Short.parseShort(str);
+        return Short.parseShort(getString(index, "" + defaultValue));
     }
 
     @Override
@@ -69,8 +101,7 @@ public class ArrayAccessor<E> implements Accessor<Integer, E> {
 
     @Override
     public Double getDouble(Integer index, Double defaultValue) {
-        String str = getString(index, "" + defaultValue);
-        return Double.parseDouble(str);
+        return Double.parseDouble(getString(index, "" + defaultValue));
     }
 
     @Override
@@ -80,8 +111,7 @@ public class ArrayAccessor<E> implements Accessor<Integer, E> {
 
     @Override
     public Float getFloat(Integer index, Float defaultValue) {
-        String str = getString(index, "" + defaultValue);
-        return Float.parseFloat(str);
+        return Float.parseFloat(getString(index, "" + defaultValue));
     }
 
     @Override
@@ -91,8 +121,7 @@ public class ArrayAccessor<E> implements Accessor<Integer, E> {
 
     @Override
     public Long getLong(Integer index, Long defaultValue) {
-        String str = getString(index, "" + defaultValue);
-        return Long.parseLong(str);
+        return Long.parseLong(getString(index, "" + defaultValue));
     }
 
     @Override
@@ -102,7 +131,57 @@ public class ArrayAccessor<E> implements Accessor<Integer, E> {
 
     @Override
     public Boolean getBoolean(Integer index, Boolean defaultValue) {
-        String str = getString(index, "" + defaultValue);
-        return Boolean.parseBoolean(str);
+        return Boolean.parseBoolean(getString(index, "" + defaultValue));
+    }
+
+
+    @Override
+    public void set(Integer index, Object value) {
+        Array.set(target, index, value);
+    }
+
+    @Override
+    public void setString(Integer index, String value) {
+        Array.set(target, index, value);
+    }
+
+    @Override
+    public void setByte(Integer index, byte value) {
+        Array.setByte(target, index, value);
+    }
+
+    @Override
+    public void setShort(Integer index, short value) {
+        Array.setShort(target, index, value);
+    }
+
+    @Override
+    public void setInteger(Integer index, int value) {
+        Array.setInt(target, index, value);
+    }
+
+    @Override
+    public void setLong(Integer index, long value) {
+        Array.setLong(target, index, value);
+    }
+
+    @Override
+    public void setFloat(Integer index, float value) {
+        Array.setFloat(target, index, value);
+    }
+
+    @Override
+    public void setDouble(Integer index, double value) {
+        Array.setDouble(target, index, value);
+    }
+
+    @Override
+    public void setBoolean(Integer index, boolean value) {
+        Array.setBoolean(target, index, value);
+    }
+
+    @Override
+    public void setChar(Integer index, char value) {
+        Array.setChar(target, index, value);
     }
 }

@@ -4,6 +4,7 @@ import com.jn.langx.Accessor;
 
 /**
  * A field accessor based on reflect
+ *
  * @author jinuo.fang
  */
 public class FieldAccessor implements Accessor<String, Object> {
@@ -24,12 +25,27 @@ public class FieldAccessor implements Accessor<String, Object> {
     }
 
     private <V> V getFieldValue(String fieldName, V defaultValue) {
+        V v;
         try {
-            return (V) Reflects.getAnyFieldValue(target, fieldName, true, true);
+            v = (V) Reflects.getAnyFieldValue(target, fieldName, true, true);
+            if (v == null) {
+                v = defaultValue;
+            }
         } catch (NoSuchFieldException ex) {
-            return defaultValue;
+            throw new RuntimeException(ex);
         } catch (IllegalAccessException ex) {
-            return defaultValue;
+            throw new RuntimeException(ex);
+        }
+        return v;
+    }
+
+    private <V> void setFieldValue(String fieldName, V value) {
+        try {
+            Reflects.setAnyFieldValue(target, fieldName, value, true, false);
+        } catch (NoSuchFieldException ex) {
+            throw new RuntimeException(ex);
+        } catch (IllegalAccessException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -46,6 +62,26 @@ public class FieldAccessor implements Accessor<String, Object> {
 
     @Override
     public String getString(String field, String defaultValue) {
+        return getFieldValue(field, defaultValue);
+    }
+
+    @Override
+    public Character getCharacter(String field) {
+        return getCharacter(field, null);
+    }
+
+    @Override
+    public Character getCharacter(String field, Character defaultValue) {
+        return getFieldValue(field, defaultValue);
+    }
+
+    @Override
+    public Byte getByte(String field) {
+        return getByte(field, null);
+    }
+
+    @Override
+    public Byte getByte(String field, Byte defaultValue) {
         return getFieldValue(field, defaultValue);
     }
 
@@ -109,5 +145,55 @@ public class FieldAccessor implements Accessor<String, Object> {
         return getFieldValue(field, defaultValue);
     }
 
+
+    @Override
+    public void set(String field, Object value) {
+        setFieldValue(field, value);
+    }
+
+    @Override
+    public void setString(String field, String value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setChar(String field, char value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setByte(String field, byte value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setShort(String field, short value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setInteger(String field, int value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setLong(String field, long value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setFloat(String field, float value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setDouble(String field, double value) {
+        set(field, value);
+    }
+
+    @Override
+    public void setBoolean(String field, boolean value) {
+        set(field, value);
+    }
 
 }
