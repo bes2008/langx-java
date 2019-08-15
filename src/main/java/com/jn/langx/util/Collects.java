@@ -111,6 +111,11 @@ public class Collects {
         return new LinkedList<E>();
     }
 
+    public static <E> E[] emptyArray(Class<E> clazz) {
+        return Arrs.createArray(clazz, 0);
+    }
+
+
     public enum MapType {
         StringMap,
         HashMap,

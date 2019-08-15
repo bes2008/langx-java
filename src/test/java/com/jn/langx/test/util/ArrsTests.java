@@ -1,6 +1,7 @@
 package com.jn.langx.test.util;
 
 import com.jn.langx.util.Arrs;
+import com.jn.langx.util.function.Supplier;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,5 +20,24 @@ public class ArrsTests {
         Assert.assertArrayEquals(new Object[]{"a"}, Arrs.wrapAsArray("a"));
         Object[] a = Arrs.wrapAsArray("a");
         System.out.println(a.length);
+    }
+
+    @Test
+    public void createArrayTests(){
+        Integer[] a = Arrs.createArray(int.class, 10, new Supplier<Integer, Integer>() {
+            @Override
+            public Integer get(Integer input) {
+                return 0;
+            }
+        });
+        Integer[] b = Arrs.createArray(Integer.class, 10, 0);
+        Assert.assertArrayEquals(a, b);
+    }
+
+    @Test
+    public void rangeTests(){
+        Integer[] a = Arrs.range(10);
+        Integer[] b = Arrs.range(0, 10, 1);
+        Assert.assertArrayEquals(a, b);
     }
 }
