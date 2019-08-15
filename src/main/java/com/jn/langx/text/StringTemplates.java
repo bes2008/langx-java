@@ -14,7 +14,7 @@ public class StringTemplates {
      * @param template the string template
      * @return formatted string
      */
-    public static String formatBasedOrder(String template, Object[] args){
+    public static String formatWithoutIndex(String template, Object... args){
         return format(template, orderPattern, new Function2<String, Object[], String>() {
             int index = -1;
             @Override
@@ -32,7 +32,7 @@ public class StringTemplates {
      * @param args args
      * @return formatted string
      */
-    public static String format(String template, Object[] args) {
+    public static String format(String template, Object... args) {
         return format(template, "", null, args);
     }
 
@@ -45,7 +45,7 @@ public class StringTemplates {
      * @param args args
      * @return formatted string
      */
-    public static String format(String template, String variablePattern, Function2<String, Object[], String> valueGetter, Object[] args) {
+    public static String format(String template, String variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
         return new StringTemplate().variablePattern(variablePattern).using(template).with(valueGetter).format(args);
     }
 
@@ -57,7 +57,7 @@ public class StringTemplates {
      * @param args args
      * @return formatted string
      */
-    public static String format(String template, Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object[] args) {
+    public static String format(String template, Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
         return new StringTemplate().variablePattern(variablePattern).using(template).with(valueGetter).format(args);
     }
 
