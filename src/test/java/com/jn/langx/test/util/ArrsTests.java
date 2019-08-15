@@ -1,4 +1,4 @@
-package com.jn.langx.test.util.collection;
+package com.jn.langx.test.util;
 
 import com.jn.langx.util.Arrs;
 import org.junit.Assert;
