@@ -1,12 +1,12 @@
 package com.jn.langx.util.concurrent;
 
-public class WrapedRunable extends WrapedTask implements Runnable {
+public class WrappedRunable extends WrappedTask implements Runnable {
     private Runnable task;
 
-    public WrapedRunable() {
+    public WrappedRunable() {
     }
 
-    public WrapedRunable(Runnable runnable) {
+    public WrappedRunable(Runnable runnable) {
         setTask(runnable);
     }
 

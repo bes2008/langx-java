@@ -2,7 +2,7 @@ package com.jn.langx.util.concurrent;
 
 import com.jn.langx.util.concurrent.interceptor.TaskInterceptorChain;
 
-public abstract class WrapedTask<V> extends TaskInterceptorChain {
+public abstract class WrappedTask<V> extends TaskInterceptorChain {
 
     protected V runInternal() throws Exception {
         V v;

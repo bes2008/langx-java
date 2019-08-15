@@ -9,6 +9,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * @author jinuo.fang
+ */
 public class CommonThreadFactory implements ThreadFactory, Factory<Runnable,Thread> {
     // key: prefix
     // value: thread N.O.
@@ -47,7 +50,7 @@ public class CommonThreadFactory implements ThreadFactory, Factory<Runnable,Thre
 
     @Override
     public Thread newThread(Runnable r) {
-        Thread thread = new WrapedThread(r, nextThreadName());
+        Thread thread = new WrappedThread(r, nextThreadName());
         thread.setDaemon(daemon);
         return thread;
     }

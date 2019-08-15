@@ -13,7 +13,7 @@ import java.util.List;
  * method1:
  * <pre>
  *  Callable task0 = new Callable(){run(){...}};
- *  WrapedCallable task00 = new WrapedCallable(task0);
+ *  WrappedCallable task00 = new WrappedCallable(task0);
  *  executor.submit(task00);
  *
  *  Runnable task1 = new Runnable(){run(){...}};
@@ -23,13 +23,15 @@ import java.util.List;
  *
  * method2:
  * <pre>
- *     using WrapedThread
+ *     using WrappedThread
  * </pre>
  *
  * method3:
  * <pre>
  *     using CommonThreadFactory
  * </pre>
+ *
+ * @author jinuo.fang
  */
 public class TaskInterceptorChain implements TaskInterceptor {
     private LinkedList<TaskInterceptor> interceptors = new LinkedList<TaskInterceptor>();
