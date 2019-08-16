@@ -55,6 +55,10 @@ public class Reflects {
         return clazz.getPackage().getName();
     }
 
+    public static String getJvmSignature(Class clazz){
+        return Types.getTypeSignature(getFQNClassName(clazz));
+    }
+
     public static URL getCodeLocation(Class clazz) {
         return clazz.getProtectionDomain().getCodeSource().getLocation();
     }
@@ -465,6 +469,5 @@ public class Reflects {
             return getMethodString(getTypeName(clazz), methodName, null, parameterTypes);
         }
     }
-
 
 }
