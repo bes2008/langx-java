@@ -9,7 +9,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public void setTarget(T target) {
-        Preconditions.checkNotNull(t);
+        Preconditions.checkNotNull(target);
+        this.t = target;
     }
 
     @Override
@@ -52,67 +53,95 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public Byte getByte(K key, Byte defaultValue) {
-        return Byte.parseByte(getString(key, "" + defaultValue));
+        String value = getString(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Byte.parseByte(value);
     }
 
     @Override
     public Integer getInteger(K key) {
-        return getInteger(key, 0);
+        return getInteger(key, null);
     }
 
     @Override
     public Integer getInteger(K key, Integer defaultValue) {
-        return Integer.parseInt(getString(key, "" + defaultValue));
+        String value = getString(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Integer.parseInt(value);
     }
 
     @Override
     public Short getShort(K key) {
-        return getShort(key, Short.valueOf("" + 0));
+        return getShort(key, null);
     }
 
     @Override
     public Short getShort(K key, Short defaultValue) {
-        return Short.parseShort(getString(key, "" + defaultValue));
+        String value = getString(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Short.parseShort(value);
     }
 
     @Override
     public Double getDouble(K key) {
-        return getDouble(key, 0.0d);
+        return getDouble(key, null);
     }
 
     @Override
     public Double getDouble(K key, Double defaultValue) {
-        return Double.parseDouble(getString(key, "" + defaultValue));
+        String value = getString(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Double.parseDouble(value);
     }
 
     @Override
     public Float getFloat(K key) {
-        return getFloat(key, 0.0f);
+        return getFloat(key, null);
     }
 
     @Override
     public Float getFloat(K key, Float defaultValue) {
-        return Float.parseFloat(getString(key, "" + defaultValue));
+        String value = getString(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Float.parseFloat(value);
     }
 
     @Override
     public Long getLong(K key) {
-        return getLong(key, 0L);
+        return getLong(key, null);
     }
 
     @Override
     public Long getLong(K key, Long defaultValue) {
-        return Long.parseLong(getString(key, "" + defaultValue));
+        String value = getString(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Long.parseLong(value);
     }
 
     @Override
     public Boolean getBoolean(K key) {
-        return getBoolean(key, false);
+        return getBoolean(key, null);
     }
 
     @Override
     public Boolean getBoolean(K key, Boolean defaultValue) {
-        return Boolean.parseBoolean(getString(key, "" + defaultValue));
+        String value = getString(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Boolean.parseBoolean(value);
     }
 
 
