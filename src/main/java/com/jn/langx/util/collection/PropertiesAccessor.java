@@ -8,7 +8,6 @@ import java.util.Properties;
  * @author jinuo.fang
  */
 public class PropertiesAccessor extends BasedStringAccessor<String, Properties> {
-    private Properties target;
 
     public PropertiesAccessor() {
     }
@@ -24,16 +23,16 @@ public class PropertiesAccessor extends BasedStringAccessor<String, Properties> 
 
     @Override
     public String getString(String key, String defaultValue) {
-        return target.getProperty(key, defaultValue);
+        return getTarget().getProperty(key, defaultValue);
     }
 
     @Override
     public void set(String key, Object value) {
         if (value == null) {
-            target.remove(key);
+            getTarget().remove(key);
             return;
         }
-        target.setProperty(key, value.toString());
+        getTarget().setProperty(key, value.toString());
     }
 
 }

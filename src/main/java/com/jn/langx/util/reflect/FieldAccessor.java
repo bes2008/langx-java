@@ -8,7 +8,6 @@ import com.jn.langx.util.BasedStringAccessor;
  * @author jinuo.fang
  */
 public class FieldAccessor extends BasedStringAccessor<String, Object> {
-    private Object target;
 
     public FieldAccessor(Object target) {
         setTarget(target);
@@ -18,7 +17,7 @@ public class FieldAccessor extends BasedStringAccessor<String, Object> {
     private <V> V getFieldValue(String fieldName, V defaultValue) {
         V v;
         try {
-            v = (V) Reflects.getAnyFieldValue(target, fieldName, true, true);
+            v = (V) Reflects.getAnyFieldValue(getTarget(), fieldName, true, true);
             if (v == null) {
                 v = defaultValue;
             }
@@ -32,7 +31,7 @@ public class FieldAccessor extends BasedStringAccessor<String, Object> {
 
     private <V> void setFieldValue(String fieldName, V value) {
         try {
-            Reflects.setAnyFieldValue(target, fieldName, value, true, false);
+            Reflects.setAnyFieldValue(getTarget(), fieldName, value, true, false);
         } catch (NoSuchFieldException ex) {
             throw new RuntimeException(ex);
         } catch (IllegalAccessException ex) {

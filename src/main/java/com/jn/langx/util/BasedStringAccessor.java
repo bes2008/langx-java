@@ -5,7 +5,7 @@ import com.jn.langx.exception.IllegalValueException;
 import com.jn.langx.text.StringTemplates;
 
 public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
-    protected T t;
+    private T t;
 
     @Override
     public void setTarget(T target) {
