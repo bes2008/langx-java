@@ -2,6 +2,7 @@ package com.jn.langx.test.util;
 
 import com.jn.langx.util.Arrs;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.reflect.Reflects;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,11 +20,12 @@ public class ArrsTests {
         Assert.assertArrayEquals(new String[]{"a"}, Arrs.wrapAsArray("a"));
         Assert.assertArrayEquals(new Object[]{"a"}, Arrs.wrapAsArray("a"));
         Object[] a = Arrs.wrapAsArray("a");
+        Assert.assertTrue(Reflects.getJvmSignature(Arrs.wrapAsArray("String").getClass()).equals(Reflects.getJvmSignature(String[].class)));
         System.out.println(a.length);
     }
 
     @Test
-    public void createArrayTests(){
+    public void createArrayTests() {
         Integer[] a = Arrs.createArray(int.class, 10, new Supplier<Integer, Integer>() {
             @Override
             public Integer get(Integer input) {
@@ -35,7 +37,7 @@ public class ArrsTests {
     }
 
     @Test
-    public void rangeTests(){
+    public void rangeTests() {
         Integer[] a = Arrs.range(10);
         Integer[] b = Arrs.range(0, 10, 1);
         Assert.assertArrayEquals(a, b);
