@@ -1,8 +1,8 @@
 package com.jn.langx.exception;
 
-import com.jn.langx.text.ParameterizationMessage;
+import com.jn.langx.text.ParameterizedMessage;
 
-public class ExceptionMessage extends ParameterizationMessage {
+public class ExceptionMessage extends ParameterizedMessage {
     public ExceptionMessage (String msg){
         super(msg);
     }
