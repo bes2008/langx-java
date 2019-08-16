@@ -1,4 +1,4 @@
-package com.jn.langx.util.regexp;
+package com.jn.langx.util.script.javascript.regexp;
 
 import com.jn.langx.util.script.ScriptLanguage;
 import com.jn.langx.util.script.SimpleScriptEngineFactory;
@@ -85,8 +85,9 @@ public class RegExp {
             } catch (Exception e) {
                 throw new RegexpPatternException(this.pattern);
             }
-        } else
+        } else {
             return str.matches(pattern);
+        }
     }
 
     /**
@@ -113,8 +114,9 @@ public class RegExp {
             } catch (Exception e) {
                 throw new RegexpPatternException(this.pattern);
             }
-        } else
+        } else {
             return str.matches(pattern);
+        }
     }
 
     public static void main(String[] args) {
