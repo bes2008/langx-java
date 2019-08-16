@@ -1,5 +1,7 @@
 package com.jn.langx.util.reflect;
 
+import com.jn.langx.text.StringTemplates;
+
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 
@@ -140,5 +142,16 @@ public class Modifiers {
      */
     public static boolean isStrict(Member member) {
         return Modifier.isStrict(modifiers(member));
+    }
+
+    public static boolean contains(int modifiers, int modifier){
+        if(modifier<=0){
+            throw new IllegalArgumentException(StringTemplates.formatWithoutIndex("Illegal modifier: {}", modifier));
+        }
+        return (modifiers & modifier) != 0;
+    }
+
+    public static boolean contains(Member member, int modifier){
+        return contains(modifiers(member), modifier);
     }
 }

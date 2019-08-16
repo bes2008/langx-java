@@ -3,10 +3,8 @@ package com.jn.langx.util.reflect;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
-import com.jn.langx.util.Collects;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
+import com.jn.langx.util.*;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.type.Types;
 
 import java.lang.annotation.Annotation;
@@ -55,7 +53,7 @@ public class Reflects {
         return clazz.getPackage().getName();
     }
 
-    public static String getJvmSignature(Class clazz){
+    public static String getJvmSignature(Class clazz) {
         return Types.getTypeSignature(getFQNClassName(clazz));
     }
 
@@ -133,6 +131,31 @@ public class Reflects {
             return null;
         }
         return field;
+    }
+
+    public static List<Field> getAllDeclaredFields(Class clazz, boolean containsStatic) {
+        Field[] fields = clazz.getDeclaredFields();
+        return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
+    }
+
+    public static List<Field> getAllPublicFields(Class clazz, boolean containsStatic) {
+        Field[] fields = clazz.getFields();
+        return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
+    }
+
+    public static List<Field> filterFields(Field[] fields, final int... excludedModifiers) {
+        final List<Integer> excludedModifierList = Collects.asList(PrimitiveArrays.wrap(excludedModifiers, false));
+        return Collects.filter(Collects.asIterable(fields, false), new Predicate<Field>() {
+            @Override
+            public boolean test(final Field field) {
+                return Collects.noneMatch(excludedModifierList, new Predicate<Integer>() {
+                    @Override
+                    public boolean test(Integer modifier) {
+                        return Modifiers.contains(field, modifier);
+                    }
+                });
+            }
+        });
     }
 
     public static <V> V getPublicFieldValueForcedIfPresent(Object object, String fieldName) {
