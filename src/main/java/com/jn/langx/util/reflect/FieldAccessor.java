@@ -1,28 +1,19 @@
 package com.jn.langx.util.reflect;
 
-import com.jn.langx.Accessor;
+import com.jn.langx.util.BasedStringAccessor;
 
 /**
  * A field accessor based on reflect
  *
  * @author jinuo.fang
  */
-public class FieldAccessor implements Accessor<String, Object> {
+public class FieldAccessor extends BasedStringAccessor<String, Object> {
     private Object target;
 
     public FieldAccessor(Object target) {
         setTarget(target);
     }
 
-    @Override
-    public void setTarget(Object target) {
-        this.target = target;
-    }
-
-    @Override
-    public Object getTarget() {
-        return target;
-    }
 
     private <V> V getFieldValue(String fieldName, V defaultValue) {
         V v;
@@ -55,96 +46,13 @@ public class FieldAccessor implements Accessor<String, Object> {
     }
 
     @Override
-    public String getString(String field) {
-        return getString(field, null);
+    public String getString(String key, String defaultValue) {
+        Object value = get(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return value.toString();
     }
-
-
-    @Override
-    public String getString(String field, String defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Character getCharacter(String field) {
-        return getCharacter(field, null);
-    }
-
-    @Override
-    public Character getCharacter(String field, Character defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Byte getByte(String field) {
-        return getByte(field, null);
-    }
-
-    @Override
-    public Byte getByte(String field, Byte defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Integer getInteger(String field) {
-        return getInteger(field, null);
-    }
-
-    @Override
-    public Integer getInteger(String field, Integer defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Short getShort(String field) {
-        return getShort(field, null);
-    }
-
-    @Override
-    public Short getShort(String field, Short defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Double getDouble(String field) {
-        return getDouble(field, null);
-    }
-
-    @Override
-    public Double getDouble(String field, Double defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Float getFloat(String field) {
-        return getFloat(field, null);
-    }
-
-    @Override
-    public Float getFloat(String field, Float defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Long getLong(String field) {
-        return getLong(field, null);
-    }
-
-    @Override
-    public Long getLong(String field, Long defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
-    @Override
-    public Boolean getBoolean(String field) {
-        return getBoolean(field, null);
-    }
-
-    @Override
-    public Boolean getBoolean(String field, Boolean defaultValue) {
-        return getFieldValue(field, defaultValue);
-    }
-
 
     @Override
     public void set(String field, Object value) {
@@ -156,44 +64,5 @@ public class FieldAccessor implements Accessor<String, Object> {
         set(field, value);
     }
 
-    @Override
-    public void setChar(String field, char value) {
-        set(field, value);
-    }
-
-    @Override
-    public void setByte(String field, byte value) {
-        set(field, value);
-    }
-
-    @Override
-    public void setShort(String field, short value) {
-        set(field, value);
-    }
-
-    @Override
-    public void setInteger(String field, int value) {
-        set(field, value);
-    }
-
-    @Override
-    public void setLong(String field, long value) {
-        set(field, value);
-    }
-
-    @Override
-    public void setFloat(String field, float value) {
-        set(field, value);
-    }
-
-    @Override
-    public void setDouble(String field, double value) {
-        set(field, value);
-    }
-
-    @Override
-    public void setBoolean(String field, boolean value) {
-        set(field, value);
-    }
 
 }

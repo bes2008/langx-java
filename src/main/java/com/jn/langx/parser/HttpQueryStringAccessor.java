@@ -1,14 +1,13 @@
 package com.jn.langx.parser;
 
-import com.jn.langx.Accessor;
+import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.StringMapAccessor;
 
 /**
  * @author jinuo.fang
  */
-public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAccessor>, Accessor<String, String> {
-    private String url;
+public class HttpQueryStringAccessor extends BasedStringAccessor<String, String> implements Parser<String, HttpQueryStringAccessor> {
     private StringMapAccessor delegate;
 
     public HttpQueryStringAccessor() {
@@ -21,13 +20,8 @@ public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAc
 
     @Override
     public void setTarget(String url) {
-        this.url = url;
+        super.setTarget(url);
         delegate = parse0(url);
-    }
-
-    @Override
-    public String getTarget() {
-        return this.url;
     }
 
     @Override
@@ -36,96 +30,10 @@ public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAc
     }
 
     @Override
-    public String getString(String key) {
-        return delegate.getString(key);
-    }
-
-    @Override
     public String getString(String key, String defaultValue) {
         return delegate.getString(key, defaultValue);
     }
 
-
-    @Override
-    public Character getCharacter(String key) {
-        return delegate.getCharacter(key);
-    }
-
-    @Override
-    public Character getCharacter(String key, Character defaultValue) {
-        return delegate.getCharacter(key, defaultValue);
-    }
-
-    @Override
-    public Byte getByte(String key) {
-        return delegate.getByte(key);
-    }
-
-    @Override
-    public Byte getByte(String key, Byte defaultValue) {
-        return delegate.getByte(key, defaultValue);
-    }
-
-
-    @Override
-    public Integer getInteger(String key) {
-        return delegate.getInteger(key);
-    }
-
-    @Override
-    public Integer getInteger(String key, Integer defaultValue) {
-        return delegate.getInteger(key, defaultValue);
-    }
-
-    @Override
-    public Short getShort(String key) {
-        return delegate.getShort(key);
-    }
-
-    @Override
-    public Short getShort(String key, Short defaultValue) {
-        return delegate.getShort(key, defaultValue);
-    }
-
-    @Override
-    public Double getDouble(String key) {
-        return delegate.getDouble(key);
-    }
-
-    @Override
-    public Double getDouble(String key, Double defaultValue) {
-        return delegate.getDouble(key, defaultValue);
-    }
-
-    @Override
-    public Float getFloat(String key) {
-        return delegate.getFloat(key);
-    }
-
-    @Override
-    public Float getFloat(String key, Float defaultValue) {
-        return delegate.getFloat(key, defaultValue);
-    }
-
-    @Override
-    public Long getLong(String key) {
-        return delegate.getLong(key);
-    }
-
-    @Override
-    public Long getLong(String key, Long defaultValue) {
-        return delegate.getLong(key, defaultValue);
-    }
-
-    @Override
-    public Boolean getBoolean(String key) {
-        return delegate.getBoolean(key);
-    }
-
-    @Override
-    public Boolean getBoolean(String key, Boolean defaultValue) {
-        return delegate.getBoolean(key, defaultValue);
-    }
 
     private StringMapAccessor parse0(String url) {
         return new StringMapAccessor(StringMap.httpUrlParameters(url));
@@ -156,48 +64,4 @@ public class HttpQueryStringAccessor implements Parser<String, HttpQueryStringAc
         delegate.set(key, value);
     }
 
-    @Override
-    public void setString(String key, String value) {
-        delegate.setString(key, value);
-    }
-
-    @Override
-    public void setByte(String key, byte value) {
-        delegate.setByte(key, value);
-    }
-
-    @Override
-    public void setShort(String key, short value) {
-        delegate.setShort(key, value);
-    }
-
-    @Override
-    public void setInteger(String key, int value) {
-        delegate.setInteger(key, value);
-    }
-
-    @Override
-    public void setLong(String key, long value) {
-        delegate.setLong(key, value);
-    }
-
-    @Override
-    public void setFloat(String key, float value) {
-        delegate.setFloat(key, value);
-    }
-
-    @Override
-    public void setDouble(String key, double value) {
-        delegate.setDouble(key, value);
-    }
-
-    @Override
-    public void setBoolean(String key, boolean value) {
-        delegate.setBoolean(key, value);
-    }
-
-    @Override
-    public void setChar(String key, char value) {
-        delegate.setChar(key, value);
-    }
 }
