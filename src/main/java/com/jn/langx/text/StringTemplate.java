@@ -7,6 +7,8 @@ import com.jn.langx.util.function.Function2;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.regex.Matcher.quoteReplacement;
+
 public class StringTemplate {
     private final static Pattern defaultPattern = Pattern.compile("\\{\\d+\\}");
     private final static Function2<String, Object[], String> defaultValueGetter = new IndexBasedValueGetter();
@@ -54,7 +56,7 @@ public class StringTemplate {
         StringBuffer b = new StringBuffer();
         while (matcher.find()) {
             String matched = matcher.group();
-            matcher.appendReplacement(b, valueGetter.apply(matched, args));
+            matcher.appendReplacement(b, quoteReplacement(valueGetter.apply(matched, args)));
         }
         matcher.appendTail(b);
         return b.toString();
