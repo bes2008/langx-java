@@ -2,7 +2,11 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.StringMap;
+import com.jn.langx.util.collection.diff.CollectionDiffer;
+import com.jn.langx.util.collection.diff.KeyBuilder;
+import com.jn.langx.util.collection.diff.MapDiffer;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
@@ -447,12 +451,12 @@ public class Collects {
     /**
      * mapping an iterable to a map
      */
-    public static <E, K, V> Map<K,V> map(Object anyObject, @NonNull Function<E, Pair<K,V>> mapper) {
+    public static <E, K, V> Map<K, V> map(Object anyObject, @NonNull Function<E, Pair<K, V>> mapper) {
         Preconditions.checkNotNull(mapper);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
-        Map<K,V> result = new HashMap<K, V>();
+        Map<K, V> result = new HashMap<K, V>();
         for (E e : iterable) {
-            Pair<K,V> pair = mapper.apply(e);
+            Pair<K, V> pair = mapper.apply(e);
             result.put(pair.getKey(), pair.getValue());
         }
         return result;
@@ -784,5 +788,37 @@ public class Collects {
             }
             return newList;
         }
+    }
+
+    public static <E> DiffResult<Collection<E>> diff(Collection<E> oldCollection, Collection<E> newCollection) {
+        return diff(oldCollection, newCollection, null);
+    }
+
+    public static <E> DiffResult<Collection<E>> diff(Collection<E> oldCollection, Collection<E> newCollection, Comparator<E> elementComparator) {
+        return diff(oldCollection, newCollection, elementComparator);
+    }
+
+    public static <E> DiffResult<Collection<E>> diff(Collection<E> oldCollection, Collection<E> newCollection, Comparator<E> elementComparator, KeyBuilder<String, E> keyBuilder) {
+        CollectionDiffer<E> differ = new CollectionDiffer<E>();
+        differ.setComparator(elementComparator);
+        if (keyBuilder != null) {
+            differ.diffUsingMap(keyBuilder);
+        }
+        return differ.diff(oldCollection, newCollection);
+    }
+
+    public static <K, V> DiffResult<Map<K, V>> diff(Map<K, V> oldMap, Map<K, V> newMap) {
+        return diff(oldMap, newMap, null);
+    }
+
+    public static <K, V> DiffResult<Map<K, V>> diff(Map<K, V> oldMap, Map<K, V> newMap, Comparator<V> valueComparator) {
+        return diff(oldMap, newMap, valueComparator, null);
+    }
+
+    public static <K, V> DiffResult<Map<K, V>> diff(Map<K, V> oldMap, Map<K, V> newMap, Comparator<V> valueComparator, Comparator<K> keyComparator) {
+        MapDiffer<K, V> differ = new MapDiffer<K, V>();
+        differ.setComparator(valueComparator);
+        differ.setKeyComparator(keyComparator);
+        return differ.diff(oldMap, newMap);
     }
 }
