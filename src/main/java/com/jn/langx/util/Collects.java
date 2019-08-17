@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
+import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
 
@@ -430,7 +431,7 @@ public class Collects {
     }
 
     /**
-     * mapping a to b
+     * mapping an iterable to a list
      */
     public static <E, R> List<R> map(Object anyObject, @NonNull Function<E, R> mapper) {
         Preconditions.checkNotNull(mapper);
@@ -442,8 +443,23 @@ public class Collects {
         return result;
     }
 
+
     /**
-     * mapping aMap to bMap
+     * mapping an iterable to a map
+     */
+    public static <E, K, V> Map<K,V> map(Object anyObject, @NonNull Function<E, Pair<K,V>> mapper) {
+        Preconditions.checkNotNull(mapper);
+        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
+        Map<K,V> result = new HashMap<K, V>();
+        for (E e : iterable) {
+            Pair<K,V> pair = mapper.apply(e);
+            result.put(pair.getKey(), pair.getValue());
+        }
+        return result;
+    }
+
+    /**
+     * mapping aMap to a list
      */
     public static <K, V, R> List<R> map(Map<K, V> map, @NonNull Function<Map.Entry<K, V>, R> mapper) {
         Preconditions.checkNotNull(mapper);
@@ -454,12 +470,15 @@ public class Collects {
         return result;
     }
 
-    public static <K, V, K1, V1> Map<K1, V1> map(Map<K, V> map, @NonNull Function2<K, V, Map.Entry<K1, V1>> mapper) {
+    /**
+     * mapping aMap to bMap
+     */
+    public static <K, V, K1, V1> Map<K1, V1> map(Map<K, V> map, @NonNull Function2<K, V, Pair<K1, V1>> mapper) {
         Preconditions.checkNotNull(mapper);
         Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<K, V> entry : map.entrySet()) {
-                Map.Entry<K1, V1> e = mapper.apply(entry.getKey(), entry.getValue());
+                Pair<K1, V1> e = mapper.apply(entry.getKey(), entry.getValue());
                 result.put(e.getKey(), e.getValue());
             }
         }
