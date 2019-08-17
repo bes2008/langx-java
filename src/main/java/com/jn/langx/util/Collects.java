@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * Collection utilities
  */
-@SuppressWarnings({"unchecked"})
+@SuppressWarnings({"unchecked","unused"})
 public class Collects {
     /**
      * Get a empty, mutable java.util.Hashtable
@@ -606,13 +606,8 @@ public class Collects {
     public static <E> boolean anyMatch(Collection<E> collection, Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
-            Iterator<E> iterator = collection.iterator();
-            while (iterator.hasNext()) {
-                E e = iterator.next();
-                if (predicate.test(e)) {
-                    return true;
-                }
-            }
+            E e = findFirst(collection, predicate);
+            return e != null;
         }
         return false;
     }
@@ -625,13 +620,8 @@ public class Collects {
     public static <K, V> boolean anyMatch(Map<K, V> map, Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<K, V> e = iterator.next();
-                if (predicate.test(e.getKey(), e.getValue())) {
-                    return true;
-                }
-            }
+            Map.Entry<K, V> entry = findFirst(map, predicate);
+            return entry != null;
         }
         return false;
     }
@@ -644,9 +634,7 @@ public class Collects {
     public static <E> boolean allMatch(Collection<E> collection, Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
-            Iterator<E> iterator = collection.iterator();
-            while (iterator.hasNext()) {
-                E e = iterator.next();
+            for(E e : collection){
                 if (!predicate.test(e)) {
                     return false;
                 }
@@ -663,9 +651,7 @@ public class Collects {
     public static <K, V> boolean allMatch(Map<K, V> map, Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<K, V> e = iterator.next();
+            for(Map.Entry<K, V> e: map.entrySet()){
                 if (!predicate.test(e.getKey(), e.getValue())) {
                     return false;
                 }
@@ -683,8 +669,7 @@ public class Collects {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
             Iterator<E> iterator = collection.iterator();
-            while (iterator.hasNext()) {
-                E e = iterator.next();
+            for (E e: collection) {
                 if (predicate.test(e)) {
                     return false;
                 }
@@ -701,9 +686,7 @@ public class Collects {
     public static <K, V> boolean noneMatch(Map<K, V> map, Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            Iterator<Map.Entry<K, V>> iterator = map.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<K, V> e = iterator.next();
+            for(Map.Entry<K, V> e: map.entrySet()){
                 if (predicate.test(e.getKey(), e.getValue())) {
                     return false;
                 }
