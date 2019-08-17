@@ -1,0 +1,135 @@
+package com.jn.langx.util.collection.diff;
+
+import com.jn.langx.util.Collects;
+import com.jn.langx.util.collection.DiffResult;
+import com.jn.langx.util.collection.Differ;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.struct.Pair;
+
+import java.util.*;
+
+public class CollectionDiffer<E> implements Differ<Collection<E>, E> {
+    private Comparator<E> comparator;
+    private KeyBuilder<String, E> keyBuilder;
+
+    public void diffUsingMap(KeyBuilder<String, E> keyBuilder) {
+        this.keyBuilder = keyBuilder;
+    }
+
+    @Override
+    public void setComparator(Comparator<E> comparator) {
+        this.comparator = comparator;
+    }
+
+    @Override
+    public DiffResult<Collection<E>> diff(Collection<E> oldCollection, Collection<E> newCollection) {
+        CollectionDiffResult<E> result = new CollectionDiffResult<E>();
+
+        if (oldCollection == null && newCollection == null) {
+            return result;
+        }
+
+        if (oldCollection == null) {
+            result.setAdds(newCollection);
+            return result;
+        }
+
+        if (newCollection == null) {
+            result.setRemoves(oldCollection);
+            return result;
+        }
+
+        if (isDiffUsingMapDiffer()) {
+            Map<String, E> oldMap = Collects.map(oldCollection, new Function<E, Pair<String, E>>() {
+                @Override
+                public Pair<String, E> apply(E element) {
+                    return new com.jn.langx.util.struct.Entry(keyBuilder.getKey(element), element);
+                }
+            });
+
+            Map<String, E> newMap = Collects.map(newCollection, new Function<E, Pair<String, E>>() {
+                @Override
+                public Pair<String, E> apply(E element) {
+                    return new com.jn.langx.util.struct.Entry(keyBuilder.getKey(element), element);
+                }
+            });
+
+            MapDiffer<String, E> mapDiffer = new MapDiffer<String, E>();
+            mapDiffer.setComparator(comparator);
+            mapDiffer.setKeyComparator(new EqualsComparator<String>());
+            mapDiffer.diff(oldMap, newMap);
+        }
+
+        if (isDiffUsingEqualMethod()) {
+            diffWithObjectEquals(oldCollection, newCollection, result);
+        } else {
+            diffWithComparator(oldCollection, newCollection, result);
+        }
+
+        return result;
+    }
+
+    private boolean isDiffUsingMapDiffer() {
+        return this.keyBuilder != null;
+    }
+
+    private boolean isDiffUsingEqualMethod() {
+        return comparator == null || comparator instanceof EqualsComparator;
+    }
+
+
+    private void diffWithObjectEquals(Collection<E> oldCollection, Collection<E> newCollection, CollectionDiffResult<E> result) {
+        List<E> removes = new ArrayList<E>(oldCollection);
+        removes.removeAll(newCollection);
+        result.setRemoves(removes);
+
+        List<E> equals = new ArrayList<E>(oldCollection);
+        equals.removeAll(removes);
+        result.setEquals(equals);
+
+        List<E> adds = new ArrayList<E>(newCollection);
+        adds.removeAll(oldCollection);
+        result.setAdds(adds);
+    }
+
+    private void diffWithComparator(final Collection<E> oldCollection, final Collection<E> newCollection, CollectionDiffResult<E> result) {
+        final List<E> adds = new ArrayList<E>();
+        final List<E> removes = new ArrayList<E>();
+        final List<E> equals = new ArrayList<E>();
+        Collects.forEach(newCollection, new Consumer<E>() {
+            @Override
+            public void accept(final E newValue) {
+                if (Collects.anyMatch(oldCollection, new Predicate<E>() {
+                    @Override
+                    public boolean test(E oldValue) {
+                        return comparator.compare(oldValue, newValue) == 0;
+                    }
+                })) {
+                    equals.add(newValue);
+                } else {
+                    adds.add(newValue);
+                }
+            }
+        });
+
+        Collects.forEach(oldCollection, new Consumer<E>() {
+            @Override
+            public void accept(final E oldValue) {
+                if (Collects.noneMatch(newCollection, new Predicate<E>() {
+                    @Override
+                    public boolean test(E newValue) {
+                        return comparator.compare(oldValue, newValue) == 0;
+                    }
+                })) {
+                    removes.add(oldValue);
+                }
+            }
+        });
+
+        result.setAdds(adds);
+        result.setRemoves(removes);
+        result.setEquals(equals);
+    }
+}
