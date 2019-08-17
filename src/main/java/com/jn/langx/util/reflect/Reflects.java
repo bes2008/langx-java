@@ -133,9 +133,17 @@ public class Reflects {
         return field;
     }
 
+    public static List<Field> getAllDeclaredFields(Class clazz) {
+        return getAllDeclaredFields(clazz, false);
+    }
+
     public static List<Field> getAllDeclaredFields(Class clazz, boolean containsStatic) {
         Field[] fields = clazz.getDeclaredFields();
         return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
+    }
+
+    public static List<Field> getAllPublicInstanceFields(Class clazz) {
+        return getAllPublicFields(clazz, false);
     }
 
     public static List<Field> getAllPublicFields(Class clazz, boolean containsStatic) {
@@ -151,7 +159,7 @@ public class Reflects {
                 return Collects.noneMatch(excludedModifierList, new Predicate<Integer>() {
                     @Override
                     public boolean test(Integer modifier) {
-                        return Modifiers.contains(field, modifier);
+                        return Modifiers.hasModifier(field, modifier);
                     }
                 });
             }
