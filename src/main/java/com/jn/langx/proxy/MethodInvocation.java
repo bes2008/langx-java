@@ -2,13 +2,13 @@ package com.jn.langx.proxy;
 
 import java.lang.reflect.Method;
 
-public class MethodInvoke {
+public class MethodInvocation {
     protected Method method;
     protected Object target;
     protected Object[] arguments;
     protected Object proxy;
 
-    public MethodInvoke(Object proxy, Object target, Method method, Object[] arguments) {
+    public MethodInvocation(Object proxy, Object target, Method method, Object[] arguments) {
         this.arguments = arguments;
         this.proxy = proxy;
         this.target = target;
