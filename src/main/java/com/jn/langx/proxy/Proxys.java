@@ -1,6 +1,4 @@
-package com.jn.langx.util.reflect;
-
-import com.jn.langx.proxy.SimpleInvocationHandler;
+package com.jn.langx.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -23,10 +21,13 @@ public class Proxys {
     }
 
     public static Object newProxyInstance(InvocationHandler invocationHandler, Class<?>[] interfaces) {
-        return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), interfaces, invocationHandler);
+        return newProxyInstance(null, invocationHandler, interfaces);
     }
 
     public static Object newProxyInstance(ClassLoader loader, InvocationHandler invocationHandler, Class<?>[] interfaces) {
+        if (loader == null) {
+            loader = Thread.currentThread().getContextClassLoader();
+        }
         return Proxy.newProxyInstance(loader, interfaces, invocationHandler);
     }
 
@@ -41,8 +42,7 @@ public class Proxys {
 
     public static Object newSimpleProxy(Class clazz) {
         try {
-            Object target = clazz.newInstance();
-            InvocationHandler invocationHandler = new SimpleInvocationHandler(target);
+            InvocationHandler invocationHandler = new SimpleInvocationHandler();
             return newProxyInstance(clazz.getClassLoader(), invocationHandler, clazz.getInterfaces());
         } catch (Throwable ex) {
             return new RuntimeException(ex);

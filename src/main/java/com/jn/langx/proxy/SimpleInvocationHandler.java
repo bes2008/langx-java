@@ -11,6 +11,9 @@ import java.lang.reflect.Method;
 public class SimpleInvocationHandler implements InvocationHandler {
     protected Object target;
 
+    public SimpleInvocationHandler() {
+    }
+
     public SimpleInvocationHandler(Object target) {
         setTarget(target);
     }
