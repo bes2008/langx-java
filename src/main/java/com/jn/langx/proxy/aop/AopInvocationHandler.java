@@ -7,14 +7,17 @@ import java.util.List;
 
 public class AopInvocationHandler extends SimpleInvocationHandler {
     private MethodInterceptorChainProvider interceptorChainProvider;
-    public AopInvocationHandler(Object target, MethodInterceptorChainProvider interceptorChainProvider){
+
+    public AopInvocationHandler(Object target, MethodInterceptorChainProvider interceptorChainProvider) {
         super(target);
         this.interceptorChainProvider = interceptorChainProvider;
     }
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         DefaultMethodInvocation methodInvocation = new DefaultMethodInvocation(proxy, target, method, args);
         List<MethodInterceptor> interceptorChain = interceptorChainProvider.get(methodInvocation);
-        return null;
+        methodInvocation.setInterceptors(interceptorChain);
+        return methodInvocation.proceed();
     }
 }

@@ -1,27 +1,28 @@
-package com.jn.langx.proxy.delegate;
+package com.jn.langx.proxy.targetdelegate;
 
 import com.jn.langx.proxy.MethodInvocation;
 import com.jn.langx.proxy.SimpleInvocationHandler;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
+/**
+ * Use it, the delegate will be the target
+ */
 public class DelegateInvocationHandler extends SimpleInvocationHandler {
-    private final DelegateProvider delegateProvider;
+    private final TargetDelegateProvider delegateProvider;
 
-    public DelegateInvocationHandler(Object target, DelegateProvider delegateProvider) {
+    public DelegateInvocationHandler(Object target, TargetDelegateProvider delegateProvider) {
         super(target);
         this.delegateProvider = delegateProvider;
     }
 
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    @Override
+    protected Object execute(MethodInvocation methodInvocation) throws Throwable {
         try {
-            MethodInvocation methodInvocation = new MethodInvocation(proxy, null, method, args);
             Object delegate = this.delegateProvider.get(methodInvocation);
             Object obj = delegate == null ? target : delegate;
-            return method.invoke(obj, args);
+            return methodInvocation.getMethod().invoke(obj, methodInvocation.getArguments());
         } catch (InvocationTargetException e) {
-
             throw e.getTargetException();
         }
     }
