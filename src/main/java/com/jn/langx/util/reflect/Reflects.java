@@ -480,7 +480,33 @@ public class Reflects {
         }
     }
 
-    public static Method getPublicMethod(Class clazz, String methodName, Class[] parameterTypes) {
+    public static Constructor getConstructor(Class clazz, Class... parameterTypes) {
+        try {
+            return clazz.getDeclaredConstructor(parameterTypes);
+        } catch (NoSuchMethodException ex) {
+            return null;
+        }
+    }
+
+    public static <E> E newInstance(Class<E> clazz) {
+        try {
+            return (E) clazz.newInstance();
+        } catch (Throwable ex) {
+            return null;
+        }
+    }
+
+    public static <E> E newInstance(Class<E> clazz, Class[] parameterTypes, Object[] parameters) {
+        Constructor constructor = getConstructor(clazz, parameterTypes);
+
+        try {
+            return (E) constructor.newInstance(parameters);
+        } catch (Throwable ex) {
+            return null;
+        }
+    }
+
+    public static Method getPublicMethod(Class clazz, String methodName, Class... parameterTypes) {
         Method method = null;
         try {
             method = clazz.getMethod(methodName, parameterTypes);
@@ -490,7 +516,7 @@ public class Reflects {
         return method;
     }
 
-    public static Method getDeclaredMethod(Class clazz, String methodName, Class[] parameterTypes) {
+    public static Method getDeclaredMethod(Class clazz, String methodName, Class... parameterTypes) {
         Method method = null;
         try {
             method = clazz.getDeclaredMethod(methodName, parameterTypes);
@@ -500,7 +526,7 @@ public class Reflects {
         return method;
     }
 
-    public static Method getAnyMethod(Class clazz, String methodName, Class[] parameterTypes) {
+    public static Method getAnyMethod(Class clazz, String methodName, Class... parameterTypes) {
         Method method = getDeclaredMethod(clazz, methodName, parameterTypes);
         if (method == null) {
             Class parent = clazz.getSuperclass();
