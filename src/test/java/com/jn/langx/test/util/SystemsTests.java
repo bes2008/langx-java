@@ -2,20 +2,19 @@ package com.jn.langx.test.util;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Collects;
-import com.jn.langx.util.comparator.StringComparator;
 import com.jn.langx.util.function.Consumer2;
 import org.junit.Test;
 
-import java.util.Comparator;
+import java.util.Map;
 
 public class SystemsTests {
     @Test
     public void testSystemProperties() {
         System.out.println("====================System Properties===========");
-        Collects.sort(System.getProperties().keySet(),new StringComparator());
-        Collects.forEach(, new Consumer2<Object, Object>() {
+        Map<String, String> map = Collects.propertiesToStringMap(System.getProperties());
+        Collects.forEach(map, new Consumer2<String, String>() {
             @Override
-            public void accept(Object key, Object value) {
+            public void accept(String key, String value) {
                 System.out.println(StringTemplates.formatWithoutIndex("{} = {}", key, value));
             }
         });

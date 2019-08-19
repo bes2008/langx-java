@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * Collection utilities
  */
-@SuppressWarnings({"unchecked","unused"})
+@SuppressWarnings({"unchecked", "unused"})
 public class Collects {
     /**
      * Get a empty, mutable java.util.Hashtable
@@ -452,7 +452,7 @@ public class Collects {
     /**
      * mapping an iterable to a map
      */
-    public static <E, K, V> Map<K, V> map(Object anyObject, @NonNull Function<E, Pair<K, V>> mapper) {
+    public static <E, K, V> Map<K, V> map(Object anyObject, @NonNull Mapper<E, Pair<K, V>> mapper) {
         Preconditions.checkNotNull(mapper);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         Map<K, V> result = new HashMap<K, V>();
@@ -635,7 +635,7 @@ public class Collects {
     public static <E> boolean allMatch(Collection<E> collection, Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
-            for(E e : collection){
+            for (E e : collection) {
                 if (!predicate.test(e)) {
                     return false;
                 }
@@ -652,7 +652,7 @@ public class Collects {
     public static <K, V> boolean allMatch(Map<K, V> map, Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            for(Map.Entry<K, V> e: map.entrySet()){
+            for (Map.Entry<K, V> e : map.entrySet()) {
                 if (!predicate.test(e.getKey(), e.getValue())) {
                     return false;
                 }
@@ -670,7 +670,7 @@ public class Collects {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
             Iterator<E> iterator = collection.iterator();
-            for (E e: collection) {
+            for (E e : collection) {
                 if (predicate.test(e)) {
                     return false;
                 }
@@ -687,7 +687,7 @@ public class Collects {
     public static <K, V> boolean noneMatch(Map<K, V> map, Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            for(Map.Entry<K, V> e: map.entrySet()){
+            for (Map.Entry<K, V> e : map.entrySet()) {
                 if (predicate.test(e.getKey(), e.getValue())) {
                     return false;
                 }
@@ -733,7 +733,7 @@ public class Collects {
         }
     }
 
-    public static <E extends Comparable<E>> List<E> sort(Collection<E> collection, boolean reverse){
+    public static <E extends Comparable<E>> List<E> sort(Collection<E> collection, boolean reverse) {
         return sort(collection, new ComparableComparator<E>(), reverse);
     }
 
@@ -808,5 +808,20 @@ public class Collects {
         differ.setComparator(valueComparator);
         differ.setKeyComparator(keyComparator);
         return differ.diff(oldMap, newMap);
+    }
+
+    public static Map<String, String> propertiesToStringMap(Properties properties) {
+        return propertiesToStringMap(properties, false);
+    }
+
+    public static Map<String, String> propertiesToStringMap(Properties properties, boolean sort) {
+        final Map<String, String> map = sort ? new TreeMap<String, String>(Comparators.STRING_COMPARATOR_IGNORE_CASE) : new StringMap();
+        Collects.forEach(properties, new Consumer2<Object, Object>() {
+            @Override
+            public void accept(Object key, Object value) {
+                map.put(key.toString(), value.toString());
+            }
+        });
+        return map;
     }
 }

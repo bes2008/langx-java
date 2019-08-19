@@ -4,7 +4,7 @@ import com.jn.langx.util.Collects;
 import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Differ;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Pair;
 
@@ -42,14 +42,14 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, E> {
         }
 
         if (isDiffUsingMapDiffer()) {
-            Map<String, E> oldMap = Collects.map(oldCollection, new Function<E, Pair<String, E>>() {
+            Map<String, E> oldMap = Collects.map(oldCollection, new Mapper<E, Pair<String, E>>() {
                 @Override
                 public Pair<String, E> apply(E element) {
                     return new com.jn.langx.util.struct.Entry(keyBuilder.getKey(element), element);
                 }
             });
 
-            Map<String, E> newMap = Collects.map(newCollection, new Function<E, Pair<String, E>>() {
+            Map<String, E> newMap = Collects.map(newCollection, new Mapper<E, Pair<String, E>>() {
                 @Override
                 public Pair<String, E> apply(E element) {
                     return new com.jn.langx.util.struct.Entry(keyBuilder.getKey(element), element);
