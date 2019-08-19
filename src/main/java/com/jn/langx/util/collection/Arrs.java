@@ -1,5 +1,7 @@
-package com.jn.langx.util;
+package com.jn.langx.util.collection;
 
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.type.Primitives;
 

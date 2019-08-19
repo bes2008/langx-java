@@ -1,5 +1,7 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.collection.Arrs;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;

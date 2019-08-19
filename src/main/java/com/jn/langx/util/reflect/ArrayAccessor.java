@@ -1,6 +1,6 @@
 package com.jn.langx.util.reflect;
 
-import com.jn.langx.util.Arrs;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.Preconditions;
 
