@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.BasedStringAccessor;
 
 /**
@@ -12,7 +13,7 @@ public class StringMapAccessor extends BasedStringAccessor<String, StringMap> {
     public StringMapAccessor() {
     }
 
-    public StringMapAccessor(StringMap target) {
+    public StringMapAccessor(@NonNull StringMap target) {
         this();
         setTarget(target);
     }

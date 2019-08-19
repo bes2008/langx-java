@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection.diff;
 
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Differ;
@@ -10,21 +11,25 @@ import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
 
+/**
+ * @param <E>
+ * @author jinuo.fang
+ */
 public class CollectionDiffer<E> implements Differ<Collection<E>, E> {
     private Comparator<E> comparator;
     private KeyBuilder<String, E> keyBuilder;
 
-    public void diffUsingMap(KeyBuilder<String, E> keyBuilder) {
+    public void diffUsingMap(@Nullable KeyBuilder<String, E> keyBuilder) {
         this.keyBuilder = keyBuilder;
     }
 
     @Override
-    public void setComparator(Comparator<E> comparator) {
+    public void setComparator(@Nullable Comparator<E> comparator) {
         this.comparator = comparator;
     }
 
     @Override
-    public DiffResult<Collection<E>> diff(Collection<E> oldCollection, Collection<E> newCollection) {
+    public DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
         CollectionDiffResult<E> result = new CollectionDiffResult<E>();
 
         if (oldCollection == null && newCollection == null) {

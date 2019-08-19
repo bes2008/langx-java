@@ -1,5 +1,6 @@
 package com.jn.langx.util.reflect;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.BasedStringAccessor;
 
 /**
@@ -9,7 +10,7 @@ import com.jn.langx.util.BasedStringAccessor;
  */
 public class FieldAccessor extends BasedStringAccessor<String, Object> {
 
-    public FieldAccessor(Object target) {
+    public FieldAccessor(@NonNull Object target) {
         setTarget(target);
     }
 

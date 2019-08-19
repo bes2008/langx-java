@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.Accessor;
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.exception.IllegalValueException;
 import com.jn.langx.text.StringTemplates;
 
@@ -8,7 +9,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     private T t;
 
     @Override
-    public void setTarget(T target) {
+    public void setTarget(@NonNull T target) {
         Preconditions.checkNotNull(target);
         this.t = target;
     }

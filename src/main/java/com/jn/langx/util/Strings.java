@@ -24,6 +24,8 @@
 
 package com.jn.langx.util;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
@@ -73,7 +75,7 @@ public class Strings {
      * @param length new string's length
      * @return the new string
      */
-    public static String truncate(final String string, final int length) {
+    public static String truncate(@NonNull final String string, final int length) {
         Preconditions.checkTrue(length >= 0);
         if (string.length() <= length) {
             return string;
@@ -88,7 +90,10 @@ public class Strings {
      * @param objects   the dbjects that will be append
      * @return the new string
      */
-    public static String join(final String separator, final Iterator objects) {
+    public static String join(@NonNull final String separator, @Nullable final Iterator objects) {
+        if (Emptys.isNull(objects)) {
+            return "";
+        }
         final StringBuilder buf = new StringBuilder();
         if (objects.hasNext()) {
             buf.append(objects.next());
@@ -99,7 +104,10 @@ public class Strings {
         return buf.toString();
     }
 
-    public static String join(final String separator, final Iterable objects) {
+    public static String join(@NonNull final String separator, @Nullable final Iterable objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
         return join(separator, objects.iterator());
     }
 
@@ -107,7 +115,7 @@ public class Strings {
      * split a string, the returned array is not contains: whitespace, null.
      * every element in string[] has the trim() invoked
      */
-    public static String[] split(String string, String separator) {
+    public static String[] split(@Nullable String string, @Nullable String separator) {
         if (Emptys.isEmpty(string) || Emptys.isEmpty(separator)) {
             return new String[0];
         }

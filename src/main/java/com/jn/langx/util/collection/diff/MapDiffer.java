@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection.diff;
 
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Differ;
@@ -7,21 +8,28 @@ import com.jn.langx.util.function.Consumer;
 
 import java.util.*;
 
+/**
+ * @param <K>
+ * @param <V>
+ * @author jinuo.fang
+ */
 public class MapDiffer<K, V> implements Differ<Map<K, V>, V> {
+    @Nullable
     private Comparator<K> keyComparator;
+    @Nullable
     private Comparator<V> valueComparator;
 
     @Override
-    public void setComparator(Comparator<V> comparator) {
+    public void setComparator(@Nullable Comparator<V> comparator) {
         this.valueComparator = comparator;
     }
 
-    public void setKeyComparator(Comparator<K> comparator) {
+    public void setKeyComparator(@Nullable Comparator<K> comparator) {
         this.keyComparator = comparator;
     }
 
     @Override
-    public DiffResult<Map<K, V>> diff(final Map<K, V> oldMap, final Map<K, V> newMap) {
+    public DiffResult<Map<K, V>> diff(@Nullable final Map<K, V> oldMap, @Nullable final Map<K, V> newMap) {
         MapDiffResult<K, V> result = new MapDiffResult<K, V>();
 
         if (oldMap == null && newMap == null) {
@@ -70,10 +78,18 @@ public class MapDiffer<K, V> implements Differ<Map<K, V>, V> {
             public void accept(K key) {
                 V oldValue = oldMap.get(key);
                 V newValue = newMap.get(key);
-                if (valueComparator.compare(oldValue, newValue) == 0) {
-                    equalsMap.put(key, newValue);
+                if (valueComparator == null) {
+                    if (oldValue.equals(newValue)) {
+                        equalsMap.put(key, newValue);
+                    } else {
+                        updatesMap.put(key, newValue);
+                    }
                 } else {
-                    updatesMap.put(key, newValue);
+                    if (valueComparator.compare(oldValue, newValue) == 0) {
+                        equalsMap.put(key, newValue);
+                    } else {
+                        updatesMap.put(key, newValue);
+                    }
                 }
             }
         });

@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection.iter;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
 import java.util.Iterator;
@@ -8,7 +9,7 @@ public class WrappedIterator<E> implements Iterator<E> {
     private Iterator<E> delegate;
     private boolean mutable;
 
-    public WrappedIterator(Iterator<E> delegate, boolean mutable) {
+    public WrappedIterator(@NonNull Iterator<E> delegate, boolean mutable) {
         Preconditions.checkNotNull(delegate);
         this.delegate = delegate;
         this.mutable = mutable;

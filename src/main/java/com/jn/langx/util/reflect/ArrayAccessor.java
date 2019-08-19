@@ -1,5 +1,6 @@
 package com.jn.langx.util.reflect;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.Preconditions;
@@ -22,7 +23,7 @@ public class ArrayAccessor<E> extends BasedStringAccessor<Integer, E> {
     }
 
     @Override
-    public void setTarget(E target) {
+    public void setTarget(@NonNull E target) {
         Preconditions.checkNotNull(target);
         Preconditions.checkArgument(Arrs.isArray(target));
         super.setTarget(target);

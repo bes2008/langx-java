@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.BasedStringAccessor;
 
 import java.util.Properties;
@@ -12,7 +13,7 @@ public class PropertiesAccessor extends BasedStringAccessor<String, Properties> 
     public PropertiesAccessor() {
     }
 
-    public PropertiesAccessor(Properties properties) {
+    public PropertiesAccessor(@NonNull Properties properties) {
         setTarget(properties);
     }
 

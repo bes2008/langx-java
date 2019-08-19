@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection.iter;
 
+import com.jn.langx.annotation.NonNull;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 
@@ -10,7 +12,7 @@ import java.util.Iterator;
 public class EnumerationIterator<E> implements Iterator<E> {
     Enumeration<E> enumeration;
 
-    public EnumerationIterator(Enumeration<E> enumeration){
+    public EnumerationIterator(@NonNull Enumeration<E> enumeration){
         this.enumeration = enumeration;
     }
 

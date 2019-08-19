@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection.iter;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
 import java.util.Iterator;
@@ -12,11 +13,11 @@ import java.util.Iterator;
 public class IteratorIterable<E> implements Iterable<E> {
     private Iterator<E> iterator;
 
-    public IteratorIterable(Iterator<E> iterator) {
+    public IteratorIterable(@NonNull Iterator<E> iterator) {
         this(iterator, true);
     }
 
-    public IteratorIterable(Iterator<E> iterator, boolean removable) {
+    public IteratorIterable(@NonNull Iterator<E> iterator, boolean removable) {
         Preconditions.checkNotNull(iterator);
         if (removable) {
             this.iterator = iterator;

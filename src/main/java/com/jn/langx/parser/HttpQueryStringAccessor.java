@@ -1,5 +1,6 @@
 package com.jn.langx.parser;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.StringMapAccessor;
@@ -13,7 +14,7 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
     public HttpQueryStringAccessor() {
     }
 
-    public HttpQueryStringAccessor(String url) {
+    public HttpQueryStringAccessor(@NonNull String url) {
         this();
         setTarget(url);
     }

@@ -1,10 +1,16 @@
 package com.jn.langx.util.collection.diff;
 
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.DiffResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * @param <E>
+ * @author jinuo.fang
+ */
 public class CollectionDiffResult<E> implements DiffResult<Collection<E>> {
 
     private Collection<E> adds = new ArrayList<E>();
@@ -17,7 +23,8 @@ public class CollectionDiffResult<E> implements DiffResult<Collection<E>> {
         return adds;
     }
 
-    public void setAdds(Collection<E> adds) {
+    public void setAdds(@Nullable Collection<E> adds) {
+        Preconditions.checkNotNull(adds);
         this.adds = adds;
     }
 
@@ -26,7 +33,8 @@ public class CollectionDiffResult<E> implements DiffResult<Collection<E>> {
         return removes;
     }
 
-    public void setRemoves(Collection<E> removes) {
+    public void setRemoves(@Nullable Collection<E> removes) {
+        Preconditions.checkNotNull(removes);
         this.removes = removes;
     }
 
@@ -35,7 +43,8 @@ public class CollectionDiffResult<E> implements DiffResult<Collection<E>> {
         return updates;
     }
 
-    public void setUpdates(Collection<E> updates) {
+    public void setUpdates(@Nullable Collection<E> updates) {
+        Preconditions.checkNotNull(updates);
         this.updates = updates;
     }
 
@@ -44,7 +53,8 @@ public class CollectionDiffResult<E> implements DiffResult<Collection<E>> {
         return equals;
     }
 
-    public void setEquals(Collection<E> equals) {
+    public void setEquals(@Nullable Collection<E> equals) {
+        Preconditions.checkNotNull(equals);
         this.equals = equals;
     }
 

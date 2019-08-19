@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier;
@@ -28,7 +30,7 @@ public class Arrs {
     /**
      * judge whether an object is an Array
      */
-    public static boolean isArray(Object o) {
+    public static boolean isArray(@Nullable Object o) {
         return Emptys.isNull(o) ? false : o.getClass().isArray();
     }
 
@@ -36,7 +38,7 @@ public class Arrs {
     /**
      * Wrap any object using new Object[]{object};
      */
-    public static <E> E[] wrapAsArray(E o) {
+    public static <E> E[] wrapAsArray(@Nullable E o) {
         if (Emptys.isNull(o)) {
             return (E[]) new Object[0];
         }
@@ -48,7 +50,8 @@ public class Arrs {
     /**
      * Create an array with the specified length
      */
-    public static <E extends Object> E[] createArray(Class<E> componentType, int length) {
+    public static <E extends Object> E[] createArray(@Nullable Class<E> componentType, int length) {
+        Preconditions.checkArgument(length >= 0);
         if (componentType == null) {
             return (E[]) Array.newInstance(Object.class, length);
         }
@@ -61,7 +64,7 @@ public class Arrs {
     /**
      * Create an array with the specified length and every element's value is the specified initValue
      */
-    public static <E extends Object> E[] createArray(Class<E> componentType, int length, final E initValue) {
+    public static <E extends Object> E[] createArray(@Nullable Class<E> componentType, int length, @Nullable final E initValue) {
         E[] array = createArray(componentType, length);
         initArray(array, initValue);
         return array;
@@ -71,13 +74,13 @@ public class Arrs {
     /**
      * Create an array with the specified length and every element's value is supplied by the specified initSupplier
      */
-    public static <E extends Object> E[] createArray(Class<E> componentType, int length, Supplier<Integer, E> initSupplier) {
+    public static <E extends Object> E[] createArray(@Nullable Class<E> componentType, int length, @NonNull Supplier<Integer, E> initSupplier) {
         E[] array = createArray(componentType, length);
         initArray(array, initSupplier);
         return array;
     }
 
-    public static <E> void initArray(E[] array, final E initValue) {
+    public static <E> void initArray(@NonNull E[] array, @Nullable final E initValue) {
         Preconditions.checkNotNull(array);
         initArray(array, new Supplier<Integer, E>() {
             @Override
@@ -87,7 +90,7 @@ public class Arrs {
         });
     }
 
-    public static <E> void initArray(E[] array, Supplier<Integer, E> initSupplier) {
+    public static <E> void initArray(@NonNull E[] array, @NonNull Supplier<Integer, E> initSupplier) {
         Preconditions.checkNotNull(initSupplier);
         for (int i = 0; i < array.length; i++) {
             array[i] = initSupplier.get(i);

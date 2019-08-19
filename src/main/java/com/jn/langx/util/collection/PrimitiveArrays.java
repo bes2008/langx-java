@@ -1,16 +1,19 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.Nullable;
+
 /**
  * Primitive array wrapper
  */
 public class PrimitiveArrays {
     /**
      * convert a boolean[] to a Boolean[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Boolean[] wrap(boolean[] values, boolean resultNullable) {
+    public static Boolean[] wrap(@Nullable boolean[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Boolean[0];
         }
@@ -23,11 +26,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Boolean[] to a boolean[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static boolean[] unwrap(Boolean[] values, boolean resultNullable) {
+    public static boolean[] unwrap(@Nullable Boolean[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new boolean[0];
         }
@@ -40,11 +44,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a char[] to a Character[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Character[] wrap(char[] values, boolean resultNullable) {
+    public static Character[] wrap(@Nullable char[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Character[0];
         }
@@ -57,11 +62,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Character[] to a char[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static char[] unwrap(Character[] values, boolean resultNullable) {
+    public static char[] unwrap(@Nullable Character[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new char[0];
         }
@@ -74,11 +80,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a byte[] to a Byte[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Byte[] wrap(byte[] values, boolean resultNullable) {
+    public static Byte[] wrap(@Nullable byte[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Byte[0];
         }
@@ -91,11 +98,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Byte[] to a byte[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static byte[] unwrap(Byte[] values, boolean resultNullable) {
+    public static byte[] unwrap(@Nullable Byte[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new byte[0];
         }
@@ -108,11 +116,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a short[] to a Short[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Short[] wrap(short[] values, boolean resultNullable) {
+    public static Short[] wrap(@Nullable short[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Short[0];
         }
@@ -125,11 +134,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Short[] to a short[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static short[] unwrap(Short[] values, boolean resultNullable) {
+    public static short[] unwrap(@Nullable Short[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new short[0];
         }
@@ -142,11 +152,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a int[] to a Integer[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Integer[] wrap(int[] values, boolean resultNullable) {
+    public static Integer[] wrap(@Nullable int[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Integer[0];
         }
@@ -159,11 +170,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Integer[] to a int[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static int[] unwrap(Integer[] values, boolean resultNullable) {
+    public static int[] unwrap(@Nullable Integer[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new int[0];
         }
@@ -176,11 +188,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a float[] to a Float[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Float[] wrap(float[] values, boolean resultNullable) {
+    public static Float[] wrap(@Nullable float[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Float[0];
         }
@@ -193,11 +206,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Float[] to a float[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static float[] unwrap(Float[] values, boolean resultNullable) {
+    public static float[] unwrap(@Nullable Float[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new float[0];
         }
@@ -210,11 +224,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a long[] to a Long[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Long[] wrap(long[] values, boolean resultNullable) {
+    public static Long[] wrap(@Nullable long[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Long[0];
         }
@@ -227,11 +242,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Long[] to a long[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static long[] unwrap(Long[] values, boolean resultNullable) {
+    public static long[] unwrap(@Nullable Long[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new long[0];
         }
@@ -244,11 +260,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a double[] to a Double[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Double[] wrap(double[] values, boolean resultNullable) {
+    public static Double[] wrap(@Nullable double[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Double[0];
         }
@@ -261,11 +278,12 @@ public class PrimitiveArrays {
 
     /**
      * convert a Double[] to a double[]
-     * @param values source
+     *
+     * @param values         source
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static double[] unwrap(Double[] values, boolean resultNullable) {
+    public static double[] unwrap(@Nullable Double[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new double[0];
         }
