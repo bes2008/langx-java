@@ -420,30 +420,36 @@ public class Collects {
     /**
      * Filter any object with the specified predicate
      */
-    public static <E> List<E> filter(@Nullable Object anyObject, @NonNull Predicate<E> predicate) {
+    public static <E> List<E> filter(@Nullable Object anyObject, @NonNull final Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
-        List<E> result = new ArrayList<E>();
-        for (E e : iterable) {
-            if (predicate.test(e)) {
-                result.add(e);
+        final List<E> result = emptyArrayList();
+        forEach(iterable, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                if (predicate.test(e)) {
+                    result.add(e);
+                }
             }
-        }
+        });
         return result;
     }
 
     /**
      * Filter a map with the specified predicate
      */
-    public static <K, V> Map<K, V> filter(@Nullable Map<K, V> map, @NonNull Predicate2<K, V> predicate) {
+    public static <K, V> Map<K, V> filter(@Nullable Map<K, V> map, @NonNull final Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
-        Map<K, V> result = getEmptyMapIfNull(null, MapType.ofMap(map));
+        final Map<K, V> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
-            for (Map.Entry<K, V> entry : map.entrySet()) {
-                if (predicate.test(entry.getKey(), entry.getValue())) {
-                    result.put(entry.getKey(), entry.getValue());
+            forEach(map, new Consumer2<K, V>() {
+                @Override
+                public void accept(K key, V value) {
+                    if (predicate.test(key, value)) {
+                        result.put(key, value);
+                    }
                 }
-            }
+            });
         }
         return result;
     }
@@ -451,13 +457,16 @@ public class Collects {
     /**
      * mapping an iterable to a list
      */
-    public static <E, R> List<R> map(@Nullable Object anyObject, @NonNull Function<E, R> mapper) {
+    public static <E, R> List<R> map(@Nullable Object anyObject, @NonNull final Function<E, R> mapper) {
         Preconditions.checkNotNull(mapper);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
-        List<R> result = new ArrayList<R>();
-        for (E e : iterable) {
-            result.add(mapper.apply(e));
-        }
+        final List<R> result = emptyArrayList();
+        forEach(iterable, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                result.add(mapper.apply(e));
+            }
+        });
         return result;
     }
 
@@ -465,42 +474,68 @@ public class Collects {
     /**
      * mapping an iterable to a map
      */
-    public static <E, K, V> Map<K, V> map(@Nullable Object anyObject, @NonNull Mapper<E, Pair<K, V>> mapper) {
+    public static <E, K, V> Map<K, V> map(@Nullable Object anyObject, @NonNull final Mapper<E, Pair<K, V>> mapper) {
         Preconditions.checkNotNull(mapper);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
-        Map<K, V> result = new HashMap<K, V>();
-        for (E e : iterable) {
-            Pair<K, V> pair = mapper.apply(e);
-            result.put(pair.getKey(), pair.getValue());
-        }
+        final Map<K, V> result = emptyHashMap();
+        forEach(iterable, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                Pair<K, V> pair = mapper.apply(e);
+                result.put(pair.getKey(), pair.getValue());
+            }
+        });
         return result;
     }
 
     /**
      * mapping aMap to a list
      */
-    public static <K, V, R> List<R> map(@Nullable Map<K, V> map, @NonNull Function<Map.Entry<K, V>, R> mapper) {
+    public static <K, V, R> List<R> map(@Nullable Map<K, V> map, @NonNull final Function2<K, V, R> mapper) {
         Preconditions.checkNotNull(mapper);
-        List<R> result = new ArrayList<R>();
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            result.add(mapper.apply(entry));
-        }
+        final List<R> result = emptyArrayList();
+        forEach(map, new Consumer2<K, V>() {
+            @Override
+            public void accept(K key, V value) {
+                result.add(mapper.apply(key, value));
+            }
+        });
         return result;
     }
 
     /**
      * mapping aMap to bMap
      */
-    public static <K, V, K1, V1> Map<K1, V1> map(@Nullable Map<K, V> map, @NonNull Function2<K, V, Pair<K1, V1>> mapper) {
+    public static <K, V, K1, V1> Map<K1, V1> map(@Nullable Map<K, V> map, @NonNull final Mapper2<K, V, Pair<K1, V1>> mapper) {
         Preconditions.checkNotNull(mapper);
-        Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
+        final Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
-            for (Map.Entry<K, V> entry : map.entrySet()) {
-                Pair<K1, V1> e = mapper.apply(entry.getKey(), entry.getValue());
-                result.put(e.getKey(), e.getValue());
-            }
+            forEach(map.entrySet(), new Consumer<Map.Entry<K, V>>() {
+                @Override
+                public void accept(Map.Entry<K, V> entry) {
+                    Pair<K1, V1> e = mapper.apply(entry.getKey(), entry.getValue());
+                    result.put(e.getKey(), e.getValue());
+                }
+            });
         }
         return result;
+    }
+
+    public <E, R0, R> List<R> flatMap(Object anyObject, Function<E, R0> mapper) {
+        List<R0> mapped = map(anyObject, mapper);
+        final List<R> list = emptyArrayList();
+        forEach(mapped, new Consumer<R0>() {
+            @Override
+            public void accept(R0 r) {
+                forEach(r, new Consumer<R>() {
+                    @Override
+                    public void accept(R o) {
+                        list.add(o);
+                    }
+                });
+            }
+        });
+        return list;
     }
 
     /**
@@ -574,16 +609,22 @@ public class Collects {
      * @throws UnsupportedOperationException, NullPointException
      */
     public static <E> boolean removeIf(@Nullable Collection<E> collection, @NonNull Predicate<E> predicate) {
-        Preconditions.checkNotNull(predicate);
         boolean hasRemoved = false;
         if (Emptys.isNotEmpty(collection)) {
-            Iterator<E> iterator = collection.iterator();
-            while (iterator.hasNext()) {
-                E e = iterator.next();
-                if (predicate.test(e)) {
-                    iterator.remove();
-                    hasRemoved = true;
-                }
+            hasRemoved = removeIf(collection.iterator(), predicate);
+        }
+        return hasRemoved;
+    }
+
+    public static <E> boolean removeIf(@Nullable Iterator<E> iterator, @NonNull Predicate<E> predicate) {
+        Preconditions.checkNotNull(iterator);
+        Preconditions.checkNotNull(predicate);
+        boolean hasRemoved = false;
+        while (iterator.hasNext()) {
+            E e = iterator.next();
+            if (predicate.test(e)) {
+                iterator.remove();
+                hasRemoved = true;
             }
         }
         return hasRemoved;
