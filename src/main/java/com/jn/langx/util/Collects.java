@@ -10,6 +10,7 @@ import com.jn.langx.util.collection.diff.MapDiffer;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
+import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.struct.Pair;
@@ -730,6 +731,10 @@ public class Collects {
             }
             return c1;
         }
+    }
+
+    public static <E extends Comparable<E>> List<E> sort(Collection<E> collection, boolean reverse){
+        return sort(collection, new ComparableComparator<E>(), reverse);
     }
 
     /**
