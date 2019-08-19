@@ -521,6 +521,9 @@ public class Collects {
         return result;
     }
 
+    /**
+     * map a collection to another, flat it
+     */
     public <E, R0, R> List<R> flatMap(@Nullable Object anyObject, @NonNull Function<E, R0> mapper) {
         List<R0> mapped = map(anyObject, mapper);
         final List<R> list = emptyArrayList();
