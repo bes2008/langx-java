@@ -44,6 +44,19 @@ public class Collects {
         return new TreeMap<K, V>();
     }
 
+    /**
+     * Get a empty, mutable java.util.TreeMap
+     *
+     * @param <K> Key
+     * @param <V> Value
+     * @return An empty, mutable java.util.TreeMap
+     */
+    public static <K, V> Map<K, V> emptyTreeMap(Comparator<K> comparator) {
+        if (comparator == null) {
+            return emptyTreeMap();
+        }
+        return new TreeMap<K, V>(comparator);
+    }
 
     /**
      * Get a empty, mutable java.util.HashMap
@@ -757,6 +770,13 @@ public class Collects {
         }
     }
 
+    public static <K, V> Map<K, V> sort(Map<K, V> map, Comparator<K> comparator) {
+        Preconditions.checkNotNull(comparator);
+        Map<K, V> result = emptyTreeMap(comparator);
+        result.putAll(map);
+        return result;
+    }
+
     /**
      * Reverse a list, return an new list when the argument 'newOne' is true
      */
@@ -815,7 +835,11 @@ public class Collects {
     }
 
     public static Map<String, String> propertiesToStringMap(Properties properties, boolean sort) {
-        final Map<String, String> map = sort ? new TreeMap<String, String>(Comparators.STRING_COMPARATOR_IGNORE_CASE) : new StringMap();
+        return propertiesToStringMap(properties, Comparators.STRING_COMPARATOR_IGNORE_CASE);
+    }
+
+    public static Map<String, String> propertiesToStringMap(Properties properties, Comparator<String> keyComparator) {
+        final Map<String, String> map = keyComparator != null ? new TreeMap<String, String>(keyComparator) : new StringMap();
         Collects.forEach(properties, new Consumer2<Object, Object>() {
             @Override
             public void accept(Object key, Object value) {
