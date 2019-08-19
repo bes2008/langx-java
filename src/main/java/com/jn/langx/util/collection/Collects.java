@@ -1,9 +1,10 @@
-package com.jn.langx.util;
+package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.util.collection.DiffResult;
-import com.jn.langx.util.collection.StringMap;
+import com.jn.langx.util.Arrs;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.CollectionDiffer;
 import com.jn.langx.util.collection.diff.KeyBuilder;
 import com.jn.langx.util.collection.diff.MapDiffer;

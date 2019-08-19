@@ -1,7 +1,7 @@
 package com.jn.langx.util.reflect;
 
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Collects;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 

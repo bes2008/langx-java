@@ -1,5 +1,6 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 
 import java.util.HashSet;

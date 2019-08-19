@@ -1,7 +1,7 @@
 package com.jn.langx.test.util;
 
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Collects;
+import com.jn.langx.util.collection.Collects;
 import org.junit.Assert;
 import org.junit.Test;
 

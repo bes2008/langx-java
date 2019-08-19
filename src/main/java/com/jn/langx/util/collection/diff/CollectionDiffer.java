@@ -1,6 +1,6 @@
 package com.jn.langx.util.collection.diff;
 
-import com.jn.langx.util.Collects;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Differ;
 import com.jn.langx.util.function.Consumer;

@@ -24,6 +24,7 @@
 
 package com.jn.langx.util;
 
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 
@@ -96,6 +97,10 @@ public class Strings {
             buf.append(separator).append(objects.next());
         }
         return buf.toString();
+    }
+
+    public static String join(final String separator, final Iterable objects) {
+        return join(separator, objects.iterator());
     }
 
     /**

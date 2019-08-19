@@ -1,8 +1,10 @@
 package com.jn.langx.test.util;
 
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Collects;
-import com.jn.langx.util.Comparators;
+import com.jn.langx.util.Strings;
+import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Comparators;
 import com.jn.langx.util.function.Consumer2;
 import org.junit.Test;
 
@@ -31,4 +33,12 @@ public class SystemsTests {
             }
         });
     }
+
+    @Test
+    public void javaClassPathTests() {
+        System.out.println("====================Java Class Path ===========");
+        System.out.println(SystemPropertys.getJavaClassPathString());
+        System.out.println(Strings.join("\n", SystemPropertys.getJavaClassPath()));
+    }
+
 }
