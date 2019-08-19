@@ -34,19 +34,4 @@ public class Proxys {
     public static InvocationHandler getInvocationHandler(Object proxyInstance) {
         return Proxy.getInvocationHandler(proxyInstance);
     }
-
-    public static Object newSimpleProxy(Object object) {
-        InvocationHandler invocationHandler = new SimpleInvocationHandler(object);
-        return newProxyInstance(object.getClass().getClassLoader(), invocationHandler, object.getClass().getInterfaces());
-    }
-
-    public static Object newSimpleProxy(Class clazz) {
-        try {
-            InvocationHandler invocationHandler = new SimpleInvocationHandler();
-            return newProxyInstance(clazz.getClassLoader(), invocationHandler, clazz.getInterfaces());
-        } catch (Throwable ex) {
-            return new RuntimeException(ex);
-        }
-    }
-
 }
