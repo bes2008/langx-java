@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection.diff;
+package com.jn.langx.util.comparator;
 
 import java.util.Comparator;
 

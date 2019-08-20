@@ -4,6 +4,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Differ;
+import com.jn.langx.util.comparator.EqualsComparator;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
