@@ -13,6 +13,7 @@ import com.jn.langx.util.collection.iter.WrappedIterable;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
+import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
@@ -74,10 +75,10 @@ public class Collects {
      *
      * @param <K> Key
      * @param <V> Value
-     * @return An empty, mutable java.util.HashMap if is not orderable, else an empty, mutable java.util.LinkedHashMap
+     * @return An empty, mutable java.util.HashMap if is not sequential, else an empty, mutable java.util.LinkedHashMap
      */
-    public static <K, V> Map<K, V> emptyHashMap(boolean orderable) {
-        return orderable ? new LinkedHashMap<K, V>() : new HashMap<K, V>();
+    public static <K, V> Map<K, V> emptyHashMap(boolean sequential) {
+        return sequential ? new LinkedHashMap<K, V>() : new HashMap<K, V>();
     }
 
     /**
@@ -94,10 +95,10 @@ public class Collects {
      * Get a empty, mutable java.util.HashSet or java.util.LinkedHashSet
      *
      * @param <E> Element
-     * @return An empty, mutable java.util.HashSet if is not orderable, else an empty, mutable java.util.LinkedHashSet
+     * @return An empty, mutable java.util.HashSet if is not sequential, else an empty, mutable java.util.LinkedHashSet
      */
-    public static <E> HashSet<E> emptyHashSet(boolean orderable) {
-        return orderable ? new LinkedHashSet<E>() : new HashSet<E>();
+    public static <E> HashSet<E> emptyHashSet(boolean sequential) {
+        return sequential ? new LinkedHashSet<E>() : new HashSet<E>();
     }
 
 
@@ -110,6 +111,14 @@ public class Collects {
     public static <E> Set<E> emptyTreeSet() {
         return new TreeSet<E>();
     }
+
+    public static <E> Set<E> emptyTreeSet(Comparator<E> comparator) {
+        if (comparator == null) {
+            return emptyTreeSet();
+        }
+        return new TreeSet<E>(comparator);
+    }
+
 
     /**
      * Get a empty, mutable java.util.ArrayList
@@ -362,6 +371,22 @@ public class Collects {
         return toArray(list, null);
     }
 
+    public static <E> List<E> asList(Iterable<E> iterable) {
+        return asList(iterable, true);
+    }
+
+    public static <E> List<E> asList(Iterable<E> iterable, boolean mutable) {
+        Preconditions.checkNotNull(iterable);
+        if (!(iterable instanceof List)) {
+            asList(collect(iterable, Collectors.toList()), mutable);
+        }
+        List<E> list = (List<E>) iterable;
+        if (!mutable) {
+            return Collections.unmodifiableList(list);
+        }
+        return list;
+    }
+
     /**
      * Convert a list to an array
      */
@@ -524,7 +549,7 @@ public class Collects {
     /**
      * map a collection to another, flat it
      */
-    public <E, R0, R> List<R> flatMap(@Nullable Object anyObject, @NonNull Function<E, R0> mapper) {
+    public static <E, R0, R> List<R> flatMap(@Nullable Object anyObject, @NonNull Function<E, R0> mapper) {
         List<R0> mapped = map(anyObject, mapper);
         final List<R> list = emptyArrayList();
         forEach(mapped, new Consumer<R0>() {
@@ -579,27 +604,46 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <E> E findFirst(@Nullable Object anyObject, @NonNull Predicate<E> predicate) {
-        Preconditions.checkNotNull(predicate);
-        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
-        for (E e : iterable) {
-            if (predicate.test(e)) {
-                return e;
-            }
+    public static <E> E findFirst(@Nullable Object anyObject, @Nullable Predicate<E> predicate) {
+        if (Emptys.isNull(anyObject)) {
+            return null;
         }
+        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
+        if (predicate != null) {
+            for (E e : iterable) {
+                if (predicate.test(e)) {
+                    return e;
+                }
+            }
+        } else {
+            Iterator<E> iterator = iterable.iterator();
+            if (iterator.hasNext()) {
+                return iterator.next();
+            }
+            return null;
+        }
+
         return null;
     }
 
     /**
      * find the first matched element, null if not found
      */
-    public static <K, V> Map.Entry<K, V> findFirst(@Nullable Map<K, V> map, @NonNull Predicate2<K, V> predicate) {
-        Preconditions.checkNotNull(predicate);
+    public static <K, V> Map.Entry<K, V> findFirst(@Nullable Map<K, V> map, @Nullable Predicate2<K, V> predicate) {
+        if (map == null) {
+            return null;
+        }
         if (Emptys.isNotEmpty(map)) {
-            for (Map.Entry<K, V> entry : map.entrySet()) {
-                if (predicate.test(entry.getKey(), entry.getValue())) {
-                    return entry;
+            if (predicate != null) {
+                for (Map.Entry<K, V> entry : map.entrySet()) {
+                    if (predicate.test(entry.getKey(), entry.getValue())) {
+                        return entry;
+                    }
                 }
+            } else {
+                Set<Map.Entry<K, V>> set = map.entrySet();
+                List<Map.Entry<K, V>> list = new ArrayList<Map.Entry<K, V>>(set);
+                return list.get(0);
             }
         }
         return null;
@@ -758,22 +802,42 @@ public class Collects {
     }
 
     /**
-     * truncate a collection using subList(0, length)
+     * truncate a collection using subList(0, maxSize)
      */
-    public static <E> List<E> limit(@Nullable Collection<E> collection, int length) {
+    public static <E> List<E> limit(@Nullable Collection<E> collection, int maxSize) {
         if (Emptys.isEmpty(collection)) {
             return emptyLinkedList();
         }
 
-        Preconditions.checkArgument(length >= 0);
+        Preconditions.checkArgument(maxSize >= 0);
 
         List<E> list = (collection instanceof List) ? (List<E>) collection : new LinkedList<E>(collection);
-        if (list.size() <= length) {
+        if (list.size() <= maxSize) {
             return list;
         }
-        return list.subList(0, length);
+        return list.subList(0, maxSize);
     }
 
+    /**
+     * skip n elements, get a collection using subList(n, size)
+     */
+    public static <E> List<E> skip(@Nullable Collection<E> collection, int n) {
+        if (Emptys.isEmpty(collection)) {
+            return emptyLinkedList();
+        }
+
+        Preconditions.checkArgument(n >= 0);
+
+        List<E> list = (collection instanceof List) ? (List<E>) collection : new LinkedList<E>(collection);
+        if (list.size() <= n) {
+            return emptyArrayList();
+        }
+        return list.subList(n, list.size());
+    }
+
+    /**
+     * Concat two collection to one
+     */
     public static <E> Collection<E> concat(@Nullable Collection<E> c1, @Nullable Collection<E> c2, boolean newOne) {
         if (newOne) {
             List<E> l = emptyArrayList();
@@ -845,6 +909,97 @@ public class Collects {
             }
             return newList;
         }
+    }
+
+    public static <K, V> int count(Map<K, V> map) {
+        return Emptys.isEmpty(map) ? 0 : map.size();
+    }
+
+    public static <E> int count(Collection<E> collection) {
+        return Emptys.isEmpty(collection) ? 0 : collection.size();
+    }
+
+    public static int count(Object anyObject) {
+        final Holder<Integer> count = new Holder<Integer>(0);
+        forEach(anyObject, new Consumer<Object>() {
+            @Override
+            public void accept(Object object) {
+                count.set(count.get() + 1);
+            }
+        });
+        return count.get();
+    }
+
+    public static <E> E max(Object object, final Comparator<E> comparator) {
+        Iterable<E> iterable = (Iterable<E>) object;
+        int count = count(iterable);
+        if (count == 0) {
+            return null;
+        }
+        if (count == 1) {
+            return iterable.iterator().next();
+        }
+        final Holder<E> max = new Holder<E>();
+
+        forEach(iterable, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                if (max.get() == null) {
+                    max.set(e);
+                } else {
+                    int delta = comparator.compare(e, max.get());
+                    if (delta > 0) {
+                        max.set(e);
+                    }
+                }
+            }
+        });
+        return max.get();
+    }
+
+    public static <E> E min(Object object, final Comparator<E> comparator) {
+        Iterable<E> iterable = (Iterable<E>) object;
+        int count = count(iterable);
+        if (count == 0) {
+            return null;
+        }
+        if (count == 1) {
+            return iterable.iterator().next();
+        }
+        final Holder<E> min = new Holder<E>();
+
+        forEach(iterable, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                if (min.get() == null) {
+                    min.set(e);
+                } else {
+                    int delta = comparator.compare(e, min.get());
+                    if (delta < 0) {
+                        min.set(e);
+                    }
+                }
+            }
+        });
+        return min.get();
+    }
+
+    public static <E, R> R collect(Object anyObject, Collector<E, R> collector) {
+        Preconditions.checkNotNull(collector);
+        return collect(anyObject, collector.supplier(), collector.accumulator());
+    }
+
+    public static <E, R> R collect(Object anyObject, Supplier0<R> containerFactory, final Consumer2<R, E> consumer) {
+        Preconditions.checkNotNull(containerFactory);
+        Preconditions.checkNotNull(consumer);
+        final R container = containerFactory.get();
+        forEach(anyObject, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                consumer.accept(container, e);
+            }
+        });
+        return container;
     }
 
     public static <E> DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
