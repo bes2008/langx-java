@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier;
 
@@ -38,7 +39,7 @@ import java.util.Map;
 public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
     private Supplier<K, V> supplier;
 
-    public NonAbsentHashMap(Supplier<K, V> supplier) {
+    public NonAbsentHashMap(@NonNull Supplier<K, V> supplier) {
         super();
         setSupplier(supplier);
     }
@@ -47,7 +48,7 @@ public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
         this(initialCapacity, initialCapacity, supplier);
     }
 
-    public NonAbsentHashMap(int initialCapacity, float loadFactor, Supplier<K, V> supplier) {
+    public NonAbsentHashMap(int initialCapacity, float loadFactor, @NonNull Supplier<K, V> supplier) {
         super(initialCapacity, loadFactor);
         setSupplier(supplier);
     }

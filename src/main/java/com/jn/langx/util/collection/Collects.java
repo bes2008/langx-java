@@ -81,6 +81,17 @@ public class Collects {
         return sequential ? new LinkedHashMap<K, V>() : new HashMap<K, V>();
     }
 
+    public static <K,V> Map<K,V> emptyNonAbsentHashMap(@NonNull Supplier<K,V> supplier){
+        Preconditions.checkNotNull(supplier);
+        return new NonAbsentHashMap<K, V>(supplier);
+    }
+
+    public static <K,V> Map<K,V> wrapAsNonAbsentMap(Map<K,V> map, Supplier<K,V> supplier){
+        Preconditions.checkNotNull(map);
+        Preconditions.checkNotNull(supplier);
+        return new WrappedNonAbsentMap<K, V>(map, supplier);
+    }
+
     /**
      * Get a empty, mutable java.util.HashSet
      *
@@ -112,7 +123,7 @@ public class Collects {
         return new TreeSet<E>();
     }
 
-    public static <E> Set<E> emptyTreeSet(Comparator<E> comparator) {
+    public static <E> Set<E> emptyTreeSet(@Nullable Comparator<E> comparator) {
         if (comparator == null) {
             return emptyTreeSet();
         }
@@ -371,20 +382,32 @@ public class Collects {
         return toArray(list, null);
     }
 
-    public static <E> List<E> asList(Iterable<E> iterable) {
+    public static <E> List<E> asList(@Nullable Iterable<E> iterable) {
         return asList(iterable, true);
     }
 
-    public static <E> List<E> asList(Iterable<E> iterable, boolean mutable) {
-        Preconditions.checkNotNull(iterable);
+    public static <E> List<E> asList(@Nullable Iterable<E> iterable, boolean mutable) {
+        if(Emptys.isNull(iterable)){
+            return emptyArrayList();
+        }
         if (!(iterable instanceof List)) {
-            asList(collect(iterable, Collectors.toList()), mutable);
+            asList(collect(iterable, toList()), mutable);
         }
         List<E> list = (List<E>) iterable;
         if (!mutable) {
             return Collections.unmodifiableList(list);
         }
         return list;
+    }
+
+    public static <E> Collection<E> asCollection(@Nullable Iterable<E> iterable) {
+        if(Emptys.isNull(iterable)){
+            return emptyArrayList();
+        }
+        if (!(iterable instanceof Collection)) {
+            asList(collect(iterable, toList()));
+        }
+        return (Collection<E>) iterable;
     }
 
     /**
@@ -1053,5 +1076,133 @@ public class Collects {
             });
         }
         return map;
+    }
+
+    public static <E> Collector<E, Set<E>> toTreeSet(@Nullable final Comparator<E> comparator) {
+        return new Collector<E, Set<E>>() {
+            @Override
+            public Supplier0<Set<E>> supplier() {
+                return new Supplier0<Set<E>>() {
+                    @Override
+                    public Set<E> get() {
+                        return Collects.emptyTreeSet(comparator);
+                    }
+                };
+            }
+
+            @Override
+            public Consumer2<Set<E>, E> accumulator() {
+                return new Consumer2<Set<E>, E>() {
+                    @Override
+                    public void accept(Set<E> set, E value) {
+                        set.add(value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E> Collector<E, Set<E>> toHashSet(final boolean sequential) {
+        return new Collector<E, Set<E>>() {
+            @Override
+            public Supplier0<Set<E>> supplier() {
+                return new Supplier0<Set<E>>() {
+                    @Override
+                    public Set<E> get() {
+                        return Collects.emptyHashSet(sequential);
+                    }
+                };
+            }
+
+            @Override
+            public Consumer2<Set<E>, E> accumulator() {
+                return new Consumer2<Set<E>, E>() {
+                    @Override
+                    public void accept(Set<E> set, E value) {
+                        set.add(value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E> Collector<E, List<E>> toList() {
+        return new Collector<E, List<E>>() {
+            @Override
+            public Supplier0<List<E>> supplier() {
+                return new Supplier0<List<E>>() {
+                    @Override
+                    public List<E> get() {
+                        return Collects.emptyArrayList();
+                    }
+                };
+            }
+
+            @Override
+            public Consumer2<List<E>, E> accumulator() {
+                return new Consumer2<List<E>, E>() {
+                    @Override
+                    public void accept(List<E> list, E value) {
+                        list.add(value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E, K, V> Collector<E, Map<K, V>> toHashMap(@NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper, final boolean sequential) {
+        Preconditions.checkNotNull(keyMapper);
+        Preconditions.checkNotNull(valueMapper);
+        return new Collector<E, Map<K, V>>() {
+            @Override
+            public Supplier0<Map<K, V>> supplier() {
+                return new Supplier0<Map<K, V>>() {
+                    @Override
+                    public Map<K, V> get() {
+                        return Collects.emptyHashMap(sequential);
+                    }
+                };
+            }
+
+            @Override
+            public Consumer2<Map<K, V>, E> accumulator() {
+                return new Consumer2<Map<K, V>, E>() {
+                    @Override
+                    public void accept(Map<K, V> map, E e) {
+                        K key = keyMapper.apply(e);
+                        V value = valueMapper.apply(e);
+                        map.put(key, value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E, K, V> Collector<E, Map<K, V>> toTreeMap(@NonNull final Function<E, K> keyMapper,@NonNull final Function<E, V> valueMapper, @Nullable final Comparator<K> comparator) {
+        Preconditions.checkNotNull(keyMapper);
+        Preconditions.checkNotNull(valueMapper);
+        return new Collector<E, Map<K, V>>() {
+            @Override
+            public Supplier0<Map<K, V>> supplier() {
+                return new Supplier0<Map<K, V>>() {
+                    @Override
+                    public Map<K, V> get() {
+                        return Collects.emptyTreeMap(comparator);
+                    }
+                };
+            }
+
+            @Override
+            public Consumer2<Map<K, V>, E> accumulator() {
+                return new Consumer2<Map<K, V>, E>() {
+                    @Override
+                    public void accept(Map<K, V> map, E e) {
+                        K key = keyMapper.apply(e);
+                        V value = valueMapper.apply(e);
+                        map.put(key, value);
+                    }
+                };
+            }
+        };
     }
 }

@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier;
@@ -42,7 +43,7 @@ public class WrappedNonAbsentMap<K, V> implements Map<K, V> {
     private Map<K, V> delegate;
     private Supplier<K, V> supplier;
 
-    public WrappedNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
+    public WrappedNonAbsentMap(@NonNull Map<K, V> map, @NonNull Supplier<K, V> supplier) {
         this.delegate = map;
         setSupplier(supplier);
     }
