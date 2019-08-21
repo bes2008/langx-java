@@ -4,7 +4,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.Comparators;
+import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.function.Consumer2;
 import org.junit.Test;
 

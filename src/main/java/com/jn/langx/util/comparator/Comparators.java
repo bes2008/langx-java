@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection;
+package com.jn.langx.util.comparator;
 
 import com.jn.langx.util.comparator.CharComparator;
 import com.jn.langx.util.comparator.StringComparator;
