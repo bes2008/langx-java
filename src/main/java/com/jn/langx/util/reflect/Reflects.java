@@ -10,7 +10,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.type.Types;
-import org.apache.commons.lang3.mutable.MutableObject;
+import com.jn.langx.util.struct.Holder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -140,18 +140,18 @@ public class Reflects {
 
             @Override
             public Iterator<Class<?>> iterator() {
-                final MutableObject<Class<?>> next = new MutableObject<Class<?>>(type);
+                final Holder<Class<?>> next = new Holder<Class<?>>(type);
                 return new Iterator<Class<?>>() {
 
                     @Override
                     public boolean hasNext() {
-                        return next.getValue() != null;
+                        return next.get() != null;
                     }
 
                     @Override
                     public Class<?> next() {
-                        final Class<?> result = next.getValue();
-                        next.setValue(result.getSuperclass());
+                        final Class<?> result = next.get();
+                        next.set(result.getSuperclass());
                         return result;
                     }
 
