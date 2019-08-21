@@ -15,6 +15,13 @@ public class Throwables {
         }
     }
 
+    public static void throwAsRuntimeException(Throwable ex){
+        if(ex instanceof RuntimeException){
+            throw (RuntimeException)ex;
+        }
+        throw new RuntimeException(ex);
+    }
+
     public static void log(Throwable ex) {
         // it;
     }
