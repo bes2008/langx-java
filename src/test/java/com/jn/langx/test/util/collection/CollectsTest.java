@@ -4,6 +4,7 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.function.Function;
 import org.junit.Assert;
 import org.junit.Test;
@@ -60,7 +61,7 @@ public class CollectsTest {
                     public String apply(String input) {
                         return input;
                     }
-                }).distinct()
+                }).distinct().sorted(Comparators.STRING_COMPARATOR_IGNORE_CASE)
                 .getAll();
         System.out.println(list);
     }
