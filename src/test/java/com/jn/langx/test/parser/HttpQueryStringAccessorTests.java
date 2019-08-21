@@ -1,6 +1,6 @@
 package com.jn.langx.test.parser;
 
-import com.jn.langx.parser.HttpQueryStringAccessor;
+import com.jn.langx.text.HttpQueryStringAccessor;
 import org.junit.Test;
 
 public class HttpQueryStringAccessorTests {
