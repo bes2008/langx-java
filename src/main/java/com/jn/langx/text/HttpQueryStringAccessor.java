@@ -1,7 +1,7 @@
 package com.jn.langx.text;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.parser.Parser;
+import com.jn.langx.Parser;
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.StringMapAccessor;

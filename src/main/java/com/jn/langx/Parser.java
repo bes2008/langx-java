@@ -1,4 +1,4 @@
-package com.jn.langx.parser;
+package com.jn.langx;
 
 import com.jn.langx.annotation.Nullable;
 
