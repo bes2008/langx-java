@@ -475,7 +475,7 @@ public class Collects {
             return emptyArrayList();
         }
         if (!(iterable instanceof Collection)) {
-            asList(collect(iterable, toList()));
+            return (Collection<E>) asList(collect(iterable, toList()));
         }
         return (Collection<E>) iterable;
     }

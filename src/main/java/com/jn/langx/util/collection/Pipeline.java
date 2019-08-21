@@ -10,7 +10,6 @@ import com.jn.langx.util.struct.Holder;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author jinuo.fang
@@ -124,8 +123,12 @@ public class Pipeline<E> {
         return Collects.collect(this.collection, collector);
     }
 
+    public Pipeline<E> listized() {
+        return new Pipeline<E>(collect(Collects.<E>toList()));
+    }
+
     public static <T> Pipeline<T> of(Object anyObject) {
-        List<T> list = (List<T>) Collects.asList(Collects.asIterable(anyObject));
+        Collection<T> list = (Collection<T>) Collects.asCollection(Collects.asIterable(anyObject));
         return new Pipeline<T>(list);
     }
 }
