@@ -17,6 +17,7 @@ import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Collection utilities
@@ -81,12 +82,12 @@ public class Collects {
         return sequential ? new LinkedHashMap<K, V>() : new HashMap<K, V>();
     }
 
-    public static <K,V> Map<K,V> emptyNonAbsentHashMap(@NonNull Supplier<K,V> supplier){
+    public static <K, V> Map<K, V> emptyNonAbsentHashMap(@NonNull Supplier<K, V> supplier) {
         Preconditions.checkNotNull(supplier);
         return new NonAbsentHashMap<K, V>(supplier);
     }
 
-    public static <K,V> Map<K,V> wrapAsNonAbsentMap(Map<K,V> map, Supplier<K,V> supplier){
+    public static <K, V> Map<K, V> wrapAsNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
         Preconditions.checkNotNull(map);
         Preconditions.checkNotNull(supplier);
         return new WrappedNonAbsentMap<K, V>(map, supplier);
@@ -250,15 +251,25 @@ public class Collects {
             if (set == null) {
                 return HashSet;
             }
-            if (set instanceof TreeSet) {
-                return TreeSet;
-            }
-            if (set instanceof LinkedHashSet) {
-                return LinkedHashSet;
-            }
-            return HashSet;
+            return inferSetType(set);
         }
     }
+
+
+    private static SetType inferSetType(@NonNull Set set) {
+        Preconditions.checkNotNull(set);
+        if (set instanceof SortedSet) {
+            return SetType.TreeSet;
+        }
+        if (set instanceof HashSet) {
+            if (set instanceof LinkedHashSet) {
+                return SetType.LinkedHashSet;
+            }
+            return SetType.HashSet;
+        }
+        return SetType.HashSet;
+    }
+
 
     /**
      * Avoid NPE, create an empty, new set when the specified set is null
@@ -293,19 +304,40 @@ public class Collects {
         return set;
     }
 
+
     public enum ListType {
         ArrayList,
-        LinkedList;
+        LinkedList,
+        CopyOnWrite,
+        VECTOR,
+        STACK;
 
         public static ListType ofList(@Nullable List list) {
             if (list == null) {
                 return ArrayList;
             }
-            if (list instanceof LinkedList) {
-                return LinkedList;
-            }
-            return ArrayList;
+            return inferListType(list);
         }
+    }
+
+
+    private static ListType inferListType(@NonNull List list) {
+        if (list instanceof CopyOnWriteArrayList) {
+            return ListType.CopyOnWrite;
+        }
+        if (list instanceof LinkedList) {
+            return ListType.LinkedList;
+        }
+        if (list instanceof Stack) {
+            return ListType.STACK;
+        }
+        if (list instanceof Vector) {
+            return ListType.VECTOR;
+        }
+        if (list instanceof ArrayList) {
+            return ListType.ArrayList;
+        }
+        return ListType.ArrayList;
     }
 
     /**
@@ -327,6 +359,15 @@ public class Collects {
                 case LinkedList:
                     list = emptyLinkedList();
                     break;
+                case CopyOnWrite:
+                    list = new CopyOnWriteArrayList<E>();
+                    break;
+                case STACK:
+                    list = new Stack<E>();
+                    break;
+                case VECTOR:
+                    list = new Vector<E>();
+                    break;
                 case ArrayList:
                     list = emptyArrayList();
                     break;
@@ -337,6 +378,25 @@ public class Collects {
         }
         return list;
     }
+
+    private static Collection emptyCollectionByInfer(Collection prototype) {
+        if (prototype == null) {
+            return emptyArrayList();
+        }
+        if (prototype instanceof Set) {
+            SetType setType = SetType.ofSet((Set) prototype);
+            return getEmptySetIfNull(null, setType);
+        }
+        if (prototype instanceof Queue) {
+            return emptyArrayList();
+        }
+        if (prototype instanceof List) {
+            ListType listType = ListType.ofList((List) prototype);
+            return getEmptyListIfNull(null, listType);
+        }
+        return emptyArrayList();
+    }
+
 
     /**
      * Convert an array to a ArrayList
@@ -387,7 +447,7 @@ public class Collects {
     }
 
     public static <E> List<E> asList(@Nullable Iterable<E> iterable, boolean mutable) {
-        if(Emptys.isNull(iterable)){
+        if (Emptys.isNull(iterable)) {
             return emptyArrayList();
         }
         if (!(iterable instanceof List)) {
@@ -401,7 +461,7 @@ public class Collects {
     }
 
     public static <E> Collection<E> asCollection(@Nullable Iterable<E> iterable) {
-        if(Emptys.isNull(iterable)){
+        if (Emptys.isNull(iterable)) {
             return emptyArrayList();
         }
         if (!(iterable instanceof Collection)) {
@@ -468,11 +528,10 @@ public class Collects {
     /**
      * Filter any object with the specified predicate
      */
-    public static <E> List<E> filter(@Nullable Object anyObject, @NonNull final Predicate<E> predicate) {
+    public static <E> Collection<E> filter(@Nullable Collection<E> collection, @NonNull final Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
-        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
-        final List<E> result = emptyArrayList();
-        forEach(iterable, new Consumer<E>() {
+        final Collection<E> result = emptyCollectionByInfer(collection);
+        forEach(asIterable(collection), new Consumer<E>() {
             @Override
             public void accept(E e) {
                 if (predicate.test(e)) {
@@ -505,11 +564,10 @@ public class Collects {
     /**
      * mapping an iterable to a list
      */
-    public static <E, R> List<R> map(@Nullable Object anyObject, @NonNull final Function<E, R> mapper) {
+    public static <E, R> Collection<R> map(@Nullable Collection<E> collection, @NonNull final Function<E, R> mapper) {
         Preconditions.checkNotNull(mapper);
-        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
-        final List<R> result = emptyArrayList();
-        forEach(iterable, new Consumer<E>() {
+        final Collection<R> result = emptyCollectionByInfer(collection);
+        forEach(asIterable(collection), new Consumer<E>() {
             @Override
             public void accept(E e) {
                 result.add(mapper.apply(e));
@@ -522,11 +580,10 @@ public class Collects {
     /**
      * mapping an iterable to a map
      */
-    public static <E, K, V> Map<K, V> map(@Nullable Object anyObject, @NonNull final Mapper<E, Pair<K, V>> mapper) {
+    public static <E, K, V> Map<K, V> map(@Nullable Collection<E> collection, @NonNull final Mapper<E, Pair<K, V>> mapper) {
         Preconditions.checkNotNull(mapper);
-        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         final Map<K, V> result = emptyHashMap();
-        forEach(iterable, new Consumer<E>() {
+        forEach(asIterable(collection), new Consumer<E>() {
             @Override
             public void accept(E e) {
                 Pair<K, V> pair = mapper.apply(e);
@@ -572,9 +629,9 @@ public class Collects {
     /**
      * map a collection to another, flat it
      */
-    public static <E, R0, R> List<R> flatMap(@Nullable Object anyObject, @NonNull Function<E, R0> mapper) {
-        List<R0> mapped = map(anyObject, mapper);
-        final List<R> list = emptyArrayList();
+    public static <E, R0, R> Collection<R> flatMap(@Nullable Collection<E> collection, @NonNull Function<E, R0> mapper) {
+        Collection<R0> mapped = map(collection, mapper);
+        final Collection<R> list = emptyCollectionByInfer(mapped);
         forEach(mapped, new Consumer<R0>() {
             @Override
             public void accept(R0 r) {
@@ -1178,7 +1235,7 @@ public class Collects {
         };
     }
 
-    public static <E, K, V> Collector<E, Map<K, V>> toTreeMap(@NonNull final Function<E, K> keyMapper,@NonNull final Function<E, V> valueMapper, @Nullable final Comparator<K> comparator) {
+    public static <E, K, V> Collector<E, Map<K, V>> toTreeMap(@NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper, @Nullable final Comparator<K> comparator) {
         Preconditions.checkNotNull(keyMapper);
         Preconditions.checkNotNull(valueMapper);
         return new Collector<E, Map<K, V>>() {
