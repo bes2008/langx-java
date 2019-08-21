@@ -20,6 +20,9 @@ import com.jn.langx.util.struct.Pair;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.jn.langx.util.function.Functions.emptyHashSetSupplier0;
+import static com.jn.langx.util.function.Functions.emptyTreeSetSupplier0;
+
 /**
  * Collection utilities
  */
@@ -121,11 +124,11 @@ public class Collects {
      * @param <E> Element
      * @return An empty, mutable java.util.TreeSet
      */
-    public static <E> Set<E> emptyTreeSet() {
+    public static <E> TreeSet<E> emptyTreeSet() {
         return new TreeSet<E>();
     }
 
-    public static <E> Set<E> emptyTreeSet(@Nullable Comparator<E> comparator) {
+    public static <E> TreeSet<E> emptyTreeSet(@Nullable Comparator<E> comparator) {
         if (comparator == null) {
             return emptyTreeSet();
         }
@@ -1160,23 +1163,18 @@ public class Collects {
         return map;
     }
 
-    public static <E> Collector<E, Set<E>> toTreeSet(@Nullable final Comparator<E> comparator) {
-        return new Collector<E, Set<E>>() {
+    public static <E> Collector<E, TreeSet<E>> toTreeSet(@Nullable final Comparator<E> comparator) {
+        return new Collector<E, TreeSet<E>>() {
             @Override
-            public Supplier0<Set<E>> supplier() {
-                return new Supplier0<Set<E>>() {
-                    @Override
-                    public Set<E> get() {
-                        return Collects.emptyTreeSet(comparator);
-                    }
-                };
+            public Supplier0<TreeSet<E>> supplier() {
+                return emptyTreeSetSupplier0(comparator);
             }
 
             @Override
-            public Consumer2<Set<E>, E> accumulator() {
-                return new Consumer2<Set<E>, E>() {
+            public Consumer2<TreeSet<E>, E> accumulator() {
+                return new Consumer2<TreeSet<E>, E>() {
                     @Override
-                    public void accept(Set<E> set, E value) {
+                    public void accept(TreeSet<E> set, E value) {
                         set.add(value);
                     }
                 };
@@ -1184,23 +1182,18 @@ public class Collects {
         };
     }
 
-    public static <E> Collector<E, Set<E>> toHashSet(final boolean sequential) {
-        return new Collector<E, Set<E>>() {
+    public static <E> Collector<E, HashSet<E>> toHashSet(final boolean sequential) {
+        return new Collector<E, HashSet<E>>() {
             @Override
-            public Supplier0<Set<E>> supplier() {
-                return new Supplier0<Set<E>>() {
-                    @Override
-                    public Set<E> get() {
-                        return Collects.emptyHashSet(sequential);
-                    }
-                };
+            public Supplier0<HashSet<E>> supplier() {
+                return emptyHashSetSupplier0();
             }
 
             @Override
-            public Consumer2<Set<E>, E> accumulator() {
-                return new Consumer2<Set<E>, E>() {
+            public Consumer2<HashSet<E>, E> accumulator() {
+                return new Consumer2<HashSet<E>, E>() {
                     @Override
-                    public void accept(Set<E> set, E value) {
+                    public void accept(HashSet<E> set, E value) {
                         set.add(value);
                     }
                 };
