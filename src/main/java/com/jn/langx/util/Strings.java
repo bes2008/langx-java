@@ -26,14 +26,11 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
 
 @SuppressWarnings({"unused"})
@@ -165,5 +162,24 @@ public class Strings {
             return c - ('a' - 0xA);
         }
         return -1;
+    }
+
+    /**
+     * Test whether the given string matches the given substring
+     * at the given index.
+     * @param str the original string (or StringBuilder)
+     * @param index the index in the original string to start matching against
+     * @param substring the substring to match at the given index
+     */
+    public static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
+        if (index + substring.length() > str.length()) {
+            return false;
+        }
+        for (int i = 0; i < substring.length(); i++) {
+            if (str.charAt(index + i) != substring.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
