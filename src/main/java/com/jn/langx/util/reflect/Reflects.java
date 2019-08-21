@@ -443,7 +443,7 @@ public class Reflects {
 
             field.setAccessible(true);
             try {
-                field.set(field, value);
+                field.set(target, value);
             } catch (Throwable ex) {
                 if (throwException) {
                     throw new RuntimeException(ex);
@@ -646,7 +646,7 @@ public class Reflects {
                                          @Nullable Class returnType,
                                          @Nullable Class[] parameterTypes) {
         try {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             if (returnType != null) {
                 sb.append(getTypeName(returnType) + " ");
             }

@@ -19,7 +19,8 @@ public class MethodInvokeTests {
                 Class templateClass = StringTemplate.class;
                 Object template = Reflects.newInstance(templateClass, null, null);
                 try {
-                    Reflects.invokeAnyMethod(template, "using", new Class[]{String.class}, new Object[]{templateString}, true, true);
+                    //Reflects.invokeAnyMethod(template, "using", new Class[]{String.class}, new Object[]{templateString}, true, true);
+                    Reflects.setAnyFieldValue(template, "template", templateString, true, true);
                     String formated = Reflects.invokeAnyMethod(template, "format", new Class[]{Object[].class}, new Object[]{new Object[]{key, value}}, true, true);
                     System.out.println(formated);
                 }catch (Throwable ex){
