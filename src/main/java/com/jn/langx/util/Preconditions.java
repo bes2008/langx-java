@@ -29,7 +29,7 @@ public class Preconditions {
     }
 
     public static <T> T checkNotNull(T obj, String errorMessage) {
-        if(errorMessage==null){
+        if (errorMessage == null) {
             return checkNotNull(obj);
         }
         if (obj == null) {
@@ -38,15 +38,20 @@ public class Preconditions {
         return obj;
     }
 
-    public static void checkArgument(boolean condition) {
-        if (!condition) {
+    public static void checkTrue(boolean expression) {
+        if (!expression) {
             throw new IllegalArgumentException();
         }
     }
 
-    public static void checkTrue(boolean expression){
-        if(!expression){
-            throw new IllegalArgumentException();
+
+    public static void checkTrue(boolean expression, String errorMessage) {
+        if (!expression) {
+            if (Emptys.isEmpty(errorMessage)) {
+                throw new IllegalArgumentException();
+            } else {
+                throw new IllegalArgumentException(errorMessage);
+            }
         }
     }
 

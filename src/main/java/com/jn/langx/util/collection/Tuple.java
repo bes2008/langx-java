@@ -31,7 +31,7 @@ public class Tuple extends BasedStringAccessor<Integer, List> implements Iterabl
     }
 
     private void setTarget0(int length, List values) {
-        Preconditions.checkArgument(length >= 0);
+        Preconditions.checkTrue(length >= 0);
         Preconditions.checkNotNull(values);
         this.maxSize = Maths.min(values.size(), length);
         this.elements.addAll(Collects.limit(values, this.maxSize));
@@ -55,7 +55,7 @@ public class Tuple extends BasedStringAccessor<Integer, List> implements Iterabl
 
     @Override
     public void set(Integer index, Object value) {
-        Preconditions.checkArgument(index < maxSize && index >= 0);
+        Preconditions.checkTrue(index < maxSize && index >= 0);
         this.elements.set(index, value);
     }
 

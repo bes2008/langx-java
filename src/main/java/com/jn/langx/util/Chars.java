@@ -14,7 +14,7 @@ public class Chars {
     }
 
     public int toInt(char c) {
-        Preconditions.checkArgument(isNumber(c));
+        Preconditions.checkTrue(isNumber(c));
         return c - 48;
     }
 

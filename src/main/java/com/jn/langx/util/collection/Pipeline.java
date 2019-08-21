@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Collector;
 import com.jn.langx.util.function.Consumer;
@@ -26,8 +27,8 @@ public class Pipeline<E> {
         return new Pipeline<O>(Collects.map(this.collection, mapper));
     }
 
-    public <I,O> Pipeline<O> flatMap(Function<I, O> mapper) {
-        Collection<Collection<I>> c = (Collection<Collection<I>>)this.collection;
+    public <I, O> Pipeline<O> flatMap(Function<I, O> mapper) {
+        Collection<Collection<I>> c = (Collection<Collection<I>>) this.collection;
         Collection<O> list = Collects.flatMap(c, mapper);
         return new Pipeline<O>(list);
     }
@@ -37,11 +38,13 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> limit(int maxSize) {
+        maxSize = maxSize < 0 ? maxSize = 0 : maxSize;
         Collection<E> list = Collects.limit(this.collection, maxSize);
         return new Pipeline<E>(list);
     }
 
     public Pipeline skip(int n) {
+        n = n < 0 ? 0 : n;
         Collection<E> list = Collects.skip(this.collection, n);
         return new Pipeline<E>(list);
     }
@@ -72,6 +75,11 @@ public class Pipeline<E> {
 
     public E findFirst() {
         return Collects.findFirst(this.collection, null);
+    }
+
+    public E findFirst(@NonNull Predicate<E> predicate) {
+        Preconditions.checkNotNull(predicate);
+        return Collects.findFirst(this.collection, predicate);
     }
 
     public int count() {
@@ -138,6 +146,11 @@ public class Pipeline<E> {
 
     public static <T> Pipeline<T> of(Object anyObject) {
         Collection<T> list = (Collection<T>) Collects.asCollection(Collects.asIterable(anyObject));
+        return new Pipeline<T>(list);
+    }
+
+    public static <T> Pipeline<T> of(Iterable<T> iterable) {
+        Collection<T> list = (Collection<T>) Collects.asCollection(iterable);
         return new Pipeline<T>(list);
     }
 

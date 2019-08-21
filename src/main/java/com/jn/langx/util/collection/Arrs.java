@@ -51,7 +51,7 @@ public class Arrs {
      * Create an array with the specified length
      */
     public static <E extends Object> E[] createArray(@Nullable Class<E> componentType, int length) {
-        Preconditions.checkArgument(length >= 0);
+        Preconditions.checkTrue(length >= 0);
         if (componentType == null) {
             return (E[]) Array.newInstance(Object.class, length);
         }
@@ -123,9 +123,9 @@ public class Arrs {
      * [start, end)
      */
     public static Integer[] range(final int start, int end, final int step) {
-        Preconditions.checkArgument(start >= 0);
-        Preconditions.checkArgument(end >= start);
-        Preconditions.checkArgument(step >= 1);
+        Preconditions.checkTrue(start >= 0);
+        Preconditions.checkTrue(end >= start);
+        Preconditions.checkTrue(step >= 1);
         int length = new Double(Math.floor((end - 1 - start) / step)).intValue() + 1;
         Preconditions.checkTrue(length >= 0);
         return createArray(Integer.class, length, new Supplier<Integer, Integer>() {

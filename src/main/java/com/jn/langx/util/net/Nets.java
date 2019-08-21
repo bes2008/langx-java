@@ -6,7 +6,6 @@ import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.PropertiesAccessor;
 import com.jn.langx.util.reflect.Reflects;
-import io.netty.util.AsciiString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,6 @@ import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-
 
 
 public class Nets {
@@ -532,9 +530,9 @@ public class Nets {
      * <p>Finds the first index in the {@code CharSequence} that matches the
      * specified character.</p>
      *
-     * @param cs  the {@code CharSequence} to be processed, not null
+     * @param cs         the {@code CharSequence} to be processed, not null
      * @param searchChar the char to be searched for
-     * @param start  the start index, negative starts at the string start
+     * @param start      the start index, negative starts at the string start
      * @return the index where the search char was found,
      * -1 if char {@code searchChar} is not found or {@code cs == null}
      */
@@ -542,8 +540,6 @@ public class Nets {
     public static int indexOf(final CharSequence cs, final char searchChar, int start) {
         if (cs instanceof String) {
             return ((String) cs).indexOf(searchChar, start);
-        } else if (cs instanceof AsciiString) {
-            return ((AsciiString) cs).indexOf(searchChar, start);
         }
         if (cs == null) {
             return -1;
@@ -986,7 +982,7 @@ public class Nets {
     }
 
     /**
-     * Returns {@link InetSocketAddress#getHostString()} if Java >= 7,
+     * Returns InetSocketAddress#getHostString() if Java >= 7,
      * or {@link InetSocketAddress#getHostName()} otherwise.
      *
      * @param addr The address

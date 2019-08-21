@@ -199,7 +199,7 @@ public class Types {
             // Neal isn't either but suspects some pathological case related
             // to nested classes exists.
             Type rawType = parameterizedType.getRawType();
-            Preconditions.checkArgument(rawType instanceof Class);
+            Preconditions.checkTrue(rawType instanceof Class);
             return (Class<?>) rawType;
 
         } else if (type instanceof GenericArrayType) {

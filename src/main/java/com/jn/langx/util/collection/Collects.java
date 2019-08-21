@@ -917,7 +917,7 @@ public class Collects {
             return emptyLinkedList();
         }
 
-        Preconditions.checkArgument(maxSize >= 0);
+        Preconditions.checkTrue(maxSize >= 0);
 
         List<E> list = (collection instanceof List) ? (List<E>) collection : new LinkedList<E>(collection);
         if (list.size() <= maxSize) {
@@ -933,9 +933,7 @@ public class Collects {
         if (Emptys.isEmpty(collection)) {
             return emptyLinkedList();
         }
-
-        Preconditions.checkArgument(n >= 0);
-
+        Preconditions.checkTrue(n >= 0);
         List<E> list = (collection instanceof List) ? (List<E>) collection : new LinkedList<E>(collection);
         if (list.size() <= n) {
             return emptyArrayList();

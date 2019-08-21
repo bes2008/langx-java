@@ -25,7 +25,7 @@ public class ArrayAccessor<E> extends BasedStringAccessor<Integer, E> {
     @Override
     public void setTarget(@NonNull E target) {
         Preconditions.checkNotNull(target);
-        Preconditions.checkArgument(Arrs.isArray(target));
+        Preconditions.checkTrue(Arrs.isArray(target));
         super.setTarget(target);
     }
 
