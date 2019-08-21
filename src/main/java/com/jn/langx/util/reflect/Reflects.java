@@ -24,49 +24,49 @@ import java.util.*;
 @SuppressWarnings({"unused", "unchecked"})
 public class Reflects {
 
-    public static String getTypeName(Class type) {
+    public static String getTypeName(@NonNull Class type) {
         return Types.typeToString(type);
     }
 
-    public static boolean isInnerClass(Class<?> clazz) {
+    public static boolean isInnerClass(@NonNull Class<?> clazz) {
         return clazz.isMemberClass() && !isStatic(clazz);
     }
 
-    public static boolean isStatic(Class<?> clazz) {
+    public static boolean isStatic(@NonNull Class<?> clazz) {
         return (clazz.getModifiers() & Modifier.STATIC) != 0;
     }
 
-    public static boolean isAnonymousOrLocal(Class<?> clazz) {
+    public static boolean isAnonymousOrLocal(@NonNull Class<?> clazz) {
         return isAnonymous(clazz) || isLocal(clazz);
     }
 
-    public static boolean isAnonymous(Class clazz) {
+    public static boolean isAnonymous(@NonNull Class clazz) {
         return !Enum.class.isAssignableFrom(clazz) && clazz.isAnonymousClass();
     }
 
 
-    public static boolean isLocal(Class clazz) {
+    public static boolean isLocal(@NonNull Class clazz) {
         return !Enum.class.isAssignableFrom(clazz) && clazz.isLocalClass();
     }
 
 
-    public static String getSimpleClassName(Class clazz) {
+    public static String getSimpleClassName(@NonNull Class clazz) {
         return clazz.getSimpleName();
     }
 
-    public static String getFQNClassName(Class clazz) {
+    public static String getFQNClassName(@NonNull Class clazz) {
         return clazz.getName();
     }
 
-    public static String getPackageName(Class clazz) {
+    public static String getPackageName(@NonNull Class clazz) {
         return clazz.getPackage().getName();
     }
 
-    public static String getJvmSignature(Class clazz) {
+    public static String getJvmSignature(@NonNull Class clazz) {
         return Types.getTypeSignature(getFQNClassName(clazz));
     }
 
-    public static URL getCodeLocation(Class clazz) {
+    public static URL getCodeLocation(@NonNull Class clazz) {
         return clazz.getProtectionDomain().getCodeSource().getLocation();
     }
 
@@ -82,7 +82,7 @@ public class Reflects {
      * @param cls the class to look up, may be {@code null}
      * @return the {@code List} of interfaces in order,
      */
-    public static List<Class<?>> getAllInterfaces(final Class<?> cls) {
+    public static List<Class<?>> getAllInterfaces(@Nullable final Class<?> cls) {
         if (cls == null) {
             return Collects.emptyArrayList();
         }
@@ -94,6 +94,26 @@ public class Reflects {
     }
 
     /**
+     * Get the interfaces for the specified class.
+     *
+     * @param cls             the class to look up, may be {@code null}
+     * @param interfacesFound the {@code Set} of interfaces for the class
+     */
+    private static void getAllInterfaces(@NonNull Class<?> cls, final HashSet<Class<?>> interfacesFound) {
+        while (cls != null) {
+            final Class<?>[] interfaces = cls.getInterfaces();
+
+            for (final Class<?> i : interfaces) {
+                if (interfacesFound.add(i)) {
+                    getAllInterfaces(i, interfacesFound);
+                }
+            }
+
+            cls = cls.getSuperclass();
+        }
+    }
+
+    /**
      * Get an {@link Iterable} that can iterate over a class hierarchy in ascending (subclass to superclass) order,
      * excluding interfaces.
      *
@@ -101,7 +121,8 @@ public class Reflects {
      * @return Iterable an Iterable over the class hierarchy of the given class
      * @since 3.2
      */
-    public static Iterable<Class<?>> hierarchy(final Class<?> type) {
+    public static Iterable<Class<?>> hierarchy(@NonNull final Class<?> type) {
+        Preconditions.checkNotNull(type);
         return hierarchy(type, true);
     }
 
@@ -113,7 +134,8 @@ public class Reflects {
      * @return Iterable an Iterable over the class hierarchy of the given class
      * @since 3.2
      */
-    public static Iterable<Class<?>> hierarchy(final Class<?> type, final boolean excludeInterfaces) {
+    public static Iterable<Class<?>> hierarchy(@NonNull final Class<?> type, final boolean excludeInterfaces) {
+        Preconditions.checkNotNull(type);
         final Iterable<Class<?>> classes = new Iterable<Class<?>>() {
 
             @Override
@@ -193,32 +215,13 @@ public class Reflects {
         };
     }
 
-    /**
-     * Get the interfaces for the specified class.
-     *
-     * @param cls             the class to look up, may be {@code null}
-     * @param interfacesFound the {@code Set} of interfaces for the class
-     */
-    private static void getAllInterfaces(Class<?> cls, final HashSet<Class<?>> interfacesFound) {
-        while (cls != null) {
-            final Class<?>[] interfaces = cls.getInterfaces();
-
-            for (final Class<?> i : interfaces) {
-                if (interfacesFound.add(i)) {
-                    getAllInterfaces(i, interfacesFound);
-                }
-            }
-
-            cls = cls.getSuperclass();
-        }
-    }
 
     /**
      * Returns true if an annotation for the specified type
      * is present on this element, else false.  This method
      * is designed primarily for convenient access to marker annotations.
      */
-    public static boolean isAnnotationPresent(AnnotatedElement annotatedElement, Class<? extends Annotation> annotationClass) {
+    public static boolean isAnnotationPresent(@NonNull AnnotatedElement annotatedElement, @NonNull Class<? extends Annotation> annotationClass) {
         return annotatedElement.isAnnotationPresent(annotationClass);
     }
 
@@ -227,7 +230,7 @@ public class Reflects {
      * Returns this element's annotation for the specified type if
      * such an annotation is present, else null.
      */
-    public static <E extends Annotation> E getAnnotation(AnnotatedElement annotatedElement, Class<E> annotationClass) {
+    public static <E extends Annotation> E getAnnotation(@NonNull AnnotatedElement annotatedElement, @NonNull Class<E> annotationClass) {
         return annotatedElement.getAnnotation(annotationClass);
     }
 
@@ -237,7 +240,7 @@ public class Reflects {
      * this method is free to modify the returned array; it will have no
      * effect on the arrays returned to other callers.
      */
-    public static Annotation[] getAnnotations(AnnotatedElement annotatedElement) {
+    public static Annotation[] getAnnotations(@NonNull AnnotatedElement annotatedElement) {
         return annotatedElement.getAnnotations();
     }
 
@@ -249,11 +252,11 @@ public class Reflects {
      * this method is free to modify the returned array; it will have no
      * effect on the arrays returned to other callers.
      */
-    public static List<Annotation> getDeclaredAnnotations(AnnotatedElement annotatedElement) {
+    public static List<Annotation> getDeclaredAnnotations(@NonNull AnnotatedElement annotatedElement) {
         return Collects.asList(annotatedElement.getDeclaredAnnotations());
     }
 
-    public static Field getPublicField(Class clazz, String fieldName) {
+    public static Field getPublicField(@NonNull Class clazz, @NonNull String fieldName) {
         Field field = null;
         try {
             field = clazz.getField(fieldName);
@@ -263,7 +266,7 @@ public class Reflects {
         return field;
     }
 
-    public static Field getDeclaredField(Class clazz, String fieldName) {
+    public static Field getDeclaredField(@NonNull Class clazz, @NonNull String fieldName) {
         Field field = null;
         try {
             field = clazz.getDeclaredField(fieldName);
@@ -273,7 +276,7 @@ public class Reflects {
         return field;
     }
 
-    public static Field getAnyField(Class clazz, String fieldName) {
+    public static Field getAnyField(@NonNull Class clazz, @NonNull String fieldName) {
         Field field = getDeclaredField(clazz, fieldName);
         if (field == null) {
             Class parent = clazz.getSuperclass();
@@ -285,25 +288,25 @@ public class Reflects {
         return field;
     }
 
-    public static Collection<Field> getAllDeclaredFields(Class clazz) {
+    public static Collection<Field> getAllDeclaredFields(@NonNull Class clazz) {
         return getAllDeclaredFields(clazz, false);
     }
 
-    public static Collection<Field> getAllDeclaredFields(Class clazz, boolean containsStatic) {
+    public static Collection<Field> getAllDeclaredFields(@NonNull Class clazz, boolean containsStatic) {
         Field[] fields = clazz.getDeclaredFields();
         return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
     }
 
-    public static Collection<Field> getAllPublicInstanceFields(Class clazz) {
+    public static Collection<Field> getAllPublicInstanceFields(@NonNull Class clazz) {
         return getAllPublicFields(clazz, false);
     }
 
-    public static Collection<Field> getAllPublicFields(Class clazz, boolean containsStatic) {
+    public static Collection<Field> getAllPublicFields(@NonNull Class clazz, boolean containsStatic) {
         Field[] fields = clazz.getFields();
         return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
     }
 
-    public static Collection<Field> filterFields(Field[] fields, final int... excludedModifiers) {
+    public static Collection<Field> filterFields(@NonNull Field[] fields, final int... excludedModifiers) {
         final List<Integer> excludedModifierList = Collects.asList(PrimitiveArrays.wrap(excludedModifiers, false));
         return Collects.filter(fields, new Predicate<Field>() {
             @Override
@@ -318,7 +321,7 @@ public class Reflects {
         });
     }
 
-    public static <V> V getPublicFieldValueForcedIfPresent(Object object, String fieldName) {
+    public static <V> V getPublicFieldValueForcedIfPresent(@NonNull Object object, @NonNull String fieldName) {
         try {
             return getPublicFieldValue(object, fieldName, false);
         } catch (Throwable ex) {
@@ -326,7 +329,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V getPublicFieldValue(Object object, String fieldName, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+    public static <V> V getPublicFieldValue(@NonNull Object object, @NonNull String fieldName, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getPublicField(object.getClass(), fieldName);
         if (field == null) {
             if (throwException) {
@@ -338,7 +341,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V getDeclaredFieldValueForcedIfPresent(Object object, String fieldName) {
+    public static <V> V getDeclaredFieldValueForcedIfPresent(@NonNull Object object, @NonNull String fieldName) {
         try {
             return getDeclaredFieldValue(object, fieldName, true, false);
         } catch (Throwable ex) {
@@ -346,7 +349,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V getDeclaredFieldValue(Object object, String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+    public static <V> V getDeclaredFieldValue(@NonNull Object object, String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getDeclaredField(object.getClass(), fieldName);
         if (field == null) {
             if (throwException) {
@@ -358,7 +361,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V getAnyFieldValueForcedIfPresent(Object object, String fieldName) {
+    public static <V> V getAnyFieldValueForcedIfPresent(@NonNull Object object, @NonNull String fieldName) {
         try {
             return getAnyFieldValue(object, fieldName, true, false);
         } catch (Throwable ex) {
@@ -366,7 +369,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V getAnyFieldValue(Object object, String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+    public static <V> V getAnyFieldValue(@NonNull Object object, @NonNull String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getAnyField(object.getClass(), fieldName);
         if (field == null) {
             if (throwException) {
@@ -378,7 +381,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V getFieldValue(Field field, Object object, boolean force, boolean throwException) throws IllegalAccessException {
+    public static <V> V getFieldValue(@NonNull Field field, @NonNull Object object, boolean force, boolean throwException) throws IllegalAccessException {
         if (!force && !field.isAccessible()) {
             if (throwException) {
                 throw new IllegalAccessException();
@@ -412,7 +415,7 @@ public class Reflects {
         }
     }
 
-    public static void setFieldValue(Field field, Object target, Object value, boolean force, boolean throwException) throws NullPointerException, IllegalAccessException {
+    public static void setFieldValue(@NonNull Field field, @NonNull Object target, Object value, boolean force, boolean throwException) throws NullPointerException, IllegalAccessException {
         if (Emptys.isEmpty(field)) {
             if (throwException) {
                 Preconditions.checkNotNull(field);
@@ -451,7 +454,7 @@ public class Reflects {
         }
     }
 
-    public static void setPublicFieldValue(Object object, String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+    public static void setPublicFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getPublicField(object.getClass(), fieldName);
         if (field == null) {
             if (throwException) {
@@ -462,7 +465,7 @@ public class Reflects {
         }
     }
 
-    public static void setDeclaredFieldValue(Object object, String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+    public static void setDeclaredFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getDeclaredField(object.getClass(), fieldName);
         if (field == null) {
             if (throwException) {
@@ -473,7 +476,7 @@ public class Reflects {
         }
     }
 
-    public static void setAnyFieldValue(Object object, String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+    public static void setAnyFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
         Field field = getAnyField(object.getClass(), fieldName);
         if (field == null) {
             if (throwException) {
@@ -484,7 +487,7 @@ public class Reflects {
         }
     }
 
-    public static Constructor getConstructor(Class clazz, Class... parameterTypes) {
+    public static Constructor getConstructor(@NonNull Class clazz, Class... parameterTypes) {
         try {
             return clazz.getDeclaredConstructor(parameterTypes);
         } catch (NoSuchMethodException ex) {
@@ -492,7 +495,8 @@ public class Reflects {
         }
     }
 
-    public static <E> E newInstance(Class<E> clazz) {
+    public static <E> E newInstance(@NonNull Class<E> clazz) {
+        Preconditions.checkNotNull(clazz);
         try {
             return (E) clazz.newInstance();
         } catch (Throwable ex) {
@@ -500,7 +504,8 @@ public class Reflects {
         }
     }
 
-    public static <E> E newInstance(Class<E> clazz, Class[] parameterTypes, Object[] parameters) {
+    public static <E> E newInstance(@NonNull Class<E> clazz, @Nullable Class[] parameterTypes, @NonNull Object[] parameters) {
+        Preconditions.checkNotNull(clazz);
         Constructor constructor = getConstructor(clazz, parameterTypes);
 
         try {
@@ -510,7 +515,7 @@ public class Reflects {
         }
     }
 
-    public static Method getPublicMethod(Class clazz, String methodName, Class... parameterTypes) {
+    public static Method getPublicMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
         Method method = null;
         try {
             method = clazz.getMethod(methodName, parameterTypes);
@@ -520,7 +525,7 @@ public class Reflects {
         return method;
     }
 
-    public static Method getDeclaredMethod(Class clazz, String methodName, Class... parameterTypes) {
+    public static Method getDeclaredMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
         Method method = null;
         try {
             method = clazz.getDeclaredMethod(methodName, parameterTypes);
@@ -530,7 +535,7 @@ public class Reflects {
         return method;
     }
 
-    public static Method getAnyMethod(Class clazz, String methodName, Class... parameterTypes) {
+    public static Method getAnyMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
         Method method = getDeclaredMethod(clazz, methodName, parameterTypes);
         if (method == null) {
             Class parent = clazz.getSuperclass();
@@ -542,7 +547,7 @@ public class Reflects {
         return method;
     }
 
-    public static <V> V invokePublicMethodForcedIfPresent(Object object, String methodName, Class[] parameterTypes, Object[] parameters) {
+    public static <V> V invokePublicMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
         try {
             return (V) invokePublicMethod(object, methodName, parameterTypes, parameters, true, false);
         } catch (Throwable ex) {
@@ -550,7 +555,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V invokePublicMethod(Object object, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static <V> V invokePublicMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = getPublicMethod(object.getClass(), methodName, parameterTypes);
         if (method == null) {
             if (throwException) {
@@ -561,7 +566,7 @@ public class Reflects {
         return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
-    public static <V> V invokeDeclaredMethodForcedIfPresent(Object object, String methodName, Class[] parameterTypes, Object[] parameters) {
+    public static <V> V invokeDeclaredMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
         try {
             return (V) invokeDeclaredMethod(object, methodName, parameterTypes, parameters, true, false);
         } catch (Throwable ex) {
@@ -569,7 +574,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V invokeDeclaredMethod(Object object, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static <V> V invokeDeclaredMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = getDeclaredMethod(object.getClass(), methodName, parameterTypes);
         if (method == null) {
             if (throwException) {
@@ -580,7 +585,7 @@ public class Reflects {
         return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
-    public static <V> V invokeAnyMethodForcedIfPresent(Object object, String methodName, Class[] parameterTypes, Object[] parameters) {
+    public static <V> V invokeAnyMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
         try {
             return (V) invokeAnyMethod(object, methodName, parameterTypes, parameters, true, false);
         } catch (Throwable ex) {
@@ -588,7 +593,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V invokeAnyMethod(Object object, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    public static <V> V invokeAnyMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = getAnyMethod(object.getClass(), methodName, parameterTypes);
         if (method == null) {
             if (throwException) {
@@ -599,7 +604,7 @@ public class Reflects {
         return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
-    public static <V> V invoke(Method method, Object object, Object[] parameters, boolean force, boolean throwException) throws IllegalAccessException, InvocationTargetException {
+    public static <V> V invoke(@NonNull Method method, @NonNull Object object, @Nullable Object[] parameters, boolean force, boolean throwException) throws IllegalAccessException, InvocationTargetException {
         if (!force && !method.isAccessible()) {
             if (throwException) {
                 throw new IllegalAccessException(new ExceptionMessage("Method {0} is not accessible", method.toString()).getMessage());
@@ -620,7 +625,7 @@ public class Reflects {
         }
     }
 
-    private static <V> V invokeMethodOrNull(Method method, Object object, Object[] parameters, boolean throwException) throws IllegalAccessException, InvocationTargetException {
+    private static <V> V invokeMethodOrNull(@NonNull Method method, @NonNull Object object, @Nullable Object[] parameters, boolean throwException) throws IllegalAccessException, InvocationTargetException {
         try {
             return (V) method.invoke(object, parameters);
         } catch (IllegalAccessException ex) {
@@ -670,7 +675,7 @@ public class Reflects {
     }
 
 
-    public static String getMethodString(Class clazz, String methodName, Class[] parameterTypes) {
+    public static String getMethodString(@NonNull Class clazz, @NonNull String methodName, @Nullable Class[] parameterTypes) {
         Method method = getAnyMethod(clazz, methodName, parameterTypes);
         if (method != null) {
             return getMethodString(method);
