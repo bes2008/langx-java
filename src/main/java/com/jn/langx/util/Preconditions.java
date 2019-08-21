@@ -28,6 +28,16 @@ public class Preconditions {
         return obj;
     }
 
+    public static <T> T checkNotNull(T obj, String errorMessage) {
+        if(errorMessage==null){
+            return checkNotNull(obj);
+        }
+        if (obj == null) {
+            throw new NullPointerException(errorMessage);
+        }
+        return obj;
+    }
+
     public static void checkArgument(boolean condition) {
         if (!condition) {
             throw new IllegalArgumentException();

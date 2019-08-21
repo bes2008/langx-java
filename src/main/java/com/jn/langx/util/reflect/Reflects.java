@@ -49,7 +49,9 @@ public class Reflects {
         return !Enum.class.isAssignableFrom(clazz) && clazz.isLocalClass();
     }
 
-
+    public static String getSimpleClassName(@NonNull Object obj) {
+        return getSimpleClassName(obj.getClass());
+    }
     public static String getSimpleClassName(@NonNull Class clazz) {
         return clazz.getSimpleName();
     }

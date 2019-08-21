@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.PropertiesAccessor;
 import com.jn.langx.util.collection.StringMap;
 
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.Locale;
  * @author jinuo.fang
  */
 public class SystemPropertys {
+
+    public static final String NEWLINE = System.getProperty("line.separator", "\n");
 
     private static final StringMap javaVersionToClassVersion = new StringMap();
 
@@ -117,5 +120,9 @@ public class SystemPropertys {
 
     public static String getFileEncoding() {
         return System.getProperty("file.encoding");
+    }
+
+    public static PropertiesAccessor getAccessor(){
+        return new PropertiesAccessor(System.getProperties());
     }
 }
