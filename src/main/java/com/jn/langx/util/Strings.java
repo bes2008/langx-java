@@ -27,6 +27,7 @@ package com.jn.langx.util;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 
@@ -117,24 +118,31 @@ public class Strings {
      * every element in string[] has the trim() invoked
      */
     public static String[] split(@Nullable String string, @Nullable String separator) {
-        if (Emptys.isEmpty(string) || Emptys.isEmpty(separator)) {
+        if (Emptys.isEmpty(string) || Emptys.isNull(separator)) {
             return new String[0];
         }
 
+        if(Emptys.isEmpty(separator)){
+            return Pipeline.of(string.split("")).filter(new Predicate<String>() {
+                @Override
+                public boolean test(String value) {
+                    return isNotBlank(value);
+                }
+            }).toArray(String[].class);
+        }
+
         StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
-        Collection<String> array = Collects.map(tokenizer, new Function<String, String>() {
+        return Pipeline.of(tokenizer).map(new Function<Object, String>() {
             @Override
-            public String apply(String input) {
-                return input.trim();
+            public String apply(Object input) {
+                return input.toString().trim();
             }
-        });
-        array = Collects.filter(array, new Predicate<String>() {
+        }).filter(new Predicate<String>() {
             @Override
             public boolean test(String value) {
                 return Strings.isNotBlank(value);
             }
-        });
-        return Collects.toArray(array, String[].class);
+        }).toArray(String[].class);
     }
 
 }

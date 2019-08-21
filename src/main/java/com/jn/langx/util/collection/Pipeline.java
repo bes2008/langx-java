@@ -26,8 +26,9 @@ public class Pipeline<E> {
         return new Pipeline<O>(Collects.map(this.collection, mapper));
     }
 
-    public <O> Pipeline<O> flatMap(Function<E, O> mapper) {
-        Collection<O> list = Collects.flatMap(this.collection, mapper);
+    public <I,O> Pipeline<O> flatMap(Function<I, O> mapper) {
+        Collection<Collection<I>> c = (Collection<Collection<I>>)this.collection;
+        Collection<O> list = Collects.flatMap(c, mapper);
         return new Pipeline<O>(list);
     }
 
@@ -81,8 +82,16 @@ public class Pipeline<E> {
         return Collects.toArray(this.collection);
     }
 
+    public E[] toArray(Class<E[]> clazz) {
+        return Collects.toArray(this.collection, clazz);
+    }
+
     public Iterator<E> iterator() {
         return this.collection.iterator();
+    }
+
+    public Collection<E> getAll() {
+        return collection;
     }
 
     public Number sum() {
@@ -129,6 +138,11 @@ public class Pipeline<E> {
 
     public static <T> Pipeline<T> of(Object anyObject) {
         Collection<T> list = (Collection<T>) Collects.asCollection(Collects.asIterable(anyObject));
+        return new Pipeline<T>(list);
+    }
+
+    public static <T> Pipeline<T> of(T[] array) {
+        Collection<T> list = (Collection<T>) Collects.asCollection(Collects.asIterable(array));
         return new Pipeline<T>(list);
     }
 }

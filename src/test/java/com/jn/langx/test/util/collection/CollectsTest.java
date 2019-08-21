@@ -1,7 +1,10 @@
 package com.jn.langx.test.util.collection;
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,10 +42,27 @@ public class CollectsTest {
         List<Integer> list = Collects.asList(array, true, Collects.ListType.ArrayList);
         Integer[] array1 = Collects.toArray(list, Integer[].class);
         Assert.assertArrayEquals(array, array1);
+
+        Object[] array2 = Collects.toArray(list);
+        Assert.assertArrayEquals(array1, array2);
     }
 
-    public void foreachTest(){
-
+    @Test
+    public void testStreamApiForCollection(){
+        Collection<String> list = Pipeline.of(new String[]{"Hello", "Java8", "Stream", "API", "for", "java 6"})
+                .map(new Function<String, List<String>>() {
+                    @Override
+                    public List<String> apply(String string) {
+                        return Collects.asList(Strings.split(string,""));
+                    }
+                }).flatMap(new Function<String, String>() {
+                    @Override
+                    public String apply(String input) {
+                        return input;
+                    }
+                }).distinct()
+                .getAll();
+        System.out.println(list);
     }
 
 

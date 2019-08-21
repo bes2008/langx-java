@@ -462,7 +462,7 @@ public class Collects {
             return emptyArrayList();
         }
         if (!(iterable instanceof List)) {
-            asList(collect(iterable, toList()), mutable);
+            return (List<E>) asList(collect(iterable, toList()), mutable);
         }
         List<E> list = (List<E>) iterable;
         if (!mutable) {
@@ -649,19 +649,17 @@ public class Collects {
     /**
      * map a collection to another, flat it
      */
-    public static <E, R0, R> Collection<R> flatMap(@Nullable Object anyObject, @NonNull Function<E, R0> mapper) {
+    public static <E, R> Collection<R> flatMap(@Nullable Collection<Collection<E>> collection, @NonNull final Function<E, R> mapper) {
+        if (Emptys.isEmpty(collection)) {
+            return emptyArrayList();
+        }
         Preconditions.checkNotNull(mapper);
-        Collection<R0> mapped = map(anyObject, mapper);
-        final Collection<R> list = emptyCollectionByInfer(mapped);
-        forEach(mapped, new Consumer<R0>() {
+        final Collection<R> list = emptyCollectionByInfer(collection);
+        forEach(collection, new Consumer<Collection<E>>() {
             @Override
-            public void accept(R0 r) {
-                forEach(r, new Consumer<R>() {
-                    @Override
-                    public void accept(R o) {
-                        list.add(o);
-                    }
-                });
+            public void accept(Collection<E> c) {
+                Collection<R> rs = Collects.map(c, mapper);
+                list.addAll(rs);
             }
         });
         return list;
