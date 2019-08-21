@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * A simple {@link IdGenerator} that starts at 1 and increments by 1 with each call.
  */
-public class SimpleUUIDGenerator implements IdGenerator<Object> {
+public class SimpleIdGenerator implements IdGenerator<Object> {
 
     private final AtomicLong mostSigBits = new AtomicLong(0);
 
