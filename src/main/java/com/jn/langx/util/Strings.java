@@ -30,6 +30,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -121,7 +122,7 @@ public class Strings {
         }
 
         StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
-        List<String> array = Collects.map(tokenizer, new Function<String, String>() {
+        Collection<String> array = Collects.map(tokenizer, new Function<String, String>() {
             @Override
             public String apply(String input) {
                 return input.trim();

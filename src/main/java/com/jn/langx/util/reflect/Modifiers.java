@@ -8,6 +8,7 @@ import com.jn.langx.util.function.Predicate;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,14 +33,14 @@ public class Modifiers {
     }));
 
     static {
-        List<Field> fields = Reflects.getAllPublicFields(Modifier.class, true);
+        Collection<Field> fields = Reflects.getAllPublicFields(Modifier.class, true);
         fields = Collects.filter(fields, new Predicate<Field>() {
             @Override
             public boolean test(Field field) {
                 return Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers());
             }
         });
-        List<Integer> supportedModifiersInModifierClass = Collects.map(fields, new Function<Field, Integer>() {
+        Collection<Integer> supportedModifiersInModifierClass = Collects.map(fields, new Function<Field, Integer>() {
             @Override
             public Integer apply(Field field) {
                 try {

@@ -575,6 +575,20 @@ public class Collects {
         });
         return result;
     }
+    /**
+     * mapping an iterable to a list
+     */
+    public static <E, R> Collection<R> map(@Nullable Iterable<E> collection, @NonNull final Function<E, R> mapper) {
+        Preconditions.checkNotNull(mapper);
+        final Collection<R> result = emptyArrayList();
+        forEach(collection, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                result.add(mapper.apply(e));
+            }
+        });
+        return result;
+    }
 
 
     /**
@@ -684,19 +698,18 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <E> E findFirst(@Nullable Object anyObject, @Nullable Predicate<E> predicate) {
-        if (Emptys.isNull(anyObject)) {
+    public static <E> E findFirst(@Nullable Collection<E> collection, @Nullable Predicate<E> predicate) {
+        if (Emptys.isEmpty(collection)) {
             return null;
         }
-        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         if (predicate != null) {
-            for (E e : iterable) {
+            for (E e : collection) {
                 if (predicate.test(e)) {
                     return e;
                 }
             }
         } else {
-            Iterator<E> iterator = iterable.iterator();
+            Iterator<E> iterator = collection.iterator();
             if (iterator.hasNext()) {
                 return iterator.next();
             }
