@@ -397,6 +397,16 @@ public class Collects {
         return emptyArrayList();
     }
 
+    private static Collection emptyCollection(@Nullable Iterable iterable) {
+        if (iterable == null) {
+            return emptyArrayList();
+        }
+        if (iterable instanceof Collection) {
+            return emptyCollectionByInfer((Collection) iterable);
+        }
+        return asList(iterable);
+    }
+
 
     /**
      * Convert an array to a ArrayList
@@ -503,6 +513,13 @@ public class Collects {
             return asList((E[]) object, mutable, null);
         }
 
+        if (object instanceof Collection) {
+            if (!mutable) {
+                Collections.unmodifiableCollection((Collection) object);
+            }
+            return (Collection) object;
+        }
+
         if (object instanceof Iterable) {
             if (!mutable) {
                 return new WrappedIterable<E>((Iterable) object, mutable);
@@ -528,10 +545,11 @@ public class Collects {
     /**
      * Filter any object with the specified predicate
      */
-    public static <E> Collection<E> filter(@Nullable Collection<E> collection, @NonNull final Predicate<E> predicate) {
+    public static <E> Collection<E> filter(@Nullable Object anyObject, @NonNull final Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
-        final Collection<E> result = emptyCollectionByInfer(collection);
-        forEach(asIterable(collection), new Consumer<E>() {
+        Iterable<E> iterable = asIterable(anyObject);
+        final Collection<E> result = emptyCollection(iterable);
+        forEach(iterable, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 if (predicate.test(e)) {
@@ -564,10 +582,11 @@ public class Collects {
     /**
      * mapping an iterable to a list
      */
-    public static <E, R> Collection<R> map(@Nullable Collection<E> collection, @NonNull final Function<E, R> mapper) {
+    public static <E, R> Collection<R> map(@Nullable Object anyObject, @NonNull final Function<E, R> mapper) {
         Preconditions.checkNotNull(mapper);
-        final Collection<R> result = emptyCollectionByInfer(collection);
-        forEach(asIterable(collection), new Consumer<E>() {
+        Iterable<E> iterable = asIterable(anyObject);
+        final Collection<R> result = emptyCollection(iterable);
+        forEach(iterable, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 result.add(mapper.apply(e));
@@ -575,29 +594,15 @@ public class Collects {
         });
         return result;
     }
-    /**
-     * mapping an iterable to a list
-     */
-    public static <E, R> Collection<R> map(@Nullable Iterable<E> collection, @NonNull final Function<E, R> mapper) {
-        Preconditions.checkNotNull(mapper);
-        final Collection<R> result = emptyArrayList();
-        forEach(collection, new Consumer<E>() {
-            @Override
-            public void accept(E e) {
-                result.add(mapper.apply(e));
-            }
-        });
-        return result;
-    }
-
 
     /**
      * mapping an iterable to a map
      */
-    public static <E, K, V> Map<K, V> map(@Nullable Collection<E> collection, @NonNull final Mapper<E, Pair<K, V>> mapper) {
+    public static <E, K, V> Map<K, V> map(@Nullable Object anyObject, @NonNull final Mapper<E, Pair<K, V>> mapper) {
         Preconditions.checkNotNull(mapper);
         final Map<K, V> result = emptyHashMap();
-        forEach(asIterable(collection), new Consumer<E>() {
+        Iterable<E> iterable = asIterable(anyObject);
+        forEach(iterable, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 Pair<K, V> pair = mapper.apply(e);
@@ -643,8 +648,9 @@ public class Collects {
     /**
      * map a collection to another, flat it
      */
-    public static <E, R0, R> Collection<R> flatMap(@Nullable Collection<E> collection, @NonNull Function<E, R0> mapper) {
-        Collection<R0> mapped = map(collection, mapper);
+    public static <E, R0, R> Collection<R> flatMap(@Nullable Object anyObject, @NonNull Function<E, R0> mapper) {
+        Preconditions.checkNotNull(mapper);
+        Collection<R0> mapped = map(anyObject, mapper);
         final Collection<R> list = emptyCollectionByInfer(mapped);
         forEach(mapped, new Consumer<R0>() {
             @Override
@@ -763,7 +769,11 @@ public class Collects {
         while (iterator.hasNext()) {
             E e = iterator.next();
             if (predicate.test(e)) {
-                iterator.remove();
+                try {
+                    iterator.remove();
+                } catch (UnsupportedOperationException ex) {
+                    break;
+                }
                 hasRemoved = true;
             }
         }
@@ -826,7 +836,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <E> boolean allMatch(@Nullable Collection<E> collection, @NonNull Predicate<E> predicate) {
+    public static <E> boolean allMatch(@Nullable Iterable<E> collection, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
             for (E e : collection) {
@@ -860,7 +870,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <E> boolean noneMatch(@Nullable Collection<E> collection, @NonNull Predicate<E> predicate) {
+    public static <E> boolean noneMatch(@Nullable Iterable<E> collection, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
             Iterator<E> iterator = collection.iterator();

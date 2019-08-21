@@ -17,6 +17,10 @@ import java.lang.reflect.*;
 import java.net.URL;
 import java.util.*;
 
+
+/**
+ * @author jinuo.fang
+ */
 @SuppressWarnings({"unused", "unchecked"})
 public class Reflects {
 
@@ -281,27 +285,27 @@ public class Reflects {
         return field;
     }
 
-    public static List<Field> getAllDeclaredFields(Class clazz) {
+    public static Collection<Field> getAllDeclaredFields(Class clazz) {
         return getAllDeclaredFields(clazz, false);
     }
 
-    public static List<Field> getAllDeclaredFields(Class clazz, boolean containsStatic) {
+    public static Collection<Field> getAllDeclaredFields(Class clazz, boolean containsStatic) {
         Field[] fields = clazz.getDeclaredFields();
         return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
     }
 
-    public static List<Field> getAllPublicInstanceFields(Class clazz) {
+    public static Collection<Field> getAllPublicInstanceFields(Class clazz) {
         return getAllPublicFields(clazz, false);
     }
 
-    public static List<Field> getAllPublicFields(Class clazz, boolean containsStatic) {
+    public static Collection<Field> getAllPublicFields(Class clazz, boolean containsStatic) {
         Field[] fields = clazz.getFields();
         return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
     }
 
-    public static List<Field> filterFields(Field[] fields, final int... excludedModifiers) {
+    public static Collection<Field> filterFields(Field[] fields, final int... excludedModifiers) {
         final List<Integer> excludedModifierList = Collects.asList(PrimitiveArrays.wrap(excludedModifiers, false));
-        return Collects.filter(Collects.asIterable(fields, false), new Predicate<Field>() {
+        return Collects.filter(fields, new Predicate<Field>() {
             @Override
             public boolean test(final Field field) {
                 return Collects.noneMatch(excludedModifierList, new Predicate<Integer>() {
