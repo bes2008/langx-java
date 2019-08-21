@@ -83,12 +83,12 @@ public class Collects {
         return sequential ? new LinkedHashMap<K, V>() : new HashMap<K, V>();
     }
 
-    public static <K, V> Map<K, V> emptyNonAbsentHashMap(@NonNull Supplier<K, V> supplier) {
+    public static <K, V> NonAbsentHashMap<K, V> emptyNonAbsentHashMap(@NonNull Supplier<K, V> supplier) {
         Preconditions.checkNotNull(supplier);
         return new NonAbsentHashMap<K, V>(supplier);
     }
 
-    public static <K, V> Map<K, V> wrapAsNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
+    public static <K, V> WrappedNonAbsentMap<K, V> wrapAsNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
         Preconditions.checkNotNull(map);
         Preconditions.checkNotNull(supplier);
         return new WrappedNonAbsentMap<K, V>(map, supplier);
@@ -669,6 +669,9 @@ public class Collects {
      * Iterate every element
      */
     public static <E> void forEach(@Nullable Object anyObject, @NonNull Consumer<E> consumer) {
+        if (anyObject == null) {
+            return;
+        }
         Preconditions.checkNotNull(consumer);
         Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
         for (E e : iterable) {
