@@ -39,6 +39,14 @@ public final class Charsets {
     public static final Charset US_ASCII = Charset.forName("US-ASCII");
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
 
+    public Charset getCharset(String name){
+        return name == null ? Charset.defaultCharset() : Charset.forName(name);
+    }
+
+    public Charset getCharset(String name, String defaultName){
+        return name == null ? (defaultName == null ? Charset.defaultCharset() : Charset.forName(defaultName)) : Charset.forName(name);
+    }
+
 
     /**
      * Returns a new {@link CharsetEncoder} for the {@link Charset} with specified error actions.
