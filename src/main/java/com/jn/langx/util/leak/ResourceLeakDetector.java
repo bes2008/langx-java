@@ -110,13 +110,6 @@ public class ResourceLeakDetector<T> {
         }
     }
 
-    /**
-     * @deprecated Use {@link #setLevel(ResourceLeakDetector.Level)} instead.
-     */
-    @Deprecated
-    public static void setEnabled(boolean enabled) {
-        setLevel(enabled ? ResourceLeakDetector.Level.SIMPLE : ResourceLeakDetector.Level.DISABLED);
-    }
 
     /**
      * Returns {@code true} if resource leak detection is enabled.
@@ -155,56 +148,12 @@ public class ResourceLeakDetector<T> {
     private final int samplingInterval;
 
     /**
-     * @deprecated use {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class, int, long)}.
-     */
-    @Deprecated
-    public ResourceLeakDetector(Class<?> resourceType) {
-        this(Reflects.getSimpleClassName(resourceType));
-    }
-
-    /**
-     * @deprecated use {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class, int, long)}.
-     */
-    @Deprecated
-    public ResourceLeakDetector(String resourceType) {
-        this(resourceType, DEFAULT_SAMPLING_INTERVAL, Long.MAX_VALUE);
-    }
-
-    /**
-     * @param maxActive This is deprecated and will be ignored.
-     * @deprecated Use {@link ResourceLeakDetector#ResourceLeakDetector(Class, int)}.
-     * <p>
      * This should not be used directly by users of {@link ResourceLeakDetector}.
      * Please use {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class)}
      * or {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class, int, long)}
      */
-    @Deprecated
-    public ResourceLeakDetector(Class<?> resourceType, int samplingInterval, long maxActive) {
-        this(resourceType, samplingInterval);
-    }
-
-    /**
-     * This should not be used directly by users of {@link ResourceLeakDetector}.
-     * Please use {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class)}
-     * or {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class, int, long)}
-     */
-    @SuppressWarnings("deprecation")
     public ResourceLeakDetector(Class<?> resourceType, int samplingInterval) {
-        this(Reflects.getSimpleClassName(resourceType), samplingInterval, Long.MAX_VALUE);
-    }
-
-    /**
-     * @param maxActive This is deprecated and will be ignored.
-     * @deprecated use {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class, int, long)}.
-     * <p>
-     */
-    @Deprecated
-    public ResourceLeakDetector(String resourceType, int samplingInterval, long maxActive) {
-        if (resourceType == null) {
-            throw new NullPointerException("resourceType");
-        }
-
-        this.resourceType = resourceType;
+        this.resourceType = Reflects.getSimpleClassName(resourceType);
         this.samplingInterval = samplingInterval;
     }
 
@@ -302,12 +251,6 @@ public class ResourceLeakDetector<T> {
     }
 
 
-    /**
-     * @deprecated This method will no longer be invoked by {@link ResourceLeakDetector}.
-     */
-    @Deprecated
-    protected void reportInstancesLeak(String resourceType) {
-    }
 
     @SuppressWarnings("deprecation")
     private static final class DefaultResourceLeak<T>
