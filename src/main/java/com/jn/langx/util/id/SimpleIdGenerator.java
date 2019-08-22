@@ -1,4 +1,4 @@
-package com.jn.langx.util;
+package com.jn.langx.util.id;
 
 import com.jn.langx.IdGenerator;
 
