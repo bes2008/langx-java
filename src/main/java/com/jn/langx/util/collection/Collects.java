@@ -442,6 +442,16 @@ public class Collects {
             case ArrayList:
                 list = new ArrayList<E>(immutableList);
                 break;
+            case STACK:
+                list = new Stack<E>();
+                list.addAll(immutableList);
+                break;
+            case VECTOR:
+                list = new Vector<E>(immutableList);
+                break;
+            case CopyOnWrite:
+                list = new CopyOnWriteArrayList<E>(immutableList);
+                break;
             default:
                 list = new ArrayList<E>(immutableList);
                 break;
