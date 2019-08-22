@@ -16,6 +16,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.net.URL;
 import java.util.*;
+import java.util.regex.Pattern;
 
 
 /**
@@ -24,12 +25,18 @@ import java.util.*;
 @SuppressWarnings({"unused", "unchecked"})
 public class Reflects {
 
+    private static final Pattern lamdbaPattern = Pattern.compile(".*\\$\\$Lambda\\$[0-9]+/.*");
+
     public static String getTypeName(@NonNull Class type) {
         return Types.typeToString(type);
     }
 
     public static boolean isInnerClass(@NonNull Class<?> clazz) {
         return clazz.isMemberClass() && !isStatic(clazz);
+    }
+
+    public static boolean isLambda(@NonNull Class<?> clazz) {
+        return clazz.isSynthetic() && lamdbaPattern.matcher(getSimpleClassName(clazz)).matches();
     }
 
     public static boolean isStatic(@NonNull Class<?> clazz) {
@@ -52,6 +59,7 @@ public class Reflects {
     public static String getSimpleClassName(@NonNull Object obj) {
         return getSimpleClassName(obj.getClass());
     }
+
     public static String getSimpleClassName(@NonNull Class clazz) {
         return clazz.getSimpleName();
     }
@@ -606,7 +614,7 @@ public class Reflects {
         return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
-    public static <V> V invoke(@NonNull Method method, @NonNull Object object, @Nullable Object[] parameters, boolean force, boolean throwException) throws IllegalAccessException, InvocationTargetException {
+    public static <V> V invoke(@NonNull Method method, @Nullable Object object, @Nullable Object[] parameters, boolean force, boolean throwException) throws IllegalAccessException, InvocationTargetException {
         if (!force && !method.isAccessible()) {
             if (throwException) {
                 throw new IllegalAccessException(new ExceptionMessage("Method {0} is not accessible", method.toString()).getMessage());
@@ -641,6 +649,14 @@ public class Reflects {
             }
             return null;
         }
+    }
+
+    public static <V> V invokeAnyStaticMethod(Class clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        Method method = getAnyMethod(clazz, methodName, parameterTypes);
+        if (Modifiers.isStatic(method)) {
+            return invoke(method, null, parameters, false, throwException);
+        }
+        throw new NoSuchMethodException();
     }
 
     public static String getMethodString(@Nullable String clazzFQN,
