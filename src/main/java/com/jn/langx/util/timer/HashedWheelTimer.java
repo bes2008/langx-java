@@ -63,18 +63,15 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class HashedWheelTimer implements Timer {
 
-    private static final Logger logger =
-            LoggerFactory.getLogger(HashedWheelTimer.class);
+    private static final Logger logger = LoggerFactory.getLogger(HashedWheelTimer.class);
 
     private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger();
     private static final AtomicBoolean WARNED_TOO_MANY_INSTANCES = new AtomicBoolean();
     private static final int INSTANCE_COUNT_LIMIT = 64;
     private static final long MILLISECOND_NANOS = TimeUnit.MILLISECONDS.toNanos(1);
-    private static final ResourceLeakDetector<HashedWheelTimer> leakDetector = ResourceLeakDetectorFactory.instance()
-            .newResourceLeakDetector(HashedWheelTimer.class, 1);
+    private static final ResourceLeakDetector<HashedWheelTimer> leakDetector = ResourceLeakDetectorFactory.instance().newResourceLeakDetector(HashedWheelTimer.class, 1);
 
-    private static final AtomicIntegerFieldUpdater<HashedWheelTimer> WORKER_STATE_UPDATER =
-            AtomicIntegerFieldUpdater.newUpdater(HashedWheelTimer.class, "workerState");
+    private static final AtomicIntegerFieldUpdater<HashedWheelTimer> WORKER_STATE_UPDATER = AtomicIntegerFieldUpdater.newUpdater(HashedWheelTimer.class, "workerState");
 
     private final ResourceLeakTracker<HashedWheelTimer> leak;
     private final HashedWheelTimer.Worker worker = new HashedWheelTimer.Worker();
@@ -175,7 +172,7 @@ public class HashedWheelTimer implements Timer {
      * @throws IllegalArgumentException if either of {@code tickDuration} and {@code ticksPerWheel} is &lt;= 0
      */
     public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel) {
-        this(threadFactory, tickDuration, unit, ticksPerWheel, true);
+        this(threadFactory, tickDuration, unit, ticksPerWheel, false);
     }
 
     /**

@@ -150,7 +150,7 @@ public class ResourceLeakDetector<T> {
     /**
      * This should not be used directly by users of {@link ResourceLeakDetector}.
      * Please use {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class)}
-     * or {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class, int, long)}
+     * or {@link ResourceLeakDetectorFactory#newResourceLeakDetector(Class, int)}
      */
     public ResourceLeakDetector(Class<?> resourceType, int samplingInterval) {
         this.resourceType = Reflects.getSimpleClassName(resourceType);
