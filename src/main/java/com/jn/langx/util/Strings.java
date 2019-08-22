@@ -29,7 +29,9 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.io.Charsets;
 
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -182,4 +184,63 @@ public class Strings {
         }
         return true;
     }
+
+    public static byte[] getBytesUtf8(final String string) {
+        return getBytes(string, Charsets.UTF_8);
+    }
+    private static byte[] getBytes(final String string, final Charset charset) {
+        if (string == null) {
+            return null;
+        }
+        return string.getBytes(charset);
+    }
+
+    /**
+     * Constructs a new <code>String</code> by decoding the specified array of bytes using the UTF-8 charset.
+     *
+     * @param bytes
+     *            The bytes to be decoded into characters
+     * @return A new <code>String</code> decoded from the specified array of bytes using the UTF-8 charset,
+     *         or <code>null</code> if the input byte array was <code>null</code>.
+     * @throws NullPointerException
+     *             Thrown if {@link org.apache.commons.codec.Charsets#UTF_8} is not initialized, which should never happen since it is
+     *             required by the Java platform specification.
+     * @since As of 1.7, throws {@link NullPointerException} instead of UnsupportedEncodingException
+     */
+    public static String newStringUtf8(final byte[] bytes) {
+        return newString(bytes, Charsets.UTF_8);
+    }
+
+    /**
+     * Constructs a new <code>String</code> by decoding the specified array of bytes using the given charset.
+     *
+     * @param bytes
+     *            The bytes to be decoded into characters
+     * @param charset
+     *            The {@link Charset} to encode the <code>String</code>; not {@code null}
+     * @return A new <code>String</code> decoded from the specified array of bytes using the given charset,
+     *         or <code>null</code> if the input byte array was <code>null</code>.
+     * @throws NullPointerException
+     *             Thrown if charset is {@code null}
+     */
+    private static String newString(final byte[] bytes, final Charset charset) {
+        return bytes == null ? null : new String(bytes, charset);
+    }
+
+    /**
+     * Constructs a new <code>String</code> by decoding the specified array of bytes using the US-ASCII charset.
+     *
+     * @param bytes
+     *            The bytes to be decoded into characters
+     * @return A new <code>String</code> decoded from the specified array of bytes using the US-ASCII charset,
+     *         or <code>null</code> if the input byte array was <code>null</code>.
+     * @throws NullPointerException
+     *             Thrown if {@link org.apache.commons.codec.Charsets#US_ASCII} is not initialized, which should never happen since it is
+     *             required by the Java platform specification.
+     * @since As of 1.7, throws {@link NullPointerException} instead of UnsupportedEncodingException
+     */
+    public static String newStringUsAscii(final byte[] bytes) {
+        return newString(bytes, org.apache.commons.codec.Charsets.US_ASCII);
+    }
+
 }
