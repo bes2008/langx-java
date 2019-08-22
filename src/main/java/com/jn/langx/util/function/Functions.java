@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Functions {
+    /*******************************************
+     *   Function, Mapper
+     *******************************************/
     public static Mapper<Object, String> toStringFunction = new Mapper<Object, String>() {
         @Override
         public String apply(Object input) {
@@ -17,6 +20,9 @@ public class Functions {
         }
     };
 
+    /**********************************************
+     *   Predicate
+     **********************************************/
     public static Predicate<Object> nonNullPredicate = new Predicate<Object>() {
         @Override
         public boolean test(Object value) {
@@ -24,6 +30,17 @@ public class Functions {
         }
     };
 
+    public static Predicate<Object> nullPredicate= new Predicate<Object>(){
+        @Override
+        public boolean test(Object value) {
+            return value == null;
+        }
+    };
+
+
+    /**********************************************
+     * Supplier
+     **********************************************/
     public static Supplier emptyArrayListSupplier = new Supplier() {
         @Override
         public Object get(Object input) {
