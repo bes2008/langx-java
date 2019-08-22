@@ -10,8 +10,6 @@ import static com.jn.langx.codec.BaseNCodec.EOF;
 
 /**
  * Abstract superclass for Base-N input streams.
- *
- * @since 1.5
  */
 public class BaseNCodecInputStream extends FilterInputStream {
 
@@ -34,7 +32,6 @@ public class BaseNCodecInputStream extends FilterInputStream {
      *
      * @return <code>0</code> if the {@link InputStream} has reached <code>EOF</code>,
      * <code>1</code> otherwise
-     * @since 1.7
      */
     @Override
     public int available() throws IOException {
@@ -48,11 +45,10 @@ public class BaseNCodecInputStream extends FilterInputStream {
 
     /**
      * Marks the current position in this input stream.
-     * <p>The {@link #mark} method of {@link org.apache.commons.codec.binary.BaseNCodecInputStream} does nothing.</p>
+     * <p>The {@link #mark} method of {@link BaseNCodecInputStream} does nothing.</p>
      *
      * @param readLimit the maximum limit of bytes that can be read before the mark position becomes invalid.
      * @see #markSupported()
-     * @since 1.7
      */
     @Override
     public synchronized void mark(final int readLimit) {
@@ -147,10 +143,9 @@ public class BaseNCodecInputStream extends FilterInputStream {
     /**
      * Repositions this stream to the position at the time the mark method was last called on this input stream.
      * <p>
-     * The {@link #reset} method of {@link org.apache.commons.codec.binary.BaseNCodecInputStream} does nothing except throw an {@link IOException}.
+     * The {@link #reset} method of {@link BaseNCodecInputStream} does nothing except throw an {@link IOException}.
      *
      * @throws IOException if this method is invoked
-     * @since 1.7
      */
     @Override
     public synchronized void reset() throws IOException {
@@ -161,7 +156,6 @@ public class BaseNCodecInputStream extends FilterInputStream {
      * {@inheritDoc}
      *
      * @throws IllegalArgumentException if the provided skip length is negative
-     * @since 1.7
      */
     @Override
     public long skip(final long n) throws IOException {

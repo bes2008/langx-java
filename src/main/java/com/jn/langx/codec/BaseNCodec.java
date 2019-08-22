@@ -17,8 +17,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * Holds thread context so classes can be thread-safe.
      * <p>
      * This class is not itself thread-safe; each thread must allocate its own copy.
-     *
-     * @since 1.7
      */
     protected static class Context {
 
@@ -86,8 +84,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
 
     /**
      * EOF
-     *
-     * @since 1.7
      */
     static final int EOF = -1;
 
@@ -336,7 +332,7 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @param pArray a byte array containing binary data
      * @return String containing only character data in the appropriate alphabet.
-     * @since 1.5
+     * <p>
      * This is a duplicate of {@link #encodeToString(byte[])}; it was merged during refactoring.
      */
     public String encodeAsString(final byte[] pArray) {
@@ -414,7 +410,6 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param offset initial offset of the subarray.
      * @param length length of the subarray.
      * @return A byte array containing only the base N alphabetic character data
-     * @since 1.11
      */
     public byte[] encode(final byte[] pArray, final int offset, final int length) {
         if (pArray == null || pArray.length == 0) {

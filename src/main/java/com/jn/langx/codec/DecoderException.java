@@ -17,8 +17,6 @@ public class DecoderException extends Exception {
     /**
      * Constructs a new exception with <code>null</code> as its detail message. The cause is not initialized, and may
      * subsequently be initialized by a call to {@link #initCause}.
-     *
-     * @since 1.4
      */
     public DecoderException() {
         super();
@@ -43,7 +41,6 @@ public class DecoderException extends Exception {
      * @param message The detail message which is saved for later retrieval by the {@link #getMessage()} method.
      * @param cause   The cause which is saved for later retrieval by the {@link #getCause()} method. A <code>null</code>
      *                value is permitted, and indicates that the cause is nonexistent or unknown.
-     * @since 1.4
      */
     public DecoderException(final String message, final Throwable cause) {
         super(message, cause);
@@ -56,7 +53,6 @@ public class DecoderException extends Exception {
      *
      * @param cause The cause which is saved for later retrieval by the {@link #getCause()} method. A <code>null</code>
      *              value is permitted, and indicates that the cause is nonexistent or unknown.
-     * @since 1.4
      */
     public DecoderException(final Throwable cause) {
         super(cause);

@@ -21,7 +21,6 @@ public class BaseNCodecOutputStream extends FilterOutputStream {
 
     private final BaseNCodec.Context context = new BaseNCodec.Context();
 
-    // TODO should this be protected?
     public BaseNCodecOutputStream(final OutputStream out, final BaseNCodec basedCodec, final boolean doEncode) {
         super(out);
         this.baseNCodec = basedCodec;
@@ -122,7 +121,6 @@ public class BaseNCodecOutputStream extends FilterOutputStream {
      * Writes EOF.
      *
      * @throws IOException if an I/O error occurs.
-     * @since 1.11
      */
     public void eof() throws IOException {
         // Notify encoder of EOF (-1).

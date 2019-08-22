@@ -35,7 +35,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>This class also provides additional commonly used bounded random
  * generation methods.
  * <p>
- * //since 1.7
  * //author Doug Lea
  */
 @SuppressWarnings("all")
