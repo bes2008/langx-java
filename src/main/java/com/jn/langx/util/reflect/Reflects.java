@@ -650,7 +650,9 @@ public class Reflects {
             return null;
         }
     }
-
+    public static <V> V invokeAnyStaticMethod(String clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        return invokeAnyStaticMethod(Class.forName(clazz), methodName, parameterTypes, parameters, force, throwException);
+    }
     public static <V> V invokeAnyStaticMethod(Class clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = getAnyMethod(clazz, methodName, parameterTypes);
         if (Modifiers.isStatic(method)) {

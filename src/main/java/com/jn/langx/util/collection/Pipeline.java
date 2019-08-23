@@ -144,18 +144,29 @@ public class Pipeline<E> {
         return new Pipeline<E>(collect(Collects.<E>toList()));
     }
 
+    public void addTo(final Collection<E> collection) {
+        Preconditions.checkNotNull(collection);
+        forEach(new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                collection.add(e);
+            }
+        });
+    }
+
     public static <T> Pipeline<T> of(Object anyObject) {
-        Collection<T> list = (Collection<T>) Collects.asCollection(Collects.asIterable(anyObject));
+        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(anyObject));
         return new Pipeline<T>(list);
     }
 
     public static <T> Pipeline<T> of(Iterable<T> iterable) {
-        Collection<T> list = (Collection<T>) Collects.asCollection(iterable);
+        Collection<T> list = Collects.<T>asCollection(iterable);
         return new Pipeline<T>(list);
     }
 
     public static <T> Pipeline<T> of(T[] array) {
-        Collection<T> list = (Collection<T>) Collects.asCollection(Collects.asIterable(array));
+        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(array));
         return new Pipeline<T>(list);
     }
+
 }

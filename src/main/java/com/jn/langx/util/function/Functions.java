@@ -3,56 +3,65 @@ package com.jn.langx.util.function;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Functions {
     /*******************************************
      *   Function, Mapper
      *******************************************/
-    public static Mapper<Object, String> toStringFunction = new Mapper<Object, String>() {
-        @Override
-        public String apply(Object input) {
-            Preconditions.checkNotNull(input);
-            return input.toString();
-        }
-    };
+    public static <E> Mapper<E, String> toStringFunction() {
+        return new Mapper<E, String>() {
+            @Override
+            public String apply(E input) {
+                Preconditions.checkNotNull(input);
+                return input.toString();
+            }
+        };
+    }
 
     /**********************************************
      *   Predicate
      **********************************************/
-    public static Predicate<Object> nonNullPredicate = new Predicate<Object>() {
-        @Override
-        public boolean test(Object value) {
-            return value != null;
-        }
-    };
+    public static <T> Predicate<T> nonNullPredicate() {
+        return new Predicate<T>() {
+            @Override
+            public boolean test(T value) {
+                return value != null;
+            }
+        };
+    }
 
-    public static Predicate<Object> nullPredicate= new Predicate<Object>(){
-        @Override
-        public boolean test(Object value) {
-            return value == null;
-        }
-    };
+
+    public static <T> Predicate<T> nullPredicate() {
+        return new Predicate<T>() {
+            @Override
+            public boolean test(T value) {
+                return value == null;
+            }
+        };
+    }
 
 
     /**********************************************
      * Supplier
      **********************************************/
-    public static Supplier emptyArrayListSupplier = new Supplier() {
-        @Override
-        public Object get(Object input) {
-            return Collects.emptyArrayList();
-        }
-    };
-    public static Supplier emptyLinkedListSupplier = new Supplier() {
-        @Override
-        public Object get(Object input) {
-            return Collects.emptyLinkedList();
-        }
-    };
+    public static <K, V> Supplier<K, List<V>> emptyArrayListSupplier() {
+        return new Supplier<K, List<V>>() {
+            @Override
+            public List<V> get(K input) {
+                return Collects.emptyArrayList();
+            }
+        };
+    }
+
+    public static <K, V> Supplier<K, List<V>> emptyLinkedListSupplier() {
+        return new Supplier<K, List<V>>() {
+            @Override
+            public List<V> get(K input) {
+                return Collects.emptyLinkedList();
+            }
+        };
+    }
 
     public static <E> Supplier0<HashSet<E>> emptyHashSetSupplier0() {
         return new Supplier0<HashSet<E>>() {
@@ -72,12 +81,14 @@ public class Functions {
         };
     }
 
-    public static Supplier emptyLinkedHashSetSupplier = new Supplier() {
-        @Override
-        public Object get(Object input) {
-            return Collects.emptyHashSet(true);
-        }
-    };
+    public static <I, E> Supplier<I, LinkedHashSet<E>> emptyLinkedHashSetSupplier() {
+        return new Supplier<I, LinkedHashSet<E>>() {
+            @Override
+            public LinkedHashSet<E> get(I input) {
+                return (LinkedHashSet<E>) Collects.emptyHashSet(true);
+            }
+        };
+    }
 
     public static <E> Supplier0<TreeSet<E>> emptyTreeSetSupplier0(final Comparator<E> comparator) {
         return new Supplier0<TreeSet<E>>() {

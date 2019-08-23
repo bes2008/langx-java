@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
+import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
+
 public class Platform {
     private static final Logger logger = LoggerFactory.getLogger(Platform.class);
     public static boolean isWindows = isWindows0();
@@ -119,5 +121,45 @@ public class Platform {
             }
         }
         return true;
+    }
+
+    /**
+     * Returns the path to the system temporary directory.
+     *
+     * @return the path to the system temporary directory.
+     *
+     */
+    public static String getTempDirectoryPath() {
+        return getJavaIOTmpDir();
+    }
+
+    /**
+     * Returns a {@link File} representing the system temporary directory.
+     *
+     * @return the system temporary directory.
+     *
+     */
+    public static File getTempDirectory() {
+        return new File(getTempDirectoryPath());
+    }
+
+    /**
+     * Returns the path to the user's home directory.
+     *
+     * @return the path to the user's home directory.
+     *
+     */
+    public static String getUserHomeDirectoryPath() {
+        return SystemPropertys.getUserHome();
+    }
+
+    /**
+     * Returns a {@link File} representing the user's home directory.
+     *
+     * @return the user's home directory.
+     *
+     */
+    public static File getUserHomeDirectory() {
+        return new File(getUserHomeDirectoryPath());
     }
 }
