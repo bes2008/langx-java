@@ -951,27 +951,6 @@ public class Collects {
         return list.subList(n, list.size());
     }
 
-    /**
-     * Concat two collection to one
-     */
-    public static <E> Collection<E> concat(@Nullable Collection<E> c1, @Nullable Collection<E> c2, boolean newOne) {
-        if (newOne) {
-            List<E> l = emptyArrayList();
-            if (Emptys.isNotEmpty(c1)) {
-                l.addAll(c1);
-            }
-            if (Emptys.isNotEmpty(c2)) {
-                l.addAll(c2);
-            }
-            return l;
-        } else {
-            Preconditions.checkNotNull(c1);
-            if (Emptys.isNotEmpty(c2)) {
-                c1.addAll(c2);
-            }
-            return c1;
-        }
-    }
 
     public static <E extends Comparable<E>> List<E> sort(@Nullable Collection<E> collection, boolean reverse) {
         return sort(collection, new ComparableComparator<E>(), reverse);
@@ -1287,5 +1266,108 @@ public class Collects {
                 };
             }
         };
+    }
+
+    public static <E> void addAll(final Collection<E> collection, Iterable<E> iterable) {
+        if (Emptys.isNotEmpty(iterable)) {
+            forEach(iterable, new Consumer<E>() {
+                @Override
+                public void accept(E e) {
+                    collection.add(e);
+                }
+            });
+        }
+    }
+
+    public static <E> void addAll(Collection<E> collection, E[] iterator) {
+        addAll(collection, Collects.<E>asIterable(iterator));
+    }
+
+    public static <E> void addAll(Collection<E> collection, Iterator<E> iterator) {
+        addAll(collection, Collects.<E>asIterable(iterator));
+    }
+
+    /**
+     * Concat two collection to one
+     */
+    public static <E> Collection<E> concat(@Nullable Collection<E> c1, @Nullable Collection<E> c2) {
+        return concat(c1, c2, true);
+    }
+
+    /**
+     * Concat two collection to one
+     */
+    public static <E> Collection<E> concat(@Nullable Collection<E> c1, @Nullable Collection<E> c2, boolean newOne) {
+        if (newOne) {
+            List<E> l = emptyArrayList();
+            if (Emptys.isNotEmpty(c1)) {
+                l.addAll(c1);
+            }
+            if (Emptys.isNotEmpty(c2)) {
+                l.addAll(c2);
+            }
+            return l;
+        } else {
+            Preconditions.checkNotNull(c1);
+            if (Emptys.isNotEmpty(c2)) {
+                c1.addAll(c2);
+            }
+            return c1;
+        }
+    }
+
+    public static <E> Collection<E> merge(@Nullable Collection<E> c1, @Nullable Collection<E> c2) {
+        return merge(c1, c2, true);
+    }
+
+    public static <E> Collection<E> merge(@Nullable final Collection<E> c1, @Nullable Collection<E> c2, boolean newOne) {
+        if (newOne) {
+            Set<E> set = emptyHashSet(true);
+            if (Emptys.isNotEmpty(c1)) {
+                set.addAll(c1);
+            }
+            if (Emptys.isNotEmpty(c2)) {
+                set.addAll(c2);
+            }
+            return set;
+        } else {
+            Preconditions.checkNotNull(c1);
+            if (Emptys.isNotEmpty(c2)) {
+                Set set = emptyHashSet(true);
+                set.addAll(c2);
+                forEach(c2, new Consumer<E>() {
+                    @Override
+                    public void accept(E e) {
+                        if (!c1.contains(e)) {
+                            c1.add(e);
+                        }
+                    }
+                });
+            }
+            return c1;
+        }
+    }
+
+    public static <K, V> Map<K, V> merge(@Nullable Map<K, V> map1, @Nullable Map<K, V> map2) {
+        return merge(map1, map2, true);
+    }
+
+    public static <K, V> Map<K, V> merge(@Nullable Map<K, V> map1, @Nullable Map<K, V> map2, boolean newOne) {
+        if (newOne) {
+            Map<K, V> map = emptyHashMap();
+            if (Emptys.isNotEmpty(map1)) {
+                map.putAll(map1);
+            }
+            if (Emptys.isNotEmpty(map2)) {
+                map.putAll(map2);
+            }
+            return map;
+        } else {
+            Preconditions.checkNotNull(map1);
+            if (Emptys.isNotEmpty(map2)) {
+                map1.putAll(map2);
+            }
+            return map1;
+        }
     }
 }
