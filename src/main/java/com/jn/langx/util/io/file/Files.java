@@ -1714,7 +1714,7 @@ public class Files {
         try {
             Class pathClass = Class.forName("java.nio.file.Path");
             Object filePathObject = Reflects.invokePublicMethod(file, "toPath", null, null, true, false);
-            return (Boolean) Reflects.invokeAnyStaticMethod("java.nio.file.Files", "isSymbolicLink", new Class[]{pathClass}, new Object[]{filePathObject}, true, false);
+            return Reflects.<Boolean>invokeAnyStaticMethod("java.nio.file.Files", "isSymbolicLink", new Class[]{pathClass}, new Object[]{filePathObject}, true, false);
         } catch (Throwable ex) {
             return false;
         }

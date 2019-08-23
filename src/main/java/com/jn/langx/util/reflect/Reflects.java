@@ -631,7 +631,8 @@ public class Reflects {
         try {
             return (V) invokeMethodOrNull(method, object, parameters, throwException);
         } finally {
-            method.setAccessible(false);
+            // method.setAccessible(false);
+            // ignore it
         }
     }
 
@@ -656,7 +657,7 @@ public class Reflects {
     public static <V> V invokeAnyStaticMethod(Class clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         Method method = getAnyMethod(clazz, methodName, parameterTypes);
         if (Modifiers.isStatic(method)) {
-            return invoke(method, null, parameters, false, throwException);
+            return invoke(method, null, parameters, force, throwException);
         }
         throw new NoSuchMethodException();
     }
