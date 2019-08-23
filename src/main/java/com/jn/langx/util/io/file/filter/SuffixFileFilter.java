@@ -54,7 +54,7 @@ public class SuffixFileFilter extends AbstractFileFilter {
 
     @Override
     public boolean accept(File file) {
-        String suffix = ignoreCase ? Filenames.getSuffixAsLowCase(file.getAbsolutePath()) : Filenames.getSuffix(file.getAbsolutePath());
+        String suffix = ignoreCase ? Filenames.getSuffixAsLowCase(file.getPath()) : Filenames.getSuffix(file.getAbsolutePath());
         return this.suffixes.contains(suffix);
     }
 
