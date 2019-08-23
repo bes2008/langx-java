@@ -45,6 +45,13 @@ public class Throwables {
         return ex;
     }
 
+    public static RuntimeException wrapAsRuntimeException(Throwable ex){
+        if(ex instanceof RuntimeException){
+            return (RuntimeException)ex;
+        }
+        return new RuntimeException(ex);
+    }
+
     public static void throwAsRuntimeException(Throwable ex) {
         if (ex instanceof RuntimeException) {
             throw (RuntimeException) ex;

@@ -6,6 +6,7 @@ import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Predicate;
@@ -339,15 +340,19 @@ public class Reflects {
         }
     }
 
-    public static <V> V getPublicFieldValue(@NonNull Object object, @NonNull String fieldName, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
-        Field field = getPublicField(object.getClass(), fieldName);
-        if (field == null) {
-            if (throwException) {
-                throw new NoSuchFieldException(new ExceptionMessage("Can't find public field {0} in the class {1}", fieldName, object.getClass().getCanonicalName()).getMessage());
+    public static <V> V getPublicFieldValue(@NonNull Object object, @NonNull String fieldName, boolean throwException) {
+        try {
+            Field field = getPublicField(object.getClass(), fieldName);
+            if (field == null) {
+                if (throwException) {
+                    throw new NoSuchFieldException(new ExceptionMessage("Can't find public field {0} in the class {1}", fieldName, object.getClass().getCanonicalName()).getMessage());
+                }
+                return null;
+            } else {
+                return (V) field.get(object);
             }
-            return null;
-        } else {
-            return (V) field.get(object);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
@@ -360,14 +365,18 @@ public class Reflects {
     }
 
     public static <V> V getDeclaredFieldValue(@NonNull Object object, String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
-        Field field = getDeclaredField(object.getClass(), fieldName);
-        if (field == null) {
-            if (throwException) {
-                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1}", fieldName, object.getClass().getCanonicalName()).getMessage());
+        try {
+            Field field = getDeclaredField(object.getClass(), fieldName);
+            if (field == null) {
+                if (throwException) {
+                    throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1}", fieldName, object.getClass().getCanonicalName()).getMessage());
+                }
+                return null;
+            } else {
+                return getFieldValue(field, object, force, throwException);
             }
-            return null;
-        } else {
-            return getFieldValue(field, object, force, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
@@ -379,28 +388,45 @@ public class Reflects {
         }
     }
 
-    public static <V> V getAnyFieldValue(@NonNull Object object, @NonNull String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
-        Field field = getAnyField(object.getClass(), fieldName);
-        if (field == null) {
-            if (throwException) {
-                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+    public static <V> V getAnyFieldValue(@NonNull Object object, @NonNull String fieldName, boolean force, boolean throwException) {
+        try {
+            Field field = getAnyField(object.getClass(), fieldName);
+            if (field == null) {
+                if (throwException) {
+                    throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+                }
+                return null;
+            } else {
+                return getFieldValue(field, object, force, throwException);
             }
-            return null;
-        } else {
-            return getFieldValue(field, object, force, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
-    public static <V> V getFieldValue(@NonNull Field field, @NonNull Object object, boolean force, boolean throwException) throws IllegalAccessException {
-        if (!force && !field.isAccessible()) {
-            if (throwException) {
-                throw new IllegalAccessException();
+    public static <V> V getFieldValue(@NonNull Field field, @NonNull Object object, boolean force, boolean throwException) {
+        try {
+            if (!force && !field.isAccessible()) {
+                if (throwException) {
+                    throw new IllegalAccessException();
+                }
+                return null;
             }
-            return null;
-        }
 
-        // accessible
-        if (field.isAccessible()) {
+            // accessible
+            if (field.isAccessible()) {
+                try {
+                    return (V) field.get(object);
+                } catch (IllegalArgumentException ex) {
+                    if (throwException) {
+                        throw ex;
+                    }
+                    return null;
+                }
+            }
+
+            // unaccessible && force
+            field.setAccessible(true);
             try {
                 return (V) field.get(object);
             } catch (IllegalArgumentException ex) {
@@ -408,92 +434,103 @@ public class Reflects {
                     throw ex;
                 }
                 return null;
-            }
-        }
-
-        // unaccessible && force
-        field.setAccessible(true);
-        try {
-            return (V) field.get(object);
-        } catch (IllegalArgumentException ex) {
-            if (throwException) {
-                throw ex;
-            }
-            return null;
-        } finally {
-            field.setAccessible(false);
-        }
-    }
-
-    public static void setFieldValue(@NonNull Field field, @NonNull Object target, Object value, boolean force, boolean throwException) throws NullPointerException, IllegalAccessException {
-        if (Emptys.isEmpty(field)) {
-            if (throwException) {
-                Preconditions.checkNotNull(field);
-            }
-        } else {
-            if (!force && !field.isAccessible()) {
-                if (throwException) {
-                    throw new IllegalAccessException();
-                }
-                return;
-            }
-
-            if (field.isAccessible()) {
-                if (throwException) {
-                    field.set(target, value);
-                } else {
-                    try {
-                        field.set(target, value);
-                    } catch (Throwable ex) {
-                        // ignore it
-                    }
-                }
-                return;
-            }
-
-            field.setAccessible(true);
-            try {
-                field.set(target, value);
-            } catch (Throwable ex) {
-                if (throwException) {
-                    throw new RuntimeException(ex);
-                }
             } finally {
-                field.setAccessible(false);
+                // field.setAccessible(false);
+                // ignore it
             }
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
-    public static void setPublicFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
-        Field field = getPublicField(object.getClass(), fieldName);
-        if (field == null) {
-            if (throwException) {
-                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+    public static void setFieldValue(@NonNull Field field, @NonNull Object target, Object value, boolean force, boolean throwException) {
+        try {
+            if (Emptys.isEmpty(field)) {
+                if (throwException) {
+                    Preconditions.checkNotNull(field);
+                }
+            } else {
+                if (!force && !field.isAccessible()) {
+                    if (throwException) {
+                        throw new IllegalAccessException();
+                    }
+                    return;
+                }
+
+                if (field.isAccessible()) {
+                    if (throwException) {
+                        field.set(target, value);
+                    } else {
+                        try {
+                            field.set(target, value);
+                        } catch (Throwable ex) {
+                            // ignore it
+                        }
+                    }
+                    return;
+                }
+
+                field.setAccessible(true);
+                try {
+                    field.set(target, value);
+                } catch (Throwable ex) {
+                    if (throwException) {
+                        throw new RuntimeException(ex);
+                    }
+                } finally {
+                    // field.setAccessible(false);
+                    // ignore it
+                }
             }
-        } else {
-            setFieldValue(field, object, value, force, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
-    public static void setDeclaredFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
-        Field field = getDeclaredField(object.getClass(), fieldName);
-        if (field == null) {
-            if (throwException) {
-                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+    public static void setPublicFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) {
+        try {
+            Field field = getPublicField(object.getClass(), fieldName);
+            if (field == null) {
+                if (throwException) {
+                    throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+                }
+            } else {
+                setFieldValue(field, object, value, force, throwException);
             }
-        } else {
-            setFieldValue(field, object, value, force, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
-    public static void setAnyFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
-        Field field = getAnyField(object.getClass(), fieldName);
-        if (field == null) {
-            if (throwException) {
-                throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+    public static void setDeclaredFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) {
+        try {
+            Field field = getDeclaredField(object.getClass(), fieldName);
+            if (field == null) {
+                if (throwException) {
+                    throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+                }
+            } else {
+                setFieldValue(field, object, value, force, throwException);
             }
-        } else {
-            setFieldValue(field, object, value, force, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
+        }
+    }
+
+    public static void setAnyFieldValue(@NonNull Object object, @NonNull String fieldName, Object value, boolean force, boolean throwException) {
+        try {
+
+
+            Field field = getAnyField(object.getClass(), fieldName);
+            if (field == null) {
+                if (throwException) {
+                    throw new NoSuchFieldException(new ExceptionMessage("Can't find a declared field {0} in the class {1} and its all super class", fieldName, object.getClass().getCanonicalName()).getMessage());
+                }
+            } else {
+                setFieldValue(field, object, value, force, throwException);
+            }
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
@@ -565,15 +602,19 @@ public class Reflects {
         }
     }
 
-    public static <V> V invokePublicMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        Method method = getPublicMethod(object.getClass(), methodName, parameterTypes);
-        if (method == null) {
-            if (throwException) {
-                throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+    public static <V> V invokePublicMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) {
+        try {
+            Method method = getPublicMethod(object.getClass(), methodName, parameterTypes);
+            if (method == null) {
+                if (throwException) {
+                    throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+                }
+                return null;
             }
-            return null;
+            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
-        return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
     public static <V> V invokeDeclaredMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
@@ -584,15 +625,19 @@ public class Reflects {
         }
     }
 
-    public static <V> V invokeDeclaredMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        Method method = getDeclaredMethod(object.getClass(), methodName, parameterTypes);
-        if (method == null) {
-            if (throwException) {
-                throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+    public static <V> V invokeDeclaredMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) {
+        try {
+            Method method = getDeclaredMethod(object.getClass(), methodName, parameterTypes);
+            if (method == null) {
+                if (throwException) {
+                    throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+                }
+                return null;
             }
-            return null;
+            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
-        return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
     public static <V> V invokeAnyMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
@@ -603,36 +648,44 @@ public class Reflects {
         }
     }
 
-    public static <V> V invokeAnyMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        Method method = getAnyMethod(object.getClass(), methodName, parameterTypes);
-        if (method == null) {
-            if (throwException) {
-                throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+    public static <V> V invokeAnyMethod(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters, boolean force, boolean throwException) {
+        try {
+            Method method = getAnyMethod(object.getClass(), methodName, parameterTypes);
+            if (method == null) {
+                if (throwException) {
+                    throw new NoSuchMethodException(new ExceptionMessage("Can't find the method: {0}", getMethodString(getFQNClassName(object.getClass()), methodName, null, parameterTypes)).getMessage());
+                }
+                return null;
             }
-            return null;
+            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
-        return (V) invokeMethodOrNull(method, object, parameters, throwException);
     }
 
-    public static <V> V invoke(@NonNull Method method, @Nullable Object object, @Nullable Object[] parameters, boolean force, boolean throwException) throws IllegalAccessException, InvocationTargetException {
-        if (!force && !method.isAccessible()) {
-            if (throwException) {
-                throw new IllegalAccessException(new ExceptionMessage("Method {0} is not accessible", method.toString()).getMessage());
-            }
-            return null;
-        }
-
-        if (method.isAccessible()) {
-            return (V) invokeMethodOrNull(method, object, parameters, throwException);
-        }
-
-        // force && unaccessible
-        method.setAccessible(true);
+    public static <V> V invoke(@NonNull Method method, @Nullable Object object, @Nullable Object[] parameters, boolean force, boolean throwException) {
         try {
-            return (V) invokeMethodOrNull(method, object, parameters, throwException);
-        } finally {
-            // method.setAccessible(false);
-            // ignore it
+            if (!force && !method.isAccessible()) {
+                if (throwException) {
+                    throw new IllegalAccessException(new ExceptionMessage("Method {0} is not accessible", method.toString()).getMessage());
+                }
+                return null;
+            }
+
+            if (method.isAccessible()) {
+                return (V) invokeMethodOrNull(method, object, parameters, throwException);
+            }
+
+            // force && unaccessible
+            method.setAccessible(true);
+            try {
+                return (V) invokeMethodOrNull(method, object, parameters, throwException);
+            } finally {
+                // method.setAccessible(false);
+                // ignore it
+            }
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
@@ -651,15 +704,21 @@ public class Reflects {
             return null;
         }
     }
-    public static <V> V invokeAnyStaticMethod(String clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+
+    public static <V> V invokeAnyStaticMethod(String clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws ClassNotFoundException {
         return invokeAnyStaticMethod(Class.forName(clazz), methodName, parameterTypes, parameters, force, throwException);
     }
-    public static <V> V invokeAnyStaticMethod(Class clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        Method method = getAnyMethod(clazz, methodName, parameterTypes);
-        if (Modifiers.isStatic(method)) {
-            return invoke(method, null, parameters, force, throwException);
+
+    public static <V> V invokeAnyStaticMethod(Class clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) {
+        try {
+            Method method = getAnyMethod(clazz, methodName, parameterTypes);
+            if (Modifiers.isStatic(method)) {
+                return invoke(method, null, parameters, force, throwException);
+            }
+            throw new NoSuchMethodException();
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
-        throw new NoSuchMethodException();
     }
 
     public static String getMethodString(@Nullable String clazzFQN,
@@ -676,7 +735,8 @@ public class Reflects {
             }
             sb.append(methodName + "(");
             if (!Emptys.isEmpty(parameterTypes)) {
-                Class[] params = parameterTypes; // avoid clone
+                // avoid clone
+                Class[] params = parameterTypes;
                 for (int j = 0; j < params.length; j++) {
                     sb.append(getTypeName(params[j]));
                     if (j < (params.length - 1)) {

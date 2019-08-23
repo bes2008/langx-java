@@ -1,6 +1,8 @@
 package com.jn.langx.util.io;
 
 
+import com.jn.langx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.io.Writer;
 
@@ -66,7 +68,7 @@ public class StringBuilderWriter extends Writer implements Serializable {
      * @return This writer instance
      */
     @Override
-    public Writer append(final CharSequence value) {
+    public Writer append(@Nullable final CharSequence value) {
         builder.append(value);
         return this;
     }
@@ -80,7 +82,7 @@ public class StringBuilderWriter extends Writer implements Serializable {
      * @return This writer instance
      */
     @Override
-    public Writer append(final CharSequence value, final int start, final int end) {
+    public Writer append(@Nullable final CharSequence value, final int start, final int end) {
         builder.append(value, start, end);
         return this;
     }

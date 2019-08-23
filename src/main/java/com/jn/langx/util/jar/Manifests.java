@@ -1,5 +1,6 @@
 package com.jn.langx.util.jar;
 
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.reflect.Reflects;
@@ -26,7 +27,7 @@ public class Manifests {
     }
 
 
-    public static Manifest loadManifest(String jarPath) {
+    public static Manifest loadManifest(@Nullable String jarPath) {
         if (jarPath == null) {
             return null;
         }

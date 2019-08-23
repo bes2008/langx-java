@@ -462,10 +462,6 @@ public class Collects {
         return list;
     }
 
-    public static <E> E[] toArray(@Nullable Collection<E> list) {
-        return toArray(list, null);
-    }
-
     public static <E> List<E> asList(@Nullable Iterable<E> iterable) {
         return asList(iterable, true);
     }
@@ -494,15 +490,20 @@ public class Collects {
         return (Collection<E>) iterable;
     }
 
+    public static <E> Object[] toArray(@Nullable Collection<E> list){
+        if (Emptys.isEmpty(list)) {
+            list = Collections.emptyList();
+        }
+        return list.toArray();
+    }
+
     /**
      * Convert a list to an array
      */
     public static <E> E[] toArray(@Nullable Collection<E> list, @Nullable Class<E[]> clazz) {
+        Preconditions.checkNotNull(clazz);
         if (Emptys.isEmpty(list)) {
             list = Collections.emptyList();
-        }
-        if (clazz == null) {
-            return (E[]) list.toArray();
         }
         // Make a new array of the specified class
         return (E[]) Arrays.copyOf(list.toArray(), list.size(), clazz);
@@ -529,14 +530,14 @@ public class Collects {
 
         if (object instanceof Collection) {
             if (!mutable) {
-                Collections.unmodifiableCollection((Collection) object);
+                return Collections.unmodifiableCollection((Collection) object);
             }
             return (Collection) object;
         }
 
         if (object instanceof Iterable) {
             if (!mutable) {
-                return new WrappedIterable<E>((Iterable) object, mutable);
+                return new WrappedIterable<E>((Iterable) object, false);
             }
             return (Iterable) object;
         }
@@ -686,7 +687,7 @@ public class Collects {
             return;
         }
         Preconditions.checkNotNull(consumer);
-        Iterable<E> iterable = (Iterable<E>) asIterable(anyObject);
+        Iterable<E> iterable = asIterable(anyObject);
         for (E e : iterable) {
             consumer.accept(e);
         }

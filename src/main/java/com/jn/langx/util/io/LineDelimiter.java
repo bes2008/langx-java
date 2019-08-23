@@ -1,6 +1,8 @@
 package com.jn.langx.util.io;
 
 
+import com.jn.langx.annotation.NonNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
@@ -30,7 +32,7 @@ public class LineDelimiter {
 
     private final String value;
 
-    public LineDelimiter(String delimiter) {
+    public LineDelimiter(@NonNull String delimiter) {
         this.value = delimiter;
     }
 

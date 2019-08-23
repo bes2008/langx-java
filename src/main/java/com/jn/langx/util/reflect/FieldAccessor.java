@@ -17,27 +17,15 @@ public class FieldAccessor extends BasedStringAccessor<String, Object> {
 
     private <V> V getFieldValue(String fieldName, V defaultValue) {
         V v;
-        try {
-            v = (V) Reflects.getAnyFieldValue(getTarget(), fieldName, true, true);
-            if (v == null) {
-                v = defaultValue;
-            }
-        } catch (NoSuchFieldException ex) {
-            throw new RuntimeException(ex);
-        } catch (IllegalAccessException ex) {
-            throw new RuntimeException(ex);
+        v = Reflects.<V>getAnyFieldValue(getTarget(), fieldName, true, true);
+        if (v == null) {
+            v = defaultValue;
         }
         return v;
     }
 
     private <V> void setFieldValue(String fieldName, V value) {
-        try {
-            Reflects.setAnyFieldValue(getTarget(), fieldName, value, true, false);
-        } catch (NoSuchFieldException ex) {
-            throw new RuntimeException(ex);
-        } catch (IllegalAccessException ex) {
-            throw new RuntimeException(ex);
-        }
+        Reflects.setAnyFieldValue(getTarget(), fieldName, value, true, false);
     }
 
     @Override

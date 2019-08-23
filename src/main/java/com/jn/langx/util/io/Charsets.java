@@ -1,6 +1,8 @@
 package com.jn.langx.util.io;
 
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 
 import java.nio.charset.Charset;
@@ -39,15 +41,15 @@ public final class Charsets {
     public static final Charset US_ASCII = Charset.forName("US-ASCII");
     public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
 
-    public static Charset getCharset(final Charset charset) {
+    public static Charset getCharset(@Nullable final Charset charset) {
         return charset == null ? Charset.defaultCharset() : charset;
     }
 
-    public static Charset getCharset(String name) {
+    public static Charset getCharset(@Nullable String name) {
         return name == null ? Charset.defaultCharset() : Charset.forName(name);
     }
 
-    public static Charset getCharset(String name, String defaultName) {
+    public static Charset getCharset(@Nullable String name, @Nullable String defaultName) {
         return name == null ? (defaultName == null ? Charset.defaultCharset() : Charset.forName(defaultName)) : Charset.forName(name);
     }
 
@@ -60,8 +62,8 @@ public final class Charsets {
      * @param unmappableCharacterAction The encoder's action for unmappable-character errors
      * @return The encoder for the specified {@code charset}
      */
-    public static CharsetEncoder encoder(Charset charset, CodingErrorAction malformedInputAction,
-                                         CodingErrorAction unmappableCharacterAction) {
+    public static CharsetEncoder encoder(@NonNull Charset charset, @NonNull CodingErrorAction malformedInputAction,
+                                         @NonNull CodingErrorAction unmappableCharacterAction) {
         Preconditions.checkNotNull(charset);
         CharsetEncoder e = charset.newEncoder();
         e.onMalformedInput(malformedInputAction).onUnmappableCharacter(unmappableCharacterAction);
@@ -75,7 +77,7 @@ public final class Charsets {
      * @param codingErrorAction The encoder's action for malformed-input and unmappable-character errors
      * @return The encoder for the specified {@code charset}
      */
-    public static CharsetEncoder encoder(Charset charset, CodingErrorAction codingErrorAction) {
+    public static CharsetEncoder encoder(@NonNull Charset charset, @NonNull CodingErrorAction codingErrorAction) {
         return encoder(charset, codingErrorAction, codingErrorAction);
     }
 
@@ -85,7 +87,7 @@ public final class Charsets {
      * @param charset The specified charset
      * @return The encoder for the specified {@code charset}
      */
-    public static CharsetEncoder encoder(Charset charset) {
+    public static CharsetEncoder encoder(@NonNull Charset charset) {
         Preconditions.checkNotNull(charset, "charset");
 
         Map<Charset, CharsetEncoder> map = encoderCache.get();
@@ -109,8 +111,8 @@ public final class Charsets {
      * @param unmappableCharacterAction The decoder's action for unmappable-character errors
      * @return The decoder for the specified {@code charset}
      */
-    public static CharsetDecoder decoder(Charset charset, CodingErrorAction malformedInputAction,
-                                         CodingErrorAction unmappableCharacterAction) {
+    public static CharsetDecoder decoder(@NonNull Charset charset, @NonNull CodingErrorAction malformedInputAction,
+                                         @NonNull CodingErrorAction unmappableCharacterAction) {
         Preconditions.checkNotNull(charset, "charset");
         CharsetDecoder d = charset.newDecoder();
         d.onMalformedInput(malformedInputAction).onUnmappableCharacter(unmappableCharacterAction);
@@ -124,7 +126,7 @@ public final class Charsets {
      * @param codingErrorAction The decoder's action for malformed-input and unmappable-character errors
      * @return The decoder for the specified {@code charset}
      */
-    public static CharsetDecoder decoder(Charset charset, CodingErrorAction codingErrorAction) {
+    public static CharsetDecoder decoder(@NonNull Charset charset, @NonNull CodingErrorAction codingErrorAction) {
         return decoder(charset, codingErrorAction, codingErrorAction);
     }
 
@@ -134,7 +136,7 @@ public final class Charsets {
      * @param charset The specified charset
      * @return The decoder for the specified {@code charset}
      */
-    public static CharsetDecoder decoder(Charset charset) {
+    public static CharsetDecoder decoder(@NonNull Charset charset) {
         Preconditions.checkNotNull(charset, "charset");
 
         Map<Charset, CharsetDecoder> map = decoderCache.get();

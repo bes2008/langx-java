@@ -1,6 +1,9 @@
 package com.jn.langx.util.io;
 
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -26,7 +29,7 @@ public class NullOutputStream extends OutputStream {
      * @param len The number of bytes to write
      */
     @Override
-    public void write(final byte[] b, final int off, final int len) {
+    public void write(@Nullable final byte[] b, final int off, final int len) {
         //to /dev/null
     }
 
@@ -44,7 +47,6 @@ public class NullOutputStream extends OutputStream {
      * Does nothing - output to <code>/dev/null</code>.
      *
      * @param b The bytes to write
-     * @throws IOException never
      */
     @Override
     public void write(final byte[] b) {
