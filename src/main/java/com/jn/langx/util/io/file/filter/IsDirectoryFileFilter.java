@@ -1,22 +1,16 @@
 package com.jn.langx.util.io.file.filter;
 
-import com.jn.langx.util.io.file.FileFilter;
-
 import java.io.File;
 
-public class IsDirectoryFileFilter implements FileFilter{
-    @Override
-    public boolean test(File file) {
-        return file.isDirectory();
-    }
+public class IsDirectoryFileFilter extends AbstractFileFilter {
 
     @Override
-    public boolean test(File dir, String filename) {
-        return test(new File(dir, filename));
+    public boolean accept(File dir, String filename) {
+        return accept(new File(dir, filename));
     }
 
     @Override
     public boolean accept(File file) {
-        return test(file);
+        return file.isDirectory();
     }
 }

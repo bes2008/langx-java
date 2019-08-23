@@ -5,6 +5,6 @@ import com.jn.langx.util.function.Predicate;
 
 import java.io.File;
 
-public interface FileFilter extends java.io.FileFilter, Filter<File>, Predicate<File>, FilenameFilter {
-
+public interface FileFilter extends  java.io.FileFilter, Filter<File>, Predicate<File>, FilenameFilter {
+    boolean accept(File e);
 }

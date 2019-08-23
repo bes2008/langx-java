@@ -4,14 +4,14 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Functions;
-import com.jn.langx.util.io.file.FileFilter;
+import com.jn.langx.util.io.file.Filenames;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SuffixFileFilter implements FileFilter {
+public class SuffixFileFilter extends AbstractFileFilter {
     private boolean ignoreCase = true;
     private Set<String> suffixes = new HashSet<String>();
 
@@ -53,17 +53,15 @@ public class SuffixFileFilter implements FileFilter {
     }
 
     @Override
-    public boolean test(File file) {
-        return false;
+    public boolean accept(File file) {
+        String suffix = ignoreCase ? Filenames.getSuffixAsLowCase(file.getAbsolutePath()) : Filenames.getSuffix(file.getAbsolutePath());
+        return this.suffixes.contains(suffix);
     }
 
     @Override
-    public boolean test(File dir, String filename) {
-        return false;
+    public boolean accept(File dir, String name) {
+        String suffix = ignoreCase ? Filenames.getSuffixAsLowCase(name) : Filenames.getSuffix(name);
+        return this.suffixes.contains(suffix);
     }
 
-    @Override
-    public boolean accept(File pathname) {
-        return false;
-    }
 }

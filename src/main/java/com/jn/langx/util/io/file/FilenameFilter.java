@@ -11,5 +11,5 @@ import java.io.File;
  *
  * @author jinuo.fang
  */
-public interface FilenameFilter extends Predicate2<File, String> {
+public interface FilenameFilter extends java.io.FilenameFilter, Predicate2<File, String> {
 }
