@@ -1,4 +1,4 @@
-package com.jn.langx.util;
+package com.jn.langx.util.io;
 
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;

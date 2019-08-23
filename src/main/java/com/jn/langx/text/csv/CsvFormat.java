@@ -1,7 +1,7 @@
 
 package com.jn.langx.text.csv;
 
-import com.jn.langx.util.IOs;
+import com.jn.langx.util.io.IOs;
 
 import java.io.*;
 import java.nio.charset.Charset;

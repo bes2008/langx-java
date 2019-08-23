@@ -1,5 +1,7 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.io.IOs;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;

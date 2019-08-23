@@ -1,7 +1,7 @@
 package com.jn.langx.util.jar;
 
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.IOs;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
