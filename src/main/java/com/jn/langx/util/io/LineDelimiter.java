@@ -1,4 +1,4 @@
-package com.jn.langx.text;
+package com.jn.langx.util.io;
 
 
 import java.io.ByteArrayOutputStream;
