@@ -14,8 +14,6 @@
 
 package com.jn.langx.util;
 
-import com.jn.langx.util.function.Predicate;
-
 public class Preconditions {
     private Preconditions() {
         throw new UnsupportedOperationException();
@@ -29,10 +27,10 @@ public class Preconditions {
     }
 
     public static <T> T checkNotNull(T obj, String errorMessage) {
-        if (errorMessage == null) {
-            return checkNotNull(obj);
-        }
         if (obj == null) {
+            if (errorMessage == null) {
+                throw new NullPointerException();
+            }
             throw new NullPointerException(errorMessage);
         }
         return obj;
@@ -55,9 +53,4 @@ public class Preconditions {
         }
     }
 
-    public static <V> void checkExpression(Predicate<V> condition, V value) {
-        if (!condition.test(value)) {
-            throw new IllegalArgumentException();
-        }
-    }
 }
