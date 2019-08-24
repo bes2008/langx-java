@@ -1091,6 +1091,23 @@ public class Collects {
         return container;
     }
 
+    public static <E> Collection<E> collect(Object anyObject, final Collection<E> container) {
+        Preconditions.checkNotNull(container);
+        Supplier0<Collection<E>> containerFactory = new Supplier0<Collection<E>>() {
+            @Override
+            public Collection<E> get() {
+                return container;
+            }
+        };
+        Consumer2<Collection<E>, E> consumer = new Consumer2<Collection<E>, E>() {
+            @Override
+            public void accept(Collection<E> list, E value) {
+                list.add(value);
+            }
+        };
+        return collect(anyObject, containerFactory, consumer);
+    }
+
     public static <E> DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
         return diff(oldCollection, newCollection, null);
     }
