@@ -7,6 +7,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.CollectionDiffer;
 import com.jn.langx.util.collection.diff.KeyBuilder;
 import com.jn.langx.util.collection.diff.MapDiffer;
+import com.jn.langx.util.collection.iter.ArrayIterator;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
@@ -525,7 +526,11 @@ public class Collects {
         }
 
         if (Arrs.isArray(object)) {
-            return asList((E[]) object, mutable, null);
+            if(mutable) {
+                return asList((E[]) object);
+            }else{
+                return new ArrayIterator<E>((E[])object);
+            }
         }
 
         if (object instanceof Collection) {
@@ -1029,13 +1034,6 @@ public class Collects {
     public static <E> E max(@NonNull Object object, @NonNull final Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);
         Iterable<E> iterable = asIterable(object);
-        int count = count(iterable);
-        if (count == 0) {
-            return null;
-        }
-        if (count == 1) {
-            return iterable.iterator().next();
-        }
         final Holder<E> max = new Holder<E>();
 
         forEach(iterable, new Consumer<E>() {
@@ -1057,13 +1055,6 @@ public class Collects {
     public static <E> E min(Object object, @NonNull final Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);
         Iterable<E> iterable = asIterable(object);
-        int count = count(iterable);
-        if (count == 0) {
-            return null;
-        }
-        if (count == 1) {
-            return iterable.iterator().next();
-        }
         final Holder<E> min = new Holder<E>();
 
         forEach(iterable, new Consumer<E>() {
