@@ -1,4 +1,4 @@
-package com.jn.langx.test.parser;
+package com.jn.langx.test.text;
 
 import com.jn.langx.text.HttpQueryStringAccessor;
 import org.junit.Test;
