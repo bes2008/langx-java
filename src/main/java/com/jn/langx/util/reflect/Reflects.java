@@ -8,7 +8,10 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.type.Types;
 import com.jn.langx.util.struct.Holder;
@@ -16,6 +19,8 @@ import com.jn.langx.util.struct.Holder;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -78,31 +83,21 @@ public class Reflects {
     }
 
     public static URL getCodeLocation(@NonNull Class clazz) {
-        return clazz.getProtectionDomain().getCodeSource().getLocation();
-    }
-
-    /**
-     * <p>Gets a {@code List} of all interfaces implemented by the given
-     * class and its superclasses.</p>
-     * <p>
-     * <p>The order is determined by looking through each interface in turn as
-     * declared in the source file and following its hierarchy up. Then each
-     * superclass is considered in the same way. Later duplicates are ignored,
-     * so the order is maintained.</p>
-     *
-     * @param cls the class to look up, may be {@code null}
-     * @return the {@code List} of interfaces in order,
-     */
-    public static List<Class<?>> getAllInterfaces(@Nullable final Class<?> cls) {
-        if (cls == null) {
-            return Collects.emptyArrayList();
+        Preconditions.checkNotNull(clazz);
+        if (Types.isArray(clazz)) {
+            return getCodeLocation(clazz.getComponentType());
         }
-
-        final LinkedHashSet<Class<?>> interfacesFound = new LinkedHashSet<Class<?>>();
-        getAllInterfaces(cls, interfacesFound);
-
-        return new ArrayList<Class<?>>(interfacesFound);
+        ProtectionDomain pd = clazz.getProtectionDomain();
+        if (pd == null) {
+            return null;
+        }
+        CodeSource codeSource = pd.getCodeSource();
+        if (codeSource == null) {
+            return null;
+        }
+        return codeSource.getLocation();
     }
+
 
     /**
      * Get the interfaces for the specified class.
@@ -763,6 +758,48 @@ public class Reflects {
         } else {
             return getMethodString(getTypeName(clazz), methodName, null, parameterTypes);
         }
+    }
+
+    public static Set<Class<?>> getAllInterfaces(Class clazz) {
+        final Set<Class<?>> set = Collects.emptyHashSet(true);
+        Class[] interfaces = clazz.getInterfaces();
+        if (interfaces.length > 0) {
+            Collects.addAll(set, interfaces);
+            Collects.forEach(interfaces, new Consumer<Class>() {
+                @Override
+                public void accept(Class iface) {
+                    set.addAll(getAllInterfaces(iface));
+                }
+            });
+        }
+        return set;
+    }
+
+    public static Set<Class<?>> getAllSuperClass(Class clazz) {
+        final Set<Class<?>> set = Collects.emptyHashSet(true);
+        Class superClass = clazz.getSuperclass();
+        if (superClass != null) {
+            set.add(superClass);
+            set.addAll(getAllInterfaces(superClass));
+        }
+        return set;
+    }
+
+
+    public static <T> boolean isInstance(T object, String classFQN) {
+        Preconditions.checkNotNull(object);
+        Preconditions.checkNotNull(classFQN);
+        Class clazz = object.getClass();
+        Set<String> set = Collects.emptyHashSet(true);
+        //set.addAll(Collects.getAllInterfaces(clazz));
+        Pipeline.of(getAllInterfaces(clazz)).concat(getAllSuperClass(clazz)).map(new Mapper<Class<?>, String>() {
+            @Override
+            public String apply(Class<?> ifce) {
+                return getFQNClassName(ifce);
+            }
+        }).addTo(set);
+
+        return set.contains(getFQNClassName(clazz));
     }
 
 }
