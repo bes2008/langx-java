@@ -490,7 +490,7 @@ public class Collects {
         return (Collection<E>) iterable;
     }
 
-    public static <E> Object[] toArray(@Nullable Collection<E> list){
+    public static <E> Object[] toArray(@Nullable Collection<E> list) {
         if (Emptys.isEmpty(list)) {
             list = Collections.emptyList();
         }
@@ -1026,8 +1026,9 @@ public class Collects {
         return count.get();
     }
 
-    public static <E> E max(Object object, final Comparator<E> comparator) {
-        Iterable<E> iterable = (Iterable<E>) object;
+    public static <E> E max(@NonNull Object object, @NonNull final Comparator<E> comparator) {
+        Preconditions.checkNotNull(comparator);
+        Iterable<E> iterable = asIterable(object);
         int count = count(iterable);
         if (count == 0) {
             return null;
@@ -1053,8 +1054,9 @@ public class Collects {
         return max.get();
     }
 
-    public static <E> E min(Object object, final Comparator<E> comparator) {
-        Iterable<E> iterable = (Iterable<E>) object;
+    public static <E> E min(Object object, @NonNull final Comparator<E> comparator) {
+        Preconditions.checkNotNull(comparator);
+        Iterable<E> iterable = asIterable(object);
         int count = count(iterable);
         if (count == 0) {
             return null;

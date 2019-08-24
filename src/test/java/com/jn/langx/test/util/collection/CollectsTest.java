@@ -4,6 +4,7 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.function.Function;
 import org.junit.Assert;
@@ -49,12 +50,12 @@ public class CollectsTest {
     }
 
     @Test
-    public void testStreamApiForCollection(){
+    public void testStreamApiForCollection() {
         Collection<String> list = Pipeline.of(new String[]{"Hello", "Java8", "Stream", "API", "for", "java 6"})
                 .map(new Function<String, List<String>>() {
                     @Override
                     public List<String> apply(String string) {
-                        return Collects.asList(Strings.split(string,""));
+                        return Collects.asList(Strings.split(string, ""));
                     }
                 }).flatMap(new Function<String, String>() {
                     @Override
@@ -66,5 +67,18 @@ public class CollectsTest {
         System.out.println(list);
     }
 
+    @Test
+    public void testPage() {
+        Integer[] paged = Collects.limit(Collects.skip(Collects.asList(Arrs.range(100)), 20), 10).toArray(new Integer[0]);
+        Assert.assertArrayEquals(Arrs.range(20, 30, 1), paged);
+    }
 
+    @Test
+    public void testMaxAndMin() {
+        List<Integer> list = Collects.asList(Arrs.range(20, 30, 1));
+        Collections.shuffle(list);
+        Integer[] array = Collects.toArray(list, Integer[].class);
+        Assert.assertTrue(29 == Collects.<Integer>max(array, new ComparableComparator<Integer>()));
+        Assert.assertTrue(20 == Collects.<Integer>min(array, new ComparableComparator<Integer>()));
+    }
 }
