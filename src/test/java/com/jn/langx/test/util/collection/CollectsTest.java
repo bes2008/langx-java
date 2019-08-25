@@ -1,9 +1,12 @@
 package com.jn.langx.test.util.collection;
 
+import com.jn.langx.test.bean.Person;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.collection.diff.KeyBuilder;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.function.Function;
@@ -80,5 +83,65 @@ public class CollectsTest {
         Integer[] array = Collects.toArray(list, Integer[].class);
         Assert.assertTrue(29 == Collects.<Integer>max(array, new ComparableComparator<Integer>()));
         Assert.assertTrue(20 == Collects.<Integer>min(array, new ComparableComparator<Integer>()));
+    }
+
+    @Test
+    public void testCollect() {
+        Collection<Integer> collection = Collects.collect(Arrs.range(10), new ArrayList<Integer>());
+        Assert.assertTrue(collection.size() == 10);
+    }
+
+    @Test
+    public void testDiff() {
+        // simple compare with equals
+        List<Integer> oldList = Collects.asList(Arrs.range(10));
+        List<Integer> newList = Collects.asList(Arrs.range(5, 15));
+        DiffResult<Collection<Integer>> dr = Collects.diff(oldList, newList);
+        Assert.assertArrayEquals(dr.getRemoves().toArray(new Integer[0]), Arrs.range(5));
+        Assert.assertArrayEquals(dr.getAdds().toArray(new Integer[0]), Arrs.range(10, 15));
+        Assert.assertArrayEquals(dr.getEquals().toArray(new Integer[0]), Arrs.range(5, 10));
+
+
+        Function<Integer, Person> mapper = new Function<Integer, Person>() {
+            @Override
+            public Person apply(Integer id) {
+                Person p = new Person();
+                p.setId("id_" + id);
+                p.setAge(id);
+                p.setName("name_" + id);
+                return p;
+            }
+        };
+        Collection<Person> oldPersonList = Collects.<Integer, Person>map(oldList, mapper);
+        Collection<Person> newPersonList = Collects.<Integer, Person>map(newList, mapper);
+
+        DiffResult<Collection<Person>> dr2 = Collects.diff(oldPersonList, newPersonList, null, new KeyBuilder<String, Person>() {
+            @Override
+            public String getKey(Person p) {
+                return p.getId();
+            }
+        });
+
+        Collection<Person> newPersonList2 = Collects.<Integer, Person>map(newList, new Function<Integer, Person>() {
+            @Override
+            public Person apply(Integer id) {
+                Person p = new Person();
+                p.setId("id_" + id);
+                if (id % 2 == 0) {
+                    p.setAge(id);
+                } else {
+                    p.setAge(id + 1);
+                }
+                p.setName("name_" + id);
+                return p;
+            }
+        });
+        dr2 = Collects.diff(oldPersonList, newPersonList2, null, new KeyBuilder<String, Person>() {
+            @Override
+            public String getKey(Person p) {
+                return p.getId();
+            }
+        });
+        Assert.assertTrue(dr2.getUpdates().size()==3);
     }
 }

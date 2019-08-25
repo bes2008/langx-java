@@ -526,10 +526,10 @@ public class Collects {
         }
 
         if (Arrs.isArray(object)) {
-            if(mutable) {
+            if (mutable) {
                 return asList((E[]) object);
-            }else{
-                return new ArrayIterator<E>((E[])object);
+            } else {
+                return new ArrayIterator<E>((E[]) object);
             }
         }
 
@@ -1012,15 +1012,15 @@ public class Collects {
         }
     }
 
-    public static <K, V> int count(Map<K, V> map) {
+    public static <K, V> int count(@Nullable Map<K, V> map) {
         return Emptys.isEmpty(map) ? 0 : map.size();
     }
 
-    public static <E> int count(Collection<E> collection) {
+    public static <E> int count(@Nullable Collection<E> collection) {
         return Emptys.isEmpty(collection) ? 0 : collection.size();
     }
 
-    public static int count(Object anyObject) {
+    public static int count(@Nullable Object anyObject) {
         final Holder<Integer> count = new Holder<Integer>(0);
         forEach(anyObject, new Consumer<Object>() {
             @Override
@@ -1052,7 +1052,7 @@ public class Collects {
         return max.get();
     }
 
-    public static <E> E min(Object object, @NonNull final Comparator<E> comparator) {
+    public static <E> E min(@Nullable Object object, @NonNull final Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);
         Iterable<E> iterable = asIterable(object);
         final Holder<E> min = new Holder<E>();
@@ -1073,12 +1073,12 @@ public class Collects {
         return min.get();
     }
 
-    public static <E, R> R collect(Object anyObject, Collector<E, R> collector) {
+    public static <E, R> R collect(@Nullable Object anyObject, @NonNull Collector<E, R> collector) {
         Preconditions.checkNotNull(collector);
         return collect(anyObject, collector.supplier(), collector.accumulator());
     }
 
-    public static <E, R> R collect(Object anyObject, Supplier0<R> containerFactory, final Consumer2<R, E> consumer) {
+    public static <E, R> R collect(@Nullable Object anyObject, @NonNull Supplier0<R> containerFactory, @NonNull final Consumer2<R, E> consumer) {
         Preconditions.checkNotNull(containerFactory);
         Preconditions.checkNotNull(consumer);
         final R container = containerFactory.get();
@@ -1091,7 +1091,7 @@ public class Collects {
         return container;
     }
 
-    public static <E> Collection<E> collect(Object anyObject, final Collection<E> container) {
+    public static <E> Collection<E> collect(@Nullable Object anyObject, @NonNull final Collection<E> container) {
         Preconditions.checkNotNull(container);
         Supplier0<Collection<E>> containerFactory = new Supplier0<Collection<E>>() {
             @Override
@@ -1113,7 +1113,7 @@ public class Collects {
     }
 
     public static <E> DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator) {
-        return diff(oldCollection, newCollection, elementComparator);
+        return diff(oldCollection, newCollection, elementComparator, null);
     }
 
     public static <E> DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator, @Nullable KeyBuilder<String, E> keyBuilder) {

@@ -65,15 +65,18 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, E> {
             MapDiffer<String, E> mapDiffer = new MapDiffer<String, E>();
             mapDiffer.setComparator(comparator);
             mapDiffer.setKeyComparator(new EqualsComparator<String>());
-            mapDiffer.diff(oldMap, newMap);
-        }
-
-        if (isDiffUsingEqualMethod()) {
-            diffWithObjectEquals(oldCollection, newCollection, result);
+            DiffResult<Map<String, E>> dr = mapDiffer.diff(oldMap, newMap);
+            result.setAdds(dr.getAdds().values());
+            result.setRemoves(dr.getRemoves().values());
+            result.setEquals(dr.getEquals().values());
+            result.setUpdates(dr.getUpdates().values());
         } else {
-            diffWithComparator(oldCollection, newCollection, result);
+            if (isDiffUsingEqualMethod()) {
+                diffWithObjectEquals(oldCollection, newCollection, result);
+            } else {
+                diffWithComparator(oldCollection, newCollection, result);
+            }
         }
-
         return result;
     }
 
