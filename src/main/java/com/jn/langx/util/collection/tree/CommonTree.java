@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection.tree;
 
+import com.jn.langx.util.function.Consumer2;
+
 import java.util.*;
 
 
@@ -160,15 +162,15 @@ public class CommonTree implements Tree<TreeNode> {
     }
 
     @Override
-    public void forEach(Callback cb) throws Throwable {
+    public void forEach(Consumer2<Tree, TreeNode> cb) throws Throwable {
         forEachCollection(this.nodes, cb);
     }
 
-    private void forEachCollection(Collection collection, Callback cb) throws Throwable {
+    private void forEachCollection(Collection collection, Consumer2<Tree, TreeNode> cb) throws Throwable {
         Iterator<TreeNode> iter = collection.iterator();
         while (iter.hasNext()) {
             TreeNode node = (TreeNode) iter.next();
-            cb.call(this, node);
+            cb.accept(this, node);
             Collection children = node.getChildren();
             if ((children != null) && (!children.isEmpty())) {
                 forEachCollection(children, cb);
@@ -193,12 +195,11 @@ public class CommonTree implements Tree<TreeNode> {
     @Override
     public void sort(final Comparator<TreeNode> comparator) {
         try {
-            forEachCollection(this.nodes, new Callback() {
+            forEachCollection(this.nodes, new Consumer2<Tree, TreeNode>() {
                 private List<TreeNode> nodes;
 
                 @Override
-                public void call(Tree tree, TreeNode node)
-                        throws Throwable {
+                public void accept(Tree tree, TreeNode node) {
                     Collections.sort(this.nodes, comparator);
                     setNodes(node.getChildren());
                 }

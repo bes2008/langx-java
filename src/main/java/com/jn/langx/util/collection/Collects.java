@@ -620,7 +620,7 @@ public class Collects {
      */
     public static <E, K, V> Map<K, V> map(@Nullable Object anyObject, @NonNull final Mapper<E, Pair<K, V>> mapper) {
         Preconditions.checkNotNull(mapper);
-        final Map<K, V> result = emptyHashMap();
+        final Map<K, V> result = emptyHashMap(true);
         Iterable<E> iterable = asIterable(anyObject);
         forEach(iterable, new Consumer<E>() {
             @Override

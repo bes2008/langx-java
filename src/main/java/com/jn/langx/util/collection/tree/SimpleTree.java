@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection.tree;
 
+import com.jn.langx.util.function.Consumer2;
+
 import java.util.*;
 
 
@@ -131,11 +133,11 @@ public class SimpleTree implements Tree<TreeNode> {
     }
 
     @Override
-    public void forEach(Callback cb) throws Throwable {
+    public void forEach(Consumer2<Tree, TreeNode> cb) throws Throwable {
         Iterator<TreeNode> iter = this.nodes.iterator();
         while (iter.hasNext()) {
             TreeNode node = (TreeNode) iter.next();
-            cb.call(this, node);
+            cb.accept(this, node);
         }
     }
 

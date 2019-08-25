@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection.tree;
 
+import com.jn.langx.util.function.Consumer2;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
@@ -32,7 +34,7 @@ public interface Tree<T extends TreeNode> extends Serializable {
 
     TreeNode getParentNode(TreeNode paramTreeNode);
 
-    void forEach(Callback paramCallback) throws Throwable;
+    void forEach(Consumer2<Tree, TreeNode> paramCallback) throws Throwable;
 
     void sort(Comparator<TreeNode> paramComparator);
 
