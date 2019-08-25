@@ -19,13 +19,13 @@ public class LastModifiedFileComparator implements Comparator<File> {
      */
     @Override
     public int compare(final File file1, final File file2) {
-        long delata = file1.lastModified() - file2.lastModified();
-        if (delata > Integer.MAX_VALUE) {
+        long delta = file1.lastModified() - file2.lastModified();
+        if (delta > Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
         }
-        if (delata < Integer.MIN_VALUE) {
+        if (delta < Integer.MIN_VALUE) {
             return Integer.MIN_VALUE;
         }
-        return Integer.parseInt(delata + "");
+        return Integer.parseInt(delta + "");
     }
 }
