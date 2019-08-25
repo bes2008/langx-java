@@ -165,6 +165,14 @@ public class Pipeline<E> {
         });
     }
 
+    public Pipeline<E> addAll(Collection collection){
+        if(collection==null){
+            return this;
+        }
+        this.collection.addAll(collection);
+        return this;
+    }
+
     public static <T> Pipeline<T> of(Object anyObject) {
         Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(anyObject));
         return new Pipeline<T>(list);

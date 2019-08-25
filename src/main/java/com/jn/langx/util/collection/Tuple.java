@@ -18,13 +18,15 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
     private static final long serialVersionUID = 1L;
     private List<Object> elements = Collects.emptyArrayList();
     private int maxSize = 0;
-
+    public Tuple(Object value0, Object... values) {
+        setTarget(Pipeline.of(new Object[]{value0}).addAll(Collects.asList(values)).getAll());
+    }
     public Tuple(Collection<Object> values) {
         setTarget(values);
     }
 
-    public Tuple(int length, Collection<Object> values) {
-        setTarget0(length, values);
+    public Tuple(int expectedLength, Collection<Object> values) {
+        setTarget0(expectedLength, values);
     }
 
     @Override
@@ -33,11 +35,16 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
         setTarget0(target.size(), target);
     }
 
-    private void setTarget0(int length, Collection values) {
-        Preconditions.checkTrue(length >= 0);
+    private void setTarget0(int expectedLength, Collection values) {
+        Preconditions.checkTrue(expectedLength >= 0);
         Preconditions.checkNotNull(values);
-        this.maxSize = Maths.min(values.size(), length);
-        this.elements.addAll(Collects.limit(values, this.maxSize));
+        this.maxSize = Maths.max(values.size(), expectedLength);
+        this.elements.clear();
+        List<Object> list = Collects.limit(values, this.maxSize);
+        while (list.size() < maxSize) {
+            list.add(null);
+        }
+        this.elements.addAll(list);
     }
 
     @Override
@@ -87,7 +94,7 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
                 hashcode.set(hashcode.get() + element.hashCode());
             }
         });
-        return super.hashCode();
+        return hashcode.get();
     }
 
     @Override
