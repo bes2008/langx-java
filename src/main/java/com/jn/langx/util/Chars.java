@@ -1,6 +1,39 @@
 package com.jn.langx.util;
 
 public class Chars {
+    /**
+     * Determines if the specified character (Unicode code point) is an alphabet.
+     * <p>
+     * A character is considered to be alphabetic if its general category type,
+     * provided by {@link Character#getType(int) getType(codePoint)}, is any of
+     * the following:
+     * <ul>
+     * <li> <code>UPPERCASE_LETTER</code>
+     * <li> <code>LOWERCASE_LETTER</code>
+     * <li> <code>TITLECASE_LETTER</code>
+     * <li> <code>MODIFIER_LETTER</code>
+     * <li> <code>OTHER_LETTER</code>
+     * <li> <code>LETTER_NUMBER</code>
+     * </ul>
+     * or it has contributory property Other_Alphabetic as defined by the
+     * Unicode Standard.
+     *
+     * @param codePoint the character (Unicode code point) to be tested.
+     * @return <code>true</code> if the character is a Unicode alphabet
+     * character, <code>false</code> otherwise.
+     *
+     * copy from java 1.7 Character.isAlphabetic
+     */
+    public static boolean isAlphabetic(int codePoint) {
+        return (((((1 << Character.UPPERCASE_LETTER) |
+                (1 << Character.LOWERCASE_LETTER) |
+                (1 << Character.TITLECASE_LETTER) |
+                (1 << Character.MODIFIER_LETTER) |
+                (1 << Character.OTHER_LETTER) |
+                (1 << Character.LETTER_NUMBER)) >> Character.getType(codePoint)) & 1) != 0) ||
+                Character.isValidCodePoint(codePoint);// BUG ?
+    }
+
     public static boolean isAscii(final char ch) {
         return ch < 128;
     }
