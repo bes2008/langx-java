@@ -2,7 +2,6 @@ package com.jn.langx.util.collection.diff;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Differ;
 import com.jn.langx.util.comparator.EqualsComparator;
 import com.jn.langx.util.function.Consumer;
@@ -16,7 +15,7 @@ import java.util.*;
  * @param <E>
  * @author jinuo.fang
  */
-public class CollectionDiffer<E> implements Differ<Collection<E>, E> {
+public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiffResult<E>> {
     private Comparator<E> comparator;
     private KeyBuilder<String, E> keyBuilder;
 
@@ -24,13 +23,12 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, E> {
         this.keyBuilder = keyBuilder;
     }
 
-    @Override
     public void setComparator(@Nullable Comparator<E> comparator) {
         this.comparator = comparator;
     }
 
     @Override
-    public DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
+    public CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
         CollectionDiffResult<E> result = new CollectionDiffResult<E>();
 
         if (oldCollection == null && newCollection == null) {
@@ -63,9 +61,9 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, E> {
             });
 
             MapDiffer<String, E> mapDiffer = new MapDiffer<String, E>();
-            mapDiffer.setComparator(comparator);
+            mapDiffer.setValueComparator(comparator);
             mapDiffer.setKeyComparator(new EqualsComparator<String>());
-            DiffResult<Map<String, E>> dr = mapDiffer.diff(oldMap, newMap);
+            MapDiffResult<String, E> dr = mapDiffer.diff(oldMap, newMap);
             result.setAdds(dr.getAdds().values());
             result.setRemoves(dr.getRemoves().values());
             result.setEquals(dr.getEquals().values());

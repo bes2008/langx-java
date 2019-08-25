@@ -4,8 +4,8 @@ import com.jn.langx.test.bean.Person;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.collection.diff.CollectionDiffResult;
 import com.jn.langx.util.collection.diff.KeyBuilder;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
@@ -96,7 +96,7 @@ public class CollectsTest {
         // simple compare with equals
         List<Integer> oldList = Collects.asList(Arrs.range(10));
         List<Integer> newList = Collects.asList(Arrs.range(5, 15));
-        DiffResult<Collection<Integer>> dr = Collects.diff(oldList, newList);
+        CollectionDiffResult<Integer> dr = Collects.diff(oldList, newList);
         Assert.assertArrayEquals(dr.getRemoves().toArray(new Integer[0]), Arrs.range(5));
         Assert.assertArrayEquals(dr.getAdds().toArray(new Integer[0]), Arrs.range(10, 15));
         Assert.assertArrayEquals(dr.getEquals().toArray(new Integer[0]), Arrs.range(5, 10));
@@ -115,7 +115,7 @@ public class CollectsTest {
         Collection<Person> oldPersonList = Collects.<Integer, Person>map(oldList, mapper);
         Collection<Person> newPersonList = Collects.<Integer, Person>map(newList, mapper);
 
-        DiffResult<Collection<Person>> dr2 = Collects.diff(oldPersonList, newPersonList, null, new KeyBuilder<String, Person>() {
+        CollectionDiffResult<Person> dr2 = Collects.diff(oldPersonList, newPersonList, null, new KeyBuilder<String, Person>() {
             @Override
             public String getKey(Person p) {
                 return p.getId();
@@ -142,6 +142,6 @@ public class CollectsTest {
                 return p.getId();
             }
         });
-        Assert.assertTrue(dr2.getUpdates().size()==3);
+        Assert.assertTrue(dr2.getUpdates().size() == 3);
     }
 }

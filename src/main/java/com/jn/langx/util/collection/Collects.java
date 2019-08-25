@@ -4,9 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collection.diff.CollectionDiffer;
-import com.jn.langx.util.collection.diff.KeyBuilder;
-import com.jn.langx.util.collection.diff.MapDiffer;
+import com.jn.langx.util.collection.diff.*;
 import com.jn.langx.util.collection.iter.ArrayIterator;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.collection.iter.IteratorIterable;
@@ -1108,15 +1106,15 @@ public class Collects {
         return collect(anyObject, containerFactory, consumer);
     }
 
-    public static <E> DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
+    public static <E> CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
         return diff(oldCollection, newCollection, null);
     }
 
-    public static <E> DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator) {
+    public static <E> CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator) {
         return diff(oldCollection, newCollection, elementComparator, null);
     }
 
-    public static <E> DiffResult<Collection<E>> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator, @Nullable KeyBuilder<String, E> keyBuilder) {
+    public static <E> CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator, @Nullable KeyBuilder<String, E> keyBuilder) {
         CollectionDiffer<E> differ = new CollectionDiffer<E>();
         differ.setComparator(elementComparator);
         if (keyBuilder != null) {
@@ -1125,17 +1123,17 @@ public class Collects {
         return differ.diff(oldCollection, newCollection);
     }
 
-    public static <K, V> DiffResult<Map<K, V>> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap) {
+    public static <K, V> MapDiffResult<K, V> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap) {
         return diff(oldMap, newMap, null);
     }
 
-    public static <K, V> DiffResult<Map<K, V>> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap, @Nullable Comparator<V> valueComparator) {
+    public static <K, V> MapDiffResult<K, V> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap, @Nullable Comparator<V> valueComparator) {
         return diff(oldMap, newMap, valueComparator, null);
     }
 
-    public static <K, V> DiffResult<Map<K, V>> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap, @Nullable Comparator<V> valueComparator, @Nullable Comparator<K> keyComparator) {
+    public static <K, V> MapDiffResult<K, V> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap, @Nullable Comparator<V> valueComparator, @Nullable Comparator<K> keyComparator) {
         MapDiffer<K, V> differ = new MapDiffer<K, V>();
-        differ.setComparator(valueComparator);
+        differ.setValueComparator(valueComparator);
         differ.setKeyComparator(keyComparator);
         return differ.diff(oldMap, newMap);
     }

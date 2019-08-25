@@ -5,7 +5,7 @@ import com.jn.langx.util.collection.DiffResult;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapDiffResult<K,V> implements DiffResult<Map<K,V>> {
+public class MapDiffResult<K,V> implements CollectionDifferResult<Map<K,V>> {
     private Map<K, V> adds = new HashMap<K, V>();
     private Map<K, V> removes = new HashMap<K, V>();
     private Map<K, V> updates = new HashMap<K, V>();

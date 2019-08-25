@@ -11,7 +11,7 @@ import java.util.Collection;
  * @param <E>
  * @author jinuo.fang
  */
-public class CollectionDiffResult<E> implements DiffResult<Collection<E>> {
+public class CollectionDiffResult<E> implements CollectionDifferResult<Collection<E>> {
 
     private Collection<E> adds = new ArrayList<E>();
     private Collection<E> removes = new ArrayList<E>();

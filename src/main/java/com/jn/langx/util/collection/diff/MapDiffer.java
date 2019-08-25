@@ -2,7 +2,6 @@ package com.jn.langx.util.collection.diff;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.DiffResult;
 import com.jn.langx.util.collection.Differ;
 import com.jn.langx.util.function.Consumer;
 
@@ -13,23 +12,22 @@ import java.util.*;
  * @param <V>
  * @author jinuo.fang
  */
-public class MapDiffer<K, V> implements Differ<Map<K, V>, V> {
+public class MapDiffer<K, V> implements Differ<Map<K, V>, MapDiffResult<K, V>> {
     @Nullable
     private Comparator<K> keyComparator;
     @Nullable
     private Comparator<V> valueComparator;
 
-    @Override
-    public void setComparator(@Nullable Comparator<V> comparator) {
-        this.valueComparator = comparator;
-    }
-
     public void setKeyComparator(@Nullable Comparator<K> comparator) {
         this.keyComparator = comparator;
     }
 
+    public void setValueComparator(@Nullable Comparator<V> comparator) {
+        this.valueComparator = comparator;
+    }
+
     @Override
-    public DiffResult<Map<K, V>> diff(@Nullable final Map<K, V> oldMap, @Nullable final Map<K, V> newMap) {
+    public MapDiffResult<K, V> diff(@Nullable final Map<K, V> oldMap, @Nullable final Map<K, V> newMap) {
         MapDiffResult<K, V> result = new MapDiffResult<K, V>();
 
         if (oldMap == null && newMap == null) {
@@ -50,7 +48,7 @@ public class MapDiffer<K, V> implements Differ<Map<K, V>, V> {
         Set<K> newKeys = newMap.keySet();
         CollectionDiffer<K> keyDiffer = new CollectionDiffer<K>();
         keyDiffer.setComparator(keyComparator);
-        DiffResult<Collection<K>> keyDiffResult = keyDiffer.diff(oldKeys, newKeys);
+        CollectionDiffResult<K> keyDiffResult = keyDiffer.diff(oldKeys, newKeys);
 
         Collection<K> addsKeys = keyDiffResult.getAdds();
         final Map<K, V> addsMap = new HashMap<K, V>();
