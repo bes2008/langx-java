@@ -4,11 +4,11 @@ import com.jn.langx.util.function.Consumer2;
 
 import java.util.*;
 
-
+@SuppressWarnings({"all"})
 public class CommonTree implements Tree<TreeNode> {
     private static final long serialVersionUID = 8663945462770387472L;
     private transient Map<String, TreeNode> nodeMap = new HashMap();
-    private List<TreeNode> nodes = new LinkedList();
+    private List<TreeNode> nodes = new LinkedList<TreeNode>();
 
     public CommonTree() {
         this(null);
@@ -129,7 +129,7 @@ public class CommonTree implements Tree<TreeNode> {
     public Collection<TreeNode> removeChildNodes(String pid) {
         TreeNode parentNode = (TreeNode) this.nodeMap.get(pid);
         if (parentNode == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         Collection<TreeNode> children = parentNode.removeChildNodes();
         if ((children != null) && (!children.isEmpty())) {
@@ -154,7 +154,7 @@ public class CommonTree implements Tree<TreeNode> {
 
     @Override
     public List<TreeNode> getNodesAsArray() {
-        List<TreeNode> descendants = new LinkedList();
+        List<TreeNode> descendants = new LinkedList<TreeNode>();
         for (TreeNode node : this.nodes) {
             node.extractDescendants(descendants, true);
         }
@@ -166,12 +166,12 @@ public class CommonTree implements Tree<TreeNode> {
         forEachCollection(this.nodes, cb);
     }
 
-    private void forEachCollection(Collection collection, Consumer2<Tree, TreeNode> cb) throws Throwable {
+    private void forEachCollection(Collection<TreeNode> collection, Consumer2<Tree, TreeNode> cb) throws Throwable {
         Iterator<TreeNode> iter = collection.iterator();
         while (iter.hasNext()) {
             TreeNode node = (TreeNode) iter.next();
             cb.accept(this, node);
-            Collection children = node.getChildren();
+            Collection<TreeNode> children = node.getChildren();
             if ((children != null) && (!children.isEmpty())) {
                 forEachCollection(children, cb);
             }
@@ -205,7 +205,7 @@ public class CommonTree implements Tree<TreeNode> {
                 }
 
                 public void setNodes(Collection<TreeNode> nodes) {
-                    this.nodes = new LinkedList();
+                    this.nodes = new LinkedList<TreeNode>();
                     if ((nodes != null) && (!nodes.isEmpty())) {
                         this.nodes.addAll(nodes);
                     }
@@ -234,4 +234,5 @@ public class CommonTree implements Tree<TreeNode> {
         this.nodes.clear();
         this.nodeMap.clear();
     }
+
 }

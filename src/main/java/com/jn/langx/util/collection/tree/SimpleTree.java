@@ -1,14 +1,15 @@
 package com.jn.langx.util.collection.tree;
 
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 
 import java.util.*;
 
-
+@SuppressWarnings("all")
 public class SimpleTree implements Tree<TreeNode> {
     private static final long serialVersionUID = -9051148743662948065L;
-    private List<TreeNode> nodes = new ArrayList();
-    private transient Map<String, TreeNode> nodeMap = new HashMap();
+    private List<TreeNode> nodes = new ArrayList<TreeNode>();
+    private transient Map<String, TreeNode> nodeMap = new HashMap<String, TreeNode>();
 
     public SimpleTree() {
         this(null);
@@ -52,7 +53,7 @@ public class SimpleTree implements Tree<TreeNode> {
     public void removeNode(TreeNode node, boolean recursion) {
         this.nodes.remove(node);
 
-        this.nodes.remove(node.getId());
+        this.nodeMap.remove(node.getId());
 
 
         if (recursion) {
@@ -75,20 +76,20 @@ public class SimpleTree implements Tree<TreeNode> {
     @Override
     public List<TreeNode> removeChildNodes(String pid) {
         if (pid == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
-        List<TreeNode> removed = new LinkedList();
+        List<TreeNode> removed = new LinkedList<TreeNode>();
         removeChildNodes(pid, removed);
         return removed;
     }
 
     public void removeChildNodes(String pid, List<TreeNode> removed) {
-        TreeNode node = (TreeNode) this.nodeMap.get(pid);
+        TreeNode node = this.nodeMap.get(pid);
         Collection<TreeNode> children = getChildren(node.getId());
         if ((children != null) && (!children.isEmpty())) {
             Iterator<TreeNode> iter = children.iterator();
             while (iter.hasNext()) {
-                TreeNode n = (TreeNode) iter.next();
+                TreeNode n = iter.next();
                 removeChildNodes(n.getId(), removed);
                 removeNode(n, false);
             }
@@ -98,17 +99,17 @@ public class SimpleTree implements Tree<TreeNode> {
 
     @Override
     public TreeNode getNodeById(String id) {
-        return (TreeNode) this.nodeMap.get(id);
+        return this.nodeMap.get(id);
     }
 
     @Override
     public Collection<TreeNode> getChildren(String id) {
-        TreeNode n = (TreeNode) this.nodeMap.get(id);
+        TreeNode n = this.nodeMap.get(id);
         if (n != null) {
-            List<TreeNode> children = new LinkedList();
+            List<TreeNode> children = new LinkedList<TreeNode>();
             Iterator<TreeNode> iter = this.nodes.iterator();
             while (iter.hasNext()) {
-                TreeNode node = (TreeNode) iter.next();
+                TreeNode node = iter.next();
                 if (id.equals(node.getPid())) {
                     children.add(node);
                 }
@@ -126,17 +127,14 @@ public class SimpleTree implements Tree<TreeNode> {
 
     @Override
     public List<TreeNode> getNodesAsArray() {
-        if ((this.nodes instanceof List)) {
-            return this.nodes;
-        }
-        return new ArrayList(this.nodes);
+        return Collects.asList(Collects.toArray(this.nodes, TreeNode[].class));
     }
 
     @Override
-    public void forEach(Consumer2<Tree, TreeNode> cb) throws Throwable {
+    public void forEach(final Consumer2<Tree, TreeNode> cb) throws Throwable {
         Iterator<TreeNode> iter = this.nodes.iterator();
         while (iter.hasNext()) {
-            TreeNode node = (TreeNode) iter.next();
+            TreeNode node = iter.next();
             cb.accept(this, node);
         }
     }
@@ -174,4 +172,5 @@ public class SimpleTree implements Tree<TreeNode> {
         this.nodes.clear();
         this.nodeMap.clear();
     }
+
 }
