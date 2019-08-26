@@ -2,7 +2,7 @@ package com.jn.langx.util.collection;
 
 import java.util.*;
 
-public class MultiKeyMap<V> extends HashMap<Object, V> {
+public class MultiKeyMap<V> implements Map<Object, V> {
     private Map<Tuple, V> delegate = new HashMap<Tuple, V>();
 
     @Override
@@ -63,6 +63,7 @@ public class MultiKeyMap<V> extends HashMap<Object, V> {
         return delegate.get(new Tuple(key, key2, key3, key4, key5));
     }
 
+    @Override
     public V put(Object key, V value) {
         return delegate.put(new Tuple(key), value);
     }
@@ -89,7 +90,7 @@ public class MultiKeyMap<V> extends HashMap<Object, V> {
         return delegate.remove(new Tuple(key));
     }
 
-    public <K2> V remove2(Object key, K2 key2) {
+    public <K2> V remove(Object key, K2 key2) {
         return delegate.remove(new Tuple(key, key2));
     }
 
@@ -105,6 +106,7 @@ public class MultiKeyMap<V> extends HashMap<Object, V> {
         return delegate.remove(new Tuple(key, key2, key3, key4, key5));
     }
 
+    @Override
     public void putAll(Map<? extends Object, ? extends V> m) {
         Iterator iter = m.entrySet().iterator();
         while (iter.hasNext()) {
