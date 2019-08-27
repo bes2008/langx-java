@@ -16,6 +16,7 @@ Java lang extensions
     + Properties Accessor
     + Field Accessor
     + Array Accessor 
+    + HTTP Query String Accessor
 5. Reflect utilities
     + Modifiers
     + Reflects
