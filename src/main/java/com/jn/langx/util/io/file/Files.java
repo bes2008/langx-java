@@ -949,7 +949,7 @@ public class Files {
             return;
         }
 
-        if (isNotSymlink(directory)) {
+        if (FileSystems.isNotSymlink(directory)) {
             cleanDirectory(directory);
         }
 
@@ -1103,7 +1103,7 @@ public class Files {
         }
 
         directory.deleteOnExit();
-        if (isNotSymlink(directory)) {
+        if (FileSystems.isNotSymlink(directory)) {
             cleanDirectoryOnExit(directory);
         }
     }
@@ -1248,7 +1248,7 @@ public class Files {
 
         for (final File file : files) {
             try {
-                if (isNotSymlink(file)) {
+                if (FileSystems.isNotSymlink(file)) {
                     size += sizeOf0(file); // internal method
                     if (size < 0) {
                         break;
@@ -1307,7 +1307,7 @@ public class Files {
 
         for (final File file : files) {
             try {
-                if (isNotSymlink(file)) {
+                if (FileSystems.isNotSymlink(file)) {
                     size = size.add(sizeOfBig0(file));
                 }
             } catch (final IOException ioe) {
@@ -1684,39 +1684,5 @@ public class Files {
         }
     }
 
-    /**
-     * Determines whether the specified file is a Symbolic Link rather than an actual file.
-     * <p>
-     * Will not return true if there is a Symbolic Link anywhere in the path,
-     * only if the specific file is.
-     * <p>
-     * When using jdk1.7, this method delegates to {@code boolean java.nio.file.Files.isSymbolicLink(Path path)}
-     * <p>
-     * <b>Note:</b> the current implementation always returns {@code false} if running on jdk1.6
-     * <p>
-     * For code that runs on Java 1.7 or later, use the following method instead:
-     * <br>
-     * {@code boolean java.nio.file.Files.isSymbolicLink(Path path)}
-     *
-     * @param file the file to check
-     * @return true if the file is a Symbolic Link
-     * @throws IOException if an IO error occurs while checking the file
-     */
-    public static boolean isNotSymlink(final File file) throws IOException {
-        return !isSymlink(file);
-    }
 
-    public static boolean isSymlink(final File file) throws IOException {
-        Preconditions.checkNotNull(file);
-        if (Platform.JAVA_VERSION_INT < 7) {
-            return false;
-        }
-        try {
-            Class pathClass = Class.forName("java.nio.file.Path");
-            Object filePathObject = Reflects.invokePublicMethod(file, "toPath", null, null, true, false);
-            return Reflects.<Boolean>invokeAnyStaticMethod("java.nio.file.Files", "isSymbolicLink", new Class[]{pathClass}, new Object[]{filePathObject}, true, false);
-        } catch (Throwable ex) {
-            return false;
-        }
-    }
 }
