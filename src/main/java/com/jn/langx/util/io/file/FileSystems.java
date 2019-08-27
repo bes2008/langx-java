@@ -37,6 +37,7 @@ public class FileSystems {
     }
 
     public static boolean isHidden(File file){
+        Preconditions.checkNotNull(file);
         String name = file.getName();
         return name.startsWith(".");
     }
