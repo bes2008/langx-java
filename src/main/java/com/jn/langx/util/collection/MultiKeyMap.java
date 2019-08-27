@@ -90,7 +90,7 @@ public class MultiKeyMap<V> implements Map<Object, V> {
         return delegate.remove(new Tuple(key));
     }
 
-    public <K2> V remove(Object key, K2 key2) {
+    public <K2> V remove2(Object key, K2 key2) {
         return delegate.remove(new Tuple(key, key2));
     }
 
