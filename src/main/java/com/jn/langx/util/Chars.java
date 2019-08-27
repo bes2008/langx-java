@@ -42,11 +42,11 @@ public class Chars {
         return ch >= 32 && ch < 127;
     }
 
-    public boolean isNumber(final char c) {
+    public static boolean isNumber(final char c) {
         return c >= '0' && c <= '9';
     }
 
-    public int toInt(char c) {
+    public static int toInt(char c) {
         Preconditions.checkTrue(isNumber(c));
         return c - 48;
     }
@@ -83,6 +83,14 @@ public class Chars {
 
     public static boolean isUpperCase(char value) {
         return value >= 'A' && value <= 'Z';
+    }
+
+    public static boolean isLowOrUpperCase(char value){
+        return isUpperCase(value) || isLowerCase(value);
+    }
+
+    public static boolean isLowOrUpperCase(byte value){
+        return isUpperCase(value) || isLowerCase(value);
     }
 
     private static final char MAX_CHAR_VALUE = 255;
