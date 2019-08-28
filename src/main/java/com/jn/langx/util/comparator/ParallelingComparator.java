@@ -9,25 +9,25 @@ import java.util.List;
 
 @SuppressWarnings({"unchecked"})
 public class ParallelingComparator implements Comparator {
-    private final List<Comparator> list = new ArrayList<Comparator>();
+    private final List<Comparator> delegates = new ArrayList<Comparator>();
 
     @Override
     public int compare(Object o1, Object o2) {
-        Preconditions.checkTrue(Emptys.isNotEmpty(list));
-        int leftMoveUnit = 32 / list.size();
+        Preconditions.checkTrue(isValid());
+        int leftMoveUnit = 32 / delegates.size();
         int deltaMax = new Double(Math.pow(2, leftMoveUnit + 1)).intValue() - 1;
         int result = 0;
 
         Boolean isNegative = null;
-        for (int i = 0; i < list.size(); i++) {
-            Comparator comparator = list.get(i);
+        for (int i = 0; i < delegates.size(); i++) {
+            Comparator comparator = delegates.get(i);
             int delta = comparator.compare(o1, o2);
             if (isNegative == null) {
                 if (delta != 0) {
                     isNegative = delta < 0;
                 }
             }
-            int leftMove = (list.size() - 1 - i) * leftMoveUnit;
+            int leftMove = (delegates.size() - 1 - i) * leftMoveUnit;
 
             if (i > 0 && isNegative != null && ((delta > 0 && isNegative) || (delta < 0 && !isNegative))) {
                 result = result + ((deltaMax - 1 - (Math.abs(delta) % deltaMax)) << leftMove);
@@ -43,6 +43,10 @@ public class ParallelingComparator implements Comparator {
 
     public void addComparator(Comparator comparator) {
         Preconditions.checkNotNull(comparator);
-        list.add(comparator);
+        delegates.add(comparator);
+    }
+
+    public boolean isValid(){
+        return Emptys.isNotEmpty(delegates);
     }
 }
