@@ -956,7 +956,11 @@ public class Collects {
     }
 
 
-    public static <E extends Comparable<E>> List<E> sort(@Nullable Collection<E> collection, boolean reverse) {
+    /**
+     * sort a collection, return an new list. it is different to
+     * Collections.sort(list) is that : Collections.sort() return void
+     */
+    public static <E extends Comparable<E>> TreeSet<E> sort(@Nullable Collection<E> collection, boolean reverse) {
         return sort(collection, new ComparableComparator<E>(), reverse);
     }
 
@@ -964,22 +968,29 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <E> List<E> sort(@Nullable Collection<E> collection, @NonNull Comparator<E> comparator) {
+    public static <E> TreeSet<E> sort(@Nullable Collection<E> collection, @NonNull Comparator<E> comparator) {
         return sort(collection, comparator, false);
     }
 
-    public static <E> List<E> sort(@Nullable Collection<E> collection, @NonNull Comparator<E> comparator, boolean reverse) {
+    /**
+     * sort a collection, return an new list. it is different to
+     * Collections.sort(list) is that : Collections.sort() return void
+     */
+    public static <E> TreeSet<E> sort(@Nullable Collection<E> collection, @NonNull Comparator<E> comparator, boolean reverse) {
         Preconditions.checkNotNull(comparator);
-        List<E> newList = new LinkedList<E>();
         if (Emptys.isEmpty(collection)) {
-            return newList;
+            return  new TreeSet<E>();
         } else {
-            newList.addAll(collection);
-            Collections.sort(newList, reverse ? Collections.reverseOrder(comparator) : comparator);
-            return newList;
+            TreeSet<E> set = new TreeSet<E>(reverse ? Collections.reverseOrder(comparator) : comparator);
+            set.addAll(filter(collection, Functions.<E>nonNullPredicate()));
+            return set;
         }
     }
 
+    /**
+     * sort a collection, return an new list. it is different to
+     * Collections.sort(list) is that : Collections.sort() return void
+     */
     public static <K, V> Map<K, V> sort(@Nullable Map<K, V> map, @NonNull Comparator<K> comparator) {
         Preconditions.checkNotNull(comparator);
         Map<K, V> result = emptyTreeMap(comparator);
