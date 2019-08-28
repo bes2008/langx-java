@@ -1,9 +1,12 @@
 package com.jn.langx.test.bean;
 
+import com.jn.langx.text.StringTemplates;
+
 public class Person {
     private String id;
     private int age;
     private String name;
+    private String desc;
 
     public String getId() {
         return id;
@@ -39,8 +42,21 @@ public class Person {
                 name.equals(person.name);
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     @Override
     public int hashCode() {
         return id.hashCode() << 8 + name.hashCode() << 4 + age << 2;
+    }
+
+    @Override
+    public String toString() {
+        return StringTemplates.format( "id: {0}, name: {1}, age: {2}", this.id, this.name, this.age);
     }
 }
