@@ -1027,4 +1027,57 @@ public class Nets {
         });
     }
 
+    /**
+     * Creates an byte[] based on an ipAddressString. No error handling is performed here.
+     */
+    public static byte[] createByteArrayFromIpAddressString(String ipAddressString) {
+
+        if (isValidIpV4Address(ipAddressString)) {
+            return validIpV4ToBytes(ipAddressString);
+        }
+
+        if (isValidIpV6Address(ipAddressString)) {
+            if (ipAddressString.charAt(0) == '[') {
+                ipAddressString = ipAddressString.substring(1, ipAddressString.length() - 1);
+            }
+
+            int percentPos = ipAddressString.indexOf('%');
+            if (percentPos >= 0) {
+                ipAddressString = ipAddressString.substring(0, percentPos);
+            }
+
+            return getIPv6ByName(ipAddressString, true);
+        }
+        return null;
+    }
+
+    // visible for tests
+    static byte[] validIpV4ToBytes(String ip) {
+        int i;
+        return new byte[] {
+                ipv4WordToByte(ip, 0, i = ip.indexOf('.', 1)),
+                ipv4WordToByte(ip, i + 1, i = ip.indexOf('.', i + 2)),
+                ipv4WordToByte(ip, i + 1, i = ip.indexOf('.', i + 2)),
+                ipv4WordToByte(ip, i + 1, ip.length())
+        };
+    }
+
+    private static byte ipv4WordToByte(String ip, int from, int toExclusive) {
+        int ret = decimalDigit(ip, from);
+        from++;
+        if (from == toExclusive) {
+            return (byte) ret;
+        }
+        ret = ret * 10 + decimalDigit(ip, from);
+        from++;
+        if (from == toExclusive) {
+            return (byte) ret;
+        }
+        return (byte) (ret * 10 + decimalDigit(ip, from));
+    }
+
+    private static int decimalDigit(String str, int pos) {
+        return str.charAt(pos) - '0';
+    }
+
 }
