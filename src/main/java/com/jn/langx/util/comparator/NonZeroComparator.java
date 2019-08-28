@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class NonZeroComparator<E> implements Comparator<E> {
     private Comparator<E> delegate;
 
-    public NonZeroComparator(Comparator comparator) {
+    public NonZeroComparator(Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);
         this.delegate = comparator;
     }
