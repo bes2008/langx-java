@@ -22,7 +22,7 @@ public class IteratorIterable<E> implements Iterable<E> {
         if (removable) {
             this.iterator = iterator;
         } else {
-
+            this.iterator = new UnremoveableIterator<E>(iterator);
         }
     }
 
