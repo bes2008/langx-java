@@ -633,7 +633,7 @@ public class Collects {
     /**
      * mapping aMap to a list
      */
-    public static <K, V, R> List<R> map(@Nullable Map<K, V> map, @NonNull final Function2<K, V, R> mapper) {
+    public static <K, V, R> List<R> map(@Nullable Map<? extends K, ? extends V> map, @NonNull final Function2<K, V, R> mapper) {
         Preconditions.checkNotNull(mapper);
         final List<R> result = emptyArrayList();
         forEach(map, new Consumer2<K, V>() {
@@ -648,7 +648,7 @@ public class Collects {
     /**
      * mapping aMap to bMap
      */
-    public static <K, V, K1, V1> Map<K1, V1> map(@Nullable Map<K, V> map, @NonNull final Mapper2<K, V, Pair<K1, V1>> mapper) {
+    public static <K, V, K1, V1> Map<K1, V1> map(@Nullable Map<? extends K, ? extends V> map, @NonNull final Mapper2<K, V, Pair<K1, V1>> mapper) {
         Preconditions.checkNotNull(mapper);
         final Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
@@ -711,10 +711,10 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <K, V> void forEach(@Nullable Map<K, V> map, @NonNull Consumer2<K, V> consumer) {
+    public static <K, V> void forEach(@Nullable Map<? extends K, ? extends V> map, @NonNull Consumer2<K, V> consumer) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(map)) {
-            for (Map.Entry<K, V> entry : map.entrySet()) {
+            for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
                 consumer.accept(entry.getKey(), entry.getValue());
             }
         }
@@ -734,7 +734,7 @@ public class Collects {
                 }
             }
         } else {
-            Iterator<E> iterator = collection.iterator();
+            Iterator<? extends E> iterator = collection.iterator();
             if (iterator.hasNext()) {
                 return iterator.next();
             }
@@ -747,19 +747,19 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <K, V> Map.Entry<K, V> findFirst(@Nullable Map<K, V> map, @Nullable Predicate2<K, V> predicate) {
+    public static <K, V> Map.Entry<? extends K, ? extends V> findFirst(@Nullable Map<? extends K, ? extends V> map, @Nullable Predicate2<K, V> predicate) {
         if (map == null) {
             return null;
         }
         if (Emptys.isNotEmpty(map)) {
             if (predicate != null) {
-                for (Map.Entry<K, V> entry : map.entrySet()) {
+                for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
                     if (predicate.test(entry.getKey(), entry.getValue())) {
                         return entry;
                     }
                 }
             } else {
-                Set<Map.Entry<K, V>> set = map.entrySet();
+                Set set = map.entrySet();
                 List<Map.Entry<K, V>> list = new ArrayList<Map.Entry<K, V>>(set);
                 return list.get(0);
             }
@@ -841,10 +841,10 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <K, V> boolean anyMatch(@Nullable Map<K, V> map, @NonNull Predicate2<K, V> predicate) {
+    public static <K, V> boolean anyMatch(@Nullable Map<? extends K, ? extends V> map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            Map.Entry<K, V> entry = findFirst(map, predicate);
+            Map.Entry<? extends K, ? extends V> entry = findFirst(map, predicate);
             return entry != null;
         }
         return false;
@@ -872,10 +872,10 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <K, V> boolean allMatch(@Nullable Map<K, V> map, @NonNull Predicate2<K, V> predicate) {
+    public static <K, V> boolean allMatch(@Nullable Map<? extends K, ? extends V> map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            for (Map.Entry<K, V> e : map.entrySet()) {
+            for (Map.Entry<? extends K, ? extends V> e : map.entrySet()) {
                 if (!predicate.test(e.getKey(), e.getValue())) {
                     return false;
                 }
@@ -907,10 +907,10 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <K, V> boolean noneMatch(@Nullable Map<K, V> map, @NonNull Predicate2<K, V> predicate) {
+    public static <K, V> boolean noneMatch(@Nullable Map<? extends K, ? extends V> map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
-            for (Map.Entry<K, V> e : map.entrySet()) {
+            for (Map.Entry<? extends K, ? extends V> e : map.entrySet()) {
                 if (predicate.test(e.getKey(), e.getValue())) {
                     return false;
                 }
