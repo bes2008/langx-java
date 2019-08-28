@@ -9,13 +9,12 @@ import com.jn.langx.text.HttpQueryStringAccessor;
  * getXxx(K key, Xxx default): get the Xxx value association to specified key from target, if can't find the key, return the specified default value
  * </pre>
  *
+ * @author jinuo.fang
  * @see com.jn.langx.util.collection.StringMapAccessor
  * @see com.jn.langx.util.reflect.FieldAccessor
  * @see com.jn.langx.util.collection.PropertiesAccessor
  * @see HttpQueryStringAccessor
  * @see com.jn.langx.util.reflect.ArrayAccessor
- *
- * @author jinuo.fang
  */
 public interface Accessor<K, T> {
     void setTarget(T target);

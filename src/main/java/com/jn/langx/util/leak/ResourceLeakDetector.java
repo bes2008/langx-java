@@ -251,7 +251,6 @@ public class ResourceLeakDetector<T> {
     }
 
 
-
     @SuppressWarnings("deprecation")
     private static final class DefaultResourceLeak<T>
             extends WeakReference<Object> implements ResourceLeakTracker<T> {

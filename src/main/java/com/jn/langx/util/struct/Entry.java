@@ -86,7 +86,7 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
             }
 
             int nextIndex = -1;
-            while ((nextIndex = src.indexOf(listSpecFlag,index + listSpecFlag.length())) != -1) {
+            while ((nextIndex = src.indexOf(listSpecFlag, index + listSpecFlag.length())) != -1) {
                 strList.add(src.substring(index, nextIndex));
                 index = nextIndex;
             }

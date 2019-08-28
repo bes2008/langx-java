@@ -49,16 +49,16 @@ public class Emptys {
         if (number instanceof Double) {
             return number.doubleValue() == 0D;
         }
-        if(number instanceof AtomicInteger){
-            return ((AtomicInteger) number).get()==0;
+        if (number instanceof AtomicInteger) {
+            return ((AtomicInteger) number).get() == 0;
         }
-        if(number instanceof BigInteger){
-            return ((BigInteger)number).intValue()==0;
+        if (number instanceof BigInteger) {
+            return ((BigInteger) number).intValue() == 0;
         }
-        if(number instanceof AtomicLong){
-            return number.longValue()==0L;
+        if (number instanceof AtomicLong) {
+            return number.longValue() == 0L;
         }
-        if(number instanceof BigDecimal){
+        if (number instanceof BigDecimal) {
             return new BigDecimal(0).equals(number);
         }
         return false;

@@ -6,5 +6,5 @@ import java.util.Collection;
 import java.util.List;
 
 interface SegmentationSelector {
-  List<Emit> select(Collection<Emit> paramCollection);
+    List<Emit> select(Collection<Emit> paramCollection);
 }

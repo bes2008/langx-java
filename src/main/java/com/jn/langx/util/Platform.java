@@ -127,7 +127,6 @@ public class Platform {
      * Returns the path to the system temporary directory.
      *
      * @return the path to the system temporary directory.
-     *
      */
     public static String getTempDirectoryPath() {
         return getJavaIOTmpDir();
@@ -137,7 +136,6 @@ public class Platform {
      * Returns a {@link File} representing the system temporary directory.
      *
      * @return the system temporary directory.
-     *
      */
     public static File getTempDirectory() {
         return new File(getTempDirectoryPath());
@@ -147,7 +145,6 @@ public class Platform {
      * Returns the path to the user's home directory.
      *
      * @return the path to the user's home directory.
-     *
      */
     public static String getUserHomeDirectoryPath() {
         return SystemPropertys.getUserHome();
@@ -157,7 +154,6 @@ public class Platform {
      * Returns a {@link File} representing the user's home directory.
      *
      * @return the user's home directory.
-     *
      */
     public static File getUserHomeDirectory() {
         return new File(getUserHomeDirectoryPath());

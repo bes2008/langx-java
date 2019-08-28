@@ -179,6 +179,7 @@ public class TreeNode<T extends TreeNode> implements Serializable {
 
         return this.id.equals(treeNode.id);
     }
+
     @Override
     public int hashCode() {
         return this.id.hashCode();

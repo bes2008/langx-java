@@ -140,13 +140,13 @@ public class Pipeline<E> {
         return Collects.collect(this.collection, collector);
     }
 
-    public Pipeline<E> concat(Pipeline<E> another){
+    public Pipeline<E> concat(Pipeline<E> another) {
         return concat(another.collection);
     }
 
-    public Pipeline<E> concat(Collection<E> another){
-        if(another!=null){
-           return new Pipeline<E>(Collects.concat(this.collection, another)) ;
+    public Pipeline<E> concat(Collection<E> another) {
+        if (another != null) {
+            return new Pipeline<E>(Collects.concat(this.collection, another));
         }
         return this;
     }
@@ -165,8 +165,8 @@ public class Pipeline<E> {
         });
     }
 
-    public Pipeline<E> addAll(Collection collection){
-        if(collection==null){
+    public Pipeline<E> addAll(Collection collection) {
+        if (collection == null) {
             return this;
         }
         this.collection.addAll(collection);

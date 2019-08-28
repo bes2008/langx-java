@@ -64,6 +64,7 @@ public class Filenames {
     public static String getSuffixAsLowCase(String filename) {
         return getSuffix(filename).toLowerCase();
     }
+
     public static String getSuffixAsUpperCase(String filename) {
         return getSuffix(filename).toUpperCase();
     }

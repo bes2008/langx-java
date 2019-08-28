@@ -1,6 +1,6 @@
 package com.jn.langx.util.leak;
 
-public interface ResourceLeakTracker<T>  {
+public interface ResourceLeakTracker<T> {
 
     /**
      * Records the caller's current stack trace so that the {@link ResourceLeakDetector} can tell where the leaked

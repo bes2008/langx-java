@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author jinuo.fang
  */
-public class CommonThreadFactory implements ThreadFactory, Factory<Runnable,Thread> {
+public class CommonThreadFactory implements ThreadFactory, Factory<Runnable, Thread> {
     // key: prefix
     // value: thread N.O.
     private static final Map<String, AtomicLong> threadNumber = new ConcurrentHashMap<String, AtomicLong>();

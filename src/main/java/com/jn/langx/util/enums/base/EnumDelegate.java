@@ -46,7 +46,7 @@ package com.jn.langx.util.enums.base;
  *         }
  *     }
  * </pre>
- *
+ * <p>
  * if use it, you can get any enum instance by CommonEnums:
  * for examples:
  * <pre>
@@ -59,7 +59,6 @@ package com.jn.langx.util.enums.base;
  *     // get an enum instance by displayText
  *     Period p = CommonEnums.ofDisplayText("minutes");
  * </pre>
- *
  */
 public class EnumDelegate implements CommonEnum {
     private int code;

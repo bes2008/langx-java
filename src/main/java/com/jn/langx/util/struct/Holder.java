@@ -1,4 +1,3 @@
-
 package com.jn.langx.util.struct;
 
 public class Holder<V> {

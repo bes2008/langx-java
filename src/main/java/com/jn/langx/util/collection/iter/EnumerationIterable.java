@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 /**
  * Wrap an Enumeration or an EnumerationIterator to Iterable
+ *
  * @param <E>
  */
 public class EnumerationIterable<E> implements Iterable<E> {

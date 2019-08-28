@@ -2,12 +2,9 @@ package com.jn.langx.util.io.file;
 
 import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Platform;
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.NullOutputStream;
-import com.jn.langx.util.reflect.Reflects;
 
 import java.io.*;
 import java.io.FileFilter;

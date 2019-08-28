@@ -1,9 +1,6 @@
 package com.jn.langx.util;
 
-import static com.jn.langx.util.ByteProcessors.CARRIAGE_RETURN;
-import static com.jn.langx.util.ByteProcessors.HTAB;
-import static com.jn.langx.util.ByteProcessors.LINE_FEED;
-import static com.jn.langx.util.ByteProcessors.SPACE;
+import static com.jn.langx.util.ByteProcessors.*;
 
 /**
  * Provides a mechanism to iterate over a collection of bytes.
@@ -128,7 +125,7 @@ public interface ByteProcessor {
 
     /**
      * @return {@code true} if the processor wants to continue the loop and handle the next byte in the buffer.
-     *         {@code false} if the processor wants to stop handling bytes and abort the loop.
+     * {@code false} if the processor wants to stop handling bytes and abort the loop.
      */
     boolean process(byte value) throws Exception;
 }

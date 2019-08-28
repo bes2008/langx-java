@@ -11,12 +11,14 @@ public class StringTemplates {
 
     /**
      * format based order
+     *
      * @param template the string template
      * @return formatted string
      */
-    public static String formatWithoutIndex(String template, Object... args){
+    public static String formatWithoutIndex(String template, Object... args) {
         return format(template, orderPattern, new Function2<String, Object[], String>() {
             int index = -1;
+
             @Override
             public String apply(String matched, Object[] args) {
                 index++;
@@ -28,8 +30,9 @@ public class StringTemplates {
 
     /**
      * format based index
+     *
      * @param template the string template
-     * @param args args
+     * @param args     args
      * @return formatted string
      */
     public static String format(String template, Object... args) {
@@ -39,10 +42,11 @@ public class StringTemplates {
 
     /**
      * custom formatter
-     * @param template the string template
+     *
+     * @param template        the string template
      * @param variablePattern variable pattern in template
-     * @param valueGetter variable's value getter, will get value from args
-     * @param args args
+     * @param valueGetter     variable's value getter, will get value from args
+     * @param args            args
      * @return formatted string
      */
     public static String format(String template, String variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
@@ -51,10 +55,11 @@ public class StringTemplates {
 
     /**
      * custom formatter
-     * @param template the string template
+     *
+     * @param template        the string template
      * @param variablePattern variable pattern in template
-     * @param valueGetter variable's value getter, will get value from args
-     * @param args args
+     * @param valueGetter     variable's value getter, will get value from args
+     * @param args            args
      * @return formatted string
      */
     public static String format(String template, Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {

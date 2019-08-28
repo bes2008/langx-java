@@ -2,7 +2,6 @@ package com.jn.langx.util.collection.diff;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collection.DiffResult;
 
 import java.util.ArrayList;
 import java.util.Collection;

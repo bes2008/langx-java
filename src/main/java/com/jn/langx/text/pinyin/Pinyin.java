@@ -73,7 +73,7 @@ public final class Pinyin {
      * <p>
      * 例: "hello:中国"  在separator为","时，输出： "h,e,l,l,o,:,ZHONG,GUO,!"
      *
-     * @param str       输入字符串
+     * @param str 输入字符串
      * @return 中文转为拼音的字符串
      */
     public static String toPinyin(String str, String separator) {

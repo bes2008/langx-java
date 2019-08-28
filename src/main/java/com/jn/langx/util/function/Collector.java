@@ -6,5 +6,6 @@ package com.jn.langx.util.function;
  */
 public interface Collector<E, C> {
     Supplier0<C> supplier();
+
     Consumer2<C, E> accumulator();
 }

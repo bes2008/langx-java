@@ -33,15 +33,15 @@ public class MutableValueBool extends MutableValue {
     @Override
     public boolean equalsSameType(Object other) {
         assert exists || (false == value);
-        MutableValueBool b = (MutableValueBool)other;
+        MutableValueBool b = (MutableValueBool) other;
         return value == b.value && exists == b.exists;
     }
 
     @Override
     public int compareSameType(Object other) {
         assert exists || (false == value);
-        MutableValueBool b = (MutableValueBool)other;
-        if (value != b.value){
+        MutableValueBool b = (MutableValueBool) other;
+        if (value != b.value) {
             return value ? 1 : -1;
         }
         if (exists == b.exists) {

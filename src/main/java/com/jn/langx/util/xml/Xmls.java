@@ -16,7 +16,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
-@SuppressWarnings({"unchecked","unused"})
+@SuppressWarnings({"unchecked", "unused"})
 public class Xmls {
     private static final String NULL_XML_STR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 

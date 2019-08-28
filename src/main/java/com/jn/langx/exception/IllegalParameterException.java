@@ -5,9 +5,10 @@ public class IllegalParameterException extends IllegalArgumentException {
         super();
     }
 
-    public IllegalParameterException(ExceptionMessage exceptionMessage){
+    public IllegalParameterException(ExceptionMessage exceptionMessage) {
         this(exceptionMessage.getMessage());
     }
+
     public IllegalParameterException(String s) {
         super(s);
     }

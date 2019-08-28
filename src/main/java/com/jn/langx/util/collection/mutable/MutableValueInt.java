@@ -33,20 +33,19 @@ public class MutableValueInt extends MutableValue {
     @Override
     public boolean equalsSameType(Object other) {
         assert exists || 0 == value;
-        MutableValueInt b = (MutableValueInt)other;
+        MutableValueInt b = (MutableValueInt) other;
         return value == b.value && exists == b.exists;
     }
 
     @Override
     public int compareSameType(Object other) {
         assert exists || 0 == value;
-        MutableValueInt b = (MutableValueInt)other;
+        MutableValueInt b = (MutableValueInt) other;
         int ai = value;
         int bi = b.value;
-        if (ai<bi) {
+        if (ai < bi) {
             return -1;
-        }
-        else if (ai>bi){
+        } else if (ai > bi) {
             return 1;
         }
 
@@ -61,6 +60,6 @@ public class MutableValueInt extends MutableValue {
     public int hashCode() {
         assert exists || 0 == value;
         // TODO: if used in HashMap, it already mixes the value... maybe use a straight value?
-        return (value>>8) + (value>>16);
+        return (value >> 8) + (value >> 16);
     }
 }

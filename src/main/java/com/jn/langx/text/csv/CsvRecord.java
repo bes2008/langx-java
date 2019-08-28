@@ -15,16 +15,24 @@ public final class CsvRecord implements Serializable, Iterable<String> {
 
     private final long characterPosition;
 
-    /** The accumulated comments (if any) */
+    /**
+     * The accumulated comments (if any)
+     */
     private final String comment;
 
-    /** The record number. */
+    /**
+     * The record number.
+     */
     private final long recordNumber;
 
-    /** The values of the record */
+    /**
+     * The values of the record
+     */
     private final String[] values;
 
-    /** The parser that originates this record. */
+    /**
+     * The parser that originates this record.
+     */
     private final CsvParser parser;
 
     CsvRecord(final CsvParser parser, final String[] values, final String comment, final long recordNumber,
@@ -39,8 +47,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by {@link Enum}.
      *
-     * @param e
-     *            an enum
+     * @param e an enum
      * @return the String at the given enum String
      */
     public String get(final Enum<?> e) {
@@ -50,8 +57,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by index.
      *
-     * @param i
-     *            a column index (0-based)
+     * @param i a column index (0-based)
      * @return the String at the given index
      */
     public String get(final int i) {
@@ -61,13 +67,10 @@ public final class CsvRecord implements Serializable, Iterable<String> {
     /**
      * Returns a value by name.
      *
-     * @param name
-     *            the name of the column to be retrieved.
+     * @param name the name of the column to be retrieved.
      * @return the column value, maybe null depending on {@link CsvFormat#getNullString()}.
-     * @throws IllegalStateException
-     *             if no header mapping was provided
-     * @throws IllegalArgumentException
-     *             if {@code name} is not mapped or if the record is inconsistent
+     * @throws IllegalStateException    if no header mapping was provided
+     * @throws IllegalArgumentException if {@code name} is not mapped or if the record is inconsistent
      * @see #isConsistent()
      * @see CsvFormat#withNullString(String)
      */
@@ -75,19 +78,19 @@ public final class CsvRecord implements Serializable, Iterable<String> {
         final Map<String, Integer> headerMap = getHeaderMapRaw();
         if (headerMap == null) {
             throw new IllegalStateException(
-                "No header mapping was specified, the record values can't be accessed by name");
+                    "No header mapping was specified, the record values can't be accessed by name");
         }
         final Integer index = headerMap.get(name);
         if (index == null) {
             throw new IllegalArgumentException(String.format("Mapping for %s not found, expected one of %s", name,
-                headerMap.keySet()));
+                    headerMap.keySet()));
         }
         try {
             return values[index.intValue()];
         } catch (final ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(String.format(
-                "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                Integer.valueOf(values.length)));
+                    "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
+                    Integer.valueOf(values.length)));
         }
     }
 
@@ -129,7 +132,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
 
     /**
      * Returns the number of this record in the parsed CSV file.
-     *
+     * <p>
      * <p>
      * <strong>ATTENTION:</strong> If your CSV input has multi-line values, the returned number does not correspond to
      * the current line number of the parser that created this record.
@@ -157,7 +160,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
 
     /**
      * Tells whether the record size matches the header size.
-     *
+     * <p>
      * <p>
      * Returns true if the sizes for this record match and false if not. Some programs can export files that fail this
      * test but still produce parsable files.
@@ -173,8 +176,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
     /**
      * Checks whether a given column is mapped, i.e. its name has been defined to the parser.
      *
-     * @param name
-     *            the name of the column to be retrieved.
+     * @param name the name of the column to be retrieved.
      * @return whether a given column is mapped.
      */
     public boolean isMapped(final String name) {
@@ -185,8 +187,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
     /**
      * Checks whether a given columns is mapped and has a value.
      *
-     * @param name
-     *            the name of the column to be retrieved.
+     * @param name the name of the column to be retrieved.
      * @return whether a given columns is mapped and has a value
      */
     public boolean isSet(final String name) {
@@ -206,8 +207,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
     /**
      * Puts all values of this record into the given Map.
      *
-     * @param map
-     *            The Map to populate.
+     * @param map The Map to populate.
      * @return the given map.
      */
     <M extends Map<String, String>> M putIn(final M map) {
@@ -234,7 +234,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
 
     /**
      * Converts the values to a List.
-     *
+     * <p>
      * TODO: Maybe make this public?
      *
      * @return a new List
@@ -260,8 +260,8 @@ public final class CsvRecord implements Serializable, Iterable<String> {
      */
     @Override
     public String toString() {
-        return "CSVRecord [comment='" + comment + "', recordNumber=" + recordNumber + ", values=" + 
-            Arrays.toString(values) + "]";
+        return "CSVRecord [comment='" + comment + "', recordNumber=" + recordNumber + ", values=" +
+                Arrays.toString(values) + "]";
     }
 
     String[] values() {

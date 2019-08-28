@@ -83,6 +83,7 @@ public class Types {
 
     /**
      * get the type's signature in jvm runtime
+     *
      * @param typeString type FQN
      * @return signature
      */

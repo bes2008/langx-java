@@ -18,9 +18,11 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
     private static final long serialVersionUID = 1L;
     private List<Object> elements = Collects.emptyArrayList();
     private int maxSize = 0;
+
     public Tuple(Object value0, Object... values) {
         setTarget(Pipeline.of(new Object[]{value0}).addAll(Collects.asList(values)).getAll());
     }
+
     public Tuple(Collection<Object> values) {
         setTarget(values);
     }

@@ -21,7 +21,7 @@ public class Chars {
      * @param codePoint the character (Unicode code point) to be tested.
      * @return <code>true</code> if the character is a Unicode alphabet
      * character, <code>false</code> otherwise.
-     *
+     * <p>
      * copy from java 1.7 Character.isAlphabetic
      */
     public static boolean isAlphabetic(int codePoint) {
@@ -85,11 +85,11 @@ public class Chars {
         return value >= 'A' && value <= 'Z';
     }
 
-    public static boolean isLowOrUpperCase(char value){
+    public static boolean isLowOrUpperCase(char value) {
         return isUpperCase(value) || isLowerCase(value);
     }
 
-    public static boolean isLowOrUpperCase(byte value){
+    public static boolean isLowOrUpperCase(byte value) {
         return isUpperCase(value) || isLowerCase(value);
     }
 

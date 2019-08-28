@@ -7,12 +7,13 @@ import java.util.Iterator;
 
 /**
  * Wrap an Enumeration to an Iterator
+ *
  * @param <E>
  */
 public class EnumerationIterator<E> implements Iterator<E> {
     Enumeration<E> enumeration;
 
-    public EnumerationIterator(@NonNull Enumeration<E> enumeration){
+    public EnumerationIterator(@NonNull Enumeration<E> enumeration) {
         this.enumeration = enumeration;
     }
 

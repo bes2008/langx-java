@@ -18,14 +18,18 @@ final class CsvConstants {
 
     static final char CR = '\r';
 
-    /** RFC 4180 defines line breaks as CRLF */
+    /**
+     * RFC 4180 defines line breaks as CRLF
+     */
     static final String CRLF = "\r\n";
 
     static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');
 
     static final String EMPTY = "";
 
-    /** The end of stream symbol */
+    /**
+     * The end of stream symbol
+     */
     static final int END_OF_STREAM = -1;
 
     static final char FF = '\f';
@@ -49,17 +53,23 @@ final class CsvConstants {
 
     static final char PIPE = '|';
 
-    /** ASCII record separator */
+    /**
+     * ASCII record separator
+     */
     static final char RS = 30;
 
     static final char SP = ' ';
 
     static final char TAB = '\t';
 
-    /** Undefined state for the lookahead char */
+    /**
+     * Undefined state for the lookahead char
+     */
     static final int UNDEFINED = -2;
 
-    /** ASCII unit separator */
+    /**
+     * ASCII unit separator
+     */
     static final char US = 31;
 
 }

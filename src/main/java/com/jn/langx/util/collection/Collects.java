@@ -979,7 +979,7 @@ public class Collects {
     public static <E> TreeSet<E> sort(@Nullable Collection<E> collection, @NonNull Comparator<E> comparator, boolean reverse) {
         Preconditions.checkNotNull(comparator);
         if (Emptys.isEmpty(collection)) {
-            return  new TreeSet<E>();
+            return new TreeSet<E>();
         } else {
             TreeSet<E> set = new TreeSet<E>(reverse ? Collections.reverseOrder(comparator) : comparator);
             set.addAll(filter(collection, Functions.<E>nonNullPredicate()));

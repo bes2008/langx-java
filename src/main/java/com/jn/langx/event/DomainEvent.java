@@ -3,13 +3,14 @@ package com.jn.langx.event;
 import java.util.EventObject;
 
 /**
- * @author jinuo.fang
  * @param <Source>
+ * @author jinuo.fang
  */
 public class DomainEvent<Source> extends EventObject {
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
     private String domain;
     private Source source;
+
     public DomainEvent(String eventDomain, Source source) {
         super(source);
         this.domain = eventDomain;

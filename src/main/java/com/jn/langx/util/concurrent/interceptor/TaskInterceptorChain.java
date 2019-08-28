@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Interceptor chain for task execute.
- *
+ * <p>
  * Usage:
  * method1:
  * <pre>
@@ -20,12 +20,12 @@ import java.util.List;
  *  WrappedRunnable task11 = new WrappedRunnable(task1);
  *  executor.submit(task11);
  * </pre>
- *
+ * <p>
  * method2:
  * <pre>
  *     using WrappedThread
  * </pre>
- *
+ * <p>
  * method3:
  * <pre>
  *     using CommonThreadFactory
