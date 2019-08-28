@@ -15,11 +15,12 @@ public class ParallelingComparator implements Comparator {
     public int compare(Object o1, Object o2) {
         Preconditions.checkTrue(Emptys.isNotEmpty(list));
         int leftMoveUnit = 32 / list.size();
+        int deltaMax = new Double(Math.pow(2, leftMoveUnit + 1)).intValue() - 1;
         int result = 0;
         for (int i = 0; i < list.size(); i++) {
             Comparator comparator = list.get(i);
             int delta = comparator.compare(o1, o2);
-            int leftMove = (list.size() - 1) * leftMoveUnit;
+            int leftMove = (list.size() - 1 - i) * leftMoveUnit;
             result = result + delta << leftMove;
         }
         return result;
