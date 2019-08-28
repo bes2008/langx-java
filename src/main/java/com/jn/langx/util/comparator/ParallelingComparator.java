@@ -17,11 +17,24 @@ public class ParallelingComparator implements Comparator {
         int leftMoveUnit = 32 / list.size();
         int deltaMax = new Double(Math.pow(2, leftMoveUnit + 1)).intValue() - 1;
         int result = 0;
+
+        boolean isNegative = false;
         for (int i = 0; i < list.size(); i++) {
             Comparator comparator = list.get(i);
             int delta = comparator.compare(o1, o2);
+            if (i == 0 && delta < 0) {
+                isNegative = true;
+            }
             int leftMove = (list.size() - 1 - i) * leftMoveUnit;
-            result = result + delta << leftMove;
+
+            if (delta > 0 && i > 0 && isNegative) {
+                result = result + ((deltaMax - (Math.abs(delta) % deltaMax)) << leftMove);
+            } else {
+                result = result + ((Math.abs(delta) % deltaMax) << leftMove);
+            }
+        }
+        if(isNegative){
+            return 0-result;
         }
         return result;
     }
