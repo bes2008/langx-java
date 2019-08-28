@@ -13,7 +13,7 @@ public class NonDistinctTreeMap<K, V> extends TreeMap<K, V> {
     }
 
     public NonDistinctTreeMap(Comparator<? super K> comparator) {
-        super(new NonZeroComparator<K>(comparator));
+        super(new NonZeroComparator(comparator));
     }
 
     public NonDistinctTreeMap(Map<? extends K, ? extends V> m) {

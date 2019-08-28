@@ -21,7 +21,7 @@ public class NonDistinctTreeSet<E> extends TreeSet<E> {
     }
 
     public NonDistinctTreeSet(SortedSet<E> s) {
-        this(new NonZeroComparator<E>(s.comparator()));
+        this(new NonZeroComparator(s.comparator()));
         addAll(s);
     }
 }
