@@ -8,9 +8,7 @@ import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Holder;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * @author jinuo.fang
@@ -102,7 +100,7 @@ public class Pipeline<E> {
         return collection;
     }
 
-    public Number sum() {
+    public Double sum() {
         final Holder<Double> sum = new Holder<Double>(0d);
         map(new Function<E, Double>() {
             @Override
@@ -121,11 +119,11 @@ public class Pipeline<E> {
         return sum.get();
     }
 
-    public Number average() {
+    public Double average() {
         if (count() > 0) {
-            return sum().doubleValue() / count();
+            return sum() / count();
         }
-        return 0;
+        return 0d;
     }
 
     public E max(Comparator<E> comparator) {
@@ -165,12 +163,22 @@ public class Pipeline<E> {
         });
     }
 
-    public Pipeline<E> addAll(Collection collection) {
+    public Pipeline<E> add(E e) {
+        List<E> list = asList();
+        list.add(e);
+        return new Pipeline<E>(list);
+    }
+
+    public Pipeline<E> addAll(Collection<E> collection) {
         if (collection == null) {
             return this;
         }
         this.collection.addAll(collection);
         return this;
+    }
+
+    public List<E> asList() {
+        return new ArrayList<E>(getAll());
     }
 
     public static <T> Pipeline<T> of(Object anyObject) {
