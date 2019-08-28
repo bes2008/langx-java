@@ -59,7 +59,6 @@ public class MutableValueInt extends MutableValue {
     @Override
     public int hashCode() {
         assert exists || 0 == value;
-        // TODO: if used in HashMap, it already mixes the value... maybe use a straight value?
         return (value >> 8) + (value >> 16);
     }
 }
