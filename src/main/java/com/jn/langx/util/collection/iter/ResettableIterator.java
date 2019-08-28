@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection.iter;
 
-public interface ResettableIterator<E> extends Iterable<E> {
+import java.util.Iterator;
+
+public interface ResettableIterator<E> extends Iterator<E> {
     void reset();
 }
