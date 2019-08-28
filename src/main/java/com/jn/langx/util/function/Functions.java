@@ -1,7 +1,7 @@
 package com.jn.langx.util.function;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -44,8 +44,10 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> allPredicate(@NonNull Predicate<E> predicate, @Nullable Predicate<E>... predicates) {
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicate).addAll(Collects.asList(predicates));
+    public static <E> Predicate<E> allPredicate(@NonNull Predicate<E>... predicates) {
+        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
+        Preconditions.checkTrue(predicates.length >= 1);
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
         return new Predicate<E>() {
             @Override
             public boolean test(final E value) {
@@ -59,8 +61,10 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> anyPredicate(@NonNull Predicate<E> predicate, @Nullable Predicate<E>... predicates) {
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicate).addAll(Collects.asList(predicates));
+    public static <E> Predicate<E> anyPredicate(@NonNull Predicate<E>... predicates) {
+        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
+        Preconditions.checkTrue(predicates.length >= 1);
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
         return new Predicate<E>() {
             @Override
             public boolean test(final E value) {
@@ -74,8 +78,10 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> andPredicate(@NonNull Predicate<E> predicate1, @NonNull Predicate<E> predicate2, @Nullable Predicate<E>... predicates) {
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(new Predicate[]{predicate1, predicate2}).addAll(Collects.asList(predicates));
+    public static <E> Predicate<E> andPredicate(@NonNull Predicate<E>... predicates) {
+        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
+        Preconditions.checkTrue(predicates.length >= 2);
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
         return new Predicate<E>() {
             @Override
             public boolean test(final E value) {
@@ -89,8 +95,10 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> orPredicate(@NonNull Predicate<E> predicate1, @NonNull Predicate<E> predicate2, @Nullable Predicate<E>... predicates) {
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(new Predicate[]{predicate1, predicate2}).addAll(Collects.asList(predicates));
+    public static <E> Predicate<E> orPredicate(@NonNull Predicate<E>... predicates) {
+        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
+        Preconditions.checkTrue(predicates.length >= 2);
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
         return new Predicate<E>() {
             @Override
             public boolean test(final E value) {
