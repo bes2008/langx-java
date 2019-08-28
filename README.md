@@ -2,6 +2,7 @@
 
 [![JDK](https://img.shields.io/badge/JDK-1.6+-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
+[![maven](https://img.shields.io/badge/maven-v0.0.2-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.2)
 [![maven](https://img.shields.io/badge/maven-v0.0.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.1)
 
 
@@ -47,3 +48,4 @@ Java lang extensions
     + StringTemplate
 13. Null judge is unnecessary    
 14. Event API  
+15. To Many Comparators
