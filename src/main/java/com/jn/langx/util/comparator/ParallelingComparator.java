@@ -11,8 +11,8 @@ import java.util.List;
 public class ParallelingComparator implements Comparator {
     private final List<Comparator> delegates = new ArrayList<Comparator>();
 
-    @Override
-    public int compare(Object o1, Object o2) {
+    @Deprecated
+    private int compare0(Object o1, Object o2) {
         Preconditions.checkTrue(isValid());
         int leftMoveUnit = 32 / delegates.size();
         int deltaMax = new Double(Math.pow(2, leftMoveUnit + 1)).intValue() - 1;
@@ -41,12 +41,23 @@ public class ParallelingComparator implements Comparator {
         return result;
     }
 
+    public int compare(Object o1, Object o2) {
+        Preconditions.checkTrue(isValid());
+        for (Comparator comparator : delegates) {
+            int delta = comparator.compare(o1, o2);
+            if (delta != 0) {
+                return delta;
+            }
+        }
+        return 0;
+    }
+
     public void addComparator(Comparator comparator) {
         Preconditions.checkNotNull(comparator);
         delegates.add(comparator);
     }
 
-    public boolean isValid(){
+    public boolean isValid() {
         return Emptys.isNotEmpty(delegates);
     }
 }
