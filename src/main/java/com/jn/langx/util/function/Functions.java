@@ -1,7 +1,10 @@
 package com.jn.langx.util.function;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 
 import java.util.*;
 
@@ -22,21 +25,81 @@ public class Functions {
     /**********************************************
      *   Predicate
      **********************************************/
-    public static <T> Predicate<T> nonNullPredicate() {
-        return new Predicate<T>() {
+    public static <E> Predicate<E> nonNullPredicate() {
+        return new Predicate<E>() {
             @Override
-            public boolean test(T value) {
+            public boolean test(E value) {
                 return value != null;
             }
         };
     }
 
 
-    public static <T> Predicate<T> nullPredicate() {
-        return new Predicate<T>() {
+    public static <E> Predicate<E> nullPredicate() {
+        return new Predicate<E>() {
             @Override
-            public boolean test(T value) {
+            public boolean test(E value) {
                 return value == null;
+            }
+        };
+    }
+
+    public static <E> Predicate<E> allPredicate(@NonNull Predicate<E> predicate, @Nullable Predicate<E>... predicates) {
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicate).addAll(Collects.asList(predicates));
+        return new Predicate<E>() {
+            @Override
+            public boolean test(final E value) {
+                return pipeline.allMatch(new Predicate<Predicate<E>>() {
+                    @Override
+                    public boolean test(Predicate<E> filter) {
+                        return filter.test(value);
+                    }
+                });
+            }
+        };
+    }
+
+    public static <E> Predicate<E> anyPredicate(@NonNull Predicate<E> predicate, @Nullable Predicate<E>... predicates) {
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicate).addAll(Collects.asList(predicates));
+        return new Predicate<E>() {
+            @Override
+            public boolean test(final E value) {
+                return pipeline.anyMatch(new Predicate<Predicate<E>>() {
+                    @Override
+                    public boolean test(Predicate<E> filter) {
+                        return filter.test(value);
+                    }
+                });
+            }
+        };
+    }
+
+    public static <E> Predicate<E> andPredicate(@NonNull Predicate<E> predicate1, @NonNull Predicate<E> predicate2, @Nullable Predicate<E>... predicates) {
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(new Predicate[]{predicate1, predicate2}).addAll(Collects.asList(predicates));
+        return new Predicate<E>() {
+            @Override
+            public boolean test(final E value) {
+                return pipeline.allMatch(new Predicate<Predicate<E>>() {
+                    @Override
+                    public boolean test(Predicate<E> filter) {
+                        return filter.test(value);
+                    }
+                });
+            }
+        };
+    }
+
+    public static <E> Predicate<E> orPredicate(@NonNull Predicate<E> predicate1, @NonNull Predicate<E> predicate2, @Nullable Predicate<E>... predicates) {
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(new Predicate[]{predicate1, predicate2}).addAll(Collects.asList(predicates));
+        return new Predicate<E>() {
+            @Override
+            public boolean test(final E value) {
+                return pipeline.anyMatch(new Predicate<Predicate<E>>() {
+                    @Override
+                    public boolean test(Predicate<E> filter) {
+                        return filter.test(value);
+                    }
+                });
             }
         };
     }
