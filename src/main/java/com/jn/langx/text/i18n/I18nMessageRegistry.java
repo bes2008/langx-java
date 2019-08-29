@@ -1,15 +1,17 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.annotation.NonNull;
+
 import java.util.Locale;
 
 public interface I18nMessageRegistry {
-    String getDefaultLanguage();
-
-    String getDefaultCountry();
 
     String getDefaultBundleName();
 
+    void setLocal(@NonNull Locale locale);
+
+    @NonNull
     Locale getLocale();
 
     Locale getLocale(String language);

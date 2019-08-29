@@ -1,90 +1,63 @@
 package com.jn.langx.text.i18n;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.lifecycle.Initializable;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initializable {
     private static final Logger logger = LoggerFactory.getLogger(DefaultI18nMessageRegistry.class);
     private static final Object[] NO_ARGS = new Object[0];
-    private HashMap bundles;
-    private final List<String> bundleNames = new ArrayList<String>();
+    // Map<bundleName, Map<language, Map<key, message>>>
     private String defaultBundleName;
     private Locale defaultLocale = Locale.getDefault();
-    private String defaultLanguage = Locale.getDefault().getLanguage();
-    private String defaultCountry = Locale.getDefault().getCountry();
     private boolean devMode;
 
     public DefaultI18nMessageRegistry() {
     }
 
-    public String getDefaultLanguage() {
-        return this.defaultLanguage;
-    }
-
-    public String getDefaultCountry() {
-        return this.defaultCountry;
+    @Override
+    public void setLocal(Locale locale) {
+        this.defaultLocale = locale;
     }
 
     public String getDefaultBundleName() {
         return this.defaultBundleName;
     }
 
-    protected List<String> getBundleNames() {
-        return this.bundleNames;
+
+    protected ResourceBundle getBundle(@Nullable String bundleName) {
+        return this.getBundle(bundleName, getLocale());
     }
 
-    protected ResourceBundle getBundle() {
-        return this.getBundle(this.getDefaultBundleName(), (Locale) null);
+    protected ResourceBundle getBundle(@Nullable String bundleName, @Nullable String languageHeader) {
+        return this.getBundle(bundleName, getLocale(languageHeader));
     }
 
-    protected ResourceBundle getBundle(String bundleName) {
-        return this.getBundle(bundleName, (Locale) null);
-    }
-
-    protected ResourceBundle getBundle(String bundleName, String languageHeader) {
-        return this.getBundle(bundleName, this.getLocale(languageHeader));
-    }
-
-    public ResourceBundle getBundle(String bundleName, Locale locale) {
-        bundleName = bundleName == null ? this.getDefaultBundleName() : bundleName.trim();
-        if (this.devMode) {
-            try {
-                Class klass = ResourceBundle.getBundle(bundleName).getClass().getSuperclass();
-                Field field = klass.getDeclaredField("cacheList");
-                field.setAccessible(true);
-                Object cache = field.get((Object) null);
-                cache.getClass().getDeclaredMethod("clear", (Class[]) null).invoke(cache, (Object[]) null);
-                field.setAccessible(false);
-            } catch (Exception ex) {
-                logger.warn(ex.getMessage());
-            }
-        }
-
+    protected ResourceBundle getBundle(@Nullable String bundleName, @Nullable Locale locale) {
+        bundleName = Strings.isBlank(bundleName) ? this.getDefaultBundleName() : bundleName.trim();
         if (locale == null) {
-            locale = this.getLocale(null);
+            locale = this.getLocale();
         }
+        return cacheBundle(bundleName, locale);
 
-        HashMap bundlesByLocale = (HashMap) this.bundles.get(bundleName);
-        ResourceBundle rb;
-        if (bundlesByLocale != null) {
-            rb = (ResourceBundle) bundlesByLocale.get(locale);
-            if (rb == null) {
-                rb = this.cacheBundle(bundleName, locale);
-            }
-        } else {
-            rb = this.cacheBundle(bundleName, locale);
-        }
-
-        return rb;
     }
 
+    public void setLocale(@NonNull Locale locale) {
+        Preconditions.checkNotNull(locale);
+        this.defaultLocale = locale;
+    }
+
+    @NonNull
     public Locale getLocale() {
         return this.defaultLocale;
     }
@@ -109,34 +82,8 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
     }
 
     public String getMessage(String bundleName, Locale locale, String key) {
-        if (locale == null) {
-            locale = this.getLocale(null);
-        }
-
-        ResourceBundle rb = this.getBundle(bundleName, locale);
-        String value = this.getStringOrNull(rb, key);
-        String name;
-        if (value == null && !this.bundleNames.isEmpty()) {
-            for (int i = 0; i < this.bundleNames.size(); ++i) {
-                name = this.bundleNames.get(i);
-                if (!name.equals(bundleName)) {
-                    rb = this.getBundle(name, locale);
-                    value = this.getStringOrNull(rb, key);
-                    if (value != null) {
-                        locale = rb.getLocale();
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (value == null) {
-            name = locale.toString();
-            String mesg = "Noticed missing resource: bundleName=" + bundleName + ", locale=" + name + ", key=" + key;
-            logger.debug(mesg);
-            value = key;
-        }
-        return value;
+        ResourceBundle bundle = cacheBundle(bundleName, locale);
+        return bundle.getString(key);
     }
 
     public String getMessage(String bundleName, Locale locale, String key, Object... args) {
@@ -152,12 +99,6 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
     }
 
     public void init() throws InitializationException {
-        this.bundles = new HashMap();
-        this.defaultLocale = new Locale(this.defaultLanguage, this.defaultCountry);
-        this.initializeBundleNames();
-        if ("true".equals(System.getProperty("PLEXUS_DEV_MODE"))) {
-            this.devMode = true;
-        }
 
     }
 
@@ -166,53 +107,7 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
     }
 
     private synchronized ResourceBundle cacheBundle(String bundleName, Locale locale) throws MissingResourceException {
-        HashMap bundlesByLocale = (HashMap) this.bundles.get(bundleName);
-        ResourceBundle rb = bundlesByLocale == null ? null : (ResourceBundle) bundlesByLocale.get(locale);
-        if (rb == null) {
-            bundlesByLocale = bundlesByLocale == null ? new HashMap(3) : new HashMap(bundlesByLocale);
-
-            try {
-                rb = ResourceBundle.getBundle(bundleName, locale);
-            } catch (MissingResourceException var6) {
-                rb = this.findBundleByLocale(bundleName, locale, bundlesByLocale);
-                if (rb == null) {
-                    throw (MissingResourceException) var6.fillInStackTrace();
-                }
-            }
-
-            if (rb != null) {
-                bundlesByLocale.put(rb.getLocale(), rb);
-                HashMap bundlesByName = new HashMap(this.bundles);
-                bundlesByName.put(bundleName, bundlesByLocale);
-                this.bundles = bundlesByName;
-            }
-        }
-
-        return rb;
-    }
-
-    private ResourceBundle findBundleByLocale(String bundleName, Locale locale, Map bundlesByLocale) {
-        ResourceBundle rb = null;
-        Locale withDefaultLanguage;
-        if (!Strings.isNotEmpty(locale.getCountry()) && this.defaultLanguage.equals(locale.getLanguage())) {
-            withDefaultLanguage = new Locale(locale.getLanguage(), this.defaultCountry);
-            rb = (ResourceBundle) bundlesByLocale.get(withDefaultLanguage);
-            if (rb == null) {
-                rb = this.getBundleIgnoreException(bundleName, withDefaultLanguage);
-            }
-        } else if (!Strings.isNotEmpty(locale.getLanguage()) && this.defaultCountry.equals(locale.getCountry())) {
-            withDefaultLanguage = new Locale(this.defaultLanguage, locale.getCountry());
-            rb = (ResourceBundle) bundlesByLocale.get(withDefaultLanguage);
-            if (rb == null) {
-                rb = this.getBundleIgnoreException(bundleName, withDefaultLanguage);
-            }
-        }
-
-        if (rb == null && !this.defaultLocale.equals(locale)) {
-            rb = this.getBundleIgnoreException(bundleName, this.defaultLocale);
-        }
-
-        return rb;
+        return ResourceBundle.getBundle(bundleName, locale);
     }
 
     private ResourceBundle getBundleIgnoreException(String bundleName, Locale locale) {
