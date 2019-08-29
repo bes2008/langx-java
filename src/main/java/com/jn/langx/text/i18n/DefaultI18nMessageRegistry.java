@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.*;
 
-public class DefaultI18N implements I18N, Initializable {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultI18N.class);
+public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initializable {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultI18nMessageRegistry.class);
     private static final Object[] NO_ARGS = new Object[0];
     private HashMap bundles;
     private String[] bundleNames;
@@ -22,7 +22,7 @@ public class DefaultI18N implements I18N, Initializable {
     private String defaultCountry = Locale.getDefault().getCountry();
     private boolean devMode;
 
-    public DefaultI18N() {
+    public DefaultI18nMessageRegistry() {
     }
 
     public String getDefaultLanguage() {

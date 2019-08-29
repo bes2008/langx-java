@@ -4,8 +4,8 @@ package com.jn.langx.text.i18n;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public interface I18N {
-    String ROLE = I18N.class.getName();
+public interface I18nMessageRegistry {
+    String ROLE = I18nMessageRegistry.class.getName();
     String ACCEPT_LANGUAGE = "Accept-Language";
 
     String getDefaultLanguage();
@@ -18,7 +18,7 @@ public interface I18N {
 
     ResourceBundle getBundle();
 
-    ResourceBundle getBundle(String var1);
+    ResourceBundle getBundle(String bundle);
 
     ResourceBundle getBundle(String var1, String var2);
 

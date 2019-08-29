@@ -2,7 +2,7 @@ package com.jn.langx.text.i18n;
 
 import java.util.*;
 
-public class I18NTokenizer implements Iterator {
+class I18NTokenizer implements Iterator {
     private static final String LOCALE_SEPARATOR = ",";
     private static final char QUALITY_SEPARATOR = ';';
     private static final Float DEFAULT_QUALITY = 1.0F;

@@ -7,15 +7,15 @@ import java.util.Locale;
 public class DefaultLanguage implements Language {
     private String bundleName;
     private Locale locale;
-    private DefaultI18N i18n;
+    private DefaultI18nMessageRegistry i18n;
     private String error;
 
     public DefaultLanguage() {
-        this.i18n = new DefaultI18N();
+        this.i18n = new DefaultI18nMessageRegistry();
     }
 
     public DefaultLanguage(Class clazz) {
-        this.i18n = new DefaultI18N();
+        this.i18n = new DefaultI18nMessageRegistry();
         this.bundleName = clazz.getPackage().getName() + "." + "Messages";
 
         try {
