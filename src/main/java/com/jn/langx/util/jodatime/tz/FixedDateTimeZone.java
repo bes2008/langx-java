@@ -21,7 +21,7 @@ import com.jn.langx.util.jodatime.DateTimeZone;
  * Basic DateTimeZone implementation that has a fixed name key and offsets.
  * <p>
  * FixedDateTimeZone is thread-safe and immutable.
- * 
+ *
  * @author Brian S O'Neill
  * @since 1.0
  */
@@ -71,6 +71,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
 
     /**
      * Override to return the correct timzone instance.
+     *
      * @since 1.5
      */
     public java.util.TimeZone toTimeZone() {
@@ -91,9 +92,9 @@ public final class FixedDateTimeZone extends DateTimeZone {
         if (obj instanceof FixedDateTimeZone) {
             FixedDateTimeZone other = (FixedDateTimeZone) obj;
             return
-                getID().equals(other.getID()) &&
-                iStandardOffset == other.iStandardOffset &&
-                iWallOffset == other.iWallOffset;
+                    getID().equals(other.getID()) &&
+                            iStandardOffset == other.iStandardOffset &&
+                            iWallOffset == other.iWallOffset;
         }
         return false;
     }

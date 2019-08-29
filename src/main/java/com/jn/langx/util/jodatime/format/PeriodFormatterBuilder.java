@@ -15,25 +15,11 @@
  */
 package com.jn.langx.util.jodatime.format;
 
+import com.jn.langx.util.jodatime.*;
+
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.TreeSet;
-
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.PeriodType;
-import com.jn.langx.util.jodatime.ReadWritablePeriod;
-import com.jn.langx.util.jodatime.ReadablePeriod;
-import com.jn.langx.util.jodatime.format.FormatUtils;
-import com.jn.langx.util.jodatime.format.ISOPeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormatter;
-import com.jn.langx.util.jodatime.format.PeriodParser;
-import com.jn.langx.util.jodatime.format.PeriodPrinter;
+import java.util.*;
 
 /**
  * Factory that creates complex instances of PeriodFormatter via method calls.
@@ -65,8 +51,8 @@ import com.jn.langx.util.jodatime.format.PeriodPrinter;
  * formatters that it builds are thread-safe and immutable.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see PeriodFormat
+ * @since 1.0
  */
 public class PeriodFormatterBuilder {
     private static final int PRINT_ZERO_RARELY_FIRST = 1;
@@ -74,7 +60,7 @@ public class PeriodFormatterBuilder {
     private static final int PRINT_ZERO_IF_SUPPORTED = 3;
     private static final int PRINT_ZERO_ALWAYS = 4;
     private static final int PRINT_ZERO_NEVER = 5;
-    
+
     private static final int YEARS = 0;
     private static final int MONTHS = 1;
     private static final int WEEKS = 2;
@@ -96,9 +82,13 @@ public class PeriodFormatterBuilder {
 
     // List of Printers and Parsers used to build a final formatter.
     private List<Object> iElementPairs;
-    /** Set to true if the formatter is not a printer. */
+    /**
+     * Set to true if the formatter is not a printer.
+     */
     private boolean iNotPrinter;
-    /** Set to true if the formatter is not a parser. */
+    /**
+     * Set to true if the formatter is not a parser.
+     */
     private boolean iNotParser;
 
     // Last PeriodFormatter appended of each field type.
@@ -109,6 +99,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs a PeriodFormatter using all the appended elements.
      * <p>
@@ -121,7 +112,7 @@ public class PeriodFormatterBuilder {
      * The methods {@link com.jn.langx.util.jodatime.format.PeriodFormatter#isPrinter()} and
      * {@link com.jn.langx.util.jodatime.format.PeriodFormatter#isParser()} will help you determine the state
      * of the formatter.
-     * 
+     *
      * @return the newly created formatter
      * @throws IllegalStateException if the builder can produce neither a printer nor a parser
      */
@@ -140,7 +131,7 @@ public class PeriodFormatterBuilder {
      * and just use the printing API.
      * <p>
      * Subsequent changes to this builder do not affect the returned printer.
-     * 
+     *
      * @return the newly created printer, null if builder cannot create a printer
      */
     public com.jn.langx.util.jodatime.format.PeriodPrinter toPrinter() {
@@ -159,7 +150,7 @@ public class PeriodFormatterBuilder {
      * and just use the printing API.
      * <p>
      * Subsequent changes to this builder do not affect the returned parser.
-     * 
+     *
      * @return the newly created parser, null if builder cannot create a parser
      */
     public com.jn.langx.util.jodatime.format.PeriodParser toParser() {
@@ -170,6 +161,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Clears out all the appended elements, allowing this builder to be reused.
      */
@@ -209,7 +201,7 @@ public class PeriodFormatterBuilder {
      * Either the printer or the parser may be null, in which case the builder will
      * be unable to produce a parser or printer repectively.
      *
-     * @param printer  appends a printer to the builder, null if printing is not supported
+     * @param printer appends a printer to the builder, null if printing is not supported
      * @param parser  appends a parser to the builder, null if parsing is not supported
      * @return this PeriodFormatterBuilder
      * @throws IllegalArgumentException if both the printer and parser are null
@@ -337,6 +329,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Append a field prefix which applies only to the next appended field. If
      * the field is not printed, neither is the prefix.
@@ -360,12 +353,12 @@ public class PeriodFormatterBuilder {
      * or not the actual value matches plurality.
      *
      * @param singularText text to print if field value is one
-     * @param pluralText text to print if field value is not one
+     * @param pluralText   text to print if field value is not one
      * @return this PeriodFormatterBuilder
      * @see #appendSuffix
      */
     public PeriodFormatterBuilder appendPrefix(String singularText,
-                                                 String pluralText) {
+                                               String pluralText) {
         if (singularText == null || pluralText == null) {
             throw new IllegalArgumentException();
         }
@@ -392,6 +385,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Instruct the printer to emit an integer years field, if supported.
      * <p>
@@ -538,13 +532,14 @@ public class PeriodFormatterBuilder {
 
     private void appendField(int type, int minPrinted) {
         FieldFormatter field = new FieldFormatter(minPrinted, iPrintZeroSetting,
-            iMaxParsedDigits, iRejectSignedValues, type, iFieldFormatters, iPrefix, null);
+                iMaxParsedDigits, iRejectSignedValues, type, iFieldFormatters, iPrefix, null);
         append0(field, field);
         iFieldFormatters[type] = field;
         iPrefix = null;
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Append a field suffix which applies only to the last appended field. If
      * the field is not printed, neither is the suffix.
@@ -569,7 +564,7 @@ public class PeriodFormatterBuilder {
      * not the actual value matches plurality.
      *
      * @param singularText text to print if field value is one
-     * @param pluralText text to print if field value is not one
+     * @param pluralText   text to print if field value is not one
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
@@ -613,11 +608,12 @@ public class PeriodFormatterBuilder {
         iElementPairs.set(iElementPairs.size() - 2, newField);
         iElementPairs.set(iElementPairs.size() - 1, newField);
         iFieldFormatters[newField.getFieldType()] = newField;
-        
+
         return this;
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Append a separator, which is output if fields are printed both before
      * and after the separator.
@@ -630,7 +626,7 @@ public class PeriodFormatterBuilder {
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @param text  the text to use as a separator
+     * @param text the text to use as a separator
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if this separator follows a previous one
      */
@@ -650,7 +646,7 @@ public class PeriodFormatterBuilder {
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @param text  the text to use as a separator
+     * @param text the text to use as a separator
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if this separator follows a previous one
      */
@@ -670,7 +666,7 @@ public class PeriodFormatterBuilder {
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @param text  the text to use as a separator
+     * @param text the text to use as a separator
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if this separator follows a previous one
      */
@@ -694,8 +690,8 @@ public class PeriodFormatterBuilder {
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @param text  the text to use as a separator
-     * @param finalText  the text used used if this is the final separator to be printed
+     * @param text      the text to use as a separator
+     * @param finalText the text used used if this is the final separator to be printed
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if this separator follows a previous one
      */
@@ -719,8 +715,8 @@ public class PeriodFormatterBuilder {
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @param text  the text to use as a separator
-     * @param finalText  the text used used if this is the final separator to be printed
+     * @param text      the text to use as a separator
+     * @param finalText the text used used if this is the final separator to be printed
      * @param variants  set of text values which are also acceptable when parsed
      * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if this separator follows a previous one
@@ -738,7 +734,7 @@ public class PeriodFormatterBuilder {
         }
 
         clearPrefix();
-        
+
         // optimise zero formatter case
         List<Object> pairs = iElementPairs;
         if (pairs.size() == 0) {
@@ -750,11 +746,11 @@ public class PeriodFormatterBuilder {
             }
             return this;
         }
-        
+
         // find the last separator added
         int i;
         Separator lastSeparator = null;
-        for (i=pairs.size(); --i>=0; ) {
+        for (i = pairs.size(); --i >= 0; ) {
             if (pairs.get(i) instanceof Separator) {
                 lastSeparator = (Separator) pairs.get(i);
                 pairs = pairs.subList(i + 1, pairs.size());
@@ -762,7 +758,7 @@ public class PeriodFormatterBuilder {
             }
             i--;  // element pairs
         }
-        
+
         // merge formatters
         if (lastSeparator != null && pairs.size() == 0) {
             throw new IllegalStateException("Cannot have two adjacent separators");
@@ -776,7 +772,7 @@ public class PeriodFormatterBuilder {
             pairs.add(separator);
             pairs.add(separator);
         }
-        
+
         return this;
     }
 
@@ -823,27 +819,28 @@ public class PeriodFormatterBuilder {
     private static Object[] createComposite(List<Object> elementPairs) {
         switch (elementPairs.size()) {
             case 0:
-                return new Object[] {Literal.EMPTY, Literal.EMPTY};
+                return new Object[]{Literal.EMPTY, Literal.EMPTY};
             case 1:
-                return new Object[] {elementPairs.get(0), elementPairs.get(1)};
+                return new Object[]{elementPairs.get(0), elementPairs.get(1)};
             default:
                 Composite comp = new Composite(elementPairs);
-                return new Object[] {comp, comp};
+                return new Object[]{comp, comp};
         }
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Defines a formatted field's prefix or suffix text.
      * This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
      */
     static interface PeriodFieldAffix {
         int calculatePrintedLength(int value);
-        
+
         void printTo(StringBuffer buf, int value);
-        
+
         void printTo(Writer out, int value) throws IOException;
-        
+
         /**
          * @return new position after parsing affix, or ~position of failure
          */
@@ -856,6 +853,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Implements an affix where the text does not vary by the amount.
      */
@@ -898,12 +896,23 @@ public class PeriodFormatterBuilder {
                 }
                 // Only allow number characters to be skipped in search of suffix.
                 switch (periodStr.charAt(pos)) {
-                case '0': case '1': case '2': case '3': case '4':
-                case '5': case '6': case '7': case '8': case '9':
-                case '.': case ',': case '+': case '-':
-                    break;
-                default:
-                    break search;
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '.':
+                    case ',':
+                    case '+':
+                    case '-':
+                        break;
+                    default:
+                        break search;
                 }
             }
             return ~position;
@@ -911,6 +920,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Implements an affix where the text varies by the amount of the field.
      * Only singular (1) and plural (not 1) are supported.
@@ -938,7 +948,7 @@ public class PeriodFormatterBuilder {
 
         public int parse(String periodStr, int position) {
             String text1 = iPluralText;
-            String text2 = iSingularText; 
+            String text2 = iSingularText;
 
             if (text1.length() < text2.length()) {
                 // Swap in order to match longer one first.
@@ -948,11 +958,11 @@ public class PeriodFormatterBuilder {
             }
 
             if (periodStr.regionMatches
-                (true, position, text1, 0, text1.length())) {
+                    (true, position, text1, 0, text1.length())) {
                 return position + text1.length();
             }
             if (periodStr.regionMatches
-                (true, position, text2, 0, text2.length())) {
+                    (true, position, text2, 0, text2.length())) {
                 return position + text2.length();
             }
 
@@ -961,7 +971,7 @@ public class PeriodFormatterBuilder {
 
         public int scan(String periodStr, final int position) {
             String text1 = iPluralText;
-            String text2 = iSingularText; 
+            String text2 = iSingularText;
 
             if (text1.length() < text2.length()) {
                 // Swap in order to match longer one first.
@@ -987,6 +997,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Builds a composite affix by merging two other affix implementations.
      */
@@ -1001,7 +1012,7 @@ public class PeriodFormatterBuilder {
 
         public int calculatePrintedLength(int value) {
             return iLeft.calculatePrintedLength(value)
-                + iRight.calculatePrintedLength(value);
+                    + iRight.calculatePrintedLength(value);
         }
 
         public void printTo(StringBuffer buf, int value) {
@@ -1032,6 +1043,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Formats the numeric value of a field, potentially with prefix/suffix.
      */
@@ -1041,15 +1053,17 @@ public class PeriodFormatterBuilder {
         private final int iPrintZeroSetting;
         private final int iMaxParsedDigits;
         private final boolean iRejectSignedValues;
-        
-        /** The index of the field type, 0=year, etc. */
+
+        /**
+         * The index of the field type, 0=year, etc.
+         */
         private final int iFieldType;
         /**
          * The array of the latest formatter added for each type.
          * This is shared between all the field formatters in a formatter.
          */
         private final FieldFormatter[] iFieldFormatters;
-        
+
         private final PeriodFieldAffix iPrefix;
         private final PeriodFieldAffix iSuffix;
 
@@ -1122,7 +1136,7 @@ public class PeriodFormatterBuilder {
 
             return sum;
         }
-        
+
         public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
             long valueLong = getFieldValue(period);
             if (valueLong == Long.MAX_VALUE) {
@@ -1190,7 +1204,7 @@ public class PeriodFormatterBuilder {
         }
 
         public int parseInto(
-                ReadWritablePeriod period, String text, 
+                ReadWritablePeriod period, String text,
                 int position, Locale locale) {
 
             boolean mustParse = (iPrintZeroSetting == PRINT_ZERO_ALWAYS);
@@ -1261,9 +1275,8 @@ public class PeriodFormatterBuilder {
                     boolean negative = c == '-';
 
                     // Next character must be a digit.
-                    if (length + 1 >= limit || 
-                        (c = text.charAt(position + length + 1)) < '0' || c > '9')
-                    {
+                    if (length + 1 >= limit ||
+                            (c = text.charAt(position + length + 1)) < '0' || c > '9') {
                         break;
                     }
 
@@ -1282,7 +1295,7 @@ public class PeriodFormatterBuilder {
                     hasDigits = true;
                 } else {
                     if ((c == '.' || c == ',')
-                         && (iFieldType == SECONDS_MILLIS || iFieldType == SECONDS_OPTIONAL_MILLIS)) {
+                            && (iFieldType == SECONDS_MILLIS || iFieldType == SECONDS_OPTIONAL_MILLIS)) {
                         if (fractPos >= 0) {
                             // can't have two decimals
                             break;
@@ -1341,20 +1354,20 @@ public class PeriodFormatterBuilder {
 
                 setFieldValue(period, MILLIS, fractValue);
             }
-                
+
             position += length;
 
             if (position >= 0 && iSuffix != null) {
                 position = iSuffix.parse(text, position);
             }
-                
+
             return position;
         }
 
         /**
-         * @param text text to parse
+         * @param text     text to parse
          * @param position position in text
-         * @param length exact count of characters to parse
+         * @param length   exact count of characters to parse
          * @return parsed int value
          */
         private int parseInt(String text, int position, int length) {
@@ -1401,69 +1414,69 @@ public class PeriodFormatterBuilder {
             long value;
 
             switch (iFieldType) {
-            default:
-                return Long.MAX_VALUE;
-            case YEARS:
-                value = period.get(DurationFieldType.years());
-                break;
-            case MONTHS:
-                value = period.get(DurationFieldType.months());
-                break;
-            case WEEKS:
-                value = period.get(DurationFieldType.weeks());
-                break;
-            case DAYS:
-                value = period.get(DurationFieldType.days());
-                break;
-            case HOURS:
-                value = period.get(DurationFieldType.hours());
-                break;
-            case MINUTES:
-                value = period.get(DurationFieldType.minutes());
-                break;
-            case SECONDS:
-                value = period.get(DurationFieldType.seconds());
-                break;
-            case MILLIS:
-                value = period.get(DurationFieldType.millis());
-                break;
-            case SECONDS_MILLIS: // drop through
-            case SECONDS_OPTIONAL_MILLIS:
-                int seconds = period.get(DurationFieldType.seconds());
-                int millis = period.get(DurationFieldType.millis());
-                value = (seconds * (long) DateTimeConstants.MILLIS_PER_SECOND) + millis;
-                break;
+                default:
+                    return Long.MAX_VALUE;
+                case YEARS:
+                    value = period.get(DurationFieldType.years());
+                    break;
+                case MONTHS:
+                    value = period.get(DurationFieldType.months());
+                    break;
+                case WEEKS:
+                    value = period.get(DurationFieldType.weeks());
+                    break;
+                case DAYS:
+                    value = period.get(DurationFieldType.days());
+                    break;
+                case HOURS:
+                    value = period.get(DurationFieldType.hours());
+                    break;
+                case MINUTES:
+                    value = period.get(DurationFieldType.minutes());
+                    break;
+                case SECONDS:
+                    value = period.get(DurationFieldType.seconds());
+                    break;
+                case MILLIS:
+                    value = period.get(DurationFieldType.millis());
+                    break;
+                case SECONDS_MILLIS: // drop through
+                case SECONDS_OPTIONAL_MILLIS:
+                    int seconds = period.get(DurationFieldType.seconds());
+                    int millis = period.get(DurationFieldType.millis());
+                    value = (seconds * (long) DateTimeConstants.MILLIS_PER_SECOND) + millis;
+                    break;
             }
 
             // determine if period is zero and this is the last field
             if (value == 0) {
                 switch (iPrintZeroSetting) {
-                case PRINT_ZERO_NEVER:
-                    return Long.MAX_VALUE;
-                case PRINT_ZERO_RARELY_LAST:
-                    if (isZero(period) && iFieldFormatters[iFieldType] == this) {
-                        for (int i = iFieldType + 1; i <= MAX_FIELD; i++) {
-                            if (isSupported(type, i) && iFieldFormatters[i] != null) {
-                                return Long.MAX_VALUE;
-                            }
-                        }
-                    } else {
+                    case PRINT_ZERO_NEVER:
                         return Long.MAX_VALUE;
-                    }
-                    break;
-                case PRINT_ZERO_RARELY_FIRST:
-                    if (isZero(period) && iFieldFormatters[iFieldType] == this) {
-                        int i = Math.min(iFieldType, 8);  // line split out for IBM JDK
-                        i--;                              // see bug 1660490
-                        for (; i >= 0 && i <= MAX_FIELD; i--) {
-                            if (isSupported(type, i) && iFieldFormatters[i] != null) {
-                                return Long.MAX_VALUE;
+                    case PRINT_ZERO_RARELY_LAST:
+                        if (isZero(period) && iFieldFormatters[iFieldType] == this) {
+                            for (int i = iFieldType + 1; i <= MAX_FIELD; i++) {
+                                if (isSupported(type, i) && iFieldFormatters[i] != null) {
+                                    return Long.MAX_VALUE;
+                                }
                             }
+                        } else {
+                            return Long.MAX_VALUE;
                         }
-                    } else {
-                        return Long.MAX_VALUE;
-                    }
-                    break;
+                        break;
+                    case PRINT_ZERO_RARELY_FIRST:
+                        if (isZero(period) && iFieldFormatters[iFieldType] == this) {
+                            int i = Math.min(iFieldType, 8);  // line split out for IBM JDK
+                            i--;                              // see bug 1660490
+                            for (; i >= 0 && i <= MAX_FIELD; i--) {
+                                if (isSupported(type, i) && iFieldFormatters[i] != null) {
+                                    return Long.MAX_VALUE;
+                                }
+                            }
+                        } else {
+                            return Long.MAX_VALUE;
+                        }
+                        break;
                 }
             }
 
@@ -1481,59 +1494,59 @@ public class PeriodFormatterBuilder {
 
         boolean isSupported(PeriodType type, int field) {
             switch (field) {
-            default:
-                return false;
-            case YEARS:
-                return type.isSupported(DurationFieldType.years());
-            case MONTHS:
-                return type.isSupported(DurationFieldType.months());
-            case WEEKS:
-                return type.isSupported(DurationFieldType.weeks());
-            case DAYS:
-                return type.isSupported(DurationFieldType.days());
-            case HOURS:
-                return type.isSupported(DurationFieldType.hours());
-            case MINUTES:
-                return type.isSupported(DurationFieldType.minutes());
-            case SECONDS:
-                return type.isSupported(DurationFieldType.seconds());
-            case MILLIS:
-                return type.isSupported(DurationFieldType.millis());
-            case SECONDS_MILLIS: // drop through
-            case SECONDS_OPTIONAL_MILLIS:
-                return type.isSupported(DurationFieldType.seconds()) ||
-                       type.isSupported(DurationFieldType.millis());
+                default:
+                    return false;
+                case YEARS:
+                    return type.isSupported(DurationFieldType.years());
+                case MONTHS:
+                    return type.isSupported(DurationFieldType.months());
+                case WEEKS:
+                    return type.isSupported(DurationFieldType.weeks());
+                case DAYS:
+                    return type.isSupported(DurationFieldType.days());
+                case HOURS:
+                    return type.isSupported(DurationFieldType.hours());
+                case MINUTES:
+                    return type.isSupported(DurationFieldType.minutes());
+                case SECONDS:
+                    return type.isSupported(DurationFieldType.seconds());
+                case MILLIS:
+                    return type.isSupported(DurationFieldType.millis());
+                case SECONDS_MILLIS: // drop through
+                case SECONDS_OPTIONAL_MILLIS:
+                    return type.isSupported(DurationFieldType.seconds()) ||
+                            type.isSupported(DurationFieldType.millis());
             }
         }
 
         void setFieldValue(ReadWritablePeriod period, int field, int value) {
             switch (field) {
-            default:
-                break;
-            case YEARS:
-                period.setYears(value);
-                break;
-            case MONTHS:
-                period.setMonths(value);
-                break;
-            case WEEKS:
-                period.setWeeks(value);
-                break;
-            case DAYS:
-                period.setDays(value);
-                break;
-            case HOURS:
-                period.setHours(value);
-                break;
-            case MINUTES:
-                period.setMinutes(value);
-                break;
-            case SECONDS:
-                period.setSeconds(value);
-                break;
-            case MILLIS:
-                period.setMillis(value);
-                break;
+                default:
+                    break;
+                case YEARS:
+                    period.setYears(value);
+                    break;
+                case MONTHS:
+                    period.setMonths(value);
+                    break;
+                case WEEKS:
+                    period.setWeeks(value);
+                    break;
+                case DAYS:
+                    period.setDays(value);
+                    break;
+                case HOURS:
+                    period.setHours(value);
+                    break;
+                case MINUTES:
+                    period.setMinutes(value);
+                    break;
+                case SECONDS:
+                    period.setSeconds(value);
+                    break;
+                case MILLIS:
+                    period.setMillis(value);
+                    break;
             }
         }
 
@@ -1543,6 +1556,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Handles a simple literal piece of text.
      */
@@ -1582,6 +1596,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Handles a separator, that splits the fields into multiple parts.
      * For example, the 'T' in the ISO8601 standard.
@@ -1607,16 +1622,16 @@ public class PeriodFormatterBuilder {
             iFinalText = finalText;
 
             if ((finalText == null || text.equals(finalText)) &&
-                (variants == null || variants.length == 0)) {
+                    (variants == null || variants.length == 0)) {
 
-                iParsedForms = new String[] {text};
+                iParsedForms = new String[]{text};
             } else {
                 // Filter and reverse sort the parsed forms.
                 TreeSet<String> parsedSet = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
                 parsedSet.add(text);
                 parsedSet.add(finalText);
                 if (variants != null) {
-                    for (int i=variants.length; --i>=0; ) {
+                    for (int i = variants.length; --i >= 0; ) {
                         parsedSet.add(variants[i]);
                     }
                 }
@@ -1642,10 +1657,10 @@ public class PeriodFormatterBuilder {
         public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
             com.jn.langx.util.jodatime.format.PeriodPrinter before = iBeforePrinter;
             com.jn.langx.util.jodatime.format.PeriodPrinter after = iAfterPrinter;
-            
+
             int sum = before.calculatePrintedLength(period, locale)
                     + after.calculatePrintedLength(period, locale);
-            
+
             if (iUseBefore) {
                 if (before.countFieldsToPrint(period, 1, locale) > 0) {
                     if (iUseAfter) {
@@ -1660,14 +1675,14 @@ public class PeriodFormatterBuilder {
             } else if (iUseAfter && after.countFieldsToPrint(period, 1, locale) > 0) {
                 sum += iText.length();
             }
-            
+
             return sum;
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
             com.jn.langx.util.jodatime.format.PeriodPrinter before = iBeforePrinter;
             com.jn.langx.util.jodatime.format.PeriodPrinter after = iAfterPrinter;
-            
+
             before.printTo(buf, period, locale);
             if (iUseBefore) {
                 if (before.countFieldsToPrint(period, 1, locale) > 0) {
@@ -1689,7 +1704,7 @@ public class PeriodFormatterBuilder {
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
             com.jn.langx.util.jodatime.format.PeriodPrinter before = iBeforePrinter;
             com.jn.langx.util.jodatime.format.PeriodPrinter after = iAfterPrinter;
-            
+
             before.printTo(out, period, locale);
             if (iUseBefore) {
                 if (before.countFieldsToPrint(period, 1, locale) > 0) {
@@ -1724,12 +1739,12 @@ public class PeriodFormatterBuilder {
                 // Consume this separator.
                 String[] parsedForms = iParsedForms;
                 int length = parsedForms.length;
-                for (int i=0; i < length; i++) {
+                for (int i = 0; i < length; i++) {
                     String parsedForm = parsedForms[i];
                     if ((parsedForm == null || parsedForm.length() == 0) ||
-                        periodStr.regionMatches
-                        (true, position, parsedForm, 0, parsedForm.length())) {
-                        
+                            periodStr.regionMatches
+                                    (true, position, parsedForm, 0, parsedForm.length())) {
+
                         parsedFormLength = (parsedForm == null ? 0 : parsedForm.length());
                         position += parsedFormLength;
                         found = true;
@@ -1766,12 +1781,13 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Composite implementation that merges other fields to create a full pattern.
      */
     static class Composite
             implements com.jn.langx.util.jodatime.format.PeriodPrinter, com.jn.langx.util.jodatime.format.PeriodParser {
-        
+
         private final com.jn.langx.util.jodatime.format.PeriodPrinter[] iPrinters;
         private final com.jn.langx.util.jodatime.format.PeriodParser[] iParsers;
 
@@ -1799,7 +1815,7 @@ public class PeriodFormatterBuilder {
         public int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale locale) {
             int sum = 0;
             com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
-            for (int i=printers.length; sum < stopAt && --i>=0; ) {
+            for (int i = printers.length; sum < stopAt && --i >= 0; ) {
                 sum += printers[i].countFieldsToPrint(period, Integer.MAX_VALUE, locale);
             }
             return sum;
@@ -1808,7 +1824,7 @@ public class PeriodFormatterBuilder {
         public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
             int sum = 0;
             com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
-            for (int i=printers.length; --i>=0; ) {
+            for (int i = printers.length; --i >= 0; ) {
                 sum += printers[i].calculatePrintedLength(period, locale);
             }
             return sum;
@@ -1817,7 +1833,7 @@ public class PeriodFormatterBuilder {
         public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
             com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
             int len = printers.length;
-            for (int i=0; i<len; i++) {
+            for (int i = 0; i < len; i++) {
                 printers[i].printTo(buf, period, locale);
             }
         }
@@ -1825,7 +1841,7 @@ public class PeriodFormatterBuilder {
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
             com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
             int len = printers.length;
-            for (int i=0; i<len; i++) {
+            for (int i = 0; i < len; i++) {
                 printers[i].printTo(out, period, locale);
             }
         }
@@ -1839,7 +1855,7 @@ public class PeriodFormatterBuilder {
             }
 
             int len = parsers.length;
-            for (int i=0; i<len && position >= 0; i++) {
+            for (int i = 0; i < len && position >= 0; i++) {
                 position = parsers[i].parseInto(period, periodStr, position, locale);
             }
             return position;
@@ -1847,7 +1863,7 @@ public class PeriodFormatterBuilder {
 
         private void decompose(List<Object> elementPairs, List<Object> printerList, List<Object> parserList) {
             int size = elementPairs.size();
-            for (int i=0; i<size; i+=2) {
+            for (int i = 0; i < size; i += 2) {
                 Object element = elementPairs.get(i);
                 if (element instanceof PeriodPrinter) {
                     if (element instanceof Composite) {
@@ -1870,7 +1886,7 @@ public class PeriodFormatterBuilder {
 
         private void addArrayToList(List<Object> list, Object[] array) {
             if (array != null) {
-                for (int i=0; i<array.length; i++) {
+                for (int i = 0; i < array.length; i++) {
                     list.add(array[i]);
                 }
             }

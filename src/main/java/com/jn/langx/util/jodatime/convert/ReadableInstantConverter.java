@@ -20,9 +20,6 @@ import com.jn.langx.util.jodatime.DateTimeUtils;
 import com.jn.langx.util.jodatime.DateTimeZone;
 import com.jn.langx.util.jodatime.ReadableInstant;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
-import com.jn.langx.util.jodatime.convert.AbstractConverter;
-import com.jn.langx.util.jodatime.convert.InstantConverter;
-import com.jn.langx.util.jodatime.convert.PartialConverter;
 
 /**
  * ReadableInstantConverter extracts milliseconds and chronology from a ReadableInstant.
@@ -46,15 +43,16 @@ class ReadableInstantConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology, which is taken from the ReadableInstant.
      * If the chronology on the instant is null, the ISOChronology in the
      * specified time zone is used.
      * If the chronology on the instant is not in the specified zone, it is
      * adapted.
-     * 
-     * @param object  the ReadableInstant to convert, must not be null
-     * @param zone  the specified zone to use, null means default zone
+     *
+     * @param object the ReadableInstant to convert, must not be null
+     * @param zone   the specified zone to use, null means default zone
      * @return the chronology, never null
      */
     public Chronology getChronology(Object object, DateTimeZone zone) {
@@ -77,9 +75,9 @@ class ReadableInstantConverter extends AbstractConverter
      * <p>
      * If the passed in chronology is non-null, it is used.
      * Otherwise the chronology from the instant is used.
-     * 
-     * @param object  the ReadableInstant to convert, must not be null
-     * @param chrono  the chronology to use, null means use that from object
+     *
+     * @param object the ReadableInstant to convert, must not be null
+     * @param chrono the chronology to use, null means use that from object
      * @return the chronology, never null
      */
     public Chronology getChronology(Object object, Chronology chrono) {
@@ -92,21 +90,22 @@ class ReadableInstantConverter extends AbstractConverter
 
     /**
      * Extracts the millis from an object of this convertor's type.
-     * 
-     * @param object  the ReadableInstant to convert, must not be null
-     * @param chrono  the non-null result of getChronology
+     *
+     * @param object the ReadableInstant to convert, must not be null
+     * @param chrono the non-null result of getChronology
      * @return the millisecond value
      * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
+     * @throws ClassCastException   if the object is an invalid type
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         return ((ReadableInstant) object).getMillis();
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns ReadableInstant.class.
-     * 
+     *
      * @return ReadableInstant.class
      */
     public Class<?> getSupportedType() {

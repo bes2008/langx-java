@@ -15,14 +15,7 @@
  */
 package com.jn.langx.util.jodatime.base;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.ReadableInstant;
-import com.jn.langx.util.jodatime.ReadablePartial;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 
@@ -47,6 +40,7 @@ public abstract class AbstractPartial
         implements ReadablePartial, Comparable<ReadablePartial> {
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructor.
      */
@@ -55,23 +49,25 @@ public abstract class AbstractPartial
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the field for a specific index in the chronology specified.
      * <p>
      * This method must not use any instance variables.
-     * 
+     *
      * @param index  the index to retrieve
-     * @param chrono  the chronology to use
+     * @param chrono the chronology to use
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     protected abstract DateTimeField getField(int index, Chronology chrono);
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the field type at the specifed index.
-     * 
-     * @param index  the index
+     *
+     * @param index the index
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -96,8 +92,8 @@ public abstract class AbstractPartial
 
     /**
      * Gets the field at the specifed index.
-     * 
-     * @param index  the index
+     *
+     * @param index the index
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -137,12 +133,13 @@ public abstract class AbstractPartial
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the value of one of the fields of a datetime.
      * <p>
      * The field specified must be one of those that is supported by the partial.
      *
-     * @param type  a DateTimeFieldType instance that is supported by this partial
+     * @param type a DateTimeFieldType instance that is supported by this partial
      * @return the value of that field
      * @throws IllegalArgumentException if the field is null or not supported
      */
@@ -153,7 +150,7 @@ public abstract class AbstractPartial
     /**
      * Checks whether the field specified is supported by this partial.
      *
-     * @param type  the type to check, may be null which returns false
+     * @param type the type to check, may be null which returns false
      * @return true if the field is supported
      */
     public boolean isSupported(DateTimeFieldType type) {
@@ -163,7 +160,7 @@ public abstract class AbstractPartial
     /**
      * Gets the index of the specified field, or -1 if the field is unsupported.
      *
-     * @param type  the type to check, may be null which returns -1
+     * @param type the type to check, may be null which returns -1
      * @return the index of the field, -1 if unsupported
      */
     public int indexOf(DateTimeFieldType type) {
@@ -179,7 +176,7 @@ public abstract class AbstractPartial
      * Gets the index of the specified field, throwing an exception if the
      * field is unsupported.
      *
-     * @param type  the type to check, not null
+     * @param type the type to check, not null
      * @return the index of the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
@@ -195,7 +192,7 @@ public abstract class AbstractPartial
      * Gets the index of the first fields to have the specified duration,
      * or -1 if the field is unsupported.
      *
-     * @param type  the type to check, may be null which returns -1
+     * @param type the type to check, may be null which returns -1
      * @return the index of the field, -1 if unsupported
      */
     protected int indexOf(DurationFieldType type) {
@@ -211,7 +208,7 @@ public abstract class AbstractPartial
      * Gets the index of the first fields to have the specified duration,
      * throwing an exception if the field is unsupported.
      *
-     * @param type  the type to check, not null
+     * @param type the type to check, not null
      * @return the index of the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
@@ -224,6 +221,7 @@ public abstract class AbstractPartial
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Resolves this partial against another complete instant to create a new
      * full instant. The combination is performed using the chronology of the
@@ -233,7 +231,7 @@ public abstract class AbstractPartial
      * method will be the datetime from the specified base instant plus the
      * time from this partial.
      *
-     * @param baseInstant  the instant that provides the missing fields, null means now
+     * @param baseInstant the instant that provides the missing fields, null means now
      * @return the combined datetime
      */
     public DateTime toDateTime(ReadableInstant baseInstant) {
@@ -244,11 +242,12 @@ public abstract class AbstractPartial
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this ReadablePartial with another returning true if the chronology,
      * field types and values are equal.
      *
-     * @param partial  an object to check against
+     * @param partial an object to check against
      * @return true if fields and values are equal
      */
     public boolean equals(Object partial) {
@@ -271,7 +270,7 @@ public abstract class AbstractPartial
     }
 
     /**
-     * Gets a hash code for the ReadablePartial that is compatible with the 
+     * Gets a hash code for the ReadablePartial that is compatible with the
      * equals method.
      *
      * @return a suitable hash code
@@ -287,6 +286,7 @@ public abstract class AbstractPartial
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this partial with another returning an integer
      * indicating the order.
@@ -300,10 +300,10 @@ public abstract class AbstractPartial
      * NOTE: Prior to v2.0, the {@code Comparable} interface was only implemented
      * in this class and not in the {@code ReadablePartial} interface.
      *
-     * @param other  an object to check against
+     * @param other an object to check against
      * @return negative if this is less, zero if equal, positive if greater
-     * @throws ClassCastException if the partial is the wrong class
-     *  or if it has field types that don't match
+     * @throws ClassCastException   if the partial is the wrong class
+     *                              or if it has field types that don't match
      * @throws NullPointerException if the partial is null
      * @since 1.1
      */
@@ -340,10 +340,10 @@ public abstract class AbstractPartial
      * You may not pass null into this method. This is because you need
      * a time zone to accurately determine the current date.
      *
-     * @param partial  a partial to check against, must not be null
+     * @param partial a partial to check against, must not be null
      * @return true if this date is after the date passed in
      * @throws IllegalArgumentException if the specified partial is null
-     * @throws ClassCastException if the partial has field types that don't match
+     * @throws ClassCastException       if the partial has field types that don't match
      * @since 1.1
      */
     public boolean isAfter(ReadablePartial partial) {
@@ -362,10 +362,10 @@ public abstract class AbstractPartial
      * You may not pass null into this method. This is because you need
      * a time zone to accurately determine the current date.
      *
-     * @param partial  a partial to check against, must not be null
+     * @param partial a partial to check against, must not be null
      * @return true if this date is before the date passed in
      * @throws IllegalArgumentException if the specified partial is null
-     * @throws ClassCastException if the partial has field types that don't match
+     * @throws ClassCastException       if the partial has field types that don't match
      * @since 1.1
      */
     public boolean isBefore(ReadablePartial partial) {
@@ -384,10 +384,10 @@ public abstract class AbstractPartial
      * You may not pass null into this method. This is because you need
      * a time zone to accurately determine the current date.
      *
-     * @param partial  a partial to check against, must not be null
+     * @param partial a partial to check against, must not be null
      * @return true if this date is the same as the date passed in
      * @throws IllegalArgumentException if the specified partial is null
-     * @throws ClassCastException if the partial has field types that don't match
+     * @throws ClassCastException       if the partial has field types that don't match
      * @since 1.1
      */
     public boolean isEqual(ReadablePartial partial) {
@@ -398,10 +398,11 @@ public abstract class AbstractPartial
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Uses the specified formatter to convert this partial to a String.
      *
-     * @param formatter  the formatter to use, null means use <code>toString()</code>.
+     * @param formatter the formatter to use, null means use <code>toString()</code>.
      * @return the formatted string
      * @since 1.1
      */

@@ -15,21 +15,20 @@
  */
 package com.jn.langx.util.jodatime.base;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DateTimeZone;
 import com.jn.langx.util.jodatime.ReadableDateTime;
-import com.jn.langx.util.jodatime.base.AbstractInstant;
 import com.jn.langx.util.jodatime.format.DateTimeFormat;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * AbstractDateTime provides the common behaviour for datetime classes.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadableDateTime} interface should be used when different 
+ * The {@link ReadableDateTime} interface should be used when different
  * kinds of date/time objects are to be referenced.
  * <p>
  * Whenever you want to implement <code>ReadableDateTime</code> you should
@@ -53,13 +52,14 @@ public abstract class AbstractDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the value of one of the fields of a datetime.
      * <p>
      * This method uses the chronology of the datetime to obtain the value.
      * It is essentially a generic way of calling one of the get methods.
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @param type a field type, usually obtained from DateTimeFieldType
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
@@ -71,9 +71,10 @@ public abstract class AbstractDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the era field value.
-     * 
+     *
      * @return the era
      */
     public int getEra() {
@@ -82,7 +83,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     public int getCenturyOfEra() {
@@ -91,7 +92,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     public int getYearOfEra() {
@@ -100,7 +101,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year of century field value.
-     * 
+     *
      * @return the year of century
      */
     public int getYearOfCentury() {
@@ -109,7 +110,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the year field value.
-     * 
+     *
      * @return the year
      */
     public int getYear() {
@@ -124,7 +125,7 @@ public abstract class AbstractDateTime
      * is that in which at least 4 days are in the year. As a result of this
      * definition, day 1 of the first week may be in the previous year.
      * The weekyear allows you to query the effective year for that day.
-     * 
+     *
      * @return the year of a week based year
      */
     public int getWeekyear() {
@@ -133,7 +134,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the month of year field value.
-     * 
+     *
      * @return the month of year
      */
     public int getMonthOfYear() {
@@ -147,7 +148,7 @@ public abstract class AbstractDateTime
      * In the standard ISO8601 week algorithm, the first week of the year
      * is that in which at least 4 days are in the year. As a result of this
      * definition, day 1 of the first week may be in the previous year.
-     * 
+     *
      * @return the week of a week based year
      */
     public int getWeekOfWeekyear() {
@@ -156,7 +157,7 @@ public abstract class AbstractDateTime
 
     /**
      * Get the day of year field value.
-     * 
+     *
      * @return the day of year
      */
     public int getDayOfYear() {
@@ -167,7 +168,7 @@ public abstract class AbstractDateTime
      * Get the day of month field value.
      * <p>
      * The values for the day of month are defined in {@link com.jn.langx.util.jodatime.DateTimeConstants}.
-     * 
+     *
      * @return the day of month
      */
     public int getDayOfMonth() {
@@ -178,7 +179,7 @@ public abstract class AbstractDateTime
      * Get the day of week field value.
      * <p>
      * The values for the day of week are defined in {@link com.jn.langx.util.jodatime.DateTimeConstants}.
-     * 
+     *
      * @return the day of week
      */
     public int getDayOfWeek() {
@@ -186,6 +187,7 @@ public abstract class AbstractDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the hour of day field value.
      *
@@ -250,6 +252,7 @@ public abstract class AbstractDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the date time as a <code>java.util.Calendar</code>, assigning
      * exactly the same millisecond instant.
@@ -264,7 +267,7 @@ public abstract class AbstractDateTime
      * is the same. Most of the time this just means that the JDK field values
      * are wrong, as our time zone information is more up to date.
      *
-     * @param locale  the locale to get the Calendar for, or default if null
+     * @param locale the locale to get the Calendar for, or default if null
      * @return a localized Calendar initialised with this datetime
      */
     public Calendar toCalendar(Locale locale) {
@@ -299,11 +302,12 @@ public abstract class AbstractDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
-     * @see  DateTimeFormat
+     * @param pattern the pattern specification, null means use <code>toString</code>
+     * @see DateTimeFormat
      */
     public String toString(String pattern) {
         if (pattern == null) {
@@ -315,9 +319,9 @@ public abstract class AbstractDateTime
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param pattern the pattern specification, null means use <code>toString</code>
      * @param locale  Locale to use, null means default
-     * @see  DateTimeFormat
+     * @see DateTimeFormat
      */
     public String toString(String pattern, Locale locale) throws IllegalArgumentException {
         if (pattern == null) {

@@ -16,14 +16,6 @@
 package com.jn.langx.util.jodatime.convert;
 
 import com.jn.langx.util.jodatime.JodaTimePermission;
-import com.jn.langx.util.jodatime.convert.*;
-import com.jn.langx.util.jodatime.convert.Converter;
-import com.jn.langx.util.jodatime.convert.ConverterSet;
-import com.jn.langx.util.jodatime.convert.DateConverter;
-import com.jn.langx.util.jodatime.convert.LongConverter;
-import com.jn.langx.util.jodatime.convert.NullConverter;
-import com.jn.langx.util.jodatime.convert.PeriodConverter;
-import com.jn.langx.util.jodatime.convert.StringConverter;
 
 /**
  * ConverterManager controls the date and time converters.
@@ -46,7 +38,7 @@ import com.jn.langx.util.jodatime.convert.StringConverter;
  * <li>Long (milliseconds)
  * <li>null (now)
  * </ul>
- * 
+ * <p>
  * The default partial converters are:
  * <ul>
  * <li>ReadablePartial
@@ -57,7 +49,7 @@ import com.jn.langx.util.jodatime.convert.StringConverter;
  * <li>Long (milliseconds)
  * <li>null (now)
  * </ul>
- * 
+ * <p>
  * The default duration converters are:
  * <ul>
  * <li>ReadableDuration
@@ -66,7 +58,7 @@ import com.jn.langx.util.jodatime.convert.StringConverter;
  * <li>Long (milliseconds)
  * <li>null (zero ms)
  * </ul>
- *
+ * <p>
  * The default time period converters are:
  * <ul>
  * <li>ReadablePeriod
@@ -74,7 +66,7 @@ import com.jn.langx.util.jodatime.convert.StringConverter;
  * <li>String
  * <li>null (zero)
  * </ul>
- * 
+ * <p>
  * The default interval converters are:
  * <ul>
  * <li>ReadableInterval
@@ -99,85 +91,87 @@ public final class ConverterManager {
         }
         return INSTANCE;
     }
-    
+
     private com.jn.langx.util.jodatime.convert.ConverterSet iInstantConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iPartialConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iDurationConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iPeriodConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iIntervalConverters;
-    
+
     /**
      * Restricted constructor.
      */
     protected ConverterManager() {
         super();
 
-        iInstantConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[] {
-            ReadableInstantConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-            CalendarConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.DateConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+        iInstantConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+                ReadableInstantConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
+                CalendarConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.DateConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
         });
 
-        iPartialConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[] {
-            ReadablePartialConverter.INSTANCE,
-            ReadableInstantConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-            CalendarConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.DateConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+        iPartialConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+                ReadablePartialConverter.INSTANCE,
+                ReadableInstantConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
+                CalendarConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.DateConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
         });
 
-        iDurationConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[] {
-            ReadableDurationConverter.INSTANCE,
-            ReadableIntervalConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+        iDurationConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+                ReadableDurationConverter.INSTANCE,
+                ReadableIntervalConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
         });
 
-        iPeriodConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[] {
-            ReadableDurationConverter.INSTANCE,
-            ReadablePeriodConverter.INSTANCE,
-            ReadableIntervalConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+        iPeriodConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+                ReadableDurationConverter.INSTANCE,
+                ReadablePeriodConverter.INSTANCE,
+                ReadableIntervalConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
         });
 
-        iIntervalConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new Converter[] {
-            ReadableIntervalConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-            com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+        iIntervalConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new Converter[]{
+                ReadableIntervalConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
+                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
         });
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the best converter for the object specified.
-     * 
-     * @param object  the object to convert
+     *
+     * @param object the object to convert
      * @return the converter to use
      * @throws IllegalArgumentException if no suitable converter
-     * @throws IllegalStateException if multiple converters match the type
-     * equally well
+     * @throws IllegalStateException    if multiple converters match the type
+     *                                  equally well
      */
     public InstantConverter getInstantConverter(Object object) {
         InstantConverter converter =
-            (InstantConverter)iInstantConverters.select(object == null ? null : object.getClass());
+                (InstantConverter) iInstantConverters.select(object == null ? null : object.getClass());
         if (converter != null) {
             return converter;
         }
         throw new IllegalArgumentException("No instant converter found for type: " +
-            (object == null ? "null" : object.getClass().getName()));
+                (object == null ? "null" : object.getClass().getName()));
     }
-    
+
     //-----------------------------------------------------------------------
+
     /**
      * Gets a copy of the set of converters.
-     * 
+     *
      * @return the converters, a copy of the real data, never null
      */
     public InstantConverter[] getInstantConverters() {
@@ -186,7 +180,7 @@ public final class ConverterManager {
         set.copyInto(converters);
         return converters;
     }
-    
+
     /**
      * Adds a converter to the set of converters. If a matching converter is
      * already in the set, the given converter replaces it. If the converter is
@@ -194,13 +188,13 @@ public final class ConverterManager {
      * <p>
      * The order in which converters are added is not relevent. The best
      * converter is selected by examining the object hierarchy.
-     * 
-     * @param converter  the converter to add, null ignored
+     *
+     * @param converter the converter to add, null ignored
      * @return replaced converter, or null
      */
     public InstantConverter addInstantConverter(InstantConverter converter)
             throws SecurityException {
-        
+
         checkAlterInstantConverters();
         if (converter == null) {
             return null;
@@ -209,17 +203,17 @@ public final class ConverterManager {
         iInstantConverters = iInstantConverters.add(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Removes a converter from the set of converters. If the converter was
      * not in the set, no changes are made.
-     * 
-     * @param converter  the converter to remove, null ignored
+     *
+     * @param converter the converter to remove, null ignored
      * @return replaced converter, or null
      */
     public InstantConverter removeInstantConverter(InstantConverter converter)
             throws SecurityException {
-        
+
         checkAlterInstantConverters();
         if (converter == null) {
             return null;
@@ -228,10 +222,10 @@ public final class ConverterManager {
         iInstantConverters = iInstantConverters.remove(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
-     * 
+     *
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterInstantConverters() throws SecurityException {
@@ -242,29 +236,31 @@ public final class ConverterManager {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the best converter for the object specified.
-     * 
-     * @param object  the object to convert
+     *
+     * @param object the object to convert
      * @return the converter to use
      * @throws IllegalArgumentException if no suitable converter
-     * @throws IllegalStateException if multiple converters match the type
-     * equally well
+     * @throws IllegalStateException    if multiple converters match the type
+     *                                  equally well
      */
     public PartialConverter getPartialConverter(Object object) {
         PartialConverter converter =
-            (PartialConverter)iPartialConverters.select(object == null ? null : object.getClass());
+                (PartialConverter) iPartialConverters.select(object == null ? null : object.getClass());
         if (converter != null) {
             return converter;
         }
         throw new IllegalArgumentException("No partial converter found for type: " +
-            (object == null ? "null" : object.getClass().getName()));
+                (object == null ? "null" : object.getClass().getName()));
     }
-    
+
     //-----------------------------------------------------------------------
+
     /**
      * Gets a copy of the set of converters.
-     * 
+     *
      * @return the converters, a copy of the real data, never null
      */
     public PartialConverter[] getPartialConverters() {
@@ -273,7 +269,7 @@ public final class ConverterManager {
         set.copyInto(converters);
         return converters;
     }
-    
+
     /**
      * Adds a converter to the set of converters. If a matching converter is
      * already in the set, the given converter replaces it. If the converter is
@@ -281,13 +277,13 @@ public final class ConverterManager {
      * <p>
      * The order in which converters are added is not relevent. The best
      * converter is selected by examining the object hierarchy.
-     * 
-     * @param converter  the converter to add, null ignored
+     *
+     * @param converter the converter to add, null ignored
      * @return replaced converter, or null
      */
     public PartialConverter addPartialConverter(PartialConverter converter)
             throws SecurityException {
-        
+
         checkAlterPartialConverters();
         if (converter == null) {
             return null;
@@ -296,17 +292,17 @@ public final class ConverterManager {
         iPartialConverters = iPartialConverters.add(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Removes a converter from the set of converters. If the converter was
      * not in the set, no changes are made.
-     * 
-     * @param converter  the converter to remove, null ignored
+     *
+     * @param converter the converter to remove, null ignored
      * @return replaced converter, or null
      */
     public PartialConverter removePartialConverter(PartialConverter converter)
             throws SecurityException {
-        
+
         checkAlterPartialConverters();
         if (converter == null) {
             return null;
@@ -315,10 +311,10 @@ public final class ConverterManager {
         iPartialConverters = iPartialConverters.remove(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Checks whether the user has permission 'ConverterManager.alterPartialConverters'.
-     * 
+     *
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterPartialConverters() throws SecurityException {
@@ -329,29 +325,31 @@ public final class ConverterManager {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the best converter for the object specified.
-     * 
-     * @param object  the object to convert
+     *
+     * @param object the object to convert
      * @return the converter to use
      * @throws IllegalArgumentException if no suitable converter
-     * @throws IllegalStateException if multiple converters match the type
-     * equally well
+     * @throws IllegalStateException    if multiple converters match the type
+     *                                  equally well
      */
     public DurationConverter getDurationConverter(Object object) {
         DurationConverter converter =
-            (DurationConverter)iDurationConverters.select(object == null ? null : object.getClass());
+                (DurationConverter) iDurationConverters.select(object == null ? null : object.getClass());
         if (converter != null) {
             return converter;
         }
         throw new IllegalArgumentException("No duration converter found for type: " +
-            (object == null ? "null" : object.getClass().getName()));
+                (object == null ? "null" : object.getClass().getName()));
     }
-    
+
     //-----------------------------------------------------------------------
+
     /**
      * Gets a copy of the list of converters.
-     * 
+     *
      * @return the converters, a copy of the real data, never null
      */
     public DurationConverter[] getDurationConverters() {
@@ -360,7 +358,7 @@ public final class ConverterManager {
         set.copyInto(converters);
         return converters;
     }
-    
+
     /**
      * Adds a converter to the set of converters. If a matching converter is
      * already in the set, the given converter replaces it. If the converter is
@@ -368,13 +366,13 @@ public final class ConverterManager {
      * <p>
      * The order in which converters are added is not relevent. The best
      * converter is selected by examining the object hierarchy.
-     * 
-     * @param converter  the converter to add, null ignored
+     *
+     * @param converter the converter to add, null ignored
      * @return replaced converter, or null
      */
     public DurationConverter addDurationConverter(DurationConverter converter)
             throws SecurityException {
-        
+
         checkAlterDurationConverters();
         if (converter == null) {
             return null;
@@ -383,17 +381,17 @@ public final class ConverterManager {
         iDurationConverters = iDurationConverters.add(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Removes a converter from the set of converters. If the converter was
      * not in the set, no changes are made.
-     * 
-     * @param converter  the converter to remove, null ignored
+     *
+     * @param converter the converter to remove, null ignored
      * @return replaced converter, or null
      */
     public DurationConverter removeDurationConverter(DurationConverter converter)
             throws SecurityException {
-        
+
         checkAlterDurationConverters();
         if (converter == null) {
             return null;
@@ -402,10 +400,10 @@ public final class ConverterManager {
         iDurationConverters = iDurationConverters.remove(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Checks whether the user has permission 'ConverterManager.alterDurationConverters'.
-     * 
+     *
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterDurationConverters() throws SecurityException {
@@ -416,29 +414,31 @@ public final class ConverterManager {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the best converter for the object specified.
-     * 
-     * @param object  the object to convert
+     *
+     * @param object the object to convert
      * @return the converter to use
      * @throws IllegalArgumentException if no suitable converter
-     * @throws IllegalStateException if multiple converters match the type
-     * equally well
+     * @throws IllegalStateException    if multiple converters match the type
+     *                                  equally well
      */
     public com.jn.langx.util.jodatime.convert.PeriodConverter getPeriodConverter(Object object) {
         com.jn.langx.util.jodatime.convert.PeriodConverter converter =
-            (com.jn.langx.util.jodatime.convert.PeriodConverter)iPeriodConverters.select(object == null ? null : object.getClass());
+                (com.jn.langx.util.jodatime.convert.PeriodConverter) iPeriodConverters.select(object == null ? null : object.getClass());
         if (converter != null) {
             return converter;
         }
         throw new IllegalArgumentException("No period converter found for type: " +
-            (object == null ? "null" : object.getClass().getName()));
+                (object == null ? "null" : object.getClass().getName()));
     }
-    
+
     //-----------------------------------------------------------------------
+
     /**
      * Gets a copy of the list of converters.
-     * 
+     *
      * @return the converters, a copy of the real data, never null
      */
     public com.jn.langx.util.jodatime.convert.PeriodConverter[] getPeriodConverters() {
@@ -447,7 +447,7 @@ public final class ConverterManager {
         set.copyInto(converters);
         return converters;
     }
-    
+
     /**
      * Adds a converter to the set of converters. If a matching converter is
      * already in the set, the given converter replaces it. If the converter is
@@ -455,13 +455,13 @@ public final class ConverterManager {
      * <p>
      * The order in which converters are added is not relevent. The best
      * converter is selected by examining the object hierarchy.
-     * 
-     * @param converter  the converter to add, null ignored
+     *
+     * @param converter the converter to add, null ignored
      * @return replaced converter, or null
      */
     public com.jn.langx.util.jodatime.convert.PeriodConverter addPeriodConverter(com.jn.langx.util.jodatime.convert.PeriodConverter converter)
             throws SecurityException {
-        
+
         checkAlterPeriodConverters();
         if (converter == null) {
             return null;
@@ -470,17 +470,17 @@ public final class ConverterManager {
         iPeriodConverters = iPeriodConverters.add(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Removes a converter from the set of converters. If the converter was
      * not in the set, no changes are made.
-     * 
-     * @param converter  the converter to remove, null ignored
+     *
+     * @param converter the converter to remove, null ignored
      * @return replaced converter, or null
      */
     public com.jn.langx.util.jodatime.convert.PeriodConverter removePeriodConverter(com.jn.langx.util.jodatime.convert.PeriodConverter converter)
             throws SecurityException {
-        
+
         checkAlterPeriodConverters();
         if (converter == null) {
             return null;
@@ -489,10 +489,10 @@ public final class ConverterManager {
         iPeriodConverters = iPeriodConverters.remove(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Checks whether the user has permission 'ConverterManager.alterPeriodConverters'.
-     * 
+     *
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterPeriodConverters() throws SecurityException {
@@ -503,29 +503,31 @@ public final class ConverterManager {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the best converter for the object specified.
-     * 
-     * @param object  the object to convert
+     *
+     * @param object the object to convert
      * @return the converter to use
      * @throws IllegalArgumentException if no suitable converter
-     * @throws IllegalStateException if multiple converters match the type
-     * equally well
+     * @throws IllegalStateException    if multiple converters match the type
+     *                                  equally well
      */
     public IntervalConverter getIntervalConverter(Object object) {
         IntervalConverter converter =
-            (IntervalConverter)iIntervalConverters.select(object == null ? null : object.getClass());
+                (IntervalConverter) iIntervalConverters.select(object == null ? null : object.getClass());
         if (converter != null) {
             return converter;
         }
         throw new IllegalArgumentException("No interval converter found for type: " +
-            (object == null ? "null" : object.getClass().getName()));
+                (object == null ? "null" : object.getClass().getName()));
     }
-    
+
     //-----------------------------------------------------------------------
+
     /**
      * Gets a copy of the list of converters.
-     * 
+     *
      * @return the converters, a copy of the real data, never null
      */
     public IntervalConverter[] getIntervalConverters() {
@@ -534,7 +536,7 @@ public final class ConverterManager {
         set.copyInto(converters);
         return converters;
     }
-    
+
     /**
      * Adds a converter to the set of converters. If a matching converter is
      * already in the set, the given converter replaces it. If the converter is
@@ -542,13 +544,13 @@ public final class ConverterManager {
      * <p>
      * The order in which converters are added is not relevent. The best
      * converter is selected by examining the object hierarchy.
-     * 
-     * @param converter  the converter to add, null ignored
+     *
+     * @param converter the converter to add, null ignored
      * @return replaced converter, or null
      */
-    public IntervalConverter addIntervalConverter(IntervalConverter converter) 
+    public IntervalConverter addIntervalConverter(IntervalConverter converter)
             throws SecurityException {
-        
+
         checkAlterIntervalConverters();
         if (converter == null) {
             return null;
@@ -557,17 +559,17 @@ public final class ConverterManager {
         iIntervalConverters = iIntervalConverters.add(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Removes a converter from the set of converters. If the converter was
      * not in the set, no changes are made.
-     * 
-     * @param converter  the converter to remove, null ignored
+     *
+     * @param converter the converter to remove, null ignored
      * @return replaced converter, or null
      */
     public IntervalConverter removeIntervalConverter(IntervalConverter converter)
             throws SecurityException {
-        
+
         checkAlterIntervalConverters();
         if (converter == null) {
             return null;
@@ -576,10 +578,10 @@ public final class ConverterManager {
         iIntervalConverters = iIntervalConverters.remove(converter, removed);
         return removed[0];
     }
-    
+
     /**
      * Checks whether the user has permission 'ConverterManager.alterIntervalConverters'.
-     * 
+     *
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterIntervalConverters() throws SecurityException {
@@ -590,16 +592,17 @@ public final class ConverterManager {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets a debug representation of the object.
      */
     public String toString() {
         return "ConverterManager[" +
-            iInstantConverters.size() + " instant," +
-            iPartialConverters.size() + " partial," +
-            iDurationConverters.size() + " duration," +
-            iPeriodConverters.size() + " period," +
-            iIntervalConverters.size() + " interval]";
+                iInstantConverters.size() + " instant," +
+                iPartialConverters.size() + " partial," +
+                iDurationConverters.size() + " duration," +
+                iPeriodConverters.size() + " period," +
+                iIntervalConverters.size() + " interval]";
     }
 
 }

@@ -15,12 +15,7 @@
  */
 package com.jn.langx.util.jodatime.convert;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.Period;
-import com.jn.langx.util.jodatime.ReadWritableInterval;
-import com.jn.langx.util.jodatime.ReadWritablePeriod;
-import com.jn.langx.util.jodatime.convert.*;
+import com.jn.langx.util.jodatime.*;
 
 /**
  * NullConverter converts null to an instant, partial, duration, period
@@ -47,10 +42,11 @@ class NullConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the millisecond duration, which is zero.
-     * 
-     * @param object  the object to convert, which is null
+     *
+     * @param object the object to convert, which is null
      * @return the millisecond duration
      */
     public long getDurationMillis(Object object) {
@@ -58,12 +54,13 @@ class NullConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the given ReadWritableDuration to zero milliseconds.
      *
      * @param duration duration to get modified
-     * @param object  the object to convert, which is null
-     * @param chrono  the chronology to use
+     * @param object   the object to convert, which is null
+     * @param chrono   the chronology to use
      * @throws NullPointerException if the duration is null
      */
     public void setInto(ReadWritablePeriod duration, Object object, Chronology chrono) {
@@ -71,13 +68,14 @@ class NullConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Extracts interval endpoint values from an object of this converter's
      * type, and sets them into the given ReadWritableInterval.
      *
      * @param writableInterval interval to get modified, not null
-     * @param object  the object to convert, which is null
-     * @param chrono  the chronology to use, may be null
+     * @param object           the object to convert, which is null
+     * @param chrono           the chronology to use, may be null
      * @throws NullPointerException if the interval is null
      */
     public void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono) {
@@ -87,9 +85,10 @@ class NullConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns null.
-     * 
+     *
      * @return null
      */
     public Class<?> getSupportedType() {

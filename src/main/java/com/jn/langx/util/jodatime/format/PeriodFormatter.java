@@ -15,21 +15,11 @@
  */
 package com.jn.langx.util.jodatime.format;
 
+import com.jn.langx.util.jodatime.*;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Locale;
-
-import com.jn.langx.util.jodatime.MutablePeriod;
-import com.jn.langx.util.jodatime.Period;
-import com.jn.langx.util.jodatime.PeriodType;
-import com.jn.langx.util.jodatime.ReadWritablePeriod;
-import com.jn.langx.util.jodatime.ReadablePeriod;
-import com.jn.langx.util.jodatime.format.FormatUtils;
-import com.jn.langx.util.jodatime.format.ISOPeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormatterBuilder;
-import com.jn.langx.util.jodatime.format.PeriodParser;
-import com.jn.langx.util.jodatime.format.PeriodPrinter;
 
 /**
  * Controls the printing and parsing of a time period to and from a string.
@@ -61,7 +51,7 @@ import com.jn.langx.util.jodatime.format.PeriodPrinter;
  * String periodStr = formatter.print(period);
  * // print using the French locale
  * String periodStr = formatter.withLocale(Locale.FRENCH).print(period);
- * 
+ *
  * // parse using the French locale
  * Period date = formatter.withLocale(Locale.FRENCH).parsePeriod(str);
  * </pre>
@@ -72,20 +62,28 @@ import com.jn.langx.util.jodatime.format.PeriodPrinter;
  */
 public class PeriodFormatter {
 
-    /** The internal printer used to output the datetime. */
+    /**
+     * The internal printer used to output the datetime.
+     */
     private final com.jn.langx.util.jodatime.format.PeriodPrinter iPrinter;
-    /** The internal parser used to output the datetime. */
+    /**
+     * The internal parser used to output the datetime.
+     */
     private final com.jn.langx.util.jodatime.format.PeriodParser iParser;
-    /** The locale to use for printing and parsing. */
+    /**
+     * The locale to use for printing and parsing.
+     */
     private final Locale iLocale;
-    /** The period type used in parsing. */
+    /**
+     * The period type used in parsing.
+     */
     private final PeriodType iParseType;
 
     /**
      * Creates a new formatter, however you will normally use the factory
      * or the builder.
-     * 
-     * @param printer  the internal printer, null if cannot print
+     *
+     * @param printer the internal printer, null if cannot print
      * @param parser  the internal parser, null if cannot parse
      */
     public PeriodFormatter(
@@ -99,11 +97,11 @@ public class PeriodFormatter {
 
     /**
      * Constructor.
-     * 
-     * @param printer  the internal printer, null if cannot print
+     *
+     * @param printer the internal printer, null if cannot print
      * @param parser  the internal parser, null if cannot parse
      * @param locale  the locale to use
-     * @param type  the parse period type
+     * @param type    the parse period type
      */
     private PeriodFormatter(
             com.jn.langx.util.jodatime.format.PeriodPrinter printer, com.jn.langx.util.jodatime.format.PeriodParser parser,
@@ -116,9 +114,10 @@ public class PeriodFormatter {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this formatter capable of printing.
-     * 
+     *
      * @return true if this is a printer
      */
     public boolean isPrinter() {
@@ -127,7 +126,7 @@ public class PeriodFormatter {
 
     /**
      * Gets the internal printer object that performs the real printing work.
-     * 
+     *
      * @return the internal printer
      */
     public com.jn.langx.util.jodatime.format.PeriodPrinter getPrinter() {
@@ -136,7 +135,7 @@ public class PeriodFormatter {
 
     /**
      * Is this formatter capable of parsing.
-     * 
+     *
      * @return true if this is a parser
      */
     public boolean isParser() {
@@ -145,7 +144,7 @@ public class PeriodFormatter {
 
     /**
      * Gets the internal parser object that performs the real parsing work.
-     * 
+     *
      * @return the internal parser
      */
     public PeriodParser getParser() {
@@ -153,14 +152,15 @@ public class PeriodFormatter {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a new formatter with a different locale that will be used
      * for printing and parsing.
      * <p>
      * A PeriodFormatter is immutable, so a new instance is returned,
      * and the original is unaltered and still usable.
-     * 
-     * @param locale  the locale to use
+     *
+     * @param locale the locale to use
      * @return the new formatter
      */
     public PeriodFormatter withLocale(Locale locale) {
@@ -172,7 +172,7 @@ public class PeriodFormatter {
 
     /**
      * Gets the locale that will be used for printing and parsing.
-     * 
+     *
      * @return the locale to use
      */
     public Locale getLocale() {
@@ -180,13 +180,14 @@ public class PeriodFormatter {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a new formatter with a different PeriodType for parsing.
      * <p>
      * A PeriodFormatter is immutable, so a new instance is returned,
      * and the original is unaltered and still usable.
-     * 
-     * @param type  the type to use in parsing
+     *
+     * @param type the type to use in parsing
      * @return the new formatter
      */
     public PeriodFormatter withParseType(PeriodType type) {
@@ -198,7 +199,7 @@ public class PeriodFormatter {
 
     /**
      * Gets the PeriodType that will be used for parsing.
-     * 
+     *
      * @return the parse type to use
      */
     public PeriodType getParseType() {
@@ -206,42 +207,43 @@ public class PeriodFormatter {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Prints a ReadablePeriod to a StringBuffer.
      *
-     * @param buf  the formatted period is appended to this buffer
-     * @param period  the period to format, not null
+     * @param buf    the formatted period is appended to this buffer
+     * @param period the period to format, not null
      */
     public void printTo(StringBuffer buf, ReadablePeriod period) {
         checkPrinter();
         checkPeriod(period);
-        
+
         getPrinter().printTo(buf, period, iLocale);
     }
 
     /**
      * Prints a ReadablePeriod to a Writer.
      *
-     * @param out  the formatted period is written out
-     * @param period  the period to format, not null
+     * @param out    the formatted period is written out
+     * @param period the period to format, not null
      */
     public void printTo(Writer out, ReadablePeriod period) throws IOException {
         checkPrinter();
         checkPeriod(period);
-        
+
         getPrinter().printTo(out, period, iLocale);
     }
 
     /**
      * Prints a ReadablePeriod to a new String.
      *
-     * @param period  the period to format, not null
+     * @param period the period to format, not null
      * @return the printed result
      */
     public String print(ReadablePeriod period) {
         checkPrinter();
         checkPeriod(period);
-        
+
         PeriodPrinter printer = getPrinter();
         StringBuffer buf = new StringBuffer(printer.calculatePrintedLength(period, iLocale));
         printer.printTo(buf, period, iLocale);
@@ -250,7 +252,7 @@ public class PeriodFormatter {
 
     /**
      * Checks whether printing is supported.
-     * 
+     *
      * @throws UnsupportedOperationException if printing is not supported
      */
     private void checkPrinter() {
@@ -261,7 +263,7 @@ public class PeriodFormatter {
 
     /**
      * Checks whether the period is non-null.
-     * 
+     *
      * @throws IllegalArgumentException if the period is null
      */
     private void checkPeriod(ReadablePeriod period) {
@@ -271,6 +273,7 @@ public class PeriodFormatter {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses a period from the given text, at the given position, saving the
      * result into the fields of the given ReadWritablePeriod. If the parse
@@ -283,8 +286,8 @@ public class PeriodFormatter {
      * modified. To determine the position where the parse failed, apply the
      * one's complement operator (~) on the return value.
      *
-     * @param period  a period that will be modified
-     * @param text  text to parse
+     * @param period   a period that will be modified
+     * @param text     text to parse
      * @param position position to start parsing from
      * @return new position, if negative, parse failed. Apply complement
      * operator (~) to get position of failure
@@ -293,33 +296,33 @@ public class PeriodFormatter {
     public int parseInto(ReadWritablePeriod period, String text, int position) {
         checkParser();
         checkPeriod(period);
-        
+
         return getParser().parseInto(period, text, position, iLocale);
     }
 
     /**
      * Parses a period from the given text, returning a new Period.
      *
-     * @param text  text to parse
+     * @param text text to parse
      * @return parsed value in a Period object
      * @throws IllegalArgumentException if any field is out of range
      */
     public Period parsePeriod(String text) {
         checkParser();
-        
+
         return parseMutablePeriod(text).toPeriod();
     }
 
     /**
      * Parses a period from the given text, returning a new MutablePeriod.
      *
-     * @param text  text to parse
+     * @param text text to parse
      * @return parsed value in a MutablePeriod object
      * @throws IllegalArgumentException if any field is out of range
      */
     public MutablePeriod parseMutablePeriod(String text) {
         checkParser();
-        
+
         MutablePeriod period = new MutablePeriod(0, iParseType);
         int newPos = getParser().parseInto(period, text, 0, iLocale);
         if (newPos >= 0) {
@@ -334,7 +337,7 @@ public class PeriodFormatter {
 
     /**
      * Checks whether parsing is supported.
-     * 
+     *
      * @throws UnsupportedOperationException if parsing is not supported
      */
     private void checkParser() {

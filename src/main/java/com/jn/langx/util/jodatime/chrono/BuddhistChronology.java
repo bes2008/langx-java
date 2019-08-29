@@ -15,24 +15,11 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
+import com.jn.langx.util.jodatime.*;
+import com.jn.langx.util.jodatime.field.*;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.chrono.AssembledChronology;
-import com.jn.langx.util.jodatime.chrono.BasicSingleEraDateTimeField;
-import com.jn.langx.util.jodatime.chrono.GJChronology;
-import com.jn.langx.util.jodatime.chrono.LimitChronology;
-import com.jn.langx.util.jodatime.field.DelegatedDateTimeField;
-import com.jn.langx.util.jodatime.field.DividedDateTimeField;
-import com.jn.langx.util.jodatime.field.OffsetDateTimeField;
-import com.jn.langx.util.jodatime.field.RemainderDateTimeField;
-import com.jn.langx.util.jodatime.field.SkipUndoDateTimeField;
 
 /**
  * A chronology that matches the BuddhistCalendar class supplied by Sun.
@@ -55,8 +42,10 @@ import com.jn.langx.util.jodatime.field.SkipUndoDateTimeField;
  * @since 1.0
  */
 public final class BuddhistChronology extends AssembledChronology {
-    
-    /** Serialization lock */
+
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -3474595157769370126L;
 
     /**
@@ -65,16 +54,24 @@ public final class BuddhistChronology extends AssembledChronology {
      */
     public static final int BE = DateTimeConstants.CE;
 
-    /** A singleton era field. */
+    /**
+     * A singleton era field.
+     */
     private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("BE");
 
-    /** Number of years difference in calendars. */
+    /**
+     * Number of years difference in calendars.
+     */
     private static final int BUDDHIST_OFFSET = 543;
 
-    /** Cache of zone to chronology */
+    /**
+     * Cache of zone to chronology
+     */
     private static final Map<DateTimeZone, BuddhistChronology> cCache = new HashMap<DateTimeZone, BuddhistChronology>();
 
-    /** UTC instance of the chronology */
+    /**
+     * UTC instance of the chronology
+     */
     private static final BuddhistChronology INSTANCE_UTC = getInstance(DateTimeZone.UTC);
 
     /**
@@ -102,7 +99,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * Sun's BuddhistCalendar class. This means that it follows the
      * GregorianJulian calendar rules with a cutover date.
      *
-     * @param zone  the time zone to use, null is default
+     * @param zone the time zone to use, null is default
      */
     public static synchronized BuddhistChronology getInstance(DateTimeZone zone) {
         if (zone == null) {
@@ -125,7 +122,7 @@ public final class BuddhistChronology extends AssembledChronology {
 
     // Constructors and instance variables
     //-----------------------------------------------------------------------
-    
+
     /**
      * Restricted constructor.
      *
@@ -145,9 +142,10 @@ public final class BuddhistChronology extends AssembledChronology {
 
     // Conversion
     //-----------------------------------------------------------------------
+
     /**
      * Gets the Chronology in the UTC time zone.
-     * 
+     *
      * @return the chronology in UTC
      */
     public Chronology withUTC() {
@@ -156,8 +154,8 @@ public final class BuddhistChronology extends AssembledChronology {
 
     /**
      * Gets the Chronology in a specific time zone.
-     * 
-     * @param zone  the zone to get the chronology in, null is default
+     *
+     * @param zone the zone to get the chronology in, null is default
      * @return the chronology
      */
     public Chronology withZone(DateTimeZone zone) {
@@ -171,10 +169,11 @@ public final class BuddhistChronology extends AssembledChronology {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks if this chronology instance equals another.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return true if equal
      * @since 1.6
      */
@@ -191,7 +190,7 @@ public final class BuddhistChronology extends AssembledChronology {
 
     /**
      * A suitable hash code for the chronology.
-     * 
+     *
      * @return the hash code
      * @since 1.6
      */
@@ -201,9 +200,10 @@ public final class BuddhistChronology extends AssembledChronology {
 
     // Output
     //-----------------------------------------------------------------------
+
     /**
      * Gets a debugging toString.
-     * 
+     *
      * @return a debugging string
      */
     public String toString() {
@@ -221,33 +221,33 @@ public final class BuddhistChronology extends AssembledChronology {
             DateTimeField field = fields.year;
             fields.year = new OffsetDateTimeField(
                     new SkipUndoDateTimeField(this, field), BUDDHIST_OFFSET);
-            
+
             // one era, so yearOfEra is the same
             field = fields.yearOfEra;
             fields.yearOfEra = new DelegatedDateTimeField(
-                fields.year, DateTimeFieldType.yearOfEra());
-            
+                    fields.year, DateTimeFieldType.yearOfEra());
+
             // julian chrono removed zero, but we need to put it back
             field = fields.weekyear;
             fields.weekyear = new OffsetDateTimeField(
                     new SkipUndoDateTimeField(this, field), BUDDHIST_OFFSET);
-            
+
             field = new OffsetDateTimeField(fields.yearOfEra, 99);
             fields.centuryOfEra = new DividedDateTimeField(
-                field, DateTimeFieldType.centuryOfEra(), 100);
-            
+                    field, DateTimeFieldType.centuryOfEra(), 100);
+
             field = new RemainderDateTimeField(
-                (DividedDateTimeField) fields.centuryOfEra);
+                    (DividedDateTimeField) fields.centuryOfEra);
             fields.yearOfCentury = new OffsetDateTimeField(
-                field, DateTimeFieldType.yearOfCentury(), 1);
-            
+                    field, DateTimeFieldType.yearOfCentury(), 1);
+
             field = new RemainderDateTimeField(
-                fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
+                    fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
             fields.weekyearOfCentury = new OffsetDateTimeField(
-                field, DateTimeFieldType.weekyearOfCentury(), 1);
-            
+                    field, DateTimeFieldType.weekyearOfCentury(), 1);
+
             fields.era = ERA_FIELD;
         }
     }
-   
+
 }

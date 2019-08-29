@@ -8,14 +8,12 @@ import java.nio.charset.Charset;
 import java.util.BitSet;
 
 /**
- *
  * This class is very similar to the java.net.URLEncoder class.
- *
+ * <p>
  * Unfortunately, with java.net.URLEncoder there is no way to specify to the
  * java.net.URLEncoder which characters should NOT be encoded.
- *
+ * <p>
  * This code was moved from DefaultServlet.java
- *
  */
 public final class UrlEncoder implements Cloneable {
 
@@ -125,9 +123,8 @@ public final class UrlEncoder implements Cloneable {
     /**
      * URL encodes the provided path using the given character set.
      *
-     * @param path      The path to encode
-     * @param charset   The character set to use to convert the path to bytes
-     *
+     * @param path    The path to encode
+     * @param charset The character set to use to convert the path to bytes
      * @return The encoded path
      */
     public String encode(String path, Charset charset) {
@@ -140,15 +137,15 @@ public final class UrlEncoder implements Cloneable {
         for (int i = 0; i < path.length(); i++) {
             int c = path.charAt(i);
             if (safeCharacters.get(c)) {
-                rewrittenPath.append((char)c);
+                rewrittenPath.append((char) c);
             } else if (encodeSpaceAsPlus && c == ' ') {
                 rewrittenPath.append('+');
             } else {
                 // convert to external encoding before hex conversion
                 try {
-                    writer.write((char)c);
+                    writer.write((char) c);
                     writer.flush();
-                } catch(IOException e) {
+                } catch (IOException e) {
                     buf.reset();
                     continue;
                 }

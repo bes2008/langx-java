@@ -19,8 +19,6 @@ import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.PeriodType;
 import com.jn.langx.util.jodatime.ReadWritablePeriod;
 import com.jn.langx.util.jodatime.ReadablePeriod;
-import com.jn.langx.util.jodatime.convert.AbstractConverter;
-import com.jn.langx.util.jodatime.convert.PeriodConverter;
 
 /**
  * ReadablePeriodConverter extracts milliseconds and chronology from a ReadablePeriod.
@@ -45,15 +43,16 @@ class ReadablePeriodConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Extracts duration values from an object of this converter's type, and
      * sets them into the given ReadWritablePeriod.
      *
      * @param duration duration to get modified
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use
-     * @throws NullPointerException if the duration or object is null
-     * @throws ClassCastException if the object is an invalid type
+     * @param object   the object to convert, must not be null
+     * @param chrono   the chronology to use
+     * @throws NullPointerException     if the duration or object is null
+     * @throws ClassCastException       if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
     public void setInto(ReadWritablePeriod duration, Object object, Chronology chrono) {
@@ -63,10 +62,10 @@ class ReadablePeriodConverter extends AbstractConverter
     /**
      * Selects a suitable period type for the given object.
      *
-     * @param object  the object to examine, must not be null
+     * @param object the object to examine, must not be null
      * @return the period type from the readable duration
      * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
+     * @throws ClassCastException   if the object is an invalid type
      */
     public PeriodType getPeriodType(Object object) {
         ReadablePeriod period = (ReadablePeriod) object;
@@ -74,9 +73,10 @@ class ReadablePeriodConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns ReadablePeriod class.
-     * 
+     *
      * @return ReadablePeriod.class
      */
     public Class<?> getSupportedType() {

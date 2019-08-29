@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * Unix-like Cron, it also is the Quartz CronExpression
- *
+ * <p>
  * Provides a parser and evaluator for unix-like cron expressions. Cron
  * expressions provide the ability to specify complex time combinations such as
  * &quot;At 8:00am every Monday through Friday&quot; or &quot;At 1:30am every

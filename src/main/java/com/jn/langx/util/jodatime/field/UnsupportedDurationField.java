@@ -15,11 +15,11 @@
  */
 package com.jn.langx.util.jodatime.field;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.DurationFieldType;
+
+import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * A placeholder implementation to use when a duration field is not supported.
@@ -31,17 +31,21 @@ import com.jn.langx.util.jodatime.DurationFieldType;
  */
 public final class UnsupportedDurationField extends DurationField implements Serializable {
 
-    /** Serialization lock. */
+    /**
+     * Serialization lock.
+     */
     private static final long serialVersionUID = -6390301302770925357L;
 
-    /** The cache of unsupported duration field instances */
+    /**
+     * The cache of unsupported duration field instances
+     */
     private static HashMap<DurationFieldType, UnsupportedDurationField> cCache;
 
     /**
      * Gets an instance of UnsupportedDurationField for a specific named field.
      * The returned instance is cached.
-     * 
-     * @param type  the type to obtain
+     *
+     * @param type the type to obtain
      * @return the instance
      */
     public static synchronized UnsupportedDurationField getInstance(DurationFieldType type) {
@@ -59,13 +63,15 @@ public final class UnsupportedDurationField extends DurationField implements Ser
         return field;
     }
 
-    /** The name of the field */
+    /**
+     * The name of the field
+     */
     private final DurationFieldType iType;
 
     /**
      * Constructor.
-     * 
-     * @param type  the type to use
+     *
+     * @param type the type to use
      */
     private UnsupportedDurationField(DurationFieldType type) {
         iType = type;
@@ -94,7 +100,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
 
     /**
      * This field is precise.
-     * 
+     *
      * @return true always
      */
     public boolean isPrecise() {
@@ -228,10 +234,11 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     }
 
     //------------------------------------------------------------------------
+
     /**
      * Compares this duration field to another.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return true if equal
      */
     public boolean equals(Object obj) {
@@ -249,7 +256,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
 
     /**
      * Gets a suitable hashcode.
-     * 
+     *
      * @return the hashcode
      */
     public int hashCode() {
@@ -258,7 +265,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
 
     /**
      * Get a suitable debug string.
-     * 
+     *
      * @return debug string
      */
     public String toString() {

@@ -15,11 +15,10 @@
  */
 package com.jn.langx.util.jodatime.field;
 
-import java.io.Serializable;
-
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.field.DecoratedDurationField;
+
+import java.io.Serializable;
 
 /**
  * <code>DelegatedDurationField</code> delegates each method call to the
@@ -34,18 +33,24 @@ import com.jn.langx.util.jodatime.field.DecoratedDurationField;
  */
 public class DelegatedDurationField extends DurationField implements Serializable {
 
-    /** Serialization lock. */
+    /**
+     * Serialization lock.
+     */
     private static final long serialVersionUID = -5576443481242007829L;
 
-    /** The DurationField being wrapped */
+    /**
+     * The DurationField being wrapped
+     */
     private final DurationField iField;
-    /** The field type */
+    /**
+     * The field type
+     */
     private final DurationFieldType iType;
 
     /**
      * Constructor.
-     * 
-     * @param field  the base field
+     *
+     * @param field the base field
      */
     protected DelegatedDurationField(DurationField field) {
         this(field, null);
@@ -53,8 +58,8 @@ public class DelegatedDurationField extends DurationField implements Serializabl
 
     /**
      * Constructor.
-     * 
-     * @param field  the base field
+     *
+     * @param field the base field
      * @param type  the field type to use
      */
     protected DelegatedDurationField(DurationField field, DurationFieldType type) {
@@ -67,9 +72,10 @@ public class DelegatedDurationField extends DurationField implements Serializabl
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the wrapped duration field.
-     * 
+     *
      * @return the wrapped DurationField
      */
     public final DurationField getWrappedField() {
@@ -94,7 +100,7 @@ public class DelegatedDurationField extends DurationField implements Serializabl
     public boolean isPrecise() {
         return iField.isPrecise();
     }
-    
+
     public int getValue(long duration) {
         return iField.getValue(duration);
     }
@@ -164,7 +170,7 @@ public class DelegatedDurationField extends DurationField implements Serializabl
 
     public String toString() {
         return (iType == null) ? iField.toString() :
-            ("DurationField[" + iType + ']');
+                ("DurationField[" + iType + ']');
     }
 
 }

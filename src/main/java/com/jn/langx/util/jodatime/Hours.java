@@ -15,13 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import com.jn.langx.util.jodatime.*;
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.Days;
-import com.jn.langx.util.jodatime.Duration;
-import com.jn.langx.util.jodatime.DurationFieldType;
 import com.jn.langx.util.jodatime.base.BaseSingleFieldPeriod;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.ISOPeriodFormat;
@@ -46,41 +39,68 @@ import com.jn.langx.util.jodatime.format.PeriodFormatter;
  */
 public final class Hours extends BaseSingleFieldPeriod {
 
-    /** Constant representing zero hours. */
+    /**
+     * Constant representing zero hours.
+     */
     public static final Hours ZERO = new Hours(0);
-    /** Constant representing one hour. */
+    /**
+     * Constant representing one hour.
+     */
     public static final Hours ONE = new Hours(1);
-    /** Constant representing two hours. */
+    /**
+     * Constant representing two hours.
+     */
     public static final Hours TWO = new Hours(2);
-    /** Constant representing three hours. */
+    /**
+     * Constant representing three hours.
+     */
     public static final Hours THREE = new Hours(3);
-    /** Constant representing four hours. */
+    /**
+     * Constant representing four hours.
+     */
     public static final Hours FOUR = new Hours(4);
-    /** Constant representing five hours. */
+    /**
+     * Constant representing five hours.
+     */
     public static final Hours FIVE = new Hours(5);
-    /** Constant representing six hours. */
+    /**
+     * Constant representing six hours.
+     */
     public static final Hours SIX = new Hours(6);
-    /** Constant representing seven hours. */
+    /**
+     * Constant representing seven hours.
+     */
     public static final Hours SEVEN = new Hours(7);
-    /** Constant representing eight hours. */
+    /**
+     * Constant representing eight hours.
+     */
     public static final Hours EIGHT = new Hours(8);
-    /** Constant representing the maximum number of hours that can be stored in this object. */
+    /**
+     * Constant representing the maximum number of hours that can be stored in this object.
+     */
     public static final Hours MAX_VALUE = new Hours(Integer.MAX_VALUE);
-    /** Constant representing the minimum number of hours that can be stored in this object. */
+    /**
+     * Constant representing the minimum number of hours that can be stored in this object.
+     */
     public static final Hours MIN_VALUE = new Hours(Integer.MIN_VALUE);
 
-    /** The paser to use for this class. */
+    /**
+     * The paser to use for this class.
+     */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.hours());
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     private static final long serialVersionUID = 87525275727380864L;
 
     //-----------------------------------------------------------------------
+
     /**
      * Obtains an instance of <code>Hours</code> that may be cached.
      * <code>Hours</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
      *
-     * @param hours  the number of hours to obtain an instance for
+     * @param hours the number of hours to obtain an instance for
      * @return the instance of Hours
      */
     public static Hours hours(int hours) {
@@ -113,12 +133,13 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a <code>Hours</code> representing the number of whole hours
      * between the two specified datetimes.
      *
-     * @param start  the start instant, must not be null
-     * @param end  the end instant, must not be null
+     * @param start the start instant, must not be null
+     * @param end   the end instant, must not be null
      * @return the period in hours
      * @throws IllegalArgumentException if the instants are null or invalid
      */
@@ -134,13 +155,13 @@ public final class Hours extends BaseSingleFieldPeriod {
      * The two partials must contain the same fields, for example you can specify
      * two <code>LocalTime</code> objects.
      *
-     * @param start  the start partial date, must not be null
-     * @param end  the end partial date, must not be null
+     * @param start the start partial date, must not be null
+     * @param end   the end partial date, must not be null
      * @return the period in hours
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Hours hoursBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof LocalTime && end instanceof LocalTime)   {
+        if (start instanceof LocalTime && end instanceof LocalTime) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int hours = chrono.hours().getDifference(
                     ((LocalTime) end).getLocalMillis(), ((LocalTime) start).getLocalMillis());
@@ -154,12 +175,12 @@ public final class Hours extends BaseSingleFieldPeriod {
      * Creates a <code>Hours</code> representing the number of whole hours
      * in the specified interval.
      *
-     * @param interval  the interval to extract hours from, null returns zero
+     * @param interval the interval to extract hours from, null returns zero
      * @return the period in hours
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Hours hoursIn(ReadableInterval interval) {
-        if (interval == null)   {
+        if (interval == null) {
             return Hours.ZERO;
         }
         int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), com.jn.langx.util.jodatime.DurationFieldType.hours());
@@ -182,7 +203,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * </ul>
      * Months and Years are imprecise and periods containing these values cannot be converted.
      *
-     * @param period  the period to get the number of hours from, null returns zero
+     * @param period the period to get the number of hours from, null returns zero
      * @return the period in hours
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
@@ -198,7 +219,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * hours component may be non-zero. If any other component is non-zero, an exception
      * will be thrown.
      *
-     * @param periodStr  the period string, null returns zero
+     * @param periodStr the period string, null returns zero
      * @return the period in hours
      * @throws IllegalArgumentException if the string format is invalid
      */
@@ -211,12 +232,13 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a new instance representing a number of hours.
      * You should consider using the factory method {@link #hours(int)}
      * instead of the constructor.
      *
-     * @param hours  the number of hours to represent
+     * @param hours the number of hours to represent
      */
     private Hours(int hours) {
         super(hours);
@@ -224,7 +246,7 @@ public final class Hours extends BaseSingleFieldPeriod {
 
     /**
      * Resolves singletons.
-     * 
+     *
      * @return the singleton instance
      */
     private Object readResolve() {
@@ -232,6 +254,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the duration field type, which is <code>hours</code>.
      *
@@ -251,6 +274,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this period in hours to a period in weeks assuming a
      * 7 day week and 24 hour day.
@@ -261,7 +285,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * This is not true when daylight savings time is considered, and may also
      * not be true for some unusual chronologies. However, it is included as it
      * is a useful operation for many applications and business rules.
-     * 
+     *
      * @return a period representing the number of whole weeks for this number of hours
      */
     public Weeks toStandardWeeks() {
@@ -277,7 +301,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * This is not true when daylight savings time is considered, and may also
      * not be true for some unusual chronologies. However, it is included as it
      * is a useful operation for many applications and business rules.
-     * 
+     *
      * @return a period representing the number of whole days for this number of hours
      */
     public com.jn.langx.util.jodatime.Days toStandardDays() {
@@ -292,7 +316,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * However to achieve this it makes the assumption that all hours are 60 minutes long.
      * This may not be true for some unusual chronologies. However, it is included
      * as it is a useful operation for many applications and business rules.
-     * 
+     *
      * @return a period representing the number of minutes for this number of hours
      * @throws ArithmeticException if the number of minutes is too large to be represented
      */
@@ -309,7 +333,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * 60 minutes long and all minutes are 60 seconds long.
      * This may not be true for some unusual chronologies. However, it is included
      * as it is a useful operation for many applications and business rules.
-     * 
+     *
      * @return a period representing the number of seconds for this number of hours
      * @throws ArithmeticException if the number of seconds is too large to be represented
      */
@@ -318,6 +342,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this period in hours to a duration in milliseconds assuming a
      * 60 minute hour and 60 second minute.
@@ -337,6 +362,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the number of hours that this period represents.
      *
@@ -347,12 +373,13 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a new instance with the specified number of hours added.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param hours  the amount of hours to add, may be negative
+     * @param hours the amount of hours to add, may be negative
      * @return the new period plus the specified number of hours
      * @throws ArithmeticException if the result overflows an int
      */
@@ -368,7 +395,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param hours  the amount of hours to add, may be negative, null means zero
+     * @param hours the amount of hours to add, may be negative, null means zero
      * @return the new period plus the specified number of hours
      * @throws ArithmeticException if the result overflows an int
      */
@@ -380,12 +407,13 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a new instance with the specified number of hours taken away.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param hours  the amount of hours to take away, may be negative
+     * @param hours the amount of hours to take away, may be negative
      * @return the new period minus the specified number of hours
      * @throws ArithmeticException if the result overflows an int
      */
@@ -398,7 +426,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param hours  the amount of hours to take away, may be negative, null means zero
+     * @param hours the amount of hours to take away, may be negative, null means zero
      * @return the new period minus the specified number of hours
      * @throws ArithmeticException if the result overflows an int
      */
@@ -410,12 +438,13 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a new instance with the hours multiplied by the specified scalar.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param scalar  the amount to multiply by, may be negative
+     * @param scalar the amount to multiply by, may be negative
      * @return the new period multiplied by the specified scalar
      * @throws ArithmeticException if the result overflows an int
      */
@@ -429,7 +458,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param divisor  the amount to divide by, may be negative
+     * @param divisor the amount to divide by, may be negative
      * @return the new period divided by the specified divisor
      * @throws ArithmeticException if the divisor is zero
      */
@@ -441,6 +470,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a new instance with the hours value negated.
      *
@@ -452,10 +482,11 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this hours instance greater than the specified number of hours.
      *
-     * @param other  the other period, null means zero
+     * @param other the other period, null means zero
      * @return true if this hours instance is greater than the specified one
      */
     public boolean isGreaterThan(Hours other) {
@@ -468,7 +499,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     /**
      * Is this hours instance less than the specified number of hours.
      *
-     * @param other  the other period, null means zero
+     * @param other the other period, null means zero
      * @return true if this hours instance is less than the specified one
      */
     public boolean isLessThan(Hours other) {
@@ -479,6 +510,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>

@@ -17,8 +17,6 @@ package com.jn.langx.util.jodatime.field;
 
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.field.BaseDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
 
 /**
  * Precise datetime field, which has a precise unit duration field.
@@ -34,16 +32,18 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 5004523158306266035L;
 
-    /** The fractional unit in millis */
+    /**
+     * The fractional unit in millis
+     */
     final long iUnitMillis;
 
     private final DurationField iUnitField;
 
     /**
      * Constructor.
-     * 
-     * @param type  the field type
-     * @param unit  precise unit duration, like "days()".
+     *
+     * @param type the field type
+     * @param unit precise unit duration, like "days()".
      * @throws IllegalArgumentException if duration field is imprecise
      * @throws IllegalArgumentException if unit milliseconds is less than one
      */
@@ -71,15 +71,15 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
 
     /**
      * Set the specified amount of units to the specified time instant.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
-     * @param value  value of units to set.
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param value   value of units to set.
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
     public long set(long instant, int value) {
         FieldUtils.verifyValueBounds(this, value, getMinimumValue(),
-                                     getMaximumValueForSet(instant, value));
+                getMaximumValueForSet(instant, value));
         return instant + (value - get(instant)) * iUnitMillis;
     }
 
@@ -146,7 +146,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
 
     /**
      * Get the minimum value for the field.
-     * 
+     *
      * @return the minimum value
      */
     public int getMinimumValue() {

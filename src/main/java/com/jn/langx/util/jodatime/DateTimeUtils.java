@@ -15,18 +15,11 @@
  */
 package com.jn.langx.util.jodatime;
 
+import com.jn.langx.util.jodatime.chrono.ISOChronology;
+
 import java.lang.reflect.Method;
 import java.text.DateFormatSymbols;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-
-import com.jn.langx.util.jodatime.*;
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.chrono.ISOChronology;
+import java.util.*;
 
 /**
  * DateTimeUtils provide public utility methods for the date-time library.
@@ -38,12 +31,19 @@ import com.jn.langx.util.jodatime.chrono.ISOChronology;
  */
 public class DateTimeUtils {
 
-    /** The singleton instance of the system millisecond provider. */
+    /**
+     * The singleton instance of the system millisecond provider.
+     */
     private static final SystemMillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
-    /** The millisecond provider currently in use. */
+    /**
+     * The millisecond provider currently in use.
+     */
     private static volatile MillisProvider cMillisProvider = SYSTEM_MILLIS_PROVIDER;
-    /** The millisecond provider currently in use. */
+    /**
+     * The millisecond provider currently in use.
+     */
     private static volatile Map<String, DateTimeZone> cZoneNames;
+
     static {
         // names from RFC-822 / JDK
         // this is all very US-centric and dubious, but perhaps it will help some
@@ -61,6 +61,7 @@ public class DateTimeUtils {
         put(map, "PDT", "America/Los_Angeles");
         cZoneNames = Collections.unmodifiableMap(map);
     }
+
     private static void put(Map<String, DateTimeZone> map, String name, String id) {
         try {
             map.put(name, DateTimeZone.forID(id));
@@ -77,12 +78,13 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the current time in milliseconds.
      * <p>
      * By default this returns <code>System.currentTimeMillis()</code>.
      * This may be changed using other methods in this class.
-     * 
+     *
      * @return the current time in milliseconds from 1970-01-01T00:00:00Z
      */
     public static final long currentTimeMillis() {
@@ -94,7 +96,7 @@ public class DateTimeUtils {
      * <p>
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, {@link System#currentTimeMillis()} is used.
-     * 
+     *
      * @throws SecurityException if the application does not have sufficient security rights
      */
     public static final void setCurrentMillisSystem() throws SecurityException {
@@ -107,8 +109,8 @@ public class DateTimeUtils {
      * <p>
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, the same millisecond time will be returned.
-     * 
-     * @param fixedMillis  the fixed millisecond time to use
+     *
+     * @param fixedMillis the fixed millisecond time to use
      * @throws SecurityException if the application does not have sufficient security rights
      */
     public static final void setCurrentMillisFixed(long fixedMillis) throws SecurityException {
@@ -122,8 +124,8 @@ public class DateTimeUtils {
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, {@link System#currentTimeMillis()} is used
      * and then offset by adding the millisecond value specified here.
-     * 
-     * @param offsetMillis  the fixed millisecond time to use
+     *
+     * @param offsetMillis the fixed millisecond time to use
      * @throws SecurityException if the application does not have sufficient security rights
      */
     public static final void setCurrentMillisOffset(long offsetMillis) throws SecurityException {
@@ -140,8 +142,8 @@ public class DateTimeUtils {
      * <p>
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, the specified class will be called.
-     * 
-     * @param millisProvider  the provider of the current time to use, not null
+     *
+     * @param millisProvider the provider of the current time to use, not null
      * @throws SecurityException if the application does not have sufficient security rights
      * @since 2.0
      */
@@ -155,7 +157,7 @@ public class DateTimeUtils {
 
     /**
      * Checks whether the provider may be changed using permission 'CurrentTime.setProvider'.
-     * 
+     *
      * @throws SecurityException if the provider may not be changed
      */
     private static void checkPermission() throws SecurityException {
@@ -166,13 +168,14 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the millisecond instant from the specified instant object handling null.
      * <p>
      * If the instant object is <code>null</code>, the {@link #currentTimeMillis()}
      * will be returned. Otherwise, the millis from the object are returned.
-     * 
-     * @param instant  the instant to examine, null means now
+     *
+     * @param instant the instant to examine, null means now
      * @return the time in milliseconds from 1970-01-01T00:00:00Z
      */
     public static final long getInstantMillis(ReadableInstant instant) {
@@ -183,14 +186,15 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology from the specified instant object handling null.
      * <p>
      * If the instant object is <code>null</code>, or the instant's chronology is
      * <code>null</code>, {@link ISOChronology#getInstance()} will be returned.
      * Otherwise, the chronology from the object is returned.
-     * 
-     * @param instant  the instant to examine, null means ISO in the default zone
+     *
+     * @param instant the instant to examine, null means ISO in the default zone
      * @return the chronology, never null
      */
     public static final com.jn.langx.util.jodatime.Chronology getInstantChronology(ReadableInstant instant) {
@@ -205,15 +209,16 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology from the specified instant based interval handling null.
      * <p>
      * The chronology is obtained from the start if that is not null, or from the
      * end if the start is null. The result is additionally checked, and if still
      * null then {@link ISOChronology#getInstance()} will be returned.
-     * 
-     * @param start  the instant to examine and use as the primary source of the chronology
-     * @param end  the instant to examine and use as the secondary source of the chronology
+     *
+     * @param start the instant to examine and use as the primary source of the chronology
+     * @param end   the instant to examine and use as the secondary source of the chronology
      * @return the chronology, never null
      */
     public static final com.jn.langx.util.jodatime.Chronology getIntervalChronology(ReadableInstant start, ReadableInstant end) {
@@ -230,14 +235,15 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology from the specified interval object handling null.
      * <p>
      * If the interval object is <code>null</code>, or the interval's chronology is
      * <code>null</code>, {@link ISOChronology#getInstance()} will be returned.
      * Otherwise, the chronology from the object is returned.
-     * 
-     * @param interval  the interval to examine, null means ISO in the default zone
+     *
+     * @param interval the interval to examine, null means ISO in the default zone
      * @return the chronology, never null
      */
     public static final com.jn.langx.util.jodatime.Chronology getIntervalChronology(ReadableInterval interval) {
@@ -252,14 +258,15 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the interval handling null.
      * <p>
      * If the interval is <code>null</code>, an interval representing now
      * to now in the {@link ISOChronology#getInstance() ISOChronology}
      * will be returned. Otherwise, the interval specified is returned.
-     * 
-     * @param interval  the interval to use, null means now to now
+     *
+     * @param interval the interval to use, null means now to now
      * @return the interval, never null
      * @since 1.1
      */
@@ -272,13 +279,14 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology handling null.
      * <p>
      * If the chronology is <code>null</code>, {@link ISOChronology#getInstance()}
      * will be returned. Otherwise, the chronology is returned.
-     * 
-     * @param chrono  the chronology to use, null means ISO in the default zone
+     *
+     * @param chrono the chronology to use, null means ISO in the default zone
      * @return the chronology, never null
      */
     public static final Chronology getChronology(Chronology chrono) {
@@ -289,13 +297,14 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the zone handling null.
      * <p>
      * If the zone is <code>null</code>, {@link DateTimeZone#getDefault()}
      * will be returned. Otherwise, the zone specified is returned.
-     * 
-     * @param zone  the time zone to use, null means the default zone
+     *
+     * @param zone the time zone to use, null means the default zone
      * @return the time zone, never null
      */
     public static final DateTimeZone getZone(DateTimeZone zone) {
@@ -306,13 +315,14 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the period type handling null.
      * <p>
      * If the zone is <code>null</code>, {@link PeriodType#standard()}
      * will be returned. Otherwise, the type specified is returned.
-     * 
-     * @param type  the time zone to use, null means the standard type
+     *
+     * @param type the time zone to use, null means the standard type
      * @return the type to use, never null
      */
     public static final PeriodType getPeriodType(PeriodType type) {
@@ -323,13 +333,14 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the millisecond duration from the specified duration object handling null.
      * <p>
      * If the duration object is <code>null</code>, zero will be returned.
      * Otherwise, the millis from the object are returned.
-     * 
-     * @param duration  the duration to examine, null means zero
+     *
+     * @param duration the duration to examine, null means zero
      * @return the duration in milliseconds
      */
     public static final long getDurationMillis(ReadableDuration duration) {
@@ -340,6 +351,7 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks whether the partial is contiguous.
      * <p>
@@ -357,8 +369,8 @@ public class DateTimeUtils {
      * field Day is not equal to the next field Year.
      * Similarly, a DayOfWeek/DayOfMonth partial is not contiguous because
      * the range Month is not equal to the next field Day.
-     * 
-     * @param partial  the partial to check
+     *
+     * @param partial the partial to check
      * @return true if the partial is contiguous
      * @throws IllegalArgumentException if the partial is null
      * @since 1.1
@@ -381,6 +393,7 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the {@link DateFormatSymbols} based on the given locale.
      * <p>
@@ -388,21 +401,22 @@ public class DateTimeUtils {
      * be used in order to allow the use of locales defined as extensions.
      * Otherwise, new DateFormatSymbols(locale) will be used.
      * See JDK 6 {@link DateFormatSymbols} for further information.
-     * 
-     * @param locale  the {@link Locale} used to get the correct {@link DateFormatSymbols}
+     *
+     * @param locale the {@link Locale} used to get the correct {@link DateFormatSymbols}
      * @return the symbols
      * @since 2.0
      */
     public static final DateFormatSymbols getDateFormatSymbols(Locale locale) {
         try {
-            Method method = DateFormatSymbols.class.getMethod("getInstance", new Class[] {Locale.class});
-            return (DateFormatSymbols) method.invoke(null, new Object[] {locale});
+            Method method = DateFormatSymbols.class.getMethod("getInstance", new Class[]{Locale.class});
+            return (DateFormatSymbols) method.invoke(null, new Object[]{locale});
         } catch (Exception ex) {
             return new DateFormatSymbols(locale);
         }
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the default map of time zone names.
      * <p>
@@ -422,7 +436,7 @@ public class DateTimeUtils {
      * <li>PST - America/Los_Angeles
      * <li>PDT - America/Los_Angeles
      * </ul>
-     * 
+     *
      * @return the unmodifiable map of abbreviations to zones, not null
      * @since 2.2
      */
@@ -434,8 +448,8 @@ public class DateTimeUtils {
      * Sets the default map of time zone names.
      * <p>
      * The map is copied before storage.
-     * 
-     * @param names  the map of abbreviations to zones, not null
+     *
+     * @param names the map of abbreviations to zones, not null
      * @since 2.2
      */
     public static final void setDefaultTimeZoneNames(Map<String, DateTimeZone> names) {
@@ -443,6 +457,7 @@ public class DateTimeUtils {
     }
 
     //-------------------------------------------------------------------------
+
     /**
      * Calculates the astronomical Julian Day for an instant.
      * <p>
@@ -455,8 +470,8 @@ public class DateTimeUtils {
      * Thus the fraction 0.25 is 18:00. equal to one quarter of the day from midday to midday.
      * <p>
      * Note that this method has nothing to do with the day-of-year.
-     * 
-     * @param epochMillis  the epoch millis from 1970-01-01Z
+     *
+     * @param epochMillis the epoch millis from 1970-01-01Z
      * @return the astronomical Julian Day represented by the specified instant
      * @since 2.2
      */
@@ -480,8 +495,8 @@ public class DateTimeUtils {
      * Thus these days start 12 hours before those of the fractional Julian Day.
      * <p>
      * Note that this method has nothing to do with the day-of-year.
-     * 
-     * @param epochMillis  the epoch millis from 1970-01-01Z
+     *
+     * @param epochMillis the epoch millis from 1970-01-01Z
      * @return the astronomical Julian Day represented by the specified instant
      * @since 2.2
      */
@@ -493,8 +508,8 @@ public class DateTimeUtils {
      * Creates a date-time from a Julian Day.
      * <p>
      * Returns the {@code DateTime} object equal to the specified Julian Day.
-     * 
-     * @param julianDay  the Julian Day
+     *
+     * @param julianDay the Julian Day
      * @return the epoch millis from 1970-01-01Z
      * @since 2.2
      */
@@ -504,9 +519,10 @@ public class DateTimeUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * A millisecond provider, allowing control of the system clock.
-     * 
+     *
      * @author Stephen Colebourne
      * @since 2.0 (previously private)
      */
@@ -515,7 +531,7 @@ public class DateTimeUtils {
          * Gets the current time.
          * <p>
          * Implementations of this method must be thread-safe.
-         * 
+         *
          * @return the current time in milliseconds
          */
         long getMillis();
@@ -527,6 +543,7 @@ public class DateTimeUtils {
     static class SystemMillisProvider implements MillisProvider {
         /**
          * Gets the current time.
+         *
          * @return the current time in millis
          */
         public long getMillis() {
@@ -538,19 +555,23 @@ public class DateTimeUtils {
      * Fixed millisecond provider.
      */
     static class FixedMillisProvider implements MillisProvider {
-        /** The fixed millis value. */
+        /**
+         * The fixed millis value.
+         */
         private final long iMillis;
-        
+
         /**
          * Constructor.
-         * @param offsetMillis  the millis offset
+         *
+         * @param offsetMillis the millis offset
          */
         FixedMillisProvider(long fixedMillis) {
             iMillis = fixedMillis;
         }
-        
+
         /**
          * Gets the current time.
+         *
          * @return the current time in millis
          */
         public long getMillis() {
@@ -562,19 +583,23 @@ public class DateTimeUtils {
      * Offset from system millis provider.
      */
     static class OffsetMillisProvider implements MillisProvider {
-        /** The millis offset. */
+        /**
+         * The millis offset.
+         */
         private final long iMillis;
-        
+
         /**
          * Constructor.
-         * @param offsetMillis  the millis offset
+         *
+         * @param offsetMillis the millis offset
          */
         OffsetMillisProvider(long offsetMillis) {
             iMillis = offsetMillis;
         }
-        
+
         /**
          * Gets the current time.
+         *
          * @return the current time in millis
          */
         public long getMillis() {

@@ -19,8 +19,6 @@ import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeUtils;
 import com.jn.langx.util.jodatime.DateTimeZone;
 import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.convert.AbstractConverter;
-import com.jn.langx.util.jodatime.convert.PartialConverter;
 
 /**
  * ReadablePartialConverter extracts partial fields and chronology from a ReadablePartial.
@@ -44,11 +42,12 @@ class ReadablePartialConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology, which is taken from the ReadablePartial.
-     * 
-     * @param object  the ReadablePartial to convert, must not be null
-     * @param zone  the specified zone to use, null means default zone
+     *
+     * @param object the ReadablePartial to convert, must not be null
+     * @param zone   the specified zone to use, null means default zone
      * @return the chronology, never null
      */
     public Chronology getChronology(Object object, DateTimeZone zone) {
@@ -60,9 +59,9 @@ class ReadablePartialConverter extends AbstractConverter
      * <p>
      * If the passed in chronology is non-null, it is used.
      * Otherwise the chronology from the instant is used.
-     * 
-     * @param object  the ReadablePartial to convert, must not be null
-     * @param chrono  the chronology to use, null means use that from object
+     *
+     * @param object the ReadablePartial to convert, must not be null
+     * @param chrono the chronology to use, null means use that from object
      * @return the chronology, never null
      */
     public Chronology getChronology(Object object, Chronology chrono) {
@@ -77,11 +76,11 @@ class ReadablePartialConverter extends AbstractConverter
      * Extracts the values of the partial from an object of this converter's type.
      * The chrono parameter is a hint to the converter, should it require a
      * chronology to aid in conversion.
-     * 
-     * @param fieldSource  a partial that provides access to the fields.
-     *  This partial may be incomplete and only getFieldType(int) should be used
-     * @param object  the object to convert
-     * @param chrono  the chronology to use, which is the non-null result of getChronology()
+     *
+     * @param fieldSource a partial that provides access to the fields.
+     *                    This partial may be incomplete and only getFieldType(int) should be used
+     * @param object      the object to convert
+     * @param chrono      the chronology to use, which is the non-null result of getChronology()
      * @return the array of field values that match the fieldSource, must be non-null valid
      * @throws ClassCastException if the object is invalid
      */
@@ -97,9 +96,10 @@ class ReadablePartialConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns ReadableInstant.class.
-     * 
+     *
      * @return ReadableInstant.class
      */
     public Class<?> getSupportedType() {

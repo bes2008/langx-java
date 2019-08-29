@@ -15,13 +15,11 @@
  */
 package com.jn.langx.util.jodatime;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.convert.ConverterManager;
 import com.jn.langx.util.jodatime.convert.InstantConverter;
+
+import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * DateTimeComparator provides comparators to compare one date with another.
@@ -38,7 +36,7 @@ import com.jn.langx.util.jodatime.convert.InstantConverter;
  * <li>Long (milliseconds)
  * <li>null (now)
  * </ul>
- *
+ * <p>
  * <p>
  * DateTimeComparator is thread-safe and immutable.
  *
@@ -49,25 +47,38 @@ import com.jn.langx.util.jodatime.convert.InstantConverter;
  */
 public class DateTimeComparator implements Comparator<Object>, Serializable {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -6097339773320178364L;
 
-    /** Singleton instance */
+    /**
+     * Singleton instance
+     */
     private static final DateTimeComparator ALL_INSTANCE = new DateTimeComparator(null, null);
-    /** Singleton instance */
+    /**
+     * Singleton instance
+     */
     private static final DateTimeComparator DATE_INSTANCE = new DateTimeComparator(DateTimeFieldType.dayOfYear(), null);
-    /** Singleton instance */
+    /**
+     * Singleton instance
+     */
     private static final DateTimeComparator TIME_INSTANCE = new DateTimeComparator(null, DateTimeFieldType.dayOfYear());
 
-    /** The lower limit of fields to compare, null if no limit */
+    /**
+     * The lower limit of fields to compare, null if no limit
+     */
     private final DateTimeFieldType iLowerLimit;
-    /** The upper limit of fields to compare, null if no limit */
+    /**
+     * The upper limit of fields to compare, null if no limit
+     */
     private final DateTimeFieldType iUpperLimit;
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a DateTimeComparator the compares the entire date time value.
-     * 
+     *
      * @return a comparator over all fields
      */
     public static DateTimeComparator getInstance() {
@@ -78,7 +89,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      * Returns a DateTimeComparator with a lower limit only. Fields of a
      * magnitude less than the lower limit are excluded from comparisons.
      *
-     * @param lowerLimit  inclusive lower limit for fields to be compared, null means no limit
+     * @param lowerLimit inclusive lower limit for fields to be compared, null means no limit
      * @return a comparator over all fields above the lower limit
      */
     public static DateTimeComparator getInstance(DateTimeFieldType lowerLimit) {
@@ -92,8 +103,8 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      * excluded from comparisons. Either limit may be specified as null, which
      * indicates an unbounded limit.
      *
-     * @param lowerLimit  inclusive lower limit for fields to be compared, null means no limit
-     * @param upperLimit  exclusive upper limit for fields to be compared, null means no limit
+     * @param lowerLimit inclusive lower limit for fields to be compared, null means no limit
+     * @param upperLimit exclusive upper limit for fields to be compared, null means no limit
      * @return a comparator over all fields between the limits
      */
     public static DateTimeComparator getInstance(DateTimeFieldType lowerLimit, DateTimeFieldType upperLimit) {
@@ -112,7 +123,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     /**
      * Returns a comparator that only considers date fields.
      * Time of day is ignored.
-     * 
+     *
      * @return a comparator over all date fields
      */
     public static DateTimeComparator getDateOnlyInstance() {
@@ -122,7 +133,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     /**
      * Returns a comparator that only considers time fields.
      * Date is ignored.
-     * 
+     *
      * @return a comparator over all time fields
      */
     public static DateTimeComparator getTimeOnlyInstance() {
@@ -131,9 +142,9 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
 
     /**
      * Restricted constructor.
-     * 
-     * @param lowerLimit  the lower field limit, null means no limit
-     * @param upperLimit  the upper field limit, null means no limit
+     *
+     * @param lowerLimit the lower field limit, null means no limit
+     * @param upperLimit the upper field limit, null means no limit
      */
     protected DateTimeComparator(DateTimeFieldType lowerLimit, DateTimeFieldType upperLimit) {
         super();
@@ -142,9 +153,10 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the field type that represents the lower limit of comparison.
-     * 
+     *
      * @return the field type, null if no upper limit
      */
     public DateTimeFieldType getLowerLimit() {
@@ -153,7 +165,7 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
 
     /**
      * Gets the field type that represents the upper limit of comparison.
-     * 
+     *
      * @return the field type, null if no upper limit
      */
     public DateTimeFieldType getUpperLimit() {
@@ -163,20 +175,20 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     /**
      * Compare two objects against only the range of date time fields as
      * specified in the constructor.
-     * 
-     * @param lhsObj  the first object,
-     *      logically on the left of a &lt; comparison, null means now
-     * @param rhsObj  the second object,
-     *      logically on the right of a &lt; comparison, null means now
+     *
+     * @param lhsObj the first object,
+     *               logically on the left of a &lt; comparison, null means now
+     * @param rhsObj the second object,
+     *               logically on the right of a &lt; comparison, null means now
      * @return zero if order does not matter,
-     *      negative value if lhsObj &lt; rhsObj, positive value otherwise.
+     * negative value if lhsObj &lt; rhsObj, positive value otherwise.
      * @throws IllegalArgumentException if either argument is not supported
      */
     public int compare(Object lhsObj, Object rhsObj) {
         InstantConverter conv = ConverterManager.getInstance().getInstantConverter(lhsObj);
         com.jn.langx.util.jodatime.Chronology lhsChrono = conv.getChronology(lhsObj, (com.jn.langx.util.jodatime.Chronology) null);
         long lhsMillis = conv.getInstantMillis(lhsObj, lhsChrono);
-        
+
         conv = ConverterManager.getInstance().getInstantConverter(rhsObj);
         com.jn.langx.util.jodatime.Chronology rhsChrono = conv.getChronology(rhsObj, (Chronology) null);
         long rhsMillis = conv.getInstantMillis(rhsObj, rhsChrono);
@@ -201,9 +213,10 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Support serialization singletons.
-     * 
+     *
      * @return the resolved singleton instance
      */
     private Object readResolve() {
@@ -212,8 +225,8 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
 
     /**
      * Compares this comparator to another.
-     * 
-     * @param object  the object to compare to
+     *
+     * @param object the object to compare to
      * @return true if equal
      */
     public boolean equals(Object object) {
@@ -221,38 +234,38 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
             DateTimeComparator other = (DateTimeComparator) object;
             return (iLowerLimit == other.getLowerLimit() ||
                     (iLowerLimit != null && iLowerLimit.equals(other.getLowerLimit()))) &&
-                   (iUpperLimit == other.getUpperLimit() ||
-                    (iUpperLimit != null && iUpperLimit.equals(other.getUpperLimit())));
+                    (iUpperLimit == other.getUpperLimit() ||
+                            (iUpperLimit != null && iUpperLimit.equals(other.getUpperLimit())));
         }
         return false;
     }
 
     /**
      * Gets a suitable hashcode.
-     * 
+     *
      * @return the hashcode
      */
     public int hashCode() {
         return (iLowerLimit == null ? 0 : iLowerLimit.hashCode()) +
-               (123 * (iUpperLimit == null ? 0 : iUpperLimit.hashCode()));
+                (123 * (iUpperLimit == null ? 0 : iUpperLimit.hashCode()));
     }
 
     /**
      * Gets a debugging string.
-     * 
+     *
      * @return a debugging string
      */
     public String toString() {
         if (iLowerLimit == iUpperLimit) {
             return "DateTimeComparator["
-                + (iLowerLimit == null ? "" : iLowerLimit.getName())
-                + "]";
+                    + (iLowerLimit == null ? "" : iLowerLimit.getName())
+                    + "]";
         } else {
             return "DateTimeComparator["
-                + (iLowerLimit == null ? "" : iLowerLimit.getName())
-                + "-"
-                + (iUpperLimit == null ? "" : iUpperLimit.getName())
-                + "]";
+                    + (iLowerLimit == null ? "" : iLowerLimit.getName())
+                    + "-"
+                    + (iUpperLimit == null ? "" : iUpperLimit.getName())
+                    + "]";
         }
     }
 

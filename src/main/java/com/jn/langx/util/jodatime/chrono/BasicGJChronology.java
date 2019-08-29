@@ -17,7 +17,6 @@ package com.jn.langx.util.jodatime.chrono;
 
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
 
 /**
  * Abstract Chronology for implementing chronologies based on Gregorian/Julian formulae.
@@ -34,17 +33,19 @@ import com.jn.langx.util.jodatime.chrono.BasicChronology;
  */
 abstract class BasicGJChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = 538276888268L;
 
     // These arrays are NOT public. We trust ourselves not to alter the array.
     // They use zero-based array indexes so the that valid range of months is
     // automatically checked.
     private static final int[] MIN_DAYS_PER_MONTH_ARRAY = {
-        31,28,31,30,31,30,31,31,30,31,30,31
+            31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     };
     private static final int[] MAX_DAYS_PER_MONTH_ARRAY = {
-        31,29,31,30,31,30,31,31,30,31,30,31
+            31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     };
     private static final long[] MIN_TOTAL_MILLIS_BY_MONTH_ARRAY;
     private static final long[] MAX_TOTAL_MILLIS_BY_MONTH_ARRAY;
@@ -58,12 +59,12 @@ abstract class BasicGJChronology extends com.jn.langx.util.jodatime.chrono.Basic
         long maxSum = 0;
         for (int i = 0; i < 11; i++) {
             long millis = MIN_DAYS_PER_MONTH_ARRAY[i]
-                * (long)DateTimeConstants.MILLIS_PER_DAY;
+                    * (long) DateTimeConstants.MILLIS_PER_DAY;
             minSum += millis;
             MIN_TOTAL_MILLIS_BY_MONTH_ARRAY[i + 1] = minSum;
 
             millis = MAX_DAYS_PER_MONTH_ARRAY[i]
-                * (long)DateTimeConstants.MILLIS_PER_DAY;
+                    * (long) DateTimeConstants.MILLIS_PER_DAY;
             maxSum += millis;
             MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[i + 1] = maxSum;
         }
@@ -86,35 +87,36 @@ abstract class BasicGJChronology extends com.jn.langx.util.jodatime.chrono.Basic
         // the instant isn't measured in milliseconds, but in units of
         // (128/125)seconds.
 
-        int i = (int)((millis - getYearMillis(year)) >> 10);
+        int i = (int) ((millis - getYearMillis(year)) >> 10);
 
         // There are 86400000 milliseconds per day, but divided by 1024 is
         // 84375. There are 84375 (128/125)seconds per day.
 
         return
-            (isLeapYear(year))
-            ? ((i < 182 * 84375)
-               ? ((i < 91 * 84375)
-                  ? ((i < 31 * 84375) ? 1 : (i < 60 * 84375) ? 2 : 3)
-                  : ((i < 121 * 84375) ? 4 : (i < 152 * 84375) ? 5 : 6))
-               : ((i < 274 * 84375)
-                  ? ((i < 213 * 84375) ? 7 : (i < 244 * 84375) ? 8 : 9)
-                  : ((i < 305 * 84375) ? 10 : (i < 335 * 84375) ? 11 : 12)))
-            : ((i < 181 * 84375)
-               ? ((i < 90 * 84375)
-                  ? ((i < 31 * 84375) ? 1 : (i < 59 * 84375) ? 2 : 3)
-                  : ((i < 120 * 84375) ? 4 : (i < 151 * 84375) ? 5 : 6))
-               : ((i < 273 * 84375)
-                  ? ((i < 212 * 84375) ? 7 : (i < 243 * 84375) ? 8 : 9)
-                  : ((i < 304 * 84375) ? 10 : (i < 334 * 84375) ? 11 : 12)));
+                (isLeapYear(year))
+                        ? ((i < 182 * 84375)
+                        ? ((i < 91 * 84375)
+                        ? ((i < 31 * 84375) ? 1 : (i < 60 * 84375) ? 2 : 3)
+                        : ((i < 121 * 84375) ? 4 : (i < 152 * 84375) ? 5 : 6))
+                        : ((i < 274 * 84375)
+                        ? ((i < 213 * 84375) ? 7 : (i < 244 * 84375) ? 8 : 9)
+                        : ((i < 305 * 84375) ? 10 : (i < 335 * 84375) ? 11 : 12)))
+                        : ((i < 181 * 84375)
+                        ? ((i < 90 * 84375)
+                        ? ((i < 31 * 84375) ? 1 : (i < 59 * 84375) ? 2 : 3)
+                        : ((i < 120 * 84375) ? 4 : (i < 151 * 84375) ? 5 : 6))
+                        : ((i < 273 * 84375)
+                        ? ((i < 212 * 84375) ? 7 : (i < 243 * 84375) ? 8 : 9)
+                        : ((i < 304 * 84375) ? 10 : (i < 334 * 84375) ? 11 : 12)));
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the number of days in the specified month and year.
-     * 
+     *
      * @param year  the year
-     * @param month  the month
+     * @param month the month
      * @return the number of days
      */
     int getDaysInYearMonth(int year, int month) {
@@ -148,11 +150,11 @@ abstract class BasicGJChronology extends com.jn.langx.util.jodatime.chrono.Basic
     long getYearDifference(long minuendInstant, long subtrahendInstant) {
         int minuendYear = getYear(minuendInstant);
         int subtrahendYear = getYear(subtrahendInstant);
-    
+
         // Inlined remainder method to avoid duplicate calls to get.
         long minuendRem = minuendInstant - getYearMillis(minuendYear);
         long subtrahendRem = subtrahendInstant - getYearMillis(subtrahendYear);
-    
+
         // Balance leap year differences on remainders.
         if (subtrahendRem >= FEB_29) {
             if (isLeapYear(subtrahendYear)) {
@@ -163,7 +165,7 @@ abstract class BasicGJChronology extends com.jn.langx.util.jodatime.chrono.Basic
                 minuendRem -= DateTimeConstants.MILLIS_PER_DAY;
             }
         }
-    
+
         int difference = minuendYear - subtrahendYear;
         if (minuendRem < subtrahendRem) {
             difference--;

@@ -15,28 +15,20 @@
  */
 package com.jn.langx.util.jodatime.base;
 
-import java.io.Serializable;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.MutableInterval;
-import com.jn.langx.util.jodatime.ReadWritableInterval;
-import com.jn.langx.util.jodatime.ReadableDuration;
-import com.jn.langx.util.jodatime.ReadableInstant;
-import com.jn.langx.util.jodatime.ReadableInterval;
-import com.jn.langx.util.jodatime.ReadablePeriod;
-import com.jn.langx.util.jodatime.base.AbstractInterval;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.convert.ConverterManager;
 import com.jn.langx.util.jodatime.convert.IntervalConverter;
 import com.jn.langx.util.jodatime.field.FieldUtils;
+
+import java.io.Serializable;
 
 /**
  * BaseInterval is an abstract implementation of ReadableInterval that stores
  * data in two <code>long</code> millisecond fields.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadableInterval} interface should be used when different 
+ * The {@link ReadableInterval} interface should be used when different
  * kinds of interval objects are to be referenced.
  * <p>
  * BaseInterval subclasses may be mutable and not thread-safe.
@@ -50,22 +42,30 @@ public abstract class BaseInterval
         extends AbstractInterval
         implements ReadableInterval, Serializable {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 576586928732749278L;
 
-    /** The chronology of the interval */
+    /**
+     * The chronology of the interval
+     */
     private volatile Chronology iChronology;
-    /** The start of the interval */
+    /**
+     * The start of the interval
+     */
     private volatile long iStartMillis;
-    /** The end of the interval */
+    /**
+     * The end of the interval
+     */
     private volatile long iEndMillis;
 
     /**
      * Constructs an interval from a start and end instant.
-     * 
-     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
-     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
-     * @param chrono  the chronology to use, null is ISO default
+     *
+     * @param startInstant start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant   end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param chrono       the chronology to use, null is ISO default
      * @throws IllegalArgumentException if the end is before the start
      */
     protected BaseInterval(long startInstant, long endInstant, Chronology chrono) {
@@ -78,9 +78,9 @@ public abstract class BaseInterval
 
     /**
      * Constructs an interval from a start and end instant.
-     * 
-     * @param start  start of this interval, null means now
-     * @param end  end of this interval, null means now
+     *
+     * @param start start of this interval, null means now
+     * @param end   end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
      */
     protected BaseInterval(ReadableInstant start, ReadableInstant end) {
@@ -98,11 +98,11 @@ public abstract class BaseInterval
 
     /**
      * Constructs an interval from a start instant and a duration.
-     * 
-     * @param start  start of this interval, null means now
-     * @param duration  the duration of this interval, null means zero length
+     *
+     * @param start    start of this interval, null means now
+     * @param duration the duration of this interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
     protected BaseInterval(ReadableInstant start, ReadableDuration duration) {
         super();
@@ -115,11 +115,11 @@ public abstract class BaseInterval
 
     /**
      * Constructs an interval from a millisecond duration and an end instant.
-     * 
-     * @param duration  the duration of this interval, null means zero length
-     * @param end  end of this interval, null means now
+     *
+     * @param duration the duration of this interval, null means zero length
+     * @param end      end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the start instant exceeds the capacity of a long
      */
     protected BaseInterval(ReadableDuration duration, ReadableInstant end) {
         super();
@@ -135,11 +135,11 @@ public abstract class BaseInterval
      * <p>
      * When forming the interval, the chronology from the instant is used
      * if present, otherwise the chronology of the period is used.
-     * 
+     *
      * @param start  start of this interval, null means now
-     * @param period  the period of this interval, null means zero length
+     * @param period the period of this interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
     protected BaseInterval(ReadableInstant start, ReadablePeriod period) {
         super();
@@ -159,11 +159,11 @@ public abstract class BaseInterval
      * <p>
      * When forming the interval, the chronology from the instant is used
      * if present, otherwise the chronology of the period is used.
-     * 
-     * @param period  the period of this interval, null means zero length
-     * @param end  end of this interval, null means now
+     *
+     * @param period the period of this interval, null means zero length
+     * @param end    end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the start instant exceeds the capacity of a long
      */
     protected BaseInterval(ReadablePeriod period, ReadableInstant end) {
         super();
@@ -181,9 +181,9 @@ public abstract class BaseInterval
     /**
      * Constructs a time interval converting or copying from another object
      * that describes an interval.
-     * 
-     * @param interval  the time interval to copy
-     * @param chrono  the chronology to use, null means let converter decide
+     *
+     * @param interval the time interval to copy
+     * @param chrono   the chronology to use, null means let converter decide
      * @throws IllegalArgumentException if the interval is invalid
      */
     protected BaseInterval(Object interval, Chronology chrono) {
@@ -207,6 +207,7 @@ public abstract class BaseInterval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology of this interval.
      *
@@ -220,7 +221,7 @@ public abstract class BaseInterval
      * Gets the start of this time interval which is inclusive.
      *
      * @return the start of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
+     * millisecond instant from 1970-01-01T00:00:00Z
      */
     public long getStartMillis() {
         return iStartMillis;
@@ -230,19 +231,20 @@ public abstract class BaseInterval
      * Gets the end of this time interval which is exclusive.
      *
      * @return the end of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
+     * millisecond instant from 1970-01-01T00:00:00Z
      */
     public long getEndMillis() {
         return iEndMillis;
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets this interval from two millisecond instants and a chronology.
      *
-     * @param startInstant  the start of the time interval
-     * @param endInstant  the start of the time interval
-     * @param chrono  the chronology, not null
+     * @param startInstant the start of the time interval
+     * @param endInstant   the start of the time interval
+     * @param chrono       the chronology, not null
      * @throws IllegalArgumentException if the end is before the start
      */
     protected void setInterval(long startInstant, long endInstant, Chronology chrono) {

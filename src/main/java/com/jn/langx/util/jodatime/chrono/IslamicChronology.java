@@ -15,19 +15,11 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
+import com.jn.langx.util.jodatime.*;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.chrono.*;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
-import com.jn.langx.util.jodatime.chrono.LimitChronology;
-import com.jn.langx.util.jodatime.chrono.ZonedChronology;
 
 /**
  * Implements the Islamic, or Hijri, calendar system using arithmetic rules.
@@ -62,14 +54,15 @@ import com.jn.langx.util.jodatime.chrono.ZonedChronology;
  * <p>
  * IslamicChronology is thread-safe and immutable.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Islamic_calendar">Wikipedia</a>
- *
  * @author Stephen Colebourne
+ * @see <a href="http://en.wikipedia.org/wiki/Islamic_calendar">Wikipedia</a>
  * @since 1.2
  */
 public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -3663823829888L;
 
     /**
@@ -78,19 +71,31 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
      */
     public static final int AH = DateTimeConstants.CE;
 
-    /** A singleton era field. */
+    /**
+     * A singleton era field.
+     */
     private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("AH");
 
-    /** Leap year 15-based pattern. */
+    /**
+     * Leap year 15-based pattern.
+     */
     public static final LeapYearPatternType LEAP_YEAR_15_BASED = new LeapYearPatternType(0, 623158436);
-    /** Leap year 16-based pattern. */
+    /**
+     * Leap year 16-based pattern.
+     */
     public static final LeapYearPatternType LEAP_YEAR_16_BASED = new LeapYearPatternType(1, 623191204);
-    /** Leap year Indian pattern. */
+    /**
+     * Leap year Indian pattern.
+     */
     public static final LeapYearPatternType LEAP_YEAR_INDIAN = new LeapYearPatternType(2, 690562340);
-    /** Leap year Habash al-Hasib pattern. */
+    /**
+     * Leap year Habash al-Hasib pattern.
+     */
     public static final LeapYearPatternType LEAP_YEAR_HABASH_AL_HASIB = new LeapYearPatternType(3, 153692453);
 
-    /** The lowest year that can be fully supported. */
+    /**
+     * The lowest year that can be fully supported.
+     */
     private static final int MIN_YEAR = -292269337;
 
     /**
@@ -101,65 +106,97 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
      */
     private static final int MAX_YEAR = 292271022;
 
-    /** The days in a pair of months. */
+    /**
+     * The days in a pair of months.
+     */
     private static final int MONTH_PAIR_LENGTH = 59;
 
-    /** The length of the long month. */
+    /**
+     * The length of the long month.
+     */
     private static final int LONG_MONTH_LENGTH = 30;
 
-    /** The length of the short month. */
+    /**
+     * The length of the short month.
+     */
     private static final int SHORT_MONTH_LENGTH = 29;
 
-    /** The length of the long month in millis. */
+    /**
+     * The length of the long month in millis.
+     */
     private static final long MILLIS_PER_MONTH_PAIR = 59L * DateTimeConstants.MILLIS_PER_DAY;
 
-    /** The length of the long month in millis. */
+    /**
+     * The length of the long month in millis.
+     */
     private static final long MILLIS_PER_MONTH = (long) (29.53056 * DateTimeConstants.MILLIS_PER_DAY);
 
-    /** The length of the long month in millis. */
+    /**
+     * The length of the long month in millis.
+     */
     private static final long MILLIS_PER_LONG_MONTH = 30L * DateTimeConstants.MILLIS_PER_DAY;
 
-    /** The typical millis per year. */
+    /**
+     * The typical millis per year.
+     */
     private static final long MILLIS_PER_YEAR = (long) (354.36667 * DateTimeConstants.MILLIS_PER_DAY);
 
-    /** The typical millis per year. */
+    /**
+     * The typical millis per year.
+     */
     private static final long MILLIS_PER_SHORT_YEAR = 354L * DateTimeConstants.MILLIS_PER_DAY;
 
-    /** The typical millis per year. */
+    /**
+     * The typical millis per year.
+     */
     private static final long MILLIS_PER_LONG_YEAR = 355L * DateTimeConstants.MILLIS_PER_DAY;
 
-    /** The millis of 0001-01-01. */
+    /**
+     * The millis of 0001-01-01.
+     */
     private static final long MILLIS_YEAR_1 = -42521587200000L;
-                                    //        -42520809600000L;
+    //        -42520809600000L;
 //    long start = 0L - 278L * DateTimeConstants.MILLIS_PER_DAY;
 //    long cy = 46L * MILLIS_PER_CYCLE;  // 1381-01-01
 //    long rem = 5L * MILLIS_PER_SHORT_YEAR +
 //            3L * MILLIS_PER_LONG_YEAR;  // 1389-01-01
 
-    /** The length of the cycle of leap years. */
+    /**
+     * The length of the cycle of leap years.
+     */
     private static final int CYCLE = 30;
 
-    /** The millis of a 30 year cycle. */
+    /**
+     * The millis of a 30 year cycle.
+     */
     private static final long MILLIS_PER_CYCLE = ((19L * 354L + 11L * 355L) * DateTimeConstants.MILLIS_PER_DAY);
 
-    /** Cache of zone to chronology arrays */
+    /**
+     * Cache of zone to chronology arrays
+     */
     private static final Map<DateTimeZone, IslamicChronology[]> cCache = new HashMap<DateTimeZone, IslamicChronology[]>();
 
-    /** Singleton instance of a UTC IslamicChronology */
+    /**
+     * Singleton instance of a UTC IslamicChronology
+     */
     private static final IslamicChronology INSTANCE_UTC;
+
     static {
         // init after static fields
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
     }
 
-    /** The leap years to use. */
+    /**
+     * The leap years to use.
+     */
     private final LeapYearPatternType iLeapYears;
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets an instance of the IslamicChronology.
      * The time zone of the returned instance is UTC.
-     * 
+     *
      * @return a singleton UTC instance of the chronology
      */
     public static IslamicChronology getInstanceUTC() {
@@ -168,7 +205,7 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 
     /**
      * Gets an instance of the IslamicChronology in the default time zone.
-     * 
+     *
      * @return a chronology in the default time zone
      */
     public static IslamicChronology getInstance() {
@@ -177,8 +214,8 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 
     /**
      * Gets an instance of the IslamicChronology in the given time zone.
-     * 
-     * @param zone  the time zone to get the chronology in, null is default
+     *
+     * @param zone the time zone to get the chronology in, null is default
      * @return a chronology in the specified time zone
      */
     public static IslamicChronology getInstance(DateTimeZone zone) {
@@ -187,9 +224,9 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 
     /**
      * Gets an instance of the IslamicChronology in the given time zone.
-     * 
-     * @param zone  the time zone to get the chronology in, null is default
-     * @param leapYears  the type defining the leap year pattern
+     *
+     * @param zone      the time zone to get the chronology in, null is default
+     * @param leapYears the type defining the leap year pattern
      * @return a chronology in the specified time zone
      */
     public static IslamicChronology getInstance(DateTimeZone zone, LeapYearPatternType leapYears) {
@@ -211,12 +248,12 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
                     // Impose lower limit and make another IslamicChronology.
                     DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
                     chrono = new IslamicChronology(
-                        LimitChronology.getInstance(chrono, lowerLimit, null),
-                         null, leapYears);
+                            LimitChronology.getInstance(chrono, lowerLimit, null),
+                            null, leapYears);
                 } else {
                     chrono = getInstance(DateTimeZone.UTC, leapYears);
                     chrono = new IslamicChronology
-                        (ZonedChronology.getInstance(chrono, zone), null, leapYears);
+                            (ZonedChronology.getInstance(chrono, zone), null, leapYears);
                 }
                 chronos[leapYears.index] = chrono;
             }
@@ -226,6 +263,7 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 
     // Constructors and instance variables
     //-----------------------------------------------------------------------
+
     /**
      * Restricted constructor.
      */
@@ -243,6 +281,7 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the leap year pattern type.
      *
@@ -254,9 +293,10 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 
     // Conversion
     //-----------------------------------------------------------------------
+
     /**
      * Gets the Chronology in the UTC time zone.
-     * 
+     *
      * @return the chronology in UTC
      */
     public Chronology withUTC() {
@@ -265,8 +305,8 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 
     /**
      * Gets the Chronology in a specific time zone.
-     * 
-     * @param zone  the zone to get the chronology in, null is default
+     *
+     * @param zone the zone to get the chronology in, null is default
      * @return the chronology
      */
     public Chronology withZone(DateTimeZone zone) {
@@ -280,10 +320,11 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks if this chronology instance equals another.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return true if equal
      * @since 2.3
      */
@@ -301,7 +342,7 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 
     /**
      * A suitable hash code for the chronology.
-     * 
+     *
      * @return the hash code
      * @since 1.6
      */
@@ -314,7 +355,7 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
         long millisIslamic = instant - MILLIS_YEAR_1;
         long cycles = millisIslamic / MILLIS_PER_CYCLE;
         long cycleRemainder = millisIslamic % MILLIS_PER_CYCLE;
-        
+
         int year = (int) ((cycles * CYCLE) + 1L);
         long yearMillis = (isLeapYear(year) ? MILLIS_PER_LONG_YEAR : MILLIS_PER_SHORT_YEAR);
         while (cycleRemainder >= yearMillis) {
@@ -463,11 +504,11 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
         long cycle = year / CYCLE;
         long millis = MILLIS_YEAR_1 + cycle * MILLIS_PER_CYCLE;
         int cycleRemainder = (year % CYCLE) + 1;
-        
+
         for (int i = 1; i < cycleRemainder; i++) {
             millis += (isLeapYear(i) ? MILLIS_PER_LONG_YEAR : MILLIS_PER_SHORT_YEAR);
         }
-        
+
         return millis;
     }
 
@@ -499,13 +540,16 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Opaque object describing a leap year pattern for the Islamic Chronology.
      *
      * @since 1.2
      */
     public static class LeapYearPatternType implements Serializable {
-        /** Serialization lock */
+        /**
+         * Serialization lock
+         */
         private static final long serialVersionUID = 26581275372698L;
 //        /** Leap year raw data encoded into bits. */
 //        private static final int[][] LEAP_YEARS = {
@@ -514,39 +558,45 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
 //            {2, 5, 8, 10, 13, 16, 19, 21, 24, 27, 29},  // 690562340
 //            {0, 2, 5, 8, 11, 13, 16, 19, 21, 24, 27},   // 153692453
 //        };
-        
-        /** The index. */
+
+        /**
+         * The index.
+         */
         final byte index;
-        /** The leap year pattern, a bit-based 1=true pattern. */
+        /**
+         * The leap year pattern, a bit-based 1=true pattern.
+         */
         final int pattern;
-        
+
         /**
          * Constructor.
          * This constructor takes a bit pattern where bits 0-29 correspond
          * to years 0-29 in the 30 year Islamic cycle of years. This allows
          * a highly efficient lookup by bit-matching.
          *
-         * @param index  the index
-         * @param pattern  the bit pattern
+         * @param index   the index
+         * @param pattern the bit pattern
          */
         LeapYearPatternType(int index, int pattern) {
             super();
             this.index = (byte) index;
             this.pattern = pattern;
         }
-        
+
         /**
          * Is the year a leap year.
-         * @param year  the year to query
+         *
+         * @param year the year to query
          * @return true if leap
          */
         boolean isLeapYear(int year) {
             int key = 1 << (year % 30);
             return ((pattern & key) > 0);
         }
-        
+
         /**
          * Ensure a singleton is returned if possible.
+         *
          * @return the singleton instance
          */
         private Object readResolve() {

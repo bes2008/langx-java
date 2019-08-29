@@ -18,8 +18,6 @@ package com.jn.langx.util.jodatime.chrono;
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeField;
 import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.chrono.AssembledChronology;
-import com.jn.langx.util.jodatime.chrono.LenientChronology;
 import com.jn.langx.util.jodatime.field.StrictDateTimeField;
 
 /**
@@ -28,13 +26,15 @@ import com.jn.langx.util.jodatime.field.StrictDateTimeField;
  * StrictChronology is thread-safe and immutable.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see StrictDateTimeField
  * @see LenientChronology
+ * @since 1.0
  */
 public final class StrictChronology extends AssembledChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = 6633006628097111960L;
 
     /**
@@ -117,11 +117,12 @@ public final class StrictChronology extends AssembledChronology {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * A strict chronology is only equal to a strict chronology with the
      * same base chronology.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return true if equal
      * @since 1.4
      */
@@ -138,7 +139,7 @@ public final class StrictChronology extends AssembledChronology {
 
     /**
      * A suitable hashcode for the chronology.
-     * 
+     *
      * @return the hashcode
      * @since 1.4
      */
@@ -148,7 +149,7 @@ public final class StrictChronology extends AssembledChronology {
 
     /**
      * A debugging string for the chronology.
-     * 
+     *
      * @return the debugging string
      */
     public String toString() {

@@ -17,9 +17,6 @@ package com.jn.langx.util.jodatime.field;
 
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
-import com.jn.langx.util.jodatime.field.ImpreciseDateTimeField;
-import com.jn.langx.util.jodatime.field.PreciseDurationDateTimeField;
 
 /**
  * Precise datetime field, composed of two precise duration fields.
@@ -32,29 +29,31 @@ import com.jn.langx.util.jodatime.field.PreciseDurationDateTimeField;
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
- * @since 1.0
  * @see ImpreciseDateTimeField
+ * @since 1.0
  */
 public class PreciseDateTimeField extends PreciseDurationDateTimeField {
 
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -5586801265774496376L;
 
-    /** The maximum range in the correct units */
+    /**
+     * The maximum range in the correct units
+     */
     private final int iRange;
 
     private final DurationField iRangeField;
 
     /**
      * Constructor.
-     * 
+     *
      * @param type  the field type this field uses
      * @param unit  precise unit duration, like "seconds()".
      * @param range precise range duration, preferably a multiple of the unit,
-     * like "minutes()".
+     *              like "minutes()".
      * @throws IllegalArgumentException if either duration field is imprecise
      * @throws IllegalArgumentException if unit milliseconds is less than one
-     * or effective value range is less than two.
+     *                                  or effective value range is less than two.
      */
     public PreciseDateTimeField(DateTimeFieldType type,
                                 DurationField unit, DurationField range) {
@@ -65,7 +64,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
         }
 
         long rangeMillis = range.getUnitMillis();
-        iRange = (int)(rangeMillis / getUnitMillis());
+        iRange = (int) (rangeMillis / getUnitMillis());
         if (iRange < 2) {
             throw new IllegalArgumentException("The effective range must be at least 2");
         }
@@ -75,8 +74,8 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the amount of fractional units from the specified time instant.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the amount of fractional units extracted from the input.
      */
     public int get(long instant) {
@@ -90,24 +89,24 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
     /**
      * Add to the component of the specified time instant, wrapping around
      * within that component if necessary.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to add to
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
     public long addWrapField(long instant, int amount) {
         int thisValue = get(instant);
         int wrappedValue = com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue
-            (thisValue, amount, getMinimumValue(), getMaximumValue());
+                (thisValue, amount, getMinimumValue(), getMaximumValue());
         // copy code from set() to avoid repeat call to get()
         return instant + (wrappedValue - thisValue) * getUnitMillis();
     }
 
     /**
      * Set the specified amount of units to the specified time instant.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
-     * @param value  value of units to set.
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param value   value of units to set.
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
@@ -128,19 +127,19 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the maximum value for the field.
-     * 
+     *
      * @return the maximum value
      */
     public int getMaximumValue() {
         return iRange - 1;
     }
-    
+
     /**
      * Returns the range of the field in the field's units.
      * <p>
      * For example, 60 for seconds per minute. The field is allowed values
      * from 0 to range - 1.
-     * 
+     *
      * @return unit range
      */
     public int getRange() {

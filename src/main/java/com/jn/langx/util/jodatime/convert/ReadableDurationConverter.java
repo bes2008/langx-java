@@ -19,9 +19,6 @@ import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeUtils;
 import com.jn.langx.util.jodatime.ReadWritablePeriod;
 import com.jn.langx.util.jodatime.ReadableDuration;
-import com.jn.langx.util.jodatime.convert.AbstractConverter;
-import com.jn.langx.util.jodatime.convert.DurationConverter;
-import com.jn.langx.util.jodatime.convert.PeriodConverter;
 
 /**
  * ReadableDurationConverter extracts milliseconds and chronology from a ReadableDuration.
@@ -46,13 +43,14 @@ class ReadableDurationConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Extracts the millis from an object of this convertor's type.
-     * 
-     * @param object  the object to convert, must not be null
+     *
+     * @param object the object to convert, must not be null
      * @return the millisecond value
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
+     * @throws NullPointerException     if the object is null
+     * @throws ClassCastException       if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
     public long getDurationMillis(Object object) {
@@ -60,15 +58,16 @@ class ReadableDurationConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Extracts duration values from an object of this converter's type, and
      * sets them into the given ReadWritableDuration.
      *
-     * @param writablePeriod  period to get modified
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, must not be null
-     * @throws NullPointerException if the duration or object is null
-     * @throws ClassCastException if the object is an invalid type
+     * @param writablePeriod period to get modified
+     * @param object         the object to convert, must not be null
+     * @param chrono         the chronology to use, must not be null
+     * @throws NullPointerException     if the duration or object is null
+     * @throws ClassCastException       if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
     public void setInto(ReadWritablePeriod writablePeriod, Object object, Chronology chrono) {
@@ -82,9 +81,10 @@ class ReadableDurationConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns ReadableDuration.class.
-     * 
+     *
      * @return ReadableDuration.class
      */
     public Class<?> getSupportedType() {

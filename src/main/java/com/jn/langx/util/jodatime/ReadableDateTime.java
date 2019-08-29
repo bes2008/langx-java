@@ -15,11 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.MutableDateTime;
-import com.jn.langx.util.jodatime.ReadableInstant;
-
 import java.util.Locale;
 
 /**
@@ -42,21 +37,21 @@ public interface ReadableDateTime extends ReadableInstant {
      * Get the day of week field value.
      * <p>
      * The values for the day of week are defined in {@link DateTimeConstants}.
-     * 
+     *
      * @return the day of week
      */
     int getDayOfWeek();
 
     /**
      * Get the day of month field value.
-     * 
+     *
      * @return the day of month
      */
     int getDayOfMonth();
 
     /**
      * Get the day of year field value.
-     * 
+     *
      * @return the day of year
      */
     int getDayOfYear();
@@ -68,7 +63,7 @@ public interface ReadableDateTime extends ReadableInstant {
      * In the standard ISO8601 week algorithm, the first week of the year
      * is that in which at least 4 days are in the year. As a result of this
      * definition, day 1 of the first week may be in the previous year.
-     * 
+     *
      * @return the week of a week based year
      */
     int getWeekOfWeekyear();
@@ -81,49 +76,49 @@ public interface ReadableDateTime extends ReadableInstant {
      * is that in which at least 4 days are in the year. As a result of this
      * definition, day 1 of the first week may be in the previous year.
      * The weekyear allows you to query the effective year for that day.
-     * 
+     *
      * @return the year of a week based year
      */
     int getWeekyear();
 
     /**
      * Get the month of year field value.
-     * 
+     *
      * @return the month of year
      */
     int getMonthOfYear();
 
     /**
      * Get the year field value.
-     * 
+     *
      * @return the year
      */
     int getYear();
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     int getYearOfEra();
 
     /**
      * Get the year of century field value.
-     * 
+     *
      * @return the year of century
      */
     int getYearOfCentury();
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     int getCenturyOfEra();
 
     /**
      * Get the era field value.
-     * 
+     *
      * @return the era
      */
     int getEra();
@@ -184,14 +179,14 @@ public interface ReadableDateTime extends ReadableInstant {
      * Get this object as a DateTime.
      * <p>
      * If the implementation of the interface is a DateTime, it is returned directly.
-     * 
+     *
      * @return a DateTime using the same millis
      */
     DateTime toDateTime();
 
     /**
      * Get this object as a MutableDateTime, always returning a new instance.
-     * 
+     *
      * @return a MutableDateTime using the same millis
      */
     MutableDateTime toMutableDateTime();
@@ -199,20 +194,20 @@ public interface ReadableDateTime extends ReadableInstant {
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  pattern specification
-     * @throws IllegalArgumentException  if pattern is invalid
-     * @see  com.jn.langx.util.jodatime.format.DateTimeFormat
+     * @param pattern pattern specification
+     * @throws IllegalArgumentException if pattern is invalid
+     * @see com.jn.langx.util.jodatime.format.DateTimeFormat
      */
     String toString(String pattern) throws IllegalArgumentException;
 
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  pattern specification
+     * @param pattern pattern specification
      * @param locale  Locale to use, or null for default
-     * @throws IllegalArgumentException  if pattern is invalid
-     * @see  com.jn.langx.util.jodatime.format.DateTimeFormat
+     * @throws IllegalArgumentException if pattern is invalid
+     * @see com.jn.langx.util.jodatime.format.DateTimeFormat
      */
     String toString(String pattern, Locale locale) throws IllegalArgumentException;
-    
+
 }

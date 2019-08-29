@@ -18,7 +18,6 @@ package com.jn.langx.util.jodatime.chrono;
 import com.jn.langx.util.jodatime.DateTimeConstants;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.field.ImpreciseDateTimeField;
 
@@ -31,7 +30,7 @@ import com.jn.langx.util.jodatime.field.ImpreciseDateTimeField;
  * @since 1.1, refactored from GJWeekyearDateTimeField
  */
 final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
-    
+
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 6215066916806820644L;
 
@@ -53,10 +52,10 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
 
     /**
      * Get the Year of a week based year component of the specified time instant.
-     * 
-     * @see com.jn.langx.util.jodatime.DateTimeField#get
-     * @param instant  the time instant in millis to query.
+     *
+     * @param instant the time instant in millis to query.
      * @return the year extracted from the input.
+     * @see com.jn.langx.util.jodatime.DateTimeField#get
      */
     public int get(long instant) {
         return iChronology.getWeekyear(instant);
@@ -64,11 +63,11 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
 
     /**
      * Add the specified years to the specified time instant.
-     * 
-     * @see com.jn.langx.util.jodatime.DateTimeField#add
-     * @param instant  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
+     *
+     * @param instant the time instant in millis to update.
+     * @param years   the years to add (can be negative).
      * @return the updated time instant.
+     * @see com.jn.langx.util.jodatime.DateTimeField#add
      */
     public long add(long instant, int years) {
         if (years == 0) {
@@ -84,11 +83,11 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
     /**
      * Add to the year component of the specified time instant
      * wrapping around within that component if necessary.
-     * 
-     * @see com.jn.langx.util.jodatime.DateTimeField#addWrapField
-     * @param instant  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
+     *
+     * @param instant the time instant in millis to update.
+     * @param years   the years to add (can be negative).
      * @return the updated time instant.
+     * @see com.jn.langx.util.jodatime.DateTimeField#addWrapField
      */
     public long addWrapField(long instant, int years) {
         return add(instant, years);
@@ -120,20 +119,20 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
     /**
      * Set the Year of a week based year component of the specified time instant.
      *
-     * @see com.jn.langx.util.jodatime.DateTimeField#set
-     * @param instant  the time instant in millis to update.
-     * @param year  the year (-9999,9999) to set the date to.
+     * @param instant the time instant in millis to update.
+     * @param year    the year (-9999,9999) to set the date to.
      * @return the updated DateTime.
-     * @throws IllegalArgumentException  if year is invalid.
+     * @throws IllegalArgumentException if year is invalid.
+     * @see com.jn.langx.util.jodatime.DateTimeField#set
      */
     public long set(long instant, int year) {
         FieldUtils.verifyValueBounds(this, Math.abs(year),
-                                     iChronology.getMinYear(), iChronology.getMaxYear());
+                iChronology.getMinYear(), iChronology.getMaxYear());
         //
         // Do nothing if no real change is requested.
         //
-        int thisWeekyear = get( instant );
-        if ( thisWeekyear == year ) {
+        int thisWeekyear = get(instant);
+        if (thisWeekyear == year) {
             return instant;
         }
         //
@@ -143,10 +142,10 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         //
         // Calculate the maximum weeks in the target year.
         //
-        int weeksInFromYear = iChronology.getWeeksInYear( thisWeekyear );
-        int weeksInToYear = iChronology.getWeeksInYear( year );
+        int weeksInFromYear = iChronology.getWeeksInYear(thisWeekyear);
+        int weeksInToYear = iChronology.getWeeksInYear(year);
         int maxOutWeeks = (weeksInToYear < weeksInFromYear) ?
-            weeksInToYear : weeksInFromYear;
+                weeksInToYear : weeksInFromYear;
         //
         // Get the current week of the year. This will be preserved in
         // the output unless it is greater than the maximum possible
@@ -154,7 +153,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         // to the maximum possible.
         //
         int setToWeek = iChronology.getWeekOfWeekyear(instant);
-        if ( setToWeek > maxOutWeeks ) {
+        if (setToWeek > maxOutWeeks) {
             setToWeek = maxOutWeeks;
         }
         //
@@ -167,20 +166,20 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         // Note - we cannot currently call ourself, so we just call
         // set for the year.  This at least gets us close.
         //
-        workInstant = iChronology.setYear( workInstant, year );
+        workInstant = iChronology.setYear(workInstant, year);
         //
         // Calculate the weekyear number for the get close to value
         // (which might not be equal to the year just set).
         //
-        int workWoyYear = get( workInstant );
+        int workWoyYear = get(workInstant);
 
         //
         // At most we are off by one year, which can be "fixed" by
         // adding/subtracting a week.
         //
-        if ( workWoyYear < year ) {
+        if (workWoyYear < year) {
             workInstant += DateTimeConstants.MILLIS_PER_WEEK;
-        } else if ( workWoyYear > year ) {
+        } else if (workWoyYear > year) {
             workInstant -= DateTimeConstants.MILLIS_PER_WEEK;
         }
         //
@@ -191,7 +190,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         int currentWoyWeek = iChronology.getWeekOfWeekyear(workInstant);
         // No range check required (we already know it is OK).
         workInstant = workInstant + (setToWeek - currentWoyWeek)
-            * (long)DateTimeConstants.MILLIS_PER_WEEK;
+                * (long) DateTimeConstants.MILLIS_PER_WEEK;
         // END: possible set WeekOfWeekyear logic.
 
         //
@@ -199,7 +198,7 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
         //
         // Note: This works fine, but it ideally shouldn't invoke other
         // fields from within a field.
-        workInstant = iChronology.dayOfWeek().set( workInstant, thisDow );
+        workInstant = iChronology.dayOfWeek().set(workInstant, thisDow);
         //
         // Return result.
         //

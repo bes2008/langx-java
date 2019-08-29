@@ -51,7 +51,7 @@ import java.util.Map;
  * DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM, yyyy");
  * String str = fmt.print(dt);
  * </pre>
- *
+ * <p>
  * The pattern syntax is mostly compatible with java.text.SimpleDateFormat -
  * time zone names cannot be parsed and a few more symbols are supported.
  * All ASCII letters are reserved as pattern letters, which are defined as follows:
@@ -121,46 +121,72 @@ import java.util.Map;
  *
  * @author Brian S O'Neill
  * @author Maxim Zhao
- * @since 1.0
  * @see ISODateTimeFormat
  * @see DateTimeFormatterBuilder
+ * @since 1.0
  */
 public class DateTimeFormat {
 
-    /** Style constant for FULL. */
+    /**
+     * Style constant for FULL.
+     */
     static final int FULL = 0;  // DateFormat.FULL
-    /** Style constant for LONG. */
+    /**
+     * Style constant for LONG.
+     */
     static final int LONG = 1;  // DateFormat.LONG
-    /** Style constant for MEDIUM. */
+    /**
+     * Style constant for MEDIUM.
+     */
     static final int MEDIUM = 2;  // DateFormat.MEDIUM
-    /** Style constant for SHORT. */
+    /**
+     * Style constant for SHORT.
+     */
     static final int SHORT = 3;  // DateFormat.SHORT
-    /** Style constant for NONE. */
+    /**
+     * Style constant for NONE.
+     */
     static final int NONE = 4;
 
-    /** Type constant for DATE only. */
+    /**
+     * Type constant for DATE only.
+     */
     static final int DATE = 0;
-    /** Type constant for TIME only. */
+    /**
+     * Type constant for TIME only.
+     */
     static final int TIME = 1;
-    /** Type constant for DATETIME. */
+    /**
+     * Type constant for DATETIME.
+     */
     static final int DATETIME = 2;
 
-    /** Maximum size of the pattern cache. */
+    /**
+     * Maximum size of the pattern cache.
+     */
     private static final int PATTERN_CACHE_SIZE = 500;
 
-    /** Maps patterns to formatters via LRU, patterns don't vary by locale. */
+    /**
+     * Maps patterns to formatters via LRU, patterns don't vary by locale.
+     */
     private static final Map<String, DateTimeFormatter> PATTERN_CACHE = new LinkedHashMap<String, DateTimeFormatter>(7) {
         private static final long serialVersionUID = 23L;
+
         @Override
         protected boolean removeEldestEntry(final Map.Entry<String, DateTimeFormatter> eldest) {
             return size() > PATTERN_CACHE_SIZE;
-        };
+        }
+
+        ;
     };
 
-    /** Maps patterns to formatters, patterns don't vary by locale. */
+    /**
+     * Maps patterns to formatters, patterns don't vary by locale.
+     */
     private static final DateTimeFormatter[] STYLE_CACHE = new DateTimeFormatter[25];
 
     //-----------------------------------------------------------------------
+
     /**
      * Factory to create a formatter from a pattern string.
      * The pattern string is described above in the class level javadoc.
@@ -174,7 +200,7 @@ public class DateTimeFormat {
      * DateTimeFormat.forPattern(pattern).withLocale(Locale.FRANCE).print(dt);
      * </pre>
      *
-     * @param pattern  pattern specification
+     * @param pattern pattern specification
      * @return the formatter
      * @throws IllegalArgumentException if the pattern is invalid
      */
@@ -198,7 +224,7 @@ public class DateTimeFormat {
      * DateTimeFormat.forStyle(style).withLocale(Locale.FRANCE).print(dt);
      * </pre>
      *
-     * @param style  two characters from the set {"S", "M", "L", "F", "-"}
+     * @param style two characters from the set {"S", "M", "L", "F", "-"}
      * @return the formatter
      * @throws IllegalArgumentException if the style is invalid
      */
@@ -215,7 +241,7 @@ public class DateTimeFormat {
      * A date or time may be ommitted by specifying a style character '-'.
      *
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
-     * @param locale  locale to use, null means default
+     * @param locale locale to use, null means default
      * @return the formatter
      * @throws IllegalArgumentException if the style is invalid
      * @since 1.3
@@ -230,12 +256,13 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a short date format.
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter shortDate() {
@@ -247,7 +274,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter shortTime() {
@@ -259,7 +286,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter shortDateTime() {
@@ -267,12 +294,13 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a medium date format.
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter mediumDate() {
@@ -284,7 +312,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter mediumTime() {
@@ -296,7 +324,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter mediumDateTime() {
@@ -304,12 +332,13 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a long date format.
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter longDate() {
@@ -321,7 +350,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter longTime() {
@@ -333,7 +362,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter longDateTime() {
@@ -341,12 +370,13 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a full date format.
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter fullDate() {
@@ -358,7 +388,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter fullTime() {
@@ -370,7 +400,7 @@ public class DateTimeFormat {
      * <p>
      * The format will change as you change the locale of the formatter.
      * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
+     *
      * @return the formatter
      */
     public static DateTimeFormatter fullDateTime() {
@@ -378,11 +408,12 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses the given pattern and appends the rules to the given
      * DateTimeFormatterBuilder.
      *
-     * @param pattern  pattern specification
+     * @param pattern pattern specification
      * @throws IllegalArgumentException if the pattern is invalid
      */
     static void appendPatternTo(DateTimeFormatterBuilder builder, String pattern) {
@@ -390,6 +421,7 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructor.
      *
@@ -400,11 +432,12 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses the given pattern and appends the rules to the given
      * DateTimeFormatterBuilder.
      *
-     * @param pattern  pattern specification
+     * @param pattern pattern specification
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #forPattern
      */
@@ -412,7 +445,7 @@ public class DateTimeFormat {
         int length = pattern.length();
         int[] indexRef = new int[1];
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             indexRef[0] = i;
             String token = parseToken(pattern, indexRef);
             i = indexRef[0];
@@ -424,162 +457,162 @@ public class DateTimeFormat {
             char c = token.charAt(0);
 
             switch (c) {
-            case 'G': // era designator (text)
-                builder.appendEraText();
-                break;
-            case 'C': // century of era (number)
-                builder.appendCenturyOfEra(tokenLen, tokenLen);
-                break;
-            case 'x': // weekyear (number)
-            case 'y': // year (number)
-            case 'Y': // year of era (number)
-                if (tokenLen == 2) {
-                    boolean lenientParse = true;
+                case 'G': // era designator (text)
+                    builder.appendEraText();
+                    break;
+                case 'C': // century of era (number)
+                    builder.appendCenturyOfEra(tokenLen, tokenLen);
+                    break;
+                case 'x': // weekyear (number)
+                case 'y': // year (number)
+                case 'Y': // year of era (number)
+                    if (tokenLen == 2) {
+                        boolean lenientParse = true;
 
-                    // Peek ahead to next token.
-                    if (i + 1 < length) {
-                        indexRef[0]++;
-                        if (isNumericToken(parseToken(pattern, indexRef))) {
-                            // If next token is a number, cannot support
-                            // lenient parse, because it will consume digits
-                            // that it should not.
-                            lenientParse = false;
+                        // Peek ahead to next token.
+                        if (i + 1 < length) {
+                            indexRef[0]++;
+                            if (isNumericToken(parseToken(pattern, indexRef))) {
+                                // If next token is a number, cannot support
+                                // lenient parse, because it will consume digits
+                                // that it should not.
+                                lenientParse = false;
+                            }
+                            indexRef[0]--;
                         }
-                        indexRef[0]--;
-                    }
 
-                    // Use pivots which are compatible with SimpleDateFormat.
-                    switch (c) {
-                    case 'x':
-                        builder.appendTwoDigitWeekyear
-                            (new DateTime().getWeekyear() - 30, lenientParse);
-                        break;
-                    case 'y':
-                    case 'Y':
-                    default:
-                        builder.appendTwoDigitYear(new DateTime().getYear() - 30, lenientParse);
-                        break;
-                    }
-                } else {
-                    // Try to support long year values.
-                    int maxDigits = 9;
-
-                    // Peek ahead to next token.
-                    if (i + 1 < length) {
-                        indexRef[0]++;
-                        if (isNumericToken(parseToken(pattern, indexRef))) {
-                            // If next token is a number, cannot support long years.
-                            maxDigits = tokenLen;
+                        // Use pivots which are compatible with SimpleDateFormat.
+                        switch (c) {
+                            case 'x':
+                                builder.appendTwoDigitWeekyear
+                                        (new DateTime().getWeekyear() - 30, lenientParse);
+                                break;
+                            case 'y':
+                            case 'Y':
+                            default:
+                                builder.appendTwoDigitYear(new DateTime().getYear() - 30, lenientParse);
+                                break;
                         }
-                        indexRef[0]--;
-                    }
-
-                    switch (c) {
-                    case 'x':
-                        builder.appendWeekyear(tokenLen, maxDigits);
-                        break;
-                    case 'y':
-                        builder.appendYear(tokenLen, maxDigits);
-                        break;
-                    case 'Y':
-                        builder.appendYearOfEra(tokenLen, maxDigits);
-                        break;
-                    }
-                }
-                break;
-            case 'M': // month of year (text and number)
-                if (tokenLen >= 3) {
-                    if (tokenLen >= 4) {
-                        builder.appendMonthOfYearText();
                     } else {
-                        builder.appendMonthOfYearShortText();
+                        // Try to support long year values.
+                        int maxDigits = 9;
+
+                        // Peek ahead to next token.
+                        if (i + 1 < length) {
+                            indexRef[0]++;
+                            if (isNumericToken(parseToken(pattern, indexRef))) {
+                                // If next token is a number, cannot support long years.
+                                maxDigits = tokenLen;
+                            }
+                            indexRef[0]--;
+                        }
+
+                        switch (c) {
+                            case 'x':
+                                builder.appendWeekyear(tokenLen, maxDigits);
+                                break;
+                            case 'y':
+                                builder.appendYear(tokenLen, maxDigits);
+                                break;
+                            case 'Y':
+                                builder.appendYearOfEra(tokenLen, maxDigits);
+                                break;
+                        }
                     }
-                } else {
-                    builder.appendMonthOfYear(tokenLen);
-                }
-                break;
-            case 'd': // day of month (number)
-                builder.appendDayOfMonth(tokenLen);
-                break;
-            case 'a': // am/pm marker (text)
-                builder.appendHalfdayOfDayText();
-                break;
-            case 'h': // clockhour of halfday (number, 1..12)
-                builder.appendClockhourOfHalfday(tokenLen);
-                break;
-            case 'H': // hour of day (number, 0..23)
-                builder.appendHourOfDay(tokenLen);
-                break;
-            case 'k': // clockhour of day (1..24)
-                builder.appendClockhourOfDay(tokenLen);
-                break;
-            case 'K': // hour of halfday (0..11)
-                builder.appendHourOfHalfday(tokenLen);
-                break;
-            case 'm': // minute of hour (number)
-                builder.appendMinuteOfHour(tokenLen);
-                break;
-            case 's': // second of minute (number)
-                builder.appendSecondOfMinute(tokenLen);
-                break;
-            case 'S': // fraction of second (number)
-                builder.appendFractionOfSecond(tokenLen, tokenLen);
-                break;
-            case 'e': // day of week (number)
-                builder.appendDayOfWeek(tokenLen);
-                break;
-            case 'E': // dayOfWeek (text)
-                if (tokenLen >= 4) {
-                    builder.appendDayOfWeekText();
-                } else {
-                    builder.appendDayOfWeekShortText();
-                }
-                break;
-            case 'D': // day of year (number)
-                builder.appendDayOfYear(tokenLen);
-                break;
-            case 'w': // week of weekyear (number)
-                builder.appendWeekOfWeekyear(tokenLen);
-                break;
-            case 'z': // time zone (text)
-                if (tokenLen >= 4) {
-                    builder.appendTimeZoneName();
-                } else {
-                    builder.appendTimeZoneShortName(null);
-                }
-                break;
-            case 'Z': // time zone offset
-                if (tokenLen == 1) {
-                    builder.appendTimeZoneOffset(null, "Z", false, 2, 2);
-                } else if (tokenLen == 2) {
-                    builder.appendTimeZoneOffset(null, "Z", true, 2, 2);
-                } else {
-                    builder.appendTimeZoneId();
-                }
-                break;
-            case '\'': // literal text
-                String sub = token.substring(1);
-                if (sub.length() == 1) {
-                    builder.appendLiteral(sub.charAt(0));
-                } else {
-                    // Create copy of sub since otherwise the temporary quoted
-                    // string would still be referenced internally.
-                    builder.appendLiteral(new String(sub));
-                }
-                break;
-            default:
-                throw new IllegalArgumentException
-                    ("Illegal pattern component: " + token);
+                    break;
+                case 'M': // month of year (text and number)
+                    if (tokenLen >= 3) {
+                        if (tokenLen >= 4) {
+                            builder.appendMonthOfYearText();
+                        } else {
+                            builder.appendMonthOfYearShortText();
+                        }
+                    } else {
+                        builder.appendMonthOfYear(tokenLen);
+                    }
+                    break;
+                case 'd': // day of month (number)
+                    builder.appendDayOfMonth(tokenLen);
+                    break;
+                case 'a': // am/pm marker (text)
+                    builder.appendHalfdayOfDayText();
+                    break;
+                case 'h': // clockhour of halfday (number, 1..12)
+                    builder.appendClockhourOfHalfday(tokenLen);
+                    break;
+                case 'H': // hour of day (number, 0..23)
+                    builder.appendHourOfDay(tokenLen);
+                    break;
+                case 'k': // clockhour of day (1..24)
+                    builder.appendClockhourOfDay(tokenLen);
+                    break;
+                case 'K': // hour of halfday (0..11)
+                    builder.appendHourOfHalfday(tokenLen);
+                    break;
+                case 'm': // minute of hour (number)
+                    builder.appendMinuteOfHour(tokenLen);
+                    break;
+                case 's': // second of minute (number)
+                    builder.appendSecondOfMinute(tokenLen);
+                    break;
+                case 'S': // fraction of second (number)
+                    builder.appendFractionOfSecond(tokenLen, tokenLen);
+                    break;
+                case 'e': // day of week (number)
+                    builder.appendDayOfWeek(tokenLen);
+                    break;
+                case 'E': // dayOfWeek (text)
+                    if (tokenLen >= 4) {
+                        builder.appendDayOfWeekText();
+                    } else {
+                        builder.appendDayOfWeekShortText();
+                    }
+                    break;
+                case 'D': // day of year (number)
+                    builder.appendDayOfYear(tokenLen);
+                    break;
+                case 'w': // week of weekyear (number)
+                    builder.appendWeekOfWeekyear(tokenLen);
+                    break;
+                case 'z': // time zone (text)
+                    if (tokenLen >= 4) {
+                        builder.appendTimeZoneName();
+                    } else {
+                        builder.appendTimeZoneShortName(null);
+                    }
+                    break;
+                case 'Z': // time zone offset
+                    if (tokenLen == 1) {
+                        builder.appendTimeZoneOffset(null, "Z", false, 2, 2);
+                    } else if (tokenLen == 2) {
+                        builder.appendTimeZoneOffset(null, "Z", true, 2, 2);
+                    } else {
+                        builder.appendTimeZoneId();
+                    }
+                    break;
+                case '\'': // literal text
+                    String sub = token.substring(1);
+                    if (sub.length() == 1) {
+                        builder.appendLiteral(sub.charAt(0));
+                    } else {
+                        // Create copy of sub since otherwise the temporary quoted
+                        // string would still be referenced internally.
+                        builder.appendLiteral(new String(sub));
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException
+                            ("Illegal pattern component: " + token);
             }
         }
     }
 
     /**
      * Parses an individual token.
-     * 
+     *
      * @param pattern  the pattern string
-     * @param indexRef  a single element array, where the input is the start
-     *  location and the output is the location after parsing the token
+     * @param indexRef a single element array, where the input is the start
+     *                 location and the output is the location after parsing the token
      * @return the parsed token
      */
     private static String parseToken(String pattern, int[] indexRef) {
@@ -611,7 +644,7 @@ public class DateTimeFormat {
 
             for (; i < length; i++) {
                 c = pattern.charAt(i);
-                
+
                 if (c == '\'') {
                     if (i + 1 < length && pattern.charAt(i + 1) == '\'') {
                         // '' is treated as escaped '
@@ -621,7 +654,7 @@ public class DateTimeFormat {
                         inLiteral = !inLiteral;
                     }
                 } else if (!inLiteral &&
-                           (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')) {
+                        (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')) {
                     i--;
                     break;
                 } else {
@@ -636,8 +669,8 @@ public class DateTimeFormat {
 
     /**
      * Returns true if token should be parsed as a numeric field.
-     * 
-     * @param token  the token to parse
+     *
+     * @param token the token to parse
      * @return true if numeric field
      */
     private static boolean isNumericToken(String token) {
@@ -645,40 +678,41 @@ public class DateTimeFormat {
         if (tokenLen > 0) {
             char c = token.charAt(0);
             switch (c) {
-            case 'c': // century (number)
-            case 'C': // century of era (number)
-            case 'x': // weekyear (number)
-            case 'y': // year (number)
-            case 'Y': // year of era (number)
-            case 'd': // day of month (number)
-            case 'h': // hour of day (number, 1..12)
-            case 'H': // hour of day (number, 0..23)
-            case 'm': // minute of hour (number)
-            case 's': // second of minute (number)
-            case 'S': // fraction of second (number)
-            case 'e': // day of week (number)
-            case 'D': // day of year (number)
-            case 'F': // day of week in month (number)
-            case 'w': // week of year (number)
-            case 'W': // week of month (number)
-            case 'k': // hour of day (1..24)
-            case 'K': // hour of day (0..11)
-                return true;
-            case 'M': // month of year (text and number)
-                if (tokenLen <= 2) {
+                case 'c': // century (number)
+                case 'C': // century of era (number)
+                case 'x': // weekyear (number)
+                case 'y': // year (number)
+                case 'Y': // year of era (number)
+                case 'd': // day of month (number)
+                case 'h': // hour of day (number, 1..12)
+                case 'H': // hour of day (number, 0..23)
+                case 'm': // minute of hour (number)
+                case 's': // second of minute (number)
+                case 'S': // fraction of second (number)
+                case 'e': // day of week (number)
+                case 'D': // day of year (number)
+                case 'F': // day of week in month (number)
+                case 'w': // week of year (number)
+                case 'W': // week of month (number)
+                case 'k': // hour of day (1..24)
+                case 'K': // hour of day (0..11)
                     return true;
-                }
+                case 'M': // month of year (text and number)
+                    if (tokenLen <= 2) {
+                        return true;
+                    }
             }
         }
-            
+
         return false;
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Select a format from a custom pattern.
      *
-     * @param pattern  pattern specification
+     * @param pattern pattern specification
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #appendPatternTo
      */
@@ -706,7 +740,7 @@ public class DateTimeFormat {
      * character of 'S' for short style, 'M' for medium, 'L' for long, and 'F'
      * for full. A date or time may be ommitted by specifying a style character '-'.
      *
-     * @param style  two characters from the set {"S", "M", "L", "F", "-"}
+     * @param style two characters from the set {"S", "M", "L", "F", "-"}
      * @throws IllegalArgumentException if the style is invalid
      */
     private static DateTimeFormatter createFormatterForStyle(String style) {
@@ -723,9 +757,9 @@ public class DateTimeFormat {
 
     /**
      * Gets the formatter for the specified style.
-     * 
-     * @param dateStyle  the date style
-     * @param timeStyle  the time style
+     *
+     * @param dateStyle the date style
+     * @param timeStyle the time style
      * @return the formatter
      */
     private static DateTimeFormatter createFormatterForStyleIndex(int dateStyle, int timeStyle) {
@@ -744,14 +778,15 @@ public class DateTimeFormat {
         }
         return f;
     }
-    
+
     /**
      * Creates a formatter for the specified style.
-     * @param dateStyle  the date style
-     * @param timeStyle  the time style
+     *
+     * @param dateStyle the date style
+     * @param timeStyle the time style
      * @return the formatter
      */
-    private static DateTimeFormatter createDateTimeFormatter(int dateStyle, int timeStyle){
+    private static DateTimeFormatter createDateTimeFormatter(int dateStyle, int timeStyle) {
         int type = DATETIME;
         if (dateStyle == NONE) {
             type = TIME;
@@ -764,24 +799,24 @@ public class DateTimeFormat {
 
     /**
      * Gets the JDK style code from the Joda code.
-     * 
-     * @param ch  the Joda style code
+     *
+     * @param ch the Joda style code
      * @return the JDK style code
      */
     private static int selectStyle(char ch) {
         switch (ch) {
-        case 'S':
-            return SHORT;
-        case 'M':
-            return MEDIUM;
-        case 'L':
-            return LONG;
-        case 'F':
-            return FULL;
-        case '-':
-            return NONE;
-        default:
-            throw new IllegalArgumentException("Invalid style character: " + ch);
+            case 'S':
+                return SHORT;
+            case 'M':
+                return MEDIUM;
+            case 'L':
+                return LONG;
+            case 'F':
+                return FULL;
+            case '-':
+                return NONE;
+            default:
+                throw new IllegalArgumentException("Invalid style character: " + ch);
         }
     }
 
@@ -790,7 +825,7 @@ public class DateTimeFormat {
             implements DateTimePrinter, DateTimeParser {
 
         private static final Map<String, DateTimeFormatter> cCache = new HashMap<String, DateTimeFormatter>();  // manual sync
-        
+
         private final int iDateStyle;
         private final int iTimeStyle;
         private final int iType;

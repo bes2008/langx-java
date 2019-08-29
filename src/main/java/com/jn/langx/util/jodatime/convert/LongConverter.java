@@ -16,10 +16,6 @@
 package com.jn.langx.util.jodatime.convert;
 
 import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.convert.AbstractConverter;
-import com.jn.langx.util.jodatime.convert.DurationConverter;
-import com.jn.langx.util.jodatime.convert.InstantConverter;
-import com.jn.langx.util.jodatime.convert.PartialConverter;
 
 /**
  * LongConverter converts a Long to an instant, partial or duration.
@@ -45,36 +41,39 @@ class LongConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the millisecond instant, which is the Long value.
-     * 
-     * @param object  the Long to convert, must not be null
-     * @param chrono  the chronology to use, which is always non-null
+     *
+     * @param object the Long to convert, must not be null
+     * @param chrono the chronology to use, which is always non-null
      * @return the millisecond value
      * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
+     * @throws ClassCastException   if the object is an invalid type
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         return ((Long) object).longValue();
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the millisecond duration, which is the Long value.
-     * 
-     * @param object  the Long to convert, must not be null
+     *
+     * @param object the Long to convert, must not be null
      * @return the millisecond duration
      * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
+     * @throws ClassCastException   if the object is an invalid type
      */
     public long getDurationMillis(Object object) {
         return ((Long) object).longValue();
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns Long.class.
-     * 
+     *
      * @return Long.class
      */
     public Class<?> getSupportedType() {

@@ -15,11 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.Instant;
-
 /**
  * Defines an instant in the datetime continuum.
  * This interface expresses the datetime as milliseconds from 1970-01-01T00:00:00Z.
@@ -55,14 +50,14 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
      * <p>
      * The {@link com.jn.langx.util.jodatime.Chronology} provides conversion from the millisecond
      * value to meaningful fields in a particular calendar system.
-     * 
+     *
      * @return the Chronology, never null
      */
     Chronology getChronology();
 
     /**
      * Gets the time zone of the instant from the chronology.
-     * 
+     *
      * @return the DateTimeZone that the instant is using, never null
      */
     DateTimeZone getZone();
@@ -72,7 +67,7 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
      * <p>
      * This method uses the chronology of the instant to obtain the value.
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType, not null
+     * @param type a field type, usually obtained from DateTimeFieldType, not null
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
@@ -81,12 +76,13 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
     /**
      * Checks whether the field type specified is supported by this implementation.
      *
-     * @param field  the field type to check, may be null which returns false
+     * @param field the field type to check, may be null which returns false
      * @return true if the field is supported
      */
     boolean isSupported(DateTimeFieldType field);
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the value as a simple immutable <code>Instant</code> object.
      * <p>
@@ -115,11 +111,12 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
 //    int compareTo(ReadableInstant readableInstant);
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this instant equal to the instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null means now
+     * @param instant an instant to check against, null means now
      * @return true if the instant is equal to the instant passed in
      */
     boolean isEqual(ReadableInstant instant);
@@ -128,7 +125,7 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
      * Is this instant after the instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null means now
+     * @param instant an instant to check against, null means now
      * @return true if the instant is after the instant passed in
      */
     boolean isAfter(ReadableInstant instant);
@@ -137,29 +134,30 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
      * Is this instant before the instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null means now
+     * @param instant an instant to check against, null means now
      * @return true if the instant is before the instant passed in
      */
     boolean isBefore(ReadableInstant instant);
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this object with the specified object for equality based
      * on the millisecond instant and the Chronology. All ReadableInstant
      * instances are accepted.
      * <p>
-     * To compare two instants for absolute time (ie. UTC milliseconds 
+     * To compare two instants for absolute time (ie. UTC milliseconds
      * ignoring the chronology), use {@link #isEqual(ReadableInstant)} or
      * {@link #compareTo(Object)}.
      *
-     * @param readableInstant  a readable instant to check against
+     * @param readableInstant a readable instant to check against
      * @return true if millisecond and chronology are equal, false if
-     *  not or the instant is null or of an incorrect type
+     * not or the instant is null or of an incorrect type
      */
     boolean equals(Object readableInstant);
 
     /**
-     * Gets a hash code for the instant that is compatible with the 
+     * Gets a hash code for the instant that is compatible with the
      * equals method.
      * <p>
      * The formula used must be as follows:
@@ -173,6 +171,7 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
     int hashCode();
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the value as a String in a recognisable ISO8601 format.
      * <p>

@@ -24,9 +24,9 @@ public class StringTemplateTests {
     }
 
     @Test
-    public void test2(){
-        testFormatBasedIndex(new Object[]{1,"hello","world","build"});
-        testFormatBasedOrder(new Object[]{1,"hello","world","build"});
+    public void test2() {
+        testFormatBasedIndex(new Object[]{1, "hello", "world", "build"});
+        testFormatBasedOrder(new Object[]{1, "hello", "world", "build"});
     }
 
 }

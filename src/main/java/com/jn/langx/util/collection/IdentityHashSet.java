@@ -1,12 +1,7 @@
 package com.jn.langx.util.collection;
 
 
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * An {@link IdentityHashMap}-backed {@link Set}.

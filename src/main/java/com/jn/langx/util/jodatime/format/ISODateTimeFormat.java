@@ -15,15 +15,11 @@
  */
 package com.jn.langx.util.jodatime.format;
 
+import com.jn.langx.util.jodatime.DateTimeFieldType;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.format.DateTimeFormat;
-import com.jn.langx.util.jodatime.format.DateTimeFormatter;
-import com.jn.langx.util.jodatime.format.DateTimeFormatterBuilder;
-import com.jn.langx.util.jodatime.format.DateTimeParser;
 
 /**
  * Factory that creates instances of DateTimeFormatter for the ISO8601 standard.
@@ -56,9 +52,9 @@ import com.jn.langx.util.jodatime.format.DateTimeParser;
  * returns are as well.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see DateTimeFormat
  * @see DateTimeFormatterBuilder
+ * @since 1.0
  */
 public class ISODateTimeFormat {
 
@@ -72,6 +68,7 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a formatter that outputs only those fields specified.
      * <p>
@@ -139,20 +136,20 @@ public class ISODateTimeFormat {
      * the fields were converted into the formatter or not. To achieve this,
      * pass in a modifiable list, and check that it is empty on exit.
      *
-     * @param fields  the fields to get a formatter for, not null,
-     *  updated by the method call unless unmodifiable,
-     *  removing those fields built in the formatter
+     * @param fields    the fields to get a formatter for, not null,
+     *                  updated by the method call unless unmodifiable,
+     *                  removing those fields built in the formatter
      * @param extended  true to use the extended format (with separators)
-     * @param strictISO  true to stick exactly to ISO8601, false to include additional formats
+     * @param strictISO true to stick exactly to ISO8601, false to include additional formats
      * @return a suitable formatter
      * @throws IllegalArgumentException if there is no format for the fields
      * @since 1.1
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter forFields(
-        Collection<DateTimeFieldType> fields,
-        boolean extended,
-        boolean strictISO) {
-        
+            Collection<DateTimeFieldType> fields,
+            boolean extended,
+            boolean strictISO) {
+
         if (fields == null || fields.size() == 0) {
             throw new IllegalArgumentException("The fields must not be null or empty");
         }
@@ -179,15 +176,15 @@ public class ISODateTimeFormat {
             reducedPrec = true;
         }
         boolean datePresent = (workingFields.size() < inputSize);
-        
+
         // time
         time(bld, workingFields, extended, strictISO, reducedPrec, datePresent);
-        
+
         // result
         if (bld.canBuildFormatter() == false) {
             throw new IllegalArgumentException("No valid format for fields: " + fields);
         }
-        
+
         // side effect the input collection to indicate the processed fields
         // handling unmodifiable collections with no side effect
         try {
@@ -199,23 +196,24 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a date using the calendar date format.
      * Specification reference: 5.2.1.
      *
-     * @param bld  the builder
-     * @param fields  the fields
+     * @param bld       the builder
+     * @param fields    the fields
      * @param extended  true to use extended format
-     * @param strictISO  true to only allow ISO formats
+     * @param strictISO true to only allow ISO formats
      * @return true if reduced precision
      * @since 1.1
      */
     private static boolean dateByMonth(
-        DateTimeFormatterBuilder bld,
-        Collection<DateTimeFieldType> fields,
-        boolean extended,
-        boolean strictISO) {
-        
+            DateTimeFormatterBuilder bld,
+            Collection<DateTimeFieldType> fields,
+            boolean extended,
+            boolean strictISO) {
+
         boolean reducedPrec = false;
         if (fields.remove(DateTimeFieldType.year())) {
             bld.append(Constants.ye);
@@ -244,7 +242,7 @@ public class ISODateTimeFormat {
                     reducedPrec = true;
                 }
             }
-            
+
         } else if (fields.remove(DateTimeFieldType.monthOfYear())) {
             bld.appendLiteral('-');
             bld.appendLiteral('-');
@@ -268,22 +266,23 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a date using the ordinal date format.
      * Specification reference: 5.2.2.
      *
-     * @param bld  the builder
-     * @param fields  the fields
+     * @param bld       the builder
+     * @param fields    the fields
      * @param extended  true to use extended format
-     * @param strictISO  true to only allow ISO formats
+     * @param strictISO true to only allow ISO formats
      * @since 1.1
      */
     private static boolean dateByOrdinal(
-        DateTimeFormatterBuilder bld,
-        Collection<DateTimeFieldType> fields,
-        boolean extended,
-        boolean strictISO) {
-        
+            DateTimeFormatterBuilder bld,
+            Collection<DateTimeFieldType> fields,
+            boolean extended,
+            boolean strictISO) {
+
         boolean reducedPrec = false;
         if (fields.remove(DateTimeFieldType.year())) {
             bld.append(Constants.ye);
@@ -295,7 +294,7 @@ public class ISODateTimeFormat {
                 // YYYY/YYYY
                 reducedPrec = true;
             }
-            
+
         } else if (fields.remove(DateTimeFieldType.dayOfYear())) {
             // -DDD/-DDD
             bld.appendLiteral('-');
@@ -305,22 +304,23 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a date using the calendar date format.
      * Specification reference: 5.2.3.
      *
-     * @param bld  the builder
-     * @param fields  the fields
+     * @param bld       the builder
+     * @param fields    the fields
      * @param extended  true to use extended format
-     * @param strictISO  true to only allow ISO formats
+     * @param strictISO true to only allow ISO formats
      * @since 1.1
      */
     private static boolean dateByWeek(
-        DateTimeFormatterBuilder bld,
-        Collection<DateTimeFieldType> fields,
-        boolean extended,
-        boolean strictISO) {
-        
+            DateTimeFormatterBuilder bld,
+            Collection<DateTimeFieldType> fields,
+            boolean extended,
+            boolean strictISO) {
+
         boolean reducedPrec = false;
         if (fields.remove(DateTimeFieldType.weekyear())) {
             bld.append(Constants.we);
@@ -349,7 +349,7 @@ public class ISODateTimeFormat {
                     reducedPrec = true;
                 }
             }
-            
+
         } else if (fields.remove(DateTimeFieldType.weekOfWeekyear())) {
             bld.appendLiteral('-');
             bld.appendLiteral('W');
@@ -373,26 +373,27 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Adds the time fields to the builder.
      * Specification reference: 5.3.1.
-     * 
-     * @param bld  the builder
-     * @param fields  the fields
-     * @param extended  whether to use the extended format
-     * @param strictISO  whether to be strict
-     * @param reducedPrec  whether the date was reduced precision
-     * @param datePresent  whether there was a date
+     *
+     * @param bld         the builder
+     * @param fields      the fields
+     * @param extended    whether to use the extended format
+     * @param strictISO   whether to be strict
+     * @param reducedPrec whether the date was reduced precision
+     * @param datePresent whether there was a date
      * @since 1.1
      */
     private static void time(
-        DateTimeFormatterBuilder bld,
-        Collection<DateTimeFieldType> fields,
-        boolean extended,
-        boolean strictISO,
-        boolean reducedPrec,
-        boolean datePresent) {
-        
+            DateTimeFormatterBuilder bld,
+            Collection<DateTimeFieldType> fields,
+            boolean extended,
+            boolean strictISO,
+            boolean reducedPrec,
+            boolean datePresent) {
+
         boolean hour = fields.remove(DateTimeFieldType.hourOfDay());
         boolean minute = fields.remove(DateTimeFieldType.minuteOfHour());
         boolean second = fields.remove(DateTimeFieldType.secondOfMinute());
@@ -450,11 +451,12 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks that the iso only flag is not set, throwing an exception if it is.
-     * 
-     * @param fields  the fields
-     * @param strictISO  true if only ISO formats allowed
+     *
+     * @param fields    the fields
+     * @param strictISO true if only ISO formats allowed
      * @since 1.1
      */
     private static void checkNotStrictISO(Collection<DateTimeFieldType> fields, boolean strictISO) {
@@ -466,9 +468,9 @@ public class ISODateTimeFormat {
     /**
      * Appends the separator if necessary.
      *
-     * @param bld  the builder
-     * @param extended  whether to append the separator
-     * @param sep  the separator
+     * @param bld      the builder
+     * @param extended whether to append the separator
+     * @param sep      the separator
      * @since 1.1
      */
     private static void appendSeparator(DateTimeFormatterBuilder bld, boolean extended) {
@@ -478,6 +480,7 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a generic ISO date parser for parsing dates with a possible zone.
      * <p>
@@ -506,6 +509,7 @@ public class ISODateTimeFormat {
      * ord-date-element  = yyyy ['-' DDD]
      * week-date-element = xxxx '-W' ww ['-' e]
      * </pre>
+     *
      * @since 1.3
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter localDateParser() {
@@ -558,6 +562,7 @@ public class ISODateTimeFormat {
      * second-element = ':' ss [fraction]
      * fraction       = ('.' | ',') digit+
      * </pre>
+     *
      * @since 1.3
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter localTimeParser() {
@@ -621,6 +626,7 @@ public class ISODateTimeFormat {
      * second-element    = ':' ss [fraction]
      * fraction          = ('.' | ',') digit+
      * </pre>
+     *
      * @since 1.3
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateOptionalTimeParser() {
@@ -645,6 +651,7 @@ public class ISODateTimeFormat {
      * second-element    = ':' ss [fraction]
      * fraction          = ('.' | ',') digit+
      * </pre>
+     *
      * @since 1.3
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter localDateOptionalTimeParser() {
@@ -652,10 +659,11 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a formatter for a full date as four digit year, two digit month
      * of year, and two digit day of month (yyyy-MM-dd).
-     * 
+     *
      * @return a formatter for yyyy-MM-dd
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter date() {
@@ -668,7 +676,7 @@ public class ISODateTimeFormat {
      * time zone offset (HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for HH:mm:ss.SSSZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter time() {
@@ -680,7 +688,7 @@ public class ISODateTimeFormat {
      * hour, two digit second of minute, and time zone offset (HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for HH:mm:ssZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter timeNoMillis() {
@@ -693,7 +701,7 @@ public class ISODateTimeFormat {
      * time zone offset prefixed by 'T' ('T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for 'T'HH:mm:ss.SSSZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter tTime() {
@@ -706,7 +714,7 @@ public class ISODateTimeFormat {
      * by 'T' ('T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for 'T'HH:mm:ssZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter tTimeNoMillis() {
@@ -718,7 +726,7 @@ public class ISODateTimeFormat {
      * (yyyy-MM-dd'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSSZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateTime() {
@@ -730,7 +738,7 @@ public class ISODateTimeFormat {
      * separated by a 'T' (yyyy-MM-dd'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ssZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateTimeNoMillis() {
@@ -740,7 +748,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a full ordinal date, using a four
      * digit year and three digit dayOfYear (yyyy-DDD).
-     * 
+     *
      * @return a formatter for yyyy-DDD
      * @since 1.1
      */
@@ -753,7 +761,7 @@ public class ISODateTimeFormat {
      * digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyy-DDD'T'HH:mm:ss.SSSZZ
      * @since 1.1
      */
@@ -766,7 +774,7 @@ public class ISODateTimeFormat {
      * using a four digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyy-DDD'T'HH:mm:ssZZ
      * @since 1.1
      */
@@ -777,7 +785,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a full date as four digit weekyear, two digit
      * week of weekyear, and one digit day of week (xxxx-'W'ww-e).
-     * 
+     *
      * @return a formatter for xxxx-'W'ww-e
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter weekDate() {
@@ -789,7 +797,7 @@ public class ISODateTimeFormat {
      * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter weekDateTime() {
@@ -801,7 +809,7 @@ public class ISODateTimeFormat {
      * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ssZZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter weekDateTimeNoMillis() {
@@ -809,10 +817,11 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a basic formatter for a full date as four digit year, two digit
      * month of year, and two digit day of month (yyyyMMdd).
-     * 
+     *
      * @return a formatter for yyyyMMdd
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicDate() {
@@ -825,7 +834,7 @@ public class ISODateTimeFormat {
      * offset (HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for HHmmss.SSSZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTime() {
@@ -837,7 +846,7 @@ public class ISODateTimeFormat {
      * of hour, two digit second of minute, and time zone offset (HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for HHmmssZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTimeNoMillis() {
@@ -850,7 +859,7 @@ public class ISODateTimeFormat {
      * offset prefixed by 'T' ('T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for 'T'HHmmss.SSSZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTTime() {
@@ -863,7 +872,7 @@ public class ISODateTimeFormat {
      * ('T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for 'T'HHmmssZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTTimeNoMillis() {
@@ -875,7 +884,7 @@ public class ISODateTimeFormat {
      * by a 'T' (yyyyMMdd'T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyyMMdd'T'HHmmss.SSSZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicDateTime() {
@@ -887,7 +896,7 @@ public class ISODateTimeFormat {
      * separated by a 'T' (yyyyMMdd'T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyyMMdd'T'HHmmssZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicDateTimeNoMillis() {
@@ -897,7 +906,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a full ordinal date, using a four
      * digit year and three digit dayOfYear (yyyyDDD).
-     * 
+     *
      * @return a formatter for yyyyDDD
      * @since 1.1
      */
@@ -910,7 +919,7 @@ public class ISODateTimeFormat {
      * digit year and three digit dayOfYear (yyyyDDD'T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyyDDD'T'HHmmss.SSSZ
      * @since 1.1
      */
@@ -923,7 +932,7 @@ public class ISODateTimeFormat {
      * using a four digit year and three digit dayOfYear (yyyyDDD'T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for yyyyDDD'T'HHmmssZ
      * @since 1.1
      */
@@ -934,7 +943,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a basic formatter for a full date as four digit weekyear, two
      * digit week of weekyear, and one digit day of week (xxxx'W'wwe).
-     * 
+     *
      * @return a formatter for xxxx'W'wwe
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicWeekDate() {
@@ -946,7 +955,7 @@ public class ISODateTimeFormat {
      * separated by a 'T' (xxxx'W'wwe'T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for xxxx'W'wwe'T'HHmmss.SSSZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicWeekDateTime() {
@@ -958,7 +967,7 @@ public class ISODateTimeFormat {
      * without millis, separated by a 'T' (xxxx'W'wwe'T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
-     * 
+     *
      * @return a formatter for xxxx'W'wwe'T'HHmmssZ
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter basicWeekDateTimeNoMillis() {
@@ -966,9 +975,10 @@ public class ISODateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a formatter for a four digit year. (yyyy)
-     * 
+     *
      * @return a formatter for yyyy
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter year() {
@@ -978,7 +988,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit year and two digit month of
      * year. (yyyy-MM)
-     * 
+     *
      * @return a formatter for yyyy-MM
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter yearMonth() {
@@ -988,7 +998,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit year, two digit month of year, and
      * two digit day of month. (yyyy-MM-dd)
-     * 
+     *
      * @return a formatter for yyyy-MM-dd
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter yearMonthDay() {
@@ -997,7 +1007,7 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a four digit weekyear. (xxxx)
-     * 
+     *
      * @return a formatter for xxxx
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter weekyear() {
@@ -1007,7 +1017,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit weekyear and two digit week of
      * weekyear. (xxxx-'W'ww)
-     * 
+     *
      * @return a formatter for xxxx-'W'ww
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter weekyearWeek() {
@@ -1017,7 +1027,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit weekyear, two digit week of
      * weekyear, and one digit day of week. (xxxx-'W'ww-e)
-     * 
+     *
      * @return a formatter for xxxx-'W'ww-e
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter weekyearWeekDay() {
@@ -1026,7 +1036,7 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a two digit hour of day. (HH)
-     * 
+     *
      * @return a formatter for HH
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter hour() {
@@ -1036,7 +1046,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day and two digit minute of
      * hour. (HH:mm)
-     * 
+     *
      * @return a formatter for HH:mm
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinute() {
@@ -1046,7 +1056,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, and two digit second of minute. (HH:mm:ss)
-     * 
+     *
      * @return a formatter for HH:mm:ss
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinuteSecond() {
@@ -1058,7 +1068,7 @@ public class ISODateTimeFormat {
      * hour, two digit second of minute, and three digit fraction of
      * second (HH:mm:ss.SSS). Parsing will parse up to 3 fractional second
      * digits.
-     * 
+     *
      * @return a formatter for HH:mm:ss.SSS
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinuteSecondMillis() {
@@ -1070,7 +1080,7 @@ public class ISODateTimeFormat {
      * hour, two digit second of minute, and three digit fraction of
      * second (HH:mm:ss.SSS). Parsing will parse up to 9 fractional second
      * digits, throwing away all except the first three.
-     * 
+     *
      * @return a formatter for HH:mm:ss.SSS
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinuteSecondFraction() {
@@ -1080,7 +1090,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date and two digit hour of
      * day. (yyyy-MM-dd'T'HH)
-     * 
+     *
      * @return a formatter for yyyy-MM-dd'T'HH
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHour() {
@@ -1090,7 +1100,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date, two digit hour of day,
      * and two digit minute of hour. (yyyy-MM-dd'T'HH:mm)
-     * 
+     *
      * @return a formatter for yyyy-MM-dd'T'HH:mm
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinute() {
@@ -1101,7 +1111,7 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, and two digit second of
      * minute. (yyyy-MM-dd'T'HH:mm:ss)
-     * 
+     *
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ss
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinuteSecond() {
@@ -1113,7 +1123,7 @@ public class ISODateTimeFormat {
      * two digit minute of hour, two digit second of minute, and three digit
      * fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
      * to 3 fractional second digits.
-     * 
+     *
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSS
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinuteSecondMillis() {
@@ -1125,7 +1135,7 @@ public class ISODateTimeFormat {
      * two digit minute of hour, two digit second of minute, and three digit
      * fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
      * to 9 fractional second digits, throwing away all except the first three.
-     * 
+     *
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSS
      */
     public static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinuteSecondFraction() {
@@ -1135,92 +1145,92 @@ public class ISODateTimeFormat {
     //-----------------------------------------------------------------------
     static final class Constants {
         private static final com.jn.langx.util.jodatime.format.DateTimeFormatter
-            ye = yearElement(),  // year element (yyyy)
-            mye = monthElement(), // monthOfYear element (-MM)
-            dme = dayOfMonthElement(), // dayOfMonth element (-dd)
-            we = weekyearElement(),  // weekyear element (xxxx)
-            wwe = weekElement(), // weekOfWeekyear element (-ww)
-            dwe = dayOfWeekElement(), // dayOfWeek element (-ee)
-            dye = dayOfYearElement(), // dayOfYear element (-DDD)
-            hde = hourElement(), // hourOfDay element (HH)
-            mhe = minuteElement(), // minuteOfHour element (:mm)
-            sme = secondElement(), // secondOfMinute element (:ss)
-            fse = fractionElement(), // fractionOfSecond element (.SSSSSSSSS)
-            ze = offsetElement(),  // zone offset element
-            lte = literalTElement(), // literal 'T' element
-            
-            //y,   // year (same as year element)
-            ym = yearMonth(),  // year month
-            ymd = yearMonthDay(), // year month day
+                ye = yearElement(),  // year element (yyyy)
+                mye = monthElement(), // monthOfYear element (-MM)
+                dme = dayOfMonthElement(), // dayOfMonth element (-dd)
+                we = weekyearElement(),  // weekyear element (xxxx)
+                wwe = weekElement(), // weekOfWeekyear element (-ww)
+                dwe = dayOfWeekElement(), // dayOfWeek element (-ee)
+                dye = dayOfYearElement(), // dayOfYear element (-DDD)
+                hde = hourElement(), // hourOfDay element (HH)
+                mhe = minuteElement(), // minuteOfHour element (:mm)
+                sme = secondElement(), // secondOfMinute element (:ss)
+                fse = fractionElement(), // fractionOfSecond element (.SSSSSSSSS)
+                ze = offsetElement(),  // zone offset element
+                lte = literalTElement(), // literal 'T' element
 
-            //w,   // weekyear (same as weekyear element)
-            ww = weekyearWeek(),  // weekyear week
-            wwd = weekyearWeekDay(), // weekyear week day
+        //y,   // year (same as year element)
+        ym = yearMonth(),  // year month
+                ymd = yearMonthDay(), // year month day
 
-            //h,    // hour (same as hour element)
-            hm = hourMinute(),   // hour minute
-            hms = hourMinuteSecond(),  // hour minute second
-            hmsl = hourMinuteSecondMillis(), // hour minute second millis
-            hmsf = hourMinuteSecondFraction(), // hour minute second fraction
+        //w,   // weekyear (same as weekyear element)
+        ww = weekyearWeek(),  // weekyear week
+                wwd = weekyearWeekDay(), // weekyear week day
 
-            dh = dateHour(),    // date hour
-            dhm = dateHourMinute(),   // date hour minute
-            dhms = dateHourMinuteSecond(),  // date hour minute second
-            dhmsl = dateHourMinuteSecondMillis(), // date hour minute second millis
-            dhmsf = dateHourMinuteSecondFraction(), // date hour minute second fraction
+        //h,    // hour (same as hour element)
+        hm = hourMinute(),   // hour minute
+                hms = hourMinuteSecond(),  // hour minute second
+                hmsl = hourMinuteSecondMillis(), // hour minute second millis
+                hmsf = hourMinuteSecondFraction(), // hour minute second fraction
 
-            //d,  // date (same as ymd)
-            t = time(),  // time
-            tx = timeNoMillis(),  // time no millis
-            tt = tTime(),  // Ttime
-            ttx = tTimeNoMillis(),  // Ttime no millis
-            dt = dateTime(), // date time
-            dtx = dateTimeNoMillis(), // date time no millis
+        dh = dateHour(),    // date hour
+                dhm = dateHourMinute(),   // date hour minute
+                dhms = dateHourMinuteSecond(),  // date hour minute second
+                dhmsl = dateHourMinuteSecondMillis(), // date hour minute second millis
+                dhmsf = dateHourMinuteSecondFraction(), // date hour minute second fraction
 
-            //wd,  // week date (same as wwd)
-            wdt = weekDateTime(), // week date time
-            wdtx = weekDateTimeNoMillis(), // week date time no millis
+        //d,  // date (same as ymd)
+        t = time(),  // time
+                tx = timeNoMillis(),  // time no millis
+                tt = tTime(),  // Ttime
+                ttx = tTimeNoMillis(),  // Ttime no millis
+                dt = dateTime(), // date time
+                dtx = dateTimeNoMillis(), // date time no millis
 
-            od = ordinalDate(),  // ordinal date (same as yd)
-            odt = ordinalDateTime(), // ordinal date time
-            odtx = ordinalDateTimeNoMillis(), // ordinal date time no millis
+        //wd,  // week date (same as wwd)
+        wdt = weekDateTime(), // week date time
+                wdtx = weekDateTimeNoMillis(), // week date time no millis
 
-            bd = basicDate(),  // basic date
-            bt = basicTime(),  // basic time
-            btx = basicTimeNoMillis(),  // basic time no millis
-            btt = basicTTime(), // basic Ttime
-            bttx = basicTTimeNoMillis(), // basic Ttime no millis
-            bdt = basicDateTime(), // basic date time
-            bdtx = basicDateTimeNoMillis(), // basic date time no millis
+        od = ordinalDate(),  // ordinal date (same as yd)
+                odt = ordinalDateTime(), // ordinal date time
+                odtx = ordinalDateTimeNoMillis(), // ordinal date time no millis
 
-            bod = basicOrdinalDate(),  // basic ordinal date
-            bodt = basicOrdinalDateTime(), // basic ordinal date time
-            bodtx = basicOrdinalDateTimeNoMillis(), // basic ordinal date time no millis
+        bd = basicDate(),  // basic date
+                bt = basicTime(),  // basic time
+                btx = basicTimeNoMillis(),  // basic time no millis
+                btt = basicTTime(), // basic Ttime
+                bttx = basicTTimeNoMillis(), // basic Ttime no millis
+                bdt = basicDateTime(), // basic date time
+                bdtx = basicDateTimeNoMillis(), // basic date time no millis
 
-            bwd = basicWeekDate(),  // basic week date
-            bwdt = basicWeekDateTime(), // basic week date time
-            bwdtx = basicWeekDateTimeNoMillis(), // basic week date time no millis
+        bod = basicOrdinalDate(),  // basic ordinal date
+                bodt = basicOrdinalDateTime(), // basic ordinal date time
+                bodtx = basicOrdinalDateTimeNoMillis(), // basic ordinal date time no millis
 
-            dpe = dateElementParser(), // date parser element
-            tpe = timeElementParser(), // time parser element
-            dp = dateParser(),  // date parser
-            ldp = localDateParser(), // local date parser
-            tp = timeParser(),  // time parser
-            ltp = localTimeParser(), // local time parser
-            dtp = dateTimeParser(), // date time parser
-            dotp = dateOptionalTimeParser(), // date optional time parser
-            ldotp = localDateOptionalTimeParser(); // local date optional time parser
+        bwd = basicWeekDate(),  // basic week date
+                bwdt = basicWeekDateTime(), // basic week date time
+                bwdtx = basicWeekDateTimeNoMillis(), // basic week date time no millis
+
+        dpe = dateElementParser(), // date parser element
+                tpe = timeElementParser(), // time parser element
+                dp = dateParser(),  // date parser
+                ldp = localDateParser(), // local date parser
+                tp = timeParser(),  // time parser
+                ltp = localTimeParser(), // local time parser
+                dtp = dateTimeParser(), // date time parser
+                dotp = dateOptionalTimeParser(), // date optional time parser
+                ldotp = localDateOptionalTimeParser(); // local date optional time parser
 
         //-----------------------------------------------------------------------
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateParser() {
             if (dp == null) {
                 com.jn.langx.util.jodatime.format.DateTimeParser tOffset = new DateTimeFormatterBuilder()
-                    .appendLiteral('T')
-                    .append(offsetElement()).toParser();
+                        .appendLiteral('T')
+                        .append(offsetElement()).toParser();
                 return new DateTimeFormatterBuilder()
-                    .append(dateElementParser())
-                    .appendOptional(tOffset)
-                    .toFormatter();
+                        .append(dateElementParser())
+                        .appendOptional(tOffset)
+                        .toFormatter();
             }
             return dp;
         }
@@ -1235,26 +1245,26 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateElementParser() {
             if (dpe == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(null, new com.jn.langx.util.jodatime.format.DateTimeParser[] {
-                        new DateTimeFormatterBuilder()
-                        .append(yearElement())
-                        .appendOptional
-                        (new DateTimeFormatterBuilder()
-                         .append(monthElement())
-                         .appendOptional(dayOfMonthElement().getParser())
-                         .toParser())
-                        .toParser(),
-                        new DateTimeFormatterBuilder()
-                        .append(weekyearElement())
-                        .append(weekElement())
-                        .appendOptional(dayOfWeekElement().getParser())
-                        .toParser(),
-                        new DateTimeFormatterBuilder()
-                        .append(yearElement())
-                        .append(dayOfYearElement())
-                        .toParser()
-                    })
-                    .toFormatter();
+                        .append(null, new com.jn.langx.util.jodatime.format.DateTimeParser[]{
+                                new DateTimeFormatterBuilder()
+                                        .append(yearElement())
+                                        .appendOptional
+                                                (new DateTimeFormatterBuilder()
+                                                        .append(monthElement())
+                                                        .appendOptional(dayOfMonthElement().getParser())
+                                                        .toParser())
+                                        .toParser(),
+                                new DateTimeFormatterBuilder()
+                                        .append(weekyearElement())
+                                        .append(weekElement())
+                                        .appendOptional(dayOfWeekElement().getParser())
+                                        .toParser(),
+                                new DateTimeFormatterBuilder()
+                                        .append(yearElement())
+                                        .append(dayOfYearElement())
+                                        .toParser()
+                        })
+                        .toFormatter();
             }
             return dpe;
         }
@@ -1262,10 +1272,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter timeParser() {
             if (tp == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendOptional(literalTElement().getParser())
-                    .append(timeElementParser())
-                    .appendOptional(offsetElement().getParser())
-                    .toFormatter();
+                        .appendOptional(literalTElement().getParser())
+                        .append(timeElementParser())
+                        .appendOptional(offsetElement().getParser())
+                        .toFormatter();
             }
             return tp;
         }
@@ -1273,9 +1283,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter localTimeParser() {
             if (ltp == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendOptional(literalTElement().getParser())
-                    .append(timeElementParser())
-                    .toFormatter().withZoneUTC();
+                        .appendOptional(literalTElement().getParser())
+                        .append(timeElementParser())
+                        .toFormatter().withZoneUTC();
             }
             return ltp;
         }
@@ -1284,51 +1294,51 @@ public class ISODateTimeFormat {
             if (tpe == null) {
                 // Decimal point can be either '.' or ','
                 com.jn.langx.util.jodatime.format.DateTimeParser decimalPoint = new DateTimeFormatterBuilder()
-                    .append(null, new com.jn.langx.util.jodatime.format.DateTimeParser[] {
-                        new DateTimeFormatterBuilder()
-                        .appendLiteral('.')
-                        .toParser(),
-                        new DateTimeFormatterBuilder()
-                        .appendLiteral(',')
-                        .toParser()
-                    })
-                    .toParser();
+                        .append(null, new com.jn.langx.util.jodatime.format.DateTimeParser[]{
+                                new DateTimeFormatterBuilder()
+                                        .appendLiteral('.')
+                                        .toParser(),
+                                new DateTimeFormatterBuilder()
+                                        .appendLiteral(',')
+                                        .toParser()
+                        })
+                        .toParser();
 
                 return new DateTimeFormatterBuilder()
-                    // time-element
-                    .append(hourElement())
-                    .append
-                    (null, new com.jn.langx.util.jodatime.format.DateTimeParser[] {
-                        new DateTimeFormatterBuilder()
-                        // minute-element
-                        .append(minuteElement())
+                        // time-element
+                        .append(hourElement())
                         .append
-                        (null, new com.jn.langx.util.jodatime.format.DateTimeParser[] {
-                            new DateTimeFormatterBuilder()
-                            // second-element
-                            .append(secondElement())
-                            // second fraction
-                            .appendOptional(new DateTimeFormatterBuilder()
-                                            .append(decimalPoint)
-                                            .appendFractionOfSecond(1, 9)
-                                            .toParser())
-                            .toParser(),
-                            // minute fraction
-                            new DateTimeFormatterBuilder()
-                            .append(decimalPoint)
-                            .appendFractionOfMinute(1, 9)
-                            .toParser(),
-                            null
-                        })
-                        .toParser(),
-                        // hour fraction
-                        new DateTimeFormatterBuilder()
-                        .append(decimalPoint)
-                        .appendFractionOfHour(1, 9)
-                        .toParser(),
-                        null
-                    })
-                    .toFormatter();
+                                (null, new com.jn.langx.util.jodatime.format.DateTimeParser[]{
+                                        new DateTimeFormatterBuilder()
+                                                // minute-element
+                                                .append(minuteElement())
+                                                .append
+                                                        (null, new com.jn.langx.util.jodatime.format.DateTimeParser[]{
+                                                                new DateTimeFormatterBuilder()
+                                                                        // second-element
+                                                                        .append(secondElement())
+                                                                        // second fraction
+                                                                        .appendOptional(new DateTimeFormatterBuilder()
+                                                                                .append(decimalPoint)
+                                                                                .appendFractionOfSecond(1, 9)
+                                                                                .toParser())
+                                                                        .toParser(),
+                                                                // minute fraction
+                                                                new DateTimeFormatterBuilder()
+                                                                        .append(decimalPoint)
+                                                                        .appendFractionOfMinute(1, 9)
+                                                                        .toParser(),
+                                                                null
+                                                        })
+                                                .toParser(),
+                                        // hour fraction
+                                        new DateTimeFormatterBuilder()
+                                                .append(decimalPoint)
+                                                .appendFractionOfHour(1, 9)
+                                                .toParser(),
+                                        null
+                                })
+                        .toFormatter();
             }
             return tpe;
         }
@@ -1338,13 +1348,13 @@ public class ISODateTimeFormat {
                 // This is different from the general time parser in that the 'T'
                 // is required.
                 com.jn.langx.util.jodatime.format.DateTimeParser time = new DateTimeFormatterBuilder()
-                    .appendLiteral('T')
-                    .append(timeElementParser())
-                    .appendOptional(offsetElement().getParser())
-                    .toParser();
+                        .appendLiteral('T')
+                        .append(timeElementParser())
+                        .appendOptional(offsetElement().getParser())
+                        .toParser();
                 return new DateTimeFormatterBuilder()
-                    .append(null, new com.jn.langx.util.jodatime.format.DateTimeParser[] {time, dateOptionalTimeParser().getParser()})
-                    .toFormatter();
+                        .append(null, new com.jn.langx.util.jodatime.format.DateTimeParser[]{time, dateOptionalTimeParser().getParser()})
+                        .toFormatter();
             }
             return dtp;
         }
@@ -1352,14 +1362,14 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateOptionalTimeParser() {
             if (dotp == null) {
                 com.jn.langx.util.jodatime.format.DateTimeParser timeOrOffset = new DateTimeFormatterBuilder()
-                    .appendLiteral('T')
-                    .appendOptional(timeElementParser().getParser())
-                    .appendOptional(offsetElement().getParser())
-                    .toParser();
+                        .appendLiteral('T')
+                        .appendOptional(timeElementParser().getParser())
+                        .appendOptional(offsetElement().getParser())
+                        .toParser();
                 return new DateTimeFormatterBuilder()
-                    .append(dateElementParser())
-                    .appendOptional(timeOrOffset)
-                    .toFormatter();
+                        .append(dateElementParser())
+                        .appendOptional(timeOrOffset)
+                        .toFormatter();
             }
             return dotp;
         }
@@ -1367,13 +1377,13 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter localDateOptionalTimeParser() {
             if (ldotp == null) {
                 DateTimeParser time = new DateTimeFormatterBuilder()
-                    .appendLiteral('T')
-                    .append(timeElementParser())
-                    .toParser();
+                        .appendLiteral('T')
+                        .append(timeElementParser())
+                        .toParser();
                 return new DateTimeFormatterBuilder()
-                    .append(dateElementParser())
-                    .appendOptional(time)
-                    .toFormatter().withZoneUTC();
+                        .append(dateElementParser())
+                        .appendOptional(time)
+                        .toFormatter().withZoneUTC();
             }
             return ldotp;
         }
@@ -1382,9 +1392,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter time() {
             if (t == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(hourMinuteSecondFraction())
-                    .append(offsetElement())
-                    .toFormatter();
+                        .append(hourMinuteSecondFraction())
+                        .append(offsetElement())
+                        .toFormatter();
             }
             return t;
         }
@@ -1392,9 +1402,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter timeNoMillis() {
             if (tx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(hourMinuteSecond())
-                    .append(offsetElement())
-                    .toFormatter();
+                        .append(hourMinuteSecond())
+                        .append(offsetElement())
+                        .toFormatter();
             }
             return tx;
         }
@@ -1402,9 +1412,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter tTime() {
             if (tt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(literalTElement())
-                    .append(time())
-                    .toFormatter();
+                        .append(literalTElement())
+                        .append(time())
+                        .toFormatter();
             }
             return tt;
         }
@@ -1412,9 +1422,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter tTimeNoMillis() {
             if (ttx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(literalTElement())
-                    .append(timeNoMillis())
-                    .toFormatter();
+                        .append(literalTElement())
+                        .append(timeNoMillis())
+                        .toFormatter();
             }
             return ttx;
         }
@@ -1422,9 +1432,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateTime() {
             if (dt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(date())
-                    .append(tTime())
-                    .toFormatter();
+                        .append(date())
+                        .append(tTime())
+                        .toFormatter();
             }
             return dt;
         }
@@ -1432,9 +1442,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateTimeNoMillis() {
             if (dtx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(date())
-                    .append(tTimeNoMillis())
-                    .toFormatter();
+                        .append(date())
+                        .append(tTimeNoMillis())
+                        .toFormatter();
             }
             return dtx;
         }
@@ -1442,9 +1452,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter ordinalDate() {
             if (od == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(yearElement())
-                    .append(dayOfYearElement())
-                    .toFormatter();
+                        .append(yearElement())
+                        .append(dayOfYearElement())
+                        .toFormatter();
             }
             return od;
         }
@@ -1452,9 +1462,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter ordinalDateTime() {
             if (odt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(ordinalDate())
-                    .append(tTime())
-                    .toFormatter();
+                        .append(ordinalDate())
+                        .append(tTime())
+                        .toFormatter();
             }
             return odt;
         }
@@ -1462,9 +1472,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter ordinalDateTimeNoMillis() {
             if (odtx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(ordinalDate())
-                    .append(tTimeNoMillis())
-                    .toFormatter();
+                        .append(ordinalDate())
+                        .append(tTimeNoMillis())
+                        .toFormatter();
             }
             return odtx;
         }
@@ -1472,9 +1482,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter weekDateTime() {
             if (wdt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(weekDate())
-                    .append(tTime())
-                    .toFormatter();
+                        .append(weekDate())
+                        .append(tTime())
+                        .toFormatter();
             }
             return wdt;
         }
@@ -1482,9 +1492,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter weekDateTimeNoMillis() {
             if (wdtx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(weekDate())
-                    .append(tTimeNoMillis())
-                    .toFormatter();
+                        .append(weekDate())
+                        .append(tTimeNoMillis())
+                        .toFormatter();
             }
             return wdtx;
         }
@@ -1493,10 +1503,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicDate() {
             if (bd == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendYear(4, 4)
-                    .appendFixedDecimal(DateTimeFieldType.monthOfYear(), 2)
-                    .appendFixedDecimal(DateTimeFieldType.dayOfMonth(), 2)
-                    .toFormatter();
+                        .appendYear(4, 4)
+                        .appendFixedDecimal(DateTimeFieldType.monthOfYear(), 2)
+                        .appendFixedDecimal(DateTimeFieldType.dayOfMonth(), 2)
+                        .toFormatter();
             }
             return bd;
         }
@@ -1504,13 +1514,13 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTime() {
             if (bt == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendFixedDecimal(DateTimeFieldType.hourOfDay(), 2)
-                    .appendFixedDecimal(DateTimeFieldType.minuteOfHour(), 2)
-                    .appendFixedDecimal(DateTimeFieldType.secondOfMinute(), 2)
-                    .appendLiteral('.')
-                    .appendFractionOfSecond(3, 9)
-                    .appendTimeZoneOffset("Z", false, 2, 2)
-                    .toFormatter();
+                        .appendFixedDecimal(DateTimeFieldType.hourOfDay(), 2)
+                        .appendFixedDecimal(DateTimeFieldType.minuteOfHour(), 2)
+                        .appendFixedDecimal(DateTimeFieldType.secondOfMinute(), 2)
+                        .appendLiteral('.')
+                        .appendFractionOfSecond(3, 9)
+                        .appendTimeZoneOffset("Z", false, 2, 2)
+                        .toFormatter();
             }
             return bt;
         }
@@ -1518,11 +1528,11 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTimeNoMillis() {
             if (btx == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendFixedDecimal(DateTimeFieldType.hourOfDay(), 2)
-                    .appendFixedDecimal(DateTimeFieldType.minuteOfHour(), 2)
-                    .appendFixedDecimal(DateTimeFieldType.secondOfMinute(), 2)
-                    .appendTimeZoneOffset("Z", false, 2, 2)
-                    .toFormatter();
+                        .appendFixedDecimal(DateTimeFieldType.hourOfDay(), 2)
+                        .appendFixedDecimal(DateTimeFieldType.minuteOfHour(), 2)
+                        .appendFixedDecimal(DateTimeFieldType.secondOfMinute(), 2)
+                        .appendTimeZoneOffset("Z", false, 2, 2)
+                        .toFormatter();
             }
             return btx;
         }
@@ -1530,9 +1540,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTTime() {
             if (btt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(literalTElement())
-                    .append(basicTime())
-                    .toFormatter();
+                        .append(literalTElement())
+                        .append(basicTime())
+                        .toFormatter();
             }
             return btt;
         }
@@ -1540,9 +1550,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicTTimeNoMillis() {
             if (bttx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(literalTElement())
-                    .append(basicTimeNoMillis())
-                    .toFormatter();
+                        .append(literalTElement())
+                        .append(basicTimeNoMillis())
+                        .toFormatter();
             }
             return bttx;
         }
@@ -1550,9 +1560,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicDateTime() {
             if (bdt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(basicDate())
-                    .append(basicTTime())
-                    .toFormatter();
+                        .append(basicDate())
+                        .append(basicTTime())
+                        .toFormatter();
             }
             return bdt;
         }
@@ -1560,9 +1570,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicDateTimeNoMillis() {
             if (bdtx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(basicDate())
-                    .append(basicTTimeNoMillis())
-                    .toFormatter();
+                        .append(basicDate())
+                        .append(basicTTimeNoMillis())
+                        .toFormatter();
             }
             return bdtx;
         }
@@ -1570,9 +1580,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicOrdinalDate() {
             if (bod == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendYear(4, 4)
-                    .appendFixedDecimal(DateTimeFieldType.dayOfYear(), 3)
-                    .toFormatter();
+                        .appendYear(4, 4)
+                        .appendFixedDecimal(DateTimeFieldType.dayOfYear(), 3)
+                        .toFormatter();
             }
             return bod;
         }
@@ -1580,9 +1590,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicOrdinalDateTime() {
             if (bodt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(basicOrdinalDate())
-                    .append(basicTTime())
-                    .toFormatter();
+                        .append(basicOrdinalDate())
+                        .append(basicTTime())
+                        .toFormatter();
             }
             return bodt;
         }
@@ -1590,9 +1600,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicOrdinalDateTimeNoMillis() {
             if (bodtx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(basicOrdinalDate())
-                    .append(basicTTimeNoMillis())
-                    .toFormatter();
+                        .append(basicOrdinalDate())
+                        .append(basicTTimeNoMillis())
+                        .toFormatter();
             }
             return bodtx;
         }
@@ -1600,11 +1610,11 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicWeekDate() {
             if (bwd == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendWeekyear(4, 4)
-                    .appendLiteral('W')
-                    .appendFixedDecimal(DateTimeFieldType.weekOfWeekyear(), 2)
-                    .appendFixedDecimal(DateTimeFieldType.dayOfWeek(), 1)
-                    .toFormatter();
+                        .appendWeekyear(4, 4)
+                        .appendLiteral('W')
+                        .appendFixedDecimal(DateTimeFieldType.weekOfWeekyear(), 2)
+                        .appendFixedDecimal(DateTimeFieldType.dayOfWeek(), 1)
+                        .toFormatter();
             }
             return bwd;
         }
@@ -1612,9 +1622,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicWeekDateTime() {
             if (bwdt == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(basicWeekDate())
-                    .append(basicTTime())
-                    .toFormatter();
+                        .append(basicWeekDate())
+                        .append(basicTTime())
+                        .toFormatter();
             }
             return bwdt;
         }
@@ -1622,9 +1632,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter basicWeekDateTimeNoMillis() {
             if (bwdtx == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(basicWeekDate())
-                    .append(basicTTimeNoMillis())
-                    .toFormatter();
+                        .append(basicWeekDate())
+                        .append(basicTTimeNoMillis())
+                        .toFormatter();
             }
             return bwdtx;
         }
@@ -1633,9 +1643,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter yearMonth() {
             if (ym == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(yearElement())
-                    .append(monthElement())
-                    .toFormatter();
+                        .append(yearElement())
+                        .append(monthElement())
+                        .toFormatter();
             }
             return ym;
         }
@@ -1643,10 +1653,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter yearMonthDay() {
             if (ymd == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(yearElement())
-                    .append(monthElement())
-                    .append(dayOfMonthElement())
-                    .toFormatter();
+                        .append(yearElement())
+                        .append(monthElement())
+                        .append(dayOfMonthElement())
+                        .toFormatter();
             }
             return ymd;
         }
@@ -1654,9 +1664,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter weekyearWeek() {
             if (ww == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(weekyearElement())
-                    .append(weekElement())
-                    .toFormatter();
+                        .append(weekyearElement())
+                        .append(weekElement())
+                        .toFormatter();
             }
             return ww;
         }
@@ -1664,10 +1674,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter weekyearWeekDay() {
             if (wwd == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(weekyearElement())
-                    .append(weekElement())
-                    .append(dayOfWeekElement())
-                    .toFormatter();
+                        .append(weekyearElement())
+                        .append(weekElement())
+                        .append(dayOfWeekElement())
+                        .toFormatter();
             }
             return wwd;
         }
@@ -1675,9 +1685,9 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinute() {
             if (hm == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(hourElement())
-                    .append(minuteElement())
-                    .toFormatter();
+                        .append(hourElement())
+                        .append(minuteElement())
+                        .toFormatter();
             }
             return hm;
         }
@@ -1685,10 +1695,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinuteSecond() {
             if (hms == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(hourElement())
-                    .append(minuteElement())
-                    .append(secondElement())
-                    .toFormatter();
+                        .append(hourElement())
+                        .append(minuteElement())
+                        .append(secondElement())
+                        .toFormatter();
             }
             return hms;
         }
@@ -1696,12 +1706,12 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinuteSecondMillis() {
             if (hmsl == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(hourElement())
-                    .append(minuteElement())
-                    .append(secondElement())
-                    .appendLiteral('.')
-                    .appendFractionOfSecond(3, 3)
-                    .toFormatter();
+                        .append(hourElement())
+                        .append(minuteElement())
+                        .append(secondElement())
+                        .appendLiteral('.')
+                        .appendFractionOfSecond(3, 3)
+                        .toFormatter();
             }
             return hmsl;
         }
@@ -1709,11 +1719,11 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter hourMinuteSecondFraction() {
             if (hmsf == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(hourElement())
-                    .append(minuteElement())
-                    .append(secondElement())
-                    .append(fractionElement())
-                    .toFormatter();
+                        .append(hourElement())
+                        .append(minuteElement())
+                        .append(secondElement())
+                        .append(fractionElement())
+                        .toFormatter();
             }
             return hmsf;
         }
@@ -1721,10 +1731,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHour() {
             if (dh == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(date())
-                    .append(literalTElement())
-                    .append(hour())
-                    .toFormatter();
+                        .append(date())
+                        .append(literalTElement())
+                        .append(hour())
+                        .toFormatter();
             }
             return dh;
         }
@@ -1732,10 +1742,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinute() {
             if (dhm == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(date())
-                    .append(literalTElement())
-                    .append(hourMinute())
-                    .toFormatter();
+                        .append(date())
+                        .append(literalTElement())
+                        .append(hourMinute())
+                        .toFormatter();
             }
             return dhm;
         }
@@ -1743,10 +1753,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinuteSecond() {
             if (dhms == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(date())
-                    .append(literalTElement())
-                    .append(hourMinuteSecond())
-                    .toFormatter();
+                        .append(date())
+                        .append(literalTElement())
+                        .append(hourMinuteSecond())
+                        .toFormatter();
             }
             return dhms;
         }
@@ -1754,10 +1764,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinuteSecondMillis() {
             if (dhmsl == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(date())
-                    .append(literalTElement())
-                    .append(hourMinuteSecondMillis())
-                    .toFormatter();
+                        .append(date())
+                        .append(literalTElement())
+                        .append(hourMinuteSecondMillis())
+                        .toFormatter();
             }
             return dhmsl;
         }
@@ -1765,10 +1775,10 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dateHourMinuteSecondFraction() {
             if (dhmsf == null) {
                 return new DateTimeFormatterBuilder()
-                    .append(date())
-                    .append(literalTElement())
-                    .append(hourMinuteSecondFraction())
-                    .toFormatter();
+                        .append(date())
+                        .append(literalTElement())
+                        .append(hourMinuteSecondFraction())
+                        .toFormatter();
             }
             return dhmsf;
         }
@@ -1777,126 +1787,126 @@ public class ISODateTimeFormat {
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter yearElement() {
             if (ye == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendYear(4, 9)
-                    .toFormatter();
+                        .appendYear(4, 9)
+                        .toFormatter();
             }
             return ye;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter monthElement() {
             if (mye == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral('-')
-                    .appendMonthOfYear(2)
-                    .toFormatter();
+                        .appendLiteral('-')
+                        .appendMonthOfYear(2)
+                        .toFormatter();
             }
             return mye;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dayOfMonthElement() {
             if (dme == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral('-')
-                    .appendDayOfMonth(2)
-                    .toFormatter();
+                        .appendLiteral('-')
+                        .appendDayOfMonth(2)
+                        .toFormatter();
             }
             return dme;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter weekyearElement() {
             if (we == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendWeekyear(4, 9)
-                    .toFormatter();
+                        .appendWeekyear(4, 9)
+                        .toFormatter();
             }
             return we;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter weekElement() {
             if (wwe == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral("-W")
-                    .appendWeekOfWeekyear(2)
-                    .toFormatter();
+                        .appendLiteral("-W")
+                        .appendWeekOfWeekyear(2)
+                        .toFormatter();
             }
             return wwe;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dayOfWeekElement() {
             if (dwe == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral('-')
-                    .appendDayOfWeek(1)
-                    .toFormatter();
+                        .appendLiteral('-')
+                        .appendDayOfWeek(1)
+                        .toFormatter();
             }
             return dwe;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter dayOfYearElement() {
             if (dye == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral('-')
-                    .appendDayOfYear(3)
-                    .toFormatter();
+                        .appendLiteral('-')
+                        .appendDayOfYear(3)
+                        .toFormatter();
             }
             return dye;
         }
-        
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter literalTElement() {
             if (lte == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral('T')
-                    .toFormatter();
+                        .appendLiteral('T')
+                        .toFormatter();
             }
             return lte;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter hourElement() {
             if (hde == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendHourOfDay(2)
-                    .toFormatter();
+                        .appendHourOfDay(2)
+                        .toFormatter();
             }
             return hde;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter minuteElement() {
             if (mhe == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral(':')
-                    .appendMinuteOfHour(2)
-                    .toFormatter();
+                        .appendLiteral(':')
+                        .appendMinuteOfHour(2)
+                        .toFormatter();
             }
             return mhe;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter secondElement() {
             if (sme == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral(':')
-                    .appendSecondOfMinute(2)
-                    .toFormatter();
+                        .appendLiteral(':')
+                        .appendSecondOfMinute(2)
+                        .toFormatter();
             }
             return sme;
         }
-    
+
         private static com.jn.langx.util.jodatime.format.DateTimeFormatter fractionElement() {
             if (fse == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendLiteral('.')
-                    // Support parsing up to nanosecond precision even though
-                    // those extra digits will be dropped.
-                    .appendFractionOfSecond(3, 9)
-                    .toFormatter();
+                        .appendLiteral('.')
+                        // Support parsing up to nanosecond precision even though
+                        // those extra digits will be dropped.
+                        .appendFractionOfSecond(3, 9)
+                        .toFormatter();
             }
             return fse;
         }
-    
+
         private static DateTimeFormatter offsetElement() {
             if (ze == null) {
                 return new DateTimeFormatterBuilder()
-                    .appendTimeZoneOffset("Z", true, 2, 4)
-                    .toFormatter();
+                        .appendTimeZoneOffset("Z", true, 2, 4)
+                        .toFormatter();
             }
             return ze;
         }

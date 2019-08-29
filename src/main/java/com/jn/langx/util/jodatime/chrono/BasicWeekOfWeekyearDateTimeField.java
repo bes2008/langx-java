@@ -19,7 +19,6 @@ import com.jn.langx.util.jodatime.DateTimeConstants;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
 import com.jn.langx.util.jodatime.field.PreciseDurationDateTimeField;
 
 /**
@@ -47,10 +46,10 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
 
     /**
      * Get the week of a week based year component of the specified time instant.
-     * 
-     * @see com.jn.langx.util.jodatime.DateTimeField#get(long)
-     * @param instant  the time instant in millis to query.
+     *
+     * @param instant the time instant in millis to query.
      * @return the week of the year extracted from the input.
+     * @see com.jn.langx.util.jodatime.DateTimeField#get(long)
      */
     public int get(long instant) {
         return iChronology.getWeekOfWeekyear(instant);
@@ -65,12 +64,12 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
 
     public long roundFloor(long instant) {
         return super.roundFloor(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
-            - 3 * DateTimeConstants.MILLIS_PER_DAY;
+                - 3 * DateTimeConstants.MILLIS_PER_DAY;
     }
 
     public long roundCeiling(long instant) {
         return super.roundCeiling(instant + 3 * DateTimeConstants.MILLIS_PER_DAY)
-            - 3 * DateTimeConstants.MILLIS_PER_DAY;
+                - 3 * DateTimeConstants.MILLIS_PER_DAY;
     }
 
     public long remainder(long instant) {

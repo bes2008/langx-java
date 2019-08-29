@@ -15,18 +15,10 @@
  */
 package com.jn.langx.util.jodatime.format;
 
+import com.jn.langx.util.jodatime.*;
+
 import java.util.Arrays;
 import java.util.Locale;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.IllegalFieldValueException;
-import com.jn.langx.util.jodatime.IllegalInstantException;
 
 /**
  * DateTimeParserBucket is an advanced class, intended mainly for parser
@@ -55,33 +47,45 @@ import com.jn.langx.util.jodatime.IllegalInstantException;
  */
 public class DateTimeParserBucket {
 
-    /** The chronology to use for parsing. */
+    /**
+     * The chronology to use for parsing.
+     */
     private final Chronology iChrono;
     private final long iMillis;
-    
-    /** The parsed zone, initialised to formatter zone. */
+
+    /**
+     * The parsed zone, initialised to formatter zone.
+     */
     private DateTimeZone iZone;
-    /** The parsed offset. */
+    /**
+     * The parsed offset.
+     */
     private Integer iOffset;
-    /** The locale to use for parsing. */
+    /**
+     * The locale to use for parsing.
+     */
     private Locale iLocale;
-    /** Used for parsing two-digit years. */
+    /**
+     * Used for parsing two-digit years.
+     */
     private Integer iPivotYear;
-    /** Used for parsing month/day without year. */
+    /**
+     * Used for parsing month/day without year.
+     */
     private int iDefaultYear;
 
     private SavedField[] iSavedFields = new SavedField[8];
     private int iSavedFieldsCount;
     private boolean iSavedFieldsShared;
-    
+
     private Object iSavedState;
 
     /**
      * Constructs a bucket.
-     * 
-     * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
-     * @param chrono  the chronology to use
-     * @param locale  the locale to use
+     *
+     * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
+     * @param chrono       the chronology to use
+     * @param locale       the locale to use
      * @deprecated Use longer constructor
      */
     @Deprecated
@@ -93,10 +97,10 @@ public class DateTimeParserBucket {
      * Constructs a bucket, with the option of specifying the pivot year for
      * two-digit year parsing.
      *
-     * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
-     * @param chrono  the chronology to use
-     * @param locale  the locale to use
-     * @param pivotYear  the pivot year to use when parsing two-digit years
+     * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
+     * @param chrono       the chronology to use
+     * @param locale       the locale to use
+     * @param pivotYear    the pivot year to use when parsing two-digit years
      * @since 1.1
      * @deprecated Use longer constructor
      */
@@ -109,14 +113,14 @@ public class DateTimeParserBucket {
      * Constructs a bucket, with the option of specifying the pivot year for
      * two-digit year parsing.
      *
-     * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
-     * @param chrono  the chronology to use
-     * @param locale  the locale to use
-     * @param pivotYear  the pivot year to use when parsing two-digit years
+     * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
+     * @param chrono       the chronology to use
+     * @param locale       the locale to use
+     * @param pivotYear    the pivot year to use when parsing two-digit years
      * @since 2.0
      */
     public DateTimeParserBucket(long instantLocal, Chronology chrono,
-            Locale locale, Integer pivotYear, int defaultYear) {
+                                Locale locale, Integer pivotYear, int defaultYear) {
         super();
         chrono = DateTimeUtils.getChronology(chrono);
         iMillis = instantLocal;
@@ -128,6 +132,7 @@ public class DateTimeParserBucket {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the chronology of the bucket, which will be a local (UTC) chronology.
      */
@@ -136,9 +141,10 @@ public class DateTimeParserBucket {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the locale to be used during parsing.
-     * 
+     *
      * @return the locale to use
      */
     public Locale getLocale() {
@@ -146,6 +152,7 @@ public class DateTimeParserBucket {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the time zone used by computeMillis.
      */
@@ -162,8 +169,10 @@ public class DateTimeParserBucket {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the time zone offset in milliseconds used by computeMillis.
+     *
      * @deprecated use Integer version
      */
     @Deprecated
@@ -180,6 +189,7 @@ public class DateTimeParserBucket {
 
     /**
      * Set a time zone offset to be used when computeMillis is called.
+     *
      * @deprecated use Integer version
      */
     @Deprecated
@@ -197,6 +207,7 @@ public class DateTimeParserBucket {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the default year used when information is incomplete.
      * <p>
@@ -219,7 +230,7 @@ public class DateTimeParserBucket {
      * If the value is set to null, this will indicate that default
      * behaviour should be used.
      *
-     * @param pivotYear  the pivot year to use
+     * @param pivotYear the pivot year to use
      * @since 1.1
      */
     public void setPivotYear(Integer pivotYear) {
@@ -227,55 +238,56 @@ public class DateTimeParserBucket {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Saves a datetime field value.
-     * 
-     * @param field  the field, whose chronology must match that of this bucket
-     * @param value  the value
+     *
+     * @param field the field, whose chronology must match that of this bucket
+     * @param value the value
      */
     public void saveField(DateTimeField field, int value) {
         saveField(new SavedField(field, value));
     }
-    
+
     /**
      * Saves a datetime field value.
-     * 
-     * @param fieldType  the field type
-     * @param value  the value
+     *
+     * @param fieldType the field type
+     * @param value     the value
      */
     public void saveField(DateTimeFieldType fieldType, int value) {
         saveField(new SavedField(fieldType.getField(iChrono), value));
     }
-    
+
     /**
      * Saves a datetime field text value.
-     * 
-     * @param fieldType  the field type
-     * @param text  the text value
-     * @param locale  the locale to use
+     *
+     * @param fieldType the field type
+     * @param text      the text value
+     * @param locale    the locale to use
      */
     public void saveField(DateTimeFieldType fieldType, String text, Locale locale) {
         saveField(new SavedField(fieldType.getField(iChrono), text, locale));
     }
-    
+
     private void saveField(SavedField field) {
         SavedField[] savedFields = iSavedFields;
         int savedFieldsCount = iSavedFieldsCount;
-        
+
         if (savedFieldsCount == savedFields.length || iSavedFieldsShared) {
             // Expand capacity or merely copy if saved fields are shared.
             SavedField[] newArray = new SavedField
-                [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];
+                    [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];
             System.arraycopy(savedFields, 0, newArray, 0, savedFieldsCount);
             iSavedFields = savedFields = newArray;
             iSavedFieldsShared = false;
         }
-        
+
         iSavedState = null;
         savedFields[savedFieldsCount] = field;
         iSavedFieldsCount = savedFieldsCount + 1;
     }
-    
+
     /**
      * Saves the state of this bucket, returning it in an opaque object. Call
      * restoreState to undo any changes that were made since the state was
@@ -289,7 +301,7 @@ public class DateTimeParserBucket {
         }
         return iSavedState;
     }
-    
+
     /**
      * Restores the state of this bucket from a previously saved state. The
      * state object passed into this method is not consumed, and it can be used
@@ -307,7 +319,7 @@ public class DateTimeParserBucket {
         }
         return false;
     }
-    
+
     /**
      * Computes the parsed datetime by setting the saved fields.
      * This method is idempotent, but it is not thread-safe.
@@ -318,7 +330,7 @@ public class DateTimeParserBucket {
     public long computeMillis() {
         return computeMillis(false, null);
     }
-    
+
     /**
      * Computes the parsed datetime by setting the saved fields.
      * This method is idempotent, but it is not thread-safe.
@@ -336,7 +348,7 @@ public class DateTimeParserBucket {
      * This method is idempotent, but it is not thread-safe.
      *
      * @param resetFields false by default, but when true, unsaved field values are cleared
-     * @param text optional text being parsed, to be included in any error message
+     * @param text        optional text being parsed, to be included in any error message
      * @return milliseconds since 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if any field is out of range
      * @since 1.3
@@ -345,7 +357,7 @@ public class DateTimeParserBucket {
         SavedField[] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
         if (iSavedFieldsShared) {
-            iSavedFields = savedFields = (SavedField[])iSavedFields.clone();
+            iSavedFields = savedFields = (SavedField[]) iSavedFields.clone();
             iSavedFieldsShared = false;
         }
         sort(savedFields, count);
@@ -376,7 +388,7 @@ public class DateTimeParserBucket {
             }
             throw e;
         }
-        
+
         if (iOffset != null) {
             millis -= iOffset;
         } else if (iZone != null) {
@@ -390,10 +402,10 @@ public class DateTimeParserBucket {
                 throw new IllegalInstantException(message);
             }
         }
-        
+
         return millis;
     }
-    
+
     /**
      * Sorts elements [0,high). Calling java.util.Arrays isn't always the right
      * choice since it always creates an internal copy of the array, even if it
@@ -416,11 +428,11 @@ public class DateTimeParserBucket {
         if (high > 10) {
             Arrays.sort(array, 0, high);
         } else {
-            for (int i=0; i<high; i++) {
-                for (int j=i; j>0 && (array[j-1]).compareTo(array[j])>0; j--) {
+            for (int i = 0; i < high; i++) {
+                for (int j = i; j > 0 && (array[j - 1]).compareTo(array[j]) > 0; j--) {
                     SavedField t = array[j];
-                    array[j] = array[j-1];
-                    array[j-1] = t;
+                    array[j] = array[j - 1];
+                    array[j - 1] = t;
                 }
             }
         }
@@ -431,14 +443,14 @@ public class DateTimeParserBucket {
         final Integer iOffset;
         final SavedField[] iSavedFields;
         final int iSavedFieldsCount;
-        
+
         SavedState() {
             this.iZone = DateTimeParserBucket.this.iZone;
             this.iOffset = DateTimeParserBucket.this.iOffset;
             this.iSavedFields = DateTimeParserBucket.this.iSavedFields;
             this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;
         }
-        
+
         boolean restoreState(DateTimeParserBucket enclosing) {
             if (enclosing != DateTimeParserBucket.this) {
                 return false;
@@ -457,27 +469,27 @@ public class DateTimeParserBucket {
             return true;
         }
     }
-    
+
     static class SavedField implements Comparable<SavedField> {
         final DateTimeField iField;
         final int iValue;
         final String iText;
         final Locale iLocale;
-        
+
         SavedField(DateTimeField field, int value) {
             iField = field;
             iValue = value;
             iText = null;
             iLocale = null;
         }
-        
+
         SavedField(DateTimeField field, String text, Locale locale) {
             iField = field;
             iValue = 0;
             iText = text;
             iLocale = locale;
         }
-        
+
         long set(long millis, boolean reset) {
             if (iText == null) {
                 millis = iField.set(millis, iValue);
@@ -489,7 +501,7 @@ public class DateTimeParserBucket {
             }
             return millis;
         }
-        
+
         /**
          * The field with the longer range duration is ordered first, where
          * null is considered infinite. If the ranges match, then the field
@@ -498,12 +510,12 @@ public class DateTimeParserBucket {
         public int compareTo(SavedField obj) {
             DateTimeField other = obj.iField;
             int result = compareReverse
-                (iField.getRangeDurationField(), other.getRangeDurationField());
+                    (iField.getRangeDurationField(), other.getRangeDurationField());
             if (result != 0) {
                 return result;
             }
             return compareReverse
-                (iField.getDurationField(), other.getDurationField());
+                    (iField.getDurationField(), other.getDurationField());
         }
     }
 

@@ -17,9 +17,6 @@ package com.jn.langx.util.jodatime.field;
 
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.field.DecoratedDurationField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
-import com.jn.langx.util.jodatime.field.PreciseDurationField;
 
 /**
  * Scales a DurationField such that it's unit millis becomes larger in
@@ -27,9 +24,8 @@ import com.jn.langx.util.jodatime.field.PreciseDurationField;
  * <p>
  * ScaledDurationField is thread-safe and immutable.
  *
- * @see PreciseDurationField
- *
  * @author Brian S O'Neill
+ * @see PreciseDurationField
  * @since 1.0
  */
 public class ScaledDurationField extends DecoratedDurationField {
@@ -40,10 +36,10 @@ public class ScaledDurationField extends DecoratedDurationField {
 
     /**
      * Constructor
-     * 
+     *
      * @param field  the field to wrap, like "year()".
-     * @param type  the type this field will actually use
-     * @param scalar  scalar, such as 100 years in a century
+     * @param type   the type this field will actually use
+     * @param scalar scalar, such as 100 years in a century
      * @throws IllegalArgumentException if scalar is zero or one.
      */
     public ScaledDurationField(DurationField field, DurationFieldType type, int scalar) {
@@ -113,9 +109,10 @@ public class ScaledDurationField extends DecoratedDurationField {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the scalar applied, in the field's units.
-     * 
+     *
      * @return the scalar
      */
     public int getScalar() {
@@ -125,8 +122,8 @@ public class ScaledDurationField extends DecoratedDurationField {
     /**
      * Compares this duration field to another.
      * Two fields are equal if of the same type and duration.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return if equal
      */
     public boolean equals(Object obj) {
@@ -135,15 +132,15 @@ public class ScaledDurationField extends DecoratedDurationField {
         } else if (obj instanceof ScaledDurationField) {
             ScaledDurationField other = (ScaledDurationField) obj;
             return (getWrappedField().equals(other.getWrappedField())) &&
-                   (getType() == other.getType()) &&
-                   (iScalar == other.iScalar);
+                    (getType() == other.getType()) &&
+                    (iScalar == other.iScalar);
         }
         return false;
     }
 
     /**
      * Gets a hash code for this instance.
-     * 
+     *
      * @return a suitable hashcode
      */
     public int hashCode() {

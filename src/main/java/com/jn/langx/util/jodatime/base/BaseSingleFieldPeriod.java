@@ -15,27 +15,18 @@
  */
 package com.jn.langx.util.jodatime.base;
 
-import java.io.Serializable;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.MutablePeriod;
-import com.jn.langx.util.jodatime.Period;
-import com.jn.langx.util.jodatime.PeriodType;
-import com.jn.langx.util.jodatime.ReadableInstant;
-import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.ReadablePeriod;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.field.FieldUtils;
+
+import java.io.Serializable;
 
 /**
  * BaseSingleFieldPeriod is an abstract implementation of ReadablePeriod that
  * manages a single duration field, such as days or minutes.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadablePeriod} interface should be used when different 
+ * The {@link ReadablePeriod} interface should be used when different
  * kinds of period objects are to be referenced.
  * <p>
  * BaseSingleFieldPeriod subclasses may be mutable and not thread-safe.
@@ -46,21 +37,28 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
 public abstract class BaseSingleFieldPeriod
         implements ReadablePeriod, Comparable<BaseSingleFieldPeriod>, Serializable {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     private static final long serialVersionUID = 9386874258972L;
-    /** The start of 1972. */
+    /**
+     * The start of 1972.
+     */
     private static final long START_1972 = 2L * 365L * 86400L * 1000L;
 
-    /** The period in the units of this period. */
+    /**
+     * The period in the units of this period.
+     */
     private volatile int iPeriod;
 
     //-----------------------------------------------------------------------
+
     /**
      * Calculates the number of whole units between the two specified datetimes.
      *
-     * @param start  the start instant, validated to not be null
-     * @param end  the end instant, validated to not be null
-     * @param field  the field type to use, must not be null
+     * @param start the start instant, validated to not be null
+     * @param end   the end instant, validated to not be null
+     * @param field the field type to use, must not be null
      * @return the period
      * @throws IllegalArgumentException if the instants are null or invalid
      */
@@ -74,15 +72,16 @@ public abstract class BaseSingleFieldPeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Calculates the number of whole units between the two specified partial datetimes.
      * <p>
      * The two partials must contain the same fields, for example you can specify
      * two <code>LocalDate</code> objects.
      *
-     * @param start  the start partial date, validated to not be null
-     * @param end  the end partial date, validated to not be null
-     * @param zeroInstance  the zero instance constant, must not be null
+     * @param start        the start partial date, validated to not be null
+     * @param end          the end partial date, validated to not be null
+     * @param zeroInstance the zero instance constant, must not be null
      * @return the period
      * @throws IllegalArgumentException if the partials are null or invalid
      */
@@ -122,8 +121,8 @@ public abstract class BaseSingleFieldPeriod
      * </ul>
      * Months and Years are imprecise and periods containing these values cannot be converted.
      *
-     * @param period  the period to get the number of hours from, must not be null
-     * @param millisPerUnit  the number of milliseconds in one standard unit of this period
+     * @param period        the period to get the number of hours from, must not be null
+     * @param millisPerUnit the number of milliseconds in one standard unit of this period
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
     protected static int standardPeriodIn(ReadablePeriod period, long millisPerUnit) {
@@ -139,7 +138,7 @@ public abstract class BaseSingleFieldPeriod
                 if (field.isPrecise() == false) {
                     throw new IllegalArgumentException(
                             "Cannot convert period to duration as " + field.getName() +
-                            " is not precise in the period " + period);
+                                    " is not precise in the period " + period);
                 }
                 duration = FieldUtils.safeAdd(duration, FieldUtils.safeMultiply(field.getUnitMillis(), value));
             }
@@ -148,10 +147,11 @@ public abstract class BaseSingleFieldPeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a new instance representing the specified period.
      *
-     * @param period  the period to represent
+     * @param period the period to represent
      */
     protected BaseSingleFieldPeriod(int period) {
         super();
@@ -159,6 +159,7 @@ public abstract class BaseSingleFieldPeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the amount of this period.
      *
@@ -172,13 +173,14 @@ public abstract class BaseSingleFieldPeriod
      * Sets the amount of this period.
      * To make a subclass immutable you must declare it final, or block this method.
      *
-     * @param value  the period value
+     * @param value the period value
      */
     protected void setValue(int value) {
         iPeriod = value;
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the single duration field type.
      *
@@ -195,6 +197,7 @@ public abstract class BaseSingleFieldPeriod
     public abstract PeriodType getPeriodType();
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the number of fields that this period supports, which is one.
      *
@@ -211,7 +214,7 @@ public abstract class BaseSingleFieldPeriod
      * The only index supported by this period is zero which returns the
      * field type of this class.
      *
-     * @param index  the index to retrieve, which must be zero
+     * @param index the index to retrieve, which must be zero
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -228,7 +231,7 @@ public abstract class BaseSingleFieldPeriod
      * <p>
      * The only index supported by this period is zero.
      *
-     * @param index  the index to retrieve, which must be zero
+     * @param index the index to retrieve, which must be zero
      * @return the value of the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -246,7 +249,7 @@ public abstract class BaseSingleFieldPeriod
      * If the field type specified does not match the type used by this class
      * then zero is returned.
      *
-     * @param type  the field type to query, null returns zero
+     * @param type the field type to query, null returns zero
      * @return the value of that field, zero if field not supported
      */
     @Override
@@ -260,7 +263,7 @@ public abstract class BaseSingleFieldPeriod
     /**
      * Checks whether the duration field specified is supported by this period.
      *
-     * @param type  the type to check, may be null which returns false
+     * @param type the type to check, may be null which returns false
      * @return true if the field is supported
      */
     @Override
@@ -269,6 +272,7 @@ public abstract class BaseSingleFieldPeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get this period as an immutable <code>Period</code> object.
      * The period will use <code>PeriodType.standard()</code>.
@@ -285,7 +289,7 @@ public abstract class BaseSingleFieldPeriod
      * <p>
      * This will always return a new <code>MutablePeriod</code> with the same fields.
      * The period will use <code>PeriodType.standard()</code>.
-     * 
+     *
      * @return a MutablePeriod using the same field set and values
      */
     @Override
@@ -296,14 +300,15 @@ public abstract class BaseSingleFieldPeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this object with the specified object for equality based on the
      * value of each field. All ReadablePeriod instances are accepted, but only
      * those with a matching <code>PeriodType</code> can return true.
      *
-     * @param period  a readable period to check against
+     * @param period a readable period to check against
      * @return true if all the field values are equal, false if
-     *  not or the period is null or of an incorrect type
+     * not or the period is null or of an incorrect type
      */
     public boolean equals(Object period) {
         if (this == period) {
@@ -331,10 +336,10 @@ public abstract class BaseSingleFieldPeriod
     /**
      * Compares this period to another object of the same class.
      *
-     * @param other  the other period, must not be null
+     * @param other the other period, must not be null
      * @return zero if equal, positive if greater, negative if less
      * @throws NullPointerException if the other period is null
-     * @throws ClassCastException if the other period is of a different type
+     * @throws ClassCastException   if the other period is of a different type
      */
     public int compareTo(BaseSingleFieldPeriod other) {
         if (other.getClass() != getClass()) {

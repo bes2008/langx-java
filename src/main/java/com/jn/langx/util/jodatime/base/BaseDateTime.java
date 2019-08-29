@@ -15,23 +15,22 @@
  */
 package com.jn.langx.util.jodatime.base;
 
-import java.io.Serializable;
-
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeUtils;
 import com.jn.langx.util.jodatime.DateTimeZone;
 import com.jn.langx.util.jodatime.ReadableDateTime;
-import com.jn.langx.util.jodatime.base.AbstractDateTime;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.convert.ConverterManager;
 import com.jn.langx.util.jodatime.convert.InstantConverter;
+
+import java.io.Serializable;
 
 /**
  * BaseDateTime is an abstract implementation of ReadableDateTime that stores
  * data in <code>long</code> and <code>Chronology</code> fields.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadableDateTime} interface should be used when different 
+ * The {@link ReadableDateTime} interface should be used when different
  * kinds of date/time objects are to be referenced.
  * <p>
  * BaseDateTime subclasses may be mutable and not thread-safe.
@@ -45,15 +44,22 @@ public abstract class BaseDateTime
         extends AbstractDateTime
         implements ReadableDateTime, Serializable {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -6728882245981L;
 
-    /** The millis from 1970-01-01T00:00:00Z */
+    /**
+     * The millis from 1970-01-01T00:00:00Z
+     */
     private volatile long iMillis;
-    /** The chronology to use */
+    /**
+     * The chronology to use
+     */
     private volatile Chronology iChronology;
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
@@ -68,7 +74,7 @@ public abstract class BaseDateTime
      * <p>
      * If the specified time zone is null, the default zone is used.
      *
-     * @param zone  the time zone, null means default zone
+     * @param zone the time zone, null means default zone
      */
     public BaseDateTime(DateTimeZone zone) {
         this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
@@ -81,18 +87,19 @@ public abstract class BaseDateTime
      * If the chronology is null, <code>ISOChronology</code>
      * in the default time zone is used.
      *
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param chronology the chronology, null means ISOChronology in default zone
      */
     public BaseDateTime(Chronology chronology) {
         this(DateTimeUtils.currentTimeMillis(), chronology);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
      * using <code>ISOChronology</code> in the default time zone.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
      */
     public BaseDateTime(long instant) {
         this(instant, ISOChronology.getInstance());
@@ -104,8 +111,8 @@ public abstract class BaseDateTime
      * <p>
      * If the specified time zone is null, the default zone is used.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param zone  the time zone, null means default zone
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
+     * @param zone    the time zone, null means default zone
      */
     public BaseDateTime(long instant, DateTimeZone zone) {
         this(instant, ISOChronology.getInstance(zone));
@@ -118,8 +125,8 @@ public abstract class BaseDateTime
      * If the chronology is null, <code>ISOChronology</code>
      * in the default time zone is used.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param instant    the milliseconds from 1970-01-01T00:00:00Z
+     * @param chronology the chronology, null means ISOChronology in default zone
      */
     public BaseDateTime(long instant, Chronology chronology) {
         super();
@@ -128,6 +135,7 @@ public abstract class BaseDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from an Object that represents a datetime,
      * forcing the time zone to that specified.
@@ -139,8 +147,8 @@ public abstract class BaseDateTime
      * {@link ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object
-     * @param zone  the time zone
+     * @param instant the datetime object
+     * @param zone    the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public BaseDateTime(Object instant, DateTimeZone zone) {
@@ -161,8 +169,8 @@ public abstract class BaseDateTime
      * {@link ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object
-     * @param chronology  the chronology
+     * @param instant    the datetime object
+     * @param chronology the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
     public BaseDateTime(Object instant, Chronology chronology) {
@@ -173,17 +181,18 @@ public abstract class BaseDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from datetime field values
      * using <code>ISOChronology</code> in the default time zone.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the millisecond of the second
+     * @param year           the year
+     * @param monthOfYear    the month of the year
+     * @param dayOfMonth     the day of the month
+     * @param hourOfDay      the hour of the day
+     * @param minuteOfHour   the minute of the hour
+     * @param secondOfMinute the second of the minute
+     * @param millisOfSecond the millisecond of the second
      */
     public BaseDateTime(
             int year,
@@ -194,7 +203,7 @@ public abstract class BaseDateTime
             int secondOfMinute,
             int millisOfSecond) {
         this(year, monthOfYear, dayOfMonth, hourOfDay,
-            minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstance());
+                minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstance());
     }
 
     /**
@@ -203,14 +212,14 @@ public abstract class BaseDateTime
      * <p>
      * If the specified time zone is null, the default zone is used.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the millisecond of the second
-     * @param zone  the time zone, null means default time zone
+     * @param year           the year
+     * @param monthOfYear    the month of the year
+     * @param dayOfMonth     the day of the month
+     * @param hourOfDay      the hour of the day
+     * @param minuteOfHour   the minute of the hour
+     * @param secondOfMinute the second of the minute
+     * @param millisOfSecond the millisecond of the second
+     * @param zone           the time zone, null means default time zone
      */
     public BaseDateTime(
             int year,
@@ -222,7 +231,7 @@ public abstract class BaseDateTime
             int millisOfSecond,
             DateTimeZone zone) {
         this(year, monthOfYear, dayOfMonth, hourOfDay,
-            minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstance(zone));
+                minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstance(zone));
     }
 
     /**
@@ -232,14 +241,14 @@ public abstract class BaseDateTime
      * If the chronology is null, <code>ISOChronology</code>
      * in the default time zone is used.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the millisecond of the second
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param year           the year
+     * @param monthOfYear    the month of the year
+     * @param dayOfMonth     the day of the month
+     * @param hourOfDay      the hour of the day
+     * @param minuteOfHour   the minute of the hour
+     * @param secondOfMinute the second of the minute
+     * @param millisOfSecond the millisecond of the second
+     * @param chronology     the chronology, null means ISOChronology in default zone
      */
     public BaseDateTime(
             int year,
@@ -253,18 +262,19 @@ public abstract class BaseDateTime
         super();
         iChronology = checkChronology(chronology);
         long instant = iChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth,
-            hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+                hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         iMillis = checkInstant(instant, iChronology);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks the specified chronology before storing it, potentially altering it.
      * This method must not access any instance variables.
      * <p>
      * This implementation converts nulls to ISOChronology in the default zone.
      *
-     * @param chronology  the chronology to use, may be null
+     * @param chronology the chronology to use, may be null
      * @return the chronology to store in this datetime, not null
      */
     protected Chronology checkChronology(Chronology chronology) {
@@ -277,8 +287,8 @@ public abstract class BaseDateTime
      * <p>
      * This implementation simply returns the instant.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
-     * @param chronology  the chronology to use, not null
+     * @param instant    the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param chronology the chronology to use, not null
      * @return the instant to store in this datetime
      */
     protected long checkInstant(long instant, Chronology chronology) {
@@ -286,10 +296,11 @@ public abstract class BaseDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the milliseconds of the datetime instant from the Java epoch
      * of 1970-01-01T00:00:00Z.
-     * 
+     *
      * @return the number of milliseconds since 1970-01-01T00:00:00Z
      */
     public long getMillis() {
@@ -298,7 +309,7 @@ public abstract class BaseDateTime
 
     /**
      * Gets the chronology of the datetime.
-     * 
+     *
      * @return the Chronology that the datetime is using
      */
     public Chronology getChronology() {
@@ -306,13 +317,14 @@ public abstract class BaseDateTime
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the milliseconds of the datetime.
      * <p>
      * All changes to the millisecond field occurs via this method.
      * Override and block this method to make a subclass immutable.
      *
-     * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the datetime to
+     * @param instant the milliseconds since 1970-01-01T00:00:00Z to set the datetime to
      */
     protected void setMillis(long instant) {
         iMillis = checkInstant(instant, iChronology);
@@ -324,7 +336,7 @@ public abstract class BaseDateTime
      * All changes to the chronology field occurs via this method.
      * Override and block this method to make a subclass immutable.
      *
-     * @param chronology  the chronology to set
+     * @param chronology the chronology to set
      */
     protected void setChronology(Chronology chronology) {
         iChronology = checkChronology(chronology);

@@ -15,20 +15,12 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import java.util.HashMap;
-import java.util.Locale;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.IllegalFieldValueException;
-import com.jn.langx.util.jodatime.IllegalInstantException;
-import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.chrono.AssembledChronology;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.field.BaseDateTimeField;
 import com.jn.langx.util.jodatime.field.BaseDurationField;
+
+import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Wraps another Chronology to add support for time zones.
@@ -41,7 +33,9 @@ import com.jn.langx.util.jodatime.field.BaseDurationField;
  */
 public final class ZonedChronology extends AssembledChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -1079258847191166848L;
 
     /**
@@ -83,7 +77,7 @@ public final class ZonedChronology extends AssembledChronology {
     }
 
     public DateTimeZone getZone() {
-        return (DateTimeZone)getParam();
+        return (DateTimeZone) getParam();
     }
 
     public Chronology withUTC() {
@@ -105,34 +99,31 @@ public final class ZonedChronology extends AssembledChronology {
 
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         return localToUTC(getBase().getDateTimeMillis
-                          (year, monthOfYear, dayOfMonth, millisOfDay));
+                (year, monthOfYear, dayOfMonth, millisOfDay));
     }
 
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         return localToUTC(getBase().getDateTimeMillis
-                          (year, monthOfYear, dayOfMonth, 
-                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
+                (year, monthOfYear, dayOfMonth,
+                        hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
     }
 
     public long getDateTimeMillis(long instant,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         return localToUTC(getBase().getDateTimeMillis
-                          (instant + getZone().getOffset(instant),
-                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
+                (instant + getZone().getOffset(instant),
+                        hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
     }
 
     /**
-     * @param localInstant  the instant from 1970-01-01T00:00:00 local time
+     * @param localInstant the instant from 1970-01-01T00:00:00 local time
      * @return the instant from 1970-01-01T00:00:00Z
      */
     private long localToUTC(long localInstant) {
@@ -199,7 +190,7 @@ public final class ZonedChronology extends AssembledChronology {
             return field;
         }
         if (converted.containsKey(field)) {
-            return (DurationField)converted.get(field);
+            return (DurationField) converted.get(field);
         }
         ZonedDurationField zonedField = new ZonedDurationField(field, getZone());
         converted.put(field, zonedField);
@@ -211,23 +202,24 @@ public final class ZonedChronology extends AssembledChronology {
             return field;
         }
         if (converted.containsKey(field)) {
-            return (DateTimeField)converted.get(field);
+            return (DateTimeField) converted.get(field);
         }
         ZonedDateTimeField zonedField =
-            new ZonedDateTimeField(field, getZone(),
-                                   convertField(field.getDurationField(), converted),
-                                   convertField(field.getRangeDurationField(), converted),
-                                   convertField(field.getLeapDurationField(), converted));
+                new ZonedDateTimeField(field, getZone(),
+                        convertField(field.getDurationField(), converted),
+                        convertField(field.getRangeDurationField(), converted),
+                        convertField(field.getLeapDurationField(), converted));
         converted.put(field, zonedField);
         return zonedField;
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * A zoned chronology is only equal to a zoned chronology with the
      * same base chronology and zone.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return true if equal
      * @since 1.4
      */
@@ -240,13 +232,13 @@ public final class ZonedChronology extends AssembledChronology {
         }
         ZonedChronology chrono = (ZonedChronology) obj;
         return
-            getBase().equals(chrono.getBase()) &&
-            getZone().equals(chrono.getZone());
+                getBase().equals(chrono.getBase()) &&
+                        getZone().equals(chrono.getZone());
     }
 
     /**
      * A suitable hashcode for the chronology.
-     * 
+     *
      * @return the hashcode
      * @since 1.4
      */
@@ -256,7 +248,7 @@ public final class ZonedChronology extends AssembledChronology {
 
     /**
      * A debugging string for the chronology.
-     * 
+     *
      * @return the debugging string
      */
     public String toString() {
@@ -327,15 +319,15 @@ public final class ZonedChronology extends AssembledChronology {
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifference
-                (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
-                 subtrahendInstant + offset);
+                    (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
+                            subtrahendInstant + offset);
         }
 
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifferenceAsLong
-                (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
-                 subtrahendInstant + offset);
+                    (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
+                            subtrahendInstant + offset);
         }
 
         private int getOffsetToAdd(long instant) {
@@ -430,9 +422,9 @@ public final class ZonedChronology extends AssembledChronology {
                 long localInstant = iField.add(instant + offset, value);
                 return localInstant - offset;
             } else {
-               long localInstant = iZone.convertUTCToLocal(instant);
-               localInstant = iField.add(localInstant, value);
-               return iZone.convertLocalToUTC(localInstant, false, instant);
+                long localInstant = iZone.convertUTCToLocal(instant);
+                localInstant = iField.add(localInstant, value);
+                return iZone.convertLocalToUTC(localInstant, false, instant);
             }
         }
 
@@ -442,9 +434,9 @@ public final class ZonedChronology extends AssembledChronology {
                 long localInstant = iField.add(instant + offset, value);
                 return localInstant - offset;
             } else {
-               long localInstant = iZone.convertUTCToLocal(instant);
-               localInstant = iField.add(localInstant, value);
-               return iZone.convertLocalToUTC(localInstant, false, instant);
+                long localInstant = iZone.convertUTCToLocal(instant);
+                localInstant = iField.add(localInstant, value);
+                return iZone.convertLocalToUTC(localInstant, false, instant);
             }
         }
 
@@ -465,7 +457,7 @@ public final class ZonedChronology extends AssembledChronology {
             localInstant = iField.set(localInstant, value);
             long result = iZone.convertLocalToUTC(localInstant, false, instant);
             if (get(result) != value) {
-                IllegalInstantException cause = new IllegalInstantException(localInstant,  iZone.getID());
+                IllegalInstantException cause = new IllegalInstantException(localInstant, iZone.getID());
                 IllegalFieldValueException ex = new IllegalFieldValueException(iField.getType(), Integer.valueOf(value), cause.getMessage());
                 ex.initCause(cause);
                 throw ex;
@@ -483,15 +475,15 @@ public final class ZonedChronology extends AssembledChronology {
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifference
-                (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
-                 subtrahendInstant + offset);
+                    (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
+                            subtrahendInstant + offset);
         }
 
         public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
             int offset = getOffsetToAdd(subtrahendInstant);
             return iField.getDifferenceAsLong
-                (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
-                 subtrahendInstant + offset);
+                    (minuendInstant + (iTimeField ? offset : getOffsetToAdd(minuendInstant)),
+                            subtrahendInstant + offset);
         }
 
         public final DurationField getDurationField() {

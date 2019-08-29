@@ -15,24 +15,10 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import java.util.Locale;
+import com.jn.langx.util.jodatime.*;
+import com.jn.langx.util.jodatime.field.*;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.chrono.*;
-import com.jn.langx.util.jodatime.field.DividedDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
-import com.jn.langx.util.jodatime.field.MillisDurationField;
-import com.jn.langx.util.jodatime.field.OffsetDateTimeField;
-import com.jn.langx.util.jodatime.field.PreciseDateTimeField;
-import com.jn.langx.util.jodatime.field.PreciseDurationField;
-import com.jn.langx.util.jodatime.field.RemainderDateTimeField;
-import com.jn.langx.util.jodatime.field.ZeroIsMaxDateTimeField;
+import java.util.Locale;
 
 /**
  * Abstract implementation for calendar systems that use a typical
@@ -50,7 +36,9 @@ import com.jn.langx.util.jodatime.field.ZeroIsMaxDateTimeField;
  */
 abstract class BasicChronology extends AssembledChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = 8283225332206808863L;
 
     private static final DurationField cMillisField;
@@ -76,47 +64,47 @@ abstract class BasicChronology extends AssembledChronology {
     static {
         cMillisField = MillisDurationField.INSTANCE;
         cSecondsField = new PreciseDurationField
-            (DurationFieldType.seconds(), DateTimeConstants.MILLIS_PER_SECOND);
+                (DurationFieldType.seconds(), DateTimeConstants.MILLIS_PER_SECOND);
         cMinutesField = new PreciseDurationField
-            (DurationFieldType.minutes(), DateTimeConstants.MILLIS_PER_MINUTE);
+                (DurationFieldType.minutes(), DateTimeConstants.MILLIS_PER_MINUTE);
         cHoursField = new PreciseDurationField
-            (DurationFieldType.hours(), DateTimeConstants.MILLIS_PER_HOUR);
+                (DurationFieldType.hours(), DateTimeConstants.MILLIS_PER_HOUR);
         cHalfdaysField = new PreciseDurationField
-            (DurationFieldType.halfdays(), DateTimeConstants.MILLIS_PER_DAY / 2);
+                (DurationFieldType.halfdays(), DateTimeConstants.MILLIS_PER_DAY / 2);
         cDaysField = new PreciseDurationField
-            (DurationFieldType.days(), DateTimeConstants.MILLIS_PER_DAY);
+                (DurationFieldType.days(), DateTimeConstants.MILLIS_PER_DAY);
         cWeeksField = new PreciseDurationField
-            (DurationFieldType.weeks(), DateTimeConstants.MILLIS_PER_WEEK);
+                (DurationFieldType.weeks(), DateTimeConstants.MILLIS_PER_WEEK);
 
         cMillisOfSecondField = new PreciseDateTimeField
-            (DateTimeFieldType.millisOfSecond(), cMillisField, cSecondsField);
+                (DateTimeFieldType.millisOfSecond(), cMillisField, cSecondsField);
 
         cMillisOfDayField = new PreciseDateTimeField
-            (DateTimeFieldType.millisOfDay(), cMillisField, cDaysField);
-             
+                (DateTimeFieldType.millisOfDay(), cMillisField, cDaysField);
+
         cSecondOfMinuteField = new PreciseDateTimeField
-            (DateTimeFieldType.secondOfMinute(), cSecondsField, cMinutesField);
+                (DateTimeFieldType.secondOfMinute(), cSecondsField, cMinutesField);
 
         cSecondOfDayField = new PreciseDateTimeField
-            (DateTimeFieldType.secondOfDay(), cSecondsField, cDaysField);
+                (DateTimeFieldType.secondOfDay(), cSecondsField, cDaysField);
 
         cMinuteOfHourField = new PreciseDateTimeField
-            (DateTimeFieldType.minuteOfHour(), cMinutesField, cHoursField);
+                (DateTimeFieldType.minuteOfHour(), cMinutesField, cHoursField);
 
         cMinuteOfDayField = new PreciseDateTimeField
-            (DateTimeFieldType.minuteOfDay(), cMinutesField, cDaysField);
+                (DateTimeFieldType.minuteOfDay(), cMinutesField, cDaysField);
 
         cHourOfDayField = new PreciseDateTimeField
-            (DateTimeFieldType.hourOfDay(), cHoursField, cDaysField);
+                (DateTimeFieldType.hourOfDay(), cHoursField, cDaysField);
 
         cHourOfHalfdayField = new PreciseDateTimeField
-            (DateTimeFieldType.hourOfHalfday(), cHoursField, cHalfdaysField);
+                (DateTimeFieldType.hourOfHalfday(), cHoursField, cHalfdaysField);
 
         cClockhourOfDayField = new ZeroIsMaxDateTimeField
-            (cHourOfDayField, DateTimeFieldType.clockhourOfDay());
+                (cHourOfDayField, DateTimeFieldType.clockhourOfDay());
 
         cClockhourOfHalfdayField = new ZeroIsMaxDateTimeField
-            (cHourOfHalfdayField, DateTimeFieldType.clockhourOfHalfday());
+                (cHourOfHalfdayField, DateTimeFieldType.clockhourOfHalfday());
 
         cHalfdayOfDayField = new HalfdayField();
     }
@@ -133,7 +121,7 @@ abstract class BasicChronology extends AssembledChronology {
 
         if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7) {
             throw new IllegalArgumentException
-                ("Invalid min days in first week: " + minDaysInFirstWeek);
+                    ("Invalid min days in first week: " + minDaysInFirstWeek);
         }
 
         iMinDaysInFirstWeek = minDaysInFirstWeek;
@@ -156,7 +144,7 @@ abstract class BasicChronology extends AssembledChronology {
         }
 
         FieldUtils.verifyValueBounds
-            (DateTimeFieldType.millisOfDay(), millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY - 1);
+                (DateTimeFieldType.millisOfDay(), millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY - 1);
         return getDateMidnightMillis(year, monthOfYear, dayOfMonth) + millisOfDay;
     }
 
@@ -167,7 +155,7 @@ abstract class BasicChronology extends AssembledChronology {
         Chronology base;
         if ((base = getBase()) != null) {
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth,
-                                          hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+                    hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         }
 
         FieldUtils.verifyValueBounds(DateTimeFieldType.hourOfDay(), hourOfDay, 0, 23);
@@ -176,10 +164,10 @@ abstract class BasicChronology extends AssembledChronology {
         FieldUtils.verifyValueBounds(DateTimeFieldType.millisOfSecond(), millisOfSecond, 0, 999);
 
         return getDateMidnightMillis(year, monthOfYear, dayOfMonth)
-            + hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
-            + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
-            + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
-            + millisOfSecond;
+                + hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
+                + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
+                + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
+                + millisOfSecond;
     }
 
     public int getMinimumDaysInFirstWeek() {
@@ -187,10 +175,11 @@ abstract class BasicChronology extends AssembledChronology {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks if this chronology instance equals another.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return true if equal
      * @since 1.6
      */
@@ -208,7 +197,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * A suitable hash code for the chronology.
-     * 
+     *
      * @return the hash code
      * @since 1.6
      */
@@ -218,9 +207,10 @@ abstract class BasicChronology extends AssembledChronology {
 
     // Output
     //-----------------------------------------------------------------------
+
     /**
      * Gets a debugging toString.
-     * 
+     *
      * @return a debugging string
      */
     public String toString() {
@@ -276,14 +266,14 @@ abstract class BasicChronology extends AssembledChronology {
 
         // Define one-based centuryOfEra and yearOfCentury.
         DateTimeField field = new OffsetDateTimeField(
-            fields.yearOfEra, 99);
+                fields.yearOfEra, 99);
         fields.centuryOfEra = new DividedDateTimeField(
-            field, DateTimeFieldType.centuryOfEra(), 100);
-        
+                field, DateTimeFieldType.centuryOfEra(), 100);
+
         field = new RemainderDateTimeField(
-            (DividedDateTimeField) fields.centuryOfEra);
+                (DividedDateTimeField) fields.centuryOfEra);
         fields.yearOfCentury = new OffsetDateTimeField(
-            field, DateTimeFieldType.yearOfCentury(), 1);
+                field, DateTimeFieldType.yearOfCentury(), 1);
 
         fields.era = new GJEraDateTimeField(this);
         fields.dayOfWeek = new GJDayOfWeekDateTimeField(this, fields.days);
@@ -292,12 +282,12 @@ abstract class BasicChronology extends AssembledChronology {
         fields.monthOfYear = new GJMonthOfYearDateTimeField(this);
         fields.weekyear = new BasicWeekyearDateTimeField(this);
         fields.weekOfWeekyear = new BasicWeekOfWeekyearDateTimeField(this, fields.weeks);
-        
+
         field = new RemainderDateTimeField(
-            fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
+                fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
         fields.weekyearOfCentury = new OffsetDateTimeField(
-            field, DateTimeFieldType.weekyearOfCentury(), 1);
-        
+                field, DateTimeFieldType.weekyearOfCentury(), 1);
+
         // The remaining (imprecise) durations are available from the newly
         // created datetime fields.
 
@@ -308,6 +298,7 @@ abstract class BasicChronology extends AssembledChronology {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the number of days in the year.
      *
@@ -320,7 +311,7 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * Get the number of days in the year.
      *
-     * @param year  the year to use
+     * @param year the year to use
      * @return 366 if a leap year, otherwise 365
      */
     int getDaysInYear(int year) {
@@ -330,7 +321,7 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * Get the number of weeks in the year.
      *
-     * @param year  the year to use
+     * @param year the year to use
      * @return number of weeks in the year
      */
     int getWeeksInYear(int year) {
@@ -342,21 +333,21 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * Get the millis for the first week of a year.
      *
-     * @param year  the year to use
+     * @param year the year to use
      * @return millis
      */
     long getFirstWeekOfYearMillis(int year) {
         long jan1millis = getYearMillis(year);
         int jan1dayOfWeek = getDayOfWeek(jan1millis);
-        
+
         if (jan1dayOfWeek > (8 - iMinDaysInFirstWeek)) {
             // First week is end of previous year because it doesn't have enough days.
             return jan1millis + (8 - jan1dayOfWeek)
-                * (long)DateTimeConstants.MILLIS_PER_DAY;
+                    * (long) DateTimeConstants.MILLIS_PER_DAY;
         } else {
             // First week is start of this year because it has enough days.
             return jan1millis - (jan1dayOfWeek - 1)
-                * (long)DateTimeConstants.MILLIS_PER_DAY;
+                    * (long) DateTimeConstants.MILLIS_PER_DAY;
         }
     }
 
@@ -373,7 +364,7 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * Get the milliseconds for the start of a month.
      *
-     * @param year The year to use.
+     * @param year  The year to use.
      * @param month The month to use
      * @return millis from 1970-01-01T00:00:00Z
      */
@@ -386,17 +377,17 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * Get the milliseconds for a particular date.
      *
-     * @param year The year to use.
-     * @param month The month to use
+     * @param year       The year to use.
+     * @param month      The month to use
      * @param dayOfMonth The day of the month to use
      * @return millis from 1970-01-01T00:00:00Z
      */
     long getYearMonthDayMillis(int year, int month, int dayOfMonth) {
         long millis = getYearMillis(year);
         millis += getTotalMillisByYearMonth(year, month);
-        return millis + (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
+        return millis + (dayOfMonth - 1) * (long) DateTimeConstants.MILLIS_PER_DAY;
     }
-    
+
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
@@ -447,7 +438,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * @param millis from 1970-01-01T00:00:00Z
-     * @param year precalculated year of millis
+     * @param year   precalculated year of millis
      */
     abstract int getMonthOfYear(long millis, int year);
 
@@ -462,7 +453,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * @param millis from 1970-01-01T00:00:00Z
-     * @param year precalculated year of millis
+     * @param year   precalculated year of millis
      */
     int getDayOfMonth(long millis, int year) {
         int month = getMonthOfYear(millis, year);
@@ -471,8 +462,8 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * @param millis from 1970-01-01T00:00:00Z
-     * @param year precalculated year of millis
-     * @param month precalculated month of millis
+     * @param year   precalculated year of millis
+     * @param month  precalculated month of millis
      */
     int getDayOfMonth(long millis, int year, int month) {
         long dateMillis = getYearMillis(year);
@@ -489,7 +480,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
-     * @param year precalculated year of millis
+     * @param year    precalculated year of millis
      */
     int getDayOfYear(long instant, int year) {
         long yearStart = getYearMillis(year);
@@ -520,7 +511,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
-     * @param year precalculated year of millis
+     * @param year    precalculated year of millis
      */
     int getWeekOfWeekyear(long instant, int year) {
         long firstWeekMillis1 = getFirstWeekOfYearMillis(year);
@@ -545,7 +536,7 @@ abstract class BasicChronology extends AssembledChronology {
             daysSince19700101 = instant / DateTimeConstants.MILLIS_PER_DAY;
         } else {
             daysSince19700101 = (instant - (DateTimeConstants.MILLIS_PER_DAY - 1))
-                / DateTimeConstants.MILLIS_PER_DAY;
+                    / DateTimeConstants.MILLIS_PER_DAY;
             if (daysSince19700101 < -3) {
                 return 7 + (int) ((daysSince19700101 + 4) % 7);
             }
@@ -562,13 +553,13 @@ abstract class BasicChronology extends AssembledChronology {
             return (int) (instant % DateTimeConstants.MILLIS_PER_DAY);
         } else {
             return (DateTimeConstants.MILLIS_PER_DAY - 1)
-                + (int) ((instant + 1) % DateTimeConstants.MILLIS_PER_DAY);
+                    + (int) ((instant + 1) % DateTimeConstants.MILLIS_PER_DAY);
         }
     }
 
     /**
      * Gets the maximum number of days in any month.
-     * 
+     *
      * @return 31
      */
     int getDaysInMonthMax() {
@@ -577,8 +568,8 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * Gets the maximum number of days in the month specified by the instant.
-     * 
-     * @param instant  millis from 1970-01-01T00:00:00Z
+     *
+     * @param instant millis from 1970-01-01T00:00:00Z
      * @return the maximum number of days in the month
      */
     int getDaysInMonthMax(long instant) {
@@ -591,9 +582,9 @@ abstract class BasicChronology extends AssembledChronology {
      * Gets the maximum number of days in the month specified by the instant.
      * The value represents what the user is trying to set, and can be
      * used to optimise this method.
-     * 
-     * @param instant  millis from 1970-01-01T00:00:00Z
-     * @param value  the value being set
+     *
+     * @param instant millis from 1970-01-01T00:00:00Z
+     * @param value   the value being set
      * @return the maximum number of days in the month
      */
     int getDaysInMonthMaxForSet(long instant, int value) {
@@ -601,11 +592,12 @@ abstract class BasicChronology extends AssembledChronology {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the milliseconds for a date at midnight.
-     * 
-     * @param year  the year
-     * @param monthOfYear  the month
+     *
+     * @param year        the year
+     * @param monthOfYear the month
      * @param dayOfMonth  the day
      * @return the milliseconds
      */
@@ -618,34 +610,34 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * Gets the difference between the two instants in years.
-     * 
-     * @param minuendInstant  the first instant
-     * @param subtrahendInstant  the second instant
+     *
+     * @param minuendInstant    the first instant
+     * @param subtrahendInstant the second instant
      * @return the difference
      */
     abstract long getYearDifference(long minuendInstant, long subtrahendInstant);
 
     /**
      * Is the specified year a leap year?
-     * 
-     * @param year  the year to test
+     *
+     * @param year the year to test
      * @return true if leap
      */
     abstract boolean isLeapYear(int year);
 
     /**
      * Gets the number of days in the specified month and year.
-     * 
+     *
      * @param year  the year
-     * @param month  the month
+     * @param month the month
      * @return the number of days
      */
     abstract int getDaysInYearMonth(int year, int month);
 
     /**
      * Gets the maximum days in the specified month.
-     * 
-     * @param month  the month
+     *
+     * @param month the month
      * @return the max days
      */
     abstract int getDaysInMonthMax(int month);
@@ -653,30 +645,30 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * Gets the total number of millis elapsed in this year at the start
      * of the specified month, such as zero for month 1.
-     * 
+     *
      * @param year  the year
-     * @param month  the month
+     * @param month the month
      * @return the elapsed millis at the start of the month
      */
     abstract long getTotalMillisByYearMonth(int year, int month);
 
     /**
      * Gets the millisecond value of the first day of the year.
-     * 
+     *
      * @return the milliseconds for the first of the year
      */
     abstract long calculateFirstDayOfYearMillis(int year);
 
     /**
      * Gets the minimum supported year.
-     * 
+     *
      * @return the year
      */
     abstract int getMinYear();
 
     /**
      * Gets the maximum supported year.
-     * 
+     *
      * @return the year
      */
     abstract int getMaxYear();
@@ -684,8 +676,8 @@ abstract class BasicChronology extends AssembledChronology {
     /**
      * Gets the maximum month for the specified year.
      * This implementation calls getMaxMonth().
-     * 
-     * @param year  the year
+     *
+     * @param year the year
      * @return the maximum month value
      */
     int getMaxMonth(int year) {
@@ -694,7 +686,7 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * Gets the maximum number of months.
-     * 
+     *
      * @return 12
      */
     int getMaxMonth() {
@@ -703,21 +695,21 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * Gets an average value for the milliseconds per year.
-     * 
+     *
      * @return the millis per year
      */
     abstract long getAverageMillisPerYear();
 
     /**
      * Gets an average value for the milliseconds per year, divided by two.
-     * 
+     *
      * @return the millis per year divided by two
      */
     abstract long getAverageMillisPerYearDividedByTwo();
 
     /**
      * Gets an average value for the milliseconds per month.
-     * 
+     *
      * @return the millis per month
      */
     abstract long getAverageMillisPerMonth();
@@ -735,9 +727,9 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * Sets the year from an instant and year.
-     * 
-     * @param instant  millis from 1970-01-01T00:00:00Z
-     * @param year  the year to set
+     *
+     * @param instant millis from 1970-01-01T00:00:00Z
+     * @param year    the year to set
      * @return the updated millis
      */
     abstract long setYear(long instant, int year);

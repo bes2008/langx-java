@@ -15,18 +15,11 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
+import com.jn.langx.util.jodatime.*;
+import com.jn.langx.util.jodatime.field.SkipDateTimeField;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.chrono.*;
-import com.jn.langx.util.jodatime.chrono.LimitChronology;
-import com.jn.langx.util.jodatime.chrono.ZonedChronology;
-import com.jn.langx.util.jodatime.field.SkipDateTimeField;
 
 /**
  * Implements the Ethiopic calendar system, which defines every fourth year as
@@ -45,15 +38,16 @@ import com.jn.langx.util.jodatime.field.SkipDateTimeField;
  * <p>
  * EthiopicChronology is thread-safe and immutable.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Ethiopian_calendar">Wikipedia</a>
- *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
+ * @see <a href="http://en.wikipedia.org/wiki/Ethiopian_calendar">Wikipedia</a>
  * @since 1.2
  */
 public final class EthiopicChronology extends BasicFixedMonthChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -5972804258688333942L;
 
     /**
@@ -62,30 +56,42 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
      */
     public static final int EE = DateTimeConstants.CE;
 
-    /** A singleton era field. */
+    /**
+     * A singleton era field.
+     */
     private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("EE");
 
-    /** The lowest year that can be fully supported. */
+    /**
+     * The lowest year that can be fully supported.
+     */
     private static final int MIN_YEAR = -292269337;
 
-    /** The highest year that can be fully supported. */
+    /**
+     * The highest year that can be fully supported.
+     */
     private static final int MAX_YEAR = 292272984;
 
-    /** Cache of zone to chronology arrays */
+    /**
+     * Cache of zone to chronology arrays
+     */
     private static final Map<DateTimeZone, EthiopicChronology[]> cCache = new HashMap<DateTimeZone, EthiopicChronology[]>();
 
-    /** Singleton instance of a UTC EthiopicChronology */
+    /**
+     * Singleton instance of a UTC EthiopicChronology
+     */
     private static final EthiopicChronology INSTANCE_UTC;
+
     static {
         // init after static fields
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets an instance of the EthiopicChronology.
      * The time zone of the returned instance is UTC.
-     * 
+     *
      * @return a singleton UTC instance of the chronology
      */
     public static EthiopicChronology getInstanceUTC() {
@@ -94,7 +100,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets an instance of the EthiopicChronology in the default time zone.
-     * 
+     *
      * @return a chronology in the default time zone
      */
     public static EthiopicChronology getInstance() {
@@ -103,8 +109,8 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets an instance of the EthiopicChronology in the given time zone.
-     * 
-     * @param zone  the time zone to get the chronology in, null is default
+     *
+     * @param zone the time zone to get the chronology in, null is default
      * @return a chronology in the specified time zone
      */
     public static EthiopicChronology getInstance(DateTimeZone zone) {
@@ -113,9 +119,9 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets an instance of the EthiopicChronology in the given time zone.
-     * 
-     * @param zone  the time zone to get the chronology in, null is default
-     * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+     *
+     * @param zone               the time zone to get the chronology in, null is default
+     * @param minDaysInFirstWeek minimum number of days in first week of the year; default is 4
      * @return a chronology in the specified time zone
      */
     public static EthiopicChronology getInstance(DateTimeZone zone, int minDaysInFirstWeek) {
@@ -133,7 +139,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
                 chrono = chronos[minDaysInFirstWeek - 1];
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new IllegalArgumentException
-                    ("Invalid min days in first week: " + minDaysInFirstWeek);
+                        ("Invalid min days in first week: " + minDaysInFirstWeek);
             }
             if (chrono == null) {
                 if (zone == DateTimeZone.UTC) {
@@ -142,12 +148,12 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
                     // Impose lower limit and make another EthiopicChronology.
                     DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
                     chrono = new EthiopicChronology
-                        (LimitChronology.getInstance(chrono, lowerLimit, null),
-                         null, minDaysInFirstWeek);
+                            (LimitChronology.getInstance(chrono, lowerLimit, null),
+                                    null, minDaysInFirstWeek);
                 } else {
                     chrono = getInstance(DateTimeZone.UTC, minDaysInFirstWeek);
                     chrono = new EthiopicChronology
-                        (ZonedChronology.getInstance(chrono, zone), null, minDaysInFirstWeek);
+                            (ZonedChronology.getInstance(chrono, zone), null, minDaysInFirstWeek);
                 }
                 chronos[minDaysInFirstWeek - 1] = chrono;
             }
@@ -157,6 +163,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     // Constructors and instance variables
     //-----------------------------------------------------------------------
+
     /**
      * Restricted constructor.
      */
@@ -171,14 +178,15 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
         Chronology base = getBase();
         return base == null ?
                 getInstance(DateTimeZone.UTC, getMinimumDaysInFirstWeek()) :
-                    getInstance(base.getZone(), getMinimumDaysInFirstWeek());
+                getInstance(base.getZone(), getMinimumDaysInFirstWeek());
     }
 
     // Conversion
     //-----------------------------------------------------------------------
+
     /**
      * Gets the Chronology in the UTC time zone.
-     * 
+     *
      * @return the chronology in UTC
      */
     public Chronology withUTC() {
@@ -187,8 +195,8 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets the Chronology in a specific time zone.
-     * 
-     * @param zone  the zone to get the chronology in, null is default
+     *
+     * @param zone the zone to get the chronology in, null is default
      * @return the chronology
      */
     public Chronology withZone(DateTimeZone zone) {
@@ -220,9 +228,9 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
                 leapYears++;
             }
         }
-        
+
         long millis = (relativeYear * 365L + leapYears)
-            * (long)DateTimeConstants.MILLIS_PER_DAY;
+                * (long) DateTimeConstants.MILLIS_PER_DAY;
 
         // Adjust to account for difference between 1963-01-01 and 1962-04-23.
 
@@ -252,7 +260,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
             // Ethiopic, like Julian, has no year zero.
             fields.year = new SkipDateTimeField(this, fields.year);
             fields.weekyear = new SkipDateTimeField(this, fields.weekyear);
-            
+
             fields.era = ERA_FIELD;
             fields.monthOfYear = new BasicMonthOfYearDateTimeField(this, 13);
             fields.months = fields.monthOfYear.getDurationField();

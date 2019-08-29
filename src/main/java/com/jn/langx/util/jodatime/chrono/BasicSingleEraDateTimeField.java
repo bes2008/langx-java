@@ -15,16 +15,12 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import java.util.Locale;
-
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.IllegalFieldValueException;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.field.BaseDateTimeField;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.field.UnsupportedDurationField;
+
+import java.util.Locale;
 
 /**
  * Provides time calculations for the coptic era component of time.
@@ -52,23 +48,31 @@ final class BasicSingleEraDateTimeField extends BaseDateTimeField {
         iEraText = text;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public boolean isLenient() {
         return false;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public int get(long instant) {
         return ERA_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public long set(long instant, int era) {
         FieldUtils.verifyValueBounds(this, era, ERA_VALUE, ERA_VALUE);
         return instant;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public long set(long instant, String text, Locale locale) {
         if (iEraText.equals(text) == false && "1".equals(text) == false) {
             throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
@@ -76,57 +80,79 @@ final class BasicSingleEraDateTimeField extends BaseDateTimeField {
         return instant;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public long roundFloor(long instant) {
         return Long.MIN_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public long roundCeiling(long instant) {
         return Long.MAX_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public long roundHalfFloor(long instant) {
         return Long.MIN_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public long roundHalfCeiling(long instant) {
         return Long.MIN_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public long roundHalfEven(long instant) {
         return Long.MIN_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public DurationField getDurationField() {
         return UnsupportedDurationField.getInstance(DurationFieldType.eras());
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public DurationField getRangeDurationField() {
         return null;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public int getMinimumValue() {
         return ERA_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public int getMaximumValue() {
         return ERA_VALUE;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public String getAsText(int fieldValue, Locale locale) {
         return iEraText;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public int getMaximumTextLength(Locale locale) {
         return iEraText.length();
     }

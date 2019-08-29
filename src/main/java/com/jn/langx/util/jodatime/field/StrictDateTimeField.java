@@ -16,9 +16,6 @@
 package com.jn.langx.util.jodatime.field;
 
 import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.field.DelegatedDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
-import com.jn.langx.util.jodatime.field.LenientDateTimeField;
 
 /**
  * Converts a lenient DateTimeField into a strict one. By being strict, the set
@@ -45,7 +42,7 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
             return null;
         }
         if (field instanceof LenientDateTimeField) {
-            field = ((LenientDateTimeField)field).getWrappedField();
+            field = ((LenientDateTimeField) field).getWrappedField();
         }
         if (!field.isLenient()) {
             return field;
@@ -68,7 +65,7 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
      */
     public long set(long instant, int value) {
         FieldUtils.verifyValueBounds
-            (this, value, getMinimumValue(instant), getMaximumValue(instant));
+                (this, value, getMinimumValue(instant), getMaximumValue(instant));
         return super.set(instant, value);
     }
 }

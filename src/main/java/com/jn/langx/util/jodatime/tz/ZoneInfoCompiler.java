@@ -15,36 +15,15 @@
  */
 package com.jn.langx.util.jodatime.tz;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.TreeMap;
-import java.util.Map.Entry;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.LocalDate;
-import com.jn.langx.util.jodatime.MutableDateTime;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.chrono.LenientChronology;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
-import com.jn.langx.util.jodatime.tz.DateTimeZoneBuilder;
-import com.jn.langx.util.jodatime.tz.ZoneInfoProvider;
+
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Compiles Olson ZoneInfo database files into binary files for each time zone
@@ -75,6 +54,7 @@ public class ZoneInfoCompiler {
 
     /**
      * Gets a flag indicating that verbose logging is required.
+     *
      * @return true to log verbosely
      */
     public static boolean verbose() {
@@ -82,9 +62,10 @@ public class ZoneInfoCompiler {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Launches the ZoneInfoCompiler tool.
-     *
+     * <p>
      * <pre>
      * Usage: java com.jn.langx.util.jodatime.tz.ZoneInfoCompiler &lt;options&gt; &lt;source files&gt;
      * where possible options include:
@@ -104,7 +85,7 @@ public class ZoneInfoCompiler {
         boolean verbose = false;
 
         int i;
-        for (i=0; i<args.length; i++) {
+        for (i = 0; i < args.length; i++) {
             try {
                 if ("-src".equals(args[i])) {
                     inputDir = new File(args[++i]);
@@ -130,7 +111,7 @@ public class ZoneInfoCompiler {
         }
 
         File[] sources = new File[args.length - i];
-        for (int j=0; i<args.length; i++,j++) {
+        for (int j = 0; i < args.length; i++, j++) {
             sources[j] = inputDir == null ? new File(args[i]) : new File(inputDir, args[i]);
         }
 
@@ -171,7 +152,7 @@ public class ZoneInfoCompiler {
 
         short count = 0;
         for (Entry<String, DateTimeZone> entry : zimap.entrySet()) {
-            String id = (String)entry.getKey();
+            String id = (String) entry.getKey();
             if (!idToIndex.containsKey(id)) {
                 Short index = Short.valueOf(count);
                 idToIndex.put(id, index);
@@ -180,7 +161,7 @@ public class ZoneInfoCompiler {
                     throw new InternalError("Too many time zone ids");
                 }
             }
-            id = ((DateTimeZone)entry.getValue()).getID();
+            id = ((DateTimeZone) entry.getValue()).getID();
             if (!idToIndex.containsKey(id)) {
                 Short index = Short.valueOf(count);
                 idToIndex.put(id, index);
@@ -228,7 +209,7 @@ public class ZoneInfoCompiler {
         DateTimeField field = ISOChronology.getInstanceUTC().dayOfWeek();
         return field.get(field.set(0, str, Locale.ENGLISH));
     }
-    
+
     static String parseOptional(String str) {
         return (str.equals("-")) ? null : str;
     }
@@ -244,7 +225,7 @@ public class ZoneInfoCompiler {
         if (newPos == ~pos) {
             throw new IllegalArgumentException(str);
         }
-        int millis = (int)mdt.getMillis();
+        int millis = (int) mdt.getMillis();
         if (pos == 1) {
             millis = -millis;
         }
@@ -253,15 +234,23 @@ public class ZoneInfoCompiler {
 
     static char parseZoneChar(char c) {
         switch (c) {
-        case 's': case 'S':
-            // Standard time
-            return 's';
-        case 'u': case 'U': case 'g': case 'G': case 'z': case 'Z':
-            // UTC
-            return 'u';
-        case 'w': case 'W': default:
-            // Wall time
-            return 'w';
+            case 's':
+            case 'S':
+                // Standard time
+                return 's';
+            case 'u':
+            case 'U':
+            case 'g':
+            case 'G':
+            case 'z':
+            case 'Z':
+                // UTC
+                return 'u';
+            case 'w':
+            case 'W':
+            default:
+                // Wall time
+                return 'w';
         }
     }
 
@@ -295,18 +284,18 @@ public class ZoneInfoCompiler {
             String nextKey = tz.getNameKey(millis);
 
             if (offset == nextOffset
-                && key.equals(nextKey)) {
+                    && key.equals(nextKey)) {
                 System.out.println("*d* Error in " + tz.getID() + " "
-                                   + new DateTime(millis,
-                                                  ISOChronology.getInstanceUTC()));
+                        + new DateTime(millis,
+                        ISOChronology.getInstanceUTC()));
                 return false;
             }
 
             if (nextKey == null || (nextKey.length() < 3 && !"??".equals(nextKey))) {
                 System.out.println("*s* Error in " + tz.getID() + " "
-                                   + new DateTime(millis,
-                                                  ISOChronology.getInstanceUTC())
-                                   + ", nameKey=" + nextKey);
+                        + new DateTime(millis,
+                        ISOChronology.getInstanceUTC())
+                        + ", nameKey=" + nextKey);
                 return false;
             }
 
@@ -321,7 +310,7 @@ public class ZoneInfoCompiler {
         millis = ISOChronology.getInstanceUTC().year().set(0, 2050);
         end = ISOChronology.getInstanceUTC().year().set(0, 1850);
 
-        for (int i=transitions.size(); --i>= 0; ) {
+        for (int i = transitions.size(); --i >= 0; ) {
             long prev = tz.previousTransition(millis);
             if (prev == millis || prev < end) {
                 break;
@@ -330,14 +319,14 @@ public class ZoneInfoCompiler {
             millis = prev;
 
             long trans = transitions.get(i).longValue();
-            
+
             if (trans - 1 != millis) {
                 System.out.println("*r* Error in " + tz.getID() + " "
-                                   + new DateTime(millis,
-                                                  ISOChronology.getInstanceUTC()) + " != "
-                                   + new DateTime(trans - 1,
-                                                  ISOChronology.getInstanceUTC()));
-                                   
+                        + new DateTime(millis,
+                        ISOChronology.getInstanceUTC()) + " != "
+                        + new DateTime(trans - 1,
+                        ISOChronology.getInstanceUTC()));
+
                 return false;
             }
         }
@@ -364,11 +353,11 @@ public class ZoneInfoCompiler {
      * Returns a map of ids to DateTimeZones.
      *
      * @param outputDir optional directory to write compiled data files to
-     * @param sources optional list of source files to parse
+     * @param sources   optional list of source files to parse
      */
     public Map<String, DateTimeZone> compile(File outputDir, File[] sources) throws IOException {
         if (sources != null) {
-            for (int i=0; i<sources.length; i++) {
+            for (int i = 0; i < sources.length; i++) {
                 BufferedReader in = new BufferedReader(new FileReader(sources[i]));
                 parseDataFile(in);
                 in.close();
@@ -389,7 +378,7 @@ public class ZoneInfoCompiler {
         Map<String, DateTimeZone> map = new TreeMap<String, DateTimeZone>();
 
         System.out.println("Writing zoneinfo files");
-        for (int i=0; i<iZones.size(); i++) {
+        for (int i = 0; i < iZones.size(); i++) {
             Zone zone = iZones.get(i);
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             zone.addToBuilder(builder, iRuleSets);
@@ -419,21 +408,21 @@ public class ZoneInfoCompiler {
 
                     if (!original.equals(tz2)) {
                         System.out.println("*e* Error in " + tz.getID() +
-                                           ": Didn't read properly from file");
+                                ": Didn't read properly from file");
                     }
                 }
             }
         }
 
-        for (int pass=0; pass<2; pass++) {
-            for (int i=0; i<iLinks.size(); i += 2) {
+        for (int pass = 0; pass < 2; pass++) {
+            for (int i = 0; i < iLinks.size(); i += 2) {
                 String id = iLinks.get(i);
                 String alias = iLinks.get(i + 1);
                 DateTimeZone tz = map.get(id);
                 if (tz == null) {
                     if (pass > 0) {
                         System.out.println("Cannot find time zone '" + id +
-                                           "' to link alias '" + alias + "' to");
+                                "' to link alias '" + alias + "' to");
                     }
                 } else {
                     map.put(alias, tz);
@@ -609,16 +598,15 @@ public class ZoneInfoCompiler {
          * Adds a recurring savings rule to the builder.
          */
         public void addRecurring(DateTimeZoneBuilder builder, String nameKey,
-                                 int saveMillis, int fromYear, int toYear)
-        {
+                                 int saveMillis, int fromYear, int toYear) {
             builder.addRecurringSavings(nameKey, saveMillis,
-                                        fromYear, toYear,
-                                        iZoneChar,
-                                        iMonthOfYear,
-                                        iDayOfMonth,
-                                        iDayOfWeek,
-                                        iAdvanceDayOfWeek,
-                                        iMillisOfDay);
+                    fromYear, toYear,
+                    iZoneChar,
+                    iMonthOfYear,
+                    iDayOfMonth,
+                    iDayOfWeek,
+                    iAdvanceDayOfWeek,
+                    iMillisOfDay);
         }
 
         /**
@@ -626,22 +614,22 @@ public class ZoneInfoCompiler {
          */
         public void addCutover(DateTimeZoneBuilder builder, int year) {
             builder.addCutover(year,
-                               iZoneChar,
-                               iMonthOfYear,
-                               iDayOfMonth,
-                               iDayOfWeek,
-                               iAdvanceDayOfWeek,
-                               iMillisOfDay);
+                    iZoneChar,
+                    iMonthOfYear,
+                    iDayOfMonth,
+                    iDayOfWeek,
+                    iAdvanceDayOfWeek,
+                    iMillisOfDay);
         }
 
         public String toString() {
             return
-                "MonthOfYear: " + iMonthOfYear + "\n" +
-                "DayOfMonth: " + iDayOfMonth + "\n" +
-                "DayOfWeek: " + iDayOfWeek + "\n" +
-                "AdvanceDayOfWeek: " + iAdvanceDayOfWeek + "\n" +
-                "MillisOfDay: " + iMillisOfDay + "\n" +
-                "ZoneChar: " + iZoneChar + "\n";
+                    "MonthOfYear: " + iMonthOfYear + "\n" +
+                            "DayOfMonth: " + iDayOfMonth + "\n" +
+                            "DayOfWeek: " + iDayOfWeek + "\n" +
+                            "AdvanceDayOfWeek: " + iAdvanceDayOfWeek + "\n" +
+                            "MillisOfDay: " + iMillisOfDay + "\n" +
+                            "ZoneChar: " + iZoneChar + "\n";
         }
     }
 
@@ -673,7 +661,7 @@ public class ZoneInfoCompiler {
         public void addRecurring(DateTimeZoneBuilder builder, String nameFormat) {
             String nameKey = formatName(nameFormat);
             iDateTimeOfYear.addRecurring
-                (builder, nameKey, iSaveMillis, iFromYear, iToYear);
+                    (builder, nameKey, iSaveMillis, iFromYear, iToYear);
         }
 
         private String formatName(String nameFormat) {
@@ -703,14 +691,14 @@ public class ZoneInfoCompiler {
 
         public String toString() {
             return
-                "[Rule]\n" + 
-                "Name: " + iName + "\n" +
-                "FromYear: " + iFromYear + "\n" +
-                "ToYear: " + iToYear + "\n" +
-                "Type: " + iType + "\n" +
-                iDateTimeOfYear +
-                "SaveMillis: " + iSaveMillis + "\n" +
-                "LetterS: " + iLetterS + "\n";
+                    "[Rule]\n" +
+                            "Name: " + iName + "\n" +
+                            "FromYear: " + iFromYear + "\n" +
+                            "ToYear: " + iToYear + "\n" +
+                            "Type: " + iType + "\n" +
+                            iDateTimeOfYear +
+                            "SaveMillis: " + iSaveMillis + "\n" +
+                            "LetterS: " + iLetterS + "\n";
         }
     }
 
@@ -733,7 +721,7 @@ public class ZoneInfoCompiler {
          * Adds recurring savings rules to the builder.
          */
         public void addRecurring(DateTimeZoneBuilder builder, String nameFormat) {
-            for (int i=0; i<iRules.size(); i++) {
+            for (int i = 0; i < iRules.size(); i++) {
                 Rule rule = iRules.get(i);
                 rule.addRecurring(builder, nameFormat);
             }
@@ -799,8 +787,7 @@ public class ZoneInfoCompiler {
 
         private static void addToBuilder(Zone zone,
                                          DateTimeZoneBuilder builder,
-                                         Map<String, RuleSet> ruleSets)
-        {
+                                         Map<String, RuleSet> ruleSets) {
             for (; zone != null; zone = zone.iNext) {
                 builder.setStandardOffset(zone.iOffsetMillis);
 
@@ -811,12 +798,11 @@ public class ZoneInfoCompiler {
                         // Check if iRules actually just refers to a savings.
                         int saveMillis = parseTime(zone.iRules);
                         builder.setFixedSavings(zone.iFormat, saveMillis);
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         RuleSet rs = ruleSets.get(zone.iRules);
                         if (rs == null) {
                             throw new IllegalArgumentException
-                                ("Rules not found: " + zone.iRules);
+                                    ("Rules not found: " + zone.iRules);
                         }
                         rs.addRecurring(builder, zone.iFormat);
                     }
@@ -832,13 +818,13 @@ public class ZoneInfoCompiler {
 
         public String toString() {
             String str =
-                "[Zone]\n" + 
-                "Name: " + iName + "\n" +
-                "OffsetMillis: " + iOffsetMillis + "\n" +
-                "Rules: " + iRules + "\n" +
-                "Format: " + iFormat + "\n" +
-                "UntilYear: " + iUntilYear + "\n" +
-                iUntilDateTimeOfYear;
+                    "[Zone]\n" +
+                            "Name: " + iName + "\n" +
+                            "OffsetMillis: " + iOffsetMillis + "\n" +
+                            "Rules: " + iRules + "\n" +
+                            "Format: " + iFormat + "\n" +
+                            "UntilYear: " + iUntilYear + "\n" +
+                            iUntilDateTimeOfYear;
 
             if (iNext == null) {
                 return str;

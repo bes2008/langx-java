@@ -15,34 +15,14 @@
  */
 package com.jn.langx.util.jodatime.format;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.MutableDateTime;
-import com.jn.langx.util.jodatime.ReadablePartial;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.MutableDateTime.Property;
 import com.jn.langx.util.jodatime.field.MillisDurationField;
 import com.jn.langx.util.jodatime.field.PreciseDateTimeField;
-import com.jn.langx.util.jodatime.format.DateTimeFormat;
-import com.jn.langx.util.jodatime.format.DateTimeFormatter;
-import com.jn.langx.util.jodatime.format.DateTimeParser;
-import com.jn.langx.util.jodatime.format.DateTimeParserBucket;
-import com.jn.langx.util.jodatime.format.DateTimePrinter;
-import com.jn.langx.util.jodatime.format.FormatUtils;
-import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.*;
 
 /**
  * Factory that creates complex instances of DateTimeFormatter via method calls.
@@ -72,18 +52,23 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @author Fredrik Borgh
- * @since 1.0
  * @see com.jn.langx.util.jodatime.format.DateTimeFormat
  * @see ISODateTimeFormat
+ * @since 1.0
  */
 public class DateTimeFormatterBuilder {
 
-    /** Array of printers and parsers (alternating). */
+    /**
+     * Array of printers and parsers (alternating).
+     */
     private ArrayList<Object> iElementPairs;
-    /** Cache of the last returned formatter. */
+    /**
+     * Cache of the last returned formatter.
+     */
     private Object iFormatter;
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a DateTimeFormatterBuilder.
      */
@@ -93,6 +78,7 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs a DateTimeFormatter using all the appended elements.
      * <p>
@@ -165,10 +151,11 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns true if toFormatter can be called without throwing an
      * UnsupportedOperationException.
-     * 
+     *
      * @return true if a formatter can be built
      */
     public boolean canBuildFormatter() {
@@ -178,7 +165,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Returns true if toPrinter can be called without throwing an
      * UnsupportedOperationException.
-     * 
+     *
      * @return true if a printer can be built
      */
     public boolean canBuildPrinter() {
@@ -188,7 +175,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Returns true if toParser can be called without throwing an
      * UnsupportedOperationException.
-     * 
+     *
      * @return true if a parser can be built
      */
     public boolean canBuildParser() {
@@ -196,6 +183,7 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Clears out all the appended elements, allowing this builder to be
      * reused.
@@ -206,6 +194,7 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Appends another formatter.
      * <p>
@@ -216,7 +205,7 @@ public class DateTimeFormatterBuilder {
      * time-zone, chronology, offset parsing or pivot/default year, will not be
      * extracted by this method.
      *
-     * @param formatter  the formatter to add
+     * @param formatter the formatter to add
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if formatter is null or of an invalid type
      */
@@ -237,7 +226,7 @@ public class DateTimeFormatterBuilder {
      * time-zone, chronology, offset parsing or pivot/default year, will not be
      * extracted by this method.
      *
-     * @param printer  the printer to add, not null
+     * @param printer the printer to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if printer is null or of an invalid type
      */
@@ -256,7 +245,7 @@ public class DateTimeFormatterBuilder {
      * time-zone, chronology, offset parsing or pivot/default year, will not be
      * extracted by this method.
      *
-     * @param parser  the parser to add, not null
+     * @param parser the parser to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if parser is null or of an invalid type
      */
@@ -274,7 +263,7 @@ public class DateTimeFormatterBuilder {
      * time-zone, chronology, offset parsing or pivot/default year, will not be
      * extracted by this method.
      *
-     * @param printer  the printer to add, not null
+     * @param printer the printer to add, not null
      * @param parser  the parser to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if printer or parser is null or of an invalid type
@@ -302,8 +291,8 @@ public class DateTimeFormatterBuilder {
      * time-zone, chronology, offset parsing or pivot/default year, will not be
      * extracted by this method.
      *
-     * @param printer  the printer to add
-     * @param parsers  the parsers to add
+     * @param printer the printer to add
+     * @param parsers the parsers to add
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if any printer or parser is of an invalid type
      * @throws IllegalArgumentException if any parser element but the last is null
@@ -350,15 +339,16 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder appendOptional(com.jn.langx.util.jodatime.format.DateTimeParser parser) {
         checkParser(parser);
-        com.jn.langx.util.jodatime.format.DateTimeParser[] parsers = new com.jn.langx.util.jodatime.format.DateTimeParser[] {parser, null};
+        com.jn.langx.util.jodatime.format.DateTimeParser[] parsers = new com.jn.langx.util.jodatime.format.DateTimeParser[]{parser, null};
         return append0(null, new MatchingParser(parsers));
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks if the parser is non null and a provider.
-     * 
-     * @param parser  the parser to check
+     *
+     * @param parser the parser to check
      */
     private void checkParser(com.jn.langx.util.jodatime.format.DateTimeParser parser) {
         if (parser == null) {
@@ -368,8 +358,8 @@ public class DateTimeFormatterBuilder {
 
     /**
      * Checks if the printer is non null and a provider.
-     * 
-     * @param printer  the printer to check
+     *
+     * @param printer the printer to check
      */
     private void checkPrinter(com.jn.langx.util.jodatime.format.DateTimePrinter printer) {
         if (printer == null) {
@@ -394,6 +384,7 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Instructs the printer to emit a specific character, and the parser to
      * expect it. The parser is case-insensitive.
@@ -429,10 +420,10 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as a decimal number, and the
      * parser to expect an unsigned decimal number.
      *
-     * @param fieldType  type of field to append
-     * @param minDigits  minimum number of digits to <i>print</i>
-     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
-     * maximum number of digits to print
+     * @param fieldType type of field to append
+     * @param minDigits minimum number of digits to <i>print</i>
+     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     *                  maximum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
@@ -458,10 +449,10 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as a fixed-width decimal
      * number (smaller numbers will be left-padded with zeros), and the parser
      * to expect an unsigned decimal number with the same fixed width.
-     * 
-     * @param fieldType  type of field to append
-     * @param numDigits  the exact number of digits to parse or print, except if
-     * printed value requires more digits
+     *
+     * @param fieldType type of field to append
+     * @param numDigits the exact number of digits to parse or print, except if
+     *                  printed value requires more digits
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
      * @since 1.5
@@ -481,10 +472,10 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as a decimal number, and the
      * parser to expect a signed decimal number.
      *
-     * @param fieldType  type of field to append
-     * @param minDigits  minimum number of digits to <i>print</i>
-     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
-     * maximum number of digits to print
+     * @param fieldType type of field to append
+     * @param minDigits minimum number of digits to <i>print</i>
+     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     *                  maximum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
@@ -510,10 +501,10 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as a fixed-width decimal
      * number (smaller numbers will be left-padded with zeros), and the parser
      * to expect an signed decimal number with the same fixed width.
-     * 
-     * @param fieldType  type of field to append
-     * @param numDigits  the exact number of digits to parse or print, except if
-     * printed value requires more digits
+     *
+     * @param fieldType type of field to append
+     * @param numDigits the exact number of digits to parse or print, except if
+     *                  printed value requires more digits
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
      * @since 1.5
@@ -533,7 +524,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as text, and the
      * parser to expect text.
      *
-     * @param fieldType  type of field to append
+     * @param fieldType type of field to append
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
@@ -548,7 +539,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as short text, and the
      * parser to expect text.
      *
-     * @param fieldType  type of field to append
+     * @param fieldType type of field to append
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
@@ -566,9 +557,9 @@ public class DateTimeFormatterBuilder {
      * decimal point is implied, so the fraction is 0.75, or three-quarters of
      * a minute.
      *
-     * @param fieldType  type of field to append
-     * @param minDigits  minimum number of digits to print.
-     * @param maxDigits  maximum number of digits to print or parse.
+     * @param fieldType type of field to append
+     * @param minDigits minimum number of digits to print.
+     * @param maxDigits maximum number of digits to print or parse.
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
@@ -595,9 +586,9 @@ public class DateTimeFormatterBuilder {
      * Thus '23' will be parsed as 230 milliseconds.
      * Contrast this behaviour to {@link #appendMillisOfSecond}.
      * This method does not print or parse the decimal point itself.
-     * 
-     * @param minDigits  minimum number of digits to print
-     * @param maxDigits  maximum number of digits to print or parse
+     *
+     * @param minDigits minimum number of digits to print
+     * @param maxDigits maximum number of digits to print or parse
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfSecond(int minDigits, int maxDigits) {
@@ -612,9 +603,9 @@ public class DateTimeFormatterBuilder {
      * as the most significant (numerically largest) digits.
      * Thus '23' will be parsed as 0.23 minutes (converted to milliseconds).
      * This method does not print or parse the decimal point itself.
-     * 
-     * @param minDigits  minimum number of digits to print
-     * @param maxDigits  maximum number of digits to print or parse
+     *
+     * @param minDigits minimum number of digits to print
+     * @param maxDigits maximum number of digits to print or parse
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfMinute(int minDigits, int maxDigits) {
@@ -629,9 +620,9 @@ public class DateTimeFormatterBuilder {
      * as the most significant (numerically largest) digits.
      * Thus '23' will be parsed as 0.23 hours (converted to milliseconds).
      * This method does not print or parse the decimal point itself.
-     * 
-     * @param minDigits  minimum number of digits to print
-     * @param maxDigits  maximum number of digits to print or parse
+     *
+     * @param minDigits minimum number of digits to print
+     * @param maxDigits maximum number of digits to print or parse
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfHour(int minDigits, int maxDigits) {
@@ -646,9 +637,9 @@ public class DateTimeFormatterBuilder {
      * as the most significant (numerically largest) digits.
      * Thus '23' will be parsed as 0.23 days (converted to milliseconds).
      * This method does not print or parse the decimal point itself.
-     * 
-     * @param minDigits  minimum number of digits to print
-     * @param maxDigits  maximum number of digits to print or parse
+     *
+     * @param minDigits minimum number of digits to print
+     * @param maxDigits maximum number of digits to print or parse
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfDay(int minDigits, int maxDigits) {
@@ -665,7 +656,7 @@ public class DateTimeFormatterBuilder {
      * if you are using the field as a fraction. Instead, a fractional
      * millisecond should be produced using {@link #appendFractionOfSecond}.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMillisOfSecond(int minDigits) {
@@ -675,7 +666,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric millisOfDay field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMillisOfDay(int minDigits) {
@@ -685,7 +676,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric secondOfMinute field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendSecondOfMinute(int minDigits) {
@@ -695,7 +686,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric secondOfDay field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendSecondOfDay(int minDigits) {
@@ -705,7 +696,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric minuteOfHour field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMinuteOfHour(int minDigits) {
@@ -715,7 +706,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric minuteOfDay field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMinuteOfDay(int minDigits) {
@@ -725,7 +716,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric hourOfDay field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendHourOfDay(int minDigits) {
@@ -745,7 +736,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric hourOfHalfday field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendHourOfHalfday(int minDigits) {
@@ -755,7 +746,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric clockhourOfHalfday field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendClockhourOfHalfday(int minDigits) {
@@ -765,7 +756,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric dayOfWeek field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfWeek(int minDigits) {
@@ -775,7 +766,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric dayOfMonth field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfMonth(int minDigits) {
@@ -785,7 +776,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric dayOfYear field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfYear(int minDigits) {
@@ -795,7 +786,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric weekOfWeekyear field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendWeekOfWeekyear(int minDigits) {
@@ -805,9 +796,9 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric weekyear field.
      *
-     * @param minDigits  minimum number of digits to <i>print</i>
-     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
-     * maximum number of digits to print
+     * @param minDigits minimum number of digits to <i>print</i>
+     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     *                  maximum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendWeekyear(int minDigits, int maxDigits) {
@@ -817,7 +808,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric monthOfYear field.
      *
-     * @param minDigits  minimum number of digits to print
+     * @param minDigits minimum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMonthOfYear(int minDigits) {
@@ -827,9 +818,9 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric year field.
      *
-     * @param minDigits  minimum number of digits to <i>print</i>
-     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
-     * maximum number of digits to print
+     * @param minDigits minimum number of digits to <i>print</i>
+     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     *                  maximum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendYear(int minDigits, int maxDigits) {
@@ -840,7 +831,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric year field which always prints
      * and parses two digits. A pivot year is used during parsing to determine
      * the range of supported years as <code>(pivot - 50) .. (pivot + 49)</code>.
-     *
+     * <p>
      * <pre>
      * pivot   supported range   00 is   20 is   40 is   60 is   80 is
      * ---------------------------------------------------------------
@@ -851,7 +842,7 @@ public class DateTimeFormatterBuilder {
      * 2050      2000..2099      2000    2020    2040    2060    2080
      * </pre>
      *
-     * @param pivot  pivot year to use when parsing
+     * @param pivot pivot year to use when parsing
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTwoDigitYear(int pivot) {
@@ -866,9 +857,9 @@ public class DateTimeFormatterBuilder {
      * treated as an absolute year. With lenient parsing, specifying a positive
      * or negative sign before the year also makes it absolute.
      *
-     * @param pivot  pivot year to use when parsing
-     * @param lenientParse  when true, if digit count is not two, it is treated
-     * as an absolute year
+     * @param pivot        pivot year to use when parsing
+     * @param lenientParse when true, if digit count is not two, it is treated
+     *                     as an absolute year
      * @return this DateTimeFormatterBuilder, for chaining
      * @since 1.1
      */
@@ -880,7 +871,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric weekyear field which always prints
      * and parses two digits. A pivot year is used during parsing to determine
      * the range of supported years as <code>(pivot - 50) .. (pivot + 49)</code>.
-     *
+     * <p>
      * <pre>
      * pivot   supported range   00 is   20 is   40 is   60 is   80 is
      * ---------------------------------------------------------------
@@ -891,7 +882,7 @@ public class DateTimeFormatterBuilder {
      * 2050      2000..2099      2000    2020    2040    2060    2080
      * </pre>
      *
-     * @param pivot  pivot weekyear to use when parsing
+     * @param pivot pivot weekyear to use when parsing
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTwoDigitWeekyear(int pivot) {
@@ -906,9 +897,9 @@ public class DateTimeFormatterBuilder {
      * treated as an absolute weekyear. With lenient parsing, specifying a positive
      * or negative sign before the weekyear also makes it absolute.
      *
-     * @param pivot  pivot weekyear to use when parsing
-     * @param lenientParse  when true, if digit count is not two, it is treated
-     * as an absolute weekyear
+     * @param pivot        pivot weekyear to use when parsing
+     * @param lenientParse when true, if digit count is not two, it is treated
+     *                     as an absolute weekyear
      * @return this DateTimeFormatterBuilder, for chaining
      * @since 1.1
      */
@@ -919,9 +910,9 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric yearOfEra field.
      *
-     * @param minDigits  minimum number of digits to <i>print</i>
-     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
-     * maximum number of digits to print
+     * @param minDigits minimum number of digits to <i>print</i>
+     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     *                  maximum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendYearOfEra(int minDigits, int maxDigits) {
@@ -931,9 +922,9 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric year of century field.
      *
-     * @param minDigits  minimum number of digits to print
-     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
-     * maximum number of digits to print
+     * @param minDigits minimum number of digits to print
+     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     *                  maximum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendYearOfCentury(int minDigits, int maxDigits) {
@@ -943,9 +934,9 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric century of era field.
      *
-     * @param minDigits  minimum number of digits to print
-     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
-     * maximum number of digits to print
+     * @param minDigits minimum number of digits to print
+     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     *                  maximum number of digits to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendCenturyOfEra(int minDigits, int maxDigits) {
@@ -990,7 +981,7 @@ public class DateTimeFormatterBuilder {
      *
      * @return this DateTimeFormatterBuilder, for chaining
      */
-    public DateTimeFormatterBuilder appendMonthOfYearText() { 
+    public DateTimeFormatterBuilder appendMonthOfYearText() {
         return appendText(DateTimeFieldType.monthOfYear());
     }
 
@@ -1031,7 +1022,7 @@ public class DateTimeFormatterBuilder {
      * The names are searched in the order of the map, thus it is strongly recommended
      * to use a {@code LinkedHashMap} or similar.
      *
-     * @param parseLookup  the table of names, not null
+     * @param parseLookup the table of names, not null
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneName(Map<String, DateTimeZone> parseLookup) {
@@ -1057,7 +1048,7 @@ public class DateTimeFormatterBuilder {
      * The names are searched in the order of the map, thus it is strongly recommended
      * to use a {@code LinkedHashMap} or similar.
      *
-     * @param parseLookup  the table of names, null to use the {@link DateTimeUtils#getDefaultTimeZoneNames() default names}
+     * @param parseLookup the table of names, null to use the {@link DateTimeUtils#getDefaultTimeZoneNames() default names}
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneShortName(Map<String, DateTimeZone> parseLookup) {
@@ -1083,20 +1074,20 @@ public class DateTimeFormatterBuilder {
      * If zero offset text is supplied, then it will be printed when the zone is zero.
      * During parsing, either the zero offset text, or the offset will be parsed.
      *
-     * @param zeroOffsetText  the text to use if time zone offset is zero. If
-     * null, offset is always shown.
-     * @param showSeparators  if true, prints ':' separator before minute and
-     * second field and prints '.' separator before fraction field.
-     * @param minFields  minimum number of fields to print, stopping when no
-     * more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
-     * @param maxFields  maximum number of fields to print
+     * @param zeroOffsetText the text to use if time zone offset is zero. If
+     *                       null, offset is always shown.
+     * @param showSeparators if true, prints ':' separator before minute and
+     *                       second field and prints '.' separator before fraction field.
+     * @param minFields      minimum number of fields to print, stopping when no
+     *                       more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
+     * @param maxFields      maximum number of fields to print
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetText, boolean showSeparators,
             int minFields, int maxFields) {
         return append0(new TimeZoneOffset
-                       (zeroOffsetText, zeroOffsetText, showSeparators, minFields, maxFields));
+                (zeroOffsetText, zeroOffsetText, showSeparators, minFields, maxFields));
     }
 
     /**
@@ -1107,15 +1098,15 @@ public class DateTimeFormatterBuilder {
      * If zero offset print text is supplied, then it will be printed when the zone is zero.
      * If zero offset parse text is supplied, then either it or the offset will be parsed.
      *
-     * @param zeroOffsetPrintText  the text to print if time zone offset is zero. If
-     * null, offset is always shown.
-     * @param zeroOffsetParseText  the text to optionally parse to indicate that the time
-     * zone offset is zero. If null, then always use the offset.
-     * @param showSeparators  if true, prints ':' separator before minute and
-     * second field and prints '.' separator before fraction field.
-     * @param minFields  minimum number of fields to print, stopping when no
-     * more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
-     * @param maxFields  maximum number of fields to print
+     * @param zeroOffsetPrintText the text to print if time zone offset is zero. If
+     *                            null, offset is always shown.
+     * @param zeroOffsetParseText the text to optionally parse to indicate that the time
+     *                            zone offset is zero. If null, then always use the offset.
+     * @param showSeparators      if true, prints ':' separator before minute and
+     *                            second field and prints '.' separator before fraction field.
+     * @param minFields           minimum number of fields to print, stopping when no
+     *                            more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
+     * @param maxFields           maximum number of fields to print
      * @return this DateTimeFormatterBuilder, for chaining
      * @since 2.0
      */
@@ -1123,15 +1114,16 @@ public class DateTimeFormatterBuilder {
             String zeroOffsetPrintText, String zeroOffsetParseText, boolean showSeparators,
             int minFields, int maxFields) {
         return append0(new TimeZoneOffset
-                       (zeroOffsetPrintText, zeroOffsetParseText, showSeparators, minFields, maxFields));
+                (zeroOffsetPrintText, zeroOffsetParseText, showSeparators, minFields, maxFields));
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Calls upon {@link com.jn.langx.util.jodatime.format.DateTimeFormat} to parse the pattern and append the
      * results into this builder.
      *
-     * @param pattern  pattern specification
+     * @param pattern pattern specification
      * @throws IllegalArgumentException if the pattern is invalid
      * @see com.jn.langx.util.jodatime.format.DateTimeFormat
      */
@@ -1171,7 +1163,7 @@ public class DateTimeFormatterBuilder {
     private boolean isPrinter(Object f) {
         if (f instanceof com.jn.langx.util.jodatime.format.DateTimePrinter) {
             if (f instanceof Composite) {
-                return ((Composite)f).isPrinter();
+                return ((Composite) f).isPrinter();
             }
             return true;
         }
@@ -1181,7 +1173,7 @@ public class DateTimeFormatterBuilder {
     private boolean isParser(Object f) {
         if (f instanceof com.jn.langx.util.jodatime.format.DateTimeParser) {
             if (f instanceof Composite) {
-                return ((Composite)f).isParser();
+                return ((Composite) f).isParser();
             }
             return true;
         }
@@ -1193,13 +1185,13 @@ public class DateTimeFormatterBuilder {
     }
 
     static void appendUnknownString(StringBuffer buf, int len) {
-        for (int i = len; --i >= 0;) {
+        for (int i = len; --i >= 0; ) {
             buf.append('\ufffd');
         }
     }
 
     static void printUnknownString(Writer out, int len) throws IOException {
-        for (int i = len; --i >= 0;) {
+        for (int i = len; --i >= 0; ) {
             out.write('\ufffd');
         }
     }
@@ -1322,7 +1314,7 @@ public class DateTimeFormatterBuilder {
         protected final boolean iSigned;
 
         NumberFormatter(DateTimeFieldType fieldType,
-                int maxParsedDigits, boolean signed) {
+                        int maxParsedDigits, boolean signed) {
             super();
             iFieldType = fieldType;
             iMaxParsedDigits = maxParsedDigits;
@@ -1344,9 +1336,8 @@ public class DateTimeFormatterBuilder {
                     negative = c == '-';
 
                     // Next character must be a digit.
-                    if (length + 1 >= limit || 
-                        (c = text.charAt(position + length + 1)) < '0' || c > '9')
-                    {
+                    if (length + 1 >= limit ||
+                            (c = text.charAt(position + length + 1)) < '0' || c > '9') {
                         break;
                     }
 
@@ -1403,8 +1394,7 @@ public class DateTimeFormatterBuilder {
     static class UnpaddedNumber extends NumberFormatter {
 
         protected UnpaddedNumber(DateTimeFieldType fieldType,
-                       int maxParsedDigits, boolean signed)
-        {
+                                 int maxParsedDigits, boolean signed) {
             super(fieldType, maxParsedDigits, signed);
         }
 
@@ -1465,8 +1455,7 @@ public class DateTimeFormatterBuilder {
         protected final int iMinPrintedDigits;
 
         protected PaddedNumber(DateTimeFieldType fieldType, int maxParsedDigits,
-                     boolean signed, int minPrintedDigits)
-        {
+                               boolean signed, int minPrintedDigits) {
             super(fieldType, maxParsedDigits, signed);
             iMinPrintedDigits = minPrintedDigits;
         }
@@ -1558,9 +1547,13 @@ public class DateTimeFormatterBuilder {
     static class TwoDigitYear
             implements com.jn.langx.util.jodatime.format.DateTimePrinter, com.jn.langx.util.jodatime.format.DateTimeParser {
 
-        /** The field to print/parse. */
+        /**
+         * The field to print/parse.
+         */
         private final DateTimeFieldType iType;
-        /** The pivot year. */
+        /**
+         * The pivot year.
+         */
         private final int iPivot;
         private final boolean iLenientParse;
 
@@ -1606,7 +1599,7 @@ public class DateTimeFormatterBuilder {
                     }
                     length++;
                 }
-                
+
                 if (length == 0) {
                     return ~position;
                 }
@@ -1635,7 +1628,7 @@ public class DateTimeFormatterBuilder {
                             value = -value;
                         }
                     }
-                    
+
                     bucket.saveField(iType, value);
                     return position;
                 }
@@ -1673,7 +1666,7 @@ public class DateTimeFormatterBuilder {
             bucket.saveField(iType, year);
             return position + 2;
         }
-        
+
         public int estimatePrintedLength() {
             return 2;
         }
@@ -1742,8 +1735,9 @@ public class DateTimeFormatterBuilder {
                         year = -year;
                     }
                     return year % 100;
-                } catch (RuntimeException e) {}
-            } 
+                } catch (RuntimeException e) {
+                }
+            }
             return -1;
         }
     }
@@ -1753,7 +1747,7 @@ public class DateTimeFormatterBuilder {
             implements com.jn.langx.util.jodatime.format.DateTimePrinter, com.jn.langx.util.jodatime.format.DateTimeParser {
 
         private static Map<Locale, Map<DateTimeFieldType, Object[]>> cParseCache =
-                    new HashMap<Locale, Map<DateTimeFieldType, Object[]>>();
+                new HashMap<Locale, Map<DateTimeFieldType, Object[]>>();
         private final DateTimeFieldType iFieldType;
         private final boolean iShort;
 
@@ -1870,7 +1864,7 @@ public class DateTimeFormatterBuilder {
                         validValues.add("ce");
                         maxLength = 3;
                     }
-                    array = new Object[] {validValues, Integer.valueOf(maxLength)};
+                    array = new Object[]{validValues, Integer.valueOf(maxLength)};
                     innerMap.put(iFieldType, array);
                 } else {
                     validValues = (Set<String>) array[0];
@@ -1948,8 +1942,7 @@ public class DateTimeFormatterBuilder {
         }
 
         protected void printTo(StringBuffer buf, Writer out, long instant, Chronology chrono)
-            throws IOException
-        {
+                throws IOException {
             DateTimeField field = iFieldType.getField(chrono);
             int minDigits = iMinDigits;
 
@@ -1982,7 +1975,7 @@ public class DateTimeFormatterBuilder {
             long[] fractionData = getFractionData(fraction, field);
             long scaled = fractionData[0];
             int maxDigits = (int) fractionData[1];
-            
+
             if ((scaled & 0x7fffffff) == scaled) {
                 str = Integer.toString((int) scaled);
             } else {
@@ -2012,11 +2005,11 @@ public class DateTimeFormatterBuilder {
                 }
                 if (length < str.length()) {
                     if (buf != null) {
-                        for (int i=0; i<length; i++) {
+                        for (int i = 0; i < length; i++) {
                             buf.append(str.charAt(i));
                         }
                     } else {
-                        for (int i=0; i<length; i++) {
+                        for (int i = 0; i < length; i++) {
                             out.write(str.charAt(i));
                         }
                     }
@@ -2030,32 +2023,70 @@ public class DateTimeFormatterBuilder {
                 out.write(str);
             }
         }
-        
+
         private long[] getFractionData(long fraction, DateTimeField field) {
             long rangeMillis = field.getDurationField().getUnitMillis();
             long scalar;
             int maxDigits = iMaxDigits;
             while (true) {
                 switch (maxDigits) {
-                default: scalar = 1L; break;
-                case 1:  scalar = 10L; break;
-                case 2:  scalar = 100L; break;
-                case 3:  scalar = 1000L; break;
-                case 4:  scalar = 10000L; break;
-                case 5:  scalar = 100000L; break;
-                case 6:  scalar = 1000000L; break;
-                case 7:  scalar = 10000000L; break;
-                case 8:  scalar = 100000000L; break;
-                case 9:  scalar = 1000000000L; break;
-                case 10: scalar = 10000000000L; break;
-                case 11: scalar = 100000000000L; break;
-                case 12: scalar = 1000000000000L; break;
-                case 13: scalar = 10000000000000L; break;
-                case 14: scalar = 100000000000000L; break;
-                case 15: scalar = 1000000000000000L; break;
-                case 16: scalar = 10000000000000000L; break;
-                case 17: scalar = 100000000000000000L; break;
-                case 18: scalar = 1000000000000000000L; break;
+                    default:
+                        scalar = 1L;
+                        break;
+                    case 1:
+                        scalar = 10L;
+                        break;
+                    case 2:
+                        scalar = 100L;
+                        break;
+                    case 3:
+                        scalar = 1000L;
+                        break;
+                    case 4:
+                        scalar = 10000L;
+                        break;
+                    case 5:
+                        scalar = 100000L;
+                        break;
+                    case 6:
+                        scalar = 1000000L;
+                        break;
+                    case 7:
+                        scalar = 10000000L;
+                        break;
+                    case 8:
+                        scalar = 100000000L;
+                        break;
+                    case 9:
+                        scalar = 1000000000L;
+                        break;
+                    case 10:
+                        scalar = 10000000000L;
+                        break;
+                    case 11:
+                        scalar = 100000000000L;
+                        break;
+                    case 12:
+                        scalar = 1000000000000L;
+                        break;
+                    case 13:
+                        scalar = 10000000000000L;
+                        break;
+                    case 14:
+                        scalar = 100000000000000L;
+                        break;
+                    case 15:
+                        scalar = 1000000000000000L;
+                        break;
+                    case 16:
+                        scalar = 10000000000000000L;
+                        break;
+                    case 17:
+                        scalar = 100000000000000000L;
+                        break;
+                    case 18:
+                        scalar = 1000000000000000000L;
+                        break;
                 }
                 if (((rangeMillis * scalar) / scalar) == rangeMillis) {
                     break;
@@ -2063,8 +2094,8 @@ public class DateTimeFormatterBuilder {
                 // Overflowed: scale down.
                 maxDigits--;
             }
-            
-            return new long[] {fraction * scalar / rangeMillis, maxDigits};
+
+            return new long[]{fraction * scalar / rangeMillis, maxDigits};
         }
 
         public int estimateParsedLength() {
@@ -2073,7 +2104,7 @@ public class DateTimeFormatterBuilder {
 
         public int parseInto(com.jn.langx.util.jodatime.format.DateTimeParserBucket bucket, String text, int position) {
             DateTimeField field = iFieldType.getField(bucket.getChronology());
-            
+
             int limit = Math.min(iMaxDigits, text.length() - position);
 
             long value = 0;
@@ -2101,9 +2132,9 @@ public class DateTimeFormatterBuilder {
             }
 
             DateTimeField parseField = new PreciseDateTimeField(
-                DateTimeFieldType.millisOfSecond(),
-                MillisDurationField.INSTANCE,
-                field.getDurationField());
+                    DateTimeFieldType.millisOfSecond(),
+                    MillisDurationField.INSTANCE,
+                    field.getDurationField());
 
             bucket.saveField(parseField, (int) value);
 
@@ -2122,9 +2153,8 @@ public class DateTimeFormatterBuilder {
         private final int iMaxFields;
 
         TimeZoneOffset(String zeroOffsetPrintText, String zeroOffsetParseText,
-                                boolean showSeparators,
-                                int minFields, int maxFields)
-        {
+                       boolean showSeparators,
+                       int minFields, int maxFields) {
             super();
             iZeroOffsetPrintText = zeroOffsetPrintText;
             iZeroOffsetParseText = zeroOffsetParseText;
@@ -2139,7 +2169,7 @@ public class DateTimeFormatterBuilder {
             iMinFields = minFields;
             iMaxFields = maxFields;
         }
-            
+
         public int estimatePrintedLength() {
             int est = 1 + iMinFields << 1;
             if (iShowSeparators) {
@@ -2150,7 +2180,7 @@ public class DateTimeFormatterBuilder {
             }
             return est;
         }
-        
+
         public void printTo(
                 StringBuffer buf, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) {
@@ -2173,7 +2203,7 @@ public class DateTimeFormatterBuilder {
             if (iMaxFields == 1) {
                 return;
             }
-            displayOffset -= hours * (int)DateTimeConstants.MILLIS_PER_HOUR;
+            displayOffset -= hours * (int) DateTimeConstants.MILLIS_PER_HOUR;
             if (displayOffset == 0 && iMinFields <= 1) {
                 return;
             }
@@ -2209,7 +2239,7 @@ public class DateTimeFormatterBuilder {
             }
             com.jn.langx.util.jodatime.format.FormatUtils.appendPaddedInteger(buf, displayOffset, 3);
         }
-        
+
         public void printTo(
                 Writer out, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
@@ -2232,7 +2262,7 @@ public class DateTimeFormatterBuilder {
             if (iMaxFields == 1) {
                 return;
             }
-            displayOffset -= hours * (int)DateTimeConstants.MILLIS_PER_HOUR;
+            displayOffset -= hours * (int) DateTimeConstants.MILLIS_PER_HOUR;
             if (displayOffset == 0 && iMinFields == 1) {
                 return;
             }
@@ -2349,7 +2379,8 @@ public class DateTimeFormatterBuilder {
             limit -= 2;
             position += 2;
 
-            parse: {
+            parse:
+            {
                 // Need to decide now if separators are expected or parsing
                 // stops at hour field.
 
@@ -2430,7 +2461,7 @@ public class DateTimeFormatterBuilder {
                     limit--;
                     position++;
                 }
-                
+
                 count = digitCount(text, position, 3);
                 if (count == 0 && !expectSeparators) {
                     break parse;
@@ -2554,6 +2585,7 @@ public class DateTimeFormatterBuilder {
         INSTANCE;
         static final Set<String> ALL_IDS = DateTimeZone.getAvailableIDs();
         static final int MAX_LENGTH;
+
         static {
             int max = 0;
             for (String id : ALL_IDS) {
@@ -2633,7 +2665,7 @@ public class DateTimeFormatterBuilder {
                 int size = printerList.size();
                 iPrinters = new com.jn.langx.util.jodatime.format.DateTimePrinter[size];
                 int printEst = 0;
-                for (int i=0; i<size; i++) {
+                for (int i = 0; i < size; i++) {
                     com.jn.langx.util.jodatime.format.DateTimePrinter printer = (com.jn.langx.util.jodatime.format.DateTimePrinter) printerList.get(i);
                     printEst += printer.estimatePrintedLength();
                     iPrinters[i] = printer;
@@ -2648,7 +2680,7 @@ public class DateTimeFormatterBuilder {
                 int size = parserList.size();
                 iParsers = new com.jn.langx.util.jodatime.format.DateTimeParser[size];
                 int parseEst = 0;
-                for (int i=0; i<size; i++) {
+                for (int i = 0; i < size; i++) {
                     com.jn.langx.util.jodatime.format.DateTimeParser parser = (com.jn.langx.util.jodatime.format.DateTimeParser) parserList.get(i);
                     parseEst += parser.estimateParsedLength();
                     iParsers[i] = parser;
@@ -2711,7 +2743,7 @@ public class DateTimeFormatterBuilder {
             }
 
             int len = elements.length;
-            for (int i=0; i<len; i++) {
+            for (int i = 0; i < len; i++) {
                 elements[i].printTo(buf, partial, locale);
             }
         }
@@ -2728,7 +2760,7 @@ public class DateTimeFormatterBuilder {
             }
 
             int len = elements.length;
-            for (int i=0; i<len; i++) {
+            for (int i = 0; i < len; i++) {
                 elements[i].printTo(out, partial, locale);
             }
         }
@@ -2744,7 +2776,7 @@ public class DateTimeFormatterBuilder {
             }
 
             int len = elements.length;
-            for (int i=0; i<len && position >= 0; i++) {
+            for (int i = 0; i < len && position >= 0; i++) {
                 position = elements[i].parseInto(bucket, text, position);
             }
             return position;
@@ -2764,17 +2796,17 @@ public class DateTimeFormatterBuilder {
          */
         private void decompose(List<Object> elementPairs, List<Object> printerList, List<Object> parserList) {
             int size = elementPairs.size();
-            for (int i=0; i<size; i+=2) {
+            for (int i = 0; i < size; i += 2) {
                 Object element = elementPairs.get(i);
                 if (element instanceof Composite) {
-                    addArrayToList(printerList, ((Composite)element).iPrinters);
+                    addArrayToList(printerList, ((Composite) element).iPrinters);
                 } else {
                     printerList.add(element);
                 }
 
                 element = elementPairs.get(i + 1);
                 if (element instanceof Composite) {
-                    addArrayToList(parserList, ((Composite)element).iParsers);
+                    addArrayToList(parserList, ((Composite) element).iParsers);
                 } else {
                     parserList.add(element);
                 }
@@ -2783,7 +2815,7 @@ public class DateTimeFormatterBuilder {
 
         private void addArrayToList(List<Object> list, Object[] array) {
             if (array != null) {
-                for (int i=0; i<array.length; i++) {
+                for (int i = 0; i < array.length; i++) {
                     list.add(array[i]);
                 }
             }
@@ -2801,7 +2833,7 @@ public class DateTimeFormatterBuilder {
             super();
             iParsers = parsers;
             int est = 0;
-            for (int i=parsers.length; --i>=0 ;) {
+            for (int i = parsers.length; --i >= 0; ) {
                 com.jn.langx.util.jodatime.format.DateTimeParser parser = parsers[i];
                 if (parser != null) {
                     int len = parser.estimateParsedLength();
@@ -2829,7 +2861,7 @@ public class DateTimeFormatterBuilder {
 
             int bestInvalidPos = position;
 
-            for (int i=0; i<length; i++) {
+            for (int i = 0; i < length; i++) {
                 DateTimeParser parser = parsers[i];
                 if (parser == null) {
                     // The empty parser wins only if nothing is better.
@@ -2843,7 +2875,7 @@ public class DateTimeFormatterBuilder {
                 if (parsePos >= position) {
                     if (parsePos > bestValidPos) {
                         if (parsePos >= text.length() ||
-                            (i + 1) >= length || parsers[i + 1] == null) {
+                                (i + 1) >= length || parsers[i + 1] == null) {
 
                             // Completely parsed text or no more parsers to
                             // check. Skip the rest.

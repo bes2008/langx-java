@@ -243,6 +243,7 @@ public class Types {
         }
         throw new IllegalArgumentException();
     }
+
     /**
      * <pre>
      *     List<E>
@@ -251,6 +252,7 @@ public class Types {
     public static ParameterizedType getSetParameterizedType(Type elementType) {
         return getParameterizedType(Set.class, elementType);
     }
+
     /**
      * <pre>
      *     List<E>

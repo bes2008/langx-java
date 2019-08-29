@@ -15,8 +15,6 @@
  */
 package com.jn.langx.util.jodatime.convert;
 
-import com.jn.langx.util.jodatime.convert.Converter;
-
 /**
  * A set of converters, which allows exact converters to be quickly
  * selected. This class is threadsafe because it is (essentially) immutable.
@@ -44,7 +42,7 @@ class ConverterSet {
      *
      * @param type type to select, which may be null
      * @throws IllegalStateException if multiple converters match the type
-     * equally well
+     *                               equally well
      */
     com.jn.langx.util.jodatime.convert.Converter select(Class<?> type) throws IllegalStateException {
         // Check the hashtable first.
@@ -78,13 +76,13 @@ class ConverterSet {
         // Do all updates on a copy: slots in iSelectEntries must not be
         // updated by multiple threads as this can allow all null slots to be
         // consumed.
-        entries = (Entry[])entries.clone();
+        entries = (Entry[]) entries.clone();
 
         // Add new entry.
         entries[index] = e;
 
         // Verify that at least one null slot exists!
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             if (entries[i] == null) {
                 // Found a null slot, swap in new hashtable.
                 iSelectEntries = entries;
@@ -96,7 +94,7 @@ class ConverterSet {
 
         int newLength = length << 1;
         Entry[] newEntries = new Entry[newLength];
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             e = entries[i];
             type = e.iType;
             index = type == null ? 0 : type.hashCode() & (newLength - 1);
@@ -133,15 +131,15 @@ class ConverterSet {
      * it. If the converter is exactly the same as one already in the set, the
      * original set is returned.
      *
-     * @param converter  converter to add, must not be null
-     * @param removed  if not null, element 0 is set to the removed converter
+     * @param converter converter to add, must not be null
+     * @param removed   if not null, element 0 is set to the removed converter
      * @throws NullPointerException if converter is null
      */
     ConverterSet add(com.jn.langx.util.jodatime.convert.Converter converter, com.jn.langx.util.jodatime.convert.Converter[] removed) {
         com.jn.langx.util.jodatime.convert.Converter[] converters = iConverters;
         int length = converters.length;
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             com.jn.langx.util.jodatime.convert.Converter existing = converters[i];
             if (converter.equals(existing)) {
                 // Already in the set.
@@ -150,12 +148,12 @@ class ConverterSet {
                 }
                 return this;
             }
-            
+
             if (converter.getSupportedType() == existing.getSupportedType()) {
                 // Replace the converter.
                 com.jn.langx.util.jodatime.convert.Converter[] copy = new com.jn.langx.util.jodatime.convert.Converter[length];
-                    
-                for (int j=0; j<length; j++) {
+
+                for (int j = 0; j < length; j++) {
                     if (j != i) {
                         copy[j] = converters[j];
                     } else {
@@ -174,7 +172,7 @@ class ConverterSet {
         com.jn.langx.util.jodatime.convert.Converter[] copy = new com.jn.langx.util.jodatime.convert.Converter[length + 1];
         System.arraycopy(converters, 0, copy, 0, length);
         copy[length] = converter;
-        
+
         if (removed != null) {
             removed[0] = null;
         }
@@ -185,15 +183,15 @@ class ConverterSet {
      * Returns a copy of this set, with the given converter removed. If the
      * converter was not in the set, the original set is returned.
      *
-     * @param converter  converter to remove, must not be null
-     * @param removed  if not null, element 0 is set to the removed converter
+     * @param converter converter to remove, must not be null
+     * @param removed   if not null, element 0 is set to the removed converter
      * @throws NullPointerException if converter is null
      */
     ConverterSet remove(com.jn.langx.util.jodatime.convert.Converter converter, com.jn.langx.util.jodatime.convert.Converter[] removed) {
         com.jn.langx.util.jodatime.convert.Converter[] converters = iConverters;
         int length = converters.length;
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             if (converter.equals(converters[i])) {
                 return remove(i, removed);
             }
@@ -210,7 +208,7 @@ class ConverterSet {
      * Returns a copy of this set, with the converter at the given index
      * removed.
      *
-     * @param index index of converter to remove
+     * @param index   index of converter to remove
      * @param removed if not null, element 0 is set to the removed converter
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -226,14 +224,14 @@ class ConverterSet {
         }
 
         com.jn.langx.util.jodatime.convert.Converter[] copy = new com.jn.langx.util.jodatime.convert.Converter[length - 1];
-                
+
         int j = 0;
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             if (i != index) {
                 copy[j++] = converters[i];
             }
         }
-        
+
         return new ConverterSet(copy);
     }
 
@@ -246,7 +244,7 @@ class ConverterSet {
         int length = converters.length;
         com.jn.langx.util.jodatime.convert.Converter converter;
 
-        for (int i=length; --i>=0; ) {
+        for (int i = length; --i >= 0; ) {
             converter = converters[i];
             Class<?> supportedType = converter.getSupportedType();
 
@@ -276,10 +274,10 @@ class ConverterSet {
         // At this point, there exist multiple potential converters.
 
         // Eliminate supertypes.
-        for (int i=length; --i>=0; ) {
+        for (int i = length; --i >= 0; ) {
             converter = converters[i];
             Class<?> supportedType = converter.getSupportedType();
-            for (int j=length; --j>=0; ) {
+            for (int j = length; --j >= 0; ) {
                 if (j != i && converters[j].getSupportedType().isAssignableFrom(supportedType)) {
                     // Eliminate supertype.
                     set = set.remove(j, null);
@@ -288,8 +286,8 @@ class ConverterSet {
                     i = length - 1;
                 }
             }
-        }        
-        
+        }
+
         // Check what remains in the set.
 
         if (length == 1) {
@@ -304,7 +302,7 @@ class ConverterSet {
         msg.append("Unable to find best converter for type \"");
         msg.append(type.getName());
         msg.append("\" from remaining set: ");
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             converter = converters[i];
             Class<?> supportedType = converter.getSupportedType();
 

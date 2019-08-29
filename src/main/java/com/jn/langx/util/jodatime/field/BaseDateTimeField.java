@@ -15,19 +15,13 @@
  */
 package com.jn.langx.util.jodatime.field;
 
-import java.util.Locale;
+import com.jn.langx.util.jodatime.*;
 
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.IllegalFieldValueException;
-import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.field.DecoratedDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
+import java.util.Locale;
 
 /**
  * BaseDateTimeField provides the common behaviour for DateTimeField
- * implementations. 
+ * implementations.
  * <p>
  * This class should generally not be used directly by API users. The
  * DateTimeField class should be used when different kinds of DateTimeField
@@ -37,12 +31,14 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  * be as well.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see DecoratedDateTimeField
+ * @since 1.0
  */
 public abstract class BaseDateTimeField extends DateTimeField {
 
-    /** The field type. */
+    /**
+     * The field type.
+     */
     private final DateTimeFieldType iType;
 
     /**
@@ -55,7 +51,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
         }
         iType = type;
     }
-    
+
     public final DateTimeFieldType getType() {
         return iType;
     }
@@ -73,23 +69,25 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     // Main access API
     //------------------------------------------------------------------------
+
     /**
      * Get the value of this field from the milliseconds.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the value of the field, in the units of the field
      */
     public abstract int get(long instant);
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the human-readable, text value of this field from the milliseconds.
      * If the specified locale is null, the default locale is used.
      * <p>
      * The default implementation returns getAsText(get(instant), locale).
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @param locale the locale to use for selecting a text symbol, null means default
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param locale  the locale to use for selecting a text symbol, null means default
      * @return the text value of the field
      */
     public String getAsText(long instant, Locale locale) {
@@ -101,7 +99,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * The default implementation calls {@link #getAsText(long, Locale)}.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the text value of the field
      */
     public final String getAsText(long instant) {
@@ -114,9 +112,9 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * The default implementation returns getAsText(fieldValue, locale).
      *
-     * @param partial  the partial instant to query
-     * @param fieldValue  the field value of this field, provided for performance
-     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @param partial    the partial instant to query
+     * @param fieldValue the field value of this field, provided for performance
+     * @param locale     the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
     public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
@@ -130,7 +128,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * The default implementation calls {@link ReadablePartial#get(DateTimeFieldType)}
      * and {@link #getAsText(ReadablePartial, int, Locale)}.
      *
-     * @param partial  the partial instant to query
+     * @param partial the partial instant to query
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
@@ -147,8 +145,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Note: subclasses that override this method should also override
      * getMaximumTextLength.
      *
-     * @param fieldValue  the numeric value to convert to text
-     * @param locale the locale to use for selecting a text symbol, null for default
+     * @param fieldValue the numeric value to convert to text
+     * @param locale     the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
     public String getAsText(int fieldValue, Locale locale) {
@@ -156,14 +154,15 @@ public abstract class BaseDateTimeField extends DateTimeField {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the human-readable, short text value of this field from the milliseconds.
      * If the specified locale is null, the default locale is used.
      * <p>
      * The default implementation returns getAsShortText(get(instant), locale).
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @param locale the locale to use for selecting a text symbol, null means default
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param locale  the locale to use for selecting a text symbol, null means default
      * @return the text value of the field
      */
     public String getAsShortText(long instant, Locale locale) {
@@ -175,7 +174,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * The default implementation calls {@link #getAsShortText(long, Locale)}.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the text value of the field
      */
     public final String getAsShortText(long instant) {
@@ -188,9 +187,9 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * The default implementation returns getAsShortText(fieldValue, locale).
      *
-     * @param partial  the partial instant to query
-     * @param fieldValue  the field value of this field, provided for performance
-     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @param partial    the partial instant to query
+     * @param fieldValue the field value of this field, provided for performance
+     * @param locale     the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
     public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
@@ -204,7 +203,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * The default implementation calls {@link ReadablePartial#get(DateTimeFieldType)}
      * and {@link #getAsText(ReadablePartial, int, Locale)}.
      *
-     * @param partial  the partial instant to query
+     * @param partial the partial instant to query
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
@@ -221,8 +220,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Note: subclasses that override this method should also override
      * getMaximumShortTextLength.
      *
-     * @param fieldValue  the numeric value to convert to text
-     * @param locale the locale to use for selecting a text symbol, null for default
+     * @param fieldValue the numeric value to convert to text
+     * @param locale     the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
     public String getAsShortText(int fieldValue, Locale locale) {
@@ -230,6 +229,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Adds a value (which may be negative) to the instant value,
      * overflowing into larger fields if necessary.
@@ -246,9 +246,9 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * 2000-08-20 add minus nine months is 1999-11-20<br>
      * 2001-01-31 add one month  is 2001-02-28<br>
      * 2001-01-31 add two months is 2001-03-31<br>
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
-     * @param value  the value to add, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to add to
+     * @param value   the value to add, in the units of the field
      * @return the updated milliseconds
      */
     public long add(long instant, int value) {
@@ -258,12 +258,12 @@ public abstract class BaseDateTimeField extends DateTimeField {
     /**
      * Adds a value (which may be negative) to the instant value,
      * overflowing into larger fields if necessary.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
-     * @param value  the long value to add, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to add to
+     * @param value   the long value to add, in the units of the field
      * @return the updated milliseconds
      * @throws IllegalArgumentException if value is too large
-     * @see #add(long,int)
+     * @see #add(long, int)
      */
     public long add(long instant, long value) {
         return getDurationField().add(instant, value);
@@ -288,11 +288,11 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * 2000-08-20 add minus nine months is 2000-11-20<br>
      * 2001-01-31 add one month  is 2001-02-28<br>
      * 2001-01-31 add two months is 2001-03-31<br>
-     * 
-     * @param instant  the partial instant
-     * @param fieldIndex  the index of this field in the partial
-     * @param values  the values of the partial instant which should be updated
-     * @param valueToAdd  the value to add, in the units of the field
+     *
+     * @param instant    the partial instant
+     * @param fieldIndex the index of this field in the partial
+     * @param values     the values of the partial instant which should be updated
+     * @param valueToAdd the value to add, in the units of the field
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
@@ -304,7 +304,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
         // trouble is when dealing with days and months, so we use this technique of
         // adding/removing one from the larger field at a time
         DateTimeField nextField = null;
-        
+
         while (valueToAdd > 0) {
             int max = getMaximumValue(instant, values);
             long proposed = values[fieldIndex] + valueToAdd;
@@ -346,7 +346,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
             values = nextField.add(instant, fieldIndex - 1, values, -1);  // subtract 1 from next bigger field
             values[fieldIndex] = getMaximumValue(instant, values);  // reset this field to max value
         }
-        
+
         return set(instant, fieldIndex, values, values[fieldIndex]);  // adjusts smaller fields
     }
 
@@ -369,11 +369,11 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * 10:20:30 add 20 minutes is 10:40:30<br>
      * 10:20:30 add 45 minutes is 11:05:30<br>
      * 10:20:30 add 16 hours is 02:20:30<br>
-     * 
-     * @param instant  the partial instant
-     * @param fieldIndex  the index of this field in the partial
-     * @param values  the values of the partial instant which should be updated
-     * @param valueToAdd  the value to add, in the units of the field
+     *
+     * @param instant    the partial instant
+     * @param fieldIndex the index of this field in the partial
+     * @param values     the values of the partial instant which should be updated
+     * @param valueToAdd the value to add, in the units of the field
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
@@ -385,7 +385,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
         // trouble is when dealing with days and months, so we use this technique of
         // adding/removing one from the larger field at a time
         DateTimeField nextField = null;
-        
+
         while (valueToAdd > 0) {
             int max = getMaximumValue(instant, values);
             long proposed = values[fieldIndex] + valueToAdd;
@@ -431,7 +431,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
             values = nextField.addWrapPartial(instant, fieldIndex - 1, values, -1);  // subtract 1 from next bigger field
             values[fieldIndex] = getMaximumValue(instant, values);  // reset this field to max value
         }
-        
+
         return set(instant, fieldIndex, values, values[fieldIndex]);  // adjusts smaller fields
     }
 
@@ -454,15 +454,15 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * The default implementation internally calls set. Subclasses are
      * encouraged to provide a more efficient implementation.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
-     * @param value  the value to add, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to add to
+     * @param value   the value to add, in the units of the field
      * @return the updated milliseconds
      */
     public long addWrapField(long instant, int value) {
         int current = get(instant);
         int wrapped = com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue
-            (current, value, getMinimumValue(instant), getMaximumValue(instant));
+                (current, value, getMinimumValue(instant), getMaximumValue(instant));
         return set(instant, wrapped);
     }
 
@@ -485,39 +485,40 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * The default implementation internally calls set. Subclasses are
      * encouraged to provide a more efficient implementation.
-     * 
-     * @param instant  the partial instant
-     * @param fieldIndex  the index of this field in the instant
-     * @param values  the values of the partial instant which should be updated
-     * @param valueToAdd  the value to add, in the units of the field
+     *
+     * @param instant    the partial instant
+     * @param fieldIndex the index of this field in the instant
+     * @param values     the values of the partial instant which should be updated
+     * @param valueToAdd the value to add, in the units of the field
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid
      */
     public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         int current = values[fieldIndex];
         int wrapped = com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue
-            (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));
+                (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));
         return set(instant, fieldIndex, values, wrapped);  // adjusts smaller fields
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Computes the difference between two instants, as measured in the units
      * of this field. Any fractional units are dropped from the result. Calling
      * getDifference reverses the effect of calling add. In the following code:
-     *
+     * <p>
      * <pre>
      * long instant = ...
      * int v = ...
      * int age = getDifference(add(instant, v), instant);
      * </pre>
-     *
+     * <p>
      * The value 'age' is the same as the value 'v'.
      *
-     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract from
+     * @param minuendInstant    the milliseconds from 1970-01-01T00:00:00Z to
+     *                          subtract from
      * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract off the minuend
+     *                          subtract off the minuend
      * @return the difference in the units of this field
      */
     public int getDifference(long minuendInstant, long subtrahendInstant) {
@@ -528,19 +529,19 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Computes the difference between two instants, as measured in the units
      * of this field. Any fractional units are dropped from the result. Calling
      * getDifference reverses the effect of calling add. In the following code:
-     *
+     * <p>
      * <pre>
      * long instant = ...
      * long v = ...
      * long age = getDifferenceAsLong(add(instant, v), instant);
      * </pre>
-     *
+     * <p>
      * The value 'age' is the same as the value 'v'.
      *
-     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract from
+     * @param minuendInstant    the milliseconds from 1970-01-01T00:00:00Z to
+     *                          subtract from
      * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract off the minuend
+     *                          subtract off the minuend
      * @return the difference in the units of this field
      */
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
@@ -557,9 +558,9 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * may be changed. For example if the current date is the 31st January, and
      * the month is set to February, the day would be invalid. Instead, the day
      * would be changed to the closest value - the 28th/29th February as appropriate.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
-     * @param value  the value to set, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param value   the value to set, in the units of the field
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -575,18 +576,18 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * may be changed. For example if the current date is the 31st January, and
      * the month is set to February, the day would be invalid. Instead, the day
      * would be changed to the closest value - the 28th/29th February as appropriate.
-     * 
-     * @param partial  the partial instant
-     * @param fieldIndex  the index of this field in the instant
-     * @param values  the values to update
-     * @param newValue  the value to set, in the units of the field
+     *
+     * @param partial    the partial instant
+     * @param fieldIndex the index of this field in the instant
+     * @param values     the values to update
+     * @param newValue   the value to set, in the units of the field
      * @return the updated values
      * @throws IllegalArgumentException if the value is invalid
      */
     public int[] set(ReadablePartial partial, int fieldIndex, int[] values, int newValue) {
         FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(partial, values), getMaximumValue(partial, values));
         values[fieldIndex] = newValue;
-        
+
         // may need to adjust smaller fields
         for (int i = fieldIndex + 1; i < partial.size(); i++) {
             DateTimeField field = partial.getField(i);
@@ -610,9 +611,9 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Note: subclasses that override this method should also override
      * getAsText.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
-     * @param text  the text value to set
-     * @param locale the locale to use for selecting a text symbol, null for default
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param text    the text value to set
+     * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
@@ -628,8 +629,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * <p>
      * Note: subclasses that override this method should also override getAsText.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
-     * @param text  the text value to set
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param text    the text value to set
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
@@ -644,11 +645,11 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * This implementation uses <code>convertText(String, Locale)</code> and
      * {@link #set(ReadablePartial, int, int[], int)}.
      *
-     * @param instant  the partial instant
-     * @param fieldIndex  the index of this field in the instant
-     * @param values  the values of the partial instant which should be updated
-     * @param text  the text value to set
-     * @param locale the locale to use for selecting a text symbol, null for default
+     * @param instant    the partial instant
+     * @param fieldIndex the index of this field in the instant
+     * @param values     the values of the partial instant which should be updated
+     * @param text       the text value to set
+     * @param locale     the locale to use for selecting a text symbol, null for default
      * @return the passed in values
      * @throws IllegalArgumentException if the text value is invalid
      */
@@ -659,9 +660,9 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     /**
      * Convert the specified text and locale into a value.
-     * 
-     * @param text  the text to convert
-     * @param locale  the locale to convert using
+     *
+     * @param text   the text to convert
+     * @param locale the locale to convert using
      * @return the value extracted from the text
      * @throws IllegalArgumentException if the text is invalid
      */
@@ -675,6 +676,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     // Extra information API
     //------------------------------------------------------------------------
+
     /**
      * Returns the duration per unit value of this field. For example, if this
      * field represents "hour of day", then the unit duration is an hour.
@@ -699,7 +701,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * false.
      * <p>
      * This implementation returns false.
-     * 
+     *
      * @return true if the field is 'leap'
      */
     public boolean isLeap(long instant) {
@@ -730,7 +732,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     /**
      * Get the minimum allowable value for this field.
-     * 
+     *
      * @return the minimum valid value for this field, in the units of the
      * field
      */
@@ -740,8 +742,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Get the minimum value for this field evaluated at the specified time.
      * <p>
      * This implementation returns the same as {@link #getMinimumValue()}.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the minimum value for this field, in the units of the field
      */
     public int getMinimumValue(long instant) {
@@ -752,8 +754,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Get the minimum value for this field evaluated at the specified instant.
      * <p>
      * This implementation returns the same as {@link #getMinimumValue()}.
-     * 
-     * @param instant  the partial instant to query
+     *
+     * @param instant the partial instant to query
      * @return the minimum value for this field, in the units of the field
      */
     public int getMinimumValue(ReadablePartial instant) {
@@ -765,8 +767,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * the specified values.
      * <p>
      * This implementation returns the same as {@link #getMinimumValue(ReadablePartial)}.
-     * 
-     * @param instant  the partial instant to query
+     *
+     * @param instant the partial instant to query
      * @param values  the values to use
      * @return the minimum value for this field, in the units of the field
      */
@@ -776,7 +778,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     /**
      * Get the maximum allowable value for this field.
-     * 
+     *
      * @return the maximum valid value for this field, in the units of the
      * field
      */
@@ -786,8 +788,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Get the maximum value for this field evaluated at the specified time.
      * <p>
      * This implementation returns the same as {@link #getMaximumValue()}.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the maximum value for this field, in the units of the field
      */
     public int getMaximumValue(long instant) {
@@ -798,8 +800,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Get the maximum value for this field evaluated at the specified instant.
      * <p>
      * This implementation returns the same as {@link #getMaximumValue()}.
-     * 
-     * @param instant  the partial instant to query
+     *
+     * @param instant the partial instant to query
      * @return the maximum value for this field, in the units of the field
      */
     public int getMaximumValue(ReadablePartial instant) {
@@ -811,8 +813,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * the specified values.
      * <p>
      * This implementation returns the same as {@link #getMaximumValue(ReadablePartial)}.
-     * 
-     * @param instant  the partial instant to query
+     *
+     * @param instant the partial instant to query
      * @param values  the values to use
      * @return the maximum value for this field, in the units of the field
      */
@@ -823,8 +825,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
     /**
      * Get the maximum text value for this field. The default implementation
      * returns the equivalent of Integer.toString(getMaximumValue()).length().
-     * 
-     * @param locale  the locale to use for selecting a text symbol
+     *
+     * @param locale the locale to use for selecting a text symbol
      * @return the maximum text length
      */
     public int getMaximumTextLength(Locale locale) {
@@ -844,8 +846,8 @@ public abstract class BaseDateTimeField extends DateTimeField {
     /**
      * Get the maximum short text value for this field. The default
      * implementation returns getMaximumTextLength().
-     * 
-     * @param locale  the locale to use for selecting a text symbol
+     *
+     * @param locale the locale to use for selecting a text symbol
      * @return the maximum short text length
      */
     public int getMaximumShortTextLength(Locale locale) {
@@ -854,6 +856,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     // Calculation API
     //------------------------------------------------------------------------
+
     /**
      * Round to the lowest whole unit of this field. After rounding, the value
      * of this field and all fields of a higher magnitude are retained. The
@@ -863,7 +866,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * For example, a datetime of 2002-11-02T23:34:56.789, rounded to the
      * lowest whole hour is 2002-11-02T23:00:00.000.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
     public abstract long roundFloor(long instant);
@@ -881,7 +884,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * modified as a result, adds one field unit. Subclasses are encouraged to
      * provide a more efficient implementation.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
     public long roundCeiling(long instant) {
@@ -898,7 +901,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * behaves like roundFloor. If the millisecond value is closer to the
      * ceiling, this function behaves like roundCeiling.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
     public long roundHalfFloor(long instant) {
@@ -922,7 +925,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * the millisecond value is closer to the ceiling or is exactly halfway,
      * this function behaves like roundCeiling.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
     public long roundHalfCeiling(long instant) {
@@ -950,7 +953,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * ceiling, the ceiling is chosen over the floor only if it makes this
      * field's value even.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
     public long roundHalfEven(long instant) {
@@ -989,7 +992,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * provide a more efficient implementation.
      *
      * @param instant the milliseconds from 1970-01-01T00:00:00Z to get the
-     * remainder
+     *                remainder
      * @return remainder duration, in milliseconds
      */
     public long remainder(long instant) {
@@ -998,7 +1001,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
 
     /**
      * Get a suitable debug string.
-     * 
+     *
      * @return debug string
      */
     public String toString() {

@@ -38,10 +38,10 @@ public final class DefaultHostsFileEntriesResolver implements HostsFileEntriesRe
                 return inet6Entries.get(normalized);
             case IPV4_PREFERRED:
                 Inet4Address inet4Address = inet4Entries.get(normalized);
-                return inet4Address != null? inet4Address : inet6Entries.get(normalized);
+                return inet4Address != null ? inet4Address : inet6Entries.get(normalized);
             case IPV6_PREFERRED:
                 Inet6Address inet6Address = inet6Entries.get(normalized);
-                return inet6Address != null? inet6Address : inet4Entries.get(normalized);
+                return inet6Address != null ? inet6Address : inet4Entries.get(normalized);
             default:
                 throw new IllegalArgumentException("Unknown ResolvedAddressTypes " + resolvedAddressTypes);
         }

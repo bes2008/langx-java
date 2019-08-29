@@ -15,14 +15,13 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeField;
 import com.jn.langx.util.jodatime.DateTimeZone;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.chrono.BaseChronology;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Abstract Chronology that enables chronologies to be assembled from
@@ -94,7 +93,7 @@ public abstract class AssembledChronology extends BaseChronology {
      * can be determined that the base chronology will produce the same results
      * as AbstractChronology.
      *
-     * @param base optional base chronology to copy initial fields from
+     * @param base  optional base chronology to copy initial fields from
      * @param param optional param object avalable for assemble method
      */
     protected AssembledChronology(Chronology base, Object param) {
@@ -113,8 +112,7 @@ public abstract class AssembledChronology extends BaseChronology {
 
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         Chronology base;
         if ((base = iBase) != null && (iBaseFlags & 6) == 6) {
             // Only call specialized implementation if applicable fields are the same.
@@ -126,31 +124,29 @@ public abstract class AssembledChronology extends BaseChronology {
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         Chronology base;
         if ((base = iBase) != null && (iBaseFlags & 5) == 5) {
             // Only call specialized implementation if applicable fields are the same.
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth,
-                                          hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+                    hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         }
         return super.getDateTimeMillis(year, monthOfYear, dayOfMonth,
-                                       hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+                hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public long getDateTimeMillis(long instant,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         Chronology base;
         if ((base = iBase) != null && (iBaseFlags & 1) == 1) {
             // Only call specialized implementation if applicable fields are the same.
             return base.getDateTimeMillis
-                (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+                    (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         }
         return super.getDateTimeMillis
-            (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+                (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public final DurationField millis() {
@@ -325,62 +321,62 @@ public abstract class AssembledChronology extends BaseChronology {
 
         {
             DurationField f;
-            iMillis    = (f = fields.millis)    != null ? f : super.millis();
-            iSeconds   = (f = fields.seconds)   != null ? f : super.seconds();
-            iMinutes   = (f = fields.minutes)   != null ? f : super.minutes();
-            iHours     = (f = fields.hours)     != null ? f : super.hours();
-            iHalfdays  = (f = fields.halfdays)  != null ? f : super.halfdays();
-            iDays      = (f = fields.days)      != null ? f : super.days();
-            iWeeks     = (f = fields.weeks)     != null ? f : super.weeks();
+            iMillis = (f = fields.millis) != null ? f : super.millis();
+            iSeconds = (f = fields.seconds) != null ? f : super.seconds();
+            iMinutes = (f = fields.minutes) != null ? f : super.minutes();
+            iHours = (f = fields.hours) != null ? f : super.hours();
+            iHalfdays = (f = fields.halfdays) != null ? f : super.halfdays();
+            iDays = (f = fields.days) != null ? f : super.days();
+            iWeeks = (f = fields.weeks) != null ? f : super.weeks();
             iWeekyears = (f = fields.weekyears) != null ? f : super.weekyears();
-            iMonths    = (f = fields.months)    != null ? f : super.months();
-            iYears     = (f = fields.years)     != null ? f : super.years();
+            iMonths = (f = fields.months) != null ? f : super.months();
+            iYears = (f = fields.years) != null ? f : super.years();
             iCenturies = (f = fields.centuries) != null ? f : super.centuries();
-            iEras      = (f = fields.eras)      != null ? f : super.eras();
+            iEras = (f = fields.eras) != null ? f : super.eras();
         }
 
         {
             DateTimeField f;
-            iMillisOfSecond     = (f = fields.millisOfSecond)     != null ? f : super.millisOfSecond();
-            iMillisOfDay        = (f = fields.millisOfDay)        != null ? f : super.millisOfDay();
-            iSecondOfMinute     = (f = fields.secondOfMinute)     != null ? f : super.secondOfMinute();
-            iSecondOfDay        = (f = fields.secondOfDay)        != null ? f : super.secondOfDay();
-            iMinuteOfHour       = (f = fields.minuteOfHour)       != null ? f : super.minuteOfHour();
-            iMinuteOfDay        = (f = fields.minuteOfDay)        != null ? f : super.minuteOfDay();
-            iHourOfDay          = (f = fields.hourOfDay)          != null ? f : super.hourOfDay();
-            iClockhourOfDay     = (f = fields.clockhourOfDay)     != null ? f : super.clockhourOfDay();
-            iHourOfHalfday      = (f = fields.hourOfHalfday)      != null ? f : super.hourOfHalfday();
+            iMillisOfSecond = (f = fields.millisOfSecond) != null ? f : super.millisOfSecond();
+            iMillisOfDay = (f = fields.millisOfDay) != null ? f : super.millisOfDay();
+            iSecondOfMinute = (f = fields.secondOfMinute) != null ? f : super.secondOfMinute();
+            iSecondOfDay = (f = fields.secondOfDay) != null ? f : super.secondOfDay();
+            iMinuteOfHour = (f = fields.minuteOfHour) != null ? f : super.minuteOfHour();
+            iMinuteOfDay = (f = fields.minuteOfDay) != null ? f : super.minuteOfDay();
+            iHourOfDay = (f = fields.hourOfDay) != null ? f : super.hourOfDay();
+            iClockhourOfDay = (f = fields.clockhourOfDay) != null ? f : super.clockhourOfDay();
+            iHourOfHalfday = (f = fields.hourOfHalfday) != null ? f : super.hourOfHalfday();
             iClockhourOfHalfday = (f = fields.clockhourOfHalfday) != null ? f : super.clockhourOfHalfday();
-            iHalfdayOfDay       = (f = fields.halfdayOfDay)       != null ? f : super.halfdayOfDay();
-            iDayOfWeek          = (f = fields.dayOfWeek)          != null ? f : super.dayOfWeek();
-            iDayOfMonth         = (f = fields.dayOfMonth)         != null ? f : super.dayOfMonth();
-            iDayOfYear          = (f = fields.dayOfYear)          != null ? f : super.dayOfYear();
-            iWeekOfWeekyear     = (f = fields.weekOfWeekyear)     != null ? f : super.weekOfWeekyear();
-            iWeekyear           = (f = fields.weekyear)           != null ? f : super.weekyear();
-            iWeekyearOfCentury  = (f = fields.weekyearOfCentury)  != null ? f : super.weekyearOfCentury();
-            iMonthOfYear        = (f = fields.monthOfYear)        != null ? f : super.monthOfYear();
-            iYear               = (f = fields.year)               != null ? f : super.year();
-            iYearOfEra          = (f = fields.yearOfEra)          != null ? f : super.yearOfEra();
-            iYearOfCentury      = (f = fields.yearOfCentury)      != null ? f : super.yearOfCentury();
-            iCenturyOfEra       = (f = fields.centuryOfEra)       != null ? f : super.centuryOfEra();
-            iEra                = (f = fields.era)                != null ? f : super.era();
+            iHalfdayOfDay = (f = fields.halfdayOfDay) != null ? f : super.halfdayOfDay();
+            iDayOfWeek = (f = fields.dayOfWeek) != null ? f : super.dayOfWeek();
+            iDayOfMonth = (f = fields.dayOfMonth) != null ? f : super.dayOfMonth();
+            iDayOfYear = (f = fields.dayOfYear) != null ? f : super.dayOfYear();
+            iWeekOfWeekyear = (f = fields.weekOfWeekyear) != null ? f : super.weekOfWeekyear();
+            iWeekyear = (f = fields.weekyear) != null ? f : super.weekyear();
+            iWeekyearOfCentury = (f = fields.weekyearOfCentury) != null ? f : super.weekyearOfCentury();
+            iMonthOfYear = (f = fields.monthOfYear) != null ? f : super.monthOfYear();
+            iYear = (f = fields.year) != null ? f : super.year();
+            iYearOfEra = (f = fields.yearOfEra) != null ? f : super.yearOfEra();
+            iYearOfCentury = (f = fields.yearOfCentury) != null ? f : super.yearOfCentury();
+            iCenturyOfEra = (f = fields.centuryOfEra) != null ? f : super.centuryOfEra();
+            iEra = (f = fields.era) != null ? f : super.era();
         }
 
         int flags;
         if (iBase == null) {
             flags = 0;
         } else {
-            flags = 
-                ((iHourOfDay      == iBase.hourOfDay()      &&
-                  iMinuteOfHour   == iBase.minuteOfHour()   &&
-                  iSecondOfMinute == iBase.secondOfMinute() &&
-                  iMillisOfSecond == iBase.millisOfSecond()   ) ? 1 : 0) |
+            flags =
+                    ((iHourOfDay == iBase.hourOfDay() &&
+                            iMinuteOfHour == iBase.minuteOfHour() &&
+                            iSecondOfMinute == iBase.secondOfMinute() &&
+                            iMillisOfSecond == iBase.millisOfSecond()) ? 1 : 0) |
 
-                ((iMillisOfDay == iBase.millisOfDay()) ? 2 : 0) |
+                            ((iMillisOfDay == iBase.millisOfDay()) ? 2 : 0) |
 
-                ((iYear        == iBase.year()        &&
-                  iMonthOfYear == iBase.monthOfYear() &&
-                  iDayOfMonth  == iBase.dayOfMonth()    ) ? 4 : 0);
+                            ((iYear == iBase.year() &&
+                                    iMonthOfYear == iBase.monthOfYear() &&
+                                    iDayOfMonth == iBase.dayOfMonth()) ? 4 : 0);
         }
 
         iBaseFlags = flags;
@@ -400,7 +396,7 @@ public abstract class AssembledChronology extends BaseChronology {
         public DurationField minutes;
         public DurationField hours;
         public DurationField halfdays;
-    
+
         public DurationField days;
         public DurationField weeks;
         public DurationField weekyears;
@@ -408,7 +404,7 @@ public abstract class AssembledChronology extends BaseChronology {
         public DurationField years;
         public DurationField centuries;
         public DurationField eras;
-    
+
         public DateTimeField millisOfSecond;
         public DateTimeField millisOfDay;
         public DateTimeField secondOfMinute;
@@ -420,7 +416,7 @@ public abstract class AssembledChronology extends BaseChronology {
         public DateTimeField hourOfHalfday;
         public DateTimeField clockhourOfHalfday;
         public DateTimeField halfdayOfDay;
-    
+
         public DateTimeField dayOfWeek;
         public DateTimeField dayOfMonth;
         public DateTimeField dayOfYear;

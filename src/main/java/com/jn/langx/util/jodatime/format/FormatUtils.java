@@ -39,12 +39,12 @@ public class FormatUtils {
     /**
      * Converts an integer to a string, prepended with a variable amount of '0'
      * pad characters, and appends it to the given buffer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param buf receives integer converted to a string
+     * @param buf   receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size  minumum amount of digits to append
      */
     public static void appendPaddedInteger(StringBuffer buf, int value, int size) {
         if (value < 0) {
@@ -55,7 +55,7 @@ public class FormatUtils {
                 for (; size > 10; size--) {
                     buf.append('0');
                 }
-                buf.append("" + -(long)Integer.MIN_VALUE);
+                buf.append("" + -(long) Integer.MIN_VALUE);
                 return;
             }
         }
@@ -63,7 +63,7 @@ public class FormatUtils {
             for (; size > 1; size--) {
                 buf.append('0');
             }
-            buf.append((char)(value + '0'));
+            buf.append((char) (value + '0'));
         } else if (value < 100) {
             for (; size > 2; size--) {
                 buf.append('0');
@@ -82,7 +82,7 @@ public class FormatUtils {
             } else if (value < 10000) {
                 digits = 4;
             } else {
-                digits = (int)(Math.log(value) / LOG_10) + 1;
+                digits = (int) (Math.log(value) / LOG_10) + 1;
             }
             for (; size > digits; size--) {
                 buf.append('0');
@@ -94,15 +94,15 @@ public class FormatUtils {
     /**
      * Converts an integer to a string, prepended with a variable amount of '0'
      * pad characters, and appends it to the given buffer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param buf receives integer converted to a string
+     * @param buf   receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size  minumum amount of digits to append
      */
     public static void appendPaddedInteger(StringBuffer buf, long value, int size) {
-        int intValue = (int)value;
+        int intValue = (int) value;
         if (intValue == value) {
             appendPaddedInteger(buf, intValue, size);
         } else if (size <= 19) {
@@ -120,7 +120,7 @@ public class FormatUtils {
                     return;
                 }
             }
-            int digits = (int)(Math.log(value) / LOG_10) + 1;
+            int digits = (int) (Math.log(value) / LOG_10) + 1;
             for (; size > digits; size--) {
                 buf.append('0');
             }
@@ -131,16 +131,15 @@ public class FormatUtils {
     /**
      * Converts an integer to a string, prepended with a variable amount of '0'
      * pad characters, and writes it to the given writer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param out receives integer converted to a string
+     * @param out   receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size  minumum amount of digits to append
      */
     public static void writePaddedInteger(Writer out, int value, int size)
-        throws IOException
-    {
+            throws IOException {
         if (value < 0) {
             out.write('-');
             if (value != Integer.MIN_VALUE) {
@@ -149,7 +148,7 @@ public class FormatUtils {
                 for (; size > 10; size--) {
                     out.write('0');
                 }
-                out.write("" + -(long)Integer.MIN_VALUE);
+                out.write("" + -(long) Integer.MIN_VALUE);
                 return;
             }
         }
@@ -176,7 +175,7 @@ public class FormatUtils {
             } else if (value < 10000) {
                 digits = 4;
             } else {
-                digits = (int)(Math.log(value) / LOG_10) + 1;
+                digits = (int) (Math.log(value) / LOG_10) + 1;
             }
             for (; size > digits; size--) {
                 out.write('0');
@@ -188,17 +187,16 @@ public class FormatUtils {
     /**
      * Converts an integer to a string, prepended with a variable amount of '0'
      * pad characters, and writes it to the given writer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param out receives integer converted to a string
+     * @param out   receives integer converted to a string
      * @param value value to convert to a string
-     * @param size minumum amount of digits to append
+     * @param size  minumum amount of digits to append
      */
     public static void writePaddedInteger(Writer out, long value, int size)
-        throws IOException
-    {
-        int intValue = (int)value;
+            throws IOException {
+        int intValue = (int) value;
         if (intValue == value) {
             writePaddedInteger(out, intValue, size);
         } else if (size <= 19) {
@@ -216,7 +214,7 @@ public class FormatUtils {
                     return;
                 }
             }
-            int digits = (int)(Math.log(value) / LOG_10) + 1;
+            int digits = (int) (Math.log(value) / LOG_10) + 1;
             for (; size > digits; size--) {
                 out.write('0');
             }
@@ -226,10 +224,10 @@ public class FormatUtils {
 
     /**
      * Converts an integer to a string, and appends it to the given buffer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param buf receives integer converted to a string
+     * @param buf   receives integer converted to a string
      * @param value value to convert to a string
      */
     public static void appendUnpaddedInteger(StringBuffer buf, int value) {
@@ -238,12 +236,12 @@ public class FormatUtils {
             if (value != Integer.MIN_VALUE) {
                 value = -value;
             } else {
-                buf.append("" + -(long)Integer.MIN_VALUE);
+                buf.append("" + -(long) Integer.MIN_VALUE);
                 return;
             }
         }
         if (value < 10) {
-            buf.append((char)(value + '0'));
+            buf.append((char) (value + '0'));
         } else if (value < 100) {
             // Calculate value div/mod by 10 without using two expensive
             // division operations. (2 ^ 27) / 10 = 13421772. Add one to
@@ -259,14 +257,14 @@ public class FormatUtils {
 
     /**
      * Converts an integer to a string, and appends it to the given buffer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param buf receives integer converted to a string
+     * @param buf   receives integer converted to a string
      * @param value value to convert to a string
      */
     public static void appendUnpaddedInteger(StringBuffer buf, long value) {
-        int intValue = (int)value;
+        int intValue = (int) value;
         if (intValue == value) {
             appendUnpaddedInteger(buf, intValue);
         } else {
@@ -276,21 +274,20 @@ public class FormatUtils {
 
     /**
      * Converts an integer to a string, and writes it to the given writer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param out receives integer converted to a string
+     * @param out   receives integer converted to a string
      * @param value value to convert to a string
      */
     public static void writeUnpaddedInteger(Writer out, int value)
-        throws IOException
-    {
+            throws IOException {
         if (value < 0) {
             out.write('-');
             if (value != Integer.MIN_VALUE) {
                 value = -value;
             } else {
-                out.write("" + -(long)Integer.MIN_VALUE);
+                out.write("" + -(long) Integer.MIN_VALUE);
                 return;
             }
         }
@@ -311,16 +308,15 @@ public class FormatUtils {
 
     /**
      * Converts an integer to a string, and writes it to the given writer.
-     *
+     * <p>
      * <p>This method is optimized for converting small values to strings.
      *
-     * @param out receives integer converted to a string
+     * @param out   receives integer converted to a string
      * @param value value to convert to a string
      */
     public static void writeUnpaddedInteger(Writer out, long value)
-        throws IOException
-    {
-        int intValue = (int)value;
+            throws IOException {
+        int intValue = (int) value;
         if (intValue == value) {
             writeUnpaddedInteger(out, intValue);
         } else {
@@ -340,12 +336,12 @@ public class FormatUtils {
                 return 20;
             }
         }
-        return 
-            (value < 10 ? 1 :
-             (value < 100 ? 2 :
-              (value < 1000 ? 3 :
-               (value < 10000 ? 4 :
-                ((int)(Math.log(value) / LOG_10) + 1)))));
+        return
+                (value < 10 ? 1 :
+                        (value < 100 ? 2 :
+                                (value < 1000 ? 3 :
+                                        (value < 10000 ? 4 :
+                                                ((int) (Math.log(value) / LOG_10) + 1)))));
     }
 
     static int parseTwoDigits(String text, int position) {
@@ -361,17 +357,17 @@ public class FormatUtils {
         } else {
             sampleText = text.substring(0, sampleLen).concat("...");
         }
-        
+
         if (errorPos <= 0) {
             return "Invalid format: \"" + sampleText + '"';
         }
-        
+
         if (errorPos >= text.length()) {
             return "Invalid format: \"" + sampleText + "\" is too short";
         }
-        
+
         return "Invalid format: \"" + sampleText + "\" is malformed at \"" +
-            sampleText.substring(errorPos) + '"';
+                sampleText.substring(errorPos) + '"';
     }
 
 }

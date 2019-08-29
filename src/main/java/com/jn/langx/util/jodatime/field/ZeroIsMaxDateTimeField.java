@@ -19,8 +19,6 @@ import com.jn.langx.util.jodatime.DateTimeField;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.field.DecoratedDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
 
 /**
  * Wraps another field such that zero values are replaced with one more than
@@ -39,8 +37,8 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Constructor.
-     * 
-     * @param field  the base field
+     *
+     * @param field the base field
      * @param type  the field type this field will actually use
      * @throws IllegalArgumentException if wrapped field's minimum value is not zero
      */
@@ -106,7 +104,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Always returns 1.
-     * 
+     *
      * @return the minimum value of 1
      */
     public int getMinimumValue() {
@@ -115,7 +113,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Always returns 1.
-     * 
+     *
      * @return the minimum value of 1
      */
     public int getMinimumValue(long instant) {
@@ -124,7 +122,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Always returns 1.
-     * 
+     *
      * @return the minimum value of 1
      */
     public int getMinimumValue(ReadablePartial instant) {
@@ -133,7 +131,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Always returns 1.
-     * 
+     *
      * @return the minimum value of 1
      */
     public int getMinimumValue(ReadablePartial instant, int[] values) {
@@ -143,7 +141,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
     /**
      * Get the maximum value for the field, which is one more than the wrapped
      * field's maximum value.
-     * 
+     *
      * @return the maximum value
      */
     public int getMaximumValue() {
@@ -153,7 +151,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
     /**
      * Get the maximum value for the field, which is one more than the wrapped
      * field's maximum value.
-     * 
+     *
      * @return the maximum value
      */
     public int getMaximumValue(long instant) {
@@ -163,7 +161,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
     /**
      * Get the maximum value for the field, which is one more than the wrapped
      * field's maximum value.
-     * 
+     *
      * @return the maximum value
      */
     public int getMaximumValue(ReadablePartial instant) {
@@ -173,7 +171,7 @@ public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
     /**
      * Get the maximum value for the field, which is one more than the wrapped
      * field's maximum value.
-     * 
+     *
      * @return the maximum value
      */
     public int getMaximumValue(ReadablePartial instant, int[] values) {

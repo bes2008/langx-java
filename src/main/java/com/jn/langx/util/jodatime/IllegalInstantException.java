@@ -15,7 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import com.jn.langx.util.jodatime.Instant;
 import com.jn.langx.util.jodatime.format.DateTimeFormat;
 
 /**
@@ -40,15 +39,17 @@ import com.jn.langx.util.jodatime.format.DateTimeFormat;
  * @since 2.2
  */
 public class IllegalInstantException extends IllegalArgumentException {
-    
-    /** Serialization lock. */
+
+    /**
+     * Serialization lock.
+     */
     private static final long serialVersionUID = 2858712538216L;
 
 
     /**
      * Constructor.
-     * 
-     * @param message  the message
+     *
+     * @param message the message
      */
     public IllegalInstantException(String message) {
         super(message);
@@ -56,9 +57,9 @@ public class IllegalInstantException extends IllegalArgumentException {
 
     /**
      * Constructor.
-     * 
-     * @param instantLocal  the local instant
-     * @param zoneId  the time-zone ID, may be null
+     *
+     * @param instantLocal the local instant
+     * @param zoneId       the time-zone ID, may be null
      */
     public IllegalInstantException(long instantLocal, String zoneId) {
         super(createMessage(instantLocal, zoneId));
@@ -71,10 +72,11 @@ public class IllegalInstantException extends IllegalArgumentException {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks if the exception is, or has a cause, of {@code IllegalInstantException}.
-     * 
-     * @param ex  the exception to check
+     *
+     * @param ex the exception to check
      * @return true if an {@code IllegalInstantException}
      */
     public static boolean isIllegalInstant(Throwable ex) {

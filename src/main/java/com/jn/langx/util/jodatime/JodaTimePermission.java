@@ -21,7 +21,7 @@ import java.security.BasicPermission;
  * JodaTimePermission is used for securing global method calls in the Joda-Time
  * library. Since this class extends BasicPermission, asterisks may be used to
  * denote wildcard permissions. The following permissions are supported:
- *
+ * <p>
  * <pre>
  * DateTimeZone
  *   .setDefault                 Allows a default DateTimeZone to be set
@@ -44,14 +44,16 @@ import java.security.BasicPermission;
  * @since 1.0
  */
 public class JodaTimePermission extends BasicPermission {
-    
-    /** Serialization version */
+
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 1408944367355875472L;
 
     /**
      * Constructs a new permission object.
-     * 
-     * @param name  the permission name
+     *
+     * @param name the permission name
      */
     public JodaTimePermission(String name) {
         super(name);

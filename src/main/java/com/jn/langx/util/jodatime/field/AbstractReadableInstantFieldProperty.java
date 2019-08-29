@@ -15,18 +15,10 @@
  */
 package com.jn.langx.util.jodatime.field;
 
+import com.jn.langx.util.jodatime.*;
+
 import java.io.Serializable;
 import java.util.Locale;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.Interval;
-import com.jn.langx.util.jodatime.ReadableInstant;
-import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.field.FieldUtils;
 
 /**
  * AbstractReadableInstantFieldProperty is a base class for binding a
@@ -46,7 +38,9 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  */
 public abstract class AbstractReadableInstantFieldProperty implements Serializable {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     private static final long serialVersionUID = 1971226328211649661L;
 
     /**
@@ -57,16 +51,17 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the field being used.
-     * 
+     *
      * @return the field
      */
     public abstract DateTimeField getField();
 
     /**
      * Gets the field type being used.
-     * 
+     *
      * @return the field type
      */
     public DateTimeFieldType getFieldType() {
@@ -75,7 +70,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the name of the field.
-     * 
+     *
      * @return the field name
      */
     public String getName() {
@@ -84,7 +79,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the milliseconds of the datetime that this property is linked to.
-     * 
+     *
      * @return the milliseconds
      */
     protected abstract long getMillis();
@@ -94,17 +89,18 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * <p>
      * This implementation throws UnsupportedOperationException, and must be
      * implemented by subclasses to enable the equals() and hashCode() methods.
-     * 
+     *
      * @return the chronology
      * @since 1.4
      */
     protected Chronology getChronology() {
         throw new UnsupportedOperationException(
                 "The method getChronology() was added in v1.4 and needs " +
-                "to be implemented by subclasses of AbstractReadableInstantFieldProperty");
+                        "to be implemented by subclasses of AbstractReadableInstantFieldProperty");
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the value of this property from the instant.
      * <p>
@@ -113,7 +109,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * datetime.getDayOfMonth();
      * datetime.dayOfMonth().get();
      * </pre>
-     * 
+     *
      * @return the current value
      * @see DateTimeField#get
      */
@@ -128,7 +124,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * using <code>Integer.toString</code>. This method does NOT return
      * textual descriptions such as 'Monday' or 'January'.
      * See {@link #getAsText()} and {@link #getAsShortText()} for those.
-     * 
+     *
      * @return the current value
      * @see DateTimeField#get
      * @since 1.1
@@ -144,7 +140,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Monday' in English.
-     * 
+     *
      * @return the current text value
      * @see DateTimeField#getAsText
      */
@@ -159,8 +155,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Monday' in English.
-     * 
-     * @param locale  locale to use for selecting a text symbol, null means default
+     *
+     * @param locale locale to use for selecting a text symbol, null means default
      * @return the current text value
      * @see DateTimeField#getAsText
      */
@@ -175,7 +171,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Mon' in English.
-     * 
+     *
      * @return the current text value
      * @see DateTimeField#getAsShortText
      */
@@ -190,8 +186,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Mon' in English.
-     * 
-     * @param locale  locale to use for selecting a text symbol, null means default
+     *
+     * @param locale locale to use for selecting a text symbol, null means default
      * @return the current text value
      * @see DateTimeField#getAsShortText
      */
@@ -200,13 +196,14 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the difference between this field property instant and the one
      * passed in, in the units of this field. The sign of the difference
      * matches that of compareTo. In other words, this field property's instant
      * is the minuend.
      *
-     * @param instant  the subtrahend, null means now
+     * @param instant the subtrahend, null means now
      * @return the difference in the units of this field
      * @see DateTimeField#getDifference
      */
@@ -223,7 +220,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * matches that of compareTo. In other words, this field property's instant
      * is the minuend.
      *
-     * @param instant  the subtrahend, null means now
+     * @param instant the subtrahend, null means now
      * @return the difference in the units of this field
      * @see DateTimeField#getDifference
      */
@@ -235,6 +232,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the duration per unit value of this field. For example, if this
      * field represents "hour of day", then the duration is an hour.
@@ -257,7 +255,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets whether this field is leap.
-     * 
+     *
      * @return true if a leap field
      * @see DateTimeField#isLeap
      */
@@ -267,7 +265,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the amount by which this field is leap.
-     * 
+     *
      * @return the amount by which the field is leap
      * @see DateTimeField#getLeapAmount
      */
@@ -284,9 +282,10 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the minimum value for the field ignoring the current time.
-     * 
+     *
      * @return the minimum value
      * @see DateTimeField#getMinimumValue
      */
@@ -296,7 +295,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the minimum value for the field.
-     * 
+     *
      * @return the minimum value
      * @see DateTimeField#getMinimumValue
      */
@@ -306,7 +305,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the maximum value for the field ignoring the current time.
-     * 
+     *
      * @return the maximum value
      * @see DateTimeField#getMaximumValue
      */
@@ -316,7 +315,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the maximum value for the field.
-     * 
+     *
      * @return the maximum value
      * @see DateTimeField#getMaximumValue
      */
@@ -326,8 +325,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the maximum text length for the field.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
+     *
+     * @param locale optional locale to use for selecting a text symbol
      * @return the maximum length
      * @see DateTimeField#getMaximumTextLength
      */
@@ -337,8 +336,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     /**
      * Gets the maximum short text length for the field.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
+     *
+     * @param locale optional locale to use for selecting a text symbol
      * @return the maximum length
      * @see DateTimeField#getMaximumShortTextLength
      */
@@ -350,8 +349,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     /**
      * Returns the fractional duration milliseconds of this field.
      *
-     * @see DateTimeField#remainder
      * @return remainder duration, in milliseconds
+     * @see DateTimeField#remainder
      */
     public long remainder() {
         return getField().remainder(getMillis());
@@ -376,6 +375,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compare this field to the same field on another instant.
      * <p>
@@ -383,8 +383,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * of any difference in chronology. Thus, if this property represents the
      * hourOfDay field, then the hourOfDay field of the other instant will be queried
      * whether in the same chronology or not.
-     * 
-     * @param instant  the instant to compare to
+     *
+     * @param instant the instant to compare to
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws IllegalArgumentException if the instant is null
      */
@@ -404,6 +404,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compare this field to the same field on another partial instant.
      * <p>
@@ -411,8 +412,8 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * of any difference in chronology. Thus, if this property represents the
      * hourOfDay field, then the hourOfDay field of the other partial will be queried
      * whether in the same chronology or not.
-     * 
-     * @param partial  the partial to compare to
+     *
+     * @param partial the partial to compare to
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws IllegalArgumentException if the partial is null
      * @throws IllegalArgumentException if the partial doesn't support this field
@@ -433,10 +434,11 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this property to another.
-     * 
-     * @param object  the object to compare to
+     *
+     * @param object the object to compare to
      * @return true if equal
      */
     public boolean equals(Object object) {
@@ -447,15 +449,15 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
             return false;
         }
         AbstractReadableInstantFieldProperty other = (AbstractReadableInstantFieldProperty) object;
-        return 
-            get() == other.get() &&
-            getFieldType().equals(other.getFieldType()) &&
-            FieldUtils.equals(getChronology(), other.getChronology());
+        return
+                get() == other.get() &&
+                        getFieldType().equals(other.getFieldType()) &&
+                        FieldUtils.equals(getChronology(), other.getChronology());
     }
 
     /**
      * Returns a hashcode compatible with the equals method.
-     * 
+     *
      * @return the hashcode
      */
     public int hashCode() {
@@ -463,9 +465,10 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Output a debugging string.
-     * 
+     *
      * @return debugging string
      */
     public String toString() {

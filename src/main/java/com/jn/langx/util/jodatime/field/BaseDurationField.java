@@ -15,12 +15,10 @@
  */
 package com.jn.langx.util.jodatime.field;
 
-import java.io.Serializable;
-
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.field.DecoratedDurationField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
+
+import java.io.Serializable;
 
 /**
  * BaseDurationField provides the common behaviour for DurationField
@@ -39,10 +37,14 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  */
 public abstract class BaseDurationField extends DurationField implements Serializable {
 
-    /** Serialization lock. */
+    /**
+     * Serialization lock.
+     */
     private static final long serialVersionUID = -2554245107589433218L;
 
-    /** A desriptive name for the field. */
+    /**
+     * A desriptive name for the field.
+     */
     private final DurationFieldType iType;
 
     protected BaseDurationField(DurationFieldType type) {
@@ -69,11 +71,12 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     }
 
     //------------------------------------------------------------------------
+
     /**
      * Get the value of this field from the milliseconds, which is approximate
      * if this field is imprecise.
      *
-     * @param duration  the milliseconds to query, which may be negative
+     * @param duration the milliseconds to query, which may be negative
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
@@ -85,7 +88,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * Get the value of this field from the milliseconds, which is approximate
      * if this field is imprecise.
      *
-     * @param duration  the milliseconds to query, which may be negative
+     * @param duration the milliseconds to query, which may be negative
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
@@ -96,15 +99,15 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     /**
      * Get the value of this field from the milliseconds relative to an
      * instant.
-     *
+     * <p>
      * <p>If the milliseconds is positive, then the instant is treated as a
      * "start instant". If negative, the instant is treated as an "end
      * instant".
-     *
+     * <p>
      * <p>The default implementation returns
      * <code>Utils.safeToInt(getAsLong(millisDuration, instant))</code>.
-     * 
-     * @param duration  the milliseconds to query, which may be negative
+     *
+     * @param duration the milliseconds to query, which may be negative
      * @param instant  the start instant to calculate relative to
      * @return the value of the field, in the units of the field, which may be
      * negative
@@ -116,8 +119,8 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     /**
      * Get the millisecond duration of this field from its value, which is
      * approximate if this field is imprecise.
-     * 
-     * @param value  the value of the field, which may be negative
+     *
+     * @param value the value of the field, which may be negative
      * @return the milliseconds that the field represents, which may be
      * negative
      */
@@ -128,8 +131,8 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     /**
      * Get the millisecond duration of this field from its value, which is
      * approximate if this field is imprecise.
-     * 
-     * @param value  the value of the field, which may be negative
+     *
+     * @param value the value of the field, which may be negative
      * @return the milliseconds that the field represents, which may be
      * negative
      */
@@ -160,7 +163,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
 
     /**
      * Get a suitable debug string.
-     * 
+     *
      * @return debug string
      */
     public String toString() {

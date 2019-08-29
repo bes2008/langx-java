@@ -239,7 +239,7 @@ public class Reflects {
         return annotatedElement.getAnnotation(annotationClass);
     }
 
-    public static <E extends Annotation> E getDeclaredAnnotation(@NonNull AnnotatedElement annotatedElement, @NonNull Class<E> annotationClass){
+    public static <E extends Annotation> E getDeclaredAnnotation(@NonNull AnnotatedElement annotatedElement, @NonNull Class<E> annotationClass) {
         return getAnnotation(annotatedElement, annotationClass);
     }
 

@@ -15,16 +15,10 @@
  */
 package com.jn.langx.util.jodatime;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.ReadablePeriod;
 import com.jn.langx.util.jodatime.field.FieldUtils;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Controls a period implementation by specifying which duration fields are to be used.
@@ -42,7 +36,7 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  * <li>Time - hours, minutes, seconds, millis
  * <li>plus one for each single type
  * </ul>
- *
+ * <p>
  * <p>
  * PeriodType is thread-safe and immutable, and all subclasses must be as well.
  *
@@ -51,10 +45,14 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  * @since 1.0
  */
 public class PeriodType implements Serializable {
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 2274324892792009998L;
 
-    /** Cache of all the known types. */
+    /**
+     * Cache of all the known types.
+     */
     private static final Map<PeriodType, Object> cTypes = new HashMap<PeriodType, Object>(32);
 
     static int YEAR_INDEX = 0;
@@ -65,7 +63,7 @@ public class PeriodType implements Serializable {
     static int MINUTE_INDEX = 5;
     static int SECOND_INDEX = 6;
     static int MILLI_INDEX = 7;
-    
+
     private static PeriodType cStandard;
     private static PeriodType cYMDTime;
     private static PeriodType cYMD;
@@ -75,7 +73,7 @@ public class PeriodType implements Serializable {
     private static PeriodType cYD;
     private static PeriodType cDTime;
     private static PeriodType cTime;
-    
+
     private static PeriodType cYears;
     private static PeriodType cMonths;
     private static PeriodType cWeeks;
@@ -104,14 +102,14 @@ public class PeriodType implements Serializable {
         PeriodType type = cStandard;
         if (type == null) {
             type = new PeriodType(
-                "Standard",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.months(),
-                    com.jn.langx.util.jodatime.DurationFieldType.weeks(), com.jn.langx.util.jodatime.DurationFieldType.days(),
-                    com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
-                    com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
-                },
-                new int[] { 0, 1, 2, 3, 4, 5, 6, 7, }
+                    "Standard",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.months(),
+                            com.jn.langx.util.jodatime.DurationFieldType.weeks(), com.jn.langx.util.jodatime.DurationFieldType.days(),
+                            com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
+                            com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
+                    },
+                    new int[]{0, 1, 2, 3, 4, 5, 6, 7,}
             );
             cStandard = type;
         }
@@ -136,14 +134,14 @@ public class PeriodType implements Serializable {
         PeriodType type = cYMDTime;
         if (type == null) {
             type = new PeriodType(
-                "YearMonthDayTime",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.months(),
-                    com.jn.langx.util.jodatime.DurationFieldType.days(),
-                    com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
-                    com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
-                },
-                new int[] { 0, 1, -1, 2, 3, 4, 5, 6, }
+                    "YearMonthDayTime",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.months(),
+                            com.jn.langx.util.jodatime.DurationFieldType.days(),
+                            com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
+                            com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
+                    },
+                    new int[]{0, 1, -1, 2, 3, 4, 5, 6,}
             );
             cYMDTime = type;
         }
@@ -165,12 +163,12 @@ public class PeriodType implements Serializable {
         PeriodType type = cYMD;
         if (type == null) {
             type = new PeriodType(
-                "YearMonthDay",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.months(),
-                    com.jn.langx.util.jodatime.DurationFieldType.days(),
-                },
-                new int[] { 0, 1, -1, 2, -1, -1, -1, -1, }
+                    "YearMonthDay",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.months(),
+                            com.jn.langx.util.jodatime.DurationFieldType.days(),
+                    },
+                    new int[]{0, 1, -1, 2, -1, -1, -1, -1,}
             );
             cYMD = type;
         }
@@ -195,14 +193,14 @@ public class PeriodType implements Serializable {
         PeriodType type = cYWDTime;
         if (type == null) {
             type = new PeriodType(
-                "YearWeekDayTime",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.years(),
-                    com.jn.langx.util.jodatime.DurationFieldType.weeks(), com.jn.langx.util.jodatime.DurationFieldType.days(),
-                    com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
-                    com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
-                },
-                new int[] { 0, -1, 1, 2, 3, 4, 5, 6, }
+                    "YearWeekDayTime",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.years(),
+                            com.jn.langx.util.jodatime.DurationFieldType.weeks(), com.jn.langx.util.jodatime.DurationFieldType.days(),
+                            com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
+                            com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
+                    },
+                    new int[]{0, -1, 1, 2, 3, 4, 5, 6,}
             );
             cYWDTime = type;
         }
@@ -224,12 +222,12 @@ public class PeriodType implements Serializable {
         PeriodType type = cYWD;
         if (type == null) {
             type = new PeriodType(
-                "YearWeekDay",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.years(),
-                    com.jn.langx.util.jodatime.DurationFieldType.weeks(), com.jn.langx.util.jodatime.DurationFieldType.days(),
-                },
-                new int[] { 0, -1, 1, 2, -1, -1, -1, -1, }
+                    "YearWeekDay",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.years(),
+                            com.jn.langx.util.jodatime.DurationFieldType.weeks(), com.jn.langx.util.jodatime.DurationFieldType.days(),
+                    },
+                    new int[]{0, -1, 1, 2, -1, -1, -1, -1,}
             );
             cYWD = type;
         }
@@ -253,13 +251,13 @@ public class PeriodType implements Serializable {
         PeriodType type = cYDTime;
         if (type == null) {
             type = new PeriodType(
-                "YearDayTime",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.days(),
-                    com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
-                    com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
-                },
-                new int[] { 0, -1, -1, 1, 2, 3, 4, 5, }
+                    "YearDayTime",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.days(),
+                            com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
+                            com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
+                    },
+                    new int[]{0, -1, -1, 1, 2, 3, 4, 5,}
             );
             cYDTime = type;
         }
@@ -280,11 +278,11 @@ public class PeriodType implements Serializable {
         PeriodType type = cYD;
         if (type == null) {
             type = new PeriodType(
-                "YearDay",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.days(),
-                },
-                new int[] { 0, -1, -1, 1, -1, -1, -1, -1, }
+                    "YearDay",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.years(), com.jn.langx.util.jodatime.DurationFieldType.days(),
+                    },
+                    new int[]{0, -1, -1, 1, -1, -1, -1, -1,}
             );
             cYD = type;
         }
@@ -307,13 +305,13 @@ public class PeriodType implements Serializable {
         PeriodType type = cDTime;
         if (type == null) {
             type = new PeriodType(
-                "DayTime",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.days(),
-                    com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
-                    com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
-                },
-                new int[] { -1, -1, -1, 0, 1, 2, 3, 4, }
+                    "DayTime",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.days(),
+                            com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
+                            com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
+                    },
+                    new int[]{-1, -1, -1, 0, 1, 2, 3, 4,}
             );
             cDTime = type;
         }
@@ -335,12 +333,12 @@ public class PeriodType implements Serializable {
         PeriodType type = cTime;
         if (type == null) {
             type = new PeriodType(
-                "Time",
-                new com.jn.langx.util.jodatime.DurationFieldType[] {
-                    com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
-                    com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
-                },
-                new int[] { -1, -1, -1, -1, 0, 1, 2, 3, }
+                    "Time",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{
+                            com.jn.langx.util.jodatime.DurationFieldType.hours(), com.jn.langx.util.jodatime.DurationFieldType.minutes(),
+                            com.jn.langx.util.jodatime.DurationFieldType.seconds(), com.jn.langx.util.jodatime.DurationFieldType.millis(),
+                    },
+                    new int[]{-1, -1, -1, -1, 0, 1, 2, 3,}
             );
             cTime = type;
         }
@@ -356,9 +354,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cYears;
         if (type == null) {
             type = new PeriodType(
-                "Years",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.years() },
-                new int[] { 0, -1, -1, -1, -1, -1, -1, -1, }
+                    "Years",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.years()},
+                    new int[]{0, -1, -1, -1, -1, -1, -1, -1,}
             );
             cYears = type;
         }
@@ -374,9 +372,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cMonths;
         if (type == null) {
             type = new PeriodType(
-                "Months",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.months() },
-                new int[] { -1, 0, -1, -1, -1, -1, -1, -1, }
+                    "Months",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.months()},
+                    new int[]{-1, 0, -1, -1, -1, -1, -1, -1,}
             );
             cMonths = type;
         }
@@ -392,9 +390,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cWeeks;
         if (type == null) {
             type = new PeriodType(
-                "Weeks",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.weeks() },
-                new int[] { -1, -1, 0, -1, -1, -1, -1, -1, }
+                    "Weeks",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.weeks()},
+                    new int[]{-1, -1, 0, -1, -1, -1, -1, -1,}
             );
             cWeeks = type;
         }
@@ -410,9 +408,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cDays;
         if (type == null) {
             type = new PeriodType(
-                "Days",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.days() },
-                new int[] { -1, -1, -1, 0, -1, -1, -1, -1, }
+                    "Days",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.days()},
+                    new int[]{-1, -1, -1, 0, -1, -1, -1, -1,}
             );
             cDays = type;
         }
@@ -428,9 +426,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cHours;
         if (type == null) {
             type = new PeriodType(
-                "Hours",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.hours() },
-                new int[] { -1, -1, -1, -1, 0, -1, -1, -1, }
+                    "Hours",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.hours()},
+                    new int[]{-1, -1, -1, -1, 0, -1, -1, -1,}
             );
             cHours = type;
         }
@@ -446,9 +444,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cMinutes;
         if (type == null) {
             type = new PeriodType(
-                "Minutes",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.minutes() },
-                new int[] { -1, -1, -1, -1, -1, 0, -1, -1, }
+                    "Minutes",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.minutes()},
+                    new int[]{-1, -1, -1, -1, -1, 0, -1, -1,}
             );
             cMinutes = type;
         }
@@ -464,9 +462,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cSeconds;
         if (type == null) {
             type = new PeriodType(
-                "Seconds",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.seconds() },
-                new int[] { -1, -1, -1, -1, -1, -1, 0, -1, }
+                    "Seconds",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.seconds()},
+                    new int[]{-1, -1, -1, -1, -1, -1, 0, -1,}
             );
             cSeconds = type;
         }
@@ -482,9 +480,9 @@ public class PeriodType implements Serializable {
         PeriodType type = cMillis;
         if (type == null) {
             type = new PeriodType(
-                "Millis",
-                new com.jn.langx.util.jodatime.DurationFieldType[] { com.jn.langx.util.jodatime.DurationFieldType.millis() },
-                new int[] { -1, -1, -1, -1, -1, -1, -1, 0, }
+                    "Millis",
+                    new com.jn.langx.util.jodatime.DurationFieldType[]{com.jn.langx.util.jodatime.DurationFieldType.millis()},
+                    new int[]{-1, -1, -1, -1, -1, -1, -1, 0,}
             );
             cMillis = type;
         }
@@ -496,7 +494,7 @@ public class PeriodType implements Serializable {
      * <p>
      * Only the 8 standard duration field types are supported.
      *
-     * @param types  the types to include in the array.
+     * @param types the types to include in the array.
      * @return the period type
      * @since 1.1
      */
@@ -579,19 +577,25 @@ public class PeriodType implements Serializable {
     }
 
     //-----------------------------------------------------------------------    
-    /** The name of the type */
+    /**
+     * The name of the type
+     */
     private final String iName;
-    /** The array of types */
+    /**
+     * The array of types
+     */
     private final com.jn.langx.util.jodatime.DurationFieldType[] iTypes;
-    /** The array of indices */
+    /**
+     * The array of indices
+     */
     private final int[] iIndices;
 
     /**
      * Constructor.
      *
-     * @param name  the name
-     * @param types  the types
-     * @param indices  the indices
+     * @param name    the name
+     * @param types   the types
+     * @param indices the indices
      */
     protected PeriodType(String name, com.jn.langx.util.jodatime.DurationFieldType[] types, int[] indices) {
         super();
@@ -601,9 +605,10 @@ public class PeriodType implements Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the name of the period type.
-     * 
+     *
      * @return the name
      */
     public String getName() {
@@ -612,7 +617,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Gets the number of fields in the period type.
-     * 
+     *
      * @return the number of fields
      */
     public int size() {
@@ -621,8 +626,8 @@ public class PeriodType implements Serializable {
 
     /**
      * Gets the field type by index.
-     * 
-     * @param index  the index to retrieve
+     *
+     * @param index the index to retrieve
      * @return the field type
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -633,7 +638,7 @@ public class PeriodType implements Serializable {
     /**
      * Checks whether the field specified is supported by this period.
      *
-     * @param type  the type to check, may be null which returns false
+     * @param type the type to check, may be null which returns false
      * @return true if the field is supported
      */
     public boolean isSupported(com.jn.langx.util.jodatime.DurationFieldType type) {
@@ -643,7 +648,7 @@ public class PeriodType implements Serializable {
     /**
      * Gets the index of the field in this period.
      *
-     * @param type  the type to check, may be null which returns -1
+     * @param type the type to check, may be null which returns -1
      * @return the index of -1 if not supported
      */
     public int indexOf(com.jn.langx.util.jodatime.DurationFieldType type) {
@@ -657,7 +662,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Gets a debugging to string.
-     * 
+     *
      * @return a string
      */
     public String toString() {
@@ -665,10 +670,11 @@ public class PeriodType implements Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the indexed field part of the period.
-     * 
-     * @param period  the period to query
+     *
+     * @param period the period to query
      * @param index  the index to use
      * @return the value of the field, zero if unsupported
      */
@@ -679,11 +685,11 @@ public class PeriodType implements Serializable {
 
     /**
      * Sets the indexed field part of the period.
-     * 
-     * @param period  the period to query
-     * @param index  the index to use
-     * @param values  the array to populate
-     * @param newValue  the value to set
+     *
+     * @param period   the period to query
+     * @param index    the index to use
+     * @param values   the array to populate
+     * @param newValue the value to set
      * @throws UnsupportedOperationException if not supported
      */
     boolean setIndexedField(ReadablePeriod period, int index, int[] values, int newValue) {
@@ -697,11 +703,11 @@ public class PeriodType implements Serializable {
 
     /**
      * Adds to the indexed field part of the period.
-     * 
-     * @param period  the period to query
-     * @param index  the index to use
-     * @param values  the array to populate
-     * @param valueToAdd  the value to add
+     *
+     * @param period     the period to query
+     * @param index      the index to use
+     * @param values     the array to populate
+     * @param valueToAdd the value to add
      * @return true if the array is updated
      * @throws UnsupportedOperationException if not supported
      */
@@ -718,9 +724,10 @@ public class PeriodType implements Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a version of this PeriodType instance that does not support years.
-     * 
+     *
      * @return a new period type that supports the original set of fields except years
      */
     public PeriodType withYearsRemoved() {
@@ -729,7 +736,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a version of this PeriodType instance that does not support months.
-     * 
+     *
      * @return a new period type that supports the original set of fields except months
      */
     public PeriodType withMonthsRemoved() {
@@ -738,7 +745,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a version of this PeriodType instance that does not support weeks.
-     * 
+     *
      * @return a new period type that supports the original set of fields except weeks
      */
     public PeriodType withWeeksRemoved() {
@@ -747,7 +754,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a version of this PeriodType instance that does not support days.
-     * 
+     *
      * @return a new period type that supports the original set of fields except days
      */
     public PeriodType withDaysRemoved() {
@@ -756,7 +763,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a version of this PeriodType instance that does not support hours.
-     * 
+     *
      * @return a new period type that supports the original set of fields except hours
      */
     public PeriodType withHoursRemoved() {
@@ -765,7 +772,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a version of this PeriodType instance that does not support minutes.
-     * 
+     *
      * @return a new period type that supports the original set of fields except minutes
      */
     public PeriodType withMinutesRemoved() {
@@ -774,7 +781,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a version of this PeriodType instance that does not support seconds.
-     * 
+     *
      * @return a new period type that supports the original set of fields except seconds
      */
     public PeriodType withSecondsRemoved() {
@@ -783,7 +790,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a version of this PeriodType instance that does not support milliseconds.
-     * 
+     *
      * @return a new period type that supports the original set of fields except milliseconds
      */
     public PeriodType withMillisRemoved() {
@@ -792,9 +799,9 @@ public class PeriodType implements Serializable {
 
     /**
      * Removes the field specified by indices index.
-     * 
-     * @param indicesIndex  the index to remove
-     * @param name  the name addition
+     *
+     * @param indicesIndex the index to remove
+     * @param name         the name addition
      * @return the new type
      */
     private PeriodType withFieldRemoved(int indicesIndex, String name) {
@@ -802,7 +809,7 @@ public class PeriodType implements Serializable {
         if (fieldIndex == -1) {
             return this;
         }
-        
+
         com.jn.langx.util.jodatime.DurationFieldType[] types = new DurationFieldType[size() - 1];
         for (int i = 0; i < iTypes.length; i++) {
             if (i < fieldIndex) {
@@ -811,7 +818,7 @@ public class PeriodType implements Serializable {
                 types[i - 1] = iTypes[i];
             }
         }
-        
+
         int[] indices = new int[8];
         for (int i = 0; i < indices.length; i++) {
             if (i < indicesIndex) {
@@ -826,11 +833,12 @@ public class PeriodType implements Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this type to another object.
      * To be equal, the object must be a PeriodType with the same set of fields.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return true if equal
      */
     public boolean equals(Object obj) {
@@ -846,7 +854,7 @@ public class PeriodType implements Serializable {
 
     /**
      * Returns a hashcode based on the field types.
-     * 
+     *
      * @return a suitable hashcode
      */
     public int hashCode() {

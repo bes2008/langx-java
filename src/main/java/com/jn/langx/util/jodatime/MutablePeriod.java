@@ -15,18 +15,12 @@
  */
 package com.jn.langx.util.jodatime;
 
-import java.io.Serializable;
-
-import com.jn.langx.util.jodatime.*;
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.Duration;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.Interval;
 import com.jn.langx.util.jodatime.base.BasePeriod;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.ISOPeriodFormat;
 import com.jn.langx.util.jodatime.format.PeriodFormatter;
+
+import java.io.Serializable;
 
 /**
  * Standard mutable time period implementation.
@@ -55,23 +49,26 @@ import com.jn.langx.util.jodatime.format.PeriodFormatter;
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
- * @since 1.0
  * @see Period
+ * @since 1.0
  */
 public class MutablePeriod
         extends BasePeriod
         implements ReadWritablePeriod, Cloneable, Serializable {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 3436451121567212165L;
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses a {@code MutablePeriod} from the specified string.
      * <p>
      * This uses {@link ISOPeriodFormat#standard()}.
-     * 
-     * @param str  the string to parse, not null
+     *
+     * @param str the string to parse, not null
      * @since 2.0
      */
     public static MutablePeriod parse(String str) {
@@ -80,9 +77,9 @@ public class MutablePeriod
 
     /**
      * Parses a {@code MutablePeriod} from the specified string using a formatter.
-     * 
-     * @param str  the string to parse, not null
-     * @param formatter  the formatter to use, not null
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
      * @since 2.0
      */
     public static MutablePeriod parse(String str, PeriodFormatter formatter) {
@@ -90,6 +87,7 @@ public class MutablePeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a zero-length period using the standard period type.
      */
@@ -100,7 +98,7 @@ public class MutablePeriod
     /**
      * Creates a zero-length period using the specified period type.
      *
-     * @param type  which set of fields this period supports
+     * @param type which set of fields this period supports
      */
     public MutablePeriod(PeriodType type) {
         super(0L, type, null);
@@ -109,9 +107,9 @@ public class MutablePeriod
     /**
      * Create a period from a set of field values using the standard set of fields.
      *
-     * @param hours  amount of hours in this period
-     * @param minutes  amount of minutes in this period
-     * @param seconds  amount of seconds in this period
+     * @param hours   amount of hours in this period
+     * @param minutes amount of minutes in this period
+     * @param seconds amount of seconds in this period
      * @param millis  amount of milliseconds in this period
      */
     public MutablePeriod(int hours, int minutes, int seconds, int millis) {
@@ -121,36 +119,36 @@ public class MutablePeriod
     /**
      * Create a period from a set of field values using the standard set of fields.
      *
-     * @param years  amount of years in this period
+     * @param years   amount of years in this period
      * @param months  amount of months in this period
-     * @param weeks  amount of weeks in this period
-     * @param days  amount of days in this period
-     * @param hours  amount of hours in this period
-     * @param minutes  amount of minutes in this period
-     * @param seconds  amount of seconds in this period
+     * @param weeks   amount of weeks in this period
+     * @param days    amount of days in this period
+     * @param hours   amount of hours in this period
+     * @param minutes amount of minutes in this period
+     * @param seconds amount of seconds in this period
      * @param millis  amount of milliseconds in this period
      */
     public MutablePeriod(int years, int months, int weeks, int days,
-                  int hours, int minutes, int seconds, int millis) {
+                         int hours, int minutes, int seconds, int millis) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.standard());
     }
 
     /**
      * Create a period from a set of field values.
      *
-     * @param years  amount of years in this period, which must be zero if unsupported
+     * @param years   amount of years in this period, which must be zero if unsupported
      * @param months  amount of months in this period, which must be zero if unsupported
-     * @param weeks  amount of weeks in this period, which must be zero if unsupported
-     * @param days  amount of days in this period, which must be zero if unsupported
-     * @param hours  amount of hours in this period, which must be zero if unsupported
-     * @param minutes  amount of minutes in this period, which must be zero if unsupported
-     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param weeks   amount of weeks in this period, which must be zero if unsupported
+     * @param days    amount of days in this period, which must be zero if unsupported
+     * @param hours   amount of hours in this period, which must be zero if unsupported
+     * @param minutes amount of minutes in this period, which must be zero if unsupported
+     * @param seconds amount of seconds in this period, which must be zero if unsupported
      * @param millis  amount of milliseconds in this period, which must be zero if unsupported
-     * @param type  which set of fields this period supports, null means AllType
+     * @param type    which set of fields this period supports, null means AllType
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public MutablePeriod(int years, int months, int weeks, int days,
-                    int hours, int minutes, int seconds, int millis, PeriodType type) {
+                         int hours, int minutes, int seconds, int millis, PeriodType type) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, type);
     }
 
@@ -178,7 +176,7 @@ public class MutablePeriod
      * fields, such as the UTC or precise types.
      * </ul>
      *
-     * @param duration  the duration, in milliseconds
+     * @param duration the duration, in milliseconds
      */
     public MutablePeriod(long duration) {
         super(duration);
@@ -197,8 +195,8 @@ public class MutablePeriod
      * be stored in the largest available precise field.
      * For details as to which fields are precise, review the period type javadoc.
      *
-     * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this period supports, null means standard
+     * @param duration the duration, in milliseconds
+     * @param type     which set of fields this period supports, null means standard
      */
     public MutablePeriod(long duration, PeriodType type) {
         super(duration, type, null);
@@ -218,8 +216,8 @@ public class MutablePeriod
      * be stored in the largest available precise field.
      * For details as to which fields are precise, review the period type javadoc.
      *
-     * @param duration  the duration, in milliseconds
-     * @param chronology  the chronology to use to split the duration, null means ISO default
+     * @param duration   the duration, in milliseconds
+     * @param chronology the chronology to use to split the duration, null means ISO default
      */
     public MutablePeriod(long duration, com.jn.langx.util.jodatime.Chronology chronology) {
         super(duration, null, chronology);
@@ -238,9 +236,9 @@ public class MutablePeriod
      * be stored in the largest available precise field.
      * For details as to which fields are precise, review the period type javadoc.
      *
-     * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this period supports, null means standard
-     * @param chronology  the chronology to use to split the duration, null means ISO default
+     * @param duration   the duration, in milliseconds
+     * @param type       which set of fields this period supports, null means standard
+     * @param chronology the chronology to use to split the duration, null means ISO default
      */
     public MutablePeriod(long duration, PeriodType type, com.jn.langx.util.jodatime.Chronology chronology) {
         super(duration, type, chronology);
@@ -250,8 +248,8 @@ public class MutablePeriod
      * Creates a period from the given interval endpoints using the standard
      * set of fields.
      *
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
      */
     public MutablePeriod(long startInstant, long endInstant) {
         super(startInstant, endInstant, null, null);
@@ -260,9 +258,9 @@ public class MutablePeriod
     /**
      * Creates a period from the given interval endpoints.
      *
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this period supports, null means standard
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
+     * @param type         which set of fields this period supports, null means standard
      */
     public MutablePeriod(long startInstant, long endInstant, PeriodType type) {
         super(startInstant, endInstant, type, null);
@@ -272,9 +270,9 @@ public class MutablePeriod
      * Creates a period from the given interval endpoints using the standard
      * set of fields.
      *
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
-     * @param chrono  the chronology to use, null means ISO in default zone
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
+     * @param chrono       the chronology to use, null means ISO in default zone
      */
     public MutablePeriod(long startInstant, long endInstant, com.jn.langx.util.jodatime.Chronology chrono) {
         super(startInstant, endInstant, null, chrono);
@@ -283,10 +281,10 @@ public class MutablePeriod
     /**
      * Creates a period from the given interval endpoints.
      *
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this period supports, null means standard
-     * @param chrono  the chronology to use, null means ISO in default zone
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
+     * @param type         which set of fields this period supports, null means standard
+     * @param chrono       the chronology to use, null means ISO in default zone
      */
     public MutablePeriod(long startInstant, long endInstant, PeriodType type, com.jn.langx.util.jodatime.Chronology chrono) {
         super(startInstant, endInstant, type, chrono);
@@ -299,8 +297,8 @@ public class MutablePeriod
      * The chronology of the start instant is used, unless that is null when the
      * chronology of the end instant is used instead.
      *
-     * @param startInstant  interval start, null means now
-     * @param endInstant  interval end, null means now
+     * @param startInstant interval start, null means now
+     * @param endInstant   interval end, null means now
      */
     public MutablePeriod(ReadableInstant startInstant, ReadableInstant endInstant) {
         super(startInstant, endInstant, null);
@@ -312,9 +310,9 @@ public class MutablePeriod
      * The chronology of the start instant is used, unless that is null when the
      * chronology of the end instant is used instead.
      *
-     * @param startInstant  interval start, null means now
-     * @param endInstant  interval end, null means now
-     * @param type  which set of fields this period supports, null means AllType
+     * @param startInstant interval start, null means now
+     * @param endInstant   interval end, null means now
+     * @param type         which set of fields this period supports, null means AllType
      */
     public MutablePeriod(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
@@ -323,8 +321,8 @@ public class MutablePeriod
     /**
      * Creates a period from the given start point and the duration.
      *
-     * @param startInstant  the interval start, null means now
-     * @param duration  the duration of the interval, null means zero-length
+     * @param startInstant the interval start, null means now
+     * @param duration     the duration of the interval, null means zero-length
      */
     public MutablePeriod(ReadableInstant startInstant, ReadableDuration duration) {
         super(startInstant, duration, null);
@@ -333,9 +331,9 @@ public class MutablePeriod
     /**
      * Creates a period from the given start point and the duration.
      *
-     * @param startInstant  the interval start, null means now
-     * @param duration  the duration of the interval, null means zero-length
-     * @param type  which set of fields this period supports, null means standard
+     * @param startInstant the interval start, null means now
+     * @param duration     the duration of the interval, null means zero-length
+     * @param type         which set of fields this period supports, null means standard
      */
     public MutablePeriod(ReadableInstant startInstant, ReadableDuration duration, PeriodType type) {
         super(startInstant, duration, type);
@@ -344,8 +342,8 @@ public class MutablePeriod
     /**
      * Creates a period from the given duration and end point.
      *
-     * @param duration  the duration of the interval, null means zero-length
-     * @param endInstant  the interval end, null means now
+     * @param duration   the duration of the interval, null means zero-length
+     * @param endInstant the interval end, null means now
      */
     public MutablePeriod(ReadableDuration duration, ReadableInstant endInstant) {
         super(duration, endInstant, null);
@@ -354,9 +352,9 @@ public class MutablePeriod
     /**
      * Creates a period from the given duration and end point.
      *
-     * @param duration  the duration of the interval, null means zero-length
-     * @param endInstant  the interval end, null means now
-     * @param type  which set of fields this period supports, null means standard
+     * @param duration   the duration of the interval, null means zero-length
+     * @param endInstant the interval end, null means now
+     * @param type       which set of fields this period supports, null means standard
      */
     public MutablePeriod(ReadableDuration duration, ReadableInstant endInstant, PeriodType type) {
         super(duration, endInstant, type);
@@ -370,8 +368,8 @@ public class MutablePeriod
      * include ReadablePeriod, ReadableInterval and String.
      * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
-     * @param period  period to convert
-     * @throws IllegalArgumentException if period is invalid
+     * @param period period to convert
+     * @throws IllegalArgumentException      if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public MutablePeriod(Object period) {
@@ -386,9 +384,9 @@ public class MutablePeriod
      * include ReadablePeriod, ReadableInterval and String.
      * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
-     * @param period  period to convert
-     * @param type  which set of fields this period supports, null means use converter
-     * @throws IllegalArgumentException if period is invalid
+     * @param period period to convert
+     * @param type   which set of fields this period supports, null means use converter
+     * @throws IllegalArgumentException      if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public MutablePeriod(Object period, PeriodType type) {
@@ -403,9 +401,9 @@ public class MutablePeriod
      * include ReadablePeriod, ReadableInterval and String.
      * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
-     * @param period  period to convert
-     * @param chrono  the chronology to use, null means ISO in default zone
-     * @throws IllegalArgumentException if period is invalid
+     * @param period period to convert
+     * @param chrono the chronology to use, null means ISO in default zone
+     * @throws IllegalArgumentException      if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public MutablePeriod(Object period, com.jn.langx.util.jodatime.Chronology chrono) {
@@ -420,10 +418,10 @@ public class MutablePeriod
      * include ReadablePeriod, ReadableInterval and String.
      * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
-     * @param period  period to convert
-     * @param type  which set of fields this period supports, null means use converter
-     * @param chrono  the chronology to use, null means ISO in default zone
-     * @throws IllegalArgumentException if period is invalid
+     * @param period period to convert
+     * @param type   which set of fields this period supports, null means use converter
+     * @param chrono the chronology to use, null means ISO in default zone
+     * @throws IllegalArgumentException      if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public MutablePeriod(Object period, PeriodType type, com.jn.langx.util.jodatime.Chronology chrono) {
@@ -431,6 +429,7 @@ public class MutablePeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Clears the period, setting all values back to zero.
      */
@@ -441,8 +440,8 @@ public class MutablePeriod
     /**
      * Sets the value of one of the fields by index.
      *
-     * @param index  the field index
-     * @param value  the new value for the field
+     * @param index the field index
+     * @param value the new value for the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public void setValue(int index, int value) {
@@ -454,8 +453,8 @@ public class MutablePeriod
      * <p>
      * The field type specified must be one of those that is supported by the period.
      *
-     * @param field  a DurationFieldType instance that is supported by this period, not null
-     * @param value  the new value for the field
+     * @param field a DurationFieldType instance that is supported by this period, not null
+     * @param value the new value for the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
     public void set(com.jn.langx.util.jodatime.DurationFieldType field, int value) {
@@ -464,8 +463,8 @@ public class MutablePeriod
 
     /**
      * Sets all the fields in one go from another ReadablePeriod.
-     * 
-     * @param period  the period to set, null means zero length period
+     *
+     * @param period the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public void setPeriod(ReadablePeriod period) {
@@ -474,14 +473,14 @@ public class MutablePeriod
 
     /**
      * Sets all the fields in one go.
-     * 
-     * @param years  amount of years in this period, which must be zero if unsupported
+     *
+     * @param years   amount of years in this period, which must be zero if unsupported
      * @param months  amount of months in this period, which must be zero if unsupported
-     * @param weeks  amount of weeks in this period, which must be zero if unsupported
-     * @param days  amount of days in this period, which must be zero if unsupported
-     * @param hours  amount of hours in this period, which must be zero if unsupported
-     * @param minutes  amount of minutes in this period, which must be zero if unsupported
-     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param weeks   amount of weeks in this period, which must be zero if unsupported
+     * @param days    amount of days in this period, which must be zero if unsupported
+     * @param hours   amount of hours in this period, which must be zero if unsupported
+     * @param minutes amount of minutes in this period, which must be zero if unsupported
+     * @param seconds amount of seconds in this period, which must be zero if unsupported
      * @param millis  amount of milliseconds in this period, which must be zero if unsupported
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
@@ -493,8 +492,8 @@ public class MutablePeriod
     /**
      * Sets all the fields in one go from an interval using the ISO chronology
      * and dividing the fields using the period type.
-     * 
-     * @param interval  the interval to set, null means zero length
+     *
+     * @param interval the interval to set, null means zero length
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableInterval interval) {
@@ -511,9 +510,9 @@ public class MutablePeriod
      * <p>
      * The chronology of the start instant is used, unless that is null when the
      * chronology of the end instant is used instead.
-     * 
-     * @param start  the start instant, null means now
-     * @param end  the end instant, null means now
+     *
+     * @param start the start instant, null means now
+     * @param end   the end instant, null means now
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableInstant start, ReadableInstant end) {
@@ -530,9 +529,9 @@ public class MutablePeriod
     /**
      * Sets all the fields in one go from a millisecond interval using ISOChronology
      * and dividing the fields using the period type.
-     * 
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
+     *
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long startInstant, long endInstant) {
@@ -541,10 +540,10 @@ public class MutablePeriod
 
     /**
      * Sets all the fields in one go from a millisecond interval.
-     * 
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
-     * @param chrono  the chronology to use, null means ISO chronology
+     *
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
+     * @param chrono       the chronology to use, null means ISO chronology
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long startInstant, long endInstant, com.jn.langx.util.jodatime.Chronology chrono) {
@@ -559,8 +558,8 @@ public class MutablePeriod
      * When dividing the duration, only precise fields in the period type will be used.
      * For large durations, all the remaining duration will be stored in the largest
      * available precise field.
-     * 
-     * @param duration  the duration to set, null means zero length
+     *
+     * @param duration the duration to set, null means zero length
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableDuration duration) {
@@ -574,9 +573,9 @@ public class MutablePeriod
      * When dividing the duration, only precise fields in the period type will be used.
      * For large durations, all the remaining duration will be stored in the largest
      * available precise field.
-     * 
-     * @param duration  the duration to set, null means zero length
-     * @param chrono  the chronology to use, null means ISO default
+     *
+     * @param duration the duration to set, null means zero length
+     * @param chrono   the chronology to use, null means ISO default
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableDuration duration, com.jn.langx.util.jodatime.Chronology chrono) {
@@ -591,8 +590,8 @@ public class MutablePeriod
      * When dividing the duration, only precise fields in the period type will be used.
      * For large durations, all the remaining duration will be stored in the largest
      * available precise field.
-     * 
-     * @param duration  the duration, in milliseconds
+     *
+     * @param duration the duration, in milliseconds
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long duration) {
@@ -605,9 +604,9 @@ public class MutablePeriod
      * When dividing the duration, only precise fields in the period type will be used.
      * For large durations, all the remaining duration will be stored in the largest
      * available precise field.
-     * 
-     * @param duration  the duration, in milliseconds
-     * @param chrono  the chronology to use, null means ISO chronology
+     *
+     * @param duration the duration, in milliseconds
+     * @param chrono   the chronology to use, null means ISO chronology
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long duration, com.jn.langx.util.jodatime.Chronology chrono) {
@@ -616,13 +615,14 @@ public class MutablePeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Adds to the value of one of the fields.
      * <p>
      * The field type specified must be one of those that is supported by the period.
      *
-     * @param field  a DurationFieldType instance that is supported by this period, not null
-     * @param value  the value to add to the field
+     * @param field a DurationFieldType instance that is supported by this period, not null
+     * @param value the value to add to the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
     public void add(com.jn.langx.util.jodatime.DurationFieldType field, int value) {
@@ -631,11 +631,11 @@ public class MutablePeriod
 
     /**
      * Adds a period to this one by adding each field in turn.
-     * 
-     * @param period  the period to add, null means add nothing
+     *
+     * @param period the period to add, null means add nothing
      * @throws IllegalArgumentException if the period being added contains a field
-     * not supported by this period
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     *                                  not supported by this period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void add(ReadablePeriod period) {
         super.addPeriod(period);
@@ -643,38 +643,38 @@ public class MutablePeriod
 
     /**
      * Adds to each field of this period.
-     * 
-     * @param years  amount of years to add to this period, which must be zero if unsupported
+     *
+     * @param years   amount of years to add to this period, which must be zero if unsupported
      * @param months  amount of months to add to this period, which must be zero if unsupported
-     * @param weeks  amount of weeks to add to this period, which must be zero if unsupported
-     * @param days  amount of days to add to this period, which must be zero if unsupported
-     * @param hours  amount of hours to add to this period, which must be zero if unsupported
-     * @param minutes  amount of minutes to add to this period, which must be zero if unsupported
-     * @param seconds  amount of seconds to add to this period, which must be zero if unsupported
+     * @param weeks   amount of weeks to add to this period, which must be zero if unsupported
+     * @param days    amount of days to add to this period, which must be zero if unsupported
+     * @param hours   amount of hours to add to this period, which must be zero if unsupported
+     * @param minutes amount of minutes to add to this period, which must be zero if unsupported
+     * @param seconds amount of seconds to add to this period, which must be zero if unsupported
      * @param millis  amount of milliseconds to add to this period, which must be zero if unsupported
      * @throws IllegalArgumentException if the period being added contains a field
-     * not supported by this period
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     *                                  not supported by this period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void add(int years, int months, int weeks, int days,
-                       int hours, int minutes, int seconds, int millis) {
+                    int hours, int minutes, int seconds, int millis) {
         setPeriod(
-            FieldUtils.safeAdd(getYears(), years),
-            FieldUtils.safeAdd(getMonths(), months),
-            FieldUtils.safeAdd(getWeeks(), weeks),
-            FieldUtils.safeAdd(getDays(), days),
-            FieldUtils.safeAdd(getHours(), hours),
-            FieldUtils.safeAdd(getMinutes(), minutes),
-            FieldUtils.safeAdd(getSeconds(), seconds),
-            FieldUtils.safeAdd(getMillis(), millis)
+                FieldUtils.safeAdd(getYears(), years),
+                FieldUtils.safeAdd(getMonths(), months),
+                FieldUtils.safeAdd(getWeeks(), weeks),
+                FieldUtils.safeAdd(getDays(), days),
+                FieldUtils.safeAdd(getHours(), hours),
+                FieldUtils.safeAdd(getMinutes(), minutes),
+                FieldUtils.safeAdd(getSeconds(), seconds),
+                FieldUtils.safeAdd(getMillis(), millis)
         );
     }
 
     /**
      * Adds an interval to this one by dividing the interval into
      * fields and calling {@link #add(ReadablePeriod)}.
-     * 
-     * @param interval  the interval to add, null means add nothing
+     *
+     * @param interval the interval to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(ReadableInterval interval) {
@@ -686,8 +686,8 @@ public class MutablePeriod
     /**
      * Adds a duration to this one by dividing the duration into
      * fields and calling {@link #add(ReadablePeriod)}.
-     * 
-     * @param duration  the duration to add, null means add nothing
+     *
+     * @param duration the duration to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(ReadableDuration duration) {
@@ -703,8 +703,8 @@ public class MutablePeriod
      * When dividing the duration, only precise fields in the period type will be used.
      * For large durations, all the remaining duration will be stored in the largest
      * available precise field.
-     * 
-     * @param duration  the duration, in milliseconds
+     *
+     * @param duration the duration, in milliseconds
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(long duration) {
@@ -718,9 +718,9 @@ public class MutablePeriod
      * When dividing the duration, only precise fields in the period type will be used.
      * For large durations, all the remaining duration will be stored in the largest
      * available precise field.
-     * 
-     * @param duration  the duration, in milliseconds
-     * @param chrono  the chronology to use, null means ISO default
+     *
+     * @param duration the duration, in milliseconds
+     * @param chrono   the chronology to use, null means ISO default
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(long duration, Chronology chrono) {
@@ -728,12 +728,13 @@ public class MutablePeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Merges all the fields from the specified period into this one.
      * <p>
      * Fields that are not present in the specified period are left unaltered.
-     * 
-     * @param period  the period to set, null ignored
+     *
+     * @param period the period to set, null ignored
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public void mergePeriod(ReadablePeriod period) {
@@ -741,9 +742,10 @@ public class MutablePeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the years field part of the period.
-     * 
+     *
      * @return the number of years in the period, zero if unsupported
      */
     public int getYears() {
@@ -752,7 +754,7 @@ public class MutablePeriod
 
     /**
      * Gets the months field part of the period.
-     * 
+     *
      * @return the number of months in the period, zero if unsupported
      */
     public int getMonths() {
@@ -761,7 +763,7 @@ public class MutablePeriod
 
     /**
      * Gets the weeks field part of the period.
-     * 
+     *
      * @return the number of weeks in the period, zero if unsupported
      */
     public int getWeeks() {
@@ -770,7 +772,7 @@ public class MutablePeriod
 
     /**
      * Gets the days field part of the period.
-     * 
+     *
      * @return the number of days in the period, zero if unsupported
      */
     public int getDays() {
@@ -778,9 +780,10 @@ public class MutablePeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the hours field part of the period.
-     * 
+     *
      * @return the number of hours in the period, zero if unsupported
      */
     public int getHours() {
@@ -789,7 +792,7 @@ public class MutablePeriod
 
     /**
      * Gets the minutes field part of the period.
-     * 
+     *
      * @return the number of minutes in the period, zero if unsupported
      */
     public int getMinutes() {
@@ -798,7 +801,7 @@ public class MutablePeriod
 
     /**
      * Gets the seconds field part of the period.
-     * 
+     *
      * @return the number of seconds in the period, zero if unsupported
      */
     public int getSeconds() {
@@ -807,7 +810,7 @@ public class MutablePeriod
 
     /**
      * Gets the millis field part of the period.
-     * 
+     *
      * @return the number of millis in the period, zero if unsupported
      */
     public int getMillis() {
@@ -815,10 +818,11 @@ public class MutablePeriod
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of years of the period.
-     * 
-     * @param years  the number of years
+     *
+     * @param years the number of years
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setYears(int years) {
@@ -827,20 +831,21 @@ public class MutablePeriod
 
     /**
      * Adds the specified years to the number of years in the period.
-     * 
-     * @param years  the number of years
+     *
+     * @param years the number of years
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addYears(int years) {
         super.addField(com.jn.langx.util.jodatime.DurationFieldType.years(), years);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of months of the period.
-     * 
-     * @param months  the number of months
+     *
+     * @param months the number of months
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setMonths(int months) {
@@ -849,20 +854,21 @@ public class MutablePeriod
 
     /**
      * Adds the specified months to the number of months in the period.
-     * 
-     * @param months  the number of months
+     *
+     * @param months the number of months
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addMonths(int months) {
         super.addField(com.jn.langx.util.jodatime.DurationFieldType.months(), months);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of weeks of the period.
-     * 
-     * @param weeks  the number of weeks
+     *
+     * @param weeks the number of weeks
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setWeeks(int weeks) {
@@ -871,20 +877,21 @@ public class MutablePeriod
 
     /**
      * Adds the specified weeks to the number of weeks in the period.
-     * 
-     * @param weeks  the number of weeks
+     *
+     * @param weeks the number of weeks
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addWeeks(int weeks) {
         super.addField(com.jn.langx.util.jodatime.DurationFieldType.weeks(), weeks);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of days of the period.
-     * 
-     * @param days  the number of days
+     *
+     * @param days the number of days
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setDays(int days) {
@@ -893,20 +900,21 @@ public class MutablePeriod
 
     /**
      * Adds the specified days to the number of days in the period.
-     * 
-     * @param days  the number of days
+     *
+     * @param days the number of days
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addDays(int days) {
         super.addField(com.jn.langx.util.jodatime.DurationFieldType.days(), days);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of hours of the period.
-     * 
-     * @param hours  the number of hours
+     *
+     * @param hours the number of hours
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setHours(int hours) {
@@ -915,20 +923,21 @@ public class MutablePeriod
 
     /**
      * Adds the specified hours to the number of hours in the period.
-     * 
-     * @param hours  the number of hours
+     *
+     * @param hours the number of hours
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addHours(int hours) {
         super.addField(com.jn.langx.util.jodatime.DurationFieldType.hours(), hours);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of minutes of the period.
-     * 
-     * @param minutes  the number of minutes
+     *
+     * @param minutes the number of minutes
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setMinutes(int minutes) {
@@ -937,20 +946,21 @@ public class MutablePeriod
 
     /**
      * Adds the specified minutes to the number of minutes in the period.
-     * 
-     * @param minutes  the number of minutes
+     *
+     * @param minutes the number of minutes
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addMinutes(int minutes) {
         super.addField(com.jn.langx.util.jodatime.DurationFieldType.minutes(), minutes);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of seconds of the period.
-     * 
-     * @param seconds  the number of seconds
+     *
+     * @param seconds the number of seconds
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setSeconds(int seconds) {
@@ -959,20 +969,21 @@ public class MutablePeriod
 
     /**
      * Adds the specified seconds to the number of seconds in the period.
-     * 
-     * @param seconds  the number of seconds
+     *
+     * @param seconds the number of seconds
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addSeconds(int seconds) {
         super.addField(com.jn.langx.util.jodatime.DurationFieldType.seconds(), seconds);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the number of millis of the period.
-     * 
-     * @param millis  the number of millis
+     *
+     * @param millis the number of millis
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setMillis(int millis) {
@@ -981,10 +992,10 @@ public class MutablePeriod
 
     /**
      * Adds the specified millis to the number of millis in the period.
-     * 
-     * @param millis  the number of millis
+     *
+     * @param millis the number of millis
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     * @throws ArithmeticException      if the addition exceeds the capacity of the period
      */
     public void addMillis(int millis) {
         super.addField(DurationFieldType.millis(), millis);
@@ -992,6 +1003,7 @@ public class MutablePeriod
 
     // Misc
     //-----------------------------------------------------------------------
+
     /**
      * Clone this object without having to cast the returned object.
      *

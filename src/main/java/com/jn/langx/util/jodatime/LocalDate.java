@@ -15,30 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
-
-import com.jn.langx.util.jodatime.*;
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateMidnight;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.Interval;
 import com.jn.langx.util.jodatime.base.BaseLocal;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.convert.ConverterManager;
@@ -48,6 +24,12 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.DateTimeFormat;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * LocalDate is an immutable datetime class representing a date
@@ -64,7 +46,7 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
  * Calculations on LocalDate are performed using a {@link com.jn.langx.util.jodatime.Chronology}.
  * This chronology will be set internally to be in the UTC time zone
  * for all calculations.
- *
+ * <p>
  * <p>Each individual field can be queried in two ways:
  * <ul>
  * <li><code>getMonthOfYear()</code>
@@ -81,7 +63,7 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
  * <li>set
  * <li>rounding
  * </ul>
- *
+ * <p>
  * <p>
  * LocalDate is thread-safe and immutable, provided that the Chronology is as well.
  * All standard Chronology classes supplied are thread-safe and immutable.
@@ -93,17 +75,28 @@ public final class LocalDate
         extends BaseLocal
         implements ReadablePartial, Serializable {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -8775358157899L;
 
-    /** The index of the year field in the field array */
+    /**
+     * The index of the year field in the field array
+     */
     private static final int YEAR = 0;
-    /** The index of the monthOfYear field in the field array */
+    /**
+     * The index of the monthOfYear field in the field array
+     */
     private static final int MONTH_OF_YEAR = 1;
-    /** The index of the dayOfMonth field in the field array */
+    /**
+     * The index of the dayOfMonth field in the field array
+     */
     private static final int DAY_OF_MONTH = 2;
-    /** Set of known duration types. */
+    /**
+     * Set of known duration types.
+     */
     private static final Set<com.jn.langx.util.jodatime.DurationFieldType> DATE_DURATION_TYPES = new HashSet<com.jn.langx.util.jodatime.DurationFieldType>();
+
     static {
         DATE_DURATION_TYPES.add(com.jn.langx.util.jodatime.DurationFieldType.days());
         DATE_DURATION_TYPES.add(com.jn.langx.util.jodatime.DurationFieldType.weeks());
@@ -115,18 +108,25 @@ public final class LocalDate
         DATE_DURATION_TYPES.add(com.jn.langx.util.jodatime.DurationFieldType.eras());
     }
 
-    /** The local millis from 1970-01-01T00:00:00 */
+    /**
+     * The local millis from 1970-01-01T00:00:00
+     */
     private final long iLocalMillis;
-    /** The chronology to use in UTC. */
+    /**
+     * The chronology to use in UTC.
+     */
     private final com.jn.langx.util.jodatime.Chronology iChronology;
-    /** The cached hash code. */
+    /**
+     * The cached hash code.
+     */
     private transient volatile int iHash;
 
     //-----------------------------------------------------------------------
+
     /**
      * Obtains a {@code LocalDate} set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
-     * 
+     *
      * @return the current date-time, not null
      * @since 2.0
      */
@@ -138,7 +138,7 @@ public final class LocalDate
      * Obtains a {@code LocalDate} set to the current system millisecond time
      * using <code>ISOChronology</code> in the specified time zone.
      *
-     * @param zone  the time zone, not null
+     * @param zone the time zone, not null
      * @return the current date-time, not null
      * @since 2.0
      */
@@ -153,7 +153,7 @@ public final class LocalDate
      * Obtains a {@code LocalDate} set to the current system millisecond time
      * using the specified chronology.
      *
-     * @param chronology  the chronology, not null
+     * @param chronology the chronology, not null
      * @return the current date-time, not null
      * @since 2.0
      */
@@ -165,12 +165,13 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses a {@code LocalDate} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#localDateParser()}.
-     * 
-     * @param str  the string to parse, not null
+     *
+     * @param str the string to parse, not null
      * @since 2.0
      */
     public static LocalDate parse(String str) {
@@ -179,9 +180,9 @@ public final class LocalDate
 
     /**
      * Parses a {@code LocalDate} from the specified string using a formatter.
-     * 
-     * @param str  the string to parse, not null
-     * @param formatter  the formatter to use, not null
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
      * @since 2.0
      */
     public static LocalDate parse(String str, DateTimeFormatter formatter) {
@@ -189,6 +190,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs a LocalDate from a <code>java.util.Calendar</code>
      * using exactly the same field values.
@@ -207,7 +209,7 @@ public final class LocalDate
      * will only pass in instances of <code>GregorianCalendar</code> however
      * this is not validated.
      *
-     * @param calendar  the Calendar to extract fields from, not null
+     * @param calendar the Calendar to extract fields from, not null
      * @return the created local date, not null
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
@@ -219,9 +221,9 @@ public final class LocalDate
         int era = calendar.get(Calendar.ERA);
         int yearOfEra = calendar.get(Calendar.YEAR);
         return new LocalDate(
-            (era == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra),
-            calendar.get(Calendar.MONTH) + 1,
-            calendar.get(Calendar.DAY_OF_MONTH)
+                (era == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH)
         );
     }
 
@@ -240,7 +242,7 @@ public final class LocalDate
      * <p>
      * This factory method always creates a LocalDate with ISO chronology.
      *
-     * @param date  the Date to extract fields from, not null
+     * @param date the Date to extract fields from, not null
      * @return the created local date, not null
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
@@ -257,19 +259,20 @@ public final class LocalDate
             return fromCalendarFields(cal);
         }
         return new LocalDate(
-            date.getYear() + 1900,
-            date.getMonth() + 1,
-            date.getDate()
+                date.getYear() + 1900,
+                date.getMonth() + 1,
+                date.getDate()
         );
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the current local time evaluated using
      * ISO chronology in the default zone.
      * <p>
      * Once the constructor is completed, the zone is no longer used.
-     * 
+     *
      * @see #now()
      */
     public LocalDate() {
@@ -283,7 +286,7 @@ public final class LocalDate
      * If the specified time zone is null, the default zone is used.
      * Once the constructor is completed, the zone is no longer used.
      *
-     * @param zone  the time zone, null means default zone
+     * @param zone the time zone, null means default zone
      * @see #now(com.jn.langx.util.jodatime.DateTimeZone)
      */
     public LocalDate(com.jn.langx.util.jodatime.DateTimeZone zone) {
@@ -297,7 +300,7 @@ public final class LocalDate
      * If the chronology is null, ISO chronology in the default time zone is used.
      * Once the constructor is completed, the zone is no longer used.
      *
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param chronology the chronology, null means ISOChronology in default zone
      * @see #now(com.jn.langx.util.jodatime.Chronology)
      */
     public LocalDate(com.jn.langx.util.jodatime.Chronology chronology) {
@@ -305,13 +308,14 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the local time defined by the specified
      * instant evaluated using ISO chronology in the default zone.
      * <p>
      * Once the constructor is completed, the zone is no longer used.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
      */
     public LocalDate(long instant) {
         this(instant, ISOChronology.getInstance());
@@ -324,8 +328,8 @@ public final class LocalDate
      * If the specified time zone is null, the default zone is used.
      * Once the constructor is completed, the zone is no longer used.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param zone  the time zone, null means default zone
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
+     * @param zone    the time zone, null means default zone
      */
     public LocalDate(long instant, com.jn.langx.util.jodatime.DateTimeZone zone) {
         this(instant, ISOChronology.getInstance(zone));
@@ -338,12 +342,12 @@ public final class LocalDate
      * If the chronology is null, ISO chronology in the default zone is used.
      * Once the constructor is completed, the zone is no longer used.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param instant    the milliseconds from 1970-01-01T00:00:00Z
+     * @param chronology the chronology, null means ISOChronology in default zone
      */
     public LocalDate(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
         chronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology);
-        
+
         long localMillis = chronology.getZone().getMillisKeepLocal(com.jn.langx.util.jodatime.DateTimeZone.UTC, instant);
         chronology = chronology.withUTC();
         iLocalMillis = chronology.dayOfMonth().roundFloor(localMillis);
@@ -351,6 +355,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from an Object that represents a datetime.
      * The time zone will be retrieved from the object if possible,
@@ -365,7 +370,7 @@ public final class LocalDate
      * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
      * The default String converter ignores the zone and only parses the field values.
      *
-     * @param instant  the datetime object
+     * @param instant the datetime object
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDate(Object instant) {
@@ -386,8 +391,8 @@ public final class LocalDate
      * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
      * The default String converter ignores the zone and only parses the field values.
      *
-     * @param instant  the datetime object
-     * @param zone  the time zone
+     * @param instant the datetime object
+     * @param zone    the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDate(Object instant, com.jn.langx.util.jodatime.DateTimeZone zone) {
@@ -416,8 +421,8 @@ public final class LocalDate
      * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
      * The default String converter ignores the zone and only parses the field values.
      *
-     * @param instant  the datetime object
-     * @param chronology  the chronology
+     * @param instant    the datetime object
+     * @param chronology the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDate(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
@@ -430,12 +435,13 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the specified date and time
      * using <code>ISOChronology</code>.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param year        the year
+     * @param monthOfYear the month of the year, from 1 to 12
      * @param dayOfMonth  the day of the month, from 1 to 31
      */
     public LocalDate(
@@ -451,8 +457,8 @@ public final class LocalDate
      * <p>
      * If the chronology is null, <code>ISOChronology</code> is used.
      *
-     * @param year  the year, valid values defined by the chronology
-     * @param monthOfYear  the month of the year, valid values defined by the chronology
+     * @param year        the year, valid values defined by the chronology
+     * @param monthOfYear the month of the year, valid values defined by the chronology
      * @param dayOfMonth  the day of the month, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
@@ -470,6 +476,7 @@ public final class LocalDate
 
     /**
      * Handle broken serialization from other tools.
+     *
      * @return the resolved object, not null
      */
     private Object readResolve() {
@@ -483,6 +490,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the number of fields in this partial, which is three.
      * The supported fields are Year, MonthOfYear and DayOfMonth.
@@ -501,7 +509,7 @@ public final class LocalDate
      * This method must not use any instance variables.
      *
      * @param index  the index to retrieve
-     * @param chrono  the chronology to use
+     * @param chrono the chronology to use
      * @return the field
      */
     protected com.jn.langx.util.jodatime.DateTimeField getField(int index, com.jn.langx.util.jodatime.Chronology chrono) {
@@ -525,7 +533,7 @@ public final class LocalDate
      * Note that all fields from day and above may in fact be queried via
      * other methods.
      *
-     * @param index  the index, zero to two
+     * @param index the index, zero to two
      * @return the value
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -543,6 +551,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the value of one of the fields of a datetime.
      * <p>
@@ -553,7 +562,7 @@ public final class LocalDate
      * int year = dt.get(DateTimeFieldType.year());
      * </pre>
      *
-     * @param fieldType  a field type, usually obtained from DateTimeFieldType, not null
+     * @param fieldType a field type, usually obtained from DateTimeFieldType, not null
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null or unsupported
      */
@@ -572,7 +581,7 @@ public final class LocalDate
      * local date and chronology.
      * This can be used to avoid exceptions in {@link #get(com.jn.langx.util.jodatime.DateTimeFieldType)}.
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @param type a field type, usually obtained from DateTimeFieldType
      * @return true if the field type is supported
      */
     public boolean isSupported(com.jn.langx.util.jodatime.DateTimeFieldType type) {
@@ -582,7 +591,7 @@ public final class LocalDate
         com.jn.langx.util.jodatime.DurationFieldType durType = type.getDurationType();
         if (DATE_DURATION_TYPES.contains(durType) ||
                 durType.getField(getChronology()).getUnitMillis() >=
-                    getChronology().days().getUnitMillis()) {
+                        getChronology().days().getUnitMillis()) {
             return type.getField(getChronology()).isSupported();
         }
         return false;
@@ -592,7 +601,7 @@ public final class LocalDate
      * Checks if the duration type specified is supported by this
      * local date and chronology.
      *
-     * @param type  a duration type, usually obtained from DurationFieldType
+     * @param type a duration type, usually obtained from DurationFieldType
      * @return true if the field type is supported
      */
     public boolean isSupported(com.jn.langx.util.jodatime.DurationFieldType type) {
@@ -601,17 +610,18 @@ public final class LocalDate
         }
         DurationField field = type.getField(getChronology());
         if (DATE_DURATION_TYPES.contains(type) ||
-            field.getUnitMillis() >= getChronology().days().getUnitMillis()) {
+                field.getUnitMillis() >= getChronology().days().getUnitMillis()) {
             return field.isSupported();
         }
         return false;
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the local milliseconds from the Java epoch
      * of 1970-01-01T00:00:00 (not fixed to any specific time zone).
-     * 
+     *
      * @return the number of milliseconds since 1970-01-01T00:00:00
      * @since 1.5 (previously private)
      */
@@ -621,7 +631,7 @@ public final class LocalDate
 
     /**
      * Gets the chronology of the date.
-     * 
+     *
      * @return the Chronology that the date is using
      */
     public com.jn.langx.util.jodatime.Chronology getChronology() {
@@ -629,11 +639,12 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this ReadablePartial with another returning true if the chronology,
      * field types and values are equal.
      *
-     * @param partial  an object to check against
+     * @param partial an object to check against
      * @return true if fields and values are equal
      */
     public boolean equals(Object partial) {
@@ -674,10 +685,10 @@ public final class LocalDate
      * The specified object must be a partial instance whose field types
      * match those of this partial.
      *
-     * @param partial  an object to check against
+     * @param partial an object to check against
      * @return negative if this is less, zero if equal, positive if greater
-     * @throws ClassCastException if the partial is the wrong class
-     *  or if it has field types that don't match
+     * @throws ClassCastException   if the partial is the wrong class
+     *                              or if it has field types that don't match
      * @throws NullPointerException if the partial is null
      */
     public int compareTo(ReadablePartial partial) {
@@ -689,7 +700,7 @@ public final class LocalDate
             LocalDate other = (LocalDate) partial;
             if (iChronology.equals(other.iChronology)) {
                 return (iLocalMillis < other.iLocalMillis ? -1 :
-                            (iLocalMillis == other.iLocalMillis ? 0 : 1));
+                        (iLocalMillis == other.iLocalMillis ? 0 : 1));
 
             }
         }
@@ -697,6 +708,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this LocalDate to a full datetime at the earliest valid time
      * for the date using the default time zone.
@@ -707,7 +719,7 @@ public final class LocalDate
      * This method handles that situation by returning 01:00 on that date.
      * <p>
      * This instance is immutable and unaffected by this method call.
-     * 
+     *
      * @return this date as a datetime at the start of the day
      * @since 1.5
      */
@@ -729,7 +741,7 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param zone  the zone to use, null means default zone
+     * @param zone the zone to use, null means default zone
      * @return this date as a datetime at the start of the day
      * @since 1.5
      */
@@ -743,6 +755,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this LocalDate to a full datetime at midnight using the default
      * time zone.
@@ -753,7 +766,7 @@ public final class LocalDate
      * midnight on the required date, and as such an exception is thrown.
      * <p>
      * This instance is immutable and unaffected by this method call.
-     * 
+     *
      * @return this date as a datetime at midnight
      * @deprecated Use {@link #toDateTimeAtStartOfDay()} which won't throw an exception
      */
@@ -776,7 +789,7 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param zone  the zone to use, null means default zone
+     * @param zone the zone to use, null means default zone
      * @return this date as a datetime at midnight
      * @deprecated Use {@link #toDateTimeAtStartOfDay(com.jn.langx.util.jodatime.DateTimeZone)} which won't throw an exception
      */
@@ -788,6 +801,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this LocalDate to a full datetime using the default time zone
      * setting the date fields from this instance and the time fields from
@@ -817,7 +831,7 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param zone  the zone to use, null means default zone
+     * @param zone the zone to use, null means default zone
      * @return this date as a datetime with the time as the current time
      */
     public com.jn.langx.util.jodatime.DateTime toDateTimeAtCurrentTime(com.jn.langx.util.jodatime.DateTimeZone zone) {
@@ -829,6 +843,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this LocalDate to a DateMidnight in the default time zone.
      * <p>
@@ -865,7 +880,7 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param zone  the zone to get the DateMidnight in, null means default zone
+     * @param zone the zone to get the DateMidnight in, null means default zone
      * @return the DateMidnight instance
      * @deprecated DateMidnight is deprecated
      */
@@ -877,6 +892,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this object to a LocalDateTime using a LocalTime to fill in
      * the missing fields.
@@ -887,7 +903,7 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param time  the time of day to use, must not be null
+     * @param time the time of day to use, must not be null
      * @return the LocalDateTime instance
      * @throws IllegalArgumentException if the time is null
      * @throws IllegalArgumentException if the chronology of the time does not match
@@ -905,6 +921,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this object to a DateTime using a LocalTime to fill in the
      * missing fields and using the default time zone.
@@ -918,7 +935,7 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param time  the time of day to use, null means current time
+     * @param time the time of day to use, null means current time
      * @return the DateTime instance
      * @throws IllegalArgumentException if the chronology of the time does not match
      */
@@ -939,8 +956,8 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param time  the time of day to use, null means current time
-     * @param zone  the zone to get the DateTime in, null means default
+     * @param time the time of day to use, null means current time
+     * @param zone the zone to get the DateTime in, null means default
      * @return the DateTime instance
      * @throws IllegalArgumentException if the chronology of the time does not match
      */
@@ -958,6 +975,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this object to an Interval representing the whole day
      * in the default time zone.
@@ -981,7 +999,7 @@ public final class LocalDate
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
-     * @param zone  the zone to get the Interval in, null means default
+     * @param zone the zone to get the Interval in, null means default
      * @return a interval over the day
      */
     public com.jn.langx.util.jodatime.Interval toInterval(DateTimeZone zone) {
@@ -992,6 +1010,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the date time as a <code>java.util.Date</code>.
      * <p>
@@ -1036,6 +1055,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with different local millis.
      * <p>
@@ -1043,7 +1063,7 @@ public final class LocalDate
      * Only the millis will change, the chronology is kept.
      * The returned object will be either be a new instance or <code>this</code>.
      *
-     * @param newMillis  the new millis, from 1970-01-01T00:00:00
+     * @param newMillis the new millis, from 1970-01-01T00:00:00
      * @return a copy of this date with different millis
      */
     LocalDate withLocalMillis(long newMillis) {
@@ -1052,6 +1072,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the partial set of fields replacing
      * those from this instance.
@@ -1061,7 +1082,7 @@ public final class LocalDate
      * Unsupported fields are ignored.
      * If the partial is null, then <code>this</code> is returned.
      *
-     * @param partial  the partial set of fields to apply to this date, null ignored
+     * @param partial the partial set of fields to apply to this date, null ignored
      * @return a copy of this date with a different set of fields
      * @throws IllegalArgumentException if any value is invalid
      */
@@ -1085,8 +1106,8 @@ public final class LocalDate
      * LocalDate updated = dt.withField(DateTimeFieldType.dayOfMonth(), 6);
      * </pre>
      *
-     * @param fieldType  the field type to set, not null
-     * @param value  the value to set
+     * @param fieldType the field type to set, not null
+     * @param value     the value to set
      * @return a copy of this date with the field set
      * @throws IllegalArgumentException if the field is null or unsupported
      */
@@ -1113,11 +1134,11 @@ public final class LocalDate
      * LocalDate added = dt.plus(Period.years(6));
      * </pre>
      *
-     * @param fieldType  the field type to add to, not null
-     * @param amount  the amount to add
+     * @param fieldType the field type to add to, not null
+     * @param amount    the amount to add
      * @return a copy of this date with the field updated
      * @throws IllegalArgumentException if the field is null or unsupported
-     * @throws ArithmeticException if the result exceeds the internal capacity
+     * @throws ArithmeticException      if the result exceeds the internal capacity
      */
     public LocalDate withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
         if (fieldType == null) {
@@ -1134,6 +1155,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the specified period added.
      * <p>
@@ -1147,8 +1169,8 @@ public final class LocalDate
      * Unsupported time fields are ignored, thus adding a period of 24 hours
      * will not have any effect.
      *
-     * @param period  the period to add to this one, null means zero
-     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @param period the period to add to this one, null means zero
+     * @param scalar the amount of times to add, such as -1 to subtract once
      * @return a copy of this date with the period added
      * @throws ArithmeticException if the result exceeds the internal capacity
      */
@@ -1169,6 +1191,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the specified period added.
      * <p>
@@ -1181,7 +1204,7 @@ public final class LocalDate
      * Unsupported time fields are ignored, thus adding a period of 24 hours
      * will not have any effect.
      *
-     * @param period  the period to add to this one, null means zero
+     * @param period the period to add to this one, null means zero
      * @return a copy of this date with the period added
      * @throws ArithmeticException if the result exceeds the internal capacity
      */
@@ -1190,6 +1213,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date plus the specified number of years.
      * <p>
@@ -1204,7 +1228,7 @@ public final class LocalDate
      * LocalDate added = dt.withFieldAdded(DurationFieldType.years(), 6);
      * </pre>
      *
-     * @param years  the amount of years to add, may be negative
+     * @param years the amount of years to add, may be negative
      * @return the new LocalDate plus the increased years
      */
     public LocalDate plusYears(int years) {
@@ -1230,7 +1254,7 @@ public final class LocalDate
      * LocalDate added = dt.withFieldAdded(DurationFieldType.months(), 6);
      * </pre>
      *
-     * @param months  the amount of months to add, may be negative
+     * @param months the amount of months to add, may be negative
      * @return the new LocalDate plus the increased months
      */
     public LocalDate plusMonths(int months) {
@@ -1253,7 +1277,7 @@ public final class LocalDate
      * LocalDate added = dt.withFieldAdded(DurationFieldType.weeks(), 6);
      * </pre>
      *
-     * @param weeks  the amount of weeks to add, may be negative
+     * @param weeks the amount of weeks to add, may be negative
      * @return the new LocalDate plus the increased weeks
      */
     public LocalDate plusWeeks(int weeks) {
@@ -1276,7 +1300,7 @@ public final class LocalDate
      * LocalDate added = dt.withFieldAdded(DurationFieldType.days(), 6);
      * </pre>
      *
-     * @param days  the amount of days to add, may be negative
+     * @param days the amount of days to add, may be negative
      * @return the new LocalDate plus the increased days
      */
     public LocalDate plusDays(int days) {
@@ -1288,6 +1312,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the specified period taken away.
      * <p>
@@ -1300,7 +1325,7 @@ public final class LocalDate
      * Unsupported time fields are ignored, thus subtracting a period of 24 hours
      * will not have any effect.
      *
-     * @param period  the period to reduce this instant by
+     * @param period the period to reduce this instant by
      * @return a copy of this LocalDate with the period taken away
      * @throws ArithmeticException if the result exceeds the internal capacity
      */
@@ -1309,6 +1334,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date minus the specified number of years.
      * <p>
@@ -1323,7 +1349,7 @@ public final class LocalDate
      * LocalDate subtracted = dt.withFieldAdded(DurationFieldType.years(), -6);
      * </pre>
      *
-     * @param years  the amount of years to subtract, may be negative
+     * @param years the amount of years to subtract, may be negative
      * @return the new LocalDate minus the increased years
      */
     public LocalDate minusYears(int years) {
@@ -1349,7 +1375,7 @@ public final class LocalDate
      * LocalDate subtracted = dt.withFieldAdded(DurationFieldType.months(), -6);
      * </pre>
      *
-     * @param months  the amount of months to subtract, may be negative
+     * @param months the amount of months to subtract, may be negative
      * @return the new LocalDate minus the increased months
      */
     public LocalDate minusMonths(int months) {
@@ -1372,7 +1398,7 @@ public final class LocalDate
      * LocalDate subtracted = dt.withFieldAdded(DurationFieldType.weeks(), -6);
      * </pre>
      *
-     * @param weeks  the amount of weeks to subtract, may be negative
+     * @param weeks the amount of weeks to subtract, may be negative
      * @return the new LocalDate minus the increased weeks
      */
     public LocalDate minusWeeks(int weeks) {
@@ -1395,7 +1421,7 @@ public final class LocalDate
      * LocalDate subtracted = dt.withFieldAdded(DurationFieldType.days(), -6);
      * </pre>
      *
-     * @param days  the amount of days to subtract, may be negative
+     * @param days the amount of days to subtract, may be negative
      * @return the new LocalDate minus the increased days
      */
     public LocalDate minusDays(int days) {
@@ -1407,11 +1433,12 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the property object for the specified type, which contains many
      * useful methods.
      *
-     * @param fieldType  the field type to get the chronology for
+     * @param fieldType the field type to get the chronology for
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */
@@ -1426,6 +1453,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the era field value.
      *
@@ -1541,6 +1569,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the era field updated.
      * <p>
@@ -1548,7 +1577,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * era changed.
      *
-     * @param era  the era to set
+     * @param era the era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1563,7 +1592,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * century of era changed.
      *
-     * @param centuryOfEra  the centurey of era to set
+     * @param centuryOfEra the centurey of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1578,7 +1607,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * year of era changed.
      *
-     * @param yearOfEra  the year of era to set
+     * @param yearOfEra the year of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1593,7 +1622,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * year of century changed.
      *
-     * @param yearOfCentury  the year of century to set
+     * @param yearOfCentury the year of century to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1608,7 +1637,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * year changed.
      *
-     * @param year  the year to set
+     * @param year the year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1629,7 +1658,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * weekyear changed.
      *
-     * @param weekyear  the weekyear to set
+     * @param weekyear the weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1644,7 +1673,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * month of year changed.
      *
-     * @param monthOfYear  the month of year to set
+     * @param monthOfYear the month of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1664,7 +1693,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * week of weekyear changed.
      *
-     * @param weekOfWeekyear  the week of weekyear to set
+     * @param weekOfWeekyear the week of weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1679,7 +1708,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * day of year changed.
      *
-     * @param dayOfYear  the day of year to set
+     * @param dayOfYear the day of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1694,7 +1723,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * day of month changed.
      *
-     * @param dayOfMonth  the day of month to set
+     * @param dayOfMonth the day of month to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1709,7 +1738,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * day of week changed.
      *
-     * @param dayOfWeek  the day of week to set
+     * @param dayOfWeek the day of week to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1718,6 +1747,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the era property which provides access to advanced functionality.
      *
@@ -1818,6 +1848,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Output the date time in ISO8601 format (yyyy-MM-dd).
      *
@@ -1830,7 +1861,7 @@ public final class LocalDate
     /**
      * Output the date using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param pattern the pattern specification, null means use <code>toString</code>
      * @see DateTimeFormat
      */
     public String toString(String pattern) {
@@ -1843,7 +1874,7 @@ public final class LocalDate
     /**
      * Output the date using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param pattern the pattern specification, null means use <code>toString</code>
      * @param locale  Locale to use, null means default
      * @see DateTimeFormat
      */
@@ -1855,6 +1886,7 @@ public final class LocalDate
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * LocalDate.Property binds a LocalDate to a DateTimeField allowing
      * powerful datetime functionality to be easily accessed.
@@ -1883,27 +1915,33 @@ public final class LocalDate
      * @since 1.3
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
-        
-        /** Serialization version */
+
+        /**
+         * Serialization version
+         */
         private static final long serialVersionUID = -3193829732634L;
-        
-        /** The instant this property is working against */
+
+        /**
+         * The instant this property is working against
+         */
         private transient LocalDate iInstant;
-        /** The field this property is working against */
+        /**
+         * The field this property is working against
+         */
         private transient com.jn.langx.util.jodatime.DateTimeField iField;
-        
+
         /**
          * Constructor.
-         * 
-         * @param instant  the instant to set
-         * @param field  the field to use
+         *
+         * @param instant the instant to set
+         * @param field   the field to use
          */
         Property(LocalDate instant, com.jn.langx.util.jodatime.DateTimeField field) {
             super();
             iInstant = instant;
             iField = field;
         }
-        
+
         /**
          * Writes the property in a safe serialization format.
          */
@@ -1922,57 +1960,59 @@ public final class LocalDate
         }
 
         //-----------------------------------------------------------------------
+
         /**
          * Gets the field being used.
-         * 
+         *
          * @return the field
          */
         public DateTimeField getField() {
             return iField;
         }
-        
+
         /**
          * Gets the milliseconds of the date that this property is linked to.
-         * 
+         *
          * @return the milliseconds
          */
         protected long getMillis() {
             return iInstant.getLocalMillis();
         }
-        
+
         /**
          * Gets the chronology of the datetime that this property is linked to.
-         * 
+         *
          * @return the chronology
          * @since 1.4
          */
         protected Chronology getChronology() {
             return iInstant.getChronology();
         }
-        
+
         /**
          * Gets the LocalDate object linked to this property.
-         * 
+         *
          * @return the linked LocalDate
          */
         public LocalDate getLocalDate() {
             return iInstant;
         }
-        
+
         //-----------------------------------------------------------------------
+
         /**
          * Adds to this field in a copy of this LocalDate.
          * <p>
          * The LocalDate attached to this property is unchanged by this call.
          *
-         * @param value  the value to add to the field in the copy
+         * @param value the value to add to the field in the copy
          * @return a copy of the LocalDate with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
         public LocalDate addToCopy(int value) {
             return iInstant.withLocalMillis(iField.add(iInstant.getLocalMillis(), value));
         }
-        
+
         /**
          * Adds to this field, possibly wrapped, in a copy of this LocalDate.
          * A field wrapped operation only changes this field.
@@ -1980,56 +2020,58 @@ public final class LocalDate
          * <p>
          * The LocalDate attached to this property is unchanged by this call.
          *
-         * @param value  the value to add to the field in the copy
+         * @param value the value to add to the field in the copy
          * @return a copy of the LocalDate with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
         public LocalDate addWrapFieldToCopy(int value) {
             return iInstant.withLocalMillis(iField.addWrapField(iInstant.getLocalMillis(), value));
         }
-        
+
         //-----------------------------------------------------------------------
+
         /**
          * Sets this field in a copy of the LocalDate.
          * <p>
          * The LocalDate attached to this property is unchanged by this call.
          *
-         * @param value  the value to set the field in the copy to
+         * @param value the value to set the field in the copy to
          * @return a copy of the LocalDate with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
         public LocalDate setCopy(int value) {
             return iInstant.withLocalMillis(iField.set(iInstant.getLocalMillis(), value));
         }
-        
+
         /**
          * Sets this field in a copy of the LocalDate to a parsed text value.
          * <p>
          * The LocalDate attached to this property is unchanged by this call.
          *
-         * @param text  the text value to set
-         * @param locale  optional locale to use for selecting a text symbol
+         * @param text   the text value to set
+         * @param locale optional locale to use for selecting a text symbol
          * @return a copy of the LocalDate with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
         public LocalDate setCopy(String text, Locale locale) {
             return iInstant.withLocalMillis(iField.set(iInstant.getLocalMillis(), text, locale));
         }
-        
+
         /**
          * Sets this field in a copy of the LocalDate to a parsed text value.
          * <p>
          * The LocalDate attached to this property is unchanged by this call.
          *
-         * @param text  the text value to set
+         * @param text the text value to set
          * @return a copy of the LocalDate with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
         public LocalDate setCopy(String text) {
             return setCopy(text, null);
         }
-        
+
         //-----------------------------------------------------------------------
+
         /**
          * Returns a new LocalDate with this field set to the maximum value
          * for this field.
@@ -2047,7 +2089,7 @@ public final class LocalDate
         public LocalDate withMaximumValue() {
             return setCopy(getMaximumValue());
         }
-        
+
         /**
          * Returns a new LocalDate with this field set to the minimum value
          * for this field.
@@ -2059,8 +2101,9 @@ public final class LocalDate
         public LocalDate withMinimumValue() {
             return setCopy(getMinimumValue());
         }
-        
+
         //-----------------------------------------------------------------------
+
         /**
          * Rounds to the lowest whole unit of this field on a copy of this
          * LocalDate.
@@ -2074,7 +2117,7 @@ public final class LocalDate
         public LocalDate roundFloorCopy() {
             return iInstant.withLocalMillis(iField.roundFloor(iInstant.getLocalMillis()));
         }
-        
+
         /**
          * Rounds to the highest whole unit of this field on a copy of this
          * LocalDate.
@@ -2088,7 +2131,7 @@ public final class LocalDate
         public LocalDate roundCeilingCopy() {
             return iInstant.withLocalMillis(iField.roundCeiling(iInstant.getLocalMillis()));
         }
-        
+
         /**
          * Rounds to the nearest whole unit of this field on a copy of this
          * LocalDate, favoring the floor if halfway.
@@ -2098,7 +2141,7 @@ public final class LocalDate
         public LocalDate roundHalfFloorCopy() {
             return iInstant.withLocalMillis(iField.roundHalfFloor(iInstant.getLocalMillis()));
         }
-        
+
         /**
          * Rounds to the nearest whole unit of this field on a copy of this
          * LocalDate, favoring the ceiling if halfway.
@@ -2108,7 +2151,7 @@ public final class LocalDate
         public LocalDate roundHalfCeilingCopy() {
             return iInstant.withLocalMillis(iField.roundHalfCeiling(iInstant.getLocalMillis()));
         }
-        
+
         /**
          * Rounds to the nearest whole unit of this field on a copy of this
          * LocalDate.  If halfway, the ceiling is favored over the floor

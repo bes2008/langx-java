@@ -15,15 +15,7 @@
  */
 package com.jn.langx.util.jodatime.base;
 
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.Duration;
-import com.jn.langx.util.jodatime.Interval;
-import com.jn.langx.util.jodatime.MutableInterval;
-import com.jn.langx.util.jodatime.Period;
-import com.jn.langx.util.jodatime.PeriodType;
-import com.jn.langx.util.jodatime.ReadableInstant;
-import com.jn.langx.util.jodatime.ReadableInterval;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
@@ -31,8 +23,8 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
 /**
  * AbstractInterval provides the common behaviour for time intervals.
  * <p>
- * This class should generally not be used directly by API users. The 
- * {@link ReadableInterval} interface should be used when different 
+ * This class should generally not be used directly by API users. The
+ * {@link ReadableInterval} interface should be used when different
  * kinds of intervals are to be referenced.
  * <p>
  * AbstractInterval subclasses may be mutable and not thread-safe.
@@ -51,11 +43,12 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Validates an interval.
-     * 
-     * @param start  the start instant in milliseconds
-     * @param end  the end instant in milliseconds
+     *
+     * @param start the start instant in milliseconds
+     * @param end   the end instant in milliseconds
      * @throws IllegalArgumentException if the interval is invalid
      */
     protected void checkInterval(long start, long end) {
@@ -65,6 +58,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the start of this time interval, which is inclusive, as a DateTime.
      *
@@ -74,7 +68,7 @@ public abstract class AbstractInterval implements ReadableInterval {
         return new DateTime(getStartMillis(), getChronology());
     }
 
-    /** 
+    /**
      * Gets the end of this time interval, which is exclusive, as a DateTime.
      *
      * @return the end of the time interval
@@ -84,14 +78,15 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Does this time interval contain the specified millisecond instant.
      * <p>
      * Non-zero duration intervals are inclusive of the start instant and
      * exclusive of the end. A zero duration interval cannot contain anything.
      *
-     * @param millisInstant  the instant to compare to,
-     *  millisecond instant from 1970-01-01T00:00:00Z
+     * @param millisInstant the instant to compare to,
+     *                      millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval contains the millisecond
      */
     public boolean contains(long millisInstant) {
@@ -125,13 +120,13 @@ public abstract class AbstractInterval implements ReadableInterval {
      * [09:00 to 10:00) contains 09:59  = true
      * [09:00 to 10:00) contains 10:00  = false (equals end)
      * [09:00 to 10:00) contains 10:01  = false (after end)
-     * 
+     *
      * [14:00 to 14:00) contains 14:00  = false (zero duration contains nothing)
      * </pre>
      * Passing in a <code>null</code> parameter will have the same effect as
      * calling {@link #containsNow()}.
      *
-     * @param instant  the instant, null means now
+     * @param instant the instant, null means now
      * @return true if this time interval contains the instant
      */
     public boolean contains(ReadableInstant instant) {
@@ -162,17 +157,17 @@ public abstract class AbstractInterval implements ReadableInterval {
      * [09:00 to 10:00) contains [09:30 to 10:00)  = true
      * [09:00 to 10:00) contains [09:15 to 09:45)  = true
      * [09:00 to 10:00) contains [09:00 to 09:00)  = true
-     * 
+     *
      * [09:00 to 10:00) contains [08:59 to 10:00)  = false (otherStart before thisStart)
      * [09:00 to 10:00) contains [09:00 to 10:01)  = false (otherEnd after thisEnd)
      * [09:00 to 10:00) contains [10:00 to 10:00)  = false (otherStart equals thisEnd)
-     * 
+     *
      * [14:00 to 14:00) contains [14:00 to 14:00)  = false (zero duration contains nothing)
      * </pre>
      * Passing in a <code>null</code> parameter will have the same effect as
      * calling {@link #containsNow()}.
      *
-     * @param interval  the time interval to compare to, null means a zero duration interval now
+     * @param interval the time interval to compare to, null means a zero duration interval now
      * @return true if this time interval contains the time interval
      */
     public boolean contains(ReadableInterval interval) {
@@ -191,7 +186,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
      * An interval overlaps another if it shares some common part of the
-     * datetime continuum. 
+     * datetime continuum.
      * <p>
      * When two intervals are compared the result is one of three states:
      * (a) they abut, (b) there is a gap between them, (c) they overlap.
@@ -205,26 +200,26 @@ public abstract class AbstractInterval implements ReadableInterval {
      * [09:00 to 10:00) overlaps [08:00 to 09:30)  = true
      * [09:00 to 10:00) overlaps [08:00 to 10:00)  = true
      * [09:00 to 10:00) overlaps [08:00 to 11:00)  = true
-     * 
+     *
      * [09:00 to 10:00) overlaps [09:00 to 09:00)  = false (abuts before)
      * [09:00 to 10:00) overlaps [09:00 to 09:30)  = true
      * [09:00 to 10:00) overlaps [09:00 to 10:00)  = true
      * [09:00 to 10:00) overlaps [09:00 to 11:00)  = true
-     * 
+     *
      * [09:00 to 10:00) overlaps [09:30 to 09:30)  = true
      * [09:00 to 10:00) overlaps [09:30 to 10:00)  = true
      * [09:00 to 10:00) overlaps [09:30 to 11:00)  = true
-     * 
+     *
      * [09:00 to 10:00) overlaps [10:00 to 10:00)  = false (abuts after)
      * [09:00 to 10:00) overlaps [10:00 to 11:00)  = false (abuts after)
-     * 
+     *
      * [09:00 to 10:00) overlaps [10:30 to 11:00)  = false (completely after)
-     * 
+     *
      * [14:00 to 14:00) overlaps [14:00 to 14:00)  = false (abuts before and after)
      * [14:00 to 14:00) overlaps [13:00 to 15:00)  = true
      * </pre>
      *
-     * @param interval  the time interval to compare to, null means a zero length interval now
+     * @param interval the time interval to compare to, null means a zero length interval now
      * @return true if the time intervals overlap
      */
     public boolean overlaps(ReadableInterval interval) {
@@ -233,7 +228,7 @@ public abstract class AbstractInterval implements ReadableInterval {
         if (interval == null) {
             long now = DateTimeUtils.currentTimeMillis();
             return (thisStart < now && now < thisEnd);
-        }  else {
+        } else {
             long otherStart = interval.getStartMillis();
             long otherEnd = interval.getEndMillis();
             return (thisStart < otherEnd && otherStart < thisEnd);
@@ -241,12 +236,13 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this interval equal to the specified interval ignoring the chronology.
      * <p>
      * This compares the underlying instants, ignoring the chronology.
      *
-     * @param other  a readable interval to check against
+     * @param other a readable interval to check against
      * @return true if the intervals are equal comparing the start and end millis
      * @since 2.3
      */
@@ -259,9 +255,9 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Is this time interval before the specified millisecond instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param millisInstant  the instant to compare to,
-     *  millisecond instant from 1970-01-01T00:00:00Z
+     *
+     * @param millisInstant the instant to compare to,
+     *                      millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is before the instant
      */
     public boolean isBefore(long millisInstant) {
@@ -272,7 +268,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Is this time interval before the current instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
+     *
      * @return true if this time interval is before the current instant
      */
     public boolean isBeforeNow() {
@@ -283,8 +279,8 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Is this time interval before the specified instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param instant  the instant to compare to, null means now
+     *
+     * @param instant the instant to compare to, null means now
      * @return true if this time interval is before the instant
      */
     public boolean isBefore(ReadableInstant instant) {
@@ -298,8 +294,8 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Is this time interval entirely before the specified instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param interval  the interval to compare to, null means now
+     *
+     * @param interval the interval to compare to, null means now
      * @return true if this time interval is before the interval specified
      */
     public boolean isBefore(ReadableInterval interval) {
@@ -310,13 +306,14 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this time interval after the specified millisecond instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param millisInstant  the instant to compare to,
-     *  millisecond instant from 1970-01-01T00:00:00Z
+     *
+     * @param millisInstant the instant to compare to,
+     *                      millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is after the instant
      */
     public boolean isAfter(long millisInstant) {
@@ -327,7 +324,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Is this time interval after the current instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
+     *
      * @return true if this time interval is after the current instant
      */
     public boolean isAfterNow() {
@@ -338,8 +335,8 @@ public abstract class AbstractInterval implements ReadableInterval {
      * Is this time interval after the specified instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param instant  the instant to compare to, null means now
+     *
+     * @param instant the instant to compare to, null means now
      * @return true if this time interval is after the instant
      */
     public boolean isAfter(ReadableInstant instant) {
@@ -354,8 +351,8 @@ public abstract class AbstractInterval implements ReadableInterval {
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
      * Only the end time of the specified interval is used in the comparison.
-     * 
-     * @param interval  the interval to compare to, null means now
+     *
+     * @param interval the interval to compare to, null means now
      * @return true if this time interval is after the interval specified
      */
     public boolean isAfter(ReadableInterval interval) {
@@ -369,6 +366,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get this interval as an immutable <code>Interval</code> object.
      *
@@ -390,6 +388,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the duration of this time interval in milliseconds.
      * <p>
@@ -420,6 +419,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts the duration of the interval to a <code>Period</code> using the
      * All period type.
@@ -440,7 +440,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * This method should be used to exract the field values describing the
      * difference between the start and end instants.
      *
-     * @param type  the requested type of the duration, null means AllType
+     * @param type the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
     public Period toPeriod(PeriodType type) {
@@ -448,6 +448,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this object with the specified object for equality based
      * on start and end millis plus the chronology.
@@ -456,9 +457,9 @@ public abstract class AbstractInterval implements ReadableInterval {
      * To compare the duration of two time intervals, use {@link #toDuration()}
      * to get the durations and compare those.
      *
-     * @param readableInterval  a readable interval to check against
+     * @param readableInterval a readable interval to check against
      * @return true if the intervals are equal comparing the start millis,
-     *  end millis and chronology
+     * end millis and chronology
      */
     public boolean equals(Object readableInterval) {
         if (this == readableInterval) {
@@ -468,10 +469,10 @@ public abstract class AbstractInterval implements ReadableInterval {
             return false;
         }
         ReadableInterval other = (ReadableInterval) readableInterval;
-        return 
-            getStartMillis() == other.getStartMillis() &&
-            getEndMillis() == other.getEndMillis() &&
-            FieldUtils.equals(getChronology(), other.getChronology());
+        return
+                getStartMillis() == other.getStartMillis() &&
+                        getEndMillis() == other.getEndMillis() &&
+                        FieldUtils.equals(getChronology(), other.getChronology());
     }
 
     /**

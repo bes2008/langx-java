@@ -17,8 +17,6 @@ package com.jn.langx.util.jodatime.field;
 
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.field.DelegatedDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
 
 /**
  * Wraps another field such that a certain value is added back into
@@ -35,21 +33,29 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  */
 public final class SkipUndoDateTimeField extends DelegatedDateTimeField {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     private static final long serialVersionUID = -5875876968979L;
 
-    /** The chronology to wrap. */
+    /**
+     * The chronology to wrap.
+     */
     private final Chronology iChronology;
-    /** The value to skip. */
+    /**
+     * The value to skip.
+     */
     private final int iSkip;
-    /** The calculated minimum value. */
+    /**
+     * The calculated minimum value.
+     */
     private transient int iMinValue;
 
     /**
      * Constructor that reinserts zero.
-     * 
-     * @param chronology  the chronoogy to use
-     * @param field  the field to skip zero on
+     *
+     * @param chronology the chronoogy to use
+     * @param field      the field to skip zero on
      */
     public SkipUndoDateTimeField(Chronology chronology, DateTimeField field) {
         this(chronology, field, 0);
@@ -57,10 +63,10 @@ public final class SkipUndoDateTimeField extends DelegatedDateTimeField {
 
     /**
      * Constructor.
-     * 
-     * @param chronology  the chronoogy to use
-     * @param field  the field to skip zero on
-     * @param skip  the value to skip
+     *
+     * @param chronology the chronoogy to use
+     * @param field      the field to skip zero on
+     * @param skip       the value to skip
      */
     public SkipUndoDateTimeField(Chronology chronology, DateTimeField field, int skip) {
         super(field);

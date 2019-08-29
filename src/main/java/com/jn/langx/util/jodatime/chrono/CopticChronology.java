@@ -15,18 +15,11 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
+import com.jn.langx.util.jodatime.*;
+import com.jn.langx.util.jodatime.field.SkipDateTimeField;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.chrono.*;
-import com.jn.langx.util.jodatime.chrono.LimitChronology;
-import com.jn.langx.util.jodatime.chrono.ZonedChronology;
-import com.jn.langx.util.jodatime.field.SkipDateTimeField;
 
 /**
  * Implements the Coptic calendar system, which defines every fourth year as
@@ -45,15 +38,16 @@ import com.jn.langx.util.jodatime.field.SkipDateTimeField;
  * <p>
  * CopticChronology is thread-safe and immutable.
  *
+ * @author Brian S O'Neill
  * @see <a href="http://en.wikipedia.org/wiki/Coptic_calendar">Wikipedia</a>
  * @see JulianChronology
- *
- * @author Brian S O'Neill
  * @since 1.0
  */
 public final class CopticChronology extends BasicFixedMonthChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = -5972804258688333942L;
 
     /**
@@ -62,30 +56,42 @@ public final class CopticChronology extends BasicFixedMonthChronology {
      */
     public static final int AM = DateTimeConstants.CE;
 
-    /** A singleton era field. */
+    /**
+     * A singleton era field.
+     */
     private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("AM");
 
-    /** The lowest year that can be fully supported. */
+    /**
+     * The lowest year that can be fully supported.
+     */
     private static final int MIN_YEAR = -292269337;
 
-    /** The highest year that can be fully supported. */
+    /**
+     * The highest year that can be fully supported.
+     */
     private static final int MAX_YEAR = 292272708;
 
-    /** Cache of zone to chronology arrays */
+    /**
+     * Cache of zone to chronology arrays
+     */
     private static final Map<DateTimeZone, CopticChronology[]> cCache = new HashMap<DateTimeZone, CopticChronology[]>();
 
-    /** Singleton instance of a UTC CopticChronology */
+    /**
+     * Singleton instance of a UTC CopticChronology
+     */
     private static final CopticChronology INSTANCE_UTC;
+
     static {
         // init after static fields
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets an instance of the CopticChronology.
      * The time zone of the returned instance is UTC.
-     * 
+     *
      * @return a singleton UTC instance of the chronology
      */
     public static CopticChronology getInstanceUTC() {
@@ -94,7 +100,7 @@ public final class CopticChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets an instance of the CopticChronology in the default time zone.
-     * 
+     *
      * @return a chronology in the default time zone
      */
     public static CopticChronology getInstance() {
@@ -103,8 +109,8 @@ public final class CopticChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets an instance of the CopticChronology in the given time zone.
-     * 
-     * @param zone  the time zone to get the chronology in, null is default
+     *
+     * @param zone the time zone to get the chronology in, null is default
      * @return a chronology in the specified time zone
      */
     public static CopticChronology getInstance(DateTimeZone zone) {
@@ -113,9 +119,9 @@ public final class CopticChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets an instance of the CopticChronology in the given time zone.
-     * 
-     * @param zone  the time zone to get the chronology in, null is default
-     * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
+     *
+     * @param zone               the time zone to get the chronology in, null is default
+     * @param minDaysInFirstWeek minimum number of days in first week of the year; default is 4
      * @return a chronology in the specified time zone
      */
     public static CopticChronology getInstance(DateTimeZone zone, int minDaysInFirstWeek) {
@@ -133,7 +139,7 @@ public final class CopticChronology extends BasicFixedMonthChronology {
                 chrono = chronos[minDaysInFirstWeek - 1];
             } catch (ArrayIndexOutOfBoundsException e) {
                 throw new IllegalArgumentException
-                    ("Invalid min days in first week: " + minDaysInFirstWeek);
+                        ("Invalid min days in first week: " + minDaysInFirstWeek);
             }
             if (chrono == null) {
                 if (zone == DateTimeZone.UTC) {
@@ -142,12 +148,12 @@ public final class CopticChronology extends BasicFixedMonthChronology {
                     // Impose lower limit and make another CopticChronology.
                     DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
                     chrono = new CopticChronology
-                        (LimitChronology.getInstance(chrono, lowerLimit, null),
-                         null, minDaysInFirstWeek);
+                            (LimitChronology.getInstance(chrono, lowerLimit, null),
+                                    null, minDaysInFirstWeek);
                 } else {
                     chrono = getInstance(DateTimeZone.UTC, minDaysInFirstWeek);
                     chrono = new CopticChronology
-                        (ZonedChronology.getInstance(chrono, zone), null, minDaysInFirstWeek);
+                            (ZonedChronology.getInstance(chrono, zone), null, minDaysInFirstWeek);
                 }
                 chronos[minDaysInFirstWeek - 1] = chrono;
             }
@@ -157,6 +163,7 @@ public final class CopticChronology extends BasicFixedMonthChronology {
 
     // Constructors and instance variables
     //-----------------------------------------------------------------------
+
     /**
      * Restricted constructor.
      */
@@ -173,14 +180,15 @@ public final class CopticChronology extends BasicFixedMonthChronology {
         minDays = (minDays == 0 ? 4 : minDays);  // handle rename of BaseGJChronology
         return base == null ?
                 getInstance(DateTimeZone.UTC, minDays) :
-                    getInstance(base.getZone(), minDays);
+                getInstance(base.getZone(), minDays);
     }
 
     // Conversion
     //-----------------------------------------------------------------------
+
     /**
      * Gets the Chronology in the UTC time zone.
-     * 
+     *
      * @return the chronology in UTC
      */
     public Chronology withUTC() {
@@ -189,8 +197,8 @@ public final class CopticChronology extends BasicFixedMonthChronology {
 
     /**
      * Gets the Chronology in a specific time zone.
-     * 
-     * @param zone  the zone to get the chronology in, null is default
+     *
+     * @param zone the zone to get the chronology in, null is default
      * @return the chronology
      */
     public Chronology withZone(DateTimeZone zone) {
@@ -222,9 +230,9 @@ public final class CopticChronology extends BasicFixedMonthChronology {
                 leapYears++;
             }
         }
-        
+
         long millis = (relativeYear * 365L + leapYears)
-            * (long)DateTimeConstants.MILLIS_PER_DAY;
+                * (long) DateTimeConstants.MILLIS_PER_DAY;
 
         // Adjust to account for difference between 1687-01-01 and 1686-04-23.
 
@@ -254,7 +262,7 @@ public final class CopticChronology extends BasicFixedMonthChronology {
             // Coptic, like Julian, has no year zero.
             fields.year = new SkipDateTimeField(this, fields.year);
             fields.weekyear = new SkipDateTimeField(this, fields.weekyear);
-            
+
             fields.era = ERA_FIELD;
             fields.monthOfYear = new BasicMonthOfYearDateTimeField(this, 13);
             fields.months = fields.monthOfYear.getDurationField();

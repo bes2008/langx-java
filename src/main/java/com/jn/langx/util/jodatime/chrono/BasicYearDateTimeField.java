@@ -17,7 +17,6 @@ package com.jn.langx.util.jodatime.chrono;
 
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.field.ImpreciseDateTimeField;
 
@@ -31,17 +30,21 @@ import com.jn.langx.util.jodatime.field.ImpreciseDateTimeField;
  */
 class BasicYearDateTimeField extends ImpreciseDateTimeField {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -98628754872287L;
 
-    /** The underlying basic chronology. */
+    /**
+     * The underlying basic chronology.
+     */
     protected final com.jn.langx.util.jodatime.chrono.BasicChronology iChronology;
 
     /**
      * Restricted constructor.
-     * 
-     * @param chronology  the chronology this field belogs to
+     *
+     * @param chronology the chronology this field belogs to
      */
     BasicYearDateTimeField(com.jn.langx.util.jodatime.chrono.BasicChronology chronology) {
         super(DateTimeFieldType.year(), chronology.getAverageMillisPerYear());
@@ -76,13 +79,13 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
         // Return newly calculated millis value
         int thisYear = iChronology.getYear(instant);
         int wrappedYear = FieldUtils.getWrappedValue
-            (thisYear, years, iChronology.getMinYear(), iChronology.getMaxYear());
+                (thisYear, years, iChronology.getMinYear(), iChronology.getMaxYear());
         return set(instant, wrappedYear);
     }
 
     public long set(long instant, int year) {
         FieldUtils.verifyValueBounds
-            (this, year, iChronology.getMinYear(), iChronology.getMaxYear());
+                (this, year, iChronology.getMinYear(), iChronology.getMaxYear());
         return iChronology.setYear(instant, year);
     }
 

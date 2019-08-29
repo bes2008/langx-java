@@ -15,17 +15,15 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import java.util.Locale;
-
 import com.jn.langx.util.jodatime.DateTimeConstants;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
-import com.jn.langx.util.jodatime.chrono.GJLocaleSymbols;
 import com.jn.langx.util.jodatime.field.BaseDateTimeField;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.field.UnsupportedDurationField;
+
+import java.util.Locale;
 
 /**
  * Provides time calculations for the era component of time.
@@ -35,8 +33,10 @@ import com.jn.langx.util.jodatime.field.UnsupportedDurationField;
  * @since 1.0
  */
 final class GJEraDateTimeField extends BaseDateTimeField {
-    
-    /** Serialization version */
+
+    /**
+     * Serialization version
+     */
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 4240986525305515528L;
 
@@ -56,8 +56,8 @@ final class GJEraDateTimeField extends BaseDateTimeField {
 
     /**
      * Get the Era component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
+     *
+     * @param instant the time instant in millis to query.
      */
     public int get(long instant) {
         if (iChronology.getYear(instant) <= 0) {
@@ -73,15 +73,15 @@ final class GJEraDateTimeField extends BaseDateTimeField {
 
     /**
      * Set the Era component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param era  the era to update the time to.
+     *
+     * @param instant the time instant in millis to update.
+     * @param era     the era to update the time to.
      * @return the updated time instant.
-     * @throws IllegalArgumentException  if era is invalid.
+     * @throws IllegalArgumentException if era is invalid.
      */
     public long set(long instant, int era) {
         FieldUtils.verifyValueBounds(this, era, DateTimeConstants.BCE, DateTimeConstants.CE);
-            
+
         int oldEra = get(instant);
         if (oldEra != era) {
             int year = iChronology.getYear(instant);

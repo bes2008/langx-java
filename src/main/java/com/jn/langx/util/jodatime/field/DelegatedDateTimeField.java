@@ -15,13 +15,13 @@
  */
 package com.jn.langx.util.jodatime.field;
 
-import java.io.Serializable;
-import java.util.Locale;
 import com.jn.langx.util.jodatime.DateTimeField;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.field.DecoratedDateTimeField;
+
+import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * <code>DelegatedDateTimeField</code> delegates each method call to the
@@ -31,23 +31,29 @@ import com.jn.langx.util.jodatime.field.DecoratedDateTimeField;
  * be as well.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see DecoratedDateTimeField
+ * @since 1.0
  */
 public class DelegatedDateTimeField extends DateTimeField implements Serializable {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = -4730164440214502503L;
 
-    /** The DateTimeField being wrapped */
+    /**
+     * The DateTimeField being wrapped
+     */
     private final DateTimeField iField;
-    /** The override field type */
+    /**
+     * The override field type
+     */
     private final DateTimeFieldType iType;
 
     /**
      * Constructor.
-     * 
-     * @param field  the field being decorated
+     *
+     * @param field the field being decorated
      */
     public DelegatedDateTimeField(DateTimeField field) {
         this(field, null);
@@ -55,8 +61,8 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
 
     /**
      * Constructor.
-     * 
-     * @param field  the field being decorated
+     *
+     * @param field the field being decorated
      * @param type  the field type override
      */
     public DelegatedDateTimeField(DateTimeField field, DateTimeFieldType type) {
@@ -70,7 +76,7 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
 
     /**
      * Gets the wrapped date time field.
-     * 
+     *
      * @return the wrapped DateTimeField
      */
     public final DateTimeField getWrappedField() {

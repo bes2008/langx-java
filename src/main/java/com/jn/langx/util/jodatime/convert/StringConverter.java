@@ -15,14 +15,7 @@
  */
 package com.jn.langx.util.jodatime.convert;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.Period;
-import com.jn.langx.util.jodatime.ReadWritableInterval;
-import com.jn.langx.util.jodatime.ReadWritablePeriod;
-import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.convert.*;
-import com.jn.langx.util.jodatime.convert.PeriodConverter;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
@@ -53,11 +46,12 @@ class StringConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the millis, which is the ISO parsed string value.
-     * 
-     * @param object  the String to convert, must not be null
-     * @param chrono  the chronology to use, non-null result of getChronology
+     *
+     * @param object the String to convert, must not be null
+     * @param chrono the chronology to use, non-null result of getChronology
      * @return the millisecond value
      * @throws IllegalArgumentException if the value if invalid
      */
@@ -71,14 +65,14 @@ class StringConverter extends AbstractConverter
      * Extracts the values of the partial from an object of this converter's type.
      * This method checks if the parser has a zone, and uses it if present.
      * This is most useful for parsing local times with UTC.
-     * 
-     * @param fieldSource  a partial that provides access to the fields.
-     *  This partial may be incomplete and only getFieldType(int) should be used
-     * @param object  the object to convert
-     * @param chrono  the chronology to use, which is the non-null result of getChronology()
-     * @param parser the parser to use, may be null
+     *
+     * @param fieldSource a partial that provides access to the fields.
+     *                    This partial may be incomplete and only getFieldType(int) should be used
+     * @param object      the object to convert
+     * @param chrono      the chronology to use, which is the non-null result of getChronology()
+     * @param parser      the parser to use, may be null
      * @return the array of field values that match the fieldSource, must be non-null valid
-     * @throws ClassCastException if the object is invalid
+     * @throws ClassCastException       if the object is invalid
      * @throws IllegalArgumentException if the value if invalid
      * @since 1.3
      */
@@ -91,11 +85,12 @@ class StringConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the duration of the string using the standard type.
      * This matches the toString() method of ReadableDuration.
-     * 
-     * @param object  the String to convert, must not be null
+     *
+     * @param object the String to convert, must not be null
      * @throws ClassCastException if the object is invalid
      */
     public long getDurationMillis(Object object) {
@@ -105,9 +100,9 @@ class StringConverter extends AbstractConverter
         String str = original;
         int len = str.length();
         if (len >= 4 &&
-            (str.charAt(0) == 'P' || str.charAt(0) == 'p') &&
-            (str.charAt(1) == 'T' || str.charAt(1) == 't') &&
-            (str.charAt(len - 1) == 'S' || str.charAt(len - 1) == 's')) {
+                (str.charAt(0) == 'P' || str.charAt(0) == 'p') &&
+                (str.charAt(1) == 'T' || str.charAt(1) == 't') &&
+                (str.charAt(len - 1) == 'S' || str.charAt(len - 1) == 's')) {
             // ok
         } else {
             throw new IllegalArgumentException("Invalid format: \"" + original + '"');
@@ -119,8 +114,8 @@ class StringConverter extends AbstractConverter
             if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
                 // ok
             } else if (i == 0 && str.charAt(0) == '-') {
-            	// ok
-            	negative = true;
+                // ok
+                negative = true;
             } else if (i > (negative ? 1 : 0) && str.charAt(i) == '.' && dot == -1) {
                 // ok
                 dot = i;
@@ -138,7 +133,7 @@ class StringConverter extends AbstractConverter
             }
             millis = Integer.parseInt(str);
         } else if (negative) {
-        	seconds = Long.parseLong(str.substring(firstDigit, str.length()));
+            seconds = Long.parseLong(str.substring(firstDigit, str.length()));
         } else {
             seconds = Long.parseLong(str);
         }
@@ -150,13 +145,14 @@ class StringConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Extracts duration values from an object of this converter's type, and
      * sets them into the given ReadWritableDuration.
      *
-     * @param period  period to get modified
-     * @param object  the String to convert, must not be null
-     * @param chrono  the chronology to use
+     * @param period period to get modified
+     * @param object the String to convert, must not be null
+     * @param chrono the chronology to use
      * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */
@@ -175,12 +171,13 @@ class StringConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the value of the mutable interval from the string.
-     * 
-     * @param writableInterval  the interval to set
-     * @param object  the String to convert, must not be null
-     * @param chrono  the chronology to use, may be null
+     *
+     * @param writableInterval the interval to set
+     * @param object           the String to convert, must not be null
+     * @param chrono           the chronology to use, may be null
      */
     public void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono) {
         String str = (String) object;
@@ -205,7 +202,7 @@ class StringConverter extends AbstractConverter
         long startInstant = 0, endInstant = 0;
         Period period = null;
         Chronology parsedChrono = null;
-        
+
         // before slash
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
@@ -215,7 +212,7 @@ class StringConverter extends AbstractConverter
             startInstant = start.getMillis();
             parsedChrono = start.getChronology();
         }
-        
+
         // after slash
         c = rightStr.charAt(0);
         if (c == 'P' || c == 'p') {
@@ -234,15 +231,16 @@ class StringConverter extends AbstractConverter
                 startInstant = chrono.add(period, endInstant, -1);
             }
         }
-        
+
         writableInterval.setInterval(startInstant, endInstant);
         writableInterval.setChronology(chrono);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns String.class.
-     * 
+     *
      * @return String.class
      */
     public Class<?> getSupportedType() {

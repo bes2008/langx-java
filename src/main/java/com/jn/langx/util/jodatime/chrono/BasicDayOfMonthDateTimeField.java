@@ -18,7 +18,6 @@ package com.jn.langx.util.jodatime.chrono;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
 import com.jn.langx.util.jodatime.field.PreciseDurationDateTimeField;
 
 /**

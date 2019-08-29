@@ -45,7 +45,7 @@ public class MultiFieldSortTests {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         System.out.println("===================test2==================");
         List<Person> persons;
         Random random = new Random(10);
@@ -76,7 +76,7 @@ public class MultiFieldSortTests {
     }
 
     @Test
-    public void test3(){
+    public void test3() {
         System.out.println("===================test3==================");
         List<Person> persons;
         Random random = new Random(10);
@@ -107,7 +107,7 @@ public class MultiFieldSortTests {
     }
 
     @Test
-    public void test4(){
+    public void test4() {
         System.out.println("===================test4==================");
         List<Person> persons;
         Random random = new Random(10);

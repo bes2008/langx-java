@@ -15,27 +15,27 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import java.util.Locale;
-
 import com.jn.langx.util.jodatime.DateTimeConstants;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
-import com.jn.langx.util.jodatime.chrono.GJLocaleSymbols;
 import com.jn.langx.util.jodatime.field.PreciseDurationDateTimeField;
+
+import java.util.Locale;
 
 /**
  * GJDayOfWeekDateTimeField provides time calculations for the
  * day of the week component of time.
  *
- * @since 1.0
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
+ * @since 1.0
  */
 final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
-    
-    /** Serialization version */
+
+    /**
+     * Serialization version
+     */
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -3857947176719041436L;
 
@@ -51,8 +51,8 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the value of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query
+     *
+     * @param instant the time instant in millis to query
      * @return the day of the week extracted from the input
      */
     public int get(long instant) {
@@ -61,9 +61,9 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the textual value of the specified time instant.
-     * 
-     * @param fieldValue  the field value to query
-     * @param locale  the locale to use
+     *
+     * @param fieldValue the field value to query
+     * @param locale     the locale to use
      * @return the day of the week, such as 'Monday'
      */
     public String getAsText(int fieldValue, Locale locale) {
@@ -72,9 +72,9 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the abbreviated textual value of the specified time instant.
-     * 
-     * @param fieldValue  the field value to query
-     * @param locale  the locale to use
+     *
+     * @param fieldValue the field value to query
+     * @param locale     the locale to use
      * @return the day of the week, such as 'Mon'
      */
     public String getAsShortText(int fieldValue, Locale locale) {
@@ -83,9 +83,9 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Convert the specified text and locale into a value.
-     * 
-     * @param text  the text to convert
-     * @param locale  the locale to convert using
+     *
+     * @param text   the text to convert
+     * @param locale the locale to convert using
      * @return the value extracted from the text
      * @throws IllegalArgumentException if the text is invalid
      */
@@ -99,7 +99,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the minimum value that this field can have.
-     * 
+     *
      * @return the field's minimum value
      */
     public int getMinimumValue() {
@@ -108,7 +108,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the maximum value that this field can have.
-     * 
+     *
      * @return the field's maximum value
      */
     public int getMaximumValue() {
@@ -117,8 +117,8 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the maximum length of the text returned by this field.
-     * 
-     * @param locale  the locale to use
+     *
+     * @param locale the locale to use
      * @return the maximum textual length
      */
     public int getMaximumTextLength(Locale locale) {
@@ -127,8 +127,8 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the maximum length of the abbreviated text returned by this field.
-     * 
-     * @param locale  the locale to use
+     *
+     * @param locale the locale to use
      * @return the maximum abbreviated textual length
      */
     public int getMaximumShortTextLength(Locale locale) {

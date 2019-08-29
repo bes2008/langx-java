@@ -15,13 +15,10 @@
  */
 package com.jn.langx.util.jodatime;
 
-import java.io.Serializable;
-
-import com.jn.langx.util.jodatime.*;
-import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.Days;
 import com.jn.langx.util.jodatime.base.BaseDuration;
 import com.jn.langx.util.jodatime.field.FieldUtils;
+
+import java.io.Serializable;
 
 /**
  * An immutable duration specifying a length of time in milliseconds.
@@ -41,19 +38,24 @@ public final class Duration
         extends BaseDuration
         implements ReadableDuration, Serializable {
 
-    /** Constant representing zero millisecond duration */
+    /**
+     * Constant representing zero millisecond duration
+     */
     public static final Duration ZERO = new Duration(0L);
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 2471658376918L;
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses a {@code Duration} from the specified string.
      * <p>
      * This parses the format {@code PTa.bS}, as per {@link #toString()}.
-     * 
-     * @param str  the string to parse, not null
+     *
+     * @param str the string to parse, not null
      * @since 2.0
      */
     public static Duration parse(String str) {
@@ -61,6 +63,7 @@ public final class Duration
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Create a duration with the specified number of days assuming that
      * there are the standard number of milliseconds in a day.
@@ -73,7 +76,7 @@ public final class Duration
      * A Duration is a representation of an amount of time. If you want to express
      * the concepts of 'days' you should consider using the {@link com.jn.langx.util.jodatime.Days} class.
      *
-     * @param days  the number of standard days in this duration
+     * @param days the number of standard days in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the days value is too large
      * @since 1.6
@@ -96,7 +99,7 @@ public final class Duration
      * A Duration is a representation of an amount of time. If you want to express
      * the concepts of 'hours' you should consider using the {@link Hours} class.
      *
-     * @param hours  the number of standard hours in this duration
+     * @param hours the number of standard hours in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the hours value is too large
      * @since 1.6
@@ -119,7 +122,7 @@ public final class Duration
      * A Duration is a representation of an amount of time. If you want to express
      * the concepts of 'minutes' you should consider using the {@link Minutes} class.
      *
-     * @param minutes  the number of standard minutes in this duration
+     * @param minutes the number of standard minutes in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the minutes value is too large
      * @since 1.6
@@ -141,7 +144,7 @@ public final class Duration
      * A Duration is a representation of an amount of time. If you want to express
      * the concepts of 'seconds' you should consider using the {@link Seconds} class.
      *
-     * @param seconds  the number of standard seconds in this duration
+     * @param seconds the number of standard seconds in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the seconds value is too large
      * @since 1.6
@@ -156,7 +159,7 @@ public final class Duration
     /**
      * Create a duration with the specified number of milliseconds.
      *
-     * @param millis  the number of standard milliseconds in this duration
+     * @param millis the number of standard milliseconds in this duration
      * @return the duration, never null
      * @since 2.0
      */
@@ -168,10 +171,11 @@ public final class Duration
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a duration from the given millisecond duration.
      *
-     * @param duration  the duration, in milliseconds
+     * @param duration the duration, in milliseconds
      */
     public Duration(long duration) {
         super(duration);
@@ -180,8 +184,8 @@ public final class Duration
     /**
      * Creates a duration from the given interval endpoints.
      *
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
      * @throws ArithmeticException if the duration exceeds a 64 bit long
      */
     public Duration(long startInstant, long endInstant) {
@@ -191,8 +195,8 @@ public final class Duration
     /**
      * Creates a duration from the given interval endpoints.
      *
-     * @param start  interval start, null means now
-     * @param end  interval end, null means now
+     * @param start interval start, null means now
+     * @param end   interval end, null means now
      * @throws ArithmeticException if the duration exceeds a 64 bit long
      */
     public Duration(ReadableInstant start, ReadableInstant end) {
@@ -203,7 +207,7 @@ public final class Duration
      * Creates a duration from the specified object using the
      * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager}.
      *
-     * @param duration  duration to convert
+     * @param duration duration to convert
      * @throws IllegalArgumentException if duration is invalid
      */
     public Duration(Object duration) {
@@ -211,6 +215,7 @@ public final class Duration
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the length of this duration in days assuming that there are the
      * standard number of milliseconds in a day.
@@ -284,10 +289,11 @@ public final class Duration
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get this duration as an immutable <code>Duration</code> object
      * by returning <code>this</code>.
-     * 
+     *
      * @return <code>this</code>
      */
     public Duration toDuration() {
@@ -302,7 +308,7 @@ public final class Duration
      * 60 minutes in an hour, 60 seconds in a minute and 1000 milliseconds in
      * a second. This will be true for most days, however days with Daylight
      * Savings changes will not have 24 hours, so use this method with care.
-     * 
+     *
      * @return a period representing the number of standard days in this period, never null
      * @throws ArithmeticException if the number of days is too large to be represented
      * @since 2.0
@@ -319,7 +325,7 @@ public final class Duration
      * This method assumes that there are 60 minutes in an hour,
      * 60 seconds in a minute and 1000 milliseconds in a second.
      * All currently supplied chronologies use this definition.
-     * 
+     *
      * @return a period representing the number of standard hours in this period, never null
      * @throws ArithmeticException if the number of hours is too large to be represented
      * @since 2.0
@@ -336,7 +342,7 @@ public final class Duration
      * This method assumes that there are 60 seconds in a minute and
      * 1000 milliseconds in a second.
      * All currently supplied chronologies use this definition.
-     * 
+     *
      * @return a period representing the number of standard minutes in this period, never null
      * @throws ArithmeticException if the number of minutes is too large to be represented
      * @since 2.0
@@ -352,7 +358,7 @@ public final class Duration
      * <p>
      * This method assumes that there are 1000 milliseconds in a second.
      * All currently supplied chronologies use this definition.
-     * 
+     *
      * @return a period representing the number of standard seconds in this period, never null
      * @throws ArithmeticException if the number of seconds is too large to be represented
      * @since 1.6
@@ -363,10 +369,11 @@ public final class Duration
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a new Duration instance with a different milisecond length.
-     * 
-     * @param duration  the new length of the duration
+     *
+     * @param duration the new length of the duration
      * @return the new duration instance
      */
     public Duration withMillis(long duration) {
@@ -381,9 +388,9 @@ public final class Duration
      * This instance is immutable and is not altered.
      * <p>
      * If the addition is zero, this instance is returned.
-     * 
-     * @param durationToAdd  the duration to add to this one
-     * @param scalar  the amount of times to add, such as -1 to subtract once
+     *
+     * @param durationToAdd the duration to add to this one
+     * @param scalar        the amount of times to add, such as -1 to subtract once
      * @return the new duration instance
      */
     public Duration withDurationAdded(long durationToAdd, int scalar) {
@@ -400,9 +407,9 @@ public final class Duration
      * This instance is immutable and is not altered.
      * <p>
      * If the addition is zero, this instance is returned.
-     * 
-     * @param durationToAdd  the duration to add to this one, null means zero
-     * @param scalar  the amount of times to add, such as -1 to subtract once
+     *
+     * @param durationToAdd the duration to add to this one, null means zero
+     * @param scalar        the amount of times to add, such as -1 to subtract once
      * @return the new duration instance
      */
     public Duration withDurationAdded(ReadableDuration durationToAdd, int scalar) {
@@ -413,13 +420,14 @@ public final class Duration
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a new duration with this length plus that specified.
      * This instance is immutable and is not altered.
      * <p>
      * If the addition is zero, this instance is returned.
-     * 
-     * @param amount  the duration to add to this one
+     *
+     * @param amount the duration to add to this one
      * @return the new duration instance
      */
     public Duration plus(long amount) {
@@ -431,8 +439,8 @@ public final class Duration
      * This instance is immutable and is not altered.
      * <p>
      * If the amount is zero, this instance is returned.
-     * 
-     * @param amount  the duration to add to this one, null means zero
+     *
+     * @param amount the duration to add to this one, null means zero
      * @return the new duration instance
      */
     public Duration plus(ReadableDuration amount) {
@@ -447,8 +455,8 @@ public final class Duration
      * This instance is immutable and is not altered.
      * <p>
      * If the addition is zero, this instance is returned.
-     * 
-     * @param amount  the duration to take away from this one
+     *
+     * @param amount the duration to take away from this one
      * @return the new duration instance
      */
     public Duration minus(long amount) {
@@ -460,8 +468,8 @@ public final class Duration
      * This instance is immutable and is not altered.
      * <p>
      * If the amount is zero, this instance is returned.
-     * 
-     * @param amount  the duration to take away from this one, null means zero
+     *
+     * @param amount the duration to take away from this one, null means zero
      * @return the new duration instance
      */
     public Duration minus(ReadableDuration amount) {

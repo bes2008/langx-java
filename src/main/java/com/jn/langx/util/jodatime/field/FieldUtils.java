@@ -35,12 +35,13 @@ public class FieldUtils {
     private FieldUtils() {
         super();
     }
-    
+
     //------------------------------------------------------------------------
+
     /**
      * Negates the input throwing an exception if it can't negate it.
-     * 
-     * @param value  the value to negate
+     *
+     * @param value the value to negate
      * @return the negated value
      * @throws ArithmeticException if the value is Integer.MIN_VALUE
      * @since 1.1
@@ -51,12 +52,12 @@ public class FieldUtils {
         }
         return -value;
     }
-    
+
     /**
      * Add two values throwing an exception if overflow occurs.
-     * 
-     * @param val1  the first value
-     * @param val2  the second value
+     *
+     * @param val1 the first value
+     * @param val2 the second value
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      */
@@ -65,16 +66,16 @@ public class FieldUtils {
         // If there is a sign change, but the two values have the same sign...
         if ((val1 ^ sum) < 0 && (val1 ^ val2) >= 0) {
             throw new ArithmeticException
-                ("The calculation caused an overflow: " + val1 + " + " + val2);
+                    ("The calculation caused an overflow: " + val1 + " + " + val2);
         }
         return sum;
     }
-    
+
     /**
      * Add two values throwing an exception if overflow occurs.
-     * 
-     * @param val1  the first value
-     * @param val2  the second value
+     *
+     * @param val1 the first value
+     * @param val2 the second value
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      */
@@ -83,16 +84,16 @@ public class FieldUtils {
         // If there is a sign change, but the two values have the same sign...
         if ((val1 ^ sum) < 0 && (val1 ^ val2) >= 0) {
             throw new ArithmeticException
-                ("The calculation caused an overflow: " + val1 + " + " + val2);
+                    ("The calculation caused an overflow: " + val1 + " + " + val2);
         }
         return sum;
     }
-    
+
     /**
      * Subtracts two values throwing an exception if overflow occurs.
-     * 
-     * @param val1  the first value, to be taken away from
-     * @param val2  the second value, the amount to take away
+     *
+     * @param val1 the first value, to be taken away from
+     * @param val2 the second value, the amount to take away
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      */
@@ -101,16 +102,16 @@ public class FieldUtils {
         // If there is a sign change, but the two values have different signs...
         if ((val1 ^ diff) < 0 && (val1 ^ val2) < 0) {
             throw new ArithmeticException
-                ("The calculation caused an overflow: " + val1 + " - " + val2);
+                    ("The calculation caused an overflow: " + val1 + " - " + val2);
         }
         return diff;
     }
-    
+
     /**
      * Multiply two values throwing an exception if overflow occurs.
-     * 
-     * @param val1  the first value
-     * @param val2  the second value
+     *
+     * @param val1 the first value
+     * @param val2 the second value
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      * @since 1.2
@@ -118,16 +119,16 @@ public class FieldUtils {
     public static int safeMultiply(int val1, int val2) {
         long total = (long) val1 * (long) val2;
         if (total < Integer.MIN_VALUE || total > Integer.MAX_VALUE) {
-          throw new ArithmeticException("Multiplication overflows an int: " + val1 + " * " + val2);
+            throw new ArithmeticException("Multiplication overflows an int: " + val1 + " * " + val2);
         }
         return (int) total;
     }
 
     /**
      * Multiply two values throwing an exception if overflow occurs.
-     * 
-     * @param val1  the first value
-     * @param val2  the second value
+     *
+     * @param val1 the first value
+     * @param val2 the second value
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      * @since 1.2
@@ -146,16 +147,16 @@ public class FieldUtils {
         }
         long total = val1 * val2;
         if (total / val2 != val1) {
-          throw new ArithmeticException("Multiplication overflows a long: " + val1 + " * " + val2);
+            throw new ArithmeticException("Multiplication overflows a long: " + val1 + " * " + val2);
         }
         return total;
     }
 
     /**
      * Multiply two values throwing an exception if overflow occurs.
-     * 
-     * @param val1  the first value
-     * @param val2  the second value
+     *
+     * @param val1 the first value
+     * @param val2 the second value
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      */
@@ -175,11 +176,11 @@ public class FieldUtils {
         }
         return total;
     }
-    
+
     /**
      * Casts to an int throwing an exception if overflow occurs.
-     * 
-     * @param value  the value
+     *
+     * @param value the value
      * @return the value as an int
      * @throws ArithmeticException if the value is too big or too small
      */
@@ -189,12 +190,12 @@ public class FieldUtils {
         }
         throw new ArithmeticException("Value cannot fit in an int: " + value);
     }
-    
+
     /**
      * Multiply two values to return an int throwing an exception if overflow occurs.
-     * 
-     * @param val1  the first value
-     * @param val2  the second value
+     *
+     * @param val1 the first value
+     * @param val2 the second value
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      */
@@ -204,55 +205,56 @@ public class FieldUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Verify that input values are within specified bounds.
-     * 
-     * @param value  the value to check
-     * @param lowerBound  the lower bound allowed for value
-     * @param upperBound  the upper bound allowed for value
+     *
+     * @param value      the value to check
+     * @param lowerBound the lower bound allowed for value
+     * @param upperBound the upper bound allowed for value
      * @throws IllegalFieldValueException if value is not in the specified bounds
      */
-    public static void verifyValueBounds(DateTimeField field, 
+    public static void verifyValueBounds(DateTimeField field,
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalFieldValueException
-                (field.getType(), Integer.valueOf(value),
-                 Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
+                    (field.getType(), Integer.valueOf(value),
+                            Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
         }
     }
 
     /**
      * Verify that input values are within specified bounds.
-     * 
-     * @param value  the value to check
-     * @param lowerBound  the lower bound allowed for value
-     * @param upperBound  the upper bound allowed for value
+     *
+     * @param value      the value to check
+     * @param lowerBound the lower bound allowed for value
+     * @param upperBound the upper bound allowed for value
      * @throws IllegalFieldValueException if value is not in the specified bounds
      * @since 1.1
      */
-    public static void verifyValueBounds(DateTimeFieldType fieldType, 
+    public static void verifyValueBounds(DateTimeFieldType fieldType,
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalFieldValueException
-                (fieldType, Integer.valueOf(value),
-                 Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
+                    (fieldType, Integer.valueOf(value),
+                            Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
         }
     }
 
     /**
      * Verify that input values are within specified bounds.
-     * 
-     * @param value  the value to check
-     * @param lowerBound  the lower bound allowed for value
-     * @param upperBound  the upper bound allowed for value
+     *
+     * @param value      the value to check
+     * @param lowerBound the lower bound allowed for value
+     * @param upperBound the upper bound allowed for value
      * @throws IllegalFieldValueException if value is not in the specified bounds
      */
     public static void verifyValueBounds(String fieldName,
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalFieldValueException
-                (fieldName, Integer.valueOf(value),
-                 Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
+                    (fieldName, Integer.valueOf(value),
+                            Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
         }
     }
 
@@ -261,15 +263,15 @@ public class FieldUtils {
      * value lies within the field's legal value range.
      *
      * @param currentValue the current value of the data, which may lie outside
-     * the wrapped value range
-     * @param wrapValue  the value to add to current value before
-     *  wrapping.  This may be negative.
-     * @param minValue the wrap range minimum value.
-     * @param maxValue the wrap range maximum value.  This must be
-     *  greater than minValue (checked by the method).
+     *                     the wrapped value range
+     * @param wrapValue    the value to add to current value before
+     *                     wrapping.  This may be negative.
+     * @param minValue     the wrap range minimum value.
+     * @param maxValue     the wrap range maximum value.  This must be
+     *                     greater than minValue (checked by the method).
      * @return the wrapped value
      * @throws IllegalArgumentException if minValue is greater
-     *  than or equal to maxValue
+     *                                  than or equal to maxValue
      */
     public static int getWrappedValue(int currentValue, int wrapValue,
                                       int minValue, int maxValue) {
@@ -279,14 +281,14 @@ public class FieldUtils {
     /**
      * Utility method that ensures the given value lies within the field's
      * legal value range.
-     * 
-     * @param value  the value to fit into the wrapped value range
+     *
+     * @param value    the value to fit into the wrapped value range
      * @param minValue the wrap range minimum value.
      * @param maxValue the wrap range maximum value.  This must be
-     *  greater than minValue (checked by the method).
+     *                 greater than minValue (checked by the method).
      * @return the wrapped value
      * @throws IllegalArgumentException if minValue is greater
-     *  than or equal to maxValue
+     *                                  than or equal to maxValue
      */
     public static int getWrappedValue(int value, int minValue, int maxValue) {
         if (minValue >= maxValue) {
@@ -309,11 +311,12 @@ public class FieldUtils {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares two objects as equals handling null.
-     * 
-     * @param object1  the first object
-     * @param object2  the second object
+     *
+     * @param object1 the first object
+     * @param object2 the second object
      * @return true if equal
      * @since 1.4
      */

@@ -15,15 +15,11 @@
  */
 package com.jn.langx.util.jodatime.format;
 
+import com.jn.langx.util.jodatime.ReadablePeriod;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Locale;
-
-import com.jn.langx.util.jodatime.ReadablePeriod;
-import com.jn.langx.util.jodatime.format.ISOPeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormatter;
-import com.jn.langx.util.jodatime.format.PeriodFormatterBuilder;
 
 /**
  * Internal interface for printing textual representations of time periods.
@@ -38,18 +34,18 @@ import com.jn.langx.util.jodatime.format.PeriodFormatterBuilder;
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
- * @since 1.0
  * @see PeriodFormatter
  * @see PeriodFormatterBuilder
  * @see PeriodFormat
+ * @since 1.0
  */
 public interface PeriodPrinter {
 
     /**
      * Returns the exact number of characters produced for the given period.
-     * 
-     * @param period  the period to use
-     * @param locale  the locale to use
+     *
+     * @param period the period to use
+     * @param locale the locale to use
      * @return the estimated length
      */
     int calculatePrintedLength(ReadablePeriod period, Locale locale);
@@ -57,30 +53,31 @@ public interface PeriodPrinter {
     /**
      * Returns the amount of fields from the given period that this printer
      * will print.
-     * 
-     * @param period  the period to use
+     *
+     * @param period the period to use
      * @param stopAt stop counting at this value, enter a number &ge; 256 to count all
-     * @param locale  the locale to use
+     * @param locale the locale to use
      * @return amount of fields printed
      */
     int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale locale);
 
     //-----------------------------------------------------------------------
+
     /**
      * Prints a ReadablePeriod to a StringBuffer.
      *
-     * @param buf  the formatted period is appended to this buffer
-     * @param period  the period to format
-     * @param locale  the locale to use
+     * @param buf    the formatted period is appended to this buffer
+     * @param period the period to format
+     * @param locale the locale to use
      */
     void printTo(StringBuffer buf, ReadablePeriod period, Locale locale);
 
     /**
      * Prints a ReadablePeriod to a Writer.
      *
-     * @param out  the formatted period is written out
-     * @param period  the period to format
-     * @param locale  the locale to use
+     * @param out    the formatted period is written out
+     * @param period the period to format
+     * @param locale the locale to use
      */
     void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException;
 

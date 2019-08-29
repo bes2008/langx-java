@@ -18,10 +18,6 @@ package com.jn.langx.util.jodatime.field;
 import com.jn.langx.util.jodatime.DateTimeField;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.field.DecoratedDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
-import com.jn.langx.util.jodatime.field.RemainderDateTimeField;
-import com.jn.langx.util.jodatime.field.ScaledDurationField;
 
 /**
  * Divides a DateTimeField such that the retrieved values are reduced by a
@@ -30,10 +26,9 @@ import com.jn.langx.util.jodatime.field.ScaledDurationField;
  * <p>
  * DividedDateTimeField is thread-safe and immutable.
  *
- * @see RemainderDateTimeField
- * 
  * @author Stephen Colebourne
  * @author Brian S O'Neill
+ * @see RemainderDateTimeField
  * @since 1.0
  */
 public class DividedDateTimeField extends DecoratedDateTimeField {
@@ -50,16 +45,16 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Constructor.
-     * 
-     * @param field  the field to wrap, like "year()".
-     * @param type  the field type this field will actually use
-     * @param divisor  divisor, such as 100 years in a century
+     *
+     * @param field   the field to wrap, like "year()".
+     * @param type    the field type this field will actually use
+     * @param divisor divisor, such as 100 years in a century
      * @throws IllegalArgumentException if divisor is less than two
      */
     public DividedDateTimeField(DateTimeField field,
                                 DateTimeFieldType type, int divisor) {
         super(field, type);
-                
+
         if (divisor < 2) {
             throw new IllegalArgumentException("The divisor must be at least 2");
         }
@@ -69,7 +64,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
             iDurationField = null;
         } else {
             iDurationField = new ScaledDurationField(
-                unitField, type.getDurationType(), divisor);
+                    unitField, type.getDurationType(), divisor);
         }
 
         iDivisor = divisor;
@@ -88,8 +83,8 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * Construct a DividedDateTimeField that compliments the given
      * RemainderDateTimeField.
      *
-     * @param remainderField  complimentary remainder field, like "yearOfCentury()".
-     * @param type  the field type this field will actually use
+     * @param remainderField complimentary remainder field, like "yearOfCentury()".
+     * @param type           the field type this field will actually use
      */
     public DividedDateTimeField(RemainderDateTimeField remainderField, DateTimeFieldType type) {
         super(remainderField.getWrappedField(), type);
@@ -109,8 +104,8 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Get the amount of scaled units from the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
+     *
+     * @param instant the time instant in millis to query.
      * @return the amount of scaled units extracted from the input.
      */
     public int get(long instant) {
@@ -125,8 +120,8 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
     /**
      * Add the specified amount of scaled units to the specified time
      * instant. The amount added may be negative.
-     * 
-     * @param instant  the time instant in millis to update.
+     *
+     * @param instant the time instant in millis to update.
      * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
@@ -137,8 +132,8 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
     /**
      * Add the specified amount of scaled units to the specified time
      * instant. The amount added may be negative.
-     * 
-     * @param instant  the time instant in millis to update.
+     *
+     * @param instant the time instant in millis to update.
      * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
@@ -149,8 +144,8 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
     /**
      * Add to the scaled component of the specified time instant,
      * wrapping around within that component if necessary.
-     * 
-     * @param instant  the time instant in millis to update.
+     *
+     * @param instant the time instant in millis to update.
      * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
@@ -168,9 +163,9 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Set the specified amount of scaled units to the specified time instant.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param value  value of scaled units to set.
+     *
+     * @param instant the time instant in millis to update.
+     * @param value   value of scaled units to set.
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
@@ -189,7 +184,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Get the minimum value for the field.
-     * 
+     *
      * @return the minimum value
      */
     public int getMinimumValue() {
@@ -198,7 +193,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Get the maximum value for the field.
-     * 
+     *
      * @return the maximum value
      */
     public int getMaximumValue() {
@@ -216,7 +211,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Returns the divisor applied, in the field's units.
-     * 
+     *
      * @return the divisor
      */
     public int getDivisor() {

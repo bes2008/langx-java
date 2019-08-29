@@ -18,7 +18,6 @@ package com.jn.langx.util.jodatime.convert;
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeZone;
 import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.convert.Converter;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 
 /**
@@ -36,9 +35,9 @@ public interface PartialConverter extends Converter {
     /**
      * Extracts the chronology from an object of this converter's type
      * where the time zone is specified.
-     * 
-     * @param object  the object to convert
-     * @param zone  the specified zone to use, null means default zone
+     *
+     * @param object the object to convert
+     * @param zone   the specified zone to use, null means default zone
      * @return the chronology, never null
      * @throws ClassCastException if the object is invalid
      * @since 1.3
@@ -48,9 +47,9 @@ public interface PartialConverter extends Converter {
     /**
      * Extracts the chronology from an object of this converter's type
      * where the chronology is specified.
-     * 
-     * @param object  the object to convert
-     * @param chrono  the chronology to use, null usually means ISO
+     *
+     * @param object the object to convert
+     * @param chrono the chronology to use, null usually means ISO
      * @return the chronology, not converted to UTC/local time zone, must be non-null valid
      * @throws ClassCastException if the object is invalid
      */
@@ -60,11 +59,11 @@ public interface PartialConverter extends Converter {
      * Extracts the values of the partial from an object of this converter's type.
      * The chrono parameter is a hint to the converter, should it require a
      * chronology to aid in conversion.
-     * 
-     * @param fieldSource  a partial that provides access to the fields.
-     *  This partial may be incomplete and only getFieldType(int) should be used
-     * @param object  the object to convert
-     * @param chrono  the chronology to use, which is the non-null result of getChronology()
+     *
+     * @param fieldSource a partial that provides access to the fields.
+     *                    This partial may be incomplete and only getFieldType(int) should be used
+     * @param object      the object to convert
+     * @param chrono      the chronology to use, which is the non-null result of getChronology()
      * @return the array of field values that match the fieldSource, must be non-null valid
      * @throws ClassCastException if the object is invalid
      */
@@ -74,12 +73,12 @@ public interface PartialConverter extends Converter {
      * Extracts the values of the partial from an object of this converter's type.
      * The chrono parameter is a hint to the converter, should it require a
      * chronology to aid in conversion.
-     * 
-     * @param fieldSource  a partial that provides access to the fields.
-     *  This partial may be incomplete and only getFieldType(int) should be used
-     * @param object  the object to convert
-     * @param chrono  the chronology to use, which is the non-null result of getChronology()
-     * @param parser  if converting from a String, the given parser is preferred
+     *
+     * @param fieldSource a partial that provides access to the fields.
+     *                    This partial may be incomplete and only getFieldType(int) should be used
+     * @param object      the object to convert
+     * @param chrono      the chronology to use, which is the non-null result of getChronology()
+     * @param parser      if converting from a String, the given parser is preferred
      * @return the array of field values that match the fieldSource, must be non-null valid
      * @throws ClassCastException if the object is invalid
      * @since 1.3

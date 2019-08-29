@@ -17,7 +17,6 @@ package com.jn.langx.util.jodatime.chrono;
 
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.DateTimeConstants;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
 
 /**
  * Abstract implementation of a calendar system based around fixed length months.
@@ -35,26 +34,35 @@ import com.jn.langx.util.jodatime.chrono.BasicChronology;
  */
 abstract class BasicFixedMonthChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
 
-    /** Serialization lock */
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = 261387371998L;
 
-    /** The length of the month. */
+    /**
+     * The length of the month.
+     */
     static final int MONTH_LENGTH = 30;
 
-    /** The typical millis per year. */
+    /**
+     * The typical millis per year.
+     */
     static final long MILLIS_PER_YEAR =
-        (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
+            (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
 
-    /** The length of the month in millis. */
+    /**
+     * The length of the month in millis.
+     */
     static final long MILLIS_PER_MONTH = ((long) MONTH_LENGTH) * DateTimeConstants.MILLIS_PER_DAY;
 
     //-----------------------------------------------------------------------
+
     /**
      * Restricted constructor.
      *
-     * @param base  the base chronology
-     * @param param  the init parameter
-     * @param minDaysInFirstWeek  the minimum days in the first week
+     * @param base               the base chronology
+     * @param param              the init parameter
+     * @param minDaysInFirstWeek the minimum days in the first week
      */
     BasicFixedMonthChronology(Chronology base, Object param, int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);

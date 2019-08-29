@@ -18,14 +18,12 @@ package com.jn.langx.util.jodatime.field;
 import com.jn.langx.util.jodatime.DateTimeField;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.field.DecoratedDateTimeField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
 
 /**
  * Generic offset adjusting datetime field.
  * <p>
  * OffsetDateTimeField is thread-safe and immutable.
- * 
+ *
  * @author Brian S O'Neill
  * @since 1.0
  */
@@ -40,9 +38,9 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Constructor.
-     * 
+     *
      * @param field  the field to wrap, like "year()".
-     * @param offset  offset to add to field values
+     * @param offset offset to add to field values
      * @throws IllegalArgumentException if offset is zero
      */
     public OffsetDateTimeField(DateTimeField field, int offset) {
@@ -51,10 +49,10 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Constructor.
-     * 
+     *
      * @param field  the field to wrap, like "year()".
-     * @param type  the field type this field actually uses
-     * @param offset  offset to add to field values
+     * @param type   the field type this field actually uses
+     * @param offset offset to add to field values
      * @throws IllegalArgumentException if offset is zero
      */
     public OffsetDateTimeField(DateTimeField field, DateTimeFieldType type, int offset) {
@@ -63,18 +61,18 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Constructor.
-     * 
-     * @param field  the field to wrap, like "year()".
-     * @param type  the field type this field actually uses
-     * @param offset  offset to add to field values
-     * @param minValue  minimum allowed value
-     * @param maxValue  maximum allowed value
+     *
+     * @param field    the field to wrap, like "year()".
+     * @param type     the field type this field actually uses
+     * @param offset   offset to add to field values
+     * @param minValue minimum allowed value
+     * @param maxValue maximum allowed value
      * @throws IllegalArgumentException if offset is zero
      */
     public OffsetDateTimeField(DateTimeField field, DateTimeFieldType type, int offset,
                                int minValue, int maxValue) {
         super(field, type);
-                
+
         if (offset == 0) {
             throw new IllegalArgumentException("The offset cannot be zero");
         }
@@ -95,8 +93,8 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Get the amount of offset units from the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
+     *
+     * @param instant the time instant in millis to query.
      * @return the amount of units extracted from the input.
      */
     public int get(long instant) {
@@ -106,8 +104,8 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
     /**
      * Add the specified amount of offset units to the specified time
      * instant. The amount added may be negative.
-     * 
-     * @param instant  the time instant in millis to update.
+     *
+     * @param instant the time instant in millis to update.
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
@@ -120,8 +118,8 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
     /**
      * Add the specified amount of offset units to the specified time
      * instant. The amount added may be negative.
-     * 
-     * @param instant  the time instant in millis to update.
+     *
+     * @param instant the time instant in millis to update.
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
@@ -134,8 +132,8 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
     /**
      * Add to the offset component of the specified time instant,
      * wrapping around within that component if necessary.
-     * 
-     * @param instant  the time instant in millis to update.
+     *
+     * @param instant the time instant in millis to update.
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
@@ -145,9 +143,9 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Set the specified amount of offset units to the specified time instant.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param value  value of units to set.
+     *
+     * @param instant the time instant in millis to update.
+     * @param value   value of units to set.
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
@@ -170,7 +168,7 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Get the minimum value for the field.
-     * 
+     *
      * @return the minimum value
      */
     public int getMinimumValue() {
@@ -179,13 +177,13 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Get the maximum value for the field.
-     * 
+     *
      * @return the maximum value
      */
     public int getMaximumValue() {
         return iMax;
     }
-    
+
     public long roundFloor(long instant) {
         return getWrappedField().roundFloor(instant);
     }
@@ -212,7 +210,7 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
 
     /**
      * Returns the offset added to the field values.
-     * 
+     *
      * @return the offset
      */
     public int getOffset() {

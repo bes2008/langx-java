@@ -18,7 +18,6 @@ package com.jn.langx.util.jodatime.chrono;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
 import com.jn.langx.util.jodatime.field.PreciseDurationDateTimeField;
 
 /**
@@ -46,8 +45,8 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
 
     /**
      * Get the day of the year component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
+     *
+     * @param instant the time instant in millis to query.
      * @return the day of the year extracted from the input.
      */
     public int get(long instant) {

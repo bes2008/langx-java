@@ -15,15 +15,15 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
+import com.jn.langx.util.jodatime.DateTimeFieldType;
+import com.jn.langx.util.jodatime.DateTimeUtils;
+import com.jn.langx.util.jodatime.IllegalFieldValueException;
+
 import java.lang.ref.WeakReference;
 import java.text.DateFormatSymbols;
 import java.util.Locale;
 import java.util.TreeMap;
 import java.util.WeakHashMap;
-
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.IllegalFieldValueException;
 
 /**
  * Utility class used by a few of the GJDateTimeFields.
@@ -60,7 +60,7 @@ class GJLocaleSymbols {
 
     private static String[] realignMonths(String[] months) {
         String[] a = new String[13];
-        for (int i=1; i<13; i++) {
+        for (int i = 1; i < 13; i++) {
             a[i] = months[i - 1];
         }
         return a;
@@ -68,14 +68,14 @@ class GJLocaleSymbols {
 
     private static String[] realignDaysOfWeek(String[] daysOfWeek) {
         String[] a = new String[8];
-        for (int i=1; i<8; i++) {
+        for (int i = 1; i < 8; i++) {
             a[i] = daysOfWeek[(i < 7) ? i + 1 : 1];
         }
         return a;
     }
 
     private static void addSymbols(TreeMap<String, Integer> map, String[] symbols, Integer[] integers) {
-        for (int i=symbols.length; --i>=0; ) {
+        for (int i = symbols.length; --i >= 0; ) {
             String symbol = symbols[i];
             if (symbol != null) {
                 map.put(symbol, integers[i]);
@@ -84,14 +84,14 @@ class GJLocaleSymbols {
     }
 
     private static void addNumerals(TreeMap<String, Integer> map, int start, int end, Integer[] integers) {
-        for (int i=start; i<=end; i++) {
+        for (int i = start; i <= end; i++) {
             map.put(String.valueOf(i).intern(), integers[i]);
         }
     }
 
     private static int maxLength(String[] a) {
         int max = 0;
-        for (int i=a.length; --i>=0; ) {
+        for (int i = a.length; --i >= 0; ) {
             String s = a[i];
             if (s != null) {
                 int len = s.length();
@@ -128,9 +128,9 @@ class GJLocaleSymbols {
      */
     private GJLocaleSymbols(Locale locale) {
         iLocale = new WeakReference<Locale>(locale);
-        
+
         DateFormatSymbols dfs = DateTimeUtils.getDateFormatSymbols(locale);
-        
+
         iEras = dfs.getEras();
         iDaysOfWeek = realignDaysOfWeek(dfs.getWeekdays());
         iShortDaysOfWeek = realignDaysOfWeek(dfs.getShortWeekdays());
@@ -139,7 +139,7 @@ class GJLocaleSymbols {
         iHalfday = dfs.getAmPmStrings();
 
         Integer[] integers = new Integer[13];
-        for (int i=0; i<13; i++) {
+        for (int i = 0; i < 13; i++) {
             integers[i] = Integer.valueOf(i);
         }
 
@@ -241,7 +241,7 @@ class GJLocaleSymbols {
 
     public int halfdayTextToValue(String text) {
         String[] halfday = iHalfday;
-        for (int i = halfday.length; --i>=0; ) {
+        for (int i = halfday.length; --i >= 0; ) {
             if (halfday[i].equalsIgnoreCase(text)) {
                 return i;
             }

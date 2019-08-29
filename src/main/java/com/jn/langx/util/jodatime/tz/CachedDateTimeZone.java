@@ -23,7 +23,7 @@ import com.jn.langx.util.jodatime.DateTimeZone;
  * not be cached, as it is unlikely to improve performance.
  * <p>
  * CachedDateTimeZone is thread-safe and immutable.
- * 
+ *
  * @author Brian S O'Neill
  * @since 1.0
  */
@@ -66,7 +66,7 @@ public class CachedDateTimeZone extends DateTimeZone {
      */
     public static CachedDateTimeZone forZone(DateTimeZone zone) {
         if (zone instanceof CachedDateTimeZone) {
-            return (CachedDateTimeZone)zone;
+            return (CachedDateTimeZone) zone;
         }
         return new CachedDateTimeZone(zone);
     }
@@ -128,7 +128,7 @@ public class CachedDateTimeZone extends DateTimeZone {
             return true;
         }
         if (obj instanceof CachedDateTimeZone) {
-            return iZone.equals(((CachedDateTimeZone)obj).iZone);
+            return iZone.equals(((CachedDateTimeZone) obj).iZone);
         }
         return false;
     }
@@ -137,11 +137,11 @@ public class CachedDateTimeZone extends DateTimeZone {
     // synchronized.
 
     private Info getInfo(long millis) {
-        int period = (int)(millis >> 32);
+        int period = (int) (millis >> 32);
         Info[] cache = iInfoCache;
         int index = period & cInfoCacheMask;
         Info info = cache[index];
-        if (info == null || (int)((info.iPeriodStart >> 32)) != period) {
+        if (info == null || (int) ((info.iPeriodStart >> 32)) != period) {
             info = createInfo(millis);
             cache[index] = info;
         }
@@ -151,7 +151,7 @@ public class CachedDateTimeZone extends DateTimeZone {
     private Info createInfo(long millis) {
         long periodStart = millis & (0xffffffffL << 32);
         Info info = new Info(iZone, periodStart);
-        
+
         long end = periodStart | 0xffffffffL;
         Info chain = info;
         while (true) {

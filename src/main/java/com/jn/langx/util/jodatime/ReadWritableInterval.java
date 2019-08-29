@@ -15,12 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.ReadableDuration;
-import com.jn.langx.util.jodatime.ReadableInstant;
-import com.jn.langx.util.jodatime.ReadableInterval;
-import com.jn.langx.util.jodatime.ReadablePeriod;
-
 /**
  * Writable interface for an interval.
  *
@@ -33,8 +27,8 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
     /**
      * Sets this interval from two millisecond instants.
      *
-     * @param startInstant  the start of the time interval
-     * @param endInstant  the start of the time interval
+     * @param startInstant the start of the time interval
+     * @param endInstant   the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
     void setInterval(long startInstant, long endInstant);
@@ -42,7 +36,7 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
     /**
      * Sets this interval to be the same as another.
      *
-     * @param interval  the interval to copy
+     * @param interval the interval to copy
      * @throws IllegalArgumentException if the end is before the start
      */
     void setInterval(ReadableInterval interval);
@@ -50,26 +44,28 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
     /**
      * Sets this interval from two instants.
      *
-     * @param startInstant  the start of the time interval
-     * @param endInstant  the start of the time interval
+     * @param startInstant the start of the time interval
+     * @param endInstant   the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
     void setInterval(com.jn.langx.util.jodatime.ReadableInstant startInstant, com.jn.langx.util.jodatime.ReadableInstant endInstant);
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the chronology of this time interval.
      *
-     * @param chrono  the chronology to use, null means ISO default
+     * @param chrono the chronology to use, null means ISO default
      */
     void setChronology(Chronology chrono);
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the start of this time interval.
      *
-     * @param millisInstant  the start of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
+     * @param millisInstant the start of the time interval,
+     *                      millisecond instant from 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if the end is before the start
      */
     void setStartMillis(long millisInstant);
@@ -77,64 +73,67 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
     /**
      * Sets the start of this time interval as an Instant.
      *
-     * @param instant  the start of the time interval
+     * @param instant the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
     void setStart(com.jn.langx.util.jodatime.ReadableInstant instant);
 
     //-----------------------------------------------------------------------
-    /** 
+
+    /**
      * Sets the end of this time interval.
      *
-     * @param millisInstant  the end of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
+     * @param millisInstant the end of the time interval,
+     *                      millisecond instant from 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if the end is before the start
      */
     void setEndMillis(long millisInstant);
 
-    /** 
+    /**
      * Sets the end of this time interval as an Instant.
      *
-     * @param instant  the end of the time interval
+     * @param instant the end of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
     void setEnd(ReadableInstant instant);
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the duration of this time interval, preserving the start instant.
      *
-     * @param duration  new duration for interval
+     * @param duration new duration for interval
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
     void setDurationAfterStart(com.jn.langx.util.jodatime.ReadableDuration duration);
 
     /**
      * Sets the duration of this time interval, preserving the end instant.
      *
-     * @param duration  new duration for interval
+     * @param duration new duration for interval
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the start instant exceeds the capacity of a long
      */
     void setDurationBeforeEnd(ReadableDuration duration);
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the period of this time interval, preserving the start instant.
      *
-     * @param period  new period for interval, null means zero length
+     * @param period new period for interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
     void setPeriodAfterStart(com.jn.langx.util.jodatime.ReadablePeriod period);
 
     /**
      * Sets the period of this time interval, preserving the end instant.
      *
-     * @param period  new period for interval, null means zero length
+     * @param period new period for interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the start instant exceeds the capacity of a long
      */
     void setPeriodBeforeEnd(ReadablePeriod period);
 

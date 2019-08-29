@@ -15,15 +15,7 @@
  */
 package com.jn.langx.util.jodatime.convert;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.ReadWritableInterval;
-import com.jn.langx.util.jodatime.ReadWritablePeriod;
-import com.jn.langx.util.jodatime.ReadableInterval;
-import com.jn.langx.util.jodatime.convert.AbstractConverter;
-import com.jn.langx.util.jodatime.convert.DurationConverter;
-import com.jn.langx.util.jodatime.convert.IntervalConverter;
-import com.jn.langx.util.jodatime.convert.PeriodConverter;
+import com.jn.langx.util.jodatime.*;
 
 /**
  * Converts intervals into durations of any requested period type.
@@ -47,22 +39,24 @@ class ReadableIntervalConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the millisecond length of the interval.
-     * 
-     * @param object  the interval
+     *
+     * @param object the interval
      */
     public long getDurationMillis(Object object) {
         return (((ReadableInterval) object)).toDurationMillis();
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Sets the values of the mutable duration from the specified interval.
-     * 
-     * @param writablePeriod  the period to modify
-     * @param object  the interval to set from
-     * @param chrono  the chronology to use
+     *
+     * @param writablePeriod the period to modify
+     * @param object         the interval to set from
+     * @param chrono         the chronology to use
      */
     public void setInto(ReadWritablePeriod writablePeriod, Object object, Chronology chrono) {
         ReadableInterval interval = (ReadableInterval) object;
@@ -76,13 +70,14 @@ class ReadableIntervalConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Checks if the input is a ReadableInterval.
      * <p>
      * If it is, then the calling code should cast and copy the fields directly.
      *
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, may be null
+     * @param object the object to convert, must not be null
+     * @param chrono the chronology to use, may be null
      * @return true if the input is a ReadableInterval
      * @throws ClassCastException if the object is invalid
      */
@@ -95,8 +90,8 @@ class ReadableIntervalConverter extends AbstractConverter
      * type, and sets them into the given ReadWritableInterval.
      *
      * @param writableInterval interval to get modified, not null
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, may be null
+     * @param object           the object to convert, must not be null
+     * @param chrono           the chronology to use, may be null
      * @throws ClassCastException if the object is invalid
      */
     public void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono) {
@@ -110,6 +105,7 @@ class ReadableIntervalConverter extends AbstractConverter
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns ReadableInterval.class.
      */

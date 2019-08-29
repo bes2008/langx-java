@@ -17,8 +17,6 @@ package com.jn.langx.util.jodatime.field;
 
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.field.BaseDurationField;
-import com.jn.langx.util.jodatime.field.DelegatedDurationField;
 
 /**
  * <code>DecoratedDurationField</code> extends {@link com.jn.langx.util.jodatime.field.BaseDurationField},
@@ -41,13 +39,15 @@ public class DecoratedDurationField extends BaseDurationField {
 
     private static final long serialVersionUID = 8019982251647420015L;
 
-    /** The DurationField being wrapped */
+    /**
+     * The DurationField being wrapped
+     */
     private final DurationField iField;
 
     /**
      * Constructor.
-     * 
-     * @param field  the base field
+     *
+     * @param field the base field
      * @param type  the type to actually use
      */
     public DecoratedDurationField(DurationField field, DurationFieldType type) {
@@ -62,9 +62,10 @@ public class DecoratedDurationField extends BaseDurationField {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the wrapped duration field.
-     * 
+     *
      * @return the wrapped DurationField
      */
     public final DurationField getWrappedField() {

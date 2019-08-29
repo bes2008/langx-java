@@ -1666,23 +1666,24 @@ public class Strings {
 
     // Case conversion
     //-----------------------------------------------------------------------
+
     /**
      * <p>Converts a String to upper case as per {@link String#toUpperCase()}.</p>
-     *
+     * <p>
      * <p>A {@code null} input String returns {@code null}.</p>
-     *
+     * <p>
      * <pre>
      * StringUtils.upperCase(null)  = null
      * StringUtils.upperCase("")    = ""
      * StringUtils.upperCase("aBc") = "ABC"
      * </pre>
-     *
+     * <p>
      * <p><strong>Note:</strong> As described in the documentation for {@link String#toUpperCase()},
      * the result of this method is affected by the current locale.
      * For platform-independent case transformations, the method {@link #lowerCase(String, Locale)}
      * should be used with a specific locale (e.g. {@link Locale#ENGLISH}).</p>
      *
-     * @param str  the String to upper case, may be null
+     * @param str the String to upper case, may be null
      * @return the upper cased String, {@code null} if null String input
      */
     public static String upperCase(final String str) {
@@ -1694,17 +1695,17 @@ public class Strings {
 
     /**
      * <p>Converts a String to upper case as per {@link String#toUpperCase(Locale)}.</p>
-     *
+     * <p>
      * <p>A {@code null} input String returns {@code null}.</p>
-     *
+     * <p>
      * <pre>
      * StringUtils.upperCase(null, Locale.ENGLISH)  = null
      * StringUtils.upperCase("", Locale.ENGLISH)    = ""
      * StringUtils.upperCase("aBc", Locale.ENGLISH) = "ABC"
      * </pre>
      *
-     * @param str  the String to upper case, may be null
-     * @param locale  the locale that defines the case transformation rules, must not be null
+     * @param str    the String to upper case, may be null
+     * @param locale the locale that defines the case transformation rules, must not be null
      * @return the upper cased String, {@code null} if null String input
      * @since 2.5
      */
@@ -1717,21 +1718,21 @@ public class Strings {
 
     /**
      * <p>Converts a String to lower case as per {@link String#toLowerCase()}.</p>
-     *
+     * <p>
      * <p>A {@code null} input String returns {@code null}.</p>
-     *
+     * <p>
      * <pre>
      * StringUtils.lowerCase(null)  = null
      * StringUtils.lowerCase("")    = ""
      * StringUtils.lowerCase("aBc") = "abc"
      * </pre>
-     *
+     * <p>
      * <p><strong>Note:</strong> As described in the documentation for {@link String#toLowerCase()},
      * the result of this method is affected by the current locale.
      * For platform-independent case transformations, the method {@link #lowerCase(String, Locale)}
      * should be used with a specific locale (e.g. {@link Locale#ENGLISH}).</p>
      *
-     * @param str  the String to lower case, may be null
+     * @param str the String to lower case, may be null
      * @return the lower cased String, {@code null} if null String input
      */
     public static String lowerCase(final String str) {
@@ -1743,17 +1744,17 @@ public class Strings {
 
     /**
      * <p>Converts a String to lower case as per {@link String#toLowerCase(Locale)}.</p>
-     *
+     * <p>
      * <p>A {@code null} input String returns {@code null}.</p>
-     *
+     * <p>
      * <pre>
      * StringUtils.lowerCase(null, Locale.ENGLISH)  = null
      * StringUtils.lowerCase("", Locale.ENGLISH)    = ""
      * StringUtils.lowerCase("aBc", Locale.ENGLISH) = "abc"
      * </pre>
      *
-     * @param str  the String to lower case, may be null
-     * @param locale  the locale that defines the case transformation rules, must not be null
+     * @param str    the String to lower case, may be null
+     * @param locale the locale that defines the case transformation rules, must not be null
      * @return the lower cased String, {@code null} if null String input
      * @since 2.5
      */
@@ -1767,10 +1768,10 @@ public class Strings {
     /**
      * <p>Capitalizes a String changing the first letter to title case as
      * per {@link Character#toTitleCase(char)}. No other letters are changed.</p>
-     *
+     * <p>
      * <p>For a word based algorithm, see {@link org.apache.commons.lang3.text.WordUtils#capitalize(String)}.
      * A {@code null} input String returns {@code null}.</p>
-     *
+     * <p>
      * <pre>
      * StringUtils.capitalize(null)  = null
      * StringUtils.capitalize("")    = ""
@@ -1805,10 +1806,10 @@ public class Strings {
     /**
      * <p>Uncapitalizes a String changing the first letter to title case as
      * per {@link Character#toLowerCase(char)}. No other letters are changed.</p>
-     *
+     * <p>
      * <p>For a word based algorithm, see {@link org.apache.commons.lang3.text.WordUtils#uncapitalize(String)}.
      * A {@code null} input String returns {@code null}.</p>
-     *
+     * <p>
      * <pre>
      * StringUtils.uncapitalize(null)  = null
      * StringUtils.uncapitalize("")    = ""
@@ -1843,28 +1844,28 @@ public class Strings {
     /**
      * <p>Swaps the case of a String changing upper and title case to
      * lower case, and lower case to upper case.</p>
-     *
+     * <p>
      * <ul>
-     *  <li>Upper case character converts to Lower case</li>
-     *  <li>Title case character converts to Lower case</li>
-     *  <li>Lower case character converts to Upper case</li>
+     * <li>Upper case character converts to Lower case</li>
+     * <li>Title case character converts to Lower case</li>
+     * <li>Lower case character converts to Upper case</li>
      * </ul>
-     *
+     * <p>
      * <p>For a word based algorithm, see {@link org.apache.commons.lang3.text.WordUtils#swapCase(String)}.
      * A {@code null} input String returns {@code null}.</p>
-     *
+     * <p>
      * <pre>
      * StringUtils.swapCase(null)                 = null
      * StringUtils.swapCase("")                   = ""
      * StringUtils.swapCase("The dog has a BONE") = "tHE DOG HAS A bone"
      * </pre>
-     *
+     * <p>
      * <p>NOTE: This method changed in Lang version 2.0.
      * It no longer performs a word based algorithm.
      * If you only use ASCII, you will notice no change.
      * That functionality is available in org.apache.commons.lang3.text.WordUtils.</p>
      *
-     * @param str  the String to swap case, may be null
+     * @param str the String to swap case, may be null
      * @return the changed String, {@code null} if null String input
      */
     public static String swapCase(final String str) {

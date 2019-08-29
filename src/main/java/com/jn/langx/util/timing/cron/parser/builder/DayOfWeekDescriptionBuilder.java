@@ -3,11 +3,11 @@ package com.jn.langx.util.timing.cron.parser.builder;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.WordUtils;
+import com.jn.langx.util.jodatime.format.DateTimeFormat;
+import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.timing.cron.parser.CronI18nMessages;
 import com.jn.langx.util.timing.cron.parser.DateAndTimeUtils;
 import com.jn.langx.util.timing.cron.parser.Options;
-import com.jn.langx.util.jodatime.format.DateTimeFormat;
-import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -44,9 +44,9 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
             int dayOfWeekNum = Integer.parseInt(exp);
             boolean isZeroBasedDayOfWeek = (options == null || options.isZeroBasedDayOfWeek());
             boolean isInvalidDayOfWeekForSetting = (options != null && !options.isZeroBasedDayOfWeek() && dayOfWeekNum <= 1);
-            if(isInvalidDayOfWeekForSetting || (isZeroBasedDayOfWeek && dayOfWeekNum == 0)) {
+            if (isInvalidDayOfWeekForSetting || (isZeroBasedDayOfWeek && dayOfWeekNum == 0)) {
                 return DateAndTimeUtils.getDayOfWeekName(7);
-            } else if(options != null && !options.isZeroBasedDayOfWeek()) {
+            } else if (options != null && !options.isZeroBasedDayOfWeek()) {
                 dayOfWeekNum -= 1;
             }
             return DateAndTimeUtils.getDayOfWeekName(dayOfWeekNum);
@@ -58,13 +58,13 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
 
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
-        return MessageFormat.format(", "+ CronI18nMessages.get("interval_description_format"), expression);
+        return MessageFormat.format(", " + CronI18nMessages.get("interval_description_format"), expression);
     }
 
     @Override
     protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
         String format = CronI18nMessages.get("between_weekday_description_format");
-        return omitSeparator ? format : ", "+format;
+        return omitSeparator ? format : ", " + format;
     }
 
     @Override
@@ -84,11 +84,11 @@ public class DayOfWeekDescriptionBuilder extends AbstractDescriptionBuilder {
             } else if ("5".equals(dayOfWeekOfMonthNumber)) {
                 dayOfWeekOfMonthDescription = CronI18nMessages.get("fifth");
             }
-            format = ", "+String.format(CronI18nMessages.get("on_the_day_of_the_month"), dayOfWeekOfMonthDescription);
+            format = ", " + String.format(CronI18nMessages.get("on_the_day_of_the_month"), dayOfWeekOfMonthDescription);
         } else if (expression.contains("L")) {
-            format = ", "+CronI18nMessages.get("on_the_last_of_the_month");
+            format = ", " + CronI18nMessages.get("on_the_last_of_the_month");
         } else {
-            format = ", "+CronI18nMessages.get("only_on");
+            format = ", " + CronI18nMessages.get("only_on");
         }
         return format;
     }

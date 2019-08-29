@@ -16,46 +16,47 @@
 package com.jn.langx.util.jodatime.field;
 
 import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.field.BaseDurationField;
-import com.jn.langx.util.jodatime.field.FieldUtils;
 
 /**
  * Duration field class representing a field with a fixed unit length.
  * <p>
  * PreciseDurationField is thread-safe and immutable.
- * 
+ *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
 public class PreciseDurationField extends BaseDurationField {
-    
+
     private static final long serialVersionUID = -8346152187724495365L;
 
-    /** The size of the unit */
+    /**
+     * The size of the unit
+     */
     private final long iUnitMillis;
 
     /**
      * Constructor.
-     * 
-     * @param type  the field type
-     * @param unitMillis  the unit milliseconds
-     */    
+     *
+     * @param type       the field type
+     * @param unitMillis the unit milliseconds
+     */
     public PreciseDurationField(DurationFieldType type, long unitMillis) {
         super(type);
         iUnitMillis = unitMillis;
     }
-    
+
     //------------------------------------------------------------------------
+
     /**
      * This field is precise.
-     * 
+     *
      * @return true always
      */
     public final boolean isPrecise() {
         return true;
     }
-    
+
     /**
      * Returns the amount of milliseconds per unit value of this field.
      *
@@ -66,10 +67,11 @@ public class PreciseDurationField extends BaseDurationField {
     }
 
     //------------------------------------------------------------------------
+
     /**
      * Get the value of this field from the milliseconds.
-     * 
-     * @param duration  the milliseconds to query, which may be negative
+     *
+     * @param duration the milliseconds to query, which may be negative
      * @param instant  ignored
      * @return the value of the field, in the units of the field, which may be
      * negative
@@ -80,9 +82,9 @@ public class PreciseDurationField extends BaseDurationField {
 
     /**
      * Get the millisecond duration of this field from its value.
-     * 
-     * @param value  the value of the field, which may be negative
-     * @param instant  ignored
+     *
+     * @param value   the value of the field, which may be negative
+     * @param instant ignored
      * @return the milliseconds that the field represents, which may be
      * negative
      */
@@ -92,9 +94,9 @@ public class PreciseDurationField extends BaseDurationField {
 
     /**
      * Get the millisecond duration of this field from its value.
-     * 
-     * @param value  the value of the field, which may be negative
-     * @param instant  ignored
+     *
+     * @param value   the value of the field, which may be negative
+     * @param instant ignored
      * @return the milliseconds that the field represents, which may be
      * negative
      */
@@ -118,11 +120,12 @@ public class PreciseDurationField extends BaseDurationField {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this duration field to another.
      * Two fields are equal if of the same type and duration.
-     * 
-     * @param obj  the object to compare to
+     *
+     * @param obj the object to compare to
      * @return if equal
      */
     public boolean equals(Object obj) {
@@ -137,7 +140,7 @@ public class PreciseDurationField extends BaseDurationField {
 
     /**
      * Gets a hash code for this instance.
-     * 
+     *
      * @return a suitable hashcode
      */
     public int hashCode() {

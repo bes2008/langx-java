@@ -15,21 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import com.jn.langx.util.jodatime.*;
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.LocalDate;
 import com.jn.langx.util.jodatime.base.BasePartial;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.field.AbstractPartialFieldProperty;
@@ -38,6 +23,9 @@ import com.jn.langx.util.jodatime.format.DateTimeFormat;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.jodatime.format.DateTimeFormatterBuilder;
 import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * MonthDay is an immutable partial supporting the monthOfYear and dayOfMonth fields.
@@ -78,30 +66,41 @@ public final class MonthDay
         extends BasePartial
         implements ReadablePartial, Serializable {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 2954560699050434609L;
 
-    /** The singleton set of field types */
-    private static final com.jn.langx.util.jodatime.DateTimeFieldType[] FIELD_TYPES = new com.jn.langx.util.jodatime.DateTimeFieldType[] {
-        com.jn.langx.util.jodatime.DateTimeFieldType.monthOfYear(),
-        com.jn.langx.util.jodatime.DateTimeFieldType.dayOfMonth(), };
+    /**
+     * The singleton set of field types
+     */
+    private static final com.jn.langx.util.jodatime.DateTimeFieldType[] FIELD_TYPES = new com.jn.langx.util.jodatime.DateTimeFieldType[]{
+            com.jn.langx.util.jodatime.DateTimeFieldType.monthOfYear(),
+            com.jn.langx.util.jodatime.DateTimeFieldType.dayOfMonth(),};
 
-    /** The singleton set of field types */
+    /**
+     * The singleton set of field types
+     */
     private static final DateTimeFormatter PARSER = new DateTimeFormatterBuilder()
-        .appendOptional(ISODateTimeFormat.localDateParser().getParser())
-        .appendOptional(DateTimeFormat.forPattern("--MM-dd").getParser()).toFormatter();
+            .appendOptional(ISODateTimeFormat.localDateParser().getParser())
+            .appendOptional(DateTimeFormat.forPattern("--MM-dd").getParser()).toFormatter();
 
-    /** The index of the monthOfYear field in the field array */
+    /**
+     * The index of the monthOfYear field in the field array
+     */
     public static final int MONTH_OF_YEAR = 0;
-    /** The index of the day field in the field array */
+    /**
+     * The index of the day field in the field array
+     */
     public static final int DAY_OF_MONTH = 1;
 
     //-----------------------------------------------------------------------
+
     /**
      * Obtains a {@code MonthDay} set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
      * The resulting object does not use the zone.
-     * 
+     *
      * @return the current month-day, not null
      * @since 2.0
      */
@@ -114,7 +113,7 @@ public final class MonthDay
      * using <code>ISOChronology</code> in the specified time zone.
      * The resulting object does not use the zone.
      *
-     * @param zone  the time zone, not null
+     * @param zone the time zone, not null
      * @return the current month-day, not null
      * @since 2.0
      */
@@ -130,7 +129,7 @@ public final class MonthDay
      * using the specified chronology.
      * The resulting object does not use the zone.
      *
-     * @param chronology  the chronology, not null
+     * @param chronology the chronology, not null
      * @return the current month-day, not null
      * @since 2.0
      */
@@ -142,12 +141,13 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses a {@code MonthDay} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#localDateParser()} or the format {@code --MM-dd}.
-     * 
-     * @param str  the string to parse, not null
+     *
+     * @param str the string to parse, not null
      * @since 2.0
      */
     public static MonthDay parse(String str) {
@@ -156,9 +156,9 @@ public final class MonthDay
 
     /**
      * Parses a {@code MonthDay} from the specified string using a formatter.
-     * 
-     * @param str  the string to parse, not null
-     * @param formatter  the formatter to use, not null
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
      * @since 2.0
      */
     public static MonthDay parse(String str, DateTimeFormatter formatter) {
@@ -167,6 +167,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs a MonthDay from a <code>java.util.Calendar</code>
      * using exactly the same field values avoiding any time zone effects.
@@ -178,7 +179,7 @@ public final class MonthDay
      * will only pass in instances of <code>GregorianCalendar</code> however
      * this is not validated.
      *
-     * @param calendar  the Calendar to extract fields from
+     * @param calendar the Calendar to extract fields from
      * @return the created MonthDay, never null
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
@@ -198,7 +199,7 @@ public final class MonthDay
      * <p>
      * This factory method always creates a MonthDay with ISO chronology.
      *
-     * @param date  the Date to extract fields from
+     * @param date the Date to extract fields from
      * @return the created MonthDay, never null
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
@@ -212,6 +213,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs a MonthDay with the current monthOfYear, using ISOChronology in
      * the default zone to extract the fields.
@@ -219,7 +221,7 @@ public final class MonthDay
      * The constructor uses the default time zone, resulting in the local time
      * being initialised. Once the constructor is complete, all further calculations
      * are performed without reference to a time-zone (by switching to UTC).
-     * 
+     *
      * @see #now()
      */
     public MonthDay() {
@@ -233,8 +235,8 @@ public final class MonthDay
      * The constructor uses the specified time zone to obtain the current month-day.
      * Once the constructor is complete, all further calculations
      * are performed without reference to a time-zone (by switching to UTC).
-     * 
-     * @param zone  the zone to use, null means default zone
+     *
+     * @param zone the zone to use, null means default zone
      * @see #now(com.jn.langx.util.jodatime.DateTimeZone)
      */
     public MonthDay(com.jn.langx.util.jodatime.DateTimeZone zone) {
@@ -249,7 +251,7 @@ public final class MonthDay
      * Once the constructor is complete, all further calculations are performed
      * without reference to a time-zone (by switching to UTC).
      *
-     * @param chronology  the chronology, null means ISOChronology in the default zone
+     * @param chronology the chronology, null means ISOChronology in the default zone
      * @see #now(com.jn.langx.util.jodatime.Chronology)
      */
     public MonthDay(com.jn.langx.util.jodatime.Chronology chronology) {
@@ -264,7 +266,7 @@ public final class MonthDay
      * being initialised. Once the constructor is complete, all further calculations
      * are performed without reference to a time-zone (by switching to UTC).
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
      */
     public MonthDay(long instant) {
         super(instant);
@@ -278,8 +280,8 @@ public final class MonthDay
      * Once the constructor is complete, all further calculations are performed
      * without reference to a time-zone (by switching to UTC).
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param chronology  the chronology, null means ISOChronology in the default zone
+     * @param instant    the milliseconds from 1970-01-01T00:00:00Z
+     * @param chronology the chronology, null means ISOChronology in the default zone
      */
     public MonthDay(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
         super(instant, chronology);
@@ -295,7 +297,7 @@ public final class MonthDay
      * <p>
      * The chronology used will be derived from the object, defaulting to ISO.
      *
-     * @param instant  the date-time object, null means now
+     * @param instant the date-time object, null means now
      * @throws IllegalArgumentException if the instant is invalid
      */
     public MonthDay(Object instant) {
@@ -316,8 +318,8 @@ public final class MonthDay
      * without reference to a time-zone (by switching to UTC).
      * The specified chronology overrides that of the object.
      *
-     * @param instant  the date-time object, null means now
-     * @param chronology  the chronology, null means ISO default
+     * @param instant    the date-time object, null means now
+     * @param chronology the chronology, null means ISO default
      * @throws IllegalArgumentException if the instant is invalid
      */
     public MonthDay(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
@@ -332,7 +334,7 @@ public final class MonthDay
      * Once the constructor is complete, all further calculations
      * are performed without reference to a time-zone (by switching to UTC).
      *
-     * @param monthOfYear  the month of the year
+     * @param monthOfYear the month of the year
      * @param dayOfMonth  the day of the month
      */
     public MonthDay(int monthOfYear, int dayOfMonth) {
@@ -349,18 +351,18 @@ public final class MonthDay
      * Once the constructor is complete, all further calculations are performed
      * without reference to a time-zone (by switching to UTC).
      *
-     * @param monthOfYear  the month of the year
+     * @param monthOfYear the month of the year
      * @param dayOfMonth  the day of the month
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
     public MonthDay(int monthOfYear, int dayOfMonth, com.jn.langx.util.jodatime.Chronology chronology) {
-        super(new int[] {monthOfYear, dayOfMonth}, chronology);
+        super(new int[]{monthOfYear, dayOfMonth}, chronology);
     }
 
     /**
      * Constructs a MonthDay with chronology from this instance and new values.
      *
-     * @param partial  the partial to base this new instance on
+     * @param partial the partial to base this new instance on
      * @param values  the new set of values
      */
     MonthDay(MonthDay partial, int[] values) {
@@ -370,7 +372,7 @@ public final class MonthDay
     /**
      * Constructs a MonthDay with values from this instance and a new chronology.
      *
-     * @param partial  the partial to base this new instance on
+     * @param partial the partial to base this new instance on
      * @param chrono  the new chronology
      */
     MonthDay(MonthDay partial, com.jn.langx.util.jodatime.Chronology chrono) {
@@ -379,6 +381,7 @@ public final class MonthDay
 
     /**
      * Handle broken serialization from other tools.
+     *
      * @return the resolved object, not null
      */
     private Object readResolve() {
@@ -389,6 +392,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the number of fields in this partial, which is two.
      * The supported fields are MonthOfYear and DayOfMonth.
@@ -404,26 +408,26 @@ public final class MonthDay
      * Gets the field for a specific index in the chronology specified.
      * <p>
      * This method must not use any instance variables.
-     * 
+     *
      * @param index  the index to retrieve
-     * @param chrono  the chronology to use
+     * @param chrono the chronology to use
      * @return the field, never null
      */
     protected com.jn.langx.util.jodatime.DateTimeField getField(int index, com.jn.langx.util.jodatime.Chronology chrono) {
         switch (index) {
-        case MONTH_OF_YEAR:
-            return chrono.monthOfYear();
-        case DAY_OF_MONTH:
-            return chrono.dayOfMonth();
-        default:
-            throw new IndexOutOfBoundsException("Invalid index: " + index);
+            case MONTH_OF_YEAR:
+                return chrono.monthOfYear();
+            case DAY_OF_MONTH:
+                return chrono.dayOfMonth();
+            default:
+                throw new IndexOutOfBoundsException("Invalid index: " + index);
         }
     }
 
     /**
      * Gets the field type at the specified index.
      *
-     * @param index  the index to retrieve
+     * @param index the index to retrieve
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
@@ -443,6 +447,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this month-day with the specified chronology.
      * This instance is immutable and unaffected by this method call.
@@ -453,7 +458,7 @@ public final class MonthDay
      * The time zone of the specified chronology is ignored, as MonthDay
      * operates without a time zone.
      *
-     * @param newChronology  the new chronology, null means ISO
+     * @param newChronology the new chronology, null means ISO
      * @return a copy of this month-day with a different chronology, never null
      * @throws IllegalArgumentException if the values are invalid for the new chronology
      */
@@ -482,8 +487,8 @@ public final class MonthDay
      * MonthDay updated = md.property(DateTimeFieldType.dayOfMonth()).setCopy(6);
      * </pre>
      *
-     * @param fieldType  the field type to set, not null
-     * @param value  the value to set
+     * @param fieldType the field type to set, not null
+     * @param value     the value to set
      * @return a copy of this instance with the field set, never null
      * @throws IllegalArgumentException if the value is null or invalid
      */
@@ -508,12 +513,12 @@ public final class MonthDay
      * MonthDay added = md.plusDays(6);
      * MonthDay added = md.dayOfMonth().addToCopy(6);
      * </pre>
-     * 
-     * @param fieldType  the field type to add to, not null
-     * @param amount  the amount to add
+     *
+     * @param fieldType the field type to add to, not null
+     * @param amount    the amount to add
      * @return a copy of this instance with the field updated, never null
      * @throws IllegalArgumentException if the value is null or invalid
-     * @throws ArithmeticException if the new date-time exceeds the capacity
+     * @throws ArithmeticException      if the new date-time exceeds the capacity
      */
     public MonthDay withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
@@ -535,9 +540,9 @@ public final class MonthDay
      * period instances. Adding one field is best achieved using methods
      * like {@link #withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType, int)}
      * or {@link #plusMonths(int)}.
-     * 
-     * @param period  the period to add to this one, null means zero
-     * @param scalar  the amount of times to add, such as -1 to subtract once
+     *
+     * @param period the period to add to this one, null means zero
+     * @param scalar the amount of times to add, such as -1 to subtract once
      * @return a copy of this instance with the period added, never null
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
@@ -558,6 +563,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this month-day with the specified period added.
      * <p>
@@ -566,8 +572,8 @@ public final class MonthDay
      * This method is typically used to add complex period instances.
      * Adding one field is best achieved using methods
      * like {@link #plusMonths(int)}.
-     * 
-     * @param period  the duration to add to this one, null means zero
+     *
+     * @param period the duration to add to this one, null means zero
      * @return a copy of this instance with the period added, never null
      * @throws ArithmeticException if the new month-day exceeds the capacity
      */
@@ -576,6 +582,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this month-day plus the specified number of months.
      * <p>
@@ -590,7 +597,7 @@ public final class MonthDay
      * MonthDay added = md.withFieldAdded(DurationFieldType.months(), 6);
      * </pre>
      *
-     * @param months  the amount of months to add, may be negative
+     * @param months the amount of months to add, may be negative
      * @return the new month-day plus the increased months, never null
      */
     public MonthDay plusMonths(int months) {
@@ -610,7 +617,7 @@ public final class MonthDay
      * MonthDay added = md.withFieldAdded(DurationFieldType.days(), 6);
      * </pre>
      *
-     * @param days  the amount of days to add, may be negative
+     * @param days the amount of days to add, may be negative
      * @return the new month-day plus the increased days, never null
      */
     public MonthDay plusDays(int days) {
@@ -618,6 +625,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this month-day with the specified period taken away.
      * <p>
@@ -626,8 +634,8 @@ public final class MonthDay
      * This method is typically used to subtract complex period instances.
      * Subtracting one field is best achieved using methods
      * like {@link #minusMonths(int)}.
-     * 
-     * @param period  the period to reduce this instant by
+     *
+     * @param period the period to reduce this instant by
      * @return a copy of this instance with the period taken away, never null
      * @throws ArithmeticException if the new month-day exceeds the capacity
      */
@@ -636,6 +644,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this month-day minus the specified number of months.
      * <p>
@@ -650,7 +659,7 @@ public final class MonthDay
      * MonthDay subtracted = md.withFieldAdded(DurationFieldType.months(), -6);
      * </pre>
      *
-     * @param months  the amount of months to subtract, may be negative
+     * @param months the amount of months to subtract, may be negative
      * @return the new month-day minus the increased months, never null
      */
     public MonthDay minusMonths(int months) {
@@ -670,7 +679,7 @@ public final class MonthDay
      * MonthDay subtracted = md.withFieldAdded(DurationFieldType.days(), -6);
      * </pre>
      *
-     * @param days  the amount of days to subtract, may be negative
+     * @param days the amount of days to subtract, may be negative
      * @return the new month-day minus the increased days, never null
      */
     public MonthDay minusDays(int days) {
@@ -678,10 +687,11 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this object to a LocalDate with the same month-day and chronology.
      *
-     * @param year  the year to use, valid for chronology
+     * @param year the year to use, valid for chronology
      * @return a LocalDate with the same month-day and chronology, never null
      */
     public com.jn.langx.util.jodatime.LocalDate toLocalDate(int year) {
@@ -689,6 +699,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the month of year field value.
      *
@@ -708,6 +719,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this month-day with the month of year field updated.
      * <p>
@@ -715,7 +727,7 @@ public final class MonthDay
      * Instead, this method returns a new instance with the value of
      * month of year changed.
      *
-     * @param monthOfYear  the month of year to set
+     * @param monthOfYear the month of year to set
      * @return a copy of this object with the field set, never null
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -732,7 +744,7 @@ public final class MonthDay
      * Instead, this method returns a new instance with the value of
      * day of month changed.
      *
-     * @param dayOfMonth  the day of month to set
+     * @param dayOfMonth the day of month to set
      * @return a copy of this object with the field set, never null
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -743,11 +755,12 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the property object for the specified type, which contains
      * many useful methods.
      *
-     * @param type  the field type to get the property for
+     * @param type the field type to get the property for
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */
@@ -756,9 +769,10 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the month of year field property which provides access to advanced functionality.
-     * 
+     *
      * @return the month of year property
      */
     public Property monthOfYear() {
@@ -767,7 +781,7 @@ public final class MonthDay
 
     /**
      * Get the day of month field property which provides access to advanced functionality.
-     * 
+     *
      * @return the day of month property
      */
     public Property dayOfMonth() {
@@ -775,6 +789,7 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Output the month-day in ISO8601 format (--MM-dd).
      *
@@ -790,7 +805,7 @@ public final class MonthDay
     /**
      * Output the month-day using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param pattern the pattern specification, null means use <code>toString</code>
      * @see DateTimeFormat
      */
     public String toString(String pattern) {
@@ -803,7 +818,7 @@ public final class MonthDay
     /**
      * Output the month-day using the specified format pattern.
      *
-     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param pattern the pattern specification, null means use <code>toString</code>
      * @param locale  Locale to use, null means default
      * @see DateTimeFormat
      */
@@ -815,29 +830,36 @@ public final class MonthDay
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * The property class for <code>MonthDay</code>.
      * <p>
      * This class binds a <code>YearMonth</code> to a <code>DateTimeField</code>.
-     * 
+     *
      * @author Chris Pheby
      * @since 2.0
      */
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
-        /** Serialization version */
+        /**
+         * Serialization version
+         */
         private static final long serialVersionUID = 5727734012190224363L;
 
-        /** The partial */
+        /**
+         * The partial
+         */
         private final MonthDay iBase;
-        /** The field index */
+        /**
+         * The field index
+         */
         private final int iFieldIndex;
 
         /**
          * Constructs a property.
-         * 
-         * @param partial  the partial instance
-         * @param fieldIndex  the index in the partial
+         *
+         * @param partial    the partial instance
+         * @param fieldIndex the index in the partial
          */
         Property(MonthDay partial, int fieldIndex) {
             super();
@@ -847,7 +869,7 @@ public final class MonthDay
 
         /**
          * Gets the field that this property uses.
-         * 
+         *
          * @return the field
          */
         public DateTimeField getField() {
@@ -856,7 +878,7 @@ public final class MonthDay
 
         /**
          * Gets the partial that this property belongs to.
-         * 
+         *
          * @return the partial
          */
         protected ReadablePartial getReadablePartial() {
@@ -865,7 +887,7 @@ public final class MonthDay
 
         /**
          * Gets the partial that this property belongs to.
-         * 
+         *
          * @return the partial
          */
         public MonthDay getMonthDay() {
@@ -874,7 +896,7 @@ public final class MonthDay
 
         /**
          * Gets the value of this field.
-         * 
+         *
          * @return the field value
          */
         public int get() {
@@ -882,6 +904,7 @@ public final class MonthDay
         }
 
         //-----------------------------------------------------------------------
+
         /**
          * Adds to the value of this field in a copy of this MonthDay.
          * <p>
@@ -891,8 +914,8 @@ public final class MonthDay
          * <p>
          * The MonthDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
-         * 
-         * @param valueToAdd  the value to add to the field in the copy
+         *
+         * @param valueToAdd the value to add to the field in the copy
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
@@ -915,8 +938,8 @@ public final class MonthDay
          * <p>
          * The MonthDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
-         * 
-         * @param valueToAdd  the value to add to the field in the copy
+         *
+         * @param valueToAdd the value to add to the field in the copy
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
@@ -927,13 +950,14 @@ public final class MonthDay
         }
 
         //-----------------------------------------------------------------------
+
         /**
          * Sets this field in a copy of the MonthDay.
          * <p>
          * The MonthDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
-         * 
-         * @param value  the value to set the field in the copy to
+         *
+         * @param value the value to set the field in the copy to
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
@@ -948,9 +972,9 @@ public final class MonthDay
          * <p>
          * The MonthDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
-         * 
-         * @param text  the text value to set
-         * @param locale  optional locale to use for selecting a text symbol
+         *
+         * @param text   the text value to set
+         * @param locale optional locale to use for selecting a text symbol
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
@@ -965,8 +989,8 @@ public final class MonthDay
          * <p>
          * The MonthDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
-         * 
-         * @param text  the text value to set
+         *
+         * @param text the text value to set
          * @return a copy of the MonthDay with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */

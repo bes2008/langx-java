@@ -38,10 +38,10 @@ public class StringsTests {
     }
 
     @Test
-    public void splitTest(){
+    public void splitTest() {
         String string = "a, b, 23, af, (, {, }, 323";
-        Assert.assertTrue(Strings.split(string,"").length > 8);
-        Assert.assertTrue(Strings.split(string,",").length==8);
-        Assert.assertTrue(Strings.split(string," ").length==8);
+        Assert.assertTrue(Strings.split(string, "").length > 8);
+        Assert.assertTrue(Strings.split(string, ",").length == 8);
+        Assert.assertTrue(Strings.split(string, " ").length == 8);
     }
 }

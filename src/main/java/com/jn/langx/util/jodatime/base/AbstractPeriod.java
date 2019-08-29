@@ -25,8 +25,8 @@ import com.jn.langx.util.jodatime.format.PeriodFormatter;
 /**
  * AbstractPeriod provides the common behaviour for period classes.
  * <p>
- * This class should generally not be used directly by API users. The 
- * {@link ReadablePeriod} interface should be used when different 
+ * This class should generally not be used directly by API users. The
+ * {@link ReadablePeriod} interface should be used when different
  * kinds of periods are to be referenced.
  * <p>
  * AbstractPeriod subclasses may be mutable and not thread-safe.
@@ -45,6 +45,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the number of fields that this period supports.
      *
@@ -58,7 +59,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     /**
      * Gets the field type at the specified index.
      *
-     * @param index  the index to retrieve
+     * @param index the index to retrieve
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      * @since 2.0 (previously on BasePeriod)
@@ -99,13 +100,14 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the value of one of the fields.
      * <p>
      * If the field type specified is not supported by the period then zero
      * is returned.
      *
-     * @param type  the field type to query, null returns zero
+     * @param type the field type to query, null returns zero
      * @return the value of that field, zero if field not supported
      */
     public int get(DurationFieldType type) {
@@ -119,7 +121,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     /**
      * Checks whether the field specified is supported by this period.
      *
-     * @param type  the type to check, may be null which returns false
+     * @param type the type to check, may be null which returns false
      * @return true if the field is supported
      */
     public boolean isSupported(DurationFieldType type) {
@@ -129,7 +131,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     /**
      * Gets the index of the field in this period.
      *
-     * @param type  the type to check, may be null which returns -1
+     * @param type the type to check, may be null which returns -1
      * @return the index of -1 if not supported
      */
     public int indexOf(DurationFieldType type) {
@@ -137,9 +139,10 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get this period as an immutable <code>Period</code> object.
-     * 
+     *
      * @return a Period using the same field set and values
      */
     public Period toPeriod() {
@@ -150,7 +153,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * Get this object as a <code>MutablePeriod</code>.
      * <p>
      * This will always return a new <code>MutablePeriod</code> with the same fields.
-     * 
+     *
      * @return a MutablePeriod using the same field set and values
      */
     public MutablePeriod toMutablePeriod() {
@@ -158,6 +161,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this object with the specified object for equality based
      * on the value of each field. All ReadablePeriod instances are accepted.
@@ -174,9 +178,9 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * {@link com.jn.langx.util.jodatime.Duration Duration}s, an operation that emphasises
      * that the result may differ according to the date you choose.
      *
-     * @param period  a readable period to check against
+     * @param period a readable period to check against
      * @return true if all the field values are equal, false if
-     *  not or the period is null or of an incorrect type
+     * not or the period is null or of an incorrect type
      */
     public boolean equals(Object period) {
         if (this == period) {
@@ -212,6 +216,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the value as a String in the ISO8601 duration format.
      * <p>
@@ -227,10 +232,11 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Uses the specified formatter to convert this period to a String.
      *
-     * @param formatter  the formatter to use, null means use <code>toString()</code>.
+     * @param formatter the formatter to use, null means use <code>toString()</code>.
      * @return the formatted string
      * @since 1.5
      */

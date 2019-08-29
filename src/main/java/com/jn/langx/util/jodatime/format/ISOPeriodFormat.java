@@ -15,10 +15,6 @@
  */
 package com.jn.langx.util.jodatime.format;
 
-import com.jn.langx.util.jodatime.format.PeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormatter;
-import com.jn.langx.util.jodatime.format.PeriodFormatterBuilder;
-
 /**
  * Factory that creates instances of PeriodFormatter for the ISO8601 standard.
  * <p>
@@ -30,21 +26,31 @@ import com.jn.langx.util.jodatime.format.PeriodFormatterBuilder;
  * returns are as well.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see PeriodFormat
  * @see PeriodFormatterBuilder
+ * @since 1.0
  */
 public class ISOPeriodFormat {
 
-    /** Cache of standard format. */
+    /**
+     * Cache of standard format.
+     */
     private static PeriodFormatter cStandard;
-    /** Cache of alternate months format. */
+    /**
+     * Cache of alternate months format.
+     */
     private static PeriodFormatter cAlternate;
-    /** Cache of alternate extended months format. */
+    /**
+     * Cache of alternate extended months format.
+     */
     private static PeriodFormatter cAlternateExtended;
-    /** Cache of alternate weeks format. */
+    /**
+     * Cache of alternate weeks format.
+     */
     private static PeriodFormatter cAlternateWithWeeks;
-    /** Cache of alternate extended weeks format. */
+    /**
+     * Cache of alternate extended weeks format.
+     */
     private static PeriodFormatter cAlternateExtendedWihWeeks;
 
     /**
@@ -57,34 +63,35 @@ public class ISOPeriodFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * The standard ISO format - PyYmMwWdDThHmMsS.
      * Milliseconds are not output.
      * Note that the ISO8601 standard actually indicates weeks should not
      * be shown if any other field is present and vice versa.
-     * 
+     *
      * @return the formatter
      */
     public static PeriodFormatter standard() {
         if (cStandard == null) {
             cStandard = new PeriodFormatterBuilder()
-                .appendLiteral("P")
-                .appendYears()
-                .appendSuffix("Y")
-                .appendMonths()
-                .appendSuffix("M")
-                .appendWeeks()
-                .appendSuffix("W")
-                .appendDays()
-                .appendSuffix("D")
-                .appendSeparatorIfFieldsAfter("T")
-                .appendHours()
-                .appendSuffix("H")
-                .appendMinutes()
-                .appendSuffix("M")
-                .appendSecondsWithOptionalMillis()
-                .appendSuffix("S")
-                .toFormatter();
+                    .appendLiteral("P")
+                    .appendYears()
+                    .appendSuffix("Y")
+                    .appendMonths()
+                    .appendSuffix("M")
+                    .appendWeeks()
+                    .appendSuffix("W")
+                    .appendDays()
+                    .appendSuffix("D")
+                    .appendSeparatorIfFieldsAfter("T")
+                    .appendHours()
+                    .appendSuffix("H")
+                    .appendMinutes()
+                    .appendSuffix("M")
+                    .appendSecondsWithOptionalMillis()
+                    .appendSuffix("S")
+                    .toFormatter();
         }
         return cStandard;
     }
@@ -94,24 +101,24 @@ public class ISOPeriodFormat {
      * <p>
      * Even if weeks are present in the period, they are not output.
      * Fractional seconds (milliseconds) will appear if required.
-     * 
+     *
      * @return the formatter
      */
     public static PeriodFormatter alternate() {
         if (cAlternate == null) {
             cAlternate = new PeriodFormatterBuilder()
-                .appendLiteral("P")
-                .printZeroAlways()
-                .minimumPrintedDigits(4)
-                .appendYears()
-                .minimumPrintedDigits(2)
-                .appendMonths()
-                .appendDays()
-                .appendSeparatorIfFieldsAfter("T")
-                .appendHours()
-                .appendMinutes()
-                .appendSecondsWithOptionalMillis()
-                .toFormatter();
+                    .appendLiteral("P")
+                    .printZeroAlways()
+                    .minimumPrintedDigits(4)
+                    .appendYears()
+                    .minimumPrintedDigits(2)
+                    .appendMonths()
+                    .appendDays()
+                    .appendSeparatorIfFieldsAfter("T")
+                    .appendHours()
+                    .appendMinutes()
+                    .appendSecondsWithOptionalMillis()
+                    .toFormatter();
         }
         return cAlternate;
     }
@@ -121,28 +128,28 @@ public class ISOPeriodFormat {
      * <p>
      * Even if weeks are present in the period, they are not output.
      * Fractional seconds (milliseconds) will appear if required.
-     * 
+     *
      * @return the formatter
      */
     public static PeriodFormatter alternateExtended() {
         if (cAlternateExtended == null) {
             cAlternateExtended = new PeriodFormatterBuilder()
-                .appendLiteral("P")
-                .printZeroAlways()
-                .minimumPrintedDigits(4)
-                .appendYears()
-                .appendSeparator("-")
-                .minimumPrintedDigits(2)
-                .appendMonths()
-                .appendSeparator("-")
-                .appendDays()
-                .appendSeparatorIfFieldsAfter("T")
-                .appendHours()
-                .appendSeparator(":")
-                .appendMinutes()
-                .appendSeparator(":")
-                .appendSecondsWithOptionalMillis()
-                .toFormatter();
+                    .appendLiteral("P")
+                    .printZeroAlways()
+                    .minimumPrintedDigits(4)
+                    .appendYears()
+                    .appendSeparator("-")
+                    .minimumPrintedDigits(2)
+                    .appendMonths()
+                    .appendSeparator("-")
+                    .appendDays()
+                    .appendSeparatorIfFieldsAfter("T")
+                    .appendHours()
+                    .appendSeparator(":")
+                    .appendMinutes()
+                    .appendSeparator(":")
+                    .appendSecondsWithOptionalMillis()
+                    .toFormatter();
         }
         return cAlternateExtended;
     }
@@ -152,25 +159,25 @@ public class ISOPeriodFormat {
      * <p>
      * Even if months are present in the period, they are not output.
      * Fractional seconds (milliseconds) will appear if required.
-     * 
+     *
      * @return the formatter
      */
     public static PeriodFormatter alternateWithWeeks() {
         if (cAlternateWithWeeks == null) {
             cAlternateWithWeeks = new PeriodFormatterBuilder()
-                .appendLiteral("P")
-                .printZeroAlways()
-                .minimumPrintedDigits(4)
-                .appendYears()
-                .minimumPrintedDigits(2)
-                .appendPrefix("W")
-                .appendWeeks()
-                .appendDays()
-                .appendSeparatorIfFieldsAfter("T")
-                .appendHours()
-                .appendMinutes()
-                .appendSecondsWithOptionalMillis()
-                .toFormatter();
+                    .appendLiteral("P")
+                    .printZeroAlways()
+                    .minimumPrintedDigits(4)
+                    .appendYears()
+                    .minimumPrintedDigits(2)
+                    .appendPrefix("W")
+                    .appendWeeks()
+                    .appendDays()
+                    .appendSeparatorIfFieldsAfter("T")
+                    .appendHours()
+                    .appendMinutes()
+                    .appendSecondsWithOptionalMillis()
+                    .toFormatter();
         }
         return cAlternateWithWeeks;
     }
@@ -180,29 +187,29 @@ public class ISOPeriodFormat {
      * <p>
      * Even if months are present in the period, they are not output.
      * Fractional seconds (milliseconds) will appear if required.
-     * 
+     *
      * @return the formatter
      */
     public static PeriodFormatter alternateExtendedWithWeeks() {
         if (cAlternateExtendedWihWeeks == null) {
             cAlternateExtendedWihWeeks = new PeriodFormatterBuilder()
-                .appendLiteral("P")
-                .printZeroAlways()
-                .minimumPrintedDigits(4)
-                .appendYears()
-                .appendSeparator("-")
-                .minimumPrintedDigits(2)
-                .appendPrefix("W")
-                .appendWeeks()
-                .appendSeparator("-")
-                .appendDays()
-                .appendSeparatorIfFieldsAfter("T")
-                .appendHours()
-                .appendSeparator(":")
-                .appendMinutes()
-                .appendSeparator(":")
-                .appendSecondsWithOptionalMillis()
-                .toFormatter();
+                    .appendLiteral("P")
+                    .printZeroAlways()
+                    .minimumPrintedDigits(4)
+                    .appendYears()
+                    .appendSeparator("-")
+                    .minimumPrintedDigits(2)
+                    .appendPrefix("W")
+                    .appendWeeks()
+                    .appendSeparator("-")
+                    .appendDays()
+                    .appendSeparatorIfFieldsAfter("T")
+                    .appendHours()
+                    .appendSeparator(":")
+                    .appendMinutes()
+                    .appendSeparator(":")
+                    .appendSecondsWithOptionalMillis()
+                    .toFormatter();
         }
         return cAlternateExtendedWihWeeks;
     }

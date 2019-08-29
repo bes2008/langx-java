@@ -15,8 +15,6 @@
  */
 package com.jn.langx.util.jodatime.convert;
 
-import com.jn.langx.util.jodatime.convert.Converter;
-
 /**
  * DurationConverter defines how an object is converted to a millisecond duration.
  *
@@ -28,8 +26,8 @@ public interface DurationConverter extends Converter {
 
     /**
      * Extracts the millis from an object of this convertor's type.
-     * 
-     * @param object  the object to convert, must not be null
+     *
+     * @param object the object to convert, must not be null
      * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */

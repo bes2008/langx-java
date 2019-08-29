@@ -15,8 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import com.jn.langx.util.jodatime.DurationFieldType;
-
 /**
  * Defines the calculation engine for duration fields.
  * The interface defines a set of methods that manipulate a millisecond duration
@@ -33,7 +31,7 @@ public abstract class DurationField implements Comparable<DurationField> {
 
     /**
      * Get the type of the field.
-     * 
+     *
      * @return field type
      */
     public abstract DurationFieldType getType();
@@ -42,14 +40,14 @@ public abstract class DurationField implements Comparable<DurationField> {
      * Get the name of the field.
      * <p>
      * By convention, names are plural.
-     * 
+     *
      * @return field name
      */
     public abstract String getName();
 
     /**
      * Returns true if this field is supported.
-     * 
+     *
      * @return true if this field is supported
      */
     public abstract boolean isSupported();
@@ -58,12 +56,12 @@ public abstract class DurationField implements Comparable<DurationField> {
      * Is this field precise. A precise field can calculate its value from
      * milliseconds without needing a reference date. Put another way, a
      * precise field's unit size is not variable.
-     * 
+     *
      * @return true if precise
      * @see #getUnitMillis()
      */
     public abstract boolean isPrecise();
-    
+
     /**
      * Returns the amount of milliseconds per unit value of this field. For
      * example, if this field represents "seconds", then this returns the
@@ -78,11 +76,12 @@ public abstract class DurationField implements Comparable<DurationField> {
     public abstract long getUnitMillis();
 
     //------------------------------------------------------------------------
+
     /**
      * Get the value of this field from the milliseconds, which is approximate
      * if this field is imprecise.
      *
-     * @param duration  the milliseconds to query, which may be negative
+     * @param duration the milliseconds to query, which may be negative
      * @return the value of the field, in the units of the field, which may be
      * negative
      * @throws ArithmeticException if the value is too large for an int
@@ -93,7 +92,7 @@ public abstract class DurationField implements Comparable<DurationField> {
      * Get the value of this field from the milliseconds, which is approximate
      * if this field is imprecise.
      *
-     * @param duration  the milliseconds to query, which may be negative
+     * @param duration the milliseconds to query, which may be negative
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
@@ -106,8 +105,8 @@ public abstract class DurationField implements Comparable<DurationField> {
      * <p>
      * If the millisecond duration is positive, then the instant is treated as a
      * "start instant". If negative, the instant is treated as an "end instant".
-     * 
-     * @param duration  the milliseconds to query, which may be negative
+     *
+     * @param duration the milliseconds to query, which may be negative
      * @param instant  the start instant to calculate relative to
      * @return the value of the field, in the units of the field, which may be
      * negative
@@ -122,8 +121,8 @@ public abstract class DurationField implements Comparable<DurationField> {
      * <p>
      * If the millisecond duration is positive, then the instant is treated as a
      * "start instant". If negative, the instant is treated as an "end instant".
-     * 
-     * @param duration  the milliseconds to query, which may be negative
+     *
+     * @param duration the milliseconds to query, which may be negative
      * @param instant  the start instant to calculate relative to
      * @return the value of the field, in the units of the field, which may be
      * negative
@@ -131,11 +130,12 @@ public abstract class DurationField implements Comparable<DurationField> {
     public abstract long getValueAsLong(long duration, long instant);
 
     //------------------------------------------------------------------------
+
     /**
      * Get the millisecond duration of this field from its value, which is
      * approximate if this field is imprecise.
-     * 
-     * @param value  the value of the field, which may be negative
+     *
+     * @param value the value of the field, which may be negative
      * @return the milliseconds that the field represents, which may be
      * negative
      */
@@ -144,8 +144,8 @@ public abstract class DurationField implements Comparable<DurationField> {
     /**
      * Get the millisecond duration of this field from its value, which is
      * approximate if this field is imprecise.
-     * 
-     * @param value  the value of the field, which may be negative
+     *
+     * @param value the value of the field, which may be negative
      * @return the milliseconds that the field represents, which may be
      * negative
      */
@@ -159,8 +159,8 @@ public abstract class DurationField implements Comparable<DurationField> {
      * If the value is positive, then the instant is treated as a "start
      * instant". If negative, the instant is treated as an "end instant".
      *
-     * @param value  the value of the field, which may be negative
-     * @param instant  the instant to calculate relative to
+     * @param value   the value of the field, which may be negative
+     * @param instant the instant to calculate relative to
      * @return the millisecond duration that the field represents, which may be
      * negative
      */
@@ -174,8 +174,8 @@ public abstract class DurationField implements Comparable<DurationField> {
      * If the value is positive, then the instant is treated as a "start
      * instant". If negative, the instant is treated as an "end instant".
      *
-     * @param value  the value of the field, which may be negative
-     * @param instant  the instant to calculate relative to
+     * @param value   the value of the field, which may be negative
+     * @param instant the instant to calculate relative to
      * @return the millisecond duration that the field represents, which may be
      * negative
      */
@@ -183,27 +183,27 @@ public abstract class DurationField implements Comparable<DurationField> {
 
     /**
      * Adds a duration value (which may be negative) to the instant.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
-     * @param value  the value to add, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to add to
+     * @param value   the value to add, in the units of the field
      * @return the updated milliseconds
      */
     public abstract long add(long instant, int value);
 
     /**
      * Adds a duration value (which may be negative) to the instant.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
-     * @param value  the value to add, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to add to
+     * @param value   the value to add, in the units of the field
      * @return the updated milliseconds
      */
     public abstract long add(long instant, long value);
 
     /**
      * Subtracts a duration value (which may be negative) from the instant.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to subtract from
-     * @param value  the value to subtract, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to subtract from
+     * @param value   the value to subtract, in the units of the field
      * @return the updated milliseconds
      * @since 1.1
      */
@@ -216,9 +216,9 @@ public abstract class DurationField implements Comparable<DurationField> {
 
     /**
      * Subtracts a duration value (which may be negative) from the instant.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to subtract from
-     * @param value  the value to subtract, in the units of the field
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z to subtract from
+     * @param value   the value to subtract, in the units of the field
      * @return the updated milliseconds
      * @since 1.1
      */
@@ -233,19 +233,19 @@ public abstract class DurationField implements Comparable<DurationField> {
      * Computes the difference between two instants, as measured in the units
      * of this field. Any fractional units are dropped from the result. Calling
      * getDifference reverses the effect of calling add. In the following code:
-     *
+     * <p>
      * <pre>
      * long instant = ...
      * int v = ...
      * int age = getDifference(add(instant, v), instant);
      * </pre>
-     *
+     * <p>
      * The value 'age' is the same as the value 'v'.
      *
-     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract from
+     * @param minuendInstant    the milliseconds from 1970-01-01T00:00:00Z to
+     *                          subtract from
      * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract off the minuend
+     *                          subtract off the minuend
      * @return the difference in the units of this field
      */
     public abstract int getDifference(long minuendInstant, long subtrahendInstant);
@@ -254,19 +254,19 @@ public abstract class DurationField implements Comparable<DurationField> {
      * Computes the difference between two instants, as measured in the units
      * of this field. Any fractional units are dropped from the result. Calling
      * getDifference reverses the effect of calling add. In the following code:
-     *
+     * <p>
      * <pre>
      * long instant = ...
      * long v = ...
      * long age = getDifferenceAsLong(add(instant, v), instant);
      * </pre>
-     *
+     * <p>
      * The value 'age' is the same as the value 'v'.
      *
-     * @param minuendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract from
+     * @param minuendInstant    the milliseconds from 1970-01-01T00:00:00Z to
+     *                          subtract from
      * @param subtrahendInstant the milliseconds from 1970-01-01T00:00:00Z to
-     * subtract off the minuend
+     *                          subtract off the minuend
      * @return the difference in the units of this field
      */
     public abstract long getDifferenceAsLong(long minuendInstant, long subtrahendInstant);
@@ -304,7 +304,7 @@ public abstract class DurationField implements Comparable<DurationField> {
 
     /**
      * Get the maximum length string returned by getUnitName.
-     * 
+     *
      * @param locale the locale to use for selecting a unit name, null for
      * default
      * @return the maximum name length
@@ -312,11 +312,12 @@ public abstract class DurationField implements Comparable<DurationField> {
     //int getMaximumUnitNameLength(Locale locale);
 
     //------------------------------------------------------------------------
+
     /**
      * Get a suitable debug string.
-     * 
+     *
      * @return debug string
      */
     public abstract String toString();
-    
+
 }

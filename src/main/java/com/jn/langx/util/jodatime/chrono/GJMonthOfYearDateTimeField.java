@@ -15,10 +15,6 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import com.jn.langx.util.jodatime.chrono.BasicChronology;
-import com.jn.langx.util.jodatime.chrono.BasicMonthOfYearDateTimeField;
-import com.jn.langx.util.jodatime.chrono.GJLocaleSymbols;
-
 import java.util.Locale;
 
 /**
@@ -31,7 +27,9 @@ import java.util.Locale;
  */
 final class GJMonthOfYearDateTimeField extends BasicMonthOfYearDateTimeField {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -4748157875845286249L;
 

@@ -15,14 +15,9 @@
  */
 package com.jn.langx.util.jodatime.field;
 
-import java.util.Locale;
+import com.jn.langx.util.jodatime.*;
 
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.ReadableInstant;
-import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.field.FieldUtils;
+import java.util.Locale;
 
 /**
  * AbstractPartialFieldProperty is a base class for binding a
@@ -45,16 +40,17 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the field being used.
-     * 
+     *
      * @return the field
      */
     public abstract DateTimeField getField();
 
     /**
      * Gets the field type being used.
-     * 
+     *
      * @return the field type
      */
     public DateTimeFieldType getFieldType() {
@@ -63,7 +59,7 @@ public abstract class AbstractPartialFieldProperty {
 
     /**
      * Gets the name of the field.
-     * 
+     *
      * @return the field name
      */
     public String getName() {
@@ -72,12 +68,13 @@ public abstract class AbstractPartialFieldProperty {
 
     /**
      * Gets the partial instant being used.
-     * 
+     *
      * @return the partial instant
      */
     protected abstract ReadablePartial getReadablePartial();
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the value of this property from the instant.
      * <p>
@@ -86,7 +83,7 @@ public abstract class AbstractPartialFieldProperty {
      * partial.getDayOfMonth();
      * partial.dayOfMonth().get();
      * </pre>
-     * 
+     *
      * @return the current value
      */
     public abstract int get();
@@ -98,7 +95,7 @@ public abstract class AbstractPartialFieldProperty {
      * using <code>Integer.toString</code>. This method does NOT return
      * textual descriptions such as 'Monday' or 'January'.
      * See {@link #getAsText()} and {@link #getAsShortText()} for those.
-     * 
+     *
      * @return the current value
      * @see DateTimeField#get
      * @since 1.1
@@ -114,7 +111,7 @@ public abstract class AbstractPartialFieldProperty {
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Monday' in English.
-     * 
+     *
      * @return the current text value
      * @see DateTimeField#getAsText
      */
@@ -129,8 +126,8 @@ public abstract class AbstractPartialFieldProperty {
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Monday' in English.
-     * 
-     * @param locale  locale to use for selecting a text symbol, null means default
+     *
+     * @param locale locale to use for selecting a text symbol, null means default
      * @return the current text value
      * @see DateTimeField#getAsText
      */
@@ -145,7 +142,7 @@ public abstract class AbstractPartialFieldProperty {
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Mon' in English.
-     * 
+     *
      * @return the current text value
      * @see DateTimeField#getAsShortText
      */
@@ -160,8 +157,8 @@ public abstract class AbstractPartialFieldProperty {
      * This method returns the value converted to a <code>String</code>
      * returning the appropriate textual description wherever possible.
      * Thus, a day of week of 1 would return 'Mon' in English.
-     * 
-     * @param locale  locale to use for selecting a text symbol, null means default
+     *
+     * @param locale locale to use for selecting a text symbol, null means default
      * @return the current text value
      * @see DateTimeField#getAsShortText
      */
@@ -170,6 +167,7 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns the duration per unit value of this field. For example, if this
      * field represents "hour of day", then the duration is an hour.
@@ -191,9 +189,10 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the minimum value for the field ignoring the current time.
-     * 
+     *
      * @return the minimum value
      * @see DateTimeField#getMinimumValue
      */
@@ -203,7 +202,7 @@ public abstract class AbstractPartialFieldProperty {
 
     /**
      * Gets the minimum value for this field given the current field values.
-     * 
+     *
      * @return the minimum value
      * @see DateTimeField#getMinimumValue
      */
@@ -213,7 +212,7 @@ public abstract class AbstractPartialFieldProperty {
 
     /**
      * Gets the maximum value for the field ignoring the current time.
-     * 
+     *
      * @return the maximum value
      * @see DateTimeField#getMaximumValue
      */
@@ -223,7 +222,7 @@ public abstract class AbstractPartialFieldProperty {
 
     /**
      * Gets the maximum value for this field given the current field values.
-     * 
+     *
      * @return the maximum value
      * @see DateTimeField#getMaximumValue
      */
@@ -232,10 +231,11 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the maximum text length for the field.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
+     *
+     * @param locale optional locale to use for selecting a text symbol
      * @return the maximum length
      * @see DateTimeField#getMaximumTextLength
      */
@@ -245,8 +245,8 @@ public abstract class AbstractPartialFieldProperty {
 
     /**
      * Gets the maximum short text length for the field.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
+     *
+     * @param locale optional locale to use for selecting a text symbol
      * @return the maximum length
      * @see DateTimeField#getMaximumShortTextLength
      */
@@ -255,6 +255,7 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compare this field to the same field on another instant.
      * <p>
@@ -262,11 +263,11 @@ public abstract class AbstractPartialFieldProperty {
      * of any difference in chronology. Thus, if this property represents the
      * hourOfDay field, then the hourOfDay field of the other instant will be queried
      * whether in the same chronology or not.
-     * 
-     * @param instant  the instant to compare to
+     *
+     * @param instant the instant to compare to
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws IllegalArgumentException if the instant is null or the instant
-     *  doesn't support the field of this property
+     *                                  doesn't support the field of this property
      */
     public int compareTo(ReadableInstant instant) {
         if (instant == null) {
@@ -290,12 +291,12 @@ public abstract class AbstractPartialFieldProperty {
      * of any difference in chronology. Thus, if this property represents the
      * hourOfDay field, then the hourOfDay field of the other partial will be queried
      * whether in the same chronology or not.
-     * 
-     * @param partial  the partial to compare to
+     *
+     * @param partial the partial to compare to
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws IllegalArgumentException if the instant is null
      * @throws IllegalArgumentException if the field of this property cannot be queried
-     *  on the specified instant
+     *                                  on the specified instant
      */
     public int compareTo(ReadablePartial partial) {
         if (partial == null) {
@@ -313,10 +314,11 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this property to another.
-     * 
-     * @param object  the object to compare to
+     *
+     * @param object the object to compare to
      * @return true if equal
      */
     public boolean equals(Object object) {
@@ -328,15 +330,16 @@ public abstract class AbstractPartialFieldProperty {
         }
         AbstractPartialFieldProperty other = (AbstractPartialFieldProperty) object;
         return
-            get() == other.get() &&
-            getFieldType() == other.getFieldType() &&
-            FieldUtils.equals(getReadablePartial().getChronology(), other.getReadablePartial().getChronology());
+                get() == other.get() &&
+                        getFieldType() == other.getFieldType() &&
+                        FieldUtils.equals(getReadablePartial().getChronology(), other.getReadablePartial().getChronology());
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets a suitable hashcode for the object.
-     * 
+     *
      * @return the hashcode
      * @since 1.3
      */
@@ -349,9 +352,10 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Output a debugging string.
-     * 
+     *
      * @return debugging string
      */
     public String toString() {

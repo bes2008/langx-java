@@ -94,7 +94,7 @@ public final class HostsFileParser {
     /**
      * Parse a hosts file.
      *
-     * @param file the file to be parsed
+     * @param file     the file to be parsed
      * @param charsets the {@link Charset}s to try as file encodings when parsing.
      * @return a {@link HostsFileEntries}
      * @throws IOException file could not be read
@@ -103,7 +103,7 @@ public final class HostsFileParser {
         Preconditions.checkNotNull(file, "file");
         Preconditions.checkNotNull(charsets, "charsets");
         if (file.exists() && file.isFile()) {
-            for (Charset charset: charsets) {
+            for (Charset charset : charsets) {
                 HostsFileEntries entries = parse(new BufferedReader(new InputStreamReader(
                         new FileInputStream(file), charset)));
                 if (entries != HostsFileEntries.EMPTY) {
@@ -142,7 +142,7 @@ public final class HostsFileParser {
 
                 // split
                 List<String> lineParts = new ArrayList<String>();
-                for (String s: WHITESPACES.split(line)) {
+                for (String s : WHITESPACES.split(line)) {
                     if (!s.isEmpty()) {
                         lineParts.add(s);
                     }
@@ -162,7 +162,7 @@ public final class HostsFileParser {
                 }
 
                 // loop over hostname and aliases
-                for (int i = 1; i < lineParts.size(); i ++) {
+                for (int i = 1; i < lineParts.size(); i++) {
                     String hostname = lineParts.get(i);
                     String hostnameLower = hostname.toLowerCase(Locale.ENGLISH);
                     InetAddress address = InetAddress.getByAddress(hostname, ipBytes);

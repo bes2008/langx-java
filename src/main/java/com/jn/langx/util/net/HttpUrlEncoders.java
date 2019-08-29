@@ -3,7 +3,6 @@ package com.jn.langx.util.net;
 import com.jn.langx.util.io.Charsets;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.BitSet;
 
 
@@ -20,8 +19,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet GEN_DELIMS = new BitSet();
 
-    static
-    {
+    static {
         GEN_DELIMS.set(':');
         GEN_DELIMS.set('/');
         GEN_DELIMS.set('?');
@@ -36,8 +34,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet SUB_DELIMS = new BitSet();
 
-    static
-    {
+    static {
         SUB_DELIMS.set('!');
         SUB_DELIMS.set('$');
         SUB_DELIMS.set('&');
@@ -56,8 +53,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet RESERVED = new BitSet();
 
-    static
-    {
+    static {
         RESERVED.or(GEN_DELIMS);
         RESERVED.or(SUB_DELIMS);
     }
@@ -68,8 +64,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet LOW_ALPHA = new BitSet();
 
-    static
-    {
+    static {
         LOW_ALPHA.set('a');
         LOW_ALPHA.set('b');
         LOW_ALPHA.set('c');
@@ -104,8 +99,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet UP_ALPHA = new BitSet();
 
-    static
-    {
+    static {
         UP_ALPHA.set('A');
         UP_ALPHA.set('B');
         UP_ALPHA.set('C');
@@ -139,8 +133,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet ALPHA = new BitSet();
 
-    static
-    {
+    static {
         ALPHA.or(LOW_ALPHA);
         ALPHA.or(UP_ALPHA);
     }
@@ -150,8 +143,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet DIGIT = new BitSet();
 
-    static
-    {
+    static {
         DIGIT.set('0');
         DIGIT.set('1');
         DIGIT.set('2');
@@ -169,8 +161,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet ALPHANUM = new BitSet();
 
-    static
-    {
+    static {
         ALPHANUM.or(ALPHA);
         ALPHANUM.or(DIGIT);
     }
@@ -180,8 +171,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet UNRESERVED = new BitSet();
 
-    static
-    {
+    static {
         UNRESERVED.or(ALPHA);
         UNRESERVED.or(DIGIT);
         UNRESERVED.set('-');
@@ -198,8 +188,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet PCHAR = new BitSet();
 
-    static
-    {
+    static {
         PCHAR.or(UNRESERVED);
         PCHAR.or(SUB_DELIMS);
         PCHAR.set(':');
@@ -211,8 +200,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet PATH_SEGMENT = new BitSet();
 
-    static
-    {
+    static {
         PATH_SEGMENT.or(PCHAR);
         // deviate from the RFC in order to disallow the path param separator
         PATH_SEGMENT.clear(';');
@@ -223,8 +211,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet PATH_PARAM_NAME = new BitSet();
 
-    static
-    {
+    static {
         PATH_PARAM_NAME.or(PCHAR);
         // deviate from the RFC in order to disallow the path param separators
         PATH_PARAM_NAME.clear(';');
@@ -236,8 +223,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet PATH_PARAM_VALUE = new BitSet();
 
-    static
-    {
+    static {
         PATH_PARAM_VALUE.or(PCHAR);
         // deviate from the RFC in order to disallow the path param separator
         PATH_PARAM_VALUE.clear(';');
@@ -248,8 +234,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet QUERY = new BitSet();
 
-    static
-    {
+    static {
         QUERY.or(PCHAR);
         QUERY.set('/');
         QUERY.set('?');
@@ -265,8 +250,7 @@ public class HttpUrlEncoders {
      */
     public final static BitSet FRAGMENT = new BitSet();
 
-    static
-    {
+    static {
         FRAGMENT.or(PCHAR);
         FRAGMENT.set('/');
         FRAGMENT.set('?');
@@ -275,17 +259,14 @@ public class HttpUrlEncoders {
     /**
      * Encodes a string to be a valid path parameter name, which means it can contain PCHAR* without "=" or ";". Uses
      * UTF-8.
+     *
      * @param pathParamName path parameter name
      * @return encoded string
      */
-    public static String encodePathParamName(final String pathParamName)
-    {
-        try
-        {
+    public static String encodePathParamName(final String pathParamName) {
+        try {
             return encodePart(pathParamName, Charsets.UTF_8.name(), PATH_PARAM_NAME);
-        }
-        catch (final UnsupportedEncodingException e)
-        {
+        } catch (final UnsupportedEncodingException e) {
             // should not happen
             throw new RuntimeException(e);
         }
@@ -293,17 +274,14 @@ public class HttpUrlEncoders {
 
     /**
      * Encodes a string to be a valid path parameter value, which means it can contain PCHAR* without ";". Uses UTF-8.
+     *
      * @param pathParamValue path parameter value
      * @return encoded string
      */
-    public static String encodePathParamValue(final String pathParamValue)
-    {
-        try
-        {
+    public static String encodePathParamValue(final String pathParamValue) {
+        try {
             return encodePart(pathParamValue, Charsets.UTF_8.name(), PATH_PARAM_VALUE);
-        }
-        catch (final UnsupportedEncodingException e)
-        {
+        } catch (final UnsupportedEncodingException e) {
             // should not happen
             throw new RuntimeException(e);
         }
@@ -312,17 +290,14 @@ public class HttpUrlEncoders {
     /**
      * Encodes a string to be a valid query, which means it can contain PCHAR* | "?" | "/" without "=" | "&#x26;" | "+". Uses
      * UTF-8.
+     *
      * @param queryNameOrValue query
      * @return encoded string
      */
-    public static String encodeQueryNameOrValue(final String queryNameOrValue)
-    {
-        try
-        {
+    public static String encodeQueryNameOrValue(final String queryNameOrValue) {
+        try {
             return encodePart(queryNameOrValue, Charsets.UTF_8.name(), QUERY);
-        }
-        catch (final UnsupportedEncodingException e)
-        {
+        } catch (final UnsupportedEncodingException e) {
             // should not happen
             throw new RuntimeException(e);
         }
@@ -331,19 +306,16 @@ public class HttpUrlEncoders {
     /**
      * Encodes a string to be a valid query with no parenthesis, which means it can contain PCHAR* | "?" | "/" without
      * "=" | "&#x26;" | "+" | "(" | ")". It strips parenthesis. Uses UTF-8.
+     *
      * @param queryNameOrValueNoParen query
      * @return encoded string
      */
-    public static String encodeQueryNameOrValueNoParen(final String queryNameOrValueNoParen)
-    {
-        try
-        {
+    public static String encodeQueryNameOrValueNoParen(final String queryNameOrValueNoParen) {
+        try {
             String query = encodePart(queryNameOrValueNoParen, Charsets.UTF_8.name(), QUERY);
             query = query.replace("(", "");
             return query.replace(")", "");
-        }
-        catch (final UnsupportedEncodingException e)
-        {
+        } catch (final UnsupportedEncodingException e) {
             // should not happen
             throw new RuntimeException(e);
         }
@@ -352,17 +324,14 @@ public class HttpUrlEncoders {
     /**
      * Encodes a string to be a valid path segment, which means it can contain PCHAR* only (do not put path parameters or
      * they will be escaped. Uses UTF-8.
+     *
      * @param pathSegment path segment
      * @return encoded string
      */
-    public static String encodePathSegment(final String pathSegment)
-    {
-        try
-        {
+    public static String encodePathSegment(final String pathSegment) {
+        try {
             return encodePart(pathSegment, Charsets.UTF_8.name(), PATH_SEGMENT);
-        }
-        catch (final UnsupportedEncodingException e)
-        {
+        } catch (final UnsupportedEncodingException e) {
             // should not happen
             throw new RuntimeException(e);
         }
@@ -371,33 +340,25 @@ public class HttpUrlEncoders {
     /**
      * Encodes a string to be a valid URI part, with the given characters allowed. The rest will be encoded.
      *
-     * @param part uri part
+     * @param part    uri part
      * @param charset charset
      * @param allowed allowed characters
-     * @throws java.io.UnsupportedEncodingException if the named charset is not supported
      * @return encoded string
-     *
+     * @throws java.io.UnsupportedEncodingException if the named charset is not supported
      */
-    public static String encodePart(final String part, final String charset, final BitSet allowed) throws UnsupportedEncodingException
-    {
-        if (part == null)
-        {
+    public static String encodePart(final String part, final String charset, final BitSet allowed) throws UnsupportedEncodingException {
+        if (part == null) {
             return null;
         }
         // start at *3 for the worst case when everything is %encoded on one byte
         final StringBuffer encoded = new StringBuffer(part.length() * 3);
         final char[] toEncode = part.toCharArray();
-        for (final char c : toEncode)
-        {
-            if (allowed.get(c))
-            {
+        for (final char c : toEncode) {
+            if (allowed.get(c)) {
                 encoded.append(c);
-            }
-            else
-            {
+            } else {
                 final byte[] bytes = String.valueOf(c).getBytes(charset);
-                for (final byte b : bytes)
-                {
+                for (final byte b : bytes) {
                     // make it unsigned
                     final int u8 = b & 0xFF;
                     encoded.append(String.format("%%%1$02X", u8));

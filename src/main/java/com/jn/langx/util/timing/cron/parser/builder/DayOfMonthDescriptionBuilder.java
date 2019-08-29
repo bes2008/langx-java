@@ -23,18 +23,18 @@ public class DayOfMonthDescriptionBuilder extends AbstractDescriptionBuilder {
     @Override
     protected String getIntervalDescriptionFormat(String expression) {
 
-        return ", "+ CronI18nMessages.get("every_x")+ getSpace(options) + plural(expression, CronI18nMessages.get("day"), CronI18nMessages.get("days"));
+        return ", " + CronI18nMessages.get("every_x") + getSpace(options) + plural(expression, CronI18nMessages.get("day"), CronI18nMessages.get("days"));
     }
 
     @Override
     protected String getBetweenDescriptionFormat(String expression, boolean omitSeparator) {
         String format = CronI18nMessages.get("between_days_of_the_month");
-        return omitSeparator ? format : ", "+format;
+        return omitSeparator ? format : ", " + format;
     }
 
     @Override
     protected String getDescriptionFormat(String expression) {
-        return ", "+CronI18nMessages.get("on_day_of_the_month");
+        return ", " + CronI18nMessages.get("on_day_of_the_month");
     }
 
     @Override

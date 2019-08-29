@@ -18,8 +18,6 @@ package com.jn.langx.util.jodatime.field;
 import com.jn.langx.util.jodatime.DateTimeField;
 import com.jn.langx.util.jodatime.DateTimeFieldType;
 import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.field.BaseDateTimeField;
-import com.jn.langx.util.jodatime.field.DelegatedDateTimeField;
 
 /**
  * <code>DecoratedDateTimeField</code> extends {@link com.jn.langx.util.jodatime.field.BaseDateTimeField},
@@ -35,22 +33,26 @@ import com.jn.langx.util.jodatime.field.DelegatedDateTimeField;
  * be as well.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see DelegatedDateTimeField
+ * @since 1.0
  */
 public abstract class DecoratedDateTimeField extends BaseDateTimeField {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 203115783733757597L;
 
-    /** The DateTimeField being wrapped */
+    /**
+     * The DateTimeField being wrapped
+     */
     private final DateTimeField iField;
 
     /**
      * Constructor.
-     * 
-     * @param field  the field being decorated
+     *
+     * @param field the field being decorated
      * @param type  allow type to be overridden
      */
     protected DecoratedDateTimeField(DateTimeField field, DateTimeFieldType type) {
@@ -66,7 +68,7 @@ public abstract class DecoratedDateTimeField extends BaseDateTimeField {
 
     /**
      * Gets the wrapped date time field.
-     * 
+     *
      * @return the wrapped DateTimeField
      */
     public final DateTimeField getWrappedField() {

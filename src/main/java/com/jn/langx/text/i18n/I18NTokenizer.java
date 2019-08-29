@@ -1,21 +1,16 @@
 package com.jn.langx.text.i18n;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class I18NTokenizer implements Iterator {
     private static final String LOCALE_SEPARATOR = ",";
     private static final char QUALITY_SEPARATOR = ';';
-    private static final Float DEFAULT_QUALITY = new Float(1.0F);
+    private static final Float DEFAULT_QUALITY = 1.0F;
     private ArrayList locales = new ArrayList(3);
 
     public I18NTokenizer(String header) {
         I18NTokenizer.AcceptLanguage acceptLang;
-        for(StringTokenizer tok = new StringTokenizer(header, ","); tok.hasMoreTokens(); this.locales.add(acceptLang)) {
+        for (StringTokenizer tok = new StringTokenizer(header, ","); tok.hasMoreTokens(); this.locales.add(acceptLang)) {
             acceptLang = new I18NTokenizer.AcceptLanguage();
             String element = tok.nextToken().trim();
             int index;
@@ -50,7 +45,7 @@ public class I18NTokenizer implements Iterator {
         if (this.locales.isEmpty()) {
             throw new NoSuchElementException();
         } else {
-            return ((I18NTokenizer.AcceptLanguage)this.locales.remove(0)).locale;
+            return ((I18NTokenizer.AcceptLanguage) this.locales.remove(0)).locale;
         }
     }
 
@@ -67,7 +62,7 @@ public class I18NTokenizer implements Iterator {
         }
 
         public final int compareTo(Object acceptLang) {
-            return this.quality.compareTo(((I18NTokenizer.AcceptLanguage)acceptLang).quality);
+            return this.quality.compareTo(((I18NTokenizer.AcceptLanguage) acceptLang).quality);
         }
     }
 }

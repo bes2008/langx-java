@@ -26,7 +26,7 @@ public interface Converter {
     /**
      * Returns the object type that this converter supports, which may
      * specified by a class, superclass, abstract class, interface, or null.
-     * 
+     *
      * @return the object type that this converter supports
      */
     Class<?> getSupportedType();

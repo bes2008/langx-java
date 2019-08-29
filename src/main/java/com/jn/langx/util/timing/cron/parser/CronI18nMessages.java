@@ -16,7 +16,8 @@ public final class CronI18nMessages {
     private static Locale currentLocale = DEFAULT_LOCALE;
     private static ResourceBundle messages = ResourceBundle.getBundle(BUNDLE, currentLocale, new CronI18nMessages.UTF8Control());
 
-    private CronI18nMessages() {}
+    private CronI18nMessages() {
+    }
 
     public static Locale getCurrentLocale() {
         return currentLocale;

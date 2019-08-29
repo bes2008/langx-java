@@ -17,7 +17,6 @@ package com.jn.langx.util.jodatime.convert;
 
 import com.jn.langx.util.jodatime.Chronology;
 import com.jn.langx.util.jodatime.ReadWritableInterval;
-import com.jn.langx.util.jodatime.convert.Converter;
 
 /**
  * IntervalConverter defines how an object is converted to an interval.
@@ -33,8 +32,8 @@ public interface IntervalConverter extends Converter {
      * <p>
      * If it is, then the calling code should cast and copy the fields directly.
      *
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, may be null
+     * @param object the object to convert, must not be null
+     * @param chrono the chronology to use, may be null
      * @return true if the input is a ReadableInterval
      * @throws ClassCastException if the object is invalid
      */
@@ -44,9 +43,9 @@ public interface IntervalConverter extends Converter {
      * Extracts interval endpoint values from an object of this converter's
      * type, and sets them into the given ReadWritableInterval.
      *
-     * @param writableInterval  interval to get modified, not null
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, may be null
+     * @param writableInterval interval to get modified, not null
+     * @param object           the object to convert, must not be null
+     * @param chrono           the chronology to use, may be null
      * @throws ClassCastException if the object is invalid
      */
     void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono);

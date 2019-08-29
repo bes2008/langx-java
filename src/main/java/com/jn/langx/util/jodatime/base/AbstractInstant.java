@@ -15,21 +15,13 @@
  */
 package com.jn.langx.util.jodatime.base;
 
-import java.util.Date;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTime;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.Instant;
-import com.jn.langx.util.jodatime.MutableDateTime;
-import com.jn.langx.util.jodatime.ReadableInstant;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
+
+import java.util.Date;
 
 /**
  * AbstractInstant provides the common behaviour for instant classes.
@@ -37,8 +29,8 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
  * This class has no concept of a chronology, all methods work on the
  * millisecond instant.
  * <p>
- * This class should generally not be used directly by API users. The 
- * {@link ReadableInstant} interface should be used when different 
+ * This class should generally not be used directly by API users. The
+ * {@link ReadableInstant} interface should be used when different
  * kinds of date/time objects are to be referenced.
  * <p>
  * Whenever you want to implement <code>ReadableInstant</code> you should
@@ -61,9 +53,10 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the time zone of the instant from the chronology.
-     * 
+     *
      * @return the DateTimeZone that the instant is using, never null
      */
     public DateTimeZone getZone() {
@@ -80,7 +73,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * int year = dt.get(DateTimeFieldType.year());
      * </pre>
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType, not null
+     * @param type a field type, usually obtained from DateTimeFieldType, not null
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
@@ -95,7 +88,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Checks if the field type specified is supported by this instant and chronology.
      * This can be used to avoid exceptions in {@link #get(DateTimeFieldType)}.
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @param type a field type, usually obtained from DateTimeFieldType
      * @return true if the field type is supported
      */
     public boolean isSupported(DateTimeFieldType type) {
@@ -114,8 +107,8 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Instant dt = new Instant();
      * int gjYear = dt.get(Chronology.getCoptic().year());
      * </pre>
-     * 
-     * @param field  the DateTimeField to use, not null
+     *
+     * @param field the DateTimeField to use, not null
      * @return the value
      * @throws IllegalArgumentException if the field is null
      */
@@ -127,9 +120,10 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get this object as an Instant.
-     * 
+     *
      * @return an Instant using the same millis
      */
     public Instant toInstant() {
@@ -156,7 +150,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a DateTime using the same chronology but a different zone.
-     * 
+     *
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
      */
@@ -168,7 +162,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a DateTime using the given chronology and its zone.
-     * 
+     *
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a DateTime using the same millis
      */
@@ -201,7 +195,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a MutableDateTime using the same chronology but a different zone.
-     * 
+     *
      * @param zone time zone to apply, or default if null
      * @return a MutableDateTime using the same millis
      */
@@ -213,7 +207,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     /**
      * Get this object as a MutableDateTime using the given chronology and its zone.
-     * 
+     *
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a MutableDateTime using the same millis
      */
@@ -222,6 +216,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the date time as a <code>java.util.Date</code>.
      * <p>
@@ -235,6 +230,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares this object with the specified object for equality based
      * on the millisecond instant, chronology and time zone.
@@ -249,9 +245,9 @@ public abstract class AbstractInstant implements ReadableInstant {
      * <p>
      * All ReadableInstant instances are accepted.
      *
-     * @param readableInstant  a readable instant to check against
+     * @param readableInstant a readable instant to check against
      * @return true if millisecond and chronology are equal, false if
-     *  not or the instant is null or of an incorrect type
+     * not or the instant is null or of an incorrect type
      */
     public boolean equals(Object readableInstant) {
         // must be to fulfil ReadableInstant contract
@@ -263,8 +259,8 @@ public abstract class AbstractInstant implements ReadableInstant {
         }
         ReadableInstant otherInstant = (ReadableInstant) readableInstant;
         return
-            getMillis() == otherInstant.getMillis() &&
-            FieldUtils.equals(getChronology(), otherInstant.getChronology());
+                getMillis() == otherInstant.getMillis() &&
+                        FieldUtils.equals(getChronology(), otherInstant.getChronology());
     }
 
     /**
@@ -275,8 +271,8 @@ public abstract class AbstractInstant implements ReadableInstant {
     public int hashCode() {
         // must be to fulfil ReadableInstant contract
         return
-            ((int) (getMillis() ^ (getMillis() >>> 32))) +
-            (getChronology().hashCode());
+                ((int) (getMillis() ^ (getMillis() >>> 32))) +
+                        (getChronology().hashCode());
     }
 
     /**
@@ -286,19 +282,19 @@ public abstract class AbstractInstant implements ReadableInstant {
      * <p>
      * All ReadableInstant instances are accepted.
      *
-     * @param other  a readable instant to check against
+     * @param other a readable instant to check against
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object type is not supported
+     * @throws ClassCastException   if the object type is not supported
      */
     public int compareTo(ReadableInstant other) {
         if (this == other) {
             return 0;
         }
-        
+
         long otherMillis = other.getMillis();
         long thisMillis = getMillis();
-        
+
         // cannot do (thisMillis - otherMillis) as can overflow
         if (thisMillis == otherMillis) {
             return 0;
@@ -311,11 +307,12 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this instant after the millisecond instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  a millisecond instant to check against
+     * @param instant a millisecond instant to check against
      * @return true if this instant is after the instant passed in
      */
     public boolean isAfter(long instant) {
@@ -325,7 +322,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Is this instant after the current instant
      * comparing solely by millisecond.
-     * 
+     *
      * @return true if this instant is after the current instant
      */
     public boolean isAfterNow() {
@@ -336,7 +333,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Is this instant after the instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null means now
+     * @param instant an instant to check against, null means now
      * @return true if the instant is after the instant passed in
      */
     public boolean isAfter(ReadableInstant instant) {
@@ -345,11 +342,12 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this instant before the millisecond instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  a millisecond instant to check against
+     * @param instant a millisecond instant to check against
      * @return true if this instant is before the instant passed in
      */
     public boolean isBefore(long instant) {
@@ -359,7 +357,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Is this instant before the current instant
      * comparing solely by millisecond.
-     * 
+     *
      * @return true if this instant is before the current instant
      */
     public boolean isBeforeNow() {
@@ -370,7 +368,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Is this instant before the instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null means now
+     * @param instant an instant to check against, null means now
      * @return true if the instant is before the instant passed in
      */
     public boolean isBefore(ReadableInstant instant) {
@@ -379,11 +377,12 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Is this instant equal to the millisecond instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  a millisecond instant to check against
+     * @param instant a millisecond instant to check against
      * @return true if this instant is before the instant passed in
      */
     public boolean isEqual(long instant) {
@@ -393,7 +392,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Is this instant equal to the current instant
      * comparing solely by millisecond.
-     * 
+     *
      * @return true if this instant is before the current instant
      */
     public boolean isEqualNow() {
@@ -404,7 +403,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Is this instant equal to the instant passed in
      * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null means now
+     * @param instant an instant to check against, null means now
      * @return true if the instant is equal to the instant passed in
      */
     public boolean isEqual(ReadableInstant instant) {
@@ -413,9 +412,10 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
-     * 
+     *
      * @return ISO8601 time formatted string.
      */
     public String toString() {
@@ -423,10 +423,11 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Uses the specified formatter to convert this partial to a String.
      *
-     * @param formatter  the formatter to use, null means use <code>toString()</code>.
+     * @param formatter the formatter to use, null means use <code>toString()</code>.
      * @return the formatted string
      * @since 1.1
      */

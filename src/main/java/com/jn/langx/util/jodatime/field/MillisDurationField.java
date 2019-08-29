@@ -15,11 +15,10 @@
  */
 package com.jn.langx.util.jodatime.field;
 
-import java.io.Serializable;
-
 import com.jn.langx.util.jodatime.DurationField;
 import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.field.FieldUtils;
+
+import java.io.Serializable;
 
 /**
  * Duration field class representing a field with a fixed unit length of one
@@ -32,10 +31,14 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  */
 public final class MillisDurationField extends DurationField implements Serializable {
 
-    /** Serialization lock. */
+    /**
+     * Serialization lock.
+     */
     private static final long serialVersionUID = 2656707858124633367L;
 
-    /** Singleton instance. */
+    /**
+     * Singleton instance.
+     */
     public static final DurationField INSTANCE = new MillisDurationField();
 
     /**
@@ -44,7 +47,7 @@ public final class MillisDurationField extends DurationField implements Serializ
     private MillisDurationField() {
         super();
     }
-    
+
     //------------------------------------------------------------------------
     public DurationFieldType getType() {
         return DurationFieldType.millis();
@@ -56,7 +59,7 @@ public final class MillisDurationField extends DurationField implements Serializ
 
     /**
      * Returns true as this field is supported.
-     * 
+     *
      * @return true always
      */
     public boolean isSupported() {
@@ -65,7 +68,7 @@ public final class MillisDurationField extends DurationField implements Serializ
 
     /**
      * Returns true as this field is precise.
-     * 
+     *
      * @return true always
      */
     public final boolean isPrecise() {
@@ -158,7 +161,7 @@ public final class MillisDurationField extends DurationField implements Serializ
 
     /**
      * Get a suitable debug string.
-     * 
+     *
      * @return debug string
      */
     public String toString() {

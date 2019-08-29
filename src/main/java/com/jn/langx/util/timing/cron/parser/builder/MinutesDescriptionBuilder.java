@@ -16,6 +16,7 @@ public class MinutesDescriptionBuilder extends AbstractDescriptionBuilder {
     public MinutesDescriptionBuilder(Options options) {
         this.options = options;
     }
+
     @Override
     protected String getSingleItemDescription(String expression) {
         return DateAndTimeUtils.formatMinutes(expression);

@@ -15,10 +15,6 @@
  */
 package com.jn.langx.util.jodatime;
 
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DurationField;
-
 import java.io.Serializable;
 
 /**
@@ -42,57 +38,86 @@ import java.io.Serializable;
  */
 public abstract class DurationFieldType implements Serializable {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 8765135187319L;
 
     // Ordinals for standard field types.
     static final byte
-        ERAS = 1,
-        CENTURIES = 2,
-        WEEKYEARS = 3,
-        YEARS = 4,
-        MONTHS = 5,
-        WEEKS = 6,
-        DAYS = 7,
-        HALFDAYS = 8,
-        HOURS = 9,
-        MINUTES = 10,
-        SECONDS = 11,
-        MILLIS = 12;
+            ERAS = 1,
+            CENTURIES = 2,
+            WEEKYEARS = 3,
+            YEARS = 4,
+            MONTHS = 5,
+            WEEKS = 6,
+            DAYS = 7,
+            HALFDAYS = 8,
+            HOURS = 9,
+            MINUTES = 10,
+            SECONDS = 11,
+            MILLIS = 12;
 
-    /** The eras field type. */
+    /**
+     * The eras field type.
+     */
     static final DurationFieldType ERAS_TYPE = new StandardDurationFieldType("eras", ERAS);
-    /** The centuries field type. */
+    /**
+     * The centuries field type.
+     */
     static final DurationFieldType CENTURIES_TYPE = new StandardDurationFieldType("centuries", CENTURIES);
-    /** The weekyears field type. */
+    /**
+     * The weekyears field type.
+     */
     static final DurationFieldType WEEKYEARS_TYPE = new StandardDurationFieldType("weekyears", WEEKYEARS);
-    /** The years field type. */
+    /**
+     * The years field type.
+     */
     static final DurationFieldType YEARS_TYPE = new StandardDurationFieldType("years", YEARS);
-    /** The months field type. */
+    /**
+     * The months field type.
+     */
     static final DurationFieldType MONTHS_TYPE = new StandardDurationFieldType("months", MONTHS);
-    /** The weeks field type. */
+    /**
+     * The weeks field type.
+     */
     static final DurationFieldType WEEKS_TYPE = new StandardDurationFieldType("weeks", WEEKS);
-    /** The days field type. */
+    /**
+     * The days field type.
+     */
     static final DurationFieldType DAYS_TYPE = new StandardDurationFieldType("days", DAYS);
-    /** The halfdays field type. */
+    /**
+     * The halfdays field type.
+     */
     static final DurationFieldType HALFDAYS_TYPE = new StandardDurationFieldType("halfdays", HALFDAYS);
-    /** The hours field type. */
+    /**
+     * The hours field type.
+     */
     static final DurationFieldType HOURS_TYPE = new StandardDurationFieldType("hours", HOURS);
-    /** The minutes field type. */
+    /**
+     * The minutes field type.
+     */
     static final DurationFieldType MINUTES_TYPE = new StandardDurationFieldType("minutes", MINUTES);
-    /** The seconds field type. */
+    /**
+     * The seconds field type.
+     */
     static final DurationFieldType SECONDS_TYPE = new StandardDurationFieldType("seconds", SECONDS);
-    /** The millis field type. */
+    /**
+     * The millis field type.
+     */
     static final DurationFieldType MILLIS_TYPE = new StandardDurationFieldType("millis", MILLIS);
 
-    /** The name of the field type. */
+    /**
+     * The name of the field type.
+     */
     private final String iName;
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructor.
-     * 
-     * @param name  the name to use, which by convention, are plural.
+     *
+     * @param name the name to use, which by convention, are plural.
      */
     protected DurationFieldType(String name) {
         super();
@@ -100,9 +125,10 @@ public abstract class DurationFieldType implements Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the millis field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType millis() {
@@ -111,7 +137,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the seconds field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType seconds() {
@@ -120,7 +146,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the minutes field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType minutes() {
@@ -129,7 +155,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the hours field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType hours() {
@@ -138,7 +164,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the halfdays field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType halfdays() {
@@ -146,9 +172,10 @@ public abstract class DurationFieldType implements Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the days field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType days() {
@@ -157,7 +184,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the weeks field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType weeks() {
@@ -166,7 +193,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the weekyears field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType weekyears() {
@@ -175,7 +202,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the months field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType months() {
@@ -184,7 +211,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the years field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType years() {
@@ -193,7 +220,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the centuries field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType centuries() {
@@ -202,7 +229,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get the eras field type.
-     * 
+     *
      * @return the DateTimeFieldType constant
      */
     public static DurationFieldType eras() {
@@ -210,10 +237,11 @@ public abstract class DurationFieldType implements Serializable {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get the name of the field.
      * By convention, names are plural.
-     * 
+     *
      * @return field name
      */
     public String getName() {
@@ -223,7 +251,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Gets a suitable field for this type from the given Chronology.
      *
-     * @param chronology  the chronology to use, null means ISOChronology in default zone
+     * @param chronology the chronology to use, null means ISOChronology in default zone
      * @return a suitable field
      */
     public abstract com.jn.langx.util.jodatime.DurationField getField(com.jn.langx.util.jodatime.Chronology chronology);
@@ -231,7 +259,7 @@ public abstract class DurationFieldType implements Serializable {
     /**
      * Checks whether this field supported in the given Chronology.
      *
-     * @param chronology  the chronology to use, null means ISOChronology in default zone
+     * @param chronology the chronology to use, null means ISOChronology in default zone
      * @return true if supported
      */
     public boolean isSupported(com.jn.langx.util.jodatime.Chronology chronology) {
@@ -240,7 +268,7 @@ public abstract class DurationFieldType implements Serializable {
 
     /**
      * Get a suitable debug string.
-     * 
+     *
      * @return debug string
      */
     public String toString() {
@@ -248,23 +276,29 @@ public abstract class DurationFieldType implements Serializable {
     }
 
     private static class StandardDurationFieldType extends DurationFieldType {
-        /** Serialization version */
+        /**
+         * Serialization version
+         */
         private static final long serialVersionUID = 31156755687123L;
 
-        /** The ordinal of the standard field type, for switch statements */
+        /**
+         * The ordinal of the standard field type, for switch statements
+         */
         private final byte iOrdinal;
 
         /**
          * Constructor.
-         * 
-         * @param name  the name to use
+         *
+         * @param name the name to use
          */
         StandardDurationFieldType(String name, byte ordinal) {
             super(name);
             iOrdinal = ordinal;
         }
 
-        /** @inheritdoc */
+        /**
+         * @inheritdoc
+         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) {
@@ -276,7 +310,9 @@ public abstract class DurationFieldType implements Serializable {
             return false;
         }
 
-        /** @inheritdoc */
+        /**
+         * @inheritdoc
+         */
         @Override
         public int hashCode() {
             return (1 << iOrdinal);
@@ -284,7 +320,7 @@ public abstract class DurationFieldType implements Serializable {
 
         public DurationField getField(Chronology chronology) {
             chronology = DateTimeUtils.getChronology(chronology);
-            
+
             switch (iOrdinal) {
                 case ERAS:
                     return chronology.eras();
@@ -318,7 +354,7 @@ public abstract class DurationFieldType implements Serializable {
 
         /**
          * Ensure a singleton is returned.
-         * 
+         *
          * @return the singleton type
          */
         private Object readResolve() {

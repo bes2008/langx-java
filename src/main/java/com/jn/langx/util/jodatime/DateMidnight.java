@@ -15,16 +15,16 @@
  */
 package com.jn.langx.util.jodatime;
 
+import com.jn.langx.util.jodatime.base.BaseDateTime;
+import com.jn.langx.util.jodatime.field.AbstractReadableInstantFieldProperty;
+import com.jn.langx.util.jodatime.format.DateTimeFormatter;
+import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Locale;
-
-import com.jn.langx.util.jodatime.base.BaseDateTime;
-import com.jn.langx.util.jodatime.field.AbstractReadableInstantFieldProperty;
-import com.jn.langx.util.jodatime.format.DateTimeFormatter;
-import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
 
 /**
  * DateMidnight defines a date where the time component is fixed at midnight.
@@ -42,7 +42,7 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
  * millisecond instant value is converted into the date time fields.
  * The default Chronology is <code>ISOChronology</code> which is the agreed
  * international standard and compatable with the modern Gregorian calendar.
- *
+ * <p>
  * <p>Each individual field can be queried in two ways:
  * <ul>
  * <li><code>getDayOfMonth()</code>
@@ -59,7 +59,7 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
  * <li>set
  * <li>rounding
  * </ul>
- *
+ * <p>
  * <p>
  * DateMidnight is thread-safe and immutable, provided that the Chronology is as well.
  * All standard Chronology classes supplied are thread-safe and immutable.
@@ -77,16 +77,19 @@ import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
 public final class DateMidnight
         extends BaseDateTime
         implements ReadableDateTime, Serializable {
-    
-    /** Serialization lock */
+
+    /**
+     * Serialization lock
+     */
     private static final long serialVersionUID = 156371964018738L;
 
     //-----------------------------------------------------------------------
+
     /**
      * Obtains a {@code DateMidnight} set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
      * The constructed object will have a local time of midnight.
-     * 
+     *
      * @return the current date, not null
      * @since 2.0
      */
@@ -99,7 +102,7 @@ public final class DateMidnight
      * using <code>ISOChronology</code> in the specified time zone.
      * The constructed object will have a local time of midnight.
      *
-     * @param zone  the time zone, not null
+     * @param zone the time zone, not null
      * @return the current date, not null
      * @since 2.0
      */
@@ -115,7 +118,7 @@ public final class DateMidnight
      * using the specified chronology.
      * The constructed object will have a local time of midnight.
      *
-     * @param chronology  the chronology, not null
+     * @param chronology the chronology, not null
      * @return the current date, not null
      * @since 2.0
      */
@@ -127,12 +130,13 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses a {@code DateMidnight} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
-     * 
-     * @param str  the string to parse, not null
+     *
+     * @param str the string to parse, not null
      * @since 2.0
      */
     public static DateMidnight parse(String str) {
@@ -141,9 +145,9 @@ public final class DateMidnight
 
     /**
      * Parses a {@code DateMidnight} from the specified string using a formatter.
-     * 
-     * @param str  the string to parse, not null
-     * @param formatter  the formatter to use, not null
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
      * @since 2.0
      */
     public static DateMidnight parse(String str, DateTimeFormatter formatter) {
@@ -151,11 +155,12 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
      * The constructed object will have a local time of midnight.
-     * 
+     *
      * @see #now()
      */
     public DateMidnight() {
@@ -169,7 +174,7 @@ public final class DateMidnight
      * <p>
      * If the specified time zone is null, the default zone is used.
      *
-     * @param zone  the time zone, null means default zone
+     * @param zone the time zone, null means default zone
      * @see #now(DateTimeZone)
      */
     public DateMidnight(DateTimeZone zone) {
@@ -184,7 +189,7 @@ public final class DateMidnight
      * If the chronology is null, <code>ISOChronology</code>
      * in the default time zone is used.
      *
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param chronology the chronology, null means ISOChronology in default zone
      * @see #now(com.jn.langx.util.jodatime.Chronology)
      */
     public DateMidnight(com.jn.langx.util.jodatime.Chronology chronology) {
@@ -192,12 +197,13 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
      * using <code>ISOChronology</code> in the default time zone.
      * The constructed object will have a local time of midnight.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
      */
     public DateMidnight(long instant) {
         super(instant);
@@ -210,8 +216,8 @@ public final class DateMidnight
      * <p>
      * If the specified time zone is null, the default zone is used.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param zone  the time zone, null means default zone
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
+     * @param zone    the time zone, null means default zone
      */
     public DateMidnight(long instant, DateTimeZone zone) {
         super(instant, zone);
@@ -225,14 +231,15 @@ public final class DateMidnight
      * If the chronology is null, <code>ISOChronology</code>
      * in the default time zone is used.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param instant    the milliseconds from 1970-01-01T00:00:00Z
+     * @param chronology the chronology, null means ISOChronology in default zone
      */
     public DateMidnight(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
         super(instant, chronology);
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from an Object that represents a datetime.
      * The constructed object will have a local time of midnight.
@@ -247,7 +254,7 @@ public final class DateMidnight
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
-     * @param instant  the datetime object, null means now
+     * @param instant the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
      */
     public DateMidnight(Object instant) {
@@ -271,8 +278,8 @@ public final class DateMidnight
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
-     * @param instant  the datetime object, null means now
-     * @param zone  the time zone, null means default time zone
+     * @param instant the datetime object, null means now
+     * @param zone    the time zone, null means default time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public DateMidnight(Object instant, DateTimeZone zone) {
@@ -293,8 +300,8 @@ public final class DateMidnight
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
-     * @param instant  the datetime object, null means now
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param instant    the datetime object, null means now
+     * @param chronology the chronology, null means ISOChronology in default zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public DateMidnight(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
@@ -302,13 +309,14 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from datetime field values
      * using <code>ISOChronology</code> in the default time zone.
      * The constructed object will have a local time of midnight.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param year        the year
+     * @param monthOfYear the month of the year, from 1 to 12
      * @param dayOfMonth  the day of the month, from 1 to 31
      */
     public DateMidnight(int year, int monthOfYear, int dayOfMonth) {
@@ -322,10 +330,10 @@ public final class DateMidnight
      * <p>
      * If the specified time zone is null, the default zone is used.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param year        the year
+     * @param monthOfYear the month of the year, from 1 to 12
      * @param dayOfMonth  the day of the month, from 1 to 31
-     * @param zone  the time zone, null means default time zone
+     * @param zone        the time zone, null means default time zone
      */
     public DateMidnight(int year, int monthOfYear, int dayOfMonth, DateTimeZone zone) {
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0, zone);
@@ -339,8 +347,8 @@ public final class DateMidnight
      * If the chronology is null, <code>ISOChronology</code>
      * in the default time zone is used.
      *
-     * @param year  the year, valid values defined by the chronology
-     * @param monthOfYear  the month of the year, valid values defined by the chronology
+     * @param year        the year, valid values defined by the chronology
+     * @param monthOfYear the month of the year, valid values defined by the chronology
      * @param dayOfMonth  the day of the month, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
@@ -351,8 +359,8 @@ public final class DateMidnight
     /**
      * Rounds the specified instant to midnight.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
-     * @param chronology  the chronology to use, not null
+     * @param instant    the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param chronology the chronology to use, not null
      * @return the updated instant, rounded to midnight
      */
     protected long checkInstant(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
@@ -360,6 +368,7 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with a different millisecond instant.
      * The returned object will have a local time of midnight.
@@ -367,7 +376,7 @@ public final class DateMidnight
      * Only the millis will change, the chronology and time zone are kept.
      * The returned object will be either be a new instance or <code>this</code>.
      *
-     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
+     * @param newMillis the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
     public DateMidnight withMillis(long newMillis) {
@@ -394,7 +403,7 @@ public final class DateMidnight
      * To avoid these unusual effects, use {@link #withZoneRetainFields(DateTimeZone)}
      * to change time zones.
      *
-     * @param newChronology  the new chronology
+     * @param newChronology the new chronology
      * @return a copy of this instant with a different chronology
      */
     public DateMidnight withChronology(com.jn.langx.util.jodatime.Chronology newChronology) {
@@ -406,7 +415,7 @@ public final class DateMidnight
      * The returned object will have a local time of midnight in the new zone on
      * the same day as the original instant.
      *
-     * @param newZone  the new time zone, null means default
+     * @param newZone the new time zone, null means default
      * @return a copy of this instant with a different time zone
      */
     public DateMidnight withZoneRetainFields(DateTimeZone newZone) {
@@ -415,12 +424,13 @@ public final class DateMidnight
         if (newZone == originalZone) {
             return this;
         }
-        
+
         long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
         return new DateMidnight(millis, getChronology().withZone(newZone));
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the partial set of fields replacing those
      * from this instance.
@@ -429,7 +439,7 @@ public final class DateMidnight
      * would be changed in the returned instance.
      * If the partial is null, then <code>this</code> is returned.
      *
-     * @param partial  the partial set of fields to apply to this datetime, null ignored
+     * @param partial the partial set of fields to apply to this datetime, null ignored
      * @return a copy of this datetime with a different set of fields
      * @throws IllegalArgumentException if any value is invalid
      */
@@ -454,8 +464,8 @@ public final class DateMidnight
      * DateTime updated = dt.property(DateTimeFieldType.dayOfMonth()).setCopy(6);
      * </pre>
      *
-     * @param fieldType  the field type to set, not null
-     * @param value  the value to set
+     * @param fieldType the field type to set, not null
+     * @param value     the value to set
      * @return a copy of this datetime with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
@@ -478,12 +488,12 @@ public final class DateMidnight
      * DateMidnight added = dt.plusYears(6);
      * DateMidnight added = dt.year().addToCopy(6);
      * </pre>
-     * 
-     * @param fieldType  the field type to add to, not null
-     * @param amount  the amount to add
+     *
+     * @param fieldType the field type to add to, not null
+     * @param amount    the amount to add
      * @return a copy of this datetime with the field updated
      * @throws IllegalArgumentException if the value is null or invalid
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException      if the new datetime exceeds the capacity of a long
      */
     public DateMidnight withFieldAdded(DurationFieldType fieldType, int amount) {
         if (fieldType == null) {
@@ -497,13 +507,14 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
-     * 
-     * @param durationToAdd  the duration to add to this one
-     * @param scalar  the amount of times to add, such as -1 to subtract once
+     *
+     * @param durationToAdd the duration to add to this one
+     * @param scalar        the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -519,9 +530,9 @@ public final class DateMidnight
      * Returns a copy of this date with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
-     * 
-     * @param durationToAdd  the duration to add to this one, null means zero
-     * @param scalar  the amount of times to add, such as -1 to subtract once
+     *
+     * @param durationToAdd the duration to add to this one, null means zero
+     * @param scalar        the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -541,9 +552,9 @@ public final class DateMidnight
      * period instances. Adding one field is best achieved using methods
      * like {@link #withFieldAdded(DurationFieldType, int)}
      * or {@link #plusYears(int)}.
-     * 
-     * @param period  the period to add to this one, null means zero
-     * @param scalar  the amount of times to add, such as -1 to subtract once
+     *
+     * @param period the period to add to this one, null means zero
+     * @param scalar the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -556,12 +567,13 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the specified duration added.
      * <p>
      * If the amount is zero, then <code>this</code> is returned.
-     * 
-     * @param duration  the duration, in millis, to add to this one
+     *
+     * @param duration the duration, in millis, to add to this one
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -573,8 +585,8 @@ public final class DateMidnight
      * Returns a copy of this date with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
-     * 
-     * @param duration  the duration to add to this one, null means zero
+     *
+     * @param duration the duration to add to this one, null means zero
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -590,8 +602,8 @@ public final class DateMidnight
      * This method is typically used to add complex period instances.
      * Adding one field is best achieved using methods
      * like {@link #plusYears(int)}.
-     * 
-     * @param period  the duration to add to this one, null means zero
+     *
+     * @param period the duration to add to this one, null means zero
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -600,6 +612,7 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date plus the specified number of years.
      * <p>
@@ -612,7 +625,7 @@ public final class DateMidnight
      * DateMidnight added = dt.withFieldAdded(DurationFieldType.years(), 6);
      * </pre>
      *
-     * @param years  the amount of years to add, may be negative
+     * @param years the amount of years to add, may be negative
      * @return the new datetime plus the increased years
      * @since 1.1
      */
@@ -636,7 +649,7 @@ public final class DateMidnight
      * DateMidnight added = dt.withFieldAdded(DurationFieldType.months(), 6);
      * </pre>
      *
-     * @param months  the amount of months to add, may be negative
+     * @param months the amount of months to add, may be negative
      * @return the new datetime plus the increased months
      * @since 1.1
      */
@@ -660,7 +673,7 @@ public final class DateMidnight
      * DateMidnight added = dt.withFieldAdded(DurationFieldType.weeks(), 6);
      * </pre>
      *
-     * @param weeks  the amount of weeks to add, may be negative
+     * @param weeks the amount of weeks to add, may be negative
      * @return the new datetime plus the increased weeks
      * @since 1.1
      */
@@ -684,7 +697,7 @@ public final class DateMidnight
      * DateMidnight added = dt.withFieldAdded(DurationFieldType.days(), 6);
      * </pre>
      *
-     * @param days  the amount of days to add, may be negative
+     * @param days the amount of days to add, may be negative
      * @return the new datetime plus the increased days
      * @since 1.1
      */
@@ -697,12 +710,13 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
-     * 
-     * @param duration  the duration, in millis, to reduce this instant by
+     *
+     * @param duration the duration, in millis, to reduce this instant by
      * @return a copy of this datetime with the duration taken away
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -714,8 +728,8 @@ public final class DateMidnight
      * Returns a copy of this date with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
-     * 
-     * @param duration  the duration to reduce this instant by
+     *
+     * @param duration the duration to reduce this instant by
      * @return a copy of this datetime with the duration taken away
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -731,8 +745,8 @@ public final class DateMidnight
      * This method is typically used to subtract complex period instances.
      * Subtracting one field is best achieved using methods
      * like {@link #minusYears(int)}.
-     * 
-     * @param period  the period to reduce this instant by
+     *
+     * @param period the period to reduce this instant by
      * @return a copy of this datetime with the period taken away
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -741,6 +755,7 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date minus the specified number of years.
      * <p>
@@ -753,7 +768,7 @@ public final class DateMidnight
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.years(), -6);
      * </pre>
      *
-     * @param years  the amount of years to subtract, may be negative
+     * @param years the amount of years to subtract, may be negative
      * @return the new datetime minus the increased years
      * @since 1.1
      */
@@ -777,7 +792,7 @@ public final class DateMidnight
      * DateMidnight subtracted = dt.withFieldAdded(DurationFieldType.months(), -6);
      * </pre>
      *
-     * @param months  the amount of months to subtract, may be negative
+     * @param months the amount of months to subtract, may be negative
      * @return the new datetime minus the increased months
      * @since 1.1
      */
@@ -801,7 +816,7 @@ public final class DateMidnight
      * DateMidnight subtracted = dt.withFieldAdded(DurationFieldType.weeks(), -6);
      * </pre>
      *
-     * @param weeks  the amount of weeks to subtract, may be negative
+     * @param weeks the amount of weeks to subtract, may be negative
      * @return the new datetime minus the increased weeks
      * @since 1.1
      */
@@ -825,7 +840,7 @@ public final class DateMidnight
      * DateMidnight subtracted = dt.withFieldAdded(DurationFieldType.days(), -6);
      * </pre>
      *
-     * @param days  the amount of days to subtract, may be negative
+     * @param days the amount of days to subtract, may be negative
      * @return the new datetime minus the increased days
      * @since 1.1
      */
@@ -838,10 +853,11 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the property object for the specified type, which contains many useful methods.
      *
-     * @param type  the field type to get the chronology for
+     * @param type the field type to get the chronology for
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */
@@ -857,10 +873,11 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Converts this object to a <code>YearMonthDay</code> using the
      * same date and chronology.
-     * 
+     *
      * @return a YearMonthDay using the same millis and chronology
      * @deprecated Use LocalDate instead of YearMonthDay
      */
@@ -886,7 +903,7 @@ public final class DateMidnight
      * <p>
      * The interval starts at midnight 00:00 and ends at 00:00 the following day,
      * (which is not included in the interval, as intervals are half-open).
-     * 
+     *
      * @return an interval over the day
      */
     public Interval toInterval() {
@@ -897,6 +914,7 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Returns a copy of this date with the era field updated.
      * <p>
@@ -904,7 +922,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * era changed.
      *
-     * @param era  the era to set
+     * @param era the era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -920,7 +938,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * century of era changed.
      *
-     * @param centuryOfEra  the centurey of era to set
+     * @param centuryOfEra the centurey of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -936,7 +954,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * year of era changed.
      *
-     * @param yearOfEra  the year of era to set
+     * @param yearOfEra the year of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -952,7 +970,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * year of century changed.
      *
-     * @param yearOfCentury  the year of century to set
+     * @param yearOfCentury the year of century to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -968,7 +986,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * year changed.
      *
-     * @param year  the year to set
+     * @param year the year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -990,7 +1008,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * weekyear changed.
      *
-     * @param weekyear  the weekyear to set
+     * @param weekyear the weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -1006,7 +1024,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * month of year changed.
      *
-     * @param monthOfYear  the month of year to set
+     * @param monthOfYear the month of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -1027,7 +1045,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * week of weekyear changed.
      *
-     * @param weekOfWeekyear  the week of weekyear to set
+     * @param weekOfWeekyear the week of weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -1043,7 +1061,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * day of year changed.
      *
-     * @param dayOfYear  the day of year to set
+     * @param dayOfYear the day of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -1059,7 +1077,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * day of month changed.
      *
-     * @param dayOfMonth  the day of month to set
+     * @param dayOfMonth the day of month to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -1075,7 +1093,7 @@ public final class DateMidnight
      * Instead, this method returns a new instance with the value of
      * day of week changed.
      *
-     * @param dayOfWeek  the day of week to set
+     * @param dayOfWeek the day of week to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      * @since 1.3
@@ -1086,9 +1104,10 @@ public final class DateMidnight
 
     // Date properties
     //-----------------------------------------------------------------------
+
     /**
      * Get the era property which provides access to advanced functionality.
-     * 
+     *
      * @return the era property
      */
     public Property era() {
@@ -1097,7 +1116,7 @@ public final class DateMidnight
 
     /**
      * Get the century of era property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of era property
      */
     public Property centuryOfEra() {
@@ -1106,7 +1125,7 @@ public final class DateMidnight
 
     /**
      * Get the year of century property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of era property
      */
     public Property yearOfCentury() {
@@ -1115,7 +1134,7 @@ public final class DateMidnight
 
     /**
      * Get the year of era property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of era property
      */
     public Property yearOfEra() {
@@ -1124,7 +1143,7 @@ public final class DateMidnight
 
     /**
      * Get the year property which provides access to advanced functionality.
-     * 
+     *
      * @return the year property
      */
     public Property year() {
@@ -1133,7 +1152,7 @@ public final class DateMidnight
 
     /**
      * Get the year of a week based year property which provides access to advanced functionality.
-     * 
+     *
      * @return the year of a week based year property
      */
     public Property weekyear() {
@@ -1142,7 +1161,7 @@ public final class DateMidnight
 
     /**
      * Get the month of year property which provides access to advanced functionality.
-     * 
+     *
      * @return the month of year property
      */
     public Property monthOfYear() {
@@ -1151,7 +1170,7 @@ public final class DateMidnight
 
     /**
      * Get the week of a week based year property which provides access to advanced functionality.
-     * 
+     *
      * @return the week of a week based year property
      */
     public Property weekOfWeekyear() {
@@ -1160,7 +1179,7 @@ public final class DateMidnight
 
     /**
      * Get the day of year property which provides access to advanced functionality.
-     * 
+     *
      * @return the day of year property
      */
     public Property dayOfYear() {
@@ -1169,7 +1188,7 @@ public final class DateMidnight
 
     /**
      * Get the day of month property which provides access to advanced functionality.
-     * 
+     *
      * @return the day of month property
      */
     public Property dayOfMonth() {
@@ -1178,7 +1197,7 @@ public final class DateMidnight
 
     /**
      * Get the day of week property which provides access to advanced functionality.
-     * 
+     *
      * @return the day of week property
      */
     public Property dayOfWeek() {
@@ -1186,6 +1205,7 @@ public final class DateMidnight
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * DateMidnight.Property binds a DateMidnight to a DateTimeField allowing powerful
      * datetime functionality to be easily accessed.
@@ -1215,20 +1235,26 @@ public final class DateMidnight
      * @since 1.0
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
-    
-        /** Serialization lock */
+
+        /**
+         * Serialization lock
+         */
         private static final long serialVersionUID = 257629620L;
-        
-        /** The instant this property is working against */
+
+        /**
+         * The instant this property is working against
+         */
         private DateMidnight iInstant;
-        /** The field this property is working against */
+        /**
+         * The field this property is working against
+         */
         private DateTimeField iField;
-        
+
         /**
          * Constructor.
-         * 
-         * @param instant  the instant to set
-         * @param field  the field to use
+         *
+         * @param instant the instant to set
+         * @param field   the field to use
          */
         Property(DateMidnight instant, DateTimeField field) {
             super();
@@ -1254,9 +1280,10 @@ public final class DateMidnight
         }
 
         //-----------------------------------------------------------------------
+
         /**
          * Gets the field being used.
-         * 
+         *
          * @return the field
          */
         public DateTimeField getField() {
@@ -1265,7 +1292,7 @@ public final class DateMidnight
 
         /**
          * Gets the milliseconds of the datetime that this property is linked to.
-         * 
+         *
          * @return the milliseconds
          */
         protected long getMillis() {
@@ -1274,7 +1301,7 @@ public final class DateMidnight
 
         /**
          * Gets the chronology of the datetime that this property is linked to.
-         * 
+         *
          * @return the chronology
          * @since 1.4
          */
@@ -1284,7 +1311,7 @@ public final class DateMidnight
 
         /**
          * Gets the datetime being used.
-         * 
+         *
          * @return the datetime
          */
         public DateMidnight getDateMidnight() {
@@ -1292,6 +1319,7 @@ public final class DateMidnight
         }
 
         //-----------------------------------------------------------------------
+
         /**
          * Adds to this field in a copy of this DateMidnight.
          * <p>
@@ -1299,8 +1327,8 @@ public final class DateMidnight
          * This operation is faster than converting a DateMidnight to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
-         * @param value  the value to add to the field in the copy
+         *
+         * @param value the value to add to the field in the copy
          * @return a copy of the DateMidnight with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
@@ -1315,8 +1343,8 @@ public final class DateMidnight
          * This operation is faster than converting a DateMidnight to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
-         * @param value  the value to add to the field in the copy
+         *
+         * @param value the value to add to the field in the copy
          * @return a copy of the DateMidnight with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
@@ -1333,8 +1361,8 @@ public final class DateMidnight
          * This operation is faster than converting a DateMidnight to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
-         * @param value  the value to add to the field in the copy
+         *
+         * @param value the value to add to the field in the copy
          * @return a copy of the DateMidnight with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
@@ -1343,6 +1371,7 @@ public final class DateMidnight
         }
 
         //-----------------------------------------------------------------------
+
         /**
          * Sets this field in a copy of the DateMidnight.
          * <p>
@@ -1350,15 +1379,15 @@ public final class DateMidnight
          * This operation is faster than converting a DateMidnight to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
-         * @param value  the value to set the field in the copy to
+         *
+         * @param value the value to set the field in the copy to
          * @return a copy of the DateMidnight with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
         public DateMidnight setCopy(int value) {
             return iInstant.withMillis(iField.set(iInstant.getMillis(), value));
         }
-    
+
         /**
          * Sets this field in a copy of the DateMidnight to a parsed text value.
          * <p>
@@ -1366,9 +1395,9 @@ public final class DateMidnight
          * This operation is faster than converting a DateMidnight to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
-         * @param text  the text value to set
-         * @param locale  optional locale to use for selecting a text symbol
+         *
+         * @param text   the text value to set
+         * @param locale optional locale to use for selecting a text symbol
          * @return a copy of the DateMidnight with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
@@ -1383,8 +1412,8 @@ public final class DateMidnight
          * This operation is faster than converting a DateMidnight to a MutableDateTime
          * and back again when setting one field. When setting multiple fields,
          * it is generally quicker to make the conversion to MutableDateTime.
-         * 
-         * @param text  the text value to set
+         *
+         * @param text the text value to set
          * @return a copy of the DateMidnight with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
@@ -1393,6 +1422,7 @@ public final class DateMidnight
         }
 
         //-----------------------------------------------------------------------
+
         /**
          * Returns a new DateMidnight with this field set to the maximum value
          * for this field.
@@ -1411,7 +1441,7 @@ public final class DateMidnight
         public DateMidnight withMaximumValue() {
             return setCopy(getMaximumValue());
         }
-        
+
         /**
          * Returns a new DateMidnight with this field set to the minimum value
          * for this field.
@@ -1424,8 +1454,9 @@ public final class DateMidnight
         public DateMidnight withMinimumValue() {
             return setCopy(getMinimumValue());
         }
-        
+
         //-----------------------------------------------------------------------
+
         /**
          * Rounds to the lowest whole unit of this field on a copy of this DateMidnight.
          *

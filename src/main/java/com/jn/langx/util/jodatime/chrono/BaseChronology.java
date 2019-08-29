@@ -15,20 +15,12 @@
  */
 package com.jn.langx.util.jodatime.chrono;
 
-import java.io.Serializable;
-
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeField;
-import com.jn.langx.util.jodatime.DateTimeFieldType;
-import com.jn.langx.util.jodatime.DateTimeZone;
-import com.jn.langx.util.jodatime.DurationField;
-import com.jn.langx.util.jodatime.DurationFieldType;
-import com.jn.langx.util.jodatime.IllegalFieldValueException;
-import com.jn.langx.util.jodatime.ReadablePartial;
-import com.jn.langx.util.jodatime.ReadablePeriod;
+import com.jn.langx.util.jodatime.*;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.field.UnsupportedDateTimeField;
 import com.jn.langx.util.jodatime.field.UnsupportedDurationField;
+
+import java.io.Serializable;
 
 /**
  * BaseChronology provides a skeleton implementation for chronology
@@ -44,7 +36,9 @@ public abstract class BaseChronology
         extends Chronology
         implements Serializable {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     private static final long serialVersionUID = -7310865996721419676L;
 
     /**
@@ -70,12 +64,12 @@ public abstract class BaseChronology
      * @return a version of this chronology that ignores time zones
      */
     public abstract Chronology withUTC();
-    
+
     /**
      * Returns an instance of this Chronology that operates in any time zone.
      *
-     * @return a version of this chronology with a specific time zone
      * @param zone to use, or default if null
+     * @return a version of this chronology with a specific time zone
      * @see com.jn.langx.util.jodatime.chrono.ZonedChronology
      */
     public abstract Chronology withZone(DateTimeZone zone);
@@ -89,16 +83,15 @@ public abstract class BaseChronology
      * determine the result. Subclasses are encouraged to provide a more
      * efficient implementation.
      *
-     * @param year year to use
+     * @param year        year to use
      * @param monthOfYear month to use
-     * @param dayOfMonth day of month to use
+     * @param dayOfMonth  day of month to use
      * @param millisOfDay millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         long instant = year().set(0, year);
         instant = monthOfYear().set(instant, monthOfYear);
         instant = dayOfMonth().set(instant, dayOfMonth);
@@ -115,11 +108,11 @@ public abstract class BaseChronology
      * determine the result. Subclasses are encouraged to provide a more
      * efficient implementation.
      *
-     * @param year year to use
-     * @param monthOfYear month to use
-     * @param dayOfMonth day of month to use
-     * @param hourOfDay hour to use
-     * @param minuteOfHour minute to use
+     * @param year           year to use
+     * @param monthOfYear    month to use
+     * @param dayOfMonth     day of month to use
+     * @param hourOfDay      hour to use
+     * @param minuteOfHour   minute to use
      * @param secondOfMinute second to use
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
@@ -127,8 +120,7 @@ public abstract class BaseChronology
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         long instant = year().set(0, year);
         instant = monthOfYear().set(instant, monthOfYear);
         instant = dayOfMonth().set(instant, dayOfMonth);
@@ -148,9 +140,9 @@ public abstract class BaseChronology
      * determine the result. Subclasses are encouraged to provide a more
      * efficient implementation.
      *
-     * @param instant instant to start from
-     * @param hourOfDay hour to use
-     * @param minuteOfHour minute to use
+     * @param instant        instant to start from
+     * @param hourOfDay      hour to use
+     * @param minuteOfHour   minute to use
      * @param secondOfMinute second to use
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
@@ -158,8 +150,7 @@ public abstract class BaseChronology
     public long getDateTimeMillis(long instant,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         instant = hourOfDay().set(instant, hourOfDay);
         instant = minuteOfHour().set(instant, minuteOfHour);
         instant = secondOfMinute().set(instant, secondOfMinute);
@@ -167,13 +158,14 @@ public abstract class BaseChronology
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Validates whether the fields stored in a partial instant are valid.
      * <p>
      * This implementation uses {@link DateTimeField#getMinimumValue(ReadablePartial, int[])}
      * and {@link DateTimeField#getMaximumValue(ReadablePartial, int[])}.
      *
-     * @param partial  the partial instant to validate
+     * @param partial the partial instant to validate
      * @param values  the values to validate, not null unless the partial is empty
      * @throws IllegalArgumentException if the instant is invalid
      */
@@ -186,13 +178,13 @@ public abstract class BaseChronology
             DateTimeField field = partial.getField(i);
             if (value < field.getMinimumValue()) {
                 throw new IllegalFieldValueException
-                    (field.getType(), Integer.valueOf(value),
-                     Integer.valueOf(field.getMinimumValue()), null);
+                        (field.getType(), Integer.valueOf(value),
+                                Integer.valueOf(field.getMinimumValue()), null);
             }
             if (value > field.getMaximumValue()) {
                 throw new IllegalFieldValueException
-                    (field.getType(), Integer.valueOf(value),
-                     null, Integer.valueOf(field.getMaximumValue()));
+                        (field.getType(), Integer.valueOf(value),
+                                null, Integer.valueOf(field.getMaximumValue()));
             }
         }
         // check values in specific range, catching really odd cases like 30th Feb
@@ -201,13 +193,13 @@ public abstract class BaseChronology
             DateTimeField field = partial.getField(i);
             if (value < field.getMinimumValue(partial, values)) {
                 throw new IllegalFieldValueException
-                    (field.getType(), Integer.valueOf(value),
-                     Integer.valueOf(field.getMinimumValue(partial, values)), null);
+                        (field.getType(), Integer.valueOf(value),
+                                Integer.valueOf(field.getMinimumValue(partial, values)), null);
             }
             if (value > field.getMaximumValue(partial, values)) {
                 throw new IllegalFieldValueException
-                    (field.getType(), Integer.valueOf(value),
-                     null, Integer.valueOf(field.getMaximumValue(partial, values)));
+                        (field.getType(), Integer.valueOf(value),
+                                null, Integer.valueOf(field.getMaximumValue(partial, values)));
             }
         }
     }
@@ -215,8 +207,8 @@ public abstract class BaseChronology
     /**
      * Gets the values of a partial from an instant.
      *
-     * @param partial  the partial instant to use
-     * @param instant  the instant to query
+     * @param partial the partial instant to use
+     * @param instant the instant to query
      * @return the values of the partial extracted from the instant
      */
     public int[] get(ReadablePartial partial, long instant) {
@@ -231,8 +223,8 @@ public abstract class BaseChronology
     /**
      * Sets the partial into the instant.
      *
-     * @param partial  the partial instant to use
-     * @param instant  the instant to update
+     * @param partial the partial instant to use
+     * @param instant the instant to update
      * @return the updated instant
      */
     public long set(ReadablePartial partial, long instant) {
@@ -243,12 +235,13 @@ public abstract class BaseChronology
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the values of a period from an interval.
      *
-     * @param period  the period instant to use
-     * @param startInstant  the start instant of an interval to query
-     * @param endInstant  the start instant of an interval to query
+     * @param period       the period instant to use
+     * @param startInstant the start instant of an interval to query
+     * @param endInstant   the start instant of an interval to query
      * @return the values of the period extracted from the interval
      */
     public int[] get(ReadablePeriod period, long startInstant, long endInstant) {
@@ -268,8 +261,8 @@ public abstract class BaseChronology
     /**
      * Gets the values of a period from an interval.
      *
-     * @param period  the period instant to use
-     * @param duration  the duration to query
+     * @param period   the period instant to use
+     * @param duration the duration to query
      * @return the values of the period extracted from the duration
      */
     public int[] get(ReadablePeriod period, long duration) {
@@ -293,7 +286,7 @@ public abstract class BaseChronology
      * Adds the period to the instant, specifying the number of times to add.
      *
      * @param period  the period to add, null means add nothing
-     * @param instant  the instant to add to
+     * @param instant the instant to add to
      * @param scalar  the number of times to add
      * @return the updated instant
      */
@@ -310,12 +303,13 @@ public abstract class BaseChronology
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Adds the duration to the instant, specifying the number of times to add.
      *
      * @param instant  the instant to add to
-     * @param duration  the duration to add
-     * @param scalar  the number of times to add
+     * @param duration the duration to add
+     * @param scalar   the number of times to add
      * @return the updated instant
      */
     public long add(long instant, long duration, int scalar) {
@@ -328,9 +322,10 @@ public abstract class BaseChronology
 
     // Millis
     //-----------------------------------------------------------------------
+
     /**
      * Get the millis duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField millis() {
@@ -339,7 +334,7 @@ public abstract class BaseChronology
 
     /**
      * Get the millis of second field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfSecond() {
@@ -348,7 +343,7 @@ public abstract class BaseChronology
 
     /**
      * Get the millis of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfDay() {
@@ -357,9 +352,10 @@ public abstract class BaseChronology
 
     // Second
     //-----------------------------------------------------------------------
+
     /**
      * Get the seconds duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField seconds() {
@@ -368,7 +364,7 @@ public abstract class BaseChronology
 
     /**
      * Get the second of minute field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfMinute() {
@@ -377,7 +373,7 @@ public abstract class BaseChronology
 
     /**
      * Get the second of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfDay() {
@@ -386,9 +382,10 @@ public abstract class BaseChronology
 
     // Minute
     //-----------------------------------------------------------------------
+
     /**
      * Get the minutes duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField minutes() {
@@ -397,7 +394,7 @@ public abstract class BaseChronology
 
     /**
      * Get the minute of hour field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfHour() {
@@ -406,7 +403,7 @@ public abstract class BaseChronology
 
     /**
      * Get the minute of day field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfDay() {
@@ -415,9 +412,10 @@ public abstract class BaseChronology
 
     // Hour
     //-----------------------------------------------------------------------
+
     /**
      * Get the hours duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField hours() {
@@ -426,7 +424,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of day (0-23) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfDay() {
@@ -435,7 +433,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of day (offset to 1-24) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfDay() {
@@ -444,9 +442,10 @@ public abstract class BaseChronology
 
     // Halfday
     //-----------------------------------------------------------------------
+
     /**
      * Get the halfdays duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField halfdays() {
@@ -455,7 +454,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of am/pm (0-11) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfHalfday() {
@@ -464,7 +463,7 @@ public abstract class BaseChronology
 
     /**
      * Get the hour of am/pm (offset to 1-12) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfHalfday() {
@@ -473,7 +472,7 @@ public abstract class BaseChronology
 
     /**
      * Get the AM(0) PM(1) field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField halfdayOfDay() {
@@ -482,9 +481,10 @@ public abstract class BaseChronology
 
     // Day
     //-----------------------------------------------------------------------
+
     /**
      * Get the days duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField days() {
@@ -493,11 +493,11 @@ public abstract class BaseChronology
 
     /**
      * Get the day of week field for this chronology.
-     *
+     * <p>
      * <p>DayOfWeek values are defined in
      * {@link com.jn.langx.util.jodatime.DateTimeConstants DateTimeConstants}.
      * They use the ISO definitions, where 1 is Monday and 7 is Sunday.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfWeek() {
@@ -506,7 +506,7 @@ public abstract class BaseChronology
 
     /**
      * Get the day of month field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfMonth() {
@@ -515,7 +515,7 @@ public abstract class BaseChronology
 
     /**
      * Get the day of year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfYear() {
@@ -524,9 +524,10 @@ public abstract class BaseChronology
 
     // Week
     //-----------------------------------------------------------------------
+
     /**
      * Get the weeks duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weeks() {
@@ -535,7 +536,7 @@ public abstract class BaseChronology
 
     /**
      * Get the week of a week based year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekOfWeekyear() {
@@ -544,9 +545,10 @@ public abstract class BaseChronology
 
     // Weekyear
     //-----------------------------------------------------------------------
+
     /**
      * Get the weekyears duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weekyears() {
@@ -555,7 +557,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of a week based year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekyear() {
@@ -564,7 +566,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of a week based year in a century field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekyearOfCentury() {
@@ -573,9 +575,10 @@ public abstract class BaseChronology
 
     // Month
     //-----------------------------------------------------------------------
+
     /**
      * Get the months duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField months() {
@@ -584,7 +587,7 @@ public abstract class BaseChronology
 
     /**
      * Get the month of year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField monthOfYear() {
@@ -593,9 +596,10 @@ public abstract class BaseChronology
 
     // Year
     //-----------------------------------------------------------------------
+
     /**
      * Get the years duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField years() {
@@ -604,7 +608,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField year() {
@@ -613,7 +617,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfEra() {
@@ -622,7 +626,7 @@ public abstract class BaseChronology
 
     /**
      * Get the year of century field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfCentury() {
@@ -631,9 +635,10 @@ public abstract class BaseChronology
 
     // Century
     //-----------------------------------------------------------------------
+
     /**
      * Get the centuries duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField centuries() {
@@ -642,7 +647,7 @@ public abstract class BaseChronology
 
     /**
      * Get the century of era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField centuryOfEra() {
@@ -651,9 +656,10 @@ public abstract class BaseChronology
 
     // Era
     //-----------------------------------------------------------------------
+
     /**
      * Get the eras duration field for this chronology.
-     * 
+     *
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField eras() {
@@ -662,7 +668,7 @@ public abstract class BaseChronology
 
     /**
      * Get the era field for this chronology.
-     * 
+     *
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField era() {
@@ -670,9 +676,10 @@ public abstract class BaseChronology
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets a debugging toString.
-     * 
+     *
      * @return a debugging string
      */
     public abstract String toString();

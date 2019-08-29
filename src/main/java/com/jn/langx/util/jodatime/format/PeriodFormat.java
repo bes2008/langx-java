@@ -15,10 +15,6 @@
  */
 package com.jn.langx.util.jodatime.format;
 
-import com.jn.langx.util.jodatime.format.ISOPeriodFormat;
-import com.jn.langx.util.jodatime.format.PeriodFormatter;
-import com.jn.langx.util.jodatime.format.PeriodFormatterBuilder;
-
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,9 +31,9 @@ import java.util.concurrent.ConcurrentMap;
  * are as well.
  *
  * @author Brian S O'Neill
- * @since 1.0
  * @see ISOPeriodFormat
  * @see PeriodFormatterBuilder
+ * @since 1.0
  */
 public class PeriodFormat {
 
@@ -60,11 +56,12 @@ public class PeriodFormat {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the default formatter that outputs words in English.
      * <p>
      * This calls {@link #wordBased(Locale)} using a locale of {@code ENGLISH}.
-     * 
+     *
      * @return the formatter, not null
      */
     public static PeriodFormatter getDefault() {
@@ -75,7 +72,7 @@ public class PeriodFormat {
      * Returns a word based formatter for the JDK default locale.
      * <p>
      * This calls {@link #wordBased(Locale)} using the {@link Locale#getDefault() default locale}.
-     * 
+     *
      * @return the formatter, not null
      * @since 2.0
      */
@@ -91,7 +88,7 @@ public class PeriodFormat {
      * This can be added to via the normal classpath resource bundle mechanisms.
      * <p>
      * Available languages are English, Danish, Dutch, French, German, Japanese, Portuguese, and Spanish.
-     * 
+     *
      * @return the formatter, not null
      * @since 2.0
      */
@@ -103,30 +100,30 @@ public class PeriodFormat {
                     b.getString("PeriodFormat.space"), b.getString("PeriodFormat.comma"),
                     b.getString("PeriodFormat.commandand"), b.getString("PeriodFormat.commaspaceand")};
             pf = new PeriodFormatterBuilder()
-                .appendYears()
-                .appendSuffix(b.getString("PeriodFormat.year"), b.getString("PeriodFormat.years"))
-                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
-                .appendMonths()
-                .appendSuffix(b.getString("PeriodFormat.month"), b.getString("PeriodFormat.months"))
-                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
-                .appendWeeks()
-                .appendSuffix(b.getString("PeriodFormat.week"), b.getString("PeriodFormat.weeks"))
-                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
-                .appendDays()
-                .appendSuffix(b.getString("PeriodFormat.day"), b.getString("PeriodFormat.days"))
-                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
-                .appendHours()
-                .appendSuffix(b.getString("PeriodFormat.hour"), b.getString("PeriodFormat.hours"))
-                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
-                .appendMinutes()
-                .appendSuffix(b.getString("PeriodFormat.minute"), b.getString("PeriodFormat.minutes"))
-                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
-                .appendSeconds()
-                .appendSuffix(b.getString("PeriodFormat.second"), b.getString("PeriodFormat.seconds"))
-                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
-                .appendMillis()
-                .appendSuffix(b.getString("PeriodFormat.millisecond"), b.getString("PeriodFormat.milliseconds"))
-                .toFormatter();
+                    .appendYears()
+                    .appendSuffix(b.getString("PeriodFormat.year"), b.getString("PeriodFormat.years"))
+                    .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
+                    .appendMonths()
+                    .appendSuffix(b.getString("PeriodFormat.month"), b.getString("PeriodFormat.months"))
+                    .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
+                    .appendWeeks()
+                    .appendSuffix(b.getString("PeriodFormat.week"), b.getString("PeriodFormat.weeks"))
+                    .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
+                    .appendDays()
+                    .appendSuffix(b.getString("PeriodFormat.day"), b.getString("PeriodFormat.days"))
+                    .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
+                    .appendHours()
+                    .appendSuffix(b.getString("PeriodFormat.hour"), b.getString("PeriodFormat.hours"))
+                    .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
+                    .appendMinutes()
+                    .appendSuffix(b.getString("PeriodFormat.minute"), b.getString("PeriodFormat.minutes"))
+                    .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
+                    .appendSeconds()
+                    .appendSuffix(b.getString("PeriodFormat.second"), b.getString("PeriodFormat.seconds"))
+                    .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
+                    .appendMillis()
+                    .appendSuffix(b.getString("PeriodFormat.millisecond"), b.getString("PeriodFormat.milliseconds"))
+                    .toFormatter();
             FORMATTERS.putIfAbsent(locale, pf);
         }
         return pf;

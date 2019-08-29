@@ -3,7 +3,7 @@ package com.jn.langx.text.i18n;
 
 import com.jn.langx.lifecycle.Initializable;
 import com.jn.langx.lifecycle.InitializationException;
-import org.codehaus.plexus.util.StringUtils;
+import com.jn.langx.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,12 +85,13 @@ public class DefaultI18N implements I18N, Initializable {
 
         return rb;
     }
+
     public Locale getLocale() {
         return this.defaultLocale;
     }
 
     public Locale getLocale(String header) {
-        if (!StringUtils.isEmpty(header)) {
+        if (!Strings.isEmpty(header)) {
             I18NTokenizer tok = new I18NTokenizer(header);
             if (tok.hasNext()) {
                 return (Locale) tok.next();
@@ -101,7 +102,7 @@ public class DefaultI18N implements I18N, Initializable {
     }
 
     public String getString(String key) {
-        return this.getString(key,  null);
+        return this.getString(key, null);
     }
 
     public String getString(String key, Locale locale) {
@@ -229,13 +230,13 @@ public class DefaultI18N implements I18N, Initializable {
     private ResourceBundle findBundleByLocale(String bundleName, Locale locale, Map bundlesByLocale) {
         ResourceBundle rb = null;
         Locale withDefaultLanguage;
-        if (!StringUtils.isNotEmpty(locale.getCountry()) && this.defaultLanguage.equals(locale.getLanguage())) {
+        if (!Strings.isNotEmpty(locale.getCountry()) && this.defaultLanguage.equals(locale.getLanguage())) {
             withDefaultLanguage = new Locale(locale.getLanguage(), this.defaultCountry);
             rb = (ResourceBundle) bundlesByLocale.get(withDefaultLanguage);
             if (rb == null) {
                 rb = this.getBundleIgnoreException(bundleName, withDefaultLanguage);
             }
-        } else if (!StringUtils.isNotEmpty(locale.getLanguage()) && this.defaultCountry.equals(locale.getCountry())) {
+        } else if (!Strings.isNotEmpty(locale.getLanguage()) && this.defaultCountry.equals(locale.getCountry())) {
             withDefaultLanguage = new Locale(this.defaultLanguage, locale.getCountry());
             rb = (ResourceBundle) bundlesByLocale.get(withDefaultLanguage);
             if (rb == null) {

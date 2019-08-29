@@ -15,16 +15,12 @@
  */
 package com.jn.langx.util.jodatime;
 
-import java.io.Serializable;
-
-import com.jn.langx.util.jodatime.*;
-import com.jn.langx.util.jodatime.Chronology;
-import com.jn.langx.util.jodatime.DateTimeUtils;
-import com.jn.langx.util.jodatime.DateTimeZone;
 import com.jn.langx.util.jodatime.base.BaseInterval;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.format.ISODateTimeFormat;
 import com.jn.langx.util.jodatime.format.ISOPeriodFormat;
+
+import java.io.Serializable;
 
 /**
  * Interval is the standard implementation of an immutable time interval.
@@ -55,18 +51,21 @@ public final class Interval
         extends BaseInterval
         implements ReadableInterval, Serializable {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 4922451897541386752L;
 
     //-----------------------------------------------------------------------
+
     /**
      * Parses a {@code Interval} from the specified string.
      * <p>
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
      * 'datetime/period' or 'period/datetime'.
-     * 
-     * @param str  the string to parse, not null
+     *
+     * @param str the string to parse, not null
      * @since 2.0
      */
     public static Interval parse(String str) {
@@ -74,12 +73,13 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Constructs an interval from a start and end instant with the ISO
      * default chronology in the default time zone.
-     * 
-     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
-     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     *
+     * @param startInstant start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant   end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
     public Interval(long startInstant, long endInstant) {
@@ -89,10 +89,10 @@ public final class Interval
     /**
      * Constructs an interval from a start and end instant with the ISO
      * default chronology in the specified time zone.
-     * 
-     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
-     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
-     * @param zone  the time zone to use, null means default zone
+     *
+     * @param startInstant start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant   end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param zone         the time zone to use, null means default zone
      * @throws IllegalArgumentException if the end is before the start
      * @since 1.5
      */
@@ -103,10 +103,10 @@ public final class Interval
     /**
      * Constructs an interval from a start and end instant with the
      * specified chronology.
-     * 
-     * @param chronology  the chronology to use, null is ISO default
-     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
-     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     *
+     * @param chronology   the chronology to use, null is ISO default
+     * @param startInstant start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant   end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
     public Interval(long startInstant, long endInstant, com.jn.langx.util.jodatime.Chronology chronology) {
@@ -117,9 +117,9 @@ public final class Interval
      * Constructs an interval from a start and end instant.
      * <p>
      * The chronology used is that of the start instant.
-     * 
-     * @param start  start of this interval, null means now
-     * @param end  end of this interval, null means now
+     *
+     * @param start start of this interval, null means now
+     * @param end   end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
      */
     public Interval(ReadableInstant start, ReadableInstant end) {
@@ -128,11 +128,11 @@ public final class Interval
 
     /**
      * Constructs an interval from a start instant and a duration.
-     * 
-     * @param start  start of this interval, null means now
-     * @param duration  the duration of this interval, null means zero length
+     *
+     * @param start    start of this interval, null means now
+     * @param duration the duration of this interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
     public Interval(ReadableInstant start, ReadableDuration duration) {
         super(start, duration);
@@ -140,11 +140,11 @@ public final class Interval
 
     /**
      * Constructs an interval from a millisecond duration and an end instant.
-     * 
-     * @param duration  the duration of this interval, null means zero length
-     * @param end  end of this interval, null means now
+     *
+     * @param duration the duration of this interval, null means zero length
+     * @param end      end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the start instant exceeds the capacity of a long
      */
     public Interval(ReadableDuration duration, ReadableInstant end) {
         super(duration, end);
@@ -155,11 +155,11 @@ public final class Interval
      * <p>
      * When forming the interval, the chronology from the instant is used
      * if present, otherwise the chronology of the period is used.
-     * 
+     *
      * @param start  start of this interval, null means now
-     * @param period  the period of this interval, null means zero length
+     * @param period the period of this interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
     public Interval(ReadableInstant start, ReadablePeriod period) {
         super(start, period);
@@ -170,11 +170,11 @@ public final class Interval
      * <p>
      * When forming the interval, the chronology from the instant is used
      * if present, otherwise the chronology of the period is used.
-     * 
-     * @param period  the period of this interval, null means zero length
-     * @param end  end of this interval, null means now
+     *
+     * @param period the period of this interval, null means zero length
+     * @param end    end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     * @throws ArithmeticException      if the start instant exceeds the capacity of a long
      */
     public Interval(ReadablePeriod period, ReadableInstant end) {
         super(period, end);
@@ -189,8 +189,8 @@ public final class Interval
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
      * 'datetime/period' or 'period/datetime'.
-     * 
-     * @param interval  the time interval to copy
+     *
+     * @param interval the time interval to copy
      * @throws IllegalArgumentException if the interval is invalid
      */
     public Interval(Object interval) {
@@ -207,9 +207,9 @@ public final class Interval
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
      * 'datetime/period' or 'period/datetime'.
-     * 
-     * @param interval  the time interval to copy
-     * @param chronology  the chronology to use, null means ISO default
+     *
+     * @param interval   the time interval to copy
+     * @param chronology the chronology to use, null means ISO default
      * @throws IllegalArgumentException if the interval is invalid
      */
     public Interval(Object interval, com.jn.langx.util.jodatime.Chronology chronology) {
@@ -217,6 +217,7 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Get this interval as an immutable <code>Interval</code> object
      * by returning <code>this</code>.
@@ -228,6 +229,7 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the overlap between this interval and another interval.
      * <p>
@@ -247,7 +249,7 @@ public final class Interval
      * Note that the use of the chronology was only correctly implemented
      * in version 1.3.
      *
-     * @param interval  the interval to examine, null means now
+     * @param interval the interval to examine, null means now
      * @return the overlap interval, null if no overlap
      * @since 1.1
      */
@@ -262,6 +264,7 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Gets the gap between this interval and another interval.
      * The other interval can be either before or after this interval.
@@ -282,7 +285,7 @@ public final class Interval
      * Note that the use of the chronology was only correctly implemented
      * in version 1.3.
      *
-     * @param interval  the interval to examine, null means now
+     * @param interval the interval to examine, null means now
      * @return the gap interval, null if no gap
      * @since 1.1
      */
@@ -302,6 +305,7 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Does this interval abut with the interval specified.
      * <p>
@@ -320,21 +324,21 @@ public final class Interval
      * [09:00 to 10:00) abuts [08:00 to 08:30)  = false (completely before)
      * [09:00 to 10:00) abuts [08:00 to 09:00)  = true
      * [09:00 to 10:00) abuts [08:00 to 09:01)  = false (overlaps)
-     * 
+     *
      * [09:00 to 10:00) abuts [09:00 to 09:00)  = true
      * [09:00 to 10:00) abuts [09:00 to 09:01)  = false (overlaps)
-     * 
+     *
      * [09:00 to 10:00) abuts [10:00 to 10:00)  = true
      * [09:00 to 10:00) abuts [10:00 to 10:30)  = true
-     * 
+     *
      * [09:00 to 10:00) abuts [10:30 to 11:00)  = false (completely after)
-     * 
+     *
      * [14:00 to 14:00) abuts [14:00 to 14:00)  = true
      * [14:00 to 14:00) abuts [14:00 to 15:00)  = true
      * [14:00 to 14:00) abuts [13:00 to 14:00)  = true
      * </pre>
      *
-     * @param interval  the interval to examine, null means now
+     * @param interval the interval to examine, null means now
      * @return true if the interval abuts
      * @since 1.1
      */
@@ -349,10 +353,11 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a new interval with the same start and end, but a different chronology.
      *
-     * @param chronology  the chronology to use, null means ISO default
+     * @param chronology the chronology to use, null means ISO default
      * @return an interval with a different chronology
      */
     public Interval withChronology(com.jn.langx.util.jodatime.Chronology chronology) {
@@ -365,7 +370,7 @@ public final class Interval
     /**
      * Creates a new interval with the specified start millisecond instant.
      *
-     * @param startInstant  the start instant for the new interval
+     * @param startInstant the start instant for the new interval
      * @return an interval with the end from this interval and the specified start
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
@@ -379,7 +384,7 @@ public final class Interval
     /**
      * Creates a new interval with the specified start instant.
      *
-     * @param start  the start instant for the new interval, null means now
+     * @param start the start instant for the new interval, null means now
      * @return an interval with the end from this interval and the specified start
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
@@ -391,7 +396,7 @@ public final class Interval
     /**
      * Creates a new interval with the specified start millisecond instant.
      *
-     * @param endInstant  the end instant for the new interval
+     * @param endInstant the end instant for the new interval
      * @return an interval with the start from this interval and the specified end
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
@@ -405,7 +410,7 @@ public final class Interval
     /**
      * Creates a new interval with the specified end instant.
      *
-     * @param end  the end instant for the new interval, null means now
+     * @param end the end instant for the new interval, null means now
      * @return an interval with the start from this interval and the specified end
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
@@ -415,10 +420,11 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a new interval with the specified duration after the start instant.
      *
-     * @param duration  the duration to add to the start to get the new end instant, null means zero
+     * @param duration the duration to add to the start to get the new end instant, null means zero
      * @return an interval with the start from this interval and a calculated end
      * @throws IllegalArgumentException if the duration is negative
      */
@@ -436,7 +442,7 @@ public final class Interval
     /**
      * Creates a new interval with the specified duration before the end instant.
      *
-     * @param duration  the duration to add to the start to get the new end instant, null means zero
+     * @param duration the duration to add to the start to get the new end instant, null means zero
      * @return an interval with the start from this interval and a calculated end
      * @throws IllegalArgumentException if the duration is negative
      */
@@ -452,10 +458,11 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates a new interval with the specified period after the start instant.
      *
-     * @param period  the period to add to the start to get the new end instant, null means zero
+     * @param period the period to add to the start to get the new end instant, null means zero
      * @return an interval with the start from this interval and a calculated end
      * @throws IllegalArgumentException if the period is negative
      */
@@ -472,7 +479,7 @@ public final class Interval
     /**
      * Creates a new interval with the specified period before the end instant.
      *
-     * @param period  the period to add to the start to get the new end instant, null means zero
+     * @param period the period to add to the start to get the new end instant, null means zero
      * @return an interval with the start from this interval and a calculated end
      * @throws IllegalArgumentException if the period is negative
      */
