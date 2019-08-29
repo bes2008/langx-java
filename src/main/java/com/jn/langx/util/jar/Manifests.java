@@ -2,8 +2,6 @@ package com.jn.langx.util.jar;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Function;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
@@ -11,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.URL;
-import java.security.CodeSource;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -61,15 +58,14 @@ public class Manifests {
         }
     }
 
-    public static Manifest getManifest(Class<?> klass)
-    {
+    public static Manifest getManifest(Class<?> klass) {
         URL location = Reflects.getCodeLocation(klass);
-        if (location != null){
+        if (location != null) {
             JarFile jarFile = null;
-            try{
-            jarFile = new JarFile(new File(location.toURI()));
-            return jarFile.getManifest();
-            }catch (Throwable ex){
+            try {
+                jarFile = new JarFile(new File(location.toURI()));
+                return jarFile.getManifest();
+            } catch (Throwable ex) {
                 IOs.close(jarFile);
             }
         }
@@ -85,10 +81,9 @@ public class Manifests {
      * @param klass the class of the jar/module to retrieve the version
      * @return the jar/module version, or an empty Optional
      */
-    public static String getClassVersion(Class<?> klass)
-    {
+    public static String getClassVersion(Class<?> klass) {
         Manifest manifest = getManifest(klass);
-        if(manifest==null){
+        if (manifest == null) {
             return null;
         }
         Attributes attributes = manifest.getMainAttributes();
