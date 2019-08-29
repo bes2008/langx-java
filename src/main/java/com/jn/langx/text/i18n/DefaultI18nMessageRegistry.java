@@ -91,7 +91,7 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
 
     public Locale getLocale(String header) {
         if (!Strings.isEmpty(header)) {
-            I18NTokenizer tok = new I18NTokenizer(header);
+            I18nTokenizer tok = new I18nTokenizer(header);
             if (tok.hasNext()) {
                 return (Locale) tok.next();
             }
