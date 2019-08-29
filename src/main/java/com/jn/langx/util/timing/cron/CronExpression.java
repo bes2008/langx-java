@@ -3,14 +3,11 @@ package com.jn.langx.util.timing.cron;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
+ * Unix-like Cron, it also is the Quartz CronExpression
+ *
  * Provides a parser and evaluator for unix-like cron expressions. Cron
  * expressions provide the ability to specify complex time combinations such as
  * &quot;At 8:00am every Monday through Friday&quot; or &quot;At 1:30am every
@@ -18,7 +15,7 @@ import java.util.TreeSet;
  * <P>
  * Cron expressions are comprised of 6 required fields and one optional field
  * separated by white space. The fields respectively are described as follows:
- *
+ * <p>
  * <table cellspacing="8">
  * <tr>
  * <th align="left">Field Name</th>
@@ -153,7 +150,7 @@ import java.util.TreeSet;
  * <P>
  * The legal characters and the names of months and days of the week are not
  * case sensitive.
- *
+ * <p>
  * <p>
  * <b>NOTES:</b>
  * <ul>
@@ -232,10 +229,11 @@ public class CronExpression implements Serializable {
     /**
      * Constructs a new <CODE>CronExpression</CODE> based on the specified
      * parameter.
+     *
      * @param cronExpression String representation of the cron expression the
-     * new object should represent
+     *                       new object should represent
      * @throws ParseException if the string expression cannot be parsed into a valid
-     * <CODE>CronExpression</CODE>
+     *                        <CODE>CronExpression</CODE>
      */
     public CronExpression(String cronExpression) throws ParseException {
         if (cronExpression == null) {
@@ -249,6 +247,7 @@ public class CronExpression implements Serializable {
 
     /**
      * Returns the string representation of the <CODE>CronExpression</CODE>
+     *
      * @return a string representation of the <CODE>CronExpression</CODE>
      */
     @Override
@@ -259,6 +258,7 @@ public class CronExpression implements Serializable {
     /**
      * Indicates whether the specified cron expression can be parsed into a
      * valid cron expression
+     *
      * @param cronExpression the expression to evaluate
      * @return a boolean indicating whether the given expression is a valid cron
      * expression

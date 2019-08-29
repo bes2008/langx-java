@@ -239,6 +239,10 @@ public class Reflects {
         return annotatedElement.getAnnotation(annotationClass);
     }
 
+    public static <E extends Annotation> E getDeclaredAnnotation(@NonNull AnnotatedElement annotatedElement, @NonNull Class<E> annotationClass){
+        return getAnnotation(annotatedElement, annotationClass);
+    }
+
     /**
      * Returns all annotations present on this element.  (Returns an array
      * of length zero if this element has no annotations.)  The caller of
