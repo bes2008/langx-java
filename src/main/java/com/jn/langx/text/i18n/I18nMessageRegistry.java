@@ -4,9 +4,6 @@ package com.jn.langx.text.i18n;
 import java.util.Locale;
 
 public interface I18nMessageRegistry {
-    String ROLE = I18nMessageRegistry.class.getName();
-    String ACCEPT_LANGUAGE = "Accept-Language";
-
     String getDefaultLanguage();
 
     String getDefaultCountry();
