@@ -35,7 +35,7 @@ public class DefaultLanguage implements Language {
         if (this.error != null) {
             return this.error;
         } else {
-            return args != null && args.length != 0 ? this.i18n.format(this.bundleName, this.locale, key, args) : this.i18n.getString(this.bundleName, this.locale, key);
+            return args != null && args.length != 0 ? this.i18n.format(this.bundleName, this.locale, key, args) : this.i18n.getMessage(this.bundleName, this.locale, key);
         }
     }
 }

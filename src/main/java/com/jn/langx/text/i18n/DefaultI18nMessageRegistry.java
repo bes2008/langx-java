@@ -1,6 +1,5 @@
 package com.jn.langx.text.i18n;
 
-
 import com.jn.langx.lifecycle.Initializable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Strings;
@@ -15,7 +14,7 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
     private static final Logger logger = LoggerFactory.getLogger(DefaultI18nMessageRegistry.class);
     private static final Object[] NO_ARGS = new Object[0];
     private HashMap bundles;
-    private String[] bundleNames;
+    private final List<String> bundleNames = new ArrayList<String>();
     private String defaultBundleName;
     private Locale defaultLocale = Locale.getDefault();
     private String defaultLanguage = Locale.getDefault().getLanguage();
@@ -37,19 +36,19 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
         return this.defaultBundleName;
     }
 
-    public String[] getBundleNames() {
-        return (String[]) this.bundleNames.clone();
+    protected List<String> getBundleNames() {
+        return this.bundleNames;
     }
 
-    public ResourceBundle getBundle() {
+    protected ResourceBundle getBundle() {
         return this.getBundle(this.getDefaultBundleName(), (Locale) null);
     }
 
-    public ResourceBundle getBundle(String bundleName) {
+    protected ResourceBundle getBundle(String bundleName) {
         return this.getBundle(bundleName, (Locale) null);
     }
 
-    public ResourceBundle getBundle(String bundleName, String languageHeader) {
+    protected ResourceBundle getBundle(String bundleName, String languageHeader) {
         return this.getBundle(bundleName, this.getLocale(languageHeader));
     }
 
@@ -63,8 +62,8 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
                 Object cache = field.get((Object) null);
                 cache.getClass().getDeclaredMethod("clear", (Class[]) null).invoke(cache, (Object[]) null);
                 field.setAccessible(false);
-            } catch (Exception var6) {
-                ;
+            } catch (Exception ex) {
+                logger.warn(ex.getMessage());
             }
         }
 
@@ -101,15 +100,15 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
         return this.defaultLocale;
     }
 
-    public String getString(String key) {
-        return this.getString(key, null);
+    public String getMessage(String key) {
+        return this.getMessage(null, key);
     }
 
-    public String getString(String key, Locale locale) {
-        return this.getString(this.getDefaultBundleName(), locale, key);
+    public String getMessage(Locale locale, String key) {
+        return this.getMessage(this.getDefaultBundleName(), locale, key);
     }
 
-    public String getString(String bundleName, Locale locale, String key) {
+    public String getMessage(String bundleName, Locale locale, String key) {
         if (locale == null) {
             locale = this.getLocale(null);
         }
@@ -117,9 +116,9 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
         ResourceBundle rb = this.getBundle(bundleName, locale);
         String value = this.getStringOrNull(rb, key);
         String name;
-        if (value == null && this.bundleNames.length > 0) {
-            for (int i = 0; i < this.bundleNames.length; ++i) {
-                name = this.bundleNames[i];
+        if (value == null && !this.bundleNames.isEmpty()) {
+            for (int i = 0; i < this.bundleNames.size(); ++i) {
+                name = this.bundleNames.get(i);
                 if (!name.equals(bundleName)) {
                     rb = this.getBundle(name, locale);
                     value = this.getStringOrNull(rb, key);
@@ -137,32 +136,11 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
             logger.debug(mesg);
             value = key;
         }
-
         return value;
     }
 
-    public String format(String key, Object arg1) {
-        return this.format(this.defaultBundleName, this.defaultLocale, key, new Object[]{arg1});
-    }
-
-    public String format(String key, Object arg1, Object arg2) {
-        return this.format(this.defaultBundleName, this.defaultLocale, key, new Object[]{arg1, arg2});
-    }
-
-    public String format(String bundleName, Locale locale, String key, Object arg1) {
-        return this.format(bundleName, locale, key, new Object[]{arg1});
-    }
-
-    public String format(String bundleName, Locale locale, String key, Object arg1, Object arg2) {
-        return this.format(bundleName, locale, key, new Object[]{arg1, arg2});
-    }
-
-    public String format(String bundleName, Locale locale, String key, Object[] args) {
-        if (locale == null) {
-            locale = this.getLocale((String) null);
-        }
-
-        String value = this.getString(bundleName, locale, key);
+    public String getMessage(String bundleName, Locale locale, String key, Object... args) {
+        String value = this.getMessage(bundleName, locale, key);
         if (args == null) {
             args = NO_ARGS;
         }
@@ -184,20 +162,6 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
     }
 
     protected void initializeBundleNames() {
-        if (this.defaultBundleName != null && this.defaultBundleName.length() > 0) {
-            if (this.bundleNames != null && this.bundleNames.length > 0) {
-                String[] array = new String[this.bundleNames.length + 1];
-                array[0] = this.defaultBundleName;
-                System.arraycopy(this.bundleNames, 0, array, 1, this.bundleNames.length);
-                this.bundleNames = array;
-            } else {
-                this.bundleNames = new String[]{this.defaultBundleName};
-            }
-        }
-
-        if (this.bundleNames == null) {
-            this.bundleNames = new String[0];
-        }
 
     }
 
