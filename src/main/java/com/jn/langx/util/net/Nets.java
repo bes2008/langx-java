@@ -13,9 +13,7 @@ import java.io.*;
 import java.net.*;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 
 public class Nets {
@@ -1054,7 +1052,7 @@ public class Nets {
     // visible for tests
     static byte[] validIpV4ToBytes(String ip) {
         int i;
-        return new byte[] {
+        return new byte[]{
                 ipv4WordToByte(ip, 0, i = ip.indexOf('.', 1)),
                 ipv4WordToByte(ip, i + 1, i = ip.indexOf('.', i + 2)),
                 ipv4WordToByte(ip, i + 1, i = ip.indexOf('.', i + 2)),
@@ -1078,6 +1076,90 @@ public class Nets {
 
     private static int decimalDigit(String str, int pos) {
         return str.charAt(pos) - '0';
+    }
+
+    /**
+     * Returns a {@link Map} of {@link InetAddress} per {@link NetworkInterface}.
+     */
+    public static Map<String, Set<InetAddress>> getNetworkInterfaceAddresses() {
+        //JVM returns interfaces in a non-predictable order, so to make this more predictable
+        //let's have them sort by interface name (by using a TreeMap).
+        Map<String, Set<InetAddress>> interfaceAddressMap = new TreeMap<String, Set<InetAddress>>();
+        try {
+            Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
+            while (ifaces.hasMoreElements()) {
+                NetworkInterface iface = ifaces.nextElement();
+                //We only care about usable non-loopback interfaces.
+                if (iface.isUp() && !iface.isLoopback() && !iface.isPointToPoint()) {
+                    String name = iface.getName();
+                    Enumeration<InetAddress> ifaceAdresses = iface.getInetAddresses();
+                    while (ifaceAdresses.hasMoreElements()) {
+                        InetAddress ia = ifaceAdresses.nextElement();
+                        //We want to filter out mac addresses
+                        if (!ia.isLoopbackAddress() && !ia.getHostAddress().contains(":")) {
+                            Set<InetAddress> addresses = interfaceAddressMap.get(name);
+                            if (addresses == null) {
+                                addresses = new LinkedHashSet<InetAddress>();
+                            }
+                            addresses.add(ia);
+                            interfaceAddressMap.put(name, addresses);
+                        }
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            //noop
+        }
+        return interfaceAddressMap;
+    }
+
+    /**
+     * Returns a {@link Set} of {@link InetAddress} that are non-loopback or mac.
+     */
+    public static Set<InetAddress> getAddresses() {
+        Set<InetAddress> allAddresses = new LinkedHashSet<InetAddress>();
+        Map<String, Set<InetAddress>> interfaceAddressMap = getNetworkInterfaceAddresses();
+        for (Map.Entry<String, Set<InetAddress>> entry : interfaceAddressMap.entrySet()) {
+            Set<InetAddress> addresses = entry.getValue();
+            if (!addresses.isEmpty()) {
+                for (InetAddress address : addresses) {
+                    allAddresses.add(address);
+                }
+            }
+        }
+        return allAddresses;
+    }
+
+
+    /**
+     * Chooses one of the available {@link InetAddress} based on the specified preference.
+     */
+    private static InetAddress chooseAddress() throws UnknownHostException {
+        Set<InetAddress> addresses = getAddresses();
+        if (addresses.contains(InetAddress.getLocalHost())) {
+            //Then if local host address is not bound to a loop-back interface, use it.
+            return InetAddress.getLocalHost();
+        } else if (addresses != null && !addresses.isEmpty()) {
+            //else return the first available addrress
+            return addresses.toArray(new InetAddress[addresses.size()])[0];
+        } else {
+            //else we are forcedt to use the localhost address.
+            return InetAddress.getLocalHost();
+        }
+    }
+
+    /**
+     * Returns the local hostname. It loops through the network interfaces and returns the first non loopback hostname
+     */
+    public static String getLocalHostName() throws UnknownHostException {
+        return chooseAddress().getHostName();
+    }
+
+    /**
+     * Returns the local IP. It loops through the network interfaces and returns the first non loopback address
+     */
+    public static String getLocalIp() throws UnknownHostException {
+        return chooseAddress().getHostAddress();
     }
 
 }

@@ -82,6 +82,10 @@ public class Manifests {
      * @return the jar/module version, or an empty Optional
      */
     public static String getClassVersion(Class<?> klass) {
+        Package p = klass.getPackage();
+        if (p != null) {
+            return p.getImplementationVersion();
+        }
         Manifest manifest = getManifest(klass);
         if (manifest == null) {
             return null;

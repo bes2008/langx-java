@@ -72,6 +72,11 @@ public class Emptys {
             return Strings.isEmpty((String) object);
         }
 
+        if(object instanceof CharSequence){
+            CharSequence cs = (CharSequence)object;
+            return cs.length() == 0;
+        }
+
         if (object instanceof Number) {
             return isZero((Number) object);
         }
