@@ -1,5 +1,5 @@
 package com.jn.langx.lifecycle;
 
 public interface Initializable {
-    void init();
+    void init() throws InitializationException;
 }

@@ -59,40 +59,6 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-<!--
-        <dependency>
-            <groupId>org.webjars.npm</groupId>
-            <artifactId>d3-timer</artifactId>
-            <version>1.0.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-timer</artifactId>
-            <version>3.0.0-M4</version>
-        </dependency>
-        <dependency>
-            <groupId>io.data2viz</groupId>
-            <artifactId>d2v-timer-common</artifactId>
-            <version>0.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.cronutils</groupId>
-            <artifactId>cron-utils</artifactId>
-            <version>9.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.redhogs.cronparser</groupId>
-            <artifactId>cron-parser-spring</artifactId>
-            <version>3.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.patterncat</groupId>
-            <artifactId>sql-helper</artifactId>
-            <version>0.0.7</version>
-        </dependency>
--->
     </dependencies>
 
     <build>
