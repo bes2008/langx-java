@@ -60,12 +60,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-
     </dependencies>
 
     <build>
