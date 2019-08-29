@@ -3,10 +3,7 @@ package com.jn.langx.util.reflect;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
-import com.jn.langx.util.Throwables;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
@@ -23,6 +20,8 @@ import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import static java.lang.System.arraycopy;
 
 
 /**
@@ -260,6 +259,17 @@ public class Reflects {
      */
     public static List<Annotation> getDeclaredAnnotations(@NonNull AnnotatedElement annotatedElement) {
         return Collects.asList(annotatedElement.getDeclaredAnnotations());
+    }
+
+    public static Field getStaticField(@NonNull Class clazz, @NonNull String fieldName) {
+        Field field = getDeclaredField(clazz, fieldName);
+        if (field == null) {
+            return null;
+        }
+        if (Modifiers.isStatic(field)) {
+            return field;
+        }
+        return null;
     }
 
     public static Field getPublicField(@NonNull Class clazz, @NonNull String fieldName) {
@@ -801,5 +811,120 @@ public class Reflects {
 
         return set.contains(getFQNClassName(clazz));
     }
+
+    /**
+     * This new method 'slightly' outperforms the old method, it was
+     * essentially a perfect example of me wasting my time and a
+     * premature optimization.  But what the hell...
+     *
+     * @param s -
+     * @return String
+     */
+    public static String getSetter(String s) {
+        char[] chars = new char[s.length() + 3];
+
+        chars[0] = 's';
+        chars[1] = 'e';
+        chars[2] = 't';
+
+        chars[3] = Chars.toUpperCase(s.charAt(0));
+
+        for (int i = s.length() - 1; i != 0; i--) {
+            chars[i + 3] = s.charAt(i);
+        }
+
+        return new String(chars);
+    }
+
+
+    public static String getGetter(String s) {
+        char[] c = s.toCharArray();
+        char[] chars = new char[c.length + 3];
+
+        chars[0] = 'g';
+        chars[1] = 'e';
+        chars[2] = 't';
+
+        chars[3] = Chars.toUpperCase(c[0]);
+
+        arraycopy(c, 1, chars, 4, c.length - 1);
+
+        return new String(chars);
+    }
+
+
+    public static String getIsGetter(String s) {
+        char[] c = s.toCharArray();
+        char[] chars = new char[c.length + 2];
+
+        chars[0] = 'i';
+        chars[1] = 's';
+
+        chars[2] = Chars.toUpperCase(c[0]);
+
+        arraycopy(c, 1, chars, 3, c.length - 1);
+
+        return new String(chars);
+    }
+
+    public static Method getSetter(Class clazz, String field) {
+        String setter = getSetter(field);
+
+        for (Method method : clazz.getMethods()) {
+            if (setter.equals(method.getName()) && Modifiers.isPublic(method) && method.getParameterTypes().length == 1) {
+                return method;
+            }
+        }
+        return null;
+    }
+
+    public static Method getSetter(Class clazz, String field, Class parameterType) {
+        String setter = getSetter(field);
+        Method method = getDeclaredMethod(clazz, setter, parameterType);
+        if (method != null && Modifiers.isPublic(method)) {
+            return method;
+        }
+        return null;
+    }
+
+    public static boolean hasGetter(Field field) {
+        Method method = getGetter(field.getDeclaringClass(), field.getName());
+        return method != null && field.getType().isAssignableFrom(method.getReturnType());
+    }
+
+    public static boolean hasSetter(Field field) {
+        Method method = getSetter(field.getDeclaringClass(), field.getName());
+        return method != null && field.getType().isAssignableFrom(method.getParameterTypes()[0]);
+    }
+
+    public static Method getGetter(Class clazz, String field) {
+        String simple = "get" + field;
+        String simpleIsGet = "is" + field;
+        String isGet = getIsGetter(field);
+        String getter = getGetter(field);
+
+        Method candidate = null;
+
+        if (Collection.class.isAssignableFrom(clazz) && "isEmpty".equals(isGet)) {
+            try {
+                return Collection.class.getMethod("isEmpty");
+            } catch (NoSuchMethodException ignore) {
+            }
+        }
+
+        for (Method meth : clazz.getMethods()) {
+            if (Modifiers.isPublic(meth) && !Modifiers.isStatic(meth) && meth.getParameterTypes().length == 0) {
+                String methodName = meth.getName();
+                if ((getter.equals(methodName) || field.equals(methodName) || ((isGet.equals(methodName) || simpleIsGet.equals(methodName)) && meth.getReturnType() == boolean.class)
+                        || simple.equals(methodName))) {
+                    if (candidate == null || candidate.getReturnType().isAssignableFrom(meth.getReturnType())) {
+                        candidate = meth;
+                    }
+                }
+            }
+        }
+        return candidate;
+    }
+
 
 }

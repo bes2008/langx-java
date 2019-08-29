@@ -4,10 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
 import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * @author jinuo.fang
@@ -246,7 +243,14 @@ public class Types {
         }
         throw new IllegalArgumentException();
     }
-
+    /**
+     * <pre>
+     *     List<E>
+     * </pre>
+     */
+    public static ParameterizedType getSetParameterizedType(Type elementType) {
+        return getParameterizedType(Set.class, elementType);
+    }
     /**
      * <pre>
      *     List<E>
