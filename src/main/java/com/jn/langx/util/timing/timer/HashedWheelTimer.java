@@ -1,4 +1,4 @@
-package com.jn.langx.util.timer;
+package com.jn.langx.util.timing.timer;
 
 
 import com.jn.langx.util.Platform;
