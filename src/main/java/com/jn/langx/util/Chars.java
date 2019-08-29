@@ -31,7 +31,7 @@ public class Chars {
                 (1 << Character.MODIFIER_LETTER) |
                 (1 << Character.OTHER_LETTER) |
                 (1 << Character.LETTER_NUMBER)) >> Character.getType(codePoint)) & 1) != 0) ||
-                Character.isValidCodePoint(codePoint);// BUG ?
+                (Character.isValidCodePoint(codePoint) && Character.isLetter(codePoint));// BUG ?
     }
 
     public static boolean isAscii(final char ch) {
