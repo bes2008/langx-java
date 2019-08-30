@@ -15,6 +15,7 @@ Java lang extensions
     + Supports Stream API for Java 6+
     + Adapter any object to Iterable
     + Supports NonAbsentMap, using it, the map.get(key) will not return the null
+    + Supports NonDistinctTreeSet, NonDistinctTreeMap, just sort 
     + Supports Tuple
     + Supports WheelQueue, CopyOnWriteHashMap
 3. Differ API
@@ -48,4 +49,8 @@ Java lang extensions
     + StringTemplate
 13. Null judge is unnecessary    
 14. Event API  
-15. To Many Comparators
+15. Comparators
+16. Parse Hosts File
+17. Codec
+18. Cron
+19. Joda-time
