@@ -112,6 +112,16 @@ public class Functions {
         };
     }
 
+    public static Predicate<String> stringContainsPredicate(final String cantained){
+        Preconditions.checkTrue(Emptys.isNotEmpty(cantained));
+        return new Predicate<String>() {
+            @Override
+            public boolean test(String value) {
+                return value.contains(cantained);
+            }
+        };
+    }
+
 
     /**********************************************
      * Supplier
