@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * Chaque pays est repésenté ainsi :
  * <pre>A2, //     A3     Number Country name</pre>
  *
- * @author Tony Chemit - dev@tchemit.fr
+ * @author jinuo.fang
  */
 public enum CountryEnum {
 

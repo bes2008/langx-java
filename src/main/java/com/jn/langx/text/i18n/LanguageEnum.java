@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
  * <p>
  * <a href="http://www.loc.gov/standards/iso639-2/php/French_list.php">la liste
  * des codes</a>
- *
  */
 public enum LanguageEnum {
 
@@ -155,13 +154,14 @@ public enum LanguageEnum {
     zh, // Chinese
     zu; // Zulu
 
-    private  static final Logger logger = LoggerFactory.getLogger(LanguageEnum.class);
+    private static final Logger logger = LoggerFactory.getLogger(LanguageEnum.class);
+
     public static LanguageEnum valueOf(String language, LanguageEnum defaultValue) {
         LanguageEnum languageValue = null;
         try {
             languageValue = valueOf(language.toLowerCase());
         } catch (Exception e) {
-            logger.warn("Unfound language {}, will use default one : {}" , language, defaultValue);
+            logger.warn("Unfound language {}, will use default one : {}", language, defaultValue);
         }
         return languageValue == null ? defaultValue : languageValue;
     }

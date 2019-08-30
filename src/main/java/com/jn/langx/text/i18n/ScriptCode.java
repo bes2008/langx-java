@@ -26,23 +26,22 @@ import java.util.regex.Pattern;
 /**
  * <a href="http://en.wikipedia.org/wiki/ISO_15924">ISO 15924<a> script code.
  *
- * @since 1.2
  * @author Takahiko Kawasaki
+ * @since 1.2
  */
-public enum ScriptCode
-{
+public enum ScriptCode {
 
     /**
      * Undefined [-1]
-     *
+     * <p>
      * <p>
      * This is not an official ISO 15924 code.
      * </p>
      *
-     * @since 1.14
      * @see #Zxxx Zxxx: 997 Code for unwritten languages
      * @see #Zyyy Zyyy: 998 Code for undetermined script
      * @see #Zzzz Zzzz: 999 Code for uncoded script
+     * @since 1.14
      */
     Undefined(-1, "Undefined"),
 
@@ -1021,8 +1020,7 @@ public enum ScriptCode
     /**
      * Code for uncoded script [999]
      */
-    Zzzz(999, "Code for uncoded script")
-    ;
+    Zzzz(999, "Code for uncoded script");
 
 
     /**
@@ -1031,12 +1029,9 @@ public enum ScriptCode
     private static final Map<Integer, ScriptCode> numericMap = new HashMap<Integer, ScriptCode>();
 
 
-    static
-    {
-        for (ScriptCode sc : values())
-        {
-            if (sc.getNumeric() != -1)
-            {
+    static {
+        for (ScriptCode sc : values()) {
+            if (sc.getNumeric() != -1) {
                 numericMap.put(sc.getNumeric(), sc);
             }
         }
@@ -1058,8 +1053,7 @@ public enum ScriptCode
     /**
      * Constructor.
      */
-    private ScriptCode(int numeric, String name)
-    {
+    private ScriptCode(int numeric, String name) {
         this.numeric = numeric;
         this.name = name;
     }
@@ -1068,11 +1062,9 @@ public enum ScriptCode
     /**
      * Get the numeric code of this script code.
      *
-     * @return
-     *         Numeric code.
+     * @return Numeric code.
      */
-    public int getNumeric()
-    {
+    public int getNumeric() {
         return numeric;
     }
 
@@ -1080,11 +1072,9 @@ public enum ScriptCode
     /**
      * Get English name of this script code.
      *
-     * @return
-     *         English name.
+     * @return English name.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -1092,21 +1082,17 @@ public enum ScriptCode
     /**
      * Get a {@code ScriptCode} instance that corresponds to the given
      * ISO 15924 alpha-4 code.
-     *
+     * <p>
      * <p>
      * This method calls {@link #getByCode(String, boolean) getByCode}{@code (code, true)}.
      * Note that the behavior has changed since the version 1.13. In the older versions,
      * this method was an alias of {@code getByCode(code, false)}.
      * </p>
      *
-     * @param code
-     *         ISO 15924 alpha-4 code. Or "Undefined" (case sensitive).
-     *
-     * @return
-     *         A {@code ScriptCode} instance, or {@code null} if not found.
+     * @param code ISO 15924 alpha-4 code. Or "Undefined" (case sensitive).
+     * @return A {@code ScriptCode} instance, or {@code null} if not found.
      */
-    public static ScriptCode getByCode(String code)
-    {
+    public static ScriptCode getByCode(String code) {
         return getByCode(code, true);
     }
 
@@ -1114,21 +1100,16 @@ public enum ScriptCode
     /**
      * Get a {@code ScriptCode} instance that corresponds to the given
      * ISO 15924 alpha-4 code.
-     *
+     * <p>
      * <p>
      * This method calls {@link #getByCode(String, boolean) getByCode}{@code (code, false)}.
      * </p>
      *
-     * @param code
-     *         ISO 15924 alpha-4 code. Or "Undefined" (case insensitive).
-     *
-     * @return
-     *         A {@code ScriptCode} instance, or {@code null} if not found.
-     *
+     * @param code ISO 15924 alpha-4 code. Or "Undefined" (case insensitive).
+     * @return A {@code ScriptCode} instance, or {@code null} if not found.
      * @since 1.13
      */
-    public static ScriptCode getByCodeIgnoreCase(String code)
-    {
+    public static ScriptCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
     }
 
@@ -1137,30 +1118,22 @@ public enum ScriptCode
      * Get a {@code ScriptCode} instance that corresponds to the given
      * ISO 15924 alpha-4 code.
      *
-     * @param code
-     *         ISO 15924 alpha-4 code. Or "Undefined" (its case sensitivity
-     *         depends on the value of {@code caseSensitive}).
-     *
-     * @param caseSensitive
-     *         If {@code true}, the first letter of the given code should be
-     *         capital and the other letters should be small. If {@code false},
-     *         whether letters are capital or small does not matter.
-     *         For example, {@code getByCode("JPAN", true)} returns
-     *         {@code null} but {@code getByCode("JPAN", false)} returns
-     *         {@link #Jpan}.
-     *
-     * @return
-     *         A {@code ScriptCode} instance, or {@code null} if not found.
+     * @param code          ISO 15924 alpha-4 code. Or "Undefined" (its case sensitivity
+     *                      depends on the value of {@code caseSensitive}).
+     * @param caseSensitive If {@code true}, the first letter of the given code should be
+     *                      capital and the other letters should be small. If {@code false},
+     *                      whether letters are capital or small does not matter.
+     *                      For example, {@code getByCode("JPAN", true)} returns
+     *                      {@code null} but {@code getByCode("JPAN", false)} returns
+     *                      {@link #Jpan}.
+     * @return A {@code ScriptCode} instance, or {@code null} if not found.
      */
-    public static ScriptCode getByCode(String code, boolean caseSensitive)
-    {
-        if (code == null)
-        {
+    public static ScriptCode getByCode(String code, boolean caseSensitive) {
+        if (code == null) {
             return null;
         }
 
-        switch (code.length())
-        {
+        switch (code.length()) {
             case 4:
             case 9:
                 break;
@@ -1171,12 +1144,9 @@ public enum ScriptCode
 
         code = canonicalize(code, caseSensitive);
 
-        try
-        {
+        try {
             return Enum.valueOf(ScriptCode.class, code);
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             return null;
         }
     }
@@ -1186,17 +1156,12 @@ public enum ScriptCode
      * Get a {@code ScriptCode} instance that corresponds to the given
      * ISO 15924 numeric code.
      *
-     * @param code
-     *         ISO 15924 numeric code.
-     *
-     * @return
-     *         A {@code ScriptCode} instance, or {@code null} if not found.
-     *         If 0 or a negative value is given, {@code null} is returned.
+     * @param code ISO 15924 numeric code.
+     * @return A {@code ScriptCode} instance, or {@code null} if not found.
+     * If 0 or a negative value is given, {@code null} is returned.
      */
-    public static ScriptCode getByCode(int code)
-    {
-        if (code <= 0)
-        {
+    public static ScriptCode getByCode(int code) {
+        if (code <= 0) {
             return null;
         }
 
@@ -1204,15 +1169,12 @@ public enum ScriptCode
     }
 
 
-    private static String canonicalize(String code, boolean caseSensitive)
-    {
-        if (code == null || code.length() == 0)
-        {
+    private static String canonicalize(String code, boolean caseSensitive) {
+        if (code == null || code.length() == 0) {
             return null;
         }
 
-        if (caseSensitive)
-        {
+        if (caseSensitive) {
             return code;
         }
 
@@ -1220,27 +1182,21 @@ public enum ScriptCode
         // if modification is needed.
         StringBuilder sb = null;
 
-        for (int i = 0; i < code.length(); ++i)
-        {
+        for (int i = 0; i < code.length(); ++i) {
             char ch = code.charAt(i);
 
             // The first letter.
-            if (i == 0)
-            {
-                if (Character.isUpperCase(ch) == false)
-                {
+            if (i == 0) {
+                if (Character.isUpperCase(ch) == false) {
                     // Modification is needed.
                     sb = new StringBuilder();
                     sb.append(Character.toUpperCase(ch));
                 }
             }
             // The second and subsequent letters.
-            else
-            {
-                if (sb == null)
-                {
-                    if (Character.isLowerCase(ch) == false)
-                    {
+            else {
+                if (sb == null) {
+                    if (Character.isLowerCase(ch) == false) {
                         // Modification is needed.
                         sb = new StringBuilder();
 
@@ -1250,20 +1206,15 @@ public enum ScriptCode
                         // Lower the current letter.
                         sb.append(Character.toLowerCase(ch));
                     }
-                }
-                else
-                {
+                } else {
                     sb.append(Character.toLowerCase(ch));
                 }
             }
         }
 
-        if (sb == null)
-        {
+        if (sb == null) {
             return code;
-        }
-        else
-        {
+        } else {
             return sb.toString();
         }
     }
@@ -1271,31 +1222,21 @@ public enum ScriptCode
 
     /**
      * Get a list of {@code ScriptCode} by a name regular expression.
-     *
+     * <p>
      * <p>
      * This method is almost equivalent to {@link #findByName(Pattern)
      * findByName}{@code (Pattern.compile(regex))}.
      * </p>
      *
-     * @param regex
-     *         Regular expression for names.
-     *
-     * @return
-     *         List of {@code ScriptCode}. If nothing has matched,
-     *         an empty list is returned.
-     *
-     * @throws IllegalArgumentException
-     *         {@code regex} is {@code null}.
-     *
-     * @throws java.util.regex.PatternSyntaxException
-     *         {@code regex} failed to be compiled.
-     *
+     * @param regex Regular expression for names.
+     * @return List of {@code ScriptCode}. If nothing has matched,
+     * an empty list is returned.
+     * @throws IllegalArgumentException               {@code regex} is {@code null}.
+     * @throws java.util.regex.PatternSyntaxException {@code regex} failed to be compiled.
      * @since 1.11
      */
-    public static List<ScriptCode> findByName(String regex)
-    {
-        if (regex == null)
-        {
+    public static List<ScriptCode> findByName(String regex) {
+        if (regex == null) {
             throw new IllegalArgumentException("regex is null.");
         }
 
@@ -1309,51 +1250,41 @@ public enum ScriptCode
 
     /**
      * Get a list of {@code ScriptCode} by a name pattern.
-     *
+     * <p>
      * <p>
      * For example, the list obtained by the code snippet below:
      * </p>
-     *
+     * <p>
      * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
      * Pattern pattern = Pattern.compile(<span style="color: darkred;">"Egyptian.*"</span>);
      * List&lt;ScriptCode&gt; list = ScriptCode.findByName(pattern);</pre>
-     *
+     * <p>
      * <p>
      * contains 3 {@code ScriptCode}s as listed below.
      * </p>
-     *
+     * <p>
      * <ol>
      * <li>{@link #Egyd} : Egyptian demotic
      * <li>{@link #Egyh} : Egyptian hieratic
      * <li>{@link #Egyp} : Egyptian hieroglyps
      * </ol>
      *
-     * @param pattern
-     *         Pattern to match names.
-     *
-     * @return
-     *         List of {@code ScriptCode}. If nothing has matched,
-     *         an empty list is returned.
-     *
-     * @throws IllegalArgumentException
-     *         {@code pattern} is {@code null}.
-     *
+     * @param pattern Pattern to match names.
+     * @return List of {@code ScriptCode}. If nothing has matched,
+     * an empty list is returned.
+     * @throws IllegalArgumentException {@code pattern} is {@code null}.
      * @since 1.11
      */
-    public static List<ScriptCode> findByName(Pattern pattern)
-    {
-        if (pattern == null)
-        {
+    public static List<ScriptCode> findByName(Pattern pattern) {
+        if (pattern == null) {
             throw new IllegalArgumentException("pattern is null.");
         }
 
         List<ScriptCode> list = new ArrayList<ScriptCode>();
 
-        for (ScriptCode entry : values())
-        {
+        for (ScriptCode entry : values()) {
             // If the name matches the given pattern.
-            if (pattern.matcher(entry.getName()).matches())
-            {
+            if (pattern.matcher(entry.getName()).matches()) {
                 list.add(entry);
             }
         }

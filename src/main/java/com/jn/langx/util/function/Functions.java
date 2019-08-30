@@ -112,7 +112,7 @@ public class Functions {
         };
     }
 
-    public static Predicate<String> stringContainsPredicate(final String cantained){
+    public static Predicate<String> stringContainsPredicate(final String cantained) {
         Preconditions.checkTrue(Emptys.isNotEmpty(cantained));
         return new Predicate<String>() {
             @Override
