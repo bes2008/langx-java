@@ -1,4 +1,4 @@
-package com.jn.langx.util.timing;
+package com.jn.langx.util;
 
 
 import com.jn.langx.annotation.Nullable;

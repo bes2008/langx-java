@@ -2,6 +2,7 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -20,6 +21,14 @@ public class Dates {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(date);
         return InternalThreadLocalMap.getSimpleDateFormat(pattern).format(date);
+    }
+
+    public Date parse(String dateString, String pattern) {
+        try {
+            return InternalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
+        } catch (ParseException ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
+        }
     }
 
 
