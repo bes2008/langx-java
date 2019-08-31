@@ -3,30 +3,16 @@ package com.jn.langx.util.io;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.InternalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 
 public final class Charsets {
-    private static final ThreadLocal<Map<Charset, CharsetEncoder>> encoderCache = new ThreadLocal<Map<Charset, CharsetEncoder>>() {
-        @Override
-        protected Map<Charset, CharsetEncoder> initialValue() {
-            return new IdentityHashMap<Charset, CharsetEncoder>();
-        }
-    };
-    private static final ThreadLocal<Map<Charset, CharsetDecoder>> decoderCache = new ThreadLocal<Map<Charset, CharsetDecoder>>() {
-        @Override
-        protected Map<Charset, CharsetDecoder> initialValue() {
-            return new IdentityHashMap<Charset, CharsetDecoder>();
-        }
-    };
-
     private Charsets() {
     }
 
@@ -89,16 +75,8 @@ public final class Charsets {
      */
     public static CharsetEncoder encoder(@NonNull Charset charset) {
         Preconditions.checkNotNull(charset, "charset");
-
-        Map<Charset, CharsetEncoder> map = encoderCache.get();
-        CharsetEncoder e = map.get(charset);
-        if (e != null) {
-            e.reset().onMalformedInput(CodingErrorAction.REPLACE).onUnmappableCharacter(CodingErrorAction.REPLACE);
-            return e;
-        }
-
-        e = encoder(charset, CodingErrorAction.REPLACE, CodingErrorAction.REPLACE);
-        map.put(charset, e);
+        CharsetEncoder e = InternalThreadLocalMap.getEncoder(charset);
+        e.reset().onMalformedInput(CodingErrorAction.REPLACE).onUnmappableCharacter(CodingErrorAction.REPLACE);
         return e;
     }
 
@@ -139,15 +117,8 @@ public final class Charsets {
     public static CharsetDecoder decoder(@NonNull Charset charset) {
         Preconditions.checkNotNull(charset, "charset");
 
-        Map<Charset, CharsetDecoder> map = decoderCache.get();
-        CharsetDecoder d = map.get(charset);
-        if (d != null) {
-            d.reset().onMalformedInput(CodingErrorAction.REPLACE).onUnmappableCharacter(CodingErrorAction.REPLACE);
-            return d;
-        }
-
-        d = decoder(charset, CodingErrorAction.REPLACE, CodingErrorAction.REPLACE);
-        map.put(charset, d);
+        CharsetDecoder d = InternalThreadLocalMap.getDecoder(charset);
+        d.reset().onMalformedInput(CodingErrorAction.REPLACE).onUnmappableCharacter(CodingErrorAction.REPLACE);
         return d;
     }
 }
