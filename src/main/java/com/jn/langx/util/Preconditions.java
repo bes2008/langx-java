@@ -14,20 +14,40 @@
 
 package com.jn.langx.util;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
+
 public class Preconditions {
     private Preconditions() {
         throw new UnsupportedOperationException();
     }
 
-    public static <T> T checkNotNull(T obj) {
+    public static <T> T checkNotNull(@NonNull T obj) {
         if (obj == null) {
             throw new NullPointerException();
         }
         return obj;
     }
 
-    public static <T> T checkNotNull(T obj, String errorMessage) {
+    public static <T> T checkNotNull(@NonNull T obj, @Nullable String errorMessage) {
         if (obj == null) {
+            if (errorMessage == null) {
+                throw new NullPointerException();
+            }
+            throw new NullPointerException(errorMessage);
+        }
+        return obj;
+    }
+
+    public static <T> T checkNotEmpty(@Nullable T obj) {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
+        return obj;
+    }
+
+    public static <T> T checkNotEmpty(@NonNull T obj, @Nullable String errorMessage) {
+        if (Emptys.isEmpty(obj)) {
             if (errorMessage == null) {
                 throw new NullPointerException();
             }
