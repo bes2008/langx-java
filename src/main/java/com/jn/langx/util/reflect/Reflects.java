@@ -12,6 +12,8 @@ import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.type.Types;
 import com.jn.langx.util.struct.Holder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -31,6 +33,11 @@ import static java.lang.System.arraycopy;
 public class Reflects {
 
     private static final Pattern lamdbaPattern = Pattern.compile(".*\\$\\$Lambda\\$[0-9]+/.*");
+    private static final Logger logger = LoggerFactory.getLogger(Reflects.class);
+
+    private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
+    private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");
+
 
     public static String getTypeName(@NonNull Class type) {
         return Types.typeToString(type);
@@ -805,7 +812,6 @@ public class Reflects {
         Preconditions.checkNotNull(classFQN);
         Class clazz = object.getClass();
         Set<String> set = Collects.emptyHashSet(true);
-        //set.addAll(Collects.getAllInterfaces(clazz));
         Pipeline.of(getAllInterfaces(clazz)).concat(getAllSuperClass(clazz)).map(new Mapper<Class<?>, String>() {
             @Override
             public String apply(Class<?> ifce) {
@@ -928,6 +934,91 @@ public class Reflects {
             }
         }
         return candidate;
+    }
+
+    public static boolean makeAccessible(Field field) {
+        if ((!Modifiers.isPublic(field) || !Modifiers.isPublic(field.getDeclaringClass()) || Modifiers.isFinal(field)) && !field.isAccessible()) {
+            try {
+                field.setAccessible(true);
+                return true;
+            } catch (SecurityException ex) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determine whether the given method is an "equals" method.
+     *
+     * @see java.lang.Object#equals(Object)
+     */
+    public static boolean isEqualsMethod(@Nullable Method method) {
+        if (method == null || !method.getName().equals("equals")) {
+            return false;
+        }
+        Class<?>[] paramTypes = method.getParameterTypes();
+        return (paramTypes.length == 1 && paramTypes[0] == Object.class);
+    }
+
+    /**
+     * Determine whether the given method is a "hashCode" method.
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    public static boolean isHashCodeMethod(@Nullable Method method) {
+        return (method != null && method.getName().equals("hashCode") && !method.isVarArgs() && method.getParameterTypes().length == 0);
+    }
+
+    /**
+     * Determine whether the given method is a "toString" method.
+     *
+     * @see java.lang.Object#toString()
+     */
+    public static boolean isToStringMethod(@Nullable Method method) {
+        return (method != null && method.getName().equals("toString") && !method.isVarArgs() && method.getParameterTypes().length == 0);
+    }
+
+    /**
+     * Determine whether the given method is originally declared by {@link java.lang.Object}.
+     */
+    public static boolean isObjectMethod(@Nullable Method method) {
+        return (method != null && (method.getDeclaringClass() == Object.class || isEqualsMethod(method) || isHashCodeMethod(method) || isToStringMethod(method)));
+    }
+
+
+    /**
+     * Determine if the given class defines an {@link Object#equals} override.
+     *
+     * @param clazz The class to check
+     * @return True if clazz defines an equals override.
+     */
+    public static boolean isOverrideEquals(Class clazz) {
+        Method equals = getDeclaredMethod(clazz, "equals", Object.class);
+        return !OBJECT_EQUALS.equals(equals);
+    }
+
+    /**
+     * Determine if the given class defines a {@link Object#hashCode} override.
+     *
+     * @param clazz The class to check
+     * @return True if clazz defines an hashCode override.
+     */
+    public static boolean isOverrideHashCode(Class clazz) {
+        Method hashCode = getDeclaredMethod(clazz, "hashCode");
+        return !OBJECT_HASHCODE.equals(hashCode);
+    }
+
+    /**
+     * Determine if the given class implements the given interface.
+     *
+     * @param clazz The class to check
+     * @param intf  The interface to check it against.
+     * @return True if the class does implement the interface, false otherwise.
+     */
+    public static boolean isImplementsInterface(Class clazz, Class intf) {
+        Preconditions.checkTrue(intf.isInterface(), "Interface to check was not an interface");
+        return intf.isAssignableFrom(clazz);
     }
 
 
