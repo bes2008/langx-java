@@ -347,7 +347,7 @@ public class Nets {
      * @return {@code true} if the provided string is a valid domain, {@code false} otherwise
      */
     public static boolean isValidEmailDomainAddress(String domain) {
-        return isValidDomainAddress( domain, EMAIL_DOMAIN_PATTERN );
+        return isValidDomainAddress(domain, EMAIL_DOMAIN_PATTERN);
     }
 
     /**
@@ -357,36 +357,34 @@ public class Nets {
      * @return {@code true} if the provided string is a valid domain, {@code false} otherwise
      */
     public static boolean isValidDomainAddress(String domain) {
-        return isValidDomainAddress( domain, DOMAIN_PATTERN );
+        return isValidDomainAddress(domain, DOMAIN_PATTERN);
     }
 
     private static boolean isValidDomainAddress(String domain, Pattern pattern) {
         // if we have a trailing dot the domain part we have an invalid email address.
         // the regular expression match would take care of this, but IDN.toASCII drops the trailing '.'
-        if ( domain.endsWith( "." ) ) {
+        if (domain.endsWith(".")) {
             return false;
         }
 
-        Matcher matcher = pattern.matcher( domain );
-        if ( !matcher.matches() ) {
+        Matcher matcher = pattern.matcher(domain);
+        if (!matcher.matches()) {
             return false;
         }
 
         String asciiString;
         try {
-            asciiString = IDN.toASCII( domain );
-        }
-        catch (IllegalArgumentException e) {
+            asciiString = IDN.toASCII(domain);
+        } catch (IllegalArgumentException e) {
             return false;
         }
 
-        if ( asciiString.length() > MAX_DOMAIN_PART_LENGTH ) {
+        if (asciiString.length() > MAX_DOMAIN_PART_LENGTH) {
             return false;
         }
 
         return true;
     }
-
 
 
     public static boolean isValidIpV6Address(String ip) {

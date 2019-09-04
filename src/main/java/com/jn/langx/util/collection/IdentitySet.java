@@ -30,7 +30,7 @@ public class IdentitySet implements Set {
      * @param sizing The sizing of the set to create.
      */
     public IdentitySet(int sizing) {
-        this.map = new IdentityHashMap( sizing );
+        this.map = new IdentityHashMap(sizing);
     }
 
     public int size() {
@@ -42,7 +42,7 @@ public class IdentitySet implements Set {
     }
 
     public boolean contains(Object o) {
-        return map.get( o ) == DUMP_VALUE;
+        return map.get(o) == DUMP_VALUE;
     }
 
     public Iterator iterator() {
@@ -54,21 +54,21 @@ public class IdentitySet implements Set {
     }
 
     public Object[] toArray(Object[] a) {
-        return map.keySet().toArray( a );
+        return map.keySet().toArray(a);
     }
 
     public boolean add(Object o) {
-        return map.put( o, DUMP_VALUE ) == null;
+        return map.put(o, DUMP_VALUE) == null;
     }
 
     public boolean remove(Object o) {
-        return map.remove( o ) == DUMP_VALUE;
+        return map.remove(o) == DUMP_VALUE;
     }
 
     public boolean containsAll(Collection c) {
         Iterator it = c.iterator();
-        while ( it.hasNext() ) {
-            if ( !map.containsKey( it.next() ) ) {
+        while (it.hasNext()) {
+            if (!map.containsKey(it.next())) {
                 return false;
             }
         }
@@ -78,8 +78,8 @@ public class IdentitySet implements Set {
     public boolean addAll(Collection c) {
         Iterator it = c.iterator();
         boolean changed = false;
-        while ( it.hasNext() ) {
-            if ( this.add( it.next() ) ) {
+        while (it.hasNext()) {
+            if (this.add(it.next())) {
                 changed = true;
             }
         }
@@ -94,8 +94,8 @@ public class IdentitySet implements Set {
     public boolean removeAll(Collection c) {
         Iterator it = c.iterator();
         boolean changed = false;
-        while ( it.hasNext() ) {
-            if ( this.remove( it.next() ) ) {
+        while (it.hasNext()) {
+            if (this.remove(it.next())) {
                 changed = true;
             }
         }

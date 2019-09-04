@@ -7,16 +7,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
-import java.util.AbstractCollection;
-import java.util.AbstractMap;
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -113,7 +104,6 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @param <K> the type of keys maintained by this map
  * @param <V> the type of mapped values
- *
  */
 public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         implements java.util.concurrent.ConcurrentMap<K, V>, Serializable {
@@ -239,29 +229,28 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
     private static int hash(int h) {
         // Spread bits to regularize both segment and index locations,
         // using variant of single-word Wang/Jenkins hash.
-        h += ( h << 15 ) ^ 0xffffcd7d;
-        h ^= ( h >>> 10 );
-        h += ( h << 3 );
-        h ^= ( h >>> 6 );
-        h += ( h << 2 ) + ( h << 14 );
-        return h ^ ( h >>> 16 );
+        h += (h << 15) ^ 0xffffcd7d;
+        h ^= (h >>> 10);
+        h += (h << 3);
+        h ^= (h >>> 6);
+        h += (h << 2) + (h << 14);
+        return h ^ (h >>> 16);
     }
 
     /**
      * Returns the segment that should be used for key with given hash
      *
      * @param hash the hash code for the key
-     *
      * @return the segment
      */
     final Segment<K, V> segmentFor(int hash) {
-        return segments[( hash >>> segmentShift ) & segmentMask];
+        return segments[(hash >>> segmentShift) & segmentMask];
     }
 
     private int hashOf(Object key) {
         return hash(
                 identityComparisons ?
-                        System.identityHashCode( key ) : key.hashCode()
+                        System.identityHashCode(key) : key.hashCode()
         );
     }
 
@@ -280,7 +269,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         final int hash;
 
         WeakKeyReference(K key, int hash, ReferenceQueue<Object> refQueue) {
-            super( key, refQueue );
+            super(key, refQueue);
             this.hash = hash;
         }
 
@@ -302,7 +291,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         final int hash;
 
         SoftKeyReference(K key, int hash, ReferenceQueue<Object> refQueue) {
-            super( key, refQueue );
+            super(key, refQueue);
             this.hash = hash;
         }
 
@@ -322,7 +311,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         final int hash;
 
         WeakValueReference(V value, Object keyRef, int hash, ReferenceQueue<Object> refQueue) {
-            super( value, refQueue );
+            super(value, refQueue);
             this.keyRef = keyRef;
             this.hash = hash;
         }
@@ -343,7 +332,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         final int hash;
 
         SoftValueReference(V value, Object keyRef, int hash, ReferenceQueue<Object> refQueue) {
-            super( value, refQueue );
+            super(value, refQueue);
             this.keyRef = keyRef;
             this.hash = hash;
         }
@@ -383,18 +372,18 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
                 ReferenceQueue<Object> refQueue) {
             this.hash = hash;
             this.next = next;
-            this.keyRef = newKeyReference( key, keyType, refQueue );
-            this.valueRef = newValueReference( value, valueType, refQueue );
+            this.keyRef = newKeyReference(key, keyType, refQueue);
+            this.valueRef = newValueReference(value, valueType, refQueue);
         }
 
         final Object newKeyReference(
                 K key, ReferenceType keyType,
                 ReferenceQueue<Object> refQueue) {
-            if ( keyType == ReferenceType.WEAK ) {
-                return new WeakKeyReference<K>( key, hash, refQueue );
+            if (keyType == ReferenceType.WEAK) {
+                return new WeakKeyReference<K>(key, hash, refQueue);
             }
-            if ( keyType == ReferenceType.SOFT ) {
-                return new SoftKeyReference<K>( key, hash, refQueue );
+            if (keyType == ReferenceType.SOFT) {
+                return new SoftKeyReference<K>(key, hash, refQueue);
             }
 
             return key;
@@ -403,11 +392,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         final Object newValueReference(
                 V value, ReferenceType valueType,
                 ReferenceQueue<Object> refQueue) {
-            if ( valueType == ReferenceType.WEAK ) {
-                return new WeakValueReference<V>( value, keyRef, hash, refQueue );
+            if (valueType == ReferenceType.WEAK) {
+                return new WeakValueReference<V>(value, keyRef, hash, refQueue);
             }
-            if ( valueType == ReferenceType.SOFT ) {
-                return new SoftValueReference<V>( value, keyRef, hash, refQueue );
+            if (valueType == ReferenceType.SOFT) {
+                return new SoftValueReference<V>(value, keyRef, hash, refQueue);
             }
 
             return value;
@@ -415,28 +404,28 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
 
         @SuppressWarnings("unchecked")
         final K key() {
-            if ( keyRef instanceof KeyReference ) {
-                return ( (Reference<K>) keyRef ).get();
+            if (keyRef instanceof KeyReference) {
+                return ((Reference<K>) keyRef).get();
             }
 
             return (K) keyRef;
         }
 
         final V value() {
-            return dereferenceValue( valueRef );
+            return dereferenceValue(valueRef);
         }
 
         @SuppressWarnings("unchecked")
         final V dereferenceValue(Object value) {
-            if ( value instanceof KeyReference ) {
-                return ( (Reference<V>) value ).get();
+            if (value instanceof KeyReference) {
+                return ((Reference<V>) value).get();
             }
 
             return (V) value;
         }
 
         final void setValue(V value, ReferenceType valueType, ReferenceQueue<Object> refQueue) {
-            this.valueRef = newValueReference( value, valueType, refQueue );
+            this.valueRef = newValueReference(value, valueType, refQueue);
         }
 
         @SuppressWarnings("unchecked")
@@ -545,7 +534,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
             this.keyType = keyType;
             this.valueType = valueType;
             this.identityComparisons = identityComparisons;
-            setTable( HashEntry.<K, V>newArray( initialCapacity ) );
+            setTable(HashEntry.<K, V>newArray(initialCapacity));
         }
 
         @SuppressWarnings("unchecked")
@@ -554,7 +543,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         }
 
         private boolean keyEq(Object src, Object dest) {
-            return identityComparisons ? src == dest : src.equals( dest );
+            return identityComparisons ? src == dest : src.equals(dest);
         }
 
         /**
@@ -562,7 +551,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
          * Call only while holding lock or in constructor.
          */
         void setTable(HashEntry<K, V>[] newTable) {
-            threshold = (int) ( newTable.length * loadFactor );
+            threshold = (int) (newTable.length * loadFactor);
             table = newTable;
             refQueue = new ReferenceQueue<Object>();
         }
@@ -572,11 +561,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
          */
         HashEntry<K, V> getFirst(int hash) {
             HashEntry<K, V>[] tab = table;
-            return tab[hash & ( tab.length - 1 )];
+            return tab[hash & (tab.length - 1)];
         }
 
         HashEntry<K, V> newHashEntry(K key, int hash, HashEntry<K, V> next, V value) {
-            return new HashEntry<K, V>( key, hash, next, value, keyType, valueType, refQueue );
+            return new HashEntry<K, V>(key, hash, next, value, keyType, valueType, refQueue);
         }
 
         /**
@@ -591,8 +580,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
             try {
                 removeStale();
                 return e.value();
-            }
-            finally {
+            } finally {
                 unlock();
             }
         }
@@ -600,16 +588,16 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         /* Specialized implementations of map methods */
 
         V get(Object key, int hash) {
-            if ( count != 0 ) { // read-volatile
-                HashEntry<K, V> e = getFirst( hash );
-                while ( e != null ) {
-                    if ( e.hash == hash && keyEq( key, e.key() ) ) {
+            if (count != 0) { // read-volatile
+                HashEntry<K, V> e = getFirst(hash);
+                while (e != null) {
+                    if (e.hash == hash && keyEq(key, e.key())) {
                         Object opaque = e.valueRef;
-                        if ( opaque != null ) {
-                            return e.dereferenceValue( opaque );
+                        if (opaque != null) {
+                            return e.dereferenceValue(opaque);
                         }
 
-                        return readValueUnderLock( e );  // recheck
+                        return readValueUnderLock(e);  // recheck
                     }
                     e = e.next;
                 }
@@ -618,10 +606,10 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         }
 
         boolean containsKey(Object key, int hash) {
-            if ( count != 0 ) { // read-volatile
-                HashEntry<K, V> e = getFirst( hash );
-                while ( e != null ) {
-                    if ( e.hash == hash && keyEq( key, e.key() ) ) {
+            if (count != 0) { // read-volatile
+                HashEntry<K, V> e = getFirst(hash);
+                while (e != null) {
+                    if (e.hash == hash && keyEq(key, e.key())) {
                         return true;
                     }
                     e = e.next;
@@ -631,22 +619,21 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         }
 
         boolean containsValue(Object value) {
-            if ( count != 0 ) { // read-volatile
+            if (count != 0) { // read-volatile
                 HashEntry<K, V>[] tab = table;
                 int len = tab.length;
-                for ( int i = 0; i < len; i++ ) {
-                    for ( HashEntry<K, V> e = tab[i]; e != null; e = e.next ) {
+                for (int i = 0; i < len; i++) {
+                    for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
                         Object opaque = e.valueRef;
                         V v;
 
-                        if ( opaque == null ) {
-                            v = readValueUnderLock( e ); // recheck
-                        }
-                        else {
-                            v = e.dereferenceValue( opaque );
+                        if (opaque == null) {
+                            v = readValueUnderLock(e); // recheck
+                        } else {
+                            v = e.dereferenceValue(opaque);
                         }
 
-                        if ( value.equals( v ) ) {
+                        if (value.equals(v)) {
                             return true;
                         }
                     }
@@ -659,19 +646,18 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
             lock();
             try {
                 removeStale();
-                HashEntry<K, V> e = getFirst( hash );
-                while ( e != null && ( e.hash != hash || !keyEq( key, e.key() ) ) ) {
+                HashEntry<K, V> e = getFirst(hash);
+                while (e != null && (e.hash != hash || !keyEq(key, e.key()))) {
                     e = e.next;
                 }
 
                 boolean replaced = false;
-                if ( e != null && oldValue.equals( e.value() ) ) {
+                if (e != null && oldValue.equals(e.value())) {
                     replaced = true;
-                    e.setValue( newValue, valueType, refQueue );
+                    e.setValue(newValue, valueType, refQueue);
                 }
                 return replaced;
-            }
-            finally {
+            } finally {
                 unlock();
             }
         }
@@ -680,19 +666,18 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
             lock();
             try {
                 removeStale();
-                HashEntry<K, V> e = getFirst( hash );
-                while ( e != null && ( e.hash != hash || !keyEq( key, e.key() ) ) ) {
+                HashEntry<K, V> e = getFirst(hash);
+                while (e != null && (e.hash != hash || !keyEq(key, e.key()))) {
                     e = e.next;
                 }
 
                 V oldValue = null;
-                if ( e != null ) {
+                if (e != null) {
                     oldValue = e.value();
-                    e.setValue( newValue, valueType, refQueue );
+                    e.setValue(newValue, valueType, refQueue);
                 }
                 return oldValue;
-            }
-            finally {
+            } finally {
                 unlock();
             }
         }
@@ -703,38 +688,36 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
             try {
                 removeStale();
                 int c = count;
-                if ( c++ > threshold ) {// ensure capacity
+                if (c++ > threshold) {// ensure capacity
                     int reduced = rehash();
-                    if ( reduced > 0 ) {
+                    if (reduced > 0) {
                         // adjust from possible weak cleanups
-                        count = ( c -= reduced ) - 1; // write-volatile
+                        count = (c -= reduced) - 1; // write-volatile
                     }
                 }
 
                 HashEntry<K, V>[] tab = table;
-                int index = hash & ( tab.length - 1 );
+                int index = hash & (tab.length - 1);
                 HashEntry<K, V> first = tab[index];
                 HashEntry<K, V> e = first;
-                while ( e != null && ( e.hash != hash || !keyEq( key, e.key() ) ) ) {
+                while (e != null && (e.hash != hash || !keyEq(key, e.key()))) {
                     e = e.next;
                 }
 
                 V oldValue;
-                if ( e != null ) {
+                if (e != null) {
                     oldValue = e.value();
-                    if ( !onlyIfAbsent ) {
-                        e.setValue( value, valueType, refQueue );
+                    if (!onlyIfAbsent) {
+                        e.setValue(value, valueType, refQueue);
                     }
-                }
-                else {
+                } else {
                     oldValue = null;
                     ++modCount;
-                    tab[index] = newHashEntry( key, hash, first, value );
+                    tab[index] = newHashEntry(key, hash, first, value);
                     count = c; // write-volatile
                 }
                 return oldValue;
-            }
-            finally {
+            } finally {
                 unlock();
             }
         }
@@ -742,7 +725,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         int rehash() {
             HashEntry<K, V>[] oldTable = table;
             int oldCapacity = oldTable.length;
-            if ( oldCapacity >= MAXIMUM_CAPACITY ) {
+            if (oldCapacity >= MAXIMUM_CAPACITY) {
                 return 0;
             }
 
@@ -760,47 +743,45 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
              * right now.
              */
 
-            HashEntry<K, V>[] newTable = HashEntry.newArray( oldCapacity << 1 );
-            threshold = (int) ( newTable.length * loadFactor );
+            HashEntry<K, V>[] newTable = HashEntry.newArray(oldCapacity << 1);
+            threshold = (int) (newTable.length * loadFactor);
             int sizeMask = newTable.length - 1;
             int reduce = 0;
-            for ( int i = 0; i < oldCapacity; i++ ) {
+            for (int i = 0; i < oldCapacity; i++) {
                 // We need to guarantee that any existing reads of old Map can
                 //  proceed. So we cannot yet null out each bin.
                 HashEntry<K, V> e = oldTable[i];
 
-                if ( e != null ) {
+                if (e != null) {
                     HashEntry<K, V> next = e.next;
                     int idx = e.hash & sizeMask;
 
                     //  Single node on list
-                    if ( next == null ) {
+                    if (next == null) {
                         newTable[idx] = e;
-                    }
-
-                    else {
+                    } else {
                         // Reuse trailing consecutive sequence at same slot
                         HashEntry<K, V> lastRun = e;
                         int lastIdx = idx;
-                        for ( HashEntry<K, V> last = next; last != null; last = last.next ) {
+                        for (HashEntry<K, V> last = next; last != null; last = last.next) {
                             int k = last.hash & sizeMask;
-                            if ( k != lastIdx ) {
+                            if (k != lastIdx) {
                                 lastIdx = k;
                                 lastRun = last;
                             }
                         }
                         newTable[lastIdx] = lastRun;
                         // Clone all remaining nodes
-                        for ( HashEntry<K, V> p = e; p != lastRun; p = p.next ) {
+                        for (HashEntry<K, V> p = e; p != lastRun; p = p.next) {
                             // Skip GC'd weak refs
                             K key = p.key();
-                            if ( key == null ) {
+                            if (key == null) {
                                 reduce++;
                                 continue;
                             }
                             int k = p.hash & sizeMask;
                             HashEntry<K, V> n = newTable[k];
-                            newTable[k] = newHashEntry( key, p.hash, n, p.value() );
+                            newTable[k] = newHashEntry(key, p.hash, n, p.value());
                         }
                     }
                 }
@@ -815,71 +796,69 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         V remove(Object key, int hash, Object value, boolean refRemove) {
             lock();
             try {
-                if ( !refRemove ) {
+                if (!refRemove) {
                     removeStale();
                 }
                 int c = count - 1;
                 HashEntry<K, V>[] tab = table;
-                int index = hash & ( tab.length - 1 );
+                int index = hash & (tab.length - 1);
                 HashEntry<K, V> first = tab[index];
                 HashEntry<K, V> e = first;
                 // a ref remove operation compares the Reference instance
-                while ( e != null && key != e.keyRef
-                        && ( refRemove || hash != e.hash || !keyEq( key, e.key() ) ) ) {
+                while (e != null && key != e.keyRef
+                        && (refRemove || hash != e.hash || !keyEq(key, e.key()))) {
                     e = e.next;
                 }
 
                 V oldValue = null;
-                if ( e != null ) {
+                if (e != null) {
                     V v = e.value();
-                    if ( value == null || value.equals( v ) ) {
+                    if (value == null || value.equals(v)) {
                         oldValue = v;
                         // All entries following removed node can stay
                         // in list, but all preceding ones need to be
                         // cloned.
                         ++modCount;
                         HashEntry<K, V> newFirst = e.next;
-                        for ( HashEntry<K, V> p = first; p != e; p = p.next ) {
+                        for (HashEntry<K, V> p = first; p != e; p = p.next) {
                             K pKey = p.key();
-                            if ( pKey == null ) { // Skip GC'd keys
+                            if (pKey == null) { // Skip GC'd keys
                                 c--;
                                 continue;
                             }
 
-                            newFirst = newHashEntry( pKey, p.hash, newFirst, p.value() );
+                            newFirst = newHashEntry(pKey, p.hash, newFirst, p.value());
                         }
                         tab[index] = newFirst;
                         count = c; // write-volatile
                     }
                 }
                 return oldValue;
-            }
-            finally {
+            } finally {
                 unlock();
             }
         }
 
         final void removeStale() {
             KeyReference ref;
-            while ( ( ref = (KeyReference) refQueue.poll() ) != null ) {
-                remove( ref.keyRef(), ref.keyHash(), null, true );
+            while ((ref = (KeyReference) refQueue.poll()) != null) {
+                remove(ref.keyRef(), ref.keyHash(), null, true);
             }
         }
 
         void clear() {
-            if ( count != 0 ) {
+            if (count != 0) {
                 lock();
                 try {
                     HashEntry<K, V>[] tab = table;
-                    for ( int i = 0; i < tab.length; i++ ) {
+                    for (int i = 0; i < tab.length; i++) {
                         tab[i] = null;
                     }
                     ++modCount;
                     // replace the reference queue to avoid unnecessary stale cleanups
                     refQueue = new ReferenceQueue<Object>();
                     count = 0; // write-volatile
-                }
-                finally {
+                } finally {
                     unlock();
                 }
             }
@@ -896,61 +875,60 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * Behavioral changing options such as {@link Option#IDENTITY_COMPARISONS}
      * can also be specified.
      *
-     * @param initialCapacity the initial capacity. The implementation
-     * performs internal sizing to accommodate this many elements.
-     * @param loadFactor the load factor threshold, used to control resizing.
-     * Resizing may be performed when the average number of elements per
-     * bin exceeds this threshold.
+     * @param initialCapacity  the initial capacity. The implementation
+     *                         performs internal sizing to accommodate this many elements.
+     * @param loadFactor       the load factor threshold, used to control resizing.
+     *                         Resizing may be performed when the average number of elements per
+     *                         bin exceeds this threshold.
      * @param concurrencyLevel the estimated number of concurrently
-     * updating threads. The implementation performs internal sizing
-     * to try to accommodate this many threads.
-     * @param keyType the reference type to use for keys
-     * @param valueType the reference type to use for values
-     * @param options the behavioral options
-     *
+     *                         updating threads. The implementation performs internal sizing
+     *                         to try to accommodate this many threads.
+     * @param keyType          the reference type to use for keys
+     * @param valueType        the reference type to use for values
+     * @param options          the behavioral options
      * @throws IllegalArgumentException if the initial capacity is
-     * negative or the load factor or concurrencyLevel are
-     * nonpositive.
+     *                                  negative or the load factor or concurrencyLevel are
+     *                                  nonpositive.
      */
     public ConcurrentReferenceHashMap(
             int initialCapacity,
             float loadFactor, int concurrencyLevel,
             ReferenceType keyType, ReferenceType valueType,
             EnumSet<Option> options) {
-        if ( !( loadFactor > 0 ) || initialCapacity < 0 || concurrencyLevel <= 0 ) {
+        if (!(loadFactor > 0) || initialCapacity < 0 || concurrencyLevel <= 0) {
             throw new IllegalArgumentException();
         }
 
-        if ( concurrencyLevel > MAX_SEGMENTS ) {
+        if (concurrencyLevel > MAX_SEGMENTS) {
             concurrencyLevel = MAX_SEGMENTS;
         }
 
         // Find power-of-two sizes best matching arguments
         int sshift = 0;
         int ssize = 1;
-        while ( ssize < concurrencyLevel ) {
+        while (ssize < concurrencyLevel) {
             ++sshift;
             ssize <<= 1;
         }
         segmentShift = 32 - sshift;
         segmentMask = ssize - 1;
-        this.segments = Segment.newArray( ssize );
+        this.segments = Segment.newArray(ssize);
 
-        if ( initialCapacity > MAXIMUM_CAPACITY ) {
+        if (initialCapacity > MAXIMUM_CAPACITY) {
             initialCapacity = MAXIMUM_CAPACITY;
         }
         int c = initialCapacity / ssize;
-        if ( c * ssize < initialCapacity ) {
+        if (c * ssize < initialCapacity) {
             ++c;
         }
         int cap = 1;
-        while ( cap < c ) {
+        while (cap < c) {
             cap <<= 1;
         }
 
-        identityComparisons = options != null && options.contains( Option.IDENTITY_COMPARISONS );
+        identityComparisons = options != null && options.contains(Option.IDENTITY_COMPARISONS);
 
-        for ( int i = 0; i < this.segments.length; ++i ) {
+        for (int i = 0; i < this.segments.length; ++i) {
             this.segments[i] = new Segment<K, V>(
                     cap, loadFactor,
                     keyType, valueType, identityComparisons
@@ -962,18 +940,17 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * Creates a new, empty map with the specified initial
      * capacity, load factor and concurrency level.
      *
-     * @param initialCapacity the initial capacity. The implementation
-     * performs internal sizing to accommodate this many elements.
-     * @param loadFactor the load factor threshold, used to control resizing.
-     * Resizing may be performed when the average number of elements per
-     * bin exceeds this threshold.
+     * @param initialCapacity  the initial capacity. The implementation
+     *                         performs internal sizing to accommodate this many elements.
+     * @param loadFactor       the load factor threshold, used to control resizing.
+     *                         Resizing may be performed when the average number of elements per
+     *                         bin exceeds this threshold.
      * @param concurrencyLevel the estimated number of concurrently
-     * updating threads. The implementation performs internal sizing
-     * to try to accommodate this many threads.
-     *
+     *                         updating threads. The implementation performs internal sizing
+     *                         to try to accommodate this many threads.
      * @throws IllegalArgumentException if the initial capacity is
-     * negative or the load factor or concurrencyLevel are
-     * nonpositive.
+     *                                  negative or the load factor or concurrencyLevel are
+     *                                  nonpositive.
      */
     public ConcurrentReferenceHashMap(
             int initialCapacity,
@@ -990,17 +967,16 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * strong values), and concurrencyLevel (16).
      *
      * @param initialCapacity The implementation performs internal
-     * sizing to accommodate this many elements.
-     * @param loadFactor the load factor threshold, used to control resizing.
-     * Resizing may be performed when the average number of elements per
-     * bin exceeds this threshold.
-     *
+     *                        sizing to accommodate this many elements.
+     * @param loadFactor      the load factor threshold, used to control resizing.
+     *                        Resizing may be performed when the average number of elements per
+     *                        bin exceeds this threshold.
      * @throws IllegalArgumentException if the initial capacity of
-     * elements is negative or the load factor is nonpositive
+     *                                  elements is negative or the load factor is nonpositive
      * @since 1.6
      */
     public ConcurrentReferenceHashMap(int initialCapacity, float loadFactor) {
-        this( initialCapacity, loadFactor, DEFAULT_CONCURRENCY_LEVEL );
+        this(initialCapacity, loadFactor, DEFAULT_CONCURRENCY_LEVEL);
     }
 
 
@@ -1009,12 +985,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * reference types and with default load factor (0.75) and concurrencyLevel (16).
      *
      * @param initialCapacity the initial capacity. The implementation
-     * performs internal sizing to accommodate this many elements.
-     * @param keyType the reference type to use for keys
-     * @param valueType the reference type to use for values
-     *
+     *                        performs internal sizing to accommodate this many elements.
+     * @param keyType         the reference type to use for keys
+     * @param valueType       the reference type to use for values
      * @throws IllegalArgumentException if the initial capacity of
-     * elements is negative.
+     *                                  elements is negative.
      */
     public ConcurrentReferenceHashMap(
             int initialCapacity,
@@ -1031,13 +1006,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * load factor (0.75) and concurrencyLevel (16).
      *
      * @param initialCapacity the initial capacity. The implementation
-     * performs internal sizing to accommodate this many elements.
-     *
+     *                        performs internal sizing to accommodate this many elements.
      * @throws IllegalArgumentException if the initial capacity of
-     * elements is negative.
+     *                                  elements is negative.
      */
     public ConcurrentReferenceHashMap(int initialCapacity) {
-        this( initialCapacity, DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL );
+        this(initialCapacity, DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL);
     }
 
     /**
@@ -1046,7 +1020,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * load factor (0.75) and concurrencyLevel (16).
      */
     public ConcurrentReferenceHashMap() {
-        this( DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL );
+        this(DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL);
     }
 
     /**
@@ -1060,12 +1034,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
     public ConcurrentReferenceHashMap(Map<? extends K, ? extends V> m) {
         this(
                 Math.max(
-                        (int) ( m.size() / DEFAULT_LOAD_FACTOR ) + 1,
+                        (int) (m.size() / DEFAULT_LOAD_FACTOR) + 1,
                         DEFAULT_INITIAL_CAPACITY
                 ),
                 DEFAULT_LOAD_FACTOR, DEFAULT_CONCURRENCY_LEVEL
         );
-        putAll( m );
+        putAll(m);
     }
 
     /**
@@ -1087,21 +1061,20 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
          */
         int[] mc = new int[segments.length];
         int mcsum = 0;
-        for ( int i = 0; i < segments.length; ++i ) {
-            if ( segments[i].count != 0 ) {
+        for (int i = 0; i < segments.length; ++i) {
+            if (segments[i].count != 0) {
                 return false;
-            }
-            else {
+            } else {
                 mcsum += mc[i] = segments[i].modCount;
             }
         }
         // If mcsum happens to be zero, then we know we got a snapshot
         // before any modifications at all were made.  This is
         // probably common enough to bother tracking.
-        if ( mcsum != 0 ) {
-            for ( int i = 0; i < segments.length; ++i ) {
-                if ( segments[i].count != 0 ||
-                        mc[i] != segments[i].modCount ) {
+        if (mcsum != 0) {
+            for (int i = 0; i < segments.length; ++i) {
+                if (segments[i].count != 0 ||
+                        mc[i] != segments[i].modCount) {
                     return false;
                 }
             }
@@ -1124,43 +1097,42 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         int[] mc = new int[segments.length];
         // Try a few times to get accurate count. On failure due to
         // continuous async changes in table, resort to locking.
-        for ( int k = 0; k < RETRIES_BEFORE_LOCK; ++k ) {
+        for (int k = 0; k < RETRIES_BEFORE_LOCK; ++k) {
             check = 0;
             sum = 0;
             int mcsum = 0;
-            for ( int i = 0; i < segments.length; ++i ) {
+            for (int i = 0; i < segments.length; ++i) {
                 sum += segments[i].count;
                 mcsum += mc[i] = segments[i].modCount;
             }
-            if ( mcsum != 0 ) {
-                for ( int i = 0; i < segments.length; ++i ) {
+            if (mcsum != 0) {
+                for (int i = 0; i < segments.length; ++i) {
                     check += segments[i].count;
-                    if ( mc[i] != segments[i].modCount ) {
+                    if (mc[i] != segments[i].modCount) {
                         check = -1; // force retry
                         break;
                     }
                 }
             }
-            if ( check == sum ) {
+            if (check == sum) {
                 break;
             }
         }
-        if ( check != sum ) { // Resort to locking all segments
+        if (check != sum) { // Resort to locking all segments
             sum = 0;
-            for ( int i = 0; i < segments.length; ++i ) {
+            for (int i = 0; i < segments.length; ++i) {
                 segments[i].lock();
             }
-            for ( int i = 0; i < segments.length; ++i ) {
+            for (int i = 0; i < segments.length; ++i) {
                 sum += segments[i].count;
             }
-            for ( int i = 0; i < segments.length; ++i ) {
+            for (int i = 0; i < segments.length; ++i) {
                 segments[i].unlock();
             }
         }
-        if ( sum > Integer.MAX_VALUE ) {
+        if (sum > Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
-        }
-        else {
+        } else {
             return (int) sum;
         }
     }
@@ -1178,31 +1150,29 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      */
     @Override
     public V get(Object key) {
-        if ( key == null ) {
+        if (key == null) {
             return null;
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).get( key, hash );
+        int hash = hashOf(key);
+        return segmentFor(hash).get(key, hash);
     }
 
     /**
      * Tests if the specified object is a key in this table.
      *
      * @param key possible key
-     *
      * @return <tt>true</tt> if and only if the specified object
      * is a key in this table, as determined by the
      * <tt>equals</tt> method; <tt>false</tt> otherwise.
-     *
      * @throws NullPointerException if the specified key is null
      */
     @Override
     public boolean containsKey(Object key) {
-        if ( key == null ) {
+        if (key == null) {
             return false;
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).containsKey( key, hash );
+        int hash = hashOf(key);
+        return segmentFor(hash).containsKey(key, hash);
     }
 
     /**
@@ -1212,13 +1182,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * method <tt>containsKey</tt>.
      *
      * @param value value whose presence in this map is to be tested
-     *
      * @return <tt>true</tt> if this map maps one or more keys to the
      * specified value
      */
     @Override
     public boolean containsValue(Object value) {
-        if ( value == null ) {
+        if (value == null) {
             return false;
         }
 
@@ -1228,45 +1197,44 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         int[] mc = new int[segments.length];
 
         // Try a few times without locking
-        for ( int k = 0; k < RETRIES_BEFORE_LOCK; ++k ) {
+        for (int k = 0; k < RETRIES_BEFORE_LOCK; ++k) {
             int sum = 0;
             int mcsum = 0;
-            for ( int i = 0; i < segments.length; ++i ) {
+            for (int i = 0; i < segments.length; ++i) {
                 int c = segments[i].count;
                 mcsum += mc[i] = segments[i].modCount;
-                if ( segments[i].containsValue( value ) ) {
+                if (segments[i].containsValue(value)) {
                     return true;
                 }
             }
             boolean cleanSweep = true;
-            if ( mcsum != 0 ) {
-                for ( int i = 0; i < segments.length; ++i ) {
+            if (mcsum != 0) {
+                for (int i = 0; i < segments.length; ++i) {
                     int c = segments[i].count;
-                    if ( mc[i] != segments[i].modCount ) {
+                    if (mc[i] != segments[i].modCount) {
                         cleanSweep = false;
                         break;
                     }
                 }
             }
-            if ( cleanSweep ) {
+            if (cleanSweep) {
                 return false;
             }
         }
         // Resort to locking all segments
-        for ( int i = 0; i < segments.length; ++i ) {
+        for (int i = 0; i < segments.length; ++i) {
             segments[i].lock();
         }
         boolean found = false;
         try {
-            for ( int i = 0; i < segments.length; ++i ) {
-                if ( segments[i].containsValue( value ) ) {
+            for (int i = 0; i < segments.length; ++i) {
+                if (segments[i].containsValue(value)) {
                     found = true;
                     break;
                 }
             }
-        }
-        finally {
-            for ( int i = 0; i < segments.length; ++i ) {
+        } finally {
+            for (int i = 0; i < segments.length; ++i) {
                 segments[i].unlock();
             }
         }
@@ -1282,16 +1250,14 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * Java Collections framework.
      *
      * @param value a value to search for
-     *
      * @return <tt>true</tt> if and only if some key maps to the
      * <tt>value</tt> argument in this table as
      * determined by the <tt>equals</tt> method;
      * <tt>false</tt> otherwise
-     *
      * @throws NullPointerException if the specified value is null
      */
     public boolean contains(Object value) {
-        return containsValue( value );
+        return containsValue(value);
     }
 
     /**
@@ -1301,21 +1267,19 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * <p> The value can be retrieved by calling the <tt>get</tt> method
      * with a key that is equal to the original key.
      *
-     * @param key key with which the specified value is to be associated
+     * @param key   key with which the specified value is to be associated
      * @param value value to be associated with the specified key
-     *
      * @return the previous value associated with <tt>key</tt>, or
      * <tt>null</tt> if there was no mapping for <tt>key</tt>
-     *
      * @throws NullPointerException if the specified key or value is null
      */
     @Override
     public V put(K key, V value) {
-        if ( key == null || value == null ) {
+        if (key == null || value == null) {
             return null;
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).put( key, hash, value, false );
+        int hash = hashOf(key);
+        return segmentFor(hash).put(key, hash, value, false);
     }
 
     /**
@@ -1323,16 +1287,15 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      *
      * @return the previous value associated with the specified key,
      * or <tt>null</tt> if there was no mapping for the key
-     *
      * @throws NullPointerException if the specified key or value is null
      */
     @Override
     public V putIfAbsent(K key, V value) {
-        if ( key == null || value == null ) {
+        if (key == null || value == null) {
             return null;
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).put( key, hash, value, true );
+        int hash = hashOf(key);
+        return segmentFor(hash).put(key, hash, value, true);
     }
 
     /**
@@ -1344,8 +1307,8 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      */
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        for ( Map.Entry<? extends K, ? extends V> e : m.entrySet() ) {
-            put( e.getKey(), e.getValue() );
+        for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
+            put(e.getKey(), e.getValue());
         }
     }
 
@@ -1354,19 +1317,17 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * This method does nothing if the key is not in the map.
      *
      * @param key the key that needs to be removed
-     *
      * @return the previous value associated with <tt>key</tt>, or
      * <tt>null</tt> if there was no mapping for <tt>key</tt>
-     *
      * @throws NullPointerException if the specified key is null
      */
     @Override
     public V remove(Object key) {
-        if ( key == null ) {
+        if (key == null) {
             return null;
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).remove( key, hash, null, false );
+        int hash = hashOf(key);
+        return segmentFor(hash).remove(key, hash, null, false);
     }
 
     /**
@@ -1376,11 +1337,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      */
     @Override
     public boolean remove(Object key, Object value) {
-        if ( key == null || value == null ) {
+        if (key == null || value == null) {
             return false;
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).remove( key, hash, value, false ) != null;
+        int hash = hashOf(key);
+        return segmentFor(hash).remove(key, hash, value, false) != null;
     }
 
     /**
@@ -1390,11 +1351,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      */
     @Override
     public boolean replace(K key, V oldValue, V newValue) {
-        if ( key == null || oldValue == null || newValue == null ) {
+        if (key == null || oldValue == null || newValue == null) {
             throw new NullPointerException();
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).replace( key, hash, oldValue, newValue );
+        int hash = hashOf(key);
+        return segmentFor(hash).replace(key, hash, oldValue, newValue);
     }
 
     /**
@@ -1402,16 +1363,15 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      *
      * @return the previous value associated with the specified key,
      * or <tt>null</tt> if there was no mapping for the key
-     *
      * @throws NullPointerException if the specified key or value is null
      */
     @Override
     public V replace(K key, V value) {
-        if ( key == null || value == null ) {
+        if (key == null || value == null) {
             return null;
         }
-        int hash = hashOf( key );
-        return segmentFor( hash ).replace( key, hash, value );
+        int hash = hashOf(key);
+        return segmentFor(hash).replace(key, hash, value);
     }
 
     /**
@@ -1419,7 +1379,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      */
     @Override
     public void clear() {
-        for ( int i = 0; i < segments.length; ++i ) {
+        for (int i = 0; i < segments.length; ++i) {
             segments[i].clear();
         }
     }
@@ -1436,7 +1396,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * of this table, so if it is to be used, it should be used sparingly.
      */
     public void purgeStaleEntries() {
-        for ( int i = 0; i < segments.length; ++i ) {
+        for (int i = 0; i < segments.length; ++i) {
             segments[i].removeStale();
         }
     }
@@ -1461,7 +1421,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
     @Override
     public Set<K> keySet() {
         Set<K> ks = keySet;
-        return ( ks != null ) ? ks : ( keySet = new KeySet() );
+        return (ks != null) ? ks : (keySet = new KeySet());
     }
 
     /**
@@ -1483,7 +1443,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
     @Override
     public Collection<V> values() {
         Collection<V> vs = values;
-        return ( vs != null ) ? vs : ( values = new Values() );
+        return (vs != null) ? vs : (values = new Values());
     }
 
     /**
@@ -1505,14 +1465,13 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
     @Override
     public Set<Map.Entry<K, V>> entrySet() {
         Set<Map.Entry<K, V>> es = entrySet;
-        return ( es != null ) ? es : ( entrySet = new EntrySet() );
+        return (es != null) ? es : (entrySet = new EntrySet());
     }
 
     /**
      * Returns an enumeration of the keys in this table.
      *
      * @return an enumeration of the keys in this table
-     *
      * @see #keySet()
      */
     public Enumeration<K> keys() {
@@ -1523,7 +1482,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * Returns an enumeration of the values in this table.
      *
      * @return an enumeration of the values in this table
-     *
      * @see #values()
      */
     public Enumeration<V> elements() {
@@ -1551,22 +1509,22 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         }
 
         final void advance() {
-            if ( nextEntry != null && ( nextEntry = nextEntry.next ) != null ) {
+            if (nextEntry != null && (nextEntry = nextEntry.next) != null) {
                 return;
             }
 
-            while ( nextTableIndex >= 0 ) {
-                if ( ( nextEntry = currentTable[nextTableIndex--] ) != null ) {
+            while (nextTableIndex >= 0) {
+                if ((nextEntry = currentTable[nextTableIndex--]) != null) {
                     return;
                 }
             }
 
-            while ( nextSegmentIndex >= 0 ) {
+            while (nextSegmentIndex >= 0) {
                 Segment<K, V> seg = segments[nextSegmentIndex--];
-                if ( seg.count != 0 ) {
+                if (seg.count != 0) {
                     currentTable = seg.table;
-                    for ( int j = currentTable.length - 1; j >= 0; --j ) {
-                        if ( ( nextEntry = currentTable[j] ) != null ) {
+                    for (int j = currentTable.length - 1; j >= 0; --j) {
+                        if ((nextEntry = currentTable[j]) != null) {
                             nextTableIndex = j - 1;
                             return;
                         }
@@ -1576,8 +1534,8 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         }
 
         public boolean hasNext() {
-            while ( nextEntry != null ) {
-                if ( nextEntry.key() != null ) {
+            while (nextEntry != null) {
+                if (nextEntry.key() != null) {
                     return true;
                 }
                 advance();
@@ -1588,23 +1546,23 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
 
         HashEntry<K, V> nextEntry() {
             do {
-                if ( nextEntry == null ) {
+                if (nextEntry == null) {
                     throw new NoSuchElementException();
                 }
 
                 lastReturned = nextEntry;
                 currentKey = lastReturned.key();
                 advance();
-            } while ( currentKey == null ); // Skip GC'd keys
+            } while (currentKey == null); // Skip GC'd keys
 
             return lastReturned;
         }
 
         public void remove() {
-            if ( lastReturned == null ) {
+            if (lastReturned == null) {
                 throw new IllegalStateException();
             }
-            ConcurrentReferenceHashMap.this.remove( currentKey );
+            ConcurrentReferenceHashMap.this.remove(currentKey);
             lastReturned = null;
         }
     }
@@ -1675,18 +1633,18 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
 
         @Override
         public boolean equals(Object o) {
-            if ( !( o instanceof Map.Entry ) ) {
+            if (!(o instanceof Map.Entry)) {
                 return false;
             }
             @SuppressWarnings("unchecked")
             Map.Entry e = (Map.Entry) o;
-            return eq( key, e.getKey() ) && eq( value, e.getValue() );
+            return eq(key, e.getKey()) && eq(value, e.getValue());
         }
 
         @Override
         public int hashCode() {
-            return ( key == null ? 0 : key.hashCode() )
-                    ^ ( value == null ? 0 : value.hashCode() );
+            return (key == null ? 0 : key.hashCode())
+                    ^ (value == null ? 0 : value.hashCode());
         }
 
         @Override
@@ -1695,7 +1653,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         }
 
         private static boolean eq(Object o1, Object o2) {
-            return o1 == null ? o2 == null : o1.equals( o2 );
+            return o1 == null ? o2 == null : o1.equals(o2);
         }
     }
 
@@ -1708,7 +1666,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         private static final long serialVersionUID = -7900634345345313646L;
 
         WriteThroughEntry(K k, V v) {
-            super( k, v );
+            super(k, v);
         }
 
         /**
@@ -1722,11 +1680,11 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
          */
         @Override
         public V setValue(V value) {
-            if ( value == null ) {
+            if (value == null) {
                 throw new NullPointerException();
             }
-            V v = super.setValue( value );
-            ConcurrentReferenceHashMap.this.put( getKey(), value );
+            V v = super.setValue(value);
+            ConcurrentReferenceHashMap.this.put(getKey(), value);
             return v;
         }
     }
@@ -1737,7 +1695,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         @Override
         public Map.Entry<K, V> next() {
             HashEntry<K, V> e = super.nextEntry();
-            return new WriteThroughEntry( e.key(), e.value() );
+            return new WriteThroughEntry(e.key(), e.value());
         }
     }
 
@@ -1759,12 +1717,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
 
         @Override
         public boolean contains(Object o) {
-            return ConcurrentReferenceHashMap.this.containsKey( o );
+            return ConcurrentReferenceHashMap.this.containsKey(o);
         }
 
         @Override
         public boolean remove(Object o) {
-            return ConcurrentReferenceHashMap.this.remove( o ) != null;
+            return ConcurrentReferenceHashMap.this.remove(o) != null;
         }
 
         @Override
@@ -1791,7 +1749,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
 
         @Override
         public boolean contains(Object o) {
-            return ConcurrentReferenceHashMap.this.containsValue( o );
+            return ConcurrentReferenceHashMap.this.containsValue(o);
         }
 
         @Override
@@ -1808,21 +1766,21 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
 
         @Override
         public boolean contains(Object o) {
-            if ( !( o instanceof Map.Entry ) ) {
+            if (!(o instanceof Map.Entry)) {
                 return false;
             }
             Map.Entry<?, ?> e = (Map.Entry<?, ?>) o;
-            V v = ConcurrentReferenceHashMap.this.get( e.getKey() );
-            return v != null && v.equals( e.getValue() );
+            V v = ConcurrentReferenceHashMap.this.get(e.getKey());
+            return v != null && v.equals(e.getValue());
         }
 
         @Override
         public boolean remove(Object o) {
-            if ( !( o instanceof Map.Entry ) ) {
+            if (!(o instanceof Map.Entry)) {
                 return false;
             }
             Map.Entry<?, ?> e = (Map.Entry<?, ?>) o;
-            return ConcurrentReferenceHashMap.this.remove( e.getKey(), e.getValue() );
+            return ConcurrentReferenceHashMap.this.remove(e.getKey(), e.getValue());
         }
 
         @Override
@@ -1848,7 +1806,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
      * stream (i.e., serialize it).
      *
      * @param s the stream
-     *
      * @serialData the key (Object) and value (Object)
      * for each key-value mapping, followed by a null pair.
      * The key-value mappings are emitted in no particular order.
@@ -1856,30 +1813,29 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
     private void writeObject(java.io.ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
 
-        for ( int k = 0; k < segments.length; ++k ) {
+        for (int k = 0; k < segments.length; ++k) {
             Segment<K, V> seg = segments[k];
             seg.lock();
             try {
                 HashEntry<K, V>[] tab = seg.table;
-                for ( int i = 0; i < tab.length; ++i ) {
-                    for ( HashEntry<K, V> e = tab[i]; e != null; e = e.next ) {
+                for (int i = 0; i < tab.length; ++i) {
+                    for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
                         K key = e.key();
-                        if ( key == null ) {
+                        if (key == null) {
                             // Skip GC'd keys
                             continue;
                         }
 
-                        s.writeObject( key );
-                        s.writeObject( e.value() );
+                        s.writeObject(key);
+                        s.writeObject(e.value());
                     }
                 }
-            }
-            finally {
+            } finally {
                 seg.unlock();
             }
         }
-        s.writeObject( null );
-        s.writeObject( null );
+        s.writeObject(null);
+        s.writeObject(null);
     }
 
     /**
@@ -1894,18 +1850,18 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V>
         s.defaultReadObject();
 
         // Initialize each segment to be minimally sized, and let grow.
-        for ( int i = 0; i < segments.length; ++i ) {
-            segments[i].setTable( new HashEntry[1] );
+        for (int i = 0; i < segments.length; ++i) {
+            segments[i].setTable(new HashEntry[1]);
         }
 
         // Read the keys and values, and put the mappings in the table
         for (; ; ) {
             K key = (K) s.readObject();
             V value = (V) s.readObject();
-            if ( key == null ) {
+            if (key == null) {
                 break;
             }
-            put( key, value );
+            put(key, value);
         }
     }
 }
