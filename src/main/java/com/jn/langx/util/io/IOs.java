@@ -471,9 +471,7 @@ public class IOs {
      * @return the requested byte array
      * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #toByteArray(Reader, Charset)} instead
      */
-    @Deprecated
     public static byte[] toByteArray(final Reader input) throws IOException {
         return toByteArray(input, Charset.defaultCharset());
     }
@@ -535,9 +533,7 @@ public class IOs {
      * @return the requested byte array
      * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs (never occurs)
-     * @deprecated 2.5 Use {@link String#getBytes()} instead
      */
-    @Deprecated
     public static byte[] toByteArray(final String input) throws IOException {
         // make explicit the use of the default charset
         return input.getBytes(Charset.defaultCharset());
@@ -605,9 +601,7 @@ public class IOs {
      * @return the requested character array
      * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #toCharArray(InputStream, Charset)} instead
      */
-    @Deprecated
     public static char[] toCharArray(final InputStream is) throws IOException {
         return toCharArray(is, Charset.defaultCharset());
     }
@@ -686,9 +680,7 @@ public class IOs {
      * @return the requested String
      * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #toString(InputStream, Charset)} instead
      */
-    @Deprecated
     public static String toString(final InputStream input) throws IOException {
         return toString(input, Charset.defaultCharset());
     }
@@ -770,9 +762,7 @@ public class IOs {
      * @param uri The URI source.
      * @return The contents of the URL as a String.
      * @throws IOException if an I/O exception occurs.
-     * @deprecated 2.5 use {@link #toString(URI, Charset)} instead
      */
-    @Deprecated
     public static String toString(final URI uri) throws IOException {
         return toString(uri, Charset.defaultCharset());
     }
@@ -811,9 +801,7 @@ public class IOs {
      * @param url The URL source.
      * @return The contents of the URL as a String.
      * @throws IOException if an I/O exception occurs.
-     * @deprecated 2.5 use {@link #toString(URL, Charset)} instead
      */
-    @Deprecated
     public static String toString(final URL url) throws IOException {
         return toString(url, Charset.defaultCharset());
     }
@@ -859,9 +847,7 @@ public class IOs {
      * @return the requested String
      * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs (never occurs)
-     * @deprecated 2.5 Use {@link String#String(byte[])} instead
      */
-    @Deprecated
     public static String toString(final byte[] input) throws IOException {
         // make explicit the use of the default charset
         return new String(input, Charset.defaultCharset());
@@ -1012,9 +998,7 @@ public class IOs {
      * @return the list of Strings, never null
      * @throws NullPointerException if the input is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #readLines(InputStream, Charset)} instead
      */
-    @Deprecated
     public static List<String> readLines(final InputStream input) throws IOException {
         return readLines(input, Charset.defaultCharset());
     }
@@ -1193,9 +1177,7 @@ public class IOs {
      *
      * @param input the CharSequence to convert
      * @return an input stream
-     * @deprecated 2.5 use {@link #toInputStream(CharSequence, Charset)} instead
      */
-    @Deprecated
     public static InputStream toInputStream(final CharSequence input) {
         return toInputStream(input, Charset.defaultCharset());
     }
@@ -1239,9 +1221,7 @@ public class IOs {
      *
      * @param input the string to convert
      * @return an input stream
-     * @deprecated 2.5 use {@link #toInputStream(String, Charset)} instead
      */
-    @Deprecated
     public static InputStream toInputStream(final String input) {
         return toInputStream(input, Charset.defaultCharset());
     }
@@ -1333,9 +1313,7 @@ public class IOs {
      * @param output the <code>Writer</code> to write to
      * @throws NullPointerException if output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #write(byte[], Writer, Charset)} instead
      */
-    @Deprecated
     public static void write(final byte[] data, final Writer output) throws IOException {
         write(data, output, Charset.defaultCharset());
     }
@@ -1436,9 +1414,7 @@ public class IOs {
      * @param output the <code>OutputStream</code> to write to
      * @throws NullPointerException if output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #write(char[], OutputStream, Charset)} instead
      */
-    @Deprecated
     public static void write(final char[] data, final OutputStream output)
             throws IOException {
         write(data, output, Charset.defaultCharset());
@@ -1516,9 +1492,7 @@ public class IOs {
      * @param output the <code>OutputStream</code> to write to
      * @throws NullPointerException if output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #write(CharSequence, OutputStream, Charset)} instead
      */
-    @Deprecated
     public static void write(final CharSequence data, final OutputStream output)
             throws IOException {
         write(data, output, Charset.defaultCharset());
@@ -1593,9 +1567,7 @@ public class IOs {
      * @param output the <code>OutputStream</code> to write to
      * @throws NullPointerException if output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #write(String, OutputStream, Charset)} instead
      */
-    @Deprecated
     public static void write(final String data, final OutputStream output)
             throws IOException {
         write(data, output, Charset.defaultCharset());
@@ -1651,9 +1623,7 @@ public class IOs {
      * @param output the <code>Writer</code> to write to
      * @throws NullPointerException if output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated replaced by write(CharSequence, Writer)
      */
-    @Deprecated
     public static void write(final StringBuffer data, final Writer output)
             throws IOException {
         if (data != null) {
@@ -1672,9 +1642,7 @@ public class IOs {
      * @param output the <code>OutputStream</code> to write to
      * @throws NullPointerException if output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated replaced by write(CharSequence, OutputStream)
      */
-    @Deprecated
     public static void write(final StringBuffer data, final OutputStream output)
             throws IOException {
         write(data, output, (String) null);
@@ -1696,9 +1664,7 @@ public class IOs {
      * @throws IOException                                  if an I/O error occurs
      * @throws java.nio.charset.UnsupportedCharsetException thrown instead of {@link java.io
      *                                                      .UnsupportedEncodingException} in version 2.2 if the encoding is not supported.
-     * @deprecated replaced by write(CharSequence, OutputStream, String)
      */
-    @Deprecated
     public static void write(final StringBuffer data, final OutputStream output, final String encoding)
             throws IOException {
         if (data != null) {
@@ -1719,9 +1685,7 @@ public class IOs {
      * @param output     the <code>OutputStream</code> to write to, not null, not closed
      * @throws NullPointerException if the output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #writeLines(Collection, String, OutputStream, Charset)} instead
      */
-    @Deprecated
     public static void writeLines(final Collection<?> lines, final String lineEnding,
                                   final OutputStream output) throws IOException {
         writeLines(lines, lineEnding, output, Charset.defaultCharset());
@@ -1896,9 +1860,7 @@ public class IOs {
      * @param output the <code>Writer</code> to write to
      * @throws NullPointerException if the input or output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #copy(InputStream, Writer, Charset)} instead
      */
-    @Deprecated
     public static void copy(final InputStream input, final Writer output)
             throws IOException {
         copy(input, output, Charset.defaultCharset());
@@ -2105,9 +2067,7 @@ public class IOs {
      * @param output the <code>OutputStream</code> to write to
      * @throws NullPointerException if the input or output is null
      * @throws IOException          if an I/O error occurs
-     * @deprecated 2.5 use {@link #copy(Reader, OutputStream, Charset)} instead
      */
-    @Deprecated
     public static void copy(final Reader input, final OutputStream output)
             throws IOException {
         copy(input, output, Charset.defaultCharset());
