@@ -1769,7 +1769,7 @@ public class Strings {
      * <p>Capitalizes a String changing the first letter to title case as
      * per {@link Character#toTitleCase(char)}. No other letters are changed.</p>
      * <p>
-     * <p>For a word based algorithm, see {@link org.apache.commons.lang3.text.WordUtils#capitalize(String)}.
+     * <p>For a word based algorithm, see {@link #capitalize(String)}.
      * A {@code null} input String returns {@code null}.</p>
      * <p>
      * <pre>
@@ -1781,7 +1781,7 @@ public class Strings {
      *
      * @param str the String to capitalize, may be null
      * @return the capitalized String, {@code null} if null String input
-     * @see org.apache.commons.lang3.text.WordUtils#capitalize(String)
+     * @see WordUtils#capitalize(String)
      * @see #uncapitalize(String)
      * @since 2.0
      */
@@ -1807,7 +1807,7 @@ public class Strings {
      * <p>Uncapitalizes a String changing the first letter to title case as
      * per {@link Character#toLowerCase(char)}. No other letters are changed.</p>
      * <p>
-     * <p>For a word based algorithm, see {@link org.apache.commons.lang3.text.WordUtils#uncapitalize(String)}.
+     * <p>For a word based algorithm, see {@link WordUtils#uncapitalize(String)}.
      * A {@code null} input String returns {@code null}.</p>
      * <p>
      * <pre>
@@ -1819,7 +1819,7 @@ public class Strings {
      *
      * @param str the String to uncapitalize, may be null
      * @return the uncapitalized String, {@code null} if null String input
-     * @see org.apache.commons.lang3.text.WordUtils#uncapitalize(String)
+     * @see WordUtils#uncapitalize(String)
      * @see #capitalize(String)
      * @since 2.0
      */
@@ -1851,7 +1851,7 @@ public class Strings {
      * <li>Lower case character converts to Upper case</li>
      * </ul>
      * <p>
-     * <p>For a word based algorithm, see {@link org.apache.commons.lang3.text.WordUtils#swapCase(String)}.
+     * <p>For a word based algorithm, see {@link WordUtils#swapCase(String)}.
      * A {@code null} input String returns {@code null}.</p>
      * <p>
      * <pre>
@@ -1863,7 +1863,7 @@ public class Strings {
      * <p>NOTE: This method changed in Lang version 2.0.
      * It no longer performs a word based algorithm.
      * If you only use ASCII, you will notice no change.
-     * That functionality is available in org.apache.commons.lang3.text.WordUtils.</p>
+     * That functionality is available in WordUtils.</p>
      *
      * @param str the String to swap case, may be null
      * @return the changed String, {@code null} if null String input
