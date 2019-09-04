@@ -2,6 +2,7 @@
 
 [![JDK](https://img.shields.io/badge/JDK-1.6+-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
+[![maven](https://img.shields.io/badge/maven-v0.0.4-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.4)
 [![maven](https://img.shields.io/badge/maven-v0.0.3-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.3)
 [![maven](https://img.shields.io/badge/maven-v0.0.2-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.2)
 [![maven](https://img.shields.io/badge/maven-v0.0.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.1)
@@ -11,7 +12,7 @@
 Java lang extensions
 
 ## Features
-1. Lang extensions, for examples: Bytes, Chars, Arrays, Numbers, Throwables, Filenames, Files, FileSystems ...
+1. Lang extensions, for examples: Bytes, Chars, Arrays, Numbers, Dates, Throwables, Filenames, Files, FileSystems ...
 2. Collection extensions:
     + Supports Stream API for Java 6+
     + Adapter any object to Iterable
@@ -19,6 +20,9 @@ Java lang extensions
     + Supports NonDistinctTreeSet, NonDistinctTreeMap, just sort 
     + Supports Tuple
     + Supports WheelQueue, CopyOnWriteHashMap
+    + NamedInheritableThreadLocal
+    + IdentityMap
+    + IdentitySet
 3. Differ API
     + Collection Differ
     + Map Differ
