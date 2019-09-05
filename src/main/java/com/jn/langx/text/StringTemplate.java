@@ -10,7 +10,10 @@ import java.util.regex.Pattern;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class StringTemplate {
-    private final static Pattern defaultPattern = Pattern.compile("\\{\\d+\\}");
+    /**
+     * index pattern
+     */
+    public final static Pattern defaultPattern = Pattern.compile("\\{\\d+\\}");
     private final static Function2<String, Object[], String> defaultValueGetter = new IndexBasedValueGetter();
 
     private Pattern variablePattern = defaultPattern;

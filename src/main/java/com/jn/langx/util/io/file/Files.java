@@ -50,7 +50,7 @@ public class Files {
             if (makeDirs(dir)) {
                 return file.createNewFile();
             }
-            throw new IOException(StringTemplates.formatWithoutIndex("Can't create directory: {}", dir.getAbsolutePath()));
+            throw new IOException(StringTemplates.formatWithPlaceholder("Can't create directory: {}", dir.getAbsolutePath()));
         }
         return true;
     }
@@ -1566,7 +1566,7 @@ public class Files {
             makeDirs(destDir);
         }
         if (!destDir.exists()) {
-            throw new FileNotFoundException(StringTemplates.formatWithoutIndex("Destination directory '{}' does not exist [createDestDir={}]", destDir, createDestDir));
+            throw new FileNotFoundException(StringTemplates.formatWithPlaceholder("Destination directory '{}' does not exist [createDestDir={}]", destDir, createDestDir));
         }
         if (!destDir.isDirectory()) {
             throw new IOException("Destination '" + destDir + "' is not a directory");
@@ -1611,7 +1611,7 @@ public class Files {
             copyFile(srcFile, destFile);
             if (!srcFile.delete()) {
                 deleteQuietly(destFile);
-                throw new IOException(StringTemplates.formatWithoutIndex("Failed to delete original file '{}' after copy to '{}'", srcFile, destFile));
+                throw new IOException(StringTemplates.formatWithPlaceholder("Failed to delete original file '{}' after copy to '{}'", srcFile, destFile));
             }
         }
     }

@@ -42,7 +42,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
             return defaultValue;
         }
         if (value.length() != 1) {
-            throw new IllegalValueException(StringTemplates.formatWithoutIndex("'{}' is a string not a character", value));
+            throw new IllegalValueException(StringTemplates.formatWithPlaceholder("'{}' is a string not a character", value));
         }
         return value.charAt(0);
     }

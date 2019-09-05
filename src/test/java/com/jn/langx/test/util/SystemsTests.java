@@ -18,7 +18,7 @@ public class SystemsTests {
         Collects.forEach(map, new Consumer2<String, String>() {
             @Override
             public void accept(String key, String value) {
-                System.out.println(StringTemplates.formatWithoutIndex("{} = {}", key, value));
+                System.out.println(StringTemplates.formatWithPlaceholder("{} = {}", key, value));
             }
         });
     }
@@ -29,7 +29,7 @@ public class SystemsTests {
         Collects.forEach(Collects.sort(System.getenv(), Comparators.STRING_COMPARATOR_IGNORE_CASE), new Consumer2<String, String>() {
             @Override
             public void accept(String key, String value) {
-                System.out.println(StringTemplates.formatWithoutIndex("{} = {}", key, value));
+                System.out.println(StringTemplates.formatWithPlaceholder("{} = {}", key, value));
             }
         });
     }

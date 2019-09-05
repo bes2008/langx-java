@@ -15,12 +15,12 @@ public class StringTemplateTests {
     }
 
     private void testFormatBasedOrder(Object[] args) {
-        System.out.println(StringTemplates.formatWithoutIndex("", args));
-        System.out.println(StringTemplates.formatWithoutIndex(" \t ", args));
-        System.out.println(StringTemplates.formatWithoutIndex(" a, b, c ", args));
-        System.out.println(StringTemplates.formatWithoutIndex(" a{}, b{1}, c{2} ", args));
-        System.out.println(StringTemplates.formatWithoutIndex(" a{1}, b{}, c{3} ", args));
-        System.out.println(StringTemplates.formatWithoutIndex(" a{0}, b{}, c{} ", args));
+        System.out.println(StringTemplates.formatWithPlaceholder("", args));
+        System.out.println(StringTemplates.formatWithPlaceholder(" \t ", args));
+        System.out.println(StringTemplates.formatWithPlaceholder(" a, b, c ", args));
+        System.out.println(StringTemplates.formatWithPlaceholder(" a{}, b{1}, c{2} ", args));
+        System.out.println(StringTemplates.formatWithPlaceholder(" a{1}, b{}, c{3} ", args));
+        System.out.println(StringTemplates.formatWithPlaceholder(" a{0}, b{}, c{} ", args));
     }
 
     @Test

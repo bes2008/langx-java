@@ -64,7 +64,7 @@ public class Modifiers {
 
     public static boolean hasModifier(int modifiers, int modifier) {
         if (!isSupportedModifier(modifier)) {
-            throw new IllegalArgumentException(StringTemplates.formatWithoutIndex("Unsupported modifier: {}", modifier));
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Unsupported modifier: {}", modifier));
         }
         return (modifiers & modifier) != 0;
     }
