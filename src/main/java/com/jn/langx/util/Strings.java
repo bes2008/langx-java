@@ -42,7 +42,7 @@ public class Strings {
     private Strings() {
     }
 
-
+    public static final String WHITESPACE = " \n\r\f\t";
     /**
      * Represents a failed index search.
      *
