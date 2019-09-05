@@ -4,7 +4,7 @@ import com.jn.langx.util.function.Function2;
 
 import java.util.regex.Pattern;
 
-public class CustomPatternStringFormatter extends AbstractStringTemplateFormatter {
+public class CustomPatternStringFormatter implements StringTemplateFormatter {
     private Pattern variablePattern;
     private Function2<String, Object[], String> valueGetter;
 
