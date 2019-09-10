@@ -50,9 +50,21 @@ public class Filenames {
     }
 
     public static String extractFilename(String filePath) {
+        return extractFilename(filePath, true);
+    }
+
+    public static String extractFilename(String filePath, boolean containsSuffix) {
         Preconditions.checkTrue(Strings.isNotBlank(filePath));
         int lastFileSeparatorIndex = asUnixFilePath(filePath).lastIndexOf("/");
-        return filePath.substring(lastFileSeparatorIndex + 1);
+        String fileName = filePath.substring(lastFileSeparatorIndex + 1);
+        if (containsSuffix) {
+            return fileName;
+        }
+        int suffixIndex = fileName.lastIndexOf(".");
+        if (suffixIndex > 0 && suffixIndex != (fileName.length() - 1)) {
+            return fileName.substring(0, suffixIndex);
+        }
+        return fileName;
     }
 
     public static String getSuffix(String filePath) {
