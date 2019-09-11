@@ -95,6 +95,21 @@ public class Strings {
         return !isBlank(str);
     }
 
+    public static String getNullIfBlank(String str) {
+        if (isBlank(str)) {
+            return null;
+        }
+        return str;
+    }
+
+    public static String getEmptyIfNull(String str) {
+        return str == null ? "" : str;
+    }
+
+    public static String getEmptyIfBlank(String str) {
+        return getEmptyIfNull(getNullIfBlank(str));
+    }
+
     /**
      * Get substring from 0 to a specified length
      * equals: string.substring(0, length)
