@@ -1,7 +1,5 @@
 package com.jn.langx.management;
 
-import com.jn.langx.management.MBeanException;
-
 import javax.management.*;
 import java.io.Closeable;
 import java.io.IOException;
