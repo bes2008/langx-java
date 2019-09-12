@@ -1,12 +1,25 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.comparator.ComparableComparator;
+
 public class Maths {
     public static int max(int a, int b) {
         return a > b ? a : b;
     }
 
+    public static int max(int... array) {
+        Preconditions.checkTrue(array.length>0);
+        return Collects.max(array, new ComparableComparator<Integer>());
+    }
+
     public static int min(int a, int b) {
         return a > b ? b : a;
+    }
+
+    public static int min(int ... array) {
+        Preconditions.checkTrue(array.length>0);
+        return Collects.min(array, new ComparableComparator<Integer>());
     }
 
     /**
@@ -22,4 +35,7 @@ public class Maths {
         return (index | length | (index + length) | (capacity - (index + length))) < 0;
     }
 
+    public static int abs(int value){
+        return value & Integer.MAX_VALUE;
+    }
 }

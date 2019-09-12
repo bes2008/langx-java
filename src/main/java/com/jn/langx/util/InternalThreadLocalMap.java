@@ -21,23 +21,6 @@ public class InternalThreadLocalMap {
         }
     };
 
-    public static InternalThreadLocalMap get() {
-        return cache.get();
-    }
-
-    // key: pattern
-    private final Map<String, SimpleDateFormat> simpleDateFormatMap = new NonAbsentHashMap<String, SimpleDateFormat>(new Supplier<String, SimpleDateFormat>() {
-        @Override
-        public SimpleDateFormat get(String pattern) {
-            return new SimpleDateFormat(pattern);
-        }
-    });
-
-    public static SimpleDateFormat getSimpleDateFormat(String pattern) {
-        return get().simpleDateFormatMap.get(pattern);
-    }
-
-
     private final Map<Charset, CharsetEncoder> encoderMap = WrappedNonAbsentMap.wrap(new IdentityHashMap<Charset, CharsetEncoder>(), new Supplier<Charset, CharsetEncoder>() {
         @Override
         public CharsetEncoder get(Charset charset) {
@@ -51,6 +34,25 @@ public class InternalThreadLocalMap {
             return Charsets.decoder(charset, CodingErrorAction.REPLACE, CodingErrorAction.REPLACE);
         }
     });
+
+    /**
+     * key: pattern
+     */
+    private final Map<String, SimpleDateFormat> simpleDateFormatMap = new NonAbsentHashMap<String, SimpleDateFormat>(new Supplier<String, SimpleDateFormat>() {
+        @Override
+        public SimpleDateFormat get(String pattern) {
+            return new SimpleDateFormat(pattern);
+        }
+    });
+
+    public static InternalThreadLocalMap get() {
+        return cache.get();
+    }
+
+
+    public static SimpleDateFormat getSimpleDateFormat(String pattern) {
+        return get().simpleDateFormatMap.get(pattern);
+    }
 
     public static CharsetDecoder getDecoder(Charset charset) {
         return get().decoderMap.get(charset);
