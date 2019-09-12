@@ -110,6 +110,10 @@ public class Strings {
         return getEmptyIfNull(getNullIfBlank(str));
     }
 
+    public static String trimOrEmpty(String str){
+        return getEmptyIfNull(str).trim();
+    }
+
     /**
      * Get substring from 0 to a specified length
      * equals: string.substring(0, length)

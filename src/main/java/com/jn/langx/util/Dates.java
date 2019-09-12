@@ -17,13 +17,13 @@ public class Dates {
     public static final String DD_MM_YYYY = "DD/MM/YYYY";
     public static final String HH_mm_ss = "HH:mm:ss";
 
-    public String format(@NonNull Date date, @NonNull String pattern) {
+    public static String format(@NonNull Date date, @NonNull String pattern) {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(date);
         return InternalThreadLocalMap.getSimpleDateFormat(pattern).format(date);
     }
 
-    public Date parse(String dateString, String pattern) {
+    public static Date parse(String dateString, String pattern) {
         try {
             return InternalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
         } catch (ParseException ex) {
