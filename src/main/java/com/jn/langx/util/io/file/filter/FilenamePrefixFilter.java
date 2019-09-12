@@ -61,7 +61,7 @@ public class FilenamePrefixFilter extends AbstractFileFilter {
         return Collects.anyMatch(this.prefixes, new Predicate<String>() {
             @Override
             public boolean test(String prefix) {
-                return name.startsWith(prefix);
+                return Strings.startsWith(name, prefix, ignoreCase);
             }
         });
     }

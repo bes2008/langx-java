@@ -423,7 +423,6 @@ public class Strings {
      * @return {@code true} if the CharSequence starts with the prefix, case insensitive, or
      * both {@code null}
      * @see java.lang.String#startsWith(String)
-     * @since 2.4
      * @since 3.0 Changed signature from startsWithIgnoreCase(String, String) to startsWithIgnoreCase(CharSequence, CharSequence)
      */
     public static boolean startsWithIgnoreCase(final CharSequence str, final CharSequence prefix) {
@@ -441,7 +440,7 @@ public class Strings {
      * both {@code null}
      * @see java.lang.String#startsWith(String)
      */
-    private static boolean startsWith(final CharSequence str, final CharSequence prefix, final boolean ignoreCase) {
+    public static boolean startsWith(final CharSequence str, final CharSequence prefix, final boolean ignoreCase) {
         if (str == null || prefix == null) {
             return str == null && prefix == null;
         }
