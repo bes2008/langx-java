@@ -21,6 +21,8 @@
 
 package com.jn.langx.security;
 
+import com.jn.langx.util.Radixs;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -38,17 +40,6 @@ public class MD5 {
         }
     }
 
-    public static String byte2hex(byte[] b) {
-        StringBuilder hex = new StringBuilder();
-        for (int n = 0; n < b.length; n++) {
-            String stmp = Integer.toHexString(b[n] & 0xFF);
-            if (stmp.length() == 1) {
-                hex.append("0");
-            }
-            hex.append(stmp);
-        }
-        return hex.toString().toUpperCase();
-    }
 
     public static String getMD5(String srcMsg) {
         if (srcMsg == null) {
@@ -56,7 +47,7 @@ public class MD5 {
         }
         md5MsgDigest.update(srcMsg.getBytes());
         byte[] md5Bytes = md5MsgDigest.digest();
-        return byte2hex(md5Bytes);
+        return Radixs.toHex2(md5Bytes).toUpperCase();
     }
 
     public static void main(String[] args) {

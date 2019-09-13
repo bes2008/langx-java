@@ -1,5 +1,8 @@
 package com.jn.langx.security;
 
+import com.jn.langx.util.Radixs;
+import com.jn.langx.util.io.IOs;
+
 import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -56,11 +59,9 @@ public class FileDigestGenerator {
                 }
             }
             byte[] hashed = messageDigest.digest();
-            return byte2hex(hashed);
+            return Radixs.toHex2(hashed).toUpperCase();
         }finally {
-            if(reader!=null){
-                reader.close();
-            }
+            IOs.close(reader);
         }
     }
 
@@ -75,17 +76,6 @@ public class FileDigestGenerator {
         }
     }
 
-    private static String byte2hex(byte[] b) {
-        StringBuilder hex = new StringBuilder();
-        for (int n = 0; n < b.length; n++) {
-            String stmp = Integer.toHexString(b[n] & 0xFF);
-            if (stmp.length() == 1) {
-                hex.append("0");
-            }
-            hex.append(stmp);
-        }
-        return hex.toString();
-    }
 
     private static abstract class FileReader<INPUT extends Closeable> {
         protected INPUT input;
@@ -105,14 +95,7 @@ public class FileDigestGenerator {
         }
 
         public final void close() {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                }
-            }
+            IOs.close(input);
         }
 
     }

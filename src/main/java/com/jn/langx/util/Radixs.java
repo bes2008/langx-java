@@ -1,4 +1,8 @@
 package com.jn.langx.util;
+
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
+
 /**
  * 10进制		二进制		8进制		16进制
  * 1		    1		    1		    1
@@ -75,6 +79,25 @@ public class Radixs {
 
     public static String toDecimal(long b) {
         return toRadix(new Long(b).intValue(), 10);
+    }
+
+    public static String toHex2(byte[] bytes) {
+        return toHex(bytes, true);
+    }
+
+    public static String toHex(byte[] bytes) {
+       return toHex(bytes, false);
+    }
+
+    private static String toHex(byte[] bytes, final boolean twoLength) {
+        final StringBuilder str = new StringBuilder();
+        Collects.forEach(bytes, new Consumer<Byte>() {
+            @Override
+            public void accept(Byte b) {
+                str.append(twoLength ? toHex2(b) : toHex(b));
+            }
+        });
+        return str.toString();
     }
 
     public static String toHex(byte b) {
