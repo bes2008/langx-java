@@ -24,12 +24,16 @@
 
 package com.jn.langx.util;
 
+import com.jn.langx.Delegatable;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.enums.CommonEnums;
+import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.reflect.type.Primitives;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
@@ -1914,4 +1918,37 @@ public class Strings {
         return str;
     }
 
+    public static Object convertTo(final String str, Class targetClass) {
+        Preconditions.checkNotNull(targetClass);
+        targetClass = Primitives.wrap(targetClass);
+        if (Number.class.isAssignableFrom(targetClass)) {
+            Class<? extends Number> xClass = (Class) targetClass;
+            return Numbers.parseNumber(str, xClass);
+        }
+        if (Boolean.class.isAssignableFrom(targetClass)) {
+            BooleanEvaluator booleanEvaluator = BooleanEvaluator.createTrueEvaluator(true, new Boolean(true), "true");
+            return booleanEvaluator.evalTrue(str);
+        }
+        if (String.class == targetClass) {
+            return str;
+        }
+        if (targetClass.isEnum()) {
+            Object v = null;
+            if (Delegatable.class.isAssignableFrom(targetClass)) {
+                v = CommonEnums.ofName(targetClass, str);
+                if (v == null) {
+                    v = CommonEnums.ofDisplayText(targetClass, str);
+                }
+            }
+            if (v == null) {
+                return Enums.ofName(str, targetClass);
+            }
+        }
+
+        if (Character.class.isAssignableFrom(targetClass)) {
+            Preconditions.checkNotEmpty(str);
+            return str.charAt(0);
+        }
+        return null;
+    }
 }
