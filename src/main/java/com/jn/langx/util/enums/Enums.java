@@ -7,11 +7,11 @@ import com.jn.langx.util.function.Predicate;
 import java.util.EnumSet;
 
 public class Enums {
-    public static <E extends Enum> E ofName(final String name, Class<E> targetClass) {
+    public static Enum ofName(final String name, Class targetClass) {
         Preconditions.checkTrue(targetClass.isEnum(), targetClass.getName() + " not an enum class");
-        return Collects.findFirst(EnumSet.allOf(targetClass), new Predicate<E>() {
+        return Collects.findFirst(EnumSet.allOf(targetClass), new Predicate<Enum>() {
             @Override
-            public boolean test(E e) {
+            public boolean test(Enum e) {
                 return e.name().equals(name);
             }
         });
