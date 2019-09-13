@@ -11,7 +11,6 @@ import com.jn.langx.util.io.LineDelimiter;
  * Each method documents its behaviour in more detail.</p>
  *
  * @version $Id: WordUtils.java 1583482 2014-03-31 22:54:57Z niallp $
- * @since 2.0
  */
 public class WordUtils {
 
@@ -265,7 +264,7 @@ public class WordUtils {
      * @return capitalized String, <code>null</code> if null String input
      * @see #uncapitalize(String)
      * @see #capitalizeFully(String)
-     * @since 2.1
+     * 
      */
     public static String capitalize(final String str, final char... delimiters) {
         final int delimLen = delimiters == null ? -1 : delimiters.length;
@@ -335,7 +334,7 @@ public class WordUtils {
      * @param str        the String to capitalize, may be null
      * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return capitalized String, <code>null</code> if null String input
-     * @since 2.1
+     * 
      */
     public static String capitalizeFully(String str, final char... delimiters) {
         final int delimLen = delimiters == null ? -1 : delimiters.length;
@@ -392,7 +391,7 @@ public class WordUtils {
      * @param delimiters set of characters to determine uncapitalization, null means whitespace
      * @return uncapitalized String, <code>null</code> if null String input
      * @see #capitalize(String)
-     * @since 2.1
+     * 
      */
     public static String uncapitalize(final String str, final char... delimiters) {
         final int delimLen = delimiters == null ? -1 : delimiters.length;
@@ -489,7 +488,7 @@ public class WordUtils {
      * @param str the String to get initials from, may be null
      * @return String of initial letters, <code>null</code> if null String input
      * @see #initials(String, char[])
-     * @since 2.2
+     * 
      */
     public static String initials(final String str) {
         return initials(str, null);
@@ -520,7 +519,7 @@ public class WordUtils {
      * @param delimiters set of characters to determine words, null means whitespace
      * @return String of initial letters, <code>null</code> if null String input
      * @see #initials(String)
-     * @since 2.2
+     * 
      */
     public static String initials(final String str, final char... delimiters) {
         if (Strings.isEmpty(str)) {
