@@ -284,7 +284,6 @@ final class CsvLexer implements Closeable {
         return reader.getPosition();
     }
 
-    // TODO escape handling needs more work
 
     /**
      * Handle an escape sequence.
@@ -313,9 +312,9 @@ final class CsvLexer implements Closeable {
                 return FF;
             case CR:
             case LF:
-            case FF: // TODO is this correct?
-            case TAB: // TODO is this correct? Do tabs need to be escaped?
-            case BACKSPACE: // TODO is this correct?
+            case FF:
+            case TAB:
+            case BACKSPACE:
                 return ch;
             case END_OF_STREAM:
                 throw new IOException("EOF whilst processing escape sequence");

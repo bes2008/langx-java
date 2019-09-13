@@ -1493,7 +1493,6 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
 
                         HashEntry<K, V> newFirst = e.next;
                         for (HashEntry<K, V> p = first; p != e; p = p.next) {
-                            // TODO A remove operation makes the map behave like all the other keys in the bucket were just added???
                             // allow p to be GC-ed
                             eviction.onEntryRemove(p);
                             newFirst = eviction.createNewEntry(p.key, p.hash, newFirst, p.value);

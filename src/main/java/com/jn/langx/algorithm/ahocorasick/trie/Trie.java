@@ -173,7 +173,6 @@ public class Trie {
             for (int position = 0; position < text.length(); position++) {
                 Character character = text.charAt(position);
 
-                // TODO: Lowercase the entire string at once?
                 if (trieConfig.isCaseInsensitive()) {
                     character = Character.toLowerCase(character);
                 }

@@ -698,11 +698,11 @@ public final class CsvFormat implements Serializable {
      * @param nullString              the line separator to use for output
      * @param headerComments          the comments to be printed by the Printer before the actual CSV data
      * @param header                  the header
-     * @param skipHeaderRecord        TODO
-     * @param allowMissingColumnNames TODO
-     * @param ignoreHeaderCase        TODO
-     * @param trim                    TODO
-     * @param trailingDelimiter       TODO
+     * @param skipHeaderRecord
+     * @param allowMissingColumnNames
+     * @param ignoreHeaderCase
+     * @param trim
+     * @param trailingDelimiter
      * @param autoFlush
      * @throws IllegalArgumentException if the delimiter is a line break character
      */

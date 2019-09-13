@@ -49,9 +49,6 @@ public class Types {
 
     /**
      * show a type as a string, for examples:
-     * <pre>
-     *     // TODO show an example for typeToString
-     * </pre>
      */
     public static String typeToString(Type type) {
         if (type instanceof Class) {
@@ -144,7 +141,6 @@ public class Types {
                 return false;
             }
 
-            // TODO: save a .clone() call
             ParameterizedType pa = (ParameterizedType) a;
             ParameterizedType pb = (ParameterizedType) b;
             return equal(pa.getOwnerType(), pb.getOwnerType())

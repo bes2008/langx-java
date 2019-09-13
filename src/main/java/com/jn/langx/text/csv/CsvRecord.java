@@ -235,7 +235,6 @@ public final class CsvRecord implements Serializable, Iterable<String> {
     /**
      * Converts the values to a List.
      * <p>
-     * TODO: Maybe make this public?
      *
      * @return a new List
      */
