@@ -110,7 +110,7 @@ public class Strings {
         return getEmptyIfNull(getNullIfBlank(str));
     }
 
-    public static String trimOrEmpty(String str){
+    public static String trimOrEmpty(String str) {
         return getEmptyIfNull(str).trim();
     }
 
@@ -892,7 +892,7 @@ public class Strings {
     }
 
     /**
-     * <p>Left pad a String with a specified character.</p>
+     * <p>Left pad a String with a specified charactfer.</p>
      * <p>
      * <p>Pad to a size of {@code size}.</p>
      * <p>
@@ -910,7 +910,6 @@ public class Strings {
      * @param padChar the character to pad with
      * @return left padded String or original String if no padding is necessary,
      * {@code null} if null String input
-     * @since 2.0
      */
     public static String leftPad(final String str, final int size, final char padChar) {
         if (str == null) {
@@ -1906,5 +1905,13 @@ public class Strings {
         return new String(buffer);
     }
 
+    public static String completingLength(String str, int expectedLength, char c, boolean left) {
+        str = getEmptyIfNull(str);
+        if (str.length() < expectedLength) {
+            String fillment = repeat(c, expectedLength - str.length());
+            return left ? (fillment + str) : (str + fillment);
+        }
+        return str;
+    }
 
 }
