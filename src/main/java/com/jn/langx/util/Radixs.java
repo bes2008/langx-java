@@ -1,5 +1,14 @@
 package com.jn.langx.util;
-
+/**
+ * 10进制		二进制		8进制		16进制
+ * 1		    1		    1		    1
+ * 10		    1010		12		    A
+ * 15		    1111		17		    F
+ * 16		    10000		20		    10
+ * 18		    10010		22		    12
+ * 100		    1100100		144		    64
+ * 100=64+32+4=1100100
+ */
 public class Radixs {
     public static String toRadix(int b, int radix) {
         if (radix <= 0) {
