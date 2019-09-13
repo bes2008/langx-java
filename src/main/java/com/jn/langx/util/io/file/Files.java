@@ -2,6 +2,7 @@ package com.jn.langx.util.io.file;
 
 import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.NullOutputStream;
@@ -105,18 +106,22 @@ public class Files {
      * @throws IOException           if the file object is a directory
      * @throws IOException           if the file cannot be read
      */
-    public static FileInputStream openInputStream(final File file) throws IOException {
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                throw new IOException("File '" + file + "' exists but is a directory");
+    public static FileInputStream openInputStream(final File file) {
+        try {
+            if (file.exists()) {
+                if (file.isDirectory()) {
+                    throw new IOException("File '" + file + "' exists but is a directory");
+                }
+                if (!file.canRead()) {
+                    throw new IOException("File '" + file + "' cannot be read");
+                }
+            } else {
+                throw new FileNotFoundException("File '" + file + "' does not exist");
             }
-            if (!file.canRead()) {
-                throw new IOException("File '" + file + "' cannot be read");
-            }
-        } else {
-            throw new FileNotFoundException("File '" + file + "' does not exist");
+            return new FileInputStream(file);
+        }catch (Throwable ex){
+            throw Throwables.wrapAsRuntimeException(ex);
         }
-        return new FileInputStream(file);
     }
 
     /**

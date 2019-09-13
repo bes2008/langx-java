@@ -2,6 +2,7 @@ package com.jn.langx.security;
 
 import com.jn.langx.util.Radixs;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.file.Files;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;
@@ -11,23 +12,24 @@ import java.security.NoSuchAlgorithmException;
 
 public class FileDigestGenerator {
     private boolean lowercase = true;
+
     public static void main(String[] args) {
         FileDigestGenerator generator = new FileDigestGenerator();
-        long strat  = System.currentTimeMillis();
-        System.out.println("MD5:   "+ generator.generate("F:\\迅雷下载\\CentOS-7-x86_64-DVD-1708.iso","MD5") );
-        long t2  = System.currentTimeMillis();
-        System.out.println("SHA-1: "+ generator.generate("F:\\迅雷下载\\CentOS-7-x86_64-DVD-1708.iso","SHA-1"));
+        long strat = System.currentTimeMillis();
+        System.out.println("MD5:   " + generator.generate("F:\\迅雷下载\\CentOS-7-x86_64-DVD-1708.iso", "MD5"));
+        long t2 = System.currentTimeMillis();
+        System.out.println("SHA-1: " + generator.generate("F:\\迅雷下载\\CentOS-7-x86_64-DVD-1708.iso", "SHA-1"));
         long t3 = System.currentTimeMillis();
-        System.out.println("MD5 time: " + (t2 -strat));
-        System.out.println("SHA-1 time: " + (t3 -t2));
+        System.out.println("MD5 time: " + (t2 - strat));
+        System.out.println("SHA-1 time: " + (t3 - t2));
     }
 
-    public String generate(String filePath, String algorithm){
-        String digest = getFileDigest(filePath,algorithm);
-        if(!lowercase){
+    public String generate(String filePath, String algorithm) {
+        String digest = getFileDigest(filePath, algorithm);
+        if (!lowercase) {
             digest = digest.toUpperCase();
         }
-        return  digest;
+        return digest;
     }
 
     public boolean isLowercase() {
@@ -41,7 +43,7 @@ public class FileDigestGenerator {
     public static String getFileDigest(String filePath, String algorithm) {
         MessageDigest messageDigest = newDigest(algorithm);
         if (messageDigest == null) {
-            throw new RuntimeException("Can't find "+algorithm+" algorithm");
+            throw new RuntimeException("Can't find " + algorithm + " algorithm");
         }
         File file = new File(filePath);
         if (!file.exists() || !file.canRead()) {
@@ -60,19 +62,19 @@ public class FileDigestGenerator {
             }
             byte[] hashed = messageDigest.digest();
             return Radixs.toHex2(hashed).toUpperCase();
-        }finally {
+        } finally {
             IOs.close(reader);
         }
     }
 
     private static MessageDigest newDigest(String algorithm) {
         try {
-            if(algorithm == null ){
+            if (algorithm == null) {
                 algorithm = "MD5";
             }
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-           return null;
+            return null;
         }
     }
 
@@ -104,12 +106,7 @@ public class FileDigestGenerator {
         @Override
         public void setFile(File file) {
             super.setFile(file);
-            FileInputStream fileInput = null;
-            try {
-                fileInput = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            FileInputStream fileInput = Files.openInputStream(file);
             input = new BufferedInputStream(fileInput);
         }
 
@@ -150,19 +147,14 @@ public class FileDigestGenerator {
         public void setFile(File file) {
             super.setFile(file);
 
-            FileInputStream fileInput = null;
-            try {
-                fileInput = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            FileInputStream fileInput = Files.openInputStream(file);
             input = fileInput.getChannel();
             remainingLength = fileLength;
         }
 
         @Override
         public byte[] next() {
-            if (currentMMapBuffer== null || currentMMapBuffer.remaining() <= 0) {
+            if (currentMMapBuffer == null || currentMMapBuffer.remaining() <= 0) {
                 mapNextFilePart();
             }
             if (currentMMapBuffer.remaining() > 0) {
