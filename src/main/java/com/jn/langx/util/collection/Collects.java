@@ -1151,124 +1151,6 @@ public class Collects {
         return map;
     }
 
-    public static <E> Collector<E, TreeSet<E>> toTreeSet(@Nullable final Comparator<E> comparator) {
-        return new Collector<E, TreeSet<E>>() {
-            @Override
-            public Supplier0<TreeSet<E>> supplier() {
-                return emptyTreeSetSupplier0(comparator);
-            }
-
-            @Override
-            public Consumer2<TreeSet<E>, E> accumulator() {
-                return new Consumer2<TreeSet<E>, E>() {
-                    @Override
-                    public void accept(TreeSet<E> set, E value) {
-                        set.add(value);
-                    }
-                };
-            }
-        };
-    }
-
-    public static <E> Collector<E, HashSet<E>> toHashSet(final boolean sequential) {
-        return new Collector<E, HashSet<E>>() {
-            @Override
-            public Supplier0<HashSet<E>> supplier() {
-                return emptyHashSetSupplier0();
-            }
-
-            @Override
-            public Consumer2<HashSet<E>, E> accumulator() {
-                return new Consumer2<HashSet<E>, E>() {
-                    @Override
-                    public void accept(HashSet<E> set, E value) {
-                        set.add(value);
-                    }
-                };
-            }
-        };
-    }
-
-    public static <E> Collector<E, List<E>> toList() {
-        return new Collector<E, List<E>>() {
-            @Override
-            public Supplier0<List<E>> supplier() {
-                return new Supplier0<List<E>>() {
-                    @Override
-                    public List<E> get() {
-                        return Collects.emptyArrayList();
-                    }
-                };
-            }
-
-            @Override
-            public Consumer2<List<E>, E> accumulator() {
-                return new Consumer2<List<E>, E>() {
-                    @Override
-                    public void accept(List<E> list, E value) {
-                        list.add(value);
-                    }
-                };
-            }
-        };
-    }
-
-    public static <E, K, V> Collector<E, Map<K, V>> toHashMap(@NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper, final boolean sequential) {
-        Preconditions.checkNotNull(keyMapper);
-        Preconditions.checkNotNull(valueMapper);
-        return new Collector<E, Map<K, V>>() {
-            @Override
-            public Supplier0<Map<K, V>> supplier() {
-                return new Supplier0<Map<K, V>>() {
-                    @Override
-                    public Map<K, V> get() {
-                        return Collects.emptyHashMap(sequential);
-                    }
-                };
-            }
-
-            @Override
-            public Consumer2<Map<K, V>, E> accumulator() {
-                return new Consumer2<Map<K, V>, E>() {
-                    @Override
-                    public void accept(Map<K, V> map, E e) {
-                        K key = keyMapper.apply(e);
-                        V value = valueMapper.apply(e);
-                        map.put(key, value);
-                    }
-                };
-            }
-        };
-    }
-
-    public static <E, K, V> Collector<E, Map<K, V>> toTreeMap(@NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper, @Nullable final Comparator<K> comparator) {
-        Preconditions.checkNotNull(keyMapper);
-        Preconditions.checkNotNull(valueMapper);
-        return new Collector<E, Map<K, V>>() {
-            @Override
-            public Supplier0<Map<K, V>> supplier() {
-                return new Supplier0<Map<K, V>>() {
-                    @Override
-                    public Map<K, V> get() {
-                        return Collects.emptyTreeMap(comparator);
-                    }
-                };
-            }
-
-            @Override
-            public Consumer2<Map<K, V>, E> accumulator() {
-                return new Consumer2<Map<K, V>, E>() {
-                    @Override
-                    public void accept(Map<K, V> map, E e) {
-                        K key = keyMapper.apply(e);
-                        V value = valueMapper.apply(e);
-                        map.put(key, value);
-                    }
-                };
-            }
-        };
-    }
-
     public static <E> void addAll(final Collection<E> collection, Iterable<E> iterable) {
         if (Emptys.isNotEmpty(iterable)) {
             forEach(iterable, new Consumer<E>() {
@@ -1372,6 +1254,10 @@ public class Collects {
         }
     }
 
+    public static <E> E reduce(E[] iterable, Operator2<E> operator) {
+        return reduce(Collects.<E>asIterable(iterable), operator);
+    }
+
     public static <E> E reduce(Iterable<E> iterable, Operator2<E> operator) {
         if (Emptys.isEmpty(iterable)) {
             return null;
@@ -1384,4 +1270,169 @@ public class Collects {
         }
         return result;
     }
+
+    public static <K, E> Map<K, List<E>> groupBy(@Nullable E[] iterable, @NonNull final Function<E, K> classifier, @NonNull Supplier0<Map<K, List<E>>> mapFactory) {
+        return groupBy(Collects.<E>asIterable(iterable), classifier, mapFactory);
+    }
+
+    public static <K, E> Map<K, List<E>> groupBy(@Nullable Iterable<E> iterable, @NonNull final Function<E, K> classifier, @NonNull Supplier0<Map<K, List<E>>> mapFactory) {
+        Preconditions.checkNotNull(classifier);
+        Preconditions.checkNotNull(mapFactory);
+        iterable = asIterable(iterable);
+        Map<K, List<E>> map = mapFactory.get();
+        Preconditions.checkNotNull(map);
+        final WrappedNonAbsentMap<K, List<E>> wrappedNonAbsentMap = WrappedNonAbsentMap.wrap(map, new Supplier<K, List<E>>() {
+            @Override
+            public List<E> get(K key) {
+                return new ArrayList<E>();
+            }
+        });
+        Collects.forEach(iterable, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                K group = classifier.apply(e);
+                wrappedNonAbsentMap.get(group).add(e);
+            }
+        });
+        return map;
+    }
+
+
+    /*****************************************************************
+     *      Collector Factory:
+     *****************************************************************/
+
+
+    public static <E> Collector<E, TreeSet<E>> toTreeSet(@Nullable final Comparator<E> comparator) {
+        return new Collector<E, TreeSet<E>>() {
+            @Override
+            public Supplier0<TreeSet<E>> supplier() {
+                return emptyTreeSetSupplier0(comparator);
+            }
+
+            @Override
+            public Consumer2<TreeSet<E>, E> accumulator() {
+                return new Consumer2<TreeSet<E>, E>() {
+                    @Override
+                    public void accept(TreeSet<E> set, E value) {
+                        set.add(value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E> Collector<E, HashSet<E>> toHashSet(final boolean sequential) {
+        return new Collector<E, HashSet<E>>() {
+            @Override
+            public Supplier0<HashSet<E>> supplier() {
+                return emptyHashSetSupplier0();
+            }
+
+            @Override
+            public Consumer2<HashSet<E>, E> accumulator() {
+                return new Consumer2<HashSet<E>, E>() {
+                    @Override
+                    public void accept(HashSet<E> set, E value) {
+                        set.add(value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E> Collector<E, List<E>> toList() {
+        return new Collector<E, List<E>>() {
+            @Override
+            public Supplier0<List<E>> supplier() {
+                return new Supplier0<List<E>>() {
+                    @Override
+                    public List<E> get() {
+                        return Collects.emptyArrayList();
+                    }
+                };
+            }
+
+            @Override
+            public Consumer2<List<E>, E> accumulator() {
+                return new Consumer2<List<E>, E>() {
+                    @Override
+                    public void accept(List<E> list, E value) {
+                        list.add(value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E, K, V> Collector<E, Map<K, V>> toHashMap(@NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper, final boolean sequential) {
+        Preconditions.checkNotNull(keyMapper);
+        Preconditions.checkNotNull(valueMapper);
+        return toMap(new Supplier0<Map<K, V>>() {
+            @Override
+            public Map<K, V> get() {
+                return Collects.emptyHashMap(sequential);
+            }
+        }, keyMapper, valueMapper);
+    }
+
+    public static <E, K, V> Collector<E, Map<K, V>> toTreeMap(@NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper, @Nullable final Comparator<K> comparator) {
+        Preconditions.checkNotNull(keyMapper);
+        Preconditions.checkNotNull(valueMapper);
+        return toMap(new Supplier0<Map<K, V>>() {
+            @Override
+            public Map<K, V> get() {
+                return Collects.emptyTreeMap(comparator);
+            }
+        }, keyMapper, valueMapper);
+    }
+
+    public static <E, K, V> Collector<E, Map<K, V>> toMap(@NonNull final Supplier0<Map<K, V>> mapFactory, @NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper) {
+        Preconditions.checkNotNull(keyMapper);
+        Preconditions.checkNotNull(valueMapper);
+        return new Collector<E, Map<K, V>>() {
+            @Override
+            public Supplier0<Map<K, V>> supplier() {
+                return mapFactory;
+            }
+
+            @Override
+            public Consumer2<Map<K, V>, E> accumulator() {
+                return new Consumer2<Map<K, V>, E>() {
+                    @Override
+                    public void accept(Map<K, V> map, E e) {
+                        K key = keyMapper.apply(e);
+                        V value = valueMapper.apply(e);
+                        map.put(key, value);
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E, K> Collector<E, Map<K, List<E>>> groupingBy(@Nullable Iterable<E> iterable, final Function<E, K> classifier, final Supplier0<Map<K, List<E>>> mapFactory) {
+        return new Collector<E, Map<K, List<E>>>() {
+            @Override
+            public Supplier0<Map<K, List<E>>> supplier() {
+                return mapFactory;
+            }
+
+            @Override
+            public Consumer2<Map<K, List<E>>, E> accumulator() {
+                return new Consumer2<Map<K, List<E>>, E>() {
+                    @Override
+                    public void accept(Map<K, List<E>> map, E e) {
+                        K group = classifier.apply(e);
+                        List<E> list = map.get(group);
+                        if (list == null) {
+                            list = new ArrayList<E>();
+                            map.put(group, list);
+                        }
+                        list.add(e);
+                    }
+                };
+            }
+        };
+    }
+
 }
