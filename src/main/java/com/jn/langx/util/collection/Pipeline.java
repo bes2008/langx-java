@@ -2,10 +2,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.function.Collector;
-import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Function;
-import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.*;
 import com.jn.langx.util.struct.Holder;
 
 import java.util.*;
@@ -101,8 +98,7 @@ public class Pipeline<E> {
     }
 
     public Double sum() {
-        final Holder<Double> sum = new Holder<Double>(0d);
-        map(new Function<E, Double>() {
+        return map(new Function<E, Double>() {
             @Override
             public Double apply(E e) {
                 if (e instanceof Number) {
@@ -110,13 +106,12 @@ public class Pipeline<E> {
                 }
                 return 0d;
             }
-        }).forEach(new Consumer<Double>() {
+        }).reduce(new Operator2<Double>() {
             @Override
-            public void accept(Double value) {
-                sum.set(sum.get() + value);
+            public Double apply(Double input1, Double input2) {
+                return input1 + input2;
             }
         });
-        return sum.get();
     }
 
     public Double average() {
@@ -132,6 +127,10 @@ public class Pipeline<E> {
 
     public E min(Comparator<E> comparator) {
         return Collects.min(this.collection, comparator);
+    }
+
+    public E reduce(Operator2<E> operator){
+        return Collects.reduce(collection, operator);
     }
 
     public <R> R collect(Collector<E, R> collector) {

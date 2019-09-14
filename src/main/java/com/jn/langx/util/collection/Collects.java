@@ -1043,43 +1043,24 @@ public class Collects {
     public static <E> E max(@NonNull Object object, @NonNull final Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);
         Iterable<E> iterable = asIterable(object);
-        final Holder<E> max = new Holder<E>();
-
-        forEach(iterable, new Consumer<E>() {
+        return reduce(iterable, new Operator2<E>() {
             @Override
-            public void accept(E e) {
-                if (max.get() == null) {
-                    max.set(e);
-                } else {
-                    int delta = comparator.compare(e, max.get());
-                    if (delta > 0) {
-                        max.set(e);
-                    }
-                }
+            public E apply(E input1, E input2) {
+                return comparator.compare(input1, input2) >= 0 ? input1 : input2;
             }
         });
-        return max.get();
     }
 
     public static <E> E min(@Nullable Object object, @NonNull final Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);
         Iterable<E> iterable = asIterable(object);
         final Holder<E> min = new Holder<E>();
-
-        forEach(iterable, new Consumer<E>() {
+        return reduce(iterable, new Operator2<E>() {
             @Override
-            public void accept(E e) {
-                if (min.get() == null) {
-                    min.set(e);
-                } else {
-                    int delta = comparator.compare(e, min.get());
-                    if (delta < 0) {
-                        min.set(e);
-                    }
-                }
+            public E apply(E input1, E input2) {
+                return comparator.compare(input1, input2) <= 0 ? input1 : input2;
             }
         });
-        return min.get();
     }
 
     public static <E, R> R collect(@Nullable Object anyObject, @NonNull Collector<E, R> collector) {
@@ -1389,5 +1370,18 @@ public class Collects {
             }
             return map1;
         }
+    }
+
+    public static <E> E reduce(Iterable<E> iterable, Operator2<E> operator) {
+        if (Emptys.isEmpty(iterable)) {
+            return null;
+        }
+        Preconditions.checkNotNull(operator);
+        List<E> list = asList(iterable);
+        E result = list.get(0);
+        for (int i = 1; i < list.size(); i++) {
+            result = operator.apply(result, list.get(i));
+        }
+        return result;
     }
 }
