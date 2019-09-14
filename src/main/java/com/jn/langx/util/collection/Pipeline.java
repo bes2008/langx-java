@@ -3,7 +3,6 @@ package com.jn.langx.util.collection;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.*;
-import com.jn.langx.util.struct.Holder;
 
 import java.util.*;
 
@@ -129,8 +128,12 @@ public class Pipeline<E> {
         return Collects.min(this.collection, comparator);
     }
 
-    public E reduce(Operator2<E> operator){
+    public E reduce(Operator2<E> operator) {
         return Collects.reduce(collection, operator);
+    }
+
+    public <K> Map<K, List<E>> groupBy(Function<E, K> classifier, Supplier0<Map<K, List<E>>> mapFactory) {
+        return Collects.groupBy(this.collection, classifier, mapFactory);
     }
 
     public <R> R collect(Collector<E, R> collector) {
