@@ -1271,14 +1271,29 @@ public class Collects {
         return result;
     }
 
-    public static <K, E> Map<K, List<E>> groupBy(@Nullable E[] iterable, @NonNull final Function<E, K> classifier, @NonNull Supplier0<Map<K, List<E>>> mapFactory) {
+    public static <K, E> Map<K, List<E>> groupBy(@Nullable E[] iterable, @NonNull final Function<E, K> classifier) {
+        return groupBy(Collects.<E>asIterable(iterable), classifier, null);
+    }
+
+    public static <K, E> Map<K, List<E>> groupBy(@Nullable E[] iterable, @NonNull final Function<E, K> classifier, @Nullable Supplier0<Map<K, List<E>>> mapFactory) {
         return groupBy(Collects.<E>asIterable(iterable), classifier, mapFactory);
     }
 
-    public static <K, E> Map<K, List<E>> groupBy(@Nullable Iterable<E> iterable, @NonNull final Function<E, K> classifier, @NonNull Supplier0<Map<K, List<E>>> mapFactory) {
+    public static <K, E> Map<K, List<E>> groupBy(@Nullable Iterable<E> iterable, @NonNull final Function<E, K> classifier) {
+        return groupBy(iterable, classifier, null);
+    }
+
+    public static <K, E> Map<K, List<E>> groupBy(@Nullable Iterable<E> iterable, @NonNull final Function<E, K> classifier, @Nullable Supplier0<Map<K, List<E>>> mapFactory) {
         Preconditions.checkNotNull(classifier);
-        Preconditions.checkNotNull(mapFactory);
         iterable = asIterable(iterable);
+        if (mapFactory == null) {
+            mapFactory = new Supplier0<Map<K, List<E>>>() {
+                @Override
+                public Map<K, List<E>> get() {
+                    return new HashMap<K, List<E>>();
+                }
+            };
+        }
         Map<K, List<E>> map = mapFactory.get();
         Preconditions.checkNotNull(map);
         final WrappedNonAbsentMap<K, List<E>> wrappedNonAbsentMap = WrappedNonAbsentMap.wrap(map, new Supplier<K, List<E>>() {
@@ -1410,7 +1425,9 @@ public class Collects {
         };
     }
 
-    public static <E, K> Collector<E, Map<K, List<E>>> groupingBy(@Nullable Iterable<E> iterable, final Function<E, K> classifier, final Supplier0<Map<K, List<E>>> mapFactory) {
+    public static <E, K> Collector<E, Map<K, List<E>>> groupingBy(@NonNull final Function<E, K> classifier, @NonNull final Supplier0<Map<K, List<E>>> mapFactory) {
+        Preconditions.checkNotNull(classifier);
+        Preconditions.checkNotNull(mapFactory);
         return new Collector<E, Map<K, List<E>>>() {
             @Override
             public Supplier0<Map<K, List<E>>> supplier() {
