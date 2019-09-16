@@ -2,6 +2,7 @@
 
 [![JDK](https://img.shields.io/badge/JDK-1.6+-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
+[![maven](https://img.shields.io/badge/maven-v0.0.5-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.5)
 [![maven](https://img.shields.io/badge/maven-v0.0.4-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.4)
 [![maven](https://img.shields.io/badge/maven-v0.0.3-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.3)
 [![maven](https://img.shields.io/badge/maven-v0.0.2-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.2)
