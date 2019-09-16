@@ -1,25 +1,32 @@
 package com.jn.langx.util.concurrent;
 
 import com.jn.langx.factory.Factory;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
+ * Assume :
+ * 1) one prefix to many factory
+ * 2) one factory to many thread
+ *
  * @author jinuo.fang
  */
 public class CommonThreadFactory implements ThreadFactory, Factory<Runnable, Thread> {
-    // key: prefix
-    // value: thread N.O.
-    private static final Map<String, AtomicLong> threadNumber = new ConcurrentHashMap<String, AtomicLong>();
-    // key: prefix
-    // value: factory N.O.
-    private static final Map<String, Integer> factoryToNumber = new ConcurrentHashMap<String, Integer>();
-    private static AtomicInteger factoryNumber = new AtomicInteger(0);
+    /**
+     * key: prefix
+     * value: factory N.O.
+     */
+    private static final ConcurrentHashMap<String, AtomicInteger> PREFIX_TO_FACTORY = new ConcurrentHashMap<String, AtomicInteger>();
+    /**
+     * key: factory
+     * value: thread N.O.
+     */
+    private static final Map<Integer, AtomicInteger> FACTORY_TO_THREAD = new ConcurrentHashMap<Integer, AtomicInteger>();
 
     private boolean daemon;
     private String prefix;
@@ -36,16 +43,16 @@ public class CommonThreadFactory implements ThreadFactory, Factory<Runnable, Thr
         this.daemon = daemon;
         this.prefix = prefix;
 
-        if (threadNumber.containsKey(prefix)) {
-            factoryNo = factoryToNumber.get(prefix);
-        } else {
-            factoryNo = factoryNumber.getAndIncrement();
-            factoryToNumber.put(prefix, factoryNo);
-        }
+        PREFIX_TO_FACTORY.putIfAbsent(prefix, new AtomicInteger(0));
+        factoryNo = PREFIX_TO_FACTORY.get(prefix).getAndIncrement();
+        FACTORY_TO_THREAD.put(factoryNo, new AtomicInteger(0));
     }
 
+    /**
+     * @return ${prefix}(${factoryNo}-${threadNumber})
+     */
     private String nextThreadName() {
-        return new StringBuilder(prefix).append("(").append(factoryNo).append("-").append(threadNumber.get(prefix).getAndIncrement()).append(")").toString();
+        return StringTemplates.formatWithPlaceholder("{}({}-{})", prefix, factoryNo, FACTORY_TO_THREAD.get(factoryNo).getAndIncrement());
     }
 
     @Override
