@@ -7,7 +7,7 @@
     <groupId>com.github.jn.langx</groupId>
     <artifactId>langx-java</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 
     <name>langx-java</name>
 
