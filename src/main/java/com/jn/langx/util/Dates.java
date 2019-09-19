@@ -11,6 +11,14 @@ import java.util.TimeZone;
  * https://www.iso.org/obp/ui#iso:std:iso:8601:-1:ed-1:v1:en
  */
 public class Dates {
+    public static final int MINUTES_TO_SECONDS = 60;
+    public static final int HOURS_TO_SECONDS = 60 * MINUTES_TO_SECONDS;
+    public static final int DAY_TO_SECONDS = 24 * HOURS_TO_SECONDS;
+    public static final long SECONDS_TO_MILLIS = 1000;
+    public static final long MINUTES_TO_MILLIS = MINUTES_TO_SECONDS * SECONDS_TO_MILLIS;
+    public static final long HOURS_TO_MILLIS = HOURS_TO_SECONDS * SECONDS_TO_MILLIS;
+    public static final long DAY_TO_MILLIS = DAY_TO_SECONDS * SECONDS_TO_MILLIS;
+
     public static final String YYYY_MM_DD_HH_mm_ss = "YYYY-MM-DD HH:mm:ss";
     public static final String YYYY_MM_DD_HH_mm_ss_SSS = "YYYY-MM-DD HH:mm:ss.SSS";
     public static final String YYYY_MM_DD = "YYYY-MM-DD";
