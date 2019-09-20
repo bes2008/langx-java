@@ -85,7 +85,7 @@ public final class Duration
 
     /**
      * Creates a duration from the specified object using the
-     * {@link convert.ConverterManager ConverterManager}.
+     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager}.
      *
      * @param duration duration to convert
      * @throws IllegalArgumentException if duration is invalid
