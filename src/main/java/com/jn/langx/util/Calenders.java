@@ -98,11 +98,10 @@ public class Calenders {
         SECOND
     }
 
-    private static enum RecentIntervalType {
+    public static enum RecentIntervalType {
         NATURE_INTERVAL,
         TO_YESTERDAY,
-        TO_NOW,
-        TO_TODAY;
+        TO_NOW;
     }
 
     /**
@@ -119,5 +118,6 @@ public class Calenders {
             this.locales = Collects.asList(locales);
         }
     }
+
 
 }

@@ -511,7 +511,7 @@ public abstract class DateTimeZone implements Serializable {
 
         if (provider == null) {
             try {
-                provider = new ZoneInfoProvider("com.jn.langx.util.jodatime/tz/data");
+                provider = new ZoneInfoProvider("com/jn/langx/util/jodatime/tz/data");
             } catch (Exception ex) {
                 Thread thread = Thread.currentThread();
                 thread.getThreadGroup().uncaughtException(thread, ex);
@@ -550,7 +550,7 @@ public abstract class DateTimeZone implements Serializable {
     public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("com.jn.langx.util.jodatime.DateTimeZone.setNameProvider"));
+            sm.checkPermission(new JodaTimePermission("DateTimeZone.setNameProvider"));
         }
         setNameProvider0(nameProvider);
     }
