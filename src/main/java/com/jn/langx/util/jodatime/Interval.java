@@ -170,7 +170,7 @@ public final class Interval
      * Constructs a time interval by converting or copying from another object.
      * <p>
      * The recognised object types are defined in
-     * {@link convert.ConverterManager ConverterManager} and
+     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
      * include ReadableInterval and String.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
@@ -188,7 +188,7 @@ public final class Interval
      * overriding the chronology.
      * <p>
      * The recognised object types are defined in
-     * {@link convert.ConverterManager ConverterManager} and
+     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
      * include ReadableInterval and String.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
