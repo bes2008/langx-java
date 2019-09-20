@@ -101,17 +101,17 @@ public class PreciseDurationField extends BaseDurationField {
      * negative
      */
     public long getMillis(long value, long instant) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeMultiply(value, iUnitMillis);
+        return FieldUtils.safeMultiply(value, iUnitMillis);
     }
 
     public long add(long instant, int value) {
         long addition = value * iUnitMillis;  // safe
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeAdd(instant, addition);
+        return FieldUtils.safeAdd(instant, addition);
     }
 
     public long add(long instant, long value) {
-        long addition = com.jn.langx.util.jodatime.field.FieldUtils.safeMultiply(value, iUnitMillis);
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeAdd(instant, addition);
+        long addition = FieldUtils.safeMultiply(value, iUnitMillis);
+        return FieldUtils.safeAdd(instant, addition);
     }
 
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {

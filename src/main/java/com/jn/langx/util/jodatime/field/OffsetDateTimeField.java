@@ -111,7 +111,7 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
      */
     public long add(long instant, int amount) {
         instant = super.add(instant, amount);
-        com.jn.langx.util.jodatime.field.FieldUtils.verifyValueBounds(this, get(instant), iMin, iMax);
+        FieldUtils.verifyValueBounds(this, get(instant), iMin, iMax);
         return instant;
     }
 
@@ -125,7 +125,7 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
      */
     public long add(long instant, long amount) {
         instant = super.add(instant, amount);
-        com.jn.langx.util.jodatime.field.FieldUtils.verifyValueBounds(this, get(instant), iMin, iMax);
+        FieldUtils.verifyValueBounds(this, get(instant), iMin, iMax);
         return instant;
     }
 
@@ -138,7 +138,7 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
      * @return the updated time instant.
      */
     public long addWrapField(long instant, int amount) {
-        return set(instant, com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue(get(instant), amount, iMin, iMax));
+        return set(instant, FieldUtils.getWrappedValue(get(instant), amount, iMin, iMax));
     }
 
     /**

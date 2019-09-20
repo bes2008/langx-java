@@ -150,7 +150,7 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * @return the updated time instant.
      */
     public long addWrapField(long instant, int amount) {
-        return set(instant, com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue(get(instant), amount, iMin, iMax));
+        return set(instant, FieldUtils.getWrappedValue(get(instant), amount, iMin, iMax));
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {

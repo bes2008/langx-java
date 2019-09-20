@@ -44,7 +44,7 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
         if (field == null) {
             return null;
         }
-        if (field instanceof com.jn.langx.util.jodatime.field.StrictDateTimeField) {
+        if (field instanceof StrictDateTimeField) {
             field = ((StrictDateTimeField) field).getWrappedField();
         }
         if (field.isLenient()) {

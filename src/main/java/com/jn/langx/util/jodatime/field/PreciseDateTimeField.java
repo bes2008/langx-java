@@ -96,7 +96,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      */
     public long addWrapField(long instant, int amount) {
         int thisValue = get(instant);
-        int wrappedValue = com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue
+        int wrappedValue = FieldUtils.getWrappedValue
                 (thisValue, amount, getMinimumValue(), getMaximumValue());
         // copy code from set() to avoid repeat call to get()
         return instant + (wrappedValue - thisValue) * getUnitMillis();

@@ -72,7 +72,7 @@ public class ScaledDurationField extends DecoratedDurationField {
     }
 
     public long getMillis(long value) {
-        long scaled = com.jn.langx.util.jodatime.field.FieldUtils.safeMultiply(value, iScalar);
+        long scaled = FieldUtils.safeMultiply(value, iScalar);
         return getWrappedField().getMillis(scaled);
     }
 
@@ -82,7 +82,7 @@ public class ScaledDurationField extends DecoratedDurationField {
     }
 
     public long getMillis(long value, long instant) {
-        long scaled = com.jn.langx.util.jodatime.field.FieldUtils.safeMultiply(value, iScalar);
+        long scaled = FieldUtils.safeMultiply(value, iScalar);
         return getWrappedField().getMillis(scaled, instant);
     }
 

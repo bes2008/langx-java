@@ -86,7 +86,7 @@ public final class MillisDurationField extends DurationField implements Serializ
 
     //------------------------------------------------------------------------
     public int getValue(long duration) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeToInt(duration);
+        return FieldUtils.safeToInt(duration);
     }
 
     public long getValueAsLong(long duration) {
@@ -94,7 +94,7 @@ public final class MillisDurationField extends DurationField implements Serializ
     }
 
     public int getValue(long duration, long instant) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeToInt(duration);
+        return FieldUtils.safeToInt(duration);
     }
 
     public long getValueAsLong(long duration, long instant) {
@@ -118,15 +118,15 @@ public final class MillisDurationField extends DurationField implements Serializ
     }
 
     public long add(long instant, int value) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeAdd(instant, value);
+        return FieldUtils.safeAdd(instant, value);
     }
 
     public long add(long instant, long value) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeAdd(instant, value);
+        return FieldUtils.safeAdd(instant, value);
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeToInt(com.jn.langx.util.jodatime.field.FieldUtils.safeSubtract(minuendInstant, subtrahendInstant));
+        return FieldUtils.safeToInt(FieldUtils.safeSubtract(minuendInstant, subtrahendInstant));
     }
 
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {

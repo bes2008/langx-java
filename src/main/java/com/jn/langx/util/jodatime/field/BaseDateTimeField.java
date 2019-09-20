@@ -461,7 +461,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      */
     public long addWrapField(long instant, int value) {
         int current = get(instant);
-        int wrapped = com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue
+        int wrapped = FieldUtils.getWrappedValue
                 (current, value, getMinimumValue(instant), getMaximumValue(instant));
         return set(instant, wrapped);
     }
@@ -495,7 +495,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      */
     public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         int current = values[fieldIndex];
-        int wrapped = com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue
+        int wrapped = FieldUtils.getWrappedValue
                 (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));
         return set(instant, fieldIndex, values, wrapped);  // adjusts smaller fields
     }

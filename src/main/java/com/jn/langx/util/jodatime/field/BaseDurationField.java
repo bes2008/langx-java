@@ -81,7 +81,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * negative
      */
     public int getValue(long duration) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeToInt(getValueAsLong(duration));
+        return FieldUtils.safeToInt(getValueAsLong(duration));
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * negative
      */
     public int getValue(long duration, long instant) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeToInt(getValueAsLong(duration, instant));
+        return FieldUtils.safeToInt(getValueAsLong(duration, instant));
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * negative
      */
     public long getMillis(long value) {
-        return com.jn.langx.util.jodatime.field.FieldUtils.safeMultiply(value, getUnitMillis());
+        return FieldUtils.safeMultiply(value, getUnitMillis());
     }
 
     // Calculation API

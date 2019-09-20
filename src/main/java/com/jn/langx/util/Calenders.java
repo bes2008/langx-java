@@ -19,9 +19,6 @@ public class Calenders {
         int m = month;
 
         int result = (1 + 2 * m + 3 * (m + 1) / 5 + y + y / 4 - y / 100 + y / 400) % 7 + 1;
-
-        // System.out.println(year + "-" + month + "-1  星期" + result);
-
         return result;
     }
 
@@ -47,4 +44,18 @@ public class Calenders {
     public static int getNumberInWeek(int year, int month, int day) {
         return (getNumberOfFirstDayInMonth(year, month) + day - 1) % 7;
     }
+
+    public static class Week{
+        long start;
+        long end;
+    }
+
+    /**
+     * 获取一个时间点所在那一周的起止时间
+     * @param time
+     */
+    public static Week getWeek(long time){
+        return null;
+    }
+
 }

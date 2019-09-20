@@ -72,7 +72,7 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      *
      * @param dividedField complimentary divided field, like "century()".
      */
-    public RemainderDateTimeField(com.jn.langx.util.jodatime.field.DividedDateTimeField dividedField) {
+    public RemainderDateTimeField(DividedDateTimeField dividedField) {
         this(dividedField, dividedField.getType());
     }
 
@@ -116,7 +116,7 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * @return the updated time instant.
      */
     public long addWrapField(long instant, int amount) {
-        return set(instant, com.jn.langx.util.jodatime.field.FieldUtils.getWrappedValue(get(instant), amount, 0, iDivisor - 1));
+        return set(instant, FieldUtils.getWrappedValue(get(instant), amount, 0, iDivisor - 1));
     }
 
     /**
