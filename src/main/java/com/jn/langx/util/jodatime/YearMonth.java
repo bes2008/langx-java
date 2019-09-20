@@ -68,6 +68,14 @@ public final class YearMonth
         implements ReadablePartial, Serializable {
 
     /**
+     * The index of the year field in the field array
+     */
+    public static final int YEAR = 0;
+    /**
+     * The index of the monthOfYear field in the field array
+     */
+    public static final int MONTH_OF_YEAR = 1;
+    /**
      * Serialization version
      */
     private static final long serialVersionUID = 797544782896179L;
@@ -78,133 +86,6 @@ public final class YearMonth
             DateTimeFieldType.year(),
             DateTimeFieldType.monthOfYear(),
     };
-
-    /**
-     * The index of the year field in the field array
-     */
-    public static final int YEAR = 0;
-    /**
-     * The index of the monthOfYear field in the field array
-     */
-    public static final int MONTH_OF_YEAR = 1;
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Obtains a {@code YearMonth} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the default time zone.
-     * The resulting object does not use the zone.
-     *
-     * @return the current year-month, not null
-     * @since 2.0
-     */
-    public static YearMonth now() {
-        return new YearMonth();
-    }
-
-    /**
-     * Obtains a {@code YearMonth} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the specified time zone.
-     * The resulting object does not use the zone.
-     *
-     * @param zone the time zone, not null
-     * @return the current year-month, not null
-     * @since 2.0
-     */
-    public static YearMonth now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
-        return new YearMonth(zone);
-    }
-
-    /**
-     * Obtains a {@code YearMonth} set to the current system millisecond time
-     * using the specified chronology.
-     * The resulting object does not use the zone.
-     *
-     * @param chronology the chronology, not null
-     * @return the current year-month, not null
-     * @since 2.0
-     */
-    public static YearMonth now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
-        return new YearMonth(chronology);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Parses a {@code YearMonth} from the specified string.
-     * <p>
-     * This uses {@link ISODateTimeFormat#localDateParser()}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static YearMonth parse(String str) {
-        return parse(str, ISODateTimeFormat.localDateParser());
-    }
-
-    /**
-     * Parses a {@code YearMonth} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static YearMonth parse(String str, DateTimeFormatter formatter) {
-        LocalDate date = formatter.parseLocalDate(str);
-        return new YearMonth(date.getYear(), date.getMonthOfYear());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs a YearMonth from a <code>java.util.Calendar</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Calendar and assigned to the YearMonth.
-     * <p>
-     * This factory method ignores the type of the calendar and always
-     * creates a YearMonth with ISO chronology. It is expected that you
-     * will only pass in instances of <code>GregorianCalendar</code> however
-     * this is not validated.
-     *
-     * @param calendar the Calendar to extract fields from
-     * @return the created YearMonth, never null
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
-     */
-    public static YearMonth fromCalendarFields(Calendar calendar) {
-        if (calendar == null) {
-            throw new IllegalArgumentException("The calendar must not be null");
-        }
-        return new YearMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
-    }
-
-    /**
-     * Constructs a YearMonth from a <code>java.util.Date</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Date and assigned to the YearMonth.
-     * <p>
-     * This factory method always creates a YearMonth with ISO chronology.
-     *
-     * @param date the Date to extract fields from
-     * @return the created YearMonth, never null
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
-     */
-    @SuppressWarnings("deprecation")
-    public static YearMonth fromDateFields(Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("The date must not be null");
-        }
-        return new YearMonth(date.getYear() + 1900, date.getMonth() + 1);
-    }
 
     //-----------------------------------------------------------------------
 
@@ -252,6 +133,8 @@ public final class YearMonth
         super(chronology);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs a YearMonth extracting the partial fields from the specified
      * milliseconds using the ISOChronology in the default zone.
@@ -280,6 +163,8 @@ public final class YearMonth
     public YearMonth(long instant, Chronology chronology) {
         super(instant, chronology);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs a YearMonth from an Object that represents some form of time.
@@ -319,6 +204,8 @@ public final class YearMonth
     public YearMonth(Object instant, Chronology chronology) {
         super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs a YearMonth with specified year and month
@@ -371,6 +258,118 @@ public final class YearMonth
      */
     YearMonth(YearMonth partial, Chronology chrono) {
         super(partial, chrono);
+    }
+
+    /**
+     * Obtains a {@code YearMonth} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * The resulting object does not use the zone.
+     *
+     * @return the current year-month, not null
+     * @since 2.0
+     */
+    public static YearMonth now() {
+        return new YearMonth();
+    }
+
+    /**
+     * Obtains a {@code YearMonth} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * The resulting object does not use the zone.
+     *
+     * @param zone the time zone, not null
+     * @return the current year-month, not null
+     * @since 2.0
+     */
+    public static YearMonth now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new YearMonth(zone);
+    }
+
+    /**
+     * Obtains a {@code YearMonth} set to the current system millisecond time
+     * using the specified chronology.
+     * The resulting object does not use the zone.
+     *
+     * @param chronology the chronology, not null
+     * @return the current year-month, not null
+     * @since 2.0
+     */
+    public static YearMonth now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new YearMonth(chronology);
+    }
+
+    /**
+     * Parses a {@code YearMonth} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#localDateParser()}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static YearMonth parse(String str) {
+        return parse(str, ISODateTimeFormat.localDateParser());
+    }
+
+    /**
+     * Parses a {@code YearMonth} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static YearMonth parse(String str, DateTimeFormatter formatter) {
+        LocalDate date = formatter.parseLocalDate(str);
+        return new YearMonth(date.getYear(), date.getMonthOfYear());
+    }
+
+    /**
+     * Constructs a YearMonth from a <code>java.util.Calendar</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Calendar and assigned to the YearMonth.
+     * <p>
+     * This factory method ignores the type of the calendar and always
+     * creates a YearMonth with ISO chronology. It is expected that you
+     * will only pass in instances of <code>GregorianCalendar</code> however
+     * this is not validated.
+     *
+     * @param calendar the Calendar to extract fields from
+     * @return the created YearMonth, never null
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
+     */
+    public static YearMonth fromCalendarFields(Calendar calendar) {
+        if (calendar == null) {
+            throw new IllegalArgumentException("The calendar must not be null");
+        }
+        return new YearMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
+    }
+
+    /**
+     * Constructs a YearMonth from a <code>java.util.Date</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Date and assigned to the YearMonth.
+     * <p>
+     * This factory method always creates a YearMonth with ISO chronology.
+     *
+     * @param date the Date to extract fields from
+     * @return the created YearMonth, never null
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
+     */
+    @SuppressWarnings("deprecation")
+    public static YearMonth fromDateFields(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        return new YearMonth(date.getYear() + 1900, date.getMonth() + 1);
     }
 
     /**

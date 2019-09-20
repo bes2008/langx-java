@@ -112,6 +112,19 @@ public final class Months extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a new instance representing a number of months.
+     * You should consider using the factory method {@link #months(int)}
+     * instead of the constructor.
+     *
+     * @param months the number of months to represent
+     */
+    private Months(int months) {
+        super(months);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Obtains an instance of <code>Months</code> that may be cached.
      * <code>Months</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
@@ -155,8 +168,6 @@ public final class Months extends BaseSingleFieldPeriod {
                 return new Months(months);
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a <code>Months</code> representing the number of whole months
@@ -213,6 +224,8 @@ public final class Months extends BaseSingleFieldPeriod {
         return Months.months(amount);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a new <code>Months</code> by parsing a string in the ISO8601 format 'PnM'.
      * <p>
@@ -230,19 +243,6 @@ public final class Months extends BaseSingleFieldPeriod {
         }
         Period p = PARSER.parsePeriod(periodStr);
         return Months.months(p.getMonths());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a new instance representing a number of months.
-     * You should consider using the factory method {@link #months(int)}
-     * instead of the constructor.
-     *
-     * @param months the number of months to represent
-     */
-    private Months(int months) {
-        super(months);
     }
 
     /**

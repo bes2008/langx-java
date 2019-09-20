@@ -39,6 +39,16 @@ public final class ZonedChronology extends AssembledChronology {
     private static final long serialVersionUID = -1079258847191166848L;
 
     /**
+     * Restricted constructor
+     *
+     * @param base base chronology to wrap
+     * @param zone the time zone
+     */
+    private ZonedChronology(Chronology base, DateTimeZone zone) {
+        super(base, zone);
+    }
+
+    /**
      * Create a ZonedChronology for any chronology, overriding any time zone it
      * may already have.
      *
@@ -64,16 +74,6 @@ public final class ZonedChronology extends AssembledChronology {
         // Use time of day arithmetic rules for unit durations less than
         // typical time zone offsets.
         return field != null && field.getUnitMillis() < DateTimeConstants.MILLIS_PER_HOUR * 12;
-    }
-
-    /**
-     * Restricted constructor
-     *
-     * @param base base chronology to wrap
-     * @param zone the time zone
-     */
-    private ZonedChronology(Chronology base, DateTimeZone zone) {
-        super(base, zone);
     }
 
     public DateTimeZone getZone() {

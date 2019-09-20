@@ -70,24 +70,9 @@ public final class TimeOfDay
     // different chronologies
 
     /**
-     * Serialization version
-     */
-    private static final long serialVersionUID = 3633353405803318660L;
-    /**
-     * The singleton set of field types
-     */
-    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
-            DateTimeFieldType.hourOfDay(),
-            DateTimeFieldType.minuteOfHour(),
-            DateTimeFieldType.secondOfMinute(),
-            DateTimeFieldType.millisOfSecond(),
-    };
-
-    /**
      * Constant for midnight.
      */
     public static final TimeOfDay MIDNIGHT = new TimeOfDay(0, 0, 0, 0);
-
     /**
      * The index of the hourOfDay field in the field array
      */
@@ -104,104 +89,20 @@ public final class TimeOfDay
      * The index of the millisOfSecond field in the field array
      */
     public static final int MILLIS_OF_SECOND = 3;
-
-    //-----------------------------------------------------------------------
-
     /**
-     * Constructs a TimeOfDay from a <code>java.util.Calendar</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Calendar and assigned to the TimeOfDay.
-     * This is useful to ensure that the field values are the same in the
-     * created TimeOfDay no matter what the time zone is. For example, if
-     * the Calendar states that the time is 04:29, then the created TimeOfDay
-     * will always have the time 04:29 irrespective of time zone issues.
-     * <p>
-     * This factory method ignores the type of the calendar and always
-     * creates a TimeOfDay with ISO chronology.
-     *
-     * @param calendar the Calendar to extract fields from
-     * @return the created TimeOfDay
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the time is invalid for the ISO chronology
-     * @since 1.2
+     * Serialization version
      */
-    public static TimeOfDay fromCalendarFields(Calendar calendar) {
-        if (calendar == null) {
-            throw new IllegalArgumentException("The calendar must not be null");
-        }
-        return new TimeOfDay(
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.SECOND),
-                calendar.get(Calendar.MILLISECOND)
-        );
-    }
-
+    private static final long serialVersionUID = 3633353405803318660L;
     /**
-     * Constructs a TimeOfDay from a <code>java.util.Date</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Date and assigned to the TimeOfDay.
-     * This is useful to ensure that the field values are the same in the
-     * created TimeOfDay no matter what the time zone is. For example, if
-     * the Calendar states that the time is 04:29, then the created TimeOfDay
-     * will always have the time 04:29 irrespective of time zone issues.
-     * <p>
-     * This factory method always creates a TimeOfDay with ISO chronology.
-     *
-     * @param date the Date to extract fields from
-     * @return the created TimeOfDay
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
-     * @since 1.2
+     * The singleton set of field types
      */
-    public static TimeOfDay fromDateFields(Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("The date must not be null");
-        }
-        return new TimeOfDay(
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds(),
-                (((int) (date.getTime() % 1000)) + 1000) % 1000
-        );
-    }
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
+            DateTimeFieldType.hourOfDay(),
+            DateTimeFieldType.minuteOfHour(),
+            DateTimeFieldType.secondOfMinute(),
+            DateTimeFieldType.millisOfSecond(),
+    };
 
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs a TimeOfDay from the specified millis of day using the
-     * ISO chronology.
-     * <p>
-     * The millisOfDay value may exceed the number of millis in one day,
-     * but additional days will be ignored.
-     * This method uses the UTC time zone internally.
-     *
-     * @param millisOfDay the number of milliseconds into a day to convert
-     */
-    public static TimeOfDay fromMillisOfDay(long millisOfDay) {
-        return fromMillisOfDay(millisOfDay, null);
-    }
-
-    /**
-     * Constructs a TimeOfDay from the specified millis of day using the
-     * specified chronology.
-     * <p>
-     * The millisOfDay value may exceed the number of millis in one day,
-     * but additional days will be ignored.
-     * This method uses the UTC time zone internally.
-     *
-     * @param millisOfDay the number of milliseconds into a day to convert
-     * @param chrono      the chronology, null means ISO chronology
-     */
-    public static TimeOfDay fromMillisOfDay(long millisOfDay, Chronology chrono) {
-        chrono = DateTimeUtils.getChronology(chrono);
-        chrono = chrono.withUTC();
-        return new TimeOfDay(millisOfDay, chrono);
-    }
-
-    // Constructors
     //-----------------------------------------------------------------------
 
     /**
@@ -231,6 +132,8 @@ public final class TimeOfDay
         super(ISOChronology.getInstance(zone));
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs a TimeOfDay with the current time, using the specified chronology
      * and zone to extract the fields.
@@ -258,6 +161,9 @@ public final class TimeOfDay
     public TimeOfDay(long instant) {
         super(instant);
     }
+
+    // Constructors
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs a TimeOfDay extracting the partial fields from the specified
@@ -434,6 +340,98 @@ public final class TimeOfDay
      */
     TimeOfDay(TimeOfDay partial, Chronology chrono) {
         super(partial, chrono);
+    }
+
+    /**
+     * Constructs a TimeOfDay from a <code>java.util.Calendar</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Calendar and assigned to the TimeOfDay.
+     * This is useful to ensure that the field values are the same in the
+     * created TimeOfDay no matter what the time zone is. For example, if
+     * the Calendar states that the time is 04:29, then the created TimeOfDay
+     * will always have the time 04:29 irrespective of time zone issues.
+     * <p>
+     * This factory method ignores the type of the calendar and always
+     * creates a TimeOfDay with ISO chronology.
+     *
+     * @param calendar the Calendar to extract fields from
+     * @return the created TimeOfDay
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the time is invalid for the ISO chronology
+     * @since 1.2
+     */
+    public static TimeOfDay fromCalendarFields(Calendar calendar) {
+        if (calendar == null) {
+            throw new IllegalArgumentException("The calendar must not be null");
+        }
+        return new TimeOfDay(
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND),
+                calendar.get(Calendar.MILLISECOND)
+        );
+    }
+
+    /**
+     * Constructs a TimeOfDay from a <code>java.util.Date</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Date and assigned to the TimeOfDay.
+     * This is useful to ensure that the field values are the same in the
+     * created TimeOfDay no matter what the time zone is. For example, if
+     * the Calendar states that the time is 04:29, then the created TimeOfDay
+     * will always have the time 04:29 irrespective of time zone issues.
+     * <p>
+     * This factory method always creates a TimeOfDay with ISO chronology.
+     *
+     * @param date the Date to extract fields from
+     * @return the created TimeOfDay
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
+     * @since 1.2
+     */
+    public static TimeOfDay fromDateFields(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        return new TimeOfDay(
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds(),
+                (((int) (date.getTime() % 1000)) + 1000) % 1000
+        );
+    }
+
+    /**
+     * Constructs a TimeOfDay from the specified millis of day using the
+     * ISO chronology.
+     * <p>
+     * The millisOfDay value may exceed the number of millis in one day,
+     * but additional days will be ignored.
+     * This method uses the UTC time zone internally.
+     *
+     * @param millisOfDay the number of milliseconds into a day to convert
+     */
+    public static TimeOfDay fromMillisOfDay(long millisOfDay) {
+        return fromMillisOfDay(millisOfDay, null);
+    }
+
+    /**
+     * Constructs a TimeOfDay from the specified millis of day using the
+     * specified chronology.
+     * <p>
+     * The millisOfDay value may exceed the number of millis in one day,
+     * but additional days will be ignored.
+     * This method uses the UTC time zone internally.
+     *
+     * @param millisOfDay the number of milliseconds into a day to convert
+     * @param chrono      the chronology, null means ISO chronology
+     */
+    public static TimeOfDay fromMillisOfDay(long millisOfDay, Chronology chrono) {
+        chrono = DateTimeUtils.getChronology(chrono);
+        chrono = chrono.withUTC();
+        return new TimeOfDay(millisOfDay, chrono);
     }
 
     //-----------------------------------------------------------------------

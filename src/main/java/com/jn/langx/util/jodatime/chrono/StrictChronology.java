@@ -36,6 +36,16 @@ public final class StrictChronology extends AssembledChronology {
      * Serialization lock
      */
     private static final long serialVersionUID = 6633006628097111960L;
+    private transient Chronology iWithUTC;
+
+    /**
+     * Create a StrictChronology for any chronology.
+     *
+     * @param base the chronology to wrap
+     */
+    private StrictChronology(Chronology base) {
+        super(base, null);
+    }
 
     /**
      * Create a StrictChronology for any chronology.
@@ -50,15 +60,8 @@ public final class StrictChronology extends AssembledChronology {
         return new StrictChronology(base);
     }
 
-    private transient Chronology iWithUTC;
-
-    /**
-     * Create a StrictChronology for any chronology.
-     *
-     * @param base the chronology to wrap
-     */
-    private StrictChronology(Chronology base) {
-        super(base, null);
+    private static final DateTimeField convertField(DateTimeField field) {
+        return StrictDateTimeField.getInstance(field);
     }
 
     public Chronology withUTC() {
@@ -110,10 +113,6 @@ public final class StrictChronology extends AssembledChronology {
         fields.clockhourOfDay = convertField(fields.clockhourOfDay);
         fields.clockhourOfHalfday = convertField(fields.clockhourOfHalfday);
         fields.halfdayOfDay = convertField(fields.halfdayOfDay);
-    }
-
-    private static final DateTimeField convertField(DateTimeField field) {
-        return StrictDateTimeField.getInstance(field);
     }
 
     //-----------------------------------------------------------------------

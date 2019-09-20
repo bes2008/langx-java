@@ -60,6 +60,8 @@ abstract class BasicChronology extends AssembledChronology {
     private static final DateTimeField cClockhourOfDayField;
     private static final DateTimeField cClockhourOfHalfdayField;
     private static final DateTimeField cHalfdayOfDayField;
+    private static final int CACHE_SIZE = 1 << 10;
+    private static final int CACHE_MASK = CACHE_SIZE - 1;
 
     static {
         cMillisField = MillisDurationField.INSTANCE;
@@ -108,9 +110,6 @@ abstract class BasicChronology extends AssembledChronology {
 
         cHalfdayOfDayField = new HalfdayField();
     }
-
-    private static final int CACHE_SIZE = 1 << 10;
-    private static final int CACHE_MASK = CACHE_SIZE - 1;
 
     private transient final YearInfo[] iYearInfoCache = new YearInfo[CACHE_SIZE];
 

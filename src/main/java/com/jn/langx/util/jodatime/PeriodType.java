@@ -82,6 +82,32 @@ public class PeriodType implements Serializable {
     private static PeriodType cMinutes;
     private static PeriodType cSeconds;
     private static PeriodType cMillis;
+    /**
+     * The name of the type
+     */
+    private final String iName;
+    /**
+     * The array of types
+     */
+    private final DurationFieldType[] iTypes;
+    /**
+     * The array of indices
+     */
+    private final int[] iIndices;
+
+    /**
+     * Constructor.
+     *
+     * @param name    the name
+     * @param types   the types
+     * @param indices the indices
+     */
+    protected PeriodType(String name, DurationFieldType[] types, int[] indices) {
+        super();
+        iName = name;
+        iTypes = types;
+        iIndices = indices;
+    }
 
     /**
      * Gets a type that defines all standard fields.
@@ -435,6 +461,8 @@ public class PeriodType implements Serializable {
         return type;
     }
 
+    //-----------------------------------------------------------------------    
+
     /**
      * Gets a type that defines just the minutes field.
      *
@@ -574,34 +602,6 @@ public class PeriodType implements Serializable {
         }
         cache.put(checkPartType, type);
         return type;
-    }
-
-    //-----------------------------------------------------------------------    
-    /**
-     * The name of the type
-     */
-    private final String iName;
-    /**
-     * The array of types
-     */
-    private final DurationFieldType[] iTypes;
-    /**
-     * The array of indices
-     */
-    private final int[] iIndices;
-
-    /**
-     * Constructor.
-     *
-     * @param name    the name
-     * @param types   the types
-     * @param indices the indices
-     */
-    protected PeriodType(String name, DurationFieldType[] types, int[] indices) {
-        super();
-        iName = name;
-        iTypes = types;
-        iIndices = indices;
     }
 
     //-----------------------------------------------------------------------

@@ -36,6 +36,16 @@ public final class LenientChronology extends AssembledChronology {
      * Serialization lock
      */
     private static final long serialVersionUID = -3148237568046877177L;
+    private transient Chronology iWithUTC;
+
+    /**
+     * Create a LenientChronology for any chronology.
+     *
+     * @param base the chronology to wrap
+     */
+    private LenientChronology(Chronology base) {
+        super(base, null);
+    }
 
     /**
      * Create a LenientChronology for any chronology.
@@ -48,17 +58,6 @@ public final class LenientChronology extends AssembledChronology {
             throw new IllegalArgumentException("Must supply a chronology");
         }
         return new LenientChronology(base);
-    }
-
-    private transient Chronology iWithUTC;
-
-    /**
-     * Create a LenientChronology for any chronology.
-     *
-     * @param base the chronology to wrap
-     */
-    private LenientChronology(Chronology base) {
-        super(base, null);
     }
 
     public Chronology withUTC() {

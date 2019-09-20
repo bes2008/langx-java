@@ -37,6 +37,70 @@ class GJLocaleSymbols {
     private static final GJLocaleSymbols[] cFastCache = new GJLocaleSymbols[FAST_CACHE_SIZE];
 
     private static WeakHashMap<Locale, GJLocaleSymbols> cCache = new WeakHashMap<Locale, GJLocaleSymbols>();
+    private final WeakReference<Locale> iLocale;
+    private final String[] iEras;
+    private final String[] iDaysOfWeek;
+    private final String[] iShortDaysOfWeek;
+    private final String[] iMonths;
+    private final String[] iShortMonths;
+    private final String[] iHalfday;
+    private final TreeMap<String, Integer> iParseEras;
+    private final TreeMap<String, Integer> iParseDaysOfWeek;
+    private final TreeMap<String, Integer> iParseMonths;
+    private final int iMaxEraLength;
+    private final int iMaxDayOfWeekLength;
+    private final int iMaxShortDayOfWeekLength;
+    private final int iMaxMonthLength;
+    private final int iMaxShortMonthLength;
+    private final int iMaxHalfdayLength;
+
+    /**
+     * @param locale must not be null
+     */
+    private GJLocaleSymbols(Locale locale) {
+        iLocale = new WeakReference<Locale>(locale);
+
+        DateFormatSymbols dfs = DateTimeUtils.getDateFormatSymbols(locale);
+
+        iEras = dfs.getEras();
+        iDaysOfWeek = realignDaysOfWeek(dfs.getWeekdays());
+        iShortDaysOfWeek = realignDaysOfWeek(dfs.getShortWeekdays());
+        iMonths = realignMonths(dfs.getMonths());
+        iShortMonths = realignMonths(dfs.getShortMonths());
+        iHalfday = dfs.getAmPmStrings();
+
+        Integer[] integers = new Integer[13];
+        for (int i = 0; i < 13; i++) {
+            integers[i] = Integer.valueOf(i);
+        }
+
+        iParseEras = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
+        addSymbols(iParseEras, iEras, integers);
+        if ("en".equals(locale.getLanguage())) {
+            // Include support for parsing "BCE" and "CE" if the language is
+            // English. At some point Joda-Time will need an independent set of
+            // localized symbols and not depend on java.text.DateFormatSymbols.
+            iParseEras.put("BCE", integers[0]);
+            iParseEras.put("CE", integers[1]);
+        }
+
+        iParseDaysOfWeek = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
+        addSymbols(iParseDaysOfWeek, iDaysOfWeek, integers);
+        addSymbols(iParseDaysOfWeek, iShortDaysOfWeek, integers);
+        addNumerals(iParseDaysOfWeek, 1, 7, integers);
+
+        iParseMonths = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
+        addSymbols(iParseMonths, iMonths, integers);
+        addSymbols(iParseMonths, iShortMonths, integers);
+        addNumerals(iParseMonths, 1, 12, integers);
+
+        iMaxEraLength = maxLength(iEras);
+        iMaxDayOfWeekLength = maxLength(iDaysOfWeek);
+        iMaxShortDayOfWeekLength = maxLength(iShortDaysOfWeek);
+        iMaxMonthLength = maxLength(iMonths);
+        iMaxShortMonthLength = maxLength(iShortMonths);
+        iMaxHalfdayLength = maxLength(iHalfday);
+    }
 
     public static GJLocaleSymbols forLocale(Locale locale) {
         if (locale == null) {
@@ -101,74 +165,6 @@ class GJLocaleSymbols {
             }
         }
         return max;
-    }
-
-    private final WeakReference<Locale> iLocale;
-
-    private final String[] iEras;
-    private final String[] iDaysOfWeek;
-    private final String[] iShortDaysOfWeek;
-    private final String[] iMonths;
-    private final String[] iShortMonths;
-    private final String[] iHalfday;
-
-    private final TreeMap<String, Integer> iParseEras;
-    private final TreeMap<String, Integer> iParseDaysOfWeek;
-    private final TreeMap<String, Integer> iParseMonths;
-
-    private final int iMaxEraLength;
-    private final int iMaxDayOfWeekLength;
-    private final int iMaxShortDayOfWeekLength;
-    private final int iMaxMonthLength;
-    private final int iMaxShortMonthLength;
-    private final int iMaxHalfdayLength;
-
-    /**
-     * @param locale must not be null
-     */
-    private GJLocaleSymbols(Locale locale) {
-        iLocale = new WeakReference<Locale>(locale);
-
-        DateFormatSymbols dfs = DateTimeUtils.getDateFormatSymbols(locale);
-
-        iEras = dfs.getEras();
-        iDaysOfWeek = realignDaysOfWeek(dfs.getWeekdays());
-        iShortDaysOfWeek = realignDaysOfWeek(dfs.getShortWeekdays());
-        iMonths = realignMonths(dfs.getMonths());
-        iShortMonths = realignMonths(dfs.getShortMonths());
-        iHalfday = dfs.getAmPmStrings();
-
-        Integer[] integers = new Integer[13];
-        for (int i = 0; i < 13; i++) {
-            integers[i] = Integer.valueOf(i);
-        }
-
-        iParseEras = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
-        addSymbols(iParseEras, iEras, integers);
-        if ("en".equals(locale.getLanguage())) {
-            // Include support for parsing "BCE" and "CE" if the language is
-            // English. At some point Joda-Time will need an independent set of
-            // localized symbols and not depend on java.text.DateFormatSymbols.
-            iParseEras.put("BCE", integers[0]);
-            iParseEras.put("CE", integers[1]);
-        }
-
-        iParseDaysOfWeek = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
-        addSymbols(iParseDaysOfWeek, iDaysOfWeek, integers);
-        addSymbols(iParseDaysOfWeek, iShortDaysOfWeek, integers);
-        addNumerals(iParseDaysOfWeek, 1, 7, integers);
-
-        iParseMonths = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
-        addSymbols(iParseMonths, iMonths, integers);
-        addSymbols(iParseMonths, iShortMonths, integers);
-        addNumerals(iParseMonths, 1, 12, integers);
-
-        iMaxEraLength = maxLength(iEras);
-        iMaxDayOfWeekLength = maxLength(iDaysOfWeek);
-        iMaxShortDayOfWeekLength = maxLength(iShortDaysOfWeek);
-        iMaxMonthLength = maxLength(iMonths);
-        iMaxShortMonthLength = maxLength(iShortMonths);
-        iMaxHalfdayLength = maxLength(iHalfday);
     }
 
     public String eraValueToText(int value) {

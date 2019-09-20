@@ -433,6 +433,14 @@ public abstract class AssembledChronology extends BaseChronology {
         Fields() {
         }
 
+        private static boolean isSupported(DurationField field) {
+            return field == null ? false : field.isSupported();
+        }
+
+        private static boolean isSupported(DateTimeField field) {
+            return field == null ? false : field.isSupported();
+        }
+
         /**
          * Copy the supported fields from a chronology into this container.
          */
@@ -549,14 +557,6 @@ public abstract class AssembledChronology extends BaseChronology {
                     era = f;
                 }
             }
-        }
-
-        private static boolean isSupported(DurationField field) {
-            return field == null ? false : field.isSupported();
-        }
-
-        private static boolean isSupported(DateTimeField field) {
-            return field == null ? false : field.isSupported();
         }
     }
 }

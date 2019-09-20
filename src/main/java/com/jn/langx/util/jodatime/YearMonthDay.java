@@ -67,19 +67,6 @@ public final class YearMonthDay
         implements ReadablePartial, Serializable {
 
     /**
-     * Serialization version
-     */
-    private static final long serialVersionUID = 797544782896179L;
-    /**
-     * The singleton set of field types
-     */
-    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
-            DateTimeFieldType.year(),
-            DateTimeFieldType.monthOfYear(),
-            DateTimeFieldType.dayOfMonth(),
-    };
-
-    /**
      * The index of the year field in the field array
      */
     public static final int YEAR = 0;
@@ -91,65 +78,18 @@ public final class YearMonthDay
      * The index of the dayOfMonth field in the field array
      */
     public static final int DAY_OF_MONTH = 2;
-
-    //-----------------------------------------------------------------------
-
     /**
-     * Constructs a YearMonthDay from a <code>java.util.Calendar</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Calendar and assigned to the YearMonthDay.
-     * This is useful if you have been using the Calendar as a local date,
-     * ignoing the zone.
-     * <p>
-     * This factory method ignores the type of the calendar and always
-     * creates a YearMonthDay with ISO chronology. It is expected that you
-     * will only pass in instances of <code>GregorianCalendar</code> however
-     * this is not validated.
-     *
-     * @param calendar the Calendar to extract fields from
-     * @return the created YearMonthDay
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
-     * @since 1.2
+     * Serialization version
      */
-    public static YearMonthDay fromCalendarFields(Calendar calendar) {
-        if (calendar == null) {
-            throw new IllegalArgumentException("The calendar must not be null");
-        }
-        return new YearMonthDay(
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DAY_OF_MONTH)
-        );
-    }
-
+    private static final long serialVersionUID = 797544782896179L;
     /**
-     * Constructs a YearMonthDay from a <code>java.util.Date</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Date and assigned to the YearMonthDay.
-     * This is useful if you have been using the Date as a local date,
-     * ignoing the zone.
-     * <p>
-     * This factory method always creates a YearMonthDay with ISO chronology.
-     *
-     * @param date the Date to extract fields from
-     * @return the created YearMonthDay
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
-     * @since 1.2
+     * The singleton set of field types
      */
-    public static YearMonthDay fromDateFields(Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("The date must not be null");
-        }
-        return new YearMonthDay(
-                date.getYear() + 1900,
-                date.getMonth() + 1,
-                date.getDate()
-        );
-    }
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
+            DateTimeFieldType.year(),
+            DateTimeFieldType.monthOfYear(),
+            DateTimeFieldType.dayOfMonth(),
+    };
 
     //-----------------------------------------------------------------------
 
@@ -179,6 +119,8 @@ public final class YearMonthDay
     public YearMonthDay(DateTimeZone zone) {
         super(ISOChronology.getInstance(zone));
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs a YearMonthDay with the current date, using the specified chronology
@@ -318,6 +260,63 @@ public final class YearMonthDay
      */
     YearMonthDay(YearMonthDay partial, Chronology chrono) {
         super(partial, chrono);
+    }
+
+    /**
+     * Constructs a YearMonthDay from a <code>java.util.Calendar</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Calendar and assigned to the YearMonthDay.
+     * This is useful if you have been using the Calendar as a local date,
+     * ignoing the zone.
+     * <p>
+     * This factory method ignores the type of the calendar and always
+     * creates a YearMonthDay with ISO chronology. It is expected that you
+     * will only pass in instances of <code>GregorianCalendar</code> however
+     * this is not validated.
+     *
+     * @param calendar the Calendar to extract fields from
+     * @return the created YearMonthDay
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
+     * @since 1.2
+     */
+    public static YearMonthDay fromCalendarFields(Calendar calendar) {
+        if (calendar == null) {
+            throw new IllegalArgumentException("The calendar must not be null");
+        }
+        return new YearMonthDay(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+    }
+
+    /**
+     * Constructs a YearMonthDay from a <code>java.util.Date</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Date and assigned to the YearMonthDay.
+     * This is useful if you have been using the Date as a local date,
+     * ignoing the zone.
+     * <p>
+     * This factory method always creates a YearMonthDay with ISO chronology.
+     *
+     * @param date the Date to extract fields from
+     * @return the created YearMonthDay
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
+     * @since 1.2
+     */
+    public static YearMonthDay fromDateFields(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        return new YearMonthDay(
+                date.getYear() + 1900,
+                date.getMonth() + 1,
+                date.getDate()
+        );
     }
 
     //-----------------------------------------------------------------------

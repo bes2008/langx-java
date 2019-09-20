@@ -188,6 +188,15 @@ public class DateTimeFormat {
     //-----------------------------------------------------------------------
 
     /**
+     * Constructor.
+     *
+     * @since 1.1 (previously private)
+     */
+    protected DateTimeFormat() {
+        super();
+    }
+
+    /**
      * Factory to create a formatter from a pattern string.
      * The pattern string is described above in the class level javadoc.
      * It is very similar to SimpleDateFormat patterns.
@@ -232,6 +241,8 @@ public class DateTimeFormat {
         return createFormatterForStyle(style);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Returns the pattern used by a particular style and locale.
      * <p>
@@ -254,8 +265,6 @@ public class DateTimeFormat {
         // Not pretty, but it works.
         return ((StyleFormatter) formatter.getPrinter()).getPattern(locale);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a format that outputs a short date format.
@@ -281,6 +290,8 @@ public class DateTimeFormat {
         return createFormatterForStyleIndex(NONE, SHORT);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a short datetime format.
      * <p>
@@ -292,8 +303,6 @@ public class DateTimeFormat {
     public static DateTimeFormatter shortDateTime() {
         return createFormatterForStyleIndex(SHORT, SHORT);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a format that outputs a medium date format.
@@ -319,6 +328,8 @@ public class DateTimeFormat {
         return createFormatterForStyleIndex(NONE, MEDIUM);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a medium datetime format.
      * <p>
@@ -330,8 +341,6 @@ public class DateTimeFormat {
     public static DateTimeFormatter mediumDateTime() {
         return createFormatterForStyleIndex(MEDIUM, MEDIUM);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a format that outputs a long date format.
@@ -357,6 +366,8 @@ public class DateTimeFormat {
         return createFormatterForStyleIndex(NONE, LONG);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a long datetime format.
      * <p>
@@ -368,8 +379,6 @@ public class DateTimeFormat {
     public static DateTimeFormatter longDateTime() {
         return createFormatterForStyleIndex(LONG, LONG);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a format that outputs a full date format.
@@ -395,6 +404,8 @@ public class DateTimeFormat {
         return createFormatterForStyleIndex(NONE, FULL);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a format that outputs a full datetime format.
      * <p>
@@ -418,17 +429,6 @@ public class DateTimeFormat {
      */
     static void appendPatternTo(DateTimeFormatterBuilder builder, String pattern) {
         parsePatternTo(builder, pattern);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructor.
-     *
-     * @since 1.1 (previously private)
-     */
-    protected DateTimeFormat() {
-        super();
     }
 
     //-----------------------------------------------------------------------

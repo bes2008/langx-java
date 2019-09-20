@@ -66,9 +66,44 @@ import java.util.Map;
 public final class GJChronology extends AssembledChronology {
 
     /**
+     * The default GregorianJulian cutover point.
+     */
+    static final Instant DEFAULT_CUTOVER = new Instant(-12219292800000L);
+    /**
      * Serialization lock
      */
     private static final long serialVersionUID = -2545574827706931671L;
+    /**
+     * Cache of zone to chronology list
+     */
+    private static final Map<DateTimeZone, ArrayList<GJChronology>> cCache = new HashMap<DateTimeZone, ArrayList<GJChronology>>();
+    //-----------------------------------------------------------------------
+    private JulianChronology iJulianChronology;
+    private GregorianChronology iGregorianChronology;
+    private Instant iCutoverInstant;
+    private long iCutoverMillis;
+    private long iGapDuration;
+
+    /**
+     * @param julian         chronology used before the cutover instant
+     * @param gregorian      chronology used at and after the cutover instant
+     * @param cutoverInstant instant when the gregorian chronology began
+     */
+    private GJChronology(JulianChronology julian,
+                         GregorianChronology gregorian,
+                         Instant cutoverInstant) {
+        super(null, new Object[]{julian, gregorian, cutoverInstant});
+    }
+
+    /**
+     * Called when applying a time zone.
+     */
+    private GJChronology(Chronology base,
+                         JulianChronology julian,
+                         GregorianChronology gregorian,
+                         Instant cutoverInstant) {
+        super(base, new Object[]{julian, gregorian, cutoverInstant});
+    }
 
     /**
      * Convert a datetime from one chronology to another.
@@ -92,16 +127,6 @@ public final class GJChronology extends AssembledChronology {
         newInstant = to.millisOfDay().set(newInstant, from.millisOfDay().get(instant));
         return newInstant;
     }
-
-    /**
-     * The default GregorianJulian cutover point.
-     */
-    static final Instant DEFAULT_CUTOVER = new Instant(-12219292800000L);
-
-    /**
-     * Cache of zone to chronology list
-     */
-    private static final Map<DateTimeZone, ArrayList<GJChronology>> cCache = new HashMap<DateTimeZone, ArrayList<GJChronology>>();
 
     /**
      * Factory method returns instances of the default GJ cutover
@@ -248,35 +273,6 @@ public final class GJChronology extends AssembledChronology {
             cutoverInstant = new Instant(gregorianCutover);
         }
         return getInstance(zone, cutoverInstant, minDaysInFirstWeek);
-    }
-
-    //-----------------------------------------------------------------------
-    private JulianChronology iJulianChronology;
-    private GregorianChronology iGregorianChronology;
-    private Instant iCutoverInstant;
-
-    private long iCutoverMillis;
-    private long iGapDuration;
-
-    /**
-     * @param julian         chronology used before the cutover instant
-     * @param gregorian      chronology used at and after the cutover instant
-     * @param cutoverInstant instant when the gregorian chronology began
-     */
-    private GJChronology(JulianChronology julian,
-                         GregorianChronology gregorian,
-                         Instant cutoverInstant) {
-        super(null, new Object[]{julian, gregorian, cutoverInstant});
-    }
-
-    /**
-     * Called when applying a time zone.
-     */
-    private GJChronology(Chronology base,
-                         JulianChronology julian,
-                         GregorianChronology gregorian,
-                         Instant cutoverInstant) {
-        super(base, new Object[]{julian, gregorian, cutoverInstant});
     }
 
     /**
@@ -595,6 +591,38 @@ public final class GJChronology extends AssembledChronology {
 
     long gregorianToJulianByWeekyear(long instant) {
         return convertByWeekyear(instant, iGregorianChronology, iJulianChronology);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Links the duration back to a ImpreciseCutoverField.
+     */
+    private static class LinkedDurationField extends DecoratedDurationField {
+        private static final long serialVersionUID = 4097975388007713084L;
+
+        private final ImpreciseCutoverField iField;
+
+        LinkedDurationField(DurationField durationField, ImpreciseCutoverField dateTimeField) {
+            super(durationField, durationField.getType());
+            iField = dateTimeField;
+        }
+
+        public long add(long instant, int value) {
+            return iField.add(instant, value);
+        }
+
+        public long add(long instant, long value) {
+            return iField.add(instant, value);
+        }
+
+        public int getDifference(long minuendInstant, long subtrahendInstant) {
+            return iField.getDifference(minuendInstant, subtrahendInstant);
+        }
+
+        public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+            return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -1103,38 +1131,6 @@ public final class GJChronology extends AssembledChronology {
             } else {
                 return iJulianField.getMaximumValue(instant);
             }
-        }
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Links the duration back to a ImpreciseCutoverField.
-     */
-    private static class LinkedDurationField extends DecoratedDurationField {
-        private static final long serialVersionUID = 4097975388007713084L;
-
-        private final ImpreciseCutoverField iField;
-
-        LinkedDurationField(DurationField durationField, ImpreciseCutoverField dateTimeField) {
-            super(durationField, durationField.getType());
-            iField = dateTimeField;
-        }
-
-        public long add(long instant, int value) {
-            return iField.add(instant, value);
-        }
-
-        public long add(long instant, long value) {
-            return iField.add(instant, value);
-        }
-
-        public int getDifference(long minuendInstant, long subtrahendInstant) {
-            return iField.getDifference(minuendInstant, subtrahendInstant);
-        }
-
-        public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-            return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
         }
     }
 

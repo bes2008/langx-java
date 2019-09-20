@@ -46,16 +46,14 @@ import java.util.Map;
 public final class CopticChronology extends BasicFixedMonthChronology {
 
     /**
-     * Serialization lock
-     */
-    private static final long serialVersionUID = -5972804258688333942L;
-
-    /**
      * Constant value for 'Anno Martyrum' or 'Era of the Martyrs', equivalent
      * to the value returned for AD/CE.
      */
     public static final int AM = DateTimeConstants.CE;
-
+    /**
+     * Serialization lock
+     */
+    private static final long serialVersionUID = -5972804258688333942L;
     /**
      * A singleton era field.
      */
@@ -89,6 +87,13 @@ public final class CopticChronology extends BasicFixedMonthChronology {
     //-----------------------------------------------------------------------
 
     /**
+     * Restricted constructor.
+     */
+    CopticChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+        super(base, param, minDaysInFirstWeek);
+    }
+
+    /**
      * Gets an instance of the CopticChronology.
      * The time zone of the returned instance is UTC.
      *
@@ -116,6 +121,9 @@ public final class CopticChronology extends BasicFixedMonthChronology {
     public static CopticChronology getInstance(DateTimeZone zone) {
         return getInstance(zone, 4);
     }
+
+    // Constructors and instance variables
+    //-----------------------------------------------------------------------
 
     /**
      * Gets an instance of the CopticChronology in the given time zone.
@@ -159,16 +167,6 @@ public final class CopticChronology extends BasicFixedMonthChronology {
             }
         }
         return chrono;
-    }
-
-    // Constructors and instance variables
-    //-----------------------------------------------------------------------
-
-    /**
-     * Restricted constructor.
-     */
-    CopticChronology(Chronology base, Object param, int minDaysInFirstWeek) {
-        super(base, param, minDaysInFirstWeek);
     }
 
     /**

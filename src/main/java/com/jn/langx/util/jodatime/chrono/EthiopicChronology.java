@@ -46,16 +46,14 @@ import java.util.Map;
 public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     /**
-     * Serialization lock
-     */
-    private static final long serialVersionUID = -5972804258688333942L;
-
-    /**
      * Constant value for 'Ethiopean Era', equivalent
      * to the value returned for AD/CE.
      */
     public static final int EE = DateTimeConstants.CE;
-
+    /**
+     * Serialization lock
+     */
+    private static final long serialVersionUID = -5972804258688333942L;
     /**
      * A singleton era field.
      */
@@ -89,6 +87,13 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     //-----------------------------------------------------------------------
 
     /**
+     * Restricted constructor.
+     */
+    EthiopicChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+        super(base, param, minDaysInFirstWeek);
+    }
+
+    /**
      * Gets an instance of the EthiopicChronology.
      * The time zone of the returned instance is UTC.
      *
@@ -116,6 +121,9 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     public static EthiopicChronology getInstance(DateTimeZone zone) {
         return getInstance(zone, 4);
     }
+
+    // Constructors and instance variables
+    //-----------------------------------------------------------------------
 
     /**
      * Gets an instance of the EthiopicChronology in the given time zone.
@@ -159,16 +167,6 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
             }
         }
         return chrono;
-    }
-
-    // Constructors and instance variables
-    //-----------------------------------------------------------------------
-
-    /**
-     * Restricted constructor.
-     */
-    EthiopicChronology(Chronology base, Object param, int minDaysInFirstWeek) {
-        super(base, param, minDaysInFirstWeek);
     }
 
     /**

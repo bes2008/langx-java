@@ -84,20 +84,11 @@ public final class ConverterManager {
      * Singleton instance, lazily loaded to avoid class loading.
      */
     private static ConverterManager INSTANCE;
-
-    public static ConverterManager getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ConverterManager();
-        }
-        return INSTANCE;
-    }
-
     private com.jn.langx.util.jodatime.convert.ConverterSet iInstantConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iPartialConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iDurationConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iPeriodConverters;
     private com.jn.langx.util.jodatime.convert.ConverterSet iIntervalConverters;
-
     /**
      * Restricted constructor.
      */
@@ -144,6 +135,13 @@ public final class ConverterManager {
                 com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
                 com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
         });
+    }
+
+    public static ConverterManager getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new ConverterManager();
+        }
+        return INSTANCE;
     }
 
     //-----------------------------------------------------------------------

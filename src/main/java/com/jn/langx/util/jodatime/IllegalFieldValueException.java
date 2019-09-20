@@ -27,67 +27,6 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * Serialization lock.
      */
     private static final long serialVersionUID = 6305711765985447737L;
-
-    /**
-     * Creates a message for the exception.
-     *
-     * @param fieldName  the field name
-     * @param value      the value rejected
-     * @param lowerBound the lower bound allowed
-     * @param upperBound the uppe bound allowed
-     * @param explain    an explanation
-     * @return the message
-     */
-    private static String createMessage(String fieldName, Number value,
-                                        Number lowerBound, Number upperBound, String explain) {
-        StringBuilder buf = new StringBuilder()
-                .append("Value ").append(value).append(" for ").append(fieldName).append(' ');
-
-        if (lowerBound == null) {
-            if (upperBound == null) {
-                buf.append("is not supported");
-            } else {
-                buf.append("must not be larger than ").append(upperBound);
-            }
-        } else if (upperBound == null) {
-            buf.append("must not be smaller than ").append(lowerBound);
-        } else {
-            buf.append("must be in the range [")
-                    .append(lowerBound)
-                    .append(',')
-                    .append(upperBound)
-                    .append(']');
-        }
-        if (explain != null) {
-            buf.append(": ").append(explain);
-        }
-
-        return buf.toString();
-    }
-
-    /**
-     * Creates a message for the exception.
-     *
-     * @param fieldName the field name
-     * @param value     the value rejected
-     * @return the message
-     */
-    private static String createMessage(String fieldName, String value) {
-        StringBuffer buf = new StringBuffer().append("Value ");
-
-        if (value == null) {
-            buf.append("null");
-        } else {
-            buf.append('"');
-            buf.append(value);
-            buf.append('"');
-        }
-
-        buf.append(" for ").append(fieldName).append(' ').append("is not supported");
-
-        return buf.toString();
-    }
-
     private final DateTimeFieldType iDateTimeFieldType;
     private final DurationFieldType iDurationFieldType;
     private final String iFieldName;
@@ -96,7 +35,6 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     private final Number iLowerBound;
     private final Number iUpperBound;
     private String iMessage;
-
     /**
      * Constructor.
      *
@@ -117,7 +55,6 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iUpperBound = upperBound;
         iMessage = super.getMessage();
     }
-
     /**
      * Constructor.
      *
@@ -233,6 +170,66 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iLowerBound = null;
         iUpperBound = null;
         iMessage = super.getMessage();
+    }
+
+    /**
+     * Creates a message for the exception.
+     *
+     * @param fieldName  the field name
+     * @param value      the value rejected
+     * @param lowerBound the lower bound allowed
+     * @param upperBound the uppe bound allowed
+     * @param explain    an explanation
+     * @return the message
+     */
+    private static String createMessage(String fieldName, Number value,
+                                        Number lowerBound, Number upperBound, String explain) {
+        StringBuilder buf = new StringBuilder()
+                .append("Value ").append(value).append(" for ").append(fieldName).append(' ');
+
+        if (lowerBound == null) {
+            if (upperBound == null) {
+                buf.append("is not supported");
+            } else {
+                buf.append("must not be larger than ").append(upperBound);
+            }
+        } else if (upperBound == null) {
+            buf.append("must not be smaller than ").append(lowerBound);
+        } else {
+            buf.append("must be in the range [")
+                    .append(lowerBound)
+                    .append(',')
+                    .append(upperBound)
+                    .append(']');
+        }
+        if (explain != null) {
+            buf.append(": ").append(explain);
+        }
+
+        return buf.toString();
+    }
+
+    /**
+     * Creates a message for the exception.
+     *
+     * @param fieldName the field name
+     * @param value     the value rejected
+     * @return the message
+     */
+    private static String createMessage(String fieldName, String value) {
+        StringBuffer buf = new StringBuffer().append("Value ");
+
+        if (value == null) {
+            buf.append("null");
+        } else {
+            buf.append('"');
+            buf.append(value);
+            buf.append('"');
+        }
+
+        buf.append(" for ").append(fieldName).append(' ').append("is not supported");
+
+        return buf.toString();
     }
 
     //-----------------------------------------------------------------------

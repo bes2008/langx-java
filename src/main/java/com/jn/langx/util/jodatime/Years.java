@@ -76,6 +76,19 @@ public final class Years extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a new instance representing a number of years.
+     * You should consider using the factory method {@link #years(int)}
+     * instead of the constructor.
+     *
+     * @param years the number of years to represent
+     */
+    private Years(int years) {
+        super(years);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Obtains an instance of <code>Years</code> that may be cached.
      * <code>Years</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
@@ -101,8 +114,6 @@ public final class Years extends BaseSingleFieldPeriod {
                 return new Years(years);
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a <code>Years</code> representing the number of whole years
@@ -159,6 +170,8 @@ public final class Years extends BaseSingleFieldPeriod {
         return Years.years(amount);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a new <code>Years</code> by parsing a string in the ISO8601 format 'PnY'.
      * <p>
@@ -176,19 +189,6 @@ public final class Years extends BaseSingleFieldPeriod {
         }
         Period p = PARSER.parsePeriod(periodStr);
         return Years.years(p.getYears());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a new instance representing a number of years.
-     * You should consider using the factory method {@link #years(int)}
-     * instead of the constructor.
-     *
-     * @param years the number of years to represent
-     */
-    private Years(int years) {
-        super(years);
     }
 
     /**

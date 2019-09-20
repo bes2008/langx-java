@@ -35,25 +35,22 @@ import com.jn.langx.util.jodatime.DateTimeConstants;
 abstract class BasicFixedMonthChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
 
     /**
-     * Serialization lock
-     */
-    private static final long serialVersionUID = 261387371998L;
-
-    /**
      * The length of the month.
      */
     static final int MONTH_LENGTH = 30;
-
     /**
      * The typical millis per year.
      */
     static final long MILLIS_PER_YEAR =
             (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
-
     /**
      * The length of the month in millis.
      */
     static final long MILLIS_PER_MONTH = ((long) MONTH_LENGTH) * DateTimeConstants.MILLIS_PER_DAY;
+    /**
+     * Serialization lock
+     */
+    private static final long serialVersionUID = 261387371998L;
 
     //-----------------------------------------------------------------------
 

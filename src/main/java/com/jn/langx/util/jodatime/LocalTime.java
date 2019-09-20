@@ -72,15 +72,13 @@ public final class LocalTime
         implements ReadablePartial, Serializable {
 
     /**
-     * Serialization lock
-     */
-    private static final long serialVersionUID = -12873158713873L;
-
-    /**
      * Constant for midnight.
      */
     public static final LocalTime MIDNIGHT = new LocalTime(0, 0, 0, 0);
-
+    /**
+     * Serialization lock
+     */
+    private static final long serialVersionUID = -12873158713873L;
     /**
      * The index of the hourOfDay field in the field array
      */
@@ -117,179 +115,6 @@ public final class LocalTime
      * The chronology to use, in UTC
      */
     private final Chronology iChronology;
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Obtains a {@code LocalTime} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the default time zone.
-     * The resulting object does not use the zone.
-     *
-     * @return the current time, not null
-     * @since 2.0
-     */
-    public static LocalTime now() {
-        return new LocalTime();
-    }
-
-    /**
-     * Obtains a {@code LocalTime} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the specified time zone.
-     * The resulting object does not use the zone.
-     *
-     * @param zone the time zone, not null
-     * @return the current time, not null
-     * @since 2.0
-     */
-    public static LocalTime now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
-        return new LocalTime(zone);
-    }
-
-    /**
-     * Obtains a {@code LocalTime} set to the current system millisecond time
-     * using the specified chronology.
-     * The resulting object does not use the zone.
-     *
-     * @param chronology the chronology, not null
-     * @return the current time, not null
-     * @since 2.0
-     */
-    public static LocalTime now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
-        return new LocalTime(chronology);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Parses a {@code LocalTime} from the specified string.
-     * <p>
-     * This uses {@link ISODateTimeFormat#localTimeParser()}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static LocalTime parse(String str) {
-        return parse(str, ISODateTimeFormat.localTimeParser());
-    }
-
-    /**
-     * Parses a {@code LocalTime} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static LocalTime parse(String str, DateTimeFormatter formatter) {
-        return formatter.parseLocalTime(str);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs a LocalTime from the specified millis of day using the
-     * ISO chronology.
-     * <p>
-     * The millisOfDay value may exceed the number of millis in one day,
-     * but additional days will be ignored.
-     * This method uses the UTC time zone internally.
-     *
-     * @param millisOfDay the number of milliseconds into a day to convert
-     */
-    public static LocalTime fromMillisOfDay(long millisOfDay) {
-        return fromMillisOfDay(millisOfDay, null);
-    }
-
-    /**
-     * Constructs a LocalTime from the specified millis of day using the
-     * specified chronology.
-     * <p>
-     * The millisOfDay value may exceed the number of millis in one day,
-     * but additional days will be ignored.
-     * This method uses the UTC time zone internally.
-     *
-     * @param millisOfDay the number of milliseconds into a day to convert
-     * @param chrono      the chronology, null means ISO chronology
-     */
-    public static LocalTime fromMillisOfDay(long millisOfDay, Chronology chrono) {
-        chrono = DateTimeUtils.getChronology(chrono).withUTC();
-        return new LocalTime(millisOfDay, chrono);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs a LocalTime from a <code>java.util.Calendar</code>
-     * using exactly the same field values.
-     * <p>
-     * Each field is queried from the Calendar and assigned to the LocalTime.
-     * This is useful if you have been using the Calendar as a local time,
-     * ignoring the zone.
-     * <p>
-     * One advantage of this method is that this method is unaffected if the
-     * version of the time zone data differs between the JDK and Joda-Time.
-     * That is because the local field values are transferred, calculated using
-     * the JDK time zone data and without using the Joda-Time time zone data.
-     * <p>
-     * This factory method ignores the type of the calendar and always
-     * creates a LocalTime with ISO chronology. It is expected that you
-     * will only pass in instances of <code>GregorianCalendar</code> however
-     * this is not validated.
-     *
-     * @param calendar the Calendar to extract fields from
-     * @return the created LocalTime
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
-     */
-    public static LocalTime fromCalendarFields(Calendar calendar) {
-        if (calendar == null) {
-            throw new IllegalArgumentException("The calendar must not be null");
-        }
-        return new LocalTime(
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.SECOND),
-                calendar.get(Calendar.MILLISECOND)
-        );
-    }
-
-    /**
-     * Constructs a LocalTime from a <code>java.util.Date</code>
-     * using exactly the same field values.
-     * <p>
-     * Each field is queried from the Date and assigned to the LocalTime.
-     * This is useful if you have been using the Date as a local time,
-     * ignoring the zone.
-     * <p>
-     * One advantage of this method is that this method is unaffected if the
-     * version of the time zone data differs between the JDK and Joda-Time.
-     * That is because the local field values are transferred, calculated using
-     * the JDK time zone data and without using the Joda-Time time zone data.
-     * <p>
-     * This factory method always creates a LocalTime with ISO chronology.
-     *
-     * @param date the Date to extract fields from
-     * @return the created LocalTime
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
-     */
-    @SuppressWarnings("deprecation")
-    public static LocalTime fromDateFields(Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("The date must not be null");
-        }
-        return new LocalTime(
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds(),
-                (((int) (date.getTime() % 1000)) + 1000) % 1000
-        );
-    }
 
     //-----------------------------------------------------------------------
 
@@ -361,6 +186,8 @@ public final class LocalTime
         this(instant, ISOChronology.getInstance(zone));
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the local time defined by the specified
      * instant evaluated using the specified chronology.
@@ -379,8 +206,6 @@ public final class LocalTime
         iLocalMillis = chronology.millisOfDay().get(localMillis);
         iChronology = chronology;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from an Object that represents a datetime.
@@ -401,6 +226,8 @@ public final class LocalTime
     public LocalTime(Object instant) {
         this(instant, (Chronology) null);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from an Object that represents a datetime,
@@ -503,6 +330,8 @@ public final class LocalTime
                 millisOfSecond, ISOChronology.getInstanceUTC());
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the specified time
      * using the specified chronology, whose zone is ignored.
@@ -527,6 +356,175 @@ public final class LocalTime
                 0L, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         iChronology = chronology;
         iLocalMillis = instant;
+    }
+
+    /**
+     * Obtains a {@code LocalTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * The resulting object does not use the zone.
+     *
+     * @return the current time, not null
+     * @since 2.0
+     */
+    public static LocalTime now() {
+        return new LocalTime();
+    }
+
+    /**
+     * Obtains a {@code LocalTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * The resulting object does not use the zone.
+     *
+     * @param zone the time zone, not null
+     * @return the current time, not null
+     * @since 2.0
+     */
+    public static LocalTime now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new LocalTime(zone);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Obtains a {@code LocalTime} set to the current system millisecond time
+     * using the specified chronology.
+     * The resulting object does not use the zone.
+     *
+     * @param chronology the chronology, not null
+     * @return the current time, not null
+     * @since 2.0
+     */
+    public static LocalTime now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new LocalTime(chronology);
+    }
+
+    /**
+     * Parses a {@code LocalTime} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#localTimeParser()}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static LocalTime parse(String str) {
+        return parse(str, ISODateTimeFormat.localTimeParser());
+    }
+
+    /**
+     * Parses a {@code LocalTime} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static LocalTime parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseLocalTime(str);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Constructs a LocalTime from the specified millis of day using the
+     * ISO chronology.
+     * <p>
+     * The millisOfDay value may exceed the number of millis in one day,
+     * but additional days will be ignored.
+     * This method uses the UTC time zone internally.
+     *
+     * @param millisOfDay the number of milliseconds into a day to convert
+     */
+    public static LocalTime fromMillisOfDay(long millisOfDay) {
+        return fromMillisOfDay(millisOfDay, null);
+    }
+
+    /**
+     * Constructs a LocalTime from the specified millis of day using the
+     * specified chronology.
+     * <p>
+     * The millisOfDay value may exceed the number of millis in one day,
+     * but additional days will be ignored.
+     * This method uses the UTC time zone internally.
+     *
+     * @param millisOfDay the number of milliseconds into a day to convert
+     * @param chrono      the chronology, null means ISO chronology
+     */
+    public static LocalTime fromMillisOfDay(long millisOfDay, Chronology chrono) {
+        chrono = DateTimeUtils.getChronology(chrono).withUTC();
+        return new LocalTime(millisOfDay, chrono);
+    }
+
+    /**
+     * Constructs a LocalTime from a <code>java.util.Calendar</code>
+     * using exactly the same field values.
+     * <p>
+     * Each field is queried from the Calendar and assigned to the LocalTime.
+     * This is useful if you have been using the Calendar as a local time,
+     * ignoring the zone.
+     * <p>
+     * One advantage of this method is that this method is unaffected if the
+     * version of the time zone data differs between the JDK and Joda-Time.
+     * That is because the local field values are transferred, calculated using
+     * the JDK time zone data and without using the Joda-Time time zone data.
+     * <p>
+     * This factory method ignores the type of the calendar and always
+     * creates a LocalTime with ISO chronology. It is expected that you
+     * will only pass in instances of <code>GregorianCalendar</code> however
+     * this is not validated.
+     *
+     * @param calendar the Calendar to extract fields from
+     * @return the created LocalTime
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
+     */
+    public static LocalTime fromCalendarFields(Calendar calendar) {
+        if (calendar == null) {
+            throw new IllegalArgumentException("The calendar must not be null");
+        }
+        return new LocalTime(
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND),
+                calendar.get(Calendar.MILLISECOND)
+        );
+    }
+
+    /**
+     * Constructs a LocalTime from a <code>java.util.Date</code>
+     * using exactly the same field values.
+     * <p>
+     * Each field is queried from the Date and assigned to the LocalTime.
+     * This is useful if you have been using the Date as a local time,
+     * ignoring the zone.
+     * <p>
+     * One advantage of this method is that this method is unaffected if the
+     * version of the time zone data differs between the JDK and Joda-Time.
+     * That is because the local field values are transferred, calculated using
+     * the JDK time zone data and without using the Joda-Time time zone data.
+     * <p>
+     * This factory method always creates a LocalTime with ISO chronology.
+     *
+     * @param date the Date to extract fields from
+     * @return the created LocalTime
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the date is invalid for the ISO chronology
+     */
+    @SuppressWarnings("deprecation")
+    public static LocalTime fromDateFields(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        return new LocalTime(
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds(),
+                (((int) (date.getTime() % 1000)) + 1000) % 1000
+        );
     }
 
     /**

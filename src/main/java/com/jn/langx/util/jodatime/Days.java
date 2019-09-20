@@ -92,6 +92,19 @@ public final class Days extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a new instance representing a number of days.
+     * You should consider using the factory method {@link #days(int)}
+     * instead of the constructor.
+     *
+     * @param days the number of days to represent
+     */
+    private Days(int days) {
+        super(days);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Obtains an instance of <code>Days</code> that may be cached.
      * <code>Days</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
@@ -125,8 +138,6 @@ public final class Days extends BaseSingleFieldPeriod {
                 return new Days(days);
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a <code>Days</code> representing the number of whole days
@@ -208,6 +219,8 @@ public final class Days extends BaseSingleFieldPeriod {
         return Days.days(amount);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a new <code>Days</code> by parsing a string in the ISO8601 format 'PnD'.
      * <p>
@@ -225,19 +238,6 @@ public final class Days extends BaseSingleFieldPeriod {
         }
         Period p = PARSER.parsePeriod(periodStr);
         return Days.days(p.getDays());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a new instance representing a number of days.
-     * You should consider using the factory method {@link #days(int)}
-     * instead of the constructor.
-     *
-     * @param days the number of days to represent
-     */
-    private Days(int days) {
-        super(days);
     }
 
     /**

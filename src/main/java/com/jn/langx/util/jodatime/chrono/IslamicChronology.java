@@ -61,21 +61,10 @@ import java.util.Map;
 public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
 
     /**
-     * Serialization lock
-     */
-    private static final long serialVersionUID = -3663823829888L;
-
-    /**
      * Constant value for 'Anno Hegirae', equivalent
      * to the value returned for AD/CE.
      */
     public static final int AH = DateTimeConstants.CE;
-
-    /**
-     * A singleton era field.
-     */
-    private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("AH");
-
     /**
      * Leap year 15-based pattern.
      */
@@ -92,7 +81,14 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
      * Leap year Habash al-Hasib pattern.
      */
     public static final LeapYearPatternType LEAP_YEAR_HABASH_AL_HASIB = new LeapYearPatternType(3, 153692453);
-
+    /**
+     * Serialization lock
+     */
+    private static final long serialVersionUID = -3663823829888L;
+    /**
+     * A singleton era field.
+     */
+    private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("AH");
     /**
      * The lowest year that can be fully supported.
      */
@@ -194,6 +190,14 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
     //-----------------------------------------------------------------------
 
     /**
+     * Restricted constructor.
+     */
+    IslamicChronology(Chronology base, Object param, LeapYearPatternType leapYears) {
+        super(base, param, 4);
+        this.iLeapYears = leapYears;
+    }
+
+    /**
      * Gets an instance of the IslamicChronology.
      * The time zone of the returned instance is UTC.
      *
@@ -221,6 +225,9 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
     public static IslamicChronology getInstance(DateTimeZone zone) {
         return getInstance(zone, LEAP_YEAR_16_BASED);
     }
+
+    // Constructors and instance variables
+    //-----------------------------------------------------------------------
 
     /**
      * Gets an instance of the IslamicChronology in the given time zone.
@@ -259,17 +266,6 @@ public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.B
             }
         }
         return chrono;
-    }
-
-    // Constructors and instance variables
-    //-----------------------------------------------------------------------
-
-    /**
-     * Restricted constructor.
-     */
-    IslamicChronology(Chronology base, Object param, LeapYearPatternType leapYears) {
-        super(base, param, 4);
-        this.iLeapYears = leapYears;
     }
 
     /**

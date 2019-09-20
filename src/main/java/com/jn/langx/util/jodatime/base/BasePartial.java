@@ -246,6 +246,22 @@ public abstract class BasePartial
     }
 
     /**
+     * Sets the values of all fields.
+     * <p>
+     * In version 2.0 and later, this method copies the array into the original.
+     * This is because the instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
+     *
+     * @param values the array of values
+     */
+    protected void setValues(int[] values) {
+        getChronology().validate(this, values);
+        System.arraycopy(values, 0, iValues, 0, iValues.length);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Gets the chronology of the partial which is never null.
      * <p>
      * The {@link Chronology} is the calculation engine behind the partial and
@@ -256,8 +272,6 @@ public abstract class BasePartial
     public Chronology getChronology() {
         return iChronology;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Sets the value of the field at the specified index.
@@ -273,20 +287,6 @@ public abstract class BasePartial
     protected void setValue(int index, int value) {
         DateTimeField field = getField(index);
         int[] values = field.set(this, index, iValues, value);
-        System.arraycopy(values, 0, iValues, 0, iValues.length);
-    }
-
-    /**
-     * Sets the values of all fields.
-     * <p>
-     * In version 2.0 and later, this method copies the array into the original.
-     * This is because the instance variable has been changed to be final to satisfy the Java Memory Model.
-     * This only impacts subclasses that are mutable.
-     *
-     * @param values the array of values
-     */
-    protected void setValues(int[] values) {
-        getChronology().validate(this, values);
         System.arraycopy(values, 0, iValues, 0, iValues.length);
     }
 

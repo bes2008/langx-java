@@ -51,6 +51,20 @@ public class ZoneInfoCompiler {
             return Boolean.FALSE;
         }
     };
+    // Maps names to RuleSets.
+    private Map<String, RuleSet> iRuleSets;
+
+    //-----------------------------------------------------------------------
+    // List of Zone objects.
+    private List<Zone> iZones;
+    // List String pairs to link.
+    private List<String> iLinks;
+
+    public ZoneInfoCompiler() {
+        iRuleSets = new HashMap<String, RuleSet>();
+        iZones = new ArrayList<Zone>();
+        iLinks = new ArrayList<String>();
+    }
 
     /**
      * Gets a flag indicating that verbose logging is required.
@@ -60,8 +74,6 @@ public class ZoneInfoCompiler {
     public static boolean verbose() {
         return cVerbose.get();
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Launches the ZoneInfoCompiler tool.
@@ -332,21 +344,6 @@ public class ZoneInfoCompiler {
         }
 
         return true;
-    }
-
-    // Maps names to RuleSets.
-    private Map<String, RuleSet> iRuleSets;
-
-    // List of Zone objects.
-    private List<Zone> iZones;
-
-    // List String pairs to link.
-    private List<String> iLinks;
-
-    public ZoneInfoCompiler() {
-        iRuleSets = new HashMap<String, RuleSet>();
-        iZones = new ArrayList<Zone>();
-        iLinks = new ArrayList<String>();
     }
 
     /**
@@ -762,29 +759,6 @@ public class ZoneInfoCompiler {
             iUntilDateTimeOfYear = dtOfYear;
         }
 
-        void chain(StringTokenizer st) {
-            if (iNext != null) {
-                iNext.chain(st);
-            } else {
-                iNext = new Zone(iName, st);
-            }
-        }
-
-        /*
-        public DateTimeZone buildDateTimeZone(Map ruleSets) {
-            DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
-            addToBuilder(builder, ruleSets);
-            return builder.toDateTimeZone(iName);
-        }
-        */
-
-        /**
-         * Adds zone info to the builder.
-         */
-        public void addToBuilder(DateTimeZoneBuilder builder, Map<String, RuleSet> ruleSets) {
-            addToBuilder(this, builder, ruleSets);
-        }
-
         private static void addToBuilder(Zone zone,
                                          DateTimeZoneBuilder builder,
                                          Map<String, RuleSet> ruleSets) {
@@ -814,6 +788,29 @@ public class ZoneInfoCompiler {
 
                 zone.iUntilDateTimeOfYear.addCutover(builder, zone.iUntilYear);
             }
+        }
+
+        /*
+        public DateTimeZone buildDateTimeZone(Map ruleSets) {
+            DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
+            addToBuilder(builder, ruleSets);
+            return builder.toDateTimeZone(iName);
+        }
+        */
+
+        void chain(StringTokenizer st) {
+            if (iNext != null) {
+                iNext.chain(st);
+            } else {
+                iNext = new Zone(iName, st);
+            }
+        }
+
+        /**
+         * Adds zone info to the builder.
+         */
+        public void addToBuilder(DateTimeZoneBuilder builder, Map<String, RuleSet> ruleSets) {
+            addToBuilder(this, builder, ruleSets);
         }
 
         public String toString() {

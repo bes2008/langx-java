@@ -51,6 +51,50 @@ public final class Duration
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a duration from the given millisecond duration.
+     *
+     * @param duration the duration, in milliseconds
+     */
+    public Duration(long duration) {
+        super(duration);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Creates a duration from the given interval endpoints.
+     *
+     * @param startInstant interval start, in milliseconds
+     * @param endInstant   interval end, in milliseconds
+     * @throws ArithmeticException if the duration exceeds a 64 bit long
+     */
+    public Duration(long startInstant, long endInstant) {
+        super(startInstant, endInstant);
+    }
+
+    /**
+     * Creates a duration from the given interval endpoints.
+     *
+     * @param start interval start, null means now
+     * @param end   interval end, null means now
+     * @throws ArithmeticException if the duration exceeds a 64 bit long
+     */
+    public Duration(ReadableInstant start, ReadableInstant end) {
+        super(start, end);
+    }
+
+    /**
+     * Creates a duration from the specified object using the
+     * {@link convert.ConverterManager ConverterManager}.
+     *
+     * @param duration duration to convert
+     * @throws IllegalArgumentException if duration is invalid
+     */
+    public Duration(Object duration) {
+        super(duration);
+    }
+
+    /**
      * Parses a {@code Duration} from the specified string.
      * <p>
      * This parses the format {@code PTa.bS}, as per {@link #toString()}.
@@ -61,8 +105,6 @@ public final class Duration
     public static Duration parse(String str) {
         return new Duration(str);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Create a duration with the specified number of days assuming that
@@ -87,6 +129,8 @@ public final class Duration
         }
         return new Duration(FieldUtils.safeMultiply(days, DateTimeConstants.MILLIS_PER_DAY));
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Create a duration with the specified number of hours assuming that
@@ -168,50 +212,6 @@ public final class Duration
             return ZERO;
         }
         return new Duration(millis);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a duration from the given millisecond duration.
-     *
-     * @param duration the duration, in milliseconds
-     */
-    public Duration(long duration) {
-        super(duration);
-    }
-
-    /**
-     * Creates a duration from the given interval endpoints.
-     *
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant   interval end, in milliseconds
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
-     */
-    public Duration(long startInstant, long endInstant) {
-        super(startInstant, endInstant);
-    }
-
-    /**
-     * Creates a duration from the given interval endpoints.
-     *
-     * @param start interval start, null means now
-     * @param end   interval end, null means now
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
-     */
-    public Duration(ReadableInstant start, ReadableInstant end) {
-        super(start, end);
-    }
-
-    /**
-     * Creates a duration from the specified object using the
-     * {@link convert.ConverterManager ConverterManager}.
-     *
-     * @param duration duration to convert
-     * @throws IllegalArgumentException if duration is invalid
-     */
-    public Duration(Object duration) {
-        super(duration);
     }
 
     //-----------------------------------------------------------------------

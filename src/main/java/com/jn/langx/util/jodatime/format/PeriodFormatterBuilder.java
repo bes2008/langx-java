@@ -100,6 +100,42 @@ public class PeriodFormatterBuilder {
 
     //-----------------------------------------------------------------------
 
+    //-----------------------------------------------------------------------
+    private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
+        if (notPrinter && notParser) {
+            throw new IllegalStateException("Builder has created neither a printer nor a parser");
+        }
+        int size = elementPairs.size();
+        if (size >= 2 && elementPairs.get(0) instanceof Separator) {
+            Separator sep = (Separator) elementPairs.get(0);
+            if (sep.iAfterParser == null && sep.iAfterPrinter == null) {
+                PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+                sep = sep.finish(f.getPrinter(), f.getParser());
+                return new PeriodFormatter(sep, sep);
+            }
+        }
+        Object[] comp = createComposite(elementPairs);
+        if (notPrinter) {
+            return new PeriodFormatter(null, (PeriodParser) comp[1]);
+        } else if (notParser) {
+            return new PeriodFormatter((PeriodPrinter) comp[0], null);
+        } else {
+            return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+        }
+    }
+
+    private static Object[] createComposite(List<Object> elementPairs) {
+        switch (elementPairs.size()) {
+            case 0:
+                return new Object[]{Literal.EMPTY, Literal.EMPTY};
+            case 1:
+                return new Object[]{elementPairs.get(0), elementPairs.get(1)};
+            default:
+                Composite comp = new Composite(elementPairs);
+                return new Object[]{comp, comp};
+        }
+    }
+
     /**
      * Constructs a PeriodFormatter using all the appended elements.
      * <p>
@@ -121,6 +157,8 @@ public class PeriodFormatterBuilder {
         iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
         return formatter;
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Internal method to create a PeriodPrinter instance using all the
@@ -159,8 +197,6 @@ public class PeriodFormatterBuilder {
         }
         return toFormatter().getParser();
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Clears out all the appended elements, allowing this builder to be reused.
@@ -302,6 +338,8 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Always print zero values for the next and following appended fields,
      * even if the period doesn't support it. The parser requires values for
@@ -328,8 +366,6 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Append a field prefix which applies only to the next appended field. If
      * the field is not printed, neither is the prefix.
@@ -344,6 +380,8 @@ public class PeriodFormatterBuilder {
         }
         return appendPrefix(new SimpleAffix(text));
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Append a field prefix which applies only to the next appended field. If
@@ -383,8 +421,6 @@ public class PeriodFormatterBuilder {
         iPrefix = prefix;
         return this;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Instruct the printer to emit an integer years field, if supported.
@@ -526,6 +562,8 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
+    //-----------------------------------------------------------------------
+
     private void appendField(int type) {
         appendField(type, iMinPrintedDigits);
     }
@@ -537,8 +575,6 @@ public class PeriodFormatterBuilder {
         iFieldFormatters[type] = field;
         iPrefix = null;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Append a field suffix which applies only to the last appended field. If
@@ -555,6 +591,8 @@ public class PeriodFormatterBuilder {
         }
         return appendSuffix(new SimpleAffix(text));
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Append a field suffix which applies only to the last appended field. If
@@ -611,8 +649,6 @@ public class PeriodFormatterBuilder {
 
         return this;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Append a separator, which is output if fields are printed both before
@@ -790,42 +826,6 @@ public class PeriodFormatterBuilder {
         iNotPrinter |= (printer == null);
         iNotParser |= (parser == null);
         return this;
-    }
-
-    //-----------------------------------------------------------------------
-    private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
-        if (notPrinter && notParser) {
-            throw new IllegalStateException("Builder has created neither a printer nor a parser");
-        }
-        int size = elementPairs.size();
-        if (size >= 2 && elementPairs.get(0) instanceof Separator) {
-            Separator sep = (Separator) elementPairs.get(0);
-            if (sep.iAfterParser == null && sep.iAfterPrinter == null) {
-                PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
-                sep = sep.finish(f.getPrinter(), f.getParser());
-                return new PeriodFormatter(sep, sep);
-            }
-        }
-        Object[] comp = createComposite(elementPairs);
-        if (notPrinter) {
-            return new PeriodFormatter(null, (PeriodParser) comp[1]);
-        } else if (notParser) {
-            return new PeriodFormatter((PeriodPrinter) comp[0], null);
-        } else {
-            return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
-        }
-    }
-
-    private static Object[] createComposite(List<Object> elementPairs) {
-        switch (elementPairs.size()) {
-            case 0:
-                return new Object[]{Literal.EMPTY, Literal.EMPTY};
-            case 1:
-                return new Object[]{elementPairs.get(0), elementPairs.get(1)};
-            default:
-                Composite comp = new Composite(elementPairs);
-                return new Object[]{comp, comp};
-        }
     }
 
     //-----------------------------------------------------------------------
@@ -1611,8 +1611,8 @@ public class PeriodFormatterBuilder {
         private final boolean iUseAfter;
 
         private final PeriodPrinter iBeforePrinter;
-        private volatile PeriodPrinter iAfterPrinter;
         private final PeriodParser iBeforeParser;
+        private volatile PeriodPrinter iAfterPrinter;
         private volatile PeriodParser iAfterParser;
 
         Separator(String text, String finalText, String[] variants,

@@ -62,19 +62,19 @@ public class DateTimeUtils {
         cZoneNames = Collections.unmodifiableMap(map);
     }
 
+    /**
+     * Restrictive constructor
+     */
+    protected DateTimeUtils() {
+        super();
+    }
+
     private static void put(Map<String, DateTimeZone> map, String name, String id) {
         try {
             map.put(name, DateTimeZone.forID(id));
         } catch (RuntimeException ex) {
             // ignore
         }
-    }
-
-    /**
-     * Restrictive constructor
-     */
-    protected DateTimeUtils() {
-        super();
     }
 
     //-----------------------------------------------------------------------

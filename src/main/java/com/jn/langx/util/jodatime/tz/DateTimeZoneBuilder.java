@@ -68,6 +68,13 @@ import java.util.*;
  * @since 1.0
  */
 public class DateTimeZoneBuilder {
+    // List of RuleSets.
+    private final ArrayList<RuleSet> iRuleSets;
+
+    public DateTimeZoneBuilder() {
+        iRuleSets = new ArrayList<RuleSet>(10);
+    }
+
     /**
      * Decodes a built DateTimeZone from the given stream, as encoded by
      * writeTo.
@@ -202,13 +209,6 @@ public class DateTimeZoneBuilder {
             return DateTimeZone.UTC;
         }
         return new FixedDateTimeZone(id, nameKey, wallOffset, standardOffset);
-    }
-
-    // List of RuleSets.
-    private final ArrayList<RuleSet> iRuleSets;
-
-    public DateTimeZoneBuilder() {
-        iRuleSets = new ArrayList<RuleSet>(10);
     }
 
     /**
@@ -462,24 +462,13 @@ public class DateTimeZoneBuilder {
      * Supports setting fields of year and moving between transitions.
      */
     private static final class OfYear {
-        static OfYear readFrom(DataInput in) throws IOException {
-            return new OfYear((char) in.readUnsignedByte(),
-                    (int) in.readUnsignedByte(),
-                    (int) in.readByte(),
-                    (int) in.readUnsignedByte(),
-                    in.readBoolean(),
-                    (int) readMillis(in));
-        }
-
         // Is 'u', 'w', or 's'.
         final char iMode;
-
         final int iMonthOfYear;
         final int iDayOfMonth;
         final int iDayOfWeek;
         final boolean iAdvance;
         final int iMillisOfDay;
-
         OfYear(char mode,
                int monthOfYear,
                int dayOfMonth,
@@ -495,6 +484,15 @@ public class DateTimeZoneBuilder {
             iDayOfWeek = dayOfWeek;
             iAdvance = advanceDayOfWeek;
             iMillisOfDay = millisOfDay;
+        }
+
+        static OfYear readFrom(DataInput in) throws IOException {
+            return new OfYear((char) in.readUnsignedByte(),
+                    (int) in.readUnsignedByte(),
+                    (int) in.readByte(),
+                    (int) in.readUnsignedByte(),
+                    in.readBoolean(),
+                    (int) readMillis(in));
         }
 
         /**
@@ -719,18 +717,17 @@ public class DateTimeZoneBuilder {
      * Extends OfYear with a nameKey and savings.
      */
     private static final class Recurrence {
-        static Recurrence readFrom(DataInput in) throws IOException {
-            return new Recurrence(OfYear.readFrom(in), in.readUTF(), (int) readMillis(in));
-        }
-
         final OfYear iOfYear;
         final String iNameKey;
         final int iSaveMillis;
-
         Recurrence(OfYear ofYear, String nameKey, int saveMillis) {
             iOfYear = ofYear;
             iNameKey = nameKey;
             iSaveMillis = saveMillis;
+        }
+
+        static Recurrence readFrom(DataInput in) throws IOException {
+            return new Recurrence(OfYear.readFrom(in), in.readUTF(), (int) readMillis(in));
         }
 
         public OfYear getOfYear() {
@@ -1147,22 +1144,20 @@ public class DateTimeZoneBuilder {
 
     private static final class DSTZone extends DateTimeZone {
         private static final long serialVersionUID = 6941492635554961361L;
-
-        static DSTZone readFrom(DataInput in, String id) throws IOException {
-            return new DSTZone(id, (int) readMillis(in),
-                    Recurrence.readFrom(in), Recurrence.readFrom(in));
-        }
-
         final int iStandardOffset;
         final Recurrence iStartRecurrence;
         final Recurrence iEndRecurrence;
-
         DSTZone(String id, int standardOffset,
                 Recurrence startRecurrence, Recurrence endRecurrence) {
             super(id);
             iStandardOffset = standardOffset;
             iStartRecurrence = startRecurrence;
             iEndRecurrence = endRecurrence;
+        }
+
+        static DSTZone readFrom(DataInput in, String id) throws IOException {
+            return new DSTZone(id, (int) readMillis(in),
+                    Recurrence.readFrom(in), Recurrence.readFrom(in));
         }
 
         public String getNameKey(long instant) {
@@ -1321,6 +1316,25 @@ public class DateTimeZoneBuilder {
 
     private static final class PrecalculatedZone extends DateTimeZone {
         private static final long serialVersionUID = 7811976468055766265L;
+        private final long[] iTransitions;
+        private final int[] iWallOffsets;
+
+        // All array fields have the same length.
+        private final int[] iStandardOffsets;
+        private final String[] iNameKeys;
+        private final DSTZone iTailZone;
+        /**
+         * Constructor used ONLY for valid input, loaded via static methods.
+         */
+        private PrecalculatedZone(String id, long[] transitions, int[] wallOffsets,
+                                  int[] standardOffsets, String[] nameKeys, DSTZone tailZone) {
+            super(id);
+            iTransitions = transitions;
+            iWallOffsets = wallOffsets;
+            iStandardOffsets = standardOffsets;
+            iNameKeys = nameKeys;
+            iTailZone = tailZone;
+        }
 
         static PrecalculatedZone readFrom(DataInput in, String id) throws IOException {
             // Read string pool.
@@ -1465,29 +1479,6 @@ public class DateTimeZoneBuilder {
 
             return new PrecalculatedZone
                     ((outputID ? id : ""), trans, wallOffsets, standardOffsets, nameKeys, tailZone);
-        }
-
-        // All array fields have the same length.
-
-        private final long[] iTransitions;
-
-        private final int[] iWallOffsets;
-        private final int[] iStandardOffsets;
-        private final String[] iNameKeys;
-
-        private final DSTZone iTailZone;
-
-        /**
-         * Constructor used ONLY for valid input, loaded via static methods.
-         */
-        private PrecalculatedZone(String id, long[] transitions, int[] wallOffsets,
-                                  int[] standardOffsets, String[] nameKeys, DSTZone tailZone) {
-            super(id);
-            iTransitions = transitions;
-            iWallOffsets = wallOffsets;
-            iStandardOffsets = standardOffsets;
-            iNameKeys = nameKeys;
-            iTailZone = tailZone;
         }
 
         public String getNameKey(long instant) {

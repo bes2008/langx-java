@@ -81,74 +81,6 @@ public final class DateTime
     //-----------------------------------------------------------------------
 
     /**
-     * Obtains a {@code DateTime} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the default time zone.
-     *
-     * @return the current date-time, not null
-     * @since 2.0
-     */
-    public static DateTime now() {
-        return new DateTime();
-    }
-
-    /**
-     * Obtains a {@code DateTime} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the specified time zone.
-     *
-     * @param zone the time zone, not null
-     * @return the current date-time, not null
-     * @since 2.0
-     */
-    public static DateTime now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
-        return new DateTime(zone);
-    }
-
-    /**
-     * Obtains a {@code DateTime} set to the current system millisecond time
-     * using the specified chronology.
-     *
-     * @param chronology the chronology, not null
-     * @return the current date-time, not null
-     * @since 2.0
-     */
-    public static DateTime now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
-        return new DateTime(chronology);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Parses a {@code DateTime} from the specified string.
-     * <p>
-     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static DateTime parse(String str) {
-        return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
-    }
-
-    /**
-     * Parses a {@code DateTime} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static DateTime parse(String str, DateTimeFormatter formatter) {
-        return formatter.parseDateTime(str);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
      *
@@ -210,6 +142,8 @@ public final class DateTime
         super(instant, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
      * using the specified chronology.
@@ -223,8 +157,6 @@ public final class DateTime
     public DateTime(long instant, Chronology chronology) {
         super(instant, chronology);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from an Object that represents a datetime.
@@ -270,6 +202,8 @@ public final class DateTime
         super(instant, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from an Object that represents a datetime,
      * using the specified chronology.
@@ -290,8 +224,6 @@ public final class DateTime
     public DateTime(Object instant, Chronology chronology) {
         super(instant, DateTimeUtils.getChronology(chronology));
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from datetime field values
@@ -338,6 +270,8 @@ public final class DateTime
                 hourOfDay, minuteOfHour, 0, 0, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from datetime field values
      * using the specified chronology.
@@ -363,8 +297,6 @@ public final class DateTime
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, 0, 0, chronology);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from datetime field values
@@ -415,6 +347,8 @@ public final class DateTime
                 hourOfDay, minuteOfHour, secondOfMinute, 0, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from datetime field values
      * using the specified chronology.
@@ -442,8 +376,6 @@ public final class DateTime
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, secondOfMinute, 0, chronology);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from datetime field values
@@ -496,6 +428,8 @@ public final class DateTime
                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from datetime field values
      * using the specified chronology.
@@ -523,6 +457,72 @@ public final class DateTime
             Chronology chronology) {
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
+    }
+
+    /**
+     * Obtains a {@code DateTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     *
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static DateTime now() {
+        return new DateTime();
+    }
+
+    /**
+     * Obtains a {@code DateTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     *
+     * @param zone the time zone, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static DateTime now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new DateTime(zone);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Obtains a {@code DateTime} set to the current system millisecond time
+     * using the specified chronology.
+     *
+     * @param chronology the chronology, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static DateTime now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new DateTime(chronology);
+    }
+
+    /**
+     * Parses a {@code DateTime} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static DateTime parse(String str) {
+        return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
+    }
+
+    /**
+     * Parses a {@code DateTime} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static DateTime parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseDateTime(str);
     }
 
     //-----------------------------------------------------------------------

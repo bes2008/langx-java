@@ -35,6 +35,11 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
 
     private final Chronology iBase;
 
+    protected LenientDateTimeField(DateTimeField field, Chronology base) {
+        super(field);
+        iBase = base;
+    }
+
     /**
      * Returns a lenient version of the given field. If it is already lenient,
      * then it is returned as-is. Otherwise, a new LenientDateTimeField is
@@ -51,11 +56,6 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
             return field;
         }
         return new LenientDateTimeField(field, base);
-    }
-
-    protected LenientDateTimeField(DateTimeField field, Chronology base) {
-        super(field);
-        iBase = base;
     }
 
     public final boolean isLenient() {

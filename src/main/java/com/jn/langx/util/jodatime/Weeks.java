@@ -76,6 +76,19 @@ public final class Weeks extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a new instance representing a number of weeks.
+     * You should consider using the factory method {@link #weeks(int)}
+     * instead of the constructor.
+     *
+     * @param weeks the number of weeks to represent
+     */
+    private Weeks(int weeks) {
+        super(weeks);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Obtains an instance of <code>Weeks</code> that may be cached.
      * <code>Weeks</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
@@ -101,8 +114,6 @@ public final class Weeks extends BaseSingleFieldPeriod {
                 return new Weeks(weeks);
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a <code>Weeks</code> representing the number of whole weeks
@@ -182,6 +193,8 @@ public final class Weeks extends BaseSingleFieldPeriod {
         return Weeks.weeks(amount);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a new <code>Weeks</code> by parsing a string in the ISO8601 format 'PnW'.
      * <p>
@@ -199,19 +212,6 @@ public final class Weeks extends BaseSingleFieldPeriod {
         }
         Period p = PARSER.parsePeriod(periodStr);
         return Weeks.weeks(p.getWeeks());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a new instance representing a number of weeks.
-     * You should consider using the factory method {@link #weeks(int)}
-     * instead of the constructor.
-     *
-     * @param weeks the number of weeks to represent
-     */
-    private Weeks(int weeks) {
-        super(weeks);
     }
 
     /**

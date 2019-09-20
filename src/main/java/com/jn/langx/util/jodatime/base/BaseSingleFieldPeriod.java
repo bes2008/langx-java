@@ -54,6 +54,18 @@ public abstract class BaseSingleFieldPeriod
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a new instance representing the specified period.
+     *
+     * @param period the period to represent
+     */
+    protected BaseSingleFieldPeriod(int period) {
+        super();
+        iPeriod = period;
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Calculates the number of whole units between the two specified datetimes.
      *
      * @param start the start instant, validated to not be null
@@ -70,8 +82,6 @@ public abstract class BaseSingleFieldPeriod
         int amount = field.getField(chrono).getDifference(end.getMillis(), start.getMillis());
         return amount;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Calculates the number of whole units between the two specified partial datetimes.
@@ -104,6 +114,8 @@ public abstract class BaseSingleFieldPeriod
         int[] values = chrono.get(zeroInstance, chrono.set(start, START_1972), chrono.set(end, START_1972));
         return values[0];
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Creates a new instance representing the number of complete standard length units
@@ -144,18 +156,6 @@ public abstract class BaseSingleFieldPeriod
             }
         }
         return FieldUtils.safeToInt(duration / millisPerUnit);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a new instance representing the specified period.
-     *
-     * @param period the period to represent
-     */
-    protected BaseSingleFieldPeriod(int period) {
-        super();
-        iPeriod = period;
     }
 
     //-----------------------------------------------------------------------

@@ -59,22 +59,6 @@ public final class Interval
     //-----------------------------------------------------------------------
 
     /**
-     * Parses a {@code Interval} from the specified string.
-     * <p>
-     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
-     * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
-     * 'datetime/period' or 'period/datetime'.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static Interval parse(String str) {
-        return new Interval(str);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Constructs an interval from a start and end instant with the ISO
      * default chronology in the default time zone.
      *
@@ -85,6 +69,8 @@ public final class Interval
     public Interval(long startInstant, long endInstant) {
         super(startInstant, endInstant, null);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs an interval from a start and end instant with the ISO
@@ -214,6 +200,20 @@ public final class Interval
      */
     public Interval(Object interval, Chronology chronology) {
         super(interval, chronology);
+    }
+
+    /**
+     * Parses a {@code Interval} from the specified string.
+     * <p>
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
+     * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
+     * 'datetime/period' or 'period/datetime'.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static Interval parse(String str) {
+        return new Interval(str);
     }
 
     //-----------------------------------------------------------------------

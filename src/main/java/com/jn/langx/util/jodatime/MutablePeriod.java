@@ -64,31 +64,6 @@ public class MutablePeriod
     //-----------------------------------------------------------------------
 
     /**
-     * Parses a {@code MutablePeriod} from the specified string.
-     * <p>
-     * This uses {@link ISOPeriodFormat#standard()}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static MutablePeriod parse(String str) {
-        return parse(str, ISOPeriodFormat.standard());
-    }
-
-    /**
-     * Parses a {@code MutablePeriod} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static MutablePeriod parse(String str, PeriodFormatter formatter) {
-        return formatter.parsePeriod(str).toMutablePeriod();
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Creates a zero-length period using the standard period type.
      */
     public MutablePeriod() {
@@ -103,6 +78,8 @@ public class MutablePeriod
     public MutablePeriod(PeriodType type) {
         super(0L, type, null);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Create a period from a set of field values using the standard set of fields.
@@ -426,6 +403,29 @@ public class MutablePeriod
      */
     public MutablePeriod(Object period, PeriodType type, Chronology chrono) {
         super(period, type, chrono);
+    }
+
+    /**
+     * Parses a {@code MutablePeriod} from the specified string.
+     * <p>
+     * This uses {@link ISOPeriodFormat#standard()}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static MutablePeriod parse(String str) {
+        return parse(str, ISOPeriodFormat.standard());
+    }
+
+    /**
+     * Parses a {@code MutablePeriod} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static MutablePeriod parse(String str, PeriodFormatter formatter) {
+        return formatter.parsePeriod(str).toMutablePeriod();
     }
 
     //-----------------------------------------------------------------------
@@ -753,6 +753,16 @@ public class MutablePeriod
     }
 
     /**
+     * Sets the number of years of the period.
+     *
+     * @param years the number of years
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
+     */
+    public void setYears(int years) {
+        super.setField(DurationFieldType.years(), years);
+    }
+
+    /**
      * Gets the months field part of the period.
      *
      * @return the number of months in the period, zero if unsupported
@@ -760,6 +770,18 @@ public class MutablePeriod
     public int getMonths() {
         return getPeriodType().getIndexedField(this, PeriodType.MONTH_INDEX);
     }
+
+    /**
+     * Sets the number of months of the period.
+     *
+     * @param months the number of months
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
+     */
+    public void setMonths(int months) {
+        super.setField(DurationFieldType.months(), months);
+    }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Gets the weeks field part of the period.
@@ -771,12 +793,32 @@ public class MutablePeriod
     }
 
     /**
+     * Sets the number of weeks of the period.
+     *
+     * @param weeks the number of weeks
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
+     */
+    public void setWeeks(int weeks) {
+        super.setField(DurationFieldType.weeks(), weeks);
+    }
+
+    /**
      * Gets the days field part of the period.
      *
      * @return the number of days in the period, zero if unsupported
      */
     public int getDays() {
         return getPeriodType().getIndexedField(this, PeriodType.DAY_INDEX);
+    }
+
+    /**
+     * Sets the number of days of the period.
+     *
+     * @param days the number of days
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
+     */
+    public void setDays(int days) {
+        super.setField(DurationFieldType.days(), days);
     }
 
     //-----------------------------------------------------------------------
@@ -791,6 +833,18 @@ public class MutablePeriod
     }
 
     /**
+     * Sets the number of hours of the period.
+     *
+     * @param hours the number of hours
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
+     */
+    public void setHours(int hours) {
+        super.setField(DurationFieldType.hours(), hours);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Gets the minutes field part of the period.
      *
      * @return the number of minutes in the period, zero if unsupported
@@ -798,6 +852,18 @@ public class MutablePeriod
     public int getMinutes() {
         return getPeriodType().getIndexedField(this, PeriodType.MINUTE_INDEX);
     }
+
+    /**
+     * Sets the number of minutes of the period.
+     *
+     * @param minutes the number of minutes
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
+     */
+    public void setMinutes(int minutes) {
+        super.setField(DurationFieldType.minutes(), minutes);
+    }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Gets the seconds field part of the period.
@@ -809,6 +875,18 @@ public class MutablePeriod
     }
 
     /**
+     * Sets the number of seconds of the period.
+     *
+     * @param seconds the number of seconds
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
+     */
+    public void setSeconds(int seconds) {
+        super.setField(DurationFieldType.seconds(), seconds);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Gets the millis field part of the period.
      *
      * @return the number of millis in the period, zero if unsupported
@@ -817,17 +895,17 @@ public class MutablePeriod
         return getPeriodType().getIndexedField(this, PeriodType.MILLI_INDEX);
     }
 
-    //-----------------------------------------------------------------------
-
     /**
-     * Sets the number of years of the period.
+     * Sets the number of millis of the period.
      *
-     * @param years the number of years
+     * @param millis the number of millis
      * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
-    public void setYears(int years) {
-        super.setField(DurationFieldType.years(), years);
+    public void setMillis(int millis) {
+        super.setField(DurationFieldType.millis(), millis);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Adds the specified years to the number of years in the period.
@@ -838,18 +916,6 @@ public class MutablePeriod
      */
     public void addYears(int years) {
         super.addField(DurationFieldType.years(), years);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Sets the number of months of the period.
-     *
-     * @param months the number of months
-     * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     */
-    public void setMonths(int months) {
-        super.setField(DurationFieldType.months(), months);
     }
 
     /**
@@ -866,16 +932,6 @@ public class MutablePeriod
     //-----------------------------------------------------------------------
 
     /**
-     * Sets the number of weeks of the period.
-     *
-     * @param weeks the number of weeks
-     * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     */
-    public void setWeeks(int weeks) {
-        super.setField(DurationFieldType.weeks(), weeks);
-    }
-
-    /**
      * Adds the specified weeks to the number of weeks in the period.
      *
      * @param weeks the number of weeks
@@ -884,18 +940,6 @@ public class MutablePeriod
      */
     public void addWeeks(int weeks) {
         super.addField(DurationFieldType.weeks(), weeks);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Sets the number of days of the period.
-     *
-     * @param days the number of days
-     * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     */
-    public void setDays(int days) {
-        super.setField(DurationFieldType.days(), days);
     }
 
     /**
@@ -912,16 +956,6 @@ public class MutablePeriod
     //-----------------------------------------------------------------------
 
     /**
-     * Sets the number of hours of the period.
-     *
-     * @param hours the number of hours
-     * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     */
-    public void setHours(int hours) {
-        super.setField(DurationFieldType.hours(), hours);
-    }
-
-    /**
      * Adds the specified hours to the number of hours in the period.
      *
      * @param hours the number of hours
@@ -930,18 +964,6 @@ public class MutablePeriod
      */
     public void addHours(int hours) {
         super.addField(DurationFieldType.hours(), hours);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Sets the number of minutes of the period.
-     *
-     * @param minutes the number of minutes
-     * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     */
-    public void setMinutes(int minutes) {
-        super.setField(DurationFieldType.minutes(), minutes);
     }
 
     /**
@@ -958,16 +980,6 @@ public class MutablePeriod
     //-----------------------------------------------------------------------
 
     /**
-     * Sets the number of seconds of the period.
-     *
-     * @param seconds the number of seconds
-     * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     */
-    public void setSeconds(int seconds) {
-        super.setField(DurationFieldType.seconds(), seconds);
-    }
-
-    /**
      * Adds the specified seconds to the number of seconds in the period.
      *
      * @param seconds the number of seconds
@@ -976,18 +988,6 @@ public class MutablePeriod
      */
     public void addSeconds(int seconds) {
         super.addField(DurationFieldType.seconds(), seconds);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Sets the number of millis of the period.
-     *
-     * @param millis the number of millis
-     * @throws IllegalArgumentException if field is not supported and the value is non-zero
-     */
-    public void setMillis(int millis) {
-        super.setField(DurationFieldType.millis(), millis);
     }
 
     /**

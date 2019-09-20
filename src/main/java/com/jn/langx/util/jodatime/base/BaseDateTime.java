@@ -308,17 +308,6 @@ public abstract class BaseDateTime
     }
 
     /**
-     * Gets the chronology of the datetime.
-     *
-     * @return the Chronology that the datetime is using
-     */
-    public Chronology getChronology() {
-        return iChronology;
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Sets the milliseconds of the datetime.
      * <p>
      * All changes to the millisecond field occurs via this method.
@@ -328,6 +317,17 @@ public abstract class BaseDateTime
      */
     protected void setMillis(long instant) {
         iMillis = checkInstant(instant, iChronology);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Gets the chronology of the datetime.
+     *
+     * @return the Chronology that the datetime is using
+     */
+    public Chronology getChronology() {
+        return iChronology;
     }
 
     /**

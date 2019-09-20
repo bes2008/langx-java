@@ -61,27 +61,13 @@ public class MutableInterval
     //-----------------------------------------------------------------------
 
     /**
-     * Parses a {@code MutableInterval} from the specified string.
-     * <p>
-     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
-     * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
-     * 'datetime/period' or 'period/datetime'.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static MutableInterval parse(String str) {
-        return new MutableInterval(str);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Constructs a zero length time interval from 1970-01-01 to 1970-01-01.
      */
     public MutableInterval() {
         super(0L, 0L, null);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs an interval from a start and end instant with the ISO default chronology.
@@ -207,6 +193,20 @@ public class MutableInterval
      */
     public MutableInterval(Object interval, Chronology chronology) {
         super(interval, chronology);
+    }
+
+    /**
+     * Parses a {@code MutableInterval} from the specified string.
+     * <p>
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
+     * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
+     * 'datetime/period' or 'period/datetime'.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static MutableInterval parse(String str) {
+        return new MutableInterval(str);
     }
 
     //-----------------------------------------------------------------------

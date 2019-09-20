@@ -96,6 +96,19 @@ public final class Hours extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a new instance representing a number of hours.
+     * You should consider using the factory method {@link #hours(int)}
+     * instead of the constructor.
+     *
+     * @param hours the number of hours to represent
+     */
+    private Hours(int hours) {
+        super(hours);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Obtains an instance of <code>Hours</code> that may be cached.
      * <code>Hours</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
@@ -131,8 +144,6 @@ public final class Hours extends BaseSingleFieldPeriod {
                 return new Hours(hours);
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a <code>Hours</code> representing the number of whole hours
@@ -212,6 +223,8 @@ public final class Hours extends BaseSingleFieldPeriod {
         return Hours.hours(amount);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a new <code>Hours</code> by parsing a string in the ISO8601 format 'PTnH'.
      * <p>
@@ -229,19 +242,6 @@ public final class Hours extends BaseSingleFieldPeriod {
         }
         Period p = PARSER.parsePeriod(periodStr);
         return Hours.hours(p.getHours());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a new instance representing a number of hours.
-     * You should consider using the factory method {@link #hours(int)}
-     * instead of the constructor.
-     *
-     * @param hours the number of hours to represent
-     */
-    private Hours(int hours) {
-        super(hours);
     }
 
     /**

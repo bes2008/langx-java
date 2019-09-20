@@ -38,11 +38,6 @@ import java.io.Serializable;
  */
 public abstract class DurationFieldType implements Serializable {
 
-    /**
-     * Serialization version
-     */
-    private static final long serialVersionUID = 8765135187319L;
-
     // Ordinals for standard field types.
     static final byte
             ERAS = 1,
@@ -57,7 +52,6 @@ public abstract class DurationFieldType implements Serializable {
             MINUTES = 10,
             SECONDS = 11,
             MILLIS = 12;
-
     /**
      * The eras field type.
      */
@@ -106,7 +100,10 @@ public abstract class DurationFieldType implements Serializable {
      * The millis field type.
      */
     static final DurationFieldType MILLIS_TYPE = new StandardDurationFieldType("millis", MILLIS);
-
+    /**
+     * Serialization version
+     */
+    private static final long serialVersionUID = 8765135187319L;
     /**
      * The name of the field type.
      */

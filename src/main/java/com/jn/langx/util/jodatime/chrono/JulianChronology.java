@@ -79,6 +79,13 @@ public final class JulianChronology extends BasicGJChronology {
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
     }
 
+    /**
+     * Restricted constructor
+     */
+    JulianChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+        super(base, param, minDaysInFirstWeek);
+    }
+
     static int adjustYearForSet(int year) {
         if (year <= 0) {
             if (year == 0) {
@@ -119,6 +126,9 @@ public final class JulianChronology extends BasicGJChronology {
         return getInstance(zone, 4);
     }
 
+    // Constructors and instance variables
+    //-----------------------------------------------------------------------
+
     /**
      * Gets an instance of the JulianChronology in the given time zone.
      *
@@ -155,16 +165,6 @@ public final class JulianChronology extends BasicGJChronology {
             }
         }
         return chrono;
-    }
-
-    // Constructors and instance variables
-    //-----------------------------------------------------------------------
-
-    /**
-     * Restricted constructor
-     */
-    JulianChronology(Chronology base, Object param, int minDaysInFirstWeek) {
-        super(base, param, minDaysInFirstWeek);
     }
 
     /**

@@ -79,6 +79,18 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
 
+    static void appendUnknownString(StringBuffer buf, int len) {
+        for (int i = len; --i >= 0; ) {
+            buf.append('\ufffd');
+        }
+    }
+
+    static void printUnknownString(Writer out, int len) throws IOException {
+        for (int i = len; --i >= 0; ) {
+            out.write('\ufffd');
+        }
+    }
+
     /**
      * Constructs a DateTimeFormatter using all the appended elements.
      * <p>
@@ -109,6 +121,8 @@ public class DateTimeFormatterBuilder {
         }
         throw new UnsupportedOperationException("Both printing and parsing not supported");
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Internal method to create a DateTimePrinter instance using all the
@@ -150,8 +164,6 @@ public class DateTimeFormatterBuilder {
         throw new UnsupportedOperationException("Parsing is not supported");
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Returns true if toFormatter can be called without throwing an
      * UnsupportedOperationException.
@@ -161,6 +173,8 @@ public class DateTimeFormatterBuilder {
     public boolean canBuildFormatter() {
         return isFormatter(getFormatter());
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Returns true if toPrinter can be called without throwing an
@@ -172,6 +186,8 @@ public class DateTimeFormatterBuilder {
         return isPrinter(getFormatter());
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Returns true if toParser can be called without throwing an
      * UnsupportedOperationException.
@@ -182,8 +198,6 @@ public class DateTimeFormatterBuilder {
         return isParser(getFormatter());
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Clears out all the appended elements, allowing this builder to be
      * reused.
@@ -192,8 +206,6 @@ public class DateTimeFormatterBuilder {
         iFormatter = null;
         iElementPairs.clear();
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Appends another formatter.
@@ -274,6 +286,8 @@ public class DateTimeFormatterBuilder {
         return append0(printer, parser);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Appends a printer and a set of matching parsers. When parsing, the first
      * parser in the list is selected for parsing. If it fails, the next is
@@ -343,8 +357,6 @@ public class DateTimeFormatterBuilder {
         return append0(null, new MatchingParser(parsers));
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Checks if the parser is non null and a provider.
      *
@@ -367,6 +379,8 @@ public class DateTimeFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+
     private DateTimeFormatterBuilder append0(Object element) {
         iFormatter = null;
         // Add the element as both a printer and parser.
@@ -382,8 +396,6 @@ public class DateTimeFormatterBuilder {
         iElementPairs.add(parser);
         return this;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Instructs the printer to emit a specific character, and the parser to
@@ -1066,6 +1078,8 @@ public class DateTimeFormatterBuilder {
         return append0(TimeZoneId.INSTANCE, TimeZoneId.INSTANCE);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Instructs the printer to emit text and numbers to display time zone
      * offset from UTC. A parser will use the parsed time zone offset to adjust
@@ -1116,8 +1130,6 @@ public class DateTimeFormatterBuilder {
         return append0(new TimeZoneOffset
                 (zeroOffsetPrintText, zeroOffsetParseText, showSeparators, minFields, maxFields));
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Calls upon {@link DateTimeFormat} to parse the pattern and append the
@@ -1184,15 +1196,65 @@ public class DateTimeFormatterBuilder {
         return (isPrinter(f) || isParser(f));
     }
 
-    static void appendUnknownString(StringBuffer buf, int len) {
-        for (int i = len; --i >= 0; ) {
-            buf.append('\ufffd');
-        }
-    }
+    //-----------------------------------------------------------------------
+    static enum TimeZoneId
+            implements DateTimePrinter, DateTimeParser {
 
-    static void printUnknownString(Writer out, int len) throws IOException {
-        for (int i = len; --i >= 0; ) {
-            out.write('\ufffd');
+        INSTANCE;
+        static final Set<String> ALL_IDS = DateTimeZone.getAvailableIDs();
+        static final int MAX_LENGTH;
+
+        static {
+            int max = 0;
+            for (String id : ALL_IDS) {
+                max = Math.max(max, id.length());
+            }
+            MAX_LENGTH = max;
+        }
+
+        public int estimatePrintedLength() {
+            return MAX_LENGTH;
+        }
+
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
+            buf.append(displayZone != null ? displayZone.getID() : "");
+        }
+
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            out.write(displayZone != null ? displayZone.getID() : "");
+        }
+
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
+            // no zone info
+        }
+
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+            // no zone info
+        }
+
+        public int estimateParsedLength() {
+            return MAX_LENGTH;
+        }
+
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            String str = text.substring(position);
+            String best = null;
+            for (String id : ALL_IDS) {
+                if (str.startsWith(id)) {
+                    if (best == null || id.length() > best.length()) {
+                        best = id;
+                    }
+                }
+            }
+            if (best != null) {
+                bucket.setZone(DateTimeZone.forID(best));
+                return position + best.length();
+            }
+            return ~position;
         }
     }
 
@@ -2573,68 +2635,6 @@ public class DateTimeFormatterBuilder {
             if (matched != null) {
                 bucket.setZone(parseLookup.get(matched));
                 return position + matched.length();
-            }
-            return ~position;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    static enum TimeZoneId
-            implements DateTimePrinter, DateTimeParser {
-
-        INSTANCE;
-        static final Set<String> ALL_IDS = DateTimeZone.getAvailableIDs();
-        static final int MAX_LENGTH;
-
-        static {
-            int max = 0;
-            for (String id : ALL_IDS) {
-                max = Math.max(max, id.length());
-            }
-            MAX_LENGTH = max;
-        }
-
-        public int estimatePrintedLength() {
-            return MAX_LENGTH;
-        }
-
-        public void printTo(
-                StringBuffer buf, long instant, Chronology chrono,
-                int displayOffset, DateTimeZone displayZone, Locale locale) {
-            buf.append(displayZone != null ? displayZone.getID() : "");
-        }
-
-        public void printTo(
-                Writer out, long instant, Chronology chrono,
-                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
-            out.write(displayZone != null ? displayZone.getID() : "");
-        }
-
-        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
-            // no zone info
-        }
-
-        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
-            // no zone info
-        }
-
-        public int estimateParsedLength() {
-            return MAX_LENGTH;
-        }
-
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            String str = text.substring(position);
-            String best = null;
-            for (String id : ALL_IDS) {
-                if (str.startsWith(id)) {
-                    if (best == null || id.length() > best.length()) {
-                        best = id;
-                    }
-                }
-            }
-            if (best != null) {
-                bucket.setZone(DateTimeZone.forID(best));
-                return position + best.length();
             }
             return ~position;
         }

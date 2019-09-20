@@ -72,216 +72,6 @@ public final class Period
     //-----------------------------------------------------------------------
 
     /**
-     * Parses a {@code Period} from the specified string.
-     * <p>
-     * This uses {@link ISOPeriodFormat#standard()}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static Period parse(String str) {
-        return parse(str, ISOPeriodFormat.standard());
-    }
-
-    /**
-     * Parses a {@code Period} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static Period parse(String str, PeriodFormatter formatter) {
-        return formatter.parsePeriod(str);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Create a period with a specified number of years.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as months or days using the <code>withXxx()</code> methods.
-     * For example, <code>Period.years(2).withMonths(6);</code>
-     * <p>
-     * If you want a year-based period that cannot have other fields added,
-     * then you should consider using {@link Years}.
-     *
-     * @param years the amount of years in this period
-     * @return the period
-     */
-    public static Period years(int years) {
-        return new Period(new int[]{years, 0, 0, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
-    }
-
-    /**
-     * Create a period with a specified number of months.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as years or days using the <code>withXxx()</code> methods.
-     * For example, <code>Period.months(2).withDays(6);</code>
-     * <p>
-     * If you want a month-based period that cannot have other fields added,
-     * then you should consider using {@link Months}.
-     *
-     * @param months the amount of months in this period
-     * @return the period
-     */
-    public static Period months(int months) {
-        return new Period(new int[]{0, months, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
-    }
-
-    /**
-     * Create a period with a specified number of weeks.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as months or days using the <code>withXxx()</code> methods.
-     * For example, <code>Period.weeks(2).withDays(6);</code>
-     * <p>
-     * If you want a week-based period that cannot have other fields added,
-     * then you should consider using {@link Weeks}.
-     *
-     * @param weeks the amount of weeks in this period
-     * @return the period
-     */
-    public static Period weeks(int weeks) {
-        return new Period(new int[]{0, 0, weeks, 0, 0, 0, 0, 0}, PeriodType.standard());
-    }
-
-    /**
-     * Create a period with a specified number of days.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as months or weeks using the <code>withXxx()</code> methods.
-     * For example, <code>Period.days(2).withHours(6);</code>
-     * <p>
-     * If you want a day-based period that cannot have other fields added,
-     * then you should consider using {@link Days}.
-     *
-     * @param days the amount of days in this period
-     * @return the period
-     */
-    public static Period days(int days) {
-        return new Period(new int[]{0, 0, 0, days, 0, 0, 0, 0}, PeriodType.standard());
-    }
-
-    /**
-     * Create a period with a specified number of hours.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as months or days using the <code>withXxx()</code> methods.
-     * For example, <code>Period.hours(2).withMinutes(30);</code>
-     * <p>
-     * If you want a hour-based period that cannot have other fields added,
-     * then you should consider using {@link Hours}.
-     *
-     * @param hours the amount of hours in this period
-     * @return the period
-     */
-    public static Period hours(int hours) {
-        return new Period(new int[]{0, 0, 0, 0, hours, 0, 0, 0}, PeriodType.standard());
-    }
-
-    /**
-     * Create a period with a specified number of minutes.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as days or hours using the <code>withXxx()</code> methods.
-     * For example, <code>Period.minutes(2).withSeconds(30);</code>
-     * <p>
-     * If you want a minute-based period that cannot have other fields added,
-     * then you should consider using {@link Minutes}.
-     *
-     * @param minutes the amount of minutes in this period
-     * @return the period
-     */
-    public static Period minutes(int minutes) {
-        return new Period(new int[]{0, 0, 0, 0, 0, minutes, 0, 0}, PeriodType.standard());
-    }
-
-    /**
-     * Create a period with a specified number of seconds.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as days or hours using the <code>withXxx()</code> methods.
-     * For example, <code>Period.seconds(2).withMillis(30);</code>
-     * <p>
-     * If you want a second-based period that cannot have other fields added,
-     * then you should consider using {@link Seconds}.
-     *
-     * @param seconds the amount of seconds in this period
-     * @return the period
-     */
-    public static Period seconds(int seconds) {
-        return new Period(new int[]{0, 0, 0, 0, 0, 0, seconds, 0}, PeriodType.standard());
-    }
-
-    /**
-     * Create a period with a specified number of millis.
-     * <p>
-     * The standard period type is used, thus you can add other fields such
-     * as days or hours using the <code>withXxx()</code> methods.
-     * For example, <code>Period.millis(20).withSeconds(30);</code>
-     *
-     * @param millis the amount of millis in this period
-     * @return the period
-     */
-    public static Period millis(int millis) {
-        return new Period(new int[]{0, 0, 0, 0, 0, 0, 0, millis}, PeriodType.standard());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a period from two partially specified times, calculating
-     * by field difference.
-     * <p>
-     * The two partials must contain the same fields, thus you can specify
-     * two <code>LocalDate</code> objects, or two <code>LocalTime</code> objects,
-     * but not one of each. Also, the partial may not contain overlapping
-     * fields, such as dayOfWeek and dayOfMonth.
-     * <p>
-     * Calculation by field difference works by extracting the difference
-     * one field at a time and not wrapping into other fields.
-     * Thus 2005-06-09/2007-04-12 will yield P1Y-2M3D.
-     * <p>
-     * For example, you have an event that always runs from the 27th of
-     * each month to the 2nd of the next month. If you calculate this
-     * period using a standard constructor, then you will get between
-     * P3D and P6D depending on the month. If you use this method, then
-     * you will get P1M-25D. This field-difference based period can
-     * be successfully applied to each month of the year to obtain the
-     * correct end date for a given start date.
-     *
-     * @param start the start of the period, must not be null
-     * @param end   the end of the period, must not be null
-     * @throws IllegalArgumentException if the partials are null or invalid
-     * @since 1.1
-     */
-    public static Period fieldDifference(ReadablePartial start, ReadablePartial end) {
-        if (start == null || end == null) {
-            throw new IllegalArgumentException("ReadablePartial objects must not be null");
-        }
-        if (start.size() != end.size()) {
-            throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
-        }
-        DurationFieldType[] types = new DurationFieldType[start.size()];
-        int[] values = new int[start.size()];
-        for (int i = 0, isize = start.size(); i < isize; i++) {
-            if (start.getFieldType(i) != end.getFieldType(i)) {
-                throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
-            }
-            types[i] = start.getFieldType(i).getDurationType();
-            if (i > 0 && types[i - 1] == types[i]) {
-                throw new IllegalArgumentException("ReadablePartial objects must not have overlapping fields");
-            }
-            values[i] = end.getValue(i) - start.getValue(i);
-        }
-        return new Period(values, PeriodType.forFields(types));
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Creates a new empty period with the standard set of fields.
      * <p>
      * One way to initialise a period is as follows:
@@ -316,6 +106,8 @@ public final class Period
     public Period(int hours, int minutes, int seconds, int millis) {
         super(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.standard());
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Create a period from a set of field values using the standard set of fields.
@@ -471,6 +263,8 @@ public final class Period
         super(startInstant, endInstant, type, null);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a period from the given interval endpoints using the standard
      * set of fields.
@@ -482,6 +276,8 @@ public final class Period
     public Period(long startInstant, long endInstant, Chronology chrono) {
         super(startInstant, endInstant, null, chrono);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Creates a period from the given interval endpoints.
@@ -719,6 +515,210 @@ public final class Period
      */
     private Period(int[] values, PeriodType type) {
         super(values, type);
+    }
+
+    /**
+     * Parses a {@code Period} from the specified string.
+     * <p>
+     * This uses {@link ISOPeriodFormat#standard()}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static Period parse(String str) {
+        return parse(str, ISOPeriodFormat.standard());
+    }
+
+    /**
+     * Parses a {@code Period} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static Period parse(String str, PeriodFormatter formatter) {
+        return formatter.parsePeriod(str);
+    }
+
+    /**
+     * Create a period with a specified number of years.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as months or days using the <code>withXxx()</code> methods.
+     * For example, <code>Period.years(2).withMonths(6);</code>
+     * <p>
+     * If you want a year-based period that cannot have other fields added,
+     * then you should consider using {@link Years}.
+     *
+     * @param years the amount of years in this period
+     * @return the period
+     */
+    public static Period years(int years) {
+        return new Period(new int[]{years, 0, 0, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of months.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as years or days using the <code>withXxx()</code> methods.
+     * For example, <code>Period.months(2).withDays(6);</code>
+     * <p>
+     * If you want a month-based period that cannot have other fields added,
+     * then you should consider using {@link Months}.
+     *
+     * @param months the amount of months in this period
+     * @return the period
+     */
+    public static Period months(int months) {
+        return new Period(new int[]{0, months, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of weeks.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as months or days using the <code>withXxx()</code> methods.
+     * For example, <code>Period.weeks(2).withDays(6);</code>
+     * <p>
+     * If you want a week-based period that cannot have other fields added,
+     * then you should consider using {@link Weeks}.
+     *
+     * @param weeks the amount of weeks in this period
+     * @return the period
+     */
+    public static Period weeks(int weeks) {
+        return new Period(new int[]{0, 0, weeks, 0, 0, 0, 0, 0}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of days.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as months or weeks using the <code>withXxx()</code> methods.
+     * For example, <code>Period.days(2).withHours(6);</code>
+     * <p>
+     * If you want a day-based period that cannot have other fields added,
+     * then you should consider using {@link Days}.
+     *
+     * @param days the amount of days in this period
+     * @return the period
+     */
+    public static Period days(int days) {
+        return new Period(new int[]{0, 0, 0, days, 0, 0, 0, 0}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of hours.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as months or days using the <code>withXxx()</code> methods.
+     * For example, <code>Period.hours(2).withMinutes(30);</code>
+     * <p>
+     * If you want a hour-based period that cannot have other fields added,
+     * then you should consider using {@link Hours}.
+     *
+     * @param hours the amount of hours in this period
+     * @return the period
+     */
+    public static Period hours(int hours) {
+        return new Period(new int[]{0, 0, 0, 0, hours, 0, 0, 0}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of minutes.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as days or hours using the <code>withXxx()</code> methods.
+     * For example, <code>Period.minutes(2).withSeconds(30);</code>
+     * <p>
+     * If you want a minute-based period that cannot have other fields added,
+     * then you should consider using {@link Minutes}.
+     *
+     * @param minutes the amount of minutes in this period
+     * @return the period
+     */
+    public static Period minutes(int minutes) {
+        return new Period(new int[]{0, 0, 0, 0, 0, minutes, 0, 0}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of seconds.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as days or hours using the <code>withXxx()</code> methods.
+     * For example, <code>Period.seconds(2).withMillis(30);</code>
+     * <p>
+     * If you want a second-based period that cannot have other fields added,
+     * then you should consider using {@link Seconds}.
+     *
+     * @param seconds the amount of seconds in this period
+     * @return the period
+     */
+    public static Period seconds(int seconds) {
+        return new Period(new int[]{0, 0, 0, 0, 0, 0, seconds, 0}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of millis.
+     * <p>
+     * The standard period type is used, thus you can add other fields such
+     * as days or hours using the <code>withXxx()</code> methods.
+     * For example, <code>Period.millis(20).withSeconds(30);</code>
+     *
+     * @param millis the amount of millis in this period
+     * @return the period
+     */
+    public static Period millis(int millis) {
+        return new Period(new int[]{0, 0, 0, 0, 0, 0, 0, millis}, PeriodType.standard());
+    }
+
+    /**
+     * Creates a period from two partially specified times, calculating
+     * by field difference.
+     * <p>
+     * The two partials must contain the same fields, thus you can specify
+     * two <code>LocalDate</code> objects, or two <code>LocalTime</code> objects,
+     * but not one of each. Also, the partial may not contain overlapping
+     * fields, such as dayOfWeek and dayOfMonth.
+     * <p>
+     * Calculation by field difference works by extracting the difference
+     * one field at a time and not wrapping into other fields.
+     * Thus 2005-06-09/2007-04-12 will yield P1Y-2M3D.
+     * <p>
+     * For example, you have an event that always runs from the 27th of
+     * each month to the 2nd of the next month. If you calculate this
+     * period using a standard constructor, then you will get between
+     * P3D and P6D depending on the month. If you use this method, then
+     * you will get P1M-25D. This field-difference based period can
+     * be successfully applied to each month of the year to obtain the
+     * correct end date for a given start date.
+     *
+     * @param start the start of the period, must not be null
+     * @param end   the end of the period, must not be null
+     * @throws IllegalArgumentException if the partials are null or invalid
+     * @since 1.1
+     */
+    public static Period fieldDifference(ReadablePartial start, ReadablePartial end) {
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("ReadablePartial objects must not be null");
+        }
+        if (start.size() != end.size()) {
+            throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
+        }
+        DurationFieldType[] types = new DurationFieldType[start.size()];
+        int[] values = new int[start.size()];
+        for (int i = 0, isize = start.size(); i < isize; i++) {
+            if (start.getFieldType(i) != end.getFieldType(i)) {
+                throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
+            }
+            types[i] = start.getFieldType(i).getDurationType();
+            if (i > 0 && types[i - 1] == types[i]) {
+                throw new IllegalArgumentException("ReadablePartial objects must not have overlapping fields");
+            }
+            values[i] = end.getValue(i) - start.getValue(i);
+        }
+        return new Period(values, PeriodType.forFields(types));
     }
 
     //-----------------------------------------------------------------------

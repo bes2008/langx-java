@@ -76,6 +76,19 @@ public final class Minutes extends BaseSingleFieldPeriod {
     //-----------------------------------------------------------------------
 
     /**
+     * Creates a new instance representing a number of minutes.
+     * You should consider using the factory method {@link #minutes(int)}
+     * instead of the constructor.
+     *
+     * @param minutes the number of minutes to represent
+     */
+    private Minutes(int minutes) {
+        super(minutes);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Obtains an instance of <code>Minutes</code> that may be cached.
      * <code>Minutes</code> is immutable, so instances can be cached and shared.
      * This factory method provides access to shared instances.
@@ -101,8 +114,6 @@ public final class Minutes extends BaseSingleFieldPeriod {
                 return new Minutes(minutes);
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Creates a <code>Minutes</code> representing the number of whole minutes
@@ -182,6 +193,8 @@ public final class Minutes extends BaseSingleFieldPeriod {
         return Minutes.minutes(amount);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Creates a new <code>Minutes</code> by parsing a string in the ISO8601 format 'PTnM'.
      * <p>
@@ -199,19 +212,6 @@ public final class Minutes extends BaseSingleFieldPeriod {
         }
         Period p = PARSER.parsePeriod(periodStr);
         return Minutes.minutes(p.getMinutes());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Creates a new instance representing a number of minutes.
-     * You should consider using the factory method {@link #minutes(int)}
-     * instead of the constructor.
-     *
-     * @param minutes the number of minutes to represent
-     */
-    private Minutes(int minutes) {
-        super(minutes);
     }
 
     /**

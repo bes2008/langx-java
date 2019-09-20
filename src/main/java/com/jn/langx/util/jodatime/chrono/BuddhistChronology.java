@@ -44,16 +44,14 @@ import java.util.Map;
 public final class BuddhistChronology extends AssembledChronology {
 
     /**
-     * Serialization lock
-     */
-    private static final long serialVersionUID = -3474595157769370126L;
-
-    /**
      * Constant value for 'Buddhist Era', equivalent to the value returned
      * for AD/CE. Note that this differs from the constant in BuddhistCalendar.
      */
     public static final int BE = DateTimeConstants.CE;
-
+    /**
+     * Serialization lock
+     */
+    private static final long serialVersionUID = -3474595157769370126L;
     /**
      * A singleton era field.
      */
@@ -75,6 +73,15 @@ public final class BuddhistChronology extends AssembledChronology {
     private static final BuddhistChronology INSTANCE_UTC = getInstance(DateTimeZone.UTC);
 
     /**
+     * Restricted constructor.
+     *
+     * @param param if non-null, then don't change the field set
+     */
+    private BuddhistChronology(Chronology base, Object param) {
+        super(base, param);
+    }
+
+    /**
      * Standard instance of a Buddhist Chronology, that matches
      * Sun's BuddhistCalendar class. This means that it follows the
      * GregorianJulian calendar rules with a cutover date.
@@ -93,6 +100,9 @@ public final class BuddhistChronology extends AssembledChronology {
     public static BuddhistChronology getInstance() {
         return getInstance(DateTimeZone.getDefault());
     }
+
+    // Constructors and instance variables
+    //-----------------------------------------------------------------------
 
     /**
      * Standard instance of a Buddhist Chronology, that matches
@@ -118,18 +128,6 @@ public final class BuddhistChronology extends AssembledChronology {
             }
         }
         return chrono;
-    }
-
-    // Constructors and instance variables
-    //-----------------------------------------------------------------------
-
-    /**
-     * Restricted constructor.
-     *
-     * @param param if non-null, then don't change the field set
-     */
-    private BuddhistChronology(Chronology base, Object param) {
-        super(base, param);
     }
 
     /**

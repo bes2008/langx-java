@@ -77,6 +77,13 @@ public final class ISOChronology extends AssembledChronology {
     }
 
     /**
+     * Restricted constructor
+     */
+    private ISOChronology(Chronology base) {
+        super(base, null);
+    }
+
+    /**
      * Gets an instance of the ISOChronology.
      * The time zone of the returned instance is UTC.
      *
@@ -94,6 +101,9 @@ public final class ISOChronology extends AssembledChronology {
     public static ISOChronology getInstance() {
         return getInstance(DateTimeZone.getDefault());
     }
+
+    // Constructors and instance variables
+    //-----------------------------------------------------------------------
 
     /**
      * Gets an instance of the ISOChronology in the given time zone.
@@ -119,16 +129,6 @@ public final class ISOChronology extends AssembledChronology {
         }
         cFastCache[index] = chrono;
         return chrono;
-    }
-
-    // Constructors and instance variables
-    //-----------------------------------------------------------------------
-
-    /**
-     * Restricted constructor
-     */
-    private ISOChronology(Chronology base) {
-        super(base, null);
     }
 
     // Conversion

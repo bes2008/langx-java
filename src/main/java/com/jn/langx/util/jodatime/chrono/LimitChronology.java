@@ -46,6 +46,25 @@ public final class LimitChronology extends AssembledChronology {
      * Serialization lock
      */
     private static final long serialVersionUID = 7670866536893052522L;
+    final DateTime iLowerLimit;
+    final DateTime iUpperLimit;
+    private transient LimitChronology iWithUTC;
+
+    /**
+     * Wraps another chronology, with datetime limits. When withUTC or
+     * withZone is called, the returned LimitChronology instance has
+     * the same limits, except they are time zone adjusted.
+     *
+     * @param lowerLimit inclusive lower limit, or null if none
+     * @param upperLimit exclusive upper limit, or null if none
+     */
+    private LimitChronology(Chronology base,
+                            DateTime lowerLimit, DateTime upperLimit) {
+        super(base, null);
+        // These can be set after assembly.
+        iLowerLimit = lowerLimit;
+        iUpperLimit = upperLimit;
+    }
 
     /**
      * Wraps another chronology, with datetime limits. When withUTC or
@@ -75,27 +94,6 @@ public final class LimitChronology extends AssembledChronology {
         }
 
         return new LimitChronology(base, (DateTime) lowerLimit, (DateTime) upperLimit);
-    }
-
-    final DateTime iLowerLimit;
-    final DateTime iUpperLimit;
-
-    private transient LimitChronology iWithUTC;
-
-    /**
-     * Wraps another chronology, with datetime limits. When withUTC or
-     * withZone is called, the returned LimitChronology instance has
-     * the same limits, except they are time zone adjusted.
-     *
-     * @param lowerLimit inclusive lower limit, or null if none
-     * @param upperLimit exclusive upper limit, or null if none
-     */
-    private LimitChronology(Chronology base,
-                            DateTime lowerLimit, DateTime upperLimit) {
-        super(base, null);
-        // These can be set after assembly.
-        iLowerLimit = lowerLimit;
-        iUpperLimit = upperLimit;
     }
 
     /**

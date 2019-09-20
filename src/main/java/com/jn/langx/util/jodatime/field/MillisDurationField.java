@@ -32,14 +32,13 @@ import java.io.Serializable;
 public final class MillisDurationField extends DurationField implements Serializable {
 
     /**
-     * Serialization lock.
-     */
-    private static final long serialVersionUID = 2656707858124633367L;
-
-    /**
      * Singleton instance.
      */
     public static final DurationField INSTANCE = new MillisDurationField();
+    /**
+     * Serialization lock.
+     */
+    private static final long serialVersionUID = 2656707858124633367L;
 
     /**
      * Restricted constructor.

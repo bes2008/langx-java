@@ -73,14 +73,13 @@ import java.util.*;
 public abstract class DateTimeZone implements Serializable {
 
     /**
-     * Serialization version.
-     */
-    private static final long serialVersionUID = 5546345482340108586L;
-
-    /**
      * The time zone for Universal Coordinated Time
      */
     public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);
+    /**
+     * Serialization version.
+     */
+    private static final long serialVersionUID = 5546345482340108586L;
     /**
      * Maximum offset.
      */
@@ -120,6 +119,23 @@ public abstract class DateTimeZone implements Serializable {
     static {
         setProvider0(null);
         setNameProvider0(null);
+    }
+
+    //-----------------------------------------------------------------------
+
+    private final String iID;
+
+    /**
+     * Constructor.
+     *
+     * @param id the id to use
+     * @throws IllegalArgumentException if the id is null
+     */
+    protected DateTimeZone(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id must not be null");
+        }
+        iID = id;
     }
 
     //-----------------------------------------------------------------------
@@ -189,8 +205,6 @@ public abstract class DateTimeZone implements Serializable {
             cDefault = zone;
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Gets a time zone instance for the specified time zone id.
@@ -303,6 +317,8 @@ public abstract class DateTimeZone implements Serializable {
         return forOffsetMillis(offset);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Gets a time zone instance for the specified offset to UTC in milliseconds.
      *
@@ -409,8 +425,6 @@ public abstract class DateTimeZone implements Serializable {
         return cAvailableIDs;
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Gets the zone provider factory.
      * <p>
@@ -440,6 +454,8 @@ public abstract class DateTimeZone implements Serializable {
         }
         setProvider0(provider);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Sets the zone provider factory without performing the security check.
@@ -509,8 +525,6 @@ public abstract class DateTimeZone implements Serializable {
         return provider;
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Gets the name provider factory.
      * <p>
@@ -540,6 +554,8 @@ public abstract class DateTimeZone implements Serializable {
         }
         setNameProvider0(nameProvider);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Sets the name provider factory without performing the security check.
@@ -584,8 +600,6 @@ public abstract class DateTimeZone implements Serializable {
 
         return nameProvider;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Converts an old style id to a new style id.
@@ -661,6 +675,9 @@ public abstract class DateTimeZone implements Serializable {
         return -(int) offsetFormatter().withChronology(chrono).parseMillis(str);
     }
 
+    // Instance fields and methods
+    //--------------------------------------------------------------------
+
     /**
      * Formats a timezone offset string.
      * <p>
@@ -716,24 +733,6 @@ public abstract class DateTimeZone implements Serializable {
                     .toFormatter();
         }
         return cOffsetFormatter;
-    }
-
-    // Instance fields and methods
-    //--------------------------------------------------------------------
-
-    private final String iID;
-
-    /**
-     * Constructor.
-     *
-     * @param id the id to use
-     * @throws IllegalArgumentException if the id is null
-     */
-    protected DateTimeZone(String id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id must not be null");
-        }
-        iID = id;
     }
 
     // Principal methods

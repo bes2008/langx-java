@@ -81,6 +81,13 @@ public final class GregorianChronology extends com.jn.langx.util.jodatime.chrono
     }
 
     /**
+     * Restricted constructor
+     */
+    private GregorianChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+        super(base, param, minDaysInFirstWeek);
+    }
+
+    /**
      * Gets an instance of the GregorianChronology.
      * The time zone of the returned instance is UTC.
      *
@@ -108,6 +115,9 @@ public final class GregorianChronology extends com.jn.langx.util.jodatime.chrono
     public static GregorianChronology getInstance(DateTimeZone zone) {
         return getInstance(zone, 4);
     }
+
+    // Constructors and instance variables
+    //-----------------------------------------------------------------------
 
     /**
      * Gets an instance of the GregorianChronology in the given time zone.
@@ -145,16 +155,6 @@ public final class GregorianChronology extends com.jn.langx.util.jodatime.chrono
             }
         }
         return chrono;
-    }
-
-    // Constructors and instance variables
-    //-----------------------------------------------------------------------
-
-    /**
-     * Restricted constructor
-     */
-    private GregorianChronology(Chronology base, Object param, int minDaysInFirstWeek) {
-        super(base, param, minDaysInFirstWeek);
     }
 
     /**

@@ -67,25 +67,6 @@ public final class MonthDay
         implements ReadablePartial, Serializable {
 
     /**
-     * Serialization version
-     */
-    private static final long serialVersionUID = 2954560699050434609L;
-
-    /**
-     * The singleton set of field types
-     */
-    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
-            DateTimeFieldType.monthOfYear(),
-            DateTimeFieldType.dayOfMonth(),};
-
-    /**
-     * The singleton set of field types
-     */
-    private static final DateTimeFormatter PARSER = new DateTimeFormatterBuilder()
-            .appendOptional(ISODateTimeFormat.localDateParser().getParser())
-            .appendOptional(DateTimeFormat.forPattern("--MM-dd").getParser()).toFormatter();
-
-    /**
      * The index of the monthOfYear field in the field array
      */
     public static final int MONTH_OF_YEAR = 0;
@@ -93,124 +74,22 @@ public final class MonthDay
      * The index of the day field in the field array
      */
     public static final int DAY_OF_MONTH = 1;
-
-    //-----------------------------------------------------------------------
-
     /**
-     * Obtains a {@code MonthDay} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the default time zone.
-     * The resulting object does not use the zone.
-     *
-     * @return the current month-day, not null
-     * @since 2.0
+     * Serialization version
      */
-    public static MonthDay now() {
-        return new MonthDay();
-    }
-
+    private static final long serialVersionUID = 2954560699050434609L;
     /**
-     * Obtains a {@code MonthDay} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the specified time zone.
-     * The resulting object does not use the zone.
-     *
-     * @param zone the time zone, not null
-     * @return the current month-day, not null
-     * @since 2.0
+     * The singleton set of field types
      */
-    public static MonthDay now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
-        return new MonthDay(zone);
-    }
-
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
+            DateTimeFieldType.monthOfYear(),
+            DateTimeFieldType.dayOfMonth(),};
     /**
-     * Obtains a {@code MonthDay} set to the current system millisecond time
-     * using the specified chronology.
-     * The resulting object does not use the zone.
-     *
-     * @param chronology the chronology, not null
-     * @return the current month-day, not null
-     * @since 2.0
+     * The singleton set of field types
      */
-    public static MonthDay now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
-        return new MonthDay(chronology);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Parses a {@code MonthDay} from the specified string.
-     * <p>
-     * This uses {@link ISODateTimeFormat#localDateParser()} or the format {@code --MM-dd}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static MonthDay parse(String str) {
-        return parse(str, PARSER);
-    }
-
-    /**
-     * Parses a {@code MonthDay} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static MonthDay parse(String str, DateTimeFormatter formatter) {
-        LocalDate date = formatter.parseLocalDate(str);
-        return new MonthDay(date.getMonthOfYear(), date.getDayOfMonth());
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs a MonthDay from a <code>java.util.Calendar</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Calendar and assigned to the MonthDay.
-     * <p>
-     * This factory method ignores the type of the calendar and always
-     * creates a MonthDay with ISO chronology. It is expected that you
-     * will only pass in instances of <code>GregorianCalendar</code> however
-     * this is not validated.
-     *
-     * @param calendar the Calendar to extract fields from
-     * @return the created MonthDay, never null
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
-     */
-    public static MonthDay fromCalendarFields(Calendar calendar) {
-        if (calendar == null) {
-            throw new IllegalArgumentException("The calendar must not be null");
-        }
-        return new MonthDay(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
-    }
-
-    /**
-     * Constructs a MonthDay from a <code>java.util.Date</code>
-     * using exactly the same field values avoiding any time zone effects.
-     * <p>
-     * Each field is queried from the Date and assigned to the MonthDay.
-     * <p>
-     * This factory method always creates a MonthDay with ISO chronology.
-     *
-     * @param date the Date to extract fields from
-     * @return the created MonthDay, never null
-     * @throws IllegalArgumentException if the calendar is null
-     * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
-     */
-    @SuppressWarnings("deprecation")
-    public static MonthDay fromDateFields(Date date) {
-        if (date == null) {
-            throw new IllegalArgumentException("The date must not be null");
-        }
-        return new MonthDay(date.getMonth() + 1, date.getDate());
-    }
+    private static final DateTimeFormatter PARSER = new DateTimeFormatterBuilder()
+            .appendOptional(ISODateTimeFormat.localDateParser().getParser())
+            .appendOptional(DateTimeFormat.forPattern("--MM-dd").getParser()).toFormatter();
 
     //-----------------------------------------------------------------------
 
@@ -258,6 +137,8 @@ public final class MonthDay
         super(chronology);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs a MonthDay extracting the partial fields from the specified
      * milliseconds using the ISOChronology in the default zone.
@@ -286,6 +167,8 @@ public final class MonthDay
     public MonthDay(long instant, Chronology chronology) {
         super(instant, chronology);
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs a MonthDay from an Object that represents some form of time.
@@ -325,6 +208,8 @@ public final class MonthDay
     public MonthDay(Object instant, Chronology chronology) {
         super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs a MonthDay with specified year and month
@@ -377,6 +262,118 @@ public final class MonthDay
      */
     MonthDay(MonthDay partial, Chronology chrono) {
         super(partial, chrono);
+    }
+
+    /**
+     * Obtains a {@code MonthDay} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * The resulting object does not use the zone.
+     *
+     * @return the current month-day, not null
+     * @since 2.0
+     */
+    public static MonthDay now() {
+        return new MonthDay();
+    }
+
+    /**
+     * Obtains a {@code MonthDay} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * The resulting object does not use the zone.
+     *
+     * @param zone the time zone, not null
+     * @return the current month-day, not null
+     * @since 2.0
+     */
+    public static MonthDay now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new MonthDay(zone);
+    }
+
+    /**
+     * Obtains a {@code MonthDay} set to the current system millisecond time
+     * using the specified chronology.
+     * The resulting object does not use the zone.
+     *
+     * @param chronology the chronology, not null
+     * @return the current month-day, not null
+     * @since 2.0
+     */
+    public static MonthDay now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new MonthDay(chronology);
+    }
+
+    /**
+     * Parses a {@code MonthDay} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#localDateParser()} or the format {@code --MM-dd}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static MonthDay parse(String str) {
+        return parse(str, PARSER);
+    }
+
+    /**
+     * Parses a {@code MonthDay} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static MonthDay parse(String str, DateTimeFormatter formatter) {
+        LocalDate date = formatter.parseLocalDate(str);
+        return new MonthDay(date.getMonthOfYear(), date.getDayOfMonth());
+    }
+
+    /**
+     * Constructs a MonthDay from a <code>java.util.Calendar</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Calendar and assigned to the MonthDay.
+     * <p>
+     * This factory method ignores the type of the calendar and always
+     * creates a MonthDay with ISO chronology. It is expected that you
+     * will only pass in instances of <code>GregorianCalendar</code> however
+     * this is not validated.
+     *
+     * @param calendar the Calendar to extract fields from
+     * @return the created MonthDay, never null
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
+     */
+    public static MonthDay fromCalendarFields(Calendar calendar) {
+        if (calendar == null) {
+            throw new IllegalArgumentException("The calendar must not be null");
+        }
+        return new MonthDay(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    /**
+     * Constructs a MonthDay from a <code>java.util.Date</code>
+     * using exactly the same field values avoiding any time zone effects.
+     * <p>
+     * Each field is queried from the Date and assigned to the MonthDay.
+     * <p>
+     * This factory method always creates a MonthDay with ISO chronology.
+     *
+     * @param date the Date to extract fields from
+     * @return the created MonthDay, never null
+     * @throws IllegalArgumentException if the calendar is null
+     * @throws IllegalArgumentException if the monthOfYear or dayOfMonth is invalid for the ISO chronology
+     */
+    @SuppressWarnings("deprecation")
+    public static MonthDay fromDateFields(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        return new MonthDay(date.getMonth() + 1, date.getDate());
     }
 
     /**

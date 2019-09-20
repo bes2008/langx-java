@@ -109,6 +109,275 @@ public final class LocalDateTime
     //-----------------------------------------------------------------------
 
     /**
+     * Constructs an instance set to the current local time evaluated using
+     * ISO chronology in the default zone.
+     * <p>
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @see #now()
+     */
+    public LocalDateTime() {
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
+    }
+
+    /**
+     * Constructs an instance set to the current local time evaluated using
+     * ISO chronology in the specified zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param zone the time zone, null means default zone
+     * @see #now(DateTimeZone)
+     */
+    public LocalDateTime(DateTimeZone zone) {
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
+    }
+
+    /**
+     * Constructs an instance set to the current local time evaluated using
+     * specified chronology.
+     * <p>
+     * If the chronology is null, ISO chronology in the default time zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param chronology the chronology, null means ISOChronology in default zone
+     * @see #now(Chronology)
+     */
+    public LocalDateTime(Chronology chronology) {
+        this(DateTimeUtils.currentTimeMillis(), chronology);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Constructs an instance set to the local time defined by the specified
+     * instant evaluated using ISO chronology in the default zone.
+     * <p>
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
+     */
+    public LocalDateTime(long instant) {
+        this(instant, ISOChronology.getInstance());
+    }
+
+    /**
+     * Constructs an instance set to the local time defined by the specified
+     * instant evaluated using ISO chronology in the specified zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
+     * @param zone    the time zone, null means default zone
+     */
+    public LocalDateTime(long instant, DateTimeZone zone) {
+        this(instant, ISOChronology.getInstance(zone));
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Constructs an instance set to the local time defined by the specified
+     * instant evaluated using the specified chronology.
+     * <p>
+     * If the chronology is null, ISO chronology in the default zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param instant    the milliseconds from 1970-01-01T00:00:00Z
+     * @param chronology the chronology, null means ISOChronology in default zone
+     */
+    public LocalDateTime(long instant, Chronology chronology) {
+        chronology = DateTimeUtils.getChronology(chronology);
+
+        long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
+        iLocalMillis = localMillis;
+        iChronology = chronology.withUTC();
+    }
+
+    /**
+     * Constructs an instance from an Object that represents a datetime.
+     * <p>
+     * If the object contains no chronology, <code>ISOChronology</code> is used.
+     * If the object contains no time zone, the default zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     * <p>
+     * The recognised object types are defined in
+     * {@link ConverterManager ConverterManager} and
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+     * The default String converter ignores the zone and only parses the field values.
+     *
+     * @param instant the datetime object
+     * @throws IllegalArgumentException if the instant is invalid
+     */
+    public LocalDateTime(Object instant) {
+        this(instant, (Chronology) null);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Constructs an instance from an Object that represents a datetime,
+     * forcing the time zone to that specified.
+     * <p>
+     * If the object contains no chronology, <code>ISOChronology</code> is used.
+     * If the specified time zone is null, the default zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     * <p>
+     * The recognised object types are defined in
+     * {@link ConverterManager ConverterManager} and
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+     * The default String converter ignores the zone and only parses the field values.
+     *
+     * @param instant the datetime object
+     * @param zone    the time zone
+     * @throws IllegalArgumentException if the instant is invalid
+     */
+    public LocalDateTime(Object instant, DateTimeZone zone) {
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
+        Chronology chronology = converter.getChronology(instant, zone);
+        chronology = DateTimeUtils.getChronology(chronology);
+        iChronology = chronology.withUTC();
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
+        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
+    }
+
+    /**
+     * Constructs an instance from an Object that represents a datetime,
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, ISO in the default time zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     * If the instant contains a chronology, it will be ignored.
+     * For example, passing a {@code LocalDate} and a different chronology
+     * will return a date with the year/month/day from the date applied
+     * unaltered to the specified chronology.
+     * <p>
+     * The recognised object types are defined in
+     * {@link ConverterManager ConverterManager} and
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+     * The default String converter ignores the zone and only parses the field values.
+     *
+     * @param instant    the datetime object
+     * @param chronology the chronology
+     * @throws IllegalArgumentException if the instant is invalid
+     */
+    public LocalDateTime(Object instant, Chronology chronology) {
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
+        chronology = converter.getChronology(instant, chronology);
+        chronology = DateTimeUtils.getChronology(chronology);
+        iChronology = chronology.withUTC();
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
+        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
+    }
+
+    /**
+     * Constructs an instance set to the specified date and time
+     * using <code>ISOChronology</code>.
+     *
+     * @param year         the year
+     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param dayOfMonth   the day of the month, from 1 to 31
+     * @param hourOfDay    the hour of the day, from 0 to 23
+     * @param minuteOfHour the minute of the hour, from 0 to 59
+     */
+    public LocalDateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour) {
+        this(year, monthOfYear, dayOfMonth, hourOfDay,
+                minuteOfHour, 0, 0, ISOChronology.getInstanceUTC());
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Constructs an instance set to the specified date and time
+     * using <code>ISOChronology</code>.
+     *
+     * @param year           the year
+     * @param monthOfYear    the month of the year, from 1 to 12
+     * @param dayOfMonth     the day of the month, from 1 to 31
+     * @param hourOfDay      the hour of the day, from 0 to 23
+     * @param minuteOfHour   the minute of the hour, from 0 to 59
+     * @param secondOfMinute the second of the minute, from 0 to 59
+     */
+    public LocalDateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute) {
+        this(year, monthOfYear, dayOfMonth, hourOfDay,
+                minuteOfHour, secondOfMinute, 0, ISOChronology.getInstanceUTC());
+    }
+
+    /**
+     * Constructs an instance set to the specified date and time
+     * using <code>ISOChronology</code>.
+     *
+     * @param year           the year
+     * @param monthOfYear    the month of the year, from 1 to 12
+     * @param dayOfMonth     the day of the month, from 1 to 31
+     * @param hourOfDay      the hour of the day, from 0 to 23
+     * @param minuteOfHour   the minute of the hour, from 0 to 59
+     * @param secondOfMinute the second of the minute, from 0 to 59
+     * @param millisOfSecond the millisecond of the second, from 0 to 999
+     */
+    public LocalDateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond) {
+        this(year, monthOfYear, dayOfMonth, hourOfDay,
+                minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstanceUTC());
+    }
+
+    /**
+     * Constructs an instance set to the specified date and time
+     * using the specified chronology, whose zone is ignored.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code> is used.
+     *
+     * @param year           the year, valid values defined by the chronology
+     * @param monthOfYear    the month of the year, valid values defined by the chronology
+     * @param dayOfMonth     the day of the month, valid values defined by the chronology
+     * @param hourOfDay      the hour of the day, valid values defined by the chronology
+     * @param minuteOfHour   the minute of the hour, valid values defined by the chronology
+     * @param secondOfMinute the second of the minute, valid values defined by the chronology
+     * @param millisOfSecond the millisecond of the second, valid values defined by the chronology
+     * @param chronology     the chronology, null means ISOChronology in default zone
+     */
+    public LocalDateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond,
+            Chronology chronology) {
+        super();
+        chronology = DateTimeUtils.getChronology(chronology).withUTC();
+        long instant = chronology.getDateTimeMillis(year, monthOfYear, dayOfMonth,
+                hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        iChronology = chronology;
+        iLocalMillis = instant;
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Obtains a {@code LocalDateTime} set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
      * The resulting object does not use the zone.
@@ -176,8 +445,6 @@ public final class LocalDateTime
     public static LocalDateTime parse(String str, DateTimeFormatter formatter) {
         return formatter.parseLocalDateTime(str);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs a LocalDateTime from a <code>java.util.Calendar</code>
@@ -259,273 +526,6 @@ public final class LocalDateTime
                 date.getSeconds(),
                 (((int) (date.getTime() % 1000)) + 1000) % 1000
         );
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * ISO chronology in the default zone.
-     * <p>
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @see #now()
-     */
-    public LocalDateTime() {
-        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
-    }
-
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * ISO chronology in the specified zone.
-     * <p>
-     * If the specified time zone is null, the default zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param zone the time zone, null means default zone
-     * @see #now(DateTimeZone)
-     */
-    public LocalDateTime(DateTimeZone zone) {
-        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
-    }
-
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * specified chronology.
-     * <p>
-     * If the chronology is null, ISO chronology in the default time zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param chronology the chronology, null means ISOChronology in default zone
-     * @see #now(Chronology)
-     */
-    public LocalDateTime(Chronology chronology) {
-        this(DateTimeUtils.currentTimeMillis(), chronology);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs an instance set to the local time defined by the specified
-     * instant evaluated using ISO chronology in the default zone.
-     * <p>
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param instant the milliseconds from 1970-01-01T00:00:00Z
-     */
-    public LocalDateTime(long instant) {
-        this(instant, ISOChronology.getInstance());
-    }
-
-    /**
-     * Constructs an instance set to the local time defined by the specified
-     * instant evaluated using ISO chronology in the specified zone.
-     * <p>
-     * If the specified time zone is null, the default zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param instant the milliseconds from 1970-01-01T00:00:00Z
-     * @param zone    the time zone, null means default zone
-     */
-    public LocalDateTime(long instant, DateTimeZone zone) {
-        this(instant, ISOChronology.getInstance(zone));
-    }
-
-    /**
-     * Constructs an instance set to the local time defined by the specified
-     * instant evaluated using the specified chronology.
-     * <p>
-     * If the chronology is null, ISO chronology in the default zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param instant    the milliseconds from 1970-01-01T00:00:00Z
-     * @param chronology the chronology, null means ISOChronology in default zone
-     */
-    public LocalDateTime(long instant, Chronology chronology) {
-        chronology = DateTimeUtils.getChronology(chronology);
-
-        long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
-        iLocalMillis = localMillis;
-        iChronology = chronology.withUTC();
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs an instance from an Object that represents a datetime.
-     * <p>
-     * If the object contains no chronology, <code>ISOChronology</code> is used.
-     * If the object contains no time zone, the default zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     * <p>
-     * The recognised object types are defined in
-     * {@link ConverterManager ConverterManager} and
-     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
-     * The default String converter ignores the zone and only parses the field values.
-     *
-     * @param instant the datetime object
-     * @throws IllegalArgumentException if the instant is invalid
-     */
-    public LocalDateTime(Object instant) {
-        this(instant, (Chronology) null);
-    }
-
-    /**
-     * Constructs an instance from an Object that represents a datetime,
-     * forcing the time zone to that specified.
-     * <p>
-     * If the object contains no chronology, <code>ISOChronology</code> is used.
-     * If the specified time zone is null, the default zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     * <p>
-     * The recognised object types are defined in
-     * {@link ConverterManager ConverterManager} and
-     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
-     * The default String converter ignores the zone and only parses the field values.
-     *
-     * @param instant the datetime object
-     * @param zone    the time zone
-     * @throws IllegalArgumentException if the instant is invalid
-     */
-    public LocalDateTime(Object instant, DateTimeZone zone) {
-        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
-        Chronology chronology = converter.getChronology(instant, zone);
-        chronology = DateTimeUtils.getChronology(chronology);
-        iChronology = chronology.withUTC();
-        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
-        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
-    }
-
-    /**
-     * Constructs an instance from an Object that represents a datetime,
-     * using the specified chronology.
-     * <p>
-     * If the chronology is null, ISO in the default time zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     * If the instant contains a chronology, it will be ignored.
-     * For example, passing a {@code LocalDate} and a different chronology
-     * will return a date with the year/month/day from the date applied
-     * unaltered to the specified chronology.
-     * <p>
-     * The recognised object types are defined in
-     * {@link ConverterManager ConverterManager} and
-     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
-     * The default String converter ignores the zone and only parses the field values.
-     *
-     * @param instant    the datetime object
-     * @param chronology the chronology
-     * @throws IllegalArgumentException if the instant is invalid
-     */
-    public LocalDateTime(Object instant, Chronology chronology) {
-        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
-        chronology = converter.getChronology(instant, chronology);
-        chronology = DateTimeUtils.getChronology(chronology);
-        iChronology = chronology.withUTC();
-        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
-        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Constructs an instance set to the specified date and time
-     * using <code>ISOChronology</code>.
-     *
-     * @param year         the year
-     * @param monthOfYear  the month of the year, from 1 to 12
-     * @param dayOfMonth   the day of the month, from 1 to 31
-     * @param hourOfDay    the hour of the day, from 0 to 23
-     * @param minuteOfHour the minute of the hour, from 0 to 59
-     */
-    public LocalDateTime(
-            int year,
-            int monthOfYear,
-            int dayOfMonth,
-            int hourOfDay,
-            int minuteOfHour) {
-        this(year, monthOfYear, dayOfMonth, hourOfDay,
-                minuteOfHour, 0, 0, ISOChronology.getInstanceUTC());
-    }
-
-    /**
-     * Constructs an instance set to the specified date and time
-     * using <code>ISOChronology</code>.
-     *
-     * @param year           the year
-     * @param monthOfYear    the month of the year, from 1 to 12
-     * @param dayOfMonth     the day of the month, from 1 to 31
-     * @param hourOfDay      the hour of the day, from 0 to 23
-     * @param minuteOfHour   the minute of the hour, from 0 to 59
-     * @param secondOfMinute the second of the minute, from 0 to 59
-     */
-    public LocalDateTime(
-            int year,
-            int monthOfYear,
-            int dayOfMonth,
-            int hourOfDay,
-            int minuteOfHour,
-            int secondOfMinute) {
-        this(year, monthOfYear, dayOfMonth, hourOfDay,
-                minuteOfHour, secondOfMinute, 0, ISOChronology.getInstanceUTC());
-    }
-
-    /**
-     * Constructs an instance set to the specified date and time
-     * using <code>ISOChronology</code>.
-     *
-     * @param year           the year
-     * @param monthOfYear    the month of the year, from 1 to 12
-     * @param dayOfMonth     the day of the month, from 1 to 31
-     * @param hourOfDay      the hour of the day, from 0 to 23
-     * @param minuteOfHour   the minute of the hour, from 0 to 59
-     * @param secondOfMinute the second of the minute, from 0 to 59
-     * @param millisOfSecond the millisecond of the second, from 0 to 999
-     */
-    public LocalDateTime(
-            int year,
-            int monthOfYear,
-            int dayOfMonth,
-            int hourOfDay,
-            int minuteOfHour,
-            int secondOfMinute,
-            int millisOfSecond) {
-        this(year, monthOfYear, dayOfMonth, hourOfDay,
-                minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstanceUTC());
-    }
-
-    /**
-     * Constructs an instance set to the specified date and time
-     * using the specified chronology, whose zone is ignored.
-     * <p>
-     * If the chronology is null, <code>ISOChronology</code> is used.
-     *
-     * @param year           the year, valid values defined by the chronology
-     * @param monthOfYear    the month of the year, valid values defined by the chronology
-     * @param dayOfMonth     the day of the month, valid values defined by the chronology
-     * @param hourOfDay      the hour of the day, valid values defined by the chronology
-     * @param minuteOfHour   the minute of the hour, valid values defined by the chronology
-     * @param secondOfMinute the second of the minute, valid values defined by the chronology
-     * @param millisOfSecond the millisecond of the second, valid values defined by the chronology
-     * @param chronology     the chronology, null means ISOChronology in default zone
-     */
-    public LocalDateTime(
-            int year,
-            int monthOfYear,
-            int dayOfMonth,
-            int hourOfDay,
-            int minuteOfHour,
-            int secondOfMinute,
-            int millisOfSecond,
-            Chronology chronology) {
-        super();
-        chronology = DateTimeUtils.getChronology(chronology).withUTC();
-        long instant = chronology.getDateTimeMillis(year, monthOfYear, dayOfMonth,
-                hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        iChronology = chronology;
-        iLocalMillis = instant;
     }
 
     /**

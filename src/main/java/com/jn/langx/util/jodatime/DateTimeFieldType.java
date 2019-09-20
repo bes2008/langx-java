@@ -41,11 +41,6 @@ import java.io.Serializable;
 public abstract class DateTimeFieldType implements Serializable {
 
     /**
-     * Serialization version
-     */
-    private static final long serialVersionUID = -42615285973990L;
-
-    /**
      * Ordinal values for standard field types.
      */
     static final byte
@@ -72,7 +67,10 @@ public abstract class DateTimeFieldType implements Serializable {
             SECOND_OF_MINUTE = 21,
             MILLIS_OF_DAY = 22,
             MILLIS_OF_SECOND = 23;
-
+    /**
+     * Serialization version
+     */
+    private static final long serialVersionUID = -42615285973990L;
     /**
      * The era field type.
      */

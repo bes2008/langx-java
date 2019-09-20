@@ -61,15 +61,7 @@ public class CachedDateTimeZone extends DateTimeZone {
         cInfoCacheMask = cacheSize - 1;
     }
 
-    /**
-     * Returns a new CachedDateTimeZone unless given zone is already cached.
-     */
-    public static CachedDateTimeZone forZone(DateTimeZone zone) {
-        if (zone instanceof CachedDateTimeZone) {
-            return (CachedDateTimeZone) zone;
-        }
-        return new CachedDateTimeZone(zone);
-    }
+    private final DateTimeZone iZone;
 
     /*
      * Caching is performed by breaking timeline down into periods of 2^32
@@ -78,14 +70,21 @@ public class CachedDateTimeZone extends DateTimeZone {
      * have no transition, about one quarter have one transition, and very rare
      * cases have multiple transitions.
      */
-
-    private final DateTimeZone iZone;
-
     private final Info[] iInfoCache = new Info[cInfoCacheMask + 1];
 
     private CachedDateTimeZone(DateTimeZone zone) {
         super(zone.getID());
         iZone = zone;
+    }
+
+    /**
+     * Returns a new CachedDateTimeZone unless given zone is already cached.
+     */
+    public static CachedDateTimeZone forZone(DateTimeZone zone) {
+        if (zone instanceof CachedDateTimeZone) {
+            return (CachedDateTimeZone) zone;
+        }
+        return new CachedDateTimeZone(zone);
     }
 
     /**

@@ -43,6 +43,27 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * The cache of unsupported datetime field instances
      */
     private static HashMap<DateTimeFieldType, UnsupportedDateTimeField> cCache;
+    /**
+     * The field type
+     */
+    private final DateTimeFieldType iType;
+    /**
+     * The duration of the datetime field
+     */
+    private final DurationField iDurationField;
+    /**
+     * Constructor.
+     *
+     * @param type          the field type
+     * @param durationField the duration to use
+     */
+    private UnsupportedDateTimeField(DateTimeFieldType type, DurationField durationField) {
+        if (type == null || durationField == null) {
+            throw new IllegalArgumentException();
+        }
+        iType = type;
+        iDurationField = durationField;
+    }
 
     /**
      * Gets an instance of UnsupportedDateTimeField for a specific named field.
@@ -71,29 +92,6 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
             cCache.put(type, field);
         }
         return field;
-    }
-
-    /**
-     * The field type
-     */
-    private final DateTimeFieldType iType;
-    /**
-     * The duration of the datetime field
-     */
-    private final DurationField iDurationField;
-
-    /**
-     * Constructor.
-     *
-     * @param type          the field type
-     * @param durationField the duration to use
-     */
-    private UnsupportedDateTimeField(DateTimeFieldType type, DurationField durationField) {
-        if (type == null || durationField == null) {
-            throw new IllegalArgumentException();
-        }
-        iType = type;
-        iDurationField = durationField;
     }
 
     //-----------------------------------------------------------------------

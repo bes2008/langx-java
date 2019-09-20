@@ -128,6 +128,52 @@ public class ZoneInfoProvider implements Provider {
     //-----------------------------------------------------------------------
 
     /**
+     * Loads the zone info map.
+     *
+     * @param in the input stream
+     * @return the map
+     */
+    private static Map<String, Object> loadZoneInfoMap(InputStream in) throws IOException {
+        Map<String, Object> map = new ConcurrentHashMap<String, Object>();
+        DataInputStream din = new DataInputStream(in);
+        try {
+            readZoneInfoMap(din, map);
+        } finally {
+            try {
+                din.close();
+            } catch (IOException ex) {
+            }
+        }
+        map.put("UTC", new SoftReference<DateTimeZone>(DateTimeZone.UTC));
+        return map;
+    }
+
+    /**
+     * Reads the zone info map from file.
+     *
+     * @param din   the input stream
+     * @param zimap gets filled with string id to string id mappings
+     */
+    private static void readZoneInfoMap(DataInputStream din, Map<String, Object> zimap) throws IOException {
+        // Read the string pool.
+        int size = din.readUnsignedShort();
+        String[] pool = new String[size];
+        for (int i = 0; i < size; i++) {
+            pool[i] = din.readUTF().intern();
+        }
+
+        // Read the mappings.
+        size = din.readUnsignedShort();
+        for (int i = 0; i < size; i++) {
+            try {
+                zimap.put(pool[din.readUnsignedShort()], pool[din.readUnsignedShort()]);
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                throw new IOException("Corrupt zone info map");
+            }
+        }
+    }
+
+    /**
      * If an error is thrown while loading zone data, uncaughtException is
      * called to log the error and null is returned for this and all future
      * requests.
@@ -187,6 +233,8 @@ public class ZoneInfoProvider implements Provider {
         t.getThreadGroup().uncaughtException(t, ex);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Opens a resource from file or classpath.
      *
@@ -241,54 +289,6 @@ public class ZoneInfoProvider implements Provider {
                     in.close();
                 }
             } catch (IOException ex) {
-            }
-        }
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Loads the zone info map.
-     *
-     * @param in the input stream
-     * @return the map
-     */
-    private static Map<String, Object> loadZoneInfoMap(InputStream in) throws IOException {
-        Map<String, Object> map = new ConcurrentHashMap<String, Object>();
-        DataInputStream din = new DataInputStream(in);
-        try {
-            readZoneInfoMap(din, map);
-        } finally {
-            try {
-                din.close();
-            } catch (IOException ex) {
-            }
-        }
-        map.put("UTC", new SoftReference<DateTimeZone>(DateTimeZone.UTC));
-        return map;
-    }
-
-    /**
-     * Reads the zone info map from file.
-     *
-     * @param din   the input stream
-     * @param zimap gets filled with string id to string id mappings
-     */
-    private static void readZoneInfoMap(DataInputStream din, Map<String, Object> zimap) throws IOException {
-        // Read the string pool.
-        int size = din.readUnsignedShort();
-        String[] pool = new String[size];
-        for (int i = 0; i < size; i++) {
-            pool[i] = din.readUTF().intern();
-        }
-
-        // Read the mappings.
-        size = din.readUnsignedShort();
-        for (int i = 0; i < size; i++) {
-            try {
-                zimap.put(pool[din.readUnsignedShort()], pool[din.readUnsignedShort()]);
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                throw new IOException("Corrupt zone info map");
             }
         }
     }

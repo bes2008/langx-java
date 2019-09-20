@@ -77,6 +77,18 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
     //-----------------------------------------------------------------------
 
     /**
+     * Restricted constructor.
+     *
+     * @param lowerLimit the lower field limit, null means no limit
+     * @param upperLimit the upper field limit, null means no limit
+     */
+    protected DateTimeComparator(DateTimeFieldType lowerLimit, DateTimeFieldType upperLimit) {
+        super();
+        iLowerLimit = lowerLimit;
+        iUpperLimit = upperLimit;
+    }
+
+    /**
      * Returns a DateTimeComparator the compares the entire date time value.
      *
      * @return a comparator over all fields
@@ -138,18 +150,6 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      */
     public static DateTimeComparator getTimeOnlyInstance() {
         return TIME_INSTANCE;
-    }
-
-    /**
-     * Restricted constructor.
-     *
-     * @param lowerLimit the lower field limit, null means no limit
-     * @param upperLimit the upper field limit, null means no limit
-     */
-    protected DateTimeComparator(DateTimeFieldType lowerLimit, DateTimeFieldType upperLimit) {
-        super();
-        iLowerLimit = lowerLimit;
-        iUpperLimit = upperLimit;
     }
 
     //-----------------------------------------------------------------------

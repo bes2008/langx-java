@@ -86,77 +86,6 @@ public final class DateMidnight
     //-----------------------------------------------------------------------
 
     /**
-     * Obtains a {@code DateMidnight} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the default time zone.
-     * The constructed object will have a local time of midnight.
-     *
-     * @return the current date, not null
-     * @since 2.0
-     */
-    public static DateMidnight now() {
-        return new DateMidnight();
-    }
-
-    /**
-     * Obtains a {@code DateMidnight} set to the current system millisecond time
-     * using <code>ISOChronology</code> in the specified time zone.
-     * The constructed object will have a local time of midnight.
-     *
-     * @param zone the time zone, not null
-     * @return the current date, not null
-     * @since 2.0
-     */
-    public static DateMidnight now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
-        return new DateMidnight(zone);
-    }
-
-    /**
-     * Obtains a {@code DateMidnight} set to the current system millisecond time
-     * using the specified chronology.
-     * The constructed object will have a local time of midnight.
-     *
-     * @param chronology the chronology, not null
-     * @return the current date, not null
-     * @since 2.0
-     */
-    public static DateMidnight now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
-        return new DateMidnight(chronology);
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Parses a {@code DateMidnight} from the specified string.
-     * <p>
-     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static DateMidnight parse(String str) {
-        return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
-    }
-
-    /**
-     * Parses a {@code DateMidnight} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static DateMidnight parse(String str, DateTimeFormatter formatter) {
-        return formatter.parseDateTime(str).toDateMidnight();
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
      * The constructed object will have a local time of midnight.
@@ -223,6 +152,8 @@ public final class DateMidnight
         super(instant, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
      * using the specified chronology.
@@ -237,8 +168,6 @@ public final class DateMidnight
     public DateMidnight(long instant, Chronology chronology) {
         super(instant, chronology);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from an Object that represents a datetime.
@@ -286,6 +215,8 @@ public final class DateMidnight
         super(instant, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from an Object that represents a datetime,
      * using the specified chronology.
@@ -307,8 +238,6 @@ public final class DateMidnight
     public DateMidnight(Object instant, Chronology chronology) {
         super(instant, DateTimeUtils.getChronology(chronology));
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance from datetime field values
@@ -339,6 +268,8 @@ public final class DateMidnight
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0, zone);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Constructs an instance from datetime field values
      * using the specified chronology.
@@ -354,6 +285,75 @@ public final class DateMidnight
      */
     public DateMidnight(int year, int monthOfYear, int dayOfMonth, Chronology chronology) {
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0, chronology);
+    }
+
+    /**
+     * Obtains a {@code DateMidnight} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * The constructed object will have a local time of midnight.
+     *
+     * @return the current date, not null
+     * @since 2.0
+     */
+    public static DateMidnight now() {
+        return new DateMidnight();
+    }
+
+    /**
+     * Obtains a {@code DateMidnight} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * The constructed object will have a local time of midnight.
+     *
+     * @param zone the time zone, not null
+     * @return the current date, not null
+     * @since 2.0
+     */
+    public static DateMidnight now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new DateMidnight(zone);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Obtains a {@code DateMidnight} set to the current system millisecond time
+     * using the specified chronology.
+     * The constructed object will have a local time of midnight.
+     *
+     * @param chronology the chronology, not null
+     * @return the current date, not null
+     * @since 2.0
+     */
+    public static DateMidnight now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new DateMidnight(chronology);
+    }
+
+    /**
+     * Parses a {@code DateMidnight} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static DateMidnight parse(String str) {
+        return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
+    }
+
+    /**
+     * Parses a {@code DateMidnight} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static DateMidnight parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseDateTime(str).toDateMidnight();
     }
 
     /**

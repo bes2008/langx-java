@@ -40,6 +40,19 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * The cache of unsupported duration field instances
      */
     private static HashMap<DurationFieldType, UnsupportedDurationField> cCache;
+    /**
+     * The name of the field
+     */
+    private final DurationFieldType iType;
+
+    /**
+     * Constructor.
+     *
+     * @param type the type to use
+     */
+    private UnsupportedDurationField(DurationFieldType type) {
+        iType = type;
+    }
 
     /**
      * Gets an instance of UnsupportedDurationField for a specific named field.
@@ -61,20 +74,6 @@ public final class UnsupportedDurationField extends DurationField implements Ser
             cCache.put(type, field);
         }
         return field;
-    }
-
-    /**
-     * The name of the field
-     */
-    private final DurationFieldType iType;
-
-    /**
-     * Constructor.
-     *
-     * @param type the type to use
-     */
-    private UnsupportedDurationField(DurationFieldType type) {
-        iType = type;
     }
 
     //-----------------------------------------------------------------------

@@ -32,6 +32,10 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
 
     private static final long serialVersionUID = 3154803964207950910L;
 
+    protected StrictDateTimeField(DateTimeField field) {
+        super(field);
+    }
+
     /**
      * Returns a strict version of the given field. If it is already strict,
      * then it is returned as-is. Otherwise, a new StrictDateTimeField is
@@ -48,10 +52,6 @@ public class StrictDateTimeField extends DelegatedDateTimeField {
             return field;
         }
         return new StrictDateTimeField(field);
-    }
-
-    protected StrictDateTimeField(DateTimeField field) {
-        super(field);
     }
 
     public final boolean isLenient() {

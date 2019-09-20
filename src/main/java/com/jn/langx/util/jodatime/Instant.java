@@ -68,43 +68,6 @@ public final class Instant
     //-----------------------------------------------------------------------
 
     /**
-     * Obtains an {@code Instant} set to the current system millisecond time.
-     *
-     * @return the current instant, not null
-     * @since 2.0
-     */
-    public static Instant now() {
-        return new Instant();
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
-     * Parses a {@code Instant} from the specified string.
-     * <p>
-     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
-     *
-     * @param str the string to parse, not null
-     * @since 2.0
-     */
-    public static Instant parse(String str) {
-        return parse(str, ISODateTimeFormat.dateTimeParser());
-    }
-
-    /**
-     * Parses a {@code Instant} from the specified string using a formatter.
-     *
-     * @param str       the string to parse, not null
-     * @param formatter the formatter to use, not null
-     * @since 2.0
-     */
-    public static Instant parse(String str, DateTimeFormatter formatter) {
-        return formatter.parseDateTime(str).toInstant();
-    }
-
-    //-----------------------------------------------------------------------
-
-    /**
      * Constructs an instance set to the current system millisecond time.
      *
      * @see #now()
@@ -113,6 +76,8 @@ public final class Instant
         super();
         iMillis = DateTimeUtils.currentTimeMillis();
     }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z.
@@ -137,6 +102,41 @@ public final class Instant
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         iMillis = converter.getInstantMillis(instant, ISOChronology.getInstanceUTC());
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
+     * Obtains an {@code Instant} set to the current system millisecond time.
+     *
+     * @return the current instant, not null
+     * @since 2.0
+     */
+    public static Instant now() {
+        return new Instant();
+    }
+
+    /**
+     * Parses a {@code Instant} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+     *
+     * @param str the string to parse, not null
+     * @since 2.0
+     */
+    public static Instant parse(String str) {
+        return parse(str, ISODateTimeFormat.dateTimeParser());
+    }
+
+    /**
+     * Parses a {@code Instant} from the specified string using a formatter.
+     *
+     * @param str       the string to parse, not null
+     * @param formatter the formatter to use, not null
+     * @since 2.0
+     */
+    public static Instant parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseDateTime(str).toInstant();
     }
 
     //-----------------------------------------------------------------------

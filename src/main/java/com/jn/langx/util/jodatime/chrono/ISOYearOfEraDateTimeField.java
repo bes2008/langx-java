@@ -32,13 +32,12 @@ import com.jn.langx.util.jodatime.field.FieldUtils;
  */
 class ISOYearOfEraDateTimeField extends DecoratedDateTimeField {
 
-    @SuppressWarnings("unused")
-    private static final long serialVersionUID = 7037524068969447317L;
-
     /**
      * Singleton instance
      */
     static final DateTimeField INSTANCE = new ISOYearOfEraDateTimeField();
+    @SuppressWarnings("unused")
+    private static final long serialVersionUID = 7037524068969447317L;
 
     /**
      * Restricted constructor.

@@ -134,13 +134,60 @@ public class DateTimeParserBucket {
     //-----------------------------------------------------------------------
 
     /**
+     * Sorts elements [0,high). Calling java.util.Arrays isn't always the right
+     * choice since it always creates an internal copy of the array, even if it
+     * doesn't need to. If the array slice is small enough, an insertion sort
+     * is chosen instead, but it doesn't need a copy!
+     * <p>
+     * This method has a modified version of that insertion sort, except it
+     * doesn't create an unnecessary array copy. If high is over 10, then
+     * java.util.Arrays is called, which will perform a merge sort, which is
+     * faster than insertion sort on large lists.
+     * <p>
+     * The end result is much greater performance when computeMillis is called.
+     * Since the amount of saved fields is small, the insertion sort is a
+     * better choice. Additional performance is gained since there is no extra
+     * array allocation and copying. Also, the insertion sort here does not
+     * perform any casting operations. The version in java.util.Arrays performs
+     * casts within the insertion sort loop.
+     */
+    private static void sort(SavedField[] array, int high) {
+        if (high > 10) {
+            Arrays.sort(array, 0, high);
+        } else {
+            for (int i = 0; i < high; i++) {
+                for (int j = i; j > 0 && (array[j - 1]).compareTo(array[j]) > 0; j--) {
+                    SavedField t = array[j];
+                    array[j] = array[j - 1];
+                    array[j - 1] = t;
+                }
+            }
+        }
+    }
+
+    //-----------------------------------------------------------------------
+
+    static int compareReverse(DurationField a, DurationField b) {
+        if (a == null || !a.isSupported()) {
+            if (b == null || !b.isSupported()) {
+                return 0;
+            }
+            return -1;
+        }
+        if (b == null || !b.isSupported()) {
+            return 1;
+        }
+        return -a.compareTo(b);
+    }
+
+    //-----------------------------------------------------------------------
+
+    /**
      * Gets the chronology of the bucket, which will be a local (UTC) chronology.
      */
     public Chronology getChronology() {
         return iChrono;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Returns the locale to be used during parsing.
@@ -168,8 +215,6 @@ public class DateTimeParserBucket {
         iZone = zone;
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Returns the time zone offset in milliseconds used by computeMillis.
      *
@@ -179,6 +224,16 @@ public class DateTimeParserBucket {
     public int getOffset() {
         return (iOffset != null ? iOffset : 0);
     }
+
+    /**
+     * Set a time zone offset to be used when computeMillis is called.
+     */
+    public void setOffset(Integer offset) {
+        iSavedState = null;
+        iOffset = offset;
+    }
+
+    //-----------------------------------------------------------------------
 
     /**
      * Returns the time zone offset in milliseconds used by computeMillis.
@@ -194,14 +249,6 @@ public class DateTimeParserBucket {
      */
     @Deprecated
     public void setOffset(int offset) {
-        iSavedState = null;
-        iOffset = offset;
-    }
-
-    /**
-     * Set a time zone offset to be used when computeMillis is called.
-     */
-    public void setOffset(Integer offset) {
         iSavedState = null;
         iOffset = offset;
     }
@@ -236,8 +283,6 @@ public class DateTimeParserBucket {
     public void setPivotYear(Integer pivotYear) {
         iPivotYear = pivotYear;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Saves a datetime field value.
@@ -406,70 +451,6 @@ public class DateTimeParserBucket {
         return millis;
     }
 
-    /**
-     * Sorts elements [0,high). Calling java.util.Arrays isn't always the right
-     * choice since it always creates an internal copy of the array, even if it
-     * doesn't need to. If the array slice is small enough, an insertion sort
-     * is chosen instead, but it doesn't need a copy!
-     * <p>
-     * This method has a modified version of that insertion sort, except it
-     * doesn't create an unnecessary array copy. If high is over 10, then
-     * java.util.Arrays is called, which will perform a merge sort, which is
-     * faster than insertion sort on large lists.
-     * <p>
-     * The end result is much greater performance when computeMillis is called.
-     * Since the amount of saved fields is small, the insertion sort is a
-     * better choice. Additional performance is gained since there is no extra
-     * array allocation and copying. Also, the insertion sort here does not
-     * perform any casting operations. The version in java.util.Arrays performs
-     * casts within the insertion sort loop.
-     */
-    private static void sort(SavedField[] array, int high) {
-        if (high > 10) {
-            Arrays.sort(array, 0, high);
-        } else {
-            for (int i = 0; i < high; i++) {
-                for (int j = i; j > 0 && (array[j - 1]).compareTo(array[j]) > 0; j--) {
-                    SavedField t = array[j];
-                    array[j] = array[j - 1];
-                    array[j - 1] = t;
-                }
-            }
-        }
-    }
-
-    class SavedState {
-        final DateTimeZone iZone;
-        final Integer iOffset;
-        final SavedField[] iSavedFields;
-        final int iSavedFieldsCount;
-
-        SavedState() {
-            this.iZone = DateTimeParserBucket.this.iZone;
-            this.iOffset = DateTimeParserBucket.this.iOffset;
-            this.iSavedFields = DateTimeParserBucket.this.iSavedFields;
-            this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;
-        }
-
-        boolean restoreState(DateTimeParserBucket enclosing) {
-            if (enclosing != DateTimeParserBucket.this) {
-                return false;
-            }
-            enclosing.iZone = this.iZone;
-            enclosing.iOffset = this.iOffset;
-            enclosing.iSavedFields = this.iSavedFields;
-            if (this.iSavedFieldsCount < enclosing.iSavedFieldsCount) {
-                // Since count is being restored to a lower count, the
-                // potential exists for new saved fields to destroy data being
-                // shared by another state. Set this flag such that the array
-                // of saved fields is cloned prior to modification.
-                enclosing.iSavedFieldsShared = true;
-            }
-            enclosing.iSavedFieldsCount = this.iSavedFieldsCount;
-            return true;
-        }
-    }
-
     static class SavedField implements Comparable<SavedField> {
         final DateTimeField iField;
         final int iValue;
@@ -519,16 +500,35 @@ public class DateTimeParserBucket {
         }
     }
 
-    static int compareReverse(DurationField a, DurationField b) {
-        if (a == null || !a.isSupported()) {
-            if (b == null || !b.isSupported()) {
-                return 0;
+    class SavedState {
+        final DateTimeZone iZone;
+        final Integer iOffset;
+        final SavedField[] iSavedFields;
+        final int iSavedFieldsCount;
+
+        SavedState() {
+            this.iZone = DateTimeParserBucket.this.iZone;
+            this.iOffset = DateTimeParserBucket.this.iOffset;
+            this.iSavedFields = DateTimeParserBucket.this.iSavedFields;
+            this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;
+        }
+
+        boolean restoreState(DateTimeParserBucket enclosing) {
+            if (enclosing != DateTimeParserBucket.this) {
+                return false;
             }
-            return -1;
+            enclosing.iZone = this.iZone;
+            enclosing.iOffset = this.iOffset;
+            enclosing.iSavedFields = this.iSavedFields;
+            if (this.iSavedFieldsCount < enclosing.iSavedFieldsCount) {
+                // Since count is being restored to a lower count, the
+                // potential exists for new saved fields to destroy data being
+                // shared by another state. Set this flag such that the array
+                // of saved fields is cloned prior to modification.
+                enclosing.iSavedFieldsShared = true;
+            }
+            enclosing.iSavedFieldsCount = this.iSavedFieldsCount;
+            return true;
         }
-        if (b == null || !b.isSupported()) {
-            return 1;
-        }
-        return -a.compareTo(b);
     }
 }
