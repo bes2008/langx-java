@@ -65,7 +65,7 @@ import java.util.Locale;
 @Deprecated
 public final class TimeOfDay
         extends BasePartial
-        implements com.jn.langx.util.jodatime.ReadablePartial, Serializable {
+        implements ReadablePartial, Serializable {
     // NOTE: No toDateTime(YearMonthDay) as semantics are confusing when
     // different chronologies
 
@@ -76,11 +76,11 @@ public final class TimeOfDay
     /**
      * The singleton set of field types
      */
-    private static final com.jn.langx.util.jodatime.DateTimeFieldType[] FIELD_TYPES = new com.jn.langx.util.jodatime.DateTimeFieldType[]{
-            com.jn.langx.util.jodatime.DateTimeFieldType.hourOfDay(),
-            com.jn.langx.util.jodatime.DateTimeFieldType.minuteOfHour(),
-            com.jn.langx.util.jodatime.DateTimeFieldType.secondOfMinute(),
-            com.jn.langx.util.jodatime.DateTimeFieldType.millisOfSecond(),
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
+            DateTimeFieldType.hourOfDay(),
+            DateTimeFieldType.minuteOfHour(),
+            DateTimeFieldType.secondOfMinute(),
+            DateTimeFieldType.millisOfSecond(),
     };
 
     /**
@@ -195,8 +195,8 @@ public final class TimeOfDay
      * @param millisOfDay the number of milliseconds into a day to convert
      * @param chrono      the chronology, null means ISO chronology
      */
-    public static TimeOfDay fromMillisOfDay(long millisOfDay, com.jn.langx.util.jodatime.Chronology chrono) {
-        chrono = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chrono);
+    public static TimeOfDay fromMillisOfDay(long millisOfDay, Chronology chrono) {
+        chrono = DateTimeUtils.getChronology(chrono);
         chrono = chrono.withUTC();
         return new TimeOfDay(millisOfDay, chrono);
     }
@@ -227,7 +227,7 @@ public final class TimeOfDay
      * @param zone the zone to use, null means default zone
      * @since 1.1
      */
-    public TimeOfDay(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public TimeOfDay(DateTimeZone zone) {
         super(ISOChronology.getInstance(zone));
     }
 
@@ -241,7 +241,7 @@ public final class TimeOfDay
      *
      * @param chronology the chronology, null means ISOChronology in the default zone
      */
-    public TimeOfDay(com.jn.langx.util.jodatime.Chronology chronology) {
+    public TimeOfDay(Chronology chronology) {
         super(chronology);
     }
 
@@ -270,7 +270,7 @@ public final class TimeOfDay
      * @param instant    the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology the chronology, null means ISOChronology in the default zone
      */
-    public TimeOfDay(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public TimeOfDay(long instant, Chronology chronology) {
         super(instant, chronology);
     }
 
@@ -315,8 +315,8 @@ public final class TimeOfDay
      * @param chronology the chronology, null means ISO default
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public TimeOfDay(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
-        super(instant, com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology), ISODateTimeFormat.timeParser());
+    public TimeOfDay(Object instant, Chronology chronology) {
+        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.timeParser());
     }
 
     /**
@@ -345,7 +345,7 @@ public final class TimeOfDay
      * @param minuteOfHour the minute of the hour
      * @param chronology   the chronology, null means ISOChronology in the default zone
      */
-    public TimeOfDay(int hourOfDay, int minuteOfHour, com.jn.langx.util.jodatime.Chronology chronology) {
+    public TimeOfDay(int hourOfDay, int minuteOfHour, Chronology chronology) {
         this(hourOfDay, minuteOfHour, 0, 0, chronology);
     }
 
@@ -377,7 +377,7 @@ public final class TimeOfDay
      * @param secondOfMinute the second of the minute
      * @param chronology     the chronology, null means ISOChronology in the default zone
      */
-    public TimeOfDay(int hourOfDay, int minuteOfHour, int secondOfMinute, com.jn.langx.util.jodatime.Chronology chronology) {
+    public TimeOfDay(int hourOfDay, int minuteOfHour, int secondOfMinute, Chronology chronology) {
         this(hourOfDay, minuteOfHour, secondOfMinute, 0, chronology);
     }
 
@@ -412,7 +412,7 @@ public final class TimeOfDay
      * @param chronology     the chronology, null means ISOChronology in the default zone
      */
     public TimeOfDay(int hourOfDay, int minuteOfHour,
-                     int secondOfMinute, int millisOfSecond, com.jn.langx.util.jodatime.Chronology chronology) {
+                     int secondOfMinute, int millisOfSecond, Chronology chronology) {
         super(new int[]{hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond}, chronology);
     }
 
@@ -432,7 +432,7 @@ public final class TimeOfDay
      * @param partial the partial to base this new instance on
      * @param chrono  the new chronology
      */
-    TimeOfDay(TimeOfDay partial, com.jn.langx.util.jodatime.Chronology chrono) {
+    TimeOfDay(TimeOfDay partial, Chronology chrono) {
         super(partial, chrono);
     }
 
@@ -456,7 +456,7 @@ public final class TimeOfDay
      * @param chrono the chronology to use
      * @return the field
      */
-    protected com.jn.langx.util.jodatime.DateTimeField getField(int index, com.jn.langx.util.jodatime.Chronology chrono) {
+    protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
             case HOUR_OF_DAY:
                 return chrono.hourOfDay();
@@ -478,7 +478,7 @@ public final class TimeOfDay
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType getFieldType(int index) {
+    public DateTimeFieldType getFieldType(int index) {
         return FIELD_TYPES[index];
     }
 
@@ -489,8 +489,8 @@ public final class TimeOfDay
      *
      * @return the array of field types (cloned), largest to smallest
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType[] getFieldTypes() {
-        return (com.jn.langx.util.jodatime.DateTimeFieldType[]) FIELD_TYPES.clone();
+    public DateTimeFieldType[] getFieldTypes() {
+        return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
 
     //-----------------------------------------------------------------------
@@ -509,8 +509,8 @@ public final class TimeOfDay
      * @return a copy of this datetime with a different chronology
      * @throws IllegalArgumentException if the values are invalid for the new chronology
      */
-    public TimeOfDay withChronologyRetainFields(com.jn.langx.util.jodatime.Chronology newChronology) {
-        newChronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(newChronology);
+    public TimeOfDay withChronologyRetainFields(Chronology newChronology) {
+        newChronology = DateTimeUtils.getChronology(newChronology);
         newChronology = newChronology.withUTC();
         if (newChronology == getChronology()) {
             return this;
@@ -539,7 +539,7 @@ public final class TimeOfDay
      * @return a copy of this instance with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    public TimeOfDay withField(com.jn.langx.util.jodatime.DateTimeFieldType fieldType, int value) {
+    public TimeOfDay withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
             return this;
@@ -568,7 +568,7 @@ public final class TimeOfDay
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException      if the new datetime exceeds the capacity
      */
-    public TimeOfDay withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
+    public TimeOfDay withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
             return this;
@@ -587,7 +587,7 @@ public final class TimeOfDay
      * <p>
      * This method is typically used to add multiple copies of complex
      * period instances. Adding one field is best achieved using methods
-     * like {@link #withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType, int)}
+     * like {@link #withFieldAdded(DurationFieldType, int)}
      * or {@link #plusHours(int)}.
      *
      * @param period the period to add to this one, null means zero
@@ -595,13 +595,13 @@ public final class TimeOfDay
      * @return a copy of this instance with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
-    public TimeOfDay withPeriodAdded(com.jn.langx.util.jodatime.ReadablePeriod period, int scalar) {
+    public TimeOfDay withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
             return this;
         }
         int[] newValues = getValues();
         for (int i = 0; i < period.size(); i++) {
-            com.jn.langx.util.jodatime.DurationFieldType fieldType = period.getFieldType(i);
+            DurationFieldType fieldType = period.getFieldType(i);
             int index = indexOf(fieldType);
             if (index >= 0) {
                 newValues = getField(index).addWrapPartial(this, index, newValues,
@@ -627,7 +627,7 @@ public final class TimeOfDay
      * @return a copy of this instance with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public TimeOfDay plus(com.jn.langx.util.jodatime.ReadablePeriod period) {
+    public TimeOfDay plus(ReadablePeriod period) {
         return withPeriodAdded(period, 1);
     }
 
@@ -650,7 +650,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay plusHours(int hours) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.hours(), hours);
+        return withFieldAdded(DurationFieldType.hours(), hours);
     }
 
     /**
@@ -670,7 +670,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay plusMinutes(int minutes) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.minutes(), minutes);
+        return withFieldAdded(DurationFieldType.minutes(), minutes);
     }
 
     /**
@@ -690,7 +690,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay plusSeconds(int seconds) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.seconds(), seconds);
+        return withFieldAdded(DurationFieldType.seconds(), seconds);
     }
 
     /**
@@ -710,7 +710,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay plusMillis(int millis) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.millis(), millis);
+        return withFieldAdded(DurationFieldType.millis(), millis);
     }
 
     //-----------------------------------------------------------------------
@@ -752,7 +752,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay minusHours(int hours) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.hours(), FieldUtils.safeNegate(hours));
+        return withFieldAdded(DurationFieldType.hours(), FieldUtils.safeNegate(hours));
     }
 
     /**
@@ -772,7 +772,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay minusMinutes(int minutes) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.minutes(), FieldUtils.safeNegate(minutes));
+        return withFieldAdded(DurationFieldType.minutes(), FieldUtils.safeNegate(minutes));
     }
 
     /**
@@ -792,7 +792,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay minusSeconds(int seconds) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.seconds(), FieldUtils.safeNegate(seconds));
+        return withFieldAdded(DurationFieldType.seconds(), FieldUtils.safeNegate(seconds));
     }
 
     /**
@@ -837,7 +837,7 @@ public final class TimeOfDay
      * @return a LocalTime with the same time and chronology
      * @since 1.3
      */
-    public com.jn.langx.util.jodatime.LocalTime toLocalTime() {
+    public LocalTime toLocalTime() {
         return new LocalTime(getHourOfDay(), getMinuteOfHour(),
                 getSecondOfMinute(), getMillisOfSecond(), getChronology());
     }
@@ -851,7 +851,7 @@ public final class TimeOfDay
      *
      * @return this date as a datetime with the time as the current time
      */
-    public com.jn.langx.util.jodatime.DateTime toDateTimeToday() {
+    public DateTime toDateTimeToday() {
         return toDateTimeToday(null);
     }
 
@@ -866,7 +866,7 @@ public final class TimeOfDay
      * @param zone the zone to use, null means default
      * @return this date as a datetime with the time as the current time
      */
-    public com.jn.langx.util.jodatime.DateTime toDateTimeToday(DateTimeZone zone) {
+    public DateTime toDateTimeToday(DateTimeZone zone) {
         Chronology chrono = getChronology().withZone(zone);
         long instantMillis = DateTimeUtils.currentTimeMillis();
         long resolved = chrono.set(this, instantMillis);

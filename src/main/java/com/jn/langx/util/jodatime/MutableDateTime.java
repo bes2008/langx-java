@@ -81,30 +81,30 @@ public class MutableDateTime
      */
     public static final int ROUND_NONE = 0;
     /**
-     * Rounding mode as described by {@link com.jn.langx.util.jodatime.DateTimeField#roundFloor}
+     * Rounding mode as described by {@link DateTimeField#roundFloor}
      */
     public static final int ROUND_FLOOR = 1;
     /**
-     * Rounding mode as described by {@link com.jn.langx.util.jodatime.DateTimeField#roundCeiling}
+     * Rounding mode as described by {@link DateTimeField#roundCeiling}
      */
     public static final int ROUND_CEILING = 2;
     /**
-     * Rounding mode as described by {@link com.jn.langx.util.jodatime.DateTimeField#roundHalfFloor}
+     * Rounding mode as described by {@link DateTimeField#roundHalfFloor}
      */
     public static final int ROUND_HALF_FLOOR = 3;
     /**
-     * Rounding mode as described by {@link com.jn.langx.util.jodatime.DateTimeField#roundHalfCeiling}
+     * Rounding mode as described by {@link DateTimeField#roundHalfCeiling}
      */
     public static final int ROUND_HALF_CEILING = 4;
     /**
-     * Rounding mode as described by {@link com.jn.langx.util.jodatime.DateTimeField#roundHalfEven}
+     * Rounding mode as described by {@link DateTimeField#roundHalfEven}
      */
     public static final int ROUND_HALF_EVEN = 5;
 
     /**
      * The field to round on
      */
-    private com.jn.langx.util.jodatime.DateTimeField iRoundingField;
+    private DateTimeField iRoundingField;
     /**
      * The mode of rounding
      */
@@ -131,7 +131,7 @@ public class MutableDateTime
      * @return the current date-time, not null
      * @since 2.0
      */
-    public static MutableDateTime now(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public static MutableDateTime now(DateTimeZone zone) {
         if (zone == null) {
             throw new NullPointerException("Zone must not be null");
         }
@@ -146,7 +146,7 @@ public class MutableDateTime
      * @return the current date-time, not null
      * @since 2.0
      */
-    public static MutableDateTime now(com.jn.langx.util.jodatime.Chronology chronology) {
+    public static MutableDateTime now(Chronology chronology) {
         if (chronology == null) {
             throw new NullPointerException("Chronology must not be null");
         }
@@ -197,9 +197,9 @@ public class MutableDateTime
      * If the specified time zone is null, the default zone is used.
      *
      * @param zone the time zone, null means default zone
-     * @see #now(com.jn.langx.util.jodatime.DateTimeZone)
+     * @see #now(DateTimeZone)
      */
-    public MutableDateTime(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public MutableDateTime(DateTimeZone zone) {
         super(zone);
     }
 
@@ -211,9 +211,9 @@ public class MutableDateTime
      * in the default time zone is used.
      *
      * @param chronology the chronology, null means ISOChronology in default zone
-     * @see #now(com.jn.langx.util.jodatime.Chronology)
+     * @see #now(Chronology)
      */
-    public MutableDateTime(com.jn.langx.util.jodatime.Chronology chronology) {
+    public MutableDateTime(Chronology chronology) {
         super(chronology);
     }
 
@@ -238,7 +238,7 @@ public class MutableDateTime
      * @param instant the milliseconds from 1970-01-01T00:00:00Z
      * @param zone    the time zone, null means default zone
      */
-    public MutableDateTime(long instant, com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public MutableDateTime(long instant, DateTimeZone zone) {
         super(instant, zone);
     }
 
@@ -252,7 +252,7 @@ public class MutableDateTime
      * @param instant    the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology the chronology, null means ISOChronology in default zone
      */
-    public MutableDateTime(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public MutableDateTime(long instant, Chronology chronology) {
         super(instant, chronology);
     }
 
@@ -267,14 +267,14 @@ public class MutableDateTime
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
      */
     public MutableDateTime(Object instant) {
-        super(instant, (com.jn.langx.util.jodatime.Chronology) null);
+        super(instant, (Chronology) null);
     }
 
     /**
@@ -289,14 +289,14 @@ public class MutableDateTime
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant the datetime object, null means now
      * @param zone    the time zone, null means default time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public MutableDateTime(Object instant, com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public MutableDateTime(Object instant, DateTimeZone zone) {
         super(instant, zone);
     }
 
@@ -309,15 +309,15 @@ public class MutableDateTime
      * is ignored.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant    the datetime object, null means now
      * @param chronology the chronology, null means ISOChronology in default zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public MutableDateTime(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
-        super(instant, com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology));
+    public MutableDateTime(Object instant, Chronology chronology) {
+        super(instant, DateTimeUtils.getChronology(chronology));
     }
 
     //-----------------------------------------------------------------------
@@ -368,7 +368,7 @@ public class MutableDateTime
             int minuteOfHour,
             int secondOfMinute,
             int millisOfSecond,
-            com.jn.langx.util.jodatime.DateTimeZone zone) {
+            DateTimeZone zone) {
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, zone);
     }
@@ -397,7 +397,7 @@ public class MutableDateTime
             int minuteOfHour,
             int secondOfMinute,
             int millisOfSecond,
-            com.jn.langx.util.jodatime.Chronology chronology) {
+            Chronology chronology) {
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
     }
@@ -410,7 +410,7 @@ public class MutableDateTime
      *
      * @return the rounding field
      */
-    public com.jn.langx.util.jodatime.DateTimeField getRoundingField() {
+    public DateTimeField getRoundingField() {
         return iRoundingField;
     }
 
@@ -436,7 +436,7 @@ public class MutableDateTime
      *
      * @param field rounding field or null to disable
      */
-    public void setRounding(com.jn.langx.util.jodatime.DateTimeField field) {
+    public void setRounding(DateTimeField field) {
         setRounding(field, MutableDateTime.ROUND_FLOOR);
     }
 
@@ -454,7 +454,7 @@ public class MutableDateTime
      * @param mode  rounding mode or ROUND_NONE to disable
      * @throws IllegalArgumentException if mode is unknown, no exception if field is null
      */
-    public void setRounding(com.jn.langx.util.jodatime.DateTimeField field, int mode) {
+    public void setRounding(DateTimeField field, int mode) {
         if (field != null && (mode < ROUND_NONE || mode > ROUND_HALF_EVEN)) {
             throw new IllegalArgumentException("Illegal rounding mode: " + mode);
         }
@@ -506,7 +506,7 @@ public class MutableDateTime
      * @param instant the instant to use, null means now
      */
     public void setMillis(ReadableInstant instant) {
-        long instantMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(instant);
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
         setMillis(instantMillis);  // set via this class not super
     }
 
@@ -585,7 +585,7 @@ public class MutableDateTime
      *
      * @param chronology the chronology to use, null means ISOChronology in default zone
      */
-    public void setChronology(com.jn.langx.util.jodatime.Chronology chronology) {
+    public void setChronology(Chronology chronology) {
         super.setChronology(chronology);
     }
 
@@ -605,9 +605,9 @@ public class MutableDateTime
      * @param newZone the time zone to use, null means default zone
      * @see #setZoneRetainFields
      */
-    public void setZone(com.jn.langx.util.jodatime.DateTimeZone newZone) {
-        newZone = com.jn.langx.util.jodatime.DateTimeUtils.getZone(newZone);
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+    public void setZone(DateTimeZone newZone) {
+        newZone = DateTimeUtils.getZone(newZone);
+        Chronology chrono = getChronology();
         if (chrono.getZone() != newZone) {
             setChronology(chrono.withZone(newZone));  // set via this class not super
         }
@@ -624,9 +624,9 @@ public class MutableDateTime
      * @param newZone the time zone to use, null means default zone
      * @see #setZone
      */
-    public void setZoneRetainFields(com.jn.langx.util.jodatime.DateTimeZone newZone) {
-        newZone = com.jn.langx.util.jodatime.DateTimeUtils.getZone(newZone);
-        com.jn.langx.util.jodatime.DateTimeZone originalZone = com.jn.langx.util.jodatime.DateTimeUtils.getZone(getZone());
+    public void setZoneRetainFields(DateTimeZone newZone) {
+        newZone = DateTimeUtils.getZone(newZone);
+        DateTimeZone originalZone = DateTimeUtils.getZone(getZone());
         if (newZone == originalZone) {
             return;
         }
@@ -645,7 +645,7 @@ public class MutableDateTime
      * @param value the value to set the field to
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    public void set(com.jn.langx.util.jodatime.DateTimeFieldType type, int value) {
+    public void set(DateTimeFieldType type, int value) {
         if (type == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
@@ -941,11 +941,11 @@ public class MutableDateTime
      * @throws IllegalArgumentException if the object is invalid
      */
     public void setDate(final ReadableInstant instant) {
-        long instantMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(instant);
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
         if (instant instanceof ReadableDateTime) {
             ReadableDateTime rdt = (ReadableDateTime) instant;
-            com.jn.langx.util.jodatime.Chronology instantChrono = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(rdt.getChronology());
-            com.jn.langx.util.jodatime.DateTimeZone zone = instantChrono.getZone();
+            Chronology instantChrono = DateTimeUtils.getChronology(rdt.getChronology());
+            DateTimeZone zone = instantChrono.getZone();
             if (zone != null) {
                 instantMillis = zone.getMillisKeepLocal(getZone(), instantMillis);
             }
@@ -966,7 +966,7 @@ public class MutableDateTime
             final int year,
             final int monthOfYear,
             final int dayOfMonth) {
-        com.jn.langx.util.jodatime.Chronology c = getChronology();
+        Chronology c = getChronology();
         long instantMidnight = c.getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
         setDate(instantMidnight);
     }
@@ -993,9 +993,9 @@ public class MutableDateTime
      * @throws IllegalArgumentException if the object is invalid
      */
     public void setTime(final ReadableInstant instant) {
-        long instantMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(instant);
-        com.jn.langx.util.jodatime.Chronology instantChrono = DateTimeUtils.getInstantChronology(instant);
-        com.jn.langx.util.jodatime.DateTimeZone zone = instantChrono.getZone();
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        Chronology instantChrono = DateTimeUtils.getInstantChronology(instant);
+        DateTimeZone zone = instantChrono.getZone();
         if (zone != null) {
             instantMillis = zone.getMillisKeepLocal(DateTimeZone.UTC, instantMillis);
         }
@@ -1057,11 +1057,11 @@ public class MutableDateTime
      * @throws IllegalArgumentException if the field is null or unsupported
      * @since 1.2
      */
-    public Property property(com.jn.langx.util.jodatime.DateTimeFieldType type) {
+    public Property property(DateTimeFieldType type) {
         if (type == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
-        com.jn.langx.util.jodatime.DateTimeField field = type.getField(getChronology());
+        DateTimeField field = type.getField(getChronology());
         if (field.isSupported() == false) {
             throw new IllegalArgumentException("Field '" + type + "' is not supported");
         }
@@ -1152,7 +1152,7 @@ public class MutableDateTime
     /**
      * Get the day of month property.
      * <p>
-     * The values for day of month are defined in {@link com.jn.langx.util.jodatime.DateTimeConstants}.
+     * The values for day of month are defined in {@link DateTimeConstants}.
      *
      * @return the day of month property
      */
@@ -1305,7 +1305,7 @@ public class MutableDateTime
         /**
          * The field this property is working against
          */
-        private com.jn.langx.util.jodatime.DateTimeField iField;
+        private DateTimeField iField;
 
         /**
          * Constructor.
@@ -1313,7 +1313,7 @@ public class MutableDateTime
          * @param instant the instant to set
          * @param field   the field to use
          */
-        Property(MutableDateTime instant, com.jn.langx.util.jodatime.DateTimeField field) {
+        Property(MutableDateTime instant, DateTimeField field) {
             super();
             iInstant = instant;
             iField = field;
@@ -1332,7 +1332,7 @@ public class MutableDateTime
          */
         private void readObject(ObjectInputStream oos) throws IOException, ClassNotFoundException {
             iInstant = (MutableDateTime) oos.readObject();
-            com.jn.langx.util.jodatime.DateTimeFieldType type = (DateTimeFieldType) oos.readObject();
+            DateTimeFieldType type = (DateTimeFieldType) oos.readObject();
             iField = type.getField(iInstant.getChronology());
         }
 
@@ -1343,7 +1343,7 @@ public class MutableDateTime
          *
          * @return the field
          */
-        public com.jn.langx.util.jodatime.DateTimeField getField() {
+        public DateTimeField getField() {
             return iField;
         }
 
@@ -1382,7 +1382,7 @@ public class MutableDateTime
          *
          * @param value the value to add
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#add(long, int)
+         * @see DateTimeField#add(long, int)
          */
         public MutableDateTime add(int value) {
             iInstant.setMillis(getField().add(iInstant.getMillis(), value));
@@ -1394,7 +1394,7 @@ public class MutableDateTime
          *
          * @param value the value to add
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#add(long, long)
+         * @see DateTimeField#add(long, long)
          */
         public MutableDateTime add(long value) {
             iInstant.setMillis(getField().add(iInstant.getMillis(), value));
@@ -1406,7 +1406,7 @@ public class MutableDateTime
          *
          * @param value the value to add
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#addWrapField
+         * @see DateTimeField#addWrapField
          */
         public MutableDateTime addWrapField(int value) {
             iInstant.setMillis(getField().addWrapField(iInstant.getMillis(), value));
@@ -1420,7 +1420,7 @@ public class MutableDateTime
          *
          * @param value the value to set.
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#set(long, int)
+         * @see DateTimeField#set(long, int)
          */
         public MutableDateTime set(int value) {
             iInstant.setMillis(getField().set(iInstant.getMillis(), value));
@@ -1434,7 +1434,7 @@ public class MutableDateTime
          * @param locale optional locale to use for selecting a text symbol
          * @return the mutable datetime being used, so calls can be chained
          * @throws IllegalArgumentException if the text value isn't valid
-         * @see com.jn.langx.util.jodatime.DateTimeField#set(long, String, Locale)
+         * @see DateTimeField#set(long, String, Locale)
          */
         public MutableDateTime set(String text, Locale locale) {
             iInstant.setMillis(getField().set(iInstant.getMillis(), text, locale));
@@ -1447,7 +1447,7 @@ public class MutableDateTime
          * @param text the text value to set
          * @return the mutable datetime being used, so calls can be chained
          * @throws IllegalArgumentException if the text value isn't valid
-         * @see com.jn.langx.util.jodatime.DateTimeField#set(long, String)
+         * @see DateTimeField#set(long, String)
          */
         public MutableDateTime set(String text) {
             set(text, null);
@@ -1460,7 +1460,7 @@ public class MutableDateTime
          * Round to the lowest whole unit of this field.
          *
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#roundFloor
+         * @see DateTimeField#roundFloor
          */
         public MutableDateTime roundFloor() {
             iInstant.setMillis(getField().roundFloor(iInstant.getMillis()));
@@ -1471,7 +1471,7 @@ public class MutableDateTime
          * Round to the highest whole unit of this field.
          *
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#roundCeiling
+         * @see DateTimeField#roundCeiling
          */
         public MutableDateTime roundCeiling() {
             iInstant.setMillis(getField().roundCeiling(iInstant.getMillis()));
@@ -1483,7 +1483,7 @@ public class MutableDateTime
          * halfway.
          *
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#roundHalfFloor
+         * @see DateTimeField#roundHalfFloor
          */
         public MutableDateTime roundHalfFloor() {
             iInstant.setMillis(getField().roundHalfFloor(iInstant.getMillis()));
@@ -1495,7 +1495,7 @@ public class MutableDateTime
          * halfway.
          *
          * @return the mutable datetime being used, so calls can be chained
-         * @see com.jn.langx.util.jodatime.DateTimeField#roundHalfCeiling
+         * @see DateTimeField#roundHalfCeiling
          */
         public MutableDateTime roundHalfCeiling() {
             iInstant.setMillis(getField().roundHalfCeiling(iInstant.getMillis()));

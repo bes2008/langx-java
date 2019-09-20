@@ -122,7 +122,7 @@ public final class DateMidnight
      * @return the current date, not null
      * @since 2.0
      */
-    public static DateMidnight now(com.jn.langx.util.jodatime.Chronology chronology) {
+    public static DateMidnight now(Chronology chronology) {
         if (chronology == null) {
             throw new NullPointerException("Chronology must not be null");
         }
@@ -190,9 +190,9 @@ public final class DateMidnight
      * in the default time zone is used.
      *
      * @param chronology the chronology, null means ISOChronology in default zone
-     * @see #now(com.jn.langx.util.jodatime.Chronology)
+     * @see #now(Chronology)
      */
-    public DateMidnight(com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateMidnight(Chronology chronology) {
         super(chronology);
     }
 
@@ -234,7 +234,7 @@ public final class DateMidnight
      * @param instant    the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology the chronology, null means ISOChronology in default zone
      */
-    public DateMidnight(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateMidnight(long instant, Chronology chronology) {
         super(instant, chronology);
     }
 
@@ -250,7 +250,7 @@ public final class DateMidnight
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -258,7 +258,7 @@ public final class DateMidnight
      * @throws IllegalArgumentException if the instant is invalid
      */
     public DateMidnight(Object instant) {
-        super(instant, (com.jn.langx.util.jodatime.Chronology) null);
+        super(instant, (Chronology) null);
     }
 
     /**
@@ -274,7 +274,7 @@ public final class DateMidnight
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -296,7 +296,7 @@ public final class DateMidnight
      * is ignored.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -304,7 +304,7 @@ public final class DateMidnight
      * @param chronology the chronology, null means ISOChronology in default zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public DateMidnight(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateMidnight(Object instant, Chronology chronology) {
         super(instant, DateTimeUtils.getChronology(chronology));
     }
 
@@ -352,7 +352,7 @@ public final class DateMidnight
      * @param dayOfMonth  the day of the month, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public DateMidnight(int year, int monthOfYear, int dayOfMonth, com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateMidnight(int year, int monthOfYear, int dayOfMonth, Chronology chronology) {
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0, chronology);
     }
 
@@ -363,7 +363,7 @@ public final class DateMidnight
      * @param chronology the chronology to use, not null
      * @return the updated instant, rounded to midnight
      */
-    protected long checkInstant(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    protected long checkInstant(long instant, Chronology chronology) {
         return chronology.dayOfMonth().roundFloor(instant);
     }
 
@@ -380,7 +380,7 @@ public final class DateMidnight
      * @return a copy of this instant with different millis
      */
     public DateMidnight withMillis(long newMillis) {
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         newMillis = checkInstant(newMillis, chrono);
         return (newMillis == getMillis() ? this : new DateMidnight(newMillis, chrono));
     }
@@ -406,7 +406,7 @@ public final class DateMidnight
      * @param newChronology the new chronology
      * @return a copy of this instant with a different chronology
      */
-    public DateMidnight withChronology(com.jn.langx.util.jodatime.Chronology newChronology) {
+    public DateMidnight withChronology(Chronology newChronology) {
         return (newChronology == getChronology() ? this : new DateMidnight(getMillis(), newChronology));
     }
 
@@ -907,7 +907,7 @@ public final class DateMidnight
      * @return an interval over the day
      */
     public Interval toInterval() {
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long start = getMillis();
         long end = DurationFieldType.days().getField(chrono).add(start, 1);
         return new Interval(start, end, chrono);

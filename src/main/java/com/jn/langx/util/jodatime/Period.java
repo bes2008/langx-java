@@ -35,7 +35,7 @@ import java.io.Serializable;
  * As a result, this takes into account daylight savings time.
  * Adding a time period of 1 day to the day before daylight savings starts will only add
  * 23 hours rather than 24 to ensure that the time remains the same.
- * If this is not the behaviour you want, then see {@link com.jn.langx.util.jodatime.Duration}.
+ * If this is not the behaviour you want, then see {@link Duration}.
  * <p>
  * The definition of a period also affects the equals method. A period of 1
  * day is not equal to a period of 24 hours, nor 1 hour equal to 60 minutes.
@@ -155,7 +155,7 @@ public final class Period
      * For example, <code>Period.days(2).withHours(6);</code>
      * <p>
      * If you want a day-based period that cannot have other fields added,
-     * then you should consider using {@link com.jn.langx.util.jodatime.Days}.
+     * then you should consider using {@link Days}.
      *
      * @param days the amount of days in this period
      * @return the period
@@ -172,7 +172,7 @@ public final class Period
      * For example, <code>Period.hours(2).withMinutes(30);</code>
      * <p>
      * If you want a hour-based period that cannot have other fields added,
-     * then you should consider using {@link com.jn.langx.util.jodatime.Hours}.
+     * then you should consider using {@link Hours}.
      *
      * @param hours the amount of hours in this period
      * @return the period
@@ -189,7 +189,7 @@ public final class Period
      * For example, <code>Period.minutes(2).withSeconds(30);</code>
      * <p>
      * If you want a minute-based period that cannot have other fields added,
-     * then you should consider using {@link com.jn.langx.util.jodatime.Minutes}.
+     * then you should consider using {@link Minutes}.
      *
      * @param minutes the amount of minutes in this period
      * @return the period
@@ -264,7 +264,7 @@ public final class Period
         if (start.size() != end.size()) {
             throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
         }
-        com.jn.langx.util.jodatime.DurationFieldType[] types = new com.jn.langx.util.jodatime.DurationFieldType[start.size()];
+        DurationFieldType[] types = new DurationFieldType[start.size()];
         int[] values = new int[start.size()];
         for (int i = 0, isize = start.size(); i < isize; i++) {
             if (start.getFieldType(i) != end.getFieldType(i)) {
@@ -424,7 +424,7 @@ public final class Period
      * @param duration   the duration, in milliseconds
      * @param chronology the chronology to use to split the duration, null means ISO default
      */
-    public Period(long duration, com.jn.langx.util.jodatime.Chronology chronology) {
+    public Period(long duration, Chronology chronology) {
         super(duration, null, chronology);
     }
 
@@ -445,7 +445,7 @@ public final class Period
      * @param type       which set of fields this period supports, null means standard
      * @param chronology the chronology to use to split the duration, null means ISO default
      */
-    public Period(long duration, PeriodType type, com.jn.langx.util.jodatime.Chronology chronology) {
+    public Period(long duration, PeriodType type, Chronology chronology) {
         super(duration, type, chronology);
     }
 
@@ -479,7 +479,7 @@ public final class Period
      * @param endInstant   interval end, in milliseconds
      * @param chrono       the chronology to use, null means ISO in default zone
      */
-    public Period(long startInstant, long endInstant, com.jn.langx.util.jodatime.Chronology chrono) {
+    public Period(long startInstant, long endInstant, Chronology chrono) {
         super(startInstant, endInstant, null, chrono);
     }
 
@@ -491,7 +491,7 @@ public final class Period
      * @param type         which set of fields this period supports, null means standard
      * @param chrono       the chronology to use, null means ISO in default zone
      */
-    public Period(long startInstant, long endInstant, PeriodType type, com.jn.langx.util.jodatime.Chronology chrono) {
+    public Period(long startInstant, long endInstant, PeriodType type, Chronology chrono) {
         super(startInstant, endInstant, type, chrono);
     }
 
@@ -542,7 +542,7 @@ public final class Period
      * As these are Partial objects, time zones have no effect on the result.
      * <p>
      * The two partials must also both be contiguous - see
-     * {@link com.jn.langx.util.jodatime.DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
+     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
      * Both <code>LocalDate</code> and <code>LocalTime</code> are contiguous.
      * <p>
      * Most calculations performed by this method have obvious results.
@@ -576,7 +576,7 @@ public final class Period
      * As these are Partial objects, time zones have no effect on the result.
      * <p>
      * The two partials must also both be contiguous - see
-     * {@link com.jn.langx.util.jodatime.DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
+     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
      * Both <code>LocalDate</code> and <code>LocalTime</code> are contiguous.
      * <p>
      * Most calculations performed by this method have obvious results.
@@ -689,7 +689,7 @@ public final class Period
      * @throws IllegalArgumentException      if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public Period(Object period, com.jn.langx.util.jodatime.Chronology chrono) {
+    public Period(Object period, Chronology chrono) {
         super(period, null, chrono);
     }
 
@@ -822,7 +822,7 @@ public final class Period
      * @throws IllegalArgumentException if the new period won't accept all of the current fields
      */
     public Period withPeriodType(PeriodType type) {
-        type = com.jn.langx.util.jodatime.DateTimeUtils.getPeriodType(type);
+        type = DateTimeUtils.getPeriodType(type);
         if (type.equals(getPeriodType())) {
             return this;
         }
@@ -860,7 +860,7 @@ public final class Period
      * @return the new period instance
      * @throws IllegalArgumentException if the field type is null or unsupported
      */
-    public Period withField(com.jn.langx.util.jodatime.DurationFieldType field, int value) {
+    public Period withField(DurationFieldType field, int value) {
         if (field == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
@@ -879,7 +879,7 @@ public final class Period
      * @return the new period instance
      * @throws IllegalArgumentException if the field type is null or unsupported
      */
-    public Period withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType field, int value) {
+    public Period withFieldAdded(DurationFieldType field, int value) {
         if (field == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
@@ -1037,14 +1037,14 @@ public final class Period
             return this;
         }
         int[] values = getValues();  // cloned
-        getPeriodType().addIndexedField(this, PeriodType.YEAR_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.YEARS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.MONTH_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.MONTHS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.WEEK_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.WEEKS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.DAY_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.DAYS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.HOUR_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.HOURS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.MINUTE_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.MINUTES_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.SECOND_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.SECONDS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, period.get(com.jn.langx.util.jodatime.DurationFieldType.MILLIS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.YEAR_INDEX, values, period.get(DurationFieldType.YEARS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MONTH_INDEX, values, period.get(DurationFieldType.MONTHS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.WEEK_INDEX, values, period.get(DurationFieldType.WEEKS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.DAY_INDEX, values, period.get(DurationFieldType.DAYS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.HOUR_INDEX, values, period.get(DurationFieldType.HOURS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MINUTE_INDEX, values, period.get(DurationFieldType.MINUTES_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.SECOND_INDEX, values, period.get(DurationFieldType.SECONDS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, period.get(DurationFieldType.MILLIS_TYPE));
         return new Period(values, getPeriodType());
     }
 
@@ -1218,13 +1218,13 @@ public final class Period
             return this;
         }
         int[] values = getValues();  // cloned
-        getPeriodType().addIndexedField(this, PeriodType.YEAR_INDEX, values, -period.get(com.jn.langx.util.jodatime.DurationFieldType.YEARS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.MONTH_INDEX, values, -period.get(com.jn.langx.util.jodatime.DurationFieldType.MONTHS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.WEEK_INDEX, values, -period.get(com.jn.langx.util.jodatime.DurationFieldType.WEEKS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.DAY_INDEX, values, -period.get(com.jn.langx.util.jodatime.DurationFieldType.DAYS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.HOUR_INDEX, values, -period.get(com.jn.langx.util.jodatime.DurationFieldType.HOURS_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.MINUTE_INDEX, values, -period.get(com.jn.langx.util.jodatime.DurationFieldType.MINUTES_TYPE));
-        getPeriodType().addIndexedField(this, PeriodType.SECOND_INDEX, values, -period.get(com.jn.langx.util.jodatime.DurationFieldType.SECONDS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.YEAR_INDEX, values, -period.get(DurationFieldType.YEARS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MONTH_INDEX, values, -period.get(DurationFieldType.MONTHS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.WEEK_INDEX, values, -period.get(DurationFieldType.WEEKS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.DAY_INDEX, values, -period.get(DurationFieldType.DAYS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.HOUR_INDEX, values, -period.get(DurationFieldType.HOURS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MINUTE_INDEX, values, -period.get(DurationFieldType.MINUTES_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.SECOND_INDEX, values, -period.get(DurationFieldType.SECONDS_TYPE));
         getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, -period.get(DurationFieldType.MILLIS_TYPE));
         return new Period(values, getPeriodType());
     }
@@ -1392,11 +1392,11 @@ public final class Period
     public Weeks toStandardWeeks() {
         checkYearsAndMonths("Weeks");
         long millis = getMillis();  // assign to a long
-        millis += ((long) getSeconds()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND;
-        millis += ((long) getMinutes()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE;
-        millis += ((long) getHours()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR;
-        millis += ((long) getDays()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_DAY;
-        long weeks = ((long) getWeeks()) + millis / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_WEEK;
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        millis += ((long) getMinutes()) * DateTimeConstants.MILLIS_PER_MINUTE;
+        millis += ((long) getHours()) * DateTimeConstants.MILLIS_PER_HOUR;
+        millis += ((long) getDays()) * DateTimeConstants.MILLIS_PER_DAY;
+        long weeks = ((long) getWeeks()) + millis / DateTimeConstants.MILLIS_PER_WEEK;
         return Weeks.weeks(FieldUtils.safeToInt(weeks));
     }
 
@@ -1419,15 +1419,15 @@ public final class Period
      * @throws ArithmeticException           if the number of days is too large to be represented
      * @since 1.5
      */
-    public com.jn.langx.util.jodatime.Days toStandardDays() {
+    public Days toStandardDays() {
         checkYearsAndMonths("Days");
         long millis = getMillis();  // assign to a long
-        millis += ((long) getSeconds()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND;
-        millis += ((long) getMinutes()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE;
-        millis += ((long) getHours()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR;
-        long days = millis / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_DAY;
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        millis += ((long) getMinutes()) * DateTimeConstants.MILLIS_PER_MINUTE;
+        millis += ((long) getHours()) * DateTimeConstants.MILLIS_PER_HOUR;
+        long days = millis / DateTimeConstants.MILLIS_PER_DAY;
         days = FieldUtils.safeAdd(days, getDays());
-        days = FieldUtils.safeAdd(days, ((long) getWeeks()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.DAYS_PER_WEEK));
+        days = FieldUtils.safeAdd(days, ((long) getWeeks()) * ((long) DateTimeConstants.DAYS_PER_WEEK));
         return Days.days(FieldUtils.safeToInt(days));
     }
 
@@ -1450,15 +1450,15 @@ public final class Period
      * @throws ArithmeticException           if the number of hours is too large to be represented
      * @since 1.5
      */
-    public com.jn.langx.util.jodatime.Hours toStandardHours() {
+    public Hours toStandardHours() {
         checkYearsAndMonths("Hours");
         long millis = getMillis();  // assign to a long
-        millis += ((long) getSeconds()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND;
-        millis += ((long) getMinutes()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE;
-        long hours = millis / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR;
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        millis += ((long) getMinutes()) * DateTimeConstants.MILLIS_PER_MINUTE;
+        long hours = millis / DateTimeConstants.MILLIS_PER_HOUR;
         hours = FieldUtils.safeAdd(hours, getHours());
-        hours = FieldUtils.safeAdd(hours, ((long) getDays()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.HOURS_PER_DAY));
-        hours = FieldUtils.safeAdd(hours, ((long) getWeeks()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.HOURS_PER_WEEK));
+        hours = FieldUtils.safeAdd(hours, ((long) getDays()) * ((long) DateTimeConstants.HOURS_PER_DAY));
+        hours = FieldUtils.safeAdd(hours, ((long) getWeeks()) * ((long) DateTimeConstants.HOURS_PER_WEEK));
         return Hours.hours(FieldUtils.safeToInt(hours));
     }
 
@@ -1481,15 +1481,15 @@ public final class Period
      * @throws ArithmeticException           if the number of minutes is too large to be represented
      * @since 1.5
      */
-    public com.jn.langx.util.jodatime.Minutes toStandardMinutes() {
+    public Minutes toStandardMinutes() {
         checkYearsAndMonths("Minutes");
         long millis = getMillis();  // assign to a long
-        millis += ((long) getSeconds()) * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND;
-        long minutes = millis / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE;
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        long minutes = millis / DateTimeConstants.MILLIS_PER_MINUTE;
         minutes = FieldUtils.safeAdd(minutes, getMinutes());
-        minutes = FieldUtils.safeAdd(minutes, ((long) getHours()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_HOUR));
-        minutes = FieldUtils.safeAdd(minutes, ((long) getDays()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_DAY));
-        minutes = FieldUtils.safeAdd(minutes, ((long) getWeeks()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_WEEK));
+        minutes = FieldUtils.safeAdd(minutes, ((long) getHours()) * ((long) DateTimeConstants.MINUTES_PER_HOUR));
+        minutes = FieldUtils.safeAdd(minutes, ((long) getDays()) * ((long) DateTimeConstants.MINUTES_PER_DAY));
+        minutes = FieldUtils.safeAdd(minutes, ((long) getWeeks()) * ((long) DateTimeConstants.MINUTES_PER_WEEK));
         return Minutes.minutes(FieldUtils.safeToInt(minutes));
     }
 
@@ -1514,12 +1514,12 @@ public final class Period
      */
     public Seconds toStandardSeconds() {
         checkYearsAndMonths("Seconds");
-        long seconds = getMillis() / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND;
+        long seconds = getMillis() / DateTimeConstants.MILLIS_PER_SECOND;
         seconds = FieldUtils.safeAdd(seconds, getSeconds());
-        seconds = FieldUtils.safeAdd(seconds, ((long) getMinutes()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_MINUTE));
-        seconds = FieldUtils.safeAdd(seconds, ((long) getHours()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_HOUR));
-        seconds = FieldUtils.safeAdd(seconds, ((long) getDays()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_DAY));
-        seconds = FieldUtils.safeAdd(seconds, ((long) getWeeks()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_WEEK));
+        seconds = FieldUtils.safeAdd(seconds, ((long) getMinutes()) * ((long) DateTimeConstants.SECONDS_PER_MINUTE));
+        seconds = FieldUtils.safeAdd(seconds, ((long) getHours()) * ((long) DateTimeConstants.SECONDS_PER_HOUR));
+        seconds = FieldUtils.safeAdd(seconds, ((long) getDays()) * ((long) DateTimeConstants.SECONDS_PER_DAY));
+        seconds = FieldUtils.safeAdd(seconds, ((long) getWeeks()) * ((long) DateTimeConstants.SECONDS_PER_WEEK));
         return Seconds.seconds(FieldUtils.safeToInt(seconds));
     }
 
@@ -1543,14 +1543,14 @@ public final class Period
      * @throws UnsupportedOperationException if the period contains years or months
      * @since 1.5
      */
-    public com.jn.langx.util.jodatime.Duration toStandardDuration() {
+    public Duration toStandardDuration() {
         checkYearsAndMonths("Duration");
         long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs
-        millis += (((long) getSeconds()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND));
-        millis += (((long) getMinutes()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE));
-        millis += (((long) getHours()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR));
-        millis += (((long) getDays()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_DAY));
-        millis += (((long) getWeeks()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_WEEK));
+        millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));
+        millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));
+        millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+        millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
+        millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
         return new Duration(millis);
     }
 
@@ -1635,10 +1635,10 @@ public final class Period
      */
     public Period normalizedStandard(PeriodType type) {
         long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs
-        millis += (((long) getSeconds()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND));
-        millis += (((long) getMinutes()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE));
-        millis += (((long) getHours()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR));
-        millis += (((long) getDays()) * ((long) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_DAY));
+        millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));
+        millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));
+        millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+        millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
         millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
         Period result = new Period(millis, DateTimeUtils.getPeriodType(type), ISOChronology.getInstanceUTC());
         int years = getYears();

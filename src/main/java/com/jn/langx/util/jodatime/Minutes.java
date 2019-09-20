@@ -114,7 +114,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the instants are null or invalid
      */
     public static Minutes minutesBetween(ReadableInstant start, ReadableInstant end) {
-        int amount = BaseSingleFieldPeriod.between(start, end, com.jn.langx.util.jodatime.DurationFieldType.minutes());
+        int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.minutes());
         return Minutes.minutes(amount);
     }
 
@@ -131,10 +131,10 @@ public final class Minutes extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Minutes minutesBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof com.jn.langx.util.jodatime.LocalTime && end instanceof com.jn.langx.util.jodatime.LocalTime) {
+        if (start instanceof LocalTime && end instanceof LocalTime) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int minutes = chrono.minutes().getDifference(
-                    ((com.jn.langx.util.jodatime.LocalTime) end).getLocalMillis(), ((LocalTime) start).getLocalMillis());
+                    ((LocalTime) end).getLocalMillis(), ((LocalTime) start).getLocalMillis());
             return Minutes.minutes(minutes);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);
@@ -153,7 +153,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
         if (interval == null) {
             return Minutes.ZERO;
         }
-        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), com.jn.langx.util.jodatime.DurationFieldType.minutes());
+        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.minutes());
         return Minutes.minutes(amount);
     }
 
@@ -178,7 +178,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
     public static Minutes standardMinutesIn(ReadablePeriod period) {
-        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE);
+        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, DateTimeConstants.MILLIS_PER_MINUTE);
         return Minutes.minutes(amount);
     }
 
@@ -230,7 +230,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.DurationFieldType getFieldType() {
+    public DurationFieldType getFieldType() {
         return DurationFieldType.minutes();
     }
 
@@ -259,7 +259,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      * @return a period representing the number of whole weeks for this number of minutes
      */
     public Weeks toStandardWeeks() {
-        return Weeks.weeks(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_WEEK);
+        return Weeks.weeks(getValue() / DateTimeConstants.MINUTES_PER_WEEK);
     }
 
     /**
@@ -275,8 +275,8 @@ public final class Minutes extends BaseSingleFieldPeriod {
      *
      * @return a period representing the number of whole days for this number of minutes
      */
-    public com.jn.langx.util.jodatime.Days toStandardDays() {
-        return Days.days(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_DAY);
+    public Days toStandardDays() {
+        return Days.days(getValue() / DateTimeConstants.MINUTES_PER_DAY);
     }
 
     /**
@@ -291,8 +291,8 @@ public final class Minutes extends BaseSingleFieldPeriod {
      *
      * @return a period representing the number of hours for this number of minutes
      */
-    public com.jn.langx.util.jodatime.Hours toStandardHours() {
-        return Hours.hours(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_HOUR);
+    public Hours toStandardHours() {
+        return Hours.hours(getValue() / DateTimeConstants.MINUTES_PER_HOUR);
     }
 
     /**
@@ -309,7 +309,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      * @throws ArithmeticException if the number of seconds is too large to be represented
      */
     public Seconds toStandardSeconds() {
-        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_MINUTE));
+        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), DateTimeConstants.SECONDS_PER_MINUTE));
     }
 
     //-----------------------------------------------------------------------
@@ -327,7 +327,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      *
      * @return a duration equivalent to this number of minutes
      */
-    public com.jn.langx.util.jodatime.Duration toStandardDuration() {
+    public Duration toStandardDuration() {
         long minutes = getValue();  // assign to a long
         return new Duration(minutes * DateTimeConstants.MILLIS_PER_MINUTE);
     }

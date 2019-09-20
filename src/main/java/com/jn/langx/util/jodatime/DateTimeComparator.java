@@ -186,11 +186,11 @@ public class DateTimeComparator implements Comparator<Object>, Serializable {
      */
     public int compare(Object lhsObj, Object rhsObj) {
         InstantConverter conv = ConverterManager.getInstance().getInstantConverter(lhsObj);
-        com.jn.langx.util.jodatime.Chronology lhsChrono = conv.getChronology(lhsObj, (com.jn.langx.util.jodatime.Chronology) null);
+        Chronology lhsChrono = conv.getChronology(lhsObj, (Chronology) null);
         long lhsMillis = conv.getInstantMillis(lhsObj, lhsChrono);
 
         conv = ConverterManager.getInstance().getInstantConverter(rhsObj);
-        com.jn.langx.util.jodatime.Chronology rhsChrono = conv.getChronology(rhsObj, (Chronology) null);
+        Chronology rhsChrono = conv.getChronology(rhsObj, (Chronology) null);
         long rhsMillis = conv.getInstantMillis(rhsObj, rhsChrono);
 
         if (iLowerLimit != null) {

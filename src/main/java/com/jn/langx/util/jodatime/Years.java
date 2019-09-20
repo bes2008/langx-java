@@ -67,7 +67,7 @@ public final class Years extends BaseSingleFieldPeriod {
     /**
      * The paser to use for this class.
      */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(com.jn.langx.util.jodatime.PeriodType.years());
+    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.years());
     /**
      * Serialization version.
      */
@@ -114,8 +114,8 @@ public final class Years extends BaseSingleFieldPeriod {
      * @return the period in years
      * @throws IllegalArgumentException if the instants are null or invalid
      */
-    public static Years yearsBetween(com.jn.langx.util.jodatime.ReadableInstant start, ReadableInstant end) {
-        int amount = BaseSingleFieldPeriod.between(start, end, com.jn.langx.util.jodatime.DurationFieldType.years());
+    public static Years yearsBetween(ReadableInstant start, ReadableInstant end) {
+        int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.years());
         return Years.years(amount);
     }
 
@@ -131,11 +131,11 @@ public final class Years extends BaseSingleFieldPeriod {
      * @return the period in years
      * @throws IllegalArgumentException if the partials are null or invalid
      */
-    public static Years yearsBetween(com.jn.langx.util.jodatime.ReadablePartial start, ReadablePartial end) {
-        if (start instanceof com.jn.langx.util.jodatime.LocalDate && end instanceof com.jn.langx.util.jodatime.LocalDate) {
+    public static Years yearsBetween(ReadablePartial start, ReadablePartial end) {
+        if (start instanceof LocalDate && end instanceof LocalDate) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int years = chrono.years().getDifference(
-                    ((com.jn.langx.util.jodatime.LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
+                    ((LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
             return Years.years(years);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);
@@ -155,7 +155,7 @@ public final class Years extends BaseSingleFieldPeriod {
         if (interval == null) {
             return Years.ZERO;
         }
-        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), com.jn.langx.util.jodatime.DurationFieldType.years());
+        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.years());
         return Years.years(amount);
     }
 
@@ -207,7 +207,7 @@ public final class Years extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.DurationFieldType getFieldType() {
+    public DurationFieldType getFieldType() {
         return DurationFieldType.years();
     }
 
@@ -216,7 +216,7 @@ public final class Years extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.PeriodType getPeriodType() {
+    public PeriodType getPeriodType() {
         return PeriodType.years();
     }
 

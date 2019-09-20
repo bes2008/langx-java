@@ -77,11 +77,11 @@ public final class Partial
     /**
      * The chronology in use.
      */
-    private final com.jn.langx.util.jodatime.Chronology iChronology;
+    private final Chronology iChronology;
     /**
      * The set of field types.
      */
-    private final com.jn.langx.util.jodatime.DateTimeFieldType[] iTypes;
+    private final DateTimeFieldType[] iTypes;
     /**
      * The values of each field in this partial.
      */
@@ -111,7 +111,7 @@ public final class Partial
      * The constructor uses the default ISO chronology.
      */
     public Partial() {
-        this((com.jn.langx.util.jodatime.Chronology) null);
+        this((Chronology) null);
     }
 
     /**
@@ -130,10 +130,10 @@ public final class Partial
      *
      * @param chrono the chronology, null means ISO
      */
-    public Partial(com.jn.langx.util.jodatime.Chronology chrono) {
+    public Partial(Chronology chrono) {
         super();
-        iChronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chrono).withUTC();
-        iTypes = new com.jn.langx.util.jodatime.DateTimeFieldType[0];
+        iChronology = DateTimeUtils.getChronology(chrono).withUTC();
+        iTypes = new DateTimeFieldType[0];
         iValues = new int[0];
     }
 
@@ -146,7 +146,7 @@ public final class Partial
      * @param value the value to store
      * @throws IllegalArgumentException if the type or value is invalid
      */
-    public Partial(com.jn.langx.util.jodatime.DateTimeFieldType type, int value) {
+    public Partial(DateTimeFieldType type, int value) {
         this(type, value, null);
     }
 
@@ -160,14 +160,14 @@ public final class Partial
      * @param chronology the chronology, null means ISO
      * @throws IllegalArgumentException if the type or value is invalid
      */
-    public Partial(com.jn.langx.util.jodatime.DateTimeFieldType type, int value, com.jn.langx.util.jodatime.Chronology chronology) {
+    public Partial(DateTimeFieldType type, int value, Chronology chronology) {
         super();
-        chronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology).withUTC();
+        chronology = DateTimeUtils.getChronology(chronology).withUTC();
         iChronology = chronology;
         if (type == null) {
             throw new IllegalArgumentException("The field type must not be null");
         }
-        iTypes = new com.jn.langx.util.jodatime.DateTimeFieldType[]{type};
+        iTypes = new DateTimeFieldType[]{type};
         iValues = new int[]{value};
         chronology.validate(this, iValues);
     }
@@ -182,7 +182,7 @@ public final class Partial
      * @param values the values to store, not null
      * @throws IllegalArgumentException if the types or values are invalid
      */
-    public Partial(com.jn.langx.util.jodatime.DateTimeFieldType[] types, int[] values) {
+    public Partial(DateTimeFieldType[] types, int[] values) {
         this(types, values, null);
     }
 
@@ -197,9 +197,9 @@ public final class Partial
      * @param chronology the chronology, null means ISO
      * @throws IllegalArgumentException if the types or values are invalid
      */
-    public Partial(com.jn.langx.util.jodatime.DateTimeFieldType[] types, int[] values, com.jn.langx.util.jodatime.Chronology chronology) {
+    public Partial(DateTimeFieldType[] types, int[] values, Chronology chronology) {
         super();
-        chronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology).withUTC();
+        chronology = DateTimeUtils.getChronology(chronology).withUTC();
         iChronology = chronology;
         if (types == null) {
             throw new IllegalArgumentException("Types array must not be null");
@@ -220,10 +220,10 @@ public final class Partial
                 throw new IllegalArgumentException("Types array must not contain null: index " + i);
             }
         }
-        com.jn.langx.util.jodatime.DurationField lastUnitField = null;
+        DurationField lastUnitField = null;
         for (int i = 0; i < types.length; i++) {
-            com.jn.langx.util.jodatime.DateTimeFieldType loopType = types[i];
-            com.jn.langx.util.jodatime.DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+            DateTimeFieldType loopType = types[i];
+            DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
             if (i > 0) {
                 int compare = lastUnitField.compareTo(loopUnitField);
                 if (compare < 0 || (compare != 0 && loopUnitField.isSupported() == false)) {
@@ -239,8 +239,8 @@ public final class Partial
                             throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
                                     types[i - 1].getName() + " < " + loopType.getName());
                         }
-                        com.jn.langx.util.jodatime.DurationField lastRangeField = types[i - 1].getRangeDurationType().getField(iChronology);
-                        com.jn.langx.util.jodatime.DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
+                        DurationField lastRangeField = types[i - 1].getRangeDurationType().getField(iChronology);
+                        DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
                         if (lastRangeField.compareTo(loopRangeField) < 0) {
                             throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
                                     types[i - 1].getName() + " < " + loopType.getName());
@@ -254,7 +254,7 @@ public final class Partial
             lastUnitField = loopUnitField;
         }
 
-        iTypes = (com.jn.langx.util.jodatime.DateTimeFieldType[]) types.clone();
+        iTypes = (DateTimeFieldType[]) types.clone();
         chronology.validate(this, values);
         iValues = (int[]) values.clone();
     }
@@ -270,8 +270,8 @@ public final class Partial
         if (partial == null) {
             throw new IllegalArgumentException("The partial must not be null");
         }
-        iChronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(partial.getChronology()).withUTC();
-        iTypes = new com.jn.langx.util.jodatime.DateTimeFieldType[partial.size()];
+        iChronology = DateTimeUtils.getChronology(partial.getChronology()).withUTC();
+        iTypes = new DateTimeFieldType[partial.size()];
         iValues = new int[partial.size()];
         for (int i = 0; i < partial.size(); i++) {
             iTypes[i] = partial.getFieldType(i);
@@ -303,7 +303,7 @@ public final class Partial
      * @param values     the values to store
      * @throws IllegalArgumentException if the types or values are invalid
      */
-    Partial(com.jn.langx.util.jodatime.Chronology chronology, com.jn.langx.util.jodatime.DateTimeFieldType[] types, int[] values) {
+    Partial(Chronology chronology, DateTimeFieldType[] types, int[] values) {
         super();
         iChronology = chronology;
         iTypes = types;
@@ -324,12 +324,12 @@ public final class Partial
     /**
      * Gets the chronology of the partial which is never null.
      * <p>
-     * The {@link com.jn.langx.util.jodatime.Chronology} is the calculation engine behind the partial and
+     * The {@link Chronology} is the calculation engine behind the partial and
      * provides conversion and validation of the fields in a particular calendar system.
      *
      * @return the chronology, never null
      */
-    public com.jn.langx.util.jodatime.Chronology getChronology() {
+    public Chronology getChronology() {
         return iChronology;
     }
 
@@ -341,7 +341,7 @@ public final class Partial
      * @return the field
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    protected com.jn.langx.util.jodatime.DateTimeField getField(int index, com.jn.langx.util.jodatime.Chronology chrono) {
+    protected DateTimeField getField(int index, Chronology chrono) {
         return iTypes[index].getField(chrono);
     }
 
@@ -352,7 +352,7 @@ public final class Partial
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType getFieldType(int index) {
+    public DateTimeFieldType getFieldType(int index) {
         return iTypes[index];
     }
 
@@ -364,8 +364,8 @@ public final class Partial
      *
      * @return the array of field types (cloned), largest to smallest
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType[] getFieldTypes() {
-        return (com.jn.langx.util.jodatime.DateTimeFieldType[]) iTypes.clone();
+    public DateTimeFieldType[] getFieldTypes() {
+        return (DateTimeFieldType[]) iTypes.clone();
     }
 
     //-----------------------------------------------------------------------
@@ -410,8 +410,8 @@ public final class Partial
      * @return a copy of this datetime with a different chronology
      * @throws IllegalArgumentException if the values are invalid for the new chronology
      */
-    public Partial withChronologyRetainFields(com.jn.langx.util.jodatime.Chronology newChronology) {
-        newChronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(newChronology);
+    public Partial withChronologyRetainFields(Chronology newChronology) {
+        newChronology = DateTimeUtils.getChronology(newChronology);
         newChronology = newChronology.withUTC();
         if (newChronology == getChronology()) {
             return this;
@@ -428,7 +428,7 @@ public final class Partial
      * Gets a copy of this date with the specified field set to a new value.
      * <p>
      * If this partial did not previously support the field, the new one will.
-     * Contrast this behaviour with {@link #withField(com.jn.langx.util.jodatime.DateTimeFieldType, int)}.
+     * Contrast this behaviour with {@link #withField(DateTimeFieldType, int)}.
      * <p>
      * For example, if the field type is <code>dayOfMonth</code> then the day
      * would be changed/added in the returned instance.
@@ -438,28 +438,28 @@ public final class Partial
      * @return a copy of this instance with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    public Partial with(com.jn.langx.util.jodatime.DateTimeFieldType fieldType, int value) {
+    public Partial with(DateTimeFieldType fieldType, int value) {
         if (fieldType == null) {
             throw new IllegalArgumentException("The field type must not be null");
         }
         int index = indexOf(fieldType);
         if (index == -1) {
-            com.jn.langx.util.jodatime.DateTimeFieldType[] newTypes = new com.jn.langx.util.jodatime.DateTimeFieldType[iTypes.length + 1];
+            DateTimeFieldType[] newTypes = new DateTimeFieldType[iTypes.length + 1];
             int[] newValues = new int[newTypes.length];
 
             // find correct insertion point to keep largest-smallest order
             int i = 0;
-            com.jn.langx.util.jodatime.DurationField unitField = fieldType.getDurationType().getField(iChronology);
+            DurationField unitField = fieldType.getDurationType().getField(iChronology);
             if (unitField.isSupported()) {
                 for (; i < iTypes.length; i++) {
-                    com.jn.langx.util.jodatime.DateTimeFieldType loopType = iTypes[i];
-                    com.jn.langx.util.jodatime.DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+                    DateTimeFieldType loopType = iTypes[i];
+                    DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
                     if (loopUnitField.isSupported()) {
                         int compare = unitField.compareTo(loopUnitField);
                         if (compare > 0) {
                             break;
                         } else if (compare == 0) {
-                            com.jn.langx.util.jodatime.DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
+                            DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
                             DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
                             if (rangeField.compareTo(loopRangeField) > 0) {
                                 break;
@@ -495,10 +495,10 @@ public final class Partial
      * @param fieldType the field type to remove, may be null
      * @return a copy of this instance with the field removed
      */
-    public Partial without(com.jn.langx.util.jodatime.DateTimeFieldType fieldType) {
+    public Partial without(DateTimeFieldType fieldType) {
         int index = indexOf(fieldType);
         if (index != -1) {
-            com.jn.langx.util.jodatime.DateTimeFieldType[] newTypes = new com.jn.langx.util.jodatime.DateTimeFieldType[size() - 1];
+            DateTimeFieldType[] newTypes = new DateTimeFieldType[size() - 1];
             int[] newValues = new int[size() - 1];
             System.arraycopy(iTypes, 0, newTypes, 0, index);
             System.arraycopy(iTypes, index + 1, newTypes, index, newTypes.length - index);
@@ -517,7 +517,7 @@ public final class Partial
      * Gets a copy of this Partial with the specified field set to a new value.
      * <p>
      * If this partial does not support the field, an exception is thrown.
-     * Contrast this behaviour with {@link #with(com.jn.langx.util.jodatime.DateTimeFieldType, int)}.
+     * Contrast this behaviour with {@link #with(DateTimeFieldType, int)}.
      * <p>
      * For example, if the field type is <code>dayOfMonth</code> then the day
      * would be changed in the returned instance if supported.
@@ -527,7 +527,7 @@ public final class Partial
      * @return a copy of this instance with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    public Partial withField(com.jn.langx.util.jodatime.DateTimeFieldType fieldType, int value) {
+    public Partial withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
             return this;
@@ -551,7 +551,7 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException      if the new datetime exceeds the capacity
      */
-    public Partial withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
+    public Partial withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
             return this;
@@ -575,7 +575,7 @@ public final class Partial
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException      if the new datetime exceeds the capacity
      */
-    public Partial withFieldAddWrapped(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
+    public Partial withFieldAddWrapped(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
             return this;
@@ -593,7 +593,7 @@ public final class Partial
      * <p>
      * This method is typically used to add multiple copies of complex
      * period instances. Adding one field is best achieved using the method
-     * {@link #withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType, int)}.
+     * {@link #withFieldAdded(DurationFieldType, int)}.
      *
      * @param period the period to add to this one, null means zero
      * @param scalar the amount of times to add, such as -1 to subtract once
@@ -648,13 +648,13 @@ public final class Partial
      * Gets the property object for the specified type, which contains
      * many useful methods for getting and manipulating the partial.
      * <p>
-     * See also {@link ReadablePartial#get(com.jn.langx.util.jodatime.DateTimeFieldType)}.
+     * See also {@link ReadablePartial#get(DateTimeFieldType)}.
      *
      * @param type the field type to get the property for, not null
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */
-    public Property property(com.jn.langx.util.jodatime.DateTimeFieldType type) {
+    public Property property(DateTimeFieldType type) {
         return new Property(this, indexOfSupported(type));
     }
 
@@ -670,7 +670,7 @@ public final class Partial
      * @return true if this partial matches the specified instant
      */
     public boolean isMatch(ReadableInstant instant) {
-        long millis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(instant);
+        long millis = DateTimeUtils.getInstantMillis(instant);
         Chronology chrono = DateTimeUtils.getInstantChronology(instant);
         for (int i = 0; i < iTypes.length; i++) {
             int value = iTypes[i].getField(chrono).get(millis);
@@ -727,7 +727,7 @@ public final class Partial
             }
             f = new DateTimeFormatter[2];
             try {
-                List<com.jn.langx.util.jodatime.DateTimeFieldType> list = new ArrayList<DateTimeFieldType>(Arrays.asList(iTypes));
+                List<DateTimeFieldType> list = new ArrayList<DateTimeFieldType>(Arrays.asList(iTypes));
                 f[0] = ISODateTimeFormat.forFields(list, true, false);
                 if (list.size() == 0) {
                     f[1] = f[0];

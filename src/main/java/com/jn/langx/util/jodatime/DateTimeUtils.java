@@ -197,11 +197,11 @@ public class DateTimeUtils {
      * @param instant the instant to examine, null means ISO in the default zone
      * @return the chronology, never null
      */
-    public static final com.jn.langx.util.jodatime.Chronology getInstantChronology(ReadableInstant instant) {
+    public static final Chronology getInstantChronology(ReadableInstant instant) {
         if (instant == null) {
             return ISOChronology.getInstance();
         }
-        com.jn.langx.util.jodatime.Chronology chrono = instant.getChronology();
+        Chronology chrono = instant.getChronology();
         if (chrono == null) {
             return ISOChronology.getInstance();
         }
@@ -221,8 +221,8 @@ public class DateTimeUtils {
      * @param end   the instant to examine and use as the secondary source of the chronology
      * @return the chronology, never null
      */
-    public static final com.jn.langx.util.jodatime.Chronology getIntervalChronology(ReadableInstant start, ReadableInstant end) {
-        com.jn.langx.util.jodatime.Chronology chrono = null;
+    public static final Chronology getIntervalChronology(ReadableInstant start, ReadableInstant end) {
+        Chronology chrono = null;
         if (start != null) {
             chrono = start.getChronology();
         } else if (end != null) {
@@ -246,11 +246,11 @@ public class DateTimeUtils {
      * @param interval the interval to examine, null means ISO in the default zone
      * @return the chronology, never null
      */
-    public static final com.jn.langx.util.jodatime.Chronology getIntervalChronology(ReadableInterval interval) {
+    public static final Chronology getIntervalChronology(ReadableInterval interval) {
         if (interval == null) {
             return ISOChronology.getInstance();
         }
-        com.jn.langx.util.jodatime.Chronology chrono = interval.getChronology();
+        Chronology chrono = interval.getChronology();
         if (chrono == null) {
             return ISOChronology.getInstance();
         }

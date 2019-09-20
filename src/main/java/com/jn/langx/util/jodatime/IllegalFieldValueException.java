@@ -88,8 +88,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         return buf.toString();
     }
 
-    private final com.jn.langx.util.jodatime.DateTimeFieldType iDateTimeFieldType;
-    private final com.jn.langx.util.jodatime.DurationFieldType iDurationFieldType;
+    private final DateTimeFieldType iDateTimeFieldType;
+    private final DurationFieldType iDurationFieldType;
     private final String iFieldName;
     private final Number iNumberValue;
     private final String iStringValue;
@@ -105,7 +105,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param lowerBound lower legal field value, or null if not applicable
      * @param upperBound upper legal field value, or null if not applicable
      */
-    public IllegalFieldValueException(com.jn.langx.util.jodatime.DateTimeFieldType fieldType,
+    public IllegalFieldValueException(DateTimeFieldType fieldType,
                                       Number value, Number lowerBound, Number upperBound) {
         super(createMessage(fieldType.getName(), value, lowerBound, upperBound, null));
         iDateTimeFieldType = fieldType;
@@ -126,7 +126,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param explain   an explanation
      * @since 1.5
      */
-    public IllegalFieldValueException(com.jn.langx.util.jodatime.DateTimeFieldType fieldType,
+    public IllegalFieldValueException(DateTimeFieldType fieldType,
                                       Number value, String explain) {
         super(createMessage(fieldType.getName(), value, null, null, explain));
         iDateTimeFieldType = fieldType;
@@ -147,7 +147,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param lowerBound lower legal field value, or null if not applicable
      * @param upperBound upper legal field value, or null if not applicable
      */
-    public IllegalFieldValueException(com.jn.langx.util.jodatime.DurationFieldType fieldType,
+    public IllegalFieldValueException(DurationFieldType fieldType,
                                       Number value, Number lowerBound, Number upperBound) {
         super(createMessage(fieldType.getName(), value, lowerBound, upperBound, null));
         iDateTimeFieldType = null;
@@ -187,7 +187,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param fieldType type of field being set
      * @param value     illegal value being set
      */
-    public IllegalFieldValueException(com.jn.langx.util.jodatime.DateTimeFieldType fieldType, String value) {
+    public IllegalFieldValueException(DateTimeFieldType fieldType, String value) {
         super(createMessage(fieldType.getName(), value));
         iDateTimeFieldType = fieldType;
         iDurationFieldType = null;
@@ -205,7 +205,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param fieldType type of field being set
      * @param value     illegal value being set
      */
-    public IllegalFieldValueException(com.jn.langx.util.jodatime.DurationFieldType fieldType, String value) {
+    public IllegalFieldValueException(DurationFieldType fieldType, String value) {
         super(createMessage(fieldType.getName(), value));
         iDateTimeFieldType = null;
         iDurationFieldType = fieldType;

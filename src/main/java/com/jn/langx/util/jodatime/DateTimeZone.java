@@ -296,7 +296,7 @@ public abstract class DateTimeZone implements Serializable {
             } else {
                 minutesOffset = hoursInMinutes + minutesOffset;
             }
-            offset = FieldUtils.safeMultiply(minutesOffset, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE);
+            offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException("Offset is too large");
         }
@@ -469,8 +469,8 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Gets the default zone provider.
      * <p>
-     * Tries the system property <code>com.jn.langx.util.jodatime.DateTimeZone.Provider</code>.
-     * Then tries a <code>ZoneInfoProvider</code> using the data in <code>com.jn.langx.util.jodatime/tz/data</code>.
+     * Tries the system property <code>DateTimeZone.Provider</code>.
+     * Then tries a <code>ZoneInfoProvider</code> using the data in <code>tz/data</code>.
      * Then uses <code>UTCProvider</code>.
      *
      * @return the default name provider
@@ -480,7 +480,7 @@ public abstract class DateTimeZone implements Serializable {
 
         try {
             String providerClass =
-                    System.getProperty("com.jn.langx.util.jodatime.DateTimeZone.Provider");
+                    System.getProperty("DateTimeZone.Provider");
             if (providerClass != null) {
                 try {
                     provider = (Provider) Class.forName(providerClass).newInstance();
@@ -495,7 +495,7 @@ public abstract class DateTimeZone implements Serializable {
 
         if (provider == null) {
             try {
-                provider = new ZoneInfoProvider("com.jn.langx.util.jodatime/tz/data");
+                provider = new ZoneInfoProvider("tz/data");
             } catch (Exception ex) {
                 Thread thread = Thread.currentThread();
                 thread.getThreadGroup().uncaughtException(thread, ex);
@@ -557,7 +557,7 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Gets the default name provider.
      * <p>
-     * Tries the system property <code>com.jn.langx.util.jodatime.DateTimeZone.NameProvider</code>.
+     * Tries the system property <code>DateTimeZone.NameProvider</code>.
      * Then uses <code>DefaultNameProvider</code>.
      *
      * @return the default name provider
@@ -565,7 +565,7 @@ public abstract class DateTimeZone implements Serializable {
     private static NameProvider getDefaultNameProvider() {
         NameProvider nameProvider = null;
         try {
-            String providerClass = System.getProperty("com.jn.langx.util.jodatime.DateTimeZone.NameProvider");
+            String providerClass = System.getProperty("DateTimeZone.NameProvider");
             if (providerClass != null) {
                 try {
                     nameProvider = (NameProvider) Class.forName(providerClass).newInstance();
@@ -639,14 +639,14 @@ public abstract class DateTimeZone implements Serializable {
     private static int parseOffset(String str) {
         // Can't use a real chronology if called during class
         // initialization. Offset parser doesn't need it anyhow.
-        com.jn.langx.util.jodatime.Chronology chrono = new BaseChronology() {
+        Chronology chrono = new BaseChronology() {
             private static final long serialVersionUID = -3128740902654445468L;
 
             public DateTimeZone getZone() {
                 return null;
             }
 
-            public com.jn.langx.util.jodatime.Chronology withUTC() {
+            public Chronology withUTC() {
                 return this;
             }
 
@@ -679,22 +679,22 @@ public abstract class DateTimeZone implements Serializable {
             offset = -offset;
         }
 
-        int hours = offset / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR;
+        int hours = offset / DateTimeConstants.MILLIS_PER_HOUR;
         FormatUtils.appendPaddedInteger(buf, hours, 2);
-        offset -= hours * (int) com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR;
+        offset -= hours * (int) DateTimeConstants.MILLIS_PER_HOUR;
 
-        int minutes = offset / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE;
+        int minutes = offset / DateTimeConstants.MILLIS_PER_MINUTE;
         buf.append(':');
         FormatUtils.appendPaddedInteger(buf, minutes, 2);
-        offset -= minutes * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE;
+        offset -= minutes * DateTimeConstants.MILLIS_PER_MINUTE;
         if (offset == 0) {
             return buf.toString();
         }
 
-        int seconds = offset / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND;
+        int seconds = offset / DateTimeConstants.MILLIS_PER_SECOND;
         buf.append(':');
         FormatUtils.appendPaddedInteger(buf, seconds, 2);
-        offset -= seconds * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND;
+        offset -= seconds * DateTimeConstants.MILLIS_PER_SECOND;
         if (offset == 0) {
             return buf.toString();
         }
@@ -1204,7 +1204,7 @@ public abstract class DateTimeZone implements Serializable {
         // a bit messy, but will work in all non-pathological cases
 
         // evaluate 3 hours before and after to work out if anything is happening
-        long instantBefore = instant - 3 * com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR;
+        long instantBefore = instant - 3 * DateTimeConstants.MILLIS_PER_HOUR;
         long instantAfter = instant + 3 * DateTimeConstants.MILLIS_PER_HOUR;
         long offsetBefore = getOffset(instantBefore);
         long offsetAfter = getOffset(instantAfter);

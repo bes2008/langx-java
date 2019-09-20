@@ -109,7 +109,7 @@ public final class Interval
      * @param endInstant   end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
-    public Interval(long startInstant, long endInstant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public Interval(long startInstant, long endInstant, Chronology chronology) {
         super(startInstant, endInstant, chronology);
     }
 
@@ -184,7 +184,7 @@ public final class Interval
      * Constructs a time interval by converting or copying from another object.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInterval and String.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
@@ -202,7 +202,7 @@ public final class Interval
      * overriding the chronology.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInterval and String.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
@@ -212,7 +212,7 @@ public final class Interval
      * @param chronology the chronology to use, null means ISO default
      * @throws IllegalArgumentException if the interval is invalid
      */
-    public Interval(Object interval, com.jn.langx.util.jodatime.Chronology chronology) {
+    public Interval(Object interval, Chronology chronology) {
         super(interval, chronology);
     }
 
@@ -254,7 +254,7 @@ public final class Interval
      * @since 1.1
      */
     public Interval overlap(ReadableInterval interval) {
-        interval = com.jn.langx.util.jodatime.DateTimeUtils.getReadableInterval(interval);
+        interval = DateTimeUtils.getReadableInterval(interval);
         if (overlaps(interval) == false) {
             return null;
         }
@@ -290,7 +290,7 @@ public final class Interval
      * @since 1.1
      */
     public Interval gap(ReadableInterval interval) {
-        interval = com.jn.langx.util.jodatime.DateTimeUtils.getReadableInterval(interval);
+        interval = DateTimeUtils.getReadableInterval(interval);
         long otherStart = interval.getStartMillis();
         long otherEnd = interval.getEndMillis();
         long thisStart = getStartMillis();
@@ -344,7 +344,7 @@ public final class Interval
      */
     public boolean abuts(ReadableInterval interval) {
         if (interval == null) {
-            long now = com.jn.langx.util.jodatime.DateTimeUtils.currentTimeMillis();
+            long now = DateTimeUtils.currentTimeMillis();
             return (getStartMillis() == now || getEndMillis() == now);
         } else {
             return (interval.getEndMillis() == getStartMillis() ||
@@ -360,7 +360,7 @@ public final class Interval
      * @param chronology the chronology to use, null means ISO default
      * @return an interval with a different chronology
      */
-    public Interval withChronology(com.jn.langx.util.jodatime.Chronology chronology) {
+    public Interval withChronology(Chronology chronology) {
         if (getChronology() == chronology) {
             return this;
         }
@@ -389,7 +389,7 @@ public final class Interval
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
     public Interval withStart(ReadableInstant start) {
-        long startMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(start);
+        long startMillis = DateTimeUtils.getInstantMillis(start);
         return withStartMillis(startMillis);
     }
 
@@ -415,7 +415,7 @@ public final class Interval
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
     public Interval withEnd(ReadableInstant end) {
-        long endMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(end);
+        long endMillis = DateTimeUtils.getInstantMillis(end);
         return withEndMillis(endMillis);
     }
 
@@ -429,11 +429,11 @@ public final class Interval
      * @throws IllegalArgumentException if the duration is negative
      */
     public Interval withDurationAfterStart(ReadableDuration duration) {
-        long durationMillis = com.jn.langx.util.jodatime.DateTimeUtils.getDurationMillis(duration);
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
         if (durationMillis == toDurationMillis()) {
             return this;
         }
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long startMillis = getStartMillis();
         long endMillis = chrono.add(startMillis, durationMillis, 1);
         return new Interval(startMillis, endMillis, chrono);
@@ -451,7 +451,7 @@ public final class Interval
         if (durationMillis == toDurationMillis()) {
             return this;
         }
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long endMillis = getEndMillis();
         long startMillis = chrono.add(endMillis, durationMillis, -1);
         return new Interval(startMillis, endMillis, chrono);
@@ -470,7 +470,7 @@ public final class Interval
         if (period == null) {
             return withDurationAfterStart(null);
         }
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long startMillis = getStartMillis();
         long endMillis = chrono.add(period, startMillis, 1);
         return new Interval(startMillis, endMillis, chrono);

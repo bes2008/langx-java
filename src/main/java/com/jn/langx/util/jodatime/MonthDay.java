@@ -74,9 +74,9 @@ public final class MonthDay
     /**
      * The singleton set of field types
      */
-    private static final com.jn.langx.util.jodatime.DateTimeFieldType[] FIELD_TYPES = new com.jn.langx.util.jodatime.DateTimeFieldType[]{
-            com.jn.langx.util.jodatime.DateTimeFieldType.monthOfYear(),
-            com.jn.langx.util.jodatime.DateTimeFieldType.dayOfMonth(),};
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
+            DateTimeFieldType.monthOfYear(),
+            DateTimeFieldType.dayOfMonth(),};
 
     /**
      * The singleton set of field types
@@ -117,7 +117,7 @@ public final class MonthDay
      * @return the current month-day, not null
      * @since 2.0
      */
-    public static MonthDay now(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public static MonthDay now(DateTimeZone zone) {
         if (zone == null) {
             throw new NullPointerException("Zone must not be null");
         }
@@ -133,7 +133,7 @@ public final class MonthDay
      * @return the current month-day, not null
      * @since 2.0
      */
-    public static MonthDay now(com.jn.langx.util.jodatime.Chronology chronology) {
+    public static MonthDay now(Chronology chronology) {
         if (chronology == null) {
             throw new NullPointerException("Chronology must not be null");
         }
@@ -162,7 +162,7 @@ public final class MonthDay
      * @since 2.0
      */
     public static MonthDay parse(String str, DateTimeFormatter formatter) {
-        com.jn.langx.util.jodatime.LocalDate date = formatter.parseLocalDate(str);
+        LocalDate date = formatter.parseLocalDate(str);
         return new MonthDay(date.getMonthOfYear(), date.getDayOfMonth());
     }
 
@@ -237,9 +237,9 @@ public final class MonthDay
      * are performed without reference to a time-zone (by switching to UTC).
      *
      * @param zone the zone to use, null means default zone
-     * @see #now(com.jn.langx.util.jodatime.DateTimeZone)
+     * @see #now(DateTimeZone)
      */
-    public MonthDay(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public MonthDay(DateTimeZone zone) {
         super(ISOChronology.getInstance(zone));
     }
 
@@ -252,9 +252,9 @@ public final class MonthDay
      * without reference to a time-zone (by switching to UTC).
      *
      * @param chronology the chronology, null means ISOChronology in the default zone
-     * @see #now(com.jn.langx.util.jodatime.Chronology)
+     * @see #now(Chronology)
      */
-    public MonthDay(com.jn.langx.util.jodatime.Chronology chronology) {
+    public MonthDay(Chronology chronology) {
         super(chronology);
     }
 
@@ -283,7 +283,7 @@ public final class MonthDay
      * @param instant    the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology the chronology, null means ISOChronology in the default zone
      */
-    public MonthDay(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public MonthDay(long instant, Chronology chronology) {
         super(instant, chronology);
     }
 
@@ -291,7 +291,7 @@ public final class MonthDay
      * Constructs a MonthDay from an Object that represents some form of time.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
      * <p>
@@ -309,7 +309,7 @@ public final class MonthDay
      * using the specified chronology.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
      * <p>
@@ -322,8 +322,8 @@ public final class MonthDay
      * @param chronology the chronology, null means ISO default
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public MonthDay(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
-        super(instant, com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
+    public MonthDay(Object instant, Chronology chronology) {
+        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
     }
 
     /**
@@ -355,7 +355,7 @@ public final class MonthDay
      * @param dayOfMonth  the day of the month
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public MonthDay(int monthOfYear, int dayOfMonth, com.jn.langx.util.jodatime.Chronology chronology) {
+    public MonthDay(int monthOfYear, int dayOfMonth, Chronology chronology) {
         super(new int[]{monthOfYear, dayOfMonth}, chronology);
     }
 
@@ -375,7 +375,7 @@ public final class MonthDay
      * @param partial the partial to base this new instance on
      * @param chrono  the new chronology
      */
-    MonthDay(MonthDay partial, com.jn.langx.util.jodatime.Chronology chrono) {
+    MonthDay(MonthDay partial, Chronology chrono) {
         super(partial, chrono);
     }
 
@@ -413,7 +413,7 @@ public final class MonthDay
      * @param chrono the chronology to use
      * @return the field, never null
      */
-    protected com.jn.langx.util.jodatime.DateTimeField getField(int index, com.jn.langx.util.jodatime.Chronology chrono) {
+    protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
             case MONTH_OF_YEAR:
                 return chrono.monthOfYear();
@@ -431,7 +431,7 @@ public final class MonthDay
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType getFieldType(int index) {
+    public DateTimeFieldType getFieldType(int index) {
         return FIELD_TYPES[index];
     }
 
@@ -442,8 +442,8 @@ public final class MonthDay
      *
      * @return the array of field types (cloned), largest to smallest, never null
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType[] getFieldTypes() {
-        return (com.jn.langx.util.jodatime.DateTimeFieldType[]) FIELD_TYPES.clone();
+    public DateTimeFieldType[] getFieldTypes() {
+        return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
 
     //-----------------------------------------------------------------------
@@ -492,7 +492,7 @@ public final class MonthDay
      * @return a copy of this instance with the field set, never null
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    public MonthDay withField(com.jn.langx.util.jodatime.DateTimeFieldType fieldType, int value) {
+    public MonthDay withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
             return this;
@@ -520,7 +520,7 @@ public final class MonthDay
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException      if the new date-time exceeds the capacity
      */
-    public MonthDay withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
+    public MonthDay withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
             return this;
@@ -538,7 +538,7 @@ public final class MonthDay
      * <p>
      * This method is typically used to add multiple copies of complex
      * period instances. Adding one field is best achieved using methods
-     * like {@link #withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType, int)}
+     * like {@link #withFieldAdded(DurationFieldType, int)}
      * or {@link #plusMonths(int)}.
      *
      * @param period the period to add to this one, null means zero
@@ -552,7 +552,7 @@ public final class MonthDay
         }
         int[] newValues = getValues();
         for (int i = 0; i < period.size(); i++) {
-            com.jn.langx.util.jodatime.DurationFieldType fieldType = period.getFieldType(i);
+            DurationFieldType fieldType = period.getFieldType(i);
             int index = indexOf(fieldType);
             if (index >= 0) {
                 newValues = getField(index).add(this, index, newValues,
@@ -601,7 +601,7 @@ public final class MonthDay
      * @return the new month-day plus the increased months, never null
      */
     public MonthDay plusMonths(int months) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.months(), months);
+        return withFieldAdded(DurationFieldType.months(), months);
     }
 
     /**
@@ -621,7 +621,7 @@ public final class MonthDay
      * @return the new month-day plus the increased days, never null
      */
     public MonthDay plusDays(int days) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.days(), days);
+        return withFieldAdded(DurationFieldType.days(), days);
     }
 
     //-----------------------------------------------------------------------
@@ -663,7 +663,7 @@ public final class MonthDay
      * @return the new month-day minus the increased months, never null
      */
     public MonthDay minusMonths(int months) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.months(), FieldUtils.safeNegate(months));
+        return withFieldAdded(DurationFieldType.months(), FieldUtils.safeNegate(months));
     }
 
     /**
@@ -694,7 +694,7 @@ public final class MonthDay
      * @param year the year to use, valid for chronology
      * @return a LocalDate with the same month-day and chronology, never null
      */
-    public com.jn.langx.util.jodatime.LocalDate toLocalDate(int year) {
+    public LocalDate toLocalDate(int year) {
         return new LocalDate(year, getMonthOfYear(), getDayOfMonth(), getChronology());
     }
 
@@ -764,7 +764,7 @@ public final class MonthDay
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */
-    public Property property(com.jn.langx.util.jodatime.DateTimeFieldType type) {
+    public Property property(DateTimeFieldType type) {
         return new Property(this, indexOfSupported(type));
     }
 
@@ -796,8 +796,8 @@ public final class MonthDay
      * @return ISO8601 time formatted string.
      */
     public String toString() {
-        List<com.jn.langx.util.jodatime.DateTimeFieldType> fields = new ArrayList<com.jn.langx.util.jodatime.DateTimeFieldType>();
-        fields.add(com.jn.langx.util.jodatime.DateTimeFieldType.monthOfYear());
+        List<DateTimeFieldType> fields = new ArrayList<DateTimeFieldType>();
+        fields.add(DateTimeFieldType.monthOfYear());
         fields.add(DateTimeFieldType.dayOfMonth());
         return ISODateTimeFormat.forFields(fields, true, true).print(this);
     }

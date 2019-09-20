@@ -254,7 +254,7 @@ public abstract class DurationFieldType implements Serializable {
      * @param chronology the chronology to use, null means ISOChronology in default zone
      * @return a suitable field
      */
-    public abstract com.jn.langx.util.jodatime.DurationField getField(com.jn.langx.util.jodatime.Chronology chronology);
+    public abstract DurationField getField(Chronology chronology);
 
     /**
      * Checks whether this field supported in the given Chronology.
@@ -262,7 +262,7 @@ public abstract class DurationFieldType implements Serializable {
      * @param chronology the chronology to use, null means ISOChronology in default zone
      * @return true if supported
      */
-    public boolean isSupported(com.jn.langx.util.jodatime.Chronology chronology) {
+    public boolean isSupported(Chronology chronology) {
         return getField(chronology).isSupported();
     }
 

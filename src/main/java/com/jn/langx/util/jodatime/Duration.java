@@ -74,7 +74,7 @@ public final class Duration
      * Savings changes will not have 24 hours, so use this method with care.
      * <p>
      * A Duration is a representation of an amount of time. If you want to express
-     * the concepts of 'days' you should consider using the {@link com.jn.langx.util.jodatime.Days} class.
+     * the concepts of 'days' you should consider using the {@link Days} class.
      *
      * @param days the number of standard days in this duration
      * @return the duration, never null
@@ -85,7 +85,7 @@ public final class Duration
         if (days == 0) {
             return ZERO;
         }
-        return new Duration(FieldUtils.safeMultiply(days, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_DAY));
+        return new Duration(FieldUtils.safeMultiply(days, DateTimeConstants.MILLIS_PER_DAY));
     }
 
     /**
@@ -108,7 +108,7 @@ public final class Duration
         if (hours == 0) {
             return ZERO;
         }
-        return new Duration(FieldUtils.safeMultiply(hours, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR));
+        return new Duration(FieldUtils.safeMultiply(hours, DateTimeConstants.MILLIS_PER_HOUR));
     }
 
     /**
@@ -131,7 +131,7 @@ public final class Duration
         if (minutes == 0) {
             return ZERO;
         }
-        return new Duration(FieldUtils.safeMultiply(minutes, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE));
+        return new Duration(FieldUtils.safeMultiply(minutes, DateTimeConstants.MILLIS_PER_MINUTE));
     }
 
     /**
@@ -153,7 +153,7 @@ public final class Duration
         if (seconds == 0) {
             return ZERO;
         }
-        return new Duration(FieldUtils.safeMultiply(seconds, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND));
+        return new Duration(FieldUtils.safeMultiply(seconds, DateTimeConstants.MILLIS_PER_SECOND));
     }
 
     /**
@@ -205,7 +205,7 @@ public final class Duration
 
     /**
      * Creates a duration from the specified object using the
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager}.
+     * {@link convert.ConverterManager ConverterManager}.
      *
      * @param duration duration to convert
      * @throws IllegalArgumentException if duration is invalid
@@ -232,7 +232,7 @@ public final class Duration
      * @since 2.0
      */
     public long getStandardDays() {
-        return getMillis() / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_DAY;
+        return getMillis() / DateTimeConstants.MILLIS_PER_DAY;
     }
 
     /**
@@ -250,7 +250,7 @@ public final class Duration
      * @since 2.0
      */
     public long getStandardHours() {
-        return getMillis() / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR;
+        return getMillis() / DateTimeConstants.MILLIS_PER_HOUR;
     }
 
     /**
@@ -268,7 +268,7 @@ public final class Duration
      * @since 2.0
      */
     public long getStandardMinutes() {
-        return getMillis() / com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_MINUTE;
+        return getMillis() / DateTimeConstants.MILLIS_PER_MINUTE;
     }
 
     /**
@@ -313,7 +313,7 @@ public final class Duration
      * @throws ArithmeticException if the number of days is too large to be represented
      * @since 2.0
      */
-    public com.jn.langx.util.jodatime.Days toStandardDays() {
+    public Days toStandardDays() {
         long days = getStandardDays();
         return Days.days(FieldUtils.safeToInt(days));
     }

@@ -102,7 +102,7 @@ public class MutableInterval
      * @param endInstant   end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
-    public MutableInterval(long startInstant, long endInstant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public MutableInterval(long startInstant, long endInstant, Chronology chronology) {
         super(startInstant, endInstant, chronology);
     }
 
@@ -177,7 +177,7 @@ public class MutableInterval
      * Constructs a time interval by converting or copying from another object.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInterval and String.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
@@ -195,7 +195,7 @@ public class MutableInterval
      * overriding the chronology.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInterval and String.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
      * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
@@ -205,7 +205,7 @@ public class MutableInterval
      * @param chronology the chronology to use, null means ISO default
      * @throws IllegalArgumentException if the interval is invalid
      */
-    public MutableInterval(Object interval, com.jn.langx.util.jodatime.Chronology chronology) {
+    public MutableInterval(Object interval, Chronology chronology) {
         super(interval, chronology);
     }
 
@@ -234,7 +234,7 @@ public class MutableInterval
         }
         long startMillis = interval.getStartMillis();
         long endMillis = interval.getEndMillis();
-        com.jn.langx.util.jodatime.Chronology chrono = interval.getChronology();
+        Chronology chrono = interval.getChronology();
         super.setInterval(startMillis, endMillis, chrono);
     }
 
@@ -248,12 +248,12 @@ public class MutableInterval
      */
     public void setInterval(ReadableInstant start, ReadableInstant end) {
         if (start == null && end == null) {
-            long now = com.jn.langx.util.jodatime.DateTimeUtils.currentTimeMillis();
+            long now = DateTimeUtils.currentTimeMillis();
             setInterval(now, now);
         } else {
-            long startMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(start);
-            long endMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(end);
-            com.jn.langx.util.jodatime.Chronology chrono = com.jn.langx.util.jodatime.DateTimeUtils.getInstantChronology(start);
+            long startMillis = DateTimeUtils.getInstantMillis(start);
+            long endMillis = DateTimeUtils.getInstantMillis(end);
+            Chronology chrono = DateTimeUtils.getInstantChronology(start);
             super.setInterval(startMillis, endMillis, chrono);
         }
     }
@@ -287,7 +287,7 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setStart(ReadableInstant start) {
-        long startMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(start);
+        long startMillis = DateTimeUtils.getInstantMillis(start);
         super.setInterval(startMillis, getEndMillis(), getChronology());
     }
 
@@ -309,7 +309,7 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setEnd(ReadableInstant end) {
-        long endMillis = com.jn.langx.util.jodatime.DateTimeUtils.getInstantMillis(end);
+        long endMillis = DateTimeUtils.getInstantMillis(end);
         super.setInterval(getStartMillis(), endMillis, getChronology());
     }
 
@@ -347,7 +347,7 @@ public class MutableInterval
      * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
     public void setDurationAfterStart(ReadableDuration duration) {
-        long durationMillis = com.jn.langx.util.jodatime.DateTimeUtils.getDurationMillis(duration);
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
         setEndMillis(FieldUtils.safeAdd(getStartMillis(), durationMillis));
     }
 

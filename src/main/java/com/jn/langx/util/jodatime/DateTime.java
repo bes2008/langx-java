@@ -114,7 +114,7 @@ public final class DateTime
      * @return the current date-time, not null
      * @since 2.0
      */
-    public static DateTime now(com.jn.langx.util.jodatime.Chronology chronology) {
+    public static DateTime now(Chronology chronology) {
         if (chronology == null) {
             throw new NullPointerException("Chronology must not be null");
         }
@@ -179,9 +179,9 @@ public final class DateTime
      * in the default time zone is used.
      *
      * @param chronology the chronology, null means ISOChronology in default zone
-     * @see #now(com.jn.langx.util.jodatime.Chronology)
+     * @see #now(Chronology)
      */
-    public DateTime(com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateTime(Chronology chronology) {
         super(chronology);
     }
 
@@ -220,7 +220,7 @@ public final class DateTime
      * @param instant    the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology the chronology, null means ISOChronology in default zone
      */
-    public DateTime(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateTime(long instant, Chronology chronology) {
         super(instant, chronology);
     }
 
@@ -235,7 +235,7 @@ public final class DateTime
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -243,7 +243,7 @@ public final class DateTime
      * @throws IllegalArgumentException if the instant is invalid
      */
     public DateTime(Object instant) {
-        super(instant, (com.jn.langx.util.jodatime.Chronology) null);
+        super(instant, (Chronology) null);
     }
 
     /**
@@ -258,7 +258,7 @@ public final class DateTime
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -279,7 +279,7 @@ public final class DateTime
      * is ignored.
      * <p>
      * The recognised object types are defined in
-     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
+     * {@link convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -287,7 +287,7 @@ public final class DateTime
      * @param chronology the chronology, null means ISO in default zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public DateTime(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateTime(Object instant, Chronology chronology) {
         super(instant, DateTimeUtils.getChronology(chronology));
     }
 
@@ -359,7 +359,7 @@ public final class DateTime
             int dayOfMonth,
             int hourOfDay,
             int minuteOfHour,
-            com.jn.langx.util.jodatime.Chronology chronology) {
+            Chronology chronology) {
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, 0, 0, chronology);
     }
@@ -438,7 +438,7 @@ public final class DateTime
             int hourOfDay,
             int minuteOfHour,
             int secondOfMinute,
-            com.jn.langx.util.jodatime.Chronology chronology) {
+            Chronology chronology) {
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, secondOfMinute, 0, chronology);
     }
@@ -520,7 +520,7 @@ public final class DateTime
             int minuteOfHour,
             int secondOfMinute,
             int millisOfSecond,
-            com.jn.langx.util.jodatime.Chronology chronology) {
+            Chronology chronology) {
         super(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
     }
@@ -569,7 +569,7 @@ public final class DateTime
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a DateTime using the same millis
      */
-    public DateTime toDateTime(com.jn.langx.util.jodatime.Chronology chronology) {
+    public DateTime toDateTime(Chronology chronology) {
         chronology = DateTimeUtils.getChronology(chronology);
         if (getChronology() == chronology) {
             return this;
@@ -601,7 +601,7 @@ public final class DateTime
      * @param newChronology the new chronology, null means ISO default
      * @return a copy of this datetime with a different chronology
      */
-    public DateTime withChronology(com.jn.langx.util.jodatime.Chronology newChronology) {
+    public DateTime withChronology(Chronology newChronology) {
         newChronology = DateTimeUtils.getChronology(newChronology);
         return (newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology));
     }
@@ -718,7 +718,7 @@ public final class DateTime
      * @throws IllegalArgumentException if any value if invalid
      */
     public DateTime withDate(int year, int monthOfYear, int dayOfMonth) {
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long instant = getMillis();
         instant = chrono.year().set(instant, year);
         instant = chrono.monthOfYear().set(instant, monthOfYear);
@@ -746,7 +746,7 @@ public final class DateTime
      * @throws IllegalArgumentException if any value if invalid
      */
     public DateTime withTime(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long instant = getMillis();
         instant = chrono.hourOfDay().set(instant, hourOfDay);
         instant = chrono.minuteOfHour().set(instant, minuteOfHour);
@@ -1521,7 +1521,7 @@ public final class DateTime
      * @deprecated DateMidnight is deprecated
      */
     @Deprecated
-    public com.jn.langx.util.jodatime.DateMidnight toDateMidnight() {
+    public DateMidnight toDateMidnight() {
         return new DateMidnight(getMillis(), getChronology());
     }
 

@@ -113,8 +113,8 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * @return the period in seconds
      * @throws IllegalArgumentException if the instants are null or invalid
      */
-    public static Seconds secondsBetween(com.jn.langx.util.jodatime.ReadableInstant start, ReadableInstant end) {
-        int amount = BaseSingleFieldPeriod.between(start, end, com.jn.langx.util.jodatime.DurationFieldType.seconds());
+    public static Seconds secondsBetween(ReadableInstant start, ReadableInstant end) {
+        int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.seconds());
         return Seconds.seconds(amount);
     }
 
@@ -130,11 +130,11 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * @return the period in seconds
      * @throws IllegalArgumentException if the partials are null or invalid
      */
-    public static Seconds secondsBetween(com.jn.langx.util.jodatime.ReadablePartial start, ReadablePartial end) {
-        if (start instanceof com.jn.langx.util.jodatime.LocalTime && end instanceof com.jn.langx.util.jodatime.LocalTime) {
+    public static Seconds secondsBetween(ReadablePartial start, ReadablePartial end) {
+        if (start instanceof LocalTime && end instanceof LocalTime) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int seconds = chrono.seconds().getDifference(
-                    ((com.jn.langx.util.jodatime.LocalTime) end).getLocalMillis(), ((LocalTime) start).getLocalMillis());
+                    ((LocalTime) end).getLocalMillis(), ((LocalTime) start).getLocalMillis());
             return Seconds.seconds(seconds);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);
@@ -153,7 +153,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
         if (interval == null) {
             return Seconds.ZERO;
         }
-        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), com.jn.langx.util.jodatime.DurationFieldType.seconds());
+        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.seconds());
         return Seconds.seconds(amount);
     }
 
@@ -178,7 +178,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
     public static Seconds standardSecondsIn(ReadablePeriod period) {
-        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_SECOND);
+        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, DateTimeConstants.MILLIS_PER_SECOND);
         return Seconds.seconds(amount);
     }
 
@@ -230,7 +230,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.DurationFieldType getFieldType() {
+    public DurationFieldType getFieldType() {
         return DurationFieldType.seconds();
     }
 
@@ -239,7 +239,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.PeriodType getPeriodType() {
+    public PeriodType getPeriodType() {
         return PeriodType.seconds();
     }
 
@@ -260,7 +260,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * @return a period representing the number of whole weeks for this number of seconds
      */
     public Weeks toStandardWeeks() {
-        return Weeks.weeks(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_WEEK);
+        return Weeks.weeks(getValue() / DateTimeConstants.SECONDS_PER_WEEK);
     }
 
     /**
@@ -276,8 +276,8 @@ public final class Seconds extends BaseSingleFieldPeriod {
      *
      * @return a period representing the number of days for this number of seconds
      */
-    public com.jn.langx.util.jodatime.Days toStandardDays() {
-        return Days.days(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_DAY);
+    public Days toStandardDays() {
+        return Days.days(getValue() / DateTimeConstants.SECONDS_PER_DAY);
     }
 
     /**
@@ -292,8 +292,8 @@ public final class Seconds extends BaseSingleFieldPeriod {
      *
      * @return a period representing the number of hours for this number of seconds
      */
-    public com.jn.langx.util.jodatime.Hours toStandardHours() {
-        return Hours.hours(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_HOUR);
+    public Hours toStandardHours() {
+        return Hours.hours(getValue() / DateTimeConstants.SECONDS_PER_HOUR);
     }
 
     /**
@@ -308,8 +308,8 @@ public final class Seconds extends BaseSingleFieldPeriod {
      *
      * @return a period representing the number of minutes for this number of seconds
      */
-    public com.jn.langx.util.jodatime.Minutes toStandardMinutes() {
-        return Minutes.minutes(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_MINUTE);
+    public Minutes toStandardMinutes() {
+        return Minutes.minutes(getValue() / DateTimeConstants.SECONDS_PER_MINUTE);
     }
 
     //-----------------------------------------------------------------------
@@ -327,7 +327,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      *
      * @return a duration equivalent to this number of seconds
      */
-    public com.jn.langx.util.jodatime.Duration toStandardDuration() {
+    public Duration toStandardDuration() {
         long seconds = getValue();  // assign to a long
         return new Duration(seconds * DateTimeConstants.MILLIS_PER_SECOND);
     }

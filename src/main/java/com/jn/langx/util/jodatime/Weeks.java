@@ -113,7 +113,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @return the period in weeks
      * @throws IllegalArgumentException if the instants are null or invalid
      */
-    public static Weeks weeksBetween(com.jn.langx.util.jodatime.ReadableInstant start, ReadableInstant end) {
+    public static Weeks weeksBetween(ReadableInstant start, ReadableInstant end) {
         int amount = BaseSingleFieldPeriod.between(start, end, com.jn.langx.util.jodatime.DurationFieldType.weeks());
         return Weeks.weeks(amount);
     }
@@ -130,11 +130,11 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @return the period in weeks
      * @throws IllegalArgumentException if the partials are null or invalid
      */
-    public static Weeks weeksBetween(com.jn.langx.util.jodatime.ReadablePartial start, ReadablePartial end) {
-        if (start instanceof com.jn.langx.util.jodatime.LocalDate && end instanceof com.jn.langx.util.jodatime.LocalDate) {
+    public static Weeks weeksBetween(ReadablePartial start, ReadablePartial end) {
+        if (start instanceof LocalDate && end instanceof LocalDate) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int weeks = chrono.weeks().getDifference(
-                    ((com.jn.langx.util.jodatime.LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
+                    ((LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
             return Weeks.weeks(weeks);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);
@@ -153,7 +153,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
         if (interval == null) {
             return Weeks.ZERO;
         }
-        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), com.jn.langx.util.jodatime.DurationFieldType.weeks());
+        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.weeks());
         return Weeks.weeks(amount);
     }
 
@@ -178,7 +178,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
     public static Weeks standardWeeksIn(ReadablePeriod period) {
-        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_WEEK);
+        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, DateTimeConstants.MILLIS_PER_WEEK);
         return Weeks.weeks(amount);
     }
 
@@ -230,7 +230,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.DurationFieldType getFieldType() {
+    public DurationFieldType getFieldType() {
         return DurationFieldType.weeks();
     }
 
@@ -239,7 +239,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.PeriodType getPeriodType() {
+    public PeriodType getPeriodType() {
         return PeriodType.weeks();
     }
 
@@ -258,8 +258,8 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @return a period representing the number of days for this number of weeks
      * @throws ArithmeticException if the number of days is too large to be represented
      */
-    public com.jn.langx.util.jodatime.Days toStandardDays() {
-        return Days.days(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.DAYS_PER_WEEK));
+    public Days toStandardDays() {
+        return Days.days(FieldUtils.safeMultiply(getValue(), DateTimeConstants.DAYS_PER_WEEK));
     }
 
     /**
@@ -276,8 +276,8 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @return a period representing the number of hours for this number of weeks
      * @throws ArithmeticException if the number of hours is too large to be represented
      */
-    public com.jn.langx.util.jodatime.Hours toStandardHours() {
-        return Hours.hours(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.HOURS_PER_WEEK));
+    public Hours toStandardHours() {
+        return Hours.hours(FieldUtils.safeMultiply(getValue(), DateTimeConstants.HOURS_PER_WEEK));
     }
 
     /**
@@ -294,8 +294,8 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @return a period representing the number of minutes for this number of weeks
      * @throws ArithmeticException if the number of minutes is too large to be represented
      */
-    public com.jn.langx.util.jodatime.Minutes toStandardMinutes() {
-        return Minutes.minutes(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_WEEK));
+    public Minutes toStandardMinutes() {
+        return Minutes.minutes(FieldUtils.safeMultiply(getValue(), DateTimeConstants.MINUTES_PER_WEEK));
     }
 
     /**
@@ -313,8 +313,8 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @return a period representing the number of seconds for this number of weeks
      * @throws ArithmeticException if the number of seconds is too large to be represented
      */
-    public com.jn.langx.util.jodatime.Seconds toStandardSeconds() {
-        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_WEEK));
+    public Seconds toStandardSeconds() {
+        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), DateTimeConstants.SECONDS_PER_WEEK));
     }
 
     //-----------------------------------------------------------------------
@@ -333,7 +333,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      *
      * @return a duration equivalent to this number of weeks
      */
-    public com.jn.langx.util.jodatime.Duration toStandardDuration() {
+    public Duration toStandardDuration() {
         long weeks = getValue();  // assign to a long
         return new Duration(weeks * DateTimeConstants.MILLIS_PER_WEEK);
     }

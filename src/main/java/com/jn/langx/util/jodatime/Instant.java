@@ -295,8 +295,8 @@ public final class Instant
      *
      * @return a DateTime using the same millis
      */
-    public com.jn.langx.util.jodatime.DateTime toDateTime() {
-        return new com.jn.langx.util.jodatime.DateTime(getMillis(), ISOChronology.getInstance());
+    public DateTime toDateTime() {
+        return new DateTime(getMillis(), ISOChronology.getInstance());
     }
 
     /**

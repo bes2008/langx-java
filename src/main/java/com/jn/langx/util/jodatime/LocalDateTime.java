@@ -104,7 +104,7 @@ public final class LocalDateTime
     /**
      * The chronology to use in UTC
      */
-    private final com.jn.langx.util.jodatime.Chronology iChronology;
+    private final Chronology iChronology;
 
     //-----------------------------------------------------------------------
 
@@ -129,7 +129,7 @@ public final class LocalDateTime
      * @return the current date, not null
      * @since 2.0
      */
-    public static LocalDateTime now(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public static LocalDateTime now(DateTimeZone zone) {
         if (zone == null) {
             throw new NullPointerException("Zone must not be null");
         }
@@ -145,7 +145,7 @@ public final class LocalDateTime
      * @return the current date, not null
      * @since 2.0
      */
-    public static LocalDateTime now(com.jn.langx.util.jodatime.Chronology chronology) {
+    public static LocalDateTime now(Chronology chronology) {
         if (chronology == null) {
             throw new NullPointerException("Chronology must not be null");
         }
@@ -272,7 +272,7 @@ public final class LocalDateTime
      * @see #now()
      */
     public LocalDateTime() {
-        this(com.jn.langx.util.jodatime.DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
     }
 
     /**
@@ -283,10 +283,10 @@ public final class LocalDateTime
      * Once the constructor is completed, the zone is no longer used.
      *
      * @param zone the time zone, null means default zone
-     * @see #now(com.jn.langx.util.jodatime.DateTimeZone)
+     * @see #now(DateTimeZone)
      */
-    public LocalDateTime(com.jn.langx.util.jodatime.DateTimeZone zone) {
-        this(com.jn.langx.util.jodatime.DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
+    public LocalDateTime(DateTimeZone zone) {
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
     }
 
     /**
@@ -297,10 +297,10 @@ public final class LocalDateTime
      * Once the constructor is completed, the zone is no longer used.
      *
      * @param chronology the chronology, null means ISOChronology in default zone
-     * @see #now(com.jn.langx.util.jodatime.Chronology)
+     * @see #now(Chronology)
      */
-    public LocalDateTime(com.jn.langx.util.jodatime.Chronology chronology) {
-        this(com.jn.langx.util.jodatime.DateTimeUtils.currentTimeMillis(), chronology);
+    public LocalDateTime(Chronology chronology) {
+        this(DateTimeUtils.currentTimeMillis(), chronology);
     }
 
     //-----------------------------------------------------------------------
@@ -327,7 +327,7 @@ public final class LocalDateTime
      * @param instant the milliseconds from 1970-01-01T00:00:00Z
      * @param zone    the time zone, null means default zone
      */
-    public LocalDateTime(long instant, com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public LocalDateTime(long instant, DateTimeZone zone) {
         this(instant, ISOChronology.getInstance(zone));
     }
 
@@ -341,10 +341,10 @@ public final class LocalDateTime
      * @param instant    the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology the chronology, null means ISOChronology in default zone
      */
-    public LocalDateTime(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
-        chronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology);
+    public LocalDateTime(long instant, Chronology chronology) {
+        chronology = DateTimeUtils.getChronology(chronology);
 
-        long localMillis = chronology.getZone().getMillisKeepLocal(com.jn.langx.util.jodatime.DateTimeZone.UTC, instant);
+        long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
         iLocalMillis = localMillis;
         iChronology = chronology.withUTC();
     }
@@ -368,7 +368,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDateTime(Object instant) {
-        this(instant, (com.jn.langx.util.jodatime.Chronology) null);
+        this(instant, (Chronology) null);
     }
 
     /**
@@ -389,10 +389,10 @@ public final class LocalDateTime
      * @param zone    the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public LocalDateTime(Object instant, com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public LocalDateTime(Object instant, DateTimeZone zone) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
-        com.jn.langx.util.jodatime.Chronology chronology = converter.getChronology(instant, zone);
-        chronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology);
+        Chronology chronology = converter.getChronology(instant, zone);
+        chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
         int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
         iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
@@ -419,10 +419,10 @@ public final class LocalDateTime
      * @param chronology the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public LocalDateTime(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public LocalDateTime(Object instant, Chronology chronology) {
         PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         chronology = converter.getChronology(instant, chronology);
-        chronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology);
+        chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
         int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localDateOptionalTimeParser());
         iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
@@ -519,9 +519,9 @@ public final class LocalDateTime
             int minuteOfHour,
             int secondOfMinute,
             int millisOfSecond,
-            com.jn.langx.util.jodatime.Chronology chronology) {
+            Chronology chronology) {
         super();
-        chronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology).withUTC();
+        chronology = DateTimeUtils.getChronology(chronology).withUTC();
         long instant = chronology.getDateTimeMillis(year, monthOfYear, dayOfMonth,
                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         iChronology = chronology;
@@ -537,7 +537,7 @@ public final class LocalDateTime
         if (iChronology == null) {
             return new LocalDateTime(iLocalMillis, ISOChronology.getInstanceUTC());
         }
-        if (com.jn.langx.util.jodatime.DateTimeZone.UTC.equals(iChronology.getZone()) == false) {
+        if (DateTimeZone.UTC.equals(iChronology.getZone()) == false) {
             return new LocalDateTime(iLocalMillis, iChronology.withUTC());
         }
         return this;
@@ -564,7 +564,7 @@ public final class LocalDateTime
      * @param chrono the chronology to use
      * @return the field
      */
-    protected com.jn.langx.util.jodatime.DateTimeField getField(int index, com.jn.langx.util.jodatime.Chronology chrono) {
+    protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
             case YEAR:
                 return chrono.year();
@@ -620,7 +620,7 @@ public final class LocalDateTime
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
-    public int get(com.jn.langx.util.jodatime.DateTimeFieldType type) {
+    public int get(DateTimeFieldType type) {
         if (type == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
@@ -630,12 +630,12 @@ public final class LocalDateTime
     /**
      * Checks if the field type specified is supported by this
      * local datetime and chronology.
-     * This can be used to avoid exceptions in {@link #get(com.jn.langx.util.jodatime.DateTimeFieldType)}.
+     * This can be used to avoid exceptions in {@link #get(DateTimeFieldType)}.
      *
      * @param type a field type, usually obtained from DateTimeFieldType
      * @return true if the field type is supported
      */
-    public boolean isSupported(com.jn.langx.util.jodatime.DateTimeFieldType type) {
+    public boolean isSupported(DateTimeFieldType type) {
         if (type == null) {
             return false;
         }
@@ -649,7 +649,7 @@ public final class LocalDateTime
      * @param type a duration type, usually obtained from DurationFieldType
      * @return true if the field type is supported
      */
-    public boolean isSupported(com.jn.langx.util.jodatime.DurationFieldType type) {
+    public boolean isSupported(DurationFieldType type) {
         if (type == null) {
             return false;
         }
@@ -674,7 +674,7 @@ public final class LocalDateTime
      *
      * @return the Chronology that the datetime is using
      */
-    public com.jn.langx.util.jodatime.Chronology getChronology() {
+    public Chronology getChronology() {
         return iChronology;
     }
 
@@ -743,8 +743,8 @@ public final class LocalDateTime
      *
      * @return <code>this</code>
      */
-    public com.jn.langx.util.jodatime.DateTime toDateTime() {
-        return toDateTime((com.jn.langx.util.jodatime.DateTimeZone) null);
+    public DateTime toDateTime() {
+        return toDateTime((DateTimeZone) null);
     }
 
     /**
@@ -756,9 +756,9 @@ public final class LocalDateTime
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
      */
-    public com.jn.langx.util.jodatime.DateTime toDateTime(DateTimeZone zone) {
+    public DateTime toDateTime(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);
-        com.jn.langx.util.jodatime.Chronology chrono = iChronology.withZone(zone);
+        Chronology chrono = iChronology.withZone(zone);
         return new DateTime(
                 getYear(), getMonthOfYear(), getDayOfMonth(),
                 getHourOfDay(), getMinuteOfHour(),
@@ -772,7 +772,7 @@ public final class LocalDateTime
      *
      * @return a LocalDate with the same date and chronology
      */
-    public com.jn.langx.util.jodatime.LocalDate toLocalDate() {
+    public LocalDate toLocalDate() {
         return new LocalDate(getLocalMillis(), getChronology());
     }
 
@@ -925,7 +925,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if any value if invalid
      */
     public LocalDateTime withDate(int year, int monthOfYear, int dayOfMonth) {
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long instant = getLocalMillis();
         instant = chrono.year().set(instant, year);
         instant = chrono.monthOfYear().set(instant, monthOfYear);
@@ -952,7 +952,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if any value if invalid
      */
     public LocalDateTime withTime(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
-        com.jn.langx.util.jodatime.Chronology chrono = getChronology();
+        Chronology chrono = getChronology();
         long instant = getLocalMillis();
         instant = chrono.hourOfDay().set(instant, hourOfDay);
         instant = chrono.minuteOfHour().set(instant, minuteOfHour);
@@ -1001,7 +1001,7 @@ public final class LocalDateTime
      * @return a copy of this datetime with the field set
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    public LocalDateTime withField(com.jn.langx.util.jodatime.DateTimeFieldType fieldType, int value) {
+    public LocalDateTime withField(DateTimeFieldType fieldType, int value) {
         if (fieldType == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
@@ -1028,7 +1028,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException      if the result exceeds the internal capacity
      */
-    public LocalDateTime withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
+    public LocalDateTime withFieldAdded(DurationFieldType fieldType, int amount) {
         if (fieldType == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
@@ -1532,7 +1532,7 @@ public final class LocalDateTime
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */
-    public Property property(com.jn.langx.util.jodatime.DateTimeFieldType fieldType) {
+    public Property property(DateTimeFieldType fieldType) {
         if (fieldType == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
@@ -1639,7 +1639,7 @@ public final class LocalDateTime
     /**
      * Get the day of month field value.
      * <p>
-     * The values for the day of month are defined in {@link com.jn.langx.util.jodatime.DateTimeConstants}.
+     * The values for the day of month are defined in {@link DateTimeConstants}.
      *
      * @return the day of month
      */
@@ -1650,7 +1650,7 @@ public final class LocalDateTime
     /**
      * Get the day of week field value.
      * <p>
-     * The values for the day of week are defined in {@link com.jn.langx.util.jodatime.DateTimeConstants}.
+     * The values for the day of week are defined in {@link DateTimeConstants}.
      *
      * @return the day of week
      */
@@ -2190,7 +2190,7 @@ public final class LocalDateTime
         /**
          * The field this property is working against
          */
-        private transient com.jn.langx.util.jodatime.DateTimeField iField;
+        private transient DateTimeField iField;
 
         /**
          * Constructor.
@@ -2198,7 +2198,7 @@ public final class LocalDateTime
          * @param instant the instant to set
          * @param field   the field to use
          */
-        Property(LocalDateTime instant, com.jn.langx.util.jodatime.DateTimeField field) {
+        Property(LocalDateTime instant, DateTimeField field) {
             super();
             iInstant = instant;
             iField = field;
@@ -2217,7 +2217,7 @@ public final class LocalDateTime
          */
         private void readObject(ObjectInputStream oos) throws IOException, ClassNotFoundException {
             iInstant = (LocalDateTime) oos.readObject();
-            com.jn.langx.util.jodatime.DateTimeFieldType type = (DateTimeFieldType) oos.readObject();
+            DateTimeFieldType type = (DateTimeFieldType) oos.readObject();
             iField = type.getField(iInstant.getChronology());
         }
 

@@ -204,7 +204,7 @@ public final class Days extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
     public static Days standardDaysIn(ReadablePeriod period) {
-        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_DAY);
+        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, DateTimeConstants.MILLIS_PER_DAY);
         return Days.days(amount);
     }
 
@@ -284,7 +284,7 @@ public final class Days extends BaseSingleFieldPeriod {
      * @return a period representing the number of weeks for this number of days
      */
     public Weeks toStandardWeeks() {
-        return Weeks.weeks(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.DAYS_PER_WEEK);
+        return Weeks.weeks(getValue() / DateTimeConstants.DAYS_PER_WEEK);
     }
 
     /**
@@ -301,7 +301,7 @@ public final class Days extends BaseSingleFieldPeriod {
      * @throws ArithmeticException if the number of hours is too large to be represented
      */
     public Hours toStandardHours() {
-        return Hours.hours(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.HOURS_PER_DAY));
+        return Hours.hours(FieldUtils.safeMultiply(getValue(), DateTimeConstants.HOURS_PER_DAY));
     }
 
     /**
@@ -319,7 +319,7 @@ public final class Days extends BaseSingleFieldPeriod {
      * @throws ArithmeticException if the number of minutes is too large to be represented
      */
     public Minutes toStandardMinutes() {
-        return Minutes.minutes(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_DAY));
+        return Minutes.minutes(FieldUtils.safeMultiply(getValue(), DateTimeConstants.MINUTES_PER_DAY));
     }
 
     /**
@@ -337,7 +337,7 @@ public final class Days extends BaseSingleFieldPeriod {
      * @throws ArithmeticException if the number of seconds is too large to be represented
      */
     public Seconds toStandardSeconds() {
-        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_DAY));
+        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), DateTimeConstants.SECONDS_PER_DAY));
     }
 
     //-----------------------------------------------------------------------

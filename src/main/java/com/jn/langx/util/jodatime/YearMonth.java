@@ -65,7 +65,7 @@ import java.util.Locale;
  */
 public final class YearMonth
         extends BasePartial
-        implements com.jn.langx.util.jodatime.ReadablePartial, Serializable {
+        implements ReadablePartial, Serializable {
 
     /**
      * Serialization version
@@ -74,9 +74,9 @@ public final class YearMonth
     /**
      * The singleton set of field types
      */
-    private static final com.jn.langx.util.jodatime.DateTimeFieldType[] FIELD_TYPES = new com.jn.langx.util.jodatime.DateTimeFieldType[]{
-            com.jn.langx.util.jodatime.DateTimeFieldType.year(),
-            com.jn.langx.util.jodatime.DateTimeFieldType.monthOfYear(),
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[]{
+            DateTimeFieldType.year(),
+            DateTimeFieldType.monthOfYear(),
     };
 
     /**
@@ -111,7 +111,7 @@ public final class YearMonth
      * @return the current year-month, not null
      * @since 2.0
      */
-    public static YearMonth now(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public static YearMonth now(DateTimeZone zone) {
         if (zone == null) {
             throw new NullPointerException("Zone must not be null");
         }
@@ -127,7 +127,7 @@ public final class YearMonth
      * @return the current year-month, not null
      * @since 2.0
      */
-    public static YearMonth now(com.jn.langx.util.jodatime.Chronology chronology) {
+    public static YearMonth now(Chronology chronology) {
         if (chronology == null) {
             throw new NullPointerException("Chronology must not be null");
         }
@@ -156,7 +156,7 @@ public final class YearMonth
      * @since 2.0
      */
     public static YearMonth parse(String str, DateTimeFormatter formatter) {
-        com.jn.langx.util.jodatime.LocalDate date = formatter.parseLocalDate(str);
+        LocalDate date = formatter.parseLocalDate(str);
         return new YearMonth(date.getYear(), date.getMonthOfYear());
     }
 
@@ -231,9 +231,9 @@ public final class YearMonth
      * are performed without reference to a time-zone (by switching to UTC).
      *
      * @param zone the zone to use, null means default zone
-     * @see #now(com.jn.langx.util.jodatime.DateTimeZone)
+     * @see #now(DateTimeZone)
      */
-    public YearMonth(com.jn.langx.util.jodatime.DateTimeZone zone) {
+    public YearMonth(DateTimeZone zone) {
         super(ISOChronology.getInstance(zone));
     }
 
@@ -246,9 +246,9 @@ public final class YearMonth
      * without reference to a time-zone (by switching to UTC).
      *
      * @param chronology the chronology, null means ISOChronology in the default zone
-     * @see #now(com.jn.langx.util.jodatime.Chronology)
+     * @see #now(Chronology)
      */
-    public YearMonth(com.jn.langx.util.jodatime.Chronology chronology) {
+    public YearMonth(Chronology chronology) {
         super(chronology);
     }
 
@@ -277,7 +277,7 @@ public final class YearMonth
      * @param instant    the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology the chronology, null means ISOChronology in the default zone
      */
-    public YearMonth(long instant, com.jn.langx.util.jodatime.Chronology chronology) {
+    public YearMonth(long instant, Chronology chronology) {
         super(instant, chronology);
     }
 
@@ -316,8 +316,8 @@ public final class YearMonth
      * @param chronology the chronology, null means ISO default
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public YearMonth(Object instant, com.jn.langx.util.jodatime.Chronology chronology) {
-        super(instant, com.jn.langx.util.jodatime.DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
+    public YearMonth(Object instant, Chronology chronology) {
+        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
     }
 
     /**
@@ -349,7 +349,7 @@ public final class YearMonth
      * @param monthOfYear the month of the year
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public YearMonth(int year, int monthOfYear, com.jn.langx.util.jodatime.Chronology chronology) {
+    public YearMonth(int year, int monthOfYear, Chronology chronology) {
         super(new int[]{year, monthOfYear}, chronology);
     }
 
@@ -369,7 +369,7 @@ public final class YearMonth
      * @param partial the partial to base this new instance on
      * @param chrono  the new chronology
      */
-    YearMonth(YearMonth partial, com.jn.langx.util.jodatime.Chronology chrono) {
+    YearMonth(YearMonth partial, Chronology chrono) {
         super(partial, chrono);
     }
 
@@ -379,7 +379,7 @@ public final class YearMonth
      * @return the resolved object, not null
      */
     private Object readResolve() {
-        if (com.jn.langx.util.jodatime.DateTimeZone.UTC.equals(getChronology().getZone()) == false) {
+        if (DateTimeZone.UTC.equals(getChronology().getZone()) == false) {
             return new YearMonth(this, getChronology().withUTC());
         }
         return this;
@@ -407,7 +407,7 @@ public final class YearMonth
      * @param chrono the chronology to use
      * @return the field, never null
      */
-    protected com.jn.langx.util.jodatime.DateTimeField getField(int index, com.jn.langx.util.jodatime.Chronology chrono) {
+    protected DateTimeField getField(int index, Chronology chrono) {
         switch (index) {
             case YEAR:
                 return chrono.year();
@@ -425,7 +425,7 @@ public final class YearMonth
      * @return the field at the specified index, never null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType getFieldType(int index) {
+    public DateTimeFieldType getFieldType(int index) {
         return FIELD_TYPES[index];
     }
 
@@ -436,8 +436,8 @@ public final class YearMonth
      *
      * @return the array of field types (cloned), largest to smallest, never null
      */
-    public com.jn.langx.util.jodatime.DateTimeFieldType[] getFieldTypes() {
-        return (com.jn.langx.util.jodatime.DateTimeFieldType[]) FIELD_TYPES.clone();
+    public DateTimeFieldType[] getFieldTypes() {
+        return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
 
     //-----------------------------------------------------------------------
@@ -457,7 +457,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the values are invalid for the new chronology
      */
     public YearMonth withChronologyRetainFields(Chronology newChronology) {
-        newChronology = com.jn.langx.util.jodatime.DateTimeUtils.getChronology(newChronology);
+        newChronology = DateTimeUtils.getChronology(newChronology);
         newChronology = newChronology.withUTC();
         if (newChronology == getChronology()) {
             return this;
@@ -486,7 +486,7 @@ public final class YearMonth
      * @return a copy of this instance with the field set, never null
      * @throws IllegalArgumentException if the value is null or invalid
      */
-    public YearMonth withField(com.jn.langx.util.jodatime.DateTimeFieldType fieldType, int value) {
+    public YearMonth withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
         if (value == getValue(index)) {
             return this;
@@ -514,7 +514,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException      if the new date-time exceeds the capacity
      */
-    public YearMonth withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType fieldType, int amount) {
+    public YearMonth withFieldAdded(DurationFieldType fieldType, int amount) {
         int index = indexOfSupported(fieldType);
         if (amount == 0) {
             return this;
@@ -532,7 +532,7 @@ public final class YearMonth
      * <p>
      * This method is typically used to add multiple copies of complex
      * period instances. Adding one field is best achieved using methods
-     * like {@link #withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType, int)}
+     * like {@link #withFieldAdded(DurationFieldType, int)}
      * or {@link #plusYears(int)}.
      *
      * @param period the period to add to this one, null means zero
@@ -540,13 +540,13 @@ public final class YearMonth
      * @return a copy of this instance with the period added, never null
      * @throws ArithmeticException if the new date-time exceeds the capacity
      */
-    public YearMonth withPeriodAdded(com.jn.langx.util.jodatime.ReadablePeriod period, int scalar) {
+    public YearMonth withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
             return this;
         }
         int[] newValues = getValues();
         for (int i = 0; i < period.size(); i++) {
-            com.jn.langx.util.jodatime.DurationFieldType fieldType = period.getFieldType(i);
+            DurationFieldType fieldType = period.getFieldType(i);
             int index = indexOf(fieldType);
             if (index >= 0) {
                 newValues = getField(index).add(this, index, newValues,
@@ -571,7 +571,7 @@ public final class YearMonth
      * @return a copy of this instance with the period added, never null
      * @throws ArithmeticException if the new year-month exceeds the capacity
      */
-    public YearMonth plus(com.jn.langx.util.jodatime.ReadablePeriod period) {
+    public YearMonth plus(ReadablePeriod period) {
         return withPeriodAdded(period, 1);
     }
 
@@ -593,7 +593,7 @@ public final class YearMonth
      * @return the new year-month plus the increased years, never null
      */
     public YearMonth plusYears(int years) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.years(), years);
+        return withFieldAdded(DurationFieldType.years(), years);
     }
 
     /**
@@ -612,7 +612,7 @@ public final class YearMonth
      * @return the new year-month plus the increased months, never null
      */
     public YearMonth plusMonths(int months) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.months(), months);
+        return withFieldAdded(DurationFieldType.months(), months);
     }
 
     //-----------------------------------------------------------------------
@@ -652,7 +652,7 @@ public final class YearMonth
      * @return the new year-month minus the increased years, never null
      */
     public YearMonth minusYears(int years) {
-        return withFieldAdded(com.jn.langx.util.jodatime.DurationFieldType.years(), FieldUtils.safeNegate(years));
+        return withFieldAdded(DurationFieldType.years(), FieldUtils.safeNegate(years));
     }
 
     /**
@@ -682,7 +682,7 @@ public final class YearMonth
      * @param dayOfMonth the day of month to use, valid for chronology, such as 1-31 for ISO
      * @return a LocalDate with the same year-month and chronology, never null
      */
-    public com.jn.langx.util.jodatime.LocalDate toLocalDate(int dayOfMonth) {
+    public LocalDate toLocalDate(int dayOfMonth) {
         return new LocalDate(getYear(), getMonthOfYear(), dayOfMonth, getChronology());
     }
 
@@ -697,7 +697,7 @@ public final class YearMonth
      *
      * @return an interval over the month, never null
      */
-    public com.jn.langx.util.jodatime.Interval toInterval() {
+    public Interval toInterval() {
         return toInterval(null);
     }
 
@@ -711,9 +711,9 @@ public final class YearMonth
      * @param zone the zone to get the Interval in, null means default
      * @return an interval over the month, never null
      */
-    public com.jn.langx.util.jodatime.Interval toInterval(DateTimeZone zone) {
+    public Interval toInterval(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);
-        com.jn.langx.util.jodatime.DateTime start = toLocalDate(1).toDateTimeAtStartOfDay(zone);
+        DateTime start = toLocalDate(1).toDateTimeAtStartOfDay(zone);
         DateTime end = plusMonths(1).toLocalDate(1).toDateTimeAtStartOfDay(zone);
         return new Interval(start, end);
     }

@@ -144,7 +144,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the instants are null or invalid
      */
     public static Hours hoursBetween(ReadableInstant start, ReadableInstant end) {
-        int amount = BaseSingleFieldPeriod.between(start, end, com.jn.langx.util.jodatime.DurationFieldType.hours());
+        int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.hours());
         return Hours.hours(amount);
     }
 
@@ -183,7 +183,7 @@ public final class Hours extends BaseSingleFieldPeriod {
         if (interval == null) {
             return Hours.ZERO;
         }
-        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), com.jn.langx.util.jodatime.DurationFieldType.hours());
+        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.hours());
         return Hours.hours(amount);
     }
 
@@ -208,7 +208,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the period contains imprecise duration values
      */
     public static Hours standardHoursIn(ReadablePeriod period) {
-        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, com.jn.langx.util.jodatime.DateTimeConstants.MILLIS_PER_HOUR);
+        int amount = BaseSingleFieldPeriod.standardPeriodIn(period, DateTimeConstants.MILLIS_PER_HOUR);
         return Hours.hours(amount);
     }
 
@@ -260,7 +260,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.DurationFieldType getFieldType() {
+    public DurationFieldType getFieldType() {
         return DurationFieldType.hours();
     }
 
@@ -289,7 +289,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @return a period representing the number of whole weeks for this number of hours
      */
     public Weeks toStandardWeeks() {
-        return Weeks.weeks(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.HOURS_PER_WEEK);
+        return Weeks.weeks(getValue() / DateTimeConstants.HOURS_PER_WEEK);
     }
 
     /**
@@ -304,8 +304,8 @@ public final class Hours extends BaseSingleFieldPeriod {
      *
      * @return a period representing the number of whole days for this number of hours
      */
-    public com.jn.langx.util.jodatime.Days toStandardDays() {
-        return Days.days(getValue() / com.jn.langx.util.jodatime.DateTimeConstants.HOURS_PER_DAY);
+    public Days toStandardDays() {
+        return Days.days(getValue() / DateTimeConstants.HOURS_PER_DAY);
     }
 
     /**
@@ -321,7 +321,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @throws ArithmeticException if the number of minutes is too large to be represented
      */
     public Minutes toStandardMinutes() {
-        return Minutes.minutes(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.MINUTES_PER_HOUR));
+        return Minutes.minutes(FieldUtils.safeMultiply(getValue(), DateTimeConstants.MINUTES_PER_HOUR));
     }
 
     /**
@@ -338,7 +338,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @throws ArithmeticException if the number of seconds is too large to be represented
      */
     public Seconds toStandardSeconds() {
-        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), com.jn.langx.util.jodatime.DateTimeConstants.SECONDS_PER_HOUR));
+        return Seconds.seconds(FieldUtils.safeMultiply(getValue(), DateTimeConstants.SECONDS_PER_HOUR));
     }
 
     //-----------------------------------------------------------------------
@@ -356,7 +356,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      *
      * @return a duration equivalent to this number of hours
      */
-    public com.jn.langx.util.jodatime.Duration toStandardDuration() {
+    public Duration toStandardDuration() {
         long hours = getValue();  // assign to a long
         return new Duration(hours * DateTimeConstants.MILLIS_PER_HOUR);
     }

@@ -169,7 +169,7 @@ public final class Months extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the instants are null or invalid
      */
     public static Months monthsBetween(ReadableInstant start, ReadableInstant end) {
-        int amount = BaseSingleFieldPeriod.between(start, end, com.jn.langx.util.jodatime.DurationFieldType.months());
+        int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.months());
         return Months.months(amount);
     }
 
@@ -186,10 +186,10 @@ public final class Months extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the partials are null or invalid
      */
     public static Months monthsBetween(ReadablePartial start, ReadablePartial end) {
-        if (start instanceof com.jn.langx.util.jodatime.LocalDate && end instanceof com.jn.langx.util.jodatime.LocalDate) {
+        if (start instanceof LocalDate && end instanceof LocalDate) {
             Chronology chrono = DateTimeUtils.getChronology(start.getChronology());
             int months = chrono.months().getDifference(
-                    ((com.jn.langx.util.jodatime.LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
+                    ((LocalDate) end).getLocalMillis(), ((LocalDate) start).getLocalMillis());
             return Months.months(months);
         }
         int amount = BaseSingleFieldPeriod.between(start, end, ZERO);
@@ -209,7 +209,7 @@ public final class Months extends BaseSingleFieldPeriod {
         if (interval == null) {
             return Months.ZERO;
         }
-        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), com.jn.langx.util.jodatime.DurationFieldType.months());
+        int amount = BaseSingleFieldPeriod.between(interval.getStart(), interval.getEnd(), DurationFieldType.months());
         return Months.months(amount);
     }
 
@@ -261,7 +261,7 @@ public final class Months extends BaseSingleFieldPeriod {
      *
      * @return the period type
      */
-    public com.jn.langx.util.jodatime.DurationFieldType getFieldType() {
+    public DurationFieldType getFieldType() {
         return DurationFieldType.months();
     }
 
