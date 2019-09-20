@@ -469,8 +469,8 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Gets the default zone provider.
      * <p>
-     * Tries the system property <code>DateTimeZone.Provider</code>.
-     * Then tries a <code>ZoneInfoProvider</code> using the data in <code>tz/data</code>.
+     * Tries the system property <code>com.jn.langx.util.jodatime.DateTimeZone.Provider</code>.
+     * Then tries a <code>ZoneInfoProvider</code> using the data in <code>com.jn.langx.util.jodatime/tz/data</code>.
      * Then uses <code>UTCProvider</code>.
      *
      * @return the default name provider
@@ -480,7 +480,7 @@ public abstract class DateTimeZone implements Serializable {
 
         try {
             String providerClass =
-                    System.getProperty("DateTimeZone.Provider");
+                    System.getProperty("com.jn.langx.util.jodatime.DateTimeZone.Provider");
             if (providerClass != null) {
                 try {
                     provider = (Provider) Class.forName(providerClass).newInstance();
@@ -495,7 +495,7 @@ public abstract class DateTimeZone implements Serializable {
 
         if (provider == null) {
             try {
-                provider = new ZoneInfoProvider("tz/data");
+                provider = new ZoneInfoProvider("com.jn.langx.util.jodatime/tz/data");
             } catch (Exception ex) {
                 Thread thread = Thread.currentThread();
                 thread.getThreadGroup().uncaughtException(thread, ex);
@@ -536,7 +536,7 @@ public abstract class DateTimeZone implements Serializable {
     public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("DateTimeZone.setNameProvider"));
+            sm.checkPermission(new JodaTimePermission("com.jn.langx.util.jodatime.DateTimeZone.setNameProvider"));
         }
         setNameProvider0(nameProvider);
     }
@@ -565,7 +565,7 @@ public abstract class DateTimeZone implements Serializable {
     private static NameProvider getDefaultNameProvider() {
         NameProvider nameProvider = null;
         try {
-            String providerClass = System.getProperty("DateTimeZone.NameProvider");
+            String providerClass = System.getProperty("com.jn.langx.util.jodatime.DateTimeZone.NameProvider");
             if (providerClass != null) {
                 try {
                     nameProvider = (NameProvider) Class.forName(providerClass).newInstance();

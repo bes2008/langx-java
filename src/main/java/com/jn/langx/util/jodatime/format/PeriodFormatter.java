@@ -65,11 +65,11 @@ public class PeriodFormatter {
     /**
      * The internal printer used to output the datetime.
      */
-    private final com.jn.langx.util.jodatime.format.PeriodPrinter iPrinter;
+    private final PeriodPrinter iPrinter;
     /**
      * The internal parser used to output the datetime.
      */
-    private final com.jn.langx.util.jodatime.format.PeriodParser iParser;
+    private final PeriodParser iParser;
     /**
      * The locale to use for printing and parsing.
      */
@@ -87,7 +87,7 @@ public class PeriodFormatter {
      * @param parser  the internal parser, null if cannot parse
      */
     public PeriodFormatter(
-            com.jn.langx.util.jodatime.format.PeriodPrinter printer, com.jn.langx.util.jodatime.format.PeriodParser parser) {
+            PeriodPrinter printer, PeriodParser parser) {
         super();
         iPrinter = printer;
         iParser = parser;
@@ -104,7 +104,7 @@ public class PeriodFormatter {
      * @param type    the parse period type
      */
     private PeriodFormatter(
-            com.jn.langx.util.jodatime.format.PeriodPrinter printer, com.jn.langx.util.jodatime.format.PeriodParser parser,
+            PeriodPrinter printer, PeriodParser parser,
             Locale locale, PeriodType type) {
         super();
         iPrinter = printer;
@@ -129,7 +129,7 @@ public class PeriodFormatter {
      *
      * @return the internal printer
      */
-    public com.jn.langx.util.jodatime.format.PeriodPrinter getPrinter() {
+    public PeriodPrinter getPrinter() {
         return iPrinter;
     }
 

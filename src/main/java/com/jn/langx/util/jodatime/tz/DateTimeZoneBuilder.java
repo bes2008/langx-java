@@ -93,14 +93,14 @@ public class DateTimeZoneBuilder {
     public static DateTimeZone readFrom(DataInput in, String id) throws IOException {
         switch (in.readUnsignedByte()) {
             case 'F':
-                DateTimeZone fixed = new com.jn.langx.util.jodatime.tz.FixedDateTimeZone
+                DateTimeZone fixed = new FixedDateTimeZone
                         (id, in.readUTF(), (int) readMillis(in), (int) readMillis(in));
                 if (fixed.equals(DateTimeZone.UTC)) {
                     fixed = DateTimeZone.UTC;
                 }
                 return fixed;
             case 'C':
-                return com.jn.langx.util.jodatime.tz.CachedDateTimeZone.forZone(PrecalculatedZone.readFrom(in, id));
+                return CachedDateTimeZone.forZone(PrecalculatedZone.readFrom(in, id));
             case 'P':
                 return PrecalculatedZone.readFrom(in, id);
             default:
@@ -201,7 +201,7 @@ public class DateTimeZoneBuilder {
                 wallOffset == 0 && standardOffset == 0) {
             return DateTimeZone.UTC;
         }
-        return new com.jn.langx.util.jodatime.tz.FixedDateTimeZone(id, nameKey, wallOffset, standardOffset);
+        return new FixedDateTimeZone(id, nameKey, wallOffset, standardOffset);
     }
 
     // List of RuleSets.
@@ -379,7 +379,7 @@ public class DateTimeZoneBuilder {
 
         PrecalculatedZone zone = PrecalculatedZone.create(id, outputID, transitions, tailZone);
         if (zone.isCachable()) {
-            return com.jn.langx.util.jodatime.tz.CachedDateTimeZone.forZone(zone);
+            return CachedDateTimeZone.forZone(zone);
         }
         return zone;
     }
@@ -448,7 +448,7 @@ public class DateTimeZoneBuilder {
             writeMillis(out, zone.getOffset(0));
             writeMillis(out, zone.getStandardOffset(0));
         } else {
-            if (zone instanceof com.jn.langx.util.jodatime.tz.CachedDateTimeZone) {
+            if (zone instanceof CachedDateTimeZone) {
                 out.writeByte('C'); // 'C' for cached, precalculated
                 zone = ((CachedDateTimeZone) zone).getUncachedZone();
             } else {
@@ -1426,7 +1426,7 @@ public class DateTimeZoneBuilder {
                         curNameKey.equals(zoneNameData[2]) &&
                         curNameKey.equals(zoneNameData[4])) {
 
-                    if (com.jn.langx.util.jodatime.tz.ZoneInfoCompiler.verbose()) {
+                    if (ZoneInfoCompiler.verbose()) {
                         System.out.println("Fixing duplicate name key - " + nextNameKey);
                         System.out.println("     - " + new DateTime(trans[i], chrono) +
                                 " - " + new DateTime(trans[i + 1], chrono));

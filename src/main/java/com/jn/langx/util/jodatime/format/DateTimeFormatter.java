@@ -73,11 +73,11 @@ public class DateTimeFormatter {
     /**
      * The internal printer used to output the datetime.
      */
-    private final com.jn.langx.util.jodatime.format.DateTimePrinter iPrinter;
+    private final DateTimePrinter iPrinter;
     /**
      * The internal parser used to output the datetime.
      */
-    private final com.jn.langx.util.jodatime.format.DateTimeParser iParser;
+    private final DateTimeParser iParser;
     /**
      * The locale to use for printing and parsing.
      */
@@ -111,7 +111,7 @@ public class DateTimeFormatter {
      * @param parser  the internal parser, null if cannot parse
      */
     public DateTimeFormatter(
-            com.jn.langx.util.jodatime.format.DateTimePrinter printer, com.jn.langx.util.jodatime.format.DateTimeParser parser) {
+            DateTimePrinter printer, DateTimeParser parser) {
         super();
         iPrinter = printer;
         iParser = parser;
@@ -127,7 +127,7 @@ public class DateTimeFormatter {
      * Constructor.
      */
     private DateTimeFormatter(
-            com.jn.langx.util.jodatime.format.DateTimePrinter printer, com.jn.langx.util.jodatime.format.DateTimeParser parser,
+            DateTimePrinter printer, DateTimeParser parser,
             Locale locale, boolean offsetParsed,
             Chronology chrono, DateTimeZone zone,
             Integer pivotYear, int defaultYear) {
@@ -158,7 +158,7 @@ public class DateTimeFormatter {
      *
      * @return the internal printer; is null if printing not supported
      */
-    public com.jn.langx.util.jodatime.format.DateTimePrinter getPrinter() {
+    public DateTimePrinter getPrinter() {
         return iPrinter;
     }
 
@@ -176,7 +176,7 @@ public class DateTimeFormatter {
      *
      * @return the internal parser; is null if parsing not supported
      */
-    public com.jn.langx.util.jodatime.format.DateTimeParser getParser() {
+    public DateTimeParser getParser() {
         return iParser;
     }
 
@@ -352,7 +352,7 @@ public class DateTimeFormatter {
      * digit year parsing in preference to that stored in the parser.
      * <p>
      * This setting is useful for changing the pivot year of formats built
-     * using a pattern - {@link com.jn.langx.util.jodatime.format.DateTimeFormat#forPattern(String)}.
+     * using a pattern - {@link DateTimeFormat#forPattern(String)}.
      * <p>
      * When parsing, this pivot year is used. Null means no-override.
      * There is no effect when printing.
@@ -547,7 +547,7 @@ public class DateTimeFormatter {
      * @param partial partial to format
      */
     public void printTo(StringBuffer buf, ReadablePartial partial) {
-        com.jn.langx.util.jodatime.format.DateTimePrinter printer = requirePrinter();
+        DateTimePrinter printer = requirePrinter();
         if (partial == null) {
             throw new IllegalArgumentException("The partial must not be null");
         }
@@ -564,7 +564,7 @@ public class DateTimeFormatter {
      * @param partial partial to format
      */
     public void printTo(Writer out, ReadablePartial partial) throws IOException {
-        com.jn.langx.util.jodatime.format.DateTimePrinter printer = requirePrinter();
+        DateTimePrinter printer = requirePrinter();
         if (partial == null) {
             throw new IllegalArgumentException("The partial must not be null");
         }
@@ -633,7 +633,7 @@ public class DateTimeFormatter {
     }
 
     private void printTo(StringBuffer buf, long instant, Chronology chrono) {
-        com.jn.langx.util.jodatime.format.DateTimePrinter printer = requirePrinter();
+        DateTimePrinter printer = requirePrinter();
         chrono = selectChronology(chrono);
         // Shift instant into local time (UTC) to avoid excessive offset
         // calculations when printing multiple fields in a composite printer.
@@ -650,7 +650,7 @@ public class DateTimeFormatter {
     }
 
     private void printTo(Writer buf, long instant, Chronology chrono) throws IOException {
-        com.jn.langx.util.jodatime.format.DateTimePrinter printer = requirePrinter();
+        DateTimePrinter printer = requirePrinter();
         chrono = selectChronology(chrono);
         // Shift instant into local time (UTC) to avoid excessive offset
         // calculations when printing multiple fields in a composite printer.
@@ -671,7 +671,7 @@ public class DateTimeFormatter {
      *
      * @throws UnsupportedOperationException if printing is not supported
      */
-    private com.jn.langx.util.jodatime.format.DateTimePrinter requirePrinter() {
+    private DateTimePrinter requirePrinter() {
         DateTimePrinter printer = iPrinter;
         if (printer == null) {
             throw new UnsupportedOperationException("Printing not supported");
@@ -715,7 +715,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException      if any field is out of range
      */
     public int parseInto(ReadWritableInstant instant, String text, int position) {
-        com.jn.langx.util.jodatime.format.DateTimeParser parser = requireParser();
+        DateTimeParser parser = requireParser();
         if (instant == null) {
             throw new IllegalArgumentException("Instant must not be null");
         }
@@ -757,7 +757,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException      if the text to parse is invalid
      */
     public long parseMillis(String text) {
-        com.jn.langx.util.jodatime.format.DateTimeParser parser = requireParser();
+        DateTimeParser parser = requireParser();
 
         Chronology chrono = selectChronology(iChrono);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
@@ -769,7 +769,7 @@ public class DateTimeFormatter {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(com.jn.langx.util.jodatime.format.FormatUtils.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
     }
 
     /**
@@ -823,7 +823,7 @@ public class DateTimeFormatter {
      * @since 2.0
      */
     public LocalDateTime parseLocalDateTime(String text) {
-        com.jn.langx.util.jodatime.format.DateTimeParser parser = requireParser();
+        DateTimeParser parser = requireParser();
 
         Chronology chrono = selectChronology(null).withUTC();  // always use UTC, avoiding DST gaps
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
@@ -843,7 +843,7 @@ public class DateTimeFormatter {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(com.jn.langx.util.jodatime.format.FormatUtils.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
     }
 
     /**
@@ -864,7 +864,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException      if the text to parse is invalid
      */
     public DateTime parseDateTime(String text) {
-        com.jn.langx.util.jodatime.format.DateTimeParser parser = requireParser();
+        DateTimeParser parser = requireParser();
 
         Chronology chrono = selectChronology(null);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
@@ -888,7 +888,7 @@ public class DateTimeFormatter {
         } else {
             newPos = ~newPos;
         }
-        throw new IllegalArgumentException(com.jn.langx.util.jodatime.format.FormatUtils.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
     }
 
     /**
@@ -909,7 +909,7 @@ public class DateTimeFormatter {
      * @throws IllegalArgumentException      if the text to parse is invalid
      */
     public MutableDateTime parseMutableDateTime(String text) {
-        com.jn.langx.util.jodatime.format.DateTimeParser parser = requireParser();
+        DateTimeParser parser = requireParser();
 
         Chronology chrono = selectChronology(null);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
@@ -941,7 +941,7 @@ public class DateTimeFormatter {
      *
      * @throws UnsupportedOperationException if parsing is not supported
      */
-    private com.jn.langx.util.jodatime.format.DateTimeParser requireParser() {
+    private DateTimeParser requireParser() {
         DateTimeParser parser = iParser;
         if (parser == null) {
             throw new UnsupportedOperationException("Parsing not supported");

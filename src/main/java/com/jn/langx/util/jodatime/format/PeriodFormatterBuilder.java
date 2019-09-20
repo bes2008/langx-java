@@ -109,15 +109,15 @@ public class PeriodFormatterBuilder {
      * Subsequent changes to this builder do not affect the returned formatter.
      * <p>
      * The returned formatter may not support both printing and parsing.
-     * The methods {@link com.jn.langx.util.jodatime.format.PeriodFormatter#isPrinter()} and
-     * {@link com.jn.langx.util.jodatime.format.PeriodFormatter#isParser()} will help you determine the state
+     * The methods {@link PeriodFormatter#isPrinter()} and
+     * {@link PeriodFormatter#isParser()} will help you determine the state
      * of the formatter.
      *
      * @return the newly created formatter
      * @throws IllegalStateException if the builder can produce neither a printer nor a parser
      */
-    public com.jn.langx.util.jodatime.format.PeriodFormatter toFormatter() {
-        com.jn.langx.util.jodatime.format.PeriodFormatter formatter = toFormatter(iElementPairs, iNotPrinter, iNotParser);
+    public PeriodFormatter toFormatter() {
+        PeriodFormatter formatter = toFormatter(iElementPairs, iNotPrinter, iNotParser);
         iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
         return formatter;
     }
@@ -134,7 +134,7 @@ public class PeriodFormatterBuilder {
      *
      * @return the newly created printer, null if builder cannot create a printer
      */
-    public com.jn.langx.util.jodatime.format.PeriodPrinter toPrinter() {
+    public PeriodPrinter toPrinter() {
         if (iNotPrinter) {
             return null;
         }
@@ -153,7 +153,7 @@ public class PeriodFormatterBuilder {
      *
      * @return the newly created parser, null if builder cannot create a parser
      */
-    public com.jn.langx.util.jodatime.format.PeriodParser toParser() {
+    public PeriodParser toParser() {
         if (iNotParser) {
             return null;
         }
@@ -186,7 +186,7 @@ public class PeriodFormatterBuilder {
      *
      * @return this PeriodFormatterBuilder
      */
-    public PeriodFormatterBuilder append(com.jn.langx.util.jodatime.format.PeriodFormatter formatter) {
+    public PeriodFormatterBuilder append(PeriodFormatter formatter) {
         if (formatter == null) {
             throw new IllegalArgumentException("No formatter supplied");
         }
@@ -206,7 +206,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      * @throws IllegalArgumentException if both the printer and parser are null
      */
-    public PeriodFormatterBuilder append(com.jn.langx.util.jodatime.format.PeriodPrinter printer, com.jn.langx.util.jodatime.format.PeriodParser parser) {
+    public PeriodFormatterBuilder append(PeriodPrinter printer, PeriodParser parser) {
         if (printer == null && parser == null) {
             throw new IllegalArgumentException("No printer or parser supplied");
         }
@@ -767,7 +767,7 @@ public class PeriodFormatterBuilder {
             pairs.clear();
             Separator separator = new Separator(
                     text, finalText, variants,
-                    (com.jn.langx.util.jodatime.format.PeriodPrinter) comp[0], (com.jn.langx.util.jodatime.format.PeriodParser) comp[1],
+                    (PeriodPrinter) comp[0], (PeriodParser) comp[1],
                     useBefore, useAfter);
             pairs.add(separator);
             pairs.add(separator);
@@ -784,7 +784,7 @@ public class PeriodFormatterBuilder {
         iPrefix = null;
     }
 
-    private PeriodFormatterBuilder append0(com.jn.langx.util.jodatime.format.PeriodPrinter printer, com.jn.langx.util.jodatime.format.PeriodParser parser) {
+    private PeriodFormatterBuilder append0(PeriodPrinter printer, PeriodParser parser) {
         iElementPairs.add(printer);
         iElementPairs.add(parser);
         iNotPrinter |= (printer == null);
@@ -793,7 +793,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    private static com.jn.langx.util.jodatime.format.PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
+    private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
         if (notPrinter && notParser) {
             throw new IllegalStateException("Builder has created neither a printer nor a parser");
         }
@@ -801,18 +801,18 @@ public class PeriodFormatterBuilder {
         if (size >= 2 && elementPairs.get(0) instanceof Separator) {
             Separator sep = (Separator) elementPairs.get(0);
             if (sep.iAfterParser == null && sep.iAfterPrinter == null) {
-                com.jn.langx.util.jodatime.format.PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+                PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
                 sep = sep.finish(f.getPrinter(), f.getParser());
-                return new com.jn.langx.util.jodatime.format.PeriodFormatter(sep, sep);
+                return new PeriodFormatter(sep, sep);
             }
         }
         Object[] comp = createComposite(elementPairs);
         if (notPrinter) {
-            return new com.jn.langx.util.jodatime.format.PeriodFormatter(null, (com.jn.langx.util.jodatime.format.PeriodParser) comp[1]);
+            return new PeriodFormatter(null, (PeriodParser) comp[1]);
         } else if (notParser) {
-            return new com.jn.langx.util.jodatime.format.PeriodFormatter((com.jn.langx.util.jodatime.format.PeriodPrinter) comp[0], null);
+            return new PeriodFormatter((PeriodPrinter) comp[0], null);
         } else {
-            return new PeriodFormatter((com.jn.langx.util.jodatime.format.PeriodPrinter) comp[0], (com.jn.langx.util.jodatime.format.PeriodParser) comp[1]);
+            return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
         }
     }
 
@@ -1048,7 +1048,7 @@ public class PeriodFormatterBuilder {
      * Formats the numeric value of a field, potentially with prefix/suffix.
      */
     static class FieldFormatter
-            implements com.jn.langx.util.jodatime.format.PeriodPrinter, com.jn.langx.util.jodatime.format.PeriodParser {
+            implements PeriodPrinter, PeriodParser {
         private final int iMinPrintedDigits;
         private final int iPrintZeroSetting;
         private final int iMaxParsedDigits;
@@ -1111,7 +1111,7 @@ public class PeriodFormatterBuilder {
                 return 0;
             }
 
-            int sum = Math.max(com.jn.langx.util.jodatime.format.FormatUtils.calculateDigitCount(valueLong), iMinPrintedDigits);
+            int sum = Math.max(FormatUtils.calculateDigitCount(valueLong), iMinPrintedDigits);
             if (iFieldType >= SECONDS_MILLIS) {
                 // valueLong contains the seconds and millis fields
                 // the minimum output is 0.000, which is 4 or 5 digits with a negative
@@ -1153,9 +1153,9 @@ public class PeriodFormatterBuilder {
             int bufLen = buf.length();
             int minDigits = iMinPrintedDigits;
             if (minDigits <= 1) {
-                com.jn.langx.util.jodatime.format.FormatUtils.appendUnpaddedInteger(buf, value);
+                FormatUtils.appendUnpaddedInteger(buf, value);
             } else {
-                com.jn.langx.util.jodatime.format.FormatUtils.appendPaddedInteger(buf, value, minDigits);
+                FormatUtils.appendPaddedInteger(buf, value, minDigits);
             }
             if (iFieldType >= SECONDS_MILLIS) {
                 int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
@@ -1164,7 +1164,7 @@ public class PeriodFormatterBuilder {
                         buf.insert(bufLen, '-');
                     }
                     buf.append('.');
-                    com.jn.langx.util.jodatime.format.FormatUtils.appendPaddedInteger(buf, dp, 3);
+                    FormatUtils.appendPaddedInteger(buf, dp, 3);
                 }
             }
             if (iSuffix != null) {
@@ -1187,9 +1187,9 @@ public class PeriodFormatterBuilder {
             }
             int minDigits = iMinPrintedDigits;
             if (minDigits <= 1) {
-                com.jn.langx.util.jodatime.format.FormatUtils.writeUnpaddedInteger(out, value);
+                FormatUtils.writeUnpaddedInteger(out, value);
             } else {
-                com.jn.langx.util.jodatime.format.FormatUtils.writePaddedInteger(out, value, minDigits);
+                FormatUtils.writePaddedInteger(out, value, minDigits);
             }
             if (iFieldType >= SECONDS_MILLIS) {
                 int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
@@ -1561,7 +1561,7 @@ public class PeriodFormatterBuilder {
      * Handles a simple literal piece of text.
      */
     static class Literal
-            implements com.jn.langx.util.jodatime.format.PeriodPrinter, com.jn.langx.util.jodatime.format.PeriodParser {
+            implements PeriodPrinter, PeriodParser {
         static final Literal EMPTY = new Literal("");
         private final String iText;
 
@@ -1602,7 +1602,7 @@ public class PeriodFormatterBuilder {
      * For example, the 'T' in the ISO8601 standard.
      */
     static class Separator
-            implements com.jn.langx.util.jodatime.format.PeriodPrinter, com.jn.langx.util.jodatime.format.PeriodParser {
+            implements PeriodPrinter, PeriodParser {
         private final String iText;
         private final String iFinalText;
         private final String[] iParsedForms;
@@ -1610,13 +1610,13 @@ public class PeriodFormatterBuilder {
         private final boolean iUseBefore;
         private final boolean iUseAfter;
 
-        private final com.jn.langx.util.jodatime.format.PeriodPrinter iBeforePrinter;
-        private volatile com.jn.langx.util.jodatime.format.PeriodPrinter iAfterPrinter;
-        private final com.jn.langx.util.jodatime.format.PeriodParser iBeforeParser;
-        private volatile com.jn.langx.util.jodatime.format.PeriodParser iAfterParser;
+        private final PeriodPrinter iBeforePrinter;
+        private volatile PeriodPrinter iAfterPrinter;
+        private final PeriodParser iBeforeParser;
+        private volatile PeriodParser iAfterParser;
 
         Separator(String text, String finalText, String[] variants,
-                  com.jn.langx.util.jodatime.format.PeriodPrinter beforePrinter, com.jn.langx.util.jodatime.format.PeriodParser beforeParser,
+                  PeriodPrinter beforePrinter, PeriodParser beforeParser,
                   boolean useBefore, boolean useAfter) {
             iText = text;
             iFinalText = finalText;
@@ -1655,8 +1655,8 @@ public class PeriodFormatterBuilder {
         }
 
         public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
-            com.jn.langx.util.jodatime.format.PeriodPrinter before = iBeforePrinter;
-            com.jn.langx.util.jodatime.format.PeriodPrinter after = iAfterPrinter;
+            PeriodPrinter before = iBeforePrinter;
+            PeriodPrinter after = iAfterPrinter;
 
             int sum = before.calculatePrintedLength(period, locale)
                     + after.calculatePrintedLength(period, locale);
@@ -1680,8 +1680,8 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
-            com.jn.langx.util.jodatime.format.PeriodPrinter before = iBeforePrinter;
-            com.jn.langx.util.jodatime.format.PeriodPrinter after = iAfterPrinter;
+            PeriodPrinter before = iBeforePrinter;
+            PeriodPrinter after = iAfterPrinter;
 
             before.printTo(buf, period, locale);
             if (iUseBefore) {
@@ -1702,8 +1702,8 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
-            com.jn.langx.util.jodatime.format.PeriodPrinter before = iBeforePrinter;
-            com.jn.langx.util.jodatime.format.PeriodPrinter after = iAfterPrinter;
+            PeriodPrinter before = iBeforePrinter;
+            PeriodPrinter after = iAfterPrinter;
 
             before.printTo(out, period, locale);
             if (iUseBefore) {
@@ -1773,7 +1773,7 @@ public class PeriodFormatterBuilder {
             return position;
         }
 
-        Separator finish(com.jn.langx.util.jodatime.format.PeriodPrinter afterPrinter, com.jn.langx.util.jodatime.format.PeriodParser afterParser) {
+        Separator finish(PeriodPrinter afterPrinter, PeriodParser afterParser) {
             iAfterPrinter = afterPrinter;
             iAfterParser = afterParser;
             return this;
@@ -1786,10 +1786,10 @@ public class PeriodFormatterBuilder {
      * Composite implementation that merges other fields to create a full pattern.
      */
     static class Composite
-            implements com.jn.langx.util.jodatime.format.PeriodPrinter, com.jn.langx.util.jodatime.format.PeriodParser {
+            implements PeriodPrinter, PeriodParser {
 
-        private final com.jn.langx.util.jodatime.format.PeriodPrinter[] iPrinters;
-        private final com.jn.langx.util.jodatime.format.PeriodParser[] iParsers;
+        private final PeriodPrinter[] iPrinters;
+        private final PeriodParser[] iParsers;
 
         Composite(List<Object> elementPairs) {
             List<Object> printerList = new ArrayList<Object>();
@@ -1801,20 +1801,20 @@ public class PeriodFormatterBuilder {
                 iPrinters = null;
             } else {
                 iPrinters = printerList.toArray(
-                        new com.jn.langx.util.jodatime.format.PeriodPrinter[printerList.size()]);
+                        new PeriodPrinter[printerList.size()]);
             }
 
             if (parserList.size() <= 0) {
                 iParsers = null;
             } else {
                 iParsers = parserList.toArray(
-                        new com.jn.langx.util.jodatime.format.PeriodParser[parserList.size()]);
+                        new PeriodParser[parserList.size()]);
             }
         }
 
         public int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale locale) {
             int sum = 0;
-            com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
+            PeriodPrinter[] printers = iPrinters;
             for (int i = printers.length; sum < stopAt && --i >= 0; ) {
                 sum += printers[i].countFieldsToPrint(period, Integer.MAX_VALUE, locale);
             }
@@ -1823,7 +1823,7 @@ public class PeriodFormatterBuilder {
 
         public int calculatePrintedLength(ReadablePeriod period, Locale locale) {
             int sum = 0;
-            com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
+            PeriodPrinter[] printers = iPrinters;
             for (int i = printers.length; --i >= 0; ) {
                 sum += printers[i].calculatePrintedLength(period, locale);
             }
@@ -1831,7 +1831,7 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period, Locale locale) {
-            com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
+            PeriodPrinter[] printers = iPrinters;
             int len = printers.length;
             for (int i = 0; i < len; i++) {
                 printers[i].printTo(buf, period, locale);
@@ -1839,7 +1839,7 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException {
-            com.jn.langx.util.jodatime.format.PeriodPrinter[] printers = iPrinters;
+            PeriodPrinter[] printers = iPrinters;
             int len = printers.length;
             for (int i = 0; i < len; i++) {
                 printers[i].printTo(out, period, locale);
@@ -1849,7 +1849,7 @@ public class PeriodFormatterBuilder {
         public int parseInto(
                 ReadWritablePeriod period, String periodStr,
                 int position, Locale locale) {
-            com.jn.langx.util.jodatime.format.PeriodParser[] parsers = iParsers;
+            PeriodParser[] parsers = iParsers;
             if (parsers == null) {
                 throw new UnsupportedOperationException();
             }
