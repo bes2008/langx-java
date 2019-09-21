@@ -49,7 +49,6 @@ public class InternalThreadLocalMap {
         return cache.get();
     }
 
-
     public static SimpleDateFormat getSimpleDateFormat(String pattern) {
         return get().simpleDateFormatMap.get(pattern);
     }

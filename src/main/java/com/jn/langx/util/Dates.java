@@ -25,6 +25,11 @@ public class Dates {
     public static final String DD_MM_YYYY = "dd/MM/yyyy";
     public static final String HH_mm_ss = "HH:mm:ss";
 
+    public static String format(@NonNull long millis, @NonNull String pattern) {
+        Preconditions.checkTrue(millis > 0);
+        return format(new Date(millis), pattern);
+    }
+
     public static String format(@NonNull Date date, @NonNull String pattern) {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(date);
