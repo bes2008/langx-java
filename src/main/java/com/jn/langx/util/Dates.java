@@ -19,10 +19,10 @@ public class Dates {
     public static final long HOURS_TO_MILLIS = HOURS_TO_SECONDS * SECONDS_TO_MILLIS;
     public static final long DAY_TO_MILLIS = DAY_TO_SECONDS * SECONDS_TO_MILLIS;
 
-    public static final String YYYY_MM_DD_HH_mm_ss = "YYYY-MM-DD HH:mm:ss";
-    public static final String YYYY_MM_DD_HH_mm_ss_SSS = "YYYY-MM-DD HH:mm:ss.SSS";
-    public static final String YYYY_MM_DD = "YYYY-MM-DD";
-    public static final String DD_MM_YYYY = "DD/MM/YYYY";
+    public static final String YYYY_MM_DD_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+    public static final String YYYY_MM_DD_HH_mm_ss_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String DD_MM_YYYY = "dd/MM/yyyy";
     public static final String HH_mm_ss = "HH:mm:ss";
 
     public static String format(@NonNull Date date, @NonNull String pattern) {
