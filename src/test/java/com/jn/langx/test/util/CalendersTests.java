@@ -30,6 +30,9 @@ import java.util.TimeZone;
  * Calender：
  *  日历，它综合了 GMT millis（Date）, timezone, locale，也就是说它是用来表示某个时区的某个国家的时间。
  *  并在此基础上提供了时间的加减运算。
+ *
+ * SimpleDateFormat 又是基于Calender（即基于 GMT millis（Date）, timezone, locale）的一个日期格式化工具
+ * Pattern 涉及的符号：https://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
  *</pre>
  */
 public class CalendersTests {

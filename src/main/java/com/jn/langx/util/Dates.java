@@ -9,6 +9,30 @@ import java.util.TimeZone;
 
 /**
  * https://www.iso.org/obp/ui#iso:std:iso:8601:-1:ed-1:v1:en
+ *
+ *
+ * 标准时间：GMT时间，也叫格林威治平时，也叫 UTC时间。
+ * Java 6 ：
+ *
+ * <pre>
+ * Date:
+ * 表示一个瞬时值，单位是毫秒。它的结果是一个标准的GMT瞬时值。它和时区（timezone）地域（Locale）没有关系。
+ * 在同一时刻，地球上两个不同时区国家的人使用Date API获取到的毫秒数完全一样的。
+ *
+ * Timezone:
+ * 表示时区，其实是各个时区与GMT的毫秒数之差, 也即Offset。
+ * 因为不同时区的时间看到的是不一样的，但是通过Date获取到的毫秒数是一样的，怎么做到的呢？
+ * Date#toString 或者 SimpleDateFormat 都会根据Timezone 和 Locale 来进行处理，具体处理如下：
+ *    1） 使用GMT 毫秒数 + Timezone.offset 计算出当地的实际毫秒数
+ *    2） 格式化显示时会使用本土语言（Locale）进行处理
+ *
+ * Calender：
+ *  日历，它综合了 GMT millis（Date）, timezone, locale，也就是说它是用来表示某个时区的某个国家的时间。
+ *  并在此基础上提供了时间的加减运算。
+ *
+ * SimpleDateFormat 又是基于Calender（即基于 GMT millis（Date）, timezone, locale）的一个日期格式化工具
+ * Pattern 涉及的符号：https://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
+ *</pre>
  */
 public class Dates {
     public static final int MINUTES_TO_SECONDS = 60;
@@ -26,7 +50,7 @@ public class Dates {
     public static final String HH_mm_ss = "HH:mm:ss";
 
     public static String format(@NonNull long millis, @NonNull String pattern) {
-        Preconditions.checkTrue(millis > 0);
+        Preconditions.checkTrue(millis >= 0);
         return format(new Date(millis), pattern);
     }
 
