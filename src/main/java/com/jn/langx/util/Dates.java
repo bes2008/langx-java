@@ -12,8 +12,8 @@ import java.util.TimeZone;
 
 /**
  * https://www.iso.org/obp/ui#iso:std:iso:8601:-1:ed-1:v1:en
- *
- *
+ * <p>
+ * <p>
  * 标准时间：GMT时间，也叫格林威治平时，也叫 UTC时间。
  * Java 6 ：
  *
@@ -32,10 +32,12 @@ import java.util.TimeZone;
  * Calender：
  *  日历，它综合了 GMT millis（Date）, timezone, locale，也就是说它是用来表示某个时区的某个国家的时间。
  *  并在此基础上提供了时间的加减运算。
+ *  setTimeInMillis，setTimeInMillis 这两个方法的参数或者返回值是 UTC millis。
+ *  提供的时间的加减运算都是针对 Locale Time的。
  *
  * SimpleDateFormat 又是基于Calender（即基于 GMT millis（Date）, timezone, locale）的一个日期格式化工具
  * Pattern 涉及的符号：https://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
- *</pre>
+ * </pre>
  */
 public class Dates {
     public static final int MINUTES_TO_SECONDS = 60;
@@ -246,7 +248,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setYears(final Date date, final int amount) {
-        return set(date, Calendar.YEAR, amount);
+        return set(date, Calendars.DateField.YEAR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -261,7 +263,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMonths(final Date date, final int amount) {
-        return set(date, Calendar.MONTH, amount);
+        return set(date, Calendars.DateField.MONTH, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -276,7 +278,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setDays(final Date date, final int amount) {
-        return set(date, Calendar.DAY_OF_MONTH, amount);
+        return set(date, Calendars.DateField.DAY, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -292,7 +294,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setHours(final Date date, final int amount) {
-        return set(date, Calendar.HOUR_OF_DAY, amount);
+        return set(date, Calendars.DateField.HOUR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -307,7 +309,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMinutes(final Date date, final int amount) {
-        return set(date, Calendar.MINUTE, amount);
+        return set(date, Calendars.DateField.MINUTE, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -322,7 +324,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setSeconds(final Date date, final int amount) {
-        return set(date, Calendar.SECOND, amount);
+        return set(date, Calendars.DateField.SECOND, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -337,7 +339,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMilliseconds(final Date date, final int amount) {
-        return set(date, Calendar.MILLISECOND, amount);
+        return set(date, Calendars.DateField.MILLIS, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -347,19 +349,19 @@ public class Dates {
      * This does not use a lenient calendar.
      * The original {@code Date} is unchanged.
      *
-     * @param date          the date, not null
-     * @param calendarField the {@code Calendar} field to set the amount to
-     * @param amount        the amount to set
+     * @param date   the date, not null
+     * @param field  the {@code Calendars.DateField} field to set the amount to
+     * @param amount the amount to set
      * @return a new {@code Date} set with the specified value
      * @throws IllegalArgumentException if the date is null
      */
-    private static Date set(final Date date, final int calendarField, final int amount) {
+    public static Date set(final Date date, final Calendars.DateField field, final int amount) {
         Preconditions.checkNotNull(date);
         // getInstance() returns a new object, so this method is thread safe.
         final Calendar c = Calendar.getInstance();
         c.setLenient(false);
         c.setTime(date);
-        c.set(calendarField, amount);
+        Calendars.setField(c, field, amount);
         return c.getTime();
     }
 

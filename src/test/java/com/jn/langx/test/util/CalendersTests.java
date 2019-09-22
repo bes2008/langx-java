@@ -45,9 +45,9 @@ public class CalendersTests {
         long now = new Date().getTime();
         long actual_now = now + timeZone.getRawOffset();
         long actual_zero = (now - actual_now % Dates.DAY_TO_MILLIS);
-        System.out.println(now + ", " + Dates.format(new Date(now), Dates.YYYY_MM_DD_HH_mm_ss_SSS));
-        System.out.println(actual_now + ", " + Dates.format(new Date(actual_now), Dates.YYYY_MM_DD_HH_mm_ss_SSS));
-        System.out.println(actual_zero + ", " + Dates.format(new Date(actual_zero), Dates.YYYY_MM_DD_HH_mm_ss_SSS));
+        System.out.println(now + ", " + Dates.format(new Date(now), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
+        System.out.println(actual_now + ", " + Dates.format(new Date(actual_now), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
+        System.out.println(actual_zero + ", " + Dates.format(new Date(actual_zero), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
 
 
         Calendar c = Calendar.getInstance();
@@ -57,7 +57,7 @@ public class CalendersTests {
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         long todayZero = c.getTimeInMillis();
-        System.out.println(todayZero + ", " + Dates.format(new Date(todayZero), Dates.YYYY_MM_DD_HH_mm_ss_SSS));
+        System.out.println(todayZero + ", " + Dates.format(new Date(todayZero), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
 
         long standardZero = now - now % Dates.DAY_TO_MILLIS;
         System.out.println(standardZero + "," + new Date(standardZero));

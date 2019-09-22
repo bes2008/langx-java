@@ -1,14 +1,14 @@
 package com.jn.langx.util;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.jodatime.Interval;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
-public class Calenders {
+public class Calendars {
     private static int[] arr = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static String[] week_cn = {"日", "一", "二", "三", "四", "五", "六"};
     private static int[] DAY_OF_WEEK = {
@@ -90,13 +90,36 @@ public class Calenders {
         return null;
     }
 
-    private static enum IntervalType{
-        YEAR,
-        MONTH,
-        DAY,
-        HOUR,
-        MINUTE,
-        SECOND
+    public static int getField(@NonNull Calendar calendar,@NonNull  DateField field){
+        Preconditions.checkNotNull(calendar);
+        Preconditions.checkNotNull(field);
+        return calendar.get(field.getField());
+    }
+
+    public static void setField(@NonNull Calendar calendar,@NonNull  DateField field, int value){
+        Preconditions.checkNotNull(calendar);
+        Preconditions.checkNotNull(field);
+        calendar.set(field.getField(), value);
+    }
+
+    public static enum DateField {
+        ERA(Calendar.ERA),
+        YEAR(Calendar.YEAR),
+        MONTH(Calendar.MONTH),
+        DAY(Calendar.DAY_OF_MONTH),
+        HOUR(Calendar.HOUR_OF_DAY),
+        MINUTE(Calendar.MINUTE),
+        SECOND(Calendar.SECOND),
+        MILLIS(Calendar.MILLISECOND);
+
+        private int field;
+        DateField(int field){
+            this.field = field;
+        }
+
+        public int getField() {
+            return field;
+        }
     }
 
     public static enum RecentIntervalType {
