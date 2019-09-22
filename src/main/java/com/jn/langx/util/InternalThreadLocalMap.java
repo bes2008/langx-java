@@ -1,5 +1,7 @@
 package com.jn.langx.util;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.function.Supplier;
@@ -64,27 +66,27 @@ public class InternalThreadLocalMap {
     });
 
 
-    public static SimpleDateFormat getSimpleDateFormat(String pattern) {
+    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern) {
         return getSimpleDateFormat(new SimpleDateFormatCacheKey(pattern));
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(String pattern, Locale locale) {
+    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable Locale locale) {
         return getSimpleDateFormat(new SimpleDateFormatCacheKey(pattern, locale));
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(String pattern, TimeZone timeZone) {
+    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable TimeZone timeZone) {
         return getSimpleDateFormat(new SimpleDateFormatCacheKey(pattern, timeZone));
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(String pattern, String timeZoneId) {
+    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable String timeZoneId) {
         return getSimpleDateFormat(new SimpleDateFormatCacheKey(pattern, timeZoneId));
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(String pattern, TimeZone timeZone, Locale locale) {
+    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
         return getSimpleDateFormat(new SimpleDateFormatCacheKey(pattern, timeZone, locale));
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(String pattern, String timeZoneId, Locale locale) {
+    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable String timeZoneId, @Nullable Locale locale) {
         return getSimpleDateFormat(new SimpleDateFormatCacheKey(pattern, timeZoneId, locale));
     }
 
@@ -97,27 +99,27 @@ public class InternalThreadLocalMap {
         private String timeZoneId;
         private Locale locale;
 
-        SimpleDateFormatCacheKey(String pattern) {
+        SimpleDateFormatCacheKey(@NonNull String pattern) {
             this(pattern, (String) null, null);
         }
 
-        SimpleDateFormatCacheKey(String pattern, String timeZoneId) {
+        SimpleDateFormatCacheKey(@NonNull String pattern, @Nullable String timeZoneId) {
             this(pattern, timeZoneId, null);
         }
 
-        SimpleDateFormatCacheKey(String pattern, TimeZone timeZone) {
+        SimpleDateFormatCacheKey(@NonNull String pattern, @Nullable TimeZone timeZone) {
             this(pattern, timeZone, null);
         }
 
-        SimpleDateFormatCacheKey(String pattern, Locale locale) {
+        SimpleDateFormatCacheKey(@NonNull String pattern, @Nullable Locale locale) {
             this(pattern, (String) null, locale);
         }
 
-        SimpleDateFormatCacheKey(String pattern, TimeZone timeZone, Locale locale) {
+        SimpleDateFormatCacheKey(@NonNull String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
             this(pattern, timeZone == null ? (String) null : timeZone.getID(), locale);
         }
 
-        SimpleDateFormatCacheKey(String pattern, String timeZoneId, Locale locale) {
+        SimpleDateFormatCacheKey(@NonNull String pattern, @Nullable String timeZoneId, @Nullable Locale locale) {
             Preconditions.checkNotNull(pattern);
             this.locale = locale == null ? Locale.getDefault() : locale;
             this.timeZoneId = Strings.isEmpty(timeZoneId) ? TimeZone.getDefault().getID() : timeZoneId;
