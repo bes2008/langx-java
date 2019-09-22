@@ -96,12 +96,78 @@ public class Calendars {
         return calendar.get(field.getField());
     }
 
+    public static int getYear(@NonNull Calendar calendar) {
+        return getField(calendar, YEAR);
+    }
+
+    public static int getMonth(@NonNull Calendar calendar) {
+        return getMonth(calendar, false);
+    }
+
+    public static int getMonth(@NonNull Calendar calendar, boolean actual) {
+        int month = getField(calendar, MONTH);
+        return actual ? (month + 1) : month;
+    }
+
+    public static int getDay(@NonNull Calendar calendar) {
+        return getField(calendar, DAY);
+    }
+
+    public static int getHour(@NonNull Calendar calendar) {
+        return getField(calendar, HOUR);
+    }
+
+    public static int getMinute(@NonNull Calendar calendar) {
+        return getField(calendar, MINUTE);
+    }
+
+    public static int getSecond(@NonNull Calendar calendar) {
+        return getField(calendar, SECOND);
+    }
+
+    public static int getMillis(@NonNull Calendar calendar) {
+        return getField(calendar, MILLIS);
+    }
 
     public static void setField(@NonNull Calendar calendar, @NonNull DateField field, int value) {
         Preconditions.checkNotNull(calendar);
         Preconditions.checkNotNull(field);
         calendar.set(field.getField(), value);
         calendar.getTimeInMillis(); // just make sure recompute
+    }
+
+    public static void setYear(@NonNull Calendar calendar, int year) {
+        Preconditions.checkTrue(year >= 1970);
+        setField(calendar, YEAR, year);
+    }
+
+    public static void setMonth(@NonNull Calendar calendar, int month) {
+        setMonth(calendar, month, false);
+    }
+
+    public static void setMonth(@NonNull Calendar calendar, int month, boolean valueIsActual) {
+        month = valueIsActual ? (month - 1) : month;
+        setField(calendar, MONTH, month);
+    }
+
+    public static void setDay(@NonNull Calendar calendar, int year) {
+        setField(calendar, YEAR, year);
+    }
+
+    public static void setHour(@NonNull Calendar calendar, int year) {
+        setField(calendar, YEAR, year);
+    }
+
+    public static void setMinute(@NonNull Calendar calendar, int year) {
+        setField(calendar, YEAR, year);
+    }
+
+    public static void setSecond(@NonNull Calendar calendar, int year) {
+        setField(calendar, SECOND, year);
+    }
+
+    public static void setMillis(@NonNull Calendar calendar, int millis) {
+        setField(calendar, MILLIS, millis);
     }
 
     /**
@@ -144,6 +210,15 @@ public class Calendars {
             return field;
         }
     }
+
+    public static final DateField ERA = DateField.ERA;
+    public static final DateField YEAR = DateField.YEAR;
+    public static final DateField MONTH = DateField.MONTH;
+    public static final DateField DAY = DateField.DAY;
+    public static final DateField HOUR = DateField.HOUR;
+    public static final DateField MINUTE = DateField.MINUTE;
+    public static final DateField SECOND = DateField.SECOND;
+    public static final DateField MILLIS = DateField.MILLIS;
 
     public static enum RecentIntervalType {
         NATURE_INTERVAL,

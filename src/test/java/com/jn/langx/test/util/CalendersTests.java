@@ -1,5 +1,6 @@
 package com.jn.langx.test.util;
 
+import com.jn.langx.util.Calendars;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.comparator.ComparableComparator;
@@ -33,7 +34,7 @@ import java.util.TimeZone;
  *
  * SimpleDateFormat 又是基于Calender（即基于 GMT millis（Date）, timezone, locale）的一个日期格式化工具
  * Pattern 涉及的符号：https://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
- *</pre>
+ * </pre>
  */
 public class CalendersTests {
     @Test
@@ -92,5 +93,31 @@ public class CalendersTests {
         System.out.println("delta:" + (t2 - t1));
     }
 
+    @Test
+    public void test2() {
+        Calendar calendar = Calendar.getInstance();
+        showCalendar(calendar);
+        System.out.println("======================");
+        Calendars.addField(calendar, Calendars.MONTH, 1);
+        showCalendar(calendar);
+        System.out.println("======================");
+        Calendars.setField(calendar, Calendars.MONTH, 10);
+        showCalendar(calendar);
+        System.out.println("======================");
+        Calendars.setMonth(calendar,15);
+        showCalendar(calendar);
+    }
 
+    private void showCalendar(Calendar calendar){
+        System.out.println("ERA:   " + calendar.get(Calendars.ERA.getField()));
+        System.out.println("YEAR:  " + calendar.get(Calendars.YEAR.getField()));
+        System.out.println("MONTH: " + calendar.get(Calendars.MONTH.getField()));
+        System.out.println("DAY:   " + calendar.get(Calendars.DAY.getField()));
+        System.out.println("HOUR:  " + calendar.get(Calendars.HOUR.getField()));
+        System.out.println("MINUTE:" + calendar.get(Calendars.MINUTE.getField()));
+        System.out.println("SECOND:" + calendar.get(Calendars.SECOND.getField()));
+        System.out.println("MILLIS:" + calendar.get(Calendars.MILLIS.getField()));
+
+        System.out.println(Dates.format(calendar.getTime(), "yyyy-MM-dd HH:mm:ss.SSS"));
+    }
 }

@@ -108,7 +108,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addYears(final Date date, final int amount) {
-        return add(date, Calendars.DateField.YEAR, amount);
+        return add(date, Calendars.YEAR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -123,7 +123,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addMonths(final Date date, final int amount) {
-        return add(date, Calendars.DateField.MONTH, amount);
+        return add(date, Calendars.MONTH, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -153,7 +153,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addDays(final Date date, final int amount) {
-        return add(date, Calendars.DateField.DAY, amount);
+        return add(date, Calendars.DAY, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -168,7 +168,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addHours(final Date date, final int amount) {
-        return add(date, Calendars.DateField.HOUR, amount);
+        return add(date, Calendars.HOUR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -183,7 +183,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addMinutes(final Date date, final int amount) {
-        return add(date, Calendars.DateField.MINUTE, amount);
+        return add(date, Calendars.MINUTE, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -198,7 +198,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addSeconds(final Date date, final int amount) {
-        return add(date, Calendars.DateField.SECOND, amount);
+        return add(date, Calendars.SECOND, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -213,7 +213,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addMilliseconds(final Date date, final int amount) {
-        return add(date, Calendars.DateField.MILLIS, amount);
+        return add(date, Calendars.MILLIS, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -256,7 +256,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setYears(final Date date, final int amount) {
-        return set(date, Calendars.DateField.YEAR, amount);
+        return set(date, Calendars.YEAR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -271,7 +271,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMonths(final Date date, final int amount) {
-        return set(date, Calendars.DateField.MONTH, amount);
+        return set(date, Calendars.MONTH, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -286,7 +286,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setDays(final Date date, final int amount) {
-        return set(date, Calendars.DateField.DAY, amount);
+        return set(date, Calendars.DAY, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -302,7 +302,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setHours(final Date date, final int amount) {
-        return set(date, Calendars.DateField.HOUR, amount);
+        return set(date, Calendars.HOUR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -317,7 +317,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMinutes(final Date date, final int amount) {
-        return set(date, Calendars.DateField.MINUTE, amount);
+        return set(date, Calendars.MINUTE, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -332,7 +332,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setSeconds(final Date date, final int amount) {
-        return set(date, Calendars.DateField.SECOND, amount);
+        return set(date, Calendars.SECOND, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -371,6 +371,15 @@ public class Dates {
         c.setTime(date);
         Calendars.setField(c, field, amount);
         return c.getTime();
+    }
+
+    private static int get(@NonNull Date date, final Calendars.DateField field){
+        Preconditions.checkNotNull(date);
+        Preconditions.checkNotNull(field);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setLenient(false);
+        calendar.setTime(date);
+        return Calendars.getField(calendar, field);
     }
 
     //-----------------------------------------------------------------------
