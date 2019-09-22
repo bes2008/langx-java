@@ -90,16 +90,38 @@ public class Calendars {
         return null;
     }
 
-    public static int getField(@NonNull Calendar calendar,@NonNull  DateField field){
+    public static int getField(@NonNull Calendar calendar, @NonNull DateField field) {
         Preconditions.checkNotNull(calendar);
         Preconditions.checkNotNull(field);
         return calendar.get(field.getField());
     }
 
-    public static void setField(@NonNull Calendar calendar,@NonNull  DateField field, int value){
+
+    public static void setField(@NonNull Calendar calendar, @NonNull DateField field, int value) {
         Preconditions.checkNotNull(calendar);
         Preconditions.checkNotNull(field);
         calendar.set(field.getField(), value);
+        calendar.getTimeInMillis(); // just make sure recompute
+    }
+
+    /**
+     * add specified field, may be change other fields
+     */
+    public static void addField(@NonNull Calendar calendar, @NonNull DateField field, int value) {
+        Preconditions.checkNotNull(calendar);
+        Preconditions.checkNotNull(field);
+        calendar.add(field.getField(), value);
+        calendar.getTimeInMillis(); // just make sure recompute
+    }
+
+    /**
+     * Just roll specified field, will not change other fields
+     */
+    public static void rollField(@NonNull Calendar calendar, @NonNull DateField field, int value) {
+        Preconditions.checkNotNull(calendar);
+        Preconditions.checkNotNull(field);
+        calendar.roll(field.getField(), value);
+        calendar.getTimeInMillis(); // just make sure recompute
     }
 
     public static enum DateField {
@@ -113,7 +135,8 @@ public class Calendars {
         MILLIS(Calendar.MILLISECOND);
 
         private int field;
-        DateField(int field){
+
+        DateField(int field) {
             this.field = field;
         }
 
