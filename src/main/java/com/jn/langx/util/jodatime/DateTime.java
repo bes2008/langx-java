@@ -167,7 +167,7 @@ public final class DateTime
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link convert.ConverterManager ConverterManager} and
+     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -190,7 +190,7 @@ public final class DateTime
      * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
-     * {@link convert.ConverterManager ConverterManager} and
+     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
@@ -213,7 +213,7 @@ public final class DateTime
      * is ignored.
      * <p>
      * The recognised object types are defined in
-     * {@link convert.ConverterManager ConverterManager} and
+     * {@link com.jn.langx.util.jodatime.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *

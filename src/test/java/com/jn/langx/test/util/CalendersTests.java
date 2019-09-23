@@ -104,7 +104,7 @@ public class CalendersTests {
         Calendars.setField(calendar, Calendars.MONTH, 10);
         showCalendar(calendar);
         System.out.println("======================");
-        Calendars.setMonth(calendar,15);
+        Calendars.setMonths(calendar,15);
         showCalendar(calendar);
     }
 
