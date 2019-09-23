@@ -271,7 +271,11 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMonths(final Date date, final int amount) {
-        return set(date, Calendars.MONTH, amount);
+        return setMonths(date, amount, false);
+    }
+
+    public static Date setMonths(final Date date, final int amount, boolean valueIsActual) {
+        return set(date, Calendars.MONTH, valueIsActual ? (amount - 1) : amount);
     }
 
     //-----------------------------------------------------------------------
@@ -382,7 +386,7 @@ public class Dates {
     }
 
     public static int getMonths(@NonNull Date date) {
-        return Calendars.getMonths(toCalendar(date));
+        return getMonths(date, false);
     }
 
     public static int getMonths(@NonNull Date date, boolean getActualMonth) {
