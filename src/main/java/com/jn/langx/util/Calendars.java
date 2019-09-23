@@ -96,32 +96,32 @@ public class Calendars {
         return calendar.get(field.getField());
     }
 
-    public static int getYear(@NonNull Calendar calendar) {
+    public static int getYears(@NonNull Calendar calendar) {
         return getField(calendar, YEAR);
     }
 
-    public static int getMonth(@NonNull Calendar calendar) {
-        return getMonth(calendar, false);
+    public static int getMonths(@NonNull Calendar calendar) {
+        return getMonths(calendar, false);
     }
 
-    public static int getMonth(@NonNull Calendar calendar, boolean actual) {
+    public static int getMonths(@NonNull Calendar calendar, boolean actual) {
         int month = getField(calendar, MONTH);
         return actual ? (month + 1) : month;
     }
 
-    public static int getDay(@NonNull Calendar calendar) {
+    public static int getDays(@NonNull Calendar calendar) {
         return getField(calendar, DAY);
     }
 
-    public static int getHour(@NonNull Calendar calendar) {
+    public static int getHours(@NonNull Calendar calendar) {
         return getField(calendar, HOUR);
     }
 
-    public static int getMinute(@NonNull Calendar calendar) {
+    public static int getMinutes(@NonNull Calendar calendar) {
         return getField(calendar, MINUTE);
     }
 
-    public static int getSecond(@NonNull Calendar calendar) {
+    public static int getSeconds(@NonNull Calendar calendar) {
         return getField(calendar, SECOND);
     }
 
@@ -136,33 +136,33 @@ public class Calendars {
         calendar.getTimeInMillis(); // just make sure recompute
     }
 
-    public static void setYear(@NonNull Calendar calendar, int year) {
+    public static void setYears(@NonNull Calendar calendar, int year) {
         Preconditions.checkTrue(year >= 1970);
         setField(calendar, YEAR, year);
     }
 
-    public static void setMonth(@NonNull Calendar calendar, int month) {
-        setMonth(calendar, month, false);
+    public static void setMonths(@NonNull Calendar calendar, int month) {
+        setMonths(calendar, month, false);
     }
 
-    public static void setMonth(@NonNull Calendar calendar, int month, boolean valueIsActual) {
+    public static void setMonths(@NonNull Calendar calendar, int month, boolean valueIsActual) {
         month = valueIsActual ? (month - 1) : month;
         setField(calendar, MONTH, month);
     }
 
-    public static void setDay(@NonNull Calendar calendar, int year) {
+    public static void setDays(@NonNull Calendar calendar, int year) {
         setField(calendar, YEAR, year);
     }
 
-    public static void setHour(@NonNull Calendar calendar, int year) {
+    public static void setHours(@NonNull Calendar calendar, int year) {
         setField(calendar, YEAR, year);
     }
 
-    public static void setMinute(@NonNull Calendar calendar, int year) {
+    public static void setMinutes(@NonNull Calendar calendar, int year) {
         setField(calendar, YEAR, year);
     }
 
-    public static void setSecond(@NonNull Calendar calendar, int year) {
+    public static void setSeconds(@NonNull Calendar calendar, int year) {
         setField(calendar, SECOND, year);
     }
 

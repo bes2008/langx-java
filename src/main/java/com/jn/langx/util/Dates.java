@@ -16,7 +16,7 @@ import java.util.TimeZone;
  * <p>
  * 标准时间：GMT时间，也叫格林威治平时，也叫 UTC时间。
  * Java 6 ：
- *
+ * <p>
  * <pre>
  * Date:
  * 表示一个瞬时值，单位是毫秒。它的结果是一个标准的GMT瞬时值。它和时区（timezone）地域（Locale）没有关系。
@@ -373,13 +373,40 @@ public class Dates {
         return c.getTime();
     }
 
-    private static int get(@NonNull Date date, final Calendars.DateField field){
-        Preconditions.checkNotNull(date);
-        Preconditions.checkNotNull(field);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setLenient(false);
-        calendar.setTime(date);
-        return Calendars.getField(calendar, field);
+    public static int get(@NonNull Date date, final Calendars.DateField field) {
+        return Calendars.getField(toCalendar(date), field);
+    }
+
+    public static int getYears(@NonNull Date date) {
+        return Calendars.getYears(toCalendar(date));
+    }
+
+    public static int getMonths(@NonNull Date date) {
+        return Calendars.getMonths(toCalendar(date));
+    }
+
+    public static int getMonths(@NonNull Date date, boolean getActualMonth) {
+        return Calendars.getMonths(toCalendar(date), getActualMonth);
+    }
+
+    public static int getDays(@NonNull Date date) {
+        return Calendars.getDays(toCalendar(date));
+    }
+
+    public static int getHours(@NonNull Date date) {
+        return Calendars.getHours(toCalendar(date));
+    }
+
+    public static int getMinutes(@NonNull Date date) {
+        return Calendars.getMinutes(toCalendar(date));
+    }
+
+    public static int getSeconds(@NonNull Date date) {
+        return Calendars.getSeconds(toCalendar(date));
+    }
+
+    public static int getMillis(@NonNull Date date) {
+        return Calendars.getMillis(toCalendar(date));
     }
 
     //-----------------------------------------------------------------------
@@ -393,6 +420,7 @@ public class Dates {
      */
     public static Calendar toCalendar(final Date date) {
         final Calendar c = Calendar.getInstance();
+        c.setLenient(false);
         c.setTime(date);
         return c;
     }
