@@ -30,12 +30,12 @@ public class PropertiesAccessorTests {
         hashMap.put("b", "false");
         hashMap.put("c", "cccc");
         hashMap.put("ac", "3.0");
-        MapAccessor accessor1 = new MapAccessor();
-        Assert.assertFalse(accessor.getBoolean("b"));
-        Assert.assertTrue(accessor.getInteger("a") == 3);
-        Assert.assertTrue(accessor.get("c").equals("cccc"));
+        MapAccessor accessor1 = new MapAccessor(hashMap);
+        Assert.assertFalse(accessor1.getBoolean("b"));
+        Assert.assertTrue(accessor1.getInteger("a") == 3);
+        Assert.assertTrue(accessor1.get("c").equals("cccc"));
 
-        Assert.assertTrue(accessor.get("ac").equals("3.0"));
-        Assert.assertTrue(accessor.getInteger("ac").equals(3));
+        Assert.assertTrue(accessor1.get("ac").equals("3.0"));
+        Assert.assertTrue(accessor1.getInteger("ac").equals(3));
     }
 }
