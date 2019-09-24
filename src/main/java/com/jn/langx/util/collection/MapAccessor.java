@@ -8,6 +8,11 @@ public class MapAccessor extends BasedStringAccessor<String, Map<String, Object>
     public MapAccessor() {
     }
 
+    public MapAccessor(Map<String, Object> target) {
+        this();
+        setTarget(target);
+    }
+
     @Override
     public Object get(String key) {
         return getTarget().get(key);
@@ -16,7 +21,7 @@ public class MapAccessor extends BasedStringAccessor<String, Map<String, Object>
     @Override
     public String getString(String key, String defaultValue) {
         Object value = get(key);
-        if(value==null){
+        if (value == null) {
             return defaultValue;
         }
         return value.toString();
