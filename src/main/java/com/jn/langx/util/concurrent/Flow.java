@@ -130,7 +130,7 @@ import java.util.concurrent.Executor;
  *
  * @author Doug Lea
  */
-public final class Flow {
+final class Flow {
 
     private Flow() {
     } // uninstantiable
