@@ -6,6 +6,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.enums.CommonEnums;
 import com.jn.langx.util.enums.Enums;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
@@ -143,7 +144,7 @@ public class Strings {
      * every element in string[] has the trim() invoked
      */
     public static String[] split(@Nullable String string, @Nullable String separator) {
-        if (Emptys.isEmpty(string) || Emptys.isNull(separator)) {
+        if (Emptys.isEmpty(string)) {
             return new String[0];
         }
 
@@ -1713,6 +1714,26 @@ public class Strings {
         return str.toUpperCase(locale);
     }
 
+    public static String upperCase(String str, int offset, int limit) {
+        Pipeline<String> pipeline = Pipeline.<String>of(Strings.split(str, null));
+        final StringBuilder builder = new StringBuilder();
+        Consumer<String> appendConsumer = new Consumer<String>() {
+            @Override
+            public void accept(String str) {
+                builder.append(str);
+            }
+        };
+        pipeline.skip(0).limit(offset).forEach(appendConsumer);
+        pipeline.skip(offset).limit(limit).map(new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return input.toUpperCase();
+            }
+        }).forEach(appendConsumer);
+        pipeline.skip(limit).forEach(appendConsumer);
+        return builder.toString();
+    }
+
     /**
      * <p>Converts a String to lower case as per {@link String#toLowerCase()}.</p>
      * <p>
@@ -1760,6 +1781,26 @@ public class Strings {
             return null;
         }
         return str.toLowerCase(locale);
+    }
+
+    public static String lowerCase(String str, int offset, int limit) {
+        Pipeline<String> pipeline = Pipeline.<String>of(Strings.split(str, null));
+        final StringBuilder builder = new StringBuilder();
+        Consumer<String> appendConsumer = new Consumer<String>() {
+            @Override
+            public void accept(String str) {
+                builder.append(str);
+            }
+        };
+        pipeline.skip(0).limit(offset).forEach(appendConsumer);
+        pipeline.skip(offset).limit(limit).map(new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return input.toLowerCase();
+            }
+        }).forEach(appendConsumer);
+        pipeline.skip(limit).forEach(appendConsumer);
+        return builder.toString();
     }
 
     /**
