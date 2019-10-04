@@ -104,7 +104,7 @@ public class FieldAttributes {
      * @see java.lang.reflect.Modifier
      */
     public boolean hasModifier(int modifier) {
-        return (field.getModifiers() & modifier) != 0;
+        return Modifiers.hasModifier(field, modifier);
     }
 
     /**
