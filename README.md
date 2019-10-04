@@ -2,6 +2,7 @@
 
 [![JDK](https://img.shields.io/badge/JDK-1.6+-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
+[![maven](https://img.shields.io/badge/maven-v0.0.8-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.8)
 [![maven](https://img.shields.io/badge/maven-v0.0.7-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.7)
 [![maven](https://img.shields.io/badge/maven-v0.0.6-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.6)
 [![maven](https://img.shields.io/badge/maven-v0.0.5-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.5)
@@ -71,3 +72,8 @@ Java lang extensions
 26. SQL formatter
 27. Linux NTP
 28. Lifecycle API
+
+
+## Contact:
+QQ Group: 750929088   
+![QQ Group](https://github.com/fangjinuo/sqlhelper/blob/master/_images/qq_group.png)

@@ -58,7 +58,11 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
         if (value == null) {
             return defaultValue;
         }
-        return Byte.parseByte(value);
+        return getNumber(value).byteValue();
+    }
+
+    protected Number getNumber(String string){
+        return Numbers.createNumber(string);
     }
 
     @Override
@@ -72,7 +76,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
         if (value == null) {
             return defaultValue;
         }
-        return Integer.parseInt(value);
+        return getNumber(value).intValue();
     }
 
     @Override
@@ -86,7 +90,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
         if (value == null) {
             return defaultValue;
         }
-        return Short.parseShort(value);
+        return getNumber(value).shortValue();
     }
 
     @Override
@@ -100,7 +104,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
         if (value == null) {
             return defaultValue;
         }
-        return Double.parseDouble(value);
+        return getNumber(value).doubleValue();
     }
 
     @Override
@@ -114,7 +118,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
         if (value == null) {
             return defaultValue;
         }
-        return Float.parseFloat(value);
+        return getNumber(value).floatValue();
     }
 
     @Override
@@ -128,7 +132,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
         if (value == null) {
             return defaultValue;
         }
-        return Long.parseLong(value);
+        return getNumber(value).longValue();
     }
 
     @Override
