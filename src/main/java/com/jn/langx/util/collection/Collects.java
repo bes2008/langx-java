@@ -699,6 +699,23 @@ public class Collects {
     /**
      * Iterate every element
      */
+    public static <E> void forEach(@Nullable Collection<E> collection, @NonNull final Consumer2<Integer, E> consumer) {
+        Preconditions.checkNotNull(consumer);
+        if (Emptys.isNotEmpty(collection)) {
+            final Holder<Integer> indexHolder = new Holder<Integer>(-1);
+            forEach(collection, new Consumer<E>() {
+                @Override
+                public void accept(E e) {
+                    indexHolder.set(indexHolder.get() + 1);
+                    consumer.accept(indexHolder.get(), e);
+                }
+            });
+        }
+    }
+
+    /**
+     * Iterate every element
+     */
     public static <E> void forEach(@Nullable E[] array, @NonNull Consumer2<Integer, E> consumer) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(array)) {
