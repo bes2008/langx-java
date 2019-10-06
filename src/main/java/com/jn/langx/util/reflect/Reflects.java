@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.type.Types;
@@ -1016,9 +1017,59 @@ public class Reflects {
      * @param intf  The interface to check it against.
      * @return True if the class does implement the interface, false otherwise.
      */
-    public static boolean isImplementsInterface(Class clazz, Class intf) {
+    public static boolean isImplementsInterface(@NonNull Class clazz, @NonNull Class intf) {
         Preconditions.checkTrue(intf.isInterface(), "Interface to check was not an interface");
         return intf.isAssignableFrom(clazz);
+    }
+
+    public static boolean isSubClassOrEquals(@NonNull Class parent, @NonNull Class child) {
+        Preconditions.checkNotNull(parent);
+        Preconditions.checkNotNull(child);
+        return parent.isAssignableFrom(child);
+    }
+
+    public static boolean isSubClass(@NonNull Class parent, @NonNull Class child) {
+        Preconditions.checkNotNull(parent);
+        Preconditions.checkNotNull(child);
+        if (parent == child) {
+            return false;
+        }
+        return parent.isAssignableFrom(child);
+    }
+
+    public static Class loadClass(String className, ClassLoader classLoader) throws ClassNotFoundException {
+        Class clazz = null;
+        try {
+            clazz = Class.forName(className, true, classLoader);
+        } catch (ClassNotFoundException ex) {
+            // NOOP
+        }
+        if (clazz == null) {
+            clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+        }
+        return clazz;
+    }
+
+    public static Class loadImplClass(final String className, ClassLoader classLoader, final Class superClass) throws ClassNotFoundException {
+        Class clazz = loadClass(className, classLoader);
+        if (!isSubClass(superClass, clazz)) {
+            final String error = "Class " + Reflects.getFQNClassName(clazz) + " is not cast to " + Reflects.getFQNClassName(superClass);
+            throw new ClassCastException(error);
+        }
+        return clazz;
+    }
+
+    public static <I, O> O doAction(@NonNull ClassLoader threadContextClassLoader, @NonNull Function<I, O> action, @Nullable I input) {
+        Preconditions.checkNotNull(threadContextClassLoader);
+        Preconditions.checkNotNull(action);
+
+        ClassLoader originalThreadCL = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(threadContextClassLoader);
+        try {
+            return action.apply(input);
+        } finally {
+            Thread.currentThread().setContextClassLoader(originalThreadCL);
+        }
     }
 
 
