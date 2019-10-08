@@ -218,7 +218,6 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
      *
      * @see #LinkedCaseInsensitiveMap(Locale)
      * @see #convertKey(String)
-     * @since 4.3.10
      */
     public Locale getLocale() {
         return this.locale;
