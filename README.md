@@ -69,9 +69,10 @@ Java lang extensions
 23. Radix converter
 24. JMX management API
 25. File Filters
-26. SQL formatter
-27. Linux NTP
-28. Lifecycle API
+26. Linux NTP
+27. Lifecycle API
+28. ClassParser
+29. Converter Service
 
 
 ## Contact:
