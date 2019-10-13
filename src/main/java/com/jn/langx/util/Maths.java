@@ -8,18 +8,72 @@ public class Maths {
         return a > b ? a : b;
     }
 
+    public static float max(float a, float b) {
+        return a > b ? a : b;
+    }
+
+    public static long max(long a, long b) {
+        return a > b ? a : b;
+    }
+
+    public static double max(double a, double b) {
+        return a > b ? a : b;
+    }
+
     public static int max(int... array) {
-        Preconditions.checkTrue(array.length>0);
+        Preconditions.checkTrue(array.length > 0);
         return Collects.max(array, new ComparableComparator<Integer>());
+    }
+
+    public static float max(float... array) {
+        Preconditions.checkTrue(array.length > 0);
+        return Collects.max(array, new ComparableComparator<Float>());
+    }
+
+    public static long max(long... array) {
+        Preconditions.checkTrue(array.length > 0);
+        return Collects.max(array, new ComparableComparator<Long>());
+    }
+
+    public static double max(double... array) {
+        Preconditions.checkTrue(array.length > 0);
+        return Collects.max(array, new ComparableComparator<Double>());
     }
 
     public static int min(int a, int b) {
         return a > b ? b : a;
     }
 
-    public static int min(int ... array) {
-        Preconditions.checkTrue(array.length>0);
+    public static float min(float a, float b) {
+        return a > b ? b : a;
+    }
+
+    public static long min(long a, long b) {
+        return a > b ? b : a;
+    }
+
+    public static double min(double a, double b) {
+        return a > b ? b : a;
+    }
+
+    public static int min(int... array) {
+        Preconditions.checkTrue(array.length > 0);
         return Collects.min(array, new ComparableComparator<Integer>());
+    }
+
+    public static float min(float... array) {
+        Preconditions.checkTrue(array.length > 0);
+        return Collects.min(array, new ComparableComparator<Float>());
+    }
+
+    public static long min(Long... array) {
+        Preconditions.checkTrue(array.length > 0);
+        return Collects.min(array, new ComparableComparator<Long>());
+    }
+
+    public static double min(Double... array) {
+        Preconditions.checkTrue(array.length > 0);
+        return Collects.min(array, new ComparableComparator<Double>());
     }
 
     /**
@@ -35,7 +89,23 @@ public class Maths {
         return (index | length | (index + length) | (capacity - (index + length))) < 0;
     }
 
-    public static int abs(int value){
+    public static int abs(int value) {
         return value & Integer.MAX_VALUE;
+    }
+
+    public static int sum(int a, int b) {
+        return a + b;
+    }
+
+    public static float sum(float a, float b) {
+        return a + b;
+    }
+
+    public static long sum(long a, long b) {
+        return a + b;
+    }
+
+    public static double sum(double a, double b) {
+        return a + b;
     }
 }

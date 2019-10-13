@@ -2,6 +2,7 @@ package com.jn.langx.util.function;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -21,6 +22,115 @@ public class Functions {
             }
         };
     }
+
+    public static Function2<Integer, Integer, Integer> maxIntegerFunction() {
+        return new Function2<Integer, Integer, Integer>() {
+            @Override
+            public Integer apply(Integer a, Integer b) {
+                return Maths.max(a, b);
+            }
+        };
+    }
+
+    public static Function2<Float, Float, Float> maxFloatFunction() {
+        return new Function2<Float, Float, Float>() {
+            @Override
+            public Float apply(Float a, Float b) {
+                return Maths.max(a, b);
+            }
+        };
+    }
+
+    public static Function2<Long, Long, Long> maxLongFunction() {
+        return new Function2<Long, Long, Long>() {
+            @Override
+            public Long apply(Long a, Long b) {
+                return Maths.max(a, b);
+            }
+        };
+    }
+
+    public static Function2<Double, Double, Double> maxDoubleFunction() {
+        return new Function2<Double, Double, Double>() {
+            @Override
+            public Double apply(Double a, Double b) {
+                return Maths.max(a, b);
+            }
+        };
+    }
+
+    public static Function2<Integer, Integer, Integer> minIntegerFunction() {
+        return new Function2<Integer, Integer, Integer>() {
+            @Override
+            public Integer apply(Integer a, Integer b) {
+                return Maths.min(a, b);
+            }
+        };
+    }
+
+    public static Function2<Float, Float, Float> minFloatFunction() {
+        return new Function2<Float, Float, Float>() {
+            @Override
+            public Float apply(Float a, Float b) {
+                return Maths.min(a, b);
+            }
+        };
+    }
+
+    public static Function2<Long, Long, Long> minLongFunction() {
+        return new Function2<Long, Long, Long>() {
+            @Override
+            public Long apply(Long a, Long b) {
+                return Maths.min(a, b);
+            }
+        };
+    }
+
+    public static Function2<Double, Double, Double> minDoubleFunction() {
+        return new Function2<Double, Double, Double>() {
+            @Override
+            public Double apply(Double a, Double b) {
+                return Maths.min(a, b);
+            }
+        };
+    }
+
+    public static Function2<Integer, Integer, Integer> sumIntegerFunction() {
+        return new Function2<Integer, Integer, Integer>() {
+            @Override
+            public Integer apply(Integer a, Integer b) {
+                return Maths.sum(a, b);
+            }
+        };
+    }
+
+    public static Function2<Float, Float, Float> sumFloatFunction() {
+        return new Function2<Float, Float, Float>() {
+            @Override
+            public Float apply(Float a, Float b) {
+                return Maths.sum(a, b);
+            }
+        };
+    }
+
+    public static Function2<Long, Long, Long> sumLongFunction() {
+        return new Function2<Long, Long, Long>() {
+            @Override
+            public Long apply(Long a, Long b) {
+                return Maths.sum(a, b);
+            }
+        };
+    }
+
+    public static Function2<Double, Double, Double> sumDoubleFunction() {
+        return new Function2<Double, Double, Double>() {
+            @Override
+            public Double apply(Double a, Double b) {
+                return Maths.sum(a, b);
+            }
+        };
+    }
+
 
     /**********************************************
      *   Predicate
