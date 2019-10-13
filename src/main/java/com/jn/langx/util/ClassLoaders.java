@@ -7,6 +7,10 @@ import com.jn.langx.util.reflect.Reflects;
 
 public class ClassLoaders {
 
+    public static Class loadClass(String className, Class basedClass) throws ClassNotFoundException {
+        return loadClass(className, basedClass.getClassLoader());
+    }
+
     public static Class loadClass(String className, ClassLoader classLoader) throws ClassNotFoundException {
         Class clazz = null;
         try {
@@ -14,8 +18,12 @@ public class ClassLoaders {
         } catch (ClassNotFoundException ex) {
             // NOOP
         }
+        ClassLoader currentThreadClassLoader = Thread.currentThread().getContextClassLoader();
+        if (clazz == null && currentThreadClassLoader != null) {
+            clazz = Class.forName(className, true, currentThreadClassLoader);
+        }
         if (clazz == null) {
-            clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+            throw new ClassNotFoundException("Failed to load class" + className);
         }
         return clazz;
     }
