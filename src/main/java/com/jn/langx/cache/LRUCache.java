@@ -44,6 +44,12 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
     }
 
     @Override
+    protected void onRead(Entry<K, V> entry, long oldExpireTime) {
+        index.get(oldExpireTime).add(entry.getKey());
+        addToCache(entry);
+    }
+
+    @Override
     protected void clearExpired() {
         long now = System.currentTimeMillis();
         List<Long> expireTimes = new ArrayList<Long>(index.keySet());

@@ -17,12 +17,17 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
     private ConcurrentHashMap<K, Entry<K, V>> map;
     private Loader<K, V> globalLoader;
-    private long duration = Long.MAX_VALUE;
-    private final long evictExpiredInterval; // mills
-    private long nextEvictExpiredTime; // mills
+    // unit: seconds
+    private long expireAfterWrite = Long.MAX_VALUE;
+    // unit: seconds
+    private long expireAfterRead = Long.MAX_VALUE;
+    // unit: mills
+    private long evictExpiredInterval;
+    // unit: mills
+    private long nextEvictExpiredTime;
     private RemoveListener<K, V> removeListener;
-    private final int maxCapatity;
-    private float capatityFactor = 0.95f;
+    private int maxCapatity;
+    private float capatityHeightWater = 0.95f;
 
     protected AbstractCache(int maxCapatity, long evictExpiredInterval) {
         this.evictExpiredInterval = evictExpiredInterval;
@@ -37,11 +42,12 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     @Override
     public void set(@NonNull K key, @Nullable V value) {
-        set(key, value, duration);
+        set(key, value, expireAfterWrite, TimeUnit.SECONDS);
     }
 
     @Override
     public void set(@NonNull K key, @Nullable V value, long duration, TimeUnit timeUnit) {
+        Preconditions.checkTrue(duration >= 0);
         duration = timeUnit.toMillis(duration);
         long now = System.currentTimeMillis();
         long expire = (Long.MAX_VALUE - now <= duration) ? Long.MAX_VALUE : now + duration;
@@ -83,12 +89,19 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         return get(key, loader, true);
     }
 
+    protected abstract void onRead(Entry<K, V> entry, long oldExpireTime);
+
     private V get(@NonNull K key, @Nullable Supplier<K, V> loader, boolean loadIfAbsent) {
         evictExpired();
         Entry<K, V> entry = map.get(key);
         if (entry != null) {
             if (!entry.isExpired()) {
                 entry.incrementUseCount();
+                long expireTime = entry.getExpireTime();
+                if (expireAfterRead > 0) {
+                    entry.setExpireTime(System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(expireAfterRead));
+                }
+                onRead(entry, expireTime);
                 return entry.getValue();
             } else {
                 remove(key, RemoveCause.EXPRIED);
@@ -121,6 +134,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         entry = map.get(key);
         if (entry != null) {
             entry.incrementUseCount();
+            onRead(entry, entry.getExpireTime());
         }
         return value;
     }
@@ -176,7 +190,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
 
     private void evictExpired() {
-        if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapatity * capatityFactor)) {
+        if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapatity * capatityHeightWater)) {
             clearExpired();
             Collects.forEach(map, new Consumer2<K, Entry<K, V>>() {
                 @Override
@@ -198,5 +212,37 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     public int size() {
         evictExpired();
         return map.size();
+    }
+
+    void setMap(ConcurrentHashMap<K, Entry<K, V>> map) {
+        this.map = map;
+    }
+
+    void setGlobalLoader(Loader<K, V> globalLoader) {
+        this.globalLoader = globalLoader;
+    }
+
+    void setExpireAfterWrite(long expireAfterWrite) {
+        this.expireAfterWrite = expireAfterWrite;
+    }
+
+    void setExpireAfterRead(long expireAfterRead) {
+        this.expireAfterRead = expireAfterRead;
+    }
+
+    void setEvictExpiredInterval(long evictExpiredInterval) {
+        this.evictExpiredInterval = evictExpiredInterval;
+    }
+
+    void setRemoveListener(RemoveListener<K, V> removeListener) {
+        this.removeListener = removeListener;
+    }
+
+    void setMaxCapatity(int maxCapatity) {
+        this.maxCapatity = maxCapatity;
+    }
+
+    void setCapatityHeightWater(float capatityHeightWater) {
+        this.capatityHeightWater = capatityHeightWater;
     }
 }
