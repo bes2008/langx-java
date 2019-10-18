@@ -26,7 +26,7 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
 
 
     public LRUCache() {
-        super(Integer.MAX_VALUE, 60);
+        super(Integer.MAX_VALUE, 60 * 1000);
     }
 
     public LRUCache(int maxCapatity, long evictExpiredInterval) {

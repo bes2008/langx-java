@@ -564,6 +564,7 @@ public class Reflects {
         try {
             return (E) clazz.newInstance();
         } catch (Throwable ex) {
+            logger.warn("Create {} instance fail", getFQNClassName(clazz), ex);
             return null;
         }
     }
@@ -575,6 +576,7 @@ public class Reflects {
         try {
             return (E) constructor.newInstance(parameters);
         } catch (Throwable ex) {
+            logger.warn("Create {} instance fail", getFQNClassName(clazz), ex);
             return null;
         }
     }

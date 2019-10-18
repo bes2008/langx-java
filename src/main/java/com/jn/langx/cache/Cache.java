@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.function.Supplier;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public interface Cache<K, V> {
@@ -26,4 +27,6 @@ public interface Cache<K, V> {
     void clean();
 
     int size();
+
+    Map<K,V> toMap();
 }

@@ -10,6 +10,8 @@ import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -26,18 +28,27 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     // unit: mills
     private long nextEvictExpiredTime;
     private RemoveListener<K, V> removeListener;
-    private int maxCapatity;
+    private int maxCapacity;
     private float capatityHeightWater = 0.95f;
 
-    protected AbstractCache(int maxCapatity, long evictExpiredInterval) {
+    protected AbstractCache(int maxCapacity, long evictExpiredInterval) {
         this.evictExpiredInterval = evictExpiredInterval;
         Preconditions.checkTrue(evictExpiredInterval >= 0);
-        this.maxCapatity = maxCapatity;
+        this.maxCapacity = maxCapacity;
         computeNextEvictExpiredTime();
     }
 
-    private void computeNextEvictExpiredTime() {
-        nextEvictExpiredTime = System.currentTimeMillis() + evictExpiredInterval;
+    void computeNextEvictExpiredTime() {
+        long now = System.currentTimeMillis();
+        if (evictExpiredInterval < 0) {
+            nextEvictExpiredTime = Long.MAX_VALUE;
+        }
+        if (Long.MAX_VALUE - now < evictExpiredInterval) {
+            evictExpiredInterval = Long.MAX_VALUE - now;
+            nextEvictExpiredTime = Long.MAX_VALUE;
+        } else {
+            nextEvictExpiredTime = System.currentTimeMillis() + evictExpiredInterval;
+        }
     }
 
     @Override
@@ -190,7 +201,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
 
     private void evictExpired() {
-        if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapatity * capatityHeightWater)) {
+        if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapacity * capatityHeightWater)) {
             clearExpired();
             Collects.forEach(map, new Consumer2<K, Entry<K, V>>() {
                 @Override
@@ -212,6 +223,18 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     public int size() {
         evictExpired();
         return map.size();
+    }
+
+    @Override
+    public Map<K, V> toMap() {
+        final Map<K, V> map = new HashMap<K, V>();
+        Collects.forEach(this.map, new Consumer2<K, Entry<K, V>>() {
+            @Override
+            public void accept(K key, Entry<K, V> entry) {
+                map.put(key, entry.getValue());
+            }
+        });
+        return map;
     }
 
     void setMap(ConcurrentHashMap<K, Entry<K, V>> map) {
@@ -238,8 +261,8 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         this.removeListener = removeListener;
     }
 
-    void setMaxCapatity(int maxCapatity) {
-        this.maxCapatity = maxCapatity;
+    void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
 
     void setCapatityHeightWater(float capatityHeightWater) {
