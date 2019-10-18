@@ -6,10 +6,7 @@ import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class LRUCache<K, V> extends AbstractCache<K, V> {
 
@@ -57,7 +54,7 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
             if (expireTime > now) {
                 break;
             }
-            List<K> keys = index.get(expireTime);
+            List<K> keys = new ArrayList<K>(index.get(expireTime));
             Collects.forEach(keys, new Consumer2<Integer, K>() {
                 @Override
                 public void accept(Integer expireTime, K key) {

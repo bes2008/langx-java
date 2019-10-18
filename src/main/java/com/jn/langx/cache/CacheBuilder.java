@@ -61,6 +61,12 @@ public class CacheBuilder<K, V> {
         return this;
     }
 
+    /**
+     * Set the period of global evict, default : Long.MAX_VALUE
+     * unit: mills
+     * @param evictExpiredInterval the evict period
+     * @return the cache builder
+     */
     public CacheBuilder<K, V> evictExpiredInterval(long evictExpiredInterval) {
         this.evictExpiredInterval = evictExpiredInterval;
         return this;
