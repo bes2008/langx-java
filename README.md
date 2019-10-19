@@ -36,7 +36,11 @@ Java lang extensions
       + LRUCache
       + FIFOCache
 + Accessor API
+    + Tuple
+    + Environment Accessor
     + Properties Accessor
+    + Map Accessor
+    + StringMap Accessor
     + Field Accessor
     + Array Accessor 
     + HTTP Query String Accessor
