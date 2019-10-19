@@ -1,87 +1,78 @@
 package com.jn.langx.cache;
 
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.comparator.ComparableComparator;
-import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Supplier;
 
 import java.util.*;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class LRUCache<K, V> extends AbstractCache<K, V> {
 
     /**
-     * Key: expire time
-     * Value: key
+     * key: lastUsedTime
+     * Value: entry.key
      */
-    private Map<Long, List<K>> index = WrappedNonAbsentMap.wrap(new TreeMap<Long, List<K>>(new ComparableComparator<Long>()), new Supplier<Long, List<K>>() {
+    private Map<Long, Set<Entry<K, V>>> lastUsedTimeIndex = WrappedNonAbsentMap.wrap(new TreeMap<Long, Set<Entry<K, V>>>(new ComparableComparator<Long>()), new Supplier<Long, Set<Entry<K, V>>>() {
         @Override
-        public List<K> get(Long expireTime) {
-            return Collects.emptyLinkedList();
+        public Set<Entry<K, V>> get(Long lastUsedTime) {
+            return new TreeSet<Entry<K, V>>(new Comparator<Entry<K, V>>() {
+                @Override
+                public int compare(Entry<K, V> o1, Entry<K, V> o2) {
+                    return o1.getExpireTime() == o2.getExpireTime() ? 0 : (o1.getExpireTime() > o2.getExpireTime() ? 1 : -1);
+                }
+            });
         }
     });
-
-    private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
-    private ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
-    private ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
-
 
     public LRUCache() {
         super(Integer.MAX_VALUE, 60 * 1000);
     }
 
-    public LRUCache(int maxCapatity, long evictExpiredInterval) {
-        super(maxCapatity, evictExpiredInterval);
+    public LRUCache(int maxCapacity, long evictExpiredInterval) {
+        super(maxCapacity, evictExpiredInterval);
     }
 
     @Override
     protected void addToCache(Entry<K, V> entry) {
-        writeLock.lock();
-        index.get(entry.getExpireTime()).add(entry.getKey());
-        writeLock.unlock();
+        lastUsedTimeIndex.get(entry.getLastUsedTime()).add(entry);
     }
 
     @Override
-    protected void removeFromCache(Entry<K, V> entry) {
-        writeLock.lock();
-        index.get(entry.getExpireTime()).remove(entry.getKey());
-        writeLock.unlock();
+    protected void removeFromCache(Entry<K, V> entry, RemoveCause removeCause) {
+        lastUsedTimeIndex.get(entry.getLastUsedTime()).remove(entry);
     }
 
     @Override
     protected void beforeRecomputeExpireTimeOnRead(Entry<K, V> entry) {
-        removeFromCache(entry);
     }
 
     @Override
     protected void afterRecomputeExpireTimeOnRead(Entry<K, V> entry) {
-        addToCache(entry);
     }
 
     @Override
-    protected void clearExpired() {
-        long now = System.currentTimeMillis();
-        List<Long> expireTimes = new ArrayList<Long>();
-        Set<Long> set = null;
-        readLock.lock();
-        set = index.keySet();
-        readLock.unlock();
-        expireTimes.addAll(set);
-        for (Long expireTime : expireTimes) {
-            if (expireTime > now) {
-                break;
-            }
-            readLock.lock();
-            List<K> keys = new ArrayList<K>(index.get(expireTime));
-            readLock.unlock();
-            Collects.forEach(keys, new Consumer2<Integer, K>() {
-                @Override
-                public void accept(Integer expireTime, K key) {
-                    remove(key, RemoveCause.COLLECTED);
-                }
-            });
-        }
-    }
+    protected List<Entry<K, V>> forceEvict(final int count) {
 
+        final List<Entry<K, V>> evicted = new ArrayList<Entry<K, V>>();
+
+        Collects.forEach(new ArrayList<Long>(lastUsedTimeIndex.keySet()), new Consumer<Long>() {
+            @Override
+            public void accept(Long lastUsedTime) {
+                Set<Entry<K, V>> set = lastUsedTimeIndex.get(lastUsedTime);
+                if (Emptys.isNotEmpty(set)) {
+                    List<Entry<K, V>> list = new LinkedList<Entry<K, V>>(set);
+                    while (evicted.size() < count && !list.isEmpty()) {
+                        Entry<K, V> entry = list.remove(0);
+                        if (entry != null) {
+                            evicted.add(entry);
+                        }
+                    }
+                }
+            }
+        });
+        return null;
+    }
 }

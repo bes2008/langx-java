@@ -7,7 +7,7 @@ public class Entry<K, V> {
     private K key;
     // required
     private V value;
-    // required
+    // required, for evict
     private long expireTime = Long.MAX_VALUE;
 
     Entry(K key, V value, long expireTime) {
@@ -21,6 +21,7 @@ public class Entry<K, V> {
 
     private long lastWriteTime;
 
+    // for LRU
     private long lastUsedTime;
 
     private int usedCountFromLastEvict;
@@ -85,5 +86,24 @@ public class Entry<K, V> {
 
     public long getExpireTime() {
         return expireTime;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()){
+            return false;
+        }
+
+        Entry<?, ?> entry = (Entry<?, ?>) object;
+
+        return key.equals(entry.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return key.hashCode();
     }
 }

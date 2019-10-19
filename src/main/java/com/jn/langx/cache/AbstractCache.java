@@ -5,16 +5,19 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.WrappedNonAbsentMap;
+import com.jn.langx.util.comparator.ComparableComparator;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class AbstractCache<K, V> implements Cache<K, V> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
@@ -24,13 +27,31 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     private long expireAfterWrite = Long.MAX_VALUE;
     // unit: seconds
     private long expireAfterRead = Long.MAX_VALUE;
+    // unit: seconds
+    private long refreshAfterAccess = Long.MAX_VALUE;
     // unit: mills
     private long evictExpiredInterval;
     // unit: mills
     private long nextEvictExpiredTime;
+
     private RemoveListener<K, V> removeListener;
     private int maxCapacity;
     private float capatityHeightWater = 0.95f;
+
+    /**
+     * Key: expire time
+     * Value: entry.key
+     */
+    private Map<Long, List<K>> expireTimeIndex = WrappedNonAbsentMap.wrap(new TreeMap<Long, List<K>>(new ComparableComparator<Long>()), new Supplier<Long, List<K>>() {
+        @Override
+        public List<K> get(Long expireTime) {
+            return Collects.emptyLinkedList();
+        }
+    });
+
+    private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
+    private ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+    private ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
     protected AbstractCache(int maxCapacity, long evictExpiredInterval) {
         this.evictExpiredInterval = evictExpiredInterval;
@@ -70,10 +91,16 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         } else if (expire < now) {
             remove(key, RemoveCause.EXPRIED);
         } else {
-            remove(key, RemoveCause.REPLACED);
-            Entry<K, V> entry = new Entry<K, V>(key, value, expire);
-            map.put(key, entry);
-            addToCache(entry);
+            writeLock.lock();
+            try {
+                remove(key, RemoveCause.REPLACED);
+                Entry<K, V> entry = new Entry<K, V>(key, value, expire);
+                map.put(key, entry);
+                expireTimeIndex.get(entry.getExpireTime()).add(entry.getKey());
+                addToCache(entry);
+            } finally {
+                writeLock.unlock();
+            }
         }
     }
 
@@ -94,20 +121,28 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         return get(key, loader, true);
     }
 
-    protected abstract void beforeRecomputeExpireTimeOnRead(Entry<K, V> entry);
-
-    protected abstract void afterRecomputeExpireTimeOnRead(Entry<K, V> entry);
-
     private V get(@NonNull K key, @Nullable Supplier<K, V> loader, boolean loadIfAbsent) {
         evictExpired();
         Entry<K, V> entry = map.get(key);
         if (entry != null) {
             if (!entry.isExpired()) {
+                long nextRefreshTime = Dates.nextTime(entry.getLastUsedTime(), TimeUnit.SECONDS.toMillis(refreshAfterAccess));
+                if (System.currentTimeMillis() > nextRefreshTime) {
+                    return refresh(key, true);
+                }
+
                 entry.incrementUseCount();
                 if (expireAfterRead > 0) {
-                    beforeRecomputeExpireTimeOnRead(entry);
-                    entry.setExpireTime(Dates.nextTime(expireAfterRead));
-                    afterRecomputeExpireTimeOnRead(entry);
+                    writeLock.lock();
+                    try {
+                        expireTimeIndex.get(entry.getExpireTime()).remove(entry.getKey());
+                        beforeRecomputeExpireTimeOnRead(entry);
+                        entry.setExpireTime(Dates.nextTime(expireAfterRead));
+                        expireTimeIndex.get(entry.getExpireTime()).add(entry.getKey());
+                        afterRecomputeExpireTimeOnRead(entry);
+                    } finally {
+                        writeLock.unlock();
+                    }
                 }
 
                 return entry.getValue();
@@ -142,13 +177,26 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         entry = map.get(key);
         if (entry != null) {
             entry.incrementUseCount();
-            afterRecomputeExpireTimeOnRead(entry);
+            try {
+                writeLock.lock();
+                afterRecomputeExpireTimeOnRead(entry);
+            } finally {
+                writeLock.unlock();
+            }
         }
         return value;
     }
 
+    protected abstract void beforeRecomputeExpireTimeOnRead(Entry<K, V> entry);
+
+    protected abstract void afterRecomputeExpireTimeOnRead(Entry<K, V> entry);
+
     @Override
     public void refresh(@NonNull K key) {
+        refresh(key, false);
+    }
+
+    private V refresh(@NonNull K key, boolean internalInvoke) {
         Preconditions.checkNotNull(key);
         evictExpired();
         Holder<Throwable> exceptionHolder = new Holder<Throwable>();
@@ -157,11 +205,12 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
             if (exceptionHolder.get() != null) {
                 logger.warn("Error occur when load resource for key: {}, error message: {}, stack:", key, exceptionHolder.get().getMessage(), exceptionHolder.get());
             } else {
-                remove(key, RemoveCause.REPLACED);
+                remove(key, internalInvoke ? RemoveCause.REPLACED : RemoveCause.EXPLICIT);
             }
         } else {
             set(key, value);
         }
+        return get(key);
     }
 
     private V loadByGlobalLoader(@NonNull K key, @NonNull Holder<Throwable> error) {
@@ -176,16 +225,24 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         return value;
     }
 
-    protected abstract void removeFromCache(Entry<K, V> entry);
+    protected abstract void removeFromCache(Entry<K, V> entry, RemoveCause removeCause);
 
     protected final V remove(@NonNull K key, @NonNull RemoveCause cause) {
-        Entry<K, V> entry = map.remove(key);
-        V ret = entry == null ? null : entry.getValue();
-        if (ret != null) {
-            removeFromCache(entry);
-            if (removeListener != null) {
-                removeListener.onRemove(key, ret, cause);
+        V ret = null;
+        writeLock.lock();
+        try {
+            Entry<K, V> entry = map.remove(key);
+            ret = entry == null ? null : entry.getValue();
+            if (ret != null) {
+                expireTimeIndex.get(entry.getExpireTime()).remove(entry.getKey());
+                removeFromCache(entry, cause);
             }
+        } finally {
+            writeLock.unlock();
+        }
+
+        if (ret != null && removeListener != null) {
+            removeListener.onRemove(key, ret, cause);
         }
         return ret;
     }
@@ -200,6 +257,22 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     private void evictExpired() {
         if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapacity * capatityHeightWater)) {
             clearExpired();
+            int forceEvictCount = map.size() - new Float(maxCapacity * capatityHeightWater).intValue();
+            if (forceEvictCount > 0) {
+                writeLock.lock();
+                try {
+                    List<Entry<K, V>> cleared = forceEvict(forceEvictCount);
+                    Collects.forEach(cleared, new Consumer<Entry<K, V>>() {
+                        @Override
+                        public void accept(Entry<K, V> entry) {
+                            expireTimeIndex.get(entry.getExpireTime()).remove(entry.getKey());
+                        }
+                    });
+                } finally {
+                    writeLock.unlock();
+                }
+
+            }
             Collects.forEach(map, new Consumer2<K, Entry<K, V>>() {
                 @Override
                 public void accept(K key, Entry<K, V> entry) {
@@ -209,7 +282,31 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         }
     }
 
-    protected abstract void clearExpired();
+    protected abstract List<Entry<K, V>> forceEvict(int count);
+
+    private void clearExpired() {
+        long now = System.currentTimeMillis();
+        List<Long> expireTimes = new ArrayList<Long>();
+        Set<Long> set = null;
+        readLock.lock();
+        set = expireTimeIndex.keySet();
+        readLock.unlock();
+        expireTimes.addAll(set);
+        for (Long expireTime : expireTimes) {
+            if (expireTime > now) {
+                break;
+            }
+            readLock.lock();
+            List<K> keys = new ArrayList<K>(expireTimeIndex.get(expireTime));
+            readLock.unlock();
+            Collects.forEach(keys, new Consumer2<Integer, K>() {
+                @Override
+                public void accept(Integer expireTime, K key) {
+                    remove(key, RemoveCause.COLLECTED);
+                }
+            });
+        }
+    }
 
     @Override
     public void clean() {
