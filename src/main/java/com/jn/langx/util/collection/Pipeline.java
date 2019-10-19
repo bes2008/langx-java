@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.*;
 
@@ -43,7 +44,7 @@ public class Pipeline<E> {
         return new Pipeline<E>(list);
     }
 
-    public Pipeline<E> sorted(Comparator<E> comparator) {
+    public Pipeline<E> sorted(@NonNull Comparator<E> comparator) {
         return new Pipeline<E>(Collects.sort(this.collection, comparator));
     }
 
@@ -51,19 +52,27 @@ public class Pipeline<E> {
         return new Pipeline<E>(Collects.distinct(this.collection));
     }
 
-    public void forEach(Consumer<E> consumer) {
+    public void forEach(@NonNull Consumer<E> consumer) {
         Collects.forEach(this.collection, consumer);
     }
 
-    public boolean anyMatch(Predicate<E> predicate) {
+    public void forEach(@NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
+        Collects.forEach(this.collection, consumer, breakPredicate);
+    }
+
+    public void forEach(@NonNull Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
+        Collects.forEach(this.collection, consumer, breakPredicate);
+    }
+
+    public boolean anyMatch(@NonNull Predicate<E> predicate) {
         return Collects.anyMatch(this.collection, predicate);
     }
 
-    public boolean allMatch(Predicate<E> predicate) {
+    public boolean allMatch(@NonNull Predicate<E> predicate) {
         return Collects.allMatch(this.collection, predicate);
     }
 
-    public boolean noneMatch(Predicate<E> predicate) {
+    public boolean noneMatch(@NonNull Predicate<E> predicate) {
         return Collects.noneMatch(this.collection, predicate);
     }
 

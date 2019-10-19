@@ -686,12 +686,22 @@ public class Collects {
      * Iterate every element
      */
     public static <E> void forEach(@Nullable Object anyObject, @NonNull Consumer<E> consumer) {
+        forEach(anyObject, consumer, null);
+    }
+
+    /**
+     * Iterate every element
+     */
+    public static <E> void forEach(@Nullable Object anyObject, @NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
         if (anyObject == null) {
             return;
         }
         Preconditions.checkNotNull(consumer);
         Iterable<E> iterable = asIterable(anyObject);
         for (E e : iterable) {
+            if (breakPredicate != null && breakPredicate.test(e)) {
+                break;
+            }
             consumer.accept(e);
         }
     }
@@ -700,16 +710,29 @@ public class Collects {
      * Iterate every element
      */
     public static <E> void forEach(@Nullable Collection<E> collection, @NonNull final Consumer2<Integer, E> consumer) {
+        forEach(collection, consumer, null);
+    }
+
+
+    /**
+     * Iterate every element
+     */
+    public static <E> void forEach(@Nullable Collection<E> collection, @NonNull final Consumer2<Integer, E> consumer, @Nullable final Predicate2<Integer, E> breakPredicate) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(collection)) {
-            final Holder<Integer> indexHolder = new Holder<Integer>(-1);
+            final Holder<Integer> indexHolder = new Holder<Integer>(0);
             forEach(collection, new Consumer<E>() {
                 @Override
                 public void accept(E e) {
-                    indexHolder.set(indexHolder.get() + 1);
                     consumer.accept(indexHolder.get(), e);
+                    indexHolder.set(indexHolder.get() + 1);
                 }
-            });
+            }, breakPredicate != null ? new Predicate<E>() {
+                @Override
+                public boolean test(E value) {
+                    return breakPredicate.test(indexHolder.get(), value);
+                }
+            } : null);
         }
     }
 
@@ -717,9 +740,19 @@ public class Collects {
      * Iterate every element
      */
     public static <E> void forEach(@Nullable E[] array, @NonNull Consumer2<Integer, E> consumer) {
+        forEach(array, consumer, null);
+    }
+
+    /**
+     * Iterate every element
+     */
+    public static <E> void forEach(@Nullable E[] array, @NonNull Consumer2<Integer, E> consumer, @Nullable final Predicate2<Integer, E> breakPredicate) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(array)) {
             for (int i = 0; i < array.length; i++) {
+                if (breakPredicate != null && breakPredicate.test(i, array[i])) {
+                    break;
+                }
                 consumer.accept(i, array[i]);
             }
         }
@@ -729,9 +762,19 @@ public class Collects {
      * Iterate every element
      */
     public static <K, V> void forEach(@Nullable Map<? extends K, ? extends V> map, @NonNull Consumer2<K, V> consumer) {
+        forEach(map, consumer, null);
+    }
+
+    /**
+     * Iterate every element
+     */
+    public static <K, V> void forEach(@Nullable Map<? extends K, ? extends V> map, @NonNull Consumer2<K, V> consumer, @Nullable final Predicate2<K, V> breakPredicate) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+                if (breakPredicate != null && breakPredicate.test(entry.getKey(), entry.getValue())) {
+                    break;
+                }
                 consumer.accept(entry.getKey(), entry.getValue());
             }
         }
