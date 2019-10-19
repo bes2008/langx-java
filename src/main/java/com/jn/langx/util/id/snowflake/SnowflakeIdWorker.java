@@ -25,8 +25,7 @@ public abstract class SnowflakeIdWorker implements IdGenerator {
 
     @Override
     public String get() {
-        // return Long.toBinaryString(nextId());
-        return nextId()+"";
+        return Long.toBinaryString(nextId());
     }
 
     public abstract long nextId();
