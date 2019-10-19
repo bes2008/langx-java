@@ -17,8 +17,8 @@
 Java lang extensions
 
 ## Features
-1. Lang extensions, for examples: Bytes, Chars, Arrays, Numbers, Dates, Throwables, Filenames, Files, FileSystems ...
-2. Collection extensions:
++ Lang extensions, for examples: Bytes, Chars, Arrays, Numbers, Dates, Throwables, Filenames, Files, FileSystems ...
++ Collection extensions:
     + Supports Stream API for Java 6+
     + Adapter any object to Iterable
     + Supports NonAbsentMap, using it, the map.get(key) will not return the null
@@ -28,52 +28,73 @@ Java lang extensions
     + NamedInheritableThreadLocal
     + IdentityMap
     + IdentitySet
-3. Differ API
++ Differ API
     + Collection Differ
     + Map Differ
-4. Accessor API
++ Cache
+    + Local Cache
+      + LRUCache
+      + FIFOCache
++ Accessor API
     + Properties Accessor
     + Field Accessor
     + Array Accessor 
     + HTTP Query String Accessor
-5. Reflect utilities
++ Reflect utilities
     + Modifiers
     + Reflects
     + Types
     + Primitives
-6. HashedWheelTimer
-7. JavaScript in Java
-8. IdGenerator
++ timing
+    + HashedWheelTimer
+    + Linux NTP
+    + Cron
+    + Joda-time
+    + Clock
+    + StopWatch
++ JavaScript in Java
++ IdGenerator
     + AutoIncrementIdGenerator
     + Base64IdGenerator
     + SimpleIdGenerator
     + UuidGenerator
-9. StopWatch   
-10. Proxy
+    + SnowflakeIdGenerator
++ Proxy
     + AOP
     + delegate
-11. Base64 for Java 6+  
-12. text
++ Base64 for Java 6+  
++ text
     + CSV
     + Pinyin
     + StringTemplate
-13. Null judge is unnecessary    
-14. Event API  
-15. Comparators
-16. Parse Hosts File
-17. Codec
-18. Cron
-19. Joda-time
-20. ClassPath Scanner
-21. Local JNDI
-22. Security checksum
-23. Radix converter
-24. JMX management API
-25. File Filters
-26. Linux NTP
-27. Lifecycle API
-28. ClassParser
-29. Converter Service
++ Null judge is unnecessary
++ Environment
+    + SystemEnvironment
++ Event API  
++ Comparators
++ Parse Hosts File
++ Codec
++ ClassPath Scanner
++ Local JNDI
++ Security checksum
++ Radix converter
++ JMX management API
++ File Filter
+    + ExecutableFilter
+    + ExistsFileFilter
+    + FilenamePrefixFilter
+    + FilenameSuffixFilter
+    + IsDirectoryFileFilter
+    + IsFileFilter
+    + IsHiddenFileFilter
+    + IsSymlinkFileFilter
+    + ReadableFileFilter
+    + ReadonlyFileFilter
+    + ValidFilenameFilter
+    + WriteableFileFilter
++ Lifecycle API
++ ClassParser
++ Converter Service
 
 
 ## Contact:
