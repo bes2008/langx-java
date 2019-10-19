@@ -286,25 +286,23 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     private void clearExpired() {
         long now = System.currentTimeMillis();
-        List<Long> expireTimes = new ArrayList<Long>();
-        Set<Long> set = null;
-        readLock.lock();
-        set = expireTimeIndex.keySet();
-        readLock.unlock();
-        expireTimes.addAll(set);
-        for (Long expireTime : expireTimes) {
-            if (expireTime > now) {
-                break;
-            }
-            readLock.lock();
-            List<K> keys = new ArrayList<K>(expireTimeIndex.get(expireTime));
-            readLock.unlock();
-            Collects.forEach(keys, new Consumer2<Integer, K>() {
-                @Override
-                public void accept(Integer expireTime, K key) {
-                    remove(key, RemoveCause.COLLECTED);
+        writeLock.lock();
+        try {
+            List<Long> expireTimes = new ArrayList<Long>(expireTimeIndex.keySet());
+            for (Long expireTime : expireTimes) {
+                if (expireTime > now) {
+                    break;
                 }
-            });
+                List<K> keys = new ArrayList<K>(expireTimeIndex.get(expireTime));
+                Collects.forEach(keys, new Consumer2<Integer, K>() {
+                    @Override
+                    public void accept(Integer expireTime, K key) {
+                        remove(key, RemoveCause.COLLECTED);
+                    }
+                });
+            }
+        }finally {
+            writeLock.unlock();
         }
     }
 
