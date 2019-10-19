@@ -16,7 +16,7 @@ public final class SystemEnvironmentSnowflakeIdWorkerProvider implements Snowfla
         long workId = environmentAccessor.getLong("idgen.snowflake.workerId", 0L);
         long dataCenterId = environmentAccessor.getLong("idgen.snowflake.dataCenterId", 0L);
 
-        return new SnowflakeIdWorker(workId, dataCenterId);
+        return new CnBlogsSnowflakeIdWorker(workId, dataCenterId);
     }
 
     @Override
