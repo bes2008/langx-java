@@ -413,6 +413,15 @@ public class Dates {
         return Calendars.getMillis(toCalendar(date));
     }
 
+    public static long nextTime(long durationInMills) {
+        Preconditions.checkTrue(durationInMills >= 0);
+        long now = System.currentTimeMillis();
+        if (Long.MAX_VALUE - now <= durationInMills) {
+            return Long.MAX_VALUE;
+        }
+        return now + durationInMills;
+    }
+
     //-----------------------------------------------------------------------
 
     /**

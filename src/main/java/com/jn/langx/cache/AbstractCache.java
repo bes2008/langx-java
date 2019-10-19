@@ -2,6 +2,7 @@ package com.jn.langx.cache;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Dates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
@@ -43,12 +44,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         if (evictExpiredInterval < 0) {
             nextEvictExpiredTime = Long.MAX_VALUE;
         }
-        if (Long.MAX_VALUE - now < evictExpiredInterval) {
-            evictExpiredInterval = Long.MAX_VALUE - now;
-            nextEvictExpiredTime = Long.MAX_VALUE;
-        } else {
-            nextEvictExpiredTime = System.currentTimeMillis() + evictExpiredInterval;
-        }
+        nextEvictExpiredTime = Dates.nextTime(evictExpiredInterval);
     }
 
     @Override
@@ -60,9 +56,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     public void set(@NonNull K key, @Nullable V value, long duration, TimeUnit timeUnit) {
         Preconditions.checkTrue(duration >= 0);
         duration = timeUnit.toMillis(duration);
-        long now = System.currentTimeMillis();
-        long expire = (Long.MAX_VALUE - now <= duration) ? Long.MAX_VALUE : now + duration;
-        set(key, value, expire);
+        set(key, value, Dates.nextTime(duration));
     }
 
     @Override
@@ -100,7 +94,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         return get(key, loader, true);
     }
 
-    protected abstract void onRead(Entry<K, V> entry, long oldExpireTime);
+    protected abstract void beforeRecomputeExpireTimeOnRead(Entry<K, V> entry);
+
+    protected abstract void afterRecomputeExpireTimeOnRead(Entry<K, V> entry);
 
     private V get(@NonNull K key, @Nullable Supplier<K, V> loader, boolean loadIfAbsent) {
         evictExpired();
@@ -108,11 +104,12 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         if (entry != null) {
             if (!entry.isExpired()) {
                 entry.incrementUseCount();
-                long expireTime = entry.getExpireTime();
                 if (expireAfterRead > 0) {
-                    entry.setExpireTime(System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(expireAfterRead));
+                    beforeRecomputeExpireTimeOnRead(entry);
+                    entry.setExpireTime(Dates.nextTime(expireAfterRead));
+                    afterRecomputeExpireTimeOnRead(entry);
                 }
-                onRead(entry, expireTime);
+
                 return entry.getValue();
             } else {
                 remove(key, RemoveCause.EXPRIED);
@@ -145,7 +142,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         entry = map.get(key);
         if (entry != null) {
             entry.incrementUseCount();
-            onRead(entry, entry.getExpireTime());
+            afterRecomputeExpireTimeOnRead(entry);
         }
         return value;
     }

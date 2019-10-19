@@ -14,6 +14,8 @@ public class CacheTests {
         final Cache<String, String> cache = CacheBuilder.<String, String>newBuilder()
                 .cacheClass(LRUCache.class)
                 .evictExpiredInterval(60 * 1000)
+                .expireAfterRead(60)
+                .expireAfterWrite(60)
                 .build();
         cache.set("1", "a");
         cache.set("2", "b");

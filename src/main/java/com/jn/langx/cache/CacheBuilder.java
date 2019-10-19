@@ -7,7 +7,7 @@ import com.jn.langx.util.reflect.Reflects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CacheBuilder<K, V> {
-    private Class cacheClass;
+    private Class cacheClass = LRUCache.class;
     private int concurrencyLevel = Runtime.getRuntime().availableProcessors();
     private int initialCapacity;
 
@@ -51,24 +51,24 @@ public class CacheBuilder<K, V> {
         return this;
     }
 
-    public CacheBuilder<K, V> expireAfterWrite(long expireAfterWrite) {
-        this.expireAfterWrite = expireAfterWrite;
+    public CacheBuilder<K, V> expireAfterWrite(long expireAfterWriteInSeconds) {
+        this.expireAfterWrite = expireAfterWriteInSeconds;
         return this;
     }
 
-    public CacheBuilder<K, V> expireAfterRead(long expireAfterRead) {
-        this.expireAfterRead = expireAfterRead;
+    public CacheBuilder<K, V> expireAfterRead(long expireAfterReadInSeconds) {
+        this.expireAfterRead = expireAfterReadInSeconds;
         return this;
     }
 
     /**
      * Set the period of global evict, default : Long.MAX_VALUE
      * unit: mills
-     * @param evictExpiredInterval the evict period
+     * @param evictExpiredIntervalInMills the evict period
      * @return the cache builder
      */
-    public CacheBuilder<K, V> evictExpiredInterval(long evictExpiredInterval) {
-        this.evictExpiredInterval = evictExpiredInterval;
+    public CacheBuilder<K, V> evictExpiredInterval(long evictExpiredIntervalInMills) {
+        this.evictExpiredInterval = evictExpiredIntervalInMills;
         return this;
     }
 
@@ -92,8 +92,8 @@ public class CacheBuilder<K, V> {
         Preconditions.checkTrue(Reflects.isSubClassOrEquals(AbstractCache.class, cacheClass), StringTemplates.formatWithPlaceholder("Your cache calss {} is not a subclass of {}", Reflects.getFQNClassName(cacheClass), Reflects.getFQNClassName(AbstractCache.class)));
         AbstractCache<K, V> cache = Reflects.<AbstractCache<K, V>>newInstance(cacheClass);
         Preconditions.checkNotNull(cache);
-        cache.setExpireAfterRead(expireAfterRead < 0 ? 60 : evictExpiredInterval);
-        cache.setExpireAfterWrite(expireAfterWrite < 0 ? 60 : evictExpiredInterval);
+        cache.setExpireAfterRead(expireAfterRead < 0 ? Long.MAX_VALUE : evictExpiredInterval);
+        cache.setExpireAfterWrite(expireAfterWrite < 0 ? Long.MAX_VALUE : evictExpiredInterval);
         cache.setGlobalLoader(loader);
         cache.setMaxCapacity(maxCapacity);
         cache.setEvictExpiredInterval(evictExpiredInterval < 0 ? Long.MAX_VALUE : evictExpiredInterval);
