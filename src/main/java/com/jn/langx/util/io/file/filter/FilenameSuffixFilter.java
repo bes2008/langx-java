@@ -11,35 +11,35 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SuffixFileFilter extends AbstractFileFilter {
+public class FilenameSuffixFilter extends AbstractFileFilter {
     private boolean ignoreCase = true;
     private Set<String> suffixes = new HashSet<String>();
 
-    public SuffixFileFilter(String suffix) {
+    public FilenameSuffixFilter(String suffix) {
         this(suffix, true);
     }
 
-    public SuffixFileFilter(String suffix, boolean ignoreCase) {
+    public FilenameSuffixFilter(String suffix, boolean ignoreCase) {
         this(ignoreCase, Collects.<String>asIterable(suffix));
     }
 
-    public SuffixFileFilter(String[] suffixes) {
+    public FilenameSuffixFilter(String[] suffixes) {
         this(suffixes, true);
     }
 
-    public SuffixFileFilter(String[] suffixes, boolean ignoreCase) {
+    public FilenameSuffixFilter(String[] suffixes, boolean ignoreCase) {
         this(Collects.asList(suffixes), ignoreCase);
     }
 
-    public SuffixFileFilter(List<String> suffixes) {
+    public FilenameSuffixFilter(List<String> suffixes) {
         this(suffixes, true);
     }
 
-    public SuffixFileFilter(List<String> suffixes, boolean ignoreCase) {
+    public FilenameSuffixFilter(List<String> suffixes, boolean ignoreCase) {
         this(ignoreCase, suffixes);
     }
 
-    private SuffixFileFilter(boolean ignoreCase, Iterable<String> suffixes) {
+    private FilenameSuffixFilter(boolean ignoreCase, Iterable<String> suffixes) {
         if (ignoreCase) {
             for (String suffix : suffixes) {
                 if (Strings.isNotBlank(suffix)) {

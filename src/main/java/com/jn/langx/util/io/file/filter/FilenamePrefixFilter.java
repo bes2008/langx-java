@@ -7,12 +7,14 @@ import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class FilenamePrefixFilter extends AbstractFileFilter {
     private boolean ignoreCase = true;
-    private Set<String> prefixes;
+    private Set<String> prefixes = new HashSet<String>();
+    ;
 
     public FilenamePrefixFilter(String prefix) {
         this(prefix, true);
