@@ -6,6 +6,11 @@ import com.jn.langx.util.id.snowflake.SnowflakeIdWorkerProviderLoader;
 public class SnowflakeIdGenerator implements IdGenerator {
     @Override
     public String get(Object object) {
-        return SnowflakeIdWorkerProviderLoader.getProvider().get().nextId() + "";
+        return Long.toBinaryString(SnowflakeIdWorkerProviderLoader.getProvider().get().nextId());
+    }
+
+    @Override
+    public String get() {
+        return get(null);
     }
 }

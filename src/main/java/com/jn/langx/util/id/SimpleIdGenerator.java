@@ -24,4 +24,8 @@ public class SimpleIdGenerator implements IdGenerator<Object> {
         return new UUID(this.mostSigBits.get(), leastSigBits).toString();
     }
 
+    @Override
+    public String get() {
+        return get(null);
+    }
 }

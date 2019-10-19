@@ -7,9 +7,10 @@ import java.util.UUID;
 public class UuidGenerator implements IdGenerator<Object> {
     @Override
     public String get(Object object) {
-        return get();
+        return UUID.randomUUID().toString();
+
     }
     public String get(){
-        return UUID.randomUUID().toString();
+        return get(null);
     }
 }

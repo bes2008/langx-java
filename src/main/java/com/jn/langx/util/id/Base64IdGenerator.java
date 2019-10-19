@@ -13,6 +13,11 @@ import java.util.Random;
 public class Base64IdGenerator implements IdGenerator {
     public static final SecureRandom INSTANCE = new SecureRandom();
 
+    @Override
+    public String get() {
+        return get(null);
+    }
+
     /**
      * Returns a Base64 encoded version of a Version 4.0 compatible UUID
      * as defined here: http://www.ietf.org/rfc/rfc4122.txt

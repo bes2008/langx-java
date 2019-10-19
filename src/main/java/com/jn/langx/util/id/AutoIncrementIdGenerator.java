@@ -19,4 +19,9 @@ public class AutoIncrementIdGenerator implements IdGenerator {
     public String get(Object object) {
         return value.getAndIncrement() + "";
     }
+
+    @Override
+    public String get() {
+        return get(null);
+    }
 }
