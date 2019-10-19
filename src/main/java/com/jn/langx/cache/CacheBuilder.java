@@ -6,6 +6,7 @@ import com.jn.langx.util.reflect.Reflects;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings({"unused"})
 public class CacheBuilder<K, V> {
     private Class cacheClass = LRUCache.class;
     private int concurrencyLevel = Runtime.getRuntime().availableProcessors();
@@ -16,6 +17,9 @@ public class CacheBuilder<K, V> {
     private long expireAfterWrite = -1;
     // unit: seconds
     private long expireAfterRead = -1;
+    // unit: seconds
+    private long refreshAfterAccess = Long.MAX_VALUE;
+
     // unit: mills
     private long evictExpiredInterval = Long.MAX_VALUE;
     private RemoveListener<K, V> removeListener;
@@ -28,7 +32,7 @@ public class CacheBuilder<K, V> {
     }
 
     public static <K, V> CacheBuilder<K, V> newBuilder() {
-        return new CacheBuilder();
+        return new CacheBuilder<K, V>();
     }
 
     public CacheBuilder<K, V> cacheClass(Class cacheClass) {
@@ -64,6 +68,7 @@ public class CacheBuilder<K, V> {
     /**
      * Set the period of global evict, default : Long.MAX_VALUE
      * unit: mills
+     *
      * @param evictExpiredIntervalInMills the evict period
      * @return the cache builder
      */
@@ -87,17 +92,23 @@ public class CacheBuilder<K, V> {
         return this;
     }
 
+    public CacheBuilder<K, V> refreshAfterAccess(long refreshAfterAccess) {
+        this.refreshAfterAccess = refreshAfterAccess;
+        return this;
+    }
+
     public Cache<K, V> build() {
         Preconditions.checkNotNull(cacheClass, "Please specify your cache class");
         Preconditions.checkTrue(Reflects.isSubClassOrEquals(AbstractCache.class, cacheClass), StringTemplates.formatWithPlaceholder("Your cache calss {} is not a subclass of {}", Reflects.getFQNClassName(cacheClass), Reflects.getFQNClassName(AbstractCache.class)));
         AbstractCache<K, V> cache = Reflects.<AbstractCache<K, V>>newInstance(cacheClass);
         Preconditions.checkNotNull(cache);
-        cache.setExpireAfterRead(expireAfterRead < 0 ? Long.MAX_VALUE : evictExpiredInterval);
-        cache.setExpireAfterWrite(expireAfterWrite < 0 ? Long.MAX_VALUE : evictExpiredInterval);
+        cache.setExpireAfterRead(expireAfterRead < 0 ? Long.MAX_VALUE : expireAfterRead);
+        cache.setExpireAfterWrite(expireAfterWrite < 0 ? Long.MAX_VALUE : expireAfterWrite);
+        cache.setRefreshAfterAccess(refreshAfterAccess < 0 ? Long.MAX_VALUE : refreshAfterAccess);
         cache.setGlobalLoader(loader);
-        cache.setMaxCapacity(maxCapacity);
+        cache.setMaxCapacity(maxCapacity < 0 ? Integer.MAX_VALUE : maxCapacity);
         cache.setEvictExpiredInterval(evictExpiredInterval < 0 ? Long.MAX_VALUE : evictExpiredInterval);
-        cache.setCapatityHeightWater(capatityHeightWater);
+        cache.setCapacityHeightWater(capatityHeightWater <= 0 ? 0.95f : capatityHeightWater);
         ConcurrentHashMap<K, Entry<K, V>> map = new ConcurrentHashMap<K, Entry<K, V>>(initialCapacity, 16, concurrencyLevel);
         cache.setMap(map);
         cache.setRemoveListener(removeListener);

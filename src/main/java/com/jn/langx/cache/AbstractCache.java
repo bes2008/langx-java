@@ -36,7 +36,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     private RemoveListener<K, V> removeListener;
     private int maxCapacity;
-    private float capatityHeightWater = 0.95f;
+    private float capacityHeightWater = 0.95f;
 
     /**
      * Key: expire time
@@ -255,9 +255,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
 
     private void evictExpired() {
-        if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapacity * capatityHeightWater)) {
+        if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapacity * capacityHeightWater)) {
             clearExpired();
-            int forceEvictCount = map.size() - new Float(maxCapacity * capatityHeightWater).intValue();
+            int forceEvictCount = map.size() - new Float(maxCapacity * capacityHeightWater).intValue();
             if (forceEvictCount > 0) {
                 writeLock.lock();
                 try {
@@ -359,7 +359,11 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
         this.maxCapacity = maxCapacity;
     }
 
-    void setCapatityHeightWater(float capatityHeightWater) {
-        this.capatityHeightWater = capatityHeightWater;
+    void setCapacityHeightWater(float capacityHeightWater) {
+        this.capacityHeightWater = capacityHeightWater;
+    }
+
+    void setRefreshAfterAccess(long refreshAfterAccess) {
+        this.refreshAfterAccess = refreshAfterAccess;
     }
 }
