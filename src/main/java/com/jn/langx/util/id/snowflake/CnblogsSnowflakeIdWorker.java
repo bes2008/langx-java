@@ -3,11 +3,11 @@ package com.jn.langx.util.id.snowflake;
 import com.jn.langx.cache.Cache;
 import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.cache.FIFOCache;
-import com.jn.langx.util.id.SnowflakeIdGenerator;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class CnblogsSnowflakeIdWorker extends SnowflakeIdGenerator {
+public class CnblogsSnowflakeIdWorker extends SnowflakeIdWorker {
     // ==============================Fields===========================================
     /**
      * 开始时间截 (2015-01-01)
@@ -72,7 +72,7 @@ public class CnblogsSnowflakeIdWorker extends SnowflakeIdGenerator {
     /**
      * 毫秒内序列(0~4095)
      */
-    private long sequence = 0L;
+    private AtomicLong sequence = new AtomicLong(0L);
 
     /**
      * 上次生成ID的时间截
@@ -80,7 +80,7 @@ public class CnblogsSnowflakeIdWorker extends SnowflakeIdGenerator {
     private long lastTimestamp = -1L;
 
 
-    private static final Cache<Long, Long> cache = CacheBuilder.<Long, Long>newBuilder().cacheClass(FIFOCache.class).maxCapacity(200).initialCapacity(10).build();
+    private static final Cache<Long, Long> cache = CacheBuilder.<Long, Long>newBuilder().cacheClass(FIFOCache.class).maxCapacity(1000).initialCapacity(10).build();
 
     //==============================Constructors=====================================
 
@@ -118,8 +118,8 @@ public class CnblogsSnowflakeIdWorker extends SnowflakeIdGenerator {
         }
 
         //如果是同一时间生成的，则进行毫秒内序列
-        if (lastTimestamp == timestamp) {
-            sequence = (sequence + 1) & sequenceMask;
+        if (lastTimestamp - timestamp == 0) {
+            long sequence = (this.sequence.incrementAndGet()) & sequenceMask;
             //毫秒内序列溢出
             if (sequence == 0) {
                 //阻塞到下一个毫秒,获得新的时间戳
@@ -128,7 +128,7 @@ public class CnblogsSnowflakeIdWorker extends SnowflakeIdGenerator {
         }
         //时间戳改变，毫秒内序列重置
         else {
-            sequence = 0L;
+            this.sequence.set(0L);
         }
 
         //上次生成ID的时间截
@@ -138,11 +138,11 @@ public class CnblogsSnowflakeIdWorker extends SnowflakeIdGenerator {
         long id = ((timestamp - twepoch) << timestampLeftShift) //
                 | (datacenterId << datacenterIdShift) //
                 | (workerId << workerIdShift) //
-                | sequence;
+                | this.sequence.get();
 
         Long idInCache = cache.getIfPresent(id);
         if (idInCache != null && idInCache != 0) {
-            return nextId();
+            throw new IllegalStateException("the id has exists in the cache, may be your worker is not unique, please check it");
         }
         cache.set(id, id, 10, TimeUnit.SECONDS);
         return id;

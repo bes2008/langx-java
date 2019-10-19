@@ -9,14 +9,24 @@ public final class SystemEnvironmentSnowflakeIdWorkerProvider implements Snowfla
 
     public static final String SYSTEM_ENVIRONMENT_SNOWFLAKE = "SYSTEM_ENVIRONMENT_SNOWFLAKE";
 
+    private static SnowflakeIdWorker worker = null;
+
     @Override
     public SnowflakeIdWorker get() {
-        EnvironmentAccessor environmentAccessor = new EnvironmentAccessor();
-        environmentAccessor.setTarget(env);
-        long workId = environmentAccessor.getLong("idgen.snowflake.workerId", 0L);
-        long dataCenterId = environmentAccessor.getLong("idgen.snowflake.dataCenterId", 0L);
+        if (worker == null) {
+            synchronized (SystemEnvironmentSnowflakeIdWorkerProvider.class) {
+                if (worker == null) {
+                    EnvironmentAccessor environmentAccessor = new EnvironmentAccessor();
+                    environmentAccessor.setTarget(env);
+                    long workId = environmentAccessor.getLong("idgen.snowflake.workerId", 0L);
+                    long dataCenterId = environmentAccessor.getLong("idgen.snowflake.dataCenterId", 0L);
 
-        return new CnBlogsSnowflakeIdWorker(workId, dataCenterId);
+                    worker = new CnblogsSnowflakeIdWorker(workId, dataCenterId);
+                    return worker;
+                }
+            }
+        }
+        return worker;
     }
 
     @Override
