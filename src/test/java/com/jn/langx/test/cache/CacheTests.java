@@ -9,7 +9,7 @@ import com.jn.langx.util.function.Consumer;
 import org.junit.Test;
 
 public class CacheTests {
-    @Test
+
     public void testBasic() {
         final Cache<String, String> cache = CacheBuilder.<String, String>newBuilder()
                 .cacheClass(LRUCache.class)

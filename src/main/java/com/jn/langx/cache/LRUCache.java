@@ -73,6 +73,6 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
                 }
             }
         });
-        return null;
+        return evicted;
     }
 }
