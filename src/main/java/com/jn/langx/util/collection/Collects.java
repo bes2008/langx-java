@@ -666,7 +666,26 @@ public class Collects {
     /**
      * map a collection to another, flat it
      */
-    public static <E, R> Collection<R> flatMap(@Nullable Collection<Collection<E>> collection, @NonNull final Function<E, R> mapper) {
+    public static <E, R> Collection<R> flatMap(@NonNull final Function<E, R> mapper, @Nullable Collection<E[]> collection) {
+        if (Emptys.isEmpty(collection)) {
+            return emptyArrayList();
+        }
+        Preconditions.checkNotNull(mapper);
+        final Collection<R> list = emptyCollectionByInfer(collection);
+        forEach(collection, new Consumer<E[]>() {
+            @Override
+            public void accept(E[] c) {
+                Collection<R> rs = Collects.map(c, mapper);
+                list.addAll(rs);
+            }
+        });
+        return list;
+    }
+
+    /**
+     * map a collection to another, flat it
+     */
+    public static <E, R> Collection<R> flatMap(@Nullable Collection<? extends Iterable<E>> collection, @NonNull final Function<E, R> mapper) {
         if (Emptys.isEmpty(collection)) {
             return emptyArrayList();
         }
