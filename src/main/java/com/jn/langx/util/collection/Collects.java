@@ -159,6 +159,25 @@ public class Collects {
         return Arrs.createArray(Primitives.wrap(componentType), 0);
     }
 
+    public static <E> ArrayList<E> newArrayList(E... elements){
+        return new ArrayList<E>(Arrays.asList(elements));
+    }
+
+    public static <E> LinkedList<E> newLinkedList(E... elements){
+        return new LinkedList<E>(Arrays.asList(elements));
+    }
+
+    public static <E> HashSet<E> newHashSet(E... elements){
+        return new HashSet<E>(Arrays.asList(elements));
+    }
+
+    public static <E> LinkedHashSet<E> newLinkedHashSet(E... elements){
+        return new LinkedHashSet<E>(Arrays.asList(elements));
+    }
+
+    public static <E> TreeSet<E> newTreeSet(E... elements){
+        return new TreeSet<E>(Arrays.asList(elements));
+    }
 
     public enum MapType {
         StringMap,
