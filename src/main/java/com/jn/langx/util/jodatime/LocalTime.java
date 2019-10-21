@@ -72,10 +72,6 @@ public final class LocalTime
         implements ReadablePartial, Serializable {
 
     /**
-     * Constant for midnight.
-     */
-    public static final LocalTime MIDNIGHT = new LocalTime(0, 0, 0, 0);
-    /**
      * Serialization lock
      */
     private static final long serialVersionUID = -12873158713873L;
@@ -625,7 +621,7 @@ public final class LocalTime
         if (fieldType == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         return fieldType.getField(getChronology()).get(getLocalMillis());
@@ -643,7 +639,7 @@ public final class LocalTime
         if (type == null) {
             return false;
         }
-        if (isSupported(type.getDurationType()) == false) {
+        if (!isSupported(type.getDurationType())) {
             return false;
         }
         DurationFieldType range = type.getRangeDurationType();
@@ -662,8 +658,7 @@ public final class LocalTime
             return false;
         }
         DurationField field = type.getField(getChronology());
-        if (TIME_DURATION_TYPES.contains(type) ||
-                field.getUnitMillis() < getChronology().days().getUnitMillis()) {
+        if (TIME_DURATION_TYPES.contains(type) || field.getUnitMillis() < getChronology().days().getUnitMillis()) {
             return field.isSupported();
         }
         return false;
@@ -807,7 +802,7 @@ public final class LocalTime
         if (fieldType == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         long instant = fieldType.getField(getChronology()).set(getLocalMillis(), value);
@@ -840,7 +835,7 @@ public final class LocalTime
         if (fieldType == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         if (amount == 0) {
@@ -1115,7 +1110,7 @@ public final class LocalTime
         if (fieldType == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         return new Property(this, fieldType.getField(getChronology()));

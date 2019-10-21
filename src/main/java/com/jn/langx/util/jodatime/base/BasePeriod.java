@@ -90,7 +90,8 @@ public abstract class BasePeriod
         super();
         type = checkPeriodType(type);
         iType = type;
-        iValues = setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis); // internal method
+        // internal method
+        iValues = setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis);
     }
 
     /**
@@ -174,7 +175,7 @@ public abstract class BasePeriod
                     throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
                 }
             }
-            if (DateTimeUtils.isContiguous(start) == false) {
+            if (!DateTimeUtils.isContiguous(start)) {
                 throw new IllegalArgumentException("ReadablePartial objects must be contiguous");
             }
             iType = checkPeriodType(type);

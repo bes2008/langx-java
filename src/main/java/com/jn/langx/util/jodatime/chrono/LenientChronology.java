@@ -129,7 +129,7 @@ public final class LenientChronology extends AssembledChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof LenientChronology == false) {
+        if (!(obj instanceof LenientChronology)) {
             return false;
         }
         LenientChronology chrono = (LenientChronology) obj;

@@ -450,9 +450,6 @@ public class Reflects {
                     throw ex;
                 }
                 return null;
-            } finally {
-                // field.setAccessible(false);
-                // ignore it
             }
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
@@ -493,9 +490,6 @@ public class Reflects {
                     if (throwException) {
                         throw new RuntimeException(ex);
                     }
-                } finally {
-                    // field.setAccessible(false);
-                    // ignore it
                 }
             }
         } catch (Throwable ex) {
@@ -951,7 +945,7 @@ public class Reflects {
      * @see java.lang.Object#equals(Object)
      */
     public static boolean isEqualsMethod(@Nullable Method method) {
-        if (method == null || !method.getName().equals("equals")) {
+        if (method == null || !"equals".equals(method.getName())) {
             return false;
         }
         Class<?>[] paramTypes = method.getParameterTypes();
@@ -964,7 +958,7 @@ public class Reflects {
      * @see java.lang.Object#hashCode()
      */
     public static boolean isHashCodeMethod(@Nullable Method method) {
-        return (method != null && method.getName().equals("hashCode") && !method.isVarArgs() && method.getParameterTypes().length == 0);
+        return (method != null && "hashCode".equals(method.getName()) && !method.isVarArgs() && method.getParameterTypes().length == 0);
     }
 
     /**
@@ -973,7 +967,7 @@ public class Reflects {
      * @see java.lang.Object#toString()
      */
     public static boolean isToStringMethod(@Nullable Method method) {
-        return (method != null && method.getName().equals("toString") && !method.isVarArgs() && method.getParameterTypes().length == 0);
+        return (method != null && "toString".equals(method.getName()) && !method.isVarArgs() && method.getParameterTypes().length == 0);
     }
 
     /**

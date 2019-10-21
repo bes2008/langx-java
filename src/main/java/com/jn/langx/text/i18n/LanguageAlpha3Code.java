@@ -5774,12 +5774,12 @@ public enum LanguageAlpha3Code {
             return null;
         }
 
-        if (caseSensitive == false) {
+        if (!caseSensitive) {
             code = code.toLowerCase();
         }
 
         // A special case for Newari.
-        if (code.equals("new")) {
+        if ("new".equals(code)) {
             code = "New";
         }
 
@@ -5800,7 +5800,6 @@ public enum LanguageAlpha3Code {
      * an empty list is returned.
      * @throws IllegalArgumentException               {@code regex} is {@code null}.
      * @throws java.util.regex.PatternSyntaxException {@code regex} failed to be compiled.
-     * @since 1.11
      */
     public static List<LanguageAlpha3Code> findByName(String regex) {
         if (regex == null) {

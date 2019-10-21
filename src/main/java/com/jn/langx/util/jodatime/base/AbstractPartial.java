@@ -254,7 +254,7 @@ public abstract class AbstractPartial
         if (this == partial) {
             return true;
         }
-        if (partial instanceof ReadablePartial == false) {
+        if (!(partial instanceof ReadablePartial)) {
             return false;
         }
         ReadablePartial other = (ReadablePartial) partial;

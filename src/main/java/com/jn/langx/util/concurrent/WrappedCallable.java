@@ -1,12 +1,8 @@
 package com.jn.langx.util.concurrent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.concurrent.Callable;
 
 public class WrappedCallable<V> extends WrappedTask<V> implements Callable<V> {
-    private static final Logger logger = LoggerFactory.getLogger(WrappedCallable.class);
 
     private Callable<V> task;
 

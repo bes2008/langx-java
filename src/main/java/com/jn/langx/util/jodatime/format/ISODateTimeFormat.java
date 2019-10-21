@@ -181,7 +181,7 @@ public class ISODateTimeFormat {
         time(bld, workingFields, extended, strictISO, reducedPrec, datePresent);
 
         // result
-        if (bld.canBuildFormatter() == false) {
+        if (!bld.canBuildFormatter()) {
             throw new IllegalArgumentException("No valid format for fields: " + fields);
         }
 

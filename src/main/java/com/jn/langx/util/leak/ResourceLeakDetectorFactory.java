@@ -2,14 +2,11 @@ package com.jn.langx.util.leak;
 
 
 import com.jn.langx.util.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This static factory should be used to load {@link ResourceLeakDetector}s as needed
  */
 public abstract class ResourceLeakDetectorFactory {
-    private static final Logger logger = LoggerFactory.getLogger(ResourceLeakDetectorFactory.class);
 
     private static volatile ResourceLeakDetectorFactory factoryInstance = new DefaultResourceLeakDetectorFactory();
 
