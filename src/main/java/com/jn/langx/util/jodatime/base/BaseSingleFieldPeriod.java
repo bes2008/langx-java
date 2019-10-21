@@ -107,7 +107,7 @@ public abstract class BaseSingleFieldPeriod
                 throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
             }
         }
-        if (DateTimeUtils.isContiguous(start) == false) {
+        if (!DateTimeUtils.isContiguous(start)) {
             throw new IllegalArgumentException("ReadablePartial objects must be contiguous");
         }
         Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();

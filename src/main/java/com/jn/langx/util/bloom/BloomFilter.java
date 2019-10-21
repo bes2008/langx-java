@@ -1,5 +1,8 @@
 package com.jn.langx.util.bloom;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Preconditions;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -90,10 +93,8 @@ public class BloomFilter extends Filter {
     }
 
     @Override
-    public boolean membershipTest(Key key) {
-        if (key == null) {
-            throw new NullPointerException("key cannot be null");
-        }
+    public boolean membershipTest(@NonNull Key key) {
+        Preconditions.checkNotNull(key,"key cannot be null" );
 
         int[] h = hash.hash(key);
         hash.clear();

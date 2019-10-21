@@ -590,14 +590,16 @@ public class DateTimeFormat {
                         builder.appendTimeZoneId();
                     }
                     break;
-                case '\'': // literal text
+                case '\'':
+                    // literal text
                     String sub = token.substring(1);
                     if (sub.length() == 1) {
                         builder.appendLiteral(sub.charAt(0));
                     } else {
                         // Create copy of sub since otherwise the temporary quoted
                         // string would still be referenced internally.
-                        builder.appendLiteral(new String(sub));
+                        String copy = new String(sub);
+                        builder.appendLiteral(copy);
                     }
                     break;
                 default:

@@ -295,7 +295,7 @@ public final class LimitChronology extends AssembledChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof LimitChronology == false) {
+        if (!(obj instanceof LimitChronology)) {
             return false;
         }
         LimitChronology chrono = (LimitChronology) obj;

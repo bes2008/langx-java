@@ -15,6 +15,8 @@
  */
 package com.jn.langx.util.jodatime;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.jodatime.base.BaseLocal;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.convert.ConverterManager;
@@ -414,10 +416,8 @@ public final class LocalDateTime
      * @return the current date, not null
      * @since 2.0
      */
-    public static LocalDateTime now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
+    public static LocalDateTime now(@NonNull Chronology chronology) {
+        Preconditions.checkNotNull(chronology, "Chronology must not be null");
         return new LocalDateTime(chronology);
     }
 

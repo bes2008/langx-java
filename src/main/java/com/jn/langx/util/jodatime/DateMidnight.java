@@ -15,6 +15,7 @@
  */
 package com.jn.langx.util.jodatime;
 
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.jodatime.base.BaseDateTime;
 import com.jn.langx.util.jodatime.field.AbstractReadableInstantFieldProperty;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
@@ -309,9 +310,7 @@ public final class DateMidnight
      * @since 2.0
      */
     public static DateMidnight now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
+        Preconditions.checkNotNull(zone, "Zone must not be null");
         return new DateMidnight(zone);
     }
 

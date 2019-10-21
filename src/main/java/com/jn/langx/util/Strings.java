@@ -4,6 +4,7 @@ import com.jn.langx.Delegatable;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.converter.BooleanConverter;
 import com.jn.langx.util.enums.CommonEnums;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Consumer;
@@ -1943,7 +1944,7 @@ public class Strings {
             return Numbers.parseNumber(str, xClass);
         }
         if (Boolean.class.isAssignableFrom(targetClass)) {
-            BooleanEvaluator booleanEvaluator = BooleanEvaluator.createTrueEvaluator(true, new Boolean(true), "true");
+            BooleanEvaluator booleanEvaluator = BooleanEvaluator.createTrueEvaluator(true, Boolean.TRUE, "true");
             return booleanEvaluator.evalTrue(str);
         }
         if (String.class == targetClass) {
