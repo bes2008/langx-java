@@ -4,7 +4,6 @@ import com.jn.langx.Delegatable;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.converter.BooleanConverter;
 import com.jn.langx.util.enums.CommonEnums;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Consumer;
@@ -27,8 +26,6 @@ public class Strings {
     public static final String WHITESPACE = " \n\r\f\t";
     /**
      * Represents a failed index search.
-     *
-     * 
      */
     public static final int INDEX_NOT_FOUND = -1;
 
@@ -36,16 +33,12 @@ public class Strings {
 
     /**
      * A String for a space character.
-     *
-     * 
      */
     public static final String SPACE = " ";
 
 
     /**
      * The empty String {@code ""}.
-     *
-     * 
      */
     public static final String EMPTY = "";
 
@@ -327,8 +320,8 @@ public class Strings {
      *
      * @param cs the CharSequence to check, may be null
      * @return {@code true} if only contains digits, and is non-null
-     *  Changed signature from isNumeric(String) to isNumeric(CharSequence)
-     *  Changed "" to return false and not true
+     * Changed signature from isNumeric(String) to isNumeric(CharSequence)
+     * Changed "" to return false and not true
      */
     public static boolean isNumeric(final CharSequence cs) {
         if (Emptys.isEmpty(cs)) {
@@ -405,7 +398,7 @@ public class Strings {
      * @return {@code true} if the CharSequence starts with the prefix, case insensitive, or
      * both {@code null}
      * @see java.lang.String#startsWith(String)
-     *  Changed signature from startsWithIgnoreCase(String, String) to startsWithIgnoreCase(CharSequence, CharSequence)
+     * Changed signature from startsWithIgnoreCase(String, String) to startsWithIgnoreCase(CharSequence, CharSequence)
      */
     public static boolean startsWithIgnoreCase(final CharSequence str, final CharSequence prefix) {
         return startsWith(str, prefix, true);
@@ -453,8 +446,8 @@ public class Strings {
      * @return {@code true} if the CharSequence ends with the suffix, case sensitive, or
      * both {@code null}
      * @see java.lang.String#endsWith(String)
-     * 
-     *  Changed signature from endsWith(String, String) to endsWith(CharSequence, CharSequence)
+     * <p>
+     * Changed signature from endsWith(String, String) to endsWith(CharSequence, CharSequence)
      */
     public static boolean endsWith(final CharSequence str, final CharSequence suffix) {
         return endsWith(str, suffix, false);
@@ -480,8 +473,8 @@ public class Strings {
      * @return {@code true} if the CharSequence ends with the suffix, case insensitive, or
      * both {@code null}
      * @see java.lang.String#endsWith(String)
-     * 
-     *  Changed signature from endsWithIgnoreCase(String, String) to endsWithIgnoreCase(CharSequence, CharSequence)
+     * <p>
+     * Changed signature from endsWithIgnoreCase(String, String) to endsWithIgnoreCase(CharSequence, CharSequence)
      */
     public static boolean endsWithIgnoreCase(final CharSequence str, final CharSequence suffix) {
         return endsWith(str, suffix, true);
@@ -533,8 +526,8 @@ public class Strings {
      * @param searchChars the chars to search for, may be null
      * @return the {@code true} if any of the chars are found,
      * {@code false} if no match or null input
-     * 
-     *  Changed signature from containsAny(String, char[]) to containsAny(CharSequence, char...)
+     * <p>
+     * Changed signature from containsAny(String, char[]) to containsAny(CharSequence, char...)
      */
     public static boolean containsAny(final CharSequence cs, final char... searchChars) {
         if (Emptys.isEmpty(cs) || Emptys.isEmpty(searchChars)) {
@@ -589,8 +582,8 @@ public class Strings {
      * @param cs          the CharSequence to check, may be null
      * @param searchChars the chars to search for, may be null
      * @return the {@code true} if any of the chars are found, {@code false} if no match or null input
-     * 
-     *  Changed signature from containsAny(String, String) to containsAny(CharSequence, CharSequence)
+     * <p>
+     * Changed signature from containsAny(String, String) to containsAny(CharSequence, CharSequence)
      */
     public static boolean containsAny(final CharSequence cs, final CharSequence searchChars) {
         if (searchChars == null) {
@@ -697,7 +690,6 @@ public class Strings {
      * @param repeat    number of times to repeat str, negative treated as zero
      * @return a new String consisting of the original String repeated,
      * {@code null} if null String input
-     * 
      */
     public static String repeat(final String str, final String separator, final int repeat) {
         if (str == null || separator == null) {
@@ -780,7 +772,6 @@ public class Strings {
      * @param padChar the character to pad with
      * @return right padded String or original String if no padding is necessary,
      * {@code null} if null String input
-     * 
      */
     public static String rightPad(final String str, final int size, final char padChar) {
         if (str == null) {
@@ -986,7 +977,6 @@ public class Strings {
      * @param remove the String to search for and remove, may be null
      * @return the substring with the string removed if found,
      * {@code null} if null String input
-     * 
      */
     public static String removeStart(final String str, final String remove) {
         if (isEmpty(str) || isEmpty(remove)) {
@@ -1021,7 +1011,6 @@ public class Strings {
      * @param remove the String to search for (case insensitive) and remove, may be null
      * @return the substring with the string removed if found,
      * {@code null} if null String input
-     * 
      */
     public static String removeStartIgnoreCase(final String str, final String remove) {
         if (isEmpty(str) || isEmpty(remove)) {
@@ -1055,7 +1044,6 @@ public class Strings {
      * @param remove the String to search for and remove, may be null
      * @return the substring with the string removed if found,
      * {@code null} if null String input
-     * 
      */
     public static String removeEnd(final String str, final String remove) {
         if (isEmpty(str) || isEmpty(remove)) {
@@ -1091,7 +1079,6 @@ public class Strings {
      * @param remove the String to search for (case insensitive) and remove, may be null
      * @return the substring with the string removed if found,
      * {@code null} if null String input
-     * 
      */
     public static String removeEndIgnoreCase(final String str, final String remove) {
         if (isEmpty(str) || isEmpty(remove)) {
@@ -1124,7 +1111,6 @@ public class Strings {
      * @param remove the String to search for and remove, may be null
      * @return the substring with the string removed if found,
      * {@code null} if null String input
-     * 
      */
     public static String remove(final String str, final String remove) {
         if (isEmpty(str) || isEmpty(remove)) {
@@ -1150,7 +1136,6 @@ public class Strings {
      * @param remove the char to search for and remove, may be null
      * @return the substring with the char removed if found,
      * {@code null} if null String input
-     * 
      */
     public static String remove(final String str, final char remove) {
         if (isEmpty(str) || str.indexOf(remove) == INDEX_NOT_FOUND) {
@@ -1211,7 +1196,6 @@ public class Strings {
      * @return The resulting {@code String}
      * @see String#replaceAll(String, String)
      * @see Pattern#DOTALL
-     * 
      */
     public static String replacePattern(final String source, final String regex, final String replacement) {
         return Pattern.compile(regex, Pattern.DOTALL).matcher(source).replaceAll(replacement);
@@ -1225,7 +1209,6 @@ public class Strings {
      * @return The resulting {@code String}
      * @see String#replaceAll(String, String)
      * @see Pattern#DOTALL
-     * 
      */
     public static String removePattern(final String source, final String regex) {
         return replacePattern(source, regex, EMPTY);
@@ -1345,7 +1328,6 @@ public class Strings {
      * null String input
      * @throws IllegalArgumentException if the lengths of the arrays are not the same (null is ok,
      *                                  and/or size 0)
-     * 
      */
     public static String replaceEach(final String text, final String[] searchList, final String[] replacementList) {
         return replaceEach(text, searchList, replacementList, false, 0);
@@ -1388,7 +1370,6 @@ public class Strings {
      *                                  to outputs of one being inputs to another
      * @throws IllegalArgumentException if the lengths of the arrays are not the same (null is ok,
      *                                  and/or size 0)
-     * 
      */
     public static String replaceEachRepeatedly(final String text, final String[] searchList, final String[] replacementList) {
         // timeToLive should be 0 if not used or nothing to replace, else it's
@@ -1437,7 +1418,6 @@ public class Strings {
      *                                  to outputs of one being inputs to another
      * @throws IllegalArgumentException if the lengths of the arrays are not the same (null is ok,
      *                                  and/or size 0)
-     * 
      */
     private static String replaceEach(
             final String text, final String[] searchList, final String[] replacementList, final boolean repeat, final int timeToLive) {
@@ -1588,7 +1568,6 @@ public class Strings {
      * @param searchChar  the character to search for, may be null
      * @param replaceChar the character to replace, may be null
      * @return modified String, {@code null} if null string input
-     * 
      */
     public static String replaceChars(final String str, final char searchChar, final char replaceChar) {
         if (str == null) {
@@ -1631,7 +1610,6 @@ public class Strings {
      * @param searchChars  a set of characters to search for, may be null
      * @param replaceChars a set of characters to replace, may be null
      * @return modified String, {@code null} if null string input
-     * 
      */
     public static String replaceChars(final String str, final String searchChars, String replaceChars) {
         if (isEmpty(str) || isEmpty(searchChars)) {
@@ -1706,7 +1684,6 @@ public class Strings {
      * @param str    the String to upper case, may be null
      * @param locale the locale that defines the case transformation rules, must not be null
      * @return the upper cased String, {@code null} if null String input
-     * 
      */
     public static String upperCase(final String str, final Locale locale) {
         if (str == null) {
@@ -1775,7 +1752,6 @@ public class Strings {
      * @param str    the String to lower case, may be null
      * @param locale the locale that defines the case transformation rules, must not be null
      * @return the lower cased String, {@code null} if null String input
-     * 
      */
     public static String lowerCase(final String str, final Locale locale) {
         if (str == null) {
@@ -1822,7 +1798,6 @@ public class Strings {
      * @return the capitalized String, {@code null} if null String input
      * @see WordUtils#capitalize(String)
      * @see #uncapitalize(String)
-     * 
      */
     public static String capitalize(final String str) {
         int strLen;
@@ -1860,7 +1835,6 @@ public class Strings {
      * @return the uncapitalized String, {@code null} if null String input
      * @see WordUtils#uncapitalize(String)
      * @see #capitalize(String)
-     * 
      */
     public static String uncapitalize(final String str) {
         int strLen;

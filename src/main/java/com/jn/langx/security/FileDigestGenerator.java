@@ -4,8 +4,6 @@ import com.jn.langx.util.Radixs;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;
@@ -14,7 +12,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class FileDigestGenerator {
-    private static final Logger logger = LoggerFactory.getLogger(FileDigestGenerator.class);
     private boolean lowercase = true;
 
     public static void main(String[] args) {
