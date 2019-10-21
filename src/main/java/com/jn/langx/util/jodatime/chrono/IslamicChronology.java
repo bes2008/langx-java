@@ -58,7 +58,7 @@ import java.util.Map;
  * @see <a href="http://en.wikipedia.org/wiki/Islamic_calendar">Wikipedia</a>
  * @since 1.2
  */
-public final class IslamicChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
+public final class IslamicChronology extends BasicChronology {
 
     /**
      * Constant value for 'Anno Hegirae', equivalent

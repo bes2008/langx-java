@@ -74,7 +74,7 @@ final class BasicSingleEraDateTimeField extends BaseDateTimeField {
      * @inheritDoc
      */
     public long set(long instant, String text, Locale locale) {
-        if (iEraText.equals(text) == false && "1".equals(text) == false) {
+        if (!iEraText.equals(text) && !"1".equals(text)) {
             throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
         }
         return instant;

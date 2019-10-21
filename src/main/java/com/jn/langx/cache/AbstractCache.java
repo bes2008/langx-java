@@ -61,7 +61,6 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     }
 
     void computeNextEvictExpiredTime() {
-        long now = System.currentTimeMillis();
         if (evictExpiredInterval < 0) {
             nextEvictExpiredTime = Long.MAX_VALUE;
         }

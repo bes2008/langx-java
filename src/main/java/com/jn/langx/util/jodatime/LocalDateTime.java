@@ -1534,7 +1534,7 @@ public final class LocalDateTime
         if (fieldType == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         return new Property(this, fieldType.getField(getChronology()));

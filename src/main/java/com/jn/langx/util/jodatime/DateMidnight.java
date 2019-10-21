@@ -863,7 +863,7 @@ public final class DateMidnight
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
         DateTimeField field = type.getField(getChronology());
-        if (field.isSupported() == false) {
+        if (!field.isSupported()) {
             throw new IllegalArgumentException("Field '" + type + "' is not supported");
         }
         return new Property(this, field);

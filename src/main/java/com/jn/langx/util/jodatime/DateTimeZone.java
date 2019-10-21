@@ -353,7 +353,7 @@ public abstract class DateTimeZone implements Serializable {
             return getDefault();
         }
         final String id = zone.getID();
-        if (id.equals("UTC")) {
+        if ("UTC".equals(id)) {
             return DateTimeZone.UTC;
         }
 

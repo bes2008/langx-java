@@ -20,7 +20,6 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
     // Map<bundleName, Map<language, Map<key, message>>>
     private String defaultBundleName;
     private Locale defaultLocale = Locale.getDefault();
-    private boolean devMode;
 
     public DefaultI18nMessageRegistry() {
     }

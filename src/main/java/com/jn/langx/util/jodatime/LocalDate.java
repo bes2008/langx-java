@@ -1114,7 +1114,7 @@ public final class LocalDate
         if (fieldType == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         long instant = fieldType.getField(getChronology()).set(getLocalMillis(), value);

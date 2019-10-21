@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 
 public class StringTemplates {
 
-    private static final Pattern orderPattern = Pattern.compile("\\{\\}");
-
     public static String formatWithCStyle(String template, Object... args) {
         return new CStyleStringFormatter().format(template, args);
     }

@@ -24,7 +24,7 @@ public class CommonEnums {
         return value;
     }
 
-    public static <T extends java.lang.Enum> T ofName(final Class<T> tClass, final String name) {
+    public static <T extends Enum> T ofName(final Class<T> tClass, final String name) {
         T value = null;
         if (Delegatable.class.isAssignableFrom((Class<?>) tClass)) {
             EnumSet<? extends Enum> enums = EnumSet.allOf(tClass);
@@ -42,7 +42,7 @@ public class CommonEnums {
         return value;
     }
 
-    public static <T extends java.lang.Enum> T ofDisplayText(final Class<T> tClass, final String displayText) {
+    public static <T extends Enum> T ofDisplayText(final Class<T> tClass, final String displayText) {
         T value = null;
         if (Delegatable.class.isAssignableFrom((Class<?>) tClass)) {
             EnumSet<? extends Enum> enums = EnumSet.allOf(tClass);

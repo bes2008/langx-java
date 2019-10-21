@@ -7,11 +7,15 @@ import com.jn.langx.util.reflect.Reflects;
 
 public class ClassLoaders {
 
-    public static Class loadClass(String className, Class basedClass) throws ClassNotFoundException {
+    public static Class loadClass(@NonNull String className) throws ClassNotFoundException {
+        return loadClass(className, (ClassLoader) null);
+    }
+
+    public static Class loadClass(@NonNull String className, @Nullable Class basedClass) throws ClassNotFoundException {
         return loadClass(className, basedClass.getClassLoader());
     }
 
-    public static Class loadClass(String className, ClassLoader classLoader) throws ClassNotFoundException {
+    public static Class loadClass(@NonNull String className, @Nullable ClassLoader classLoader) throws ClassNotFoundException {
         Class clazz = null;
         try {
             clazz = Class.forName(className, true, classLoader);
@@ -28,7 +32,7 @@ public class ClassLoaders {
         return clazz;
     }
 
-    public static Class loadImplClass(final String className, ClassLoader classLoader, final Class superClass) throws ClassNotFoundException {
+    public static Class loadImplClass(@NonNull final String className, @Nullable ClassLoader classLoader, final Class superClass) throws ClassNotFoundException {
         Class clazz = loadClass(className, classLoader);
         if (!Reflects.isSubClass(superClass, clazz)) {
             final String error = "Class " + Reflects.getFQNClassName(clazz) + " is not cast to " + Reflects.getFQNClassName(superClass);

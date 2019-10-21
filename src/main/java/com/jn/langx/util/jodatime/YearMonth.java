@@ -376,7 +376,7 @@ public final class YearMonth
      * @return the resolved object, not null
      */
     private Object readResolve() {
-        if (DateTimeZone.UTC.equals(getChronology().getZone()) == false) {
+        if (!DateTimeZone.UTC.equals(getChronology().getZone())) {
             return new YearMonth(this, getChronology().withUTC());
         }
         return this;

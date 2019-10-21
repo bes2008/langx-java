@@ -8,7 +8,7 @@ public abstract class ThrowableFunction2<I1, I2, O> implements Function2<I1, I2,
         try {
             return doFun2(i1, i2);
         } catch (Throwable ex) {
-            throw com.jn.langx.util.Throwables.wrapAsRuntimeException(ex);
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 

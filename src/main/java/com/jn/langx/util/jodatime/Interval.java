@@ -255,7 +255,7 @@ public final class Interval
      */
     public Interval overlap(ReadableInterval interval) {
         interval = DateTimeUtils.getReadableInterval(interval);
-        if (overlaps(interval) == false) {
+        if (!overlaps(interval)) {
             return null;
         }
         long start = Math.max(getStartMillis(), interval.getStartMillis());

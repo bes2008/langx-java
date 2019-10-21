@@ -32,12 +32,12 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -5961050944769862059L;
 
-    private final com.jn.langx.util.jodatime.chrono.BasicChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor.
      */
-    GJYearOfEraDateTimeField(DateTimeField yearField, com.jn.langx.util.jodatime.chrono.BasicChronology chronology) {
+    GJYearOfEraDateTimeField(DateTimeField yearField, BasicChronology chronology) {
         super(yearField, DateTimeFieldType.yearOfEra());
         iChronology = chronology;
     }

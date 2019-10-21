@@ -226,7 +226,7 @@ public final class Partial
             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
             if (i > 0) {
                 int compare = lastUnitField.compareTo(loopUnitField);
-                if (compare < 0 || (compare != 0 && loopUnitField.isSupported() == false)) {
+                if (compare < 0 || (compare != 0 && !loopUnitField.isSupported())) {
                     throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
                             types[i - 1].getName() + " < " + loopType.getName());
                 } else if (compare == 0) {
