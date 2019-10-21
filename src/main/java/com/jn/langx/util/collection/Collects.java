@@ -433,7 +433,7 @@ public class Collects {
     /**
      * Convert an array to a ArrayList
      */
-    public static <E> List<E> asList(@Nullable E[] array) {
+    public static <E> List<E> asList(@Nullable E... array) {
         return asList(array, true, ListType.ArrayList);
     }
 
@@ -1260,7 +1260,7 @@ public class Collects {
         }
     }
 
-    public static <E> void addAll(Collection<E> collection, E[] iterator) {
+    public static <E> void addAll(Collection<E> collection, E... iterator) {
         addAll(collection, Collects.<E>asIterable(iterator));
     }
 
