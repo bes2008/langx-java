@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/fangjinuo/langx-java/blob/master/LICENSE)
 
-<a href="https://codebeat.co/projects/github-com-fangjinuo-langx-java-master"><img alt="codebeat badge" src="https://codebeat.co/badges/d230dd4b-7ef3-48be-8742-32c9a1aca5fb" /></a>
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3d8c8c9680234698b04819059c9cd6c3)](https://www.codacy.com/manual/fs1194361820/langx-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fangjinuo/langx-java&amp;utm_campaign=Badge_Grade)
 
 [![JDK](https://img.shields.io/badge/JDK-1.6+-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
