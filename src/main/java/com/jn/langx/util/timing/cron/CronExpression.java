@@ -367,7 +367,7 @@ public class CronExpression implements Serializable {
             return i;
         }
         char c = s.charAt(i);
-        if ((c >= 'A') && (c <= 'Z') && (!s.equals("L")) && (!s.equals("LW"))) {
+        if ((c >= 'A') && (c <= 'Z') && (!"L".equals(s)) && (!"LW".equals(s))) {
             String sub = s.substring(i, i + 3);
             int sval = -1;
             int eval = -1;

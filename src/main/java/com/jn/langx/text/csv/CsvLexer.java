@@ -104,7 +104,7 @@ final class CsvLexer implements Closeable {
             }
             final String comment = line.trim();
             token.content.append(comment);
-            token.type = com.jn.langx.text.csv.Token.Type.COMMENT;
+            token.type = Token.Type.COMMENT;
             return token;
         }
 

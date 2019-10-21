@@ -157,7 +157,7 @@ public abstract class AbstractDuration implements ReadableDuration {
         if (this == duration) {
             return true;
         }
-        if (duration instanceof ReadableDuration == false) {
+        if (!(duration instanceof ReadableDuration )) {
             return false;
         }
         ReadableDuration other = (ReadableDuration) duration;

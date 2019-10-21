@@ -568,7 +568,7 @@ public class ZoneInfoCompiler {
                     if (st.hasMoreTokens()) {
                         str = st.nextToken();
                         zoneChar = parseZoneChar(str.charAt(str.length() - 1));
-                        if (str.equals("24:00")) {
+                        if ("24:00".equals(str)) {
                             LocalDate date = (day == -1 ?
                                     new LocalDate(2001, month, 1).plusMonths(1) :
                                     new LocalDate(2001, month, day).plusDays(1));
