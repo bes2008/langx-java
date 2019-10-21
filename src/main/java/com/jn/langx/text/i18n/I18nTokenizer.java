@@ -21,7 +21,7 @@ class I18nTokenizer implements Iterator {
                     try {
                         acceptLang.quality = Float.valueOf(q.substring(index + 1));
                     } catch (NumberFormatException var8) {
-                        ;
+                        // NOOP
                     }
                 }
             }

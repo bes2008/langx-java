@@ -1,5 +1,8 @@
 package com.jn.langx.util.bloom;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Preconditions;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -62,10 +65,8 @@ public final class RetouchedBloomFilter extends BloomFilter
     }
 
     @Override
-    public void add(Key key) {
-        if (key == null) {
-            throw new NullPointerException("key can not be null");
-        }
+    public void add(@NonNull Key key) {
+        Preconditions.checkNotNull(key, "key can not be null");
 
         int[] h = hash.hash(key);
         hash.clear();
@@ -83,10 +84,8 @@ public final class RetouchedBloomFilter extends BloomFilter
      *
      * @param key The false positive key to add.
      */
-    public void addFalsePositive(Key key) {
-        if (key == null) {
-            throw new NullPointerException("key can not be null");
-        }
+    public void addFalsePositive(@NonNull Key key) {
+        Preconditions.checkNotNull(key, "key can not be null");
 
         int[] h = hash.hash(key);
         hash.clear();
@@ -101,10 +100,8 @@ public final class RetouchedBloomFilter extends BloomFilter
      *
      * @param coll The collection of false positive.
      */
-    public void addFalsePositive(Collection<Key> coll) {
-        if (coll == null) {
-            throw new NullPointerException("Collection<Key> can not be null");
-        }
+    public void addFalsePositive(@NonNull Collection<Key> coll) {
+        Preconditions.checkNotNull(coll, "\"Collection<Key> can not be null");
 
         for (Key k : coll) {
             addFalsePositive(k);
@@ -116,10 +113,8 @@ public final class RetouchedBloomFilter extends BloomFilter
      *
      * @param keys The list of false positive.
      */
-    public void addFalsePositive(List<Key> keys) {
-        if (keys == null) {
-            throw new NullPointerException("ArrayList<Key> can not be null");
-        }
+    public void addFalsePositive(@NonNull List<Key> keys) {
+        Preconditions.checkNotNull(keys, "\"ArrayList<Key> can not be null");
 
         for (Key k : keys) {
             addFalsePositive(k);
@@ -131,10 +126,9 @@ public final class RetouchedBloomFilter extends BloomFilter
      *
      * @param keys The array of false positive.
      */
-    public void addFalsePositive(Key[] keys) {
-        if (keys == null) {
-            throw new NullPointerException("Key[] can not be null");
-        }
+    public void addFalsePositive(@NonNull Key[] keys) {
+        Preconditions.checkNotNull(keys, "\"Key[] can not be null");
+
 
         for (int i = 0; i < keys.length; i++) {
             addFalsePositive(keys[i]);
@@ -147,10 +141,8 @@ public final class RetouchedBloomFilter extends BloomFilter
      * @param k      The false positive key to remove from <i>this</i> retouched Bloom filter.
      * @param scheme The selective clearing scheme to apply.
      */
-    public void selectiveClearing(Key k, short scheme) {
-        if (k == null) {
-            throw new NullPointerException("Key can not be null");
-        }
+    public void selectiveClearing(@NonNull Key k, short scheme) {
+        Preconditions.checkNotNull(k, "\"Key can not be null");
 
         if (!membershipTest(k)) {
             throw new IllegalArgumentException("Key is not a member");
@@ -304,14 +296,9 @@ public final class RetouchedBloomFilter extends BloomFilter
      * @param k      The key to remove.
      * @param vector The counting vector associated to the key.
      */
-    private void removeKey(Key k, List<Key>[] vector) {
-        if (k == null) {
-            throw new NullPointerException("Key can not be null");
-        }
-        if (vector == null) {
-            throw new NullPointerException("ArrayList<Key>[] can not be null");
-        }
-
+    private void removeKey(@NonNull Key k, @NonNull List<Key>[] vector) {
+        Preconditions.checkNotNull(k, "Key can not be null");
+        Preconditions.checkNotNull(vector, "ArrayList<Key>[] can not be null");
         int[] h = hash.hash(k);
         hash.clear();
 

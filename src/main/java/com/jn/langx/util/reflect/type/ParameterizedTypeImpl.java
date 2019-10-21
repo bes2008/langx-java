@@ -1,5 +1,7 @@
 package com.jn.langx.util.reflect.type;
 
+import com.jn.langx.util.Preconditions;
+
 import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.Arrays;
@@ -25,7 +27,7 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         this.rawType = canonicalize(rawType);
         this.typeArguments = typeArguments.clone();
         for (int t = 0, length = this.typeArguments.length; t < length; t++) {
-            checkNotNull(this.typeArguments[t]);
+            Preconditions.checkNotNull(this.typeArguments[t]);
             checkNotPrimitive(this.typeArguments[t]);
             this.typeArguments[t] = canonicalize(this.typeArguments[t]);
         }
@@ -71,14 +73,14 @@ public class ParameterizedTypeImpl implements ParameterizedType {
             checkArgument(upperBounds.length == 1);
 
             if (lowerBounds.length == 1) {
-                checkNotNull(lowerBounds[0]);
+                Preconditions.checkNotNull(lowerBounds[0]);
                 checkNotPrimitive(lowerBounds[0]);
                 checkArgument(upperBounds[0] == Object.class);
                 this.lowerBound = canonicalize(lowerBounds[0]);
                 this.upperBound = Object.class;
 
             } else {
-                checkNotNull(upperBounds[0]);
+                Preconditions.checkNotNull(upperBounds[0]);
                 checkNotPrimitive(upperBounds[0]);
                 this.lowerBound = null;
                 this.upperBound = canonicalize(upperBounds[0]);
@@ -124,13 +126,6 @@ public class ParameterizedTypeImpl implements ParameterizedType {
 
     static boolean equal(Object a, Object b) {
         return a == b || (a != null && a.equals(b));
-    }
-
-    static <T> T checkNotNull(T obj) {
-        if (obj == null) {
-            throw new NullPointerException();
-        }
-        return obj;
     }
 
     static void checkArgument(boolean condition) {

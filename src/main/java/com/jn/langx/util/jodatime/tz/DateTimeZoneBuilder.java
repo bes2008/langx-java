@@ -653,7 +653,7 @@ public class DateTimeZoneBuilder {
                 next = setDayOfMonth(chrono, next);
             } catch (IllegalArgumentException e) {
                 if (iMonthOfYear == 2 && iDayOfMonth == 29) {
-                    while (chrono.year().isLeap(next) == false) {
+                    while (!chrono.year().isLeap(next)) {
                         next = chrono.year().add(next, 1);
                     }
                     next = setDayOfMonth(chrono, next);
@@ -672,7 +672,7 @@ public class DateTimeZoneBuilder {
                 prev = setDayOfMonth(chrono, prev);
             } catch (IllegalArgumentException e) {
                 if (iMonthOfYear == 2 && iDayOfMonth == 29) {
-                    while (chrono.year().isLeap(prev) == false) {
+                    while (!chrono.year().isLeap(prev)) {
                         prev = chrono.year().add(prev, -1);
                     }
                     prev = setDayOfMonth(chrono, prev);

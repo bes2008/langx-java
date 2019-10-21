@@ -1187,7 +1187,7 @@ public enum ScriptCode {
 
             // The first letter.
             if (i == 0) {
-                if (Character.isUpperCase(ch) == false) {
+                if (!Character.isUpperCase(ch)) {
                     // Modification is needed.
                     sb = new StringBuilder();
                     sb.append(Character.toUpperCase(ch));
@@ -1196,7 +1196,7 @@ public enum ScriptCode {
             // The second and subsequent letters.
             else {
                 if (sb == null) {
-                    if (Character.isLowerCase(ch) == false) {
+                    if (!Character.isLowerCase(ch)) {
                         // Modification is needed.
                         sb = new StringBuilder();
 

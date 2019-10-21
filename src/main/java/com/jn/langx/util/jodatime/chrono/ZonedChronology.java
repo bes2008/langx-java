@@ -227,7 +227,7 @@ public final class ZonedChronology extends AssembledChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof ZonedChronology == false) {
+        if (!(obj instanceof ZonedChronology)) {
             return false;
         }
         ZonedChronology chrono = (ZonedChronology) obj;

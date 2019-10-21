@@ -1,8 +1,11 @@
 package com.jn.langx.security;
 
 import com.jn.langx.util.Radixs;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;
@@ -11,6 +14,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class FileDigestGenerator {
+    private static final Logger logger = LoggerFactory.getLogger(FileDigestGenerator.class);
     private boolean lowercase = true;
 
     public static void main(String[] args) {
@@ -25,11 +29,15 @@ public class FileDigestGenerator {
     }
 
     public String generate(String filePath, String algorithm) {
-        String digest = getFileDigest(filePath, algorithm);
-        if (!lowercase) {
-            digest = digest.toUpperCase();
+        try {
+            String digest = getFileDigest(filePath, algorithm);
+            if (!lowercase) {
+                digest = digest.toUpperCase();
+            }
+            return digest;
+        } catch (FileNotFoundException ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
-        return digest;
     }
 
     public boolean isLowercase() {
@@ -40,14 +48,14 @@ public class FileDigestGenerator {
         this.lowercase = lowercase;
     }
 
-    public static String getFileDigest(String filePath, String algorithm) {
+    public static String getFileDigest(String filePath, String algorithm) throws FileNotFoundException {
         MessageDigest messageDigest = newDigest(algorithm);
         if (messageDigest == null) {
-            throw new RuntimeException("Can't find " + algorithm + " algorithm");
+            throw new FileNotFoundException("Can't find " + algorithm + " algorithm");
         }
         File file = new File(filePath);
         if (!file.exists() || !file.canRead()) {
-            throw new RuntimeException(" can't find file [" + filePath + "] or it is not readable");
+            throw new FileNotFoundException(" can't find file [" + filePath + "] or it is not readable");
         }
         // step 1 find file
         FileReader reader = FileReaderFactory.getFileReader(filePath);

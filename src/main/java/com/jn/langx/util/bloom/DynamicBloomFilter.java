@@ -1,6 +1,9 @@
 package com.jn.langx.util.bloom;
 
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Preconditions;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -82,10 +85,8 @@ public class DynamicBloomFilter extends Filter {
     }
 
     @Override
-    public void add(Key key) {
-        if (key == null) {
-            throw new NullPointerException("Key can not be null");
-        }
+    public void add(@NonNull Key key) {
+        Preconditions.checkNotNull(key, "Key can not be null");
 
         BloomFilter bf = getActiveStandardBF();
 
