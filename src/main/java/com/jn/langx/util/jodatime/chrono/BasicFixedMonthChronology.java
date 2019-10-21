@@ -32,7 +32,7 @@ import com.jn.langx.util.jodatime.DateTimeConstants;
  * @author Stephen Colebourne
  * @since 1.2, refactored from CopticChronology
  */
-abstract class BasicFixedMonthChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
+abstract class BasicFixedMonthChronology extends BasicChronology {
 
     /**
      * The length of the month.

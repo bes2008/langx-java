@@ -6,7 +6,6 @@ import com.jn.langx.cache.LRUCache;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-import org.junit.Test;
 
 public class CacheTests {
 
