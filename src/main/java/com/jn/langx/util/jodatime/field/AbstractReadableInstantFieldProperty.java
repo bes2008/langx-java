@@ -445,7 +445,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
         if (this == object) {
             return true;
         }
-        if (object instanceof AbstractReadableInstantFieldProperty == false) {
+        if (!(object instanceof AbstractReadableInstantFieldProperty)) {
             return false;
         }
         AbstractReadableInstantFieldProperty other = (AbstractReadableInstantFieldProperty) object;

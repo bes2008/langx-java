@@ -565,28 +565,28 @@ public class PeriodType implements Serializable {
         }
         PeriodType type = standard();
         List<DurationFieldType> list = new ArrayList<DurationFieldType>(Arrays.asList(types));
-        if (list.remove(DurationFieldType.years()) == false) {
+        if (!list.remove(DurationFieldType.years())) {
             type = type.withYearsRemoved();
         }
-        if (list.remove(DurationFieldType.months()) == false) {
+        if (!list.remove(DurationFieldType.months())) {
             type = type.withMonthsRemoved();
         }
-        if (list.remove(DurationFieldType.weeks()) == false) {
+        if (!list.remove(DurationFieldType.weeks())) {
             type = type.withWeeksRemoved();
         }
-        if (list.remove(DurationFieldType.days()) == false) {
+        if (!list.remove(DurationFieldType.days())) {
             type = type.withDaysRemoved();
         }
-        if (list.remove(DurationFieldType.hours()) == false) {
+        if (!list.remove(DurationFieldType.hours())) {
             type = type.withHoursRemoved();
         }
-        if (list.remove(DurationFieldType.minutes()) == false) {
+        if (!list.remove(DurationFieldType.minutes())) {
             type = type.withMinutesRemoved();
         }
-        if (list.remove(DurationFieldType.seconds()) == false) {
+        if (!list.remove(DurationFieldType.seconds())) {
             type = type.withSecondsRemoved();
         }
-        if (list.remove(DurationFieldType.millis()) == false) {
+        if (!list.remove(DurationFieldType.millis())) {
             type = type.withMillisRemoved();
         }
         if (list.size() > 0) {

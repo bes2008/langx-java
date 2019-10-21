@@ -696,12 +696,7 @@ public class Reflects {
 
             // force && unaccessible
             method.setAccessible(true);
-            try {
-                return (V) invokeMethodOrNull(method, object, parameters, throwException);
-            } finally {
-                // method.setAccessible(false);
-                // ignore it
-            }
+            return (V) invokeMethodOrNull(method, object, parameters, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }

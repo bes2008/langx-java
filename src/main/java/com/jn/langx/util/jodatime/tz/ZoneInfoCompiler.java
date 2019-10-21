@@ -223,7 +223,7 @@ public class ZoneInfoCompiler {
     }
 
     static String parseOptional(String str) {
-        return (str.equals("-")) ? null : str;
+        return ("-".equals(str)) ? null : str;
     }
 
     static int parseTime(String str) {

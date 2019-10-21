@@ -22,7 +22,7 @@ package com.jn.langx.util.jodatime;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public interface ReadWritableInterval extends com.jn.langx.util.jodatime.ReadableInterval {
+public interface ReadWritableInterval extends ReadableInterval {
 
     /**
      * Sets this interval from two millisecond instants.
@@ -48,7 +48,7 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
      * @param endInstant   the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
-    void setInterval(com.jn.langx.util.jodatime.ReadableInstant startInstant, com.jn.langx.util.jodatime.ReadableInstant endInstant);
+    void setInterval(ReadableInstant startInstant, ReadableInstant endInstant);
 
     //-----------------------------------------------------------------------
 
@@ -76,7 +76,7 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
      * @param instant the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
-    void setStart(com.jn.langx.util.jodatime.ReadableInstant instant);
+    void setStart(ReadableInstant instant);
 
     //-----------------------------------------------------------------------
 
@@ -106,7 +106,7 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
-    void setDurationAfterStart(com.jn.langx.util.jodatime.ReadableDuration duration);
+    void setDurationAfterStart(ReadableDuration duration);
 
     /**
      * Sets the duration of this time interval, preserving the end instant.
@@ -126,7 +126,7 @@ public interface ReadWritableInterval extends com.jn.langx.util.jodatime.Readabl
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException      if the end instant exceeds the capacity of a long
      */
-    void setPeriodAfterStart(com.jn.langx.util.jodatime.ReadablePeriod period);
+    void setPeriodAfterStart(ReadablePeriod period);
 
     /**
      * Sets the period of this time interval, preserving the end instant.

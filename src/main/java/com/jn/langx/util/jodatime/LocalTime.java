@@ -536,7 +536,7 @@ public final class LocalTime
         if (iChronology == null) {
             return new LocalTime(iLocalMillis, ISOChronology.getInstanceUTC());
         }
-        if (DateTimeZone.UTC.equals(iChronology.getZone()) == false) {
+        if (!DateTimeZone.UTC.equals(iChronology.getZone())) {
             return new LocalTime(iLocalMillis, iChronology.withUTC());
         }
         return this;

@@ -40,12 +40,12 @@ final class GJEraDateTimeField extends BaseDateTimeField {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = 4240986525305515528L;
 
-    private final com.jn.langx.util.jodatime.chrono.BasicChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    GJEraDateTimeField(com.jn.langx.util.jodatime.chrono.BasicChronology chronology) {
+    GJEraDateTimeField(BasicChronology chronology) {
         super(DateTimeFieldType.era());
         iChronology = chronology;
     }
@@ -68,7 +68,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
     }
 
     public String getAsText(int fieldValue, Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).eraValueToText(fieldValue);
+        return GJLocaleSymbols.forLocale(locale).eraValueToText(fieldValue);
     }
 
     /**
@@ -92,7 +92,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
     }
 
     public long set(long instant, String text, Locale locale) {
-        return set(instant, com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).eraTextToValue(text));
+        return set(instant, GJLocaleSymbols.forLocale(locale).eraTextToValue(text));
     }
 
     public long roundFloor(long instant) {
@@ -143,7 +143,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
     }
 
     public int getMaximumTextLength(Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).getEraMaxTextLength();
+        return GJLocaleSymbols.forLocale(locale).getEraMaxTextLength();
     }
 
     /**

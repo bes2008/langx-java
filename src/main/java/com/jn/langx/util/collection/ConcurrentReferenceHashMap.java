@@ -1,6 +1,8 @@
 package com.jn.langx.util.collection;
 
 
+import com.jn.langx.util.Preconditions;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.Reference;
@@ -1679,9 +1681,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
          */
         @Override
         public V setValue(V value) {
-            if (value == null) {
-                throw new NullPointerException();
-            }
+            Preconditions.checkNotNull(value);
             V v = super.setValue(value);
             ConcurrentReferenceHashMap.this.put(getKey(), value);
             return v;
