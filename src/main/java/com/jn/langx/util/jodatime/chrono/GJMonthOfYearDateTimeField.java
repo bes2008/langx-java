@@ -36,33 +36,33 @@ final class GJMonthOfYearDateTimeField extends BasicMonthOfYearDateTimeField {
     /**
      * Restricted constructor
      */
-    GJMonthOfYearDateTimeField(com.jn.langx.util.jodatime.chrono.BasicChronology chronology) {
+    GJMonthOfYearDateTimeField(BasicChronology chronology) {
         super(chronology, 2);
     }
 
     //-----------------------------------------------------------------------
     public String getAsText(int fieldValue, Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(fieldValue);
+        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(fieldValue);
     }
 
     //-----------------------------------------------------------------------
     public String getAsShortText(int fieldValue, Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(fieldValue);
+        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(fieldValue);
     }
 
     //-----------------------------------------------------------------------
     protected int convertText(String text, Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text);
+        return GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text);
     }
 
     //-----------------------------------------------------------------------
     public int getMaximumTextLength(Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).getMonthMaxTextLength();
+        return GJLocaleSymbols.forLocale(locale).getMonthMaxTextLength();
     }
 
     //-----------------------------------------------------------------------
     public int getMaximumShortTextLength(Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).getMonthMaxShortTextLength();
+        return GJLocaleSymbols.forLocale(locale).getMonthMaxShortTextLength();
     }
 
 }

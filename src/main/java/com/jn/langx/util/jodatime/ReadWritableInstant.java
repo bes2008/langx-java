@@ -25,7 +25,7 @@ package com.jn.langx.util.jodatime;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadWritableInstant extends com.jn.langx.util.jodatime.ReadableInstant {
+public interface ReadWritableInstant extends ReadableInstant {
 
     /**
      * Sets the value as the number of milliseconds since
@@ -69,7 +69,7 @@ public interface ReadWritableInstant extends com.jn.langx.util.jodatime.Readable
      * @param zone the time zone to use, null means default zone
      * @see #setZoneRetainFields
      */
-    void setZone(com.jn.langx.util.jodatime.DateTimeZone zone);
+    void setZone(DateTimeZone zone);
 
     /**
      * Sets the time zone of the datetime, changing the chronology and millisecond.
@@ -104,7 +104,7 @@ public interface ReadWritableInstant extends com.jn.langx.util.jodatime.Readable
      * @param duration the duration to add, null means add zero
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    void add(com.jn.langx.util.jodatime.ReadableDuration duration);
+    void add(ReadableDuration duration);
 
     /**
      * Adds a duration to this instant specifying how many times to add.
@@ -125,7 +125,7 @@ public interface ReadWritableInstant extends com.jn.langx.util.jodatime.Readable
      * @param period the period to add, null means add zero
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    void add(com.jn.langx.util.jodatime.ReadablePeriod period);
+    void add(ReadablePeriod period);
 
     /**
      * Adds a period to this instant specifying how many times to add.

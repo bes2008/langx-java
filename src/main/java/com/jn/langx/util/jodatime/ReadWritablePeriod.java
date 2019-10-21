@@ -25,7 +25,7 @@ package com.jn.langx.util.jodatime;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadWritablePeriod extends com.jn.langx.util.jodatime.ReadablePeriod {
+public interface ReadWritablePeriod extends ReadablePeriod {
 
     /**
      * Clears the period, setting all values back to zero.
@@ -50,7 +50,7 @@ public interface ReadWritablePeriod extends com.jn.langx.util.jodatime.ReadableP
      * @param value the new value for the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    void set(com.jn.langx.util.jodatime.DurationFieldType field, int value);
+    void set(DurationFieldType field, int value);
 
     /**
      * Sets all the fields in one go from another ReadablePeriod.
@@ -58,7 +58,7 @@ public interface ReadWritablePeriod extends com.jn.langx.util.jodatime.ReadableP
      * @param period the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    void setPeriod(com.jn.langx.util.jodatime.ReadablePeriod period);
+    void setPeriod(ReadablePeriod period);
 
     /**
      * Sets all the fields in one go.
@@ -82,7 +82,7 @@ public interface ReadWritablePeriod extends com.jn.langx.util.jodatime.ReadableP
      *
      * @param interval the interval to set, null means zero length
      */
-    void setPeriod(com.jn.langx.util.jodatime.ReadableInterval interval);
+    void setPeriod(ReadableInterval interval);
 
     //-----------------------------------------------------------------------
 

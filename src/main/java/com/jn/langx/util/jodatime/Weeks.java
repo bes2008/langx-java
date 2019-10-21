@@ -67,7 +67,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
     /**
      * The paser to use for this class.
      */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(com.jn.langx.util.jodatime.PeriodType.weeks());
+    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.weeks());
     /**
      * Serialization version.
      */
@@ -125,7 +125,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the instants are null or invalid
      */
     public static Weeks weeksBetween(ReadableInstant start, ReadableInstant end) {
-        int amount = BaseSingleFieldPeriod.between(start, end, com.jn.langx.util.jodatime.DurationFieldType.weeks());
+        int amount = BaseSingleFieldPeriod.between(start, end, DurationFieldType.weeks());
         return Weeks.weeks(amount);
     }
 

@@ -62,7 +62,7 @@ public interface ReadableInterval {
      *
      * @return the start of the time interval
      */
-    com.jn.langx.util.jodatime.DateTime getStart();
+    DateTime getStart();
 
     /**
      * Gets the end of this time interval which is exclusive.
@@ -101,7 +101,7 @@ public interface ReadableInterval {
      * @param instant the instant, null means now
      * @return true if this time interval contains the instant
      */
-    boolean contains(com.jn.langx.util.jodatime.ReadableInstant instant);
+    boolean contains(ReadableInstant instant);
 
     /**
      * Does this time interval contain the specified time interval.
@@ -190,7 +190,7 @@ public interface ReadableInterval {
      * @param instant the instant to compare to, null means now
      * @return true if this time interval is after the instant
      */
-    boolean isAfter(com.jn.langx.util.jodatime.ReadableInstant instant);
+    boolean isAfter(ReadableInstant instant);
 
     /**
      * Is this time interval entirely after the specified interval.
@@ -269,7 +269,7 @@ public interface ReadableInterval {
      *
      * @return a time period derived from the interval
      */
-    com.jn.langx.util.jodatime.Period toPeriod();
+    Period toPeriod();
 
     /**
      * Converts the duration of the interval to a period using the

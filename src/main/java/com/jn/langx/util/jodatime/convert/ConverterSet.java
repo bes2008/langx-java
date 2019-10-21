@@ -23,13 +23,13 @@ package com.jn.langx.util.jodatime.convert;
  * @since 1.0
  */
 class ConverterSet {
-    private final com.jn.langx.util.jodatime.convert.Converter[] iConverters;
+    private final Converter[] iConverters;
 
     // A simple immutable hashtable: closed hashing, linear probing, sized
     // power of 2, at least one null slot.
     private Entry[] iSelectEntries;
 
-    ConverterSet(com.jn.langx.util.jodatime.convert.Converter[] converters) {
+    ConverterSet(Converter[] converters) {
         // Since this is a package private constructor, we trust ourselves not
         // to alter the array outside this class.
         iConverters = converters;
@@ -40,10 +40,10 @@ class ConverterSet {
      * Returns the closest matching converter for the given type, but not very
      * efficiently.
      */
-    private static com.jn.langx.util.jodatime.convert.Converter selectSlow(ConverterSet set, Class<?> type) {
-        com.jn.langx.util.jodatime.convert.Converter[] converters = set.iConverters;
+    private static Converter selectSlow(ConverterSet set, Class<?> type) {
+        Converter[] converters = set.iConverters;
         int length = converters.length;
-        com.jn.langx.util.jodatime.convert.Converter converter;
+        Converter converter;
 
         for (int i = length; --i >= 0; ) {
             converter = converters[i];
@@ -124,7 +124,7 @@ class ConverterSet {
      * @throws IllegalStateException if multiple converters match the type
      *                               equally well
      */
-    com.jn.langx.util.jodatime.convert.Converter select(Class<?> type) throws IllegalStateException {
+    Converter select(Class<?> type) throws IllegalStateException {
         // Check the hashtable first.
         Entry[] entries = iSelectEntries;
         int length = entries.length;
@@ -143,7 +143,7 @@ class ConverterSet {
 
         // Not found in the hashtable, so do actual work.
 
-        com.jn.langx.util.jodatime.convert.Converter converter = selectSlow(this, type);
+        Converter converter = selectSlow(this, type);
         e = new Entry(type, converter);
 
         // Save the entry for future selects. This class must be threadsafe,
@@ -201,7 +201,7 @@ class ConverterSet {
     /**
      * Copies all the converters in the set to the given array.
      */
-    void copyInto(com.jn.langx.util.jodatime.convert.Converter[] converters) {
+    void copyInto(Converter[] converters) {
         System.arraycopy(iConverters, 0, converters, 0, iConverters.length);
     }
 
@@ -215,12 +215,12 @@ class ConverterSet {
      * @param removed   if not null, element 0 is set to the removed converter
      * @throws NullPointerException if converter is null
      */
-    ConverterSet add(com.jn.langx.util.jodatime.convert.Converter converter, com.jn.langx.util.jodatime.convert.Converter[] removed) {
-        com.jn.langx.util.jodatime.convert.Converter[] converters = iConverters;
+    ConverterSet add(Converter converter, Converter[] removed) {
+        Converter[] converters = iConverters;
         int length = converters.length;
 
         for (int i = 0; i < length; i++) {
-            com.jn.langx.util.jodatime.convert.Converter existing = converters[i];
+            Converter existing = converters[i];
             if (converter.equals(existing)) {
                 // Already in the set.
                 if (removed != null) {
@@ -231,7 +231,7 @@ class ConverterSet {
 
             if (converter.getSupportedType() == existing.getSupportedType()) {
                 // Replace the converter.
-                com.jn.langx.util.jodatime.convert.Converter[] copy = new com.jn.langx.util.jodatime.convert.Converter[length];
+                Converter[] copy = new Converter[length];
 
                 for (int j = 0; j < length; j++) {
                     if (j != i) {
@@ -249,7 +249,7 @@ class ConverterSet {
         }
 
         // Not found, so add it.
-        com.jn.langx.util.jodatime.convert.Converter[] copy = new com.jn.langx.util.jodatime.convert.Converter[length + 1];
+        Converter[] copy = new Converter[length + 1];
         System.arraycopy(converters, 0, copy, 0, length);
         copy[length] = converter;
 
@@ -267,8 +267,8 @@ class ConverterSet {
      * @param removed   if not null, element 0 is set to the removed converter
      * @throws NullPointerException if converter is null
      */
-    ConverterSet remove(com.jn.langx.util.jodatime.convert.Converter converter, com.jn.langx.util.jodatime.convert.Converter[] removed) {
-        com.jn.langx.util.jodatime.convert.Converter[] converters = iConverters;
+    ConverterSet remove(Converter converter, Converter[] removed) {
+        Converter[] converters = iConverters;
         int length = converters.length;
 
         for (int i = 0; i < length; i++) {
@@ -292,8 +292,8 @@ class ConverterSet {
      * @param removed if not null, element 0 is set to the removed converter
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    ConverterSet remove(final int index, com.jn.langx.util.jodatime.convert.Converter[] removed) {
-        com.jn.langx.util.jodatime.convert.Converter[] converters = iConverters;
+    ConverterSet remove(final int index, Converter[] removed) {
+        Converter[] converters = iConverters;
         int length = converters.length;
         if (index >= length) {
             throw new IndexOutOfBoundsException();
@@ -303,7 +303,7 @@ class ConverterSet {
             removed[0] = converters[index];
         }
 
-        com.jn.langx.util.jodatime.convert.Converter[] copy = new com.jn.langx.util.jodatime.convert.Converter[length - 1];
+        Converter[] copy = new Converter[length - 1];
 
         int j = 0;
         for (int i = 0; i < length; i++) {
@@ -317,7 +317,7 @@ class ConverterSet {
 
     static class Entry {
         final Class<?> iType;
-        final com.jn.langx.util.jodatime.convert.Converter iConverter;
+        final Converter iConverter;
 
         Entry(Class<?> type, Converter converter) {
             iType = type;
