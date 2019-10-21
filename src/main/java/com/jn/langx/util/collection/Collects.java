@@ -192,7 +192,7 @@ public class Collects {
             if (map == null) {
                 return HashMap;
             }
-            if (map instanceof com.jn.langx.util.collection.StringMap) {
+            if (map instanceof StringMap) {
                 return StringMap;
             }
             if (map instanceof Properties) {

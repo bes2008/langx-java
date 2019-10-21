@@ -84,56 +84,56 @@ public final class ConverterManager {
      * Singleton instance, lazily loaded to avoid class loading.
      */
     private static ConverterManager INSTANCE;
-    private com.jn.langx.util.jodatime.convert.ConverterSet iInstantConverters;
-    private com.jn.langx.util.jodatime.convert.ConverterSet iPartialConverters;
-    private com.jn.langx.util.jodatime.convert.ConverterSet iDurationConverters;
-    private com.jn.langx.util.jodatime.convert.ConverterSet iPeriodConverters;
-    private com.jn.langx.util.jodatime.convert.ConverterSet iIntervalConverters;
+    private ConverterSet iInstantConverters;
+    private ConverterSet iPartialConverters;
+    private ConverterSet iDurationConverters;
+    private ConverterSet iPeriodConverters;
+    private ConverterSet iIntervalConverters;
     /**
      * Restricted constructor.
      */
     protected ConverterManager() {
         super();
 
-        iInstantConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+        iInstantConverters = new ConverterSet(new Converter[]{
                 ReadableInstantConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
+                StringConverter.INSTANCE,
                 CalendarConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.DateConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+                DateConverter.INSTANCE,
+                LongConverter.INSTANCE,
+                NullConverter.INSTANCE,
         });
 
-        iPartialConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+        iPartialConverters = new ConverterSet(new Converter[]{
                 ReadablePartialConverter.INSTANCE,
                 ReadableInstantConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
+                StringConverter.INSTANCE,
                 CalendarConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.DateConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+                DateConverter.INSTANCE,
+                LongConverter.INSTANCE,
+                NullConverter.INSTANCE,
         });
 
-        iDurationConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+        iDurationConverters = new ConverterSet(new Converter[]{
                 ReadableDurationConverter.INSTANCE,
                 ReadableIntervalConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.LongConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+                StringConverter.INSTANCE,
+                LongConverter.INSTANCE,
+                NullConverter.INSTANCE,
         });
 
-        iPeriodConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new com.jn.langx.util.jodatime.convert.Converter[]{
+        iPeriodConverters = new ConverterSet(new Converter[]{
                 ReadableDurationConverter.INSTANCE,
                 ReadablePeriodConverter.INSTANCE,
                 ReadableIntervalConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+                StringConverter.INSTANCE,
+                NullConverter.INSTANCE,
         });
 
-        iIntervalConverters = new com.jn.langx.util.jodatime.convert.ConverterSet(new Converter[]{
+        iIntervalConverters = new ConverterSet(new Converter[]{
                 ReadableIntervalConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.StringConverter.INSTANCE,
-                com.jn.langx.util.jodatime.convert.NullConverter.INSTANCE,
+                StringConverter.INSTANCE,
+                NullConverter.INSTANCE,
         });
     }
 
@@ -173,7 +173,7 @@ public final class ConverterManager {
      * @return the converters, a copy of the real data, never null
      */
     public InstantConverter[] getInstantConverters() {
-        com.jn.langx.util.jodatime.convert.ConverterSet set = iInstantConverters;
+        ConverterSet set = iInstantConverters;
         InstantConverter[] converters = new InstantConverter[set.size()];
         set.copyInto(converters);
         return converters;
@@ -262,7 +262,7 @@ public final class ConverterManager {
      * @return the converters, a copy of the real data, never null
      */
     public PartialConverter[] getPartialConverters() {
-        com.jn.langx.util.jodatime.convert.ConverterSet set = iPartialConverters;
+        ConverterSet set = iPartialConverters;
         PartialConverter[] converters = new PartialConverter[set.size()];
         set.copyInto(converters);
         return converters;
@@ -351,7 +351,7 @@ public final class ConverterManager {
      * @return the converters, a copy of the real data, never null
      */
     public DurationConverter[] getDurationConverters() {
-        com.jn.langx.util.jodatime.convert.ConverterSet set = iDurationConverters;
+        ConverterSet set = iDurationConverters;
         DurationConverter[] converters = new DurationConverter[set.size()];
         set.copyInto(converters);
         return converters;
@@ -422,9 +422,9 @@ public final class ConverterManager {
      * @throws IllegalStateException    if multiple converters match the type
      *                                  equally well
      */
-    public com.jn.langx.util.jodatime.convert.PeriodConverter getPeriodConverter(Object object) {
-        com.jn.langx.util.jodatime.convert.PeriodConverter converter =
-                (com.jn.langx.util.jodatime.convert.PeriodConverter) iPeriodConverters.select(object == null ? null : object.getClass());
+    public PeriodConverter getPeriodConverter(Object object) {
+        PeriodConverter converter =
+                (PeriodConverter) iPeriodConverters.select(object == null ? null : object.getClass());
         if (converter != null) {
             return converter;
         }
@@ -439,9 +439,9 @@ public final class ConverterManager {
      *
      * @return the converters, a copy of the real data, never null
      */
-    public com.jn.langx.util.jodatime.convert.PeriodConverter[] getPeriodConverters() {
-        com.jn.langx.util.jodatime.convert.ConverterSet set = iPeriodConverters;
-        com.jn.langx.util.jodatime.convert.PeriodConverter[] converters = new com.jn.langx.util.jodatime.convert.PeriodConverter[set.size()];
+    public PeriodConverter[] getPeriodConverters() {
+        ConverterSet set = iPeriodConverters;
+        PeriodConverter[] converters = new PeriodConverter[set.size()];
         set.copyInto(converters);
         return converters;
     }
@@ -457,14 +457,14 @@ public final class ConverterManager {
      * @param converter the converter to add, null ignored
      * @return replaced converter, or null
      */
-    public com.jn.langx.util.jodatime.convert.PeriodConverter addPeriodConverter(com.jn.langx.util.jodatime.convert.PeriodConverter converter)
+    public PeriodConverter addPeriodConverter(PeriodConverter converter)
             throws SecurityException {
 
         checkAlterPeriodConverters();
         if (converter == null) {
             return null;
         }
-        com.jn.langx.util.jodatime.convert.PeriodConverter[] removed = new com.jn.langx.util.jodatime.convert.PeriodConverter[1];
+        PeriodConverter[] removed = new PeriodConverter[1];
         iPeriodConverters = iPeriodConverters.add(converter, removed);
         return removed[0];
     }
@@ -476,14 +476,14 @@ public final class ConverterManager {
      * @param converter the converter to remove, null ignored
      * @return replaced converter, or null
      */
-    public com.jn.langx.util.jodatime.convert.PeriodConverter removePeriodConverter(com.jn.langx.util.jodatime.convert.PeriodConverter converter)
+    public PeriodConverter removePeriodConverter(PeriodConverter converter)
             throws SecurityException {
 
         checkAlterPeriodConverters();
         if (converter == null) {
             return null;
         }
-        com.jn.langx.util.jodatime.convert.PeriodConverter[] removed = new PeriodConverter[1];
+        PeriodConverter[] removed = new PeriodConverter[1];
         iPeriodConverters = iPeriodConverters.remove(converter, removed);
         return removed[0];
     }
@@ -529,7 +529,7 @@ public final class ConverterManager {
      * @return the converters, a copy of the real data, never null
      */
     public IntervalConverter[] getIntervalConverters() {
-        com.jn.langx.util.jodatime.convert.ConverterSet set = iIntervalConverters;
+        ConverterSet set = iIntervalConverters;
         IntervalConverter[] converters = new IntervalConverter[set.size()];
         set.copyInto(converters);
         return converters;

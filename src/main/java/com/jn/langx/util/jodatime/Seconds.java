@@ -67,7 +67,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
     /**
      * The paser to use for this class.
      */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(com.jn.langx.util.jodatime.PeriodType.seconds());
+    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.seconds());
     /**
      * Serialization version.
      */

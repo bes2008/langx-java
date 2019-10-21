@@ -36,12 +36,12 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
 
     private static final long WEEK_53 = (53L - 1) * DateTimeConstants.MILLIS_PER_WEEK;
 
-    private final com.jn.langx.util.jodatime.chrono.BasicChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    BasicWeekyearDateTimeField(com.jn.langx.util.jodatime.chrono.BasicChronology chronology) {
+    BasicWeekyearDateTimeField(BasicChronology chronology) {
         super(DateTimeFieldType.weekyear(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }

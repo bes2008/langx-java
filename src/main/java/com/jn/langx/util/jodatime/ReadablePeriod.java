@@ -64,7 +64,7 @@ public interface ReadablePeriod {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    com.jn.langx.util.jodatime.DurationFieldType getFieldType(int index);
+    DurationFieldType getFieldType(int index);
 
     /**
      * Gets the value at the specified index.
@@ -84,7 +84,7 @@ public interface ReadablePeriod {
      * @param field the field type to query, null returns zero
      * @return the value of that field, zero if field not supported
      */
-    int get(com.jn.langx.util.jodatime.DurationFieldType field);
+    int get(DurationFieldType field);
 
     /**
      * Checks whether the field type specified is supported by this period.

@@ -82,7 +82,7 @@ public class Calendars {
      * @param millis time millis
      */
     public static Interval getWeek(long millis, RecentIntervalType recentWeekType) {
-        Calendar calendar = java.util.Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(millis);
 
         calendar.getFirstDayOfWeek();

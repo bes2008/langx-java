@@ -51,7 +51,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the field at the specified index
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    com.jn.langx.util.jodatime.DateTimeFieldType getFieldType(int index);
+    DateTimeFieldType getFieldType(int index);
 
     /**
      * Gets the field at the specified index.
@@ -90,7 +90,7 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
      * @return the value of that field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    int get(com.jn.langx.util.jodatime.DateTimeFieldType field);
+    int get(DateTimeFieldType field);
 
     /**
      * Checks whether the field type specified is supported by this partial.

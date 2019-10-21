@@ -34,12 +34,12 @@ final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeFiel
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -1587436826395135328L;
 
-    private final com.jn.langx.util.jodatime.chrono.BasicChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    BasicWeekOfWeekyearDateTimeField(com.jn.langx.util.jodatime.chrono.BasicChronology chronology, DurationField weeks) {
+    BasicWeekOfWeekyearDateTimeField(BasicChronology chronology, DurationField weeks) {
         super(DateTimeFieldType.weekOfWeekyear(), weeks);
         iChronology = chronology;
     }

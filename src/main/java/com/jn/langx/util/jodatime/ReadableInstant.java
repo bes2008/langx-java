@@ -71,7 +71,7 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
      * @return the value of that field
      * @throws IllegalArgumentException if the field type is null
      */
-    int get(com.jn.langx.util.jodatime.DateTimeFieldType type);
+    int get(DateTimeFieldType type);
 
     /**
      * Checks whether the field type specified is supported by this implementation.
