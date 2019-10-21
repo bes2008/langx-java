@@ -30,6 +30,8 @@ Java lang extensions
     + NamedInheritableThreadLocal
     + IdentityMap
     + IdentitySet
+    + WeakIdentityHashMap
+    + ConcurrentReferenceHashMap
 + Differ API
     + Collection Differ
     + Map Differ
@@ -101,6 +103,7 @@ Java lang extensions
 + Lifecycle API
 + ClassParser
 + Converter Service
++ BloomFilter
 
 
 ## Contact:

@@ -7,7 +7,7 @@
     <groupId>com.github.fangjinuo.langx</groupId>
     <artifactId>langx-java</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.9</version>
+    <version>0.1.0</version>
 
     <name>langx-java</name>
 
