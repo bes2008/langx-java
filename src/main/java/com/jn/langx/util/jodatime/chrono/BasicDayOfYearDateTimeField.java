@@ -33,12 +33,12 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -6821236822336841037L;
 
-    private final com.jn.langx.util.jodatime.chrono.BasicChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    BasicDayOfYearDateTimeField(com.jn.langx.util.jodatime.chrono.BasicChronology chronology, DurationField days) {
+    BasicDayOfYearDateTimeField(BasicChronology chronology, DurationField days) {
         super(DateTimeFieldType.dayOfYear(), days);
         iChronology = chronology;
     }

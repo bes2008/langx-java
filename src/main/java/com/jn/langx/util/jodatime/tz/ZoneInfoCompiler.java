@@ -202,11 +202,11 @@ public class ZoneInfoCompiler {
 
     static int parseYear(String str, int def) {
         str = str.toLowerCase();
-        if (str.equals("minimum") || str.equals("min")) {
+        if ("minimum".equals(str) || "min".equals(str)) {
             return Integer.MIN_VALUE;
-        } else if (str.equals("maximum") || str.equals("max")) {
+        } else if ("maximum".equals(str) || "max".equals(str)) {
             return Integer.MAX_VALUE;
-        } else if (str.equals("only")) {
+        } else if ("only".equals(str)) {
             return def;
         }
         return Integer.parseInt(str);

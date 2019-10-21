@@ -31,7 +31,7 @@ import com.jn.langx.util.jodatime.DateTimeConstants;
  * @author Guy Allard
  * @since 1.2, refactored from CommonGJChronology
  */
-abstract class BasicGJChronology extends com.jn.langx.util.jodatime.chrono.BasicChronology {
+abstract class BasicGJChronology extends BasicChronology {
 
     /**
      * Serialization lock

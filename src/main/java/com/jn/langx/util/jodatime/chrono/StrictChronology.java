@@ -129,7 +129,7 @@ public final class StrictChronology extends AssembledChronology {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof StrictChronology == false) {
+        if (!(obj instanceof StrictChronology)) {
             return false;
         }
         StrictChronology chrono = (StrictChronology) obj;

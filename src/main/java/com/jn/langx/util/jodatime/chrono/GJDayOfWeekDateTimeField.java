@@ -39,12 +39,12 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     @SuppressWarnings("unused")
     private static final long serialVersionUID = -3857947176719041436L;
 
-    private final com.jn.langx.util.jodatime.chrono.BasicChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor.
      */
-    GJDayOfWeekDateTimeField(com.jn.langx.util.jodatime.chrono.BasicChronology chronology, DurationField days) {
+    GJDayOfWeekDateTimeField(BasicChronology chronology, DurationField days) {
         super(DateTimeFieldType.dayOfWeek(), days);
         iChronology = chronology;
     }
@@ -67,7 +67,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @return the day of the week, such as 'Monday'
      */
     public String getAsText(int fieldValue, Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(fieldValue);
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(fieldValue);
     }
 
     /**
@@ -78,7 +78,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @return the day of the week, such as 'Mon'
      */
     public String getAsShortText(int fieldValue, Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(fieldValue);
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(fieldValue);
     }
 
     /**
@@ -90,7 +90,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @throws IllegalArgumentException if the text is invalid
      */
     protected int convertText(String text, Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).dayOfWeekTextToValue(text);
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekTextToValue(text);
     }
 
     public DurationField getRangeDurationField() {
@@ -122,7 +122,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @return the maximum textual length
      */
     public int getMaximumTextLength(Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).getDayOfWeekMaxTextLength();
+        return GJLocaleSymbols.forLocale(locale).getDayOfWeekMaxTextLength();
     }
 
     /**
@@ -132,7 +132,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @return the maximum abbreviated textual length
      */
     public int getMaximumShortTextLength(Locale locale) {
-        return com.jn.langx.util.jodatime.chrono.GJLocaleSymbols.forLocale(locale).getDayOfWeekMaxShortTextLength();
+        return GJLocaleSymbols.forLocale(locale).getDayOfWeekMaxShortTextLength();
     }
 
     /**

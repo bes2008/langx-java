@@ -41,7 +41,7 @@ import java.util.Map;
  * @see GJChronology
  * @since 1.0
  */
-public final class GregorianChronology extends com.jn.langx.util.jodatime.chrono.BasicGJChronology {
+public final class GregorianChronology extends BasicGJChronology {
 
     /**
      * Serialization lock
