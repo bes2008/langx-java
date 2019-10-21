@@ -350,7 +350,7 @@ final class CsvLexer implements Closeable {
             ch = reader.read();
             // Save the EOL state
             if (firstEol == null) {
-                this.firstEol = CsvConstants.CRLF;
+                this.firstEol = CRLF;
             }
         }
         // save EOL state here.

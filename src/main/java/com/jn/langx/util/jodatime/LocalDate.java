@@ -569,7 +569,7 @@ public final class LocalDate
         if (fieldType == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         return fieldType.getField(getChronology()).get(getLocalMillis());
@@ -1033,7 +1033,7 @@ public final class LocalDate
         if (check.isBefore(this)) {
             // DST gap (no midnight)
             // move forward in units of one hour until date correct
-            while (check.equals(this) == false) {
+            while (!check.equals(this)) {
                 date.setTime(date.getTime() + 3600000);
                 check = LocalDate.fromDateFields(date);
             }

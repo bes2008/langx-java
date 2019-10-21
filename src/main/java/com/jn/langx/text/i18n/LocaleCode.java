@@ -1297,7 +1297,7 @@ public enum LocaleCode {
         // Canonicalize the given country code.
         country = CountryCode.canonicalize(country, caseSensitive);
 
-        if (language.equals("undefined") && (country == null || country.equals("UNDEFINED"))) {
+        if ("undefined".equals(language) && (country == null || "UNDEFINED".equals(country))) {
             return LocaleCode.undefined;
         }
 

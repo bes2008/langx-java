@@ -709,7 +709,7 @@ public class CronExpression implements Serializable {
         return buf.toString();
     }
 
-    protected String getExpressionSetSummary(java.util.Set set) {
+    protected String getExpressionSetSummary(Set set) {
 
         if (set.contains(NO_SPEC)) {
             return "?";
@@ -735,7 +735,7 @@ public class CronExpression implements Serializable {
         return buf.toString();
     }
 
-    protected String getExpressionSetSummary(java.util.ArrayList list) {
+    protected String getExpressionSetSummary(ArrayList list) {
 
         if (list.contains(NO_SPEC)) {
             return "?";

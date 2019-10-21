@@ -25,7 +25,7 @@ public class Platform {
 
     private static boolean isIkvmDotNet0() {
         String vmName = System.getProperty("java.vm.name", "").toUpperCase(Locale.US);
-        return vmName.equals("IKVM.NET");
+        return "IKVM.NET".equals(vmName);
     }
 
     private static boolean isAndroid0() {

@@ -6,8 +6,6 @@ import com.jn.langx.lifecycle.Initializable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -15,7 +13,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initializable {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultI18nMessageRegistry.class);
     private static final Object[] NO_ARGS = new Object[0];
     // Map<bundleName, Map<language, Map<key, message>>>
     private String defaultBundleName;
