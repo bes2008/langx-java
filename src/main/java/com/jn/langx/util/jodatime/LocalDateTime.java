@@ -401,9 +401,7 @@ public final class LocalDateTime
      * @since 2.0
      */
     public static LocalDateTime now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
+        Preconditions.checkNotNull(zone, "Zone must not be null");
         return new LocalDateTime(zone);
     }
 
@@ -537,7 +535,7 @@ public final class LocalDateTime
         if (iChronology == null) {
             return new LocalDateTime(iLocalMillis, ISOChronology.getInstanceUTC());
         }
-        if (DateTimeZone.UTC.equals(iChronology.getZone()) == false) {
+        if (!DateTimeZone.UTC.equals(iChronology.getZone())) {
             return new LocalDateTime(iLocalMillis, iChronology.withUTC());
         }
         return this;
@@ -872,7 +870,7 @@ public final class LocalDateTime
                 check = LocalDateTime.fromCalendarFields(calendar);
             }
             // move back in units of one second until date wrong
-            while (check.isBefore(this) == false) {
+            while (!check.isBefore(this)) {
                 calendar.setTimeInMillis(calendar.getTimeInMillis() - 1000);
                 check = LocalDateTime.fromCalendarFields(calendar);
             }

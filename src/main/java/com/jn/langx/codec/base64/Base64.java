@@ -2,6 +2,7 @@ package com.jn.langx.codec.base64;
 
 
 import com.jn.langx.codec.BaseNCodec;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 
 import java.math.BigInteger;
@@ -651,9 +652,7 @@ public class Base64 extends BaseNCodec {
      * @throws NullPointerException if null is passed in
      */
     public static byte[] encodeInteger(final BigInteger bigInt) {
-        if (bigInt == null) {
-            throw new NullPointerException("encodeInteger called with null parameter");
-        }
+        Preconditions.checkNotNull(bigInt, "encodeInteger called with null parameter");
         return encodeBase64(toIntegerBytes(bigInt), false);
     }
 

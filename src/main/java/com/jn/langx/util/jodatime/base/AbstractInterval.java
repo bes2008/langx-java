@@ -465,7 +465,7 @@ public abstract class AbstractInterval implements ReadableInterval {
         if (this == readableInterval) {
             return true;
         }
-        if (readableInterval instanceof ReadableInterval == false) {
+        if (!(readableInterval instanceof ReadableInterval)) {
             return false;
         }
         ReadableInterval other = (ReadableInterval) readableInterval;

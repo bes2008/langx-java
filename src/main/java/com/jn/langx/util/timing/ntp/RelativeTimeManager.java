@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RelativeTimeManager {
     private final ConcurrentHashMap<String, RelativeTime> cache = new ConcurrentHashMap<String, RelativeTime>();
 
-    private RelativeTimeManager (){}
+    public RelativeTimeManager (){}
 
     public void add(String machineId, long machineTime){
         if(machineId!=null){

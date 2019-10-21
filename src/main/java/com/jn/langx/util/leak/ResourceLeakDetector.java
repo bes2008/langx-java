@@ -1,6 +1,7 @@
 package com.jn.langx.util.leak;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.PropertiesAccessor;
 import com.jn.langx.util.random.ThreadLocalRandom;
@@ -122,9 +123,7 @@ public class ResourceLeakDetector<T> {
      * Sets the resource leak detection level.
      */
     public static void setLevel(ResourceLeakDetector.Level level) {
-        if (level == null) {
-            throw new NullPointerException("level");
-        }
+        Preconditions.checkNotNull(level);
         ResourceLeakDetector.level = level;
     }
 
@@ -407,9 +406,9 @@ public class ResourceLeakDetector<T> {
          */
         private static void reachabilityFence0(Object ref) {
             if (ref != null) {
-                synchronized (ref) {
+                //synchronized (ref) {
                     // Empty synchronized is ok: https://stackoverflow.com/a/31933260/1151521
-                }
+                //}
             }
         }
 

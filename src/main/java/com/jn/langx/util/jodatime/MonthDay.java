@@ -382,7 +382,7 @@ public final class MonthDay
      * @return the resolved object, not null
      */
     private Object readResolve() {
-        if (DateTimeZone.UTC.equals(getChronology().getZone()) == false) {
+        if (!DateTimeZone.UTC.equals(getChronology().getZone())) {
             return new MonthDay(this, getChronology().withUTC());
         }
         return this;

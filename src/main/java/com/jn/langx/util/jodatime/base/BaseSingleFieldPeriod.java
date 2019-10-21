@@ -147,7 +147,7 @@ public abstract class BaseSingleFieldPeriod
             int value = period.getValue(i);
             if (value != 0) {
                 DurationField field = period.getFieldType(i).getField(iso);
-                if (field.isPrecise() == false) {
+                if (!field.isPrecise()) {
                     throw new IllegalArgumentException(
                             "Cannot convert period to duration as " + field.getName() +
                                     " is not precise in the period " + period);
@@ -314,7 +314,7 @@ public abstract class BaseSingleFieldPeriod
         if (this == period) {
             return true;
         }
-        if (period instanceof ReadablePeriod == false) {
+        if (!(period instanceof ReadablePeriod)) {
             return false;
         }
         ReadablePeriod other = (ReadablePeriod) period;

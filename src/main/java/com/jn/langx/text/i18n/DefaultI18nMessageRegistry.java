@@ -123,7 +123,7 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
             try {
                 return rb.getString(key);
             } catch (MissingResourceException var4) {
-                ;
+                // NOOP
             }
         }
 

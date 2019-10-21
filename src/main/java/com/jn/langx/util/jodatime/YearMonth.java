@@ -15,6 +15,8 @@
  */
 package com.jn.langx.util.jodatime;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.jodatime.base.BasePartial;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.field.AbstractPartialFieldProperty;
@@ -281,10 +283,8 @@ public final class YearMonth
      * @return the current year-month, not null
      * @since 2.0
      */
-    public static YearMonth now(DateTimeZone zone) {
-        if (zone == null) {
-            throw new NullPointerException("Zone must not be null");
-        }
+    public static YearMonth now(@NonNull DateTimeZone zone) {
+        Preconditions.checkNotNull(zone,"Zone must not be null");
         return new YearMonth(zone);
     }
 
@@ -297,10 +297,8 @@ public final class YearMonth
      * @return the current year-month, not null
      * @since 2.0
      */
-    public static YearMonth now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
+    public static YearMonth now(@NonNull Chronology chronology) {
+        Preconditions.checkNotNull(chronology,"Chronology must not be null");
         return new YearMonth(chronology);
     }
 

@@ -1,5 +1,7 @@
 package com.jn.langx.util.reflect.type;
 
+import com.jn.langx.util.Preconditions;
+
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +61,7 @@ public class Primitives {
      * @see Class#isPrimitive
      */
     public static boolean isWrapperType(Type type) {
-        return WRAPPER_TO_PRIMITIVE_TYPE.containsKey(checkNotNull(type));
+        return WRAPPER_TO_PRIMITIVE_TYPE.containsKey(Preconditions.checkNotNull(type));
     }
 
     /**
@@ -74,8 +76,7 @@ public class Primitives {
     public static <T> Class<T> wrap(Class<T> type) {
         // cast is safe: long.class and Long.class are both of type Class<Long>
         @SuppressWarnings("unchecked")
-        Class<T> wrapped = (Class<T>) PRIMITIVE_TO_WRAPPER_TYPE.get(
-                checkNotNull(type));
+        Class<T> wrapped = (Class<T>) PRIMITIVE_TO_WRAPPER_TYPE.get(Preconditions.checkNotNull(type));
         return (wrapped == null) ? type : wrapped;
     }
 
@@ -84,7 +85,7 @@ public class Primitives {
      */
     public static Class wrap(Type type) {
         if (isPrimitive(type)) {
-            return PRIMITIVE_TO_WRAPPER_TYPE.get(checkNotNull(type));
+            return PRIMITIVE_TO_WRAPPER_TYPE.get(Preconditions.checkNotNull(type));
         }
         return (Class) type;
     }
@@ -101,15 +102,8 @@ public class Primitives {
     public static <T> Class<T> unwrap(Class<T> type) {
         // cast is safe: long.class and Long.class are both of type Class<Long>
         @SuppressWarnings("unchecked")
-        Class<T> unwrapped = (Class<T>) WRAPPER_TO_PRIMITIVE_TYPE.get(
-                checkNotNull(type));
+        Class<T> unwrapped = (Class<T>) WRAPPER_TO_PRIMITIVE_TYPE.get(Preconditions.checkNotNull(type));
         return (unwrapped == null) ? type : unwrapped;
     }
 
-    private static Object checkNotNull(Object o) {
-        if (o == null) {
-            throw new RuntimeException();
-        }
-        return o;
-    }
 }

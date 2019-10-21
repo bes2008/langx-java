@@ -15,6 +15,7 @@
  */
 package com.jn.langx.util.jodatime;
 
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.jodatime.base.BaseLocal;
 import com.jn.langx.util.jodatime.chrono.ISOChronology;
 import com.jn.langx.util.jodatime.convert.ConverterManager;
@@ -369,9 +370,7 @@ public final class LocalDate
      * @since 2.0
      */
     public static LocalDate now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
+        Preconditions.checkNotNull(chronology, "Chronology must not be null");
         return new LocalDate(chronology);
     }
 
@@ -483,7 +482,7 @@ public final class LocalDate
         if (iChronology == null) {
             return new LocalDate(iLocalMillis, ISOChronology.getInstanceUTC());
         }
-        if (DateTimeZone.UTC.equals(iChronology.getZone()) == false) {
+        if (!DateTimeZone.UTC.equals(iChronology.getZone())) {
             return new LocalDate(iLocalMillis, iChronology.withUTC());
         }
         return this;
@@ -1144,7 +1143,7 @@ public final class LocalDate
         if (fieldType == null) {
             throw new IllegalArgumentException("Field must not be null");
         }
-        if (isSupported(fieldType) == false) {
+        if (!isSupported(fieldType)) {
             throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
         if (amount == 0) {

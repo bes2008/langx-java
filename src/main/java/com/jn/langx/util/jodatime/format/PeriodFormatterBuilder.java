@@ -1407,7 +1407,7 @@ public class PeriodFormatterBuilder {
             } else {
                 type = period.getPeriodType();
             }
-            if (type != null && isSupported(type, iFieldType) == false) {
+            if (type != null && !isSupported(type, iFieldType)) {
                 return Long.MAX_VALUE;
             }
 

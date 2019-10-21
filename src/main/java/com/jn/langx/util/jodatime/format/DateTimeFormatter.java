@@ -228,7 +228,7 @@ public class DateTimeFormatter {
      * @return the new formatter
      */
     public DateTimeFormatter withOffsetParsed() {
-        if (iOffsetParsed == true) {
+        if (iOffsetParsed) {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, iLocale,

@@ -326,9 +326,7 @@ public final class DateMidnight
      * @since 2.0
      */
     public static DateMidnight now(Chronology chronology) {
-        if (chronology == null) {
-            throw new NullPointerException("Chronology must not be null");
-        }
+        Preconditions.checkNotNull(chronology, "Chronology must not be null");
         return new DateMidnight(chronology);
     }
 

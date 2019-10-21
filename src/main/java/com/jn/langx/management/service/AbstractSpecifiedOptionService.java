@@ -2,6 +2,7 @@ package com.jn.langx.management.service;
 
 import com.jn.langx.management.BaseService;
 import com.jn.langx.management.MBeanException;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.struct.Entry;
 import org.slf4j.Logger;
@@ -15,9 +16,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
     private static final Logger logger;
 
     protected Map<String, Map<String, Object>> queryMBeanAttrs(final String specifiedOption, final Hashtable<String, String> options, final Collection<String> attributeNames) {
-        if (Strings.isBlank(specifiedOption)) {
-            throw new NullPointerException("specialOption is null. ");
-        }
+        Preconditions.checkNotNull(specifiedOption, "specialOption is null. ");
         final ObjectName queryOname = this.createObjectName(options);
         final Set<ObjectInstance> instances = (Set<ObjectInstance>) this.conn.queryMBeans(queryOname, (QueryExp) null);
         final List<ObjectName> onames = new ArrayList<ObjectName>();
@@ -51,9 +50,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
     }
 
     protected Map<String, List<Entry<String, Object>>> getMBeansAttrs(final String specifiedOption, final List<String> optionValues, final Collection<String> attributeNames) throws Exception {
-        if (Strings.isBlank(specifiedOption)) {
-            throw new NullPointerException("specialOption is null. ");
-        }
+        Preconditions.checkNotNull(specifiedOption, "specialOption is null. ");
         final Map<String, List<Entry<String, Object>>> result = new HashMap<String, List<Entry<String, Object>>>();
         if (attributeNames.isEmpty()) {
             return result;

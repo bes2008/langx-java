@@ -1,6 +1,8 @@
 package com.jn.langx.codec;
 
 
+import com.jn.langx.util.Preconditions;
+
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -52,9 +54,8 @@ public class BaseNCodecOutputStream extends FilterOutputStream {
      */
     @Override
     public void write(final byte b[], final int offset, final int len) throws IOException {
-        if (b == null) {
-            throw new NullPointerException();
-        } else if (offset < 0 || len < 0) {
+        Preconditions.checkNotNull(b);
+        if (offset < 0 || len < 0) {
             throw new IndexOutOfBoundsException();
         } else if (offset > b.length || offset + len > b.length) {
             throw new IndexOutOfBoundsException();
