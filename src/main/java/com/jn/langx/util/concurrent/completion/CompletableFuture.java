@@ -338,7 +338,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             }
             throw new ExecutionException(x);
         }
-        @SuppressWarnings("unchecked") T t = (T) r;
+        T t = (T) r;
         return t;
     }
 
@@ -359,7 +359,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             }
             throw new CompletionException(x);
         }
-        @SuppressWarnings("unchecked") T t = (T) r;
+        T t = (T) r;
         return t;
     }
 
@@ -682,7 +682,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 if (c != null && !c.claim()) {
                     return false;
                 }
-                @SuppressWarnings("unchecked") S s = (S) r;
+                S s = (S) r;
                 f.accept(s);
                 completeNull();
             } catch (Throwable ex) {
@@ -804,7 +804,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                     x = ((AltResult) r).ex;
                     t = null;
                 } else {
-                    @SuppressWarnings("unchecked") T tr = (T) r;
+                    T tr = (T) r;
                     t = tr;
                 }
                 f.accept(t, x);
@@ -878,7 +878,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                     s = null;
                 } else {
                     x = null;
-                    @SuppressWarnings("unchecked") S ss = (S) r;
+                    S ss = (S) r;
                     s = ss;
                 }
                 completeValue(f.apply(s, x));
@@ -1041,7 +1041,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 if (c != null && !c.claim()) {
                     return false;
                 }
-                @SuppressWarnings("unchecked") S s = (S) r;
+                S s = (S) r;
                 CompletableFuture<T> g = f.apply(s).toCompletableFuture();
                 if (g.result.get() == null || !uniRelay(g)) {
                     UniRelay<T> copy = new UniRelay<T>(this, g);
@@ -1074,7 +1074,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 r = null;
             }
             try {
-                @SuppressWarnings("unchecked") T t = (T) r;
+                T t = (T) r;
                 CompletableFuture<V> g = f.apply(t).toCompletableFuture();
                 Object s = g.result.get();
                 if (s != null) {
@@ -1227,8 +1227,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 if (c != null && !c.claim()) {
                     return false;
                 }
-                @SuppressWarnings("unchecked") R rr = (R) r;
-                @SuppressWarnings("unchecked") S ss = (S) s;
+                R rr = (R) r;
+                S ss = (S) s;
                 completeValue(f.apply(rr, ss));
             } catch (Throwable ex) {
                 completeThrowable(ex);
@@ -1533,7 +1533,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                     }
                     r = null;
                 }
-                @SuppressWarnings("unchecked") R rr = (R) r;
+                R rr = (R) r;
                 completeValue(f.apply(rr));
             } catch (Throwable ex) {
                 completeThrowable(ex);
@@ -1607,7 +1607,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                     }
                     r = null;
                 }
-                @SuppressWarnings("unchecked") R rr = (R) r;
+                R rr = (R) r;
                 f.accept(rr);
                 completeNull();
             } catch (Throwable ex) {
