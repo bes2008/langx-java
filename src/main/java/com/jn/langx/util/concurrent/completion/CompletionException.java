@@ -6,7 +6,6 @@ package com.jn.langx.util.concurrent.completion;
  * in the course of completing a result or task.
  *
  * @since 1.8
- * @author Doug Lea
  */
 public class CompletionException extends RuntimeException {
     private static final long serialVersionUID = 7830266012832686185L;
