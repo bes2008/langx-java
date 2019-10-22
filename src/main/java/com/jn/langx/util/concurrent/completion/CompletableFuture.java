@@ -11,6 +11,7 @@ package com.jn.langx.util.concurrent.completion;
 import com.jn.langx.util.function.*;
 
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
 
@@ -411,10 +412,9 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
     /* ------------- Base Completion classes and operations -------------- */
 
     @SuppressWarnings("serial")
-    abstract static class Completion
-            implements Runnable, AsynchronousCompletionTask {
+    abstract static class Completion implements Runnable, AsynchronousCompletionTask {
         AtomicReference<Completion> next = new AtomicReference<Completion>();      // Treiber stack link
-
+        AtomicInteger tag = new AtomicInteger(0);
         /**
          * Performs completion action if triggered, returning a
          * dependent that may need propagation, if one exists.
@@ -528,7 +528,13 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
          */
         final boolean claim() {
             Executor e = executor;
-            // TODO compareAndSetForkJoinTaskTag
+            if(tag.compareAndSet(0,1)){
+                if(e==null){
+                    return true;
+                }
+                executor = null;
+                e.execute(this);
+            }
             return false;
         }
 
@@ -575,9 +581,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
     static final class UniApply<T, V> extends UniCompletion<T, V> {
         Function<? super T, ? extends V> fn;
 
-        UniApply(Executor executor, CompletableFuture<V> dep,
-                 CompletableFuture<T> src,
-                 Function<? super T, ? extends V> fn) {
+        UniApply(Executor executor, CompletableFuture<V> dep, CompletableFuture<T> src, Function<? super T, ? extends V> fn) {
             super(executor, dep, src);
             this.fn = fn;
         }
@@ -595,9 +599,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
         }
     }
 
-    final <S> boolean uniApply(CompletableFuture<S> a,
-                               Function<? super S, ? extends T> f,
-                               UniApply<S, T> c) {
+    final <S> boolean uniApply(CompletableFuture<S> a, Function<? super S, ? extends T> f, UniApply<S, T> c) {
         Object r;
         Throwable x;
         if (a == null || (r = a.result.get()) == null || f == null) {
@@ -616,7 +618,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 if (c != null && !c.claim()) {
                     return false;
                 }
-                @SuppressWarnings("unchecked") S s = (S) r;
+                S s = (S) r;
                 completeValue(f.apply(s));
             } catch (Throwable ex) {
                 completeThrowable(ex);
@@ -625,8 +627,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
         return true;
     }
 
-    private <V> CompletableFuture<V> uniApplyStage(
-            Executor e, Function<? super T, ? extends V> f) {
+    private <V> CompletableFuture<V> uniApplyStage(Executor e, Function<? super T, ? extends V> f) {
         if (f == null) {
             throw new NullPointerException();
         }
@@ -1307,8 +1308,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 if (c != null && !c.claim()) {
                     return false;
                 }
-                @SuppressWarnings("unchecked") R rr = (R) r;
-                @SuppressWarnings("unchecked") S ss = (S) s;
+                R rr = (R) r;
+                S ss = (S) s;
                 f.accept(rr, ss);
                 completeNull();
             } catch (Throwable ex) {
@@ -1754,8 +1755,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
     /* ------------- Zero-input Async forms -------------- */
 
     @SuppressWarnings("serial")
-    static final class AsyncSupply<T>
-            implements Runnable, AsynchronousCompletionTask {
+    static final class AsyncSupply<T> implements Runnable, AsynchronousCompletionTask {
         CompletableFuture<T> dep;
         Supplier0<T> fn;
 
@@ -2022,13 +2022,13 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * by a task running in the { ForkJoinPool#commonPool()} with
      * the value obtained by calling the given Supplier0.
      *
-     * @param Supplier0 a function returning the value to be used
+     * @param supplier0 a function returning the value to be used
      *                  to complete the returned CompletableFuture
      * @param <U>       the function's return type
      * @return the new CompletableFuture
      */
-    public static <U> CompletableFuture<U> supplyAsync(Supplier0<U> Supplier0) {
-        return asyncSupplyStage(asyncPool, Supplier0);
+    public static <U> CompletableFuture<U> supplyAsync(Supplier0<U> supplier0) {
+        return asyncSupplyStage(asyncPool, supplier0);
     }
 
     /**
@@ -2036,15 +2036,15 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * by a task running in the given executor with the value obtained
      * by calling the given Supplier0.
      *
-     * @param Supplier0 a function returning the value to be used
+     * @param supplier0 a function returning the value to be used
      *                  to complete the returned CompletableFuture
      * @param executor  the executor to use for asynchronous execution
      * @param <U>       the function's return type
      * @return the new CompletableFuture
      */
-    public static <U> CompletableFuture<U> supplyAsync(Supplier0<U> Supplier0,
+    public static <U> CompletableFuture<U> supplyAsync(Supplier0<U> supplier0,
                                                        Executor executor) {
-        return asyncSupplyStage(screenExecutor(executor), Supplier0);
+        return asyncSupplyStage(screenExecutor(executor), supplier0);
     }
 
     /**
