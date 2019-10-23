@@ -202,7 +202,7 @@ public class Pipeline<E> {
         return new Pipeline<T>(list);
     }
 
-    public static <T> Pipeline<T> of(T[] array) {
+    public static <T> Pipeline<T> of(T... array) {
         Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(array));
         return new Pipeline<T>(list);
     }
