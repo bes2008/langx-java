@@ -67,7 +67,7 @@ public class Reflects {
         return !Enum.class.isAssignableFrom(clazz) && clazz.isLocalClass();
     }
 
-    public static boolean isConcrete(@NonNull Class clazz){
+    public static boolean isConcrete(@NonNull Class clazz) {
         return !clazz.isInterface() && !Modifiers.isAbstract(clazz);
     }
 
@@ -383,7 +383,7 @@ public class Reflects {
         }
     }
 
-    public static <V> V getDeclaredFieldValue(@NonNull Object object, String fieldName, boolean force, boolean throwException) throws NoSuchFieldException, IllegalAccessException {
+    public static <V> V getDeclaredFieldValue(@NonNull Object object, String fieldName, boolean force, boolean throwException) {
         try {
             Field field = getDeclaredField(object.getClass(), fieldName);
             if (field == null) {
@@ -547,10 +547,11 @@ public class Reflects {
         }
     }
 
-    public static Constructor getConstructor(@NonNull Class clazz, Class... parameterTypes) {
+    public static <E> Constructor<E> getConstructor(@NonNull Class<E> clazz, Class... parameterTypes) {
         try {
             return clazz.getDeclaredConstructor(parameterTypes);
         } catch (NoSuchMethodException ex) {
+            logger.warn(ex.getMessage(), ex);
             return null;
         }
     }
@@ -558,7 +559,7 @@ public class Reflects {
     public static <E> E newInstance(@NonNull Class<E> clazz) {
         Preconditions.checkNotNull(clazz);
         try {
-            return (E) clazz.newInstance();
+            return clazz.newInstance();
         } catch (Throwable ex) {
             logger.warn("Create {} instance fail", getFQNClassName(clazz), ex);
             return null;
@@ -567,18 +568,21 @@ public class Reflects {
 
     public static <E> E newInstance(@NonNull Class<E> clazz, @Nullable Class[] parameterTypes, @NonNull Object[] parameters) {
         Preconditions.checkNotNull(clazz);
-        Constructor constructor = getConstructor(clazz, parameterTypes);
-
-        try {
-            return (E) constructor.newInstance(parameters);
-        } catch (Throwable ex) {
-            logger.warn("Create {} instance fail", getFQNClassName(clazz), ex);
-            return null;
+        Constructor<E> constructor = getConstructor(clazz, parameterTypes);
+        if (constructor != null) {
+            try {
+                return constructor.newInstance(parameters);
+            } catch (Throwable ex) {
+                logger.warn("Create {} instance fail", getFQNClassName(clazz), ex);
+                return null;
+            }
         }
+        return null;
+
     }
 
     public static Method getPublicMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
-        Method method = null;
+        Method method;
         try {
             method = clazz.getMethod(methodName, parameterTypes);
         } catch (NoSuchMethodException ex) {
@@ -588,7 +592,7 @@ public class Reflects {
     }
 
     public static Method getDeclaredMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
-        Method method = null;
+        Method method;
         try {
             method = clazz.getDeclaredMethod(methodName, parameterTypes);
         } catch (NoSuchMethodException ex) {
