@@ -44,7 +44,7 @@ public class Reflects {
     }
 
     public static boolean isInnerClass(@NonNull Class<?> clazz) {
-        return clazz.isMemberClass() && !isStatic(clazz);
+        return clazz.isMemberClass() && !isStatic(clazz) && clazz.getEnclosingClass() != null;
     }
 
     public static boolean isLambda(@NonNull Class<?> clazz) {
@@ -63,9 +63,12 @@ public class Reflects {
         return !Enum.class.isAssignableFrom(clazz) && clazz.isAnonymousClass();
     }
 
-
     public static boolean isLocal(@NonNull Class clazz) {
         return !Enum.class.isAssignableFrom(clazz) && clazz.isLocalClass();
+    }
+
+    public static boolean isConcrete(@NonNull Class clazz){
+        return !clazz.isInterface() && !Modifiers.isAbstract(clazz);
     }
 
     public static String getSimpleClassName(@NonNull Object obj) {
