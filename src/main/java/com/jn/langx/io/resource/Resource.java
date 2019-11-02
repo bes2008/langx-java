@@ -1,16 +1,13 @@
 package com.jn.langx.io.resource;
 
-import com.jn.langx.annotation.Nullable;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public interface Resource {
+public interface Resource<E> {
+
+    E getRealResource();
     /**
      * Return an {@link InputStream} for the content of an underlying resource.
      * <p>It is expected that each call creates a <i>fresh</i> stream.
@@ -49,52 +46,6 @@ public interface Resource {
     boolean isReadable();
 
     /**
-     * Indicate whether this resource represents a handle with an open stream.
-     * If {@code true}, the InputStream cannot be read multiple times,
-     * and must be read and closed to avoid resource leaks.
-     * <p>Will be {@code false} for typical resource descriptors.
-     */
-    boolean isOpen();
-
-    /**
-     * Determine whether this resource represents a file in a file system.
-     * A value of {@code true} strongly suggests (but does not guarantee)
-     * that a {@link #getFile()} call will succeed.
-     * <p>This is conservatively {@code false} by default.
-     *
-     * @see #getFile()
-     * @since 5.0
-     */
-    boolean isFile();
-
-    /**
-     * Return a URL handle for this resource.
-     *
-     * @throws IOException if the resource cannot be resolved as URL,
-     *                     i.e. if the resource is not available as descriptor
-     */
-    URL getURL() throws IOException;
-
-    /**
-     * Return a URI handle for this resource.
-     *
-     * @throws IOException if the resource cannot be resolved as URI,
-     *                     i.e. if the resource is not available as descriptor
-     * @since 2.5
-     */
-    URI getURI() throws IOException;
-
-    /**
-     * Return a File handle for this resource.
-     *
-     * @throws java.io.FileNotFoundException if the resource cannot be resolved as
-     *                                       absolute file path, i.e. if the resource is not available in a file system
-     * @throws IOException                   in case of general resolution/reading failures
-     * @see #getInputStream()
-     */
-    File getFile() throws IOException;
-
-    /**
      * Return a {@link ReadableByteChannel}.
      * <p>It is expected that each call creates a <i>fresh</i> channel.
      * <p>The default implementation returns {@link Channels#newChannel(InputStream)}
@@ -114,23 +65,6 @@ public interface Resource {
      *                     (in the file system or as some other known physical resource type)
      */
     long contentLength() throws IOException;
-
-    /**
-     * Determine the last-modified timestamp for this resource.
-     *
-     * @throws IOException if the resource cannot be resolved
-     *                     (in the file system or as some other known physical resource type)
-     */
-    long lastModified() throws IOException;
-
-    /**
-     * Determine a filename for this resource, i.e. typically the last
-     * part of the path: for example, "myfile.txt".
-     * <p>Returns {@code null} if this type of resource does not
-     * have a filename.
-     */
-    @Nullable
-    String getFilename();
 
     /**
      * Return a description for this resource,
