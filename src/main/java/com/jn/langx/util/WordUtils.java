@@ -10,7 +10,6 @@ import com.jn.langx.util.io.LineDelimiter;
  * An exception will not be thrown for a <code>null</code> input.
  * Each method documents its behaviour in more detail.</p>
  *
- * @version $Id: WordUtils.java 1583482 2014-03-31 22:54:57Z niallp $
  */
 public class WordUtils {
 

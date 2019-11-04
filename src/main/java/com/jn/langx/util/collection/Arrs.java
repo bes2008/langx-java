@@ -31,7 +31,7 @@ public class Arrs {
      * judge whether an object is an Array
      */
     public static boolean isArray(@Nullable Object o) {
-        return Emptys.isNull(o) ? false : o.getClass().isArray();
+        return Emptys.isNotNull(o) && o.getClass().isArray();
     }
 
 
@@ -135,6 +135,5 @@ public class Arrs {
             }
         });
     }
-
 
 }
