@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-@SuppressWarnings({"unused","unchecked","inferred"})
+@SuppressWarnings({"unused", "unchecked", "inferred"})
 public class Strings {
     private Strings() {
     }
@@ -1925,9 +1925,9 @@ public class Strings {
         if (String.class == targetClass) {
             return (T) str;
         }
-        if (targetClass.isEnum() && Enum.class.isAssignableFrom(targetClass)) {
+        if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
             Class<? extends Enum> vClass = (Class<? extends Enum>) targetClass;
-            return (T) inferEnum(vClass, str);
+            return (T) Enums.inferEnum(vClass, str);
         }
 
         if (Reflects.isSubClassOrEquals(Character.class, targetClass)) {
@@ -1936,19 +1936,4 @@ public class Strings {
         return null;
     }
 
-    private static <T extends Enum<T>> T inferEnum(Class<T> targetClass, String name) {
-        if (targetClass.isEnum() && Enum.class.isAssignableFrom(targetClass)) {
-            T v = null;
-            if (Reflects.isSubClassOrEquals(Delegatable.class, targetClass)) {
-                v = Enums.<T>ofName(targetClass, name);
-                if (v == null) {
-                    v = Enums.ofDisplayText(targetClass, name);
-                }
-            }
-            if (v == null) {
-                return Enums.<T>ofName(targetClass, name);
-            }
-        }
-        return null;
-    }
 }

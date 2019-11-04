@@ -21,7 +21,7 @@ public class FieldComparator implements DelegatableComparator {
         this.field = field;
         if (fieldComparator == null) {
             Class fieldClass = field.getType();
-            if (Comparable.class.isAssignableFrom(Primitives.wrap(fieldClass))) {
+            if (Reflects.isSubClassOrEquals(Comparable.class,Primitives.wrap(fieldClass))) {
                 fieldComparator = new ComparableComparator();
             }
         }

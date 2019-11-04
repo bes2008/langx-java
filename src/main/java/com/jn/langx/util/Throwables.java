@@ -296,7 +296,7 @@ public class Throwables {
             if (Collects.noneMatch(throwables, new Predicate<Class<Throwable>>() {
                 @Override
                 public boolean test(Class<Throwable> exceptionClass) {
-                    return exceptionClass.isAssignableFrom(exClass);
+                    return Reflects.isSubClassOrEquals(exceptionClass, exClass);
                 }
             })) {
                 logger = logger == null ? Throwables.logger : logger;
@@ -319,7 +319,7 @@ public class Throwables {
             if (Collects.noneMatch(throwables, new Predicate<Class<Throwable>>() {
                 @Override
                 public boolean test(Class<Throwable> exceptionClass) {
-                    return exceptionClass.isAssignableFrom(exClass);
+                    return Reflects.isSubClassOrEquals(exceptionClass, exClass);
                 }
             })) {
                 logger = logger == null ? Throwables.logger : logger;

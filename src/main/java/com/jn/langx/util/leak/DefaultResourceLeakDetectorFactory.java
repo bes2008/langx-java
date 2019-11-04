@@ -1,6 +1,7 @@
 package com.jn.langx.util.leak;
 
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
             final Class<?> detectorClass = Class.forName(customLeakDetector, true,
                     ClassLoader.getSystemClassLoader());
 
-            if (ResourceLeakDetector.class.isAssignableFrom(detectorClass)) {
+            if (Reflects.isSubClassOrEquals(ResourceLeakDetector.class, detectorClass)) {
                 return detectorClass.getConstructor(Class.class, int.class, long.class);
             } else {
                 logger.error("Class {} does not inherit from ResourceLeakDetector.", customLeakDetector);
@@ -57,7 +58,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
             final Class<?> detectorClass = Class.forName(customLeakDetector, true,
                     ClassLoader.getSystemClassLoader());
 
-            if (ResourceLeakDetector.class.isAssignableFrom(detectorClass)) {
+            if (Reflects.isSubClassOrEquals(ResourceLeakDetector.class, detectorClass)) {
                 return detectorClass.getConstructor(Class.class, int.class);
             } else {
                 logger.error("Class {} does not inherit from ResourceLeakDetector.", customLeakDetector);

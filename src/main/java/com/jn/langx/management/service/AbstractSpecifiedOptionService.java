@@ -4,6 +4,7 @@ import com.jn.langx.management.BaseService;
 import com.jn.langx.management.MBeanException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.struct.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,7 +117,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
             }
         }
         final List<String> notSerialAttrs = new ArrayList<String>();
-        if (unerialClazz != null && Unserializable.class.isAssignableFrom(unerialClazz)) {
+        if (unerialClazz != null && Reflects.isSubClassOrEquals(Unserializable.class, unerialClazz)) {
             final Field[] arr$;
             final Field[] fields = arr$ = unerialClazz.getDeclaredFields();
             for (final Field field : arr$) {

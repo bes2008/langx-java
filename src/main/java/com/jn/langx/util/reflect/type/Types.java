@@ -2,6 +2,7 @@ package com.jn.langx.util.reflect.type;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.reflect.Reflects;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -446,7 +447,7 @@ public class Types {
             for (int i = 0, length = interfaces.length; i < length; i++) {
                 if (interfaces[i] == toResolve) {
                     return rawType.getGenericInterfaces()[i];
-                } else if (toResolve.isAssignableFrom(interfaces[i])) {
+                } else if (Reflects.isSubClassOrEquals(toResolve, interfaces[i])) {
                     return getGenericSupertype(rawType.getGenericInterfaces()[i], interfaces[i], toResolve);
                 }
             }
@@ -458,7 +459,7 @@ public class Types {
                 Class<?> rawSupertype = rawType.getSuperclass();
                 if (rawSupertype == toResolve) {
                     return rawType.getGenericSuperclass();
-                } else if (toResolve.isAssignableFrom(rawSupertype)) {
+                } else if (Reflects.isSubClassOrEquals(toResolve, rawSupertype)) {
                     return getGenericSupertype(rawType.getGenericSuperclass(), rawSupertype, toResolve);
                 }
                 rawType = rawSupertype;

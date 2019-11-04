@@ -15,6 +15,8 @@
  */
 package com.jn.langx.util.jodatime.convert;
 
+import com.jn.langx.util.reflect.Reflects;
+
 /**
  * A set of converters, which allows exact converters to be quickly
  * selected. This class is threadsafe because it is (essentially) immutable.
@@ -54,7 +56,7 @@ class ConverterSet {
                 return converter;
             }
 
-            if (supportedType == null || (type != null && !supportedType.isAssignableFrom(type))) {
+            if (supportedType == null || (type != null && !Reflects.isSubClassOrEquals(supportedType, type))) {
                 // Eliminate the impossible.
                 set = set.remove(i, null);
                 converters = set.iConverters;
@@ -79,7 +81,7 @@ class ConverterSet {
             converter = converters[i];
             Class<?> supportedType = converter.getSupportedType();
             for (int j = length; --j >= 0; ) {
-                if (j != i && converters[j].getSupportedType().isAssignableFrom(supportedType)) {
+                if (j != i && Reflects.isSubClassOrEquals(converters[j].getSupportedType(), supportedType)) {
                     // Eliminate supertype.
                     set = set.remove(j, null);
                     converters = set.iConverters;

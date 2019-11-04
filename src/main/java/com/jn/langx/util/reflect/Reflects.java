@@ -60,11 +60,11 @@ public class Reflects {
     }
 
     public static boolean isAnonymous(@NonNull Class clazz) {
-        return !Enum.class.isAssignableFrom(clazz) && clazz.isAnonymousClass();
+        return !isSubClassOrEquals(Enum.class, clazz) && clazz.isAnonymousClass();
     }
 
     public static boolean isLocal(@NonNull Class clazz) {
-        return !Enum.class.isAssignableFrom(clazz) && clazz.isLocalClass();
+        return !isSubClassOrEquals(Enum.class, clazz) && clazz.isLocalClass();
     }
 
     public static boolean isConcrete(@NonNull Class clazz) {
@@ -881,12 +881,12 @@ public class Reflects {
 
     public static boolean hasGetter(Field field) {
         Method method = getGetter(field.getDeclaringClass(), field.getName());
-        return method != null && field.getType().isAssignableFrom(method.getReturnType());
+        return method != null && isSubClassOrEquals(field.getType(), method.getReturnType());
     }
 
     public static boolean hasSetter(Field field) {
         Method method = getSetter(field.getDeclaringClass(), field.getName());
-        return method != null && field.getType().isAssignableFrom(method.getParameterTypes()[0]);
+        return method != null && isSubClassOrEquals(field.getType(), method.getParameterTypes()[0]);
     }
 
     public static Method getGetter(Class clazz, String field) {
@@ -897,7 +897,7 @@ public class Reflects {
 
         Method candidate = null;
 
-        if (Collection.class.isAssignableFrom(clazz) && "isEmpty".equals(isGet)) {
+        if (isSubClassOrEquals(Collection.class, clazz) && "isEmpty".equals(isGet)) {
             try {
                 return Collection.class.getMethod("isEmpty");
             } catch (NoSuchMethodException ignore) {
@@ -909,7 +909,7 @@ public class Reflects {
                 String methodName = meth.getName();
                 if ((getter.equals(methodName) || field.equals(methodName) || ((isGet.equals(methodName) || simpleIsGet.equals(methodName)) && meth.getReturnType() == boolean.class)
                         || simple.equals(methodName))) {
-                    if (candidate == null || candidate.getReturnType().isAssignableFrom(meth.getReturnType())) {
+                    if (candidate == null || isSubClassOrEquals(candidate.getReturnType(), meth.getReturnType())) {
                         candidate = meth;
                     }
                 }
@@ -918,16 +918,13 @@ public class Reflects {
         return candidate;
     }
 
-    public static boolean makeAccessible(Field field) {
-        if ((!Modifiers.isPublic(field) || !Modifiers.isPublic(field.getDeclaringClass()) || Modifiers.isFinal(field)) && !field.isAccessible()) {
-            try {
-                field.setAccessible(true);
-                return true;
-            } catch (SecurityException ex) {
-                return false;
-            }
+    public static boolean makeAccessible(@NonNull Field field) {
+        try {
+            field.setAccessible(true);
+            return true;
+        } catch (SecurityException ex) {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -1000,7 +997,7 @@ public class Reflects {
      */
     public static boolean isImplementsInterface(@NonNull Class clazz, @NonNull Class intf) {
         Preconditions.checkTrue(intf.isInterface(), "Interface to check was not an interface");
-        return intf.isAssignableFrom(clazz);
+        return isSubClassOrEquals(intf, clazz);
     }
 
     public static boolean isSubClassOrEquals(@NonNull Class parent, @NonNull Class child) {
@@ -1012,10 +1009,7 @@ public class Reflects {
     public static boolean isSubClass(@NonNull Class parent, @NonNull Class child) {
         Preconditions.checkNotNull(parent);
         Preconditions.checkNotNull(child);
-        if (parent == child) {
-            return false;
-        }
-        return parent.isAssignableFrom(child);
+        return parent != child && isSubClassOrEquals(parent, child);
     }
 
     public static <T> boolean isInstance(T object, String classFQN) {

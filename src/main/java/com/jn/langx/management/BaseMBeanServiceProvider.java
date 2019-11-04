@@ -1,5 +1,6 @@
 package com.jn.langx.management;
 
+import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ public class BaseMBeanServiceProvider {
             return null;
         }
         final MBeanService service = (MBeanService) BaseMBeanServiceProvider.provider.get(serviceClazz);
-        if (service != null && serviceClazz.isAssignableFrom(service.getClass())) {
+        if (service != null && Reflects.isSubClassOrEquals(serviceClazz,service.getClass())) {
             return (S) service;
         }
         final ClassLoader originalCL = Thread.currentThread().getContextClassLoader();

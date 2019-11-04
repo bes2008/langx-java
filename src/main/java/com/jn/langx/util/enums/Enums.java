@@ -81,4 +81,21 @@ public class Enums {
         }
         return null;
     }
+
+    public static <T extends Enum<T>> T inferEnum(Class<T> targetClass, String text) {
+        if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
+            T v = null;
+            if (Reflects.isSubClassOrEquals(Delegatable.class, targetClass)) {
+                v = Enums.<T>ofName(targetClass, text);
+                if (v == null) {
+                    v = Enums.ofDisplayText(targetClass, text);
+                }
+            }
+            if (v == null) {
+                return Enums.<T>ofName(targetClass, text);
+            }
+        }
+        return null;
+    }
+
 }
