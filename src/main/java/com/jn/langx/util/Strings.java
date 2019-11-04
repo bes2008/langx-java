@@ -4,12 +4,12 @@ import com.jn.langx.Delegatable;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.enums.CommonEnums;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
 
 import java.nio.charset.Charset;
@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({"unused","unchecked","inferred"})
 public class Strings {
     private Strings() {
     }
@@ -1910,36 +1910,44 @@ public class Strings {
         return str;
     }
 
-    public static Object convertTo(final String str, Class targetClass) {
+    @SuppressWarnings({"unchecked", "inferred"})
+    public static <T> T convertTo(final String str, Class<T> targetClass) {
         Preconditions.checkNotNull(targetClass);
         targetClass = Primitives.wrap(targetClass);
-        if (Number.class.isAssignableFrom(targetClass)) {
+        if (Reflects.isSubClassOrEquals(Number.class, targetClass)) {
             Class<? extends Number> xClass = (Class) targetClass;
-            return Numbers.parseNumber(str, xClass);
+            return (T) Numbers.parseNumber(str, xClass);
         }
-        if (Boolean.class.isAssignableFrom(targetClass)) {
+        if (Reflects.isSubClassOrEquals(Boolean.class, targetClass)) {
             BooleanEvaluator booleanEvaluator = BooleanEvaluator.createTrueEvaluator(true, Boolean.TRUE, "true");
-            return booleanEvaluator.evalTrue(str);
+            return (T) (booleanEvaluator.evalTrue(str) ? Boolean.TRUE : Boolean.FALSE);
         }
         if (String.class == targetClass) {
-            return str;
+            return (T) str;
         }
-        if (targetClass.isEnum()) {
-            Object v = null;
-            if (Delegatable.class.isAssignableFrom(targetClass)) {
-                v = CommonEnums.ofName(targetClass, str);
+        if (targetClass.isEnum() && Enum.class.isAssignableFrom(targetClass)) {
+            Class<? extends Enum> vClass = (Class<? extends Enum>) targetClass;
+            return (T) inferEnum(vClass, str);
+        }
+
+        if (Reflects.isSubClassOrEquals(Character.class, targetClass)) {
+            return (T) new Character(Preconditions.checkNotEmpty(str).charAt(0));
+        }
+        return null;
+    }
+
+    private static <T extends Enum<T>> T inferEnum(Class<T> targetClass, String name) {
+        if (targetClass.isEnum() && Enum.class.isAssignableFrom(targetClass)) {
+            T v = null;
+            if (Reflects.isSubClassOrEquals(Delegatable.class, targetClass)) {
+                v = Enums.<T>ofName(targetClass, name);
                 if (v == null) {
-                    v = CommonEnums.ofDisplayText(targetClass, str);
+                    v = Enums.ofDisplayText(targetClass, name);
                 }
             }
             if (v == null) {
-                return Enums.ofName(str, targetClass);
+                return Enums.<T>ofName(targetClass, name);
             }
-        }
-
-        if (Character.class.isAssignableFrom(targetClass)) {
-            Preconditions.checkNotEmpty(str);
-            return str.charAt(0);
         }
         return null;
     }

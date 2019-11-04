@@ -804,22 +804,6 @@ public class Reflects {
         return set;
     }
 
-
-    public static <T> boolean isInstance(T object, String classFQN) {
-        Preconditions.checkNotNull(object);
-        Preconditions.checkNotNull(classFQN);
-        Class clazz = object.getClass();
-        Set<String> set = Collects.emptyHashSet(true);
-        Pipeline.of(getAllInterfaces(clazz)).concat(getAllSuperClass(clazz)).map(new Mapper<Class<?>, String>() {
-            @Override
-            public String apply(Class<?> ifce) {
-                return getFQNClassName(ifce);
-            }
-        }).addTo(set);
-
-        return set.contains(getFQNClassName(clazz));
-    }
-
     /**
      * This new method 'slightly' outperforms the old method, it was
      * essentially a perfect example of me wasting my time and a
@@ -1032,5 +1016,20 @@ public class Reflects {
             return false;
         }
         return parent.isAssignableFrom(child);
+    }
+
+    public static <T> boolean isInstance(T object, String classFQN) {
+        Preconditions.checkNotNull(object);
+        Preconditions.checkNotNull(classFQN);
+        Class clazz = object.getClass();
+        Set<String> set = Collects.emptyHashSet(true);
+        Pipeline.of(getAllInterfaces(clazz)).concat(getAllSuperClass(clazz)).map(new Mapper<Class<?>, String>() {
+            @Override
+            public String apply(Class<?> ifce) {
+                return getFQNClassName(ifce);
+            }
+        }).addTo(set);
+
+        return set.contains(getFQNClassName(clazz));
     }
 }
