@@ -14,7 +14,7 @@ public class Enums {
 
     public static <T extends Enum<T>> T ofValue(final int value, Class<T> targetClass) {
         Preconditions.checkTrue(targetClass.isEnum(), targetClass.getName() + " not an enum class");
-        return Collects.findFirst(EnumSet.<T>allOf(targetClass), new Predicate<T>() {
+        return Collects.findFirst(EnumSet.allOf(targetClass), new Predicate<T>() {
             @Override
             public boolean test(T e) {
                 return e.ordinal() == value;
@@ -23,7 +23,6 @@ public class Enums {
     }
 
     public static <T extends Enum<T>> T ofCode(@NonNull final Class<T> tClass, final int code) {
-        T value = null;
         Preconditions.checkNotNull(tClass);
         if (Reflects.isSubClassOrEquals(Delegatable.class, tClass)) {
             EnumSet<T> enums = EnumSet.allOf(tClass);
@@ -57,7 +56,7 @@ public class Enums {
             }
         }
 
-        return Collects.findFirst(EnumSet.<T>allOf(tClass), new Predicate<T>() {
+        return Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
             @Override
             public boolean test(T e) {
                 return e.name().equals(name);
