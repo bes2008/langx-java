@@ -22,7 +22,7 @@ public interface ResourceLoader {
      * @see Resource#exists()
      * @see Resource#getInputStream()
      */
-    Resource loadResource(String location);
+    <V>Resource<V> loadResource(String location);
 
     /**
      * Expose the ClassLoader used by this ResourceLoader.

@@ -22,8 +22,4 @@ public abstract class AbstractResource<E> implements Resource<E> {
         return Channels.newChannel(getInputStream());
     }
 
-    @Override
-    public String toString() {
-        return getDescription();
-    }
 }

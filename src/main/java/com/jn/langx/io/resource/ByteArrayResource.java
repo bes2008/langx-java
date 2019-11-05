@@ -79,7 +79,7 @@ public class ByteArrayResource extends AbstractResource<byte[]> {
      * {@code description}, if any.
      */
     @Override
-    public String getDescription() {
+    public String toString() {
         return "Byte array resource [" + this.description + "]";
     }
 

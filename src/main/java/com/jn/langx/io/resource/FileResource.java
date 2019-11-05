@@ -62,9 +62,4 @@ public class FileResource extends AbstractPathableResource<File> {
     public long contentLength() throws IOException {
         return exists() ? file.length() : -1;
     }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
 }

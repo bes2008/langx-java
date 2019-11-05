@@ -56,9 +56,4 @@ public class UrlResource extends AbstractPathableResource<URL> {
     public long contentLength() {
         return URLs.getContentLength(url);
     }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
 }

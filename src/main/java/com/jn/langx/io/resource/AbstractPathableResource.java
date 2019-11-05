@@ -11,4 +11,9 @@ public abstract class AbstractPathableResource<T> extends AbstractResource<T> im
     public void setPath(String path) {
         this.path = path;
     }
+
+    @Override
+    public String toString() {
+        return path;
+    }
 }

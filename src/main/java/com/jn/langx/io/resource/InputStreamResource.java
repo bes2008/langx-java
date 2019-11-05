@@ -73,7 +73,7 @@ public class InputStreamResource extends AbstractResource<InputStream> {
      * description, if any.
      */
     @Override
-    public String getDescription() {
+    public String toString() {
         return "InputStream resource [" + this.description + "]";
     }
 
