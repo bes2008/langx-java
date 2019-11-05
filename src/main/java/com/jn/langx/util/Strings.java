@@ -404,6 +404,10 @@ public class Strings {
         return startsWith(str, prefix, true);
     }
 
+    public static boolean startsWith(final CharSequence str, final CharSequence prefix){
+        return startsWith(str, prefix, false);
+    }
+
     /**
      * <p>Check if a CharSequence starts with a specified prefix (optionally case insensitive).</p>
      *

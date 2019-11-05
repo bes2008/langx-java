@@ -51,7 +51,7 @@ public class InputStreamResource extends AbstractResource<InputStream> {
 
     @Override
     public long contentLength() throws IOException {
-        return 0;
+        return -1;
     }
 
     /**
