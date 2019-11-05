@@ -28,10 +28,10 @@ public class DefaultResourceLoader implements ResourceLoader {
     @Override
     public <V extends Resource> V loadResource(String location) {
         Preconditions.checkNotNull(location);
-        if (location.startsWith(ClassPathResource.PATTERN)) {
+        if (location.startsWith(ClassPathResource.PREFIX)) {
             return (V) new ClassPathResource(location, classLoader);
         }
-        if (location.startsWith(FileResource.PATTERN) && !location.startsWith(FileResource.FILE_URL_PATTERN)) {
+        if (location.startsWith(FileResource.PREFIX) && !location.startsWith(FileResource.FILE_URL_PATTERN)) {
             return (V) new FileResource(location);
         }
         URL url = URLs.newURL(location);

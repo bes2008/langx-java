@@ -16,7 +16,7 @@ import java.net.URL;
  * classpath:xx/yy/zz
  */
 public class ClassPathResource extends AbstractPathableResource<URL> {
-    public static final String PATTERN = "classpath:";
+    public static final String PREFIX = "classpath:";
 
     @Nullable
     private ClassLoader classLoader;

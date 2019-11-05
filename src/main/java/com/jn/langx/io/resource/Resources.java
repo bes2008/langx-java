@@ -24,8 +24,8 @@ public class Resources {
 
     public static FileResource loadFileResource(@NonNull String location, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(location);
-        if (!Strings.startsWith(location, FileResource.PATTERN)) {
-            location = FileResource.PATTERN + location;
+        if (!Strings.startsWith(location, FileResource.PREFIX)) {
+            location = FileResource.PREFIX + location;
         }
         return new DefaultResourceLoader(classLoader).loadResource(location);
     }
@@ -37,8 +37,8 @@ public class Resources {
 
     public static ClassPathResource loadClassPathResource(@NonNull String location, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(location);
-        if (!Strings.startsWith(location, ClassPathResource.PATTERN)) {
-            location = ClassPathResource.PATTERN + location;
+        if (!Strings.startsWith(location, ClassPathResource.PREFIX)) {
+            location = ClassPathResource.PREFIX + location;
         }
         return new DefaultResourceLoader(classLoader).loadResource(location);
     }
