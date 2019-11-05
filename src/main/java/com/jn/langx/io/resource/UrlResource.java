@@ -3,6 +3,7 @@ package com.jn.langx.io.resource;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.URLs;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -44,7 +45,13 @@ public class UrlResource extends AbstractPathableResource<URL> {
 
     @Override
     public String getAbsolutePath() {
-        return URLs.isFileURL(url) ? URLs.getFile(url).getAbsolutePath() : url.getPath();
+        if (URLs.isFileURL(url)) {
+            File file = URLs.getFile(url);
+            if (file != null) {
+                return file.getAbsolutePath();
+            }
+        }
+        return url.getPath();
     }
 
     @Override

@@ -80,13 +80,13 @@ public class URLs {
      */
     public static final String WAR_URL_SEPARATOR = "*/";
 
-    public static final boolean isFileURL(URL url) {
+    public static boolean isFileURL(URL url) {
         String protocol = url.getProtocol();
         return (URL_PROTOCOL_FILE.equals(protocol) || URL_PROTOCOL_VFSFILE.equals(protocol) ||
                 URL_PROTOCOL_VFS.equals(protocol));
     }
 
-    public static final File getFile(URL url) {
+    public static File getFile(URL url) {
         if (isFileURL(url)) {
             return new File(url.getFile());
         }
