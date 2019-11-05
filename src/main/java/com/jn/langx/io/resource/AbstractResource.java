@@ -6,10 +6,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public abstract class AbstractResource<E> implements Resource<E> {
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return null;
-    }
 
     @Override
     public boolean isReadable() {

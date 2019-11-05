@@ -1687,4 +1687,8 @@ public class Files {
     }
 
 
+    public static boolean exists(File file){
+        return file!=null && file.exists();
+    }
+
 }
