@@ -8,7 +8,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class URLs {
     private static final Logger logger = LoggerFactory.getLogger(URLs.class);
@@ -41,6 +44,7 @@ public class URLs {
 
     public static final String URL_PREFIX_FILE = "file://";
     public static final String URL_PREFIX_JAR = "jar:";
+    public static final String URL_PREFIX_JAR_FILE = URL_PREFIX_JAR + URL_PREFIX_FILE + "/";
     public static final String URL_PREFIX_FTP = "ftp://";
     public static final String URL_PREFIX_HTTP = "http://";
     public static final String URL_PREFIX_MAIL = "mail:";
@@ -111,28 +115,10 @@ public class URLs {
         try {
             if (isFileURL(url)) {
                 return Files.exists(getFile(url));
-            } else if (isJarURL(url)) {
-                String path = url.getPath();
-                int separatorIndex = path.lastIndexOf(JAR_URL_SEPARATOR);
-                String jarPath = path.substring(0, separatorIndex);
-                String fileInJar = path.substring(separatorIndex + JAR_URL_SEPARATOR.length());
-                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(jarPath)});
-
-                if (fileInJar.endsWith(".class")) {
-                    try {
-                        cl.loadClass(fileInJar.substring(0, fileInJar.length() - ".class".length()).replace("/","."));
-                    } catch (ClassNotFoundException ex) {
-                        return false;
-                    }
-                } else {
-                    URL u = cl.findResource("/" + fileInJar);
-                    return u == null;
-                }
-                return false;
             } else {
                 // Try a URL connection content-length header
-                URLConnection con = url.openConnection();
-                HttpURLConnection httpCon = (con instanceof HttpURLConnection ? (HttpURLConnection) con : null);
+                URLConnection conn = url.openConnection();
+                HttpURLConnection httpCon = (conn instanceof HttpURLConnection ? (HttpURLConnection) conn : null);
                 if (httpCon != null) {
                     int code = httpCon.getResponseCode();
                     if (code == HttpURLConnection.HTTP_OK) {
@@ -141,10 +127,10 @@ public class URLs {
                         return false;
                     }
                 }
-                if (URLConnections.getContentLengthLong(con) > 0) {
+                if (URLConnections.getContentLengthLong(conn) > 0) {
                     return true;
                 }
-                if (URLConnections.getContentLength(con) > 0) {
+                if (URLConnections.getContentLength(conn) > 0) {
                     return true;
                 }
                 if (httpCon != null) {
@@ -152,8 +138,6 @@ public class URLs {
                     httpCon.disconnect();
                     return false;
                 } else {
-                    // Fall back to stream existence: can we open the stream?
-                    con.getInputStream().close();
                     return true;
                 }
             }

@@ -48,9 +48,6 @@ public class URLConnections {
         if (l > Integer.MAX_VALUE) {
             return -1;
         }
-        if (l < 0) {
-            l = conn.getContentLength();
-        }
         return (int) l;
     }
 
@@ -63,7 +60,14 @@ public class URLConnections {
      * not known.
      */
     public static long getContentLengthLong(URLConnection conn) {
-        return getHeaderFieldLong(conn, "content-length", -1);
+        long l = getHeaderFieldLong(conn, "content-length", -1);
+        if (l > Integer.MAX_VALUE) {
+            return -1;
+        }
+        if (l < 0) {
+            l = conn.getContentLength();
+        }
+        return (int) l;
     }
 
     /**

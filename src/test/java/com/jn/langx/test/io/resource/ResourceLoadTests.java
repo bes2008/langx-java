@@ -49,10 +49,10 @@ public class ResourceLoadTests {
     public void testUrlResource_jarProtocol() {
         String workDir = SystemPropertys.getUserWorkDir();
         System.out.println(workDir);
-        String currentFilePath = workDir + "/src/test/java/" + Reflects.getPackageName(ResourceLoadTests.class).replaceAll("\\.", "/") + "/ph-json-9.3.4.jar" + URLs.JAR_URL_SEPARATOR+"com/helger/json/JsonArray.class";
-        UrlResource urlResource = Resources.loadUrlResource(URLs.URL_PREFIX_JAR + URLs.URL_PREFIX_FILE + currentFilePath);
+        String currentFilePath = workDir + "/src/test/java/" + Reflects.getPackageName(ResourceLoadTests.class).replaceAll("\\.", "/") + "/ph-json-9.3.4.jar" + URLs.JAR_URL_SEPARATOR + "com/helger/json/JsonArray.class";
+        UrlResource urlResource = Resources.loadUrlResource(URLs.URL_PREFIX_JAR_FILE + currentFilePath);
         showFileResource(urlResource);
-        UrlResource urlResource2 = Resources.loadResource(URLs.URL_PREFIX_JAR + URLs.URL_PREFIX_FILE + currentFilePath);
+        UrlResource urlResource2 = Resources.loadResource(URLs.URL_PREFIX_JAR_FILE + currentFilePath);
         showFileResource(urlResource2);
         Assert.assertEquals(urlResource, urlResource2);
     }
