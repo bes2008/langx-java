@@ -64,6 +64,6 @@ public interface Resource<E> {
      * @throws IOException if the resource cannot be resolved
      *                     (in the file system or as some other known physical resource type)
      */
-    long contentLength() throws IOException;
+    long contentLength();
 
 }

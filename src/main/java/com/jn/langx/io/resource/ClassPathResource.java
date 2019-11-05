@@ -16,7 +16,7 @@ import java.net.URL;
  * classpath:xx/yy/zz
  */
 public class ClassPathResource extends AbstractPathableResource<URL> {
-    public static final String PATTERN="classpath:";
+    public static final String PATTERN = "classpath:";
 
     @Nullable
     private ClassLoader classLoader;
@@ -104,8 +104,12 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
 
 
     @Override
-    public long contentLength() throws IOException {
-        return URLs.getContentLength(getURL());
+    public long contentLength() {
+        try {
+            return URLs.getContentLength(getURL());
+        } catch (IOException ex) {
+            return -1;
+        }
     }
 
     public final ClassLoader getClassLoader() {
