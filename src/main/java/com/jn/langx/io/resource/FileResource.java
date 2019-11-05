@@ -2,6 +2,7 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.file.Filenames;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +17,8 @@ public class FileResource extends AbstractPathableResource<File> {
     public static final String PATTERN = "file:";
     public static final String FILE_URL_PATTERN = "file://";
 
+    private String cleanedPath;
+
     public FileResource(@NonNull String path) {
         Preconditions.checkTrue(path.startsWith(PATTERN) && !path.startsWith(FILE_URL_PATTERN));
         setPath(path);
@@ -24,12 +27,9 @@ public class FileResource extends AbstractPathableResource<File> {
     @Override
     public void setPath(String path) {
         super.setPath(path);
-        file = new File(path.substring(PATTERN.length()));
-    }
-
-    @Override
-    public String getPath() {
-        return exists() ? file.getAbsolutePath() : null;
+        cleanedPath = path.substring(PATTERN.length());
+        cleanedPath = Filenames.cleanPath(cleanedPath);
+        file = new File(cleanedPath);
     }
 
     @Override
@@ -61,5 +61,19 @@ public class FileResource extends AbstractPathableResource<File> {
     @Override
     public long contentLength() {
         return exists() ? file.length() : -1;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof FileResource)) {
+            return false;
+        }
+        FileResource o2 = (FileResource) obj;
+        return this.cleanedPath.equals(o2.cleanedPath);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

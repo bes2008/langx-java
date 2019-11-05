@@ -4,6 +4,7 @@ import com.jn.langx.io.resource.FileResource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.reflect.Reflects;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class ResourceLoadTests {
@@ -16,6 +17,7 @@ public class ResourceLoadTests {
         showFileResource(fileResource);
         FileResource fileResource2 = Resources.loadResource(FileResource.PATTERN + currentFilePath);
         showFileResource(fileResource2);
+        Assert.assertEquals(fileResource, fileResource2);
     }
 
     private void showFileResource(FileResource fileResource) {

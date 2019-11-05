@@ -66,7 +66,7 @@ public class Filenames {
      * @return the normalized path
      */
     public static String cleanPath(String path) {
-        if (Strings.isNotEmpty(path)) {
+        if (Strings.isEmpty(path)) {
             return path;
         }
         String pathToUse = Strings.replace(path, WINDOWS_FOLDER_SEPARATOR, FOLDER_SEPARATOR);
