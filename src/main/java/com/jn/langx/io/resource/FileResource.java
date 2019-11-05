@@ -14,7 +14,7 @@ import java.net.URL;
 /**
  * file:/home/fjn/xx/yy
  */
-public class FileResource extends AbstractPathableResource<File> implements Urlable {
+public class FileResource extends AbstractPathableResource<File> {
     private File file;
     public static final String PATTERN = "file:";
     public static final String FILE_URL_PATTERN = "file://";

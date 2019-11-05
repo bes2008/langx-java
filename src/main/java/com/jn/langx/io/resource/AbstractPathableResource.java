@@ -1,6 +1,6 @@
 package com.jn.langx.io.resource;
 
-public abstract class AbstractPathableResource<T> extends AbstractResource<T> implements Pathable {
+public abstract class AbstractPathableResource<T> extends AbstractResource<T> implements Pathable, Urlable {
     private String path;
 
     @Override

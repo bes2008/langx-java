@@ -81,7 +81,7 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
     @Override
     public URL getRealResource() {
         try {
-            return getURL();
+            return getUrl();
         } catch (Throwable ex) {
             return null;
         }
@@ -94,7 +94,7 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
      * @see java.lang.ClassLoader#getResource(String)
      * @see java.lang.Class#getResource(String)
      */
-    public URL getURL() throws IOException {
+    public URL getUrl() throws IOException {
         URL url = resolveURL();
         if (url == null) {
             throw new FileNotFoundException(toString() + " cannot be resolved to URL because it does not exist");
@@ -106,7 +106,7 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
     @Override
     public long contentLength() {
         try {
-            return URLs.getContentLength(getURL());
+            return URLs.getContentLength(getUrl());
         } catch (IOException ex) {
             return -1;
         }

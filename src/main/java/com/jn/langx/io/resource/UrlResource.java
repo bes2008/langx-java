@@ -15,7 +15,7 @@ import java.net.URL;
  * file://c:\\a\\b
  * http://www.baidu.com/resources/xx
  */
-public class UrlResource extends AbstractPathableResource<URL> implements Urlable{
+public class UrlResource extends AbstractPathableResource<URL> {
 
     private URL url;
 
