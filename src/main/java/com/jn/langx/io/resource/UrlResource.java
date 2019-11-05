@@ -30,7 +30,7 @@ public class UrlResource extends AbstractPathableResource<URL> {
     public UrlResource(URL url) {
         Preconditions.checkNotNull(url);
         this.url = url;
-        setPath(url.getPath());
+        setPath(url.toString());
     }
 
     @Override
@@ -67,5 +67,19 @@ public class UrlResource extends AbstractPathableResource<URL> {
     @Override
     public URL getUrl() {
         return url;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof UrlResource)) {
+            return false;
+        }
+        UrlResource o2 = (UrlResource) obj;
+        return this.url.equals(o2.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.url.hashCode();
     }
 }

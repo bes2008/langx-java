@@ -48,6 +48,9 @@ public class URLConnections {
         if (l > Integer.MAX_VALUE) {
             return -1;
         }
+        if (l < 0) {
+            l = conn.getContentLength();
+        }
         return (int) l;
     }
 

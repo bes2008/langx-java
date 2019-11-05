@@ -2,6 +2,7 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.URLs;
 import com.jn.langx.util.io.file.Filenames;
 
 import java.io.File;
@@ -17,7 +18,7 @@ import java.net.URL;
 public class FileResource extends AbstractPathableResource<File> {
     private File file;
     public static final String PATTERN = "file:";
-    public static final String FILE_URL_PATTERN = "file://";
+    public static final String FILE_URL_PATTERN = URLs.URL_PREFIX_FILE;
 
     private String cleanedPath;
 

@@ -2,6 +2,7 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.URLs;
@@ -47,7 +48,7 @@ public class Resources {
     }
 
     public static UrlResource loadUrlResource(@NonNull String location, @Nullable ClassLoader classLoader) {
-        Preconditions.checkNotNull(URLs.newURL(location));
+        Preconditions.checkNotNull(URLs.newURL(location), StringTemplates.formatWithPlaceholder("location : {} not a URL", location));
         return new DefaultResourceLoader(classLoader).loadResource(location);
     }
 

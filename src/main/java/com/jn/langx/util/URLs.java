@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 
 public class URLs {
     private static final Logger logger = LoggerFactory.getLogger(URLs.class);
@@ -36,7 +33,22 @@ public class URLs {
         }
     }
 
+    /**
+     * Separator between JAR URL and file path within the JAR: "!/".
+     */
+    public static final String JAR_URL_SEPARATOR = "!/";
+
+
+    public static final String URL_PREFIX_FILE = "file://";
+    public static final String URL_PREFIX_JAR = "jar:";
+    public static final String URL_PREFIX_FTP = "ftp://";
+    public static final String URL_PREFIX_HTTP = "http://";
+    public static final String URL_PREFIX_MAIL = "mail:";
+    public static final String URL_PREFIX_SMTP = "smtp://";
+
+
     public static final String URL_PROTOCOL_FILE = "file";
+
 
     public static final String URL_PROTOCOL_JAR = "jar";
 
@@ -69,12 +81,6 @@ public class URLs {
      */
     public static final String JAR_FILE_SUFFIX = ".jar";
 
-
-    /**
-     * Separator between JAR URL and file path within the JAR: "!/".
-     */
-    public static final String JAR_URL_SEPARATOR = "!/";
-
     /**
      * Special separator between WAR URL and jar part on Tomcat.
      */
@@ -84,6 +90,11 @@ public class URLs {
         String protocol = url.getProtocol();
         return (URL_PROTOCOL_FILE.equals(protocol) || URL_PROTOCOL_VFSFILE.equals(protocol) ||
                 URL_PROTOCOL_VFS.equals(protocol));
+    }
+
+    public static boolean isJarURL(URL url) {
+        String protocol = url.getProtocol();
+        return protocol.equals(URL_PROTOCOL_JAR) && url.getPath().contains(JAR_URL_SEPARATOR);
     }
 
     public static File getFile(URL url) {
@@ -100,6 +111,24 @@ public class URLs {
         try {
             if (isFileURL(url)) {
                 return Files.exists(getFile(url));
+            } else if (isJarURL(url)) {
+                String path = url.getPath();
+                int separatorIndex = path.lastIndexOf(JAR_URL_SEPARATOR);
+                String jarPath = path.substring(0, separatorIndex);
+                String fileInJar = path.substring(separatorIndex + JAR_URL_SEPARATOR.length());
+                URLClassLoader cl = new URLClassLoader(new URL[]{new URL(jarPath)});
+
+                if (fileInJar.endsWith(".class")) {
+                    try {
+                        cl.loadClass(fileInJar.substring(0, fileInJar.length() - ".class".length()).replace("/","."));
+                    } catch (ClassNotFoundException ex) {
+                        return false;
+                    }
+                } else {
+                    URL u = cl.findResource("/" + fileInJar);
+                    return u == null;
+                }
+                return false;
             } else {
                 // Try a URL connection content-length header
                 URLConnection con = url.openConnection();
@@ -113,6 +142,9 @@ public class URLs {
                     }
                 }
                 if (URLConnections.getContentLengthLong(con) > 0) {
+                    return true;
+                }
+                if (URLConnections.getContentLength(con) > 0) {
                     return true;
                 }
                 if (httpCon != null) {
@@ -131,19 +163,27 @@ public class URLs {
     }
 
     public static long getContentLength(URL url) {
-        URLConnection con = null;
-        try {
-            con = url.openConnection();
-            return URLConnections.getContentLengthLong(con);
-        } catch (IOException ex) {
-            // ignore it
-            return -1;
-        } finally {
-            if (Emptys.isNotNull(con)) {
-                try {
-                    con.getInputStream().close();
-                } catch (IOException ex) {
-                    // ignore it
+        if (URLs.isFileURL(url)) {
+            return URLs.getFile(url).length();
+        } else {
+            URLConnection con = null;
+            try {
+                con = url.openConnection();
+                long length = URLConnections.getContentLengthLong(con);
+                if (length < 0) {
+                    length = URLConnections.getContentLength(con);
+                }
+                return length;
+            } catch (IOException ex) {
+                // ignore it
+                return -1;
+            } finally {
+                if (Emptys.isNotNull(con)) {
+                    try {
+                        con.getInputStream().close();
+                    } catch (IOException ex) {
+                        // ignore it
+                    }
                 }
             }
         }
