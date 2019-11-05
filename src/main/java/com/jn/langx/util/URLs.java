@@ -1,5 +1,6 @@
 package com.jn.langx.util;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.io.file.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class URLs {
         }
     }
 
-    public static URL newURL(String url) {
+    public static URL newURL(@NonNull String url) {
         Preconditions.checkNotNull(url);
         try {
             return new URL(url);

@@ -26,17 +26,17 @@ public class DefaultResourceLoader implements ResourceLoader {
     }
 
     @Override
-    public <V> Resource<V> loadResource(String location) {
+    public <V extends Resource> V loadResource(String location) {
         Preconditions.checkNotNull(location);
         if (location.startsWith(ClassPathResource.PATTERN)) {
-            return (Resource<V>) new ClassPathResource(location, classLoader);
+            return (V) new ClassPathResource(location, classLoader);
         }
         if (location.startsWith(FileResource.PATTERN) && !location.startsWith(FileResource.FILE_URL_PATTERN)) {
-            return (Resource<V>) new FileResource(location);
+            return (V) new FileResource(location);
         }
         URL url = URLs.newURL(location);
         if (url != null) {
-            return (Resource<V>) new UrlResource(url);
+            return (V) new UrlResource(url);
         }
         return null;
     }

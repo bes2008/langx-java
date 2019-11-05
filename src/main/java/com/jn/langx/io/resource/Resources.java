@@ -4,41 +4,51 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.URLs;
 
 import java.io.InputStream;
 
 public class Resources {
-    public static <V> Resource<V> loadResource(@NonNull String location) {
+    public static <V extends Resource> V loadResource(@NonNull String location) {
         return loadResource(location, null);
     }
 
-    public static <V> Resource<V> loadResource(@NonNull String location, @Nullable ClassLoader classLoader) {
-        return new DefaultResourceLoader(classLoader).<V>loadResource(location);
+    public static <V extends Resource> V loadResource(@NonNull String location, @Nullable ClassLoader classLoader) {
+        return new DefaultResourceLoader(classLoader).loadResource(location);
     }
 
-    public static <V> Resource<V> loadFileResource(@NonNull String location) {
+    public static FileResource loadFileResource(@NonNull String location) {
         return loadFileResource(location, null);
     }
 
-    public static <V> Resource<V> loadFileResource(@NonNull String location, @Nullable ClassLoader classLoader) {
+    public static FileResource loadFileResource(@NonNull String location, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(location);
         if (!Strings.startsWith(location, FileResource.PATTERN)) {
             location = FileResource.PATTERN + location;
         }
-        return new DefaultResourceLoader(classLoader).<V>loadResource(location);
+        return new DefaultResourceLoader(classLoader).loadResource(location);
     }
 
 
-    public static <V> Resource<V> loadClassPathResource(@NonNull String location) {
+    public static ClassPathResource loadClassPathResource(@NonNull String location) {
         return loadClassPathResource(location, null);
     }
 
-    public static <V> Resource<V> loadClassPathResource(@NonNull String location, @Nullable ClassLoader classLoader) {
+    public static ClassPathResource loadClassPathResource(@NonNull String location, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(location);
         if (!Strings.startsWith(location, ClassPathResource.PATTERN)) {
             location = ClassPathResource.PATTERN + location;
         }
-        return new DefaultResourceLoader(classLoader).<V>loadResource(location);
+        return new DefaultResourceLoader(classLoader).loadResource(location);
+    }
+
+    public static UrlResource loadUrlResource(@NonNull String location) {
+        return loadUrlResource(location, null);
+    }
+
+    public static UrlResource loadUrlResource(@NonNull String location, @Nullable ClassLoader classLoader) {
+        Preconditions.checkNotNull(URLs.newURL(location));
+        return new DefaultResourceLoader(classLoader).loadResource(location);
     }
 
 
