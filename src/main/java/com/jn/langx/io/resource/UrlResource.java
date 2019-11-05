@@ -8,6 +8,12 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * ftp://ftp.baidu.com/resources/xx
+ * file:///home/fjn/
+ * file://c:\\a\\b
+ * http://www.baidu.com/resources/xx
+ */
 public class UrlResource extends AbstractPathableResource<URL> {
 
     private URL url;

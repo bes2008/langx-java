@@ -11,7 +11,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ * classpath:/xx/yy/zz
+ * classpath:xx/yy/zz
+ */
 public class ClassPathResource extends AbstractPathableResource<URL> {
+    public static final String PATTERN="classpath:";
+
     @Nullable
     private ClassLoader classLoader;
 

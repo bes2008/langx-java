@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * file:/home/fjn/xx/yy
+ */
 public class FileResource extends AbstractPathableResource<File> {
     private File file;
     public static final String PATTERN = "file:";
