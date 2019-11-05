@@ -8,11 +8,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * file:/home/fjn/xx/yy
  */
-public class FileResource extends AbstractPathableResource<File> {
+public class FileResource extends AbstractPathableResource<File> implements Urlable {
     private File file;
     public static final String PATTERN = "file:";
     public static final String FILE_URL_PATTERN = "file://";
@@ -30,6 +32,18 @@ public class FileResource extends AbstractPathableResource<File> {
         cleanedPath = path.substring(PATTERN.length());
         cleanedPath = Filenames.cleanPath(cleanedPath);
         file = new File(cleanedPath);
+    }
+
+    @Override
+    public URL getUrl() {
+        if (exists()) {
+            try {
+                return file.toURL();
+            } catch (MalformedURLException ex) {
+                return null;
+            }
+        }
+        return null;
     }
 
     @Override

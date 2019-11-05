@@ -15,7 +15,7 @@ import java.net.URL;
  * file://c:\\a\\b
  * http://www.baidu.com/resources/xx
  */
-public class UrlResource extends AbstractPathableResource<URL> {
+public class UrlResource extends AbstractPathableResource<URL> implements Urlable{
 
     private URL url;
 
@@ -30,7 +30,7 @@ public class UrlResource extends AbstractPathableResource<URL> {
     public UrlResource(URL url) {
         Preconditions.checkNotNull(url);
         this.url = url;
-        setPath(getAbsolutePath());
+        setPath(url.getPath());
     }
 
     @Override
@@ -62,5 +62,10 @@ public class UrlResource extends AbstractPathableResource<URL> {
     @Override
     public long contentLength() {
         return URLs.getContentLength(url);
+    }
+
+    @Override
+    public URL getUrl() {
+        return url;
     }
 }
