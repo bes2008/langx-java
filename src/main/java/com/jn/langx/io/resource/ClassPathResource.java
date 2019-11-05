@@ -172,7 +172,7 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
         }
         ClassPathResource o2 = (ClassPathResource) obj;
         URL url1 = getUrlOrNull();
-        URL url2 = getUrlOrNull();
+        URL url2 = o2.getUrlOrNull();
 
         if (url1 == null && url2 == null) {
             return this.cleanedPath.equals(o2.cleanedPath);

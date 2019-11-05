@@ -80,7 +80,7 @@ public class FileResource extends AbstractPathableResource<File> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof FileResource)) {
+        if (!(obj instanceof FileResource)) {
             return false;
         }
         FileResource o2 = (FileResource) obj;

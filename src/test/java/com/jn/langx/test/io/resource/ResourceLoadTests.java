@@ -63,5 +63,8 @@ public class ResourceLoadTests {
         ClassPathResource cpResource2 = Resources.loadResource(ClassPathResource.PREFIX + currentFilePath);
         showFileResource(cpResource2);
         Assert.assertEquals(cpResource, cpResource2);
+        ClassPathResource cpResource3 = Resources.loadClassPathResource("ph-json-9.3.4.jar", ResourceLoadTests.class);
+        showFileResource(cpResource3);
+        Assert.assertEquals(cpResource2, cpResource3);
     }
 }

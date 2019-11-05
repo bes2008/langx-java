@@ -32,7 +32,7 @@ public class Resources {
 
 
     public static ClassPathResource loadClassPathResource(@NonNull String location) {
-        return loadClassPathResource(location, null);
+        return loadClassPathResource(location, (ClassLoader) null);
     }
 
     public static ClassPathResource loadClassPathResource(@NonNull String location, @Nullable ClassLoader classLoader) {
@@ -41,6 +41,14 @@ public class Resources {
             location = ClassPathResource.PREFIX + location;
         }
         return new DefaultResourceLoader(classLoader).loadResource(location);
+    }
+
+    public static ClassPathResource loadClassPathResource(@NonNull String location, @Nullable Class clazz) {
+        Preconditions.checkNotNull(location);
+        if (!Strings.startsWith(location, ClassPathResource.PREFIX)) {
+            location = ClassPathResource.PREFIX + location;
+        }
+        return new ClassPathResource(location, clazz);
     }
 
     public static UrlResource loadUrlResource(@NonNull String location) {
