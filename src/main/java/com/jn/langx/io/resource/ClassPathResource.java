@@ -18,6 +18,8 @@ import java.net.URL;
 public class ClassPathResource extends AbstractPathableResource<URL> {
     public static final String PREFIX = "classpath:";
 
+    private String cleanedPath;
+
     @Nullable
     private ClassLoader classLoader;
 
@@ -50,11 +52,14 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
      */
     public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(path, "Path must not be null");
+        Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
+        setPath(path);
+        path = path.substring(PREFIX.length());
         String pathToUse = Filenames.cleanPath(path);
         if (pathToUse.startsWith("/")) {
             pathToUse = pathToUse.substring(1);
         }
-        setPath(pathToUse);
+        this.cleanedPath = pathToUse;
         this.classLoader = (classLoader != null ? classLoader : ClassLoaders.getDefaultClassLoader());
     }
 
@@ -69,7 +74,10 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
      */
     public ClassPathResource(String path, @Nullable Class<?> clazz) {
         Preconditions.checkNotNull(path, "Path must not be null");
-        setPath(Filenames.cleanPath(path));
+        Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
+        setPath(path);
+        path = path.substring(PREFIX.length());
+        this.cleanedPath = Filenames.cleanPath(path);
         this.clazz = clazz;
     }
 
@@ -102,6 +110,17 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
         return url;
     }
 
+    @Override
+    public boolean exists() {
+        try {
+            getUrl();
+        } catch (FileNotFoundException ex) {
+            return false;
+        } catch (IOException ex) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public long contentLength() {
@@ -118,26 +137,62 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
 
     protected URL resolveURL() {
         if (this.clazz != null) {
-            return this.clazz.getResource(getPath());
+            return this.clazz.getResource(cleanedPath);
         } else if (this.classLoader != null) {
-            return this.classLoader.getResource(getPath());
+            return this.classLoader.getResource(cleanedPath);
         } else {
-            return ClassLoader.getSystemResource(getPath());
+            return ClassLoader.getSystemResource(cleanedPath);
         }
     }
 
     public InputStream getInputStream() throws IOException {
         InputStream is;
         if (this.clazz != null) {
-            is = this.clazz.getResourceAsStream(getPath());
+            is = this.clazz.getResourceAsStream(cleanedPath);
         } else if (this.classLoader != null) {
-            is = this.classLoader.getResourceAsStream(getPath());
+            is = this.classLoader.getResourceAsStream(cleanedPath);
         } else {
-            is = ClassLoader.getSystemResourceAsStream(getPath());
+            is = ClassLoader.getSystemResourceAsStream(cleanedPath);
         }
         if (is == null) {
             throw new FileNotFoundException(toString() + " cannot be opened because it does not exist");
         }
         return is;
+    }
+
+    @Override
+    public String toString() {
+        return getPath();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ClassPathResource)) {
+            return false;
+        }
+        ClassPathResource o2 = (ClassPathResource) obj;
+        URL url1 = getUrlOrNull();
+        URL url2 = getUrlOrNull();
+
+        if (url1 == null && url2 == null) {
+            return this.cleanedPath.equals(o2.cleanedPath);
+        }
+        if (url1 != null && url2 != null) {
+            return url1.equals(url2);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return cleanedPath.hashCode();
+    }
+
+    public URL getUrlOrNull() {
+        try {
+            return getUrl();
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

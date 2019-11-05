@@ -1,9 +1,6 @@
 package com.jn.langx.test.io.resource;
 
-import com.jn.langx.io.resource.AbstractPathableResource;
-import com.jn.langx.io.resource.FileResource;
-import com.jn.langx.io.resource.Resources;
-import com.jn.langx.io.resource.UrlResource;
+import com.jn.langx.io.resource.*;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.URLs;
 import com.jn.langx.util.reflect.Reflects;
@@ -12,13 +9,14 @@ import org.junit.Test;
 
 public class ResourceLoadTests {
 
+    @Test
     public void testFileResource() {
         String workDir = SystemPropertys.getUserWorkDir();
         System.out.println(workDir);
         String currentFilePath = workDir + "/src/test/java/" + Reflects.getFQNClassName(ResourceLoadTests.class).replaceAll("\\.", "/") + ".java";
         FileResource fileResource = Resources.loadFileResource(currentFilePath);
         showFileResource(fileResource);
-        FileResource fileResource2 = Resources.loadResource(FileResource.PATTERN + currentFilePath);
+        FileResource fileResource2 = Resources.loadResource(FileResource.PREFIX + currentFilePath);
         showFileResource(fileResource2);
         Assert.assertEquals(fileResource, fileResource2);
     }
@@ -59,6 +57,11 @@ public class ResourceLoadTests {
 
     @Test
     public void testClassPathResource() {
-
+        String currentFilePath = Reflects.getPackageName(ResourceLoadTests.class).replaceAll("\\.", "/") + "/ph-json-9.3.4.jar";
+        ClassPathResource cpResource = Resources.loadClassPathResource(ClassPathResource.PREFIX + currentFilePath);
+        showFileResource(cpResource);
+        ClassPathResource cpResource2 = Resources.loadResource(ClassPathResource.PREFIX + currentFilePath);
+        showFileResource(cpResource2);
+        Assert.assertEquals(cpResource, cpResource2);
     }
 }

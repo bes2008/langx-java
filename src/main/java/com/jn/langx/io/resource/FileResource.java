@@ -89,6 +89,6 @@ public class FileResource extends AbstractPathableResource<File> {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return cleanedPath.hashCode();
     }
 }

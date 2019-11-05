@@ -83,6 +83,23 @@
             </resource>
         </resources>
 
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>${basedir}/src/test/java/com/jn/langx/test/io/resource</directory>
+                <includes>
+                    <include>*.jar</include>
+                </includes>
+                <targetPath>${project.build.testOutputDirectory}/com/jn/langx/test/io/resource</targetPath>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
