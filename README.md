@@ -105,6 +105,7 @@ Java lang extensions
 + ClassParser
 + Converter Service
 + BloomFilter
++ IO Resource Load API
 
 
 ## Contact:
