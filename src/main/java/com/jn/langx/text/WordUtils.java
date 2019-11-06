@@ -1,6 +1,7 @@
-package com.jn.langx.util;
+package com.jn.langx.text;
 
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.LineDelimiter;
 
 /**

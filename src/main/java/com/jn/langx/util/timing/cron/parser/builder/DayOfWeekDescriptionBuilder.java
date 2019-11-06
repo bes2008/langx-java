@@ -2,7 +2,7 @@ package com.jn.langx.util.timing.cron.parser.builder;
 
 
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.WordUtils;
+import com.jn.langx.text.WordUtils;
 import com.jn.langx.util.jodatime.format.DateTimeFormat;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
 import com.jn.langx.util.timing.cron.parser.CronI18nMessages;

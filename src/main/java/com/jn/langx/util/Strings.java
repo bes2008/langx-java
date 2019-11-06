@@ -1,8 +1,8 @@
 package com.jn.langx.util;
 
-import com.jn.langx.Delegatable;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.WordUtils;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Consumer;
