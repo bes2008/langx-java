@@ -107,6 +107,7 @@ Java lang extensions
 + Converter Service
 + BloomFilter
 + IO Resource Load API
++ Common Configuration API
 
 
 ## Contact:
