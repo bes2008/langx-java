@@ -16,10 +16,27 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.function.Predicate;
 
 public class Preconditions {
     private Preconditions() {
         throw new UnsupportedOperationException();
+    }
+
+    public static <T> T test(@NonNull Predicate<T> predicate, @Nullable T argument) {
+        return test(predicate, argument, null);
+    }
+
+    public static <T> T test(@NonNull Predicate<T> predicate, @Nullable T argument, String message) {
+        if (predicate.test(argument)) {
+            return argument;
+        }
+        if (Strings.isNotEmpty(message)) {
+            throw new IllegalArgumentException(message);
+        } else {
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Illegal argument: {}", argument));
+        }
     }
 
     public static <T> T checkNotNull(@NonNull T obj) {

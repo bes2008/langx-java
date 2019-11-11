@@ -298,4 +298,13 @@ public class Functions {
             }
         };
     }
+
+    public static <T> Supplier<T,T> noopSupplier(){
+        return new Supplier<T, T>() {
+            @Override
+            public T get(T input) {
+                return input;
+            }
+        };
+    }
 }

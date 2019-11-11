@@ -3,6 +3,7 @@ package com.jn.langx.util;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.WordUtils;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Consumer;
@@ -14,6 +15,7 @@ import com.jn.langx.util.reflect.type.Primitives;
 
 import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
@@ -1938,6 +1940,24 @@ public class Strings {
             return (T) new Character(Preconditions.checkNotEmpty(str).charAt(0));
         }
         return null;
+    }
+
+    static final List<String> vowelLetters = Collects.asList("a", "e", "i", "o", "u");
+
+    public static boolean isVowelLetter(final char c) {
+        return Collects.anyMatch(vowelLetters, new Predicate<String>() {
+            @Override
+            public boolean test(String vowelLetter) {
+                return vowelLetter.equalsIgnoreCase("" + c);
+            }
+        });
+    }
+
+    public static boolean startsWithVowelLetter(String string) {
+        if (Strings.isBlank(string)) {
+            return false;
+        }
+        return isVowelLetter(string.trim().charAt(0));
     }
 
 }

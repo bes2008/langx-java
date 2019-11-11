@@ -119,7 +119,7 @@ public class Files {
                 throw new FileNotFoundException("File '" + file + "' does not exist");
             }
             return new FileInputStream(file);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
     }
@@ -1687,8 +1687,16 @@ public class Files {
     }
 
 
-    public static boolean exists(File file){
-        return file!=null && file.exists();
+    public static boolean exists(File file) {
+        return file != null && file.exists();
+    }
+
+    public static boolean isReadable(File file) {
+        return file != null && file.canRead();
+    }
+
+    public static boolean isWritable(File file) {
+        return file != null && file.canWrite();
     }
 
 }
