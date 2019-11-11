@@ -779,8 +779,8 @@ public class Reflects {
         }
     }
 
-    public static Set<Class<?>> getAllInterfaces(Class clazz) {
-        final Set<Class<?>> set = Collects.emptyHashSet(true);
+    public static Set<Class> getAllInterfaces(Class clazz) {
+        final Set<Class> set = Collects.emptyHashSet(true);
         Class[] interfaces = clazz.getInterfaces();
         if (interfaces.length > 0) {
             Collects.addAll(set, interfaces);
@@ -794,8 +794,8 @@ public class Reflects {
         return set;
     }
 
-    public static Set<Class<?>> getAllSuperClass(Class clazz) {
-        final Set<Class<?>> set = Collects.emptyHashSet(true);
+    public static Set<Class> getAllSuperClass(Class clazz) {
+        final Set<Class> set = Collects.emptyHashSet(true);
         Class superClass = clazz.getSuperclass();
         if (superClass != null) {
             set.add(superClass);
@@ -1017,9 +1017,9 @@ public class Reflects {
         Preconditions.checkNotNull(classFQN);
         Class clazz = object.getClass();
         Set<String> set = Collects.emptyHashSet(true);
-        Pipeline.of(getAllInterfaces(clazz)).concat(getAllSuperClass(clazz)).map(new Mapper<Class<?>, String>() {
+        Pipeline.of(getAllInterfaces(clazz)).concat(getAllSuperClass(clazz)).map(new Mapper<Class, String>() {
             @Override
-            public String apply(Class<?> ifce) {
+            public String apply(Class ifce) {
                 return getFQNClassName(ifce);
             }
         }).addTo(set);

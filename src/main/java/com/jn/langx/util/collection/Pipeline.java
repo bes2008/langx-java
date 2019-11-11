@@ -13,7 +13,7 @@ import java.util.*;
 public class Pipeline<E> {
     private Collection<E> collection;
 
-    public Pipeline(Collection<E> collection) {
+    public <C extends Collection<E>> Pipeline(C collection) {
         Preconditions.checkNotNull(collection);
         this.collection = collection;
     }
@@ -33,7 +33,7 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> limit(int maxSize) {
-        maxSize = maxSize < 0 ? maxSize = 0 : maxSize;
+        maxSize = maxSize < 0 ? 0 : maxSize;
         Collection<E> list = Collects.limit(this.collection, maxSize);
         return new Pipeline<E>(list);
     }
@@ -153,7 +153,7 @@ public class Pipeline<E> {
         return concat(another.collection);
     }
 
-    public Pipeline<E> concat(Collection<E> another) {
+    public <C extends Collection<E>> Pipeline<E> concat(C another) {
         if (another != null) {
             return new Pipeline<E>(Collects.concat(this.collection, another));
         }
@@ -164,7 +164,7 @@ public class Pipeline<E> {
         return new Pipeline<E>(collect(Collects.<E>toList()));
     }
 
-    public void addTo(final Collection<E> collection) {
+    public <C extends Collection<E>> void addTo(final C collection) {
         Preconditions.checkNotNull(collection);
         forEach(new Consumer<E>() {
             @Override
@@ -180,7 +180,7 @@ public class Pipeline<E> {
         return new Pipeline<E>(list);
     }
 
-    public Pipeline<E> addAll(Collection<E> collection) {
+    public <C extends Collection<E>> Pipeline<E> addAll(C collection) {
         if (collection == null) {
             return this;
         }

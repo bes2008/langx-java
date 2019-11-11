@@ -159,23 +159,23 @@ public class Collects {
         return Arrs.createArray(Primitives.wrap(componentType), 0);
     }
 
-    public static <E> ArrayList<E> newArrayList(E... elements){
+    public static <E> ArrayList<E> newArrayList(E... elements) {
         return new ArrayList<E>(Arrays.asList(elements));
     }
 
-    public static <E> LinkedList<E> newLinkedList(E... elements){
+    public static <E> LinkedList<E> newLinkedList(E... elements) {
         return new LinkedList<E>(Arrays.asList(elements));
     }
 
-    public static <E> HashSet<E> newHashSet(E... elements){
+    public static <E> HashSet<E> newHashSet(E... elements) {
         return new HashSet<E>(Arrays.asList(elements));
     }
 
-    public static <E> LinkedHashSet<E> newLinkedHashSet(E... elements){
+    public static <E> LinkedHashSet<E> newLinkedHashSet(E... elements) {
         return new LinkedHashSet<E>(Arrays.asList(elements));
     }
 
-    public static <E> TreeSet<E> newTreeSet(E... elements){
+    public static <E> TreeSet<E> newTreeSet(E... elements) {
         return new TreeSet<E>(Arrays.asList(elements));
     }
 
@@ -220,17 +220,17 @@ public class Collects {
      *
      * @return a new, empty map when the specified is null, others, return the argument
      */
-    public static <K, V> Map<K, V> getEmptyMapIfNull(@Nullable Map<K, V> map) {
+    public static <K, V, M extends Map<K, V>> M getEmptyMapIfNull(@Nullable M map) {
         return getEmptyMapIfNull(map, null);
     }
 
     /**
      * @see #getEmptyMapIfNull(Map, MapType)
      */
-    public static <K, V> Map<K, V> getEmptyMapIfNull(@Nullable Map<K, V> map, @Nullable MapType mapType) {
+    public static <K, V, M extends Map<K, V>> M getEmptyMapIfNull(@Nullable M map, @Nullable MapType mapType) {
         if (map == null) {
             if (mapType == null) {
-                return emptyHashMap();
+                return (M) emptyHashMap();
             }
             Map map1;
             switch (mapType) {
@@ -259,7 +259,7 @@ public class Collects {
                     map1 = emptyHashMap();
                     break;
             }
-            return map1;
+            return (M) map1;
         }
         return map;
     }
@@ -508,20 +508,22 @@ public class Collects {
         return (Collection<E>) iterable;
     }
 
-    public static <E> Object[] toArray(@Nullable Collection<E> list) {
-        if (Emptys.isEmpty(list)) {
-            list = Collections.emptyList();
+    public static <E, C extends Collection<E>> Object[] toArray(@Nullable C collection) {
+        if (Emptys.isEmpty(collection)) {
+            C c = (C) Collections.emptyList();
+            return c.toArray();
         }
-        return list.toArray();
+        return collection.toArray();
     }
 
     /**
      * Convert a list to an array
      */
-    public static <E> E[] toArray(@Nullable Collection<E> list, @Nullable Class<E[]> clazz) {
+    public static <E, C extends Collection<E>> E[] toArray(@Nullable C list, @Nullable Class<E[]> clazz) {
         Preconditions.checkNotNull(clazz);
         if (Emptys.isEmpty(list)) {
-            list = Collections.emptyList();
+            C c = (C) Collections.emptyList();
+            return (E[]) Arrays.copyOf(c.toArray(), list.size(), clazz);
         }
         // Make a new array of the specified class
         return (E[]) Arrays.copyOf(list.toArray(), list.size(), clazz);
@@ -600,9 +602,9 @@ public class Collects {
     /**
      * Filter a map with the specified predicate
      */
-    public static <K, V> Map<K, V> filter(@Nullable Map<K, V> map, @NonNull final Predicate2<K, V> predicate) {
+    public static <K, V, M extends Map<K, V>> M filter(@Nullable M map, @NonNull final Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
-        final Map<K, V> result = getEmptyMapIfNull(null, MapType.ofMap(map));
+        final M result = (M) getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
             forEach(map, new Consumer2<K, V>() {
                 @Override
@@ -635,9 +637,9 @@ public class Collects {
     /**
      * mapping an iterable to a map
      */
-    public static <E, K, V> Map<K, V> map(@Nullable Object anyObject, @NonNull final Mapper<E, Pair<K, V>> mapper) {
+    public static <E, K, V, M extends Map<K, V>> M map(@Nullable Object anyObject, @NonNull final Mapper<E, Pair<K, V>> mapper) {
         Preconditions.checkNotNull(mapper);
-        final Map<K, V> result = emptyHashMap(true);
+        final M result = (M) emptyHashMap(true);
         Iterable<E> iterable = asIterable(anyObject);
         forEach(iterable, new Consumer<E>() {
             @Override
@@ -652,7 +654,7 @@ public class Collects {
     /**
      * mapping aMap to a list
      */
-    public static <K, V, R> List<R> map(@Nullable Map<? extends K, ? extends V> map, @NonNull final Function2<K, V, R> mapper) {
+    public static <K, V, R, M extends Map<K, V>> List<R> map(@Nullable M map, @NonNull final Function2<K, V, R> mapper) {
         Preconditions.checkNotNull(mapper);
         final List<R> result = emptyArrayList();
         forEach(map, new Consumer2<K, V>() {
@@ -667,9 +669,9 @@ public class Collects {
     /**
      * mapping aMap to bMap
      */
-    public static <K, V, K1, V1> Map<K1, V1> map(@Nullable Map<? extends K, ? extends V> map, @NonNull final Mapper2<K, V, Pair<K1, V1>> mapper) {
+    public static <K, V, K1, V1, M extends Map<K, V>> Map<K1, V1> map(@Nullable M map, @NonNull final Mapper2<K, V, Pair<K1, V1>> mapper) {
         Preconditions.checkNotNull(mapper);
-        final Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
+        final Map<K1, V1> result = (Map<K1, V1>) getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
             forEach(map.entrySet(), new Consumer<Map.Entry<K, V>>() {
                 @Override
@@ -704,7 +706,7 @@ public class Collects {
     /**
      * map a collection to another, flat it
      */
-    public static <E, R> Collection<R> flatMap(@Nullable Collection<? extends Iterable<E>> collection, @NonNull final Function<E, R> mapper) {
+    public static <E, R, C extends Collection<? extends Iterable<E>>> Collection<R> flatMap(@Nullable C collection, @NonNull final Function<E, R> mapper) {
         if (Emptys.isEmpty(collection)) {
             return emptyArrayList();
         }
@@ -747,7 +749,7 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <E> void forEach(@Nullable Collection<E> collection, @NonNull final Consumer2<Integer, E> consumer) {
+    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer) {
         forEach(collection, consumer, null);
     }
 
@@ -755,7 +757,7 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <E> void forEach(@Nullable Collection<E> collection, @NonNull final Consumer2<Integer, E> consumer, @Nullable final Predicate2<Integer, E> breakPredicate) {
+    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer, @Nullable final Predicate2<Integer, E> breakPredicate) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(collection)) {
             final Holder<Integer> indexHolder = new Holder<Integer>(0);
@@ -799,20 +801,21 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <K, V> void forEach(@Nullable Map<? extends K, ? extends V> map, @NonNull Consumer2<K, V> consumer) {
+    public static <K, V, M extends Map<? extends K, ? extends V>> void forEach(@Nullable M map, @NonNull Consumer2<K, V> consumer) {
         forEach(map, consumer, null);
     }
 
     /**
      * Iterate every element
      */
-    public static <K, V> void forEach(@Nullable Map<? extends K, ? extends V> map, @NonNull Consumer2<K, V> consumer, @Nullable final Predicate2<K, V> breakPredicate) {
+    public static <K, V, M extends Map<? extends K, ? extends V>> void forEach(@Nullable M map, @NonNull Consumer2<K, V> consumer, @Nullable final Predicate2<K, V> breakPredicate) {
         Preconditions.checkNotNull(consumer);
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
                 if (breakPredicate != null && breakPredicate.test(entry.getKey(), entry.getValue())) {
                     break;
                 }
+
                 consumer.accept(entry.getKey(), entry.getValue());
             }
         }
@@ -821,7 +824,7 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <E> E findFirst(@Nullable Collection<E> collection, @Nullable Predicate<E> predicate) {
+    public static <E, C extends Collection<E>> E findFirst(@Nullable C collection, @Nullable Predicate<E> predicate) {
         if (Emptys.isEmpty(collection)) {
             return null;
         }
@@ -871,7 +874,7 @@ public class Collects {
      * @return whether has any element removed
      * @throws UnsupportedOperationException, NullPointException
      */
-    public static <E> boolean removeIf(@Nullable Collection<E> collection, @NonNull Predicate<E> predicate) {
+    public static <E, C extends Collection<E>> boolean removeIf(@Nullable C collection, @NonNull Predicate<E> predicate) {
         boolean hasRemoved = false;
         if (Emptys.isNotEmpty(collection)) {
             hasRemoved = removeIf(collection.iterator(), predicate);
@@ -925,7 +928,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <E> boolean anyMatch(@Nullable Collection<E> collection, @NonNull Predicate<E> predicate) {
+    public static <E, C extends Collection<E>> boolean anyMatch(@Nullable C collection, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
             E e = findFirst(collection, predicate);
@@ -939,7 +942,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <K, V> boolean anyMatch(@Nullable Map<? extends K, ? extends V> map, @NonNull Predicate2<K, V> predicate) {
+    public static <K, V, M extends Map<? extends K, ? extends V>> boolean anyMatch(@Nullable M map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
             Map.Entry<? extends K, ? extends V> entry = findFirst(map, predicate);
@@ -953,7 +956,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <E> boolean allMatch(@Nullable Iterable<E> collection, @NonNull Predicate<E> predicate) {
+    public static <E, C extends Collection<E>> boolean allMatch(@Nullable C collection, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
             for (E e : collection) {
@@ -970,7 +973,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <K, V> boolean allMatch(@Nullable Map<? extends K, ? extends V> map, @NonNull Predicate2<K, V> predicate) {
+    public static <K, V, M extends Map<? extends K, ? extends V>> boolean allMatch(@Nullable M map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<? extends K, ? extends V> e : map.entrySet()) {
@@ -987,7 +990,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <E> boolean noneMatch(@Nullable Iterable<E> collection, @NonNull Predicate<E> predicate) {
+    public static <E, C extends Collection<E>> boolean noneMatch(@Nullable C collection, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
             Iterator<E> iterator = collection.iterator();
@@ -1005,7 +1008,7 @@ public class Collects {
      *
      * @return whether has any element removed
      */
-    public static <K, V> boolean noneMatch(@Nullable Map<? extends K, ? extends V> map, @NonNull Predicate2<K, V> predicate) {
+    public static <K, V, M extends Map<? extends K, ? extends V>> boolean noneMatch(@Nullable M map, @NonNull Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<? extends K, ? extends V> e : map.entrySet()) {
@@ -1017,14 +1020,14 @@ public class Collects {
         return true;
     }
 
-    public static <E> Set<E> distinct(@Nullable Collection<E> collection) {
+    public static <E, C extends Collection<E>> Set<E> distinct(@Nullable C collection) {
         return new LinkedHashSet<E>(Emptys.isEmpty(collection) ? Collections.EMPTY_LIST : collection);
     }
 
     /**
      * truncate a collection using subList(0, maxSize)
      */
-    public static <E> List<E> limit(@Nullable Collection<E> collection, int maxSize) {
+    public static <E, C extends Collection<E>> List<E> limit(@Nullable C collection, int maxSize) {
         if (Emptys.isEmpty(collection)) {
             return emptyLinkedList();
         }
@@ -1041,7 +1044,7 @@ public class Collects {
     /**
      * skip n elements, get a collection using subList(n, size)
      */
-    public static <E> List<E> skip(@Nullable Collection<E> collection, int n) {
+    public static <E, C extends Collection<E>> List<E> skip(@Nullable C collection, int n) {
         if (Emptys.isEmpty(collection)) {
             return emptyLinkedList();
         }
@@ -1058,7 +1061,7 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <E extends Comparable<E>> TreeSet<E> sort(@Nullable Collection<E> collection, boolean reverse) {
+    public static <E extends Comparable<E>, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, boolean reverse) {
         return sort(collection, new ComparableComparator<E>(), reverse);
     }
 
@@ -1066,7 +1069,7 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <E> TreeSet<E> sort(@Nullable Collection<E> collection, @NonNull Comparator<E> comparator) {
+    public static <E, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator) {
         return sort(collection, comparator, false);
     }
 
@@ -1074,7 +1077,7 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <E> TreeSet<E> sort(@Nullable Collection<E> collection, @NonNull Comparator<E> comparator, boolean reverse) {
+    public static <E, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator, boolean reverse) {
         Preconditions.checkNotNull(comparator);
         if (Emptys.isEmpty(collection)) {
             return new TreeSet<E>(comparator);
@@ -1089,9 +1092,9 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <K, V> Map<K, V> sort(@Nullable Map<K, V> map, @NonNull Comparator<K> comparator) {
+    public static <K, V, M extends Map<K, V>> M sort(@Nullable M map, @NonNull Comparator<K> comparator) {
         Preconditions.checkNotNull(comparator);
-        Map<K, V> result = emptyTreeMap(comparator);
+        M result = (M) emptyTreeMap(comparator);
         if (Emptys.isNotEmpty(map)) {
             result.putAll(map);
         }
@@ -1123,7 +1126,7 @@ public class Collects {
         return Emptys.isEmpty(map) ? 0 : map.size();
     }
 
-    public static <E> int count(@Nullable Collection<E> collection) {
+    public static <E, C extends Collection<E>> int count(@Nullable C collection) {
         return Emptys.isEmpty(collection) ? 0 : collection.size();
     }
 
@@ -1196,15 +1199,15 @@ public class Collects {
         return collect(anyObject, containerFactory, consumer);
     }
 
-    public static <E> CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
+    public static <E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable C oldCollection, @Nullable C newCollection) {
         return diff(oldCollection, newCollection, null);
     }
 
-    public static <E> CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator) {
+    public static <E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable C oldCollection, @Nullable C newCollection, @Nullable Comparator<E> elementComparator) {
         return diff(oldCollection, newCollection, elementComparator, null);
     }
 
-    public static <E> CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection, @Nullable Comparator<E> elementComparator, @Nullable KeyBuilder<String, E> keyBuilder) {
+    public static <E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable C oldCollection, @Nullable C newCollection, @Nullable Comparator<E> elementComparator, @Nullable KeyBuilder<String, E> keyBuilder) {
         CollectionDiffer<E> differ = new CollectionDiffer<E>();
         differ.setComparator(elementComparator);
         if (keyBuilder != null) {
@@ -1213,15 +1216,15 @@ public class Collects {
         return differ.diff(oldCollection, newCollection);
     }
 
-    public static <K, V> MapDiffResult<K, V> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap) {
+    public static <K, V, M extends Map<K, V>> MapDiffResult<K, V> diff(@Nullable M oldMap, @Nullable M newMap) {
         return diff(oldMap, newMap, null);
     }
 
-    public static <K, V> MapDiffResult<K, V> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap, @Nullable Comparator<V> valueComparator) {
+    public static <K, V, M extends Map<K, V>> MapDiffResult<K, V> diff(@Nullable M oldMap, @Nullable M newMap, @Nullable Comparator<V> valueComparator) {
         return diff(oldMap, newMap, valueComparator, null);
     }
 
-    public static <K, V> MapDiffResult<K, V> diff(@Nullable Map<K, V> oldMap, @Nullable Map<K, V> newMap, @Nullable Comparator<V> valueComparator, @Nullable Comparator<K> keyComparator) {
+    public static <K, V, M extends Map<K, V>> MapDiffResult<K, V> diff(@Nullable M oldMap, @Nullable M newMap, @Nullable Comparator<V> valueComparator, @Nullable Comparator<K> keyComparator) {
         MapDiffer<K, V> differ = new MapDiffer<K, V>();
         differ.setValueComparator(valueComparator);
         differ.setKeyComparator(keyComparator);
@@ -1249,7 +1252,7 @@ public class Collects {
         return map;
     }
 
-    public static <E> void addAll(final Collection<E> collection, Iterable<E> iterable) {
+    public static <E, C extends Collection<E>> void addAll(final C collection, Iterable<E> iterable) {
         if (Emptys.isNotEmpty(iterable)) {
             forEach(iterable, new Consumer<E>() {
                 @Override
@@ -1260,25 +1263,25 @@ public class Collects {
         }
     }
 
-    public static <E> void addAll(Collection<E> collection, E... iterator) {
+    public static <E, C extends Collection<E>> void addAll(C collection, E... iterator) {
         addAll(collection, Collects.<E>asIterable(iterator));
     }
 
-    public static <E> void addAll(Collection<E> collection, Iterator<E> iterator) {
+    public static <E, C extends Collection<E>> void addAll(C collection, Iterator<E> iterator) {
         addAll(collection, Collects.<E>asIterable(iterator));
     }
 
     /**
      * Concat two collection to one
      */
-    public static <E> Collection<E> concat(@Nullable Collection<E> c1, @Nullable Collection<E> c2) {
+    public static <E, C extends Collection<E>> C concat(@Nullable C c1, @Nullable C c2) {
         return concat(c1, c2, true);
     }
 
     /**
      * Concat two collection to one
      */
-    public static <E> Collection<E> concat(@Nullable Collection<E> c1, @Nullable Collection<E> c2, boolean newOne) {
+    public static <E, C extends Collection<E>> C concat(@Nullable C c1, @Nullable C c2, boolean newOne) {
         if (newOne) {
             List<E> l = emptyArrayList();
             if (Emptys.isNotEmpty(c1)) {
@@ -1287,7 +1290,7 @@ public class Collects {
             if (Emptys.isNotEmpty(c2)) {
                 l.addAll(c2);
             }
-            return l;
+            return (C) l;
         } else {
             Preconditions.checkNotNull(c1);
             if (Emptys.isNotEmpty(c2)) {
@@ -1297,11 +1300,11 @@ public class Collects {
         }
     }
 
-    public static <E> Collection<E> merge(@Nullable Collection<E> c1, @Nullable Collection<E> c2) {
+    public static <E, C extends Collection<E>> C merge(@Nullable C c1, @Nullable C c2) {
         return merge(c1, c2, true);
     }
 
-    public static <E> Collection<E> merge(@Nullable final Collection<E> c1, @Nullable Collection<E> c2, boolean newOne) {
+    public static <E, C extends Collection<E>> C merge(@Nullable final C c1, @Nullable C c2, boolean newOne) {
         if (newOne) {
             Set<E> set = emptyHashSet(true);
             if (Emptys.isNotEmpty(c1)) {
@@ -1310,7 +1313,7 @@ public class Collects {
             if (Emptys.isNotEmpty(c2)) {
                 set.addAll(c2);
             }
-            return set;
+            return (C) set;
         } else {
             Preconditions.checkNotNull(c1);
             if (Emptys.isNotEmpty(c2)) {
@@ -1329,11 +1332,11 @@ public class Collects {
         }
     }
 
-    public static <K, V> Map<K, V> merge(@Nullable Map<K, V> map1, @Nullable Map<K, V> map2) {
+    public static <K, V, M extends Map<K, V>> M merge(@Nullable M map1, @Nullable M map2) {
         return merge(map1, map2, true);
     }
 
-    public static <K, V> Map<K, V> merge(@Nullable Map<K, V> map1, @Nullable Map<K, V> map2, boolean newOne) {
+    public static <K, V, M extends Map<K, V>> M merge(@Nullable M map1, @Nullable M map2, boolean newOne) {
         if (newOne) {
             Map<K, V> map = emptyHashMap();
             if (Emptys.isNotEmpty(map1)) {
@@ -1342,7 +1345,7 @@ public class Collects {
             if (Emptys.isNotEmpty(map2)) {
                 map.putAll(map2);
             }
-            return map;
+            return (M) map;
         } else {
             Preconditions.checkNotNull(map1);
             if (Emptys.isNotEmpty(map2)) {
@@ -1377,11 +1380,11 @@ public class Collects {
         return groupBy(Collects.<E>asIterable(iterable), classifier, mapFactory);
     }
 
-    public static <K, E> Map<K, List<E>> groupBy(@Nullable Iterable<E> iterable, @NonNull final Function<E, K> classifier) {
+    public static <K, E, C extends Collection<E>> Map<K, List<E>> groupBy(@Nullable C iterable, @NonNull final Function<E, K> classifier) {
         return groupBy(iterable, classifier, null);
     }
 
-    public static <K, E> Map<K, List<E>> groupBy(@Nullable Iterable<E> iterable, @NonNull final Function<E, K> classifier, @Nullable Supplier0<Map<K, List<E>>> mapFactory) {
+    public static <K, E, C extends Collection<E>> Map<K, List<E>> groupBy(@Nullable Iterable<E> iterable, @NonNull final Function<E, K> classifier, @Nullable Supplier0<Map<K, List<E>>> mapFactory) {
         Preconditions.checkNotNull(classifier);
         iterable = asIterable(iterable);
         if (mapFactory == null) {

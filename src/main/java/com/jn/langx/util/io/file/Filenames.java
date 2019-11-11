@@ -6,6 +6,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Filenames {
     /**
@@ -38,7 +39,7 @@ public class Filenames {
         filePath = filePath.substring(partitionSeparatorIndex + 1);
         filePath = filePath.replaceAll("\\\\+", "/");
         String[] pathSegments = Strings.split(filePath, "/");
-        return Collects.<String>allMatch(Collects.asList(pathSegments), new Predicate<String>() {
+        return Collects.<String, List<String>>allMatch(Collects.asList(pathSegments), new Predicate<String>() {
             @Override
             public boolean test(String pathSegment) {
                 return checkFileSegment(pathSegment);

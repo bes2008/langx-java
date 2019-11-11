@@ -57,12 +57,13 @@ public class PrefixHashMap<V> extends HashMap<String, V> {
 
     @Override
     public void putAll(Map<? extends String, ? extends V> m) {
-        Collects.forEach(m, new Consumer2<String, V>() {
+        Consumer2<String, V> consumer2 = new Consumer2<String, V>() {
             @Override
             public void accept(String key, V value) {
                 put(key, value);
             }
-        });
+        };
+        Collects.forEach(m, consumer2);
     }
 
     @Override
