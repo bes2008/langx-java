@@ -1,8 +1,8 @@
 package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.io.file.Files;
+import com.jn.langx.util.jar.multiplelevel.MultipleLevelURLStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +127,8 @@ public class URLs {
             } else {
                 if (isJarURL(url)) {
                     if (isMultipleLevelJarURL(url)) {
-                        throw new IOException(StringTemplates.formatWithPlaceholder("The URL ({}) is a multiple level jar url, JDK built-in URLStreamHandler is not supported", url.getPath()));
+                        String urlString = url.toString();
+                        url = new URL(null, urlString, new MultipleLevelURLStreamHandler());
                     }
                 }
 

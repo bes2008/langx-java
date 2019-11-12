@@ -1,6 +1,6 @@
 package com.jn.langx.util.jar;
 
-import com.jn.langx.util.jar.multiplelevel.Handler;
+import com.jn.langx.util.jar.multiplelevel.MultipleLevelURLStreamHandler;
 import com.jn.langx.util.jar.multiplelevel.JarFile;
 import com.jn.langx.util.reflect.Reflects;
 
@@ -37,27 +37,27 @@ public class MultipleLevelJarUrlClassLoader extends URLClassLoader {
 
     @Override
     public URL findResource(String name) {
-        Handler.setUseFastConnectionExceptions(true);
+        MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(true);
         try {
             return super.findResource(name);
         } finally {
-            Handler.setUseFastConnectionExceptions(false);
+            MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(false);
         }
     }
 
     @Override
     public Enumeration<URL> findResources(String name) throws IOException {
-        Handler.setUseFastConnectionExceptions(true);
+        MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(true);
         try {
             return new UseFastConnectionExceptionsEnumeration(super.findResources(name));
         } finally {
-            Handler.setUseFastConnectionExceptions(false);
+            MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(false);
         }
     }
 
     @Override
     protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-        Handler.setUseFastConnectionExceptions(true);
+        MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(true);
         try {
             try {
                 definePackageIfNecessary(name);
@@ -72,7 +72,7 @@ public class MultipleLevelJarUrlClassLoader extends URLClassLoader {
             }
             return super.loadClass(name, resolve);
         } finally {
-            Handler.setUseFastConnectionExceptions(false);
+            MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(false);
         }
     }
 
@@ -168,22 +168,22 @@ public class MultipleLevelJarUrlClassLoader extends URLClassLoader {
 
         @Override
         public boolean hasMoreElements() {
-            Handler.setUseFastConnectionExceptions(true);
+            MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(true);
             try {
                 return this.delegate.hasMoreElements();
             } finally {
-                Handler.setUseFastConnectionExceptions(false);
+                MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(false);
             }
 
         }
 
         @Override
         public URL nextElement() {
-            Handler.setUseFastConnectionExceptions(true);
+            MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(true);
             try {
                 return this.delegate.nextElement();
             } finally {
-                Handler.setUseFastConnectionExceptions(false);
+                MultipleLevelURLStreamHandler.setUseFastConnectionExceptions(false);
             }
         }
 

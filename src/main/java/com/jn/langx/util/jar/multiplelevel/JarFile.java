@@ -320,7 +320,7 @@ public class JarFile extends java.util.jar.JarFile {
      */
     public URL getUrl() throws MalformedURLException {
         if (this.url == null) {
-            Handler handler = new Handler(this);
+            MultipleLevelURLStreamHandler handler = new MultipleLevelURLStreamHandler(this);
             String file = this.rootFile.getFile().toURI() + this.pathFromRoot + "!/";
             file = file.replace("file:////", "file://"); // Fix UNC paths
             this.url = new URL("jar", "", -1, file, handler);

@@ -14,9 +14,9 @@ import java.util.regex.Pattern;
  * {@link URLStreamHandler} for Spring Boot loader {@link JarFile}s.
  *
  * @see JarFile#registerUrlProtocolHandler()
- * @since 1.0.0
+ * @since 1.1.0
  */
-public class Handler extends URLStreamHandler {
+public class MultipleLevelURLStreamHandler extends URLStreamHandler {
 
     // NOTE: in order to be found as a URL protocol handler, this class must be public,
     // must be named Handler and must be in a package ending '.jar'
@@ -45,11 +45,11 @@ public class Handler extends URLStreamHandler {
 
     private URLStreamHandler fallbackHandler;
 
-    public Handler() {
+    public MultipleLevelURLStreamHandler() {
         this(null);
     }
 
-    public Handler(JarFile jarFile) {
+    public MultipleLevelURLStreamHandler(JarFile jarFile) {
         this.jarFile = jarFile;
     }
 
@@ -272,7 +272,7 @@ public class Handler extends URLStreamHandler {
             if (!name.startsWith(FILE_PROTOCOL)) {
                 throw new IllegalStateException("Not a file URL");
             }
-            File file = new File(URI.create(name));
+            File file = new File(new URL(name).toURI());
             Map<File, JarFile> cache = rootFileCache.get();
             JarFile result = (cache != null) ? cache.get(file) : null;
             if (result == null) {

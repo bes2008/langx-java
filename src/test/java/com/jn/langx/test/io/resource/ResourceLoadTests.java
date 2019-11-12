@@ -47,7 +47,7 @@ public class ResourceLoadTests {
     public void testUrlResource_jarProtocol() {
         String workDir = SystemPropertys.getUserWorkDir();
         System.out.println(workDir);
-        String currentFilePath = workDir + "/src/test/java/" + Reflects.getPackageName(ResourceLoadTests.class).replaceAll("\\.", "/") + "/sqlhelper-examples-2.2.0.jar" + URLs.JAR_URL_SEPARATOR + "BOOT-INFO/lib/langx-java-1.0.0.jar" + URLs.JAR_URL_SEPARATOR + "com/jn/langx/util/collection/Collects.classXXX";
+        String currentFilePath = workDir + "/src/test/java/" + Reflects.getPackageName(ResourceLoadTests.class).replaceAll("\\.", "/") + "/sqlhelper-examples-2.2.0.jar" + URLs.JAR_URL_SEPARATOR + "BOOT-INF/lib/langx-java-1.0.0.jar" + URLs.JAR_URL_SEPARATOR + "com/jn/langx/util/collection/Collects.class";
         UrlResource urlResource = Resources.loadUrlResource(URLs.URL_PREFIX_JAR_FILE + currentFilePath);
         showFileResource(urlResource);
         UrlResource urlResource2 = Resources.loadResource(URLs.URL_PREFIX_JAR_FILE + currentFilePath);
