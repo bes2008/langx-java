@@ -220,17 +220,17 @@ public class Collects {
      *
      * @return a new, empty map when the specified is null, others, return the argument
      */
-    public static <K, V, M extends Map<K, V>> M getEmptyMapIfNull(@Nullable M map) {
+    public static <K, V> Map<K, V> getEmptyMapIfNull(@Nullable Map<K, V> map) {
         return getEmptyMapIfNull(map, null);
     }
 
     /**
      * @see #getEmptyMapIfNull(Map, MapType)
      */
-    public static <K, V, M extends Map<K, V>> M getEmptyMapIfNull(@Nullable M map, @Nullable MapType mapType) {
+    public static <K, V> Map<K, V> getEmptyMapIfNull(@Nullable Map<K, V> map, @Nullable MapType mapType) {
         if (map == null) {
             if (mapType == null) {
-                return (M) emptyHashMap();
+                return  emptyHashMap();
             }
             Map map1;
             switch (mapType) {
@@ -259,7 +259,7 @@ public class Collects {
                     map1 = emptyHashMap();
                     break;
             }
-            return (M) map1;
+            return  map1;
         }
         return map;
     }
@@ -602,9 +602,9 @@ public class Collects {
     /**
      * Filter a map with the specified predicate
      */
-    public static <K, V, M extends Map<K, V>> M filter(@Nullable M map, @NonNull final Predicate2<K, V> predicate) {
+    public static <K, V> Map<K, V> filter(@Nullable Map<K, V> map, @NonNull final Predicate2<K, V> predicate) {
         Preconditions.checkNotNull(predicate);
-        final M result = (M) getEmptyMapIfNull(null, MapType.ofMap(map));
+        final Map<K, V> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
             forEach(map, new Consumer2<K, V>() {
                 @Override
