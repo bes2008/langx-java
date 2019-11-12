@@ -46,10 +46,10 @@ public class StringsTests {
     }
 
     @Test
-    public void testUpperCaseTests(){
+    public void testUpperCaseTests() {
         String str = "abcdefghklm_nopRstUvwx_yz";
-        System.out.println(Strings.upperCase(str, 0,1));
-        System.out.println(Strings.upperCase(str, 2,7));
-        System.out.println(Strings.upperCase(str, 9,20));
+        System.out.println(Strings.upperCase(str, 0, 1));
+        System.out.println(Strings.upperCase(str, 2, 7));
+        System.out.println(Strings.upperCase(str, 9, 20));
     }
 }

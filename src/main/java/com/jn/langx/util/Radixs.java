@@ -86,7 +86,7 @@ public class Radixs {
     }
 
     public static String toHex(byte[] bytes) {
-       return toHex(bytes, false);
+        return toHex(bytes, false);
     }
 
     private static String toHex(byte[] bytes, final boolean twoLength) {

@@ -186,7 +186,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
         if (this == period) {
             return true;
         }
-        if (!(period instanceof ReadablePeriod )) {
+        if (!(period instanceof ReadablePeriod)) {
             return false;
         }
         ReadablePeriod other = (ReadablePeriod) period;

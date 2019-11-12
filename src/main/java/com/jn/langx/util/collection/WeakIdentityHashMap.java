@@ -8,7 +8,7 @@ import java.util.*;
  * Implements a combination of WeakHashMap and IdentityHashMap.
  * Useful for caches that need to key off of a == comparison
  * instead of a .equals.
- *
+ * <p>
  * <b>
  * This class is not a general-purpose Map implementation! While
  * this class implements the Map interface, it intentionally violates

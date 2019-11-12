@@ -6,7 +6,7 @@ import java.io.IOException;
 
 /**
  * Produces 32-bit hash for hash table lookup.
- *
+ * <p>
  * <pre>lookup3.c, by Bob Jenkins, May 2006, Public Domain.
  *
  * You can use this free for any purpose.  It's in the public domain.
@@ -43,19 +43,19 @@ public class JenkinsHash extends Hash {
      * @return a 32-bit value.  Every bit of the key affects every bit of the
      * return value.  Two keys differing by one or two bits will have totally
      * different hash values.
-     *
+     * <p>
      * <p>The best hash table sizes are powers of 2.  There is no need to do mod
      * a prime (mod is sooo slow!).  If you need less than 32 bits, use a bitmask.
      * For example, if you need only 10 bits, do
      * <code>h = (h & hashmask(10));</code>
      * In which case, the hash table should have hashsize(10) elements.
-     *
+     * <p>
      * <p>If you are hashing n strings byte[][] k, do it like this:
      * for (int i = 0, h = 0; i < n; ++i) h = hash( k[i], h);
-     *
+     * <p>
      * <p>By Bob Jenkins, 2006.  bob_jenkins@burtleburtle.net.  You may use this
      * code any way you wish, private, educational, or commercial.  It's free.
-     *
+     * <p>
      * <p>Use for hash table lookup, or anything where one collision in 2^^32 is
      * acceptable.  Do NOT use for cryptographic purposes.
      */

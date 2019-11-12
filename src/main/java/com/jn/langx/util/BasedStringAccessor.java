@@ -61,7 +61,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
         return getNumber(value).byteValue();
     }
 
-    protected Number getNumber(String string){
+    protected Number getNumber(String string) {
         return Numbers.createNumber(string);
     }
 

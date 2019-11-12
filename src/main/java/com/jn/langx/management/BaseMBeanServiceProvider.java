@@ -18,7 +18,7 @@ public class BaseMBeanServiceProvider {
             return null;
         }
         final MBeanService service = (MBeanService) BaseMBeanServiceProvider.provider.get(serviceClazz);
-        if (service != null && Reflects.isSubClassOrEquals(serviceClazz,service.getClass())) {
+        if (service != null && Reflects.isSubClassOrEquals(serviceClazz, service.getClass())) {
             return (S) service;
         }
         final ClassLoader originalCL = Thread.currentThread().getContextClassLoader();

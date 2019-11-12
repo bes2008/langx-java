@@ -15,7 +15,7 @@ import java.util.TimeZone;
 /**
  * 标准时间：GMT时间，也叫格林威治平时，也叫 UTC时间。
  * Java 6 ：
- *
+ * <p>
  * <pre>
  * Date:
  * 表示一个瞬时值，单位是毫秒。它的结果是一个标准的GMT瞬时值。它和时区（timezone）地域（Locale）没有关系。
@@ -104,11 +104,11 @@ public class CalendersTests {
         Calendars.setField(calendar, Calendars.MONTH, 10);
         showCalendar(calendar);
         System.out.println("======================");
-        Calendars.setMonths(calendar,15);
+        Calendars.setMonths(calendar, 15);
         showCalendar(calendar);
     }
 
-    private void showCalendar(Calendar calendar){
+    private void showCalendar(Calendar calendar) {
         System.out.println("ERA:   " + calendar.get(Calendars.ERA.getField()));
         System.out.println("YEAR:  " + calendar.get(Calendars.YEAR.getField()));
         System.out.println("MONTH: " + calendar.get(Calendars.MONTH.getField()));

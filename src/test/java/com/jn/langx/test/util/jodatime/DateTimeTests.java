@@ -5,8 +5,8 @@ import org.junit.Test;
 
 public class DateTimeTests {
     @Test
-    public void test(){
-        DateTime dt =  DateTime.now();
+    public void test() {
+        DateTime dt = DateTime.now();
         System.out.println(System.currentTimeMillis());
         System.out.println(dt.getMillis());
 

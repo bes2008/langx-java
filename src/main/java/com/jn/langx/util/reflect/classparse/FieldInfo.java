@@ -9,11 +9,11 @@ public class FieldInfo {
     private Method getter;
     private Method setter;
 
-    public String getFieldName(){
+    public String getFieldName() {
         return field.getName();
     }
 
-    public Class getFieldType(){
+    public Class getFieldType() {
         return field.getType();
     }
 

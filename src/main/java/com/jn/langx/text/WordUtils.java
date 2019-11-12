@@ -10,7 +10,6 @@ import com.jn.langx.util.io.LineDelimiter;
  * <p>This class tries to handle <code>null</code> input gracefully.
  * An exception will not be thrown for a <code>null</code> input.
  * Each method documents its behaviour in more detail.</p>
- *
  */
 public class WordUtils {
 
@@ -264,7 +263,6 @@ public class WordUtils {
      * @return capitalized String, <code>null</code> if null String input
      * @see #uncapitalize(String)
      * @see #capitalizeFully(String)
-     * 
      */
     public static String capitalize(final String str, final char... delimiters) {
         final int delimLen = delimiters == null ? -1 : delimiters.length;
@@ -334,7 +332,6 @@ public class WordUtils {
      * @param str        the String to capitalize, may be null
      * @param delimiters set of characters to determine capitalization, null means whitespace
      * @return capitalized String, <code>null</code> if null String input
-     * 
      */
     public static String capitalizeFully(String str, final char... delimiters) {
         final int delimLen = delimiters == null ? -1 : delimiters.length;
@@ -391,7 +388,6 @@ public class WordUtils {
      * @param delimiters set of characters to determine uncapitalization, null means whitespace
      * @return uncapitalized String, <code>null</code> if null String input
      * @see #capitalize(String)
-     * 
      */
     public static String uncapitalize(final String str, final char... delimiters) {
         final int delimLen = delimiters == null ? -1 : delimiters.length;
@@ -488,7 +484,6 @@ public class WordUtils {
      * @param str the String to get initials from, may be null
      * @return String of initial letters, <code>null</code> if null String input
      * @see #initials(String, char[])
-     * 
      */
     public static String initials(final String str) {
         return initials(str, null);
@@ -519,7 +514,6 @@ public class WordUtils {
      * @param delimiters set of characters to determine words, null means whitespace
      * @return String of initial letters, <code>null</code> if null String input
      * @see #initials(String)
-     * 
      */
     public static String initials(final String str, final char... delimiters) {
         if (Strings.isEmpty(str)) {

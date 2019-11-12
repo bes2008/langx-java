@@ -74,13 +74,13 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
 
     /**
      * Overview:
-     *
+     * <p>
      * A CompletableFuture may have dependent completion actions,
      * collected in a linked stack. It atomically completes by CASing
      * a result field, and then pops off and runs those actions. This
      * applies across normal vs exceptional outcomes, sync vs async
      * actions, binary triggers, and various forms of completions.
-     *
+     * <p>
      * Non-nullness of field result (set via CAS) indicates done.  An
      * AltResult is used to box null as a result, as well as to hold
      * exceptions.  Using a single field makes completion simple to
@@ -92,7 +92,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * Even though some of the generics casts are unchecked (see
      * SuppressWarnings annotations), they are placed to be
      * appropriate even if checked.
-     *
+     * <p>
      * Dependent actions are represented by Completion objects linked
      * as Treiber stacks headed by field "stack". There are Completion
      * classes for each kind of action, grouped into single-input
@@ -104,52 +104,52 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * (adding no space overhead because we exploit its "tag" methods
      * to maintain claims). It is also declared as Runnable to allow
      * usage with arbitrary executors.
-     *
+     * <p>
      * Support for each kind of CompletionStep relies on a separate
      * class, along with two CompletableFuture methods:
-     *
+     * <p>
      * * A Completion class with name X corresponding to function,
-     *   prefaced with "Uni", "Bi", or "Or". Each class contains
-     *   fields for source(s), actions, and dependent. They are
-     *   boringly similar, differing from others only with respect to
-     *   underlying functional forms. We do this so that users don't
-     *   encounter layers of adaptors in common usages. We also
-     *   include "Relay" classes/methods that don't correspond to user
-     *   methods; they copy results from one stage to another.
-     *
+     * prefaced with "Uni", "Bi", or "Or". Each class contains
+     * fields for source(s), actions, and dependent. They are
+     * boringly similar, differing from others only with respect to
+     * underlying functional forms. We do this so that users don't
+     * encounter layers of adaptors in common usages. We also
+     * include "Relay" classes/methods that don't correspond to user
+     * methods; they copy results from one stage to another.
+     * <p>
      * * Boolean CompletableFuture method x(...) (for example
-     *   uniApply) takes all of the arguments needed to check that an
-     *   action is triggerable, and then either runs the action or
-     *   arranges its async execution by executing its Completion
-     *   argument, if present. The method returns true if known to be
-     *   complete.
-     *
+     * uniApply) takes all of the arguments needed to check that an
+     * action is triggerable, and then either runs the action or
+     * arranges its async execution by executing its Completion
+     * argument, if present. The method returns true if known to be
+     * complete.
+     * <p>
      * * Completion method tryFire(int mode) invokes the associated x
-     *   method with its held arguments, and on success cleans up.
-     *   The mode argument allows tryFire to be called twice (SYNC,
-     *   then ASYNC); the first to screen and trap exceptions while
-     *   arranging to execute, and the second when called from a
-     *   task. (A few classes are not used async so take slightly
-     *   different forms.)  The claim() callback suppresses function
-     *   invocation if already claimed by another thread.
-     *
+     * method with its held arguments, and on success cleans up.
+     * The mode argument allows tryFire to be called twice (SYNC,
+     * then ASYNC); the first to screen and trap exceptions while
+     * arranging to execute, and the second when called from a
+     * task. (A few classes are not used async so take slightly
+     * different forms.)  The claim() callback suppresses function
+     * invocation if already claimed by another thread.
+     * <p>
      * * CompletableFuture method xStage(...) is called from a public
-     *   stage method of CompletableFuture x. It screens user
-     *   arguments and invokes and/or creates the stage object.  If
-     *   not async and x is already complete, the action is run
-     *   immediately.  Otherwise a Completion c is created, pushed to
-     *   x's stack (unless done), and started or triggered via
-     *   c.tryFire.  This also covers races possible if x completes
-     *   while pushing.  Classes with two inputs (for example BiApply)
-     *   deal with races across both while pushing actions.  The
-     *   second completion is a CoCompletion pointing to the first,
-     *   shared so that at most one performs the action.  The
-     *   multiple-arity methods allOf and anyOf do this pairwise to
-     *   form trees of completions.
-     *
+     * stage method of CompletableFuture x. It screens user
+     * arguments and invokes and/or creates the stage object.  If
+     * not async and x is already complete, the action is run
+     * immediately.  Otherwise a Completion c is created, pushed to
+     * x's stack (unless done), and started or triggered via
+     * c.tryFire.  This also covers races possible if x completes
+     * while pushing.  Classes with two inputs (for example BiApply)
+     * deal with races across both while pushing actions.  The
+     * second completion is a CoCompletion pointing to the first,
+     * shared so that at most one performs the action.  The
+     * multiple-arity methods allOf and anyOf do this pairwise to
+     * form trees of completions.
+     * <p>
      * Note that the generic type parameters of methods vary according
      * to whether "this" is a source, dependent, or completion.
-     *
+     * <p>
      * Method postComplete is called upon completion unless the target
      * is guaranteed not to be observable (i.e., not yet returned or
      * linked). Multiple threads can call postComplete, which
@@ -158,13 +158,13 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * recursively, so NESTED mode returns its completed dependent (if
      * one exists) for further processing by its caller (see method
      * postFire).
-     *
+     * <p>
      * Blocking methods get() and join() rely on Signaller Completions
      * that wake up waiting threads.  The mechanics are similar to
      * Treiber stack wait-nodes used in FutureTask, Phaser, and
      * SynchronousQueue. See their internal documentation for
      * algorithmic details.
-     *
+     * <p>
      * Without precautions, CompletableFutures would be prone to
      * garbage accumulation as chains of Completions build up, each
      * pointing back to its sources. So we null out fields as soon as
@@ -195,7 +195,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
     final boolean tryPushStack(Completion c) {
         Completion h = stack.get();
         lazySetNext(c, h);
-        return stack.compareAndSet(h,c);
+        return stack.compareAndSet(h, c);
     }
 
     /**
@@ -239,7 +239,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * Completes with a non-exceptional result, unless already completed.
      */
     final boolean completeValue(T t) {
-        return result.compareAndSet(null,  (t == null) ? NIL : t);
+        return result.compareAndSet(null, (t == null) ? NIL : t);
     }
 
     /**
@@ -283,7 +283,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * existing CompletionException.
      */
     final boolean completeThrowable(Throwable x, Object r) {
-        return result.compareAndSet(null, encodeThrowable(x,r));
+        return result.compareAndSet(null, encodeThrowable(x, r));
     }
 
     /**
@@ -415,6 +415,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
     abstract static class Completion implements Runnable, AsynchronousCompletionTask {
         AtomicReference<Completion> next = new AtomicReference<Completion>();      // Treiber stack link
         AtomicInteger tag = new AtomicInteger(0);
+
         /**
          * Performs completion action if triggered, returning a
          * dependent that may need propagation, if one exists.
@@ -528,8 +529,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
          */
         final boolean claim() {
             Executor e = executor;
-            if(tag.compareAndSet(0,1)){
-                if(e==null){
+            if (tag.compareAndSet(0, 1)) {
+                if (e == null) {
                     return true;
                 }
                 executor = null;

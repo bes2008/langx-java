@@ -51,6 +51,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * The duration of the datetime field
      */
     private final DurationField iDurationField;
+
     /**
      * Constructor.
      *

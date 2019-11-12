@@ -26,7 +26,7 @@ public class PrefixHashMapTests {
         showMap(map);
     }
 
-    private void showMap(PrefixHashMap<String> map ){
+    private void showMap(PrefixHashMap<String> map) {
         Collects.forEach(map.entrySet(), new Consumer<Map.Entry<String, String>>() {
             @Override
             public void accept(Map.Entry<String, String> entry) {

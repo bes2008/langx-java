@@ -1,10 +1,7 @@
 package com.jn.langx.security;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
+
 @Documented
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -16,6 +13,7 @@ import java.lang.annotation.Target;
 public @interface Algorithm {
     /**
      * 算法名称
+     *
      * @return
      */
     public String name();
@@ -29,6 +27,7 @@ public @interface Algorithm {
 
     /**
      * 算法描述
+     *
      * @return
      */
     public String desc() default "";

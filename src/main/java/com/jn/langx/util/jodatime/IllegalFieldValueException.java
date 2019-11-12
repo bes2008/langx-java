@@ -35,6 +35,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     private final Number iLowerBound;
     private final Number iUpperBound;
     private String iMessage;
+
     /**
      * Constructor.
      *
@@ -55,6 +56,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iUpperBound = upperBound;
         iMessage = super.getMessage();
     }
+
     /**
      * Constructor.
      *

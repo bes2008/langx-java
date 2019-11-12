@@ -407,7 +407,7 @@ public class ResourceLeakDetector<T> {
         private static void reachabilityFence0(Object ref) {
             if (ref != null) {
                 //synchronized (ref) {
-                    // Empty synchronized is ok: https://stackoverflow.com/a/31933260/1151521
+                // Empty synchronized is ok: https://stackoverflow.com/a/31933260/1151521
                 //}
             }
         }

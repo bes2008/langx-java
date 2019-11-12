@@ -469,6 +469,7 @@ public class DateTimeZoneBuilder {
         final int iDayOfWeek;
         final boolean iAdvance;
         final int iMillisOfDay;
+
         OfYear(char mode,
                int monthOfYear,
                int dayOfMonth,
@@ -720,6 +721,7 @@ public class DateTimeZoneBuilder {
         final OfYear iOfYear;
         final String iNameKey;
         final int iSaveMillis;
+
         Recurrence(OfYear ofYear, String nameKey, int saveMillis) {
             iOfYear = ofYear;
             iNameKey = nameKey;
@@ -1147,6 +1149,7 @@ public class DateTimeZoneBuilder {
         final int iStandardOffset;
         final Recurrence iStartRecurrence;
         final Recurrence iEndRecurrence;
+
         DSTZone(String id, int standardOffset,
                 Recurrence startRecurrence, Recurrence endRecurrence) {
             super(id);
@@ -1323,6 +1326,7 @@ public class DateTimeZoneBuilder {
         private final int[] iStandardOffsets;
         private final String[] iNameKeys;
         private final DSTZone iTailZone;
+
         /**
          * Constructor used ONLY for valid input, loaded via static methods.
          */

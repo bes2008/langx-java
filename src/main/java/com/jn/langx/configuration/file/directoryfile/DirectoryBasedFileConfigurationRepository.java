@@ -14,6 +14,8 @@
 
 package com.jn.langx.configuration.file.directoryfile;
 
+import com.jn.langx.configuration.AbstractConfigurationRepository;
+import com.jn.langx.configuration.Configuration;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -26,8 +28,6 @@ import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
-import com.jn.langx.configuration.AbstractConfigurationRepository;
-import com.jn.langx.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

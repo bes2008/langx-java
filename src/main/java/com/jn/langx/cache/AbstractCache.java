@@ -300,7 +300,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
                     }
                 });
             }
-        }finally {
+        } finally {
             writeLock.unlock();
         }
     }

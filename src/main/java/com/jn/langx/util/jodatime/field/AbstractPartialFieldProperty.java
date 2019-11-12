@@ -325,7 +325,7 @@ public abstract class AbstractPartialFieldProperty {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof AbstractPartialFieldProperty )) {
+        if (!(object instanceof AbstractPartialFieldProperty)) {
             return false;
         }
         AbstractPartialFieldProperty other = (AbstractPartialFieldProperty) object;

@@ -845,7 +845,7 @@ public class PeriodType implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof PeriodType)){
+        if (!(obj instanceof PeriodType)) {
             return false;
         }
         PeriodType other = (PeriodType) obj;

@@ -7,7 +7,6 @@ import com.jn.langx.util.Preconditions;
  * A {@link CharSequence} backed by a single shared {@link String}. Unlike a regular
  * {@link String}, {@link #subSequence(int, int)} operations will not copy the underlying
  * character array.
- *
  */
 final class StringSequence implements CharSequence {
 

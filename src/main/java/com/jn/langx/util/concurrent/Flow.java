@@ -9,7 +9,7 @@ import java.util.concurrent.Executor;
  * produce items consumed by one or more {@link Subscriber
  * Subscribers}, each managed by a {@link Subscription
  * Subscription}.
- *
+ * <p>
  * <p>These interfaces correspond to the <a
  * href="http://www.reactive-streams.org/"> reactive-streams</a>
  * specification.  They apply in both concurrent and distributed
@@ -18,7 +18,7 @@ import java.util.concurrent.Executor;
  * of flow control (method {@link Subscription#request}) that can be
  * used to avoid resource management problems that may otherwise occur
  * in "push" based systems.
- *
+ * <p>
  * <p><b>Examples.</b> A {@link Publisher} usually defines its own
  * {@link Subscription} implementation; constructing one in method
  * {@code subscribe} and issuing it to the calling {@link
@@ -29,7 +29,7 @@ import java.util.concurrent.Executor;
  * only a single item, this class does not use buffering and ordering
  * control required in most implementations (for example {@link
  * SubmissionPublisher}).
- *
+ * <p>
  * <pre> {@code
  * class OneShotPublisher implements Publisher<Boolean> {
  *   private final ExecutorService executor = ForkJoinPool.commonPool(); // daemon-based
@@ -72,7 +72,7 @@ import java.util.concurrent.Executor;
  *     }
  *   }
  * }}</pre>
- *
+ * <p>
  * <p>A {@link Subscriber} arranges that items be requested and
  * processed.  Items (invocations of {@link Subscriber#onNext}) are
  * not issued unless requested, but multiple items may be requested.
@@ -86,7 +86,7 @@ import java.util.concurrent.Executor;
  * methods to use locks or volatiles unless a Subscriber maintains
  * multiple Subscriptions (in which case it is better to instead
  * define multiple Subscribers, each with its own Subscription).
- *
+ * <p>
  * <pre> {@code
  * class SampleSubscriber<T> implements Subscriber<T> {
  *   final Consumer<? super T> consumer;
@@ -110,13 +110,13 @@ import java.util.concurrent.Executor;
  *   public void onError(Throwable ex) { ex.printStackTrace(); }
  *   public void onComplete() {}
  * }}</pre>
- *
+ * <p>
  * <p>The default value of {@link #defaultBufferSize} may provide a
  * useful starting point for choosing request sizes and capacities in
  * Flow components based on expected rates, resources, and usages.
  * Or, when flow control is never needed, a subscriber may initially
  * request an effectively unbounded number of items, as in:
- *
+ * <p>
  * <pre> {@code
  * class UnboundedSubscriber<T> implements Subscriber<T> {
  *   public void onSubscribe(Subscription subscription) {
@@ -148,7 +148,7 @@ final class Flow {
      * invocations for each subscription are strictly ordered in <a
      * href="package-summary.html#MemoryVisibility"><i>happens-before</i></a>
      * order.
-     *
+     * <p>
      * <p>Publishers may vary in policy about whether drops (failures
      * to issue an item because of resource limitations) are treated
      * as unrecoverable errors.  Publishers may also vary about
@@ -187,7 +187,7 @@ final class Flow {
          * methods for the given Subscription. If this method throws
          * an exception, resulting behavior is not guaranteed, but may
          * cause the Subscription not to be established or to be cancelled.
-         *
+         * <p>
          * <p>Typically, implementations of this method invoke {@code
          * subscription.request} to enable receiving items.
          *

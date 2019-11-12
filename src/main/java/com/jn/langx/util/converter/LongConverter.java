@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class LongConverter implements Converter<Object, Long> {
     public static final LongConverter INSTANCE = new LongConverter();
+
     @Override
     public Long apply(Object input) {
         if (input == null) {

@@ -284,7 +284,7 @@ public final class YearMonth
      * @since 2.0
      */
     public static YearMonth now(@NonNull DateTimeZone zone) {
-        Preconditions.checkNotNull(zone,"Zone must not be null");
+        Preconditions.checkNotNull(zone, "Zone must not be null");
         return new YearMonth(zone);
     }
 
@@ -298,7 +298,7 @@ public final class YearMonth
      * @since 2.0
      */
     public static YearMonth now(@NonNull Chronology chronology) {
-        Preconditions.checkNotNull(chronology,"Chronology must not be null");
+        Preconditions.checkNotNull(chronology, "Chronology must not be null");
         return new YearMonth(chronology);
     }
 

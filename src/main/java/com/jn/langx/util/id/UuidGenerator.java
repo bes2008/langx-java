@@ -10,7 +10,8 @@ public class UuidGenerator implements IdGenerator<Object> {
         return UUID.randomUUID().toString();
 
     }
-    public String get(){
+
+    public String get() {
         return get(null);
     }
 }

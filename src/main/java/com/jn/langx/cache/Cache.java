@@ -28,5 +28,5 @@ public interface Cache<K, V> {
 
     int size();
 
-    Map<K,V> toMap();
+    Map<K, V> toMap();
 }

@@ -17,6 +17,7 @@ public interface ResourceLoader {
      * </ul>
      * <p>Note that a Resource handle does not imply an existing resource;
      * you need to invoke {@link Resource#exists} to check for existence.
+     *
      * @param location the resource location
      * @return a corresponding Resource handle (never {@code null})
      * @see Resource#exists()
@@ -29,6 +30,7 @@ public interface ResourceLoader {
      * <p>Clients which need to access the ClassLoader directly can do so
      * in a uniform manner with the ResourceLoader, rather than relying
      * on the thread context ClassLoader.
+     *
      * @return the ClassLoader
      * (only {@code null} if even the system ClassLoader isn't accessible)
      */

@@ -14,6 +14,7 @@ public interface WritableResource extends Resource {
      * note that actual content writing may still fail when attempted.
      * However, a value of {@code false} is a definitive indication
      * that the resource content cannot be modified.
+     *
      * @see #getOutputStream()
      * @see #isReadable()
      */
@@ -22,6 +23,7 @@ public interface WritableResource extends Resource {
     /**
      * Return an {@link OutputStream} for the underlying resource,
      * allowing to (over-)write its content.
+     *
      * @throws IOException if the stream could not be opened
      * @see #getInputStream()
      */
@@ -32,10 +34,11 @@ public interface WritableResource extends Resource {
      * <p>It is expected that each call creates a <i>fresh</i> channel.
      * <p>The default implementation returns {@link Channels#newChannel(OutputStream)}
      * with the result of {@link #getOutputStream()}.
+     *
      * @return the byte channel for the underlying resource (must not be {@code null})
      * @throws java.io.FileNotFoundException if the underlying resource doesn't exist
-     * @throws IOException if the content channel could not be opened
+     * @throws IOException                   if the content channel could not be opened
      * @see #getOutputStream()
      */
-    WritableByteChannel writableChannel() throws IOException ;
+    WritableByteChannel writableChannel() throws IOException;
 }

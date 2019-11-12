@@ -10,7 +10,6 @@ import java.util.jar.Manifest;
 
 /**
  * Extended variant of {@link java.util.jar.JarEntry} returned by {@link JarFile}s.
- *
  */
 class JarEntry extends java.util.jar.JarEntry implements FileHeader {
 

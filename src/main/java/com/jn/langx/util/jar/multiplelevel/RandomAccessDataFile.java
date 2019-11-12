@@ -4,7 +4,6 @@ import java.io.*;
 
 /**
  * {@link RandomAccessData} implementation backed by a {@link RandomAccessFile}.
- *
  */
 public class RandomAccessDataFile implements RandomAccessData {
 

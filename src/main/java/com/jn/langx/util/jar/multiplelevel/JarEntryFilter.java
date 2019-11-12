@@ -2,7 +2,6 @@ package com.jn.langx.util.jar.multiplelevel;
 
 /**
  * Interface that can be used to filter and optionally rename jar entries.
- *
  */
 interface JarEntryFilter {
 

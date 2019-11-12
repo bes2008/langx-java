@@ -12,7 +12,7 @@ import java.security.Signature;
  * 例如<code>MessageDigest.getInstance(String)</code>。<br>
  * 因为名称比较固定，但容易出错，这个类就是方便名称的使用的。</p>
  * 使用时只需要：<code>MessageDigest.getInstance(JCAEngineInstanceName.MD5.getName());</code>
- *
+ * <p>
  * <p>
  * Name目前有3种：Algorithm名称、Certificate名称、KeyStore名称、Service Attribute名称<br>
  * <strong>Algorithm:</strong><br>
@@ -28,7 +28,7 @@ import java.security.Signature;
  * <br>
  * Signature算法相关的实例的名称，例如SHA1withDSA，其实就是keyPair算法+MessageDigest算法的结合。
  * 这是因为Signature本来就是在PrivateKey的基础上对数据使用了MessageDigest算法，从而生成Signature。</p><br>
- *
+ * <p>
  * <p><strong>Certificate:</strong><br>
  * 著名的有X.509
  * </p>
@@ -38,43 +38,42 @@ import java.security.Signature;
  * <strong>Service Attribute:</strong><br>
  * JKS、PKCS12
  * </p>
- *
- *
+ * <p>
+ * <p>
  * JCE中的名称太多了，也没有什么规律，这里就不指明了。可以参考：<a href="http://docs.oracle.com/javase/1.5.0/docs/guide/security/CryptoSpec.html#AppB">JCE 实例名称说明</a>
  *
  * @author fs1194361820@163.com
- *
  */
 public enum JCAEStandardName {
 
     /*********************MessageDigest**********************/
-    @Algorithm(name="SHA-1",type=MessageDigest.class)
+    @Algorithm(name = "SHA-1", type = MessageDigest.class)
     SHA_1,
-    @Algorithm(name="SHA-256",type=MessageDigest.class)
+    @Algorithm(name = "SHA-256", type = MessageDigest.class)
     SHA_256,
-    @Algorithm(name="SHA-384",type=MessageDigest.class)
+    @Algorithm(name = "SHA-384", type = MessageDigest.class)
     SHA_384,
-    @Algorithm(name="SHA-512",type=MessageDigest.class)
+    @Algorithm(name = "SHA-512", type = MessageDigest.class)
     SHA_512,
-    @Algorithm(name="MD2",type=MessageDigest.class)
+    @Algorithm(name = "MD2", type = MessageDigest.class)
     MD2,
-    @Algorithm(name="MD5",type=MessageDigest.class)
+    @Algorithm(name = "MD5", type = MessageDigest.class)
     MD5,
 
     /*********************KeyPair, Key Parameter*************/
-    @Algorithm(name="DSA",type={KeyPairGenerator.class, AlgorithmParameterGenerator.class})
+    @Algorithm(name = "DSA", type = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
     DSA,
-    @Algorithm(name="RSA",type=KeyPairGenerator.class)
+    @Algorithm(name = "RSA", type = KeyPairGenerator.class)
     RSA,
 
     /********************Digital Signature***************************/
-    @Algorithm(name="SHA1withDSA",type=Signature.class)
+    @Algorithm(name = "SHA1withDSA", type = Signature.class)
     SHA1_DSA,
-    @Algorithm(name="MD2withRSA",type=Signature.class)
+    @Algorithm(name = "MD2withRSA", type = Signature.class)
     MD2_RSA,
-    @Algorithm(name="MD2withRSA",type=Signature.class)
+    @Algorithm(name = "MD2withRSA", type = Signature.class)
     MD5_RSA,
-    @Algorithm(name="SHA1withRSA",type=Signature.class)
+    @Algorithm(name = "SHA1withRSA", type = Signature.class)
     SHA1_RSA,
 
     ECDSA,
@@ -89,8 +88,8 @@ public enum JCAEStandardName {
     JKS,
     PKCS_12("PKCS#12");
 
-    JCAEStandardName(){
-        Algorithm algorithm=null;
+    JCAEStandardName() {
+        Algorithm algorithm = null;
         try {
             algorithm = JCAEStandardName.class.getDeclaredField(name()).getAnnotation(Algorithm.class);
         } catch (NoSuchFieldException e) {
@@ -98,26 +97,26 @@ public enum JCAEStandardName {
         } catch (SecurityException e) {
             e.printStackTrace();
         }
-        if(algorithm != null){
-            this.name=algorithm.name();
-        }else{
-            this.name=name();
+        if (algorithm != null) {
+            this.name = algorithm.name();
+        } else {
+            this.name = name();
         }
     }
 
-    JCAEStandardName(String name){
-        this.name=name;
+    JCAEStandardName(String name) {
+        this.name = name;
     }
 
     //	Override the Enum#name
     private String name;
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.name;
     }
 }

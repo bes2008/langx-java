@@ -2,7 +2,6 @@ package com.jn.langx.util.jar.multiplelevel;
 
 /**
  * Callback visitor triggered by {@link CentralDirectoryParser}.
- *
  */
 interface CentralDirectoryVisitor {
 

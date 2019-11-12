@@ -4,9 +4,10 @@ public class RelativeTime {
     private String machineId;
     private long delta;
 
-    public RelativeTime(){}
+    public RelativeTime() {
+    }
 
-    public RelativeTime(String machineId, long time){
+    public RelativeTime(String machineId, long time) {
         this.machineId = machineId;
         this.delta = System.currentTimeMillis() - time;
     }

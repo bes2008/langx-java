@@ -15,9 +15,9 @@ import java.util.concurrent.Executor;
  * in turn trigger other dependent stages.  The functionality defined
  * in this interface takes only a few basic forms, which expand out to
  * a larger set of methods to capture a range of usage styles:
- *
+ * <p>
  * <ul>
- *
+ * <p>
  * <li>The computation performed by a stage may be expressed as a
  * Function, Consumer, or Runnable (using methods with names including
  * <em>apply</em>, <em>accept</em>, or <em>run</em>, respectively)
@@ -30,10 +30,10 @@ import java.util.concurrent.Executor;
  * <p>
  * An additional form (<em>compose</em>) allows the construction of
  * computation pipelines from functions returning completion stages.
- *
+ * <p>
  * <p>Any argument to a stage's computation is the outcome of a
  * triggering stage's computation.
- *
+ * <p>
  * <li>One stage's execution may be triggered by completion of a
  * single stage, or both of two stages, or either of two stages.
  * Dependencies on a single stage are arranged using methods with
@@ -42,7 +42,7 @@ import java.util.concurrent.Executor;
  * effects, using correspondingly named methods. Those triggered by
  * <em>either</em> of two stages make no guarantees about which of the
  * results or effects are used for the dependent stage's computation.
- *
+ * <p>
  * <li>Dependencies among stages control the triggering of
  * computations, but do not otherwise guarantee any particular
  * ordering. Additionally, execution of a new stage's computations may
@@ -55,7 +55,7 @@ import java.util.concurrent.Executor;
  * explicit Executor arguments may have arbitrary execution
  * properties, and might not even support concurrent execution, but
  * are arranged for processing in a way that accommodates asynchrony.
- *
+ * <p>
  * <li>Two method forms ({ #handle handle} and {
  * #whenComplete whenComplete}) support unconditional computation
  * whether the triggering stage completed normally or exceptionally.
@@ -77,9 +77,9 @@ import java.util.concurrent.Executor;
  * exception unless the source stage also completed exceptionally, in
  * which case the exceptional completion from the source stage is
  * given preference and propagated to the dependent stage.
- *
+ * <p>
  * </ul>
- *
+ * <p>
  * <p>All methods adhere to the above triggering, execution, and
  * exceptional completion specifications (which are not repeated in
  * individual method specifications). Additionally, while arguments
@@ -87,7 +87,7 @@ import java.util.concurrent.Executor;
  * {@code T}) for methods accepting them may be null, passing a null
  * value for any other parameter will result in a {
  * NullPointerException} being thrown.
- *
+ * <p>
  * <p>Method form { #handle handle} is the most general way of
  * creating a continuation stage, unconditionally performing a
  * computation that is given both the result and exception (if any) of
@@ -96,7 +96,7 @@ import java.util.concurrent.Executor;
  * the result of the triggering stage instead of computing a new one.
  * Because a stage's normal result may be {@code null}, both methods
  * should have a computation structured thus:
- *
+ * <p>
  * <pre>{@code (result, exception) -> {
  *   if (exception == null) {
  *     // triggering stage completed normally
@@ -104,7 +104,7 @@ import java.util.concurrent.Executor;
  *     // triggering stage completed exceptionally
  *   }
  * }}</pre>
- *
+ * <p>
  * <p>This interface does not define methods for initially creating,
  * forcibly completing normally or exceptionally, probing completion
  * status or results, or awaiting completion of a stage.
@@ -121,11 +121,11 @@ public interface CompletionStep<T> {
      * Returns a new CompletionStage that, when this stage completes
      * normally, is executed with this stage's result as the argument
      * to the supplied function.
-     *
+     * <p>
      * <p>This method is analogous to
      * { java.util.Optional#map Optional.map} and
      * { java.util.stream.Stream#map Stream.map}.
-     *
+     * <p>
      * <p>See the { CompletionStep} documentation for rules
      * covering exceptional completion.
      *
@@ -593,20 +593,20 @@ public interface CompletionStep<T> {
     /**
      * Returns a new CompletionStage that is completed with the same
      * value as the CompletionStage returned by the given function.
-     *
+     * <p>
      * <p>When this stage completes normally, the given function is
      * invoked with this stage's result as the argument, returning
      * another CompletionStage.  When that stage completes normally,
      * the CompletionStage returned by this method is completed with
      * the same value.
-     *
+     * <p>
      * <p>To ensure progress, the supplied function must arrange
      * eventual completion of its result.
-     *
+     * <p>
      * <p>This method is analogous to
      * { java.util.Optional#flatMap Optional.flatMap} and
      * { java.util.stream.Stream#flatMap Stream.flatMap}.
-     *
+     * <p>
      * <p>See the { CompletionStep} documentation for rules
      * covering exceptional completion.
      *
@@ -622,16 +622,16 @@ public interface CompletionStep<T> {
      * value as the CompletionStage returned by the given function,
      * executed using this stage's default asynchronous execution
      * facility.
-     *
+     * <p>
      * <p>When this stage completes normally, the given function is
      * invoked with this stage's result as the argument, returning
      * another CompletionStage.  When that stage completes normally,
      * the CompletionStage returned by this method is completed with
      * the same value.
-     *
+     * <p>
      * <p>To ensure progress, the supplied function must arrange
      * eventual completion of its result.
-     *
+     * <p>
      * <p>See the { CompletionStep} documentation for rules
      * covering exceptional completion.
      *
@@ -646,16 +646,16 @@ public interface CompletionStep<T> {
      * Returns a new CompletionStage that is completed with the same
      * value as the CompletionStage returned by the given function,
      * executed using the supplied Executor.
-     *
+     * <p>
      * <p>When this stage completes normally, the given function is
      * invoked with this stage's result as the argument, returning
      * another CompletionStage.  When that stage completes normally,
      * the CompletionStage returned by this method is completed with
      * the same value.
-     *
+     * <p>
      * <p>To ensure progress, the supplied function must arrange
      * eventual completion of its result.
-     *
+     * <p>
      * <p>See the { CompletionStep} documentation for rules
      * covering exceptional completion.
      *
@@ -672,7 +672,7 @@ public interface CompletionStep<T> {
      * Returns a new CompletionStage that, when this stage completes
      * either normally or exceptionally, is executed with this stage's
      * result and exception as arguments to the supplied function.
-     *
+     * <p>
      * <p>When this stage is complete, the given function is invoked
      * with the result (or {@code null} if none) and the exception (or
      * {@code null} if none) of this stage as arguments, and the
@@ -691,7 +691,7 @@ public interface CompletionStep<T> {
      * either normally or exceptionally, is executed using this stage's
      * default asynchronous execution facility, with this stage's
      * result and exception as arguments to the supplied function.
-     *
+     * <p>
      * <p>When this stage is complete, the given function is invoked
      * with the result (or {@code null} if none) and the exception (or
      * {@code null} if none) of this stage as arguments, and the
@@ -710,7 +710,7 @@ public interface CompletionStep<T> {
      * either normally or exceptionally, is executed using the
      * supplied executor, with this stage's result and exception as
      * arguments to the supplied function.
-     *
+     * <p>
      * <p>When this stage is complete, the given function is invoked
      * with the result (or {@code null} if none) and the exception (or
      * {@code null} if none) of this stage as arguments, and the
@@ -729,12 +729,12 @@ public interface CompletionStep<T> {
     /**
      * Returns a new CompletionStage with the same result or exception as
      * this stage, that executes the given action when this stage completes.
-     *
+     * <p>
      * <p>When this stage is complete, the given action is invoked
      * with the result (or {@code null} if none) and the exception (or
      * {@code null} if none) of this stage as arguments.  The returned
      * stage is completed when the action returns.
-     *
+     * <p>
      * <p>Unlike method { #handle handle},
      * this method is not designed to translate completion outcomes,
      * so the supplied action should not throw an exception. However,
@@ -755,12 +755,12 @@ public interface CompletionStep<T> {
      * Returns a new CompletionStage with the same result or exception as
      * this stage, that executes the given action using this stage's
      * default asynchronous execution facility when this stage completes.
-     *
+     * <p>
      * <p>When this stage is complete, the given action is invoked with the
      * result (or {@code null} if none) and the exception (or {@code null}
      * if none) of this stage as arguments.  The returned stage is completed
      * when the action returns.
-     *
+     * <p>
      * <p>Unlike method { #handleAsync(Function2) handleAsync},
      * this method is not designed to translate completion outcomes,
      * so the supplied action should not throw an exception. However,
@@ -781,12 +781,12 @@ public interface CompletionStep<T> {
      * Returns a new CompletionStage with the same result or exception as
      * this stage, that executes the given action using the supplied
      * Executor when this stage completes.
-     *
+     * <p>
      * <p>When this stage is complete, the given action is invoked with the
      * result (or {@code null} if none) and the exception (or {@code null}
      * if none) of this stage as arguments.  The returned stage is completed
      * when the action returns.
-     *
+     * <p>
      * <p>Unlike method { #handleAsync(Function2,Executor) handleAsync},
      * this method is not designed to translate completion outcomes,
      * so the supplied action should not throw an exception. However,

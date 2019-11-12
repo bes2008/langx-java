@@ -7,6 +7,7 @@ import com.jn.langx.util.Numbers;
 
 public class DoubleConverter implements Converter<Object, Double> {
     public static final DoubleConverter INSTANCE = new DoubleConverter();
+
     @Override
     public Double apply(Object input) {
         if (input == null) {

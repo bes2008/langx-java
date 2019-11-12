@@ -230,7 +230,7 @@ public class Collects {
     public static <K, V> Map<K, V> getEmptyMapIfNull(@Nullable Map<K, V> map, @Nullable MapType mapType) {
         if (map == null) {
             if (mapType == null) {
-                return  emptyHashMap();
+                return emptyHashMap();
             }
             Map map1;
             switch (mapType) {
@@ -259,7 +259,7 @@ public class Collects {
                     map1 = emptyHashMap();
                     break;
             }
-            return  map1;
+            return map1;
         }
         return map;
     }

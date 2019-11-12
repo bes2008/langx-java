@@ -4,11 +4,11 @@ public class NetworkAddress {
     private String host;
     private int port;
 
-    public NetworkAddress(){
+    public NetworkAddress() {
 
     }
 
-    public NetworkAddress(String host, int port){
+    public NetworkAddress(String host, int port) {
         this.host = host;
         this.port = port;
     }

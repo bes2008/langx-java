@@ -1,6 +1,6 @@
 package com.jn.langx.exception;
 
-public class UnsupportedEnvironmentException extends RuntimeException{
+public class UnsupportedEnvironmentException extends RuntimeException {
     public UnsupportedEnvironmentException() {
         super();
     }

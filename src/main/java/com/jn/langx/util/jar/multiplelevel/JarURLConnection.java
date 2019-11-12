@@ -6,7 +6,6 @@ import java.security.Permission;
 
 /**
  * {@link java.net.JarURLConnection} used to support {@link JarFile#getUrl()}.
- *
  */
 final class JarURLConnection extends java.net.JarURLConnection {
 

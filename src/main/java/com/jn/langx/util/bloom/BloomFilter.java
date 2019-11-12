@@ -20,7 +20,7 @@ import java.util.BitSet;
  * The receiver uses the filter to test whether various elements are members of the set. Though the
  * filter will occasionally return a false positive, it will never return a false negative. When creating
  * the filter, the sender can choose its desired point in a trade-off between the false positive rate and the size.
- *
+ * <p>
  * <p>
  * Originally created by
  * <a href="http://www.one-lab.org">European Commission One-Lab Project 034819</a>.
@@ -94,7 +94,7 @@ public class BloomFilter extends Filter {
 
     @Override
     public boolean membershipTest(@NonNull Key key) {
-        Preconditions.checkNotNull(key,"key cannot be null" );
+        Preconditions.checkNotNull(key, "key cannot be null");
 
         int[] h = hash.hash(key);
         hash.clear();

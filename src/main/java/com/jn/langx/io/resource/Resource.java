@@ -8,6 +8,7 @@ import java.nio.channels.ReadableByteChannel;
 public interface Resource<E> {
 
     E getRealResource();
+
     /**
      * Return an {@link InputStream} for the content of an underlying resource.
      * <p>It is expected that each call creates a <i>fresh</i> stream.
