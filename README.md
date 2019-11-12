@@ -108,6 +108,7 @@ Java lang extensions
 + BloomFilter
 + IO Resource Load API
 + Common Configuration API
++ Multiple Level Jar URLStreamHandler, JarUrlClassLoader
 
 
 ## Contact:
