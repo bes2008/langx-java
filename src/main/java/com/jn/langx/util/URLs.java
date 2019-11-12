@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.io.file.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +102,14 @@ public class URLs {
         return protocol.equals(URL_PROTOCOL_JAR) && url.getPath().contains(JAR_URL_SEPARATOR);
     }
 
+    public static boolean isMultipleLevelJarURL(URL url) {
+        if (isJarURL(url)) {
+            String path = url.getPath();
+            return path.indexOf(JAR_URL_SEPARATOR) != path.lastIndexOf(JAR_URL_SEPARATOR);
+        }
+        return false;
+    }
+
     public static File getFile(URL url) {
         if (isFileURL(url)) {
             return new File(url.getFile());
@@ -116,6 +125,12 @@ public class URLs {
             if (isFileURL(url)) {
                 return Files.exists(getFile(url));
             } else {
+                if (isJarURL(url)) {
+                    if (isMultipleLevelJarURL(url)) {
+                        throw new IOException(StringTemplates.formatWithPlaceholder("The URL ({}) is a multiple level jar url, JDK built-in URLStreamHandler is not supported", url.getPath()));
+                    }
+                }
+
                 // Try a URL connection content-length header
                 URLConnection conn = url.openConnection();
                 HttpURLConnection httpCon = (conn instanceof HttpURLConnection ? (HttpURLConnection) conn : null);
