@@ -8,7 +8,6 @@ import com.jn.langx.util.Preconditions;
  * {@link String}, {@link #subSequence(int, int)} operations will not copy the underlying
  * character array.
  *
- * @author Phillip Webb
  */
 final class StringSequence implements CharSequence {
 

@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
 /**
  * {@link URLStreamHandler} for Spring Boot loader {@link JarFile}s.
  *
- * @author Phillip Webb
- * @author Andy Wilkinson
  * @see JarFile#registerUrlProtocolHandler()
  * @since 1.0.0
  */

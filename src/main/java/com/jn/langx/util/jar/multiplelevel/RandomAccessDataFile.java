@@ -5,9 +5,6 @@ import java.io.*;
 /**
  * {@link RandomAccessData} implementation backed by a {@link RandomAccessFile}.
  *
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @since 1.0.0
  */
 public class RandomAccessDataFile implements RandomAccessData {
 

@@ -8,8 +8,6 @@ import java.io.IOException;
 /**
  * A ZIP File "Central directory file header record" (CDFH).
  *
- * @author Phillip Webb
- * @author Andy Wilkinson
  * @see <a href="https://en.wikipedia.org/wiki/Zip_%28file_format%29">Zip File Format</a>
  */
 

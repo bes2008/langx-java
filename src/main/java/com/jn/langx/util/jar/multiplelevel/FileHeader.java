@@ -5,7 +5,6 @@ import java.util.zip.ZipEntry;
 /**
  * A file header record that has been loaded from a Jar file.
  *
- * @author Phillip Webb
  * @see JarEntry
  * @see CentralDirectoryFileHeader
  */

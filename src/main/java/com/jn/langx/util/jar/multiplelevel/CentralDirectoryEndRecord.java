@@ -8,9 +8,6 @@ import java.io.IOException;
 /**
  * A ZIP File "End of central directory record" (EOCD).
  *
- * @author Phillip Webb
- * @author Andy Wilkinson
- * @author Camille Vienot
  * @see <a href="https://en.wikipedia.org/wiki/Zip_%28file_format%29">Zip File Format</a>
  */
 class CentralDirectoryEndRecord {

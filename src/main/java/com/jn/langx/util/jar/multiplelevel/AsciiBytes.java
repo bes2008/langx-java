@@ -7,8 +7,6 @@ import com.jn.langx.util.io.Charsets;
  * Simple wrapper around a byte array that represents an ASCII. Used for performance
  * reasons to save constructing Strings for ZIP data.
  *
- * @author Phillip Webb
- * @author Andy Wilkinson
  */
 final class AsciiBytes {
 

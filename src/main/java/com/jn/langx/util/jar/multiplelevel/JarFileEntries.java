@@ -21,8 +21,6 @@ import java.util.zip.ZipEntry;
  * A typical Spring Boot application will have somewhere in the region of 10,500 entries
  * which should consume about 122K.
  *
- * @author Phillip Webb
- * @author Andy Wilkinson
  */
 class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
 

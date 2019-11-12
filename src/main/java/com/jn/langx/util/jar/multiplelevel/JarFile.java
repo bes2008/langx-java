@@ -28,8 +28,6 @@ import java.util.zip.ZipEntry;
  * embedded JAR files (as long as their entry is not compressed).</li>
  * </ul>
  *
- * @author Phillip Webb
- * @author Andy Wilkinson
  * @since 1.0.0
  */
 public class JarFile extends java.util.jar.JarFile {
