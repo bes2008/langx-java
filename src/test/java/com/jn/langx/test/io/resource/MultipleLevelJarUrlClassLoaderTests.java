@@ -16,7 +16,11 @@ public class MultipleLevelJarUrlClassLoaderTests {
         String currentFilePath = workDir + "/src/test/java/" + Reflects.getPackageName(ResourceLoadTests.class).replaceAll("\\.", "/") + "/sqlhelper-examples-2.2.0.jar";// + URLs.JAR_URL_SEPARATOR + "BOOT-INF/lib/langx-java-1.0.0.jar" + URLs.JAR_URL_SEPARATOR + "com/jn/langx/util/collection/Collects.class";
         URL url = new URL(URLs.URL_PREFIX_FILE + currentFilePath);
         ClassLoader classLoader = new MultipleLevelJarUrlClassLoader(new URL[]{url}, Thread.currentThread().getContextClassLoader().getParent());
-        classLoader.loadClass("com.jn.langx.util.collection.Collects");
+        try {
+            classLoader.loadClass("com.jn.langx.util.collection.Collects");
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
 }
