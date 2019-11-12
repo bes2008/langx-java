@@ -163,29 +163,40 @@ public class URLs {
     }
 
     public static long getContentLength(URL url) {
-        if (URLs.isFileURL(url)) {
-            return URLs.getFile(url).length();
-        } else {
-            URLConnection con = null;
-            try {
-                con = url.openConnection();
-                long length = URLConnections.getContentLengthLong(con);
-                if (length < 0) {
-                    length = URLConnections.getContentLength(con);
+        Preconditions.checkNotNull(url);
+        try {
+            if (URLs.isFileURL(url)) {
+                return URLs.getFile(url).length();
+            } else {
+                if (isJarURL(url)) {
+                    if (isMultipleLevelJarURL(url)) {
+                        String urlString = url.toString();
+                        url = new URL(null, urlString, new MultipleLevelURLStreamHandler());
+                    }
                 }
-                return length;
-            } catch (IOException ex) {
-                // ignore it
-                return -1;
-            } finally {
-                if (Emptys.isNotNull(con)) {
-                    try {
-                        con.getInputStream().close();
-                    } catch (IOException ex) {
-                        // ignore it
+                URLConnection con = null;
+                try {
+                    con = url.openConnection();
+                    long length = URLConnections.getContentLengthLong(con);
+                    if (length < 0) {
+                        length = URLConnections.getContentLength(con);
+                    }
+                    return length;
+                } catch (IOException ex) {
+                    // ignore it
+                    return -1;
+                } finally {
+                    if (Emptys.isNotNull(con)) {
+                        try {
+                            con.getInputStream().close();
+                        } catch (IOException ex) {
+                            // ignore it
+                        }
                     }
                 }
             }
+        } catch (Throwable ex) {
+            return -1;
         }
     }
 
