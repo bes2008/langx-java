@@ -1,5 +1,7 @@
-package com.jn.langx.util.jar.multiplelevel;
+package com.jn.langx.util.jar;
 
+import com.jn.langx.util.jar.multiplelevel.Handler;
+import com.jn.langx.util.jar.multiplelevel.JarFile;
 import com.jn.langx.util.reflect.Reflects;
 
 import java.io.IOException;
@@ -112,8 +114,8 @@ public class MultipleLevelJarUrlClassLoader extends URLClassLoader {
                     for (URL url : getURLs()) {
                         try {
                             URLConnection connection = url.openConnection();
-                            if (connection instanceof java.net.JarURLConnection) {
-                                java.util.jar.JarFile jarFile = ((java.net.JarURLConnection) connection).getJarFile();
+                            if (connection instanceof JarURLConnection) {
+                                java.util.jar.JarFile jarFile = ((JarURLConnection) connection).getJarFile();
                                 if (jarFile.getEntry(classEntryName) != null && jarFile.getEntry(packageEntryName) != null
                                         && jarFile.getManifest() != null) {
                                     definePackage(packageName, jarFile.getManifest(), url);
