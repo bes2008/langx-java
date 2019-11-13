@@ -85,6 +85,10 @@ public class Pipeline<E> {
         return Collects.findFirst(this.collection, predicate);
     }
 
+    public Pipeline<E> clearNulls(){
+        return new Pipeline<E>(Collects.clearNulls(this.collection));
+    }
+
     public int count() {
         return this.collection.size();
     }

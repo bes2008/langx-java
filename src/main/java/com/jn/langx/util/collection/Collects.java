@@ -419,7 +419,7 @@ public class Collects {
         return emptyArrayList();
     }
 
-    private static Collection emptyCollection(@Nullable Iterable iterable) {
+    private static <E> Collection<E> emptyCollection(@Nullable Iterable<E> iterable) {
         if (iterable == null) {
             return emptyArrayList();
         }
@@ -624,7 +624,7 @@ public class Collects {
     public static <E, R> Collection<R> map(@Nullable Object anyObject, @NonNull final Function<E, R> mapper) {
         Preconditions.checkNotNull(mapper);
         Iterable<E> iterable = asIterable(anyObject);
-        final Collection<R> result = emptyCollection(iterable);
+        final Collection result = emptyCollection(iterable);
         forEach(iterable, new Consumer<E>() {
             @Override
             public void accept(E e) {
@@ -692,7 +692,7 @@ public class Collects {
             return emptyArrayList();
         }
         Preconditions.checkNotNull(mapper);
-        final Collection<R> list = emptyCollectionByInfer(collection);
+        final Collection<R> list = (Collection<R>) emptyCollectionByInfer(collection);
         forEach(collection, new Consumer<E[]>() {
             @Override
             public void accept(E[] c) {
@@ -1551,6 +1551,11 @@ public class Collects {
                 };
             }
         };
+    }
+
+    public static <E, C extends Collection<E>> C clearNulls(@NonNull C collection) {
+        final Collection<E> c = Collects.emptyCollectionByInfer(collection);
+        return (C)filter(c, Functions.nonNullPredicate());
     }
 
 }
