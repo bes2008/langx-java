@@ -370,7 +370,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         if (!running) {
             running = true;
             computeNextEvictExpiredTime();
-            if (evictExpiredInterval >= 0) {
+            if (evictExpiredInterval > 0) {
                 Preconditions.checkNotNull(timer);
                 timeout = timer.newTimeout(this.new EvictExpiredTask(), nextEvictExpiredTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
             }

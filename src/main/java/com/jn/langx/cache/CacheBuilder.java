@@ -124,7 +124,9 @@ public class CacheBuilder<K, V> {
         ConcurrentHashMap<K, Entry<K, V>> map = new ConcurrentHashMap<K, Entry<K, V>>(initialCapacity, 16, concurrencyLevel);
         cache.setMap(map);
         cache.setRemoveListener(removeListener);
-        cache.setTimer(timer);
+        if (evictExpiredInterval > 0 && timer != null) {
+            cache.setTimer(timer);
+        }
         cache.startup();
         return cache;
     }
