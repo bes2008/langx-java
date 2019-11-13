@@ -332,7 +332,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
                 Collects.forEach(keys, new Consumer2<Integer, K>() {
                     @Override
                     public void accept(Integer expireTime, K key) {
-                        remove(key, RemoveCause.COLLECTED);
+                        remove(key, RemoveCause.EXPRIED);
                     }
                 });
             }

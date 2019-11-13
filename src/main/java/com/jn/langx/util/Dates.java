@@ -426,6 +426,18 @@ public class Dates {
         return nextTime(System.currentTimeMillis(), durationInMills);
     }
 
+    public static long nowMills(){
+        return System.currentTimeMillis();
+    }
+
+    public static Date now(){
+        return new Date();
+    }
+
+    public static String nowReadableString(){
+        return format(new Date(), yyyy_MM_dd_HH_mm_ss);
+    }
+
     //-----------------------------------------------------------------------
 
     /**
