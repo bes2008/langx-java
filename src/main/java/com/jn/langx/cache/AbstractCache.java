@@ -2,6 +2,7 @@ package com.jn.langx.cache;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
@@ -11,6 +12,10 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.struct.Holder;
+import com.jn.langx.util.timing.timer.Timeout;
+import com.jn.langx.util.timing.timer.Timer;
+import com.jn.langx.util.timing.timer.TimerTask;
+import com.jn.langx.util.timing.timer.WheelTimers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public abstract class AbstractCache<K, V> implements Cache<K, V> {
+public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
     private ConcurrentHashMap<K, Entry<K, V>> map;
     private Loader<K, V> globalLoader;
@@ -30,13 +35,18 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     // unit: seconds
     private long refreshAfterAccess = Long.MAX_VALUE;
     // unit: mills
-    private long evictExpiredInterval;
+    private volatile long evictExpiredInterval;
     // unit: mills
-    private long nextEvictExpiredTime;
+    private volatile long nextEvictExpiredTime;
 
     private RemoveListener<K, V> removeListener;
     private int maxCapacity;
     private float capacityHeightWater = 0.95f;
+
+    private Timer timer;
+    private Timeout timeout;
+
+    private volatile boolean running = false;
 
     /**
      * Key: expire time
@@ -54,10 +64,27 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     private ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
     protected AbstractCache(int maxCapacity, long evictExpiredInterval) {
+        this(maxCapacity, evictExpiredInterval, evictExpiredInterval >= 0 ? WheelTimers.newHashedWheelTimer() : null);
+    }
+
+    protected AbstractCache(int maxCapacity, long evictExpiredInterval, Timer timer) {
         this.evictExpiredInterval = evictExpiredInterval;
         Preconditions.checkTrue(evictExpiredInterval >= 0);
         this.maxCapacity = maxCapacity;
         computeNextEvictExpiredTime();
+        this.timer = timer;
+    }
+
+    class EvictExpiredTask implements TimerTask {
+        @Override
+        public void run(Timeout timeout) throws Exception {
+            if (timeout.isCancelled()) {
+                // NOOP
+            } else {
+                evictExpired();
+                timer.newTimeout(this, nextEvictExpiredTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+            }
+        }
     }
 
     void computeNextEvictExpiredTime() {
@@ -83,6 +110,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     public void set(@NonNull K key, @Nullable V value, long expire) {
         Preconditions.checkNotNull(key);
         Preconditions.checkTrue(expire > 0);
+        if (!running) {
+            return;
+        }
         evictExpired();
         long now = System.currentTimeMillis();
         if (value == null) {
@@ -121,6 +151,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     }
 
     private V get(@NonNull K key, @Nullable Supplier<K, V> loader, boolean loadIfAbsent) {
+        if (!running) {
+            return null;
+        }
         evictExpired();
         Entry<K, V> entry = map.get(key);
         if (entry != null) {
@@ -196,6 +229,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
     }
 
     private V refresh(@NonNull K key, boolean internalInvoke) {
+        if (!running) {
+            return null;
+        }
         Preconditions.checkNotNull(key);
         evictExpired();
         Holder<Throwable> exceptionHolder = new Holder<Throwable>();
@@ -301,6 +337,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
                 });
             }
         } finally {
+            computeNextEvictExpiredTime();
             writeLock.unlock();
         }
     }
@@ -326,6 +363,23 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
             }
         });
         return map;
+    }
+
+    @Override
+    public void startup() {
+        if (!running) {
+            running = true;
+            computeNextEvictExpiredTime();
+            if (evictExpiredInterval >= 0) {
+                Preconditions.checkNotNull(timer);
+                timeout = timer.newTimeout(this.new EvictExpiredTask(), nextEvictExpiredTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+            }
+        }
+    }
+
+    @Override
+    public void shutdown() {
+        running = false;
     }
 
     void setMap(ConcurrentHashMap<K, Entry<K, V>> map) {
@@ -362,5 +416,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V> {
 
     void setRefreshAfterAccess(long refreshAfterAccess) {
         this.refreshAfterAccess = refreshAfterAccess;
+    }
+
+    public void setTimer(Timer timer) {
+        this.timer = timer;
     }
 }

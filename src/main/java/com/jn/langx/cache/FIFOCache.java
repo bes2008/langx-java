@@ -2,6 +2,7 @@ package com.jn.langx.cache;
 
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.timing.timer.Timer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -10,6 +11,14 @@ import java.util.List;
 public class FIFOCache<K, V> extends AbstractCache<K, V> {
     public FIFOCache() {
         super(Integer.MAX_VALUE, 60 * 1000);
+    }
+
+    public FIFOCache(int maxCapacity, long evictExpiredInterval) {
+        super(maxCapacity, evictExpiredInterval);
+    }
+
+    public FIFOCache(int maxCapacity, long evictExpiredInterval, Timer timer) {
+        super(maxCapacity, evictExpiredInterval, timer);
     }
 
     private LinkedHashMap<K, Entry<K, V>> queue = new LinkedHashMap<K, Entry<K, V>>();

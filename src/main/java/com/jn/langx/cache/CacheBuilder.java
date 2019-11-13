@@ -3,6 +3,7 @@ package com.jn.langx.cache;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.timing.timer.Timer;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +25,8 @@ public class CacheBuilder<K, V> {
     private long evictExpiredInterval = Long.MAX_VALUE;
     private RemoveListener<K, V> removeListener;
     private int maxCapacity = Integer.MAX_VALUE;
+
+    private Timer timer;
 
     private float capatityHeightWater = 0.95f;
 
@@ -72,8 +75,17 @@ public class CacheBuilder<K, V> {
      * @param evictExpiredIntervalInMills the evict period
      * @return the cache builder
      */
+    public CacheBuilder<K, V> evictExpiredInterval(long evictExpiredIntervalInMills, Timer timer) {
+        return evictExpiredInterval(evictExpiredIntervalInMills).timer(timer);
+    }
+
     public CacheBuilder<K, V> evictExpiredInterval(long evictExpiredIntervalInMills) {
         this.evictExpiredInterval = evictExpiredIntervalInMills;
+        return this;
+    }
+
+    public CacheBuilder<K, V> timer(Timer timer) {
+        this.timer = timer;
         return this;
     }
 
@@ -87,7 +99,7 @@ public class CacheBuilder<K, V> {
         return this;
     }
 
-    public CacheBuilder<K, V> capatityHeightWater(float capatityHeightWater) {
+    public CacheBuilder<K, V> capacityHeightWater(float capatityHeightWater) {
         this.capatityHeightWater = capatityHeightWater;
         return this;
     }
@@ -99,7 +111,7 @@ public class CacheBuilder<K, V> {
 
     public Cache<K, V> build() {
         Preconditions.checkNotNull(cacheClass, "Please specify your cache class");
-        Preconditions.checkTrue(Reflects.isSubClassOrEquals(AbstractCache.class, cacheClass), StringTemplates.formatWithPlaceholder("Your cache calss {} is not a subclass of {}", Reflects.getFQNClassName(cacheClass), Reflects.getFQNClassName(AbstractCache.class)));
+        Preconditions.checkTrue(Reflects.isSubClass(AbstractCache.class, cacheClass), StringTemplates.formatWithPlaceholder("Your cache calss {} is not a subclass of {}", Reflects.getFQNClassName(cacheClass), Reflects.getFQNClassName(AbstractCache.class)));
         AbstractCache<K, V> cache = Reflects.<AbstractCache<K, V>>newInstance(cacheClass);
         Preconditions.checkNotNull(cache);
         cache.setExpireAfterRead(expireAfterRead < 0 ? Long.MAX_VALUE : expireAfterRead);
@@ -112,7 +124,8 @@ public class CacheBuilder<K, V> {
         ConcurrentHashMap<K, Entry<K, V>> map = new ConcurrentHashMap<K, Entry<K, V>>(initialCapacity, 16, concurrencyLevel);
         cache.setMap(map);
         cache.setRemoveListener(removeListener);
-        cache.computeNextEvictExpiredTime();
+        cache.setTimer(timer);
+        cache.startup();
         return cache;
     }
 }

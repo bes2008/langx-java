@@ -6,6 +6,7 @@ import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.timing.timer.Timer;
 
 import java.util.*;
 
@@ -34,6 +35,11 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
     public LRUCache(int maxCapacity, long evictExpiredInterval) {
         super(maxCapacity, evictExpiredInterval);
     }
+
+    public LRUCache(int maxCapacity, long evictExpiredInterval, Timer timer) {
+        super(maxCapacity, evictExpiredInterval, timer);
+    }
+
 
     @Override
     protected void addToCache(Entry<K, V> entry) {
