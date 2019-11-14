@@ -35,13 +35,21 @@ import java.util.Map;
  * using {@link ArrayBasedEscaperMap}.
  */
 public abstract class ArrayBasedCharEscaper extends CharEscaper {
-    // The replacement array (see ArrayBasedEscaperMap).
+    /**
+     * The replacement array (see ArrayBasedEscaperMap).
+     */
     private final char[][] replacements;
-    // The number of elements in the replacement array.
+    /**
+     * The number of elements in the replacement array.
+     */
     private final int replacementsLength;
-    // The first character in the safe range.
+    /**
+     * The first character in the safe range.
+     */
     private final char safeMin;
-    // The last character in the safe range.
+    /**
+     * The last character in the safe range.
+     */
     private final char safeMax;
 
     /**
@@ -75,8 +83,8 @@ public abstract class ArrayBasedCharEscaper extends CharEscaper {
      * @param safeMax    the highest character value in the safe range
      */
     protected ArrayBasedCharEscaper(ArrayBasedEscaperMap escaperMap, char safeMin, char safeMax) {
-
-        Preconditions.checkNotNull(escaperMap); // GWT specific check (do not optimize)
+// GWT specific check (do not optimize)
+        Preconditions.checkNotNull(escaperMap);
         this.replacements = escaperMap.getReplacementArray();
         this.replacementsLength = replacements.length;
         if (safeMax < safeMin) {
@@ -89,13 +97,14 @@ public abstract class ArrayBasedCharEscaper extends CharEscaper {
         this.safeMax = safeMax;
     }
 
-    /*
+    /**
      * This is overridden to improve performance. Rough benchmarking shows that this almost doubles
      * the speed when processing strings that do not require any escaping.
      */
     @Override
     public final String escape(String s) {
-        Preconditions.checkNotNull(s); // GWT specific check (do not optimize).
+        // GWT specific check (do not optimize).
+        Preconditions.checkNotNull(s);
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if ((c < replacementsLength && replacements[c] != null) || c > safeMax || c < safeMin) {
@@ -135,7 +144,9 @@ public abstract class ArrayBasedCharEscaper extends CharEscaper {
      *
      * @param c the character to escape
      * @return the replacement characters, or {@code null} if no escaping was required
+     * <p>
+     * // will do: Rename this something better once refactoring done
      */
-    // will do: Rename this something better once refactoring done
+
     protected abstract char[] escapeUnsafe(char c);
 }

@@ -31,7 +31,7 @@ import com.jn.langx.util.Preconditions;
  * multiple threads.
  *
  * <p>Popular escapers are defined as constants in classes like {@link
- * com.google.common.html.HtmlEscapers} and {@link com.google.common.xml.XmlEscapers}. To create
+ * com.jn.langx.text.html.HtmlEscapers} and {@link com.jn.langx.text.xml.XmlEscapers}. To create
  * your own escapers extend this class and implement the {@link #escape(char)} method.
  *
  * @author Sven Mawson

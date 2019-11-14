@@ -62,10 +62,14 @@ public final class CharEscaperBuilder {
         }
     }
 
-    // Replacement mappings.
+    /**
+     * Replacement mappings.
+     */
     private final Map<Character, String> map;
 
-    // The highest index we've seen so far.
+    /**
+     * The highest index we've seen so far.
+     */
     private int max = -1;
 
     /**

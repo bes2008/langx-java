@@ -37,16 +37,27 @@ import java.util.Map;
  * using {@link ArrayBasedEscaperMap}.
  */
 public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
-    // The replacement array (see ArrayBasedEscaperMap).
+    /**
+     * The replacement array (see ArrayBasedEscaperMap).
+     */
+
     private final char[][] replacements;
-    // The number of elements in the replacement array.
+    /**
+     * The number of elements in the replacement array.
+     */
     private final int replacementsLength;
-    // The first code point in the safe range.
+    /**
+     * The first code point in the safe range.
+     */
     private final int safeMin;
-    // The last code point in the safe range.
+    /**
+     * The last code point in the safe range.
+     */
     private final int safeMax;
 
-    // Cropped values used in the fast path range checks.
+    /**
+     * Cropped values used in the fast path range checks.
+     */
     private final char safeMinChar;
     private final char safeMaxChar;
 
@@ -92,7 +103,8 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
             int safeMin,
             int safeMax,
             @Nullable String unsafeReplacement) {
-        Preconditions.checkNotNull(escaperMap); // GWT specific check (do not optimize)
+        // GWT specific check (do not optimize)
+        Preconditions.checkNotNull(escaperMap);
         this.replacements = escaperMap.getReplacementArray();
         this.replacementsLength = replacements.length;
         if (safeMax < safeMin) {
@@ -130,18 +142,17 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
         }
     }
 
-    /*
+    /**
      * This is overridden to improve performance. Rough benchmarking shows that this almost doubles
      * the speed when processing strings that do not require any escaping.
      */
     @Override
     public final String escape(String s) {
-        Preconditions.checkNotNull(s); // GWT specific check (do not optimize)
+        // GWT specific check (do not optimize)
+        Preconditions.checkNotNull(s);
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if ((c < replacementsLength && replacements[c] != null)
-                    || c > safeMaxChar
-                    || c < safeMinChar) {
+            if ((c < replacementsLength && replacements[c] != null) || c > safeMaxChar || c < safeMinChar) {
                 return escapeSlow(s, i);
             }
         }
@@ -167,14 +178,14 @@ public abstract class ArrayBasedUnicodeEscaper extends UnicodeEscaper {
         return escapeUnsafe(cp);
     }
 
-    /* Overridden for performance. */
+    /**
+     * Overridden for performance.
+     */
     @Override
     protected final int nextEscapeIndex(CharSequence csq, int index, int end) {
         while (index < end) {
             char c = csq.charAt(index);
-            if ((c < replacementsLength && replacements[c] != null)
-                    || c > safeMaxChar
-                    || c < safeMinChar) {
+            if ((c < replacementsLength && replacements[c] != null) || c > safeMaxChar || c < safeMinChar) {
                 break;
             }
             index++;
