@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 /**
  * @author jinuo.fang
  */
-public class ArrayIterator<E> implements Iterable<E>, Iterator<E> {
+public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterable<E>{
     private final E[] array;
     private int index = 0;
     private final int length;
@@ -33,10 +33,5 @@ public class ArrayIterator<E> implements Iterable<E>, Iterator<E> {
         } else {
             throw new NoSuchElementException();
         }
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
     }
 }

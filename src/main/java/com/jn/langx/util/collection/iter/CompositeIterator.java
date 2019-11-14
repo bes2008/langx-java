@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * @param <E> the element type
  */
-public class CompositeIterator<E> implements Iterator<E> {
+public class CompositeIterator<E> extends UnmodifiableIterator {
 
     private final Set<Iterator<E>> iterators = Collects.emptyHashSet(true);
 
@@ -55,11 +55,6 @@ public class CompositeIterator<E> implements Iterator<E> {
             }
         }
         throw new NoSuchElementException("All iterators exhausted");
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException("CompositeIterator does not support remove()");
     }
 
 }
