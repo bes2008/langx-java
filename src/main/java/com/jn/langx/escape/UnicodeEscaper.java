@@ -14,7 +14,7 @@
 
 package com.jn.langx.escape;
 
-import com.jn.langx.util.InternalThreadLocalMap;
+import com.jn.langx.util.GlobalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
 
 /**
@@ -152,7 +152,7 @@ public abstract class UnicodeEscaper extends Escaper {
     int end = s.length();
 
     // Get a destination buffer and setup some loop variables.
-    char[] dest = InternalThreadLocalMap.getCharBuffer();
+    char[] dest = GlobalThreadLocalMap.getCharBuffer();
     int destIndex = 0;
     int unescapedChunkStart = 0;
 

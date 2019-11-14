@@ -62,36 +62,36 @@ public class Dates {
     public static String format(@NonNull Date date, @NonNull String pattern) {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(date);
-        return InternalThreadLocalMap.getSimpleDateFormat(pattern).format(date);
+        return GlobalThreadLocalMap.getSimpleDateFormat(pattern).format(date);
     }
 
     public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern) {
-        return InternalThreadLocalMap.getSimpleDateFormat(pattern);
+        return GlobalThreadLocalMap.getSimpleDateFormat(pattern);
     }
 
     public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable Locale locale) {
-        return InternalThreadLocalMap.getSimpleDateFormat(pattern, locale);
+        return GlobalThreadLocalMap.getSimpleDateFormat(pattern, locale);
     }
 
     public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable TimeZone timeZone) {
-        return InternalThreadLocalMap.getSimpleDateFormat(pattern, timeZone);
+        return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZone);
     }
 
     public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable String timeZoneId) {
-        return InternalThreadLocalMap.getSimpleDateFormat(pattern, timeZoneId);
+        return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZoneId);
     }
 
     public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
-        return InternalThreadLocalMap.getSimpleDateFormat(pattern, timeZone, locale);
+        return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZone, locale);
     }
 
     public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable String timeZoneId, @Nullable Locale locale) {
-        return InternalThreadLocalMap.getSimpleDateFormat(pattern, timeZoneId, locale);
+        return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZoneId, locale);
     }
 
     public static Date parse(String dateString, String pattern) {
         try {
-            return InternalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
+            return GlobalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
         } catch (ParseException ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }

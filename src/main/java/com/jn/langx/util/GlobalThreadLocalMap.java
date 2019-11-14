@@ -17,19 +17,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class InternalThreadLocalMap {
-    private static final ThreadLocal<InternalThreadLocalMap> cache = new ThreadLocal<InternalThreadLocalMap>() {
+public class GlobalThreadLocalMap {
+    private static final ThreadLocal<GlobalThreadLocalMap> cache = new ThreadLocal<GlobalThreadLocalMap>() {
         @Override
-        protected InternalThreadLocalMap initialValue() {
-            return new InternalThreadLocalMap();
+        protected GlobalThreadLocalMap initialValue() {
+            return new GlobalThreadLocalMap();
         }
     };
 
-    public static InternalThreadLocalMap get() {
+    private static GlobalThreadLocalMap get() {
         return cache.get();
     }
 
-
+    /**
+     * encoder, decoder
+     */
     private final Map<Charset, CharsetEncoder> encoderMap = WrappedNonAbsentMap.wrap(new IdentityHashMap<Charset, CharsetEncoder>(), new Supplier<Charset, CharsetEncoder>() {
         @Override
         public CharsetEncoder get(Charset charset) {
@@ -54,6 +56,7 @@ public class InternalThreadLocalMap {
 
 
     /**
+     * date formatter
      * key: pattern
      */
     private final Map<SimpleDateFormatCacheKey, SimpleDateFormat> simpleDateFormatMap = new NonAbsentHashMap<SimpleDateFormatCacheKey, SimpleDateFormat>(new Supplier<SimpleDateFormatCacheKey, SimpleDateFormat>() {
@@ -146,4 +149,11 @@ public class InternalThreadLocalMap {
             return result;
         }
     }
+
+    private final char[] charBuffer = new char[1024];
+
+    public static char[] getCharBuffer() {
+        return get().charBuffer;
+    }
+
 }
