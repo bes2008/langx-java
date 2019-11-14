@@ -90,7 +90,7 @@ public class Collects {
         return new NonAbsentHashMap<K, V>(supplier);
     }
 
-    public static <K, V> WrappedNonAbsentMap<K, V> wrapAsNonAbsentMap(Map<K, V> map, Supplier<K, V> supplier) {
+    public static <K, V> WrappedNonAbsentMap<K, V> wrapAsNonAbsentMap(@NonNull Map<K, V> map, @NonNull Supplier<K, V> supplier) {
         Preconditions.checkNotNull(map);
         Preconditions.checkNotNull(supplier);
         return new WrappedNonAbsentMap<K, V>(map, supplier);
@@ -151,7 +151,7 @@ public class Collects {
      * @param <E> Element
      * @return An empty, mutable java.util.LinkedList
      */
-    public static <E> List<E> emptyLinkedList() {
+    public static <E> LinkedList<E> emptyLinkedList() {
         return new LinkedList<E>();
     }
 
@@ -159,24 +159,24 @@ public class Collects {
         return Arrs.createArray(Primitives.wrap(componentType), 0);
     }
 
-    public static <E> ArrayList<E> newArrayList(E... elements) {
-        return new ArrayList<E>(Arrays.asList(elements));
+    public static <E> ArrayList<E> newArrayList(@Nullable E... elements) {
+        return new ArrayList<E>(asList(elements));
     }
 
-    public static <E> LinkedList<E> newLinkedList(E... elements) {
-        return new LinkedList<E>(Arrays.asList(elements));
+    public static <E> LinkedList<E> newLinkedList(@Nullable E... elements) {
+        return new LinkedList<E>(asList(elements));
     }
 
-    public static <E> HashSet<E> newHashSet(E... elements) {
-        return new HashSet<E>(Arrays.asList(elements));
+    public static <E> HashSet<E> newHashSet(@Nullable E... elements) {
+        return new HashSet<E>(asList(elements));
     }
 
-    public static <E> LinkedHashSet<E> newLinkedHashSet(E... elements) {
-        return new LinkedHashSet<E>(Arrays.asList(elements));
+    public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable E... elements) {
+        return new LinkedHashSet<E>(asList(elements));
     }
 
-    public static <E> TreeSet<E> newTreeSet(E... elements) {
-        return new TreeSet<E>(Arrays.asList(elements));
+    public static <E> TreeSet<E> newTreeSet(@Nullable E... elements) {
+        return new TreeSet<E>(asList(elements));
     }
 
     public enum MapType {
@@ -297,7 +297,7 @@ public class Collects {
      * Avoid NPE, create an empty, new set when the specified set is null
      */
     public static <E> Set<E> getEmptySetIfNull(@Nullable Set<E> set) {
-        return getEmptySetIfNull(set);
+        return getEmptySetIfNull(set, null);
     }
 
     /**
@@ -523,10 +523,10 @@ public class Collects {
         Preconditions.checkNotNull(clazz);
         if (Emptys.isEmpty(list)) {
             C c = (C) Collections.emptyList();
-            return (E[]) Arrays.copyOf(c.toArray(), list.size(), clazz);
+            return Arrays.copyOf(c.toArray(), list.size(), clazz);
         }
         // Make a new array of the specified class
-        return (E[]) Arrays.copyOf(list.toArray(), list.size(), clazz);
+        return Arrays.copyOf(list.toArray(), list.size(), clazz);
     }
 
     /**
@@ -671,7 +671,7 @@ public class Collects {
      */
     public static <K, V, K1, V1, M extends Map<K, V>> Map<K1, V1> map(@Nullable M map, @NonNull final Mapper2<K, V, Pair<K1, V1>> mapper) {
         Preconditions.checkNotNull(mapper);
-        final Map<K1, V1> result = (Map<K1, V1>) getEmptyMapIfNull(null, MapType.ofMap(map));
+        final Map<K1, V1> result = getEmptyMapIfNull(null, MapType.ofMap(map));
         if (Emptys.isNotEmpty(map)) {
             forEach(map.entrySet(), new Consumer<Map.Entry<K, V>>() {
                 @Override
@@ -1252,7 +1252,8 @@ public class Collects {
         return map;
     }
 
-    public static <E, C extends Collection<E>> void addAll(final C collection, Iterable<E> iterable) {
+    public static <E, C extends Collection<E>> void addAll(@NonNull final C collection, @Nullable Iterable<E> iterable) {
+        Preconditions.checkNotNull(collection);
         if (Emptys.isNotEmpty(iterable)) {
             forEach(iterable, new Consumer<E>() {
                 @Override
@@ -1263,11 +1264,11 @@ public class Collects {
         }
     }
 
-    public static <E, C extends Collection<E>> void addAll(C collection, E... iterator) {
+    public static <E, C extends Collection<E>> void addAll(@NonNull C collection, @Nullable E... iterator) {
         addAll(collection, Collects.<E>asIterable(iterator));
     }
 
-    public static <E, C extends Collection<E>> void addAll(C collection, Iterator<E> iterator) {
+    public static <E, C extends Collection<E>> void addAll(@NonNull C collection, @Nullable Iterator<E> iterator) {
         addAll(collection, Collects.<E>asIterable(iterator));
     }
 
@@ -1355,11 +1356,11 @@ public class Collects {
         }
     }
 
-    public static <E> E reduce(E[] iterable, Operator2<E> operator) {
+    public static <E> E reduce(@Nullable E[] iterable, Operator2<E> operator) {
         return reduce(Collects.<E>asIterable(iterable), operator);
     }
 
-    public static <E> E reduce(Iterable<E> iterable, Operator2<E> operator) {
+    public static <E, C extends Iterable<E>> E reduce(@Nullable Iterable<E> iterable, Operator2<E> operator) {
         if (Emptys.isEmpty(iterable)) {
             return null;
         }
@@ -1553,9 +1554,9 @@ public class Collects {
         };
     }
 
-    public static <E, C extends Collection<E>> C clearNulls(@NonNull C collection) {
+    public static <E, C extends Collection<E>> C clearNulls(@Nullable C collection) {
         final Collection<E> c = Collects.emptyCollectionByInfer(collection);
-        return (C)filter(c, Functions.nonNullPredicate());
+        return (C) filter(c, Functions.nonNullPredicate());
     }
 
 }
