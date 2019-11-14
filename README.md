@@ -110,6 +110,7 @@ Java lang extensions
 + IO Resource Load API
 + Common Configuration API
 + Multiple Level Jar URLStreamHandler
++ Escaper API
 
 
 ## Contact:
