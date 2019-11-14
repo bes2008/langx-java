@@ -1,6 +1,6 @@
 package com.jn.langx.util.collection.iter;
 
-import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -13,18 +13,18 @@ import java.util.Iterator;
 public class EnumerationIterator<E> implements Iterator<E> {
     Enumeration<E> enumeration;
 
-    public EnumerationIterator(@NonNull Enumeration<E> enumeration) {
+    public EnumerationIterator(@Nullable Enumeration<E> enumeration) {
         this.enumeration = enumeration;
     }
 
     @Override
     public boolean hasNext() {
-        return enumeration.hasMoreElements();
+        return enumeration != null && enumeration.hasMoreElements();
     }
 
     @Override
     public E next() {
-        return enumeration.nextElement();
+        return enumeration != null ? enumeration.nextElement() : null;
     }
 
     @Override

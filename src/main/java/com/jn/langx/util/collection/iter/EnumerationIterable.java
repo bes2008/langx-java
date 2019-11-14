@@ -1,6 +1,6 @@
 package com.jn.langx.util.collection.iter;
 
-import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -13,12 +13,12 @@ import java.util.Iterator;
 public class EnumerationIterable<E> implements Iterable<E> {
     private EnumerationIterator<E> iterator;
 
-    public EnumerationIterable(@NonNull Enumeration<E> enumeration) {
+    public EnumerationIterable(@Nullable Enumeration<E> enumeration) {
         this(new EnumerationIterator<E>(enumeration));
     }
 
-    public EnumerationIterable(@NonNull EnumerationIterator<E> iterator) {
-        this.iterator = iterator;
+    public EnumerationIterable(@Nullable EnumerationIterator<E> iterator) {
+        this.iterator = iterator == null ? new EnumerationIterator<E>(null) : iterator;
     }
 
     @Override
