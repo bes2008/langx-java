@@ -1,5 +1,9 @@
 package com.jn.langx.util.collection.diff;
 
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Objects;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +18,10 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
         return adds;
     }
 
-    public void setAdds(Map<K, V> adds) {
-        this.adds = adds;
+    public void setAdds(@Nullable Map<K, V> adds) {
+        if (Objects.nonNull(adds)) {
+            this.adds = adds;
+        }
     }
 
     @Override
@@ -23,8 +29,10 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
         return removes;
     }
 
-    public void setRemoves(Map<K, V> removes) {
-        this.removes = removes;
+    public void setRemoves(@Nullable Map<K, V> removes) {
+        if (Objects.nonNull(removes)) {
+            this.removes = removes;
+        }
     }
 
     @Override
@@ -32,8 +40,10 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
         return updates;
     }
 
-    public void setUpdates(Map<K, V> updates) {
-        this.updates = updates;
+    public void setUpdates(@Nullable Map<K, V> updates) {
+        if (Objects.nonNull(updates)) {
+            this.updates = updates;
+        }
     }
 
     @Override
@@ -41,7 +51,14 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
         return equals;
     }
 
-    public void setEquals(Map<K, V> equals) {
-        this.equals = equals;
+    public void setEquals(@Nullable Map<K, V> equals) {
+        if (Objects.nonNull(equals)) {
+            this.equals = equals;
+        }
+    }
+
+    @Override
+    public boolean hasDifference() {
+        return Emptys.isNotEmpty(adds) && Emptys.isNotEmpty(updates) && Emptys.isNotEmpty(removes);
     }
 }

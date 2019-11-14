@@ -1,7 +1,8 @@
 package com.jn.langx.util.collection.diff;
 
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Objects;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,8 +24,9 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setAdds(@Nullable Collection<E> adds) {
-        Preconditions.checkNotNull(adds);
-        this.adds = adds;
+        if (Objects.nonNull(adds)) {
+            this.adds = adds;
+        }
     }
 
     @Override
@@ -33,8 +35,9 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setRemoves(@Nullable Collection<E> removes) {
-        Preconditions.checkNotNull(removes);
-        this.removes = removes;
+        if (Objects.nonNull(removes)) {
+            this.removes = removes;
+        }
     }
 
     @Override
@@ -43,8 +46,9 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setUpdates(@Nullable Collection<E> updates) {
-        Preconditions.checkNotNull(updates);
-        this.updates = updates;
+        if (Objects.nonNull(updates)) {
+            this.updates = updates;
+        }
     }
 
     @Override
@@ -53,8 +57,13 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setEquals(@Nullable Collection<E> equals) {
-        Preconditions.checkNotNull(equals);
-        this.equals = equals;
+        if (Objects.nonNull(equals)) {
+            this.equals = equals;
+        }
     }
 
+    @Override
+    public boolean hasDifference() {
+        return Emptys.isNotEmpty(adds) && Emptys.isNotEmpty(updates) && Emptys.isNotEmpty(removes);
+    }
 }
