@@ -4,7 +4,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.URLs;
+import com.jn.langx.util.net.URLs;
 
 import java.net.URL;
 

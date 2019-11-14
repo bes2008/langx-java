@@ -1,8 +1,8 @@
 package com.jn.langx.test.io.resource;
 
 import com.jn.langx.util.SystemPropertys;
-import com.jn.langx.util.URLs;
 import com.jn.langx.util.jar.MultipleLevelJarUrlClassLoader;
+import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.reflect.Reflects;
 import org.junit.Test;
 

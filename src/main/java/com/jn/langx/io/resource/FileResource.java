@@ -2,7 +2,7 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.URLs;
+import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.io.file.Filenames;
 
 import java.io.File;

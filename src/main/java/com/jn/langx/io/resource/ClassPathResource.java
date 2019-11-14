@@ -3,8 +3,8 @@ package com.jn.langx.io.resource;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.URLs;
 import com.jn.langx.util.io.file.Filenames;
+import com.jn.langx.util.net.URLs;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

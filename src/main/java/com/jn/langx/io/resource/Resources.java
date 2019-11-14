@@ -5,7 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.URLs;
+import com.jn.langx.util.net.URLs;
 
 import java.io.InputStream;
 

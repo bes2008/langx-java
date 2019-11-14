@@ -1,7 +1,7 @@
 package com.jn.langx.io.resource;
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.URLs;
+import com.jn.langx.util.net.URLs;
 
 import java.io.File;
 import java.io.IOException;
