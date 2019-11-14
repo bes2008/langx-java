@@ -3,6 +3,7 @@ package com.jn.langx.util.function;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -218,6 +219,24 @@ public class Functions {
                         return filter.test(value);
                     }
                 });
+            }
+        };
+    }
+
+    public static <E1, E2> Predicate2<E1, E2> deepEqualsPredicate() {
+        return new Predicate2<E1, E2>() {
+            @Override
+            public boolean test(E1 v1, E2 v2) {
+                return Objects.deepEquals(v1, v2);
+            }
+        };
+    }
+
+    public static <E1, E2> Predicate2<E1, E2> equalsPredicate() {
+        return new Predicate2<E1, E2>() {
+            @Override
+            public boolean test(E1 v1, E2 v2) {
+                return Objects.equals(v1, v2);
             }
         };
     }

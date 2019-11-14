@@ -18,6 +18,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Supplier0;
 
 public class Preconditions {
     private Preconditions() {
@@ -48,6 +49,20 @@ public class Preconditions {
 
     public static <T> T checkNotNull(@NonNull T obj, @Nullable String errorMessage) {
         if (obj == null) {
+            if (errorMessage == null) {
+                throw new NullPointerException();
+            }
+            throw new NullPointerException(errorMessage);
+        }
+        return obj;
+    }
+
+    public static <T> T checkNotNull(@NonNull T obj, @Nullable Supplier0<String> errorMessageSupplier0) {
+        if (obj == null) {
+            if (errorMessageSupplier0 == null) {
+                throw new NullPointerException();
+            }
+            String errorMessage = errorMessageSupplier0.get();
             if (errorMessage == null) {
                 throw new NullPointerException();
             }

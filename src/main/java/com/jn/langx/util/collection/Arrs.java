@@ -8,6 +8,7 @@ import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.type.Primitives;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 /**
  * Array tools
@@ -134,6 +135,42 @@ public class Arrs {
                 return start + step * index;
             }
         });
+    }
+
+    public static boolean deepEquals(Object[] a1, Object[] a2) {
+        return Arrays.deepEquals(a1, a2);
+    }
+
+    public static boolean deepEquals(Object e1, Object e2) {
+        if (e1 == e2) {
+            return true;
+        }
+        if (e1 == null || e2 == null) {
+            return false;
+        }
+        boolean eq;
+        if (e1 instanceof Object[] && e2 instanceof Object[]) {
+            eq = Arrays.deepEquals((Object[]) e1, (Object[]) e2);
+        } else if (e1 instanceof byte[] && e2 instanceof byte[]) {
+            eq = PrimitiveArrays.equals((byte[]) e1, (byte[]) e2);
+        } else if (e1 instanceof short[] && e2 instanceof short[]) {
+            eq = PrimitiveArrays.equals((short[]) e1, (short[]) e2);
+        } else if (e1 instanceof int[] && e2 instanceof int[]) {
+            eq = PrimitiveArrays.equals((int[]) e1, (int[]) e2);
+        } else if (e1 instanceof long[] && e2 instanceof long[]) {
+            eq = PrimitiveArrays.equals((long[]) e1, (long[]) e2);
+        } else if (e1 instanceof char[] && e2 instanceof char[]) {
+            eq = PrimitiveArrays.equals((char[]) e1, (char[]) e2);
+        } else if (e1 instanceof float[] && e2 instanceof float[]) {
+            eq = PrimitiveArrays.equals((float[]) e1, (float[]) e2);
+        } else if (e1 instanceof double[] && e2 instanceof double[]) {
+            eq = PrimitiveArrays.equals((double[]) e1, (double[]) e2);
+        } else if (e1 instanceof boolean[] && e2 instanceof boolean[]) {
+            eq = PrimitiveArrays.equals((boolean[]) e1, (boolean[]) e2);
+        } else {
+            eq = e1.equals(e2);
+        }
+        return eq;
     }
 
 }
