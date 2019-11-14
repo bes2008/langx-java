@@ -104,6 +104,11 @@ public class DirectoryBasedFileConfigurationRepository<T extends Configuration> 
         if (!running) {
             super.startup();
             if (reloadIntervalInSeconds > 0) {
+                try {
+                    reload();
+                } catch (Throwable ex) {
+                    logger.warn(ex.getMessage(), ex);
+                }
                 timer.newTimeout(new TimerTask() {
                     @Override
                     public void run(Timeout timeout) throws Exception {
