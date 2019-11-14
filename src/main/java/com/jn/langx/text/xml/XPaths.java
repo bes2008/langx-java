@@ -1,4 +1,4 @@
-package com.jn.langx.util.xml;
+package com.jn.langx.text.xml;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.jn.langx.util.xml;
+package com.jn.langx.text.xml;
 
 import org.w3c.dom.Document;
 
