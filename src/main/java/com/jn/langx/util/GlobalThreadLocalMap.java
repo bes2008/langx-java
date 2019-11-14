@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class GlobalThreadLocalMap {
-    private static final ThreadLocal<GlobalThreadLocalMap> cache = new ThreadLocal<GlobalThreadLocalMap>() {
+    private static final ThreadLocal<GlobalThreadLocalMap> CACHE = new ThreadLocal<GlobalThreadLocalMap>() {
         @Override
         protected GlobalThreadLocalMap initialValue() {
             return new GlobalThreadLocalMap();
@@ -26,7 +26,7 @@ public class GlobalThreadLocalMap {
     };
 
     private static GlobalThreadLocalMap get() {
-        return cache.get();
+        return CACHE.get();
     }
 
     /**
@@ -156,4 +156,8 @@ public class GlobalThreadLocalMap {
         return get().charBuffer;
     }
 
+
+    public void clear(){
+        CACHE.remove();
+    }
 }
