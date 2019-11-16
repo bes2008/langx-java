@@ -2,6 +2,8 @@ package com.jn.langx.util.enums;
 
 import com.jn.langx.Delegatable;
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.enums.base.EnumDelegate;
@@ -98,4 +100,30 @@ public class Enums {
         return null;
     }
 
+    public static <T extends Enum<T>> T ofField(Class<T> targetClass, final String field, final Object value) {
+        Preconditions.checkNotNull(targetClass);
+        Preconditions.checkNotNull(field);
+        if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
+            return Collects.findFirst(EnumSet.allOf(targetClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    Object fieldValue = Reflects.getAnyFieldValue(e, field, true, false);
+                    return Objects.deepEquals(fieldValue, value);
+                }
+            });
+        }
+        throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("{} not a enum class", Reflects.getFQNClassName(targetClass)));
+    }
+
+    public static <T extends Enum<T>> T ofField(Class<T> targetClass, final String field, final Object value, Predicate<T> predicate) {
+        Preconditions.checkNotNull(targetClass);
+        Preconditions.checkNotNull(field);
+        if(predicate==null){
+            return ofField(targetClass, field, value);
+        }
+        if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
+            return Collects.findFirst(EnumSet.allOf(targetClass), predicate);
+        }
+        throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("{} not a enum class", Reflects.getFQNClassName(targetClass)));
+    }
 }
