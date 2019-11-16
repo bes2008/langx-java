@@ -72,6 +72,14 @@ public class Strings {
         return !isBlank(str);
     }
 
+    public static String getNullIfEmpty(String str) {
+        if (isEmpty(str)) {
+            return null;
+        }
+        return str;
+    }
+
+
     public static String getNullIfBlank(String str) {
         if (isBlank(str)) {
             return null;
@@ -79,8 +87,20 @@ public class Strings {
         return str;
     }
 
+    public static String useValueIfNull(String str, String defaultValue){
+        return str == null ? defaultValue : str;
+    }
+
+    public static String useValueIfBlank(String str, String defaultValue){
+        return useValueIfNull(getNullIfBlank(str), defaultValue);
+    }
+
+    public static String useValueIfEmpty(String str, String defaultValue){
+        return useValueIfNull(getNullIfEmpty(str), defaultValue);
+    }
+
     public static String getEmptyIfNull(String str) {
-        return str == null ? "" : str;
+        return useValueIfNull(str, "");
     }
 
     public static String getEmptyIfBlank(String str) {

@@ -250,4 +250,13 @@ public final class Objects {
     public static <T> T requireNonNull(T obj, Supplier0<String> messageSupplier) {
         return Preconditions.checkNotNull(obj, messageSupplier);
     }
+
+    public static <T> T useValueIfNull(T value, T defaultValue){
+        if(value==null){
+            return defaultValue;
+        }
+        return value;
+    }
+
+
 }
