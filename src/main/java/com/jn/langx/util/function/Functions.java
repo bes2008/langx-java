@@ -14,6 +14,24 @@ public class Functions {
     /*******************************************
      *   Function, Mapper
      *******************************************/
+    public static <E> Function<E, E> noopFunction(){
+        return new Function<E, E>() {
+            @Override
+            public E apply(E input) {
+                return input;
+            }
+        };
+    }
+
+    public static <E> Mapper<E, E> noopMapper(){
+        return new Mapper<E, E>() {
+            @Override
+            public E apply(E input) {
+                return input;
+            }
+        };
+    }
+
     public static <E> Mapper<E, String> toStringFunction() {
         return new Mapper<E, String>() {
             @Override
