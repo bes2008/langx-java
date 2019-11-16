@@ -72,31 +72,16 @@ public class Strings {
         return !isBlank(str);
     }
 
-    public static String getNullIfEmpty(String str) {
-        if (isEmpty(str)) {
-            return null;
-        }
-        return str;
-    }
-
-
-    public static String getNullIfBlank(String str) {
-        if (isBlank(str)) {
-            return null;
-        }
-        return str;
-    }
-
-    public static String useValueIfNull(String str, String defaultValue){
+    public static String useValueIfNull(String str, String defaultValue) {
         return str == null ? defaultValue : str;
     }
 
-    public static String useValueIfBlank(String str, String defaultValue){
-        return useValueIfNull(getNullIfBlank(str), defaultValue);
+    public static String useValueIfBlank(String str, String defaultValue) {
+        return isBlank(str) ? defaultValue : str;
     }
 
-    public static String useValueIfEmpty(String str, String defaultValue){
-        return useValueIfNull(getNullIfEmpty(str), defaultValue);
+    public static String useValueIfEmpty(String str, String defaultValue) {
+        return isEmpty(str) ? defaultValue : str;
     }
 
     public static String getEmptyIfNull(String str) {
@@ -104,7 +89,15 @@ public class Strings {
     }
 
     public static String getEmptyIfBlank(String str) {
-        return getEmptyIfNull(getNullIfBlank(str));
+        return useValueIfBlank(str, "");
+    }
+
+    public static String getNullIfEmpty(String str) {
+        return useValueIfEmpty(str, null);
+    }
+
+    public static String getNullIfBlank(String str) {
+        return useValueIfBlank(str, null);
     }
 
     public static String trimOrEmpty(String str) {
