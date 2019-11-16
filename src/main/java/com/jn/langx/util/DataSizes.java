@@ -2,7 +2,6 @@ package com.jn.langx.util;
 
 import java.math.BigInteger;
 
-@SuppressWarnings({"unused"})
 public class DataSizes {
 
     /**
