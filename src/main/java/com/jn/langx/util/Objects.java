@@ -258,5 +258,12 @@ public final class Objects {
         return value;
     }
 
+    public static boolean isEmpty(Object o){
+        return Emptys.isEmpty(o);
+    }
+
+    public static boolean isNotEmpty(Object o){
+        return Emptys.isNotEmpty(o);
+    }
 
 }
