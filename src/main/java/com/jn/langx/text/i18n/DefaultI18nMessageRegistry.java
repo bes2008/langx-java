@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initializable {
     private static final Object[] NO_ARGS = new Object[0];
     // Map<bundleName, Map<language, Map<key, message>>>
-    private String defaultBundleName;
+    private String defaultBundleName = "i18n";
     private Locale defaultLocale = Locale.getDefault();
 
     public DefaultI18nMessageRegistry() {
@@ -75,6 +75,10 @@ public class DefaultI18nMessageRegistry implements I18nMessageRegistry, Initiali
 
     public String getMessage(Locale locale, String key) {
         return this.getMessage(this.getDefaultBundleName(), locale, key);
+    }
+
+    public String getMessage(Locale locale, String key, Object... args) {
+        return this.getMessage(this.getDefaultBundleName(), locale, key, args);
     }
 
     public String getMessage(String bundleName, Locale locale, String key) {

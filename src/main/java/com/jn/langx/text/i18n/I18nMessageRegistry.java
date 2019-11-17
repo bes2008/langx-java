@@ -20,6 +20,8 @@ public interface I18nMessageRegistry {
 
     String getMessage(Locale locale, String key);
 
+    String getMessage(Locale locale, String key, Object... args);
+
     String getMessage(String bundleName, Locale locale, String key);
 
     String getMessage(String bundleName, Locale locale, String key, Object... args);
