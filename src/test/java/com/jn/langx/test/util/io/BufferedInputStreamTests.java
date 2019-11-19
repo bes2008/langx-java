@@ -88,6 +88,52 @@ public class BufferedInputStreamTests {
         }
     }
 
+    @Test
+    public void test4() {
+        FileResource file = getCurrentFileResource();
+        BufferedInputStream bin = null;
+        try {
+            bin = new BufferedInputStream(file.getInputStream());
+            DelimiterBasedReadableByteChannel channel = new DelimiterBasedReadableByteChannel(Channels.newChannel(bin), ";");
+            Iterator<byte[]> iter = channel.iterator();
+            int i =0;
+            while (iter.hasNext()) {
+                if(i>0){
+                    System.out.print(";");
+                }
+
+                byte[] bytes = iter.next();
+                System.out.print(new String(bytes,0,bytes.length));
+                i++;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test5() {
+        FileResource file = getCurrentFileResource();
+        BufferedInputStream bin = null;
+        try {
+            bin = new BufferedInputStream(file.getInputStream());
+            DelimiterBasedReadableByteChannel channel = new DelimiterBasedReadableByteChannel(Channels.newChannel(bin), ";\r\n");
+            Iterator<byte[]> iter = channel.iterator();
+            int i =0;
+            while (iter.hasNext()) {
+                if(i>0){
+                    System.out.print(";\r\n");
+                }
+
+                byte[] bytes = iter.next();
+                System.out.print(new String(bytes,0,bytes.length));
+                i++;
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     public FileResource getCurrentFileResource() {
         String workDir = SystemPropertys.getUserWorkDir();
