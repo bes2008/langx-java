@@ -175,11 +175,7 @@ public class BufferedInputStream extends FilterInputStream {
      */
     public synchronized int read(byte b[], int off, int len)
             throws IOException {
-        int length = read1(b, off, len);
-        if (length == 0) {
-            length = -1;
-        }
-        return length;
+        return read1(b, off, len);
     }
 
     /**
