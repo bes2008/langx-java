@@ -309,6 +309,72 @@ public class Strings {
     }
 
     /**
+     * Remove all duplicate whitespace characters and line terminators are replaced with a single space.
+     *
+     * @param s a not null String
+     * @return a string with unique whitespace.
+     */
+    public static String removeDuplicateWhitespace(String s) {
+        StringBuilder result = new StringBuilder();
+        int length = s.length();
+        boolean isPreviousWhiteSpace = false;
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            boolean thisCharWhiteSpace = Character.isWhitespace(c);
+            if (!(isPreviousWhiteSpace && thisCharWhiteSpace)) {
+                result.append(c);
+            }
+            isPreviousWhiteSpace = thisCharWhiteSpace;
+        }
+        return result.toString();
+    }
+
+    public static String unifyLineSeparators(String s) {
+        return unifyLineSeparators(s, System.getProperty("line.separator"));
+    }
+
+    /**
+     * Parses the given String and replaces all occurrences of '\n', '\r' and '\r\n' with the system line separator.
+     *
+     * @param s  a not null String
+     * @param ls the wanted line separator ("\n" on UNIX), if null using the System line separator.
+     * @return a String that contains only System line separators.
+     * @throws IllegalArgumentException if ls is not '\n', '\r' and '\r\n' characters.
+     */
+    public static String unifyLineSeparators(String s, String ls) {
+        if (s == null) {
+            return null;
+        }
+
+        if (ls == null) {
+            ls = System.getProperty("line.separator");
+        }
+
+        if (!(ls.equals("\n") || ls.equals("\r") || ls.equals("\r\n"))) {
+            throw new IllegalArgumentException("Requested line separator is invalid.");
+        }
+
+        int length = s.length();
+
+        StringBuilder buffer = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            if (s.charAt(i) == '\r') {
+                if ((i + 1) < length && s.charAt(i + 1) == '\n') {
+                    i++;
+                }
+
+                buffer.append(ls);
+            } else if (s.charAt(i) == '\n') {
+                buffer.append(ls);
+            } else {
+                buffer.append(s.charAt(i));
+            }
+        }
+
+        return buffer.toString();
+    }
+
+    /**
      * <p>Checks if the CharSequence contains only Unicode digits.
      * A decimal point is not a Unicode digit and returns false.</p>
      * <p>
