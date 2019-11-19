@@ -16,6 +16,10 @@ public final class Charsets {
     private Charsets() {
     }
 
+    public static Charset getDefault(){
+        return Charset.defaultCharset();
+    }
+
     public static final Charset GBK = Charset.forName("GBK");
     public static final Charset GB2312 = Charset.forName("GB2312");
 
