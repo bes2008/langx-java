@@ -130,6 +130,9 @@ public class BufferedInputStream extends FilterInputStream {
                 off++;
                 i++;
             } else {
+                if (i == 0) {
+                    return -1;
+                }
                 break;
             }
         }
