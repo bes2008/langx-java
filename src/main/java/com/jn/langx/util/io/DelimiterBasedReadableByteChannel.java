@@ -12,7 +12,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
     private ByteBuffer delimiter;
     private ReadableByteChannel channel;
     private ByteBuffer buf;
-    private int nextScanDelimiterStartPosition = 0;
+    private boolean eof = false;
 
     public DelimiterBasedReadableByteChannel(ReadableByteChannel channel, String delimiter) {
         Preconditions.checkNotNull(channel, "channel is null");
@@ -28,9 +28,6 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
     public void setDelimiter(String delimiter) {
         Preconditions.checkTrue(Strings.isNotEmpty(delimiter), "delimiter is null or empty");
         this.delimiter = ByteBuffer.wrap(delimiter.getBytes());
-        if (buf != null) {
-            this.nextScanDelimiterStartPosition = buf.position();
-        }
     }
 
     @Override
@@ -74,125 +71,95 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
             buf = ByteBuffer.allocate(8192);
             buf.mark();
         } else {
-            if (!buf.hasRemaining() && buf.capacity()-buf.limit()==0) {
-                buf.position(0);
-                buf.limit(buf.capacity());
+            buf.reset();
+            if (!buf.hasRemaining()) {
+                buf.clear();
                 buf.mark();
             } else {
-                // the buff will full
-                if (buf.position() == 0 && buf.limit() - nextScanDelimiterStartPosition <= delimiter.capacity() && buf.capacity() - buf.limit() < delimiter.capacity()) {
+                // move remaining to begin
+                if (buf.remaining() <= buf.capacity() / 3) {
+                    ByteBuffer moving = buf.slice();
+                    moving.limit(buf.remaining());
+                    buf.clear();
+                    buf.mark();
+                    buf.put(moving);
+                } else {
                     // expand capacity
                     ByteBuffer buf2 = ByteBuffer.allocate(buf.capacity() * 2);
-                    ByteBuffer willCopy = buf.slice();
-                    willCopy.limit(buf.remaining());
-                    buf2.put(willCopy);
-                    buf2.position(0);
-                    buf.mark();
-                    buf2.position(willCopy.limit());
-                    buf2.limit(buf2.capacity());
+                    ByteBuffer moving = buf.slice();
+                    moving.limit(buf.remaining());
+                    buf2.mark();
+                    buf2.put(moving);
                     buf = buf2;
-                } else {
-                    buf.mark();
-                    buf.position(buf.limit());
-                    buf.limit(buf.capacity());
                 }
             }
         }
         int length = channel.read(buf);
-        buf.limit(buf.position());
-        if (length != -1) {
-            buf.reset();
+        if (length == -1) {
+            eof = true;
         }
+        buf.limit(buf.position());
+        buf.reset();
         return length;
     }
 
     public boolean hasNextSegment() throws IOException {
-        if (buf == null || !buf.hasRemaining() || buf.limit() - nextScanDelimiterStartPosition < 1) {
-            fill();
+        if (buf == null || !buf.hasRemaining() || buf.remaining() < delimiter.limit()) {
+            if (!eof) {
+                fill();
+            }
         }
         return buf.hasRemaining();
 
     }
 
     public ByteBuffer nextSegment() throws IOException {
-        if (buf == null || !buf.hasRemaining() || buf.limit() - nextScanDelimiterStartPosition < 1) {
-            fill();
+        if (buf == null || !buf.hasRemaining() || buf.remaining() < delimiter.limit()) {
+            if (!eof) {
+                fill();
+            }
+        }
+        if (eof) {
+            return buf;
         }
         if (!buf.hasRemaining()) {
             return buf;
         }
-        buf.position(nextScanDelimiterStartPosition);
+
         buf.mark();
-        boolean found = findDelimiter(buf);
-        int waterPosition = buf.position();
-        if (found) {
-            // skip the delimiter
-            buf.reset();
-            ByteBuffer ret = buf.slice();
-            ret.limit(waterPosition - nextScanDelimiterStartPosition);
-            buf.position(waterPosition + delimiter.capacity());
-            nextScanDelimiterStartPosition = buf.position();
-            return ret;
-        } else {
-            // copy to an new buffer
-            ByteBuffer buf2 = ByteBuffer.allocate(buf.capacity());
-            buf.reset();
-            int delta = buf.limit() - waterPosition;
-            ByteBuffer subBuffer = buf.slice();
-            subBuffer.limit(buf.limit() - nextScanDelimiterStartPosition);
-            buf2.put(subBuffer);
-            buf2.position(0);
-            buf2.limit(subBuffer.limit());
-            buf = buf2;
-            nextScanDelimiterStartPosition = buf.limit() - delta;
-            return nextSegment();
-        }
-    }
-
-    private boolean findDelimiter(ByteBuffer byteBuffer) {
         delimiter.clear();
-        int delimiterLength = delimiter.limit();
         byte firstByteOfDelimiter = delimiter.get();
-
-        // skip to scan position
-        byteBuffer.position(nextScanDelimiterStartPosition);
-
-        while (byteBuffer.hasRemaining()) {
-            byte b = byteBuffer.get();
-            if (b == firstByteOfDelimiter) {
-                if (delimiterLength > 1) {
-                    boolean found = true;
-                    int i = 0;
-                    while (delimiter.hasRemaining() && byteBuffer.hasRemaining()) {
-                        if (delimiter.get() != byteBuffer.get()) {
-                            found = false;
-                            break;
-                        } else {
-                            i++;
-                        }
+        A:
+        while (buf.hasRemaining() && buf.remaining() >= delimiter.limit()) {
+            if (buf.get() == firstByteOfDelimiter) {
+                B:
+                while (delimiter.hasRemaining() && buf.remaining() >= delimiter.remaining()) {
+                    if (delimiter.get() != buf.get()) {
+                        delimiter.clear();
+                        firstByteOfDelimiter = delimiter.get();
+                        continue A;
                     }
-
-                    if (found) {
-                        int delimiterStartPosition = byteBuffer.position() - delimiterLength;
-                        byteBuffer.position(delimiterStartPosition);
-                        return true;
-                    } else {
-                        if (byteBuffer.hasRemaining()) {
-                            // not found
-                        } else {
-                            byteBuffer.position(byteBuffer.position() - i);
-                        }
-                    }
-                } else {
-                    int delimiterStartPosition = byteBuffer.position() - delimiterLength;
-                    byteBuffer.position(delimiterStartPosition);
-                    return true;
                 }
+
+                // found
+                delimiter.clear();
+                firstByteOfDelimiter = delimiter.get();
+
+                int current = buf.position();
+                buf.reset();
+                ByteBuffer ret = buf.slice();
+                ret.limit(current - delimiter.limit() - buf.position());
+                int bufferLimit = buf.limit();
+                buf.clear();
+                buf.limit(bufferLimit);
+                buf.position(current);
+                buf.mark();
+                return ret;
             }
         }
-        return false;
-    }
 
+        return nextSegment();
+    }
 
     @Override
     public boolean isOpen() {

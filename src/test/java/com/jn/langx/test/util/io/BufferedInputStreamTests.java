@@ -25,7 +25,9 @@ public class BufferedInputStreamTests {
             byte[] bytes = new byte[8192];
             int length = bytes.length;
             while ((length = bin.read(bytes, 0, bytes.length)) != -1) {
-                System.out.println(new String(bytes, 0, length));
+                if(length>0) {
+                    System.out.print(new String(bytes, 0, length));
+                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -52,7 +54,9 @@ public class BufferedInputStreamTests {
                         int endPosition = bf.position();
                         int length = endPosition - positionBeforeRead;
                         positionBeforeRead = endPosition;
-                        System.out.println(new String(bytes, 0, length));
+                        if(length>0) {
+                            System.out.print(new String(bytes, 0, length));
+                        }
                     }
                 } else {
                     break;
