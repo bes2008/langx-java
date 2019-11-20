@@ -80,6 +80,11 @@ Java lang extensions
     + CSV
     + Pinyin
     + StringTemplate
+      + placeholder: {}
+      + index:       {0}, {1}
+      + C style:     %d, %s ...
+      + field :      ${fieldName1}, ${fieldName2}
+      + map:         ${key1}, ${key2}
 + Null judge is unnecessary
 + Environment
     + SystemEnvironment
