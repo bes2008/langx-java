@@ -1,5 +1,6 @@
 package com.jn.langx.util.struct;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 
 import java.util.ArrayList;
@@ -33,6 +34,11 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
     @Override
     public int hashCode() {
         return getKey().hashCode() ^ 4 + getValue().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return StringTemplates.formatWithBean("{key: ${key}, value: ${value}}", this);
     }
 
     public static Entry<String, String> newEntry(String keyValue, String spec)
