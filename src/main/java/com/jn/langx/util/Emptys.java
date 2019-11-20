@@ -4,6 +4,7 @@ import com.jn.langx.util.collection.Arrs;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
@@ -79,6 +80,11 @@ public class Emptys {
 
         if (object instanceof Number) {
             return isZero((Number) object);
+        }
+
+        if (object instanceof Buffer) {
+            Buffer buff = (Buffer) object;
+            return buff.hasRemaining();
         }
 
         if (object instanceof Collection) {
