@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.Channels;
 import com.jn.langx.util.io.IOs;
@@ -96,13 +97,11 @@ public class Resources {
                     }
                 });
             } catch (IOException ex) {
-
+                throw Throwables.wrapAsRuntimeException(ex);
             } finally {
                 IOs.close(inputStream);
             }
         }
-
-
     }
 
     public static void readLines(@NonNull String location, @NonNull Charset charset, @NonNull final Consumer<String> consumer) {
