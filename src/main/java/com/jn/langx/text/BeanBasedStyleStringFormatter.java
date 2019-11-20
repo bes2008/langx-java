@@ -7,11 +7,11 @@ import com.jn.langx.util.reflect.FieldAccessor;
 
 import java.util.regex.Pattern;
 
-public class FiledNameStyleStringFormatter extends CustomPatternStringFormatter {
+public class BeanBasedStyleStringFormatter extends CustomPatternStringFormatter {
     static final Pattern BEAN_VARIABLE_PATTERN = Pattern.compile("\\$\\{[a-zA-Z_]\\w*\\}");
 
 
-    public FiledNameStyleStringFormatter() {
+    public BeanBasedStyleStringFormatter() {
         super(BEAN_VARIABLE_PATTERN, new FiledValueGetter());
     }
 
