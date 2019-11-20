@@ -16,6 +16,10 @@ public interface Cache<K, V> {
 
     V get(@NonNull K key);
 
+    Map<K, V> getAll(@NonNull Iterable<K> keys);
+
+    Map<K, V> getAllIfPresent(@NonNull Iterable<K> keys);
+
     V getIfPresent(@NonNull K key);
 
     V get(@NonNull K key, @Nullable Supplier<K, V> loader);

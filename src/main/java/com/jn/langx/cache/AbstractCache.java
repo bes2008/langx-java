@@ -141,6 +141,32 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     }
 
     @Override
+    public Map<K, V> getAll(Iterable<K> keys) {
+        final Map<K, V> map = new HashMap<K, V>();
+        Collects.forEach(keys, new Consumer<K>() {
+            @Override
+            public void accept(K key) {
+                V v = get(key);
+                map.put(key, v);
+            }
+        });
+        return map;
+    }
+
+    @Override
+    public Map<K, V> getAllIfPresent(Iterable<K> keys) {
+        final Map<K, V> map = new HashMap<K, V>();
+        Collects.forEach(keys, new Consumer<K>() {
+            @Override
+            public void accept(K key) {
+                V v = getIfPresent(key);
+                map.put(key, v);
+            }
+        });
+        return map;
+    }
+
+    @Override
     public V getIfPresent(@NonNull K key) {
         return get(key, null, false);
     }
