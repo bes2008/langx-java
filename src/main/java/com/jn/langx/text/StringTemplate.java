@@ -1,8 +1,9 @@
 package com.jn.langx.text;
 
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.*;
 import com.jn.langx.util.function.Function2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +11,7 @@ import java.util.regex.Pattern;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class StringTemplate {
+    private static final Logger logger = LoggerFactory.getLogger(StringTemplate.class);
     /**
      * index pattern
      */
@@ -42,8 +44,8 @@ public class StringTemplate {
 
     /**
      * set a value getter
-     * @param valueGetter
-     *      apply(String matched, Object[] args)
+     *
+     * @param valueGetter apply(String matched, Object[] args)
      * @return
      */
     public StringTemplate with(Function2<String, Object[], String> valueGetter) {
@@ -64,8 +66,15 @@ public class StringTemplate {
         Matcher matcher = variablePattern.matcher(this.template);
         StringBuffer b = new StringBuffer();
         while (matcher.find()) {
-            String matched = matcher.group();
-            matcher.appendReplacement(b, quoteReplacement(valueGetter.apply(matched, args)));
+            final String matched = matcher.group();
+            String value = Throwables.ignoreThrowable(logger, matched, new ThrowableFunction<Object[], String>() {
+                @Override
+                public String doFun(Object[] args) throws Throwable {
+                    return valueGetter.apply(matched, args);
+                }
+            }, args);
+            value = Objects.isNull(value) ? matched : value;
+            matcher.appendReplacement(b, quoteReplacement(value));
         }
         matcher.appendTail(b);
         return b.toString();

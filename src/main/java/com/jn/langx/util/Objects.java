@@ -213,6 +213,10 @@ public final class Objects {
         return Emptys.isNull(obj);
     }
 
+    public static boolean isNotNull(Object obj) {
+        return Emptys.isNotNull(obj);
+    }
+
     /**
      * Returns {@code true} if the provided reference is non-{@code null}
      * otherwise returns {@code false}.
@@ -251,18 +255,18 @@ public final class Objects {
         return Preconditions.checkNotNull(obj, messageSupplier);
     }
 
-    public static <T> T useValueIfNull(T value, T defaultValue){
-        if(value==null){
+    public static <T> T useValueIfNull(T value, T defaultValue) {
+        if (value == null) {
             return defaultValue;
         }
         return value;
     }
 
-    public static boolean isEmpty(Object o){
+    public static boolean isEmpty(Object o) {
         return Emptys.isEmpty(o);
     }
 
-    public static boolean isNotEmpty(Object o){
+    public static boolean isNotEmpty(Object o) {
         return Emptys.isNotEmpty(o);
     }
 
