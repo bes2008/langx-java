@@ -109,7 +109,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
                 fill();
             }
         }
-        return buf.hasRemaining();
+        return buf !=null && buf.hasRemaining();
 
     }
 
@@ -132,7 +132,6 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
         A:
         while (buf.hasRemaining() && buf.remaining() >= delimiter.limit()) {
             if (buf.get() == firstByteOfDelimiter) {
-                B:
                 while (delimiter.hasRemaining() && buf.remaining() >= delimiter.remaining()) {
                     if (delimiter.get() != buf.get()) {
                         delimiter.clear();
