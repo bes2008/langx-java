@@ -13,6 +13,7 @@ import com.jn.langx.util.net.URLs;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.Charset;
 
 public class Resources {
@@ -66,6 +67,10 @@ public class Resources {
         return new DefaultResourceLoader(classLoader).loadResource(location);
     }
 
+    public static UrlResource loadUrlResource(@NonNull URL url) {
+        return new UrlResource(url);
+    }
+
 
     public static ByteArrayResource asByteArrayResource(@NonNull byte[] byteArray) {
         return new ByteArrayResource(byteArray);
@@ -83,24 +88,48 @@ public class Resources {
         return new InputStreamResource(inputStream, description);
     }
 
+
+    public static void readUsingDelimiter(Resource resource, @NonNull String delimiter, @NonNull final Consumer<byte[]> consumer) {
+        InputStream inputStream = null;
+        try {
+            inputStream = resource.getInputStream();
+            Channels.readUsingDelimiter(inputStream, delimiter, consumer);
+        } catch (IOException ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
+        } finally {
+            IOs.close(inputStream);
+        }
+    }
+
+    public static void readUsingDelimiter(Resource resource, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
+        InputStream inputStream = null;
+        try {
+            inputStream = resource.getInputStream();
+            Channels.readUsingDelimiter(inputStream, delimiter, charset, consumer);
+        } catch (IOException ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
+        } finally {
+            IOs.close(inputStream);
+        }
+    }
+
+
     public static void readUsingDelimiter(@NonNull String location, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
         Preconditions.checkNotNull(location);
         Resource resource = loadResource(location);
         if (resource.exists()) {
-            InputStream inputStream = null;
-            try {
-                inputStream = resource.getInputStream();
-                Channels.readUsingDelimiter(inputStream, delimiter, new Consumer<byte[]>() {
-                    @Override
-                    public void accept(byte[] bytes) {
-                        consumer.accept(new String(bytes, charset));
-                    }
-                });
-            } catch (IOException ex) {
-                throw Throwables.wrapAsRuntimeException(ex);
-            } finally {
-                IOs.close(inputStream);
-            }
+            readUsingDelimiter(resource, delimiter, charset, consumer);
+        }
+    }
+
+    public static void readUsingDelimiter(@NonNull URL url, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
+        readUsingDelimiter(loadUrlResource(url), delimiter, charset, consumer);
+    }
+
+    public static void readUsingDelimiter(@NonNull byte[] byteArray, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
+        Resource resource = asByteArrayResource(byteArray);
+        if (resource.exists()) {
+            readUsingDelimiter(resource, delimiter, charset, consumer);
         }
     }
 

@@ -15,7 +15,22 @@ public class Channels {
     }
 
     public static void readUsingDelimiter(@NonNull ReadableByteChannel channel, @NonNull String delimiter, @NonNull Consumer<byte[]> consumer) {
+        Preconditions.checkNotNull(delimiter);
+        Preconditions.checkNotNull(consumer);
         Collects.forEach(new DelimiterBasedReadableByteChannel(channel, delimiter), consumer);
+    }
+
+    public static void readUsingDelimiter(@NonNull InputStream inputStream, @NonNull String delimiter, @NonNull Charset charset, Consumer<String> consumer) {
+        readUsingDelimiter(java.nio.channels.Channels.newChannel(inputStream), delimiter, charset, consumer);
+    }
+
+    public static void readUsingDelimiter(@NonNull ReadableByteChannel channel, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
+        readUsingDelimiter(channel, delimiter, new Consumer<byte[]>() {
+            @Override
+            public void accept(byte[] bytes) {
+                consumer.accept(new String(bytes, charset));
+            }
+        });
     }
 
     public static void readLines(@NonNull InputStream inputStream, @NonNull Consumer<String> consumer) {
@@ -33,11 +48,6 @@ public class Channels {
     public static void readLines(@NonNull ReadableByteChannel channel, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
         Preconditions.checkNotNull(charset);
         Preconditions.checkNotNull(consumer);
-        readUsingDelimiter(channel, "\n", new Consumer<byte[]>() {
-            @Override
-            public void accept(byte[] bytes) {
-                consumer.accept(new String(bytes, charset));
-            }
-        });
+        readUsingDelimiter(channel, "\n", charset, consumer);
     }
 }
