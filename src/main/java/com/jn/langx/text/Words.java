@@ -11,7 +11,7 @@ import com.jn.langx.util.io.LineDelimiter;
  * An exception will not be thrown for a <code>null</code> input.
  * Each method documents its behaviour in more detail.</p>
  */
-public class WordUtils {
+public class Words {
 
     /**
      * <p><code>WordUtils</code> instances should NOT be constructed in
@@ -21,7 +21,7 @@ public class WordUtils {
      * <p>This constructor is public to permit tools that require a JavaBean
      * instance to operate.</p>
      */
-    public WordUtils() {
+    public Words() {
         super();
     }
 
