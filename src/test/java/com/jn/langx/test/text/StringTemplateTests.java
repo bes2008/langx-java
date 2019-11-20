@@ -1,7 +1,11 @@
 package com.jn.langx.test.text;
 
+import com.jn.langx.test.bean.Person;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.collection.Collects;
 import org.junit.Test;
+
+import java.util.Map;
 
 public class StringTemplateTests {
 
@@ -31,6 +35,32 @@ public class StringTemplateTests {
     public void test2() {
         testFormatBasedIndex(new Object[]{1, "hello", "world", "build"});
         testFormatBasedOrder(new Object[]{1, "hello", "world", "build"});
+    }
+
+    @Test
+    public void testBeanTemplate() {
+        Person p = new Person();
+        p.setId("id-1231231231");
+        p.setAge(12);
+        p.setName("zhangsan");
+        p.setDesc("Hello, I'm from china");
+
+        String template = "ID: ${id}, name: ${name}, age: ${age}, desc: ${desc}, xxxx: ${xxxx}";
+        System.out.println(StringTemplates.formatWithBean(template, p));
+    }
+
+
+    @Test
+    public void testMapTemplate() {
+        Map<String, Object> map = Collects.emptyHashMap();
+        map.put("id", "id-1231231231");
+        map.put("age", "12");
+        map.put("name", "zhangsan");
+        map.put("desc", "Hello, I'm from china");
+
+
+        String template = "ID: ${id}, name: ${name}, age: ${age}, desc: ${desc}, xxxx: ${xxxx}";
+        System.out.println(StringTemplates.formatWithMap(template, map));
     }
 
 }
