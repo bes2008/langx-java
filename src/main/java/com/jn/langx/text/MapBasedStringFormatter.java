@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class MapBasedStringFormatter extends CustomPatternStringFormatter {
-    static final Pattern MAP_VARIABLE_PATTERN = Pattern.compile("\\$\\\\w+\\}");
+    static final Pattern MAP_VARIABLE_PATTERN = Pattern.compile("\\$\\{\\w+\\}");
 
     public MapBasedStringFormatter() {
         super(MAP_VARIABLE_PATTERN, new MapValueGetter());
