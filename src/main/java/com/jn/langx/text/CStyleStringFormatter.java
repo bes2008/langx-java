@@ -1,5 +1,11 @@
 package com.jn.langx.text;
 
+/**
+ * %d
+ * %s
+ *
+ * @see {@link String#format(String, Object...)}
+ */
 public class CStyleStringFormatter implements StringTemplateFormatter {
     @Override
     public String format(String template, Object... args) {
