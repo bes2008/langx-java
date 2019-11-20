@@ -85,7 +85,10 @@ public class BufferedInputStreamTests {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        } finally {
+            IOs.close(bin);
         }
+
     }
 
     @Test
@@ -108,7 +111,10 @@ public class BufferedInputStreamTests {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        } finally {
+            IOs.close(bin);
         }
+
     }
 
     @Test
@@ -131,7 +137,10 @@ public class BufferedInputStreamTests {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        } finally {
+            IOs.close(bin);
         }
+
     }
 
 

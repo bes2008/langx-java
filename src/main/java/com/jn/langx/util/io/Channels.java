@@ -24,11 +24,20 @@ public class Channels {
         readUsingDelimiter(java.nio.channels.Channels.newChannel(inputStream), delimiter, charset, consumer);
     }
 
-    public static void readUsingDelimiter(@NonNull ReadableByteChannel channel, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
+    public static void readUsingDelimiter(@NonNull ReadableByteChannel channel, @NonNull final String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
         readUsingDelimiter(channel, delimiter, new Consumer<byte[]>() {
             @Override
             public void accept(byte[] bytes) {
-                consumer.accept(new String(bytes, charset));
+                String str = new String(bytes, charset);
+                // in a windows or an unix os read \n or \r\n file
+                if (delimiter.equals("\n") && str.endsWith("\r")) {
+                    str = str.substring(0, str.length() - 1);
+                }
+                // in a mac os ( <9 version ) read \r or \r\n file
+                if (delimiter.equals("\r") && str.startsWith("\n")) {
+                    str = str.substring(1);
+                }
+                consumer.accept(str);
             }
         });
     }
