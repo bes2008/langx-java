@@ -5,9 +5,14 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.io.Channels;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.net.URLs;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 public class Resources {
     public static <V extends Resource> V loadResource(@NonNull String location) {
@@ -75,5 +80,32 @@ public class Resources {
 
     public static InputStreamResource asInputStreamResource(@NonNull InputStream inputStream, @Nullable String description) {
         return new InputStreamResource(inputStream, description);
+    }
+
+    public static void readUsingDelimiter(@NonNull String location, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
+        Preconditions.checkNotNull(location);
+        Resource resource = loadResource(location);
+        if (resource.exists()) {
+            InputStream inputStream = null;
+            try {
+                inputStream = resource.getInputStream();
+                Channels.readUsingDelimiter(inputStream, delimiter, new Consumer<byte[]>() {
+                    @Override
+                    public void accept(byte[] bytes) {
+                        consumer.accept(new String(bytes, charset));
+                    }
+                });
+            } catch (IOException ex) {
+
+            } finally {
+                IOs.close(inputStream);
+            }
+        }
+
+
+    }
+
+    public static void readLines(@NonNull String location, @NonNull Charset charset, @NonNull final Consumer<String> consumer) {
+        readUsingDelimiter(location, "\n", charset, consumer);
     }
 }
