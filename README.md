@@ -113,6 +113,7 @@ Java lang extensions
 + Common Configuration API
 + Multiple Level Jar URLStreamHandler
 + Escaper API
++ Delimiter Channel
 
 
 ## Contact:
