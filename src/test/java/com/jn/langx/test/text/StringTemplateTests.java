@@ -1,6 +1,7 @@
 package com.jn.langx.test.text;
 
 import com.jn.langx.test.bean.Person;
+import com.jn.langx.text.StringTemplateFormatterChain;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import org.junit.Test;
@@ -39,28 +40,73 @@ public class StringTemplateTests {
 
     @Test
     public void testBeanTemplate() {
+        Person p = newBean();
+        String template = "ID: ${id}, name: ${name}, age: ${age}, desc: ${desc}, xxxx: ${xxxx}";
+        System.out.println(StringTemplates.formatWithBean(template, p));
+    }
+
+    Person newBean() {
         Person p = new Person();
         p.setId("id-1231231231");
         p.setAge(12);
         p.setName("zhangsan");
         p.setDesc("Hello, I'm from china");
-
-        String template = "ID: ${id}, name: ${name}, age: ${age}, desc: ${desc}, xxxx: ${xxxx}";
-        System.out.println(StringTemplates.formatWithBean(template, p));
+        return p;
     }
 
+    Map<String, Object> newMap() {
+        return newMap("");
+    }
+
+    Map<String, Object> newMap(String keyPrefix) {
+        Map<String, Object> map = Collects.emptyHashMap();
+        map.put(keyPrefix + "id", "id-1231231231");
+        map.put(keyPrefix + "age", "12");
+        map.put(keyPrefix + "name", "zhangsan");
+        map.put(keyPrefix + "desc", "Hello, I'm from china");
+        return map;
+    }
 
     @Test
     public void testMapTemplate() {
-        Map<String, Object> map = Collects.emptyHashMap();
-        map.put("id", "id-1231231231");
-        map.put("age", "12");
-        map.put("name", "zhangsan");
-        map.put("desc", "Hello, I'm from china");
-
-
-        String template = "ID: ${id}, name: ${name}, age: ${age}, desc: ${desc}, xxxx: ${xxxx}";
+        Map<String, Object> map = newMap();
+        String template = "ID: ${id}, name: ${name}, age: ${age}, xxxx: ${xxxx}, desc: ${desc}";
         System.out.println(StringTemplates.formatWithMap(template, map));
+    }
+
+    @Test
+    public void testTemplateChain() {
+        Person p = newBean();
+        Map<String, Object> map = newMap("x");
+        StringBuilder template = new StringBuilder()
+                .append("1.\tid: {0}, name: {1} \n")
+                .append("2.\tID: ${id}, name: ${name}, age: ${age}, xxxx: ${xxxx}, desc: ${desc}\n")
+                .append("3.\tid: {}, name: {}\n")
+                .append("4.\tID: ${xid}, name: ${xname}, age: ${xage}, xxxx: ${xxxx}, desc: ${xdesc}");
+        StringTemplateFormatterChain chain = new StringTemplateFormatterChain()
+                .addIndexedFormatterAndParameters(p.getId(), p.getName())
+                .addPlaceHolderFormatterAndParameters(p.getId(), p.getName())
+                .addMapBasedFormatterAndParameters(map)
+                .addBeanBasedFormatterAndParameters(p);
+        System.out.println(chain.format(template.toString()));
+
+    }
+
+    @Test
+    public void testTemplateFluent() {
+        Person p = newBean();
+        Map<String, Object> map = newMap("x");
+        StringBuilder template = new StringBuilder()
+                .append("1.\tid: {0}, name: {1} \n")
+                .append("2.\tID: ${id}, name: ${name}, age: ${age}, xxxx: ${xxxx}, desc: ${desc}\n")
+                .append("3.\tid: {}, name: {}\n")
+                .append("4.\tID: ${xid}, name: ${xname}, age: ${xage}, xxxx: ${xxxx}, desc: ${xdesc}");
+        System.out.println(StringTemplates.fluenter(template.toString())
+                .formatWithIndex(p.getId(), p.getName())
+                .formatWithPlaceHolder(p.getId(), p.getName())
+                .formatWithMap(map)
+                .formatWithBean(p).get());
+
     }
 
 }
