@@ -63,7 +63,7 @@ public class StringTemplates {
      * @return formatted string
      */
     public static <T> String formatWithBean(String template, T bean) {
-        return new FiledNameStyleStringFormatter().format(template, bean);
+        return new BeanBasedStyleStringFormatter().format(template, bean);
     }
 
     /**
@@ -102,4 +102,48 @@ public class StringTemplates {
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
     }
 
+    public static TemplateFluenter fluenter(String template){
+        return new TemplateFluenter(template);
+    }
+
+    public static final class TemplateFluenter {
+        private String template;
+
+        private TemplateFluenter(String template) {
+            this.template = template;
+        }
+
+        public TemplateFluenter format(StringTemplateFormatter formatter, Object... args) {
+            template = formatter.format(template, args);
+            return this;
+        }
+
+        public TemplateFluenter format(String variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
+            return format(new CustomPatternStringFormatter(variablePattern, valueGetter), args);
+        }
+
+        public TemplateFluenter format(Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
+            return format(new CustomPatternStringFormatter(variablePattern, valueGetter), args);
+        }
+
+        public TemplateFluenter formatWithIndex(Object... args) {
+            return format(new IndexStringFormatter(), args);
+        }
+
+        public TemplateFluenter formatWithPlaceHolder(Object... args) {
+            return format(new PlaceholderStringFormatter(), args);
+        }
+
+        public <T> TemplateFluenter formatWithBean(T bean) {
+            return format(new BeanBasedStyleStringFormatter(), bean);
+        }
+
+        public <T> TemplateFluenter formatWithMap(Map<String, Object> map) {
+            return format(new MapBasedStringFormatter(), map);
+        }
+
+        public String get() {
+            return template;
+        }
+    }
 }
