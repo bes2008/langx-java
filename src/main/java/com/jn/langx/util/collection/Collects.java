@@ -1285,7 +1285,22 @@ public class Collects {
         return collect(anyObject, containerFactory, consumer);
     }
 
-    public static <E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable C oldCollection, @Nullable C newCollection) {
+    public static <X, Y, E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable X oldObject, @NonNull final Function<X, E> oldMapper, @Nullable Y newObject, @NonNull final Function<Y, E> newMapper) {
+        return diff(oldObject, oldMapper, newObject, newMapper, null);
+    }
+
+    public static <X, Y, E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable X oldObject, @NonNull final Function<X, E> oldMapper, @Nullable Y newObject, @NonNull final Function<Y, E> newMapper, @Nullable Comparator<E> elementComparator) {
+        return diff(oldObject, oldMapper, newObject, newMapper, elementComparator, null);
+    }
+
+    public static <X, Y, E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable X oldObject, @NonNull final Function<X, E> oldMapper, @Nullable Y newObject, @NonNull final Function<Y, E> newMapper, @Nullable Comparator<E> elementComparator, @Nullable KeyBuilder<String, E> keyBuilder) {
+        Collection<E> oldCollection = map(oldObject, oldMapper);
+        Collection<E> newCollection = map(oldObject, oldMapper);
+        return diff(oldCollection, newCollection, elementComparator, keyBuilder);
+    }
+
+
+    public static <E,C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable C oldCollection, @Nullable C newCollection){
         return diff(oldCollection, newCollection, null);
     }
 
