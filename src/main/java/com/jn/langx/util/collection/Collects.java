@@ -159,12 +159,24 @@ public class Collects {
         return Arrs.createArray(Primitives.wrap(componentType), 0);
     }
 
+    public static <E> ArrayList<E> newArrayList(@Nullable List<E> elements) {
+        return new ArrayList<E>(asList(elements));
+    }
+
     public static <E> ArrayList<E> newArrayList(@Nullable E... elements) {
         return new ArrayList<E>(asList(elements));
     }
 
+    public static <E> LinkedList<E> newLinkedList(@Nullable List<E> elements) {
+        return new LinkedList<E>(asList(elements));
+    }
+
     public static <E> LinkedList<E> newLinkedList(@Nullable E... elements) {
         return new LinkedList<E>(asList(elements));
+    }
+
+    public static <E> HashSet<E> newHashSet(@Nullable Set<E> elements) {
+        return new HashSet<E>(asSet(elements));
     }
 
     public static <E> HashSet<E> newHashSet(@Nullable E... elements) {
@@ -267,7 +279,8 @@ public class Collects {
     public enum SetType {
         HashSet,
         LinkedHashSet,
-        TreeSet;
+        TreeSet,
+        NonDistinctTreeSet;
 
         public static SetType ofSet(@Nullable Set set) {
             if (set == null) {
@@ -429,6 +442,79 @@ public class Collects {
         return asList(iterable);
     }
 
+    /**
+     * Convert an array to a ArrayList
+     */
+    public static <E> Set<E> asSet(@Nullable E... array) {
+        return asSet(array, true, SetType.HashSet);
+    }
+
+    /**
+     * Convert an array to a ArrayList or a LinkedList
+     */
+    public static <E> Set<E> asSet(@Nullable E[] array, @Nullable SetType setType) {
+        return asSet(array, true, setType);
+    }
+
+    public static <E> Set<E> asSet(@Nullable Iterable<E> iterable) {
+        return asSet(iterable, true);
+    }
+
+    public static <E> Set<E> asSet(@Nullable Iterable<E> iterable, boolean mutable) {
+        if (Emptys.isNull(iterable)) {
+            Set set = emptyHashSet();
+            return mutable ? set : Collections.unmodifiableSet(set);
+        }
+
+        Collection<E> c = (iterable instanceof Collection) ? (Collection) iterable : asList(iterable);
+        Set set = new HashSet(c);
+        return mutable ? set : Collections.unmodifiableSet(set);
+    }
+
+    /**
+     * Convert an array to a List, if the 'mutable' argument is true, will return an unmodifiable List
+     */
+    public static <E> Set<E> asSet(@Nullable E[] array, boolean mutable, @Nullable SetType setType) {
+        List<E> immutableList = Emptys.isEmpty(array) ? Collects.<E>emptyArrayList() : Arrays.asList(array);
+        if (setType == null) {
+            setType = SetType.HashSet;
+        }
+        Set<E> set = null;
+        switch (setType) {
+            case HashSet:
+                set = new HashSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSet(set);
+                }
+                break;
+            case LinkedHashSet:
+                set = new LinkedHashSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSet(set);
+                }
+                break;
+            case TreeSet:
+                TreeSet tset = new TreeSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSortedSet(tset);
+                }
+                break;
+            case NonDistinctTreeSet:
+                NonDistinctTreeSet tset2 = new NonDistinctTreeSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSortedSet(tset2);
+                }
+                break;
+            default:
+                set = new HashSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSet(set);
+                }
+                break;
+        }
+
+        return set;
+    }
 
     /**
      * Convert an array to a ArrayList
