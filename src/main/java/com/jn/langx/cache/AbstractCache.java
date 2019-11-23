@@ -8,14 +8,15 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.comparator.ComparableComparator;
+import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.struct.Holder;
+import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
-import com.jn.langx.util.timing.timer.WheelTimers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +45,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private float capacityHeightWater = 0.95f;
 
     private Timer timer;
-    private Timeout timeout;
+    private boolean shutdownTimerSelf = false;
 
     private volatile boolean running = false;
 
@@ -64,7 +65,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
     protected AbstractCache(int maxCapacity, long evictExpiredInterval) {
-        this(maxCapacity, evictExpiredInterval, evictExpiredInterval >= 0 ? WheelTimers.newHashedWheelTimer() : null);
+        this(maxCapacity, evictExpiredInterval, null);
     }
 
     protected AbstractCache(int maxCapacity, long evictExpiredInterval, Timer timer) {
@@ -397,8 +398,11 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
             running = true;
             computeNextEvictExpiredTime();
             if (evictExpiredInterval > 0) {
-                Preconditions.checkNotNull(timer);
-                timeout = timer.newTimeout(this.new EvictExpiredTask(), nextEvictExpiredTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+                if (timer == null) {
+                    timer = new HashedWheelTimer(new CommonThreadFactory("Cache-Evict", false));
+                    shutdownTimerSelf = true;
+                }
+                timer.newTimeout(this.new EvictExpiredTask(), nextEvictExpiredTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
             }
         }
     }
@@ -406,6 +410,11 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     @Override
     public void shutdown() {
         running = false;
+        if (timer != null) {
+            if (shutdownTimerSelf) {
+                timer.stop();
+            }
+        }
     }
 
     void setMap(ConcurrentHashMap<K, Entry<K, V>> map) {
