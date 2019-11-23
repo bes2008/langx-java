@@ -1,5 +1,7 @@
 package com.jn.langx.util.leak;
 
+import com.jn.langx.annotation.Singleton;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import java.lang.reflect.Constructor;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
+@Singleton
 public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFactory {
     private static final Logger logger = LoggerFactory.getLogger(DefaultResourceLeakDetectorFactory.class);
 
@@ -21,22 +24,23 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
             customLeakDetector = AccessController.doPrivileged(new PrivilegedAction<String>() {
                 @Override
                 public String run() {
-                    return SystemPropertys.getAccessor().getString("io.netty.customResourceLeakDetector");
+                    return SystemPropertys.getAccessor().getString("langx.customResourceLeakDetector");
                 }
             });
         } catch (Throwable cause) {
-            logger.error("Could not access System property: io.netty.customResourceLeakDetector", cause);
+            logger.error("Could not access System property: langx.customResourceLeakDetector", cause);
             customLeakDetector = null;
         }
-        if (customLeakDetector == null) {
-            obsoleteCustomClassConstructor = customClassConstructor = null;
+        if (Strings.isBlank(customLeakDetector)) {
+            obsoleteCustomClassConstructor = null;
+            customClassConstructor = null;
         } else {
-            obsoleteCustomClassConstructor = obsoleteCustomClassConstructor(customLeakDetector);
-            customClassConstructor = customClassConstructor(customLeakDetector);
+            obsoleteCustomClassConstructor = find3ArgumentsResourceLeakDetectorConstructor(customLeakDetector);
+            customClassConstructor = find2ArgumentsResourceLeakDetectorConstructor(customLeakDetector);
         }
     }
 
-    private static Constructor<?> obsoleteCustomClassConstructor(String customLeakDetector) {
+    private static Constructor<?> find3ArgumentsResourceLeakDetectorConstructor(String customLeakDetector) {
         try {
             final Class<?> detectorClass = Class.forName(customLeakDetector, true,
                     ClassLoader.getSystemClassLoader());
@@ -53,7 +57,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
         return null;
     }
 
-    private static Constructor<?> customClassConstructor(String customLeakDetector) {
+    private static Constructor<?> find2ArgumentsResourceLeakDetectorConstructor(String customLeakDetector) {
         try {
             final Class<?> detectorClass = Class.forName(customLeakDetector, true,
                     ClassLoader.getSystemClassLoader());

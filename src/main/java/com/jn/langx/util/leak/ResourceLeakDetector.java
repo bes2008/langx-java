@@ -25,9 +25,9 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import static com.jn.langx.util.SystemPropertys.NEWLINE;
 
 public class ResourceLeakDetector<T> {
-    private static String RESOURCE_LEAK_DETECTION_PREFIX = SystemPropertys.getAccessor().getString("RESOURCE_LEAK_DETECTION_PREFIX", "io.netty.leakDetection");
+    private static String RESOURCE_LEAK_DETECTION_PREFIX = SystemPropertys.getAccessor().getString("RESOURCE_LEAK_DETECTION_PREFIX", "langx.leakDetection");
     private static final String PROP_LEVEL = RESOURCE_LEAK_DETECTION_PREFIX + ".level";
-    private static final ResourceLeakDetector.Level DEFAULT_LEVEL = ResourceLeakDetector.Level.SIMPLE;
+    private static final Level DEFAULT_LEVEL = Level.SIMPLE;
 
     private static final String PROP_TARGET_RECORDS = RESOURCE_LEAK_DETECTION_PREFIX + ".targetRecords";
     private static final int DEFAULT_TARGET_RECORDS = 4;
@@ -70,9 +70,9 @@ public class ResourceLeakDetector<T> {
          * @param levelStr - level string : DISABLED, SIMPLE, ADVANCED, PARANOID. Ignores case.
          * @return corresponding level or SIMPLE level in case of no match.
          */
-        static ResourceLeakDetector.Level parseLevel(String levelStr) {
+        static Level parseLevel(String levelStr) {
             String trimmedLevelStr = levelStr.trim();
-            for (ResourceLeakDetector.Level l : values()) {
+            for (Level l : values()) {
                 if (trimmedLevelStr.equalsIgnoreCase(l.name()) || trimmedLevelStr.equals(String.valueOf(l.ordinal()))) {
                     return l;
                 }
@@ -81,7 +81,7 @@ public class ResourceLeakDetector<T> {
         }
     }
 
-    private static ResourceLeakDetector.Level level;
+    private static Level level;
 
     private static final Logger logger = LoggerFactory.getLogger(ResourceLeakDetector.class);
 
@@ -96,10 +96,10 @@ public class ResourceLeakDetector<T> {
             disabled = false;
         }
 
-        ResourceLeakDetector.Level defaultLevel = disabled ? ResourceLeakDetector.Level.DISABLED : DEFAULT_LEVEL;
+        Level defaultLevel = disabled ? Level.DISABLED : DEFAULT_LEVEL;
 
         String levelStr = systemPropertiesAccessor.getString(PROP_LEVEL, defaultLevel.name());
-        ResourceLeakDetector.Level level = ResourceLeakDetector.Level.parseLevel(levelStr);
+        Level level = Level.parseLevel(levelStr);
 
         TARGET_RECORDS = systemPropertiesAccessor.getInteger(PROP_TARGET_RECORDS, DEFAULT_TARGET_RECORDS);
         SAMPLING_INTERVAL = systemPropertiesAccessor.getInteger(PROP_SAMPLING_INTERVAL, DEFAULT_SAMPLING_INTERVAL);
@@ -116,13 +116,13 @@ public class ResourceLeakDetector<T> {
      * Returns {@code true} if resource leak detection is enabled.
      */
     public static boolean isEnabled() {
-        return getLevel().ordinal() > ResourceLeakDetector.Level.DISABLED.ordinal();
+        return getLevel().ordinal() > Level.DISABLED.ordinal();
     }
 
     /**
      * Sets the resource leak detection level.
      */
-    public static void setLevel(ResourceLeakDetector.Level level) {
+    public static void setLevel(Level level) {
         Preconditions.checkNotNull(level);
         ResourceLeakDetector.level = level;
     }
@@ -130,15 +130,14 @@ public class ResourceLeakDetector<T> {
     /**
      * Returns the current resource leak detection level.
      */
-    public static ResourceLeakDetector.Level getLevel() {
+    public static Level getLevel() {
         return level;
     }
 
     /**
      * the collection of active resources
      */
-    private final Set<ResourceLeakDetector.DefaultResourceLeak<?>> allLeaks =
-            Collections.newSetFromMap(new ConcurrentHashMap<ResourceLeakDetector.DefaultResourceLeak<?>, Boolean>());
+    private final Set<DefaultResourceLeak> allLeaks = Collections.newSetFromMap(new ConcurrentHashMap<DefaultResourceLeak, Boolean>());
 
     private final ReferenceQueue<Object> refQueue = new ReferenceQueue<Object>();
     private final ConcurrentMap<String, Boolean> reportedLeaks = new ConcurrentHashMap<String, Boolean>();
@@ -168,27 +167,27 @@ public class ResourceLeakDetector<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private ResourceLeakDetector.DefaultResourceLeak track0(T obj) {
-        ResourceLeakDetector.Level level = ResourceLeakDetector.level;
-        if (level == ResourceLeakDetector.Level.DISABLED) {
+    private DefaultResourceLeak track0(T obj) {
+        Level level = ResourceLeakDetector.level;
+        if (level == Level.DISABLED) {
             return null;
         }
 
-        if (level.ordinal() < ResourceLeakDetector.Level.PARANOID.ordinal()) {
+        if (level.ordinal() < Level.PARANOID.ordinal()) {
             if ((ThreadLocalRandom.current().nextInt(samplingInterval)) == 0) {
                 reportLeak();
-                return new ResourceLeakDetector.DefaultResourceLeak(obj, refQueue, allLeaks);
+                return new DefaultResourceLeak(obj, refQueue, allLeaks);
             }
             return null;
         }
         reportLeak();
-        return new ResourceLeakDetector.DefaultResourceLeak(obj, refQueue, allLeaks);
+        return new DefaultResourceLeak(obj, refQueue, allLeaks);
     }
 
     private void clearRefQueue() {
         for (; ; ) {
             @SuppressWarnings("unchecked")
-            ResourceLeakDetector.DefaultResourceLeak ref = (ResourceLeakDetector.DefaultResourceLeak) refQueue.poll();
+            DefaultResourceLeak ref = (DefaultResourceLeak) refQueue.poll();
             if (ref == null) {
                 break;
             }
@@ -201,11 +200,9 @@ public class ResourceLeakDetector<T> {
             clearRefQueue();
             return;
         }
-
         // Detect and report previous leaks.
         for (; ; ) {
-            @SuppressWarnings("unchecked")
-            ResourceLeakDetector.DefaultResourceLeak ref = (ResourceLeakDetector.DefaultResourceLeak) refQueue.poll();
+            DefaultResourceLeak ref = (DefaultResourceLeak) refQueue.poll();
             if (ref == null) {
                 break;
             }
@@ -231,7 +228,7 @@ public class ResourceLeakDetector<T> {
      */
     protected void reportTracedLeak(String resourceType, String records) {
         logger.error(
-                "LEAK: {}.release() was not called before it's garbage-collected. " +
+                "LEAK: {} was not (close | stop | release | dispose, or other similar method) before it's garbage-collected. " +
                         "See https://netty.io/wiki/reference-counted-objects.html for more information.{}",
                 resourceType, records);
     }
@@ -241,41 +238,35 @@ public class ResourceLeakDetector<T> {
      * have been detected.
      */
     protected void reportUntracedLeak(String resourceType) {
-        logger.error("LEAK: {}.release() was not called before it's garbage-collected. " +
+        logger.error("LEAK: {} was not (close | stop | release | dispose, or other similar method) before it's garbage-collected. " +
                         "Enable advanced leak reporting to find out where the leak occurred. " +
                         "To enable advanced leak reporting, " +
                         "specify the JVM option '-D{}={}' or call {}.setLevel() " +
                         "See https://netty.io/wiki/reference-counted-objects.html for more information.",
-                resourceType, PROP_LEVEL, ResourceLeakDetector.Level.ADVANCED.name().toLowerCase(), Reflects.getSimpleClassName(this));
+                resourceType, PROP_LEVEL, Level.ADVANCED.name().toLowerCase(), Reflects.getSimpleClassName(this));
     }
 
 
-    @SuppressWarnings("deprecation")
-    private static final class DefaultResourceLeak<T>
-            extends WeakReference<Object> implements ResourceLeakTracker<T> {
+    @SuppressWarnings({"deprecation","unused"})
+    private static final class DefaultResourceLeak<T> extends WeakReference<Object> implements ResourceLeakTracker<T> {
 
-        @SuppressWarnings("unchecked") // generics and updaters do not mix.
-        private static final AtomicReferenceFieldUpdater<ResourceLeakDetector.DefaultResourceLeak<?>, ResourceLeakDetector.Record> headUpdater =
-                (AtomicReferenceFieldUpdater)
-                        AtomicReferenceFieldUpdater.newUpdater(ResourceLeakDetector.DefaultResourceLeak.class, ResourceLeakDetector.Record.class, "head");
+        /**
+         * generics and updaters do not mix.
+         */
+        private static final AtomicReferenceFieldUpdater<DefaultResourceLeak, Record> headUpdater = AtomicReferenceFieldUpdater.newUpdater(DefaultResourceLeak.class, Record.class, "head");
 
-        @SuppressWarnings("unchecked") // generics and updaters do not mix.
-        private static final AtomicIntegerFieldUpdater<ResourceLeakDetector.DefaultResourceLeak<?>> droppedRecordsUpdater =
-                (AtomicIntegerFieldUpdater)
-                        AtomicIntegerFieldUpdater.newUpdater(ResourceLeakDetector.DefaultResourceLeak.class, "droppedRecords");
+        /**
+         * generics and updaters do not mix.
+         */
+        private static final AtomicIntegerFieldUpdater<DefaultResourceLeak> droppedRecordsUpdater = AtomicIntegerFieldUpdater.newUpdater(DefaultResourceLeak.class, "droppedRecords");
 
-        @SuppressWarnings("unused")
-        private volatile ResourceLeakDetector.Record head;
-        @SuppressWarnings("unused")
+        private volatile Record head;
         private volatile int droppedRecords;
 
-        private final Set<ResourceLeakDetector.DefaultResourceLeak<?>> allLeaks;
+        private final Set<DefaultResourceLeak> allLeaks;
         private final int trackedHash;
 
-        DefaultResourceLeak(
-                Object referent,
-                ReferenceQueue<Object> refQueue,
-                Set<ResourceLeakDetector.DefaultResourceLeak<?>> allLeaks) {
+        DefaultResourceLeak(Object referent, ReferenceQueue<Object> refQueue, Set<DefaultResourceLeak> allLeaks) {
             super(referent, refQueue);
 
             assert referent != null;
@@ -284,6 +275,7 @@ public class ResourceLeakDetector<T> {
             // It's important that we not store a reference to the referent as this would disallow it from
             // be collected via the WeakReference.
             trackedHash = System.identityHashCode(referent);
+            Preconditions.checkNotNull(allLeaks);
             allLeaks.add(this);
             // Create a new Record so we always have the creation stacktrace included.
             headUpdater.set(this, new ResourceLeakDetector.Record(ResourceLeakDetector.Record.BOTTOM));
@@ -414,7 +406,7 @@ public class ResourceLeakDetector<T> {
 
         @Override
         public String toString() {
-            ResourceLeakDetector.Record oldHead = headUpdater.getAndSet(this, null);
+            Record oldHead = headUpdater.getAndSet(this, null);
             if (oldHead == null) {
                 // Already closed
                 return "";
@@ -430,10 +422,10 @@ public class ResourceLeakDetector<T> {
 
             int i = 1;
             Set<String> seen = new HashSet<String>(present);
-            for (; oldHead != ResourceLeakDetector.Record.BOTTOM; oldHead = oldHead.next) {
+            for (; oldHead != Record.BOTTOM; oldHead = oldHead.next) {
                 String s = oldHead.toString();
                 if (seen.add(s)) {
-                    if (oldHead.next == ResourceLeakDetector.Record.BOTTOM) {
+                    if (oldHead.next == Record.BOTTOM) {
                         buf.append("Created at:").append(NEWLINE).append(s);
                     } else {
                         buf.append('#').append(i++).append(':').append(NEWLINE).append(s);
@@ -502,14 +494,14 @@ public class ResourceLeakDetector<T> {
         private final ResourceLeakDetector.Record next;
         private final int pos;
 
-        Record(ResourceLeakDetector.Record next, Object hint) {
+        Record(Record next, Object hint) {
             // This needs to be generated even if toString() is never called as it may change later on.
             hintString = hint instanceof ResourceLeakHint ? ((ResourceLeakHint) hint).toHintString() : hint.toString();
             this.next = next;
             this.pos = next.pos + 1;
         }
 
-        Record(ResourceLeakDetector.Record next) {
+        Record(Record next) {
             hintString = null;
             this.next = next;
             this.pos = next.pos + 1;

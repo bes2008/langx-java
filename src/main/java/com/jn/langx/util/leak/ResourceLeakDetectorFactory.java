@@ -8,7 +8,7 @@ import com.jn.langx.util.Preconditions;
  */
 public abstract class ResourceLeakDetectorFactory {
 
-    private static volatile ResourceLeakDetectorFactory factoryInstance = new DefaultResourceLeakDetectorFactory();
+    private static volatile ResourceLeakDetectorFactory FACTORY_INSTANCE = new DefaultResourceLeakDetectorFactory();
 
     /**
      * Get the singleton instance of this factory class.
@@ -16,7 +16,7 @@ public abstract class ResourceLeakDetectorFactory {
      * @return the current {@link ResourceLeakDetectorFactory}
      */
     public static ResourceLeakDetectorFactory instance() {
-        return factoryInstance;
+        return FACTORY_INSTANCE;
     }
 
     /**
@@ -27,7 +27,7 @@ public abstract class ResourceLeakDetectorFactory {
      * @param factory the instance that will become the current {@link ResourceLeakDetectorFactory}'s singleton
      */
     public static void setResourceLeakDetectorFactory(ResourceLeakDetectorFactory factory) {
-        factoryInstance = Preconditions.checkNotNull(factory, "factory");
+        FACTORY_INSTANCE = Preconditions.checkNotNull(factory, "factory");
     }
 
     /**
