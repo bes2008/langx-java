@@ -1,13 +1,13 @@
 package com.jn.langx.util.collection.tree;
 
+import com.jn.langx.util.BasedStringAccessor;
+import com.jn.langx.util.Objects;
+
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
-public class TreeNode<T extends TreeNode> implements Serializable {
+public class TreeNode<T extends TreeNode> extends BasedStringAccessor<String, Map<String, Object>> implements Serializable {
     private static final long serialVersionUID = 3465696230080207245L;
     private String id;
     private String pid;
@@ -41,6 +41,7 @@ public class TreeNode<T extends TreeNode> implements Serializable {
         if (isParent) {
             this.children = children;
         }
+        setTarget(new HashMap<String, Object>());
     }
 
     public String getId() {
@@ -183,5 +184,24 @@ public class TreeNode<T extends TreeNode> implements Serializable {
     @Override
     public int hashCode() {
         return this.id.hashCode();
+    }
+
+    @Override
+    public Object get(String key) {
+        return getTarget().get(key);
+    }
+
+    @Override
+    public String getString(String key, String defaultValue) {
+        Object obj = get(key);
+        if (Objects.isNull(obj)) {
+            return defaultValue;
+        }
+        return obj.toString();
+    }
+
+    @Override
+    public void set(String key, Object value) {
+        getTarget().put(key, value);
     }
 }
