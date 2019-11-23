@@ -5,18 +5,59 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.concurrent.completion.CompletableFuture;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.timing.timer.HashedWheelTimer;
+import com.jn.langx.util.timing.timer.Timer;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class CacheTests {
 
-    public void testBasic() {
+    public void test0() throws Throwable {
+        final Timer timer = new HashedWheelTimer(Executors.defaultThreadFactory());
+        CompletableFuture f1 = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                testBasic(timer);
+            }
+        });
+        CompletableFuture f2 = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                testBasic(timer);
+            }
+        });
+
+        CompletableFuture f3 = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                testBasic(timer);
+            }
+        });
+        CompletableFuture f4 = CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                testBasic(timer);
+            }
+        });
+        CompletableFuture.allOf(f1, f2, f3, f4).thenRun(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("great");
+            }
+        }).get();
+    }
+
+
+    private void testBasic(Timer timer) {
         final Cache<String, String> cache = CacheBuilder.<String, String>newBuilder()
                 .cacheClass(LRUCache.class)
                 .evictExpiredInterval(2 * 1000)
                 .expireAfterRead(60)
                 .expireAfterWrite(60)
+                .timer(timer)
                 .removeListener(new RemoveListener<String, String>() {
                     @Override
                     public void onRemove(String key, String value, RemoveCause cause) {
