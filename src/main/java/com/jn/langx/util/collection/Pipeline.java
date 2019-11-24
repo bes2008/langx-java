@@ -38,13 +38,17 @@ public class Pipeline<E> {
         return new Pipeline<E>(list);
     }
 
-    public Pipeline skip(int n) {
+    public Pipeline<E> skip(int n) {
         n = n < 0 ? 0 : n;
         Collection<E> list = Collects.skip(this.collection, n);
         return new Pipeline<E>(list);
     }
 
     public Pipeline<E> sorted(@NonNull Comparator<E> comparator) {
+        return new Pipeline<E>(Collects.sort(this.collection, comparator));
+    }
+
+    public Pipeline<E> sort(@NonNull Comparator<E> comparator) {
         return new Pipeline<E>(Collects.sort(this.collection, comparator));
     }
 
@@ -85,7 +89,16 @@ public class Pipeline<E> {
         return Collects.findFirst(this.collection, predicate);
     }
 
-    public Pipeline<E> clearNulls(){
+    public Pipeline<E> findN(int n) {
+        return of(Collects.findN(this.collection, null, n));
+    }
+
+    public Pipeline<E> findN(@NonNull Predicate<E> predicate, int n) {
+        Preconditions.checkNotNull(predicate);
+        return of(Collects.findN(this.collection, predicate, n));
+    }
+
+    public Pipeline<E> clearNulls() {
         return new Pipeline<E>(Collects.clearNulls(this.collection));
     }
 

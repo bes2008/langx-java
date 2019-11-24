@@ -911,23 +911,10 @@ public class Collects {
      * find the first matched element, null if not found
      */
     public static <E, C extends Collection<E>> E findFirst(@Nullable C collection, @Nullable Predicate<E> predicate) {
-        if (Emptys.isEmpty(collection)) {
-            return null;
+        List<E> list = findN(collection, predicate, 1);
+        if (Emptys.isNotEmpty(list)) {
+            return list.get(0);
         }
-        if (predicate != null) {
-            for (E e : collection) {
-                if (predicate.test(e)) {
-                    return e;
-                }
-            }
-        } else {
-            Iterator<? extends E> iterator = collection.iterator();
-            if (iterator.hasNext()) {
-                return iterator.next();
-            }
-            return null;
-        }
-
         return null;
     }
 
@@ -952,6 +939,48 @@ public class Collects {
             }
         }
         return null;
+    }
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <E, C extends Collection<E>> List<E> findN(@Nullable C collection, @Nullable Predicate<E> predicate, int n) {
+        List<E> ret = Collects.emptyArrayList();
+        if (n <= 0 || Emptys.isEmpty(collection)) {
+            return ret;
+        }
+
+        for (E e : collection) {
+            if (predicate == null || predicate.test(e)) {
+                ret.add(e);
+                if (ret.size() == n) {
+                    break;
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <K, V> Map<? extends K, ? extends V> findN(@Nullable Map<? extends K, ? extends V> map, @Nullable Predicate2<K, V> predicate, int n) {
+        Map<K, V> ret = emptyHashMap(true);
+        if (n <= 0 || map == null || map.isEmpty()) {
+            return ret;
+        }
+        for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+            if (predicate == null || predicate.test(entry.getKey(), entry.getValue())) {
+                K key = entry.getKey();
+                V value = entry.getValue();
+                ret.put(key, value);
+                if (map.size() == n) {
+                    break;
+                }
+            }
+        }
+        return ret;
     }
 
     /**
@@ -1300,7 +1329,7 @@ public class Collects {
     }
 
 
-    public static <E,C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable C oldCollection, @Nullable C newCollection){
+    public static <E, C extends Collection<E>> CollectionDiffResult<E> diff(@Nullable C oldCollection, @Nullable C newCollection) {
         return diff(oldCollection, newCollection, null);
     }
 
