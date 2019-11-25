@@ -38,10 +38,10 @@ public class DatabaseBasedConfigurationRepository<T extends Configuration> exten
     public void reload() {
         List<T> newConfigs = Collects.asList(loader.loadAll());
         Collection<T> oldConfigs = getAll().values();
-        CollectionDiffResult<T> differResult = Collects.diff(oldConfigs, newConfigs, null, new KeyBuilder<String, T>() {
+        CollectionDiffResult<T> differResult = Collects.diff(oldConfigs, newConfigs, getComparator(), new KeyBuilder<String, T>() {
             @Override
-            public String getKey(T object) {
-                return object.getId();
+            public String getKey(T configuration) {
+                return configuration.getId();
             }
         });
         if (differResult.hasDifference()) {

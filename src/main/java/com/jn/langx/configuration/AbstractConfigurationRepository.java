@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -54,17 +55,25 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     @NonNull
     private Cache<String, T> cache;
 
+    private Comparator<T> comparator;
+
     /**
      * units: seconds
      * scan interval, if <=0, will not refresh
      */
     protected int reloadIntervalInSeconds = -1;
 
-
     public void setReloadIntervalInSeconds(int reloadIntervalInSeconds) {
         this.reloadIntervalInSeconds = reloadIntervalInSeconds;
     }
 
+    public void setComparator(Comparator<T> comparator) {
+        this.comparator = comparator;
+    }
+
+    public Comparator<T> getComparator() {
+        return comparator;
+    }
 
     public void setCache(Cache<String, T> cache) {
         this.cache = cache;
