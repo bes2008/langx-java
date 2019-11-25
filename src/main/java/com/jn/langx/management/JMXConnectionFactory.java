@@ -1,5 +1,5 @@
 package com.jn.langx.management;
 
 public interface JMXConnectionFactory {
-    JMXConnection getConnection(final ConnectorConfiguration p0);
+    JMXConnection getConnection(final ConnectorConfiguration configuration);
 }
