@@ -37,7 +37,6 @@ import java.util.Map;
 public class DirectoryBasedFileConfigurationRepository<T extends Configuration> extends AbstractConfigurationRepository<T, DirectoryBasedFileConfigurationLoader<T>, DirectoryBasedFileConfigurationWriter<T>> {
     private static final Logger logger = LoggerFactory.getLogger(DirectoryBasedFileConfigurationRepository.class);
 
-
     private String directory;
 
     private Map<String, Long> lastModifiedTimeMap = Collects.emptyHashMap();
