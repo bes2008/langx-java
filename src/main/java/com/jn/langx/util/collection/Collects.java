@@ -159,7 +159,7 @@ public class Collects {
         return Arrs.createArray(Primitives.wrap(componentType), 0);
     }
 
-    public static <E> ArrayList<E> newArrayList(@Nullable List<E> elements) {
+    public static <E> ArrayList<E> newArrayList(@Nullable Iterable<E> elements) {
         return new ArrayList<E>(asList(elements));
     }
 
@@ -167,7 +167,7 @@ public class Collects {
         return new ArrayList<E>(asList(elements));
     }
 
-    public static <E> LinkedList<E> newLinkedList(@Nullable List<E> elements) {
+    public static <E> LinkedList<E> newLinkedList(@Nullable Iterable<E> elements) {
         return new LinkedList<E>(asList(elements));
     }
 
@@ -175,7 +175,7 @@ public class Collects {
         return new LinkedList<E>(asList(elements));
     }
 
-    public static <E> HashSet<E> newHashSet(@Nullable Set<E> elements) {
+    public static <E> HashSet<E> newHashSet(@Nullable Iterable<E> elements) {
         return new HashSet<E>(asSet(elements));
     }
 
