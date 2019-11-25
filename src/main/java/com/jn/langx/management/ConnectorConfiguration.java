@@ -1,9 +1,22 @@
 package com.jn.langx.management;
 
+import com.jn.langx.configuration.Configuration;
+
 import java.util.Properties;
 
-public class ConnectorConfiguration {
+public class ConnectorConfiguration implements Configuration {
+    private String id;
     private Properties props;
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public ConnectorConfiguration() {
         this.props = new Properties();
