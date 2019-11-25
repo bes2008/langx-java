@@ -64,6 +64,6 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
 
     @Override
     public boolean hasDifference() {
-        return Emptys.isNotEmpty(adds) && Emptys.isNotEmpty(updates) && Emptys.isNotEmpty(removes);
+        return Emptys.isNotEmpty(adds) || Emptys.isNotEmpty(updates) || Emptys.isNotEmpty(removes);
     }
 }

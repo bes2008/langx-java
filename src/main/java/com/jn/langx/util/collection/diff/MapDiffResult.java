@@ -59,6 +59,6 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
 
     @Override
     public boolean hasDifference() {
-        return Emptys.isNotEmpty(adds) && Emptys.isNotEmpty(updates) && Emptys.isNotEmpty(removes);
+        return Emptys.isNotEmpty(adds) || Emptys.isNotEmpty(updates) || Emptys.isNotEmpty(removes);
     }
 }
