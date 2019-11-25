@@ -21,19 +21,13 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.diff.MapDiffResult;
-import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.io.file.Files;
-import com.jn.langx.util.timing.timer.HashedWheelTimer;
-import com.jn.langx.util.timing.timer.Timeout;
-import com.jn.langx.util.timing.timer.Timer;
-import com.jn.langx.util.timing.timer.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * multiple configuration file in one directory, every configuration will be load as a configurationlangx
@@ -43,25 +37,14 @@ import java.util.concurrent.TimeUnit;
 public class DirectoryBasedFileConfigurationRepository<T extends Configuration> extends AbstractConfigurationRepository<T, DirectoryBasedFileConfigurationLoader<T>, DirectoryBasedFileConfigurationWriter<T>> {
     private static final Logger logger = LoggerFactory.getLogger(DirectoryBasedFileConfigurationRepository.class);
 
-    /**
-     * units: seconds
-     * scan interval, if <=0, will not refresh
-     */
-    private int reloadIntervalInSeconds = -1;
 
     private String directory;
 
     private Map<String, Long> lastModifiedTimeMap = Collects.emptyHashMap();
 
-    private Timer timer;
 
     public void setDirectory(String directory) {
         this.directory = directory;
-    }
-
-
-    public void setReloadIntervalInSeconds(int reloadIntervalInSeconds) {
-        this.reloadIntervalInSeconds = reloadIntervalInSeconds;
     }
 
 
@@ -83,12 +66,7 @@ public class DirectoryBasedFileConfigurationRepository<T extends Configuration> 
                 writer.setDirectory(directory);
             }
             // enable refresh
-            if (reloadIntervalInSeconds > 0) {
-                if (timer == null) {
-                    logger.warn("The timer is not specified for the repository ({}) , will use a simple timer", name);
-                    timer = new HashedWheelTimer(new CommonThreadFactory("Configuration", true), 50, TimeUnit.MILLISECONDS);
-                }
-            } else {
+            if (reloadIntervalInSeconds > 1) {
                 logger.info("The configuration refresh task is disabled for repository: {}", name);
             }
             inited = true;
@@ -103,41 +81,10 @@ public class DirectoryBasedFileConfigurationRepository<T extends Configuration> 
         }
         if (!running) {
             super.startup();
-            if (reloadIntervalInSeconds > 0) {
-                try {
-                    reload();
-                } catch (Throwable ex) {
-                    logger.warn(ex.getMessage(), ex);
-                }
-                timer.newTimeout(new TimerTask() {
-                    @Override
-                    public void run(Timeout timeout) throws Exception {
-                        try {
-                            reload();
-                        } catch (Throwable ex) {
-                            logger.error(ex.getMessage(), ex);
-                        } finally {
-                            if (running) {
-                                timer.newTimeout(this, reloadIntervalInSeconds, TimeUnit.SECONDS);
-                            }
-                        }
-                    }
-                }, reloadIntervalInSeconds, TimeUnit.SECONDS);
-            } else {
-                reload();
-            }
         }
     }
 
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public void setTimer(Timer timer) {
-        this.timer = timer;
-    }
-
-    private void reload() {
+    public void reload() {
         Map<String, Long> modifiedTimeMap = loader.scanConfigurationFileModifiedTimes();
         try {
             MapDiffResult<String, Long> lastModifiedDiffResult = Collects.diff(lastModifiedTimeMap, modifiedTimeMap);
