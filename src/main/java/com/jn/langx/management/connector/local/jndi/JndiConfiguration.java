@@ -1,10 +1,10 @@
 package com.jn.langx.management.connector.local.jndi;
 
-import com.jn.langx.management.Configuration;
+import com.jn.langx.management.ConnectorConfiguration;
 
 import java.util.List;
 
-public class JndiConfiguration extends Configuration {
+public class JndiConfiguration extends ConnectorConfiguration {
     private String serverJndi;
     private String jndiFactoryClass;
 

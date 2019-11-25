@@ -1,6 +1,6 @@
 package com.jn.langx.management.connector.local.jndi;
 
-import com.jn.langx.management.Configuration;
+import com.jn.langx.management.ConnectorConfiguration;
 import com.jn.langx.management.JMXConnection;
 import com.jn.langx.management.JMXConnectionFactory;
 import com.jn.langx.management.connector.local.JMXLocalConnection;
@@ -12,7 +12,7 @@ public class JndiLocalConnectionFactory implements JMXConnectionFactory {
     private static final String DEFAULT_CONTEXT_FACTORY = "com.sun.InitialContextFactroy";
 
     @Override
-    public JMXConnection getConnection(final Configuration config) {
+    public JMXConnection getConnection(final ConnectorConfiguration config) {
         final JndiConfiguration jndiConfig = (JndiConfiguration) config;
         final String jndi = jndiConfig.getServerJndi();
         MBeanServer server = null;

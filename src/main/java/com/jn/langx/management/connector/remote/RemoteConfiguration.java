@@ -1,8 +1,8 @@
 package com.jn.langx.management.connector.remote;
 
-import com.jn.langx.management.Configuration;
+import com.jn.langx.management.ConnectorConfiguration;
 
-public class RemoteConfiguration extends Configuration {
+public class RemoteConfiguration extends ConnectorConfiguration {
     private String user;
     private String password;
     private String serverName;

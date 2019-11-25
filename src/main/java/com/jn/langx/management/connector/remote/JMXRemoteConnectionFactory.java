@@ -1,6 +1,6 @@
 package com.jn.langx.management.connector.remote;
 
-import com.jn.langx.management.Configuration;
+import com.jn.langx.management.ConnectorConfiguration;
 import com.jn.langx.management.JMXConnection;
 import com.jn.langx.management.JMXConnectionFactory;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 
 public abstract class JMXRemoteConnectionFactory implements JMXConnectionFactory {
     @Override
-    public JMXConnection getConnection(final Configuration config) {
+    public JMXConnection getConnection(final ConnectorConfiguration config) {
         final RemoteConfiguration conf = (RemoteConfiguration) config;
         final JMXServiceURL serviceUrl = this.buildJMXServiceUrl(conf);
         final Map<String, Object> env = new HashMap<String, Object>();

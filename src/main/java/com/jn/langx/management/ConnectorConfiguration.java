@@ -2,10 +2,10 @@ package com.jn.langx.management;
 
 import java.util.Properties;
 
-public class Configuration {
+public class ConnectorConfiguration {
     private Properties props;
 
-    public Configuration() {
+    public ConnectorConfiguration() {
         this.props = new Properties();
     }
 
