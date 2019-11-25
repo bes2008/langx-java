@@ -4,6 +4,9 @@
 
 [![JDK](https://img.shields.io/badge/JDK-1.6+-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
+[GitHub](https://github.com/fangjinuo/langx-java)
+[Gitee](https://gitee.com/fangjinuo/langx-java)
+
 [![maven](https://img.shields.io/badge/maven-v1.2.3-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.3)
 [![maven](https://img.shields.io/badge/maven-v1.2.2-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.2)
 [![maven](https://img.shields.io/badge/maven-v1.2.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.1)
@@ -124,5 +127,7 @@ Java lang extensions
 
 
 ## Contact:
+如果遇到问题，可以在Github, Gitee 上提出issue, 也可以在QQ群里询问。
+
 QQ Group: 750929088   
 ![QQ Group](https://github.com/fangjinuo/sqlhelper/blob/master/_images/qq_group.png)
