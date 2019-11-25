@@ -54,7 +54,6 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     @NonNull
     private Cache<String, T> cache;
 
-
     /**
      * units: seconds
      * scan interval, if <=0, will not refresh
