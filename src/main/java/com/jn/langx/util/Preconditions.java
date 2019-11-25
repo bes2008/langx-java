@@ -88,6 +88,24 @@ public class Preconditions {
         return obj;
     }
 
+
+    public static void checkArgument(boolean expression) {
+        if (!expression) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+
+    public static void checkArgument(boolean expression, String errorMessage) {
+        if (!expression) {
+            if (Emptys.isEmpty(errorMessage)) {
+                throw new IllegalArgumentException();
+            } else {
+                throw new IllegalArgumentException(errorMessage);
+            }
+        }
+    }
+
     public static void checkTrue(boolean expression) {
         if (!expression) {
             throw new IllegalArgumentException();
