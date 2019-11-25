@@ -12,16 +12,14 @@
  * limitations under the License.
  */
 
-package com.jn.langx.configuration.file.directoryfile;
+package com.jn.langx.configuration;
 
 import com.jn.langx.cache.AbstractCacheLoader;
-import com.jn.langx.configuration.Configuration;
-import com.jn.langx.configuration.ConfigurationLoader;
 
-public class DirectoryBasedFileConfigurationCacheLoaderAdapter<T extends Configuration> extends AbstractCacheLoader<String, T> {
+public class ConfigurationCacheLoaderAdapter<T extends Configuration> extends AbstractCacheLoader<String, T> {
     private ConfigurationLoader<T> configurationLoader;
 
-    public DirectoryBasedFileConfigurationCacheLoaderAdapter(ConfigurationLoader<T> configurationLoader) {
+    public ConfigurationCacheLoaderAdapter(ConfigurationLoader<T> configurationLoader) {
         this.configurationLoader = configurationLoader;
     }
 
