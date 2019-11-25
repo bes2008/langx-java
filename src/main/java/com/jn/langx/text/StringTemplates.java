@@ -20,7 +20,7 @@ public class StringTemplates {
     }
 
     /**
-     * format based paceholder: {}
+     * format based placeholder: {}
      *
      * @param template the string template
      * @return formatted string
@@ -43,7 +43,7 @@ public class StringTemplates {
     }
 
     /**
-     * format based index
+     * format based index: {0}, {1}, {2}
      *
      * @param template the string template
      * @param args     args
@@ -73,7 +73,17 @@ public class StringTemplates {
      * @return formatted string
      */
     public static String formatWithMap(String template, Map<String, ?> map) {
-        return new MapBasedStringFormatter().format(template, map);
+        return formatWithMap(template, MapBasedStringFormatter.PatternStyle.$, map);
+    }
+
+    /**
+     * format based on a map, the variable: ${key}
+     *
+     * @param template the string template
+     * @return formatted string
+     */
+    public static String formatWithMap(String template, MapBasedStringFormatter.PatternStyle patternStyle, Map<String, ?> map) {
+        return new MapBasedStringFormatter(patternStyle).format(template, map);
     }
 
     /**
@@ -102,7 +112,7 @@ public class StringTemplates {
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
     }
 
-    public static TemplateFluenter fluenter(String template){
+    public static TemplateFluenter fluenter(String template) {
         return new TemplateFluenter(template);
     }
 

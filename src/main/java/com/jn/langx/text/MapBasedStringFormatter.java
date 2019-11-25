@@ -9,18 +9,42 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class MapBasedStringFormatter extends CustomPatternStringFormatter {
-    static final Pattern MAP_VARIABLE_PATTERN = Pattern.compile("\\$\\{\\w+\\}");
+    public static enum PatternStyle {
+        $(Pattern.compile("\\$\\{\\w+\\}")),
+        PLACE_HOLDER(Pattern.compile("\\{\\w+\\}"));
+
+        private Pattern pattern;
+
+        private PatternStyle(Pattern pattern) {
+            this.pattern = pattern;
+        }
+
+        public Pattern getPattern() {
+            return pattern;
+        }
+    }
 
     public MapBasedStringFormatter() {
-        super(MAP_VARIABLE_PATTERN, new MapValueGetter());
+        this(PatternStyle.$);
+    }
+
+    public MapBasedStringFormatter(PatternStyle patternStyle) {
+        super(patternStyle.getPattern(), new MapValueGetter(patternStyle));
     }
 
 
     private static class MapValueGetter implements Function2<String, Object[], String> {
+        private PatternStyle style;
+
+        MapValueGetter(PatternStyle style) {
+            this.style = style;
+        }
+
         @Override
+        @SuppressWarnings("unchecked")
         public String apply(String matched, Object[] args) {
             Preconditions.checkNotNull(args);
-            matched = matched.substring(2, matched.length() - 1);
+            matched = style == PatternStyle.$ ? matched.substring(2, matched.length() - 1) : matched.substring(1, matched.length() - 1);
             Accessor<String, ?> accessor = new MapAccessor((Map) args[0]);
             return accessor.getString(matched);
         }
