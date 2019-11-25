@@ -74,16 +74,6 @@ public class DirectoryBasedFileConfigurationRepository<T extends Configuration> 
         }
     }
 
-    @Override
-    public void startup() {
-        if (!inited) {
-            init();
-        }
-        if (!running) {
-            super.startup();
-        }
-    }
-
     public void reload() {
         Map<String, Long> modifiedTimeMap = loader.scanConfigurationFileModifiedTimes();
         try {
