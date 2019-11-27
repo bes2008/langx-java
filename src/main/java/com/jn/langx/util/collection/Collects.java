@@ -1794,9 +1794,7 @@ public class Collects {
      * Swaps the two specified elements in the specified array.
      */
     public static <E>void swap(@NonNull E[] arr, int i, int j) {
-        E tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+        Arrs.swap(arr,i,j);
     }
 
 }
