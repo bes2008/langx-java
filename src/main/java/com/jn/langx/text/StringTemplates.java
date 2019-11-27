@@ -129,6 +129,7 @@ public class StringTemplates {
         return mapStyleSupplier(template, null);
     }
 
+    @SuppressWarnings({"unchecked"})
     public static Supplier<Object[], String> mapStyleSupplier(@NonNull final String template, @Nullable final MapBasedStringFormatter.PatternStyle patternStyle) {
         return new Supplier<Object[], String>() {
             @Override
