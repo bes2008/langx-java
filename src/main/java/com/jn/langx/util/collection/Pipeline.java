@@ -2,6 +2,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.GlobalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.*;
 
@@ -177,11 +178,19 @@ public class Pipeline<E> {
         return this;
     }
 
+    public boolean contains(E e) {
+        return collection.contains(e);
+    }
+
+    public Pipeline<E> subPipeline(int offset, int limit) {
+        return new Pipeline<E>(Collects.skip(Collects.limit(collection, limit), offset));
+    }
+
     public Pipeline<E> listized() {
         return new Pipeline<E>(collect(Collects.<E>toList()));
     }
 
-    public <C extends Collection<E>> void addTo(final C collection) {
+    public <C extends Collection<E>> void addTo(@NonNull final C collection) {
         Preconditions.checkNotNull(collection);
         forEach(new Consumer<E>() {
             @Override
@@ -197,7 +206,23 @@ public class Pipeline<E> {
         return new Pipeline<E>(list);
     }
 
-    public <C extends Collection<E>> Pipeline<E> addAll(C collection) {
+    public Pipeline<E> shuffle() {
+        return shuffle(GlobalThreadLocalMap.getRandom());
+    }
+
+    public Pipeline<E> shuffle(Random random) {
+        List<E> list = asList();
+        Collects.shuffle(list, random);
+        return new Pipeline<E>(list);
+    }
+
+    public Pipeline<E> swap(int i, int j) {
+        List<E> list = asList();
+        Collects.swap(list, i, j);
+        return new Pipeline<E>(list);
+    }
+
+    public <C extends Collection<E>> Pipeline<E> addAll(@Nullable C collection) {
         if (collection == null) {
             return this;
         }
@@ -206,20 +231,23 @@ public class Pipeline<E> {
     }
 
     public List<E> asList() {
+        if (collection instanceof List) {
+            return (List<E>) collection;
+        }
         return new ArrayList<E>(getAll());
     }
 
-    public static <T> Pipeline<T> of(Object anyObject) {
+    public static <T> Pipeline<T> of(@Nullable Object anyObject) {
         Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(anyObject));
         return new Pipeline<T>(list);
     }
 
-    public static <T> Pipeline<T> of(Iterable<T> iterable) {
+    public static <T> Pipeline<T> of(@Nullable Iterable<T> iterable) {
         Collection<T> list = Collects.<T>asCollection(iterable);
         return new Pipeline<T>(list);
     }
 
-    public static <T> Pipeline<T> of(T... array) {
+    public static <T> Pipeline<T> of(@Nullable T... array) {
         Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(array));
         return new Pipeline<T>(list);
     }

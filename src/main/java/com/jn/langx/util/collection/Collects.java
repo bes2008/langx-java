@@ -2,6 +2,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.GlobalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
@@ -1719,7 +1720,7 @@ public class Collects {
      * @throws UnsupportedOperationException if the specified list or
      *                                       its list-iterator does not support the <tt>set</tt> operation.
      */
-    public static void shuffle(List<?> list) {
+    public static <E>void shuffle(@NonNull List<E> list) {
         shuffle(list, GlobalThreadLocalMap.getRandom());
     }
 
@@ -1746,7 +1747,7 @@ public class Collects {
      * @throws UnsupportedOperationException if the specified list or its
      *                                       list-iterator does not support the <tt>set</tt> operation.
      */
-    public static void shuffle(List<?> list, Random rnd) {
+    public static <E>void shuffle(@NonNull List<E> list, @NonNull Random rnd) {
         int size = list.size();
         if (size < 5 || list instanceof RandomAccess) {
             for (int i = size; i > 1; i--) {
@@ -1782,18 +1783,18 @@ public class Collects {
      *                                   is out of range (i &lt; 0 || i &gt;= list.size()
      *                                   || j &lt; 0 || j &gt;= list.size()).
      */
-    public static void swap(@NonNull List<?> list, int i, int j) {
-        Preconditions.checkArgument(i>0, "index i is illegal : {}");
-        Preconditions.checkArgument(i>0, "index j is illegal : {}");
-        final List l = list;
+    public static <E> void swap(@NonNull List<E> list, int i, int j) {
+        Preconditions.checkArgument(i > 0, StringTemplates.indexStyleSupplier("index i is illegal : {}"), i);
+        Preconditions.checkArgument(j > 0, StringTemplates.indexStyleSupplier("index j is illegal : {}"), j);
+        final List<E> l = list;
         l.set(i, l.set(j, l.get(i)));
     }
 
     /**
      * Swaps the two specified elements in the specified array.
      */
-    private static void swap(Object[] arr, int i, int j) {
-        Object tmp = arr[i];
+    private static <E>void swap(@NonNull E[] arr, int i, int j) {
+        E tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
     }
