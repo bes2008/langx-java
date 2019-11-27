@@ -6,18 +6,16 @@ import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.random.ThreadLocalRandom;
 
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 import java.text.SimpleDateFormat;
-import java.util.IdentityHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
-public class GlobalThreadLocalMap {
+public final class GlobalThreadLocalMap {
     private static final ThreadLocal<GlobalThreadLocalMap> CACHE = new ThreadLocal<GlobalThreadLocalMap>() {
         @Override
         protected GlobalThreadLocalMap initialValue() {
@@ -131,13 +129,21 @@ public class GlobalThreadLocalMap {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o){
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             SimpleDateFormatCacheKey that = (SimpleDateFormatCacheKey) o;
 
-            if (!pattern.equals(that.pattern)) return false;
-            if (!timeZoneId.equals(that.timeZoneId)) return false;
+            if (!pattern.equals(that.pattern)){
+                return false;
+            }
+            if (!timeZoneId.equals(that.timeZoneId)){
+                return false;
+            }
             return locale.equals(that.locale);
         }
 
@@ -159,5 +165,9 @@ public class GlobalThreadLocalMap {
 
     public void clear(){
         CACHE.remove();
+    }
+
+    public static Random getRandom(){
+        return ThreadLocalRandom.current();
     }
 }
