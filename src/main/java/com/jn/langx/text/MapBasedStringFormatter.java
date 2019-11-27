@@ -1,6 +1,7 @@
 package com.jn.langx.text;
 
 import com.jn.langx.Accessor;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.MapAccessor;
 import com.jn.langx.util.function.Function2;
@@ -28,8 +29,8 @@ public class MapBasedStringFormatter extends CustomPatternStringFormatter {
         this(PatternStyle.$);
     }
 
-    public MapBasedStringFormatter(PatternStyle patternStyle) {
-        super(patternStyle.getPattern(), new MapValueGetter(patternStyle));
+    public MapBasedStringFormatter(@Nullable PatternStyle patternStyle) {
+        super((patternStyle == null ? PatternStyle.$ : patternStyle).getPattern(), new MapValueGetter(patternStyle));
     }
 
 
