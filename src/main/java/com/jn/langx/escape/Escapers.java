@@ -22,10 +22,6 @@ import java.util.Map;
 
 /**
  * Static utility methods pertaining to {@link Escaper} instances.
- *
- * @author Sven Mawson
- * @author David Beaumont
- * @since 15.0
  */
 public final class Escapers {
     private Escapers() {
@@ -49,7 +45,6 @@ public final class Escapers {
 
                 @Override
                 protected char[] escape(char c) {
-                    // TODO: Fix tests not to call this directly and make it throw an error.
                     return null;
                 }
             };
