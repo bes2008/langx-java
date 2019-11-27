@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.function.Supplier0;
 
 import java.util.Arrays;
@@ -251,8 +252,17 @@ public final class Objects {
      * @return {@code obj} if not {@code null}
      * @throws NullPointerException if {@code obj} is {@code null}
      */
-    public static <T> T requireNonNull(T obj, Supplier0<String> messageSupplier) {
-        return Preconditions.checkNotNull(obj, messageSupplier);
+    public static <T> T requireNonNull(T obj, Supplier<Object[],String> messageSupplier, Object... params) {
+        return Preconditions.checkNotNull(obj, messageSupplier, params);
+    }
+
+    public static <T> T requireNonNull(T obj, final Supplier0<String> messageSupplier) {
+        return Preconditions.checkNotNull(obj, new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] input) {
+                return messageSupplier.get();
+            }
+        });
     }
 
     public static <T> T useValueIfNull(T value, T defaultValue) {
