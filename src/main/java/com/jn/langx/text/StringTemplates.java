@@ -1,6 +1,10 @@
 package com.jn.langx.text;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.function.Supplier;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -19,6 +23,15 @@ public class StringTemplates {
         return new CStyleStringFormatter().format(template, args);
     }
 
+    public static Supplier<Object[], String> cStyleSupplier(final String template) {
+        return new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] params) {
+                return formatWithCStyle(template, params);
+            }
+        };
+    }
+
     /**
      * format based placeholder: {}
      *
@@ -27,6 +40,15 @@ public class StringTemplates {
      */
     public static String formatWithPlaceholder(String template, Object... args) {
         return new PlaceholderStringFormatter().format(template, args);
+    }
+
+    public static Supplier<Object[], String> placeholderStyleSupplier(final String template) {
+        return new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] params) {
+                return formatWithPlaceholder(template, params);
+            }
+        };
     }
 
 
@@ -42,6 +64,15 @@ public class StringTemplates {
         return format(template, args);
     }
 
+    public static Supplier<Object[], String> indexStyleSupplier(final String template) {
+        return new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] params) {
+                return formatWithIndex(template, params);
+            }
+        };
+    }
+
     /**
      * format based index: {0}, {1}, {2}
      *
@@ -52,6 +83,15 @@ public class StringTemplates {
      */
     public static String format(String template, Object... args) {
         return new IndexStringFormatter().format(template, args);
+    }
+
+    public static Supplier<Object[], String> supplier(final String template) {
+        return new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] params) {
+                return format(template, params);
+            }
+        };
     }
 
     /**
@@ -66,6 +106,15 @@ public class StringTemplates {
         return new BeanBasedStyleStringFormatter().format(template, bean);
     }
 
+    public static Supplier<Object[], String> beanStyleSupplier(final String template) {
+        return new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] params) {
+                return formatWithBean(template, params);
+            }
+        };
+    }
+
     /**
      * format based on a map, the variable: ${key}
      *
@@ -74,6 +123,19 @@ public class StringTemplates {
      */
     public static String formatWithMap(String template, Map<String, ?> map) {
         return formatWithMap(template, MapBasedStringFormatter.PatternStyle.$, map);
+    }
+
+    public static Supplier<Object[], String> mapStyleSupplier(@NonNull final String template) {
+        return mapStyleSupplier(template, null);
+    }
+
+    public static Supplier<Object[], String> mapStyleSupplier(@NonNull final String template, @Nullable final MapBasedStringFormatter.PatternStyle patternStyle) {
+        return new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] params) {
+                return formatWithMap(template, patternStyle, Emptys.isNotEmpty(params) ? (Map) params[0] : null);
+            }
+        };
     }
 
     /**
