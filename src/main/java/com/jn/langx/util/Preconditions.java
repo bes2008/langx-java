@@ -18,7 +18,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.function.Supplier0;
+import com.jn.langx.util.function.Supplier;
 
 public class Preconditions {
     private Preconditions() {
@@ -40,6 +40,17 @@ public class Preconditions {
         }
     }
 
+    public static <T> T test(@NonNull Predicate<T> predicate, @Nullable T argument, Supplier<Object[], String> messageSupplier, Object... params) {
+        if (predicate.test(argument)) {
+            return argument;
+        }
+        if (Objects.isNull(messageSupplier)) {
+            throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException(messageSupplier.get(params));
+        }
+    }
+
     public static <T> T checkNotNull(@NonNull T obj) {
         if (obj == null) {
             throw new NullPointerException();
@@ -57,12 +68,12 @@ public class Preconditions {
         return obj;
     }
 
-    public static <T> T checkNotNull(@NonNull T obj, @Nullable Supplier0<String> errorMessageSupplier0) {
+    public static <T> T checkNotNull(@NonNull T obj, @Nullable Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (obj == null) {
-            if (errorMessageSupplier0 == null) {
+            if (errorMessageSupplier == null) {
                 throw new NullPointerException();
             }
-            String errorMessage = errorMessageSupplier0.get();
+            String errorMessage = errorMessageSupplier.get(params);
             if (errorMessage == null) {
                 throw new NullPointerException();
             }
@@ -88,6 +99,16 @@ public class Preconditions {
         return obj;
     }
 
+    public static <T> T checkNotEmpty(@NonNull T obj, @Nullable Supplier<Object[], String> errorMessageSupplier, Object... params) {
+        if (Emptys.isEmpty(obj)) {
+            if (Objects.isNull(errorMessageSupplier)) {
+                throw new NullPointerException();
+            }
+            throw new NullPointerException(errorMessageSupplier.get(params));
+        }
+        return obj;
+    }
+
 
     public static void checkArgument(boolean expression) {
         if (!expression) {
@@ -106,6 +127,16 @@ public class Preconditions {
         }
     }
 
+    public static void checkArgument(boolean expression, Supplier<Object[], String> errorMessageSupplier, Object... params) {
+        if (!expression) {
+            if (Objects.isNull(errorMessageSupplier)) {
+                throw new IllegalArgumentException();
+            } else {
+                throw new IllegalArgumentException(errorMessageSupplier.get(params));
+            }
+        }
+    }
+
     public static void checkTrue(boolean expression) {
         if (!expression) {
             throw new IllegalArgumentException();
@@ -119,6 +150,16 @@ public class Preconditions {
                 throw new IllegalArgumentException();
             } else {
                 throw new IllegalArgumentException(errorMessage);
+            }
+        }
+    }
+
+    public static void checkTrue(boolean expression, Supplier<Object[], String> errorMessageSupplier, Object... params) {
+        if (!expression) {
+            if (Objects.isNull(errorMessageSupplier)) {
+                throw new IllegalArgumentException();
+            } else {
+                throw new IllegalArgumentException(errorMessageSupplier.get(params));
             }
         }
     }
