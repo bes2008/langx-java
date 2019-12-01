@@ -25,4 +25,12 @@ public class DefaultConstructorInvocation implements ConstructorInvocation {
     public Object proceed() throws Throwable {
         return null;
     }
+
+    public void setConstructor(Constructor constructor) {
+        this.constructor = constructor;
+    }
+
+    public void setArguments(Object[] arguments) {
+        this.arguments = arguments;
+    }
 }

@@ -1,6 +1,7 @@
 package com.jn.langx.test.util.reflect;
 
 import com.jn.langx.test.bean.Person;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.comparator.ParallelingComparator;
 import com.jn.langx.util.comparator.ReverseComparator;
@@ -21,7 +22,7 @@ public class MultiFieldSortTests {
         persons = new LinkedList<Person>();
         for (int i = 0; i < 100; i++) {
             Person person = new Person();
-            person.setId("id_" + Math.abs(random.nextInt()));
+            person.setId("id_" + Maths.abs(random.nextInt()));
             person.setName("name_" + Math.abs(random.nextInt()));
             person.setAge(Math.abs(random.nextInt(200)));
             persons.add(person);

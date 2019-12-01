@@ -1272,7 +1272,6 @@ public class Collects {
     public static <E> E min(@Nullable Object object, @NonNull final Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);
         Iterable<E> iterable = asIterable(object);
-        final Holder<E> min = new Holder<E>();
         return reduce(iterable, new Operator2<E>() {
             @Override
             public E apply(E input1, E input2) {
@@ -1720,7 +1719,7 @@ public class Collects {
      * @throws UnsupportedOperationException if the specified list or
      *                                       its list-iterator does not support the <tt>set</tt> operation.
      */
-    public static <E>void shuffle(@NonNull List<E> list) {
+    public static <E> void shuffle(@NonNull List<E> list) {
         shuffle(list, GlobalThreadLocalMap.getRandom());
     }
 
@@ -1747,7 +1746,7 @@ public class Collects {
      * @throws UnsupportedOperationException if the specified list or its
      *                                       list-iterator does not support the <tt>set</tt> operation.
      */
-    public static <E>void shuffle(@NonNull List<E> list, @NonNull Random rnd) {
+    public static <E> void shuffle(@NonNull List<E> list, @NonNull Random rnd) {
         int size = list.size();
         if (size < 5 || list instanceof RandomAccess) {
             for (int i = size; i > 1; i--) {
@@ -1793,8 +1792,8 @@ public class Collects {
     /**
      * Swaps the two specified elements in the specified array.
      */
-    public static <E>void swap(@NonNull E[] arr, int i, int j) {
-        Arrs.swap(arr,i,j);
+    public static <E> void swap(@NonNull E[] arr, int i, int j) {
+        Arrs.swap(arr, i, j);
     }
 
 }

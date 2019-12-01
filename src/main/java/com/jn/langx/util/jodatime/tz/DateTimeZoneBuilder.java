@@ -608,9 +608,6 @@ public class DateTimeZoneBuilder {
         }
 
         public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
             if (obj instanceof OfYear) {
                 OfYear other = (OfYear) obj;
                 return

@@ -292,7 +292,7 @@ public class Types {
         while (genericComponentType instanceof GenericArrayType) {
             genericComponentType = ((GenericArrayType) genericComponentType)
                     .getGenericComponentType();
-            prefix += prefix;
+            prefix = prefix + "[";
         }
 
         if (genericComponentType instanceof Class<?>) {

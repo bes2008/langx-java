@@ -5,8 +5,6 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import static com.jn.langx.util.DataUnit.*;
@@ -99,6 +97,11 @@ public final class DataSize {
         return getBytes() == memSize.getBytes();
     }
 
+    @Override
+    public int hashCode() {
+        return unit.hashCode() << 2 + value;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -110,11 +113,10 @@ public final class DataSize {
 
 
     public static DataSize parseMemSize(String memSizeString) {
+        Preconditions.checkNotNull(memSizeString);
         if (!MEM_SIZE_PATTERN.matcher(memSizeString).matches()) {
             throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("{} is not an illegal data size", memSizeString));
         }
-        Set<String> units = new HashSet<String>();
-        String originalString = memSizeString;
         final String lowerCase = memSizeString.trim().toLowerCase();
         String unit = Collects.findFirst(DataUnit.allSymbols(), new Predicate<String>() {
             @Override

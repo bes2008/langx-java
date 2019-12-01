@@ -56,10 +56,10 @@ public abstract class BaseService implements MBeanService {
             final Object attrValue = attr.getValue();
             mbean.add(new Entry<String, Object>(attrName, attrValue));
         }
-        return null;
+        return mbean;
     }
 
     static {
-        logger = LoggerFactory.getLogger((Class) BaseService.class);
+        logger = LoggerFactory.getLogger(BaseService.class);
     }
 }

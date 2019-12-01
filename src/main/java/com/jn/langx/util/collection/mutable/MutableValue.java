@@ -36,6 +36,9 @@ public abstract class MutableValue implements Comparable<MutableValue> {
 
     @Override
     public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
         return (getClass() == other.getClass()) && this.equalsSameType(other);
     }
 

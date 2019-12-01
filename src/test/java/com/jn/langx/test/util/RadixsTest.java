@@ -17,7 +17,7 @@ public class RadixsTest {
 
     @Test
     public void test() {
-        Integer i = new Integer(100);
+        Integer i = 100;
         System.out.println(Integer.toBinaryString(i));
         System.out.println(Integer.toOctalString(i));
         System.out.println(Integer.toHexString(i));

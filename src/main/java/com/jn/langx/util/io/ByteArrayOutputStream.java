@@ -311,7 +311,7 @@ public class ByteArrayOutputStream extends OutputStream {
     public static InputStream toBufferedInputStream(final InputStream input, final int size)
             throws IOException {
         // It does not matter if a ByteArrayOutputStream is not closed as close() is a no-op
-        @SuppressWarnings("resource") final ByteArrayOutputStream output = new ByteArrayOutputStream(size);
+        final ByteArrayOutputStream output = new ByteArrayOutputStream(size);
         output.write(input);
         return output.toInputStream();
     }

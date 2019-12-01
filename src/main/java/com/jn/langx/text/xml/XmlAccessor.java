@@ -25,10 +25,10 @@ public class XmlAccessor {
             }
             element.setAttribute(attributeName, attributeValue);
             if (logger.isDebugEnabled()) {
-                logger.debug("set attribute " + attributeName + "=" + attributeValue + "for element " + elementXpath);
+                logger.debug("set attribute {} = {} for element ", attributeName, attributeValue, elementXpath);
             }
         } catch (Exception ex) {
-            logger.error("Error occur when set attribute {} for element {}", (Object) attributeName, (Object) elementXpath);
+            logger.error("Error occur when set attribute {} for element {}", attributeName, elementXpath);
             throw ex;
         }
     }
@@ -50,12 +50,12 @@ public class XmlAccessor {
             }
             for (final String attributeName : attrs.keySet()) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("set attribute " + attributeName + "=" + attrs.get(attributeName) + "for element " + elementXpath);
+                    logger.debug("set attribute {} = {} for element {}", attributeName, attrs.get(attributeName), elementXpath);
                 }
                 element.setAttribute(attributeName, attrs.get(attributeName));
             }
         } catch (Exception ex) {
-            logger.error("Error occur when set attribute for element {}", (Object) elementXpath);
+            logger.error("Error occur when set attribute for element {}", elementXpath);
             throw ex;
         }
     }
@@ -73,7 +73,7 @@ public class XmlAccessor {
                 final Element element = (Element) elements.item(i);
                 for (final String attributeName : attrs.keySet()) {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("set attribute " + attributeName + "=" + attrs.get(attributeName) + "for element " + elementXpath);
+                        logger.debug("set attribute {} = {} for element {}", attributeName, attrs.get(attributeName), elementXpath);
                     }
                     element.setAttribute(attributeName, attrs.get(attributeName));
                 }
@@ -85,7 +85,7 @@ public class XmlAccessor {
     }
 
     public String getElementAttribute(final String xmlFilePath, final String elementXpath, final String attributeName) throws Exception {
-        return Xmls.handleXml(xmlFilePath, (XmlDocumentHandler<String>) new XmlDocumentHandler<String>() {
+        return Xmls.handleXml(xmlFilePath, new XmlDocumentHandler<String>() {
             @Override
             public String handle(final Document doc) throws Exception {
                 final XPathFactory factory = XPathFactory.newInstance();
@@ -103,11 +103,11 @@ public class XmlAccessor {
             final Attr attr = element.getAttributeNode(attributeName);
             String ret = Emptys.isEmpty(attr) ? "" : attr.getValue();
             if (logger.isDebugEnabled()) {
-                logger.debug("get attribute " + attributeName + " from " + elementXpath + " is " + ret);
+                logger.debug("get attribute {} from {} is {}", attributeName, elementXpath, ret);
             }
             return ret;
         } catch (Exception ex) {
-            logger.error("Error occur when get attribute {} from element {}", attributeName, (Object) elementXpath);
+            logger.error("Error occur when get attribute {} from element {}", attributeName, elementXpath);
             throw ex;
         }
     }

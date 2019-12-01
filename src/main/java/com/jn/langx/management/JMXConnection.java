@@ -232,9 +232,8 @@ public abstract class JMXConnection implements Closeable {
         boolean hasAttribute = false;
         try {
             final MBeanInfo mbeanInfo = this.getMBeanInfo(oname);
-            final MBeanAttributeInfo[] arr$;
-            final MBeanAttributeInfo[] attrInfoes = arr$ = mbeanInfo.getAttributes();
-            for (final MBeanAttributeInfo attr : arr$) {
+            final MBeanAttributeInfo[] arr = mbeanInfo.getAttributes();
+            for (final MBeanAttributeInfo attr : arr) {
                 if (attr.getName().equals(attributeName)) {
                     hasAttribute = true;
                     break;

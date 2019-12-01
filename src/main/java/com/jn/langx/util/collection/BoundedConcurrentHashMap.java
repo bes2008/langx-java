@@ -217,8 +217,11 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
             if (o == null) {
                 return false;
             }
-            HashEntry<?, ?> other = (HashEntry<?, ?>) o;
-            return hash == other.hash && key.equals(other.key);
+            if(o instanceof HashEntry) {
+                HashEntry<?, ?> other = (HashEntry<?, ?>) o;
+                return hash == other.hash && key.equals(other.key);
+            }
+            return false;
         }
 
         @SuppressWarnings("unchecked")
@@ -537,8 +540,11 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
             if (o == null) {
                 return false;
             }
-            HashEntry<?, ?> other = (HashEntry<?, ?>) o;
-            return hash == other.hash && key.equals(other.key);
+            if(o instanceof HashEntry) {
+                HashEntry<?, ?> other = (HashEntry<?, ?>) o;
+                return hash == other.hash && key.equals(other.key);
+            }
+            return false;
         }
 
         /**

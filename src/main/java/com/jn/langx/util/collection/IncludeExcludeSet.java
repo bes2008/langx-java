@@ -144,7 +144,7 @@ public class IncludeExcludeSet<T, P> implements Predicate<P> {
             return Boolean.TRUE;
         }
 
-        return null;
+        return Boolean.FALSE;
     }
 
     public boolean hasIncludes() {

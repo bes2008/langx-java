@@ -84,7 +84,7 @@ public class FileDigestGenerator {
     }
 
 
-    private static abstract class FileReader<INPUT extends Closeable> {
+    public static abstract class FileReader<INPUT extends Closeable> {
         protected INPUT input;
         private File file;
         protected long fileLength;
