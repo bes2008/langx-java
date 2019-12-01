@@ -9,7 +9,7 @@ public final class SystemEnvironmentSnowflakeIdWorkerProvider implements Snowfla
 
     public static final String SYSTEM_ENVIRONMENT_SNOWFLAKE = "SYSTEM_ENVIRONMENT_SNOWFLAKE";
 
-    private static SnowflakeIdWorker worker = null;
+    private static volatile SnowflakeIdWorker worker = null;
 
     @Override
     public SnowflakeIdWorker get() {

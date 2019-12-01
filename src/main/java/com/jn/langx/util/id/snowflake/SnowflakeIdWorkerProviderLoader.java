@@ -12,7 +12,7 @@ import java.util.ServiceLoader;
 public class SnowflakeIdWorkerProviderLoader {
     private static final Logger logger = LoggerFactory.getLogger(SnowflakeIdWorkerProviderLoader.class);
     private static final SnowflakeIdWorkerProvider DEFAULT_PROVIDER = new SystemEnvironmentSnowflakeIdWorkerProvider();
-    private static boolean loaded = false;
+    private static volatile boolean loaded = false;
 
     private static final Map<String, SnowflakeIdWorkerProvider> LOADED_PROVIDER_MAP = new HashMap<String, SnowflakeIdWorkerProvider>();
 

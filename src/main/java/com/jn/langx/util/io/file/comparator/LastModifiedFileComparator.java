@@ -21,10 +21,10 @@ public class LastModifiedFileComparator implements Comparator<File> {
     public int compare(final File file1, final File file2) {
         long delta = file1.lastModified() - file2.lastModified();
         if (delta > Integer.MAX_VALUE) {
-            return Integer.MAX_VALUE;
+            return 1;
         }
         if (delta < Integer.MIN_VALUE) {
-            return Integer.MIN_VALUE;
+            return -1;
         }
         return Integer.parseInt(delta + "");
     }
