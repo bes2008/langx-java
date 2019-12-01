@@ -180,7 +180,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @return total number of bytes read from the input stream
      * (and written to this stream)
      * @throws IOException if an I/O error occurs while reading the input stream
-     * @since 1.4
+     * 
      */
     public synchronized int write(final InputStream in) throws IOException {
         int readCount = 0;
@@ -279,7 +279,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @param input Stream to be fully buffered.
      * @return A fully buffered stream.
      * @throws IOException if an I/O error occurs
-     * @since 2.0
+     * 
      */
     public static InputStream toBufferedInputStream(final InputStream input)
             throws IOException {
@@ -306,7 +306,6 @@ public class ByteArrayOutputStream extends OutputStream {
      * @param size  the initial buffer size
      * @return A fully buffered stream.
      * @throws IOException if an I/O error occurs
-     * @since 2.5
      */
     public static InputStream toBufferedInputStream(final InputStream input, final int size)
             throws IOException {
@@ -324,7 +323,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @return the current contents of this output stream.
      * @see java.io.ByteArrayOutputStream#toByteArray()
      * @see #reset()
-     * @since 2.5
+     * 
      */
     public synchronized InputStream toInputStream() {
         int remaining = count;
@@ -376,7 +375,7 @@ public class ByteArrayOutputStream extends OutputStream {
      *
      * @return the contents of the byte array as a String
      * @see java.io.ByteArrayOutputStream#toString()
-     * @deprecated 2.5 use {@link #toString(String)} instead
+     *  use {@link #toString(String)} instead
      */
     @Override
     @Deprecated
@@ -405,7 +404,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @param charset the character encoding
      * @return the string converted from the byte array
      * @see java.io.ByteArrayOutputStream#toString(String)
-     * @since 2.5
+     * 
      */
     public String toString(final Charset charset) {
         return new String(toByteArray(), charset);

@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.util.*;
 
 public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Serializable {
+    public static final long serialVersionUID = 1L;
+
+
     @SuppressWarnings({"unchecked", "rawtypes"}) // to avoid Comparable<Comparable<Comparable<...>>>
     private static final Comparator<Comparable> NATURAL_ORDER = new Comparator<Comparable>() {
         @Override

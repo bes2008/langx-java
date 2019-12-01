@@ -9,6 +9,7 @@ public enum Period implements Delegatable<EnumDelegate> {
     DAY(2, "day", "day"),
     MONTH(3, "month", "month");
 
+    public static final long serialVersionUID = 1L;
 
     private int code;
     private String name;

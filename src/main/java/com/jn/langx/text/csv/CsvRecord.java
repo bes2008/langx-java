@@ -8,10 +8,8 @@ import java.util.Map.Entry;
  * A CSV record parsed from a CSV file.
  */
 public final class CsvRecord implements Serializable, Iterable<String> {
-
+    public static final long serialVersionUID = 1L;
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-    private static final long serialVersionUID = 1L;
 
     private final long characterPosition;
 

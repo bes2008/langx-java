@@ -23,7 +23,7 @@ public class MultiFieldSortTests {
         for (int i = 0; i < 100; i++) {
             Person person = new Person();
             person.setId("id_" + Maths.abs(random.nextInt()));
-            person.setName("name_" + Math.abs(random.nextInt()));
+            person.setName("name_" + Maths.abs(random.nextInt()));
             person.setAge(Math.abs(random.nextInt(200)));
             persons.add(person);
         }

@@ -92,51 +92,54 @@ public class Zips {
     public static void uncompressFiltered(File file, File targetDir, String... excludes) throws IOException {
 
         ZipFile zipFile = new ZipFile(file);
+        try {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
 
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-
-            String name = entry.getName();
-            // add continue to break loop
-            boolean excludeEntry = false;
-            if (excludes != null) {
-                for (String exclude : excludes) {
-                    if (name.matches(exclude)) {
-                        excludeEntry = true;
-                    }
-                }
-            }
-
-            if (!excludeEntry) {
-                File target = new File(targetDir, name);
-                if (entry.isDirectory()) {
-                    Files.makeDirs(target);
-                } else {
-                    // get inputstream only here
-                    Files.makeDirs(target.getParentFile());
-                    InputStream in = null;
-                    try {
-                        in = zipFile.getInputStream(entry);
-                        OutputStream out = null;
-                        try {
-                            out = new BufferedOutputStream(new FileOutputStream(target));
-                            byte[] buffer = new byte[8 * 1024];
-                            int len;
-
-                            while ((len = in.read(buffer, 0, 8 * 1024)) != -1) {
-                                out.write(buffer, 0, len);
-                            }
-
-                        } finally {
-                            IOs.close(out);
+                String name = entry.getName();
+                // add continue to break loop
+                boolean excludeEntry = false;
+                if (excludes != null) {
+                    for (String exclude : excludes) {
+                        if (name.matches(exclude)) {
+                            excludeEntry = true;
                         }
-                    } finally {
-                        IOs.close(in);
+                    }
+                }
+
+                if (!excludeEntry) {
+                    File target = new File(targetDir, name);
+                    if (entry.isDirectory()) {
+                        Files.makeDirs(target);
+                    } else {
+                        // get inputstream only here
+                        Files.makeDirs(target.getParentFile());
+                        InputStream in = null;
+                        try {
+                            in = zipFile.getInputStream(entry);
+                            OutputStream out = null;
+                            try {
+                                out = new BufferedOutputStream(new FileOutputStream(target));
+                                byte[] buffer = new byte[8 * 1024];
+                                int len;
+
+                                while ((len = in.read(buffer, 0, 8 * 1024)) != -1) {
+                                    out.write(buffer, 0, len);
+                                }
+
+                            } finally {
+                                IOs.close(out);
+                            }
+                        } finally {
+                            IOs.close(in);
+                        }
                     }
                 }
             }
+        }finally {
+            IOs.close(zipFile);
         }
     }
 

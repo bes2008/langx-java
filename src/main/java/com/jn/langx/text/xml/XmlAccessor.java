@@ -1,6 +1,9 @@
 package com.jn.langx.text.xml;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -48,12 +51,15 @@ public class XmlAccessor {
             if (Emptys.isEmpty(element)) {
                 return;
             }
-            for (final String attributeName : attrs.keySet()) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("set attribute {} = {} for element {}", attributeName, attrs.get(attributeName), elementXpath);
+            Collects.forEach(attrs, new Consumer2<String, String>() {
+                @Override
+                public void accept(String attributeName, String value) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("set attribute {} = {} for element {}", attributeName, value, elementXpath);
+                    }
+                    element.setAttribute(attributeName, value);
                 }
-                element.setAttribute(attributeName, attrs.get(attributeName));
-            }
+            });
         } catch (Exception ex) {
             logger.error("Error occur when set attribute for element {}", elementXpath);
             throw ex;
@@ -69,15 +75,20 @@ public class XmlAccessor {
             if (Emptys.isEmpty(elements)) {
                 return;
             }
-            for (int i = 0; i < elements.getLength(); ++i) {
-                final Element element = (Element) elements.item(i);
-                for (final String attributeName : attrs.keySet()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("set attribute {} = {} for element {}", attributeName, attrs.get(attributeName), elementXpath);
-                    }
-                    element.setAttribute(attributeName, attrs.get(attributeName));
+            Collects.forEach(elements, new Consumer<Element>() {
+                @Override
+                public void accept(final Element element) {
+                    Collects.forEach(attrs, new Consumer2<String, String>() {
+                        @Override
+                        public void accept(String attributeName, String value) {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("set attribute {} = {} for element {}", attributeName, attrs.get(attributeName), elementXpath);
+                            }
+                            element.setAttribute(attributeName, attrs.get(attributeName));
+                        }
+                    });
                 }
-            }
+            });
         } catch (Exception ex) {
             logger.error("Error occur when set attribute for element {}", elementXpath);
             throw ex;
