@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class Objects {
     private Objects() {
-        throw new AssertionError("No java.util.Objects instances for you!");
+        throw new AssertionError("No com.jn.langx.util.Objects instances for you!");
     }
 
     /**
