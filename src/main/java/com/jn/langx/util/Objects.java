@@ -252,7 +252,7 @@ public final class Objects {
      * @return {@code obj} if not {@code null}
      * @throws NullPointerException if {@code obj} is {@code null}
      */
-    public static <T> T requireNonNull(T obj, Supplier<Object[],String> messageSupplier, Object... params) {
+    public static <T> T requireNonNull(T obj, Supplier<Object[], String> messageSupplier, Object... params) {
         return Preconditions.checkNotNull(obj, messageSupplier, params);
     }
 
@@ -270,6 +270,86 @@ public final class Objects {
             return defaultValue;
         }
         return value;
+    }
+
+    public static <T> T requireNonNullElseGet(T obj, Supplier0<? extends T> supplier) {
+        return (obj != null) ? obj
+                : requireNonNull(requireNonNull(supplier, "supplier").get(), "supplier.get()");
+    }
+
+    public static <T> T requireNonNullElse(T obj, T defaultObj) {
+        return (obj != null) ? obj : requireNonNull(defaultObj, "defaultObj");
+    }
+
+    /**
+     * Checks if the {@code index} is within the bounds of the range from
+     * {@code 0} (inclusive) to {@code length} (exclusive).
+     *
+     * <p>The {@code index} is defined to be out of bounds if any of the
+     * following inequalities is true:
+     * <ul>
+     * <li>{@code index < 0}</li>
+     * <li>{@code index >= length}</li>
+     * <li>{@code length < 0}, which is implied from the former inequalities</li>
+     * </ul>
+     *
+     * @param index  the index
+     * @param length the upper-bound (exclusive) of the range
+     * @return {@code index} if it is within bounds of the range
+     * @throws IndexOutOfBoundsException if the {@code index} is out of bounds
+     */
+    public static int checkIndex(int index, int length) {
+        return Preconditions.checkIndex(index, length, null);
+    }
+
+    /**
+     * Checks if the sub-range from {@code fromIndex} (inclusive) to
+     * {@code toIndex} (exclusive) is within the bounds of range from {@code 0}
+     * (inclusive) to {@code length} (exclusive).
+     *
+     * <p>The sub-range is defined to be out of bounds if any of the following
+     * inequalities is true:
+     * <ul>
+     * <li>{@code fromIndex < 0}</li>
+     * <li>{@code fromIndex > toIndex}</li>
+     * <li>{@code toIndex > length}</li>
+     * <li>{@code length < 0}, which is implied from the former inequalities</li>
+     * </ul>
+     *
+     * @param fromIndex the lower-bound (inclusive) of the sub-range
+     * @param toIndex   the upper-bound (exclusive) of the sub-range
+     * @param length    the upper-bound (exclusive) the range
+     * @return {@code fromIndex} if the sub-range within bounds of the range
+     * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+     * @since 9
+     */
+    public static int checkFromToIndex(int fromIndex, int toIndex, int length) {
+        return Preconditions.checkFromToIndex(fromIndex, toIndex, length, null);
+    }
+
+    /**
+     * Checks if the sub-range from {@code fromIndex} (inclusive) to
+     * {@code fromIndex + size} (exclusive) is within the bounds of range from
+     * {@code 0} (inclusive) to {@code length} (exclusive).
+     *
+     * <p>The sub-range is defined to be out of bounds if any of the following
+     * inequalities is true:
+     * <ul>
+     * <li>{@code fromIndex < 0}</li>
+     * <li>{@code size < 0}</li>
+     * <li>{@code fromIndex + size > length}, taking into account integer overflow</li>
+     * <li>{@code length < 0}, which is implied from the former inequalities</li>
+     * </ul>
+     *
+     * @param fromIndex the lower-bound (inclusive) of the sub-interval
+     * @param size      the size of the sub-range
+     * @param length    the upper-bound (exclusive) of the range
+     * @return {@code fromIndex} if the sub-range within bounds of the range
+     * @throws IndexOutOfBoundsException if the sub-range is out of bounds
+     * @since 9
+     */
+    public static int checkFromIndexSize(int fromIndex, int size, int length) {
+        return Preconditions.checkFromIndexSize(fromIndex, size, length, null);
     }
 
     public static boolean isEmpty(Object o) {
