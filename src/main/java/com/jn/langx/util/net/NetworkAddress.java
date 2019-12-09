@@ -1,4 +1,4 @@
-package com.jn.langx.util.struct;
+package com.jn.langx.util.net;
 
 public class NetworkAddress {
     private String host;
