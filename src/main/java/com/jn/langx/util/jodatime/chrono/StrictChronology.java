@@ -60,7 +60,7 @@ public final class StrictChronology extends AssembledChronology {
         return new StrictChronology(base);
     }
 
-    private static final DateTimeField convertField(DateTimeField field) {
+    private static DateTimeField convertField(DateTimeField field) {
         return StrictDateTimeField.getInstance(field);
     }
 

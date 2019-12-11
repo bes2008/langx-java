@@ -1,6 +1,7 @@
 package com.jn.langx.util.timing.timer;
 
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Platform;
 import com.jn.langx.util.leak.ResourceLeakDetector;
 import com.jn.langx.util.leak.ResourceLeakDetectorFactory;
@@ -245,8 +246,8 @@ public class HashedWheelTimer implements Timer {
 
         if (duration < MILLISECOND_NANOS) {
             if (logger.isWarnEnabled()) {
-                logger.warn("Configured tickDuration %d smaller then %d, using 1ms.",
-                        tickDuration, MILLISECOND_NANOS);
+                logger.warn(StringTemplates.formatWithCStyle("Configured tickDuration %d smaller then %d, using 1ms.",
+                        tickDuration, MILLISECOND_NANOS));
             }
             this.tickDuration = MILLISECOND_NANOS;
         } else {

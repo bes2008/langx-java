@@ -28,7 +28,7 @@ public class XmlAccessor {
             }
             element.setAttribute(attributeName, attributeValue);
             if (logger.isDebugEnabled()) {
-                logger.debug("set attribute {} = {} for element ", attributeName, attributeValue, elementXpath);
+                logger.debug("set attribute {} = {} for element {}", attributeName, attributeValue, elementXpath);
             }
         } catch (Exception ex) {
             logger.error("Error occur when set attribute {} for element {}", attributeName, elementXpath);
