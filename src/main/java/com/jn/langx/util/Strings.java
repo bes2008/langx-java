@@ -12,8 +12,6 @@ import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.CharSequenceUtils;
 
 import java.nio.charset.Charset;
 import java.text.Normalizer;
@@ -2802,10 +2800,9 @@ public class Strings {
      * @param searchStrings a vararg of strings, may be {@code null}.
      * @return {@code true} if the string is equal (case-sensitive) to any other element of <code>searchStrings</code>;
      * {@code false} if <code>searchStrings</code> is null or contains no matches.
-     * @since 3.5
      */
     public static boolean equalsAny(final CharSequence string, final CharSequence... searchStrings) {
-        if (ArrayUtils.isNotEmpty(searchStrings)) {
+        if (Emptys.isNotEmpty(searchStrings)) {
             for (final CharSequence next : searchStrings) {
                 if (equals(string, next)) {
                     return true;
@@ -2833,10 +2830,9 @@ public class Strings {
      * @param searchStrings a vararg of strings, may be {@code null}.
      * @return {@code true} if the string is equal (case-insensitive) to any other element of <code>searchStrings</code>;
      * {@code false} if <code>searchStrings</code> is null or contains no matches.
-     * @since 3.5
      */
     public static boolean equalsAnyIgnoreCase(final CharSequence string, final CharSequence... searchStrings) {
-        if (ArrayUtils.isNotEmpty(searchStrings)) {
+        if (Emptys.isNotEmpty(searchStrings)) {
             for (final CharSequence next : searchStrings) {
                 if (equalsIgnoreCase(string, next)) {
                     return true;
@@ -2882,9 +2878,6 @@ public class Strings {
      * @param searchChar the character to find
      * @return the first index of the search character,
      * -1 if no match or {@code null} string input
-     * @since 2.0
-     * @since 3.0 Changed signature from indexOf(String, int) to indexOf(CharSequence, int)
-     * @since 3.6 Updated {@link CharSequenceUtils} call to behave more like <code>String</code>
      */
     public static int indexOf(final CharSequence seq, final int searchChar) {
         if (isEmpty(seq)) {
@@ -2941,9 +2934,6 @@ public class Strings {
      * @param startPos   the start position, negative treated as zero
      * @return the first index of the search character (always &ge; startPos),
      * -1 if no match or {@code null} string input
-     * @since 2.0
-     * @since 3.0 Changed signature from indexOf(String, int, int) to indexOf(CharSequence, int, int)
-     * @since 3.6 Updated {@link CharSequenceUtils} call to behave more like <code>String</code>
      */
     public static int indexOf(final CharSequence seq, final int searchChar, final int startPos) {
         if (isEmpty(seq)) {
