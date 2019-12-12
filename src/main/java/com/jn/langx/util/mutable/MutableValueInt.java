@@ -1,30 +1,30 @@
-package com.jn.langx.util.collection.mutable;
+package com.jn.langx.util.mutable;
 
 /**
- * {@link MutableValue} implementation of type <code>double</code>.
+ * {@link MutableValue} implementation of type <code>int</code>.
  * When mutating instances of this object, the caller is responsible for ensuring
  * that any instance where <code>exists</code> is set to <code>false</code> must also
- * <code>value</code> set to <code>0.0D</code> for proper operation.
+ * <code>value</code> set to <code>0</code> for proper operation.
  */
-public class MutableValueDouble extends MutableValue {
-    public double value = 0.0D;
+public class MutableValueInt extends MutableValue {
+    public int value;
 
     @Override
     public Object toObject() {
-        assert exists || 0.0D == value;
+        assert exists || 0 == value;
         return exists ? value : null;
     }
 
     @Override
     public void copy(MutableValue source) {
-        MutableValueDouble s = (MutableValueDouble) source;
+        MutableValueInt s = (MutableValueInt) source;
         value = s.value;
         exists = s.exists;
     }
 
     @Override
     public MutableValue duplicate() {
-        MutableValueDouble v = new MutableValueDouble();
+        MutableValueInt v = new MutableValueInt();
         v.value = this.value;
         v.exists = this.exists;
         return v;
@@ -32,29 +32,33 @@ public class MutableValueDouble extends MutableValue {
 
     @Override
     public boolean equalsSameType(Object other) {
-        assert exists || 0.0D == value;
-        MutableValueDouble b = (MutableValueDouble) other;
+        assert exists || 0 == value;
+        MutableValueInt b = (MutableValueInt) other;
         return value == b.value && exists == b.exists;
     }
 
     @Override
     public int compareSameType(Object other) {
-        assert exists || 0.0D == value;
-        MutableValueDouble b = (MutableValueDouble) other;
-        int c = Double.compare(value, b.value);
-        if (c != 0) {
-            return c;
+        assert exists || 0 == value;
+        MutableValueInt b = (MutableValueInt) other;
+        int ai = value;
+        int bi = b.value;
+        if (ai < bi) {
+            return -1;
+        } else if (ai > bi) {
+            return 1;
         }
+
         if (exists == b.exists) {
             return 0;
         }
         return exists ? 1 : -1;
     }
 
+
     @Override
     public int hashCode() {
-        assert exists || 0.0D == value;
-        long x = Double.doubleToLongBits(value);
-        return (int) x + (int) (x >>> 32);
+        assert exists || 0 == value;
+        return (value >> 8) + (value >> 16);
     }
 }

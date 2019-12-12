@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection.mutable;
+package com.jn.langx.util.mutable;
 
 /**
  * {@link MutableValue} implementation of type <code>float</code>.
