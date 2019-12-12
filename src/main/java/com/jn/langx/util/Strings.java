@@ -72,6 +72,18 @@ public class Strings {
         return !isBlank(str);
     }
 
+    /**
+     *
+     * equals:
+     * <pre>
+     *     <code>
+     *        return str == null ? defaultValue : str;
+     *     </code>
+     * </pre>
+     * @param str a specified string
+     * @param defaultValue the default value
+     * @return a new string
+     */
     public static String useValueIfNull(String str, String defaultValue) {
         return str == null ? defaultValue : str;
     }
@@ -100,6 +112,11 @@ public class Strings {
         return useValueIfBlank(str, null);
     }
 
+    /**
+     * Trim a string, if the string is null, will return empty string:""
+     * @param str a specified string
+     * @return a new string after trim
+     */
     public static String trimOrEmpty(String str) {
         return getEmptyIfNull(str).trim();
     }
@@ -147,6 +164,70 @@ public class Strings {
         }
         return join(separator, objects.iterator());
     }
+
+    public static String join(@NonNull final String separator, @Nullable final Object[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Integer[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Long[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Float[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Double[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Short[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Byte[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Character[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final String[] objects) {
+        if (Emptys.isEmpty(objects)) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(objects));
+    }
+
 
     /**
      * split a string, the returned array is not contains: whitespace, null.
@@ -330,27 +411,27 @@ public class Strings {
     }
 
     public static String unifyLineSeparators(String s) {
-        return unifyLineSeparators(s, System.getProperty("line.separator"));
+        return unifyLineSeparators(s, SystemPropertys.getLineSeparator());
     }
 
     /**
      * Parses the given String and replaces all occurrences of '\n', '\r' and '\r\n' with the system line separator.
      *
      * @param s  a not null String
-     * @param ls the wanted line separator ("\n" on UNIX), if null using the System line separator.
+     * @param lineSeparator the wanted line separator ("\n" on UNIX), if null using the System line separator.
      * @return a String that contains only System line separators.
      * @throws IllegalArgumentException if ls is not '\n', '\r' and '\r\n' characters.
      */
-    public static String unifyLineSeparators(String s, String ls) {
+    public static String unifyLineSeparators(String s, String lineSeparator) {
         if (s == null) {
             return null;
         }
 
-        if (ls == null) {
-            ls = System.getProperty("line.separator");
+        if (lineSeparator == null) {
+            lineSeparator = SystemPropertys.getLineSeparator();
         }
 
-        if (!(ls.equals("\n") || ls.equals("\r") || ls.equals("\r\n"))) {
+        if (!(lineSeparator.equals("\n") || lineSeparator.equals("\r") || lineSeparator.equals("\r\n"))) {
             throw new IllegalArgumentException("Requested line separator is invalid.");
         }
 
@@ -363,9 +444,9 @@ public class Strings {
                     i++;
                 }
 
-                buffer.append(ls);
+                buffer.append(lineSeparator);
             } else if (s.charAt(i) == '\n') {
-                buffer.append(ls);
+                buffer.append(lineSeparator);
             } else {
                 buffer.append(s.charAt(i));
             }
@@ -374,47 +455,11 @@ public class Strings {
         return buffer.toString();
     }
 
-    /**
-     * <p>Checks if the CharSequence contains only Unicode digits.
-     * A decimal point is not a Unicode digit and returns false.</p>
-     * <p>
-     * <p>{@code null} will return {@code false}.
-     * An empty CharSequence (length()=0) will return {@code false}.</p>
-     * <p>
-     * <p>Note that the method does not allow for a leading sign, either positive or negative.
-     * Also, if a String passes the numeric test, it may still generate a NumberFormatException
-     * when parsed by Integer.parseInt or Long.parseLong, e.g. if the value is outside the range
-     * for int or long respectively.</p>
-     * <p>
-     * <pre>
-     * StringUtils.isNumeric(null)   = false
-     * StringUtils.isNumeric("")     = false
-     * StringUtils.isNumeric("  ")   = false
-     * StringUtils.isNumeric("123")  = true
-     * StringUtils.isNumeric("12 3") = false
-     * StringUtils.isNumeric("ab2c") = false
-     * StringUtils.isNumeric("12-3") = false
-     * StringUtils.isNumeric("12.3") = false
-     * StringUtils.isNumeric("-123") = false
-     * StringUtils.isNumeric("+123") = false
-     * </pre>
-     *
-     * @param cs the CharSequence to check, may be null
-     * @return {@code true} if only contains digits, and is non-null
-     * Changed signature from isNumeric(String) to isNumeric(CharSequence)
-     * Changed "" to return false and not true
-     */
     public static boolean isNumeric(final CharSequence cs) {
         if (Emptys.isEmpty(cs)) {
             return false;
         }
-        final int sz = cs.length();
-        for (int i = 0; i < sz; i++) {
-            if (!Character.isDigit(cs.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
+        return Numbers.isNumber(cs.toString().trim());
     }
 
     /**

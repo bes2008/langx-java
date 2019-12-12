@@ -122,6 +122,10 @@ public class SystemPropertys {
         return System.getProperty("file.encoding");
     }
 
+    public static String getLineSeparator(){
+        return System.getProperty("line.separator");
+    }
+
     public static PropertiesAccessor getAccessor() {
         return new PropertiesAccessor(System.getProperties());
     }
