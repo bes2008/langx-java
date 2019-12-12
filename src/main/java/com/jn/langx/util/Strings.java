@@ -314,7 +314,6 @@ public class Strings {
      * or <code>null</code> if the input byte array was <code>null</code>.
      * @throws NullPointerException Thrown if {@link Charsets#UTF_8} is not initialized, which should never happen since it is
      *                              required by the Java platform specification.
-     * @since As of 1.7, throws {@link NullPointerException} instead of UnsupportedEncodingException
      */
     public static String newStringUtf8(final byte[] bytes) {
         return newString(bytes, Charsets.UTF_8);
@@ -341,7 +340,6 @@ public class Strings {
      * or <code>null</code> if the input byte array was <code>null</code>.
      * @throws NullPointerException Thrown if {@link Charsets#US_ASCII} is not initialized, which should never happen since it is
      *                              required by the Java platform specification.
-     * @since As of 1.7, throws {@link NullPointerException} instead of UnsupportedEncodingException
      */
     public static String newStringUsAscii(final byte[] bytes) {
         return newString(bytes, Charsets.US_ASCII);
@@ -2064,7 +2062,6 @@ public class Strings {
      * @param str the String to be trimmed, may be null
      * @return the trimmed String,
      * {@code null} if only chars &lt;= 32, empty or null String input
-     * @since 2.0
      */
     public static String trimToNull(final String str) {
         final String ts = trim(str);
@@ -2090,7 +2087,7 @@ public class Strings {
      *
      * @param str the String to be trimmed, may be null
      * @return the trimmed String, or an empty String if {@code null} input
-     * @since 2.0
+     * 
      */
     public static String trimToEmpty(final String str) {
         return str == null ? EMPTY : str.trim();
@@ -2125,7 +2122,7 @@ public class Strings {
      * @param str      the String to truncate, may be null
      * @param maxWidth maximum length of result String, must be positive
      * @return truncated String, {@code null} if null String input
-     * @since 3.5
+     * 
      */
     public static String truncate(final String str, final int maxWidth) {
         return truncate(str, 0, maxWidth);
@@ -2188,7 +2185,7 @@ public class Strings {
      * @param offset   left edge of source String
      * @param maxWidth maximum length of result String, must be positive
      * @return truncated String, {@code null} if null String input
-     * @since 3.5
+     * 
      */
     public static String truncate(final String str, final int offset, final int maxWidth) {
         if (offset < 0) {
@@ -2260,7 +2257,7 @@ public class Strings {
      * @param str the String to be stripped, may be null
      * @return the stripped String,
      * {@code null} if whitespace, empty or null String input
-     * @since 2.0
+     * 
      */
     public static String stripToNull(String str) {
         if (str == null) {
@@ -2290,7 +2287,7 @@ public class Strings {
      *
      * @param str the String to be stripped, may be null
      * @return the trimmed String, or an empty String if {@code null} input
-     * @since 2.0
+     * 
      */
     public static String stripToEmpty(final String str) {
         return str == null ? EMPTY : strip(str, null);
@@ -2496,7 +2493,7 @@ public class Strings {
      *
      * @param input String to be stripped
      * @return input text with diacritics removed
-     * @since 3.0
+     * 
      */
     // See also Lucene's ASCIIFoldingFilter (Lucene 2.9) that replaces accented characters by their unaccented equivalent (and uncommitted bug fix: https://issues.apache.org/jira/browse/LUCENE-1343?focusedCommentId=12858907&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_12858907).
     public static String stripAccents(final String input) {
@@ -2545,7 +2542,7 @@ public class Strings {
      * @return {@code true} if the CharSequences are equal (case-sensitive), or both {@code null}
      * @see Object#equals(Object)
      * @see #equalsIgnoreCase(CharSequence, CharSequence)
-     * @since 3.0 Changed signature from equals(String, String) to equals(CharSequence, CharSequence)
+     *  Changed signature from equals(String, String) to equals(CharSequence, CharSequence)
      */
     public static boolean equals(final CharSequence cs1, final CharSequence cs2) {
         if (cs1 == cs2) {
@@ -2589,7 +2586,7 @@ public class Strings {
      * @param cs2 the second CharSequence, may be {@code null}
      * @return {@code true} if the CharSequences are equal (case-insensitive), or both {@code null}
      * @see #equals(CharSequence, CharSequence)
-     * @since 3.0 Changed signature from equalsIgnoreCase(String, String) to equalsIgnoreCase(CharSequence, CharSequence)
+     *  Changed signature from equalsIgnoreCase(String, String) to equalsIgnoreCase(CharSequence, CharSequence)
      */
     public static boolean equalsIgnoreCase(final CharSequence cs1, final CharSequence cs2) {
         if (cs1 == cs2) {
@@ -2637,7 +2634,7 @@ public class Strings {
      * @return &lt; 0, 0, &gt; 0, if {@code str1} is respectively less, equal or greater than {@code str2}
      * @see #compare(String, String, boolean)
      * @see String#compareTo(String)
-     * @since 3.5
+     * 
      */
     public static int compare(final String str1, final String str2) {
         return compare(str1, str2, true);
@@ -2675,7 +2672,7 @@ public class Strings {
      * @param nullIsLess whether consider {@code null} value less than non-{@code null} value
      * @return &lt; 0, 0, &gt; 0, if {@code str1} is respectively less, equal ou greater than {@code str2}
      * @see String#compareTo(String)
-     * @since 3.5
+     * 
      */
     public static int compare(final String str1, final String str2, final boolean nullIsLess) {
         if (str1 == str2) {
@@ -2725,7 +2722,7 @@ public class Strings {
      * ignoring case differences.
      * @see #compareIgnoreCase(String, String, boolean)
      * @see String#compareToIgnoreCase(String)
-     * @since 3.5
+     * 
      */
     public static int compareIgnoreCase(final String str1, final String str2) {
         return compareIgnoreCase(str1, str2, true);
@@ -2768,7 +2765,7 @@ public class Strings {
      * @return &lt; 0, 0, &gt; 0, if {@code str1} is respectively less, equal ou greater than {@code str2},
      * ignoring case differences.
      * @see String#compareToIgnoreCase(String)
-     * @since 3.5
+     * 
      */
     public static int compareIgnoreCase(final String str1, final String str2, final boolean nullIsLess) {
         if (str1 == str2) {
@@ -2963,8 +2960,8 @@ public class Strings {
      * @param searchSeq the CharSequence to find, may be null
      * @return the first index of the search CharSequence,
      * -1 if no match or {@code null} string input
-     * @since 2.0
-     * @since 3.0 Changed signature from indexOf(String, String) to indexOf(CharSequence, CharSequence)
+     * 
+     *  Changed signature from indexOf(String, String) to indexOf(CharSequence, CharSequence)
      */
     public static int indexOf(final CharSequence seq, final CharSequence searchSeq) {
         if (seq == null || searchSeq == null) {
@@ -3003,8 +3000,8 @@ public class Strings {
      * @param startPos  the start position, negative treated as zero
      * @return the first index of the search CharSequence (always &ge; startPos),
      * -1 if no match or {@code null} string input
-     * @since 2.0
-     * @since 3.0 Changed signature from indexOf(String, String, int) to indexOf(CharSequence, CharSequence, int)
+     * 
+     *  Changed signature from indexOf(String, String, int) to indexOf(CharSequence, CharSequence, int)
      */
     public static int indexOf(final CharSequence seq, final CharSequence searchSeq, final int startPos) {
         if (seq == null || searchSeq == null) {
@@ -3058,7 +3055,7 @@ public class Strings {
      * @param searchChar the char to be searched for
      * @param start      the start index, negative returns -1, beyond length starts at end
      * @return the index where the search char was found, -1 if not found
-     * @since 3.6 updated to behave more like <code>String</code>
+     *  updated to behave more like <code>String</code>
      */
     static int lastIndexOf(final CharSequence cs, final int searchChar, int start) {
         if (cs instanceof String) {
