@@ -1173,6 +1173,30 @@ public class Collects {
         return list.subList(n, list.size());
     }
 
+    public static <E, K> List<List<E>> partitionBy(Iterator<E> c, Function<E, K> classifier) {
+        return asList(collect(c, partioningBy(classifier)).values());
+    }
+
+    public static <E, K> List<List<E>> partitionBy(Iterator<E> c, Function2<Integer, E, K> classifier) {
+        return asList(collect(c, partioningBy(classifier)).values());
+    }
+
+    public static <E, K> List<List<E>> partitionBy(E[] c, Function<E, K> classifier) {
+        return asList(collect(c, partioningBy(classifier)).values());
+    }
+
+    public static <E, K> List<List<E>> partitionBy(E[] c, Function2<Integer, E, K> classifier) {
+        return asList(collect(c, partioningBy(classifier)).values());
+    }
+
+    public static <E, K> List<List<E>> partitionBy(Iterable<E> c, Function<E, K> classifier) {
+        return asList(collect(c, partioningBy(classifier)).values());
+    }
+
+    public static <E, K> List<List<E>> partitionBy(Iterable<E> c, Function2<Integer, E, K> classifier) {
+        return asList(collect(c, partioningBy(classifier)).values());
+    }
+
 
     /**
      * sort a collection, return an new list. it is different to
@@ -1683,6 +1707,64 @@ public class Collects {
                 };
             }
         };
+    }
+
+    public static <E, K> Collector<E, Map<K, List<E>>> groupingBy(@NonNull final Function2<Integer, E, K> classifier, @NonNull final Supplier0<Map<K, List<E>>> mapFactory) {
+        Preconditions.checkNotNull(classifier);
+        Preconditions.checkNotNull(mapFactory);
+        return new Collector<E, Map<K, List<E>>>() {
+            @Override
+            public Supplier0<Map<K, List<E>>> supplier() {
+                return mapFactory;
+            }
+
+            @Override
+            public Consumer2<Map<K, List<E>>, E> accumulator() {
+                return new Consumer2<Map<K, List<E>>, E>() {
+                    private int index = 0;
+
+                    @Override
+                    public void accept(Map<K, List<E>> map, E e) {
+                        K group = classifier.apply(index, e);
+                        List<E> list = map.get(group);
+                        if (list == null) {
+                            list = new ArrayList<E>();
+                            map.put(group, list);
+                        }
+                        list.add(e);
+                        index++;
+                    }
+                };
+            }
+        };
+    }
+
+    public static <E, K> Collector<E, Map<K, List<E>>> partioningBy(@NonNull final Function<E, K> classifier) {
+        return groupingBy(classifier, new Supplier0<Map<K, List<E>>>() {
+            @Override
+            public Map<K, List<E>> get() {
+                return new NonAbsentTreeMap<K, List<E>>(new Supplier<K, List<E>>() {
+                    @Override
+                    public List<E> get(K input) {
+                        return new ArrayList<E>();
+                    }
+                });
+            }
+        });
+    }
+
+    public static <E, K> Collector<E, Map<K, List<E>>> partioningBy(@NonNull final Function2<Integer, E, K> classifier) {
+        return groupingBy(classifier, new Supplier0<Map<K, List<E>>>() {
+            @Override
+            public Map<K, List<E>> get() {
+                return new NonAbsentTreeMap<K, List<E>>(new Supplier<K, List<E>>() {
+                    @Override
+                    public List<E> get(K input) {
+                        return new ArrayList<E>();
+                    }
+                });
+            }
+        });
     }
 
     public static <E, C extends Collection<E>> C clearNulls(@Nullable C collection) {

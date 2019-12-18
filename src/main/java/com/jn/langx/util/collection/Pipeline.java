@@ -3,6 +3,7 @@ package com.jn.langx.util.collection;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.GlobalThreadLocalMap;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.*;
 
@@ -34,15 +35,23 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> limit(int maxSize) {
-        maxSize = maxSize < 0 ? 0 : maxSize;
+        maxSize = Maths.max(0, maxSize);
         Collection<E> list = Collects.limit(this.collection, maxSize);
         return new Pipeline<E>(list);
     }
 
     public Pipeline<E> skip(int n) {
-        n = n < 0 ? 0 : n;
+        n = Maths.max(0, n);
         Collection<E> list = Collects.skip(this.collection, n);
         return new Pipeline<E>(list);
+    }
+
+    public <K> Pipeline<List<E>> partitionBy(Function<E, K> classifier) {
+        return new Pipeline<List<E>>(Collects.partitionBy(this.collection, classifier));
+    }
+
+    public <K> Pipeline<List<E>> partitionBy(Function2<Integer, E, K> classifier) {
+        return new Pipeline<List<E>>(Collects.partitionBy(this.collection, classifier));
     }
 
     public Pipeline<E> sorted(@NonNull Comparator<E> comparator) {
@@ -157,6 +166,10 @@ public class Pipeline<E> {
 
     public E reduce(Operator2<E> operator) {
         return Collects.reduce(collection, operator);
+    }
+
+    public <K> Map<K, List<E>> groupBy(Function<E, K> classifier) {
+        return Collects.groupBy(this.collection, classifier, null);
     }
 
     public <K> Map<K, List<E>> groupBy(Function<E, K> classifier, Supplier0<Map<K, List<E>>> mapFactory) {
