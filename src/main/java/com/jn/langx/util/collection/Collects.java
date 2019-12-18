@@ -1197,6 +1197,16 @@ public class Collects {
         return asList(collect(c, partioningBy(classifier)).values());
     }
 
+    public static <E> List<List<E>> partitionBySize(Iterable<E> c, final int partitionSize) {
+        Preconditions.checkArgument(partitionSize > 0);
+        return partitionBy(c, new Function2<Integer, E, Integer>() {
+            @Override
+            public Integer apply(Integer index, E element) {
+                return index % partitionSize;
+            }
+        });
+    }
+
 
     /**
      * sort a collection, return an new list. it is different to
