@@ -217,6 +217,22 @@ public final class Bytes {
         }
     }
 
+    public static byte toLowerCase(byte c) {
+        return Chars.isUpperCase(c) ? (byte) (c + 32) : c;
+    }
+
+    public static byte toUpperCase(byte b) {
+        return Chars.isLowerCase(b) ? (byte) (b - 32) : b;
+    }
+
+    public static boolean isLowerCase(byte value) {
+        return value >= 'a' && value <= 'z';
+    }
+
+    public static boolean isUpperCase(byte value) {
+        return value >= 'A' && value <= 'Z';
+    }
+
     /**
      * {@link ByteSupplier} based on {@link InputStream}.
      */
