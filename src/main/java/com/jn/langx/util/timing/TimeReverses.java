@@ -1,4 +1,4 @@
-package com.jn.langx.util;
+package com.jn.langx.util.timing;
 
 public class TimeReverses {
     public static long reverseTimeMillis(long time) {
