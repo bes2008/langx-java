@@ -26,22 +26,6 @@ public class Maths {
         return Collects.max(array, new ComparableComparator<Double>());
     }
 
-    public static int min(int a, int b) {
-        return a > b ? b : a;
-    }
-
-    public static float min(float a, float b) {
-        return a > b ? b : a;
-    }
-
-    public static long min(long a, long b) {
-        return a > b ? b : a;
-    }
-
-    public static double min(double a, double b) {
-        return a > b ? b : a;
-    }
-
     public static int min(int... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.min(array, new ComparableComparator<Integer>());
