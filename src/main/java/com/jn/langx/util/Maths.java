@@ -1,24 +1,10 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
 
 public class Maths {
-    public static int max(int a, int b) {
-        return a > b ? a : b;
-    }
-
-    public static float max(float a, float b) {
-        return a > b ? a : b;
-    }
-
-    public static long max(long a, long b) {
-        return a > b ? a : b;
-    }
-
-    public static double max(double a, double b) {
-        return a > b ? a : b;
-    }
 
     public static int max(int... array) {
         Preconditions.checkTrue(array.length > 0);
@@ -93,19 +79,44 @@ public class Maths {
         return value & Integer.MAX_VALUE;
     }
 
-    public static int sum(int a, int b) {
-        return a + b;
+    public static int avg(int... values) {
+        Preconditions.checkNotNull(values);
+        Preconditions.checkArgument(values.length >= 1);
+        return sum(values) / values.length;
     }
 
-    public static float sum(float a, float b) {
-        return a + b;
+    public static float avg(float... values) {
+        Preconditions.checkNotNull(values);
+        Preconditions.checkArgument(values.length >= 1);
+        return sum(values) / values.length;
     }
 
-    public static long sum(long a, long b) {
-        return a + b;
+    public static long avg(long... values) {
+        Preconditions.checkNotNull(values);
+        Preconditions.checkArgument(values.length >= 1);
+        return sum(values) / values.length;
     }
 
-    public static double sum(double a, double b) {
-        return a + b;
+    public static double avg(double... values) {
+        Preconditions.checkNotNull(values);
+        Preconditions.checkArgument(values.length >= 1);
+        return sum(values) / values.length;
+    }
+
+    public static int sum(int... values) {
+        return Pipeline.of(values).sum().intValue();
+    }
+
+    public static float sum(float... values) {
+        return Pipeline.of(values).sum().floatValue();
+    }
+
+    public static long sum(long... values) {
+        return Pipeline.of(values).sum().longValue();
+    }
+
+
+    public static double sum(double... values) {
+        return Pipeline.of(values).sum();
     }
 }
