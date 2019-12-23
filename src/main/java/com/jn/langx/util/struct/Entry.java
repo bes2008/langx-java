@@ -2,6 +2,7 @@ package com.jn.langx.util.struct;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,12 +44,8 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
 
     public static Entry<String, String> newEntry(String keyValue, String spec)
             throws IllegalArgumentException {
-        if (Emptys.isEmpty(spec)) {
-            throw new IllegalArgumentException("argument 'spec' is null .");
-        }
-        if (Emptys.isEmpty(keyValue)) {
-            throw new IllegalArgumentException("argument 'keyValue' is null .");
-        }
+        Preconditions.checkArgument(Emptys.isNotEmpty(spec),"argument 'spec' is null .");
+        Preconditions.checkArgument(Emptys.isNotEmpty(keyValue),"argument 'keyValue' is null .");
         int index = keyValue.indexOf(spec);
         if (index == -1) {
             return new Entry<String, String>(keyValue.trim(), "");
