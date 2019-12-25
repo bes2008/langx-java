@@ -1,13 +1,55 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objects;
+import com.jn.langx.util.Preconditions;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Primitive array wrapper
  */
 public class PrimitiveArrays {
+    public static final Class BYTE_ARRAY_CLASS = byte[].class;
+    public static final Class SHORT_ARRAY_CLASS = short[].class;
+    public static final Class INT_ARRAY_CLASS = int[].class;
+    public static final Class LONG_ARRAY_CLASS = long[].class;
+    public static final Class FLOAT_ARRAY_CLASS = float[].class;
+    public static final Class DOUBLE_ARRAY_CLASS = double[].class;
+    public static final Class CHAR_ARRAY_CLASS = char[].class;
+    public static final Class BOOLEAN_ARRAY_CLASS = boolean[].class;
+
+    private static final List<Class> PRIMITIVE_ARRAY_CLASSES=Collects.asList(
+            BYTE_ARRAY_CLASS,
+            SHORT_ARRAY_CLASS,
+            INT_ARRAY_CLASS,
+            LONG_ARRAY_CLASS,
+            FLOAT_ARRAY_CLASS,
+            DOUBLE_ARRAY_CLASS,
+            CHAR_ARRAY_CLASS,
+            BOOLEAN_ARRAY_CLASS
+    );
+
+    public static boolean isPrimitiveArray(Class clazz){
+        return clazz!=null && PRIMITIVE_ARRAY_CLASSES.contains(clazz);
+    }
+
+    public static <E> E[] wrap(Object o){
+        Preconditions.checkArgument(Arrs.isArray(o));
+        if(isPrimitiveArray(o.getClass())) {
+            int length = Arrs.getLength(o);
+            Class componentType = o.getClass().getComponentType();
+            E[] array = (E[]) Arrs.createArray(componentType, length);
+            for (int i = 0; i < length; i++) {
+                Array.set(array, i, Array.get(o, i));
+            }
+            return array;
+        }
+        return (E[])o;
+    }
+
     /**
      * convert a boolean[] to a Boolean[]
      *

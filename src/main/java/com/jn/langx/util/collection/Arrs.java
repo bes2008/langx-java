@@ -51,7 +51,7 @@ public class Arrs {
     /**
      * Create an array with the specified length
      */
-    public static <E extends Object> E[] createArray(@Nullable Class<E> componentType, int length) {
+    public static <E> E[] createArray(@Nullable Class<E> componentType, int length) {
         Preconditions.checkTrue(length >= 0);
         if (componentType == null) {
             return (E[]) Array.newInstance(Object.class, length);
@@ -176,7 +176,7 @@ public class Arrs {
     /**
      * Swaps the two specified elements in the specified array.
      */
-    public static <E>void swap(@NonNull E[] arr, int i, int j) {
+    public static <E> void swap(@NonNull E[] arr, int i, int j) {
         E tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;

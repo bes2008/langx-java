@@ -28,22 +28,22 @@ public class Maths {
 
     public static int min(int... array) {
         Preconditions.checkTrue(array.length > 0);
-        return Collects.min(array, new ComparableComparator<Integer>());
+        return Collects.<Integer>min(array, new ComparableComparator<Integer>());
     }
 
     public static float min(float... array) {
         Preconditions.checkTrue(array.length > 0);
-        return Collects.min(array, new ComparableComparator<Float>());
+        return Collects.<Float>min(array, new ComparableComparator<Float>());
     }
 
-    public static long min(Long... array) {
+    public static long min(long... array) {
         Preconditions.checkTrue(array.length > 0);
-        return Collects.min(array, new ComparableComparator<Long>());
+        return Collects.<Long>min(array, new ComparableComparator<Long>());
     }
 
-    public static double min(Double... array) {
+    public static double min(double... array) {
         Preconditions.checkTrue(array.length > 0);
-        return Collects.min(array, new ComparableComparator<Double>());
+        return Collects.<Double>min(array, new ComparableComparator<Double>());
     }
 
     /**

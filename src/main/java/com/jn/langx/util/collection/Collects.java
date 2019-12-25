@@ -7,7 +7,6 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.GlobalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.*;
-import com.jn.langx.util.collection.iter.ArrayIterator;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
@@ -633,10 +632,11 @@ public class Collects {
         }
 
         if (Arrs.isArray(object)) {
+            List<E> a = asList(PrimitiveArrays.<E>wrap(object));
             if (mutable) {
-                return asList((E[]) object);
+                return asList(a);
             } else {
-                return new ArrayIterator<E>((E[]) object);
+                return Collections.unmodifiableList(a);
             }
         }
 
