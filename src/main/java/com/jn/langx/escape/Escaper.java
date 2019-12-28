@@ -48,14 +48,9 @@ package com.jn.langx.escape;
  * your own escapers, use {@link CharEscaperBuilder}, or extend {@code CharEscaper} or {@code
  * UnicodeEscaper}.
  */
-public abstract class Escaper {
+public interface Escaper {
     // WILL DO(dbeaumont): evaluate custom implementations, considering package private constructor.
 
-    /**
-     * Constructor for use by subclasses.
-     */
-    protected Escaper() {
-    }
 
     /**
      * Returns the escaped form of a given literal string.
@@ -78,6 +73,6 @@ public abstract class Escaper {
      * @throws IllegalArgumentException if {@code string} contains badly formed UTF-16 or cannot be
      *                                  escaped for any other reason
      */
-    public abstract String escape(String string);
+    String escape(String string);
 
 }

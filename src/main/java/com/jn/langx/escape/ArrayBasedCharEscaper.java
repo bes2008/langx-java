@@ -63,8 +63,7 @@ public abstract class ArrayBasedCharEscaper extends CharEscaper {
      * @param safeMin        the lowest character value in the safe range
      * @param safeMax        the highest character value in the safe range
      */
-    protected ArrayBasedCharEscaper(
-            Map<Character, String> replacementMap, char safeMin, char safeMax) {
+    protected ArrayBasedCharEscaper(Map<Character, String> replacementMap, char safeMin, char safeMax) {
 
         this(ArrayBasedEscaperMap.create(replacementMap), safeMin, safeMax);
     }

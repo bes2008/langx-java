@@ -45,7 +45,7 @@ import com.jn.langx.util.Preconditions;
  * your own escapers extend this class and implement the {@link #escape(int)} method.
  *
  */
-public abstract class UnicodeEscaper extends Escaper {
+public abstract class UnicodeEscaper implements Escaper {
   /** The amount of padding (chars) to use when growing the escape buffer. */
   private static final int DEST_PAD = 32;
 

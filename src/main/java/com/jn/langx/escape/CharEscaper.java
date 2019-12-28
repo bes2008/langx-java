@@ -37,7 +37,7 @@ import com.jn.langx.util.Preconditions;
  * @author Sven Mawson
  * @since 15.0
  */
-public abstract class CharEscaper extends Escaper {
+public abstract class CharEscaper implements Escaper {
     /**
      * Constructor for use by subclasses.
      */
