@@ -49,8 +49,6 @@ package com.jn.langx.escape;
  * UnicodeEscaper}.
  */
 public interface Escaper {
-    // WILL DO(dbeaumont): evaluate custom implementations, considering package private constructor.
-
 
     /**
      * Returns the escaped form of a given literal string.

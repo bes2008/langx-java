@@ -34,8 +34,6 @@ import com.jn.langx.util.Preconditions;
  * com.jn.langx.text.html.HtmlEscapers} and {@link com.jn.langx.text.xml.XmlEscapers}. To create
  * your own escapers extend this class and implement the {@link #escape(char)} method.
  *
- * @author Sven Mawson
- * @since 15.0
  */
 public abstract class CharEscaper implements Escaper {
     /**
