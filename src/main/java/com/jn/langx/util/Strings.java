@@ -7,18 +7,19 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
+import com.jn.langx.util.struct.Entry;
+import com.jn.langx.util.struct.Holder;
+import com.jn.langx.util.struct.Pair;
 
 import java.nio.charset.Charset;
 import java.text.Normalizer;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @SuppressWarnings({"unused", "unchecked", "inferred"})
@@ -219,6 +220,69 @@ public class Strings {
         return join(separator, Collects.asIterable(objects));
     }
 
+    public static String insert(@NonNull final String string, @Nullable final List<Integer> slotIndexes, @NonNull String insertment){
+        Preconditions.checkNotNull(string);
+        if (Emptys.isEmpty(slotIndexes)) {
+            return string;
+        }
+        // step 1: sort indexes:
+        final Set<Integer> sortedSlotIndexes = Collects.emptyTreeSet();
+        final Holder<Boolean> insertFirst = new Holder<Boolean>(false);
+        final Holder<Boolean> insertLast = new Holder<Boolean>(false);
+        Collects.forEach(slotIndexes, new Consumer<Integer>() {
+            @Override
+            public void accept(Integer slotIndex) {
+                if (slotIndex <= 0) {
+                    insertFirst.set(true);
+                } else if (slotIndex >= string.length()) {
+                    insertLast.set(true);
+                } else {
+                    sortedSlotIndexes.add(slotIndex);
+                }
+
+            }
+        });
+        final List<Integer> sortedSlotIndexList = Pipeline.of(sortedSlotIndexes).asList();
+
+        // step 2: split segments
+        final List<Pair<Integer, Integer>> segmentOffsetPairs = new LinkedList<Pair<Integer, Integer>>();
+
+        Collects.forEach(sortedSlotIndexList, new Consumer2<Integer, Integer>() {
+            @Override
+            public void accept(Integer index, Integer slotIndex) {
+                if (index == 0) {
+                    segmentOffsetPairs.add(new Entry<Integer, Integer>(0, slotIndex));
+                } else {
+                    segmentOffsetPairs.add(new Entry<Integer, Integer>(sortedSlotIndexList.get(index - 1), slotIndex));
+                }
+            }
+        });
+
+        final Collection<String> segments = Collects.map(segmentOffsetPairs, new Function<Pair<Integer, Integer>, String>() {
+            @Override
+            public String apply(Pair<Integer, Integer> pair) {
+                return string.substring(pair.getKey(), pair.getValue());
+            }
+        });
+
+        // step 3: concat string
+        StringBuilder newString = new StringBuilder(string.length() + 20);
+        if (insertFirst.get()) {
+            newString.append(insertment);
+        }
+        Iterator<String> segmentIter = segments.iterator();
+        while (segmentIter.hasNext()) {
+            String segment = segmentIter.next();
+            newString.append(segment);
+            if (segmentIter.hasNext()) {
+                newString.append(insertment);
+            }
+        }
+        if (insertLast.get()) {
+            newString.append(insertment);
+        }
+        return newString.toString();
+    }
 
     /**
      * split a string, the returned array is not contains: whitespace, null.
