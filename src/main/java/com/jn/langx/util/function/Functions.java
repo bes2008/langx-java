@@ -46,7 +46,7 @@ public class Functions {
         return new Function2<Integer, Integer, Integer>() {
             @Override
             public Integer apply(Integer a, Integer b) {
-                return Maths.max(a, b);
+                return Maths.<Integer>max(a, b);
             }
         };
     }
@@ -55,7 +55,7 @@ public class Functions {
         return new Function2<Float, Float, Float>() {
             @Override
             public Float apply(Float a, Float b) {
-                return Maths.max(a, b);
+                return Maths.<Float>max(a, b);
             }
         };
     }
@@ -64,7 +64,7 @@ public class Functions {
         return new Function2<Long, Long, Long>() {
             @Override
             public Long apply(Long a, Long b) {
-                return Maths.max(a, b);
+                return Maths.<Long>max(a, b);
             }
         };
     }
@@ -73,7 +73,7 @@ public class Functions {
         return new Function2<Double, Double, Double>() {
             @Override
             public Double apply(Double a, Double b) {
-                return Maths.max(a, b);
+                return Maths.<Double>max(a, b);
             }
         };
     }
@@ -82,7 +82,7 @@ public class Functions {
         return new Function2<Integer, Integer, Integer>() {
             @Override
             public Integer apply(Integer a, Integer b) {
-                return Maths.min(a, b);
+                return Maths.<Integer>min(a, b);
             }
         };
     }
@@ -91,7 +91,7 @@ public class Functions {
         return new Function2<Float, Float, Float>() {
             @Override
             public Float apply(Float a, Float b) {
-                return Maths.min(a, b);
+                return Maths.<Float>min(a, b);
             }
         };
     }
@@ -100,7 +100,7 @@ public class Functions {
         return new Function2<Long, Long, Long>() {
             @Override
             public Long apply(Long a, Long b) {
-                return Maths.min(a, b);
+                return Maths.<Long>min(a, b);
             }
         };
     }
@@ -109,7 +109,7 @@ public class Functions {
         return new Function2<Double, Double, Double>() {
             @Override
             public Double apply(Double a, Double b) {
-                return Maths.min(a, b);
+                return Maths.<Double>min(a, b);
             }
         };
     }

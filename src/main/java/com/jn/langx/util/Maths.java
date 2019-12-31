@@ -35,12 +35,10 @@ public class Maths {
         Preconditions.checkTrue(array.length > 0);
         return Collects.<Float>min(array, new ComparableComparator<Float>());
     }
-
     public static long min(long... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.<Long>min(array, new ComparableComparator<Long>());
     }
-
     public static double min(double... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.<Double>min(array, new ComparableComparator<Double>());
