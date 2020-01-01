@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection.properties;
+package com.jn.langx.text.properties;
 
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;

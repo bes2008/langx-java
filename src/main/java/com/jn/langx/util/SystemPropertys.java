@@ -1,7 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.properties.PropertiesAccessor;
+import com.jn.langx.text.properties.PropertiesAccessor;
 import com.jn.langx.util.collection.StringMap;
 
 import java.util.List;

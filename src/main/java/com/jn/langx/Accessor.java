@@ -1,7 +1,7 @@
 package com.jn.langx;
 
 import com.jn.langx.text.HttpQueryStringAccessor;
-import com.jn.langx.util.collection.properties.PropertiesAccessor;
+import com.jn.langx.text.properties.PropertiesAccessor;
 
 /**
  * A object's accessor, use it, you can get value from T object;
