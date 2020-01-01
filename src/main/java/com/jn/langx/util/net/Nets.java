@@ -4,7 +4,7 @@ import com.jn.langx.util.Platform;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.Throwables;
-import com.jn.langx.util.collection.properties.PropertiesAccessor;
+import com.jn.langx.text.properties.PropertiesAccessor;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
