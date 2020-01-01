@@ -1,6 +1,7 @@
 package com.jn.langx;
 
 import com.jn.langx.text.HttpQueryStringAccessor;
+import com.jn.langx.util.collection.properties.PropertiesAccessor;
 
 /**
  * A object's accessor, use it, you can get value from T object;
@@ -12,7 +13,7 @@ import com.jn.langx.text.HttpQueryStringAccessor;
  * @author jinuo.fang
  * @see com.jn.langx.util.collection.StringMapAccessor
  * @see com.jn.langx.util.reflect.FieldAccessor
- * @see com.jn.langx.util.collection.PropertiesAccessor
+ * @see PropertiesAccessor
  * @see HttpQueryStringAccessor
  * @see com.jn.langx.util.reflect.ArrayAccessor
  */

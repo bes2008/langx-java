@@ -1,6 +1,7 @@
-package com.jn.langx.text;
+package com.jn.langx.util.collection.properties;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.PlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import org.slf4j.Logger;
@@ -15,9 +16,6 @@ import java.util.*;
  * user-supplied values. <p> Values for substitution can be supplied using a {@link Properties} instance or
  * using a {@link PlaceholderParser}.
  *
- * @author Juergen Hoeller
- * @author Rob Harrop
- * @since 3.0
  */
 public class PropertyPlaceholderHandler {
 

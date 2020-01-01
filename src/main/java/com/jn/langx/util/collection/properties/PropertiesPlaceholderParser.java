@@ -1,4 +1,6 @@
-package com.jn.langx.text;
+package com.jn.langx.util.collection.properties;
+
+import com.jn.langx.text.PlaceholderParser;
 
 import java.util.Properties;
 
