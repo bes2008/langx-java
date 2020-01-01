@@ -11,17 +11,17 @@ public class Maths {
         return Collects.max(array, new ComparableComparator<Integer>());
     }
 
-    public static float max(float... array) {
+    public static float maxFloat(float... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.max(array, new ComparableComparator<Float>());
     }
 
-    public static long max(long... array) {
+    public static long maxLong(long... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.max(array, new ComparableComparator<Long>());
     }
 
-    public static double max(double... array) {
+    public static double maxDouble(double... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.max(array, new ComparableComparator<Double>());
     }
@@ -31,17 +31,17 @@ public class Maths {
         return Collects.<Integer>min(array, new ComparableComparator<Integer>());
     }
 
-    public static float min(float... array) {
+    public static float minFloat(float... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.<Float>min(array, new ComparableComparator<Float>());
     }
 
-    public static long min(long... array) {
+    public static long minLong(long... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.<Long>min(array, new ComparableComparator<Long>());
     }
 
-    public static double min(double... array) {
+    public static double minDouble(double... array) {
         Preconditions.checkTrue(array.length > 0);
         return Collects.<Double>min(array, new ComparableComparator<Double>());
     }
@@ -69,38 +69,38 @@ public class Maths {
         return sum(values) / values.length;
     }
 
-    public static float avg(float... values) {
+    public static float avgFloat(float... values) {
         Preconditions.checkNotNull(values);
         Preconditions.checkArgument(values.length >= 1);
-        return sum(values) / values.length;
+        return sumFloat(values) / values.length;
     }
 
-    public static long avg(long... values) {
+    public static long avgLong(long... values) {
         Preconditions.checkNotNull(values);
         Preconditions.checkArgument(values.length >= 1);
-        return sum(values) / values.length;
+        return sumLong(values) / values.length;
     }
 
-    public static double avg(double... values) {
+    public static double avgDouble(double... values) {
         Preconditions.checkNotNull(values);
         Preconditions.checkArgument(values.length >= 1);
-        return sum(values) / values.length;
+        return sumDouble(values) / values.length;
     }
 
     public static int sum(int... values) {
         return Pipeline.of(values).sum().intValue();
     }
 
-    public static float sum(float... values) {
+    public static float sumFloat(float... values) {
         return Pipeline.of(values).sum().floatValue();
     }
 
-    public static long sum(long... values) {
+    public static long sumLong(long... values) {
         return Pipeline.of(values).sum().longValue();
     }
 
 
-    public static double sum(double... values) {
+    public static double sumDouble(double... values) {
         return Pipeline.of(values).sum();
     }
 }

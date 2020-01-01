@@ -55,7 +55,7 @@ public class Functions {
         return new Function2<Float, Float, Float>() {
             @Override
             public Float apply(Float a, Float b) {
-                return Maths.max(a, b);
+                return Maths.maxFloat(a, b);
             }
         };
     }
@@ -64,7 +64,7 @@ public class Functions {
         return new Function2<Long, Long, Long>() {
             @Override
             public Long apply(Long a, Long b) {
-                return Maths.max(a, b);
+                return Maths.maxLong(a, b);
             }
         };
     }
@@ -73,7 +73,7 @@ public class Functions {
         return new Function2<Double, Double, Double>() {
             @Override
             public Double apply(Double a, Double b) {
-                return Maths.max(a, b);
+                return Maths.maxDouble(a, b);
             }
         };
     }
@@ -91,7 +91,7 @@ public class Functions {
         return new Function2<Float, Float, Float>() {
             @Override
             public Float apply(Float a, Float b) {
-                return Maths.min(a, b);
+                return Maths.minFloat(a, b);
             }
         };
     }
@@ -100,7 +100,7 @@ public class Functions {
         return new Function2<Long, Long, Long>() {
             @Override
             public Long apply(Long a, Long b) {
-                return Maths.min(a, b);
+                return Maths.minLong(a, b);
             }
         };
     }
@@ -109,7 +109,7 @@ public class Functions {
         return new Function2<Double, Double, Double>() {
             @Override
             public Double apply(Double a, Double b) {
-                return Maths.min(a, b);
+                return Maths.minDouble(a, b);
             }
         };
     }
@@ -127,7 +127,7 @@ public class Functions {
         return new Function2<Float, Float, Float>() {
             @Override
             public Float apply(Float a, Float b) {
-                return Maths.sum(a, b);
+                return Maths.sumFloat(a, b);
             }
         };
     }
@@ -136,7 +136,7 @@ public class Functions {
         return new Function2<Long, Long, Long>() {
             @Override
             public Long apply(Long a, Long b) {
-                return Maths.sum(a, b);
+                return Maths.sumLong(a, b);
             }
         };
     }
@@ -145,7 +145,7 @@ public class Functions {
         return new Function2<Double, Double, Double>() {
             @Override
             public Double apply(Double a, Double b) {
-                return Maths.sum(a, b);
+                return Maths.sumDouble(a, b);
             }
         };
     }
