@@ -1,12 +1,16 @@
 package com.jn.langx.text.properties;
 
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.IOs;
 
 import java.io.*;
 import java.net.URL;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Properties;
 
 public class Props {
@@ -81,5 +85,17 @@ public class Props {
         Properties props = new Properties();
         props.loadFromXML(inputStream);
         return props;
+    }
+
+    public static Map<String, String> toStringMap(@Nullable Properties properties) {
+        return Collects.propertiesToStringMap(properties);
+    }
+
+    public static Map<String, String> toStringMap(@Nullable Properties properties, boolean sort) {
+        return Collects.propertiesToStringMap(properties, sort);
+    }
+
+    public static Map<String, String> toStringMap(@Nullable Properties properties, @Nullable Comparator<String> keyComparator) {
+        return Collects.propertiesToStringMap(properties, keyComparator);
     }
 }
