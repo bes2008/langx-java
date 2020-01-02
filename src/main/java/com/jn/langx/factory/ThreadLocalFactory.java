@@ -1,6 +1,7 @@
 package com.jn.langx.factory;
 
 import com.jn.langx.Delegatable;
+import com.jn.langx.util.Preconditions;
 
 public class ThreadLocalFactory<I, E> implements Factory<I, E>, Delegatable<Factory<I, E>> {
     private final ThreadLocal<E> valueCache;
@@ -8,10 +9,7 @@ public class ThreadLocalFactory<I, E> implements Factory<I, E>, Delegatable<Fact
     private Factory<I, E> delegate;
 
     public ThreadLocalFactory(final Factory<I, E> delegate) {
-        if (delegate == null) {
-            throw new NullPointerException();
-        }
-        setDelegate(delegate);
+        setDelegate(Preconditions.checkNotNull(delegate));
         this.valueCache = new ThreadLocal<E>() {
             @Override
             protected E initialValue() {

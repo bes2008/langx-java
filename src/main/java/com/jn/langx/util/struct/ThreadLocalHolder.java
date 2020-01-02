@@ -3,6 +3,10 @@ package com.jn.langx.util.struct;
 public class ThreadLocalHolder<V> implements ValueHolder<V> {
     private ThreadLocal<V> local;
 
+    public ThreadLocalHolder(){
+        this(null);
+    }
+
     public ThreadLocalHolder(final V value) {
         local = new ThreadLocal<V>(){
             @Override
