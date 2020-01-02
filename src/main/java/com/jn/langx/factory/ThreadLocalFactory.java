@@ -32,10 +32,15 @@ public class ThreadLocalFactory<I, E> implements Factory<I, E>, Delegatable<Fact
     public E get(I input) {
         inputCache.set(input);
         try {
+            valueCache.remove();
             return valueCache.get();
         } finally {
             inputCache.remove();
         }
+    }
+
+    public E get(){
+        return valueCache.get();
     }
 
     public void clear() {
