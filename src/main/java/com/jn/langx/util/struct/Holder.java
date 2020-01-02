@@ -1,12 +1,15 @@
 package com.jn.langx.util.struct;
 
-public class Holder<V> {
+public class Holder<V> implements ValueHolder<V> {
     private V v;
+    private final V initValue;
 
     public Holder() {
+        this.initValue = null;
     }
 
     public Holder(final V value) {
+        this.initValue = value;
         this.set(value);
     }
 
@@ -18,4 +21,8 @@ public class Holder<V> {
         return this.v;
     }
 
+    @Override
+    public void reset() {
+        this.v = initValue;
+    }
 }
