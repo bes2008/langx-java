@@ -18,8 +18,15 @@ public class PipelineTests {
         p.setDesc("description");
 
         Pipeline pipeline = Pipelines.newPipeline(Collects.<Handler>asList(new DebugHandler()));
-        pipeline.bindTarget(p);
-        pipeline.inbound();
-        pipeline.clear();
+        try {
+            pipeline.bindTarget(p);
+            pipeline.inbound();
+            pipeline.outbound();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        } finally {
+            pipeline.clear();
+        }
+
     }
 }
