@@ -1,11 +1,11 @@
 package com.jn.langx.pipeline;
 
 public class TailHandlerContext extends HandlerContext {
-    public TailHandlerContext(){
+    public TailHandlerContext() {
         super(NoopHandler.getInstance());
     }
 
-    public TailHandlerContext(Handler handler){
+    public TailHandlerContext(Handler handler) {
         super(handler);
     }
 
