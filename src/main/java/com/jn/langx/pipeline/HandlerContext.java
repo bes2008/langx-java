@@ -2,8 +2,10 @@ package com.jn.langx.pipeline;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.annotation.Prototype;
 import com.jn.langx.util.Preconditions;
 
+@Prototype
 public class HandlerContext {
     @Nullable
     private HandlerContext prev;

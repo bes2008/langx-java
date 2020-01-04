@@ -1,9 +1,11 @@
 package com.jn.langx.pipeline;
 
+import com.jn.langx.annotation.Prototype;
 import com.jn.langx.util.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Prototype
 public class DefaultPipeline<T> implements Pipeline<T> {
     private static final Logger logger = LoggerFactory.getLogger(DefaultPipeline.class);
     private HeadHandlerContext head;
