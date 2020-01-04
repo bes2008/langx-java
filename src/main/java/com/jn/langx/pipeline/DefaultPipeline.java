@@ -1,6 +1,11 @@
 package com.jn.langx.pipeline;
 
+import com.jn.langx.util.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DefaultPipeline<T> implements Pipeline<T> {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultPipeline.class);
     private HeadHandlerContext head;
     private TailHandlerContext tail;
     private T target;
@@ -69,20 +74,29 @@ public class DefaultPipeline<T> implements Pipeline<T> {
         if (next != null) {
             next.clear();
         }
+        unbindTarget();
     }
 
     @Override
     public void handle() {
+        Preconditions.checkNotNull(target, "target is null");
         getHead().inbound();
     }
 
     @Override
-    public void setTarget(T target) {
+    public void bindTarget(T target) {
         this.target = target;
+    }
+
+    @Override
+    public void unbindTarget() {
+        this.target = null;
     }
 
     @Override
     public T getTarget() {
         return target;
     }
+
+
 }

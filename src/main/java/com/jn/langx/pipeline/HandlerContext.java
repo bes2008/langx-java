@@ -65,4 +65,12 @@ public class HandlerContext {
     public void setPipeline(Pipeline pipeline) {
         this.pipeline = pipeline;
     }
+
+    @Override
+    public String toString() {
+        return "HandlerContext{" +
+                "pipeline=" + pipeline +
+                ", handler=" + handler +
+                '}';
+    }
 }

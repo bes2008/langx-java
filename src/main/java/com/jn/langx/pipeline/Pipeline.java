@@ -6,6 +6,7 @@ public interface Pipeline<T> {
     HeadHandlerContext getHead();
     void clear();
     void handle();
-    void setTarget(T target);
+    void bindTarget(T target);
+    void unbindTarget();
     T getTarget();
 }
