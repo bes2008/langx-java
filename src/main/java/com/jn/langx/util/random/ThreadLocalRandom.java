@@ -2,7 +2,7 @@ package com.jn.langx.util.random;
 
 
 import com.jn.langx.util.SystemPropertys;
-import com.jn.langx.util.collection.PropertiesAccessor;
+import com.jn.langx.text.properties.PropertiesAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

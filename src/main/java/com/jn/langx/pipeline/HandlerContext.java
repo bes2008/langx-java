@@ -1,0 +1,57 @@
+package com.jn.langx.pipeline;
+
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Preconditions;
+
+public class HandlerContext {
+    @Nullable
+    private HandlerContext prev;
+    @Nullable
+    private HandlerContext next;
+    @NonNull
+    private Handler handler;
+
+    public HandlerContext(Handler handler) {
+        Preconditions.checkNotNull(handler);
+        this.handler = handler;
+    }
+
+    public void setNext(HandlerContext next) {
+        this.next = next;
+    }
+
+    public void setPrev(HandlerContext prev) {
+        this.prev = prev;
+    }
+
+    public void inbound() {
+        handler.inbound(this);
+    }
+
+    public void outbound() {
+        handler.outbound(this);
+    }
+
+    public boolean hasNext() {
+        return next != null;
+    }
+
+    public HandlerContext getNext() {
+        return next;
+    }
+
+    public boolean hasPrev() {
+        return prev != null;
+    }
+
+    public HandlerContext getPrev() {
+        return prev;
+    }
+
+    public void clear(){
+        this.next = null;
+        this.prev = null;
+        this.handler = null;
+    }
+}

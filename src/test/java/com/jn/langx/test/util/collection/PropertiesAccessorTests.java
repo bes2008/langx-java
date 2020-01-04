@@ -1,7 +1,7 @@
 package com.jn.langx.test.util.collection;
 
 import com.jn.langx.util.collection.MapAccessor;
-import com.jn.langx.util.collection.PropertiesAccessor;
+import com.jn.langx.text.properties.PropertiesAccessor;
 import org.junit.Assert;
 import org.junit.Test;
 

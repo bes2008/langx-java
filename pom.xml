@@ -7,7 +7,7 @@
     <groupId>com.github.fangjinuo.langx</groupId>
     <artifactId>langx-java</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.5</version>
+    <version>1.3.2</version>
 
     <name>langx-java</name>
 
@@ -59,6 +59,13 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        -->
     </dependencies>
 
     <build>
@@ -131,7 +138,7 @@
         <profile>
             <id>envHome</id>
             <properties>
-                <gpg.executable>C:/Program Files (x86)/GNU/GnuPG/gpg2</gpg.executable>
+                <gpg.executable>D:/Program Files/GnuPG/bin/gpg</gpg.executable>
                 <gpg.homedir>C:/Users/Administrator/AppData/Roaming/gnupg</gpg.homedir>
                 <!--
                 <gpg.passphrase>YOUR GPG PASSPHRASE</gpg.passphrase>
