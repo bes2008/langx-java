@@ -12,6 +12,9 @@ public class HandlerContext {
     @NonNull
     private Handler handler;
 
+    @NonNull
+    private Pipeline pipeline;
+
     public HandlerContext(Handler handler) {
         Preconditions.checkNotNull(handler);
         this.handler = handler;
@@ -49,9 +52,17 @@ public class HandlerContext {
         return prev;
     }
 
-    public void clear(){
+    public void clear() {
         this.next = null;
         this.prev = null;
         this.handler = null;
+    }
+
+    public Pipeline getPipeline() {
+        return this.pipeline;
+    }
+
+    public void setPipeline(Pipeline pipeline) {
+        this.pipeline = pipeline;
     }
 }

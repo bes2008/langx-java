@@ -27,6 +27,7 @@ public class DefaultPipeline<T> implements Pipeline<T> {
     @Override
     public void addFirst(Handler handler) {
         HandlerContext ctx = new HandlerContext(handler);
+        ctx.setPipeline(this);
         HandlerContext first = head.getNext();
 
         first.setPrev(ctx);
@@ -39,6 +40,7 @@ public class DefaultPipeline<T> implements Pipeline<T> {
     @Override
     public void addLast(Handler handler) {
         HandlerContext ctx = new HandlerContext(handler);
+        ctx.setPipeline(this);
         HandlerContext last = tail.getPrev();
 
         last.setNext(ctx);
