@@ -1,8 +1,9 @@
 package com.jn.langx.pipeline;
 
-public class DefaultPipeline implements Pipeline {
+public class DefaultPipeline<T> implements Pipeline<T> {
     private HeadHandlerContext head;
     private TailHandlerContext tail;
+    private T target;
 
     public DefaultPipeline() {
         this(new HeadHandlerContext(), new TailHandlerContext());
@@ -56,13 +57,28 @@ public class DefaultPipeline implements Pipeline {
     public void clear() {
         HandlerContext ctx = getHead();
         HandlerContext next = null;
-        while (ctx.hasNext()){
+        while (ctx.hasNext()) {
             next = ctx.getNext();
             ctx.clear();
             ctx = next;
         }
-        if(next!=null){
+        if (next != null) {
             next.clear();
         }
+    }
+
+    @Override
+    public void handle() {
+        getHead().inbound();
+    }
+
+    @Override
+    public void setTarget(T target) {
+        this.target = target;
+    }
+
+    @Override
+    public T getTarget() {
+        return target;
     }
 }
