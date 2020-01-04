@@ -22,6 +22,8 @@ public class DefaultPipeline<T> implements Pipeline<T> {
         this.tail = tail;
         this.head.setNext(tail);
         this.tail.setPrev(head);
+        head.setPipeline(this);
+        tail.setPipeline(this);
     }
 
     @Override
