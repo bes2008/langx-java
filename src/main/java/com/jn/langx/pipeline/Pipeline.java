@@ -5,8 +5,9 @@ public interface Pipeline<T> {
     void addLast(Handler handler);
     HeadHandlerContext getHead();
     void clear();
-    void handle();
     void bindTarget(T target);
     void unbindTarget();
     T getTarget();
+    void inbound();
+    void outbound();
 }

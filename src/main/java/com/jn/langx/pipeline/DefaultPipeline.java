@@ -80,9 +80,15 @@ public class DefaultPipeline<T> implements Pipeline<T> {
     }
 
     @Override
-    public void handle() {
+    public void inbound() {
         Preconditions.checkNotNull(target, "target is null");
         getHead().inbound();
+    }
+
+    @Override
+    public void outbound() {
+        Preconditions.checkNotNull(target, "target is null");
+        tail.outbound();
     }
 
     @Override

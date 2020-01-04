@@ -19,7 +19,7 @@ public class PipelineTests {
 
         Pipeline pipeline = Pipelines.newPipeline(Collects.<Handler>asList(new DebugHandler()));
         pipeline.bindTarget(p);
-        pipeline.handle();
+        pipeline.inbound();
         pipeline.clear();
     }
 }
