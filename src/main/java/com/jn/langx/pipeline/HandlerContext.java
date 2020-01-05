@@ -12,6 +12,13 @@ public class HandlerContext {
     @NonNull
     private Handler handler;
 
+    @NonNull
+    private Pipeline pipeline;
+
+    private boolean inbounded = false;
+    private boolean outbounded = false;
+    private boolean skiped = false;
+
     public HandlerContext(Handler handler) {
         Preconditions.checkNotNull(handler);
         this.handler = handler;
@@ -25,11 +32,21 @@ public class HandlerContext {
         this.prev = prev;
     }
 
-    public void inbound() {
+    public void inbound() throws Throwable {
+        if(isSkiped()){
+            Pipelines.skipHandler(this, true);
+        }
+        getPipeline().setCurrentHandlerContext(this);
+        this.inbounded = true;
         handler.inbound(this);
     }
 
-    public void outbound() {
+    public void outbound() throws Throwable {
+        if (isSkiped()) {
+            Pipelines.skipHandler(this, false);
+        }
+        getPipeline().setCurrentHandlerContext(this);
+        this.outbounded = true;
         handler.outbound(this);
     }
 
@@ -49,9 +66,49 @@ public class HandlerContext {
         return prev;
     }
 
-    public void clear(){
+    public void clear() {
         this.next = null;
         this.prev = null;
         this.handler = null;
+    }
+
+    public Pipeline getPipeline() {
+        return this.pipeline;
+    }
+
+    public void setPipeline(Pipeline pipeline) {
+        this.pipeline = pipeline;
+    }
+
+    public boolean isInbounded() {
+        return inbounded;
+    }
+
+    public void setInbounded(boolean inbounded) {
+        this.inbounded = inbounded;
+    }
+
+    public boolean isOutbounded() {
+        return outbounded;
+    }
+
+    public void setOutbounded(boolean outbounded) {
+        this.outbounded = outbounded;
+    }
+
+    public boolean isSkiped() {
+        return skiped;
+    }
+
+    public void setSkiped(boolean skiped) {
+        this.skiped = skiped;
+    }
+
+    @Override
+    public String toString() {
+        return "HandlerContext{" +
+                "pipeline=" + pipeline +
+                ", handler=" + handler +
+                '}';
     }
 }
