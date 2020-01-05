@@ -1,5 +1,8 @@
 package com.jn.langx.pipeline;
 
+import com.jn.langx.annotation.Prototype;
+
+@Prototype
 public interface Pipeline<T> {
     void addFirst(Handler handler);
 
@@ -22,5 +25,6 @@ public interface Pipeline<T> {
     boolean hadOutbound();
 
     HandlerContext getCurrentHandlerContext();
+
     void setCurrentHandlerContext(HandlerContext handlerContext);
 }
