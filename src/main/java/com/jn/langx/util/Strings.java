@@ -258,6 +258,17 @@ public class Strings {
             }
         });
 
+        if (Emptys.isEmpty(sortedSlotIndexList)) {
+            segmentOffsetPairs.add(new Entry<Integer, Integer>(0, string.length()));
+        } else {
+            int lastSlotIndex = sortedSlotIndexList.get(sortedSlotIndexList.size() - 1);
+            int stringLength = string.length();
+            if (lastSlotIndex < stringLength) {
+                segmentOffsetPairs.add(new Entry<Integer, Integer>(lastSlotIndex, stringLength));
+            }
+        }
+
+
         final Collection<String> segments = Collects.map(segmentOffsetPairs, new Function<Pair<Integer, Integer>, String>() {
             @Override
             public String apply(Pair<Integer, Integer> pair) {
