@@ -1,16 +1,15 @@
 package com.jn.langx.pipeline;
 
-import com.jn.langx.annotation.Prototype;
 import com.jn.langx.util.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Prototype
 public class DefaultPipeline<T> implements Pipeline<T> {
     private static final Logger logger = LoggerFactory.getLogger(DefaultPipeline.class);
     private HeadHandlerContext head;
     private TailHandlerContext tail;
     private T target;
+    private HandlerContext current = null;
 
     public DefaultPipeline() {
         this(new HeadHandlerContext(), new TailHandlerContext());
@@ -66,6 +65,7 @@ public class DefaultPipeline<T> implements Pipeline<T> {
 
     @Override
     public void clear() {
+        setCurrentHandlerContext(null);
         HandlerContext ctx = getHead();
         HandlerContext next = null;
         while (ctx.hasNext()) {
@@ -80,15 +80,16 @@ public class DefaultPipeline<T> implements Pipeline<T> {
     }
 
     @Override
-    public void inbound() {
+    public void inbound() throws Throwable {
         Preconditions.checkNotNull(target, "target is null");
         getHead().inbound();
     }
 
     @Override
-    public void outbound() {
+    public void outbound() throws Throwable {
         Preconditions.checkNotNull(target, "target is null");
-        tail.outbound();
+        Preconditions.checkNotNull(current, "current handler context is null");
+        current.outbound();
     }
 
     @Override
@@ -106,5 +107,41 @@ public class DefaultPipeline<T> implements Pipeline<T> {
         return target;
     }
 
+    public void setHeadHandler(Handler headHandler) {
+        Preconditions.checkTrue(head != null && !head.isSkiped() && !head.isInbounded() && !head.isOutbounded());
+        HeadHandlerContext ctx = new HeadHandlerContext(headHandler);
+        ctx.setPipeline(this);
 
+        if (this.head.hasNext()) {
+            ctx.setNext(this.head.getNext());
+            this.head.getNext().setPrev(ctx);
+        }
+
+        this.head = ctx;
+    }
+
+    public void setTailHandler(Handler tailHandler) {
+        Preconditions.checkNotNull(tail != null && !tail.isSkiped() && !tail.isInbounded() && tail.isOutbounded());
+        TailHandlerContext ctx = new TailHandlerContext(tailHandler);
+        ctx.setPipeline(this);
+        if (this.tail.hasPrev()) {
+            this.tail.getPrev().setNext(ctx);
+            ctx.setPrev(this.tail);
+        }
+    }
+
+    @Override
+    public boolean hadOutbound() {
+        return false;
+    }
+
+    @Override
+    public HandlerContext getCurrentHandlerContext() {
+        return current;
+    }
+
+    @Override
+    public void setCurrentHandlerContext(HandlerContext handlerContext) {
+        this.current = handlerContext;
+    }
 }
