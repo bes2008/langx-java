@@ -1,8 +1,5 @@
 package com.jn.langx;
 
-import com.jn.langx.text.HttpQueryStringAccessor;
-import com.jn.langx.text.properties.PropertiesAccessor;
-
 /**
  * A object's accessor, use it, you can get value from T object;
  * <pre>
@@ -13,8 +10,8 @@ import com.jn.langx.text.properties.PropertiesAccessor;
  * @author jinuo.fang
  * @see com.jn.langx.util.collection.StringMapAccessor
  * @see com.jn.langx.util.reflect.FieldAccessor
- * @see PropertiesAccessor
- * @see HttpQueryStringAccessor
+ * @see com.jn.langx.text.properties.PropertiesAccessor
+ * @see com.jn.langx.text.HttpQueryStringAccessor
  * @see com.jn.langx.util.reflect.ArrayAccessor
  */
 public interface Accessor<K, T> {
