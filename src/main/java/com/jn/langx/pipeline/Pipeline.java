@@ -25,6 +25,5 @@ public interface Pipeline<T> {
     boolean hadOutbound();
 
     HandlerContext getCurrentHandlerContext();
-
     void setCurrentHandlerContext(HandlerContext handlerContext);
 }

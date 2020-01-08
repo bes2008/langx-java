@@ -2,10 +2,8 @@ package com.jn.langx.pipeline;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.annotation.Prototype;
 import com.jn.langx.util.Preconditions;
 
-@Prototype
 public class HandlerContext {
     @Nullable
     private HandlerContext prev;
@@ -35,7 +33,7 @@ public class HandlerContext {
     }
 
     public void inbound() throws Throwable {
-        if (isSkiped()) {
+        if(isSkiped()){
             Pipelines.skipHandler(this, true);
         }
         getPipeline().setCurrentHandlerContext(this);
