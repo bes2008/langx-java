@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
     <version>1.3.2</version>
 
-    <name>langx-java</name>
+    <name>langx</name>
 
     <description>
         Java Lang Extensions
