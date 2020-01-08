@@ -11,6 +11,8 @@
 [javadoc](https://apidoc.gitee.com/fangjinuo/langx-java)
 [Tutorial](https://fangjinuo.gitee.io/docs/)
 
+
+[![maven](https://img.shields.io/badge/maven-v2.0.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.0.0)
 [![maven](https://img.shields.io/badge/maven-v1.3.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.3.1)
 [![maven](https://img.shields.io/badge/maven-v1.3.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.3.0)
 [![maven](https://img.shields.io/badge/maven-v1.2.5-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.5)
