@@ -10,14 +10,14 @@
         <version>2.0.0</version>
     </parent>
 
-    <artifactId>langx-java6</artifactId>
+    <artifactId>langx-java</artifactId>
     <packaging>jar</packaging>
 
 
-    <name>langx-java6</name>
+    <name>langx-java</name>
 
     <description>
-        Java8 Extensions
+        Java6 Extensions
     </description>
 
 

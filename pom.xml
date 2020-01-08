@@ -48,7 +48,7 @@
     </licenses>
 
     <modules>
-        <module>langx-java6</module>
+        <module>langx-java</module>
         <module>langx-java8</module>
     </modules>
 
