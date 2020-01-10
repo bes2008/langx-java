@@ -189,8 +189,8 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public T add(T configuration) {
-       return add(configuration, true);
+    public void add(T configuration) {
+        add(configuration, true);
     }
 
     @Override
@@ -209,12 +209,12 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public T update(T configuration) {
-        return update(configuration, true);
+    public void update(T configuration) {
+        update(configuration, true);
     }
 
     @Override
-    public T update(T configuration, boolean sync) {
+    public void update(T configuration, boolean sync) {
         if (running) {
             logMutation(ConfigurationEventType.UPDATE, configuration);
             if (sync && writer != null && writer.isSupportsRewrite()) {
@@ -225,7 +225,6 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
                 eventPublisher.publish(eventFactory.createEvent(ConfigurationEventType.UPDATE, configuration));
             }
         }
-        return configuration;
     }
 
     private void logMutation(ConfigurationEventType eventType, T configuration) {

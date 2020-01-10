@@ -65,7 +65,7 @@ public interface ConfigurationRepository<T extends Configuration, Loader extends
      *
      * @param configuration the configuration bean
      */
-    T add(T configuration);
+    void add(T configuration);
 
     /**
      * @param configuration the configuration
@@ -79,7 +79,7 @@ public interface ConfigurationRepository<T extends Configuration, Loader extends
      *
      * @param configuration the configuration bean
      */
-    T update(T configuration);
+    void update(T configuration);
 
     /**
      * update the configuration to storage
@@ -87,6 +87,6 @@ public interface ConfigurationRepository<T extends Configuration, Loader extends
      * @param configuration the configuration bean
      * @param sync          whether sync to the real storage or not
      */
-    T update(T configuration, boolean sync);
+    void update(T configuration, boolean sync);
 
 }
