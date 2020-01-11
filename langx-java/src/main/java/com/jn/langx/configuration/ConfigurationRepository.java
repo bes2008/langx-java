@@ -17,8 +17,9 @@ package com.jn.langx.configuration;
 import com.jn.langx.event.EventPublisherAware;
 import com.jn.langx.lifecycle.Initializable;
 import com.jn.langx.lifecycle.Lifecycle;
+import com.jn.langx.repository.Repository;
 
-public interface ConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends Lifecycle, EventPublisherAware, Initializable {
+public interface ConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends Lifecycle, EventPublisherAware, Initializable, Repository<T, String> {
 
     /**
      * set a loader
@@ -70,7 +71,7 @@ public interface ConfigurationRepository<T extends Configuration, Loader extends
      * @param configuration the configuration
      * @param sync          whether sync to the real storage or not
      */
-    void add(T configuration, boolean sync);
+    T add(T configuration, boolean sync);
 
     /**
      * update the configuration to storage

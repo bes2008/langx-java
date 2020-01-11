@@ -194,7 +194,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public void add(T configuration, boolean sync) {
+    public T add(T configuration, boolean sync) {
         if (running) {
             logMutation(ConfigurationEventType.ADD, configuration);
             if (sync && writer != null && writer.isSupportsWrite()) {
@@ -205,6 +205,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
                 eventPublisher.publish(eventFactory.createEvent(ConfigurationEventType.ADD, configuration));
             }
         }
+        return configuration;
     }
 
     @Override
