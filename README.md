@@ -138,7 +138,6 @@ Java lang extensions
 
 ## Contact:
 如果遇到问题，可以在Github, Gitee 上提出issue, 也可以在QQ群里询问。
-代码提交以GitHub为主，会定期同步到Gitee。
 
 QQ Group: 750929088   
 ![QQ Group](https://github.com/fangjinuo/sqlhelper/blob/master/_images/qq_group.png)
