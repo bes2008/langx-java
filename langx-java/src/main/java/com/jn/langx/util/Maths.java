@@ -4,6 +4,9 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
 
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+
 public class Maths {
 
     public static int max(int... array) {
@@ -102,5 +105,18 @@ public class Maths {
 
     public static double sumDouble(double... values) {
         return Pipeline.of(values).sum();
+    }
+
+
+    public static Double formatPrecision(double value, int precision) {
+        return formatPrecision(value, precision, RoundingMode.HALF_UP);
+    }
+
+    public static Double formatPrecision(double value, int precision, RoundingMode roundingMode) {
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(precision);
+        nf.setRoundingMode(roundingMode == null ? RoundingMode.HALF_UP : roundingMode);
+        String string = nf.format(value);
+        return Double.parseDouble(string);
     }
 }
