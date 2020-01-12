@@ -1,10 +1,13 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
+import com.jn.langx.util.function.Consumer;
 
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class Maths {
@@ -113,7 +116,16 @@ public class Maths {
     }
 
     public static Double formatPrecision(double value, int precision, RoundingMode roundingMode) {
-        NumberFormat nf = NumberFormat.getNumberInstance();
+        Preconditions.checkArgument(precision >= 0);
+        final StringBuilder pattern = precision > 0 ? new StringBuilder("#.") : new StringBuilder("#");
+        Collects.forEach(Arrs.range(precision), new Consumer<Integer>() {
+            @Override
+            public void accept(Integer integer) {
+                pattern.append("0");
+            }
+        });
+
+        NumberFormat nf = new DecimalFormat(pattern.toString());
         nf.setMaximumFractionDigits(precision);
         nf.setRoundingMode(roundingMode == null ? RoundingMode.HALF_UP : roundingMode);
         String string = nf.format(value);
