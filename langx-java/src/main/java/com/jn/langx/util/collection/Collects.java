@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.GlobalThreadLocalMap;
+import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.*;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
@@ -16,6 +17,8 @@ import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
+import com.jn.langx.util.struct.counter.Counter;
+import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -364,7 +367,7 @@ public class Collects {
         if (list instanceof LinkedList) {
             return ListType.LinkedList;
         }
-        if (list instanceof Stack) {
+        if (list instanceof com.jn.langx.util.collection.stack.Stack) {
             return ListType.STACK;
         }
         if (list instanceof Vector) {
@@ -399,7 +402,7 @@ public class Collects {
                     list = new CopyOnWriteArrayList<E>();
                     break;
                 case STACK:
-                    list = new Stack<E>();
+                    list = new java.util.Stack<E>();
                     break;
                 case VECTOR:
                     list = new Vector<E>();
@@ -548,7 +551,7 @@ public class Collects {
                 list = new ArrayList<E>(immutableList);
                 break;
             case STACK:
-                list = new Stack<E>();
+                list = new java.util.Stack<E>();
                 list.addAll(immutableList);
                 break;
             case VECTOR:
@@ -907,6 +910,18 @@ public class Collects {
                 consumer.accept(entry.getKey(), entry.getValue());
             }
         }
+    }
+
+    public static <E, C extends Collection<E>> Integer firstOccurrence(C c, final E item) {
+        final SimpleIntegerCounter counter = new SimpleIntegerCounter(-1);
+        Collects.findFirst(c, new Predicate<E>() {
+            @Override
+            public boolean test(E value) {
+                counter.increment();
+                return Objects.equals(value, item);
+            }
+        });
+        return counter.get();
     }
 
     /**
