@@ -1026,4 +1026,10 @@ public class Reflects {
 
         return set.contains(getFQNClassName(clazz));
     }
+
+    public static <E> Class<E> getComponentType(E[] array){
+        Preconditions.checkNotNull(array);
+        Class clazz = array.getClass();
+        return clazz.getComponentType();
+    }
 }
