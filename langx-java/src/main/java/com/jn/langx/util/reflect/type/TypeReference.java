@@ -5,28 +5,46 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
- * The TypeReference is used to embed a generic type.
- *
- * ex: JSON.decode("{}", new TypeReference&lt;Map&lt;String, String&gt;&gt;() {});
- *
- * @param <T> a generic type
+ * This generic abstract class is used for obtaining full generics type information
+ * by sub-classing;
+ * Class is based on ideas from
+ * <a href="http://gafter.blogspot.com/2006/12/super-type-tokens.html"
+ * >http://gafter.blogspot.com/2006/12/super-type-tokens.html</a>,
+ * Additional idea (from a suggestion made in comments of the article)
+ * is to require bogus implementation of <code>Comparable</code>
+ * (any such generic interface would do, as long as it forces a method
+ * with generic type to be implemented).
+ * to ensure that a Type argument is indeed given.
+ * <p>
+ * Usage is by sub-classing: here is one way to instantiate reference
+ * to generic type <code>List&lt;Integer&gt;</code>:
+ * <pre>
+ *  TypeReference ref = new TypeReference&lt;List&lt;Integer&gt;&gt;() { };
+ * </pre>
+ * which can be passed to methods that accept TypeReference
  */
-public abstract class TypeReference<T> implements Type {
-    public Type getType() {
-        Type type = this.getClass().getGenericSuperclass();
-        if (type instanceof ParameterizedType) {
-            Type[] args = ((ParameterizedType)type).getActualTypeArguments();
-            if (args != null && args.length == 1) {
-                return args[0];
-            }
+public abstract class TypeReference<T> implements Comparable<TypeReference<T>> {
+    protected final Type _type;
+
+    protected TypeReference() {
+        Type superClass = getClass().getGenericSuperclass();
+        if (superClass instanceof Class<?>) { // sanity check, should never happen
+            throw new IllegalArgumentException("Internal error: TypeReference constructed without actual type information");
         }
-        throw new IllegalStateException("Reference must be specified actual type.");
+        _type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
     }
 
+    public Type getType() {
+        return _type;
+    }
+
+    /**
+     * The only reason we define this method (and require implementation
+     * of <code>Comparable</code>) is to prevent constructing a
+     * reference without type information.
+     */
     @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(getClass().getSimpleName());
-        sb.append("[").append(getType()).append("]");
-        return sb.toString();
+    public int compareTo(TypeReference<T> o) {
+        return 0;
     }
 }
