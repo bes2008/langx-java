@@ -9,8 +9,8 @@ import java.lang.reflect.Type;
  * <pre>
  *  List:
  *  ParameterizedType type0 = new ParameterizedTypeGetter<List<Person>>(){}.getType();
- *  ParameterizedType type1 = Types.getParameterizedType(List.class, Person);
- *  ParameterizedType type2 = new ParameterizedType(null, List.class, Person);
+ *  ParameterizedType type1 = Types.getParameterizedType(List.class, Person.class);
+ *  ParameterizedType type2 = new ParameterizedType(null, List.class, Person.class);
  *
  *  type0 equivalent to type1
  *  type0 equivalent to type2
