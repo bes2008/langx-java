@@ -1,12 +1,12 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.function.Supplier0;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.nio.Buffer;
+import java.util.*;
 
 public final class Objects {
     private Objects() {
@@ -358,6 +358,45 @@ public final class Objects {
 
     public static boolean isNotEmpty(Object o) {
         return Emptys.isNotEmpty(o);
+    }
+
+    public static <T> int length(T object) {
+        if (isNull(object)) {
+            return 0;
+        }
+        if (object instanceof String) {
+            return ((String) object).length();
+        }
+
+        if (object instanceof CharSequence) {
+            CharSequence cs = (CharSequence) object;
+            return cs.length();
+        }
+
+        if (object instanceof Number) {
+            return 1;
+        }
+
+        if (object instanceof Buffer) {
+            Buffer buff = (Buffer) object;
+            return buff.remaining();
+        }
+
+        if (object instanceof Collection) {
+            return ((Collection) object).size();
+        }
+
+        if (object instanceof Map) {
+            return ((Map) object).size();
+        }
+        if (object.getClass().isArray()) {
+            return Arrs.getLength(object);
+        }
+
+        if (object.getClass().isEnum()) {
+            return 1;
+        }
+        return Pipeline.of(object).asList().size();
     }
 
 }
