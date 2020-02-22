@@ -134,7 +134,6 @@ public class Reflects {
      *
      * @param type the type to get the class hierarchy from
      * @return Iterable an Iterable over the class hierarchy of the given class
-     * @since 3.2
      */
     public static Iterable<Class<?>> hierarchy(@NonNull final Class<?> type) {
         Preconditions.checkNotNull(type);
@@ -147,7 +146,6 @@ public class Reflects {
      * @param type              the type to get the class hierarchy from
      * @param excludeInterfaces switch indicating whether to include or exclude interfaces
      * @return Iterable an Iterable over the class hierarchy of the given class
-     * @since 3.2
      */
     public static Iterable<Class<?>> hierarchy(@NonNull final Class<?> type, final boolean excludeInterfaces) {
         Preconditions.checkNotNull(type);
@@ -190,7 +188,7 @@ public class Reflects {
                 final Iterator<Class<?>> wrapped = classes.iterator();
 
                 return new Iterator<Class<?>>() {
-                    Iterator<Class<?>> interfaces = Collections.<Class<?>>emptySet().iterator();
+                    Iterator<Class<?>> interfaces = Collects.<Class<?>>emptyTreeSet().iterator();
 
                     @Override
                     public boolean hasNext() {

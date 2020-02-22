@@ -10,9 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.AbstractList;
 import java.util.List;
@@ -22,6 +20,9 @@ import static java.util.Collections.unmodifiableList;
 
 public class Throwables {
     private static final Logger logger = LoggerFactory.getLogger(Throwables.class);
+
+    private Throwables() {
+    }
 
     public static String getStackTraceAsString(Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
@@ -327,5 +328,13 @@ public class Throwables {
             }
             return valueIfError;
         }
+    }
+
+    public static String stringify(final Throwable t) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream stream = new PrintStream(output);
+        t.printStackTrace(stream);
+
+        return output.toString();
     }
 }
