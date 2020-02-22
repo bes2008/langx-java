@@ -361,42 +361,7 @@ public final class Objects {
     }
 
     public static <T> int length(T object) {
-        if (isNull(object)) {
-            return 0;
-        }
-        if (object instanceof String) {
-            return ((String) object).length();
-        }
-
-        if (object instanceof CharSequence) {
-            CharSequence cs = (CharSequence) object;
-            return cs.length();
-        }
-
-        if (object instanceof Number) {
-            return 1;
-        }
-
-        if (object instanceof Buffer) {
-            Buffer buff = (Buffer) object;
-            return buff.remaining();
-        }
-
-        if (object instanceof Collection) {
-            return ((Collection) object).size();
-        }
-
-        if (object instanceof Map) {
-            return ((Map) object).size();
-        }
-        if (object.getClass().isArray()) {
-            return Arrs.getLength(object);
-        }
-
-        if (object.getClass().isEnum()) {
-            return 1;
-        }
-        return Pipeline.of(object).asList().size();
+        return Emptys.getLength(object);
     }
 
 }
