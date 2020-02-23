@@ -20,6 +20,13 @@
         Java8 Extensions
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.fangjinuo.langx</groupId>
+            <artifactId>langx-java</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

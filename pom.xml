@@ -51,6 +51,15 @@
         <module>langx-java</module>
         <module>langx-java8</module>
     </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx</groupId>
+                <artifactId>langx-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -64,13 +73,6 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>com.github.whvcse</groupId>
-            <artifactId>easy-captcha</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        -->
     </dependencies>
 
     <build>
