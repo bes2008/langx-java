@@ -76,4 +76,11 @@ public class ClassLoaders {
         return cl;
     }
 
+    public static ClassLoader getSystemClassLoader(){
+        try {
+            return ClassLoader.getSystemClassLoader();
+        } catch (final SecurityException se) {
+            return null;
+        }
+    }
 }
