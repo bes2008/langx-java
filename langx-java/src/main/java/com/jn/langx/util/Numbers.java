@@ -651,4 +651,27 @@ public class Numbers {
         return (negative ? result.negate() : result);
     }
 
+    public static int toInt(Number number){
+        return number.intValue();
+    }
+
+    public static long toLong(Number number){
+        return number.longValue();
+    }
+
+    public static double toDouble(Number number){
+        return number.doubleValue();
+    }
+
+    public static float toFloat(Number number){
+        return number.floatValue();
+    }
+
+    public static short toShort(Number number){
+        return number.shortValue();
+    }
+
+    public static byte toByte(Number number){
+        return number.byteValue();
+    }
 }
