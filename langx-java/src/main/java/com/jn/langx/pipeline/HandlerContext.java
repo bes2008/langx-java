@@ -114,4 +114,8 @@ public class HandlerContext {
                 ", handler=" + handler +
                 '}';
     }
+
+    public Object getTarget(){
+        return this.pipeline.getTarget();
+    }
 }

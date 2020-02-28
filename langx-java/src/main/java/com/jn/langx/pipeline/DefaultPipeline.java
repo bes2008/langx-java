@@ -67,14 +67,13 @@ public class DefaultPipeline<T> implements Pipeline<T> {
     public void clear() {
         setCurrentHandlerContext(null);
         HandlerContext ctx = getHead();
-        HandlerContext next = null;
-        while (ctx.hasNext()) {
-            next = ctx.getNext();
+        if (ctx != null) {
+            while (ctx.hasNext()) {
+                HandlerContext next = ctx.getNext();
+                ctx.clear();
+                ctx = next;
+            }
             ctx.clear();
-            ctx = next;
-        }
-        if (next != null) {
-            next.clear();
         }
         unbindTarget();
     }
