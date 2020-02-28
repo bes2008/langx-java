@@ -64,7 +64,16 @@ public class DefaultPipeline<T> implements Pipeline<T> {
     }
 
     @Override
+    public void reset() {
+        clearHandlers(false);
+    }
+
+    @Override
     public void clear() {
+        clearHandlers(true);
+    }
+
+    private void clearHandlers(boolean removeHeadAndTail){
         setCurrentHandlerContext(null);
         HandlerContext ctx = getHead();
         if (ctx != null) {
@@ -74,6 +83,10 @@ public class DefaultPipeline<T> implements Pipeline<T> {
                 ctx = next;
             }
             ctx.clear();
+        }
+        if(removeHeadAndTail) {
+            this.head = null;
+            this.tail = null;
         }
         unbindTarget();
     }

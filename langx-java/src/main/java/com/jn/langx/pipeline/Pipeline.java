@@ -10,7 +10,15 @@ public interface Pipeline<T> {
 
     HeadHandlerContext getHead();
 
+    /**
+     * clear all handlers
+     */
     void clear();
+
+    /**
+     * clear handlers, but head, tail will not be remove
+     */
+    void reset();
 
     void bindTarget(T target);
 
