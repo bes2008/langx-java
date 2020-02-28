@@ -70,6 +70,9 @@ public class HandlerContext {
         this.next = null;
         this.prev = null;
         this.handler = null;
+        this.skiped = false;
+        this.outbounded = false;
+        this.inbounded = false;
     }
 
     public Pipeline getPipeline() {
