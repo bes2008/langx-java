@@ -33,7 +33,7 @@ public class HandlerContext {
     }
 
     public void inbound() throws Throwable {
-        if(isSkiped()){
+        if (isSkiped()) {
             Pipelines.skipHandler(this, true);
         }
         getPipeline().setCurrentHandlerContext(this);
@@ -67,12 +67,22 @@ public class HandlerContext {
     }
 
     public void clear() {
+        clear(true);
+    }
+
+    public void clear(boolean removeHandler) {
         this.next = null;
         this.prev = null;
-        this.handler = null;
         this.skiped = false;
         this.outbounded = false;
         this.inbounded = false;
+        if (removeHandler) {
+            this.handler = null;
+        }
+    }
+
+    Handler getHandler() {
+        return this.handler;
     }
 
     public Pipeline getPipeline() {
@@ -110,12 +120,12 @@ public class HandlerContext {
     @Override
     public String toString() {
         return "HandlerContext{" +
-                "pipeline=" + pipeline +
-                ", handler=" + handler +
+                "handler=" + handler +
+                ", pipeline=" + pipeline +
                 '}';
     }
 
-    public Object getTarget(){
+    public Object getTarget() {
         return this.pipeline.getTarget();
     }
 }

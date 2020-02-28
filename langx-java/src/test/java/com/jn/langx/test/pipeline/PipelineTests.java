@@ -17,7 +17,19 @@ public class PipelineTests {
         p.setName("hello world");
         p.setDesc("description");
 
-        Pipeline pipeline = Pipelines.newPipeline(Collects.<Handler>asList(new DebugHandler()));
+        DebugHandler debugHandler = new DebugHandler();
+        Pipeline pipeline = Pipelines.newPipeline(Collects.<Handler>asList(debugHandler));
+        try {
+            pipeline.bindTarget(p);
+            pipeline.inbound();
+            pipeline.outbound();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        } finally {
+            pipeline.reset();
+        }
+
+        pipeline.addLast(debugHandler);
         try {
             pipeline.bindTarget(p);
             pipeline.inbound();
@@ -27,6 +39,5 @@ public class PipelineTests {
         } finally {
             pipeline.clear();
         }
-
     }
 }
