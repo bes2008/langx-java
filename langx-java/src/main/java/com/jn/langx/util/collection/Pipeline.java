@@ -78,6 +78,10 @@ public class Pipeline<E> {
         Collects.forEach(this.collection, consumer, breakPredicate);
     }
 
+    public void forEach(@Nullable Predicate2<Integer, E> consumePredicate, @NonNull Consumer2<Integer, E> consumer) {
+        Collects.forEach(this.collection, consumePredicate, consumer);
+    }
+
     public boolean anyMatch(@NonNull Predicate<E> predicate) {
         return Collects.anyMatch(this.collection, predicate);
     }
