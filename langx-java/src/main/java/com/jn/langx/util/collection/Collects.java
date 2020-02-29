@@ -17,7 +17,6 @@ import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
-import com.jn.langx.util.struct.counter.Counter;
 import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 
 import java.util.*;
@@ -1534,6 +1533,51 @@ public class Collects {
             }
             return map1;
         }
+    }
+
+    /**
+     * test c1 contains any element in c2
+     */
+    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> boolean containsAny(final C1 c1, C2 c2) {
+        if (Emptys.isEmpty(c1)) {
+            return false;
+        }
+        return anyMatch(c2, new Predicate<E>() {
+            @Override
+            public boolean test(E value) {
+                return c1.contains(value);
+            }
+        });
+    }
+
+    /**
+     * test c1 contains all elements in c2
+     */
+    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> boolean containsAll(final C1 c1, C2 c2) {
+        if (Emptys.isEmpty(c1)) {
+            return false;
+        }
+        return allMatch(c2, new Predicate<E>() {
+            @Override
+            public boolean test(E value) {
+                return c1.contains(value);
+            }
+        });
+    }
+
+    /**
+     * test c1 contains all elements in c2
+     */
+    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> boolean containsNone(final C1 c1, C2 c2) {
+        if (Emptys.isEmpty(c1)) {
+            return false;
+        }
+        return noneMatch(c2, new Predicate<E>() {
+            @Override
+            public boolean test(E value) {
+                return c1.contains(value);
+            }
+        });
     }
 
     public static <E> E reduce(@Nullable E[] iterable, Operator2<E> operator) {
