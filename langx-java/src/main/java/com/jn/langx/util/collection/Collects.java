@@ -837,6 +837,25 @@ public class Collects {
     }
 
     /**
+     * consume every element what matched the consumePredicate
+     */
+    public static <E> void forEach(@Nullable Object anyObject, @Nullable Predicate<E> consumePredicate, @NonNull Consumer<E> consumer) {
+        if (anyObject == null) {
+            return;
+        }
+        if (consumePredicate == null) {
+            forEach(anyObject, consumer);
+            return;
+        }
+        Iterable<E> iterable = asIterable(anyObject);
+        for (E e : iterable) {
+            if (consumePredicate.test(e)) {
+                consumer.accept(e);
+            }
+        }
+    }
+
+    /**
      * Iterate every element
      */
     public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer) {
@@ -867,6 +886,31 @@ public class Collects {
     }
 
     /**
+     * Consume every element what matched the consumePredicate
+     */
+    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @Nullable final Predicate2<Integer, E> consumePredicate, @NonNull final Consumer2<Integer, E> consumer) {
+        if (consumePredicate == null) {
+            forEach(collection, consumer);
+            return;
+        }
+        if (Emptys.isNotEmpty(collection)) {
+            final Holder<Integer> indexHolder = new Holder<Integer>(-1);
+            forEach(collection, new Predicate<E>() {
+                @Override
+                public boolean test(E value) {
+                    indexHolder.set(indexHolder.get() + 1);
+                    return consumePredicate.test(indexHolder.get(), value);
+                }
+            }, new Consumer<E>() {
+                @Override
+                public void accept(E e) {
+                    consumer.accept(indexHolder.get(), e);
+                }
+            });
+        }
+    }
+
+    /**
      * Iterate every element
      */
     public static <E> void forEach(@Nullable E[] array, @NonNull Consumer2<Integer, E> consumer) {
@@ -884,6 +928,23 @@ public class Collects {
                     break;
                 }
                 consumer.accept(i, array[i]);
+            }
+        }
+    }
+
+    /**
+     * consume every element that matched the consumePredicate
+     */
+    public static <E> void forEach(@Nullable E[] array, @Nullable final Predicate2<Integer, E> consumePredicate, @NonNull Consumer2<Integer, E> consumer) {
+        if (consumePredicate == null) {
+            forEach(array, consumer);
+            return;
+        }
+        if (Emptys.isNotEmpty(array)) {
+            for (int i = 0; i < array.length; i++) {
+                if (consumePredicate.test(i, array[i])) {
+                    consumer.accept(i, array[i]);
+                }
             }
         }
     }
@@ -907,6 +968,24 @@ public class Collects {
                 }
 
                 consumer.accept(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
+    /**
+     * consume every element what matched the consumePredicate
+     */
+    public static <K, V, M extends Map<? extends K, ? extends V>> void forEach(@Nullable M map, @Nullable final Predicate2<K, V> consumePredicate, @NonNull Consumer2<K, V> consumer) {
+        Preconditions.checkNotNull(consumer);
+        if (consumePredicate == null) {
+            forEach(map, consumer);
+            return;
+        }
+        if (Emptys.isNotEmpty(map)) {
+            for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+                if (consumePredicate.test(entry.getKey(), entry.getValue())) {
+                    consumer.accept(entry.getKey(), entry.getValue());
+                }
             }
         }
     }
@@ -1578,6 +1657,35 @@ public class Collects {
                 return c1.contains(value);
             }
         });
+    }
+
+    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> List<E> intersection(final C1 c1, final C2 c2) {
+        final List<E> list = emptyArrayList();
+        if (Emptys.isEmpty(c1) || Emptys.isEmpty(c2)) {
+            return list;
+        }
+        List<E> allElements = emptyArrayList();
+        allElements.addAll(c1);
+        allElements.addAll(c2);
+        forEach(allElements, new Predicate<E>() {
+            @Override
+            public boolean test(E element) {
+                return list.contains(element) || (c1.contains(element) && c2.contains(element));
+            }
+        }, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                list.add(e);
+            }
+        });
+        return list;
+    }
+
+    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> List<E> union(final C1 c1, final C2 c2) {
+        List<E> allElements = emptyArrayList();
+        allElements.addAll(Emptys.isEmpty(c1) ? Collects.<E>emptyArrayList():c1);
+        allElements.addAll(Emptys.isEmpty(c2) ? Collects.<E>emptyArrayList():c2);
+        return allElements;
     }
 
     public static <E> E reduce(@Nullable E[] iterable, Operator2<E> operator) {
