@@ -1659,10 +1659,10 @@ public class Collects {
         });
     }
 
-    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> List<E> intersection(final C1 c1, final C2 c2) {
-        final List<E> list = emptyArrayList();
+    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> Set<E> intersection(final C1 c1, final C2 c2) {
+        final Set<E> set = emptyHashSet(true);
         if (Emptys.isEmpty(c1) || Emptys.isEmpty(c2)) {
-            return list;
+            return set;
         }
         List<E> allElements = emptyArrayList();
         allElements.addAll(c1);
@@ -1670,19 +1670,19 @@ public class Collects {
         forEach(allElements, new Predicate<E>() {
             @Override
             public boolean test(E element) {
-                return list.contains(element) || (c1.contains(element) && c2.contains(element));
+                return set.contains(element) || (c1.contains(element) && c2.contains(element));
             }
         }, new Consumer<E>() {
             @Override
             public void accept(E e) {
-                list.add(e);
+                set.add(e);
             }
         });
-        return list;
+        return set;
     }
 
-    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> List<E> union(final C1 c1, final C2 c2) {
-        List<E> allElements = emptyArrayList();
+    public static <E, C1 extends Collection<E>, C2 extends Collection<E>> Set<E> union(final C1 c1, final C2 c2) {
+        Set<E> allElements = emptyHashSet(true);
         allElements.addAll(Emptys.isEmpty(c1) ? Collects.<E>emptyArrayList():c1);
         allElements.addAll(Emptys.isEmpty(c2) ? Collects.<E>emptyArrayList():c2);
         return allElements;

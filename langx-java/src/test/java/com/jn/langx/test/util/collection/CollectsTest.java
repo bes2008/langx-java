@@ -144,4 +144,12 @@ public class CollectsTest {
         });
         Assert.assertTrue(dr2.getUpdates().size() == 3);
     }
+
+    @Test
+    public void testUnion() {
+        List<Integer> list1 = Collects.asList(1, 3, 5, 6, 7, 9, 8, 8);
+        List<Integer> list2 = Collects.asList(2, 4, 6, 8);
+        System.out.println(Collects.intersection(list1, list2));
+        System.out.println(Collects.union(list1, list2));
+    }
 }
