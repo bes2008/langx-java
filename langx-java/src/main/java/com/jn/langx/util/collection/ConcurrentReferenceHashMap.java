@@ -849,6 +849,14 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
     /* ---------------- Public operations -------------- */
 
+
+    public ConcurrentReferenceHashMap(
+            int initialCapacity,
+            float loadFactor, int concurrencyLevel,
+            ReferenceType keyType, ReferenceType valueType){
+        this(initialCapacity, loadFactor, concurrencyLevel, keyType, valueType, null);
+    }
+
     /**
      * Creates a new, empty map with the specified initial
      * capacity, reference types, load factor and concurrency level.

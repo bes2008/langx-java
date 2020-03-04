@@ -6,12 +6,14 @@ import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timeout;
@@ -20,14 +22,14 @@ import com.jn.langx.util.timing.timer.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.ReferenceQueue;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
-    private ConcurrentHashMap<K, Entry<K, V>> map;
+    private ConcurrentReferenceHashMap<K, Entry<K, V>> map;
     private Loader<K, V> globalLoader;
     // unit: seconds
     private long expireAfterWrite = Long.MAX_VALUE;
@@ -48,6 +50,10 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private boolean shutdownTimerSelf = false;
 
     private volatile boolean running = false;
+
+    private ReferenceType keyReferenceType;
+    private ReferenceType valueReferenceType;
+    private ReferenceQueue referenceQueue;
 
     /**
      * Key: expire time
@@ -95,6 +101,18 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         nextEvictExpiredTime = Dates.nextTime(evictExpiredInterval);
     }
 
+    public void setKeyReferenceType(ReferenceType keyReferenceType) {
+        this.keyReferenceType = keyReferenceType;
+    }
+
+    public void setValueReferenceType(ReferenceType valueReferenceType) {
+        this.valueReferenceType = valueReferenceType;
+    }
+
+    public void setReferenceQueue(ReferenceQueue referenceQueue) {
+        this.referenceQueue = referenceQueue;
+    }
+
     @Override
     public void set(@NonNull K key, @Nullable V value) {
         set(key, value, expireAfterWrite, TimeUnit.SECONDS);
@@ -124,7 +142,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
             writeLock.lock();
             try {
                 remove(key, RemoveCause.REPLACED);
-                Entry<K, V> entry = new Entry<K, V>(key, value, expire);
+                Entry<K, V> entry = new Entry<K, V>(key, keyReferenceType, value, valueReferenceType, referenceQueue, false, expire);
                 map.put(key, entry);
                 expireTimeIndex.get(entry.getExpireTime()).add(entry.getKey());
                 addToCache(entry);
@@ -194,11 +212,14 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
                 if (expireAfterRead > 0) {
                     writeLock.lock();
                     try {
-                        expireTimeIndex.get(entry.getExpireTime()).remove(entry.getKey());
-                        beforeRecomputeExpireTimeOnRead(entry);
-                        entry.setExpireTime(Dates.nextTime(expireAfterRead));
-                        expireTimeIndex.get(entry.getExpireTime()).add(entry.getKey());
-                        afterRecomputeExpireTimeOnRead(entry);
+                        K key0 = entry.getKey();
+                        if (key0 != null) {
+                            expireTimeIndex.get(entry.getExpireTime()).remove(key0);
+                            beforeRecomputeExpireTimeOnRead(entry);
+                            entry.setExpireTime(Dates.nextTime(expireAfterRead));
+                            expireTimeIndex.get(entry.getExpireTime()).add(key0);
+                            afterRecomputeExpireTimeOnRead(entry);
+                        }
                     } finally {
                         writeLock.unlock();
                     }
@@ -327,7 +348,10 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
                     Collects.forEach(cleared, new Consumer<Entry<K, V>>() {
                         @Override
                         public void accept(Entry<K, V> entry) {
-                            expireTimeIndex.get(entry.getExpireTime()).remove(entry.getKey());
+                            K key = entry.getKey();
+                            if (key != null) {
+                                expireTimeIndex.get(entry.getExpireTime()).remove(key);
+                            }
                         }
                     });
                 } finally {
@@ -417,7 +441,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         }
     }
 
-    void setMap(ConcurrentHashMap<K, Entry<K, V>> map) {
+    void setMap(ConcurrentReferenceHashMap<K, Entry<K, V>> map) {
         this.map = map;
     }
 

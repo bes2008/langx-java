@@ -25,7 +25,10 @@ public class FIFOCache<K, V> extends AbstractCache<K, V> {
 
     @Override
     protected void addToCache(Entry<K, V> entry) {
-        queue.put(entry.getKey(), entry);
+        K key = entry.getKey();
+        if (key != null) {
+            queue.put(key, entry);
+        }
     }
 
     @Override
@@ -40,7 +43,10 @@ public class FIFOCache<K, V> extends AbstractCache<K, V> {
 
     @Override
     protected void removeFromCache(Entry<K, V> entry, RemoveCause removeCause) {
-        queue.remove(entry.getKey());
+        K key = entry.getKey();
+        if (key != null) {
+            queue.remove(entry.getKey());
+        }
     }
 
     @Override

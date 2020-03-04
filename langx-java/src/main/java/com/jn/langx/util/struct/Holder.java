@@ -37,4 +37,13 @@ public class Holder<V> implements ValueHolder<V> {
     public boolean isEmpty() {
         return Emptys.isEmpty(v);
     }
+
+    @Override
+    public void setHash(int hash) {
+    }
+
+    @Override
+    public int getHash() {
+        return v.hashCode();
+    }
 }
