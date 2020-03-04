@@ -1,5 +1,7 @@
 package com.jn.langx.util.struct;
 
+import com.jn.langx.util.Emptys;
+
 public class Holder<V> implements ValueHolder<V> {
     private V v;
     private final V initValue;
@@ -24,5 +26,15 @@ public class Holder<V> implements ValueHolder<V> {
     @Override
     public void reset() {
         this.v = initValue;
+    }
+
+    @Override
+    public boolean isNull() {
+        return v == null;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return Emptys.isEmpty(v);
     }
 }
