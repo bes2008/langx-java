@@ -2,6 +2,7 @@ package com.jn.langx.util.collection;
 
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.reflect.reference.ReferenceType;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -114,27 +115,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      * The basic strategy is to subdivide the table among Segments,
      * each of which itself is a concurrently readable hash table.
      */
-
-    /**
-     * An option specifying which Java reference type should be used to refer
-     * to a key and/or value.
-     */
-    public static enum ReferenceType {
-        /**
-         * Indicates a normal Java strong reference should be used
-         */
-        STRONG,
-        /**
-         * Indicates a {@link WeakReference} should be used
-         */
-        WEAK,
-        /**
-         * Indicates a {@link SoftReference} should be used
-         */
-        SOFT
-    }
-
-    ;
 
 
     public static enum Option {
