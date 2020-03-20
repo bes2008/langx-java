@@ -1,10 +1,11 @@
 package com.jn.langx.util.collection.iter;
 
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 /**
  * Composite iterator that combines multiple other iterators,
@@ -17,16 +18,16 @@ import java.util.Set;
  */
 public class CompositeIterator<E> extends UnmodifiableIterator {
 
-    private final Set<Iterator<E>> iterators = Collects.emptyHashSet(true);
+    private final List<Iterator<E>> iterators = Collects.emptyArrayList();
 
-    private boolean inUse = false;
-
+    private int currentIteratorIndex = -1;
 
     /**
      * Add given iterator to this composite.
      */
     public void add(Iterator<E> iterator) {
-        if (!this.inUse) {
+        Preconditions.checkNotNull(iterator);
+        if (this.currentIteratorIndex <= -1) {
             if (this.iterators.contains(iterator)) {
                 throw new IllegalArgumentException("You cannot add the same iterator twice");
             }
@@ -37,22 +38,25 @@ public class CompositeIterator<E> extends UnmodifiableIterator {
 
     @Override
     public boolean hasNext() {
-        this.inUse = true;
-        for (Iterator<E> iterator : this.iterators) {
-            if (iterator.hasNext()) {
-                return true;
-            }
+        if (iterators.isEmpty() || currentIteratorIndex >= iterators.size()) {
+            return false;
         }
-        return false;
+        if (currentIteratorIndex == -1) {
+            currentIteratorIndex = 0;
+        }
+        Iterator<E> currentIterator = iterators.get(currentIteratorIndex);
+        if (currentIterator.hasNext()) {
+            return true;
+        } else {
+            currentIteratorIndex++;
+            return hasNext();
+        }
     }
 
     @Override
     public E next() {
-        this.inUse = true;
-        for (Iterator<E> iterator : this.iterators) {
-            if (iterator.hasNext()) {
-                return iterator.next();
-            }
+        if (hasNext()) {
+            return iterators.get(currentIteratorIndex).next();
         }
         throw new NoSuchElementException("All iterators exhausted");
     }
