@@ -899,7 +899,6 @@ public class Collects {
         consumePredicate = consumePredicate == null ? Functions.<Integer, E>truePredicate2() : consumePredicate;
 
         if (Emptys.isNotEmpty(collection)) {
-            final Holder<Integer> indexHolder = new Holder<Integer>(0);
             Iterator<E> iterator = collection.iterator();
             for (int i = 0; iterator.hasNext(); i++) {
                 E element = iterator.next();
