@@ -675,7 +675,7 @@ public class Collects {
      * Filter any object with the specified predicate
      */
     public static <E> Collection<E> filter(@Nullable Object anyObject, @NonNull final Predicate<E> predicate) {
-       return filter(anyObject, predicate, null);
+        return filter(anyObject, predicate, null);
     }
 
     /**
@@ -993,17 +993,19 @@ public class Collects {
     public static <K, V, M extends Map<? extends K, ? extends V>> void forEach(@Nullable M map, @Nullable final Predicate2<K, V> consumePredicate, @NonNull Consumer2<K, V> consumer) {
         forEach(map, consumePredicate, consumer, null);
     }
+
     /**
      * consume every element what matched the consumePredicate
      */
-    public static <K, V, M extends Map<? extends K, ? extends V>> void forEach(@Nullable M map, @Nullable final Predicate2<K, V> consumePredicate, @NonNull Consumer2<K, V> consumer, @Nullable final Predicate2<K, V> breakPredicate) {
+    public static <K, V, M extends Map<? extends K, ? extends V>> void forEach(@Nullable M map, @Nullable Predicate2<K, V> consumePredicate, @NonNull Consumer2<K, V> consumer, @Nullable final Predicate2<K, V> breakPredicate) {
         Preconditions.checkNotNull(consumer);
+        consumePredicate = consumePredicate == null ? Functions.<K, V>truePredicate2() : consumePredicate;
         if (Emptys.isNotEmpty(map)) {
             for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
                 if (consumePredicate.test(entry.getKey(), entry.getValue())) {
                     consumer.accept(entry.getKey(), entry.getValue());
                 }
-                if(breakPredicate!=null && breakPredicate.test(entry.getKey(), entry.getValue())){
+                if (breakPredicate != null && breakPredicate.test(entry.getKey(), entry.getValue())) {
                     break;
                 }
             }
@@ -1070,7 +1072,7 @@ public class Collects {
             public void accept(E e) {
                 ret.add(e);
             }
-        },new Predicate<E>() {
+        }, new Predicate<E>() {
             @Override
             public boolean test(E value) {
                 return ret.size() == n;
@@ -1083,21 +1085,22 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <K, V> Map<? extends K, ? extends V> findN(@Nullable Map<? extends K, ? extends V> map, @Nullable Predicate2<K, V> predicate, int n) {
-        Map<K, V> ret = emptyHashMap(true);
+    public static <K, V> Map<? extends K, ? extends V> findN(@Nullable Map<? extends K, ? extends V> map, @Nullable Predicate2<K, V> predicate, final int n) {
+        final Map<K, V> ret = emptyHashMap(true);
         if (n <= 0 || map == null || map.isEmpty()) {
             return ret;
         }
-        for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
-            if (predicate == null || predicate.test(entry.getKey(), entry.getValue())) {
-                K key = entry.getKey();
-                V value = entry.getValue();
+        forEach(map, predicate, new Consumer2<K, V>() {
+            @Override
+            public void accept(K key, V value) {
                 ret.put(key, value);
-                if (map.size() == n) {
-                    break;
-                }
             }
-        }
+        }, new Predicate2<K, V>() {
+            @Override
+            public boolean test(K key, V value) {
+                return n == ret.size();
+            }
+        });
         return ret;
     }
 
