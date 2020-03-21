@@ -74,12 +74,20 @@ public class Pipeline<E> {
         Collects.forEach(this.collection, consumer, breakPredicate);
     }
 
+    public void forEach(@Nullable Predicate<E> consumePredicate, @NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
+        Collects.forEach(this.collection, consumePredicate, consumer, breakPredicate);
+    }
+
     public void forEach(@NonNull Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
-        Collects.forEach(this.collection, consumer, breakPredicate);
+        this.forEach(null, consumer, breakPredicate);
     }
 
     public void forEach(@Nullable Predicate2<Integer, E> consumePredicate, @NonNull Consumer2<Integer, E> consumer) {
-        Collects.forEach(this.collection, consumePredicate, consumer);
+        this.forEach(consumePredicate, consumer, null);
+    }
+
+    public void forEach(@Nullable Predicate2<Integer, E> consumePredicate, @NonNull Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
+        Collects.forEach(this.collection, consumePredicate, consumer, breakPredicate);
     }
 
     public boolean anyMatch(@NonNull Predicate<E> predicate) {
