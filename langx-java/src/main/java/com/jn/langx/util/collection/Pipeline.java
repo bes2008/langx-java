@@ -31,7 +31,11 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> filter(Predicate<E> predicate) {
-        return new Pipeline<E>(Collects.filter(this.collection, predicate));
+        return this.filter(predicate, null);
+    }
+
+    public Pipeline<E> filter(Predicate<E> predicate, @Nullable Predicate<E> breakPredicate) {
+        return new Pipeline<E>(Collects.filter(this.collection, predicate, breakPredicate));
     }
 
     public Pipeline<E> limit(int maxSize) {
