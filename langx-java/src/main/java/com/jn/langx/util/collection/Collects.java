@@ -1674,7 +1674,7 @@ public class Collects {
      */
     public static <E, C1 extends Collection<E>, C2 extends Collection<E>> boolean containsNone(final C1 c1, C2 c2) {
         if (Emptys.isEmpty(c1)) {
-            return false;
+            return true;
         }
         return noneMatch(c2, new Predicate<E>() {
             @Override
