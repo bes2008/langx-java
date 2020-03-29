@@ -674,4 +674,60 @@ public class Numbers {
     public static byte toByte(Number number){
         return number.byteValue();
     }
+
+    public static Number mod(Number left, Number right) {
+        if (isDouble(left) || isDouble(right)) {
+            return left.doubleValue() % right.doubleValue();
+        }
+        return left.longValue() % right.longValue();
+    }
+
+    public static Number add(Number left, Number right) {
+        if (isDouble(left) || isDouble(right)) {
+            return left.doubleValue() + right.doubleValue();
+        }
+        return left.longValue() + right.longValue();
+    }
+
+    public static Number sub(Number left, Number right) {
+        if (isDouble(left) || isDouble(right)) {
+            return left.doubleValue() - right.doubleValue();
+        }
+        return left.longValue() - right.longValue();
+    }
+
+    public static Number mul(Number left, Number right) {
+        if (isDouble(left) || isDouble(right)) {
+            return left.doubleValue() * right.doubleValue();
+        }
+        return left.longValue() * right.longValue();
+    }
+
+    public static Number div(Number left, Number right) {
+        if (isDouble(left) || isDouble(right)) {
+            return left.doubleValue() / right.doubleValue();
+        }
+        return left.longValue() / right.longValue();
+    }
+
+    public static boolean isInteger(Number number) {
+        if (number instanceof Integer) {
+            return true;
+        }
+        return number.longValue() == number.intValue();
+    }
+
+    public static boolean isDouble(Number number) {
+        if (number instanceof Double) {
+            return true;
+        }
+        return Strings.containsAny(number.toString(), ".");
+    }
+
+    public static boolean isLong(Number number) {
+        if (number instanceof Long) {
+            return true;
+        }
+        return !isDouble(number) && !isInteger(number);
+    }
 }
