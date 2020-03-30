@@ -5,7 +5,7 @@ import com.jn.langx.expression.Expression;
 
 public abstract class AbstractUnaryOperator<E extends Expression<R>,R> implements UnaryOperator<E,R> {
     private E target;
-    private String operateSymbol;
+    protected String operateSymbol;
 
     @Override
     public void setOperateSymbol(String operateSymbol) {

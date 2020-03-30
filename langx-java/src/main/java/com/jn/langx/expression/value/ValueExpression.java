@@ -6,6 +6,11 @@ import com.jn.langx.expression.Expression;
 public class ValueExpression<E> implements Expression<E> {
     private E value;
 
+    public ValueExpression(){}
+    public ValueExpression(E value){
+        setValue(value);
+    }
+
     public void setValue(E value) {
         this.value = value;
     }

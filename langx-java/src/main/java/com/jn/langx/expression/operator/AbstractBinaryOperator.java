@@ -6,7 +6,7 @@ import com.jn.langx.expression.Expression;
 public abstract class AbstractBinaryOperator<Left extends Expression, Right extends Expression, Result extends Expression> implements BinaryOperator<Left, Right, Result> {
     private Left left;
     private Right right;
-    private String operateSymbol;
+    protected String operateSymbol;
 
     @Override
     public void setLeft(Left left) {
