@@ -1,4 +1,4 @@
-package com.jn.langx.expression.value;
+package com.jn.langx.expression;
 
 
 import com.jn.langx.expression.Expression;
