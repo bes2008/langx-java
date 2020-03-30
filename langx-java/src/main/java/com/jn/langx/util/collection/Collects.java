@@ -592,7 +592,14 @@ public class Collects {
             return emptyArrayList();
         }
         if (!(iterable instanceof Collection)) {
-            return (Collection<E>) asList(collect(iterable, toList()));
+            final List<E> list = newArrayList();
+            forEach(iterable, new Consumer<E>() {
+                @Override
+                public void accept(E e) {
+                    list.add(e);
+                }
+            });
+            return list;
         }
         return (Collection<E>) iterable;
     }
@@ -685,7 +692,7 @@ public class Collects {
         Preconditions.checkNotNull(predicate);
         Iterable<E> iterable = asIterable(anyObject);
         final Collection<E> result = emptyCollection(iterable);
-        forEach(iterable, new Consumer<E>() {
+        forEach((Collection<E>)asCollection(iterable),null, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 if (predicate.test(e)) {
@@ -739,7 +746,7 @@ public class Collects {
         Preconditions.checkNotNull(mapper);
         final M result = (M) emptyHashMap(true);
         Iterable<E> iterable = asIterable(anyObject);
-        forEach(iterable, new Consumer<E>() {
+        forEach((Iterable<E>)iterable, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 Pair<K, V> pair = mapper.apply(e);
@@ -810,7 +817,7 @@ public class Collects {
         }
         Preconditions.checkNotNull(mapper);
         final Collection<R> list = emptyCollectionByInfer(collection);
-        forEach(collection, new Consumer<Collection<E>>() {
+        forEach((Collection)collection, new Consumer<Collection<E>>() {
             @Override
             public void accept(Collection<E> c) {
                 Collection<R> rs = Collects.map(c, mapper);
@@ -820,44 +827,25 @@ public class Collects {
         return list;
     }
 
-    /**
-     * Iterate every element
-     */
-    public static <E> void forEach(@Nullable Object anyObject, @NonNull Consumer<E> consumer) {
-        forEach(anyObject, null, consumer, null);
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection,  @NonNull final Consumer<E> consumer) {
+        forEach(collection,null, consumer, null);
     }
 
-    /**
-     * Iterate every element
-     */
-    public static <E> void forEach(@Nullable Object anyObject, @NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
-        forEach(anyObject, null, consumer, breakPredicate);
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection,  @Nullable Predicate<E> consumePredicate,@NonNull final Consumer<E> consumer) {
+        forEach(collection,consumePredicate, consumer, null);
     }
-
-    /**
-     * consume every element what matched the consumePredicate
-     */
-    public static <E> void forEach(@Nullable Object anyObject, @Nullable Predicate<E> consumePredicate, @NonNull Consumer<E> consumer) {
-        forEach(anyObject, consumePredicate, consumer, null);
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection,  @NonNull final Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
+        forEach(collection,null, consumer, breakPredicate);
     }
-
     /**
      * Consume every element what matched the consumePredicate
      */
-    public static <E, C extends Collection<E>> void forEach(@Nullable Object anyObject, @Nullable Predicate<E> consumePredicate, @NonNull final Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
-        forEach(asCollection(asIterable(anyObject)), consumePredicate, consumer, breakPredicate);
-    }
-
-    /**
-     * Consume every element what matched the consumePredicate
-     */
-    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @Nullable Predicate<E> consumePredicate, @NonNull final Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @Nullable Predicate<E> consumePredicate, @NonNull final Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
         consumePredicate = consumePredicate == null ? Functions.<E>truePredicate() : consumePredicate;
 
         if (Emptys.isNotEmpty(collection)) {
-            final Holder<Integer> indexHolder = new Holder<Integer>(0);
             Iterator<E> iterator = collection.iterator();
-            for (int i = 0; iterator.hasNext(); i++) {
+            while (iterator.hasNext()) {
                 E element = iterator.next();
                 if (consumePredicate.test(element)) {
                     consumer.accept(element);
@@ -872,7 +860,7 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer) {
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer) {
         forEach(collection, null, consumer, null);
     }
 
@@ -880,14 +868,14 @@ public class Collects {
     /**
      * Iterate every element
      */
-    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer, @Nullable final Predicate2<Integer, E> breakPredicate) {
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer, @Nullable final Predicate2<Integer, E> breakPredicate) {
         forEach(collection, null, consumer, breakPredicate);
     }
 
     /**
      * Consume every element what matched the consumePredicate
      */
-    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @Nullable final Predicate2<Integer, E> consumePredicate, @NonNull final Consumer2<Integer, E> consumer) {
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @Nullable final Predicate2<Integer, E> consumePredicate, @NonNull final Consumer2<Integer, E> consumer) {
         forEach(collection, consumePredicate, consumer, null);
     }
 
@@ -895,7 +883,7 @@ public class Collects {
     /**
      * Consume every element what matched the consumePredicate
      */
-    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @Nullable Predicate2<Integer, E> consumePredicate, @NonNull final Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @Nullable Predicate2<Integer, E> consumePredicate, @NonNull final Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
         consumePredicate = consumePredicate == null ? Functions.<Integer, E>truePredicate2() : consumePredicate;
 
         if (Emptys.isNotEmpty(collection)) {
@@ -911,7 +899,14 @@ public class Collects {
             }
         }
     }
-
+    public static <E> void forEach(@Nullable E[] array, @NonNull final Consumer<E> consumer) {
+        forEach(array, new Consumer2<Integer, E>() {
+            @Override
+            public void accept(Integer key, E value) {
+                consumer.accept(value);
+            }
+        }, null);
+    }
     /**
      * Iterate every element
      */
@@ -1401,12 +1396,12 @@ public class Collects {
 
     public static int count(@Nullable Object anyObject) {
         final Holder<Integer> count = new Holder<Integer>(0);
-        forEach(anyObject, new Consumer<Object>() {
+        forEach(asCollection(asIterable(anyObject)),null, new Consumer<Object>() {
             @Override
             public void accept(Object object) {
                 count.set(count.get() + 1);
             }
-        });
+        },null);
         return count.get();
     }
 
@@ -1441,7 +1436,7 @@ public class Collects {
         Preconditions.checkNotNull(containerFactory);
         Preconditions.checkNotNull(consumer);
         final R container = containerFactory.get();
-        forEach(anyObject, new Consumer<E>() {
+        forEach((Collection<E>) asCollection(asIterable(anyObject)), new Consumer<E>() {
             @Override
             public void accept(E e) {
                 consumer.accept(container, e);
@@ -1692,7 +1687,7 @@ public class Collects {
         List<E> allElements = emptyArrayList();
         allElements.addAll(c1);
         allElements.addAll(c2);
-        forEach(allElements, new Predicate<E>() {
+        forEach((Collection<E>) allElements, new Predicate<E>() {
             @Override
             public boolean test(E element) {
                 return set.contains(element) || (c1.contains(element) && c2.contains(element));
@@ -1702,7 +1697,7 @@ public class Collects {
             public void accept(E e) {
                 set.add(e);
             }
-        });
+        },null);
         return set;
     }
 
@@ -1761,7 +1756,7 @@ public class Collects {
                 return new ArrayList<E>();
             }
         });
-        Collects.forEach(iterable, new Consumer<E>() {
+        Collects.forEach((Collection<E>) asCollection(asIterable(iterable)), new Consumer<E>() {
             @Override
             public void accept(E e) {
                 K group = classifier.apply(e);

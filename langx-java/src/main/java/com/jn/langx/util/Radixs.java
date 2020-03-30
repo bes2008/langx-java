@@ -91,12 +91,9 @@ public class Radixs {
 
     private static String toHex(byte[] bytes, final boolean twoLength) {
         final StringBuilder str = new StringBuilder();
-        Collects.forEach(bytes, new Consumer<Byte>() {
-            @Override
-            public void accept(Byte b) {
-                str.append(twoLength ? toHex2(b) : toHex(b));
-            }
-        });
+        for (byte b : bytes){
+            str.append(twoLength ? toHex2(b) : toHex(b));
+        }
         return str.toString();
     }
 

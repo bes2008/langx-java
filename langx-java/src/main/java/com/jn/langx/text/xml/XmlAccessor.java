@@ -75,7 +75,7 @@ public class XmlAccessor {
             if (Emptys.isEmpty(elements)) {
                 return;
             }
-            Collects.forEach(elements, new Consumer<Element>() {
+            Collects.forEach(Collects.<Element>asIterable(elements), new Consumer<Element>() {
                 @Override
                 public void accept(final Element element) {
                     Collects.forEach(attrs, new Consumer2<String, String>() {

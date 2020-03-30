@@ -71,11 +71,11 @@ public class Pipeline<E> {
     }
 
     public void forEach(@NonNull Consumer<E> consumer) {
-        Collects.forEach(this.collection, consumer);
+        Collects.forEach(this.collection, null,consumer,null);
     }
 
     public void forEach(@NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
-        Collects.forEach(this.collection, consumer, breakPredicate);
+        Collects.forEach(this.collection,null, consumer, breakPredicate);
     }
 
     public void forEach(@Nullable Predicate<E> consumePredicate, @NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {

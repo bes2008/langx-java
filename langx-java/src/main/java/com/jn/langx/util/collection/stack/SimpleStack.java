@@ -91,7 +91,7 @@ public class SimpleStack<E> implements Stack<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        Collects.forEach(c, new Consumer<E>() {
+        Collects.forEach((Collection<E>)c, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 add(e);

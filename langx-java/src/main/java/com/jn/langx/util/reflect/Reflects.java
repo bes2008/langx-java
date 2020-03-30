@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.type.Types;
@@ -782,9 +783,9 @@ public class Reflects {
         Class[] interfaces = clazz.getInterfaces();
         if (interfaces.length > 0) {
             Collects.addAll(set, interfaces);
-            Collects.forEach(interfaces, new Consumer<Class>() {
+            Collects.forEach(interfaces, new Consumer2<Integer,Class>() {
                 @Override
-                public void accept(Class iface) {
+                public void accept(Integer index, Class iface) {
                     set.addAll(getAllInterfaces(iface));
                 }
             });
