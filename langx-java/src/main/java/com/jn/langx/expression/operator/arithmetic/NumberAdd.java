@@ -9,7 +9,7 @@ public class NumberAdd extends AbstractBinaryOperator<NumberExpression<Number>, 
     @Override
     public NumberExpression<Number> execute() {
         NumberExpression<Number> expression = new NumberExpression<Number>();
-        expression.setValue(Numbers.add(left.execute(), right.execute()));
+        expression.setValue(Numbers.add(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

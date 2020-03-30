@@ -8,7 +8,7 @@ public class StringAdd extends AbstractBinaryOperator<StringExpression, StringEx
     @Override
     public StringExpression execute() {
         StringExpression expression = new StringExpression();
-        expression.setValue(left.execute()+right.execute());
+        expression.setValue(getLeft().execute()+getRight().execute());
         return expression;
     }
 }

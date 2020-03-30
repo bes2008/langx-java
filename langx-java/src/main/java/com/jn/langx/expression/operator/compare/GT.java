@@ -15,7 +15,7 @@ public class GT<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
     @Override
     public BooleanResultExpression execute() {
         BooleanExpression expression = new BooleanExpression();
-        expression.setValue(Compares.gt(left.execute(), right.execute()));
+        expression.setValue(Compares.gt(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

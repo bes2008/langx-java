@@ -9,7 +9,7 @@ public class Divide extends AbstractBinaryOperator<NumberExpression<Number>, Num
     @Override
     public NumberExpression<Number> execute() {
         NumberExpression<Number> expression = new NumberExpression<Number>();
-        expression.setValue(Numbers.div(left.execute(), right.execute()));
+        expression.setValue(Numbers.div(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

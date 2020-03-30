@@ -8,7 +8,7 @@ public class Multiple extends AbstractBinaryOperator<NumberExpression<Number>, N
     @Override
     public NumberExpression<Number> execute() {
         NumberExpression<Number> expression = new NumberExpression<Number>();
-        expression.setValue(Numbers.mul(left.execute(), right.execute()));
+        expression.setValue(Numbers.mul(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

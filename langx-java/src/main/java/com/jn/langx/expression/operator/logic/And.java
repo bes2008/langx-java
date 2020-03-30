@@ -10,7 +10,7 @@ public class And<E extends Expression<BooleanResultExpression>, F extends Expres
 
     @Override
     public BooleanResultExpression execute() {
-        return new BooleanExpression(left.execute().execute() && right.execute().execute());
+        return new BooleanExpression(getLeft().execute().execute() && getRight().execute().execute());
     }
 
 }

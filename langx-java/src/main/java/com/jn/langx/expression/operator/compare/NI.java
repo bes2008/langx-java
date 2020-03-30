@@ -15,7 +15,7 @@ public class NI<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
     @Override
     public BooleanResultExpression execute() {
         BooleanExpression expression = new BooleanExpression();
-        expression.setValue(Compares.ni(left.execute(), right.execute()));
+        expression.setValue(Compares.ni(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

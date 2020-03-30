@@ -14,4 +14,9 @@ public class ValueExpression<E> implements Expression<E> {
     public E execute() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return value == null ? "" : value.toString();
+    }
 }

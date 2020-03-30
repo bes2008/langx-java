@@ -14,7 +14,7 @@ public class IN<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
     @Override
     public BooleanResultExpression execute() {
         BooleanExpression expression = new BooleanExpression();
-        expression.setValue(Compares.in(left.execute(), right.execute()));
+        expression.setValue(Compares.in(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

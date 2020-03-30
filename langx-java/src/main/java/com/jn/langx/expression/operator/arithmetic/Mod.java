@@ -9,7 +9,7 @@ public class Mod extends AbstractBinaryOperator<NumberExpression<Number>, Number
     @Override
     public NumberExpression<Number> execute() {
         NumberExpression<Number> expression = new NumberExpression<Number>();
-        expression.setValue(Numbers.mod(left.execute(), right.execute()));
+        expression.setValue(Numbers.mod(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

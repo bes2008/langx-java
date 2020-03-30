@@ -9,7 +9,7 @@ public class Subtract extends AbstractBinaryOperator<NumberExpression<Number>, N
     @Override
     public NumberExpression<Number> execute() {
         NumberExpression<Number> expression = new NumberExpression<Number>();
-        expression.setValue(Numbers.sub(left.execute(), right.execute()));
+        expression.setValue(Numbers.sub(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

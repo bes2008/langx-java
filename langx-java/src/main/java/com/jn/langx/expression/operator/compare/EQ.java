@@ -15,7 +15,7 @@ public class EQ<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
     @Override
     public BooleanResultExpression execute() {
         BooleanExpression expression = new BooleanExpression();
-        expression.setValue(Compares.eq(left.execute(), right.execute()));
+        expression.setValue(Compares.eq(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

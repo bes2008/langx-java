@@ -15,7 +15,7 @@ public class LE<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
     @Override
     public BooleanResultExpression execute() {
         BooleanExpression expression = new BooleanExpression();
-        expression.setValue(Compares.le(left.execute(), right.execute()));
+        expression.setValue(Compares.le(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }

@@ -16,7 +16,7 @@ public class GE<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
     @Override
     public BooleanResultExpression execute() {
         BooleanExpression expression = new BooleanExpression();
-        expression.setValue(Compares.ge(left.execute(), right.execute()));
+        expression.setValue(Compares.ge(getLeft().execute(), getRight().execute()));
         return expression;
     }
 }
