@@ -1,10 +1,10 @@
 package com.jn.langx.expression.operator.logic;
 
 
+import com.jn.langx.expression.BooleanResultExpression;
 import com.jn.langx.expression.Expression;
 import com.jn.langx.expression.operator.AbstractUnaryOperator;
 import com.jn.langx.expression.value.BooleanExpression;
-import com.jn.langx.expression.BooleanResultExpression;
 import com.jn.langx.util.Strings;
 
 public class Non<E extends Expression<BooleanResultExpression>> extends AbstractUnaryOperator<E, BooleanResultExpression> implements UnaryLogicOperator<E> {
@@ -23,7 +23,12 @@ public class Non<E extends Expression<BooleanResultExpression>> extends Abstract
 
     @Override
     public String getOperateSymbol() {
-        return Strings.isEmpty(operateSymbol) ? "||" : operateSymbol;
+        return Strings.isEmpty(operateSymbol) ? "!" : operateSymbol;
+    }
+
+    @Override
+    public String toString() {
+        return getOperateSymbol() + " " + getTarget().toString();
     }
 
     @Override
