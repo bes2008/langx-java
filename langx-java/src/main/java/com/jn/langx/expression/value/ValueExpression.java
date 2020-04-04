@@ -1,13 +1,16 @@
 package com.jn.langx.expression.value;
 
 
+import com.jn.langx.expression.BaseExpression;
 import com.jn.langx.expression.Expression;
 
-public class ValueExpression<E> implements Expression<E> {
+public class ValueExpression<E> extends BaseExpression<E> implements Expression<E> {
     private E value;
 
-    public ValueExpression(){}
-    public ValueExpression(E value){
+    public ValueExpression() {
+    }
+
+    public ValueExpression(E value) {
         setValue(value);
     }
 
