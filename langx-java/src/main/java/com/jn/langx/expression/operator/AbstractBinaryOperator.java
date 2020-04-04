@@ -1,9 +1,10 @@
 package com.jn.langx.expression.operator;
 
 
+import com.jn.langx.expression.BaseExpression;
 import com.jn.langx.expression.Expression;
 
-public abstract class AbstractBinaryOperator<Left extends Expression, Right extends Expression, Result extends Expression> implements BinaryOperator<Left, Right, Result> {
+public abstract class AbstractBinaryOperator<Left extends Expression, Right extends Expression, Result extends Expression> extends BaseExpression<Result> implements BinaryOperator<Left, Right, Result> {
     private Left left;
     private Right right;
     protected String operateSymbol;
