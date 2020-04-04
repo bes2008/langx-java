@@ -3,6 +3,7 @@ package com.jn.langx.expression.operator;
 
 import com.jn.langx.expression.BaseExpression;
 import com.jn.langx.expression.Expression;
+import com.jn.langx.util.hash.HashCodeBuilder;
 
 public abstract class AbstractUnaryOperator<E extends Expression<R>, R> extends BaseExpression<R> implements UnaryOperator<E, R> {
     private E target;
@@ -31,5 +32,9 @@ public abstract class AbstractUnaryOperator<E extends Expression<R>, R> extends 
     @Override
     public String toString() {
         return operateSymbol + " " + target.toString();
+    }
+
+    public int hashCode() {
+        return new HashCodeBuilder().with(operateSymbol).with(target).build();
     }
 }

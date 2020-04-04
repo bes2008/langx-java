@@ -1,6 +1,8 @@
 package com.jn.langx.util.hash;
 
-public class HashCodeBuilder {
+import com.jn.langx.Builder;
+
+public class HashCodeBuilder implements Builder<Integer> {
     private int hash = 0;
 
     public HashCodeBuilder with(Object object) {
@@ -12,7 +14,7 @@ public class HashCodeBuilder {
         this.hash = this.hash * 31 + hash;
     }
 
-    public int build() {
+    public Integer build() {
         return hash;
     }
 
