@@ -9,6 +9,7 @@ import com.jn.langx.util.Strings;
 
 public class And<E extends Expression<BooleanResultExpression>, F extends Expression<BooleanResultExpression>> extends AbstractBinaryOperator<E, F, BooleanResultExpression> implements BinaryLogicOperator<E, F> {
     public And() {
+        setOperateSymbol("&&");
     }
 
     public And(E left, F right) {

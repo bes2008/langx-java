@@ -14,6 +14,7 @@ import com.jn.langx.util.comparator.Compares;
 public class IN<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, BooleanResultExpression> implements CompareOperator<Expression<E>, Expression<E>> {
 
     public IN() {
+        setOperateSymbol("in");
     }
 
     public IN(Expression<E> left, Expression<E> right) {

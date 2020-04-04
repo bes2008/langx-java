@@ -15,6 +15,7 @@ import com.jn.langx.util.comparator.Compares;
 public class NE<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, BooleanResultExpression> implements CompareOperator<Expression<E>, Expression<E>> {
 
     public NE() {
+        setOperateSymbol("!=");
     }
 
     public NE(Expression<E> left, Expression<E> right) {

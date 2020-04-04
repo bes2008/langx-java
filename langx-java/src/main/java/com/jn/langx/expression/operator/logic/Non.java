@@ -10,6 +10,7 @@ import com.jn.langx.util.Strings;
 public class Non<E extends Expression<BooleanResultExpression>> extends AbstractUnaryOperator<E, BooleanResultExpression> implements UnaryLogicOperator<E> {
 
     public Non() {
+        setOperateSymbol("!");
     }
 
     public Non(E target) {

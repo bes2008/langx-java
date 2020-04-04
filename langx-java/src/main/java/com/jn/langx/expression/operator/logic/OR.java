@@ -9,6 +9,7 @@ import com.jn.langx.util.Strings;
 public class OR<E extends BooleanResultExpression, F extends BooleanResultExpression> extends AbstractBinaryOperator<E, F, BooleanResultExpression> implements BinaryLogicOperator<E, F> {
 
     public OR() {
+        setOperateSymbol("||");
     }
 
     public OR(E left, F right) {

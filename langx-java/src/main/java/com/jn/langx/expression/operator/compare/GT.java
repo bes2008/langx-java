@@ -15,6 +15,7 @@ import com.jn.langx.util.comparator.Compares;
 public class GT<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, BooleanResultExpression> implements CompareOperator<Expression<E>, Expression<E>> {
 
     public GT() {
+        setOperateSymbol(">");
     }
 
     public GT(Expression<E> left, Expression<E> right) {

@@ -3,6 +3,7 @@ package com.jn.langx.expression.operator;
 
 import com.jn.langx.expression.BaseExpression;
 import com.jn.langx.expression.Expression;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
 public abstract class AbstractBinaryOperator<Left extends Expression, Right extends Expression, Result extends Expression> extends BaseExpression<Result> implements BinaryOperator<Left, Right, Result> {
@@ -32,7 +33,9 @@ public abstract class AbstractBinaryOperator<Left extends Expression, Right exte
 
     @Override
     public void setOperateSymbol(String operateSymbol) {
-        this.operateSymbol = operateSymbol;
+        if (Strings.isNotEmpty(operateSymbol)) {
+            this.operateSymbol = operateSymbol;
+        }
     }
 
     @Override
@@ -40,9 +43,10 @@ public abstract class AbstractBinaryOperator<Left extends Expression, Right exte
         return this.operateSymbol;
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return new HashCodeBuilder().with(operateSymbol).with(left).with(right).build();
     }
+
     @Override
     public String toString() {
         return left.toString() + " " + getOperateSymbol() + " " + right.toString();
