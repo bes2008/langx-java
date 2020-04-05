@@ -1,10 +1,9 @@
 package com.jn.langx.expression.operator.logic;
 
 
-import com.jn.langx.expression.value.BooleanResultExpression;
 import com.jn.langx.expression.operator.AbstractBinaryOperator;
 import com.jn.langx.expression.value.BooleanExpression;
-import com.jn.langx.util.Strings;
+import com.jn.langx.expression.value.BooleanResultExpression;
 
 public class OR<E extends BooleanResultExpression, F extends BooleanResultExpression> extends AbstractBinaryOperator<E, F, BooleanResultExpression> implements BinaryLogicOperator<E, F> {
 
@@ -20,11 +19,6 @@ public class OR<E extends BooleanResultExpression, F extends BooleanResultExpres
     public OR(String operateSymbol, E left, F right) {
         this(left, right);
         setOperateSymbol(operateSymbol);
-    }
-
-    @Override
-    public String getOperateSymbol() {
-        return Strings.isEmpty(operateSymbol) ? "||" : operateSymbol;
     }
 
     @Override
