@@ -29,12 +29,6 @@ public class EQ<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
     }
 
     @Override
-    public String getOperateSymbol() {
-        return Strings.isEmpty(operateSymbol) ? "==" : operateSymbol;
-    }
-
-
-    @Override
     public BooleanResultExpression execute() {
         BooleanExpression expression = new BooleanExpression();
         expression.setValue(Compares.eq(getLeft().execute(), getRight().execute()));

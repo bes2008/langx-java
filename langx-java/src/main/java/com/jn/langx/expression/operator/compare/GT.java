@@ -5,11 +5,11 @@ import com.jn.langx.expression.Expression;
 import com.jn.langx.expression.operator.AbstractBinaryOperator;
 import com.jn.langx.expression.value.BooleanExpression;
 import com.jn.langx.expression.value.BooleanResultExpression;
-import com.jn.langx.util.Strings;
 import com.jn.langx.util.comparator.Compares;
 
 /**
  * grater than
+ *
  * @param <E>
  */
 public class GT<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, BooleanResultExpression> implements CompareOperator<Expression<E>, Expression<E>> {
@@ -28,10 +28,6 @@ public class GT<E> extends AbstractBinaryOperator<Expression<E>, Expression<E>, 
         setOperateSymbol(operateSymbol);
     }
 
-    @Override
-    public String getOperateSymbol() {
-        return Strings.isEmpty(operateSymbol) ? ">" : operateSymbol;
-    }
 
     @Override
     public BooleanResultExpression execute() {
