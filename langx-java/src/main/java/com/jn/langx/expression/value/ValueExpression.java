@@ -19,6 +19,10 @@ public class ValueExpression<E> extends BaseExpression<E> implements Expression<
         this.value = value;
     }
 
+    public E getValue(){
+        return this.value;
+    }
+
     @Override
     public E execute() {
         return value;
