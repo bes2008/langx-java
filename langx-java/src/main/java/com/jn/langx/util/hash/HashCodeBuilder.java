@@ -5,6 +5,17 @@ import com.jn.langx.Builder;
 public class HashCodeBuilder implements Builder<Integer> {
     private int hash = 0;
 
+    public HashCodeBuilder() {
+        this(0);
+    }
+
+    public HashCodeBuilder(int hash) {
+        if (hash < 0) {
+            hash = 0;
+        }
+        this.hash = hash;
+    }
+
     public HashCodeBuilder with(Object object) {
         compute(object == null ? 0 : object.hashCode());
         return this;
