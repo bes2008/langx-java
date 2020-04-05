@@ -1,7 +1,7 @@
 package com.jn.langx.expression.operator.logic;
 
 
-import com.jn.langx.expression.BooleanResultExpression;
+import com.jn.langx.expression.value.BooleanResultExpression;
 import com.jn.langx.expression.operator.AbstractBinaryOperator;
 import com.jn.langx.expression.value.BooleanExpression;
 import com.jn.langx.util.Strings;
