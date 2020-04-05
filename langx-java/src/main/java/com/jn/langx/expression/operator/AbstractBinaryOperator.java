@@ -43,6 +43,7 @@ public abstract class AbstractBinaryOperator<Left extends Expression, Right exte
         return this.operateSymbol;
     }
 
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().with(operateSymbol).with(left).with(right).build();
     }
