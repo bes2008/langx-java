@@ -4,9 +4,9 @@
 
 [![JDK](https://img.shields.io/badge/JDK-1.6+-green.svg)](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
-[GitHub](https://github.com/fangjinuo/langx-java): https://github.com/fangjinuo/langx-java
+## 迁移到 [GitHub](https://github.com/fangjinuo): https://github.com/fangjinuo
 
-[Gitee](https://gitee.com/fangjinuo/langx-java): https://gitee.com/fangjinuo/langx-java
+
 
 [javadoc](https://apidoc.gitee.com/fangjinuo/langx-java)
 [Tutorial](https://fangjinuo.gitee.io/docs/)
