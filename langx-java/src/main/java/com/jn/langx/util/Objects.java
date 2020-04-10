@@ -1,12 +1,12 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.function.Supplier0;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.nio.Buffer;
+import java.util.*;
 
 public final class Objects {
     private Objects() {
@@ -358,6 +358,10 @@ public final class Objects {
 
     public static boolean isNotEmpty(Object o) {
         return Emptys.isNotEmpty(o);
+    }
+
+    public static <T> int length(T object) {
+        return Emptys.getLength(object);
     }
 
 }

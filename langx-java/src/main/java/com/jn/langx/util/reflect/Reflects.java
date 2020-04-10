@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.type.Types;
@@ -134,7 +135,6 @@ public class Reflects {
      *
      * @param type the type to get the class hierarchy from
      * @return Iterable an Iterable over the class hierarchy of the given class
-     * @since 3.2
      */
     public static Iterable<Class<?>> hierarchy(@NonNull final Class<?> type) {
         Preconditions.checkNotNull(type);
@@ -147,7 +147,6 @@ public class Reflects {
      * @param type              the type to get the class hierarchy from
      * @param excludeInterfaces switch indicating whether to include or exclude interfaces
      * @return Iterable an Iterable over the class hierarchy of the given class
-     * @since 3.2
      */
     public static Iterable<Class<?>> hierarchy(@NonNull final Class<?> type, final boolean excludeInterfaces) {
         Preconditions.checkNotNull(type);
@@ -190,7 +189,7 @@ public class Reflects {
                 final Iterator<Class<?>> wrapped = classes.iterator();
 
                 return new Iterator<Class<?>>() {
-                    Iterator<Class<?>> interfaces = Collections.<Class<?>>emptySet().iterator();
+                    Iterator<Class<?>> interfaces = Collects.<Class<?>>emptyTreeSet().iterator();
 
                     @Override
                     public boolean hasNext() {
@@ -784,9 +783,9 @@ public class Reflects {
         Class[] interfaces = clazz.getInterfaces();
         if (interfaces.length > 0) {
             Collects.addAll(set, interfaces);
-            Collects.forEach(interfaces, new Consumer<Class>() {
+            Collects.forEach(interfaces, new Consumer2<Integer,Class>() {
                 @Override
-                public void accept(Class iface) {
+                public void accept(Integer index, Class iface) {
                     set.addAll(getAllInterfaces(iface));
                 }
             });
@@ -1025,5 +1024,11 @@ public class Reflects {
         }).addTo(set);
 
         return set.contains(getFQNClassName(clazz));
+    }
+
+    public static <E> Class<E> getComponentType(E[] array){
+        Preconditions.checkNotNull(array);
+        Class clazz = array.getClass();
+        return clazz.getComponentType();
     }
 }

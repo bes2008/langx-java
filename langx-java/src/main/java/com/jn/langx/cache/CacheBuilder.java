@@ -2,10 +2,12 @@ package com.jn.langx.cache;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.timing.timer.Timer;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.lang.ref.ReferenceQueue;
 
 @SuppressWarnings({"unused"})
 public class CacheBuilder<K, V> {
@@ -28,7 +30,10 @@ public class CacheBuilder<K, V> {
 
     private Timer timer;
 
-    private float capatityHeightWater = 0.95f;
+    private float capacityHeightWater = 0.95f;
+
+    private ReferenceType keyReferenceType = ReferenceType.STRONG;
+    private ReferenceType valueReferenceType = ReferenceType.STRONG;
 
     private CacheBuilder() {
 
@@ -100,12 +105,40 @@ public class CacheBuilder<K, V> {
     }
 
     public CacheBuilder<K, V> capacityHeightWater(float capatityHeightWater) {
-        this.capatityHeightWater = capatityHeightWater;
+        this.capacityHeightWater = capatityHeightWater;
         return this;
     }
 
     public CacheBuilder<K, V> refreshAfterAccess(long refreshAfterAccess) {
         this.refreshAfterAccess = refreshAfterAccess;
+        return this;
+    }
+
+    public CacheBuilder<K, V> weakValue(boolean weakValue) {
+        if (weakValue) {
+            this.valueReferenceType = ReferenceType.WEAK;
+        }
+        return this;
+    }
+
+    public CacheBuilder<K, V> softValue(boolean softValue) {
+        if (softValue) {
+            this.valueReferenceType = ReferenceType.SOFT;
+        }
+        return this;
+    }
+
+    public CacheBuilder<K, V> weakKey(boolean weakKey) {
+        if (weakKey) {
+            this.keyReferenceType = ReferenceType.WEAK;
+        }
+        return this;
+    }
+
+    public CacheBuilder<K, V> softKey(boolean softKey) {
+        if (softKey) {
+            this.keyReferenceType = ReferenceType.SOFT;
+        }
         return this;
     }
 
@@ -120,8 +153,14 @@ public class CacheBuilder<K, V> {
         cache.setGlobalLoader(loader);
         cache.setMaxCapacity(maxCapacity < 0 ? Integer.MAX_VALUE : maxCapacity);
         cache.setEvictExpiredInterval(evictExpiredInterval < 0 ? Long.MAX_VALUE : evictExpiredInterval);
-        cache.setCapacityHeightWater(capatityHeightWater <= 0 ? 0.95f : capatityHeightWater);
-        ConcurrentHashMap<K, Entry<K, V>> map = new ConcurrentHashMap<K, Entry<K, V>>(initialCapacity, 16, concurrencyLevel);
+        cache.setCapacityHeightWater(capacityHeightWater <= 0 ? 0.95f : capacityHeightWater);
+        // value is ReferenceEntry, so here is STRONG
+        ConcurrentReferenceHashMap<K, Entry<K, V>> map = new ConcurrentReferenceHashMap<K, Entry<K, V>>(initialCapacity, 16, concurrencyLevel, keyReferenceType, ReferenceType.STRONG);
+        cache.setKeyReferenceType(keyReferenceType);
+        cache.setValueReferenceType(valueReferenceType);
+        if (keyReferenceType != ReferenceType.STRONG || valueReferenceType != ReferenceType.STRONG) {
+            cache.setReferenceQueue(new ReferenceQueue());
+        }
         cache.setMap(map);
         cache.setRemoveListener(removeListener);
         if (evictExpiredInterval > 0 && timer != null) {

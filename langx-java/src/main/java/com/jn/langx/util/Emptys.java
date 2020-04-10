@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.collection.Pipeline;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -115,6 +116,45 @@ public class Emptys {
 
     public static boolean isNotNull(Object o) {
         return o != null;
+    }
+
+    public static <T> int getLength(T object) {
+        if (isNull(object)) {
+            return 0;
+        }
+        if (object instanceof String) {
+            return ((String) object).length();
+        }
+
+        if (object instanceof CharSequence) {
+            CharSequence cs = (CharSequence) object;
+            return cs.length();
+        }
+
+        if (object instanceof Number) {
+            return 1;
+        }
+
+        if (object instanceof Buffer) {
+            Buffer buff = (Buffer) object;
+            return buff.remaining();
+        }
+
+        if (object instanceof Collection) {
+            return ((Collection) object).size();
+        }
+
+        if (object instanceof Map) {
+            return ((Map) object).size();
+        }
+        if (object.getClass().isArray()) {
+            return Arrs.getLength(object);
+        }
+
+        if (object.getClass().isEnum()) {
+            return 1;
+        }
+        return Pipeline.of(object).asList().size();
     }
 
 }

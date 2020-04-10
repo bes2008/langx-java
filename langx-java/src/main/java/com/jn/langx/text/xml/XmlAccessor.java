@@ -36,7 +36,7 @@ public class XmlAccessor {
         }
     }
 
-    protected Element getElement(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+    public Element getElement(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         final XPathExpression exp = xpath.compile(elementXpath);
         return (Element) exp.evaluate(doc, XPathConstants.NODE);
@@ -75,7 +75,7 @@ public class XmlAccessor {
             if (Emptys.isEmpty(elements)) {
                 return;
             }
-            Collects.forEach(elements, new Consumer<Element>() {
+            Collects.forEach(Collects.<Element>asIterable(elements), new Consumer<Element>() {
                 @Override
                 public void accept(final Element element) {
                     Collects.forEach(attrs, new Consumer2<String, String>() {

@@ -2504,10 +2504,10 @@ public class Strings {
      * A {@code null} array entry will be ignored.</p>
      *
      * <pre>
-     * StringUtils.stripAll(null)             = null
-     * StringUtils.stripAll([])               = []
-     * StringUtils.stripAll(["abc", "  abc"]) = ["abc", "abc"]
-     * StringUtils.stripAll(["abc  ", null])  = ["abc", null]
+     * Strings.stripAll(null)             = null
+     * Strings.stripAll([])               = []
+     * Strings.stripAll(["abc", "  abc"]) = ["abc", "abc"]
+     * Strings.stripAll(["abc  ", null])  = ["abc", null]
      * </pre>
      *
      * @param strs the array to remove whitespace from, may be null

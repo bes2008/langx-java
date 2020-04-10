@@ -1,9 +1,10 @@
 package com.jn.langx.test.util.enums;
 
 import com.jn.langx.Delegatable;
+import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.enums.base.EnumDelegate;
 
-public enum Period implements Delegatable<EnumDelegate> {
+public enum Period implements Delegatable<EnumDelegate>, CommonEnum {
     MINUTES(0, "minutes", "minutes"),
     HOURS(1, "hours", "hours"),
     DAY(2, "day", "day"),
@@ -11,30 +12,39 @@ public enum Period implements Delegatable<EnumDelegate> {
 
     public static final long serialVersionUID = 1L;
 
-    private int code;
-    private String name;
-    private String displayText;
     private EnumDelegate delegate;
 
     Period(int code, String name, String displayText) {
-        this.code = code;
-        this.name = name;
-        this.displayText = displayText;
-
         setDelegate(new EnumDelegate(code, name, displayText));
     }
 
     public int getCode() {
-        return code;
+        return delegate.getCode();
+    }
+
+    @Override
+    public void setCode(int code) {
+        delegate.setCode(code);
+    }
+
+    @Override
+    public void setName(String name) {
+        delegate.setName(name);
     }
 
     public String getName() {
-        return name;
+        return delegate.getName();
     }
 
     public String getDisplayText() {
-        return displayText;
+        return delegate.getDisplayText();
     }
+
+    @Override
+    public void setDisplayText(String displayText) {
+        delegate.setDisplayText(displayText);
+    }
+
 
     public EnumDelegate getDelegate() {
         return delegate;

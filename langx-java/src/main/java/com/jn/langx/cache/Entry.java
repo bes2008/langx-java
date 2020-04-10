@@ -1,19 +1,24 @@
 package com.jn.langx.cache;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.reflect.reference.ReferenceEntry;
+import com.jn.langx.util.reflect.reference.ReferenceType;
+import com.jn.langx.util.struct.Reference;
 
-public class Entry<K, V> {
-    // required
-    private K key;
-    // required
-    private V value;
+import java.lang.ref.ReferenceQueue;
+
+public class Entry<K, V> extends ReferenceEntry<K, V> {
+
     // required, for evict
     private long expireTime = Long.MAX_VALUE;
 
-    Entry(K key, V value, long expireTime) {
-        setKey(key);
-        setValue(value);
+    Entry(K key, ReferenceType keyReferenceType, V value, ReferenceType valueReferenceType, ReferenceQueue referenceQueue, boolean wrappedWhenStrong, long expireTime) {
+        super(key, keyReferenceType, value, valueReferenceType, referenceQueue, wrappedWhenStrong);
         setExpireTime(expireTime);
+    }
+
+    Entry(K key, V value, boolean wrappedWhenStrong, long expireTime) {
+        this(key, ReferenceType.STRONG, value, ReferenceType.STRONG, null, wrappedWhenStrong, expireTime);
     }
 
 
@@ -28,27 +33,17 @@ public class Entry<K, V> {
 
     private int age = 0;
 
-
-    public K getKey() {
-        return key;
-    }
-
-    public void setKey(K key) {
-        Preconditions.checkNotNull(key);
-        this.key = key;
-    }
-
     public V getValue() {
         lastReadTime = System.currentTimeMillis();
         lastUsedTime = lastReadTime;
-        return value;
+        return super.getValue();
     }
 
     public void setValue(V value) {
         Preconditions.checkNotNull(value);
         lastWriteTime = System.currentTimeMillis();
         lastUsedTime = lastWriteTime;
-        this.value = value;
+        super.setValue(value);
         age = 0;
     }
 
@@ -99,11 +94,19 @@ public class Entry<K, V> {
 
         Entry<?, ?> entry = (Entry<?, ?>) object;
 
-        return key.equals(entry.key);
+        return keyRef.equals(entry.keyRef);
     }
 
     @Override
     public int hashCode() {
-        return key.hashCode();
+        if (keyRef != null) {
+            if (keyRef instanceof Reference) {
+                return ((Reference<K>) keyRef).getHash();
+            }
+            return keyRef.hashCode();
+        }
+        return 0;
     }
+
+
 }

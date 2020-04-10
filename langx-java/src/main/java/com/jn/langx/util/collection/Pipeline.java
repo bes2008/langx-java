@@ -31,7 +31,11 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> filter(Predicate<E> predicate) {
-        return new Pipeline<E>(Collects.filter(this.collection, predicate));
+        return this.filter(predicate, null);
+    }
+
+    public Pipeline<E> filter(Predicate<E> predicate, @Nullable Predicate<E> breakPredicate) {
+        return new Pipeline<E>(Collects.filter(this.collection, predicate, breakPredicate));
     }
 
     public Pipeline<E> limit(int maxSize) {
@@ -67,15 +71,27 @@ public class Pipeline<E> {
     }
 
     public void forEach(@NonNull Consumer<E> consumer) {
-        Collects.forEach(this.collection, consumer);
+        Collects.forEach(this.collection, null,consumer,null);
     }
 
     public void forEach(@NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
-        Collects.forEach(this.collection, consumer, breakPredicate);
+        Collects.forEach(this.collection,null, consumer, breakPredicate);
+    }
+
+    public void forEach(@Nullable Predicate<E> consumePredicate, @NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
+        Collects.forEach(this.collection, consumePredicate, consumer, breakPredicate);
     }
 
     public void forEach(@NonNull Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
-        Collects.forEach(this.collection, consumer, breakPredicate);
+        this.forEach(null, consumer, breakPredicate);
+    }
+
+    public void forEach(@Nullable Predicate2<Integer, E> consumePredicate, @NonNull Consumer2<Integer, E> consumer) {
+        this.forEach(consumePredicate, consumer, null);
+    }
+
+    public void forEach(@Nullable Predicate2<Integer, E> consumePredicate, @NonNull Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
+        Collects.forEach(this.collection, consumePredicate, consumer, breakPredicate);
     }
 
     public boolean anyMatch(@NonNull Predicate<E> predicate) {

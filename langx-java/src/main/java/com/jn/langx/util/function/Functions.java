@@ -173,6 +173,40 @@ public class Functions {
         };
     }
 
+    public static <E> Predicate<E> truePredicate(){
+        return booleanPredicate(true);
+    }
+
+    public static <E> Predicate<E> falsePredicate(){
+        return booleanPredicate(false);
+    }
+
+    public static <E> Predicate<E> booleanPredicate(final boolean value){
+        return new Predicate<E>() {
+            @Override
+            public boolean test(E element) {
+                return value;
+            }
+        };
+    }
+
+    public static <E1,E2> Predicate2<E1,E2> truePredicate2(){
+        return booleanPredicate2(true);
+    }
+
+    public static <E1,E2> Predicate2<E1,E2> falsePredicate2(){
+        return booleanPredicate2(false);
+    }
+
+    public static <E1,E2> Predicate2<E1,E2> booleanPredicate2(final boolean value){
+        return new Predicate2<E1,E2>() {
+            @Override
+            public boolean test(E1 e1,E2 e2) {
+                return value;
+            }
+        };
+    }
+
     public static <E> Predicate<E> allPredicate(@NonNull Predicate<E>... predicates) {
         Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
         Preconditions.checkTrue(predicates.length >= 1);

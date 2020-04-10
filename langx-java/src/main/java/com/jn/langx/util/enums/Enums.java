@@ -6,7 +6,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.enums.base.EnumDelegate;
+import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.Reflects;
 
@@ -26,38 +26,35 @@ public class Enums {
 
     public static <T extends Enum<T>> T ofCode(@NonNull final Class<T> tClass, final int code) {
         Preconditions.checkNotNull(tClass);
-        if (Reflects.isSubClassOrEquals(Delegatable.class, tClass)) {
-            EnumSet<T> enums = EnumSet.allOf(tClass);
-            for (T x : enums) {
-                Delegatable y = (Delegatable) x;
-                Object delegateObj = y.getDelegate();
-                if (delegateObj != null && delegateObj instanceof EnumDelegate) {
-                    EnumDelegate delegate = (EnumDelegate) delegateObj;
-                    if (delegate.getCode() == code) {
-                        return x;
-                    }
+        if (Reflects.isSubClass(CommonEnum.class, tClass)) {
+            return Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    CommonEnum y = (CommonEnum) e;
+                    return y.getCode() == code;
                 }
-            }
+            });
+        } else {
+            return Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    return e.ordinal() == code;
+                }
+            });
         }
-        return null;
     }
 
     public static <T extends Enum<T>> T ofName(@NonNull final Class<T> tClass, final String name) {
         Preconditions.checkNotNull(tClass);
-        if (Reflects.isSubClassOrEquals(Delegatable.class, tClass)) {
-            EnumSet<T> enums = EnumSet.allOf(tClass);
-            for (T x : enums) {
-                Delegatable y = (Delegatable) x;
-                Object delegateObj = y.getDelegate();
-                if (delegateObj != null && delegateObj instanceof EnumDelegate) {
-                    EnumDelegate delegate = (EnumDelegate) delegateObj;
-                    if (delegate.getName().equals(name)) {
-                        return x;
-                    }
+        if (Reflects.isSubClass(CommonEnum.class, tClass)) {
+            return Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    CommonEnum y = (CommonEnum) e;
+                    return y.getName().equals(name);
                 }
-            }
+            });
         }
-
         return Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
             @Override
             public boolean test(T e) {
@@ -68,33 +65,29 @@ public class Enums {
 
     public static <T extends Enum<T>> T ofDisplayText(@NonNull final Class<T> tClass, final String displayText) {
         Preconditions.checkNotNull(tClass);
-        if (Reflects.isSubClassOrEquals(Delegatable.class, tClass)) {
-            EnumSet<T> enums = EnumSet.allOf(tClass);
-            for (T x : enums) {
-                Delegatable y = (Delegatable) x;
-                Object delegateObj = y.getDelegate();
-                if (delegateObj != null && delegateObj instanceof EnumDelegate) {
-                    EnumDelegate delegate = (EnumDelegate) delegateObj;
-                    if (delegate.getDisplayText().equals(displayText)) {
-                        return x;
-                    }
+        if (Reflects.isSubClass(CommonEnum.class, tClass)) {
+            return Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    CommonEnum y = (CommonEnum) e;
+                    return y.getDisplayText().equals(displayText);
                 }
-            }
+            });
+        } else {
+            return Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    return e.name().equals(displayText);
+                }
+            });
         }
-        return null;
     }
 
     public static <T extends Enum<T>> T inferEnum(Class<T> targetClass, String text) {
         if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
-            T v = null;
-            if (Reflects.isSubClassOrEquals(Delegatable.class, targetClass)) {
-                v = Enums.<T>ofName(targetClass, text);
-                if (v == null) {
-                    v = Enums.ofDisplayText(targetClass, text);
-                }
-            }
+            T v = ofDisplayText(targetClass, text);
             if (v == null) {
-                return Enums.<T>ofName(targetClass, text);
+                return ofName(targetClass, text);
             }
         }
         return null;
@@ -118,7 +111,7 @@ public class Enums {
     public static <T extends Enum<T>> T ofField(Class<T> targetClass, final String field, final Object value, Predicate<T> predicate) {
         Preconditions.checkNotNull(targetClass);
         Preconditions.checkNotNull(field);
-        if(predicate==null){
+        if (predicate == null) {
             return ofField(targetClass, field, value);
         }
         if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {

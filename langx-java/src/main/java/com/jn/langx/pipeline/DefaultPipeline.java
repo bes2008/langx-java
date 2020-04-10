@@ -64,17 +64,48 @@ public class DefaultPipeline<T> implements Pipeline<T> {
     }
 
     @Override
+    public void reset() {
+        clearHandlers(false);
+    }
+
+    @Override
     public void clear() {
+        clearHandlers(true);
+    }
+
+    private void clearHandlers(boolean removeHeadAndTail) {
         setCurrentHandlerContext(null);
         HandlerContext ctx = getHead();
-        HandlerContext next = null;
-        while (ctx.hasNext()) {
-            next = ctx.getNext();
-            ctx.clear();
-            ctx = next;
+        if (ctx != null) {
+            while (ctx.hasNext()) {
+                HandlerContext next = ctx.getNext();
+                if (removeHeadAndTail) {
+                    ctx.clear();
+                } else {
+                    if (head == ctx || tail == ctx) {
+                        ctx.clear(false);
+                    } else {
+                        ctx.clear();
+                    }
+                }
+                ctx = next;
+            }
+            if (removeHeadAndTail) {
+                ctx.clear();
+            } else {
+                if (head == ctx || tail == ctx) {
+                    ctx.clear(false);
+                } else {
+                    ctx.clear();
+                }
+            }
         }
-        if (next != null) {
-            next.clear();
+        if (removeHeadAndTail) {
+            this.head = null;
+            this.tail = null;
+        } else {
+            setHeadHandler(head.getHandler());
+            setTailHandler(tail.getHandler());
         }
         unbindTarget();
     }
@@ -112,22 +143,31 @@ public class DefaultPipeline<T> implements Pipeline<T> {
         HeadHandlerContext ctx = new HeadHandlerContext(headHandler);
         ctx.setPipeline(this);
 
-        if (this.head.hasNext()) {
-            ctx.setNext(this.head.getNext());
-            this.head.getNext().setPrev(ctx);
+        HandlerContext next = this.head == null ? null : this.head.getNext();
+        if (next == null) {
+            next = tail;
+        }
+        ctx.setNext(next);
+        if (next != null) {
+            next.setPrev(ctx);
         }
 
         this.head = ctx;
     }
 
     public void setTailHandler(Handler tailHandler) {
-        Preconditions.checkTrue(tail != null && !tail.isSkiped() && !tail.isInbounded() && tail.isOutbounded());
+        Preconditions.checkTrue(tail != null && !tail.isSkiped() && !tail.isInbounded() && !tail.isOutbounded());
         TailHandlerContext ctx = new TailHandlerContext(tailHandler);
         ctx.setPipeline(this);
-        if (this.tail.hasPrev()) {
-            this.tail.getPrev().setNext(ctx);
-            ctx.setPrev(this.tail);
+        HandlerContext prev = this.tail == null ? null : this.tail.getPrev();
+        if (prev == null) {
+            prev = head;
         }
+        ctx.setPrev(prev);
+        if (prev != null) {
+            prev.setNext(ctx);
+        }
+        this.tail = ctx;
     }
 
     @Override

@@ -14,8 +14,13 @@ public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterabl
     private final E[] array;
     private int index = 0;
     private final int length;
+    private boolean reversed = false;
 
     public ArrayIterator(Object array) {
+        this(array, false);
+    }
+
+    public ArrayIterator(Object array, boolean reversed) {
         if (array != null) {
             Preconditions.checkArgument(Arrs.isArray(array));
             if (PrimitiveArrays.isPrimitiveArray(array.getClass())) {
@@ -27,11 +32,19 @@ public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterabl
             this.array = null;
         }
         this.length = this.array == null ? 0 : this.array.length;
+        this.reversed = reversed;
+        this.index = reversed ? (this.length - 1) : 0;
     }
 
     public ArrayIterator(E[] array) {
+        this(array, false);
+    }
+
+    public ArrayIterator(E[] array, boolean reversed) {
         this.array = array;
         this.length = array == null ? 0 : array.length;
+        this.reversed = reversed;
+        this.index = reversed ? (this.length - 1) : 0;
     }
 
     @Override
@@ -41,13 +54,13 @@ public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterabl
 
     @Override
     public boolean hasNext() {
-        return index < length;
+        return reversed ? index >= 0 : index < length;
     }
 
     @Override
     public E next() {
         if (hasNext()) {
-            return array[index++];
+            return array[reversed ? index-- : index++];
         } else {
             throw new NoSuchElementException();
         }
