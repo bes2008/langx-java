@@ -48,7 +48,7 @@ public class Collects {
      * @param <V> Value
      * @return An empty, mutable java.util.TreeMap
      */
-    public static <K, V> Map<K, V> emptyTreeMap() {
+    public static <K, V> TreeMap<K, V> emptyTreeMap() {
         return new TreeMap<K, V>();
     }
 
@@ -59,7 +59,7 @@ public class Collects {
      * @param <V> Value
      * @return An empty, mutable java.util.TreeMap
      */
-    public static <K, V> Map<K, V> emptyTreeMap(@Nullable Comparator<K> comparator) {
+    public static <K, V> TreeMap<K, V> emptyTreeMap(@Nullable Comparator<K> comparator) {
         if (comparator == null) {
             return emptyTreeMap();
         }
@@ -73,7 +73,7 @@ public class Collects {
      * @param <V> Value
      * @return An empty, mutable java.util.HashMap
      */
-    public static <K, V> Map<K, V> emptyHashMap() {
+    public static <K, V> HashMap<K, V> emptyHashMap() {
         return new HashMap<K, V>();
     }
 
@@ -84,7 +84,7 @@ public class Collects {
      * @param <V> Value
      * @return An empty, mutable java.util.HashMap if is not sequential, else an empty, mutable java.util.LinkedHashMap
      */
-    public static <K, V> Map<K, V> emptyHashMap(boolean sequential) {
+    public static <K, V> HashMap<K, V> emptyHashMap(boolean sequential) {
         return sequential ? new LinkedHashMap<K, V>() : new HashMap<K, V>();
     }
 
@@ -192,6 +192,26 @@ public class Collects {
 
     public static <E> TreeSet<E> newTreeSet(@Nullable E... elements) {
         return new TreeSet<E>(asList(elements));
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap(Map<K, V> map) {
+        if (Emptys.isEmpty(map)) {
+            return emptyHashMap();
+        }
+        return new HashMap<K, V>(map);
+    }
+
+    public static <K, V> TreeMap<K, V> newTreeMap(Map<K, V> map) {
+        if (map == null) {
+            return new TreeMap<K, V>();
+        }
+        Comparator<K> comparator = null;
+        if (map instanceof TreeMap) {
+            comparator = ((TreeMap) map).comparator();
+        }
+        TreeMap<K, V> treeMap = new TreeMap<K, V>(comparator);
+        treeMap.putAll(map);
+        return treeMap;
     }
 
     public enum MapType {
@@ -692,7 +712,7 @@ public class Collects {
         Preconditions.checkNotNull(predicate);
         Iterable<E> iterable = asIterable(anyObject);
         final Collection<E> result = emptyCollection(iterable);
-        forEach((Collection<E>)asCollection(iterable),null, new Consumer<E>() {
+        forEach((Collection<E>) asCollection(iterable), null, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 if (predicate.test(e)) {
@@ -746,7 +766,7 @@ public class Collects {
         Preconditions.checkNotNull(mapper);
         final M result = (M) emptyHashMap(true);
         Iterable<E> iterable = asIterable(anyObject);
-        forEach((Iterable<E>)iterable, new Consumer<E>() {
+        forEach((Iterable<E>) iterable, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 Pair<K, V> pair = mapper.apply(e);
@@ -817,7 +837,7 @@ public class Collects {
         }
         Preconditions.checkNotNull(mapper);
         final Collection<R> list = emptyCollectionByInfer(collection);
-        forEach((Collection)collection, new Consumer<Collection<E>>() {
+        forEach((Collection) collection, new Consumer<Collection<E>>() {
             @Override
             public void accept(Collection<E> c) {
                 Collection<R> rs = Collects.map(c, mapper);
@@ -827,16 +847,18 @@ public class Collects {
         return list;
     }
 
-    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection,  @NonNull final Consumer<E> consumer) {
-        forEach(collection,null, consumer, null);
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @NonNull final Consumer<E> consumer) {
+        forEach(collection, null, consumer, null);
     }
 
-    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection,  @Nullable Predicate<E> consumePredicate,@NonNull final Consumer<E> consumer) {
-        forEach(collection,consumePredicate, consumer, null);
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @Nullable Predicate<E> consumePredicate, @NonNull final Consumer<E> consumer) {
+        forEach(collection, consumePredicate, consumer, null);
     }
-    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection,  @NonNull final Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
-        forEach(collection,null, consumer, breakPredicate);
+
+    public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @NonNull final Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
+        forEach(collection, null, consumer, breakPredicate);
     }
+
     /**
      * Consume every element what matched the consumePredicate
      */
@@ -899,6 +921,7 @@ public class Collects {
             }
         }
     }
+
     public static <E> void forEach(@Nullable E[] array, @NonNull final Consumer<E> consumer) {
         forEach(array, new Consumer2<Integer, E>() {
             @Override
@@ -907,6 +930,7 @@ public class Collects {
             }
         }, null);
     }
+
     /**
      * Iterate every element
      */
@@ -1396,12 +1420,12 @@ public class Collects {
 
     public static int count(@Nullable Object anyObject) {
         final Holder<Integer> count = new Holder<Integer>(0);
-        forEach(asCollection(asIterable(anyObject)),null, new Consumer<Object>() {
+        forEach(asCollection(asIterable(anyObject)), null, new Consumer<Object>() {
             @Override
             public void accept(Object object) {
                 count.set(count.get() + 1);
             }
-        },null);
+        }, null);
         return count.get();
     }
 
@@ -1697,7 +1721,7 @@ public class Collects {
             public void accept(E e) {
                 set.add(e);
             }
-        },null);
+        }, null);
         return set;
     }
 
