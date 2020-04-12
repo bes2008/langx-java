@@ -6,11 +6,11 @@ import java.util.concurrent.Callable;
  * @author jinuo.fang
  */
 public class WrappedTasks {
-    public static WrappedRunable wrap(Runnable target) {
+    public static WrappedRunnable wrap(Runnable target) {
         if (target == null) {
             return null;
         }
-        return ((target instanceof WrappedRunable) ? (WrappedRunable) target : new WrappedRunable(target));
+        return ((target instanceof WrappedRunnable) ? (WrappedRunnable) target : new WrappedRunnable(target));
     }
 
     public static <V> WrappedCallable<V> wrap(Callable<V> target) {
