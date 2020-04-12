@@ -1,5 +1,7 @@
 package com.jn.langx.util.concurrent;
 
+import com.jn.langx.util.Preconditions;
+
 import java.util.concurrent.Callable;
 
 /**
@@ -7,16 +9,12 @@ import java.util.concurrent.Callable;
  */
 public class WrappedTasks {
     public static WrappedRunnable wrap(Runnable target) {
-        if (target == null) {
-            return null;
-        }
+        Preconditions.checkNotNull(target);
         return ((target instanceof WrappedRunnable) ? (WrappedRunnable) target : new WrappedRunnable(target));
     }
 
     public static <V> WrappedCallable<V> wrap(Callable<V> target) {
-        if (target == null) {
-            return null;
-        }
+        Preconditions.checkNotNull(target);
         return ((target instanceof WrappedCallable) ? (WrappedCallable) target : new WrappedCallable(target));
     }
 }
