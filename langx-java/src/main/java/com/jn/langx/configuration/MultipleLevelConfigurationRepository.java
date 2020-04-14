@@ -14,7 +14,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @SuppressWarnings({"rawtypes","unchecked"})
-public abstract class AbstractMultipleLevelConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends AbstractConfigurationRepository<T, Loader, Writer> {
+public class MultipleLevelConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends AbstractConfigurationRepository<T, Loader, Writer> {
+    /**
+     * key : the repository name
+     * value: order
+     */
     private Map<String, Integer> delegateOrderMap = new NonAbsentHashMap<String, Integer>(new Supplier<String, Integer>() {
         @Override
         public Integer get(String input) {
@@ -22,6 +26,9 @@ public abstract class AbstractMultipleLevelConfigurationRepository<T extends Con
         }
     });
 
+    /**
+     * key: the repository name
+     */
     private Map<String, ConfigurationRepository> delegates = new TreeMap<String, ConfigurationRepository>(new Comparator<String>() {
         @Override
         public int compare(String repositoryName1, String repositoryName2) {
@@ -38,6 +45,10 @@ public abstract class AbstractMultipleLevelConfigurationRepository<T extends Con
         delegates.put(repository.getName(),repository);
     }
 
+    public void removeRepository(String repositoryName){
+        delegateOrderMap.remove(repositoryName);
+        delegates.remove(repositoryName);
+    }
 
     @Override
     public void startup() {
