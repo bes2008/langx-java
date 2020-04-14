@@ -83,6 +83,10 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         this.name = name;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void setEventFactory(ConfigurationEventFactory<T> eventFactory) {
         this.eventFactory = eventFactory;
     }
