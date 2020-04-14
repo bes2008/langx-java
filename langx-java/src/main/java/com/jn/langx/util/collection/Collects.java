@@ -194,7 +194,7 @@ public class Collects {
         return new TreeSet<E>(asList(elements));
     }
 
-    public static <K, V> HashMap<K, V> newHashMap(Map<K, V> map) {
+    public static <K, V> HashMap<K, V> newHashMap(@Nullable Map<K, V> map) {
         if (Emptys.isEmpty(map)) {
             return emptyHashMap();
         }
