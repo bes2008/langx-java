@@ -245,6 +245,17 @@ public class Pipeline<E> {
         return new Pipeline<E>(list);
     }
 
+    public Pipeline<E> reverse(){
+        return reverse(false);
+    }
+
+    public Pipeline<E> reverse(boolean newOne){
+        if(this.collection instanceof List){
+            return of(Collects.reverse((List)this.collection, newOne));
+        }
+        return of(asList()).reverse(newOne);
+    }
+
     public Pipeline<E> swap(int i, int j) {
         List<E> list = asList();
         Collects.swap(list, i, j);
