@@ -9,34 +9,9 @@
 
 
 [javadoc](https://apidoc.gitee.com/fangjinuo/langx-java)
-[Tutorial](https://fangjinuo.gitee.io/docs/)
+[教程](https://fangjinuo.gitee.io/docs/)
 
-[![maven](https://img.shields.io/badge/maven-v2.2.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.2.1)
-[![maven](https://img.shields.io/badge/maven-v2.2.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.2.0)
-[![maven](https://img.shields.io/badge/maven-v2.1.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.1.1)
-[![maven](https://img.shields.io/badge/maven-v2.1.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.1.0)
-[![maven](https://img.shields.io/badge/maven-v2.0.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.0.1)
-[![maven](https://img.shields.io/badge/maven-v2.0.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.0.0)
-[![maven](https://img.shields.io/badge/maven-v1.3.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.3.1)
-[![maven](https://img.shields.io/badge/maven-v1.3.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.3.0)
-[![maven](https://img.shields.io/badge/maven-v1.2.5-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.5)
-[![maven](https://img.shields.io/badge/maven-v1.2.4-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.4)
-[![maven](https://img.shields.io/badge/maven-v1.2.3-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.3)
-[![maven](https://img.shields.io/badge/maven-v1.2.2-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.2)
-[![maven](https://img.shields.io/badge/maven-v1.2.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.1)
-[![maven](https://img.shields.io/badge/maven-v1.2.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.2.0)
-[![maven](https://img.shields.io/badge/maven-v1.1.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.1.0)
-[![maven](https://img.shields.io/badge/maven-v1.0.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:1.0.0)
-[![maven](https://img.shields.io/badge/maven-v0.1.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.1.0)
-[![maven](https://img.shields.io/badge/maven-v0.0.9-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.9)
-[![maven](https://img.shields.io/badge/maven-v0.0.8-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.8)
-[![maven](https://img.shields.io/badge/maven-v0.0.7-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.7)
-[![maven](https://img.shields.io/badge/maven-v0.0.6-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.6)
-[![maven](https://img.shields.io/badge/maven-v0.0.5-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.5)
-[![maven](https://img.shields.io/badge/maven-v0.0.4-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.4)
-[![maven](https://img.shields.io/badge/maven-v0.0.3-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.3)
-[![maven](https://img.shields.io/badge/maven-v0.0.2-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.2)
-[![maven](https://img.shields.io/badge/maven-v0.0.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:0.0.1)
+[![maven](https://img.shields.io/badge/maven-v2.2.4-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.2.4)
 
 
 # langx-java
