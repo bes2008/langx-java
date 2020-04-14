@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
+@SuppressWarnings({"rawtypes","unchecked"})
 public abstract class AbstractMultipleLevelConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends AbstractConfigurationRepository<T, Loader, Writer> {
     private Map<String, Integer> delegateOrderMap = new NonAbsentHashMap<String, Integer>(new Supplier<String, Integer>() {
         @Override
@@ -27,6 +28,16 @@ public abstract class AbstractMultipleLevelConfigurationRepository<T extends Con
             return delegateOrderMap.get(repositoryName1) - delegateOrderMap.get(repositoryName2);
         }
     });
+
+    public void addRepository(ConfigurationRepository repository){
+        this.addRepository(repository, Integer.MAX_VALUE);
+    }
+
+    public void addRepository(ConfigurationRepository repository, int order){
+        delegateOrderMap.put(repository.getName(), order);
+        delegates.put(repository.getName(),repository);
+    }
+
 
     @Override
     public void startup() {
@@ -70,6 +81,14 @@ public abstract class AbstractMultipleLevelConfigurationRepository<T extends Con
             t = holder.get();
         }
         return t;
+    }
+
+    public T getById(String repositoryName, String id){
+        ConfigurationRepository repository = delegates.get(repositoryName);
+        if(repository!=null){
+            return (T)repository.getById(id);
+        }
+        return null;
     }
 
     public void removeById(final String id, final boolean sync) {
