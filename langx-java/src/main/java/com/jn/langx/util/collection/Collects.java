@@ -214,6 +214,14 @@ public class Collects {
         return treeMap;
     }
 
+    public static <K,V> TreeMap<K,V> newTreeMap(Map<K, V> map, Comparator<K> keyComparator){
+        TreeMap<K,V> treeMap = new TreeMap<K,V>(keyComparator);
+        if(Emptys.isNotEmpty(map)) {
+            treeMap.putAll(map);
+        }
+        return treeMap;
+    }
+
     public enum MapType {
         StringMap,
         HashMap,
