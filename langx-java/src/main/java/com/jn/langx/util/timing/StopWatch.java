@@ -80,7 +80,7 @@ public class StopWatch {
         this(id, true);
     }
 
-    public StopWatch(String id, boolean keepTaskList){
+    public StopWatch(String id, boolean keepTaskList) {
         this.id = id;
         this.setKeepTaskList(keepTaskList);
     }
@@ -142,9 +142,9 @@ public class StopWatch {
         if (this.currentTaskName == null) {
             throw new IllegalStateException("Can't stop StopWatch: it's not running");
         }
-        long lastTime = System.currentTimeMillis() - this.startTimeMillis;
-        this.totalTimeMillis += lastTime;
-        this.lastTaskInfo = new StopWatch.TaskInfo(this.currentTaskName, lastTime);
+        long now = System.currentTimeMillis();
+        this.lastTaskInfo = new StopWatch.TaskInfo(this.currentTaskName, startTimeMillis, now);
+        this.totalTimeMillis += lastTaskInfo.getTimeMillis();
         if (this.keepTaskList) {
             this.taskList.add(this.lastTaskInfo);
         }
@@ -180,7 +180,7 @@ public class StopWatch {
         if (this.lastTaskInfo == null) {
             throw new IllegalStateException("No tasks run: can't get last task interval");
         }
-        return this.lastTaskInfo.getTimeMillis();
+        return this.lastTaskInfo.getDurationTimeMillis();
     }
 
     /**
@@ -263,7 +263,7 @@ public class StopWatch {
             pf.setMinimumIntegerDigits(3);
             pf.setGroupingUsed(false);
             for (StopWatch.TaskInfo task : getTaskInfo()) {
-                sb.append(nf.format(task.getTimeMillis())).append("  ");
+                sb.append(nf.format(task.getDurationTimeMillis())).append("  ");
                 sb.append(pf.format(task.getTimeSeconds() / getTotalTimeSeconds())).append("  ");
                 sb.append(task.getTaskName()).append("\n");
             }
@@ -280,7 +280,7 @@ public class StopWatch {
         StringBuilder sb = new StringBuilder(shortSummary());
         if (this.keepTaskList) {
             for (StopWatch.TaskInfo task : getTaskInfo()) {
-                sb.append("; [").append(task.getTaskName()).append("] took ").append(task.getTimeMillis());
+                sb.append("; [").append(task.getTaskName()).append("] took ").append(task.getDurationTimeMillis());
                 long percent = Math.round((100.0 * task.getTimeSeconds()) / getTotalTimeSeconds());
                 sb.append(" = ").append(percent).append("%");
             }
@@ -298,11 +298,21 @@ public class StopWatch {
 
         private final String taskName;
 
-        private final long timeMillis;
+        private final long startTimeMills;
 
-        TaskInfo(String taskName, long timeMillis) {
+        private final long endTimeMills;
+
+        private final long durationTimeMillis;
+
+        TaskInfo(String taskName, long startTimeMills) {
+            this(taskName, startTimeMills, System.currentTimeMillis());
+        }
+
+        TaskInfo(String taskName, long startTimeMills, long endTimeMillis) {
             this.taskName = taskName;
-            this.timeMillis = timeMillis;
+            this.startTimeMills = startTimeMills;
+            this.endTimeMills = endTimeMillis;
+            this.durationTimeMillis = endTimeMillis - startTimeMills;
         }
 
         /**
@@ -316,14 +326,27 @@ public class StopWatch {
          * Return the time in milliseconds this task took.
          */
         public long getTimeMillis() {
-            return this.timeMillis;
+            return this.durationTimeMillis;
+        }
+
+
+        public long getStartTimeMills() {
+            return startTimeMills;
+        }
+
+        public long getEndTimeMills() {
+            return endTimeMills;
+        }
+
+        public long getDurationTimeMillis() {
+            return durationTimeMillis;
         }
 
         /**
          * Return the time in seconds this task took.
          */
         public double getTimeSeconds() {
-            return (this.timeMillis / 1000.0);
+            return (this.durationTimeMillis / 1000.0);
         }
     }
 
