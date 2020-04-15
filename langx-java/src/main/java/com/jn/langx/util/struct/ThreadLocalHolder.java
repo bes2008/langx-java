@@ -1,16 +1,26 @@
 package com.jn.langx.util.struct;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.function.Supplier0;
 
 public class ThreadLocalHolder<V> implements ValueHolder<V> {
     private ThreadLocal<V> local;
 
-    public ThreadLocalHolder(){
-        this(null);
+    public ThreadLocalHolder() {
+        this((V) null);
+    }
+
+    public ThreadLocalHolder(final Supplier0<V> supplier) {
+        local = new ThreadLocal<V>() {
+            @Override
+            protected V initialValue() {
+                return supplier.get();
+            }
+        };
     }
 
     public ThreadLocalHolder(final V value) {
-        local = new ThreadLocal<V>(){
+        local = new ThreadLocal<V>() {
             @Override
             protected V initialValue() {
                 return value;
@@ -28,7 +38,7 @@ public class ThreadLocalHolder<V> implements ValueHolder<V> {
         return local.get();
     }
 
-    public void reset(){
+    public void reset() {
         local.remove();
     }
 
@@ -39,7 +49,7 @@ public class ThreadLocalHolder<V> implements ValueHolder<V> {
 
     @Override
     public boolean isNull() {
-        return get()==null;
+        return get() == null;
     }
 
     @Override
@@ -50,7 +60,7 @@ public class ThreadLocalHolder<V> implements ValueHolder<V> {
     @Override
     public int getHash() {
         Object v = get();
-        if(v==null){
+        if (v == null) {
             return 0;
         }
         return v.hashCode();
