@@ -14,7 +14,7 @@ public class ThreadLocalHolder<V> implements ValueHolder<V> {
         local = new ThreadLocal<V>() {
             @Override
             protected V initialValue() {
-                return supplier.get();
+                return supplier==null? null:supplier.get();
             }
         };
     }
