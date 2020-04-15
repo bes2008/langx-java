@@ -35,7 +35,7 @@ public class StopWatch {
      */
     private final String id;
 
-    private boolean keepTaskList = true;
+    private boolean keepTaskList;
 
     private final List<TaskInfo> taskList = new LinkedList<TaskInfo>();
 
@@ -77,9 +77,13 @@ public class StopWatch {
      *           and need to distinguish between them.
      */
     public StopWatch(String id) {
-        this.id = id;
+        this(id, true);
     }
 
+    public StopWatch(String id, boolean keepTaskList){
+        this.id = id;
+        this.setKeepTaskList(keepTaskList);
+    }
 
     /**
      * Return the id of this stop watch, as specified on construction.
