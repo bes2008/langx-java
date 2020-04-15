@@ -71,15 +71,23 @@ public class Pipeline<E> {
     }
 
     public void forEach(@NonNull Consumer<E> consumer) {
-        Collects.forEach(this.collection, null,consumer,null);
+        this.forEach(null, consumer, null);
+    }
+
+    public void forEach(@Nullable Predicate<E> consumePredicate, Consumer<E> consumer) {
+        this.forEach(consumePredicate, consumer, null);
     }
 
     public void forEach(@NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
-        Collects.forEach(this.collection,null, consumer, breakPredicate);
+        this.forEach(null, consumer, breakPredicate);
     }
 
     public void forEach(@Nullable Predicate<E> consumePredicate, @NonNull Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
         Collects.forEach(this.collection, consumePredicate, consumer, breakPredicate);
+    }
+
+    public void forEach(@NonNull Consumer2<Integer, E> consumer) {
+        this.forEach(consumer, null);
     }
 
     public void forEach(@NonNull Consumer2<Integer, E> consumer, @Nullable Predicate2<Integer, E> breakPredicate) {
@@ -243,6 +251,17 @@ public class Pipeline<E> {
         List<E> list = asList();
         Collects.shuffle(list, random);
         return new Pipeline<E>(list);
+    }
+
+    public Pipeline<E> reverse() {
+        return reverse(false);
+    }
+
+    public Pipeline<E> reverse(boolean newOne) {
+        if (this.collection instanceof List) {
+            return of(Collects.reverse((List) this.collection, newOne));
+        }
+        return of(asList()).reverse(newOne);
     }
 
     public Pipeline<E> swap(int i, int j) {

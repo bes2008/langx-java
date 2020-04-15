@@ -194,7 +194,7 @@ public class Collects {
         return new TreeSet<E>(asList(elements));
     }
 
-    public static <K, V> HashMap<K, V> newHashMap(Map<K, V> map) {
+    public static <K, V> HashMap<K, V> newHashMap(@Nullable Map<K, V> map) {
         if (Emptys.isEmpty(map)) {
             return emptyHashMap();
         }
@@ -211,6 +211,14 @@ public class Collects {
         }
         TreeMap<K, V> treeMap = new TreeMap<K, V>(comparator);
         treeMap.putAll(map);
+        return treeMap;
+    }
+
+    public static <K,V> TreeMap<K,V> newTreeMap(Map<K, V> map, Comparator<K> keyComparator){
+        TreeMap<K,V> treeMap = new TreeMap<K,V>(keyComparator);
+        if(Emptys.isNotEmpty(map)) {
+            treeMap.putAll(map);
+        }
         return treeMap;
     }
 

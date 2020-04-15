@@ -19,7 +19,13 @@ import com.jn.langx.lifecycle.Initializable;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.repository.Repository;
 
+import java.util.Map;
+
 public interface ConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends Lifecycle, EventPublisherAware, Initializable, Repository<T, String> {
+
+    String getName();
+
+    void setName(String name);
 
     /**
      * set a loader
@@ -89,4 +95,5 @@ public interface ConfigurationRepository<T extends Configuration, Loader extends
      */
     void update(T configuration, boolean sync);
 
+    Map<String, T> getAll();
 }

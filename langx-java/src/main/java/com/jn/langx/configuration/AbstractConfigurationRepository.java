@@ -83,6 +83,10 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         this.name = name;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void setEventFactory(ConfigurationEventFactory<T> eventFactory) {
         this.eventFactory = eventFactory;
     }
@@ -245,7 +249,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         logger.info("Initial configuration repository: {}", name);
     }
 
-    public final Map<String, T> getAll() {
+    public Map<String, T> getAll() {
         return Collections.unmodifiableMap(cache.toMap());
     }
 
