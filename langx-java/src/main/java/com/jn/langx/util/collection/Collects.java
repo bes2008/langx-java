@@ -186,8 +186,16 @@ public class Collects {
         return new HashSet<E>(asList(elements));
     }
 
+    public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable Iterable<E> elements) {
+        return new LinkedHashSet<E>(asList(elements));
+    }
+
     public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable E... elements) {
         return new LinkedHashSet<E>(asList(elements));
+    }
+
+    public static <E> TreeSet<E> newTreeSet(@Nullable Iterable<E> elements) {
+        return new TreeSet<E>(asList(elements));
     }
 
     public static <E> TreeSet<E> newTreeSet(@Nullable E... elements) {
@@ -214,9 +222,9 @@ public class Collects {
         return treeMap;
     }
 
-    public static <K,V> TreeMap<K,V> newTreeMap(Map<K, V> map, Comparator<K> keyComparator){
-        TreeMap<K,V> treeMap = new TreeMap<K,V>(keyComparator);
-        if(Emptys.isNotEmpty(map)) {
+    public static <K, V> TreeMap<K, V> newTreeMap(Map<K, V> map, Comparator<K> keyComparator) {
+        TreeMap<K, V> treeMap = new TreeMap<K, V>(keyComparator);
+        if (Emptys.isNotEmpty(map)) {
             treeMap.putAll(map);
         }
         return treeMap;
