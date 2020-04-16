@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class CommonThreadFactory implements ThreadFactory, Factory<Runnable, Thread> {
 
-    public static final CommonThreadFactory INSTANCE = new CommonThreadFactory();
     /**
      * key: prefix
      * value: factory N.O.

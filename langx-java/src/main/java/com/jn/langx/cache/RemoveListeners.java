@@ -31,7 +31,7 @@ public class RemoveListeners {
         return new RemoveListener<K, V>() {
             @Override
             public void onRemove(final K key, final V value, final RemoveCause cause) {
-                CommonThreadFactory.INSTANCE.execute(new Runnable() {
+                new CommonThreadFactory("Cache-RemoveListener", false).execute(new Runnable() {
                     @Override
                     public void run() {
                         listener.onRemove(key, value, cause);
