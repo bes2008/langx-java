@@ -7,7 +7,6 @@ import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
-import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
@@ -239,6 +238,9 @@ public class Reflects {
         return annotatedElement.isAnnotationPresent(annotationClass);
     }
 
+    public static <E extends Annotation> boolean hasAnnotation(@NonNull AnnotatedElement annotatedElement, @NonNull Class<E> annotationClass) {
+        return getAnnotation(annotatedElement, annotationClass) != null;
+    }
 
     /**
      * Returns this element's annotation for the specified type if
@@ -783,7 +785,7 @@ public class Reflects {
         Class[] interfaces = clazz.getInterfaces();
         if (interfaces.length > 0) {
             Collects.addAll(set, interfaces);
-            Collects.forEach(interfaces, new Consumer2<Integer,Class>() {
+            Collects.forEach(interfaces, new Consumer2<Integer, Class>() {
                 @Override
                 public void accept(Integer index, Class iface) {
                     set.addAll(getAllInterfaces(iface));
@@ -1026,7 +1028,7 @@ public class Reflects {
         return set.contains(getFQNClassName(clazz));
     }
 
-    public static <E> Class<E> getComponentType(E[] array){
+    public static <E> Class<E> getComponentType(E[] array) {
         Preconditions.checkNotNull(array);
         Class clazz = array.getClass();
         return clazz.getComponentType();

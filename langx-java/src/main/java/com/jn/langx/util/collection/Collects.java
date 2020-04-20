@@ -186,8 +186,16 @@ public class Collects {
         return new HashSet<E>(asList(elements));
     }
 
+    public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable Iterable<E> elements) {
+        return new LinkedHashSet<E>(asList(elements));
+    }
+
     public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable E... elements) {
         return new LinkedHashSet<E>(asList(elements));
+    }
+
+    public static <E> TreeSet<E> newTreeSet(@Nullable Iterable<E> elements) {
+        return new TreeSet<E>(asList(elements));
     }
 
     public static <E> TreeSet<E> newTreeSet(@Nullable E... elements) {
@@ -214,9 +222,9 @@ public class Collects {
         return treeMap;
     }
 
-    public static <K,V> TreeMap<K,V> newTreeMap(Map<K, V> map, Comparator<K> keyComparator){
-        TreeMap<K,V> treeMap = new TreeMap<K,V>(keyComparator);
-        if(Emptys.isNotEmpty(map)) {
+    public static <K, V> TreeMap<K, V> newTreeMap(Map<K, V> map, Comparator<K> keyComparator) {
+        TreeMap<K, V> treeMap = new TreeMap<K, V>(keyComparator);
+        if (Emptys.isNotEmpty(map)) {
             treeMap.putAll(map);
         }
         return treeMap;
@@ -855,6 +863,11 @@ public class Collects {
         return list;
     }
 
+    public static <E>void forEach(Object obj, @NonNull final Consumer<E> consumer) {
+        Iterable<E> iterable = asIterable(obj);
+        forEach(iterable, null, consumer, null);
+    }
+
     public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @NonNull final Consumer<E> consumer) {
         forEach(collection, null, consumer, null);
     }
@@ -886,7 +899,14 @@ public class Collects {
             }
         }
     }
+    public static <E> void forEach(Object obj, @NonNull final Consumer2<Integer, E> consumer) {
+        Iterable<E> iterable = asIterable(obj);
+        forEach(iterable, null, consumer, null);
+    }
 
+    public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer) {
+        forEach(collection, null, consumer, null);
+    }
     /**
      * Iterate every element
      */
