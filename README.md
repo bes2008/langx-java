@@ -116,7 +116,13 @@ Java lang extensions
 
 
 ## Contact:
-如果遇到问题，可以在Github, Gitee 上提出issue, 也可以在QQ群里询问。
+如果遇到问题，可以在Github上提出issue, 也可以在QQ群里询问。
 
 QQ Group: 750929088   
 ![QQ Group](https://github.com/fangjinuo/sqlhelper/blob/master/_images/qq_group.png)
+
+## 鸣谢
+最后，感谢 Jetbrains 提供免费License，方便了开源项目的发展。
+
+[![Jetbrains](https://github.com/fangjinuo/sqlhelper/blob/master/_images/jetbrains.png)](https://www.jetbrains.com/zh-cn/)
+
