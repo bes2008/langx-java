@@ -7,6 +7,8 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Channels;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.net.URLs;
@@ -102,10 +104,23 @@ public class Resources {
     }
 
     public static void readUsingDelimiter(Resource resource, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
+        readUsingDelimiter(resource, delimiter, charset, new Consumer2<Integer, String>() {
+            @Override
+            public void accept(Integer index, String value) {
+                consumer.accept(value);
+            }
+        });
+    }
+
+    public static void readUsingDelimiter(Resource resource, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer2<Integer, String> consumer) {
+        readUsingDelimiter(resource, delimiter, charset, null, consumer, null);
+    }
+
+    public static void readUsingDelimiter(Resource resource, @NonNull String delimiter, @NonNull final Charset charset, @Nullable Predicate2<Integer, String> consumePredicate, @NonNull final Consumer2<Integer, String> consumer, @Nullable Predicate2<Integer, String> breakPredicate) {
         InputStream inputStream = null;
         try {
             inputStream = resource.getInputStream();
-            Channels.readUsingDelimiter(inputStream, delimiter, charset, consumer);
+            Channels.readUsingDelimiter(inputStream, delimiter, charset, consumePredicate, consumer, breakPredicate);
         } catch (IOException ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         } finally {
@@ -117,10 +132,27 @@ public class Resources {
     public static void readUsingDelimiter(@NonNull String location, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
         Preconditions.checkNotNull(location);
         Resource resource = loadResource(location);
-        if (resource.exists()) {
+        if (resource.exists() && resource.isReadable()) {
             readUsingDelimiter(resource, delimiter, charset, consumer);
         }
     }
+
+    public static void readUsingDelimiter(@NonNull String location, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer2<Integer, String> consumer) {
+        Preconditions.checkNotNull(location);
+        Resource resource = loadResource(location);
+        if (resource.exists() && resource.isReadable()) {
+            readUsingDelimiter(resource, delimiter, charset, consumer);
+        }
+    }
+
+    public static void readUsingDelimiter(@NonNull String location, @NonNull String delimiter, @NonNull final Charset charset, @Nullable Predicate2<Integer, String> consumePredicate, @NonNull final Consumer2<Integer, String> consumer, @Nullable Predicate2<Integer, String> breakPredicate) {
+        Preconditions.checkNotNull(location);
+        Resource resource = loadResource(location);
+        if (resource.exists() && resource.isReadable()) {
+            readUsingDelimiter(resource, delimiter, charset, consumePredicate, consumer, breakPredicate);
+        }
+    }
+
 
     public static void readUsingDelimiter(@NonNull URL url, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
         readUsingDelimiter(loadUrlResource(url), delimiter, charset, consumer);
@@ -128,7 +160,7 @@ public class Resources {
 
     public static void readUsingDelimiter(@NonNull byte[] byteArray, @NonNull String delimiter, @NonNull final Charset charset, @NonNull final Consumer<String> consumer) {
         Resource resource = asByteArrayResource(byteArray);
-        if (resource.exists()) {
+        if (resource.exists() && resource.isReadable()) {
             readUsingDelimiter(resource, delimiter, charset, consumer);
         }
     }
@@ -136,4 +168,14 @@ public class Resources {
     public static void readLines(@NonNull String location, @NonNull Charset charset, @NonNull final Consumer<String> consumer) {
         readUsingDelimiter(location, "\n", charset, consumer);
     }
+
+    public static void readLines(@NonNull String location, @NonNull Charset charset, @NonNull final Consumer2<Integer, String> consumer) {
+        readUsingDelimiter(location, "\n", charset, consumer);
+    }
+
+    public static void readLines(@NonNull String location, @NonNull Charset charset, @Nullable Predicate2<Integer, String> consumePredicate, @NonNull final Consumer2<Integer, String> consumer, @Nullable Predicate2<Integer, String> breakPredicate) {
+        readUsingDelimiter(location, "\n", charset, consumePredicate, consumer, breakPredicate);
+    }
+
+
 }
