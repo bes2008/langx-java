@@ -181,4 +181,44 @@ public class Arrs {
         arr[i] = arr[j];
         arr[j] = tmp;
     }
+
+    /**
+     * 反转索引
+     */
+    public static int reverseIndex(int length, int index) {
+        Preconditions.checkTrue(isValidIndex(length, index), "index " + index + " is invalid");
+        if (isPositiveIndex(length, index)) {
+            return index - length;
+        } else {
+            return length + index;
+        }
+    }
+
+    /**
+     * 判断索引是否有效
+     */
+    public static boolean isValidIndex(int length, int index) {
+        return isNegativeIndex(length, index) || isPositiveIndex(length, index);
+    }
+
+    /**
+     * 判断是否为正数索引
+     */
+    public static boolean isPositiveIndex(int length, int index) {
+        Preconditions.checkTrue(length > 0, "length " + length + " is invalid");
+        int max = length - 1;
+        int min = 0;
+        return index >= min && index <= max;
+    }
+
+    /**
+     * 判断是否为负数索引
+     */
+    public static boolean isNegativeIndex(int length, int index) {
+        Preconditions.checkTrue(length > 0, "length " + length + " is invalid");
+        int max = -1;
+        int min = -length;
+        return index >= min && index <= max;
+    }
+
 }
