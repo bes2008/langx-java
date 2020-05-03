@@ -26,7 +26,7 @@ public class FileDigestGenerator {
     public static void main(String[] args) {
         FileDigestGenerator generator = new FileDigestGenerator();
         long strat = System.currentTimeMillis();
-        System.out.println("MD5:   " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", "MD5"));
+        System.out.println("MD5, SHA-1:   " + generator.generate("D:\\mvn_repo\\org\\springframework.zip",null, "MD5", "SHA-1"));
         long t2 = System.currentTimeMillis();
         System.out.println("SHA-1: " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", "SHA-1"));
         long t3 = System.currentTimeMillis();
@@ -35,16 +35,26 @@ public class FileDigestGenerator {
     }
 
     public String generate(String filePath, String algorithm) {
-        return generate(filePath, algorithm, null);
+        return generate(filePath, null, algorithm);
     }
 
-    public String generate(String filePath, String algorithm, FileReader reader) {
+    public String generate(String filePath, FileReader reader, String algorithm) {
+        return generate(filePath, reader, new String[]{algorithm}).get(0);
+    }
+
+
+    public List<String> generate(String filePath, FileReader reader, String... algorithms) {
         try {
-            String digest = getFileDigest(filePath, algorithm, reader);
+            List<String> digests = getFileDigestStrings(filePath, reader, algorithms);
             if (!lowercase) {
-                digest = digest.toUpperCase();
+                return Pipeline.of(digests).map(new Function<String, String>() {
+                    @Override
+                    public String apply(String input) {
+                        return input.toUpperCase();
+                    }
+                }).asList();
             }
-            return digest;
+            return digests;
         } catch (FileNotFoundException ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
