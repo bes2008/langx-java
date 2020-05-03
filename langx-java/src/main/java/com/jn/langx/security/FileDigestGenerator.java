@@ -1,15 +1,24 @@
 package com.jn.langx.security;
 
-import com.jn.langx.util.Radixs;
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.codec.Hex;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
+import com.jn.langx.util.struct.Holder;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
+import java.util.List;
 
 public class FileDigestGenerator {
     private boolean lowercase = true;
@@ -17,17 +26,21 @@ public class FileDigestGenerator {
     public static void main(String[] args) {
         FileDigestGenerator generator = new FileDigestGenerator();
         long strat = System.currentTimeMillis();
-        System.out.println("MD5:   " + generator.generate("F:\\迅雷下载\\CentOS-7-x86_64-DVD-1708.iso", "MD5"));
+        System.out.println("MD5:   " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", "MD5"));
         long t2 = System.currentTimeMillis();
-        System.out.println("SHA-1: " + generator.generate("F:\\迅雷下载\\CentOS-7-x86_64-DVD-1708.iso", "SHA-1"));
+        System.out.println("SHA-1: " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", "SHA-1"));
         long t3 = System.currentTimeMillis();
         System.out.println("MD5 time: " + (t2 - strat));
         System.out.println("SHA-1 time: " + (t3 - t2));
     }
 
     public String generate(String filePath, String algorithm) {
+        return generate(filePath, algorithm, null);
+    }
+
+    public String generate(String filePath, String algorithm, FileReader reader) {
         try {
-            String digest = getFileDigest(filePath, algorithm);
+            String digest = getFileDigest(filePath, algorithm, reader);
             if (!lowercase) {
                 digest = digest.toUpperCase();
             }
@@ -45,34 +58,92 @@ public class FileDigestGenerator {
         this.lowercase = lowercase;
     }
 
-    public static String getFileDigest(String filePath, String algorithm) throws FileNotFoundException {
-        MessageDigest messageDigest = newDigest(algorithm);
-        if (messageDigest == null) {
-            throw new FileNotFoundException("Can't find " + algorithm + " algorithm");
+    public static String getFileDigest(String filePath, String algorithm, @Nullable FileReader reader) throws FileNotFoundException {
+        List<byte[]> hashBytesList = getFileDigest(filePath, reader, algorithm);
+        if (Emptys.isEmpty(hashBytesList)) {
+            throw new IllegalArgumentException();
         }
+        return Hex.encodeHexString(hashBytesList.get(0));
+    }
+
+    public static List<String> getFileDigestStrings(String filePath, @Nullable FileReader reader, String... algorithms) throws FileNotFoundException {
+        return Pipeline.of(getFileDigest(filePath, reader, Pipeline.of(algorithms).map(new Function<String, MessageDigest>() {
+            @Override
+            public MessageDigest apply(String algorithm) {
+                return newDigest(algorithm);
+            }
+        }).asList())).map(new Function<byte[], String>() {
+            @Override
+            public String apply(byte[] bytes) {
+                return Hex.encodeHexString(bytes);
+            }
+        }).asList();
+    }
+
+    public static List<byte[]> getFileDigest(String filePath, @Nullable FileReader reader, String... algorithms) throws FileNotFoundException {
+        return getFileDigest(filePath, reader, Pipeline.of(algorithms).map(new Function<String, MessageDigest>() {
+            @Override
+            public MessageDigest apply(String algorithm) {
+                return newDigest(algorithm);
+            }
+        }).asList());
+    }
+
+    public static List<String> getFileDigestStrings(String filePath, @Nullable FileReader reader, MessageDigest... messageDigests) throws FileNotFoundException {
+        return Pipeline.of(getFileDigest(filePath, reader, Collects.asList(messageDigests))).map(new Function<byte[], String>() {
+            @Override
+            public String apply(byte[] bytes) {
+                return Hex.encodeHexString(bytes);
+            }
+        }).asList();
+    }
+
+    public static List<byte[]> getFileDigest(String filePath, @Nullable FileReader reader, MessageDigest... messageDigests) throws FileNotFoundException {
+        return getFileDigest(filePath, reader, Collects.asList(messageDigests));
+    }
+
+    public static List<byte[]> getFileDigest(String filePath, @Nullable FileReader reader, List<MessageDigest> messageDigests) throws FileNotFoundException {
+        if (Emptys.isEmpty(messageDigests)) {
+            return Collects.newArrayList();
+        }
+
         File file = new File(filePath);
         if (!file.exists() || !file.canRead()) {
             throw new FileNotFoundException(" can't find file [" + filePath + "] or it is not readable");
         }
         // step 1 find file
-        FileReader reader = FileReaderFactory.getFileReader(filePath);
+        reader = reader == null ? FileReaderFactory.getFileReader(filePath) : reader;
         try {
             reader.setFile(file);
 
             while (reader.hasNext()) {
-                byte[] bytes = reader.next();
-                if (bytes != null && bytes.length > 0) {
-                    messageDigest.update(bytes);
+                final Holder<byte[]> bytes = new Holder<byte[]>(reader.next());
+                if (!bytes.isEmpty()) {
+                    Collects.forEach(messageDigests, new Consumer2<Integer, MessageDigest>() {
+                        @Override
+                        public void accept(Integer index, MessageDigest messageDigest) {
+                            messageDigest.update(bytes.get());
+                        }
+                    });
                 }
             }
-            byte[] hashed = messageDigest.digest();
-            return Radixs.toHex2(hashed).toUpperCase();
+            return Pipeline.of(messageDigests).map(new Function<MessageDigest, byte[]>() {
+                @Override
+                public byte[] apply(MessageDigest messageDigest) {
+                    return messageDigest.digest();
+                }
+            }).asList();
+
         } finally {
             IOs.close(reader);
         }
     }
 
-    private static MessageDigest newDigest(String algorithm) {
+    public static String getFileDigest(String filePath, String algorithm) throws FileNotFoundException {
+        return getFileDigest(filePath, algorithm, null);
+    }
+
+    public static MessageDigest newDigest(String algorithm) {
         try {
             if (algorithm == null) {
                 algorithm = "MD5";
@@ -84,18 +155,14 @@ public class FileDigestGenerator {
     }
 
 
-    public static abstract class FileReader<INPUT extends Closeable> {
+    public static abstract class FileReader<INPUT extends Closeable> implements Iterator<byte[]>, Iterable<byte[]> {
         protected INPUT input;
-        private File file;
         protected long fileLength;
         protected long readedLength = 0L;
 
         public void setFile(File file) {
-            this.file = file;
             fileLength = file.length();
         }
-
-        public abstract byte[] next();
 
         public final boolean hasNext() {
             return readedLength < fileLength;
@@ -105,12 +172,23 @@ public class FileDigestGenerator {
             IOs.close(input);
         }
 
+        @Override
+        public abstract byte[] next();
+
+        @Override
+        public Iterator<byte[]> iterator() {
+            return this;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 
-    private static class BufferedFileReader extends FileReader<BufferedInputStream> {
+    public static class BufferedFileReader extends FileReader<BufferedInputStream> {
         @Override
         public void setFile(File file) {
-            super.setFile(file);
             FileInputStream fileInput = Files.openInputStream(file);
             input = new BufferedInputStream(fileInput);
         }
@@ -144,7 +222,7 @@ public class FileDigestGenerator {
 
     }
 
-    private static class MMapedFileReader extends FileReader<FileChannel> {
+    public static class MMapedFileReader extends FileReader<FileChannel> {
         private MappedByteBuffer currentMMapBuffer;
         private long nextMapStartPosition = 0L;
         private long remainingLength = 0L;
@@ -193,12 +271,12 @@ public class FileDigestGenerator {
     }
 
     static class FileReaderFactory {
-        private static final long SIZE_50M = 50 * 1024 * 1024;
+        private static final long SIZE_10M = 10 * 1024 * 1024;
 
         public static FileReader getFileReader(String filePath) {
             File file = new File(filePath);
 
-            if (file.length() > SIZE_50M) {
+            if (file.length() > SIZE_10M) {
                 return new MMapedFileReader();
             } else {
                 return new BufferedFileReader();
