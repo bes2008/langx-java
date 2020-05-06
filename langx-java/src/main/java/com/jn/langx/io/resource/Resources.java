@@ -12,6 +12,7 @@ import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Channels;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.net.URLs;
+import com.jn.langx.util.struct.Holder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -177,5 +178,25 @@ public class Resources {
         readUsingDelimiter(location, "\n", charset, consumePredicate, consumer, breakPredicate);
     }
 
+    public static String readFirstLine(@NonNull String location, @NonNull Charset charset) {
+        final Holder<String> firstLine = new Holder<String>();
+        readLines(location, charset, new Predicate2<Integer, String>() {
+            @Override
+            public boolean test(Integer index, String line) {
+                return index == 0;
+            }
+        }, new Consumer2<Integer, String>() {
+            @Override
+            public void accept(Integer index, String line) {
+                firstLine.set(line);
+            }
+        }, new Predicate2<Integer, String>() {
+            @Override
+            public boolean test(Integer index, String value) {
+                return index != 0;
+            }
+        });
+        return firstLine.get();
+    }
 
 }

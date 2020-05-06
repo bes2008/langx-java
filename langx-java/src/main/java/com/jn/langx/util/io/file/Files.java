@@ -7,8 +7,8 @@ import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.NullOutputStream;
 
-import java.io.*;
 import java.io.FileFilter;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
@@ -48,10 +48,12 @@ public class Files {
     public static boolean makeFile(File file) throws IOException {
         if (!file.exists()) {
             File dir = file.getParentFile();
-            if (makeDirs(dir)) {
+            makeDirs(dir);
+            if (dir.exists()) {
                 return file.createNewFile();
+            } else {
+                throw new IOException(StringTemplates.formatWithPlaceholder("Can't create directory: {}", dir.getAbsolutePath()));
             }
-            throw new IOException(StringTemplates.formatWithPlaceholder("Can't create directory: {}", dir.getAbsolutePath()));
         }
         return true;
     }
@@ -1065,13 +1067,13 @@ public class Files {
             deleteDirectory(file);
         } else {
             final boolean filePresent = file.exists();
-            if (!file.delete()) {
-                if (!filePresent) {
-                    throw new FileNotFoundException("File does not exist: " + file);
+            if (filePresent) {
+                if (!file.delete()) {
+                    if (file.exists()) {
+                        final String message = "Unable to delete file: " + file;
+                        throw new IOException(message);
+                    }
                 }
-                final String message =
-                        "Unable to delete file: " + file;
-                throw new IOException(message);
             }
         }
     }
