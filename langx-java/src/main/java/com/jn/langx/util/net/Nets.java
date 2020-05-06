@@ -1,10 +1,13 @@
 package com.jn.langx.util.net;
 
-import com.jn.langx.util.Platform;
-import com.jn.langx.util.Strings;
-import com.jn.langx.util.SystemPropertys;
-import com.jn.langx.util.Throwables;
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.properties.PropertiesAccessor;
+import com.jn.langx.util.*;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Functions;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -955,12 +958,12 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                   <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
-     *                   defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
-     *                   following the updated guidelines in
-     *                   <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
-     *                   <li>{@code false} to strictly follow rfc 5952</li>
-     *                   </ul>
+     *                                                                                                             <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
+     *                                                                                                             defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
+     *                                                                                                             following the updated guidelines in
+     *                                                                                                             <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
+     *                                                                                                             <li>{@code false} to strictly follow rfc 5952</li>
+     *                                                                                                             </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
@@ -1166,19 +1169,43 @@ public class Nets {
     public static Map<String, Set<InetAddress>> getNetworkInterfaceAddresses() {
         //JVM returns interfaces in a non-predictable order, so to make this more predictable
         //let's have them sort by interface name (by using a TreeMap).
+        return getNetworkInterfaceAddresses(new Predicate<NetworkInterface>() {
+            @Override
+            public boolean test(NetworkInterface iface) {
+                try {
+                    return iface.isUp() && !iface.isLoopback() && !iface.isPointToPoint();
+                } catch (SocketException ex) {
+                    return false;
+                }
+            }
+        }, new Predicate<InetAddress>() {
+            @Override
+            public boolean test(InetAddress ia) {
+                return !ia.isLoopbackAddress() && !ia.getHostAddress().contains(":");
+            }
+        });
+    }
+
+    public static Map<String, Set<InetAddress>> getNetworkInterfaceAddresses(
+            @Nullable Predicate<NetworkInterface> networkInterfacePredicate,
+            @Nullable Predicate<InetAddress> inetAddressPredicate) {
+        //JVM returns interfaces in a non-predictable order, so to make this more predictable
+        //let's have them sort by interface name (by using a TreeMap).
         Map<String, Set<InetAddress>> interfaceAddressMap = new TreeMap<String, Set<InetAddress>>();
         try {
             Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
+            networkInterfacePredicate = networkInterfacePredicate == null ? Functions.<NetworkInterface>truePredicate() : networkInterfacePredicate;
+            inetAddressPredicate = inetAddressPredicate == null ? Functions.<InetAddress>truePredicate() : inetAddressPredicate;
             while (ifaces.hasMoreElements()) {
                 NetworkInterface iface = ifaces.nextElement();
                 //We only care about usable non-loopback interfaces.
-                if (iface.isUp() && !iface.isLoopback() && !iface.isPointToPoint()) {
+                if (networkInterfacePredicate.test(iface)) {
                     String name = iface.getName();
-                    Enumeration<InetAddress> ifaceAdresses = iface.getInetAddresses();
-                    while (ifaceAdresses.hasMoreElements()) {
-                        InetAddress ia = ifaceAdresses.nextElement();
+                    Enumeration<InetAddress> ifaceAddresses = iface.getInetAddresses();
+                    while (ifaceAddresses.hasMoreElements()) {
+                        InetAddress ia = ifaceAddresses.nextElement();
                         //We want to filter out mac addresses
-                        if (!ia.isLoopbackAddress() && !ia.getHostAddress().contains(":")) {
+                        if (inetAddressPredicate.test(ia)) {
                             Set<InetAddress> addresses = interfaceAddressMap.get(name);
                             if (addresses == null) {
                                 addresses = new LinkedHashSet<InetAddress>();
@@ -1193,6 +1220,48 @@ public class Nets {
             //noop
         }
         return interfaceAddressMap;
+    }
+
+    public static List<NetworkInterface> getNetworkInterfaces() {
+        return getNetworkInterfaces(null);
+    }
+
+    public static List<NetworkInterface> getNetworkInterfaces(Predicate<NetworkInterface> predicate) {
+        predicate = predicate == null ? Functions.<NetworkInterface>truePredicate() : predicate;
+        try {
+            Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
+            return Pipeline.<NetworkInterface>of(enumeration).filter(predicate).asList();
+        } catch (SocketException ex) {
+            // ignore it
+        }
+        return Collects.emptyArrayList();
+    }
+
+    @Nullable
+    public static String getMac(@NonNull NetworkInterface networkInterface) throws SocketException {
+        byte[] macBytes = networkInterface.getHardwareAddress();
+        if (Emptys.isNotEmpty(macBytes)) {
+            return getMac(macBytes);
+        }
+        return null;
+    }
+
+    public static String getMac(@NonNull byte[] bytes) {
+        Preconditions.checkArgument(Emptys.isNotEmpty(bytes), "invalid mac bytes");
+        StringBuilder mac = new StringBuilder();
+        byte currentByte;
+        boolean first = false;
+        for (byte b : bytes) {
+            if (first) {
+                mac.append("-");
+            }
+            currentByte = (byte) ((b & 240) >> 4);
+            mac.append(Integer.toHexString(currentByte));
+            currentByte = (byte) (b & 15);
+            mac.append(Integer.toHexString(currentByte));
+            first = true;
+        }
+        return mac.toString().toUpperCase();
     }
 
     /**
