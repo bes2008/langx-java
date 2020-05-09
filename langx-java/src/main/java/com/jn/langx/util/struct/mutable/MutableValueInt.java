@@ -1,4 +1,4 @@
-package com.jn.langx.util.mutable;
+package com.jn.langx.util.struct.mutable;
 
 /**
  * {@link MutableValue} implementation of type <code>int</code>.

@@ -3,7 +3,7 @@ package com.jn.langx.util.io;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.util.GlobalThreadLocalMap;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
 
 import java.nio.charset.Charset;

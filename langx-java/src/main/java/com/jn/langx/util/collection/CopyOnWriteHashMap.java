@@ -1,7 +1,7 @@
 package com.jn.langx.util.collection;
 
 
-import com.jn.langx.util.mutable.MutableValueInt;
+import com.jn.langx.util.struct.mutable.MutableValueInt;
 
 import java.lang.reflect.Array;
 import java.util.*;

@@ -14,7 +14,7 @@
 
 package com.jn.langx.escape;
 
-import com.jn.langx.util.GlobalThreadLocalMap;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
 
 /**

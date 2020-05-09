@@ -1,4 +1,4 @@
-package com.jn.langx.util.mutable;
+package com.jn.langx.util.struct.mutable;
 
 /**
  * Base class for all mutable values.
