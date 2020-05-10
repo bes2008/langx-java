@@ -173,6 +173,24 @@ public class Functions {
         };
     }
 
+    public static <E> Predicate<E> emptyPredicate(){
+        return new Predicate<E>() {
+            @Override
+            public boolean test(E value) {
+                return Emptys.isEmpty(value);
+            }
+        };
+    }
+
+    public static <E> Predicate<E> notEmptyPredicate(){
+        return new Predicate<E>() {
+            @Override
+            public boolean test(E value) {
+                return Emptys.isNotEmpty(value);
+            }
+        };
+    }
+
     public static <E> Predicate<E> truePredicate(){
         return booleanPredicate(true);
     }

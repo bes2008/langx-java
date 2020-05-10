@@ -1,4 +1,6 @@
-package com.jn.langx.util;
+package com.jn.langx.util.concurrent.threadlocal;
+
+import com.jn.langx.util.Preconditions;
 
 public class NamedThreadLocal<T> extends ThreadLocal<T> {
 
