@@ -17,6 +17,8 @@ public class LocalDateTimeTests {
 
     @Test
     public void test() {
+        // LocalDateTime 用于替换 java.util.Date
+        // DateTime 用于替换 java.util.Calendars
         LocalDateTime dt = new LocalDateTime();
         DateTime dt2 = DateTime.now();
         long time = System.currentTimeMillis();
