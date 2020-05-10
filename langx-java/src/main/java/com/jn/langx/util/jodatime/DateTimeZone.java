@@ -15,6 +15,7 @@
  */
 package com.jn.langx.util.jodatime;
 
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.jodatime.chrono.BaseChronology;
 import com.jn.langx.util.jodatime.field.FieldUtils;
 import com.jn.langx.util.jodatime.format.DateTimeFormatter;
@@ -468,7 +469,7 @@ public abstract class DateTimeZone implements Serializable {
             provider = getDefaultProvider();
         }
         Set<String> ids = provider.getAvailableIDs();
-        if (ids == null || ids.size() == 0) {
+        if (Emptys.isEmpty(ids)) {
             throw new IllegalArgumentException
                     ("The provider doesn't have any available ids");
         }
@@ -495,8 +496,7 @@ public abstract class DateTimeZone implements Serializable {
         Provider provider = null;
 
         try {
-            String providerClass =
-                    System.getProperty("com.jn.langx.util.jodatime.DateTimeZone.Provider");
+            String providerClass = System.getProperty("com.jn.langx.util.jodatime.DateTimeZone.Provider");
             if (providerClass != null) {
                 try {
                     provider = (Provider) Class.forName(providerClass).newInstance();
