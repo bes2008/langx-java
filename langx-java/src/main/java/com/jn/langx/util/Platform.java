@@ -12,9 +12,10 @@ import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
 public class Platform {
     private static final Logger logger = LoggerFactory.getLogger(Platform.class);
-    public static boolean isWindows = isWindows0();
+    public static final boolean isWindows = isWindows0();
     public static int JAVA_VERSION_INT = javaVersion();
-    public static boolean isAndroid = isAndroid0();
+    public static final boolean isAndroid = isAndroid0();
+    public static final boolean isKaffeJVM = isKaffeJVM();
     private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
     public static boolean isGroovyAvailable = isGroovyAvailable0();
     public static String processId = getProcessId0();
@@ -42,6 +43,16 @@ public class Platform {
             logger.debug("Platform: Android");
         }
         return isAndroid;
+    }
+
+    private static boolean isKaffeJVM(){
+        try {
+            Class.forName("kaffe.util.NotImplemented");
+            return true;
+        } catch (Throwable t) {
+            // swallow as this simply doesn't seem to be Kaffe
+        }
+        return false;
     }
 
     private static int javaVersion() {
