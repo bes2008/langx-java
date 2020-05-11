@@ -2,7 +2,9 @@ package com.jn.langx.util.struct;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.hash.HashCodeBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,13 +30,19 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
             return false;
         }
         @SuppressWarnings("rawtypes")
-        Entry o = (Entry) obj;
-        return getKey().equals(o.getKey()) && getValue().equals(o.getValue());
+        Entry that = (Entry) obj;
+        if (!Objects.equals(getKey(), that.getKey())) {
+            return false;
+        }
+        if (!Objects.equals(getValue(), that.getValue())) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return getKey().hashCode() ^ 4 + getValue().hashCode();
+        return new HashCodeBuilder().with(getKey()).with(getValue()).build();
     }
 
     @Override

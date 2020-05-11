@@ -1,5 +1,8 @@
 package com.jn.langx.util.struct;
 
+import com.jn.langx.util.Objects;
+import com.jn.langx.util.hash.HashCodeBuilder;
+
 /**
  * Key value pair
  */
@@ -35,7 +38,17 @@ public abstract class Pair<K, V> {
             return false;
         }
         Pair that = (Pair) object;
-        return key.equals(that.key) && value.equals(that.key);
+        if (!Objects.equals(key, that.key)) {
+            return false;
+        }
+        if (!Objects.equals(value, that.value)) {
+            return false;
+        }
+        return true;
     }
 
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().with(key).with(value).build();
+    }
 }
