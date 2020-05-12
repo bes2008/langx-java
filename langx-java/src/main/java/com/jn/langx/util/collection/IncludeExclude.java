@@ -13,6 +13,7 @@ import java.util.Set;
  *
  * @param <ITEM> The type of element
  */
+@Deprecated
 public class IncludeExclude<ITEM> extends IncludeExcludeSet<ITEM, ITEM> {
     public IncludeExclude() {
         super();

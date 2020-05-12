@@ -2017,8 +2017,7 @@ public class Collects {
     }
 
     public static <E, C extends Collection<E>> C clearNulls(@Nullable C collection) {
-        final Collection<E> c = Collects.emptyCollectionByInfer(collection);
-        return (C) filter(c, Functions.nonNullPredicate());
+        return (C) filter(collection, Functions.nonNullPredicate());
     }
 
 
