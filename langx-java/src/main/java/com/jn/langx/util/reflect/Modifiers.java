@@ -16,6 +16,9 @@ import java.util.Set;
  * @author jinuo.fang
  */
 public class Modifiers {
+    static final int MANDATED = 0x00008000;
+    static final int SYNTHETIC = 0x00001000;
+
     private static final Set<Integer> supportedModifiers = new HashSet<Integer>(Collects.asList(new Integer[]{
             Modifier.ABSTRACT,
             Modifier.FINAL,
@@ -28,7 +31,9 @@ public class Modifiers {
             Modifier.SYNCHRONIZED,
             Modifier.STRICT,
             Modifier.TRANSIENT,
-            Modifier.VOLATILE
+            Modifier.VOLATILE,
+            MANDATED,
+            SYNTHETIC
     }));
 
     static {
@@ -157,5 +162,27 @@ public class Modifiers {
         return hasModifier(member, Modifier.VOLATILE);
     }
 
+    public static boolean isMandated(int mod) {
+        return (mod & MANDATED) != 0;
+    }
 
+    public static boolean isMandated(Class clazz) {
+        return hasModifier(clazz, MANDATED);
+    }
+
+    public static boolean isMandated(Member member) {
+        return hasModifier(member, MANDATED);
+    }
+
+    public static boolean isSynthetic(int mod) {
+        return (mod & SYNTHETIC) != 0;
+    }
+
+    public static boolean isSynthetic(Class clazz) {
+        return hasModifier(clazz, SYNTHETIC);
+    }
+
+    public static boolean isSynthetic(Member member) {
+        return hasModifier(member, SYNTHETIC);
+    }
 }
