@@ -22,27 +22,12 @@ public enum Period implements Delegatable<EnumDelegate>, CommonEnum {
         return delegate.getCode();
     }
 
-    @Override
-    public void setCode(int code) {
-        delegate.setCode(code);
-    }
-
-    @Override
-    public void setName(String name) {
-        delegate.setName(name);
-    }
-
     public String getName() {
         return delegate.getName();
     }
 
     public String getDisplayText() {
         return delegate.getDisplayText();
-    }
-
-    @Override
-    public void setDisplayText(String displayText) {
-        delegate.setDisplayText(displayText);
     }
 
 

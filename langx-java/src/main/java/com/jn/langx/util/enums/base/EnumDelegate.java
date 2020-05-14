@@ -77,23 +77,8 @@ public class EnumDelegate implements CommonEnum {
     }
 
     @Override
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    @Override
     public String getDisplayText() {
         return this.displayText;
-    }
-
-    @Override
-    public void setDisplayText(String text) {
-        this.displayText = text;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

@@ -14,16 +14,6 @@ class DelegatableCommonEnum implements CommonEnum, Delegatable<EnumDelegate> {
     }
 
     @Override
-    public void setCode(int code) {
-        delegate.setCode(code);
-    }
-
-    @Override
-    public void setName(String name) {
-        delegate.setName(name);
-    }
-
-    @Override
     public String getName() {
         return delegate.getName();
     }
@@ -33,10 +23,6 @@ class DelegatableCommonEnum implements CommonEnum, Delegatable<EnumDelegate> {
         return delegate.getDisplayText();
     }
 
-    @Override
-    public void setDisplayText(String displayText) {
-        delegate.setDisplayText(displayText);
-    }
 
     @Override
     public EnumDelegate getDelegate() {
