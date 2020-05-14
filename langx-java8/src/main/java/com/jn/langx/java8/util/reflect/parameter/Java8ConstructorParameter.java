@@ -75,4 +75,26 @@ public class Java8ConstructorParameter implements ConstructorParameter {
     public Annotation[] getDeclaredAnnotations() {
         return parameter.getDeclaredAnnotations();
     }
+
+
+    @Override
+    public String toString() {
+        return parameter.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Java8ConstructorParameter that = (Java8ConstructorParameter) o;
+
+        return parameter.equals(that.parameter);
+    }
+
+    @Override
+    public int hashCode() {
+        return parameter.hashCode();
+    }
+
 }
