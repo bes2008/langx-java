@@ -1,12 +1,16 @@
 package com.jn.langx.util.reflect;
 
 import com.jn.langx.annotation.Singleton;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.reflect.parameter.*;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
@@ -80,6 +84,22 @@ class ParameterServiceRegistry {
         return INSTANCE;
     }
 
+
+    public List<MethodParameter> getMethodParameters(final Method method) {
+        Preconditions.checkNotNull(method);
+        int count = method.getParameterTypes().length;
+        final List<MethodParameter> parameters = Collects.newArrayList();
+        if (count > 0) {
+            Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
+                @Override
+                public void accept(Integer index) {
+                    parameters.add(getMethodParameter(method, index));
+                }
+            });
+        }
+        return parameters;
+    }
+
     public MethodParameter getMethodParameter(Method method, int index) {
         return getMethodParameter("arg" + index, 0, method, index);
     }
@@ -88,12 +108,27 @@ class ParameterServiceRegistry {
         return methodParameterSupplier.get(new ParameterMeta(name, modifiers, method, index));
     }
 
-    public ConstructorParameter getConstructorParameter(Method method, int index) {
-        return getConstructorParameter("arg" + index, 0, method, index);
+    public List<ConstructorParameter> getConstructorParameters(final Constructor constructor) {
+        Preconditions.checkNotNull(constructor);
+        int count = constructor.getParameterTypes().length;
+        final List<ConstructorParameter> parameters = Collects.newArrayList();
+        if (count > 0) {
+            Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
+                @Override
+                public void accept(Integer index) {
+                    parameters.add(getConstructorParameter(constructor, index));
+                }
+            });
+        }
+        return parameters;
     }
 
-    public ConstructorParameter getConstructorParameter(String name, int modifiers, Method method, int index) {
-        return constructorParameterSupplier.get(new ParameterMeta(name, modifiers, method, index));
+    public ConstructorParameter getConstructorParameter(Constructor constructor, int index) {
+        return getConstructorParameter("arg" + index, 0, constructor, index);
+    }
+
+    public ConstructorParameter getConstructorParameter(String name, int modifiers, Constructor constructor, int index) {
+        return constructorParameterSupplier.get(new ParameterMeta(name, modifiers, constructor, index));
     }
 
 }

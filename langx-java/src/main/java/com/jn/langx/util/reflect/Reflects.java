@@ -10,6 +10,8 @@ import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.reflect.parameter.ConstructorParameter;
+import com.jn.langx.util.reflect.parameter.MethodParameter;
 import com.jn.langx.util.reflect.type.Types;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
@@ -37,6 +39,7 @@ public class Reflects {
 
     private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
     private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");
+    private static final ParameterServiceRegistry PARAMETER_SERVICE_REGISTRY = ParameterServiceRegistry.getInstance();
 
     public static String getTypeName(@NonNull Class type) {
         return Types.typeToString(type);
@@ -777,6 +780,22 @@ public class Reflects {
         } else {
             return getMethodString(getTypeName(clazz), methodName, null, parameterTypes);
         }
+    }
+
+    public static MethodParameter getMethodParameter(Method method, int index) {
+        return PARAMETER_SERVICE_REGISTRY.getMethodParameter(method, index);
+    }
+
+    public static List<MethodParameter> getMethodParameters(Method method) {
+        return PARAMETER_SERVICE_REGISTRY.getMethodParameters(method);
+    }
+
+    public static ConstructorParameter getConstructorParameter(Constructor constructor, int index) {
+        return PARAMETER_SERVICE_REGISTRY.getConstructorParameter(constructor, index);
+    }
+
+    public static List<ConstructorParameter> getConstructorParameters(Constructor constructor) {
+        return PARAMETER_SERVICE_REGISTRY.getConstructorParameters(constructor);
     }
 
     public static Set<Class> getAllInterfaces(Class clazz) {
