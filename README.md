@@ -47,6 +47,15 @@ Java lang extensions
     + Field Accessor
     + Array Accessor 
     + HTTP Query String Accessor
++ ValueGetter
+    + ArrayValueGetter
+    + CompositeValueGetter
+    + IterableValueGetter
+    + LiteralValueGetter
+    + MapValueGetter
+    + MemberValueGetter
+    + PipelineValueGetter
+    + StreamValueGetter
 + Reflect utilities
     + Modifiers
     + Reflects
