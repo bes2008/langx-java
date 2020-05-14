@@ -38,7 +38,6 @@ public class Reflects {
     private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
     private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");
 
-
     public static String getTypeName(@NonNull Class type) {
         return Types.typeToString(type);
     }
