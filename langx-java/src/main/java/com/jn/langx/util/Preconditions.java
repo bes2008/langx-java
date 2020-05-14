@@ -186,32 +186,21 @@ public class Preconditions {
      *                  given arguments.
      * @return the runtime exception
      */
-    private static RuntimeException outOfBounds(
-            Function2<String, List<Integer>, ? extends RuntimeException> oobef,
-            String checkKind,
-            Integer... args) {
+    private static RuntimeException outOfBounds(Function2<String, List<Integer>, ? extends RuntimeException> oobef, String checkKind, Integer... args) {
         List<Integer> largs = Collects.asList(args);
-        RuntimeException e = oobef == null
-                ? null : oobef.apply(checkKind, largs);
-        return e == null
-                ? new IndexOutOfBoundsException(outOfBoundsMessage(checkKind, largs)) : e;
+        RuntimeException e = oobef == null ? null : oobef.apply(checkKind, largs);
+        return e == null ? new IndexOutOfBoundsException(outOfBoundsMessage(checkKind, largs)) : e;
     }
 
-    private static RuntimeException outOfBoundsCheckIndex(
-            Function2<String, List<Integer>, ? extends RuntimeException> oobe,
-            int index, int length) {
+    private static RuntimeException outOfBoundsCheckIndex(Function2<String, List<Integer>, ? extends RuntimeException> oobe, int index, int length) {
         return outOfBounds(oobe, "checkIndex", index, length);
     }
 
-    private static RuntimeException outOfBoundsCheckFromToIndex(
-            Function2<String, List<Integer>, ? extends RuntimeException> oobe,
-            int fromIndex, int toIndex, int length) {
+    private static RuntimeException outOfBoundsCheckFromToIndex(Function2<String, List<Integer>, ? extends RuntimeException> oobe, int fromIndex, int toIndex, int length) {
         return outOfBounds(oobe, "checkFromToIndex", fromIndex, toIndex, length);
     }
 
-    private static RuntimeException outOfBoundsCheckFromIndexSize(
-            Function2<String, List<Integer>, ? extends RuntimeException> oobe,
-            int fromIndex, int size, int length) {
+    private static RuntimeException outOfBoundsCheckFromIndexSize(Function2<String, List<Integer>, ? extends RuntimeException> oobe, int fromIndex, int size, int length) {
         return outOfBounds(oobe, "checkFromIndexSize", fromIndex, size, length);
     }
 
@@ -281,8 +270,7 @@ public class Preconditions {
      *            exception factory and relayed by the exception formatter
      * @return the out-of-bounds exception formatter
      */
-    public static <X extends RuntimeException>
-    Function2<String, List<Integer>, X> outOfBoundsExceptionFormatter(final Function<String, X> f) {
+    public static <X extends RuntimeException> Function2<String, List<Integer>, X> outOfBoundsExceptionFormatter(final Function<String, X> f) {
         // Use anonymous class to avoid bootstrap issues if this method is
         // used early in startup
         return new Function2<String, List<Integer>, X>() {
@@ -328,6 +316,12 @@ public class Preconditions {
         return String.format("Range check failed: %s %s", checkKind, args);
     }
 
+    public static <X extends RuntimeException> int checkIndex(int index, int length) {
+        if (index < 0 || index >= length)
+            throw new IndexOutOfBoundsException(StringTemplates.formatWithPlaceholder("index {} out of bounds, the length is: {}", index, length));
+        return index;
+    }
+
     /**
      * Checks if the {@code index} is within the bounds of the range from
      * {@code 0} (inclusive) to {@code length} (exclusive).
@@ -362,15 +356,12 @@ public class Preconditions {
      *                                   formatter is non-{@code null}
      * @throws IndexOutOfBoundsException if the {@code index} is out of bounds
      *                                   and the exception formatter is {@code null}
-     * @implNote This method is made intrinsic in optimizing compilers to guide them to
-     * perform unsigned comparisons of the index and length when it is known the
-     * length is a non-negative value (such as that of an array length or from
-     * the upper bound of a loop)
-     * @since 9
+     *                                   Note: This method is made intrinsic in optimizing compilers to guide them to
+     *                                   perform unsigned comparisons of the index and length when it is known the
+     *                                   length is a non-negative value (such as that of an array length or from
+     *                                   the upper bound of a loop)
      */
-    public static <X extends RuntimeException>
-    int checkIndex(int index, int length,
-                   Function2<String, List<Integer>, X> oobef) {
+    public static <X extends RuntimeException> int checkIndex(int index, int length, Function2<String, List<Integer>, X> oobef) {
         if (index < 0 || index >= length)
             throw outOfBoundsCheckIndex(oobef, index, length);
         return index;
@@ -413,11 +404,8 @@ public class Preconditions {
      *                                   function is non-{@code null}
      * @throws IndexOutOfBoundsException if the sub-range is out of bounds and
      *                                   the exception factory function is {@code null}
-     * @since 9
      */
-    public static <X extends RuntimeException>
-    int checkFromToIndex(int fromIndex, int toIndex, int length,
-                         Function2<String, List<Integer>, X> oobef) {
+    public static <X extends RuntimeException> int checkFromToIndex(int fromIndex, int toIndex, int length, Function2<String, List<Integer>, X> oobef) {
         if (fromIndex < 0 || fromIndex > toIndex || toIndex > length)
             throw outOfBoundsCheckFromToIndex(oobef, fromIndex, toIndex, length);
         return fromIndex;
@@ -462,9 +450,7 @@ public class Preconditions {
      * @throws IndexOutOfBoundsException if the sub-range is out of bounds and
      *                                   the exception factory function is {@code null}
      */
-    public static <X extends RuntimeException>
-    int checkFromIndexSize(int fromIndex, int size, int length,
-                           Function2<String, List<Integer>, X> oobef) {
+    public static <X extends RuntimeException> int checkFromIndexSize(int fromIndex, int size, int length, Function2<String, List<Integer>, X> oobef) {
         if ((length | fromIndex | size) < 0 || size > length - fromIndex)
             throw outOfBoundsCheckFromIndexSize(oobef, fromIndex, size, length);
         return fromIndex;
