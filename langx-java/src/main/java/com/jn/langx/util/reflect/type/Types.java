@@ -488,4 +488,16 @@ public class Types {
         return new ParameterizedTypeImpl.WildcardTypeImpl(new Type[]{Object.class}, new Type[]{bound});
     }
 
+    /**
+     * 判断是否为 字面量类型
+     */
+    public static boolean isLiteralType(Type type) {
+        if (Primitives.isPrimitive(type) || Primitives.isWrapperType(type)) {
+            return true;
+        }
+        if (isClass(type)) {
+            return type == String.class;
+        }
+        return false;
+    }
 }
