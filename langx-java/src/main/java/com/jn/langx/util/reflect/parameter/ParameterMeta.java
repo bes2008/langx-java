@@ -2,7 +2,10 @@ package com.jn.langx.util.reflect.parameter;
 
 import com.jn.langx.util.Preconditions;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 public class ParameterMeta {
     private Object executable;
@@ -13,9 +16,17 @@ public class ParameterMeta {
     public ParameterMeta(String name, int modifiers, Object executable, int index) {
         this.name = name;
         this.modifiers = modifiers;
-        Preconditions.checkArgument(executable instanceof Method || executable instanceof Class);
+        Preconditions.checkArgument(executable instanceof Method || executable instanceof Constructor);
         this.executable = executable;
         this.index = index;
+    }
+
+    public boolean isMethodParameter() {
+        return executable instanceof Method;
+    }
+
+    public boolean isConstructorParameter() {
+        return executable instanceof Constructor;
     }
 
     public Object getExecutable() {

@@ -4,17 +4,17 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Modifiers;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Java6MethodParameter implements MethodParameter {
+public class Java6ConstructorParameter implements ConstructorParameter {
     private final String name;
     private final int modifiers;
     private final int index;
-    private final Method method;
+    private final Constructor constructor;
 
     /**
      * Package-private constructor for {@code Parameter}.
@@ -24,15 +24,15 @@ public class Java6MethodParameter implements MethodParameter {
      * absent, however, then {@code Executable} uses this constructor
      * to synthesize them.
      *
-     * @param name      The name of the parameter.
-     * @param modifiers The modifier flags for the parameter.
-     * @param method    The executable which defines this parameter.
-     * @param index     The index of the parameter.
+     * @param name        The name of the parameter.
+     * @param modifiers   The modifier flags for the parameter.
+     * @param constructor The executable which defines this parameter.
+     * @param index       The index of the parameter.
      */
-    Java6MethodParameter(String name, int modifiers, Method method, int index) {
+    Java6ConstructorParameter(String name, int modifiers, Constructor constructor, int index) {
         this.name = name;
         this.modifiers = modifiers;
-        this.method = method;
+        this.constructor = constructor;
         this.index = index;
     }
 
@@ -44,8 +44,8 @@ public class Java6MethodParameter implements MethodParameter {
      */
     public boolean equals(Object obj) {
         if (obj instanceof Java6MethodParameter) {
-            Java6MethodParameter other = (Java6MethodParameter) obj;
-            return (other.method.equals(method) && other.index == index);
+            Java6ConstructorParameter other = (Java6ConstructorParameter) obj;
+            return (other.constructor.equals(constructor) && other.index == index);
         }
         return false;
     }
@@ -57,7 +57,7 @@ public class Java6MethodParameter implements MethodParameter {
      * @return A hash code based on the executable's hash code.
      */
     public int hashCode() {
-        return method.hashCode() ^ index;
+        return constructor.hashCode() ^ index;
     }
 
     /**
@@ -113,8 +113,8 @@ public class Java6MethodParameter implements MethodParameter {
      * @return The {@code Executable} declaring this parameter.
      */
     @Override
-    public Method getDeclaringExecutable() {
-        return method;
+    public Constructor getDeclaringExecutable() {
+        return constructor;
     }
 
     /**
@@ -143,11 +143,10 @@ public class Java6MethodParameter implements MethodParameter {
         // Note: empty strings as paramete names are now outlawed.
         // The .equals("") is for compatibility with current JVM
         // behavior.  It may be removed at some point.
-        if (name == null || name.equals("")) {
+        if (name == null || name.equals(""))
             return "arg" + index;
-        } else {
+        else
             return name;
-        }
     }
 
     // Package-private accessor to the real name field.
@@ -167,7 +166,7 @@ public class Java6MethodParameter implements MethodParameter {
     public Class<?> getType() {
         Class<?> tmp = parameterClassCache;
         if (null == tmp) {
-            tmp = method.getParameterTypes()[index];
+            tmp = constructor.getParameterTypes()[index];
             parameterClassCache = tmp;
         }
         return tmp;
@@ -196,6 +195,7 @@ public class Java6MethodParameter implements MethodParameter {
      * @return true if and only if this parameter is a synthetic
      * construct as defined by
      * <cite>The Java&trade; Language Specification</cite>.
+     * @jls 13.1 The Form of a Binary
      */
     public boolean isSynthetic() {
         return Modifiers.isSynthetic(getModifiers());
@@ -209,8 +209,7 @@ public class Java6MethodParameter implements MethodParameter {
      * variable argument list.
      */
     public boolean isVarArgs() {
-        return method.isVarArgs() &&
-                index == method.getParameterTypes().length - 1;
+        return constructor.isVarArgs() && index == constructor.getParameterTypes().length - 1;
     }
 
 
@@ -234,7 +233,7 @@ public class Java6MethodParameter implements MethodParameter {
      * {@inheritDoc}
      */
     public Annotation[] getDeclaredAnnotations() {
-        return method.getParameterAnnotations()[index];
+        return constructor.getParameterAnnotations()[index];
     }
 
     /**

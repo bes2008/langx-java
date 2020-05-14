@@ -1,4 +1,4 @@
-package com.jn.langx.java8.util.reflect;
+package com.jn.langx.java8.util.reflect.parameter;
 
 
 import com.jn.langx.util.reflect.parameter.MethodParameter;
@@ -10,6 +10,13 @@ import java.lang.reflect.Parameter;
 public class Java8MethodParameter implements MethodParameter {
 
     private Parameter parameter;
+
+    /**
+     * package private
+     */
+    Java8MethodParameter(Parameter parameter) {
+        this.parameter = parameter;
+    }
 
     @Override
     public boolean isNamePresent() {
