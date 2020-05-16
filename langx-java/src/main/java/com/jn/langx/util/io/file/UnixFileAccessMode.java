@@ -1,10 +1,12 @@
 package com.jn.langx.util.io.file;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Radixs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.hash.HashCodeBuilder;
 
 import java.util.regex.Pattern;
 
@@ -93,7 +95,7 @@ public class UnixFileAccessMode {
         Collects.forEach(octal.toCharArray(), new Consumer<Character>() {
             @Override
             public void accept(Character c) {
-                modeString.append(Radixs.toBinary(c));
+                modeString.append(Radixs.toBinary(c - 48));
             }
         });
         return modeString.toString();
@@ -104,15 +106,34 @@ public class UnixFileAccessMode {
      *
      * @param octal octal string
      */
-    public static UnixFileAccessMode create(String octal){
+    public static UnixFileAccessMode create(String octal) {
         return new UnixFileAccessMode(toBinaryMode(octal));
     }
 
     /**
-     *
      * @param decimal 是进制数字
      */
-    public static UnixFileAccessMode create(int decimal){
+    public static UnixFileAccessMode create(int decimal) {
         return create(Radixs.toOtc(decimal));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UnixFileAccessMode that = (UnixFileAccessMode) o;
+
+        return Objects.equals(binaryMode, that.binaryMode);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().with(binaryMode).build();
+    }
+
+    @Override
+    public String toString() {
+        return "binaryMode:" + binaryMode + ", octalMode: " + Radixs.binaryToOctal(binaryMode);
     }
 }

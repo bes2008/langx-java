@@ -1,5 +1,6 @@
 package com.jn.langx.util;
 
+import java.math.BigInteger;
 import java.util.regex.Pattern;
 
 /**
@@ -45,8 +46,9 @@ public class Radixs {
     }
 
     private static Pattern OCTAL_STRING_PATTERN = Pattern.compile("^[0-7]+$");
-    public static boolean isOctal(String str){
-        if(Emptys.isEmpty(str)){
+
+    public static boolean isOctal(String str) {
+        if (Emptys.isEmpty(str)) {
             return false;
         }
         return OCTAL_STRING_PATTERN.matcher(str).matches();
@@ -146,5 +148,17 @@ public class Radixs {
 
     public static String toHex2(long b) {
         return Strings.completingLength(toRadix(new Long(b).intValue(), 16), 2, '0', true);
+    }
+
+    public static int binaryToDecimal(String binary) {
+        return binaryToDecimal2(binary).intValue();
+    }
+
+    public static String binaryToOctal(String binary) {
+        return toOtc(binaryToDecimal(binary));
+    }
+
+    public static BigInteger binaryToDecimal2(String binary) {
+        return new BigInteger(binary, 2);
     }
 }
