@@ -45,7 +45,7 @@ public class Platform {
         return isAndroid;
     }
 
-    private static boolean isKaffeJVM(){
+    private static boolean isKaffeJVM() {
         try {
             Class.forName("kaffe.util.NotImplemented");
             return true;
@@ -71,23 +71,115 @@ public class Platform {
 
     // Package-private for testing only
     private static int majorVersionFromJavaSpecificationVersion() {
-        return majorVersion(System.getProperty("java.specification.version", "1.6"));
+        // http://www.oracle.com/technetwork/java/javase/versioning-naming-139433.html
+        // http://openjdk.java.net/jeps/223 "New Version-String Scheme"
+
+        String vm = System.getProperty("java.version"); // JLS 20.18.7
+        if (vm == null) {
+            vm = System.getProperty("java.runtime.version");
+        }
+        if (vm == null) {
+            vm = System.getProperty("java.specification.version", "1.6");
+        }
+        return majorVersion(vm);
     }
 
     // Package-private for testing only
-    private static int majorVersion(final String javaSpecVersion) {
-        final String[] components = javaSpecVersion.split("\\.");
+    private static int majorVersion(String javaVersion) {
+        int index = Strings.indexOf(javaVersion, "_", 0);
+        if (index != -1) {
+            javaVersion = javaVersion.substring(0, index);
+        }
+        final String[] components = javaVersion.split("\\.");
         final int[] version = new int[components.length];
         for (int i = 0; i < components.length; i++) {
-            version[i] = Integer.parseInt(components[i]);
+            try {
+                version[i] = Integer.parseInt(components[i]);
+            } catch (Throwable ex) {
+                // ignore it
+            }
         }
 
         if (version[0] == 1) {
-            assert version[1] >= 6;
             return version[1];
         } else {
             return version[0];
         }
+    }
+
+    public static boolean is3VMOrGreater() {
+        return JAVA_VERSION_INT >= 3;
+    }
+
+    public static boolean is4VMOrGreater() {
+        return JAVA_VERSION_INT >= 4;
+    }
+
+    public static boolean is5VMOrGreater() {
+        return JAVA_VERSION_INT >= 5;
+    }
+
+    public static boolean is6VMOrGreater() {
+        return JAVA_VERSION_INT >= 6;
+    }
+
+    public static boolean is7VMOrGreater() {
+        return JAVA_VERSION_INT >= 7;
+    }
+
+    public static boolean is8VMOrGreater() {
+        return JAVA_VERSION_INT >= 8;
+    }
+
+    public static boolean is9VMOrGreater() {
+        return JAVA_VERSION_INT >= 9;
+    }
+
+    public static boolean is10VMOrGreater() {
+        return JAVA_VERSION_INT >= 10;
+    }
+
+    public static boolean is11VMOrGreater() {
+        return JAVA_VERSION_INT >= 11;
+    }
+
+    public static boolean is12VMOrGreater() {
+        return JAVA_VERSION_INT >= 12;
+    }
+
+    public static boolean is13VMOrGreater() {
+        return JAVA_VERSION_INT >= 13;
+    }
+
+    /**
+     * Find java executable File path from java.home system property.
+     *
+     * @return File associated with the java command, or null if not found.
+     */
+    public static File getJavaExecutable() {
+        String javaHome = null;
+        File result = null;
+        // java.home
+        // java.class.path
+        // java.ext.dirs
+        try {
+            javaHome = System.getProperty("java.home");
+        } catch (Throwable t) {
+            // ignore
+        }
+        if (null != javaHome) {
+            File binDir = new File(javaHome, "bin");
+            if (binDir.isDirectory() && binDir.canRead()) {
+                String[] execs = new String[] { "java", "java.exe" };
+                for (int i = 0; i < execs.length; i++) {
+                    result = new File(binDir, execs[i]);
+                    if (result.canRead()) {
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     private static boolean isGroovyAvailable0() {
