@@ -2,14 +2,25 @@ package com.jn.langx.aspectj.reflect;
 
 import com.jn.langx.annotation.Name;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.parameter.AbstractMethodParameterSupplier;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
 import com.jn.langx.util.reflect.parameter.MethodParameterSupplier;
 import com.jn.langx.util.reflect.parameter.ParameterMeta;
+import org.aspectj.apache.bcel.Repository;
+import org.aspectj.apache.bcel.classfile.JavaClass;
+import org.aspectj.apache.bcel.classfile.LocalVariable;
+import org.aspectj.apache.bcel.classfile.LocalVariableTable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Name("langx_aspectj")
+import java.lang.reflect.Method;
+
+@Name(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME)
 public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
+    private static final Logger logger = LoggerFactory.getLogger(AjMethodParameterSupplier.class);
     private MethodParameterSupplier delegate;
 
     public AjMethodParameterSupplier() {
@@ -38,7 +49,40 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
     @Override
     public MethodParameter get(ParameterMeta meta) {
         init();
+        String parameterName = findRealParameterName(meta);
+        meta.setName(parameterName);
         MethodParameter delegate = this.delegate.get(meta);
-        return new AjMethodParameter(delegate);
+        return new AjMethodParameter(parameterName, delegate);
+    }
+
+    private String findRealParameterName(ParameterMeta meta) {
+        try {
+            Method method = (Method) meta.getExecutable();
+            Class declaringClass = method.getDeclaringClass();
+            JavaClass classAj = Repository.lookupClass(Reflects.getFQNClassName(declaringClass));
+            org.aspectj.apache.bcel.classfile.Method methodAj = classAj.getMethod(method);
+            LocalVariableTable lvt = methodAj.getLocalVariableTable();
+
+            for (int i = 0; i < lvt.getTableLength(); i++) {
+                LocalVariable localVariable = lvt.getLocalVariable(i);
+
+                if (localVariable.getStartPC() == 0) {
+                    if(Modifiers.isStatic(method)){
+                         if(localVariable.getIndex() == meta.getIndex()){
+                             return localVariable.getName();
+                         }
+                    }
+                    else{
+                        // 实例方法的参数中， index 为0 的是 this 关键字
+                        if(localVariable.getIndex()-1 == meta.getIndex()){
+                            return localVariable.getName();
+                        }
+                    }
+                }
+            }
+        } catch (Throwable ex) {
+            logger.error(ex.getMessage(), ex);
+        }
+        return "arg" + meta.getIndex();
     }
 }
