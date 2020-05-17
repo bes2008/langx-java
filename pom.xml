@@ -50,12 +50,18 @@
     <modules>
         <module>langx-java</module>
         <module>langx-java8</module>
+        <module>langx-java-reflect-aspectj</module>
     </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.github.fangjinuo.langx</groupId>
                 <artifactId>langx-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx</groupId>
+                <artifactId>langx-java8</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
