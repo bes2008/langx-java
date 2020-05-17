@@ -6,7 +6,6 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.parameter.*;
 
 import java.lang.reflect.Constructor;
@@ -36,73 +35,62 @@ public class ParameterServiceRegistry {
         } catch (ClassNotFoundException ex) {
         }
 
-        Map<Boolean, MethodParameterSupplier> _methodParameterSupplierMap = loadMethodParameterSuppliers();
-        MethodParameterSupplier defaultMethodParameterSupplier = _methodParameterSupplierMap.get(JDK_PARAMETER_FOUND);
+        loadMethodParameterSuppliers();
+        String defaultName = JDK_PARAMETER_FOUND ? "langx_java8" : "langx_java6";
+        MethodParameterSupplier defaultMethodParameterSupplier = methodParameterSupplierRegistry.get(defaultName);
         if (defaultMethodParameterSupplier == null && JDK_PARAMETER_FOUND) {
-            defaultMethodParameterSupplier = _methodParameterSupplierMap.get(false);
+            defaultMethodParameterSupplier = methodParameterSupplierRegistry.get("langx_java6");
         }
         methodParameterSupplier = defaultMethodParameterSupplier;
-        Collects.forEach(_methodParameterSupplierMap, new Consumer2<Boolean, MethodParameterSupplier>() {
-            @Override
-            public void accept(Boolean key, MethodParameterSupplier supplier) {
-                Class<? extends MethodParameterSupplier> clazz = supplier.getClass();
-                String name = clazz.getSimpleName();
-                if (Reflects.hasAnnotation(clazz, Name.class)) {
-                    Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
-                    name = nameAnno.value();
-                }
-                methodParameterSupplierRegistry.put(name, supplier);
-            }
-        });
 
-        Map<Boolean, ConstructorParameterSupplier> _constructorParameterSupplierMap = loadConstructorParameterSuppliers();
-        ConstructorParameterSupplier defaultConstructorParameterSupplier = _constructorParameterSupplierMap.get(JDK_PARAMETER_FOUND);
+        loadConstructorParameterSuppliers();
+        ConstructorParameterSupplier defaultConstructorParameterSupplier = constructorParameterSupplierRegistry.get(defaultName);
         if (defaultConstructorParameterSupplier == null && JDK_PARAMETER_FOUND) {
-            defaultConstructorParameterSupplier = _constructorParameterSupplierMap.get(false);
+            defaultConstructorParameterSupplier = constructorParameterSupplierRegistry.get("langx_java6");
         }
         constructorParameterSupplier = defaultConstructorParameterSupplier;
-        Collects.forEach(_constructorParameterSupplierMap, new Consumer2<Boolean, ConstructorParameterSupplier>() {
-            @Override
-            public void accept(Boolean key, ConstructorParameterSupplier supplier) {
-                Class<? extends ConstructorParameterSupplier> clazz = supplier.getClass();
-                String name = clazz.getSimpleName();
-                if (Reflects.hasAnnotation(clazz, Name.class)) {
-                    Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
-                    name = nameAnno.value();
-                }
-                constructorParameterSupplierRegistry.put(name, supplier);
-            }
-        });
 
     }
 
-    private static Map<Boolean, MethodParameterSupplier> loadMethodParameterSuppliers() {
+    private static void loadMethodParameterSuppliers() {
         ServiceLoader<MethodParameterSupplier> loader = ServiceLoader.load(MethodParameterSupplier.class);
-        final Map<Boolean, MethodParameterSupplier> methodParameterSupplierRegistry = new HashMap<Boolean, MethodParameterSupplier>();
         Collects.forEach(loader, new Consumer<MethodParameterSupplier>() {
             @Override
-            public void accept(MethodParameterSupplier methodParameterSupplier) {
-                if (methodParameterSupplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
-                    methodParameterSupplierRegistry.put(methodParameterSupplier.usingJdkApi(), methodParameterSupplier);
+            public void accept(MethodParameterSupplier supplier) {
+                if (supplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
+                    Class<? extends MethodParameterSupplier> clazz = supplier.getClass();
+                    String name = Reflects.getFQNClassName(clazz);
+                    methodParameterSupplierRegistry.put(name, supplier);
+                    if (Reflects.hasAnnotation(clazz, Name.class)) {
+                        Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
+                        name = nameAnno.value();
+                        methodParameterSupplierRegistry.put(name, supplier);
+                    }
+
                 }
             }
         });
-        return methodParameterSupplierRegistry;
     }
 
 
-    private static Map<Boolean, ConstructorParameterSupplier> loadConstructorParameterSuppliers() {
+    private static void loadConstructorParameterSuppliers() {
         ServiceLoader<ConstructorParameterSupplier> loader = ServiceLoader.load(ConstructorParameterSupplier.class);
-        final Map<Boolean, ConstructorParameterSupplier> constructorParameterSupplierRegistry = new HashMap<Boolean, ConstructorParameterSupplier>();
         Collects.forEach(loader, new Consumer<ConstructorParameterSupplier>() {
             @Override
-            public void accept(ConstructorParameterSupplier constructorParameterSupplier) {
-                if (constructorParameterSupplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
-                    constructorParameterSupplierRegistry.put(constructorParameterSupplier.usingJdkApi(), constructorParameterSupplier);
+            public void accept(final ConstructorParameterSupplier supplier) {
+                if (supplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
+                    Class<? extends ConstructorParameterSupplier> clazz = supplier.getClass();
+                    String name = Reflects.getFQNClassName(clazz);
+                    constructorParameterSupplierRegistry.put(name, supplier);
+                    if (Reflects.hasAnnotation(clazz, Name.class)) {
+                        Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
+                        name = nameAnno.value();
+                        constructorParameterSupplierRegistry.put(name, supplier);
+                    }
+
                 }
             }
         });
-        return constructorParameterSupplierRegistry;
     }
 
     public static ParameterServiceRegistry getInstance() {
