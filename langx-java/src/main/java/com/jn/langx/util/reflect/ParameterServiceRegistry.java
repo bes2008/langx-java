@@ -23,6 +23,9 @@ public class ParameterServiceRegistry {
     private static final Map<String, MethodParameterSupplier> methodParameterSupplierRegistry = new HashMap<String, MethodParameterSupplier>();
     private static final Map<String, ConstructorParameterSupplier> constructorParameterSupplierRegistry = new HashMap<String, ConstructorParameterSupplier>();
 
+    private static final String JAVA_6_SUPPLIER_NAME = "langx_java6";
+    private static final String JAVA_8_SUPPLIER_NAME = "langx_java8";
+
     private ParameterServiceRegistry() {
 
     }
@@ -36,17 +39,17 @@ public class ParameterServiceRegistry {
         }
 
         loadMethodParameterSuppliers();
-        String defaultName = JDK_PARAMETER_FOUND ? "langx_java8" : "langx_java6";
+        String defaultName = JDK_PARAMETER_FOUND ? JAVA_8_SUPPLIER_NAME : JAVA_6_SUPPLIER_NAME;
         MethodParameterSupplier defaultMethodParameterSupplier = methodParameterSupplierRegistry.get(defaultName);
         if (defaultMethodParameterSupplier == null && JDK_PARAMETER_FOUND) {
-            defaultMethodParameterSupplier = methodParameterSupplierRegistry.get("langx_java6");
+            defaultMethodParameterSupplier = methodParameterSupplierRegistry.get(JAVA_6_SUPPLIER_NAME);
         }
         methodParameterSupplier = defaultMethodParameterSupplier;
 
         loadConstructorParameterSuppliers();
         ConstructorParameterSupplier defaultConstructorParameterSupplier = constructorParameterSupplierRegistry.get(defaultName);
         if (defaultConstructorParameterSupplier == null && JDK_PARAMETER_FOUND) {
-            defaultConstructorParameterSupplier = constructorParameterSupplierRegistry.get("langx_java6");
+            defaultConstructorParameterSupplier = constructorParameterSupplierRegistry.get(JAVA_6_SUPPLIER_NAME);
         }
         constructorParameterSupplier = defaultConstructorParameterSupplier;
 
