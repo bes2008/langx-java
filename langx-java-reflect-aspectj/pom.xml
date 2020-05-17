@@ -11,6 +11,11 @@
 
     <artifactId>langx-java-reflect-aspectj</artifactId>
 
+    <properties>
+        <aspectj.version>1.9.5</aspectj.version>
+
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
@@ -20,7 +25,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.9.5</version>
+            <version>${aspectj.version}</version>
         </dependency>
     </dependencies>
 
