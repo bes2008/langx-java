@@ -63,23 +63,27 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
             org.aspectj.apache.bcel.classfile.Method methodAj = classAj.getMethod(method);
             LocalVariableTable lvt = methodAj.getLocalVariableTable();
 
-            for (int i = 0; i < lvt.getTableLength(); i++) {
-                LocalVariable localVariable = lvt.getLocalVariable(i);
+            // 如果一个jar 在编译时，设置 编译时不保留 vars , 这种情况下 lvt 将是 null
+            if (lvt != null) {
+                for (int i = 0; i < lvt.getTableLength(); i++) {
+                    LocalVariable localVariable = lvt.getLocalVariable(i);
 
-                if (localVariable.getStartPC() == 0) {
-                    if(Modifiers.isStatic(method)){
-                         if(localVariable.getIndex() == meta.getIndex()){
-                             return localVariable.getName();
-                         }
-                    }
-                    else{
-                        // 实例方法的参数中， index 为0 的是 this 关键字
-                        if(localVariable.getIndex()-1 == meta.getIndex()){
-                            return localVariable.getName();
+                    // 只有 start pc 为0 的，才会是 方法的参数
+                    if (localVariable.getStartPC() == 0) {
+                        if (Modifiers.isStatic(method)) {
+                            if (localVariable.getIndex() == meta.getIndex()) {
+                                return localVariable.getName();
+                            }
+                        } else {
+                            // 实例方法的参数中， index 为0 的是 this 关键字
+                            if (localVariable.getIndex() - 1 == meta.getIndex()) {
+                                return localVariable.getName();
+                            }
                         }
                     }
                 }
             }
+
         } catch (Throwable ex) {
             logger.error(ex.getMessage(), ex);
         }

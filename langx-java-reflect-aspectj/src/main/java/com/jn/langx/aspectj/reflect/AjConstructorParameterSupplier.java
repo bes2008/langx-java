@@ -59,13 +59,16 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
             Constructor constructor = (Constructor) meta.getExecutable();
             Class declaringClass = constructor.getDeclaringClass();
             JavaClass classAj = Repository.lookupClass(Reflects.getFQNClassName(declaringClass));
+            // 构造器的本质 是 <init> 方法
             Method methodAj = classAj.getMethod(constructor);
             LocalVariableTable lvt = methodAj.getLocalVariableTable();
 
+            // 如果一个jar 在编译时，设置 编译时不保留 vars , 这种情况下 lvt 将是 null
             if (lvt != null) {
                 for (int i = 0; i < lvt.getTableLength(); i++) {
                     LocalVariable localVariable = lvt.getLocalVariable(i);
 
+                    // 只有 start pc 为0 的，才会是 方法的参数
                     if (localVariable.getStartPC() == 0) {
                         // 构造器参数中， index 为0 的是 this 关键字
                         if (localVariable.getIndex() - 1 == meta.getIndex()) {
