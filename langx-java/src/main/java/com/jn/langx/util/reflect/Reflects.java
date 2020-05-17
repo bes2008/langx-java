@@ -782,12 +782,24 @@ public class Reflects {
         }
     }
 
+    public static MethodParameter getMethodParameter(String supplierName, Method method, int index) {
+        return PARAMETER_SERVICE_REGISTRY.getMethodParameter(supplierName, method, index);
+    }
+
     public static MethodParameter getMethodParameter(Method method, int index) {
         return PARAMETER_SERVICE_REGISTRY.getMethodParameter(method, index);
     }
 
+    public static List<MethodParameter> getMethodParameters(String supplierName, Method method) {
+        return PARAMETER_SERVICE_REGISTRY.getMethodParameters(supplierName, method);
+    }
+
     public static List<MethodParameter> getMethodParameters(Method method) {
         return PARAMETER_SERVICE_REGISTRY.getMethodParameters(method);
+    }
+
+    public static ConstructorParameter getConstructorParameter(String supplierName, Constructor constructor, int index) {
+        return PARAMETER_SERVICE_REGISTRY.getConstructorParameter(supplierName, constructor, index);
     }
 
     public static ConstructorParameter getConstructorParameter(Constructor constructor, int index) {
@@ -796,6 +808,10 @@ public class Reflects {
 
     public static List<ConstructorParameter> getConstructorParameters(Constructor constructor) {
         return PARAMETER_SERVICE_REGISTRY.getConstructorParameters(constructor);
+    }
+
+    public static List<ConstructorParameter> getConstructorParameters(String supplierName, Constructor constructor) {
+        return PARAMETER_SERVICE_REGISTRY.getConstructorParameters(supplierName, constructor);
     }
 
     public static Set<Class> getAllInterfaces(Class clazz) {

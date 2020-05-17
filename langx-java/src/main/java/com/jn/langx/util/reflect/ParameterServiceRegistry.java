@@ -102,6 +102,10 @@ public class ParameterServiceRegistry {
 
 
     public List<MethodParameter> getMethodParameters(final Method method) {
+        return getMethodParameters(null, method);
+    }
+
+    public List<MethodParameter> getMethodParameters(final String supplierName, final Method method) {
         Preconditions.checkNotNull(method);
         int count = method.getParameterTypes().length;
         final List<MethodParameter> parameters = Collects.newArrayList();
@@ -109,7 +113,7 @@ public class ParameterServiceRegistry {
             Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                 @Override
                 public void accept(Integer index) {
-                    parameters.add(getMethodParameter(method, index));
+                    parameters.add(getMethodParameter(supplierName, method, index));
                 }
             });
         }
@@ -117,14 +121,26 @@ public class ParameterServiceRegistry {
     }
 
     public MethodParameter getMethodParameter(Method method, int index) {
-        return getMethodParameter("arg" + index, 0, method, index);
+        return getMethodParameter(null, method, index);
+    }
+
+    public MethodParameter getMethodParameter(String supplierName, Method method, int index) {
+        return getMethodParameter(supplierName, "arg" + index, 0, method, index);
     }
 
     public MethodParameter getMethodParameter(String name, int modifiers, Method method, int index) {
-        return methodParameterSupplier.get(new ParameterMeta(name, modifiers, method, index));
+        return getMethodParameter(null, name, modifiers, method, index);
+    }
+
+    public MethodParameter getMethodParameter(String supplierName, String name, int modifiers, Method method, int index) {
+        return findMethodParameterSupplier(supplierName, true).get(new ParameterMeta(name, modifiers, method, index));
     }
 
     public List<ConstructorParameter> getConstructorParameters(final Constructor constructor) {
+        return getConstructorParameters(null, constructor);
+    }
+
+    public List<ConstructorParameter> getConstructorParameters(final String supplierName, final Constructor constructor) {
         Preconditions.checkNotNull(constructor);
         int count = constructor.getParameterTypes().length;
         final List<ConstructorParameter> parameters = Collects.newArrayList();
@@ -132,7 +148,7 @@ public class ParameterServiceRegistry {
             Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                 @Override
                 public void accept(Integer index) {
-                    parameters.add(getConstructorParameter(constructor, index));
+                    parameters.add(getConstructorParameter(supplierName, constructor, index));
                 }
             });
         }
@@ -140,12 +156,21 @@ public class ParameterServiceRegistry {
     }
 
     public ConstructorParameter getConstructorParameter(Constructor constructor, int index) {
-        return getConstructorParameter("arg" + index, 0, constructor, index);
+        return getConstructorParameter(null, constructor, index);
+    }
+
+    public ConstructorParameter getConstructorParameter(String supplierName, Constructor constructor, int index) {
+        return getConstructorParameter(supplierName, "arg" + index, 0, constructor, index);
     }
 
     public ConstructorParameter getConstructorParameter(String name, int modifiers, Constructor constructor, int index) {
-        return constructorParameterSupplier.get(new ParameterMeta(name, modifiers, constructor, index));
+        return getConstructorParameter(null, name, modifiers, constructor, index);
     }
+
+    public ConstructorParameter getConstructorParameter(String supplierName, String name, int modifiers, Constructor constructor, int index) {
+        return findConstructorParameterSupplier(supplierName, true).get(new ParameterMeta(name, modifiers, constructor, index));
+    }
+
 
     public MethodParameterSupplier getDefaultMethodParameterSupplier() {
         return methodParameterSupplier;
@@ -156,11 +181,27 @@ public class ParameterServiceRegistry {
     }
 
     public MethodParameterSupplier findMethodParameterSupplier(String name) {
-        return methodParameterSupplierRegistry.get(name);
+        return findMethodParameterSupplier(name, true);
+    }
+
+    public MethodParameterSupplier findMethodParameterSupplier(String name, boolean useDefaultIfNotFound) {
+        MethodParameterSupplier supplier = methodParameterSupplierRegistry.get(name);
+        if (supplier == null && useDefaultIfNotFound) {
+            return getDefaultMethodParameterSupplier();
+        }
+        return supplier;
     }
 
     public ConstructorParameterSupplier findConstructorParameterSupplier(String name) {
-        return constructorParameterSupplierRegistry.get(name);
+        return findConstructorParameterSupplier(name, true);
+    }
+
+    public ConstructorParameterSupplier findConstructorParameterSupplier(String name, boolean useDefaultIfNotFound) {
+        ConstructorParameterSupplier supplier = constructorParameterSupplierRegistry.get(name);
+        if (supplier == null && useDefaultIfNotFound) {
+            return getDefaultConstructorParameterSupplier();
+        }
+        return supplier;
     }
 
     public void register(String name, MethodParameterSupplier supplier) {
