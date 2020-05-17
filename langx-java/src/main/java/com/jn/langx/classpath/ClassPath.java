@@ -1,4 +1,4 @@
-package com.jn.langx.util;
+package com.jn.langx.classpath;
 
 import java.io.*;
 import java.util.ArrayList;
