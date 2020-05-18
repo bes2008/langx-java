@@ -1,7 +1,7 @@
 package com.jn.langx.util;
 
-import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer;
+import java.math.BigInteger;
+import java.util.regex.Pattern;
 
 /**
  * 10进制		二进制		8进制		16进制
@@ -39,6 +39,19 @@ public class Radixs {
 
     public static String toBinary(long b) {
         return toRadix(new Long(b).intValue(), 2);
+    }
+
+    public static boolean isOctal(int b) {
+        return b >= 0 && b <= 7;
+    }
+
+    private static Pattern OCTAL_STRING_PATTERN = Pattern.compile("^[0-7]+$");
+
+    public static boolean isOctal(String str) {
+        if (Emptys.isEmpty(str)) {
+            return false;
+        }
+        return OCTAL_STRING_PATTERN.matcher(str).matches();
     }
 
     public static String toOtc(byte b) {
@@ -91,7 +104,7 @@ public class Radixs {
 
     private static String toHex(byte[] bytes, final boolean twoLength) {
         final StringBuilder str = new StringBuilder();
-        for (byte b : bytes){
+        for (byte b : bytes) {
             str.append(twoLength ? toHex2(b) : toHex(b));
         }
         return str.toString();
@@ -135,5 +148,17 @@ public class Radixs {
 
     public static String toHex2(long b) {
         return Strings.completingLength(toRadix(new Long(b).intValue(), 16), 2, '0', true);
+    }
+
+    public static int binaryToDecimal(String binary) {
+        return binaryToDecimal2(binary).intValue();
+    }
+
+    public static String binaryToOctal(String binary) {
+        return toOtc(binaryToDecimal(binary));
+    }
+
+    public static BigInteger binaryToDecimal2(String binary) {
+        return new BigInteger(binary, 2);
     }
 }

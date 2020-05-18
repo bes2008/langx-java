@@ -1,8 +1,11 @@
 package com.jn.langx.util.reflect.parameter;
 
+import com.jn.langx.annotation.Name;
+
 import java.lang.reflect.Constructor;
 
-public class Java6ConstructorParameterSupplier implements ConstructorParameterSupplier {
+@Name("langx_java6")
+public class Java6ConstructorParameterSupplier extends AbstractConstructorParameterSupplier {
     @Override
     public boolean usingJdkApi() {
         return false;

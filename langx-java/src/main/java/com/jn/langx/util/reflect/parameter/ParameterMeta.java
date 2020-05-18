@@ -2,10 +2,8 @@ package com.jn.langx.util.reflect.parameter;
 
 import com.jn.langx.util.Preconditions;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 
 public class ParameterMeta {
     private Object executable;

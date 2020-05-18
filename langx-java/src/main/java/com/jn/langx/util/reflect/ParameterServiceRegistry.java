@@ -1,5 +1,6 @@
 package com.jn.langx.util.reflect;
 
+import com.jn.langx.annotation.Name;
 import com.jn.langx.annotation.Singleton;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Arrs;
@@ -14,14 +15,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-/**
- * Package scope
- */
 @Singleton
-class ParameterServiceRegistry {
+public class ParameterServiceRegistry {
     private static final ParameterServiceRegistry INSTANCE = new ParameterServiceRegistry();
     private static final MethodParameterSupplier methodParameterSupplier;
     private static final ConstructorParameterSupplier constructorParameterSupplier;
+    private static final Map<String, MethodParameterSupplier> methodParameterSupplierRegistry = new HashMap<String, MethodParameterSupplier>();
+    private static final Map<String, ConstructorParameterSupplier> constructorParameterSupplierRegistry = new HashMap<String, ConstructorParameterSupplier>();
+
+    private static final String JAVA_6_SUPPLIER_NAME = "langx_java6";
+    private static final String JAVA_8_SUPPLIER_NAME = "langx_java8";
 
     private ParameterServiceRegistry() {
 
@@ -35,57 +38,74 @@ class ParameterServiceRegistry {
         } catch (ClassNotFoundException ex) {
         }
 
-        Map<Boolean, MethodParameterSupplier> methodParameterSupplierMap = loadMethodParameterSuppliers();
-        MethodParameterSupplier defaultMethodParameterSupplier = methodParameterSupplierMap.get(JDK_PARAMETER_FOUND);
+        loadMethodParameterSuppliers();
+        String defaultName = JDK_PARAMETER_FOUND ? JAVA_8_SUPPLIER_NAME : JAVA_6_SUPPLIER_NAME;
+        MethodParameterSupplier defaultMethodParameterSupplier = methodParameterSupplierRegistry.get(defaultName);
         if (defaultMethodParameterSupplier == null && JDK_PARAMETER_FOUND) {
-            defaultMethodParameterSupplier = methodParameterSupplierMap.get(false);
+            defaultMethodParameterSupplier = methodParameterSupplierRegistry.get(JAVA_6_SUPPLIER_NAME);
         }
         methodParameterSupplier = defaultMethodParameterSupplier;
 
-
-        Map<Boolean, ConstructorParameterSupplier> constructorParameterSupplierMap = loadConstructorParameterSuppliers();
-        ConstructorParameterSupplier defaultConstructorParameterSupplier = constructorParameterSupplierMap.get(JDK_PARAMETER_FOUND);
+        loadConstructorParameterSuppliers();
+        ConstructorParameterSupplier defaultConstructorParameterSupplier = constructorParameterSupplierRegistry.get(defaultName);
         if (defaultConstructorParameterSupplier == null && JDK_PARAMETER_FOUND) {
-            defaultConstructorParameterSupplier = constructorParameterSupplierMap.get(false);
+            defaultConstructorParameterSupplier = constructorParameterSupplierRegistry.get(JAVA_6_SUPPLIER_NAME);
         }
         constructorParameterSupplier = defaultConstructorParameterSupplier;
+
     }
 
-    private static Map<Boolean, MethodParameterSupplier> loadMethodParameterSuppliers() {
+    private static void loadMethodParameterSuppliers() {
         ServiceLoader<MethodParameterSupplier> loader = ServiceLoader.load(MethodParameterSupplier.class);
-        final Map<Boolean, MethodParameterSupplier> methodParameterSupplierRegistry = new HashMap<Boolean, MethodParameterSupplier>();
         Collects.forEach(loader, new Consumer<MethodParameterSupplier>() {
             @Override
-            public void accept(MethodParameterSupplier methodParameterSupplier) {
-                if (methodParameterSupplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
-                    methodParameterSupplierRegistry.put(methodParameterSupplier.usingJdkApi(), methodParameterSupplier);
+            public void accept(MethodParameterSupplier supplier) {
+                if (supplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
+                    Class<? extends MethodParameterSupplier> clazz = supplier.getClass();
+                    String name = Reflects.getFQNClassName(clazz);
+                    methodParameterSupplierRegistry.put(name, supplier);
+                    if (Reflects.hasAnnotation(clazz, Name.class)) {
+                        Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
+                        name = nameAnno.value();
+                        methodParameterSupplierRegistry.put(name, supplier);
+                    }
+
                 }
             }
         });
-        return methodParameterSupplierRegistry;
     }
 
 
-    private static Map<Boolean, ConstructorParameterSupplier> loadConstructorParameterSuppliers() {
+    private static void loadConstructorParameterSuppliers() {
         ServiceLoader<ConstructorParameterSupplier> loader = ServiceLoader.load(ConstructorParameterSupplier.class);
-        final Map<Boolean, ConstructorParameterSupplier> constructorParameterSupplierRegistry = new HashMap<Boolean, ConstructorParameterSupplier>();
         Collects.forEach(loader, new Consumer<ConstructorParameterSupplier>() {
             @Override
-            public void accept(ConstructorParameterSupplier constructorParameterSupplier) {
-                if (constructorParameterSupplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
-                    constructorParameterSupplierRegistry.put(constructorParameterSupplier.usingJdkApi(), constructorParameterSupplier);
+            public void accept(final ConstructorParameterSupplier supplier) {
+                if (supplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
+                    Class<? extends ConstructorParameterSupplier> clazz = supplier.getClass();
+                    String name = Reflects.getFQNClassName(clazz);
+                    constructorParameterSupplierRegistry.put(name, supplier);
+                    if (Reflects.hasAnnotation(clazz, Name.class)) {
+                        Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
+                        name = nameAnno.value();
+                        constructorParameterSupplierRegistry.put(name, supplier);
+                    }
+
                 }
             }
         });
-        return constructorParameterSupplierRegistry;
     }
 
-    static ParameterServiceRegistry getInstance() {
+    public static ParameterServiceRegistry getInstance() {
         return INSTANCE;
     }
 
 
     public List<MethodParameter> getMethodParameters(final Method method) {
+        return getMethodParameters(null, method);
+    }
+
+    public List<MethodParameter> getMethodParameters(final String supplierName, final Method method) {
         Preconditions.checkNotNull(method);
         int count = method.getParameterTypes().length;
         final List<MethodParameter> parameters = Collects.newArrayList();
@@ -93,7 +113,7 @@ class ParameterServiceRegistry {
             Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                 @Override
                 public void accept(Integer index) {
-                    parameters.add(getMethodParameter(method, index));
+                    parameters.add(getMethodParameter(supplierName, method, index));
                 }
             });
         }
@@ -101,14 +121,26 @@ class ParameterServiceRegistry {
     }
 
     public MethodParameter getMethodParameter(Method method, int index) {
-        return getMethodParameter("arg" + index, 0, method, index);
+        return getMethodParameter(null, method, index);
+    }
+
+    public MethodParameter getMethodParameter(String supplierName, Method method, int index) {
+        return getMethodParameter(supplierName, "arg" + index, 0, method, index);
     }
 
     public MethodParameter getMethodParameter(String name, int modifiers, Method method, int index) {
-        return methodParameterSupplier.get(new ParameterMeta(name, modifiers, method, index));
+        return getMethodParameter(null, name, modifiers, method, index);
+    }
+
+    public MethodParameter getMethodParameter(String supplierName, String name, int modifiers, Method method, int index) {
+        return findMethodParameterSupplier(supplierName, true).get(new ParameterMeta(name, modifiers, method, index));
     }
 
     public List<ConstructorParameter> getConstructorParameters(final Constructor constructor) {
+        return getConstructorParameters(null, constructor);
+    }
+
+    public List<ConstructorParameter> getConstructorParameters(final String supplierName, final Constructor constructor) {
         Preconditions.checkNotNull(constructor);
         int count = constructor.getParameterTypes().length;
         final List<ConstructorParameter> parameters = Collects.newArrayList();
@@ -116,7 +148,7 @@ class ParameterServiceRegistry {
             Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                 @Override
                 public void accept(Integer index) {
-                    parameters.add(getConstructorParameter(constructor, index));
+                    parameters.add(getConstructorParameter(supplierName, constructor, index));
                 }
             });
         }
@@ -124,11 +156,64 @@ class ParameterServiceRegistry {
     }
 
     public ConstructorParameter getConstructorParameter(Constructor constructor, int index) {
-        return getConstructorParameter("arg" + index, 0, constructor, index);
+        return getConstructorParameter(null, constructor, index);
+    }
+
+    public ConstructorParameter getConstructorParameter(String supplierName, Constructor constructor, int index) {
+        return getConstructorParameter(supplierName, "arg" + index, 0, constructor, index);
     }
 
     public ConstructorParameter getConstructorParameter(String name, int modifiers, Constructor constructor, int index) {
-        return constructorParameterSupplier.get(new ParameterMeta(name, modifiers, constructor, index));
+        return getConstructorParameter(null, name, modifiers, constructor, index);
+    }
+
+    public ConstructorParameter getConstructorParameter(String supplierName, String name, int modifiers, Constructor constructor, int index) {
+        return findConstructorParameterSupplier(supplierName, true).get(new ParameterMeta(name, modifiers, constructor, index));
+    }
+
+
+    public MethodParameterSupplier getDefaultMethodParameterSupplier() {
+        return methodParameterSupplier;
+    }
+
+    public ConstructorParameterSupplier getDefaultConstructorParameterSupplier() {
+        return constructorParameterSupplier;
+    }
+
+    public MethodParameterSupplier findMethodParameterSupplier(String name) {
+        return findMethodParameterSupplier(name, true);
+    }
+
+    public MethodParameterSupplier findMethodParameterSupplier(String name, boolean useDefaultIfNotFound) {
+        MethodParameterSupplier supplier = methodParameterSupplierRegistry.get(name);
+        if (supplier == null && useDefaultIfNotFound) {
+            return getDefaultMethodParameterSupplier();
+        }
+        return supplier;
+    }
+
+    public ConstructorParameterSupplier findConstructorParameterSupplier(String name) {
+        return findConstructorParameterSupplier(name, true);
+    }
+
+    public ConstructorParameterSupplier findConstructorParameterSupplier(String name, boolean useDefaultIfNotFound) {
+        ConstructorParameterSupplier supplier = constructorParameterSupplierRegistry.get(name);
+        if (supplier == null && useDefaultIfNotFound) {
+            return getDefaultConstructorParameterSupplier();
+        }
+        return supplier;
+    }
+
+    public void register(String name, MethodParameterSupplier supplier) {
+        if (methodParameterSupplierRegistry.get(name) == null) {
+            methodParameterSupplierRegistry.put(name, supplier);
+        }
+    }
+
+    public void register(String name, ConstructorParameterSupplier supplier) {
+        if (constructorParameterSupplierRegistry.get(name) == null) {
+            constructorParameterSupplierRegistry.put(name, supplier);
+        }
     }
 
 }

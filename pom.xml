@@ -7,7 +7,7 @@
     <groupId>com.github.fangjinuo.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>2.4.0</version>
+    <version>2.4.1</version>
 
     <name>langx</name>
 
@@ -50,12 +50,18 @@
     <modules>
         <module>langx-java</module>
         <module>langx-java8</module>
+        <module>langx-java-reflect-aspectj</module>
     </modules>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.github.fangjinuo.langx</groupId>
                 <artifactId>langx-java</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx</groupId>
+                <artifactId>langx-java8</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
@@ -121,9 +127,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
+                    <debug>true</debug>
                 </configuration>
             </plugin>
             <plugin>
