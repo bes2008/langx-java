@@ -2952,9 +2952,6 @@ public class Strings {
      * -1 if no match or {@code null} string input
      */
     public static int indexOf(final CharSequence seq, final int searchChar) {
-        if (isEmpty(seq)) {
-            return INDEX_NOT_FOUND;
-        }
         return indexOf(seq, searchChar, 0);
     }
 
@@ -3007,11 +3004,39 @@ public class Strings {
      * @return the first index of the search character (always &ge; startPos),
      * -1 if no match or {@code null} string input
      */
-    public static int indexOf(final CharSequence seq, final int searchChar, final int startPos) {
+    public static int indexOf(final CharSequence seq, final int searchChar, int startPos) {
         if (isEmpty(seq)) {
             return INDEX_NOT_FOUND;
         }
-        return indexOf(seq, searchChar, startPos);
+        if (isEmpty(seq)) {
+            return INDEX_NOT_FOUND;
+        }
+        if(seq instanceof String) {
+            return seq.toString().indexOf(searchChar, 0);
+        }
+        final int sz = seq.length();
+        if (startPos < 0) {
+            startPos = 0;
+        }
+        if (searchChar < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+            for (int i = startPos; i < sz; i++) {
+                if (seq.charAt(i) == searchChar) {
+                    return i;
+                }
+            }
+        }
+        //supplementary characters (LANG1300)
+        if (searchChar <= Character.MAX_CODE_POINT) {
+            final char[] chars = Character.toChars(searchChar);
+            for (int i = startPos; i < sz - 1; i++) {
+                final char high = seq.charAt(i);
+                final char low = seq.charAt(i + 1);
+                if (high == chars[0] && low == chars[1]) {
+                    return i;
+                }
+            }
+        }
+        return NOT_FOUND;
     }
 
     /**
@@ -3082,7 +3107,7 @@ public class Strings {
         if (seq == null || searchSeq == null) {
             return INDEX_NOT_FOUND;
         }
-        return indexOf(seq, searchSeq, startPos);
+        return seq.toString().indexOf(searchSeq.toString(), startPos);
     }
 
     //-----------------------------------------------------------------------

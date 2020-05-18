@@ -52,4 +52,13 @@ public class StringsTests {
         System.out.println(Strings.upperCase(str, 2, 7));
         System.out.println(Strings.upperCase(str, 9, 20));
     }
+
+    @Test
+    public void testIndexOf(){
+        String str = "abcde123fg34hklm_34534nopRst234Uvw4x_yz";
+        System.out.println(Strings.indexOf(str, '4'));
+        System.out.println(Strings.indexOf(str, '4', 20));
+        System.out.println(Strings.indexOf(str, "nop"));
+        System.out.println(Strings.indexOf(str, "nop", 20));
+    }
 }
