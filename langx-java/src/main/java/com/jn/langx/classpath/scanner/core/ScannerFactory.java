@@ -1,15 +1,15 @@
 package com.jn.langx.classpath.scanner.core;
 
-import com.jn.langx.classpath.scanner.ClassPathScanner;
-import com.jn.langx.classpath.scanner.ClassPathScannerFactory;
+import com.jn.langx.classpath.scanner.ClasspathScanner;
+import com.jn.langx.classpath.scanner.ClasspathScannerFactory;
 
 /**
  * Service implementation of ClassPathScannerFactory.
  */
-public class ScannerFactory implements ClassPathScannerFactory {
+public class ScannerFactory implements ClasspathScannerFactory {
 
     @Override
-    public ClassPathScanner createScanner(ClassLoader classLoader) {
+    public ClasspathScanner createScanner(ClassLoader classLoader) {
         return new Scanner(classLoader);
     }
 }

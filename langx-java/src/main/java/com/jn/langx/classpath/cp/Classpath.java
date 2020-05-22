@@ -1,5 +1,6 @@
 package com.jn.langx.classpath.cp;
 
+import com.jn.langx.classpath.scanner.ClasspathScanner;
 import com.jn.langx.io.resource.Resource;
 
 /**
@@ -9,7 +10,7 @@ import com.jn.langx.io.resource.Resource;
  * <p>The users can define a class implementing this interface so that
  * a class file is obtained from a non-standard source.
  */
-public interface Classpath {
+public interface Classpath extends ClasspathScanner {
 
     /**
      * Returns the uniform resource locator (URL) of the class file

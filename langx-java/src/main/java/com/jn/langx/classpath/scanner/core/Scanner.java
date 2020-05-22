@@ -2,6 +2,7 @@ package com.jn.langx.classpath.scanner.core;
 
 
 import com.jn.langx.classpath.scanner.ClassFilter;
+import com.jn.langx.classpath.scanner.ClasspathScanner;
 import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.classpath.scanner.internal.EnvironmentDetection;
 import com.jn.langx.classpath.scanner.internal.ResourceAndClassScanner;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Scanner for Resources and Classes.
  */
-public class Scanner implements com.jn.langx.classpath.scanner.ClassPathScanner {
+public class Scanner implements ClasspathScanner {
 
     private final ResourceAndClassScanner resourceAndClassScanner;
 
@@ -66,7 +67,7 @@ public class Scanner implements com.jn.langx.classpath.scanner.ClassPathScanner 
      * @return The resources that were found.
      */
     @Override
-    public List<Resource> scanForResources(String location, ResourceFilter predicate) {
+    public List<Resource> scanResources(String location, ResourceFilter predicate) {
         return scanForResources(Locations.parseLocation(location), predicate);
     }
 
@@ -89,7 +90,7 @@ public class Scanner implements com.jn.langx.classpath.scanner.ClassPathScanner 
      * @return The classes found matching the predicate
      */
     @Override
-    public List<Class<?>> scanForClasses(String location, ClassFilter predicate) {
+    public List<Class<?>> scanClasses(String location, ClassFilter predicate) {
         Location l = Locations.parseLocation(location);
         return scanForClasses(l, predicate);
     }
