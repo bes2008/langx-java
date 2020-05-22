@@ -12,6 +12,10 @@ import java.nio.channels.ReadableByteChannel;
  * 3. 一个 byte[]
  * 4. 一个 字符串
  * 5. 一个 URL
+ *
+ * Resource只是一个资源的描述，它不代表该资源真实存在，如果不存在 getInputStream()返回为 null
+ *
+ *
  * @param <E>
  */
 public interface Resource<E> {

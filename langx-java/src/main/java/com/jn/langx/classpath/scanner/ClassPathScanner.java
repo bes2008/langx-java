@@ -5,9 +5,7 @@ import com.jn.langx.io.resource.Resource;
 import java.util.List;
 
 /**
- * copy from: org.avaje:avaje-classpath-scanner.3.1.1
- * <p>
- * Scans the class path for resources or classes.
+ * Scans resources or classes from the classpath
  */
 public interface ClassPathScanner {
 
