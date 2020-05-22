@@ -4,10 +4,10 @@ import com.jn.langx.io.resource.ByteArrayResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 
-public class ByteArrayClassPath implements Classpath {
+public class ByteArrayClasspath implements Classpath {
     private ByteArrayResource resource;
 
-    public ByteArrayClassPath(String desc, byte[] bytes) {
+    public ByteArrayClasspath(String desc, byte[] bytes) {
         resource = Resources.asByteArrayResource(bytes, desc);
     }
 
