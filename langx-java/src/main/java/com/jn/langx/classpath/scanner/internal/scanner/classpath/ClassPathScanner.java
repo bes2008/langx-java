@@ -6,7 +6,7 @@ import com.jn.langx.classpath.scanner.FilterResource;
 import com.jn.langx.classpath.scanner.Resource;
 import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.classpath.scanner.core.ClassPathScanException;
-import com.jn.langx.classpath.scanner.core.Location;
+import com.jn.langx.io.resource.Location;
 import com.jn.langx.classpath.scanner.internal.EnvironmentDetection;
 import com.jn.langx.classpath.scanner.internal.ResourceAndClassScanner;
 import com.jn.langx.classpath.scanner.internal.scanner.classpath.jboss.JBossVFSv2UrlResolver;

@@ -5,6 +5,15 @@ import java.io.InputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
+/**
+ * 任何的可以 用 input stream 去读的都可以被称为资源。例如：
+ * 1. 一个普通文件
+ * 2. 一个.class
+ * 3. 一个 byte[]
+ * 4. 一个 字符串
+ * 5. 一个 URL
+ * @param <E>
+ */
 public interface Resource<E> {
 
     E getRealResource();

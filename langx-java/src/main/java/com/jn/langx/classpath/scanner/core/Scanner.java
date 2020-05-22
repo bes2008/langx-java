@@ -9,6 +9,9 @@ import com.jn.langx.classpath.scanner.internal.ResourceAndClassScanner;
 import com.jn.langx.classpath.scanner.internal.scanner.classpath.ClassPathScanner;
 import com.jn.langx.classpath.scanner.internal.scanner.filesystem.FileSystemScanner;
 import com.jn.langx.exception.UnsupportedPlatformException;
+import com.jn.langx.io.resource.Location;
+import com.jn.langx.io.resource.Locations;
+import com.jn.langx.util.collection.Collects;
 
 import java.util.List;
 
@@ -41,11 +44,14 @@ public class Scanner implements com.jn.langx.classpath.scanner.ClassPathScanner 
      * @return The resources that were found.
      */
     public List<Resource> scanForResources(Location location, ResourceFilter predicate) {
-
-        if (location.isFileSystem()) {
+        Location l = Locations.parseLocation(location.getLocation());
+        if(Locations.isFileLocation(location)){
             return fileSystemScanner.scanForResources(location, predicate);
         }
-        return resourceAndClassScanner.scanForResources(location, predicate);
+        if(Locations.isClasspathLocation(location)) {
+            return resourceAndClassScanner.scanForResources(location, predicate);
+        }
+        return Collects.newArrayList();
     }
 
     /**
@@ -61,7 +67,7 @@ public class Scanner implements com.jn.langx.classpath.scanner.ClassPathScanner 
      */
     @Override
     public List<Resource> scanForResources(String location, ResourceFilter predicate) {
-        return scanForResources(new Location(location), predicate);
+        return scanForResources(Locations.parseLocation(location), predicate);
     }
 
     /**
@@ -84,7 +90,8 @@ public class Scanner implements com.jn.langx.classpath.scanner.ClassPathScanner 
      */
     @Override
     public List<Class<?>> scanForClasses(String location, ClassFilter predicate) {
-        return scanForClasses(new Location(location), predicate);
+        Location l = Locations.parseLocation(location);
+        return scanForClasses(l, predicate);
     }
 
 }

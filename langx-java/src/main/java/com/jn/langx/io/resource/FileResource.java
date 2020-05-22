@@ -2,8 +2,8 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.io.file.Filenames;
+import com.jn.langx.util.net.URLs;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,22 +15,22 @@ import java.net.URL;
 /**
  * file:/home/fjn/xx/yy
  */
-public class FileResource extends AbstractPathableResource<File> {
+public class FileResource extends AbstractLocatableResource<File> {
     private File file;
     public static final String PREFIX = "file:";
     public static final String FILE_URL_PATTERN = URLs.URL_PREFIX_FILE;
 
     private String cleanedPath;
 
+
     public FileResource(@NonNull String path) {
         Preconditions.checkTrue(path.startsWith(PREFIX) && !path.startsWith(FILE_URL_PATTERN));
         setPath(path);
     }
 
-    @Override
-    public void setPath(String path) {
-        super.setPath(path);
+    private void setPath(String path) {
         cleanedPath = path.substring(PREFIX.length());
+        setLocation(PREFIX, cleanedPath);
         cleanedPath = Filenames.cleanPath(cleanedPath);
         file = new File(cleanedPath);
     }

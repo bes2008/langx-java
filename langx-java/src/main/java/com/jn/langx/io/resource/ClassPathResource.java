@@ -15,7 +15,7 @@ import java.net.URL;
  * classpath:/xx/yy/zz
  * classpath:xx/yy/zz
  */
-public class ClassPathResource extends AbstractPathableResource<URL> {
+public class ClassPathResource extends AbstractLocatableResource<URL> {
     public static final String PREFIX = "classpath:";
 
     private String cleanedPath;
@@ -53,12 +53,14 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
     public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(path, "Path must not be null");
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
-        setPath(path);
+
         path = path.substring(PREFIX.length());
+        setLocation(PREFIX, path);
         String pathToUse = Filenames.cleanPath(path);
         if (pathToUse.startsWith("/")) {
             pathToUse = pathToUse.substring(1);
         }
+
         this.cleanedPath = pathToUse;
         this.classLoader = (classLoader != null ? classLoader : ClassLoaders.getDefaultClassLoader());
     }
@@ -75,8 +77,9 @@ public class ClassPathResource extends AbstractPathableResource<URL> {
     public ClassPathResource(String path, @Nullable Class<?> clazz) {
         Preconditions.checkNotNull(path, "Path must not be null");
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
-        setPath(path);
+
         path = path.substring(PREFIX.length());
+        setLocation(PREFIX, path);
         this.cleanedPath = Filenames.cleanPath(path);
         this.clazz = clazz;
     }

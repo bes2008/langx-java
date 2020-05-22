@@ -4,7 +4,7 @@ package com.jn.langx.classpath.scanner.internal;
 import com.jn.langx.classpath.scanner.ClassFilter;
 import com.jn.langx.classpath.scanner.Resource;
 import com.jn.langx.classpath.scanner.ResourceFilter;
-import com.jn.langx.classpath.scanner.core.Location;
+import com.jn.langx.io.resource.Location;
 
 import java.util.List;
 

@@ -15,7 +15,7 @@ import java.net.URL;
  * file://c:\\a\\b
  * http://www.baidu.com/resources/xx
  */
-public class UrlResource extends AbstractPathableResource<URL> {
+public class UrlResource extends AbstractLocatableResource<URL> {
 
     private URL url;
 
@@ -27,10 +27,17 @@ public class UrlResource extends AbstractPathableResource<URL> {
         this(URLs.toURL(uri));
     }
 
+
+
     public UrlResource(URL url) {
         Preconditions.checkNotNull(url);
         this.url = url;
-        setPath(url.toString());
+        String prefix = url.getProtocol()+"://";
+        String path = url.toString();
+        if(path.startsWith(prefix)){
+           path = path.substring(prefix.length());
+        }
+        setLocation(prefix, path);
     }
 
     @Override
@@ -71,7 +78,7 @@ public class UrlResource extends AbstractPathableResource<URL> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof UrlResource)) {
+        if (!(obj instanceof UrlResource)) {
             return false;
         }
         UrlResource o2 = (UrlResource) obj;
