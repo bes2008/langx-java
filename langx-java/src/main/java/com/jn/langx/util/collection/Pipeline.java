@@ -2,9 +2,9 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
 
 import java.util.*;
@@ -28,6 +28,14 @@ public class Pipeline<E> {
         Collection<Collection<I>> c = (Collection<Collection<I>>) this.collection;
         Collection<O> list = Collects.flatMap(c, mapper);
         return new Pipeline<O>(list);
+    }
+
+    public <O> O firstMap(@NonNull final Function2<Integer, E, O> mapper) {
+        return Collects.firstMap(collection, mapper);
+    }
+
+    public <O> O firstMap(@NonNull final Function2<Integer, E, O> mapper, Predicate<O> breakPredicate) {
+        return Collects.firstMap(collection, mapper, breakPredicate);
     }
 
     public Pipeline<E> filter(Predicate<E> predicate) {

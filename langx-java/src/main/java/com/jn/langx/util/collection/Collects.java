@@ -4,7 +4,6 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.*;
@@ -13,6 +12,7 @@ import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.struct.Holder;
@@ -863,7 +863,7 @@ public class Collects {
         return list;
     }
 
-    public static <E>void forEach(Object obj, @NonNull final Consumer<E> consumer) {
+    public static <E> void forEach(Object obj, @NonNull final Consumer<E> consumer) {
         Iterable<E> iterable = asIterable(obj);
         forEach(iterable, null, consumer, null);
     }
@@ -899,6 +899,7 @@ public class Collects {
             }
         }
     }
+
     public static <E> void forEach(Object obj, @NonNull final Consumer2<Integer, E> consumer) {
         Iterable<E> iterable = asIterable(obj);
         forEach(iterable, null, consumer, null);
@@ -907,6 +908,7 @@ public class Collects {
     public static <E, C extends Collection<E>> void forEach(@Nullable C collection, @NonNull final Consumer2<Integer, E> consumer) {
         forEach(collection, null, consumer, null);
     }
+
     /**
      * Iterate every element
      */
@@ -1069,6 +1071,61 @@ public class Collects {
         });
         return counter.get();
     }
+
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper) {
+        return firstMap(collection, mapper, null);
+    }
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate<O> breakPredicate) {
+        final Holder<O> holder = new Holder<O>();
+        Collects.forEach(collection, new Consumer2<Integer, E>() {
+            @Override
+            public void accept(Integer index, E value) {
+                holder.set(mapper.apply(index, value));
+            }
+        }, new Predicate2<Integer, E>() {
+            @Override
+            public boolean test(Integer key, E value) {
+                return breakPredicate == null ? !holder.isNull() : breakPredicate.test(holder.get());
+            }
+        });
+        return holder.get();
+    }
+
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <K,V,O> O firstMap(@Nullable Map<K,V> map, @NonNull final Function2<K, V, O> mapper) {
+        return firstMap(map, mapper, null);
+    }
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <K,V,O> O firstMap(@Nullable Map<K,V> map, @NonNull final Function2<K, V, O> mapper, final Predicate<O> breakPredicate) {
+        final Holder<O> holder = new Holder<O>();
+        Collects.forEach(map, new Consumer2<K, V>() {
+            @Override
+            public void accept(K index, V value) {
+                holder.set(mapper.apply(index, value));
+            }
+        }, new Predicate2<K, V>() {
+            @Override
+            public boolean test(K key, V value) {
+                return breakPredicate == null ? !holder.isNull() : breakPredicate.test(holder.get());
+            }
+        });
+        return holder.get();
+    }
+
 
     /**
      * find the first matched element, null if not found
