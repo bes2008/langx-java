@@ -1,8 +1,6 @@
 package com.jn.langx.classpath.cp;
 
-import com.jn.langx.io.resource.Location;
-
-import java.net.URL;
+import com.jn.langx.io.resource.Resource;
 
 /**
  * <code>ClassPath</code> is an interface implemented by objects
@@ -13,16 +11,13 @@ import java.net.URL;
  */
 public interface Classpath {
 
-    Location getLocation();
-
-    void setLocation(Location location);
-
     /**
      * Returns the uniform resource locator (URL) of the class file
      * with the specified name.
      *
-     * @param resourceLocation a fully-qualified class name.
+     * @param resourceLocation your resource location
      * @return null if the specified class file could not be found.
      */
-    URL find(String resourceLocation);
+    Resource find(String resourceLocation, boolean isClass);
+
 }
