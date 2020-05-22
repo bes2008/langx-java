@@ -12,10 +12,7 @@ public class ClassLoaderClasspath implements Classpath {
 
     @Override
     public Resource find(String path, boolean isClass) {
-        if (isClass) {
-            path = path.replace('.', '/') + ".class";
-        }
-
+        path = Classpaths.getPath(path, isClass);
         return new ClassPathResource(path, classLoader);
     }
 }

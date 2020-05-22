@@ -16,9 +16,7 @@ public class InputStreamClasspath implements Classpath {
 
     @Override
     public Resource find(String path, boolean isClass) {
-        if (isClass) {
-            path = path.replace('.', '/') + ".class";
-        }
+        path = Classpaths.getPath(path, isClass);
         if (path.equals(resource.getDescription())) {
             return resource;
         }

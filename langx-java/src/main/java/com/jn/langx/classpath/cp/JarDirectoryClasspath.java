@@ -26,10 +26,11 @@ public class JarDirectoryClasspath implements Classpath {
 
     @Override
     public Resource find(final String filepath, final boolean isClass) {
+        final String path = Classpaths.getPath(filepath, isClass);
         return Collects.firstMap(jars, new Function2<Integer, JarClasspath, Resource>() {
             @Override
             public Resource apply(Integer index, JarClasspath jarClasspath) {
-                return jarClasspath.find(filepath, isClass);
+                return jarClasspath.find(path, false);
             }
         });
     }

@@ -12,16 +12,14 @@ public class ClassClasspath implements Classpath {
      */
     private Class clazz;
 
-    public ClassClasspath(@NonNull Class clazz){
+    public ClassClasspath(@NonNull Class clazz) {
         Preconditions.checkNotNull(clazz);
         this.clazz = clazz;
     }
 
     @Override
     public Resource find(String path, boolean isClass) {
-        if (isClass) {
-            path = path.replace('.', '/') + ".class";
-        }
+        path = Classpaths.getPath(path, isClass);
         return new ClassPathResource(path, this.clazz);
     }
 }

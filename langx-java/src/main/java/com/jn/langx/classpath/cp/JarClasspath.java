@@ -62,10 +62,7 @@ public class JarClasspath implements Classpath {
 
     @Override
     public Resource find(String filepath, boolean isClass) {
-        if (isClass) {
-            filepath = filepath.replace('.', '/') + ".class";
-        }
-
+        filepath = Classpaths.getPath(filepath, isClass);
         String suffix = getSuffix(filepath);
 
         if (this.fileEntries.get(suffix).contains(filepath)) {
