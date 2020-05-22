@@ -15,7 +15,7 @@ public class DirectoryClasspath implements Classpath {
     @Override
     public Resource find(String filepath, boolean isClass) {
         if (isClass) {
-            filepath = filepath.replace(".", File.separator) + ".class";
+            filepath = filepath.replace('.', '/') + ".class";
         }
         return loader.loadResource(filepath);
     }

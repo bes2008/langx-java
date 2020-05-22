@@ -13,6 +13,10 @@ public class ByteArrayResource extends AbstractResource<byte[]> {
 
     private final String description;
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public byte[] getRealResource() {
         return null;
