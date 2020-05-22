@@ -1,5 +1,7 @@
 package com.jn.langx.classpath.scanner;
 
+import com.jn.langx.io.resource.Resource;
+
 import java.util.List;
 
 /**

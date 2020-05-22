@@ -1,10 +1,11 @@
 package com.jn.langx.classpath.scanner.internal.scanner.filesystem;
 
 
-import com.jn.langx.classpath.scanner.Resource;
 import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.classpath.scanner.core.ClassPathScanException;
+import com.jn.langx.io.resource.FileResource;
 import com.jn.langx.io.resource.Location;
+import com.jn.langx.io.resource.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +43,7 @@ public class FileSystemScanner {
         try {
             Set<String> resourceNames = findResourceNames(path, predicate);
             for (String resourceName : resourceNames) {
-                resources.add(new FileSystemResource(resourceName));
+                resources.add(new FileResource(resourceName));
                 LOG.debug("Found filesystem resource: " + resourceName);
             }
             return resources;
@@ -98,7 +99,7 @@ public class FileSystemScanner {
     private Set<String> filterResourceNames(Set<String> resourceNames, ResourceFilter predicate) {
         Set<String> filteredResourceNames = new TreeSet<String>();
         for (String resourceName : resourceNames) {
-            if (predicate.isMatch(resourceName)) {
+            if (predicate.test(resourceName)) {
                 filteredResourceNames.add(resourceName);
             }
         }

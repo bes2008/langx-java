@@ -2,7 +2,6 @@ package com.jn.langx.classpath.scanner.core;
 
 
 import com.jn.langx.classpath.scanner.ClassFilter;
-import com.jn.langx.classpath.scanner.Resource;
 import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.classpath.scanner.internal.EnvironmentDetection;
 import com.jn.langx.classpath.scanner.internal.ResourceAndClassScanner;
@@ -11,6 +10,7 @@ import com.jn.langx.classpath.scanner.internal.scanner.filesystem.FileSystemScan
 import com.jn.langx.exception.UnsupportedPlatformException;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Locations;
+import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.List;

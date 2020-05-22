@@ -3,14 +3,15 @@ package com.jn.langx.classpath.scanner.internal.scanner.classpath;
 
 import com.jn.langx.classpath.scanner.ClassFilter;
 import com.jn.langx.classpath.scanner.FilterResource;
-import com.jn.langx.classpath.scanner.Resource;
 import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.classpath.scanner.core.ClassPathScanException;
+import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.classpath.scanner.internal.EnvironmentDetection;
 import com.jn.langx.classpath.scanner.internal.ResourceAndClassScanner;
 import com.jn.langx.classpath.scanner.internal.scanner.classpath.jboss.JBossVFSv2UrlResolver;
 import com.jn.langx.exception.UnsupportedEnvironmentException;
+import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.io.file.Files;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -260,7 +261,7 @@ public class ClassPathScanner implements ResourceAndClassScanner {
 
         Set<String> filteredResourceNames = new TreeSet<String>();
         for (String resourceName : resourceNames) {
-            if (predicate.isMatch(resourceName)) {
+            if (predicate.test(resourceName)) {
                 filteredResourceNames.add(resourceName);
             }
         }

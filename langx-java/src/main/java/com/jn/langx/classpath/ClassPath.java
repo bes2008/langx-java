@@ -9,10 +9,7 @@ import java.util.zip.ZipFile;
 
 /**
  *
- * Responsible for loading (class) files from the CLASSPATH. Inspired by
- * sun.tools.ClassPath.
- *
- * Migrate it from aspectj
+ * 代表一个资源路径，该路径可以是一个 目录, jar, zip 等形式。也可以是一个 class文件的全路径
  */
 public class ClassPath implements Serializable {
     private static final String JRT_FS = "jrt-fs.jar";
