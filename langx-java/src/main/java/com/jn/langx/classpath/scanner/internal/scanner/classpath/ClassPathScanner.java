@@ -2,7 +2,7 @@ package com.jn.langx.classpath.scanner.internal.scanner.classpath;
 
 
 import com.jn.langx.classpath.scanner.ClassFilter;
-import com.jn.langx.classpath.scanner.FilterResource;
+import com.jn.langx.classpath.scanner.ResourceFilters;
 import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.classpath.scanner.core.ClassPathScanException;
 import com.jn.langx.io.resource.ClassPathResource;
@@ -82,7 +82,7 @@ public class ClassPathScanner implements ResourceAndClassScanner {
         try {
             List<Class<?>> classes = new ArrayList<Class<?>>();
 
-            Set<String> resourceNames = findResourceNames(location, FilterResource.bySuffix(".class"));
+            Set<String> resourceNames = findResourceNames(location, ResourceFilters.bySuffix(".class"));
 
             LOG.debug("scanning for classes at {} found {} resources to check", location, resourceNames.size());
             for (String resourceName : resourceNames) {

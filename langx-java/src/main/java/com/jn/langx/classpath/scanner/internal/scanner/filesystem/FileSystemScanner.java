@@ -70,7 +70,6 @@ public class FileSystemScanner {
      * @return The resource names;
      * @throws IOException when the folder could not be read.
      */
-    @SuppressWarnings("ConstantConditions")
     Set<String> findResourceNamesFromFileSystem(String scanRootLocation, File folder) throws IOException {
 
         LOG.debug("scanning in path: {} ({})", folder.getPath(), scanRootLocation);

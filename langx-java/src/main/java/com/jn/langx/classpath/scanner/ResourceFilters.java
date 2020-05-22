@@ -3,7 +3,7 @@ package com.jn.langx.classpath.scanner;
 /**
  * Some common resource matching predicates.
  */
-public class FilterResource {
+public class ResourceFilters {
 
     /**
      * Return a resource matcher that matches by both prefix and suffix.
@@ -26,7 +26,7 @@ public class FilterResource {
         return new ByPrefix(prefix);
     }
 
-    private FilterResource() {
+    private ResourceFilters() {
     }
 
     private static class ByPrefixSuffix implements ResourceFilter {
