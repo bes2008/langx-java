@@ -4,7 +4,7 @@ import com.jn.langx.io.resource.ByteArrayResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 
-public class ByteArrayClasspath implements Classpath {
+public class ByteArrayClasspath extends AbstractClasspath {
     private ByteArrayResource resource;
 
     public ByteArrayClasspath(String desc, byte[] bytes) {
@@ -12,7 +12,7 @@ public class ByteArrayClasspath implements Classpath {
     }
 
     @Override
-    public Resource find(String path, boolean isClass) {
+    public Resource findResource(String path, boolean isClass) {
         path = Classpaths.getPath(path, isClass);
         if (path.equals(resource.getDescription())) {
             return resource;

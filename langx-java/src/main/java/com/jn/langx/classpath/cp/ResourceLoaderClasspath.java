@@ -3,7 +3,7 @@ package com.jn.langx.classpath.cp;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceLoader;
 
-public class ResourceLoaderClasspath implements Classpath {
+public class ResourceLoaderClasspath extends AbstractClasspath {
     private ResourceLoader loader;
 
     public ResourceLoaderClasspath(ResourceLoader loader) {
@@ -11,7 +11,7 @@ public class ResourceLoaderClasspath implements Classpath {
     }
 
     @Override
-    public Resource find(String path, boolean isClass) {
+    public Resource findResource(String path, boolean isClass) {
         path = Classpaths.getPath(path, isClass);
         return loader.loadResource(path);
     }

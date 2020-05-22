@@ -18,6 +18,7 @@ public interface Classpath {
      * @param resourceLocation your resource location
      * @return null if the specified class file could not be found.
      */
-    Resource find(String resourceLocation, boolean isClass);
+    Resource findResource(String resourceLocation, boolean isClass);
 
+    ClassFile findClassFile(String classname);
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class JarClasspath implements Classpath {
+public class JarClasspath extends AbstractClasspath {
     /**
      * key: file suffix
      * values: file path relative the jar
@@ -61,7 +61,7 @@ public class JarClasspath implements Classpath {
 
 
     @Override
-    public Resource find(String filepath, boolean isClass) {
+    public Resource findResource(String filepath, boolean isClass) {
         filepath = Classpaths.getPath(filepath, isClass);
         String suffix = getSuffix(filepath);
 

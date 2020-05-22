@@ -5,7 +5,7 @@ import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.Preconditions;
 
-public class ClassClasspath implements Classpath {
+public class ClassClasspath extends AbstractClasspath {
 
     /**
      * 基于这个 Class 去加载
@@ -18,7 +18,7 @@ public class ClassClasspath implements Classpath {
     }
 
     @Override
-    public Resource find(String path, boolean isClass) {
+    public Resource findResource(String path, boolean isClass) {
         path = Classpaths.getPath(path, isClass);
         return new ClassPathResource(path, this.clazz);
     }

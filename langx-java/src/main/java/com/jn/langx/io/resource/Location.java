@@ -1,6 +1,8 @@
 package com.jn.langx.io.resource;
 
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 
 /**
@@ -11,11 +13,13 @@ public final class Location implements Comparable<Location> {
     /**
      * The prefix part of the location. Can be either classpath: or filesystem:.
      */
+    @Nullable
     private String prefix;
 
     /**
      * The path part of the location.
      */
+    @NonNull
     private String path;
 
     public Location(String prefix, String path) {

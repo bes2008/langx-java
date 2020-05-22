@@ -10,7 +10,7 @@ import com.jn.langx.util.io.file.filter.FilenameSuffixFilter;
 import java.io.File;
 import java.util.List;
 
-public class JarDirectoryClasspath implements Classpath {
+public class JarDirectoryClasspath extends AbstractClasspath {
     private List<JarClasspath> jars = Collects.emptyArrayList();
 
     public JarDirectoryClasspath(String dirName) {
@@ -25,12 +25,12 @@ public class JarDirectoryClasspath implements Classpath {
     }
 
     @Override
-    public Resource find(final String filepath, final boolean isClass) {
+    public Resource findResource(final String filepath, final boolean isClass) {
         final String path = Classpaths.getPath(filepath, isClass);
         return Collects.firstMap(jars, new Function2<Integer, JarClasspath, Resource>() {
             @Override
             public Resource apply(Integer index, JarClasspath jarClasspath) {
-                return jarClasspath.find(path, false);
+                return jarClasspath.findResource(path, false);
             }
         });
     }

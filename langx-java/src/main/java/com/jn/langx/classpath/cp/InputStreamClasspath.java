@@ -6,7 +6,7 @@ import com.jn.langx.io.resource.Resources;
 
 import java.io.InputStream;
 
-public class InputStreamClasspath implements Classpath {
+public class InputStreamClasspath extends AbstractClasspath {
 
     private InputStreamResource resource;
 
@@ -15,7 +15,7 @@ public class InputStreamClasspath implements Classpath {
     }
 
     @Override
-    public Resource find(String path, boolean isClass) {
+    public Resource findResource(String path, boolean isClass) {
         path = Classpaths.getPath(path, isClass);
         if (path.equals(resource.getDescription())) {
             return resource;
