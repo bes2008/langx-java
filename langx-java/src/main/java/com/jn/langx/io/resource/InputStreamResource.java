@@ -28,6 +28,11 @@ public class InputStreamResource extends AbstractResource<InputStream> {
         this(inputStream, "resource loaded through InputStream");
     }
 
+
+    public String getDescription() {
+        return description;
+    }
+
     /**
      * Create a new InputStreamResource.
      *
