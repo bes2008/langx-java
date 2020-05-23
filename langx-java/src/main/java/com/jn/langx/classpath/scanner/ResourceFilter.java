@@ -10,5 +10,5 @@ public interface ResourceFilter extends Predicate<String> {
      * Return true if this resource should be included in the scan result.
      */
     @Override
-    boolean test(String value);
+    boolean test(String resource);
 }

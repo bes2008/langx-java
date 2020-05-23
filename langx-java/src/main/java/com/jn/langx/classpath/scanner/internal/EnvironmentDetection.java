@@ -1,5 +1,6 @@
 package com.jn.langx.classpath.scanner.internal;
 
+import com.jn.langx.util.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,12 +82,6 @@ public class EnvironmentDetection {
         return osgi;
     }
 
-    /**
-     * Return true if the runtime is Andriod.
-     */
-    public static boolean isAndroid() {
-        return "Android Runtime".equals(System.getProperty("java.runtime.name"));
-    }
 
     /**
      * Determine whether the {@link Class} identified by the supplied name is present

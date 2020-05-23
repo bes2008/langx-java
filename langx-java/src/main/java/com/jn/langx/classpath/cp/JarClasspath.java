@@ -1,5 +1,8 @@
 package com.jn.langx.classpath.cp;
 
+import com.jn.langx.classpath.scanner.ClassFilter;
+import com.jn.langx.classpath.scanner.ResourceFilter;
+import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceNotFoundException;
 import com.jn.langx.io.resource.Resources;
@@ -13,6 +16,7 @@ import com.jn.langx.util.io.file.Filenames;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -69,6 +73,26 @@ public class JarClasspath extends AbstractClasspath {
             String url = StringTemplates.format("jar:{}!/{}", this.jarfileURL, filepath);
             return Resources.loadUrlResource(url);
         }
+        return null;
+    }
+
+    @Override
+    public List<Resource> scanResources(String namespace, ResourceFilter filter) {
+        return null;
+    }
+
+    @Override
+    public List<ClassFile> scanClassFiles(String namespace, ClassFilter filter) {
+        return null;
+    }
+
+    @Override
+    public Set<Location> findResources(String namespace, ResourceFilter filter) {
+        return null;
+    }
+
+    @Override
+    public Set<Location> allResources() {
         return null;
     }
 }

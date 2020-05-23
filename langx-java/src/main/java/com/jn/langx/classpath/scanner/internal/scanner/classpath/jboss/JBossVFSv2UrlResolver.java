@@ -1,6 +1,6 @@
 package com.jn.langx.classpath.scanner.internal.scanner.classpath.jboss;
 
-import com.jn.langx.classpath.scanner.core.ClassPathScanException;
+import com.jn.langx.classpath.scanner.ClasspathScanException;
 import com.jn.langx.classpath.scanner.internal.scanner.classpath.UrlResolver;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class JBossVFSv2UrlResolver implements UrlResolver {
             Object root = getRootMethod.invoke(null, url);
             return (URL) getRealURLMethod.invoke(null, root);
         } catch (Exception e) {
-            throw new ClassPathScanException("JBoss VFS v2 call failed", e);
+            throw new ClasspathScanException("JBoss VFS v2 call failed", e);
         }
     }
 }
