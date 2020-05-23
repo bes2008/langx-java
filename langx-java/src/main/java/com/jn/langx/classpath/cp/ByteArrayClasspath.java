@@ -6,6 +6,7 @@ import com.jn.langx.io.resource.ByteArrayResource;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.util.collection.Collects;
 
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,7 @@ public class ByteArrayClasspath extends AbstractClasspath {
     @Override
     public Resource findResource(String path, boolean isClass) {
         path = Classpaths.getPath(path, isClass);
-        if (path.equals(resource.getDescription())) {
+        if (path.equals(resource.getPath())) {
             return resource;
         }
         return null;
@@ -43,6 +44,6 @@ public class ByteArrayClasspath extends AbstractClasspath {
 
     @Override
     public Set<Location> allResources() {
-        return null;
+        return Collects.newHashSet(resource.getLocation());
     }
 }

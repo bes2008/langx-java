@@ -8,18 +8,38 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-public class ByteArrayResource extends AbstractResource<byte[]> {
+public class ByteArrayResource extends AbstractResource<byte[]> implements Locatable {
     private final byte[] byteArray;
 
-    private final String description;
+    private final String path;
 
     public String getDescription() {
-        return description;
+        return path;
+    }
+
+    @Override
+    public String getPrefix() {
+        return "bytes:";
+    }
+
+    @Override
+    public String getPath() {
+        return this.path;
+    }
+
+    @Override
+    public Location getLocation() {
+        return new Location(getPrefix(), getPath());
+    }
+
+    @Override
+    public String getAbsolutePath() {
+        return getPath();
     }
 
     @Override
     public byte[] getRealResource() {
-        return null;
+        return byteArray;
     }
 
     /**
@@ -40,7 +60,7 @@ public class ByteArrayResource extends AbstractResource<byte[]> {
     public ByteArrayResource(byte[] byteArray, @Nullable String description) {
         Preconditions.checkNotNull(byteArray, "Byte array must not be null");
         this.byteArray = byteArray;
-        this.description = (description != null ? description : "");
+        this.path = (description != null ? description : "");
     }
 
 
@@ -84,7 +104,7 @@ public class ByteArrayResource extends AbstractResource<byte[]> {
      */
     @Override
     public String toString() {
-        return "Byte array resource [" + this.description + "]";
+        return "Byte array resource [" + this.path + "]";
     }
 
 
