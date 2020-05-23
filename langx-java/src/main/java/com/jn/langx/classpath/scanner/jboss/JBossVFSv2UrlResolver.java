@@ -1,7 +1,7 @@
-package com.jn.langx.classpath.scanner.internal.scanner.classpath.jboss;
+package com.jn.langx.classpath.scanner.jboss;
 
-import com.jn.langx.classpath.scanner.ClasspathScanException;
-import com.jn.langx.classpath.scanner.internal.scanner.classpath.UrlResolver;
+import com.jn.langx.classpath.ClasspathScanException;
+import com.jn.langx.util.net.UrlResolver;
 
 import java.io.IOException;
 import java.lang.reflect.Method;

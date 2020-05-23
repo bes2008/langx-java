@@ -1,4 +1,4 @@
-package com.jn.langx.classpath.scanner.internal.scanner.classpath;
+package com.jn.langx.classpath.scanner;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package com.jn.langx.classpath.scanner;
+package com.jn.langx.classpath;
 
 /**
  * Exceptions throw when scanning the classpath.

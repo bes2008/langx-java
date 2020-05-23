@@ -1,6 +1,5 @@
-package com.jn.langx.classpath.scanner.internal;
+package com.jn.langx.classpath.scanner;
 
-import com.jn.langx.util.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
