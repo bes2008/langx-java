@@ -2,6 +2,8 @@ package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.struct.Holder;
+import com.jn.langx.util.struct.Reference;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -103,6 +105,17 @@ public class Emptys {
             return false;
         }
 
+        if (object instanceof EmptyEvalutible) {
+            return ((EmptyEvalutible) object).isEmpty();
+        }
+
+        if (object instanceof Reference) {
+            return ((Reference) object).isNull();
+        }
+
+        if (object instanceof Holder) {
+            return ((Holder) object).isEmpty();
+        }
         return false;
     }
 

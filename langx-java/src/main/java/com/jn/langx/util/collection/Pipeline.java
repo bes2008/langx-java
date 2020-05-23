@@ -286,6 +286,16 @@ public class Pipeline<E> {
         return this;
     }
 
+    public Set<E> asSet(boolean sequential) {
+        if (sequential && collection instanceof LinkedHashSet) {
+            return (LinkedHashSet<E>) collection;
+        }
+        Set<E> set = Collects.emptyHashSet(sequential);
+        set.addAll(getAll());
+        return set;
+    }
+
+
     public List<E> asList() {
         if (collection instanceof List) {
             return (List<E>) collection;

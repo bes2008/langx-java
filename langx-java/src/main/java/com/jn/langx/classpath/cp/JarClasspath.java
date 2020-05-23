@@ -1,7 +1,5 @@
 package com.jn.langx.classpath.cp;
 
-import com.jn.langx.classpath.scanner.ClassFilter;
-import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceNotFoundException;
@@ -16,7 +14,6 @@ import com.jn.langx.util.io.file.Filenames;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -45,7 +42,7 @@ public class JarClasspath extends AbstractClasspath {
         this(new File(jarPath));
     }
 
-    public JarClasspath(File file){
+    public JarClasspath(File file) {
         JarFile jarfile = null;
         try {
             jarfile = new JarFile(file);
@@ -63,31 +60,20 @@ public class JarClasspath extends AbstractClasspath {
     }
 
 
-
     @Override
-    public Resource findResource(String filepath, boolean isClass) {
-        filepath = Classpaths.getPath(filepath, isClass);
-        String suffix = getSuffix(filepath);
+    public Resource findResource(String relativePath, boolean isClass) {
+        relativePath = Classpaths.getPath(relativePath, isClass);
+        String suffix = getSuffix(relativePath);
 
-        if (this.fileEntries.get(suffix).contains(filepath)) {
-            String url = StringTemplates.format("jar:{}!/{}", this.jarfileURL, filepath);
+        if (this.fileEntries.get(suffix).contains(relativePath)) {
+            String url = StringTemplates.format("jar:{}!/{}", this.jarfileURL, relativePath);
             return Resources.loadUrlResource(url);
         }
         return null;
     }
 
     @Override
-    public List<Resource> scanResources(String namespace, ResourceFilter filter) {
-        return null;
-    }
-
-    @Override
-    public List<ClassFile> scanClassFiles(String namespace, ClassFilter filter) {
-        return null;
-    }
-
-    @Override
-    public Set<Location> findResources(String namespace, ResourceFilter filter) {
+    public Location getRoot() {
         return null;
     }
 

@@ -3,12 +3,15 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.EmptyEvalutible;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 
 /**
  * A starting location to scan from.
  */
-public final class Location implements Comparable<Location> {
+public final class Location implements Comparable<Location>, EmptyEvalutible {
 
     /**
      * The prefix part of the location. Can be either classpath: or filesystem:.
@@ -22,9 +25,20 @@ public final class Location implements Comparable<Location> {
     @NonNull
     private String path;
 
-    public Location(String prefix, String path) {
+    private String pathSeparator;
+
+    public String getPathSeparator() {
+        return pathSeparator;
+    }
+
+    public Location(String prefix, String path, String pathSeparator) {
         this.path = path;
-        this.prefix = prefix;
+        this.prefix = Strings.getEmptyIfNull(path);
+        this.pathSeparator = Strings.useValueIfBlank(pathSeparator, "/");
+    }
+
+    public Location(String prefix, String path) {
+        this(prefix, path, null);
     }
 
     /**
@@ -71,6 +85,16 @@ public final class Location implements Comparable<Location> {
     @Override
     public String toString() {
         return getLocation();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return Emptys.isEmpty(path);
+    }
+
+    @Override
+    public boolean isNull() {
+        return Emptys.isNull(prefix);
     }
 }
 

@@ -1,7 +1,5 @@
 package com.jn.langx.classpath.cp;
 
-import com.jn.langx.classpath.scanner.ClassFilter;
-import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.io.resource.DirectoryBasedFileResourceLoader;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
@@ -29,8 +27,8 @@ public class JarDirectoryClasspath extends AbstractClasspath {
     }
 
     @Override
-    public Resource findResource(final String filepath, final boolean isClass) {
-        final String path = Classpaths.getPath(filepath, isClass);
+    public Resource findResource(final String relativePath, final boolean isClass) {
+        final String path = Classpaths.getPath(relativePath, isClass);
         return Collects.firstMap(jars, new Function2<Integer, JarClasspath, Resource>() {
             @Override
             public Resource apply(Integer index, JarClasspath jarClasspath) {
@@ -40,17 +38,7 @@ public class JarDirectoryClasspath extends AbstractClasspath {
     }
 
     @Override
-    public List<Resource> scanResources(String namespace, ResourceFilter filter) {
-        return null;
-    }
-
-    @Override
-    public List<ClassFile> scanClassFiles(String namespace, ClassFilter filter) {
-        return null;
-    }
-
-    @Override
-    public Set<Location> findResources(String namespace, ResourceFilter filter) {
+    public Location getRoot() {
         return null;
     }
 

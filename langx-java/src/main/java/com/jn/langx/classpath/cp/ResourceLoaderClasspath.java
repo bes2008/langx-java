@@ -1,12 +1,9 @@
 package com.jn.langx.classpath.cp;
 
-import com.jn.langx.classpath.scanner.ClassFilter;
-import com.jn.langx.classpath.scanner.ResourceFilter;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceLoader;
 
-import java.util.List;
 import java.util.Set;
 
 public class ResourceLoaderClasspath extends AbstractClasspath {
@@ -17,23 +14,13 @@ public class ResourceLoaderClasspath extends AbstractClasspath {
     }
 
     @Override
-    public Resource findResource(String path, boolean isClass) {
-        path = Classpaths.getPath(path, isClass);
-        return loader.loadResource(path);
+    public Resource findResource(String relativePath, boolean isClass) {
+        relativePath = Classpaths.getPath(relativePath, isClass);
+        return loader.loadResource(relativePath);
     }
 
     @Override
-    public List<Resource> scanResources(String namespace, ResourceFilter filter) {
-        return null;
-    }
-
-    @Override
-    public List<ClassFile> scanClassFiles(String namespace, ClassFilter filter) {
-        return null;
-    }
-
-    @Override
-    public Set<Location> findResources(String namespace, ResourceFilter filter) {
+    public Location getRoot() {
         return null;
     }
 
