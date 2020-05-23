@@ -6,11 +6,11 @@ import com.jn.langx.util.Preconditions;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class InputStreamResource extends AbstractResource<InputStream> {
+public class InputStreamResource extends AbstractResource<InputStream> implements Locatable {
 
     private final InputStream inputStream;
 
-    private final String description;
+    private final String path;
 
     private boolean read = false;
 
@@ -30,19 +30,39 @@ public class InputStreamResource extends AbstractResource<InputStream> {
 
 
     public String getDescription() {
-        return description;
+        return path;
+    }
+
+    @Override
+    public String getPrefix() {
+        return "inputstream:";
+    }
+
+    @Override
+    public String getPath() {
+        return path;
+    }
+
+    @Override
+    public Location getLocation() {
+        return new Location(getPrefix(), getPath());
+    }
+
+    @Override
+    public String getAbsolutePath() {
+        return path;
     }
 
     /**
      * Create a new InputStreamResource.
      *
      * @param inputStream the InputStream to use
-     * @param description where the InputStream comes from
+     * @param path        where the InputStream comes from
      */
-    public InputStreamResource(InputStream inputStream, @Nullable String description) {
+    public InputStreamResource(InputStream inputStream, @Nullable String path) {
         Preconditions.checkNotNull(inputStream, "InputStream must not be null");
         this.inputStream = inputStream;
-        this.description = (description != null ? description : "");
+        this.path = (path != null ? path : "");
     }
 
     /**
@@ -79,7 +99,7 @@ public class InputStreamResource extends AbstractResource<InputStream> {
      */
     @Override
     public String toString() {
-        return "InputStream resource [" + this.description + "]";
+        return "InputStream resource [" + this.path + "]";
     }
 
 
