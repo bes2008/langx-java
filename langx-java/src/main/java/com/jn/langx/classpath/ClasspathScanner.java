@@ -1,6 +1,5 @@
-package com.jn.langx.classpath.scanner;
+package com.jn.langx.classpath;
 
-import com.jn.langx.classpath.cp.ClassFile;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 

@@ -1,4 +1,4 @@
-package com.jn.langx.classpath.scanner;
+package com.jn.langx.classpath;
 
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.util.function.Predicate;

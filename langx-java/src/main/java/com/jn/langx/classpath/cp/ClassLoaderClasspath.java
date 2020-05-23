@@ -1,6 +1,7 @@
 package com.jn.langx.classpath.cp;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.classpath.Classpaths;
 import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;

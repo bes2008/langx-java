@@ -1,4 +1,4 @@
-package com.jn.langx.classpath.cp;
+package com.jn.langx.classpath;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
