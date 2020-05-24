@@ -44,23 +44,25 @@ public class JarFileClasspath extends AbstractClasspath {
     }
 
     public JarFileClasspath(File file) {
-        JarFile jarfile = null;
-        try {
-            jarfile = new JarFile(file);
-            for (JarEntry entry : Collections.list(jarfile.entries())) {
-                String suffix = getSuffix(entry.getName());
-                fileEntries.get(suffix).add(entry.getName());
-            }
+        if (file.exists() && file.isFile() && file.canRead()) {
+            JarFile jarfile = null;
+            try {
+                jarfile = new JarFile(file);
+                for (JarEntry entry : Collections.list(jarfile.entries())) {
+                    String suffix = getSuffix(entry.getName());
+                    fileEntries.get(suffix).add(entry.getName());
+                }
 
-            this.jarfileURL = file.getCanonicalFile().toURI().toURL().toString();
-        } catch (IOException e) {
-            throw new ResourceNotFoundException(file.getName());
-        } finally {
-            IOs.close(jarfile);
+                this.jarfileURL = file.getCanonicalFile().toURI().toURL().toString();
+            } catch (IOException e) {
+                throw new ResourceNotFoundException(file.getName());
+            } finally {
+                IOs.close(jarfile);
+            }
         }
+
         root = new Location(URLs.URL_PREFIX_JAR, jarfileURL + URLs.JAR_URL_SEPARATOR);
     }
-
 
     @Override
     public Resource findResource(String relativePath, boolean isClass) {
