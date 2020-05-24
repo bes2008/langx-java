@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class JarClasspath extends AbstractClasspath {
+public class JarFileClasspath extends AbstractClasspath {
     /**
      * key: file suffix
      * values: file path relative the jar
@@ -39,11 +39,11 @@ public class JarClasspath extends AbstractClasspath {
         return Emptys.isNotEmpty(suffix) ? suffix : "__langx_other__";
     }
 
-    public JarClasspath(String jarPath) {
+    public JarFileClasspath(String jarPath) {
         this(new File(jarPath));
     }
 
-    public JarClasspath(File file) {
+    public JarFileClasspath(File file) {
         JarFile jarfile = null;
         try {
             jarfile = new JarFile(file);

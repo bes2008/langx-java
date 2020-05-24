@@ -24,7 +24,7 @@ import java.util.Set;
  * @see DirectoryClasspath
  */
 public class JarDirectoryClasspath extends AbstractClasspath {
-    private List<JarClasspath> jars = Collects.emptyArrayList();
+    private List<JarFileClasspath> jars = Collects.emptyArrayList();
     private Location root;
 
     public JarDirectoryClasspath(String dirName) {
@@ -38,7 +38,7 @@ public class JarDirectoryClasspath extends AbstractClasspath {
         Collects.forEach(files, new Consumer2<Integer, File>() {
             @Override
             public void accept(Integer index, File jarfile) {
-                jars.add(new JarClasspath(jarfile));
+                jars.add(new JarFileClasspath(jarfile));
             }
         });
 
@@ -48,9 +48,9 @@ public class JarDirectoryClasspath extends AbstractClasspath {
     @Override
     public Resource findResource(final String relativePath, final boolean isClass) {
         final String path = Classpaths.getPath(relativePath, isClass);
-        return Collects.firstMap(jars, new Function2<Integer, JarClasspath, Resource>() {
+        return Collects.firstMap(jars, new Function2<Integer, JarFileClasspath, Resource>() {
             @Override
-            public Resource apply(Integer index, JarClasspath jarClasspath) {
+            public Resource apply(Integer index, JarFileClasspath jarClasspath) {
                 return jarClasspath.findResource(path, false);
             }
         });
@@ -64,9 +64,9 @@ public class JarDirectoryClasspath extends AbstractClasspath {
     @Override
     public Set<Location> allResources() {
         final Set<Location> locations = Collects.emptyHashSet(true);
-        Collects.forEach(jars, new Consumer2<Integer, JarClasspath>() {
+        Collects.forEach(jars, new Consumer2<Integer, JarFileClasspath>() {
             @Override
-            public void accept(Integer key, JarClasspath jarClasspath) {
+            public void accept(Integer key, JarFileClasspath jarClasspath) {
                 locations.addAll(jarClasspath.allResources());
             }
         });

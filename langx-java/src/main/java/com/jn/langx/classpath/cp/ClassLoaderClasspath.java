@@ -26,7 +26,7 @@ public class ClassLoaderClasspath extends AbstractClasspath {
 
     @Override
     public Location getRoot() {
-        return null;
+        return root;
     }
 
     @Override
