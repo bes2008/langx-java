@@ -85,8 +85,28 @@ public class Reflects {
         return clazz.getName();
     }
 
+    public static String getPackageName(@NonNull String classFullName) {
+        /**
+         * 类名A$类名B：类名A中的类名B
+         *
+         * 类名A$12：类名A中的匿名内部类，种类索引为12（类索引从1开始）
+         *
+         * 类名A$$Lambda$12：类名A中的Lambda表达式（类索引为12）
+         */
+        int index = classFullName.lastIndexOf('.');
+        if (index != -1) {
+            return classFullName.substring(0, index);
+        }
+        return "";
+    }
+
     public static String getPackageName(@NonNull Class clazz) {
-        return clazz.getPackage().getName();
+        Package pkg = clazz.getPackage();
+        if (pkg != null) {
+            return pkg.getName();
+        }
+        String className = getFQNClassName(clazz);
+        return getPackageName(className);
     }
 
     public static String getJvmSignature(@NonNull Class clazz) {
