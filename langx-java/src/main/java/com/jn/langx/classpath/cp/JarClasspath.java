@@ -10,6 +10,7 @@ import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Filenames;
+import com.jn.langx.util.net.URLs;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class JarClasspath extends AbstractClasspath {
         } finally {
             IOs.close(jarfile);
         }
-        root = new Location(StringTemplates.formatWithPlaceholder("jar:{}!/", jarfileURL), "");
+        root = new Location(URLs.URL_PREFIX_JAR, jarfileURL + URLs.JAR_URL_SEPARATOR);
     }
 
 
