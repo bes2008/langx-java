@@ -12,6 +12,11 @@ import com.jn.langx.util.function.Consumer;
 import java.io.File;
 import java.util.Set;
 
+/**
+ * 普通的目录，不会扫描它下面的 jar,zip文件
+ *
+ * @see JarDirectoryClasspath
+ */
 public class DirectoryClasspath extends AbstractClasspath {
     private DirectoryBasedFileResourceLoader loader;
     private Location root;

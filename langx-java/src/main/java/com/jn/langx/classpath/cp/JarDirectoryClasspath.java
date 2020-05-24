@@ -8,18 +8,32 @@ import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.io.file.FileFilters;
 import com.jn.langx.util.io.file.filter.FilenameSuffixFilter;
+import com.jn.langx.util.io.file.filter.IsFileFilter;
+import com.jn.langx.util.io.file.filter.ReadableFileFilter;
 
 import java.io.File;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 扫描指定目录下所有的jar, zip
+ * 不会递归扫描子目录
+ *
+ * @see DirectoryClasspath
+ */
 public class JarDirectoryClasspath extends AbstractClasspath {
     private List<JarClasspath> jars = Collects.emptyArrayList();
     private Location root;
 
     public JarDirectoryClasspath(String dirName) {
-        List<File> files = new DirectoryBasedFileResourceLoader(dirName).listFiles(new FilenameSuffixFilter(new String[]{"jar", "zip"}, true));
+        List<File> files = new DirectoryBasedFileResourceLoader(dirName)
+                .listFiles(FileFilters.allFileFilter(
+                        new IsFileFilter(),
+                        new ReadableFileFilter(),
+                        new FilenameSuffixFilter(new String[]{"jar", "zip"}, true)
+                ));
 
         Collects.forEach(files, new Consumer2<Integer, File>() {
             @Override
