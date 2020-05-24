@@ -29,7 +29,7 @@ public class InputStreamClasspath extends AbstractClasspath {
 
     @Override
     public Location getRoot() {
-        return null;
+        return resource.getLocation();
     }
 
     @Override

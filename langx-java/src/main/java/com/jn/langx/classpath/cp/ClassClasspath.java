@@ -15,6 +15,7 @@ public class ClassClasspath extends AbstractClasspath {
      * 基于这个 Class 去加载
      */
     private Class clazz;
+    private Location root = new Location(ClassPathResource.PREFIX, "/");
 
     public ClassClasspath(@NonNull Class clazz) {
         Preconditions.checkNotNull(clazz);
@@ -29,7 +30,7 @@ public class ClassClasspath extends AbstractClasspath {
 
     @Override
     public Location getRoot() {
-        return null;
+        return root;
     }
 
     @Override
