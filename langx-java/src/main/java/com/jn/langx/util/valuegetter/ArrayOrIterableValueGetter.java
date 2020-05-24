@@ -1,23 +1,14 @@
 package com.jn.langx.util.valuegetter;
 
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.collection.Collects;
-
-import java.util.List;
-
-public class ArrayOrIterableValueGetter<V> implements ValueGetter<Object, V> {
-    private int index;
-
+/**
+ *
+ * @param <V> 数组，或者 collection,或者 iterable
+ * @deprecated 用 {@link LinerCollectionValueGetter} 替代
+ * @see LinerCollectionValueGetter
+ */
+@Deprecated
+public class ArrayOrIterableValueGetter<V> extends LinerCollectionValueGetter<V> {
     public ArrayOrIterableValueGetter(int index) {
-        this.index = index;
-    }
-
-    @Override
-    public V get(Object input) {
-        List<V> list = Collects.asList(Collects.<V>asIterable(input));
-        if (Emptys.isEmpty(list)) {
-            return null;
-        }
-        return list.get(index);
+        super(index);
     }
 }
