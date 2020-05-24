@@ -3,8 +3,8 @@ package com.jn.langx.io.resource;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.classpath.Classpaths;
 import com.jn.langx.util.ClassLoaders;
+import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.file.Filenames;
 import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.reflect.Reflects;
@@ -20,8 +20,6 @@ import java.net.URL;
  */
 public class ClassPathResource extends AbstractLocatableResource<URL> {
     public static final String PREFIX = "classpath:";
-
-    private String cleanedPath;
 
     @Nullable
     private ClassLoader classLoader;
@@ -55,17 +53,27 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
      */
     public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(path, "Path must not be null");
+        this.classLoader = (classLoader != null ? classLoader : ClassLoaders.getDefaultClassLoader());
+
+        path = Classpaths.getPath(path, path.endsWith(".class"));
+        if (!path.startsWith(PREFIX)) {
+            // classpath下的绝对路径
+            if (path.startsWith("/")) {
+                path = PREFIX + path.substring(1);
+            } else {
+                path = PREFIX + path;
+            }
+        }
+
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
 
         path = path.substring(PREFIX.length());
-        setLocation(PREFIX, path);
+
         String pathToUse = Filenames.cleanPath(path);
         if (pathToUse.startsWith("/")) {
             pathToUse = pathToUse.substring(1);
         }
-
-        this.cleanedPath = pathToUse;
-        this.classLoader = (classLoader != null ? classLoader : ClassLoaders.getDefaultClassLoader());
+        setLocation(PREFIX, pathToUse);
     }
 
     /**
@@ -79,21 +87,26 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
      */
     public ClassPathResource(String path, @Nullable Class<?> clazz) {
         Preconditions.checkNotNull(path, "Path must not be null");
+        if (clazz == null) {
+            this.classLoader = ClassLoaders.getDefaultClassLoader();
+        }
         path = Classpaths.getPath(path, path.endsWith(".class"));
         if (!path.startsWith(PREFIX)) {
             // classpath下的绝对路径
-            if(path.startsWith("/")){
-                path = PREFIX+path;
-            }else {
+            if (path.startsWith("/")) {
+                path = PREFIX + path.substring(1);
+            } else {
                 // 相对于指定的类的路径
                 if (clazz != null) {
                     String packageName = Reflects.getPackageName(clazz);
                     packageName = Classpaths.getPath(packageName, false);
                     if (path.startsWith(packageName)) {
-                        path = PREFIX + (path.startsWith("/") ? "" : "/") + path;
+                        path = PREFIX + path;
                     } else {
-                        path = PREFIX + (packageName.startsWith("/") ? "" : "/") + packageName + (path.startsWith("/") ? "" : "/") + path;
+                        path = PREFIX + packageName + "/" + path;
                     }
+                } else {
+                    path = PREFIX + path;
                 }
             }
         }
@@ -101,9 +114,12 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
 
         path = path.substring(PREFIX.length());
-        setLocation(PREFIX, path);
-        this.cleanedPath = Filenames.cleanPath(path);
+        String pathToUse = Filenames.cleanPath(path);
+        if (pathToUse.startsWith("/")) {
+            pathToUse = pathToUse.substring(1);
+        }
         this.clazz = clazz;
+        setLocation(PREFIX, pathToUse);
     }
 
     @Override
@@ -162,22 +178,22 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
 
     protected URL resolveURL() {
         if (this.clazz != null) {
-            return this.clazz.getResource(cleanedPath);
+            return this.clazz.getResource(getPath());
         } else if (this.classLoader != null) {
-            return this.classLoader.getResource(cleanedPath);
+            return this.classLoader.getResource(getPath());
         } else {
-            return ClassLoader.getSystemResource(cleanedPath);
+            return ClassLoader.getSystemResource(getPath());
         }
     }
 
     public InputStream getInputStream() throws IOException {
         InputStream is;
         if (this.clazz != null) {
-            is = this.clazz.getResourceAsStream(cleanedPath);
+            is = this.clazz.getResourceAsStream(getPath());
         } else if (this.classLoader != null) {
-            is = this.classLoader.getResourceAsStream(cleanedPath);
+            is = this.classLoader.getResourceAsStream(getPath());
         } else {
-            is = ClassLoader.getSystemResourceAsStream(cleanedPath);
+            is = ClassLoader.getSystemResourceAsStream(getPath());
         }
         if (is == null) {
             throw new FileNotFoundException(toString() + " cannot be opened because it does not exist");
@@ -192,25 +208,23 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ClassPathResource)) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != ClassPathResource.class) {
             return false;
         }
         ClassPathResource o2 = (ClassPathResource) obj;
-        URL url1 = getUrlOrNull();
-        URL url2 = o2.getUrlOrNull();
 
-        if (url1 == null && url2 == null) {
-            return this.cleanedPath.equals(o2.cleanedPath);
+        if (!Objects.equals(this.getLocation(), o2.getLocation())) {
+            return false;
         }
-        if (url1 != null && url2 != null) {
-            return url1.equals(url2);
-        }
-        return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return cleanedPath.hashCode();
+        return getPath().hashCode();
     }
 
     public URL getUrlOrNull() {
