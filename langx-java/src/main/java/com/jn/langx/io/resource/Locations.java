@@ -1,6 +1,7 @@
 package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.net.URLs;
 
 public class Locations {
     public static Location parseLocation(String location) {
@@ -19,29 +20,11 @@ public class Locations {
     }
 
     public static boolean isFileLocation(@NonNull Location location) {
-        Resource resource = newResource(location.getLocation());
-        if (resource == null) {
-            return false;
-        }
-
-        if (resource instanceof FileResource) {
-            return true;
-        }
-
-        return false;
+        return FileResource.PREFIX.equals(location.getPrefix());
     }
 
     public static boolean isClasspathLocation(@NonNull Location location) {
-        Resource resource = newResource(location.getLocation());
-        if (resource == null) {
-            return false;
-        }
-
-        if (resource instanceof ClassPathResource) {
-            return true;
-        }
-
-        return false;
+        return ClassPathResource.PREFIX.equals(location.getPrefix());
     }
 
     public static boolean isUrlLocation(@NonNull Location location) {
@@ -55,6 +38,21 @@ public class Locations {
         }
 
         return false;
+    }
+
+    public static boolean isJarLocation(Location location) {
+        String l = location.getLocation();
+        return l.startsWith(URLs.URL_PREFIX_JAR);
+    }
+
+    public static boolean isJarFileLocation(Location location) {
+        String l = location.getLocation();
+        return l.startsWith(URLs.URL_PREFIX_JAR_FILE);
+    }
+
+    public static boolean isJarEntryLocation(Location location) {
+        String l = location.getLocation();
+        return l.startsWith(URLs.URL_PREFIX_JAR_FILE) && l.contains(URLs.JAR_URL_SEPARATOR) && !l.endsWith(URLs.JAR_URL_SEPARATOR);
     }
 
     /**
