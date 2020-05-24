@@ -74,13 +74,13 @@ public class Locations {
         return null;
     }
 
-    public static Location newLocation(Location root, String namespace) {
+    public static Location newLocation(Location root, String relativePath) {
         if (root == null) {
-            return new Location(null, namespace);
+            return new Location(null, relativePath);
         }
-        if (namespace == null) {
+        if (relativePath == null) {
             return root;
         }
-        return new Location(root.getPrefix(), root.getPath() + root.getPathSeparator() + namespace);
+        return new Location(root.getPrefix(), root.getPath() + root.getPathSeparator() + relativePath);
     }
 }
