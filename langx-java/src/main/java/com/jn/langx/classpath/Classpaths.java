@@ -8,11 +8,16 @@ public class Classpaths {
         return getPath(path, isClass, null);
     }
 
+
     public static String getPath(@NonNull String path, boolean isClass, String pathSeparator) {
         pathSeparator = pathSeparator == null ? "/" : pathSeparator;
         Preconditions.checkNotNull(path, "path is null or empty");
-        if (isClass) {
-            path = path.replace("\\.", pathSeparator) + ".class";
+        if (path.endsWith(".class")) {
+            path = path.substring(0, path.length() - ".class".length());
+        }
+        path = path.replace(".", pathSeparator);
+        if (isClass && !path.endsWith(".class")) {
+            path = path + ".class";
         }
         return path;
     }

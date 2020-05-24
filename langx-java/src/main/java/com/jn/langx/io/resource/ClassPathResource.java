@@ -79,7 +79,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
      */
     public ClassPathResource(String path, @Nullable Class<?> clazz) {
         Preconditions.checkNotNull(path, "Path must not be null");
-        path = Classpaths.getPath(path, true);
+        path = Classpaths.getPath(path, path.endsWith(".class"));
         if (!path.startsWith(PREFIX)) {
             // classpath下的绝对路径
             if(path.startsWith("/")){
@@ -88,7 +88,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
                 // 相对于指定的类的路径
                 if (clazz != null) {
                     String packageName = Reflects.getPackageName(clazz);
-                    packageName = Classpaths.getPath(packageName, true);
+                    packageName = Classpaths.getPath(packageName, false);
                     if (path.startsWith(packageName)) {
                         path = PREFIX + (path.startsWith("/") ? "" : "/") + path;
                     } else {
@@ -187,7 +187,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
 
     @Override
     public String toString() {
-        return getPath();
+        return getLocation().getLocation();
     }
 
     @Override

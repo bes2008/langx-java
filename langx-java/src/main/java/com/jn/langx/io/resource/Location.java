@@ -33,7 +33,7 @@ public final class Location implements Comparable<Location>, EmptyEvalutible {
 
     public Location(String prefix, String path, String pathSeparator) {
         this.path = path;
-        this.prefix = Strings.getEmptyIfNull(path);
+        this.prefix = Strings.getEmptyIfNull(prefix);
         this.pathSeparator = Strings.useValueIfBlank(pathSeparator, "/");
     }
 

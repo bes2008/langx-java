@@ -2,6 +2,7 @@ package com.jn.langx.classpath.cp;
 
 import com.jn.langx.classpath.Classpaths;
 import com.jn.langx.io.resource.DirectoryBasedFileResourceLoader;
+import com.jn.langx.io.resource.FileResource;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.collection.Collects;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 public class JarDirectoryClasspath extends AbstractClasspath {
     private List<JarClasspath> jars = Collects.emptyArrayList();
+    private Location root;
 
     public JarDirectoryClasspath(String dirName) {
         List<File> files = new DirectoryBasedFileResourceLoader(dirName).listFiles(new FilenameSuffixFilter(new String[]{"jar", "zip"}, true));
@@ -25,6 +27,8 @@ public class JarDirectoryClasspath extends AbstractClasspath {
                 jars.add(new JarClasspath(jarfile));
             }
         });
+
+        root = new Location(FileResource.PREFIX, dirName);
     }
 
     @Override
@@ -40,11 +44,18 @@ public class JarDirectoryClasspath extends AbstractClasspath {
 
     @Override
     public Location getRoot() {
-        return null;
+        return root;
     }
 
     @Override
     public Set<Location> allResources() {
-        return null;
+        final Set<Location> locations = Collects.emptyHashSet(true);
+        Collects.forEach(jars, new Consumer2<Integer, JarClasspath>() {
+            @Override
+            public void accept(Integer key, JarClasspath jarClasspath) {
+                locations.addAll(jarClasspath.allResources());
+            }
+        });
+        return locations;
     }
 }
