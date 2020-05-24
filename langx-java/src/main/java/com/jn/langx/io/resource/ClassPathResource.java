@@ -1,10 +1,13 @@
 package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.classpath.Classpaths;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.file.Filenames;
 import com.jn.langx.util.net.URLs;
+import com.jn.langx.util.reflect.Reflects;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -76,6 +79,25 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
      */
     public ClassPathResource(String path, @Nullable Class<?> clazz) {
         Preconditions.checkNotNull(path, "Path must not be null");
+        path = Classpaths.getPath(path, true);
+        if (!path.startsWith(PREFIX)) {
+            // classpath下的绝对路径
+            if(path.startsWith("/")){
+                path = PREFIX+path;
+            }else {
+                // 相对于指定的类的路径
+                if (clazz != null) {
+                    String packageName = Reflects.getPackageName(clazz);
+                    packageName = Classpaths.getPath(packageName, true);
+                    if (path.startsWith(packageName)) {
+                        path = PREFIX + (path.startsWith("/") ? "" : "/") + path;
+                    } else {
+                        path = PREFIX + (packageName.startsWith("/") ? "" : "/") + packageName + (path.startsWith("/") ? "" : "/") + path;
+                    }
+                }
+            }
+        }
+
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
 
         path = path.substring(PREFIX.length());
