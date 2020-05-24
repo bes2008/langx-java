@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class ClassLoaderClasspath extends AbstractClasspath {
     private ClassLoader classLoader;
+    private Location root = new Location(ClassPathResource.PREFIX,"");
 
     public ClassLoaderClasspath(@NonNull ClassLoader loader) {
         Preconditions.checkNotNull(loader);

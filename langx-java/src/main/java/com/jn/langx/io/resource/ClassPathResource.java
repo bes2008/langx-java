@@ -2,6 +2,7 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.classpath.Classpaths;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
@@ -54,8 +55,13 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
     public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
         Preconditions.checkNotNull(path, "Path must not be null");
         this.classLoader = (classLoader != null ? classLoader : ClassLoaders.getDefaultClassLoader());
-
-        path = Classpaths.getPath(path, path.endsWith(".class"));
+        String path0 = path;
+        if (path.endsWith(".class")) {
+            path = Classpaths.getPath(path, true);
+        }
+        if (path.startsWith(PREFIX)) {
+            path = path.substring(PREFIX.length());
+        }
         if (!path.startsWith(PREFIX)) {
             // classpath下的绝对路径
             if (path.startsWith("/")) {
@@ -63,6 +69,8 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
             } else {
                 path = PREFIX + path;
             }
+        } else {
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("illegal path {}", path0));
         }
 
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
@@ -87,28 +95,40 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
      */
     public ClassPathResource(String path, @Nullable Class<?> clazz) {
         Preconditions.checkNotNull(path, "Path must not be null");
+        String path0 = path;
         if (clazz == null) {
             this.classLoader = ClassLoaders.getDefaultClassLoader();
         }
-        path = Classpaths.getPath(path, path.endsWith(".class"));
+        if (path.endsWith(".class")) {
+            path = Classpaths.getPath(path, true);
+        }
+
+        if (path.startsWith(PREFIX)) {
+            path = path.substring(PREFIX.length());
+        }
+
         if (!path.startsWith(PREFIX)) {
-            // classpath下的绝对路径
             if (path.startsWith("/")) {
+                // classpath下的绝对路径
                 path = PREFIX + path.substring(1);
             } else {
-                // 相对于指定的类的路径
                 if (clazz != null) {
                     String packageName = Reflects.getPackageName(clazz);
                     packageName = Classpaths.getPath(packageName, false);
                     if (path.startsWith(packageName)) {
+                        // 绝对路径
                         path = PREFIX + path;
                     } else {
+                        // 相对路径
                         path = PREFIX + packageName + "/" + path;
                     }
                 } else {
+                    // 没有 指定类时，就认为这是个绝对路径
                     path = PREFIX + path;
                 }
             }
+        } else {
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("illegal path {}", path0));
         }
 
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
@@ -178,7 +198,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
 
     protected URL resolveURL() {
         if (this.clazz != null) {
-            return this.clazz.getResource(getPath());
+            return this.clazz.getResource("/" + getPath());
         } else if (this.classLoader != null) {
             return this.classLoader.getResource(getPath());
         } else {
