@@ -14,6 +14,7 @@ import java.net.URL;
  * file:///home/fjn/
  * file://c:\\a\\b
  * http://www.baidu.com/resources/xx
+ * jar:file://
  */
 public class UrlResource extends AbstractLocatableResource<URL> {
 

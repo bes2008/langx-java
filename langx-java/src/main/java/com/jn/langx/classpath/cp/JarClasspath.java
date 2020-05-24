@@ -1,13 +1,12 @@
 package com.jn.langx.classpath.cp;
 
 import com.jn.langx.classpath.Classpaths;
-import com.jn.langx.io.resource.Location;
-import com.jn.langx.io.resource.Resource;
-import com.jn.langx.io.resource.ResourceNotFoundException;
-import com.jn.langx.io.resource.Resources;
+import com.jn.langx.io.resource.*;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Filenames;
@@ -32,7 +31,7 @@ public class JarClasspath extends AbstractClasspath {
         }
     });
     private String jarfileURL;
-
+    private Location root;
 
     private String getSuffix(String path) {
         String suffix = Filenames.getSuffix(path);
@@ -58,6 +57,7 @@ public class JarClasspath extends AbstractClasspath {
         } finally {
             IOs.close(jarfile);
         }
+        root = new Location(StringTemplates.formatWithPlaceholder("jar:{}!/", jarfileURL), "");
     }
 
 
@@ -67,7 +67,7 @@ public class JarClasspath extends AbstractClasspath {
         String suffix = getSuffix(relativePath);
 
         if (this.fileEntries.get(suffix).contains(relativePath)) {
-            String url = StringTemplates.format("jar:{}!/{}", this.jarfileURL, relativePath);
+            String url = getUrl(relativePath, false);
             return Resources.loadUrlResource(url);
         }
         return null;
@@ -75,11 +75,22 @@ public class JarClasspath extends AbstractClasspath {
 
     @Override
     public Location getRoot() {
-        return null;
+        return root;
     }
 
     @Override
     public Set<Location> allResources() {
-        return null;
+        return Pipeline.of(fileEntries).flatMap(new Function<String, Location>() {
+            @Override
+            public Location apply(String relativePath) {
+                relativePath = Classpaths.getPath(relativePath, true);
+                return Locations.newLocation(root, relativePath);
+            }
+        }).asSet(false);
+    }
+
+    private String getUrl(String relativePath, boolean isClass) {
+        relativePath = Classpaths.getPath(relativePath, isClass);
+        return StringTemplates.formatWithPlaceholder("jar:{}!/{}", this.jarfileURL, relativePath);
     }
 }
