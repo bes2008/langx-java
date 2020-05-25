@@ -2,6 +2,7 @@ package com.jn.langx.aspectj.reflect;
 
 import com.jn.langx.annotation.Name;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.parameter.AbstractConstructorParameterSupplier;
@@ -49,8 +50,16 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
     public ConstructorParameter get(ParameterMeta meta) {
         init();
         String parameterName = findRealParameterName(meta);
-        meta.setName(parameterName);
+        if (Strings.isNotEmpty(parameterName)) {
+            meta.setName(parameterName);
+        }
         ConstructorParameter delegate = this.delegate.get(meta);
+        if (Strings.isEmpty(parameterName)) {
+            parameterName = delegate.getName();
+        }
+        if (Strings.isEmpty(parameterName)) {
+            parameterName = "arg" + meta.getIndex();
+        }
         return new AjConstructorParameter(parameterName, delegate);
     }
 
@@ -61,15 +70,15 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
             String classname = Reflects.getFQNClassName(declaringClass);
 
             JavaClass classAj = Repository.lookupClass(classname);
-            if(classAj==null){
+            if (classAj == null) {
                 logger.warn("Can't find the BCEL JavaClass for the class {}", classname);
-            }else {
+            } else {
 
                 // 构造器的本质 是 <init> 方法
                 Method methodAj = classAj.getMethod(constructor);
-                if(methodAj == null){
+                if (methodAj == null) {
                     logger.warn("Can't find the BCEL constructor for the constructor {}", "");
-                }else {
+                } else {
                     LocalVariableTable lvt = methodAj.getLocalVariableTable();
 
                     // 如果一个jar 在编译时，设置 编译时不保留 vars , 这种情况下 lvt 将是 null
@@ -91,6 +100,6 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
         } catch (Throwable ex) {
             logger.error(ex.getMessage(), ex);
         }
-        return "arg" + meta.getIndex();
+        return null;
     }
 }

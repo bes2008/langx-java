@@ -2,6 +2,7 @@ package com.jn.langx.aspectj.reflect;
 
 import com.jn.langx.annotation.Name;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
 import com.jn.langx.util.reflect.Reflects;
@@ -50,8 +51,17 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
     public MethodParameter get(ParameterMeta meta) {
         init();
         String parameterName = findRealParameterName(meta);
-        meta.setName(parameterName);
+        if (Strings.isNotEmpty(parameterName)) {
+            meta.setName(parameterName);
+        }
+        // 获取参数，这里拿到的参数很可能跟之前获取的不一样
         MethodParameter delegate = this.delegate.get(meta);
+        if (Strings.isEmpty(parameterName)) {
+            parameterName = delegate.getName();
+        }
+        if (Strings.isEmpty(parameterName)) {
+            parameterName = "arg" + meta.getIndex();
+        }
         return new AjMethodParameter(parameterName, delegate);
     }
 
@@ -97,6 +107,6 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
         } catch (Throwable ex) {
             logger.error(ex.getMessage(), ex);
         }
-        return "arg" + meta.getIndex();
+        return null;
     }
 }
