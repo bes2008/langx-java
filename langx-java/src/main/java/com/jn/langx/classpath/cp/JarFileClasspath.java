@@ -2,7 +2,6 @@ package com.jn.langx.classpath.cp;
 
 import com.jn.langx.classpath.Classpaths;
 import com.jn.langx.io.resource.*;
-import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -70,7 +69,9 @@ public class JarFileClasspath extends AbstractClasspath {
     public Resource findResource(String relativePath) {
         relativePath = Classpaths.getCanonicalFilePath(relativePath);
         String suffix = getSuffix(relativePath);
-
+        if (relativePath.startsWith("/")) {
+            relativePath = relativePath.substring(1);
+        }
         if (this.fileEntries.get(suffix).contains(relativePath)) {
             String url = getUrl(relativePath);
             return Resources.loadUrlResource(url);
@@ -96,6 +97,6 @@ public class JarFileClasspath extends AbstractClasspath {
 
     private String getUrl(String relativePath) {
         relativePath = Classpaths.getCanonicalFilePath(relativePath);
-        return StringTemplates.formatWithPlaceholder("jar:{}!/{}", this.jarfileURL, relativePath);
+        return this.root.getLocation() + relativePath;
     }
 }
