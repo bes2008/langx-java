@@ -9,14 +9,16 @@ import com.jn.langx.util.reflect.parameter.AbstractConstructorParameterSupplier;
 import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import com.jn.langx.util.reflect.parameter.ConstructorParameterSupplier;
 import com.jn.langx.util.reflect.parameter.ParameterMeta;
-import org.aspectj.apache.bcel.Repository;
 import org.aspectj.apache.bcel.classfile.JavaClass;
 import org.aspectj.apache.bcel.classfile.LocalVariable;
 import org.aspectj.apache.bcel.classfile.LocalVariableTable;
 import org.aspectj.apache.bcel.classfile.Method;
+import org.aspectj.apache.bcel.util.ClassPath;
+import org.aspectj.apache.bcel.util.SyntheticRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 
 @Name(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME)
@@ -69,7 +71,25 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
             Class declaringClass = constructor.getDeclaringClass();
             String classname = Reflects.getFQNClassName(declaringClass);
 
-            JavaClass classAj = Repository.lookupClass(classname);
+            File classpathRoot = new File(Reflects.getCodeLocation(declaringClass).toURI());
+
+            ClassPath classPath = new ClassPath(classpathRoot.getAbsolutePath());
+            SyntheticRepository repository = SyntheticRepository.getInstance(classPath);
+
+            JavaClass classAj = repository.findClass(classname);
+            if (classAj == null) {
+                try {
+                    classAj = repository.loadClass(classname);
+                    JavaClass classAj1 = repository.findClass(classname);
+                    if (classAj1 == null) {
+                        repository.storeClass(classAj);
+                    } else {
+                        classAj = classAj1;
+                    }
+                } catch (ClassNotFoundException ex) {
+                    logger.warn(ex.getMessage(), ex);
+                }
+            }
             if (classAj == null) {
                 logger.warn("Can't find the BCEL JavaClass for the class {}", classname);
             } else {
