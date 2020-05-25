@@ -1,6 +1,7 @@
 package com.jn.langx.aspectj.reflect;
 
 import com.jn.langx.annotation.Name;
+import com.jn.langx.aspectj.coderepository.Repositorys;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
@@ -13,12 +14,10 @@ import org.aspectj.apache.bcel.classfile.JavaClass;
 import org.aspectj.apache.bcel.classfile.LocalVariable;
 import org.aspectj.apache.bcel.classfile.LocalVariableTable;
 import org.aspectj.apache.bcel.classfile.Method;
-import org.aspectj.apache.bcel.util.ClassPath;
-import org.aspectj.apache.bcel.util.SyntheticRepository;
+import org.aspectj.apache.bcel.util.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 
 @Name(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME)
@@ -71,10 +70,7 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
             Class declaringClass = constructor.getDeclaringClass();
             String classname = Reflects.getFQNClassName(declaringClass);
 
-            File classpathRoot = new File(Reflects.getCodeLocation(declaringClass).toURI());
-
-            ClassPath classPath = new ClassPath(classpathRoot.getAbsolutePath());
-            SyntheticRepository repository = SyntheticRepository.getInstance(classPath);
+            Repository repository = Repositorys.getClassLoaderRepository(declaringClass);
 
             JavaClass classAj = repository.findClass(classname);
             if (classAj == null) {
