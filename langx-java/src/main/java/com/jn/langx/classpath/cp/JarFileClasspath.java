@@ -70,7 +70,7 @@ public class JarFileClasspath extends AbstractClasspath {
         String suffix = getSuffix(relativePath);
 
         if (this.fileEntries.get(suffix).contains(relativePath)) {
-            String url = getUrl(relativePath, false);
+            String url = getUrl(relativePath, isClass);
             return Resources.loadUrlResource(url);
         }
         return null;

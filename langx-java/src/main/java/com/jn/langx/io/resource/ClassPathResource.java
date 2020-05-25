@@ -10,6 +10,7 @@ import com.jn.langx.util.io.file.Filenames;
 import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.reflect.Reflects;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -144,7 +145,22 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
 
     @Override
     public String getAbsolutePath() {
-        return getPath();
+        URL url = getUrlOrNull();
+        File file = null;
+        if (url != null) {
+            try {
+                file = new File(url.toURI());
+            } catch (Throwable ex) {
+
+            }
+        }
+        if (file != null) {
+            return file.getAbsolutePath();
+        }
+        if (url != null) {
+            return url.toString();
+        }
+        return getLocation().getLocation();
     }
 
     @Override

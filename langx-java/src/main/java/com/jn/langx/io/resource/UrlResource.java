@@ -33,7 +33,8 @@ public class UrlResource extends AbstractLocatableResource<URL> {
     public UrlResource(URL url) {
         Preconditions.checkNotNull(url);
         this.url = url;
-        String prefix = url.getProtocol()+"://";
+        String protocol = url.getProtocol();
+        String prefix = URLs.getUrlPrefix(protocol);
         String path = url.toString();
         if(path.startsWith(prefix)){
            path = path.substring(prefix.length());

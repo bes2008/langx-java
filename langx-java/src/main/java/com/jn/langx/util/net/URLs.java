@@ -15,9 +15,15 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class URLs {
     private static final Logger logger = LoggerFactory.getLogger(URLs.class);
+
+    private static final Map<String,String> URL_PREFIX_MAPPING = new HashMap<String, String>();
+
+
 
     public static URL toURL(URI uri) {
         Preconditions.checkNotNull(uri);
@@ -50,6 +56,7 @@ public class URLs {
     public static final String URL_PREFIX_JAR_FILE = URL_PREFIX_JAR + URL_PREFIX_FILE + "/";
     public static final String URL_PREFIX_FTP = "ftp://";
     public static final String URL_PREFIX_HTTP = "http://";
+    public static final String URL_PREFIX_HTTPS = "https://";
     public static final String URL_PREFIX_MAIL = "mail:";
     public static final String URL_PREFIX_SMTP = "smtp://";
 
@@ -92,6 +99,20 @@ public class URLs {
      * Special separator between WAR URL and jar part on Tomcat.
      */
     public static final String WAR_URL_SEPARATOR = "*/";
+
+    static {
+        URL_PREFIX_MAPPING.put("http", URL_PREFIX_HTTP);
+        URL_PREFIX_MAPPING.put("https",URL_PREFIX_HTTPS);
+        URL_PREFIX_MAPPING.put("ftp", URL_PREFIX_FTP);
+        URL_PREFIX_MAPPING.put("jar", URL_PREFIX_JAR);
+        URL_PREFIX_MAPPING.put("file", URL_PREFIX_FILE);
+        URL_PREFIX_MAPPING.put("smtp", URL_PREFIX_SMTP);
+        URL_PREFIX_MAPPING.put("mail", URL_PREFIX_MAIL);
+    }
+
+    public static String getUrlPrefix(String protocol){
+        return URL_PREFIX_MAPPING.get(protocol);
+    }
 
     public static boolean isFileURL(URL url) {
         String protocol = url.getProtocol();
