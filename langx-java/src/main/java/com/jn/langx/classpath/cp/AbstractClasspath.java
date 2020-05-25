@@ -1,10 +1,6 @@
 package com.jn.langx.classpath.cp;
 
-import com.jn.langx.classpath.ClassFile;
-import com.jn.langx.classpath.Classpath;
-import com.jn.langx.classpath.Classpaths;
-import com.jn.langx.classpath.ResourceClassFile;
-import com.jn.langx.classpath.ResourceFilter;
+import com.jn.langx.classpath.*;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Locations;
 import com.jn.langx.io.resource.Resource;
@@ -19,7 +15,7 @@ import java.util.Set;
 public abstract class AbstractClasspath implements Classpath {
     @Override
     public ClassFile findClassFile(String classname) {
-        Resource resource = findResource(classname, true);
+        Resource resource = findResource(Classpaths.classNameToPath(classname));
         if (resource == null) {
             return null;
         }
@@ -28,7 +24,7 @@ public abstract class AbstractClasspath implements Classpath {
 
     @Override
     public List<ClassFile> scanClassFiles(String packageName, ResourceFilter filter) {
-        List<Resource> resources = scanResources(packageName, true, filter);
+        List<Resource> resources = scanResources(packageName, filter);
         return Pipeline.of(resources).map(new Function<Resource, ClassFile>() {
             @Override
             public ClassFile apply(Resource resource) {
@@ -41,8 +37,8 @@ public abstract class AbstractClasspath implements Classpath {
     }
 
     @Override
-    public List<Resource> scanResources(String namespace, final boolean isClass, ResourceFilter filter) {
-        namespace = Classpaths.getPath(namespace, isClass);
+    public List<Resource> scanResources(String namespace, ResourceFilter filter) {
+        namespace = Classpaths.getCanonicalFilePath(namespace);
         Set<Location> locations = scanResourceLocations(namespace, filter);
         final Location root = getRoot();
         return Pipeline.of(locations).map(new Function<Location, Resource>() {
@@ -52,7 +48,7 @@ public abstract class AbstractClasspath implements Classpath {
                 if (relativePath == null) {
                     return null;
                 } else {
-                    return findResource(relativePath, isClass);
+                    return findResource(relativePath);
                 }
             }
         }).clearNulls().asList();

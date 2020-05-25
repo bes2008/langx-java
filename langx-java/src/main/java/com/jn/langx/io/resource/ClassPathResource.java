@@ -58,7 +58,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         this.classLoader = (classLoader != null ? classLoader : ClassLoaders.getDefaultClassLoader());
         String path0 = path;
         if (path.endsWith(".class")) {
-            path = Classpaths.getPath(path, true);
+            path = Classpaths.classNameToPath(path);
         }
         if (path.startsWith(PREFIX)) {
             path = path.substring(PREFIX.length());
@@ -101,7 +101,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
             this.classLoader = ClassLoaders.getDefaultClassLoader();
         }
         if (path.endsWith(".class")) {
-            path = Classpaths.getPath(path, true);
+            path = Classpaths.classNameToPath(path);
         }
 
         if (path.startsWith(PREFIX)) {
@@ -115,7 +115,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
             } else {
                 if (clazz != null) {
                     String packageName = Reflects.getPackageName(clazz);
-                    packageName = Classpaths.getPath(packageName, false);
+                    packageName = Classpaths.packageToPath(packageName);
                     if (path.startsWith(packageName)) {
                         // 绝对路径
                         path = PREFIX + path;

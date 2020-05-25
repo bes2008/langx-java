@@ -15,11 +15,10 @@ public interface ClasspathScanner {
      * Scan for file resources using the starting location and filter.
      *
      * @param namespace The relative location from which the scan will start.
-     * @param isClass the namespace will converted by package name
      * @param filter    The filter used to match resources.
      * @return The list of resources found that match our filter.
      */
-    List<Resource> scanResources(String namespace, boolean isClass, ResourceFilter filter);
+    List<Resource> scanResources(String namespace, ResourceFilter filter);
 
     /**
      * Scan of classes using the starting package and filter.

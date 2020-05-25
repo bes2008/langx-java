@@ -27,8 +27,8 @@ public class DirectoryClasspath extends AbstractClasspath {
     }
 
     @Override
-    public Resource findResource(String relativePath, boolean isClass) {
-        relativePath = Classpaths.getPath(relativePath, isClass, root.getPathSeparator());
+    public Resource findResource(String relativePath) {
+        relativePath = Classpaths.getCanonicalFilePath(relativePath);
         return loader.loadResource(relativePath);
     }
 

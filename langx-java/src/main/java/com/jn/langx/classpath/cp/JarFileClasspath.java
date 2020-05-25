@@ -49,8 +49,10 @@ public class JarFileClasspath extends AbstractClasspath {
             try {
                 jarfile = new JarFile(file);
                 for (JarEntry entry : Collections.list(jarfile.entries())) {
-                    String suffix = getSuffix(entry.getName());
-                    fileEntries.get(suffix).add(entry.getName());
+                    if (!entry.isDirectory()) {
+                        String suffix = getSuffix(entry.getName());
+                        fileEntries.get(suffix).add(entry.getName());
+                    }
                 }
 
                 this.jarfileURL = file.getCanonicalFile().toURI().toURL().toString();
@@ -65,12 +67,12 @@ public class JarFileClasspath extends AbstractClasspath {
     }
 
     @Override
-    public Resource findResource(String relativePath, boolean isClass) {
-        relativePath = Classpaths.getPath(relativePath, isClass);
+    public Resource findResource(String relativePath) {
+        relativePath = Classpaths.getCanonicalFilePath(relativePath);
         String suffix = getSuffix(relativePath);
 
         if (this.fileEntries.get(suffix).contains(relativePath)) {
-            String url = getUrl(relativePath, isClass);
+            String url = getUrl(relativePath);
             return Resources.loadUrlResource(url);
         }
         return null;
@@ -86,14 +88,14 @@ public class JarFileClasspath extends AbstractClasspath {
         return Pipeline.of(fileEntries).flatMap(new Function<String, Location>() {
             @Override
             public Location apply(String relativePath) {
-                relativePath = Classpaths.getPath(relativePath, true);
+                relativePath = Classpaths.getCanonicalFilePath(relativePath);
                 return Locations.newLocation(root, relativePath);
             }
         }).asSet(false);
     }
 
-    private String getUrl(String relativePath, boolean isClass) {
-        relativePath = Classpaths.getPath(relativePath, isClass);
+    private String getUrl(String relativePath) {
+        relativePath = Classpaths.getCanonicalFilePath(relativePath);
         return StringTemplates.formatWithPlaceholder("jar:{}!/{}", this.jarfileURL, relativePath);
     }
 }

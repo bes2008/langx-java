@@ -21,7 +21,11 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class WarFileClasspath extends AbstractClasspath {
+
+    public static final String FILE_NAME_PREFIX = "WEB-INF/classes/";
+
     /**
+     * 只是存放了  WEB-INF/classes 目录下的文件名
      * key: file suffix
      * values: file path relative the jar
      */
@@ -49,8 +53,12 @@ public class WarFileClasspath extends AbstractClasspath {
             try {
                 jarfile = new JarFile(file);
                 for (JarEntry entry : Collections.list(jarfile.entries())) {
-                    String suffix = getSuffix(entry.getName());
-                    fileEntries.get(suffix).add(entry.getName());
+                    if (!entry.isDirectory()) {
+                        if (entry.getName().startsWith(FILE_NAME_PREFIX)) {
+                            String suffix = getSuffix(entry.getName());
+                            fileEntries.get(suffix).add(entry.getName().substring(FILE_NAME_PREFIX.length()));
+                        }
+                    }
                 }
 
                 this.jarfileURL = file.getCanonicalFile().toURI().toURL().toString();
@@ -61,16 +69,18 @@ public class WarFileClasspath extends AbstractClasspath {
             }
         }
 
-        root = new Location(URLs.URL_PREFIX_JAR, jarfileURL + URLs.JAR_URL_SEPARATOR);
+        root = new Location(URLs.URL_PREFIX_JAR, jarfileURL + URLs.JAR_URL_SEPARATOR + "WEB-INF/classes");
     }
 
     @Override
-    public Resource findResource(String relativePath, boolean isClass) {
-        relativePath = Classpaths.getPath(relativePath, isClass);
+    public Resource findResource(String relativePath) {
+        relativePath = Classpaths.getCanonicalFilePath(relativePath);
         String suffix = getSuffix(relativePath);
-
+        if (relativePath.startsWith("/")) {
+            relativePath = relativePath.substring(1);
+        }
         if (this.fileEntries.get(suffix).contains(relativePath)) {
-            String url = getUrl(relativePath, false);
+            String url = getUrl(relativePath);
             return Resources.loadUrlResource(url);
         }
         return null;
@@ -86,15 +96,15 @@ public class WarFileClasspath extends AbstractClasspath {
         return Pipeline.of(fileEntries).flatMap(new Function<String, Location>() {
             @Override
             public Location apply(String relativePath) {
-                relativePath = Classpaths.getPath(relativePath, true);
+                relativePath = Classpaths.getCanonicalFilePath(relativePath);
                 return Locations.newLocation(root, relativePath);
             }
         }).asSet(false);
     }
 
-    private String getUrl(String relativePath, boolean isClass) {
+    private String getUrl(String relativePath) {
         // todo refactor the war class path
-        relativePath = Classpaths.getPath(relativePath, isClass);
-        return StringTemplates.formatWithPlaceholder("jar:{}!/{}", this.jarfileURL, relativePath);
+        relativePath = Classpaths.getCanonicalFilePath(relativePath);
+        return StringTemplates.formatWithPlaceholder("{}/{}", this.root.getLocation(), relativePath);
     }
 }

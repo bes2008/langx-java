@@ -20,10 +20,11 @@ public interface Classpath extends ClasspathScanner {
      * @param relativePath your resource location
      * @return null if the specified class file could not be found.
      */
-    Resource findResource(@NonNull String relativePath, boolean isClass);
+    Resource findResource(@NonNull String relativePath);
 
     /**
      * 根据 class name 在 root 下查找
+     *
      * @param classname the class name
      * @return the class file
      */
@@ -31,6 +32,7 @@ public interface Classpath extends ClasspathScanner {
 
     /**
      * root 位置，如果 root 是 null, 则为无root资源
+     *
      * @return root location
      */
     Location getRoot();

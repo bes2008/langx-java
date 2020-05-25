@@ -19,8 +19,8 @@ public class InputStreamClasspath extends AbstractClasspath {
     }
 
     @Override
-    public Resource findResource(String relativePath, boolean isClass) {
-        relativePath = Classpaths.getPath(relativePath, isClass);
+    public Resource findResource(String relativePath) {
+        relativePath = Classpaths.getCanonicalFilePath(relativePath);
         if (relativePath.equals(resource.getDescription())) {
             return resource;
         }

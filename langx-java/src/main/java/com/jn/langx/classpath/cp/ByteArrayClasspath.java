@@ -18,8 +18,8 @@ public class ByteArrayClasspath extends AbstractClasspath {
     }
 
     @Override
-    public Resource findResource(@NonNull String relativePath, boolean isClass) {
-        relativePath = Classpaths.getPath(relativePath, isClass);
+    public Resource findResource(@NonNull String relativePath) {
+        relativePath = Classpaths.getCanonicalFilePath(relativePath);
         if (relativePath.equals(resource.getPath())) {
             return resource;
         }

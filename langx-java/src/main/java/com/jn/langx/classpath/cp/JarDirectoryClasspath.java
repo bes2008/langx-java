@@ -46,12 +46,12 @@ public class JarDirectoryClasspath extends AbstractClasspath {
     }
 
     @Override
-    public Resource findResource(final String relativePath, final boolean isClass) {
-        final String path = Classpaths.getPath(relativePath, isClass);
+    public Resource findResource(final String relativePath) {
+        final String path = Classpaths.getCanonicalFilePath(relativePath);
         return Collects.firstMap(jars, new Function2<Integer, JarFileClasspath, Resource>() {
             @Override
             public Resource apply(Integer index, JarFileClasspath jarClasspath) {
-                return jarClasspath.findResource(path, false);
+                return jarClasspath.findResource(path);
             }
         });
     }

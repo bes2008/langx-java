@@ -1,24 +1,26 @@
 package com.jn.langx.classpath;
 
-import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.file.Filenames;
 
 public class Classpaths {
-    public static String getPath(@NonNull String path, boolean isClass) {
-        return getPath(path, isClass, null);
+
+    public static String classNameToPath(String className) {
+        Preconditions.checkNotNull(className, "className is null or empty");
+        if (className.endsWith(".class")) {
+            className = className.substring(0, className.length() - ".class".length());
+        }
+        className = className.replace(".", "/");
+        className = className + ".class";
+        return className;
     }
 
-
-    public static String getPath(@NonNull String path, boolean isClass, String pathSeparator) {
-        pathSeparator = pathSeparator == null ? "/" : pathSeparator;
-        Preconditions.checkNotNull(path, "path is null or empty");
-        if (path.endsWith(".class")) {
-            path = path.substring(0, path.length() - ".class".length());
-        }
-        path = path.replace(".", pathSeparator);
-        if (isClass && !path.endsWith(".class")) {
-            path = path + ".class";
-        }
-        return path;
+    public static String packageToPath(String packageName) {
+        return packageName.replace(".", "/");
     }
+
+    public static String getCanonicalFilePath(String path) {
+        return Filenames.cleanPath(path);
+    }
+
 }
