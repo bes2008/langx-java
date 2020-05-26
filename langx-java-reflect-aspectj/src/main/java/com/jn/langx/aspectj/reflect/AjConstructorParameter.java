@@ -86,6 +86,16 @@ public class AjConstructorParameter implements ConstructorParameter {
     }
 
     @Override
+    public <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass) {
+        return delegate.getDeclaredAnnotationsByType(annotationClass);
+    }
+
+    @Override
+    public <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass) {
+        return delegate.getAnnotationsByType(annotationClass);
+    }
+
+    @Override
     public String toString() {
         if (Strings.isEmpty(name)) {
             return delegate.toString();

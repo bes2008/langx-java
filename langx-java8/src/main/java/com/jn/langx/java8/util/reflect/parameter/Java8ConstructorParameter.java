@@ -83,6 +83,15 @@ public class Java8ConstructorParameter implements ConstructorParameter {
         return parameter.getDeclaredAnnotations();
     }
 
+    @Override
+    public <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass) {
+        return parameter.getDeclaredAnnotationsByType(annotationClass);
+    }
+
+    @Override
+    public <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass) {
+        return parameter.getAnnotationsByType(annotationClass);
+    }
 
     @Override
     public String toString() {

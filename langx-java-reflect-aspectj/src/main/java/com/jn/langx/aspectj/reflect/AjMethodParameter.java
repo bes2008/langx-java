@@ -86,10 +86,20 @@ public class AjMethodParameter implements MethodParameter {
     }
 
     @Override
+    public <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass) {
+        return delegate.getDeclaredAnnotationsByType(annotationClass);
+    }
+
+    @Override
+    public <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass) {
+        return delegate.getAnnotationsByType(annotationClass);
+    }
+
+    @Override
     public String toString() {
-        if(Strings.isEmpty(name)) {
+        if (Strings.isEmpty(name)) {
             return delegate.toString();
-        }else{
+        } else {
             final StringBuilder sb = new StringBuilder();
             final Type type = this.getType();
             final String typename = type.toString();

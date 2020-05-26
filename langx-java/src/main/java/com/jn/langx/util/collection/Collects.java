@@ -648,6 +648,15 @@ public class Collects {
         return collection.toArray();
     }
 
+    public static <E, C extends Collection<E>> E[] asArray(@Nullable C list, @NonNull Class<E> componentClass){
+        Preconditions.checkNotNull(componentClass);
+        E[] array = Arrs.createArray(componentClass, Emptys.isEmpty(list)?0:list.size());
+        if(Emptys.isNotEmpty(list)) {
+            list.toArray(array);
+        }
+        return array;
+    }
+
     /**
      * Convert a list to an array
      */

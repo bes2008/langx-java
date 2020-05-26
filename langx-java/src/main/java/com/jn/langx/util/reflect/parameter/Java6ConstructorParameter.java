@@ -1,6 +1,7 @@
 package com.jn.langx.util.reflect.parameter;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.reflect.Modifiers;
 
 import java.lang.annotation.Annotation;
@@ -8,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Java6ConstructorParameter implements ConstructorParameter {
@@ -259,7 +261,6 @@ public class Java6ConstructorParameter implements ConstructorParameter {
     }
 
 
-
     /**
      * {@inheritDoc}
      */
@@ -268,6 +269,21 @@ public class Java6ConstructorParameter implements ConstructorParameter {
     }
 
     private transient Map<Class<? extends Annotation>, Annotation> declaredAnnotations;
+
+    @Override
+    public <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass) {
+        return getAnnotationsByType(annotationClass);
+    }
+
+    @Override
+    public <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass) {
+        T annotation = (T) declaredAnnotations().get(annotationClass);
+        List<T> annotations = Collects.newArrayList();
+        if (annotation != null) {
+            annotations.add(annotation);
+        }
+        return Collects.asArray(annotations, annotationClass);
+    }
 
     private synchronized Map<Class<? extends Annotation>, Annotation> declaredAnnotations() {
         if (null == declaredAnnotations) {
