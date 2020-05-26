@@ -72,20 +72,7 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
 
             Repository repository = Repositorys.getClassLoaderRepository(declaringClass);
 
-            JavaClass classAj = repository.findClass(classname);
-            if (classAj == null) {
-                try {
-                    classAj = repository.loadClass(classname);
-                    JavaClass classAj1 = repository.findClass(classname);
-                    if (classAj1 == null) {
-                        repository.storeClass(classAj);
-                    } else {
-                        classAj = classAj1;
-                    }
-                } catch (ClassNotFoundException ex) {
-                    logger.warn(ex.getMessage(), ex);
-                }
-            }
+            JavaClass classAj = Repositorys.loadJavaClass(repository, classname);
             if (classAj == null) {
                 logger.warn("Can't find the BCEL JavaClass for the class {}", classname);
             } else {

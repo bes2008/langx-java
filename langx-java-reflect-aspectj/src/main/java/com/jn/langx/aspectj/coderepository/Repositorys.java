@@ -4,6 +4,8 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
+import com.sun.istack.internal.NotNull;
+import org.aspectj.apache.bcel.classfile.JavaClass;
 import org.aspectj.apache.bcel.util.ClassLoaderRepository;
 import org.aspectj.apache.bcel.util.ClassPath;
 import org.aspectj.apache.bcel.util.Repository;
@@ -53,5 +55,26 @@ public class Repositorys {
             }
         }
         return null;
+    }
+
+    public static JavaClass loadJavaClass(@NotNull Repository repository, @NotNull String classname) throws ClassNotFoundException {
+        Preconditions.checkNotNull(repository);
+        Preconditions.checkNotNull(classname);
+
+        JavaClass classAj = repository.findClass(classname);
+        if (classAj == null) {
+            classAj = repository.loadClass(classname);
+            JavaClass classAj1 = repository.findClass(classname);
+            if (classAj1 == null) {
+                repository.storeClass(classAj);
+            } else {
+                classAj = classAj1;
+            }
+        }
+        return classAj;
+    }
+
+    public static JavaClass loadJavaClass(@NotNull Repository repository, @NotNull Class clazz) throws ClassNotFoundException {
+        return loadJavaClass(repository, Reflects.getFQNClassName(clazz));
     }
 }
