@@ -31,6 +31,16 @@ Java lang extensions
     + IdentitySet
     + WeakIdentityHashMap
     + ConcurrentReferenceHashMap
++ Classpath API
+    + DirectoryClasspath
+    + JarFileClasspath
+    + WarFileClasspath
+    + JarDirectoryClasspath
+    + ClassLoaderClasspath
+    + ClassClasspath
+    + ResourceLoaderClasspath
+    + ByteArrayClasspath
+    + InputStreamClasspath
 + Differ API
     + Collection Differ
     + Map Differ
