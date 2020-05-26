@@ -65,10 +65,11 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
     }
 
     private String findRealParameterName(ParameterMeta meta) {
+        String classname = null;
         try {
             Constructor constructor = (Constructor) meta.getExecutable();
             Class declaringClass = constructor.getDeclaringClass();
-            String classname = Reflects.getFQNClassName(declaringClass);
+            classname = Reflects.getFQNClassName(declaringClass);
 
             Repository repository = Repositorys.getClassLoaderRepository(declaringClass);
 
@@ -101,7 +102,11 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
                 }
             }
         } catch (Throwable ex) {
-            logger.error(ex.getMessage(), ex);
+            if(ex instanceof ClassNotFoundException) {
+                logger.error("Can't find the class {} when use BCEL load it", classname, ex);
+            }else{
+                logger.error(ex.getMessage(), ex);
+            }
         }
         return null;
     }

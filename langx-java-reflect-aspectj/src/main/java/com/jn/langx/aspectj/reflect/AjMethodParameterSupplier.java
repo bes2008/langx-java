@@ -67,10 +67,11 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
     }
 
     private String findRealParameterName(ParameterMeta meta) {
+        String classname = null;
         try {
             Method method = (Method) meta.getExecutable();
             Class declaringClass = method.getDeclaringClass();
-            String classname = Reflects.getFQNClassName(declaringClass);
+            classname = Reflects.getFQNClassName(declaringClass);
 
             Repository repository = Repositorys.getClassLoaderRepository(declaringClass);
 
@@ -108,7 +109,11 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
             }
 
         } catch (Throwable ex) {
-            logger.error(ex.getMessage(), ex);
+            if (ex instanceof ClassNotFoundException) {
+                logger.error("Can't find the class {} when use BCEL load it", classname, ex);
+            } else {
+                logger.error(ex.getMessage(), ex);
+            }
         }
         return null;
     }
