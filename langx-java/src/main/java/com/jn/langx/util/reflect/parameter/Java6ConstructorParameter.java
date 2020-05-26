@@ -154,6 +154,18 @@ public class Java6ConstructorParameter implements ConstructorParameter {
         return name;
     }
 
+    private Type parameterTypeCache;
+
+    @Override
+    public Type getParameterizedType() {
+        Type tmp = parameterTypeCache;
+        if (null == tmp) {
+            tmp = constructor.getGenericParameterTypes()[index];
+            parameterTypeCache = tmp;
+        }
+
+        return tmp;
+    }
 
     /**
      * Returns a {@code Class} object that identifies the
@@ -246,10 +258,7 @@ public class Java6ConstructorParameter implements ConstructorParameter {
         return getAnnotation(annotationClass);
     }
 
-    @Override
-    public Type getParameterizedType() {
-        return null;
-    }
+
 
     /**
      * {@inheritDoc}
