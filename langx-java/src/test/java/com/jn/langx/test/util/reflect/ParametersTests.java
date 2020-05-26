@@ -3,11 +3,13 @@ package com.jn.langx.test.util.reflect;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
+import com.jn.langx.util.reflect.type.Types;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class ParametersTests {
@@ -30,6 +32,16 @@ public class ParametersTests {
         Constructor constructor = Reflects.getConstructor(StringBuilder.class, String.class);
         List<ConstructorParameter> constructorParameters = Reflects.getConstructorParameters(constructor);
         System.out.println(constructorParameters);
+
+
+        Method showMethod = Reflects.getAnyMethod(ParametersTests.class, "show", List.class);
+        List<MethodParameter> showMethodParameters = Reflects.getMethodParameters("langx_aspectj", showMethod);
+        Type type = Types.resolve(null, null, showMethodParameters.get(0).getParameterizedType());
+        System.out.println(showMethodParameters);
+
+    }
+
+    public void show(List<String> ids) {
 
     }
 }

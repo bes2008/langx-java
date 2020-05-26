@@ -41,6 +41,11 @@ public class AjMethodParameter implements MethodParameter {
     }
 
     @Override
+    public Type getParameterizedType() {
+        return delegate.getParameterizedType();
+    }
+
+    @Override
     public Class<?> getType() {
         return delegate.getType();
     }

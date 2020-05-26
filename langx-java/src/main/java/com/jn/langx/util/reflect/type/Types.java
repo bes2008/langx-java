@@ -324,6 +324,13 @@ public class Types {
         return clz;
     }
 
+    /**
+     *
+     * @param context
+     * @param contextRawType
+     * @param toResolve 将要被解析的类型
+     * @return
+     */
     public static Type resolve(Type context, Class<?> contextRawType, Type toResolve) {
         // This implementation is made a little more complicated in an attempt to avoid object-creation.
         while (true) {

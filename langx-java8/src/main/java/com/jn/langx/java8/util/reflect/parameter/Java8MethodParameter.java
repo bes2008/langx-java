@@ -6,6 +6,7 @@ import com.jn.langx.util.reflect.parameter.MethodParameter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 
 public class Java8MethodParameter implements MethodParameter {
 
@@ -36,6 +37,11 @@ public class Java8MethodParameter implements MethodParameter {
     @Override
     public String getName() {
         return parameter.getName();
+    }
+
+    @Override
+    public Type getParameterizedType() {
+        return parameter.getParameterizedType();
     }
 
     @Override

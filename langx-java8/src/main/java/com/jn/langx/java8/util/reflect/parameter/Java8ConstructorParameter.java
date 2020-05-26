@@ -5,6 +5,7 @@ import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 
 public class Java8ConstructorParameter implements ConstructorParameter {
     private Parameter parameter;
@@ -34,6 +35,12 @@ public class Java8ConstructorParameter implements ConstructorParameter {
     @Override
     public String getName() {
         return parameter.getName();
+    }
+
+
+    @Override
+    public Type getParameterizedType() {
+        return parameter.getParameterizedType();
     }
 
     @Override

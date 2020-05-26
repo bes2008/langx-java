@@ -246,6 +246,10 @@ public class Java6ConstructorParameter implements ConstructorParameter {
         return getAnnotation(annotationClass);
     }
 
+    @Override
+    public Type getParameterizedType() {
+        return null;
+    }
 
     /**
      * {@inheritDoc}

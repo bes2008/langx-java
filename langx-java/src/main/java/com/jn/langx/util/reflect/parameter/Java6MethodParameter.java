@@ -155,6 +155,17 @@ public class Java6MethodParameter implements MethodParameter {
         return name;
     }
 
+    private Type parameterTypeCache;
+    @Override
+    public Type getParameterizedType() {
+        Type tmp = parameterTypeCache;
+        if (null == tmp) {
+            tmp = method.getGenericParameterTypes()[index];
+            parameterTypeCache = tmp;
+        }
+
+        return tmp;
+    }
 
     /**
      * Returns a {@code Class} object that identifies the
