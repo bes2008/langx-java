@@ -106,4 +106,22 @@ public class Primitives {
         return (unwrapped == null) ? type : unwrapped;
     }
 
+
+    public static short sizeOf(Class<?> type){
+        Preconditions.checkArgument(isPrimitive(type));
+        if (type == boolean.class || type == byte.class) {
+            return 1;
+        }
+        if (type == char.class || type == short.class) {
+            return 2;
+        }
+        if (type == int.class || type == float.class) {
+            return 4;
+        }
+        if (type == long.class || type == double.class) {
+            return 8;
+        }
+        // void
+        return 0;
+    }
 }
