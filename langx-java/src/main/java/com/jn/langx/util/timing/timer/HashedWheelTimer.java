@@ -3,9 +3,9 @@ package com.jn.langx.util.timing.timer;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Platform;
-import com.jn.langx.util.leak.ResourceLeakDetector;
-import com.jn.langx.util.leak.ResourceLeakDetectorFactory;
-import com.jn.langx.util.leak.ResourceLeakTracker;
+import com.jn.langx.util.memory.leak.ResourceLeakDetector;
+import com.jn.langx.util.memory.leak.ResourceLeakDetectorFactory;
+import com.jn.langx.util.memory.leak.ResourceLeakTracker;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
