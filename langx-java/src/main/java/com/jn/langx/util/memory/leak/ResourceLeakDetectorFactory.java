@@ -1,4 +1,4 @@
-package com.jn.langx.util.leak;
+package com.jn.langx.util.memory.leak;
 
 
 import com.jn.langx.util.Preconditions;
