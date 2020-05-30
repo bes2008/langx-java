@@ -5,7 +5,7 @@ package com.jn.langx.commandline.util;
  *
  * @version $Id: DebugUtils.java 1636203 2014-11-02 22:26:31Z ggregory $
  */
-public class DebugUtils
+public class CommandLineDebugUtils
 {
     /**
      * System property to determine how to handle exceptions. When

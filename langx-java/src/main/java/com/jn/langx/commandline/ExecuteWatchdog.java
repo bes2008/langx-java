@@ -1,7 +1,7 @@
 package com.jn.langx.commandline;
 
 
-import com.jn.langx.commandline.util.DebugUtils;
+import com.jn.langx.commandline.util.CommandLineDebugUtils;
 
 /**
  * Destroys a process running for too long. For example:
@@ -146,7 +146,7 @@ public class ExecuteWatchdog implements TimeoutObserver {
             }
         } catch (final Exception e) {
             caught = e;
-            DebugUtils.handleException("Getting the exit value of the process failed", e);
+            CommandLineDebugUtils.handleException("Getting the exit value of the process failed", e);
         } finally {
             cleanUp();
         }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.jn.langx.commandline.util.DebugUtils;
+import com.jn.langx.commandline.util.CommandLineDebugUtils;
 
 /**
  * Copies all data from an input stream to an output stream.
@@ -97,7 +97,7 @@ public class StreamPumper implements Runnable {
                     os.close();
                 } catch (final IOException e) {
                     final String msg = "Got exception while closing exhausted output stream";
-                    DebugUtils.handleException(msg ,e);
+                    CommandLineDebugUtils.handleException(msg ,e);
                 }
             }
             synchronized (this) {
