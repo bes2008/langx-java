@@ -153,7 +153,6 @@ public class DefaultProcessingEnvironment {
 //            executable = "env";
 //        } else {
 //            // MAC OS 9 and previous
-//            // TODO: I have no idea how to get it, someone must fix it
 //            executable = null;
 //        }
         final CommandLine commandLine = null;
