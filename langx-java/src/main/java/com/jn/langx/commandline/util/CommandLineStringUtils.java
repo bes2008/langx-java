@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
  *
  * @version $Id: StringUtils.java 1636204 2014-11-02 22:30:31Z ggregory $
  */
-public class StringUtils {
+public class CommandLineStringUtils {
 
     private static final String SINGLE_QUOTE = "\'";
     private static final String DOUBLE_QUOTE = "\"";

@@ -30,7 +30,7 @@ import java.util.Map;
  *
  * @version $Id: DefaultExecutor.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
-public class DefaultExecutor implements Executor {
+public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
     /** taking care of output and error stream */
     private ExecuteStreamHandler streamHandler;
@@ -66,7 +66,7 @@ public class DefaultExecutor implements Executor {
      * into our {@code System.out} and {@code System.err} to avoid
      * a blocked or deadlocked subprocess (see{@link java.lang.Process Process}).
      */
-    public DefaultExecutor() {
+    public DefaultCommandLineExecutor() {
         this.streamHandler = new PumpStreamHandler();
         this.launcher = CommandLauncherFactory.createVMLauncher();
         this.exitValues = new int[0];
@@ -75,63 +75,63 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#getStreamHandler()
+     * @see CommandLineExecutor#getStreamHandler()
      */
     public ExecuteStreamHandler getStreamHandler() {
         return streamHandler;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#setStreamHandler(com.jn.langx.commandline.ExecuteStreamHandler)
+     * @see CommandLineExecutor#setStreamHandler(com.jn.langx.commandline.ExecuteStreamHandler)
      */
     public void setStreamHandler(final ExecuteStreamHandler streamHandler) {
         this.streamHandler = streamHandler;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#getWatchdog()
+     * @see CommandLineExecutor#getWatchdog()
      */
     public ExecuteWatchdog getWatchdog() {
         return watchdog;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#setWatchdog(com.jn.langx.commandline.ExecuteWatchdog)
+     * @see CommandLineExecutor#setWatchdog(com.jn.langx.commandline.ExecuteWatchdog)
      */
     public void setWatchdog(final ExecuteWatchdog watchDog) {
         this.watchdog = watchDog;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#getProcessDestroyer()
+     * @see CommandLineExecutor#getProcessDestroyer()
      */
     public ProcessDestroyer getProcessDestroyer() {
       return this.processDestroyer;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#setProcessDestroyer(ProcessDestroyer)
+     * @see CommandLineExecutor#setProcessDestroyer(ProcessDestroyer)
      */
     public void setProcessDestroyer(final ProcessDestroyer processDestroyer) {
       this.processDestroyer = processDestroyer;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#getWorkingDirectory()
+     * @see CommandLineExecutor#getWorkingDirectory()
      */
     public File getWorkingDirectory() {
         return workingDirectory;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#setWorkingDirectory(java.io.File)
+     * @see CommandLineExecutor#setWorkingDirectory(java.io.File)
      */
     public void setWorkingDirectory(final File dir) {
         this.workingDirectory = dir;
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#execute(CommandLine)
+     * @see CommandLineExecutor#execute(CommandLine)
      */
     public int execute(final CommandLine command) throws ExecuteException,
             IOException {
@@ -139,7 +139,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#execute(CommandLine, java.util.Map)
+     * @see CommandLineExecutor#execute(CommandLine, java.util.Map)
      */
     public int execute(final CommandLine command, final Map<String, String> environment)
             throws ExecuteException, IOException {
@@ -153,7 +153,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#execute(CommandLine,
+     * @see CommandLineExecutor#execute(CommandLine,
      *      com.jn.langx.commandline.ExecuteResultHandler)
      */
     public void execute(final CommandLine command, final ExecuteResultHandler handler)
@@ -162,7 +162,7 @@ public class DefaultExecutor implements Executor {
     }
 
     /**
-     * @see com.jn.langx.commandline.Executor#execute(CommandLine,
+     * @see CommandLineExecutor#execute(CommandLine,
      *      java.util.Map, com.jn.langx.commandline.ExecuteResultHandler)
      */
     public void execute(final CommandLine command, final Map<String, String> environment,
@@ -180,7 +180,7 @@ public class DefaultExecutor implements Executor {
         {
             public void run()
             {
-                int exitValue = Executor.INVALID_EXITVALUE;
+                int exitValue = CommandLineExecutor.INVALID_EXITVALUE;
                 try {
                     exitValue = executeInternal(command, environment, workingDirectory, streamHandler);
                     handler.onProcessComplete(exitValue);
@@ -196,18 +196,18 @@ public class DefaultExecutor implements Executor {
         getExecutorThread().start();
     }
 
-    /** @see com.jn.langx.commandline.Executor#setExitValue(int) */
+    /** @see CommandLineExecutor#setExitValue(int) */
     public void setExitValue(final int value) {
         this.setExitValues(new int[] {value});
     }
 
 
-    /** @see com.jn.langx.commandline.Executor#setExitValues(int[]) */
+    /** @see CommandLineExecutor#setExitValues(int[]) */
     public void setExitValues(final int[] values) {
         this.exitValues = values == null ? null : (int[]) values.clone();
     }
 
-    /** @see com.jn.langx.commandline.Executor#isFailure(int) */
+    /** @see CommandLineExecutor#isFailure(int) */
     public boolean isFailure(final int exitValue) {
 
         if (this.exitValues == null) {
@@ -343,7 +343,7 @@ public class DefaultExecutor implements Executor {
                 watchdog.start(process);
             }
 
-            int exitValue = Executor.INVALID_EXITVALUE;
+            int exitValue = CommandLineExecutor.INVALID_EXITVALUE;
 
             try {
                 exitValue = process.waitFor();

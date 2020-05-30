@@ -4,9 +4,9 @@ package com.jn.langx.commandline;
  * Runs daemon processes asynchronously. Callers are expected to register a {@link ProcessDestroyer} before executing
  * any processes.
  * 
- * @since 1.3
+ * @since 2.5.0
  */
-public class DaemonExecutor extends DefaultExecutor {
+public class DaemonCommandLineExecutor extends DefaultCommandLineExecutor {
 
     /**
      * Factory method to create a thread waiting for the result of an asynchronous execution.

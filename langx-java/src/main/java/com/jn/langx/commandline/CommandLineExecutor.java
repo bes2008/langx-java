@@ -28,7 +28,7 @@ import java.util.Map;
  * @version $Id: Executor.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 
-public interface Executor {
+public interface CommandLineExecutor {
 
     /** Invalid exit code. */
     int INVALID_EXITVALUE = 0xdeadbeef;
@@ -36,7 +36,7 @@ public interface Executor {
     /**
      * Define the {@code exitValue} of the process to be considered
      * successful. If a different exit value is returned by
-     * the process then {@link com.jn.langx.commandline.Executor#execute(CommandLine)}
+     * the process then {@link CommandLineExecutor#execute(CommandLine)}
      * will throw an {@link com.jn.langx.commandline.ExecuteException}
      *
      * @param value the exit code representing successful execution
@@ -48,12 +48,12 @@ public interface Executor {
      * successful. The caller can pass one of the following values
      * <ul>
      *  <li>an array of exit values to be considered successful</li>
-     *  <li>an empty array for auto-detect of successful exit codes relying on {@link com.jn.langx.commandline.Executor#isFailure(int)}</li>
+     *  <li>an empty array for auto-detect of successful exit codes relying on {@link CommandLineExecutor#isFailure(int)}</li>
      *  <li>null to indicate to skip checking of exit codes</li>
      * </ul>
      *
      * If an undefined exit value is returned by the process then
-     * {@link com.jn.langx.commandline.Executor#execute(CommandLine)}  will
+     * {@link CommandLineExecutor#execute(CommandLine)}  will
      * throw an {@link com.jn.langx.commandline.ExecuteException}.
      *
      * @param values a list of the exit codes
@@ -145,7 +145,7 @@ public interface Executor {
      * @return process exit value
      * @throws ExecuteException execution of subprocess failed or the
      *          subprocess returned a exit value indicating a failure
-     *          {@link Executor#setExitValue(int)}.
+     *          {@link CommandLineExecutor#setExitValue(int)}.
      */
     int execute(CommandLine command)
         throws ExecuteException, IOException;
@@ -159,7 +159,7 @@ public interface Executor {
      * @return process exit value
      * @throws ExecuteException execution of subprocess failed or the
      *          subprocess returned a exit value indicating a failure
-     *          {@link Executor#setExitValue(int)}.
+     *          {@link CommandLineExecutor#setExitValue(int)}.
      */
     int execute(CommandLine command, Map<String, String> environment)
         throws ExecuteException, IOException;

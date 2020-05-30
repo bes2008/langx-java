@@ -13,14 +13,14 @@ public class DebugUtils
      * exceptions found in the original code. The default value
      * is "true"
      */
-    public static final String COMMONS_EXEC_LENIENT = "org.apache.commons.exec.lenient";
+    public static final String COMMONS_EXEC_LENIENT = "com.jn.langx.commandline.lenient";
 
     /**
      * System property to determine how to dump an exception. When
      * set to "true" we print any exception to stderr. The default
      * value is "false"
      */
-    public static final String COMMONS_EXEC_DEBUG = "org.apache.commons.exec.debug";
+    public static final String COMMONS_EXEC_DEBUG = "com.jn.langx.commandline.debug";
 
     /**
      * Handles an exception based on the system properties.

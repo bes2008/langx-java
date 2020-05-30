@@ -274,7 +274,7 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
                     thread.join(timeToWait);
                     if (!(System.currentTimeMillis() < startTime + timeToWait)) {
                         final String msg = "The stop timeout of " + timeout + " ms was exceeded";
-                        caught = new ExecuteException(msg, Executor.INVALID_EXITVALUE);
+                        caught = new ExecuteException(msg, CommandLineExecutor.INVALID_EXITVALUE);
                     }
                 }
             } catch (final InterruptedException e) {

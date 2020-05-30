@@ -1,6 +1,6 @@
 package com.jn.langx.commandline;
 
-import com.jn.langx.commandline.util.StringUtils;
+import com.jn.langx.commandline.util.CommandLineStringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -130,7 +130,7 @@ public class CommandLine {
         // Expand the executable and replace '/' and '\\' with the platform
         // specific file separator char. This is safe here since we know
         // that this is a platform specific command.
-        return StringUtils.fixFileSeparatorChar(expandArgument(executable));
+        return CommandLineStringUtils.fixFileSeparatorChar(expandArgument(executable));
     }
 
     /**
@@ -228,7 +228,7 @@ public class CommandLine {
        // IllegalArgumentException
        if (handleQuoting)
        {
-           StringUtils.quoteArgument(argument);
+           CommandLineStringUtils.quoteArgument(argument);
        }
 
        arguments.add(new Argument(argument, handleQuoting));
@@ -249,7 +249,7 @@ public class CommandLine {
         for (int i=0; i<result.length; i++) {
             currArgument = arguments.get(i);
             expandedArgument = expandArgument(currArgument.getValue());
-            result[i] = currArgument.isHandleQuoting() ? StringUtils.quoteArgument(expandedArgument) : expandedArgument;
+            result[i] = currArgument.isHandleQuoting() ? CommandLineStringUtils.quoteArgument(expandedArgument) : expandedArgument;
         }
 
         return result;
@@ -293,7 +293,7 @@ public class CommandLine {
      */
     @Override
     public String toString() {
-        return "[" + StringUtils.toString(toStrings(), ", ") + "]";
+        return "[" + CommandLineStringUtils.toString(toStrings(), ", ") + "]";
     }
 
     // --- Implementation ---------------------------------------------------
@@ -305,7 +305,7 @@ public class CommandLine {
      * @return the expanded string
      */
     private String expandArgument(final String argument) {
-        final StringBuffer stringBuffer = StringUtils.stringSubstitution(argument, this.getSubstitutionMap(), true);
+        final StringBuffer stringBuffer = CommandLineStringUtils.stringSubstitution(argument, this.getSubstitutionMap(), true);
         return stringBuffer.toString();
     }
 
@@ -397,7 +397,7 @@ public class CommandLine {
         } else if (dirtyExecutable.trim().length() == 0) {
             throw new IllegalArgumentException("Executable can not be empty");
         } else {
-            return StringUtils.fixFileSeparatorChar(dirtyExecutable);
+            return CommandLineStringUtils.fixFileSeparatorChar(dirtyExecutable);
         }
     }
 

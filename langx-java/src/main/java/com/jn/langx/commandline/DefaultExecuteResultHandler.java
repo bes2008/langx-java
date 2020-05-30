@@ -25,7 +25,7 @@ public class DefaultExecuteResultHandler implements ExecuteResultHandler {
      */
     public DefaultExecuteResultHandler() {
         this.hasResult = false;
-        this.exitValue = Executor.INVALID_EXITVALUE;
+        this.exitValue = CommandLineExecutor.INVALID_EXITVALUE;
     }
 
     /**

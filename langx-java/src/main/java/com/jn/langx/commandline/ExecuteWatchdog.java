@@ -25,7 +25,7 @@ import com.jn.langx.commandline.util.DebugUtils;
  * be still attached to a process even after the DefaultExecutor.execute 
  * has returned.
  *
- * @see com.jn.langx.commandline.Executor
+ * @see CommandLineExecutor
  * @see com.jn.langx.commandline.Watchdog
  *
  * @version $Id: ExecuteWatchdog.java 1612032 2014-07-20 06:30:44Z ggregory $

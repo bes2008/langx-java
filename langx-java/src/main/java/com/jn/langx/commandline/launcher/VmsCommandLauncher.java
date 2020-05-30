@@ -1,7 +1,7 @@
 package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
-import com.jn.langx.commandline.util.StringUtils;
+import com.jn.langx.commandline.util.CommandLineStringUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -100,7 +100,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
             if (cmd.isFile()) {// We assume it is it a script file
                 out.print("$ @");
                 // This is a bit crude, but seems to work
-                final String parts[] = StringUtils.split(command,"/");
+                final String parts[] = CommandLineStringUtils.split(command,"/");
                 out.print(parts[0]); // device
                 out.print(":[");
                 out.print(parts[1]); // top level directory

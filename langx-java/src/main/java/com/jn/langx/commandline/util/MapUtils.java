@@ -9,20 +9,16 @@ import java.util.Map;
  *
  * @version $Id: MapUtils.java 1636205 2014-11-02 22:32:33Z ggregory $
  */
-public class MapUtils
-{
+public class MapUtils {
     /**
      * Clones a map.
-     * 
-     * @param source
-     *            the Map to clone
-     * @param <K>
-     *            the map key type
-     * @param <V>
-     *            the map value type
+     *
+     * @param source the Map to clone
+     * @param <K>    the map key type
+     * @param <V>    the map value type
      * @return the cloned map
      */
-   public static <K, V> Map<K, V> copy(final Map<K, V> source) {
+    public static <K, V> Map<K, V> copy(final Map<K, V> source) {
 
         if (source == null) {
             return null;
@@ -37,14 +33,10 @@ public class MapUtils
      * Clones a map and prefixes the keys in the clone, e.g. for mapping "JAVA_HOME" to "env.JAVA_HOME" to simulate the
      * behaviour of Ant.
      *
-     * @param source
-     *            the source map
-     * @param prefix
-     *            the prefix used for all names
-     * @param <K>
-     *            the map key type
-     * @param <V>
-     *            the map value type
+     * @param source the source map
+     * @param prefix the prefix used for all names
+     * @param <K>    the map key type
+     * @param <V>    the map value type
      * @return the clone of the source map
      */
     public static <K, V> Map<String, V> prefix(final Map<K, V> source, final String prefix) {
@@ -67,14 +59,10 @@ public class MapUtils
     /**
      * Clones the lhs map and add all things from the rhs map.
      *
-     * @param lhs
-     *            the first map
-     * @param rhs
-     *            the second map
-     * @param <K>
-     *            the map key type
-     * @param <V>
-     *            the map value type
+     * @param lhs the first map
+     * @param rhs the second map
+     * @param <K> the map key type
+     * @param <V> the map value type
      * @return the merged map
      */
     public static <K, V> Map<K, V> merge(final Map<K, V> lhs, final Map<K, V> rhs) {
@@ -83,15 +71,13 @@ public class MapUtils
 
         if (lhs == null || lhs.size() == 0) {
             result = copy(rhs);
-        }
-        else if (rhs == null || rhs.size() == 0) {
+        } else if (rhs == null || rhs.size() == 0) {
             result = copy(lhs);
-        }
-        else {
+        } else {
             result = copy(lhs);
             result.putAll(rhs);
         }
-        
+
         return result;
     }
 }
