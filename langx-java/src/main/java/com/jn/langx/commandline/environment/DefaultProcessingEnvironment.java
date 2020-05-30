@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.jn.langx.commandline.CommandLine;
-import com.jn.langx.commandline.OS;
+import com.jn.langx.util.OS;
 
 /**
  * Helper class to determine the environment variable

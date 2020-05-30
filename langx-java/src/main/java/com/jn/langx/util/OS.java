@@ -16,7 +16,7 @@
  *
  */
 
-package com.jn.langx.commandline;
+package com.jn.langx.util;
 
 import java.util.Locale;
 
