@@ -17,11 +17,24 @@
     <name>langx-java</name>
 
     <description>
-        Java lang extensions for java6+，a supplement to , replacement  of a Guava, commons-lang.
+        Java lang extensions for java6+，a supplement to , replacement of a Guava, commons-lang.
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
 
     <dependencies>
+        <!--reflectasm-->
+        <!--
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>8.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>reflectasm</artifactId>
+            <version>1.11.9</version>
+        </dependency>
+        -->
     </dependencies>
 
 
