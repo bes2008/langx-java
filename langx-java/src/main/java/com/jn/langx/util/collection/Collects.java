@@ -1697,6 +1697,25 @@ public class Collects {
         }
     }
 
+    /**
+     * Clones a map.
+     *
+     * @param source the Map to clone
+     * @param <K>    the map key type
+     * @param <V>    the map value type
+     * @return the cloned map
+     */
+    public static <K, V> Map<K, V> copy(final Map<K, V> source) {
+
+        if (source == null) {
+            return null;
+        }
+
+        final Map<K, V> result = new HashMap<K, V>();
+        result.putAll(source);
+        return result;
+    }
+
     public static <E, C extends Collection<E>> C merge(@Nullable C c1, @Nullable C c2) {
         return merge(c1, c2, true);
     }
