@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class FieldAttributes {
+public class FieldAttributes implements MemberAttributes<Field>{
     private final Field field;
 
     /**
@@ -16,6 +16,15 @@ public class FieldAttributes {
      */
     public FieldAttributes(Field f) {
         this.field = f;
+    }
+
+    @Override
+    public int getModifier() {
+        return field.getModifiers();
+    }
+
+    public Field get(){
+        return this.field;
     }
 
     /**
