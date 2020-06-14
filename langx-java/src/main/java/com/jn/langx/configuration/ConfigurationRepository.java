@@ -34,12 +34,16 @@ public interface ConfigurationRepository<T extends Configuration, Loader extends
      */
     void setConfigurationLoader(Loader loader);
 
+    Loader getConfigurationLoader();
+
     /**
      * set a writer
      *
      * @param writer the configuration writer
      */
     void setConfigurationWriter(Writer writer);
+
+    Writer getConfigurationWriter();
 
     /**
      * Get a configuration bean by a specified id

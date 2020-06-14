@@ -11,7 +11,7 @@
 [javadoc](https://apidoc.gitee.com/fangjinuo/langx-java)
 [教程](https://fangjinuo.gitee.io/docs/)
 
-[![maven](https://img.shields.io/badge/maven-v2.5.0-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.5.0)
+[![maven](https://img.shields.io/badge/maven-v2.5.1-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.5.1)
 
 
 # langx-java

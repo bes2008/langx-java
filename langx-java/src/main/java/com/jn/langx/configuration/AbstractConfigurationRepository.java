@@ -163,6 +163,16 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
+    public Loader getConfigurationLoader() {
+        return this.loader;
+    }
+
+    @Override
+    public Writer getConfigurationWriter() {
+        return this.writer;
+    }
+
+    @Override
     public void setConfigurationWriter(Writer writer) {
         this.writer = writer;
     }
