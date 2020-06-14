@@ -973,6 +973,64 @@ public class Reflects {
         return candidate;
     }
 
+    public static boolean isSetter(@NonNull Method method) {
+        if(isGetterOrSetter(method)){
+            String methodName = method.getName();
+            if(methodName.startsWith("set")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isGetter(@NonNull Method method) {
+        if(isGetterOrSetter(method)){
+            String methodName = method.getName();
+            if(methodName.startsWith("get") || methodName.startsWith("is")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isGetterOrSetter(@NonNull Method method) {
+        if (method == null) {
+            return false;
+        }
+        if (!Modifiers.isPublic(method) || Modifiers.isStatic(method) || Modifiers.isAbstract(method)) {
+            return false;
+        }
+
+        String methodName = method.getName();
+        String fieldName = null;
+        if (methodName.startsWith("set")) {
+            if (method.getParameterTypes().length != 1) {
+                return false;
+            }
+            fieldName = methodName.substring(3);
+        } else if (methodName.startsWith("get")) {
+            if (method.getParameterTypes().length != 0) {
+                return false;
+            }
+            fieldName = methodName.substring(3);
+        } else if (methodName.startsWith("is")) {
+            if (method.getParameterTypes().length != 0) {
+                return false;
+            }
+            fieldName = methodName.substring(2);
+        }
+        if (Strings.isEmpty(fieldName)) {
+            return false;
+        }
+        fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
+        Class beanClass = method.getDeclaringClass();
+        Field field = getAnyField(beanClass, fieldName);
+        if (field == null) {
+            return false;
+        }
+        return true;
+    }
+
     public static boolean makeAccessible(@NonNull Field field) {
         try {
             field.setAccessible(true);
