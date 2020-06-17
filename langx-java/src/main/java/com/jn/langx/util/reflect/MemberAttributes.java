@@ -9,6 +9,7 @@ public interface MemberAttributes<M extends Member> {
     <T extends Annotation> T getAnnotation(Class<T> annotation);
     Collection<Annotation> getAnnotations();
     boolean hasModifier(int modifier);
+    Class getDeclaringClass();
     int getModifier();
     M get();
 }

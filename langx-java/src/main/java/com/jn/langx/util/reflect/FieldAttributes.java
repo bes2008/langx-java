@@ -57,6 +57,7 @@ public class FieldAttributes implements MemberAttributes<Field>{
      *
      * @return the specific type declared for this field
      */
+    @Deprecated
     public Type getDeclaredType() {
         return field.getGenericType();
     }
