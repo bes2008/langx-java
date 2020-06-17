@@ -28,7 +28,7 @@ import static com.jn.langx.util.function.Functions.emptyTreeSetSupplier0;
 /**
  * Collection utilities
  */
-@SuppressWarnings({"unchecked", "unused"})
+@SuppressWarnings({"all"})
 public class Collects {
     /**
      * Get a empty, mutable java.util.Hashtable
@@ -2301,5 +2301,29 @@ public class Collects {
             }
         }
         return -1;
+    }
+
+    public static <E> int indexOf(E[] list, E e) {
+        return indexOf(asList(list), e);
+    }
+
+    public static <E> int indexOf(E[] list, E e, int startIndex) {
+        return indexOf(asList(list), e, startIndex);
+    }
+
+    public static <E> int indexOf(E[] list, E e, int startIndex, int endIndex) {
+        return indexOf(asList(list), e, startIndex, endIndex);
+    }
+
+    public static <E> int lastIndexOf(E[] list, E e) {
+        return lastIndexOf(asList(list), e);
+    }
+
+    public static <E> int lastIndexOf(E[] list, E e, int startIndex) {
+        return lastIndexOf(asList(list), e, startIndex);
+    }
+
+    public static <E> int lastIndexOf(E[] list, E e, int startIndex, int endIndex) {
+        return lastIndexOf(asList(list), e, startIndex, endIndex);
     }
 }
