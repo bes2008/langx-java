@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection.iter;
 
+import com.jn.langx.util.Preconditions;
+
 import java.util.ListIterator;
 
 public class WrappedListIterator<E> implements ListIterator<E> {
@@ -11,6 +13,7 @@ public class WrappedListIterator<E> implements ListIterator<E> {
     }
 
     public WrappedListIterator(ListIterator delegate, boolean mutable) {
+        Preconditions.checkNotNull(delegate);
         this.delegate = delegate;
         this.mutable = mutable;
     }
