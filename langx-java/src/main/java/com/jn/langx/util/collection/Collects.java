@@ -648,10 +648,10 @@ public class Collects {
         return collection.toArray();
     }
 
-    public static <E, C extends Collection<E>> E[] asArray(@Nullable C list, @NonNull Class<E> componentClass){
+    public static <E, C extends Collection<E>> E[] asArray(@Nullable C list, @NonNull Class<E> componentClass) {
         Preconditions.checkNotNull(componentClass);
-        E[] array = Arrs.createArray(componentClass, Emptys.isEmpty(list)?0:list.size());
-        if(Emptys.isNotEmpty(list)) {
+        E[] array = Arrs.createArray(componentClass, Emptys.isEmpty(list) ? 0 : list.size());
+        if (Emptys.isNotEmpty(list)) {
             list.toArray(array);
         }
         return array;
@@ -1112,14 +1112,14 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <K,V,O> O firstMap(@Nullable Map<K,V> map, @NonNull final Function2<K, V, O> mapper) {
+    public static <K, V, O> O firstMap(@Nullable Map<K, V> map, @NonNull final Function2<K, V, O> mapper) {
         return firstMap(map, mapper, null);
     }
 
     /**
      * find the first matched element, null if not found
      */
-    public static <K,V,O> O firstMap(@Nullable Map<K,V> map, @NonNull final Function2<K, V, O> mapper, final Predicate<O> breakPredicate) {
+    public static <K, V, O> O firstMap(@Nullable Map<K, V> map, @NonNull final Function2<K, V, O> mapper, final Predicate<O> breakPredicate) {
         final Holder<O> holder = new Holder<O>();
         Collects.forEach(map, new Consumer2<K, V>() {
             @Override
@@ -2211,4 +2211,95 @@ public class Collects {
         Arrs.swap(arr, i, j);
     }
 
+    public static <E> int indexOf(List<E> list, E e) {
+        return indexOf(list, e, 0);
+    }
+
+    public static <E> int indexOf(List<E> list, E e, int startIndex) {
+        return indexOf(list, e, startIndex, Emptys.isEmpty(list) ? 0 : list.size());
+    }
+
+    /**
+     * [startIndex, endIndex)
+     *
+     * @param list
+     * @param e
+     * @param startIndex 包含
+     * @param endIndex   不包含
+     * @param <E>
+     * @return
+     */
+    public static <E> int indexOf(List<E> list, E e, int startIndex, int endIndex) {
+        if (list == null || list.isEmpty()) {
+            return -1;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        if (startIndex >= list.size()) {
+            return -1;
+        }
+        if (endIndex <= 0) {
+            return -1;
+        }
+        if (endIndex > list.size()) {
+            endIndex = list.size();
+        }
+        if (startIndex >= endIndex) {
+            return -1;
+        }
+        ArrayList<E> arrayList = (list instanceof ArrayList) ? (ArrayList<E>) list : newArrayList(list);
+        for (int i = startIndex; i < endIndex; i++) {
+            if (Objects.equals(arrayList.get(i), e)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static <E> int lastIndexOf(List<E> list, E e) {
+        return lastIndexOf(list, e, 0);
+    }
+
+    public static <E> int lastIndexOf(List<E> list, E e, int startIndex) {
+        return lastIndexOf(list, e, startIndex, Emptys.isEmpty(list) ? 0 : list.size());
+    }
+
+    /**
+     * [startIndex, endIndex)
+     *
+     * @param list
+     * @param e
+     * @param startIndex
+     * @param endIndex
+     * @param <E>
+     * @return
+     */
+    public static <E> int lastIndexOf(List<E> list, E e, int startIndex, int endIndex) {
+        if (list == null || list.isEmpty()) {
+            return -1;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        if (startIndex >= list.size()) {
+            return -1;
+        }
+        if (endIndex <= 0) {
+            return -1;
+        }
+        if (endIndex > list.size()) {
+            endIndex = list.size();
+        }
+        if (startIndex >= endIndex) {
+            return -1;
+        }
+        ArrayList<E> arrayList = (list instanceof ArrayList) ? (ArrayList<E>) list : newArrayList(list);
+        for (int i = endIndex - 1; i >= startIndex; i--) {
+            if (Objects.equals(arrayList.get(i), e)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
