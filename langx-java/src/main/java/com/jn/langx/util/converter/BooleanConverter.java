@@ -8,6 +8,11 @@ public class BooleanConverter implements Converter<Object, Boolean> {
     public static final BooleanConverter INSTANCE = new BooleanConverter();
 
     @Override
+    public boolean isConvertible(Class sourceClass, Class targetClass) {
+        return targetClass==boolean.class || targetClass==Boolean.class;
+    }
+
+    @Override
     public Boolean apply(Object input) {
         return booleanEvaluator.evalTrue(input);
     }

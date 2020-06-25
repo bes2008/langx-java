@@ -9,6 +9,14 @@ public class DoubleConverter implements Converter<Object, Double> {
     public static final DoubleConverter INSTANCE = new DoubleConverter();
 
     @Override
+    public boolean isConvertible(Class sourceClass, Class targetClass) {
+        if( targetClass==double.class || targetClass==Double.class){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Double apply(Object input) {
         if (input == null) {
             return 0D;

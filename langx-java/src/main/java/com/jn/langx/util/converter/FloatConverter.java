@@ -8,6 +8,14 @@ public class FloatConverter implements Converter<Object, Float> {
     private static final DoubleConverter doubleConverter = DoubleConverter.INSTANCE;
 
     @Override
+    public boolean isConvertible(Class sourceClass, Class targetClass) {
+        if(targetClass == Float.class || Float.TYPE == targetClass){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Float apply(Object input) {
         Double doubleValue = doubleConverter.apply(input);
         return Numbers.convertNumberToTargetClass(doubleValue, Float.class);

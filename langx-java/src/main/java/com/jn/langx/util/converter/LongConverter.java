@@ -11,6 +11,14 @@ public class LongConverter implements Converter<Object, Long> {
     public static final LongConverter INSTANCE = new LongConverter();
 
     @Override
+    public boolean isConvertible(Class sourceClass, Class targetClass) {
+        if(targetClass==double.class || targetClass==Double.class){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public Long apply(Object input) {
         if (input == null) {
             return 0L;

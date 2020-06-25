@@ -1,10 +1,12 @@
 package com.jn.langx.util.reflect.type;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Primitives {
@@ -64,6 +66,14 @@ public class Primitives {
         return WRAPPER_TO_PRIMITIVE_TYPE.containsKey(Preconditions.checkNotNull(type));
     }
 
+    public static boolean isPrimitiveOrPrimitiveWrapperType(Type type) {
+        return isPrimitive(type) || isWrapperType(type);
+    }
+
+    public static boolean isChar(Type type) {
+        return type == char.class || type == Character.class || type == Character.TYPE;
+    }
+
     /**
      * Returns the corresponding wrapper type of {@code type} if it is a primitive
      * type; otherwise returns {@code type} itself. Idempotent.
@@ -107,7 +117,7 @@ public class Primitives {
     }
 
 
-    public static short sizeOf(Class<?> type){
+    public static short sizeOf(Class<?> type) {
         Preconditions.checkArgument(isPrimitive(type));
         if (type == boolean.class || type == byte.class) {
             return 1;
@@ -123,5 +133,21 @@ public class Primitives {
         }
         // void
         return 0;
+    }
+
+    private static final List<Class> INTEGER_COMPAT_TYPES = Collects.<Class>asList(
+            byte.class,
+            Byte.class,
+            Byte.TYPE,
+            short.class,
+            Short.TYPE,
+            Short.class,
+            int.class,
+            Integer.TYPE,
+            Integer.class
+    );
+
+    public static boolean isIntegerCompatible(Class clazz) {
+        return INTEGER_COMPAT_TYPES.contains(clazz);
     }
 }
