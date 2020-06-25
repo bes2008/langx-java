@@ -2,6 +2,7 @@ package com.jn.langx.util.converter;
 
 import com.jn.langx.Converter;
 import com.jn.langx.util.Numbers;
+import com.jn.langx.util.reflect.type.Primitives;
 
 public class FloatConverter implements Converter<Object, Float> {
     public static final FloatConverter INSTANCE = new FloatConverter();
@@ -9,7 +10,7 @@ public class FloatConverter implements Converter<Object, Float> {
 
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
-        if(targetClass == Float.class || Float.TYPE == targetClass){
+        if(Primitives.isFloat(targetClass)){
             return true;
         }
         return false;

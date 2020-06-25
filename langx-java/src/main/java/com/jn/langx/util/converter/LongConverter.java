@@ -4,6 +4,7 @@ import com.jn.langx.Converter;
 import com.jn.langx.exception.ValueConvertException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Numbers;
+import com.jn.langx.util.reflect.type.Primitives;
 
 import java.util.Date;
 
@@ -12,7 +13,7 @@ public class LongConverter implements Converter<Object, Long> {
 
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
-        if(targetClass==double.class || targetClass==Double.class){
+        if(Primitives.isLong(targetClass)){
             return true;
         }
         return false;

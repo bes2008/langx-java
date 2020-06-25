@@ -2,6 +2,7 @@ package com.jn.langx.util.converter;
 
 import com.jn.langx.Converter;
 import com.jn.langx.util.BooleanEvaluator;
+import com.jn.langx.util.reflect.type.Primitives;
 
 public class BooleanConverter implements Converter<Object, Boolean> {
     private static final BooleanEvaluator booleanEvaluator = BooleanEvaluator.createFalseEvaluator(false, true, new Object[]{"false", 0, false, "off", 'n', "no"});
@@ -9,7 +10,7 @@ public class BooleanConverter implements Converter<Object, Boolean> {
 
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
-        return targetClass==boolean.class || targetClass==Boolean.class;
+        return Primitives.isBoolean(targetClass);
     }
 
     @Override
