@@ -40,19 +40,19 @@ public class ConverterService {
 
 
     private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> registry0 = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
-    private final Map<Class, Converter> registry1= new ConcurrentHashMap<Class, Converter>(BUILTIN);
+    private final Map<Class, Converter> registry1 = new ConcurrentHashMap<Class, Converter>(BUILTIN);
 
     public static final ConverterService DEFAULT = new ConverterService();
 
-    public void register(@NonNull Class targetClass, @Nullable Class sourceClass, @NonNull  Converter converter) {
-        if(sourceClass==null){
+    public void register(@NonNull Class targetClass, @Nullable Class sourceClass, @NonNull Converter converter) {
+        if (sourceClass == null) {
             register(targetClass, converter);
             return;
         }
         Preconditions.checkNotNull(targetClass);
         Preconditions.checkNotNull(converter);
-        ConcurrentHashMap<Class,Converter> map = registry0.get(targetClass);
-        if(map==null){
+        ConcurrentHashMap<Class, Converter> map = registry0.get(targetClass);
+        if (map == null) {
             map = new ConcurrentHashMap<Class, Converter>();
             registry0.put(targetClass, map);
         }
@@ -65,45 +65,45 @@ public class ConverterService {
         registry1.put(targetClass, converter);
     }
 
-    public <T> T convert( @Nullable Object obj, @NonNull Class<T> targetClass) {
-        Converter converter = findConverter(obj==null?null:obj.getClass(), targetClass);
+    public <T> T convert(@Nullable Object obj, @NonNull Class<T> targetClass) {
+        Converter converter = findConverter(obj == null ? null : obj.getClass(), targetClass);
         if (converter == null) {
             throw new ValueConvertException(StringTemplates.formatWithPlaceholder("Can't cast {} to {}", obj, targetClass));
         }
         return (T) converter.apply(obj);
     }
 
-    public <S,T>Converter<S,T> findConverter(@Nullable S source, @NonNull Class<T> targetClass){
+    public <S, T> Converter<S, T> findConverter(@Nullable S source, @NonNull Class<T> targetClass) {
         Preconditions.checkNotNull(targetClass);
-        if(source==null){
+        if (source == null) {
             return registry1.get(targetClass);
         }
 
         Converter converter = findConverter(source.getClass(), targetClass);
-        if(converter==null){
+        if (converter == null) {
             converter = findConverter(null, targetClass);
         }
         return converter;
     }
 
 
-    public <S,T>Converter<S,T> findConverter(@NonNull Class<S> sourceClass, @NonNull final Class<T> targetClass){
+    public <S, T> Converter<S, T> findConverter(@NonNull Class<S> sourceClass, @NonNull final Class<T> targetClass) {
         Preconditions.checkNotNull(sourceClass);
         Preconditions.checkNotNull(targetClass);
 
         ConcurrentHashMap<Class, Converter> mapping = registry0.get(targetClass);
-        if(mapping!=null){
+        if (mapping != null) {
             Converter converter = mapping.get(sourceClass);
-            if(converter!=null){
+            if (converter != null) {
                 return converter;
             }
-            Map.Entry<? extends Class, ? extends Converter> entry= Collects.findFirst(mapping, new Predicate2<Class, Converter>() {
+            Map.Entry<? extends Class, ? extends Converter> entry = Collects.findFirst(mapping, new Predicate2<Class, Converter>() {
                 @Override
                 public boolean test(Class sourceClass, Converter converter) {
                     return converter.isConvertible(sourceClass, targetClass);
                 }
             });
-            if(entry!=null){
+            if (entry != null) {
                 return entry.getValue();
             }
         }
