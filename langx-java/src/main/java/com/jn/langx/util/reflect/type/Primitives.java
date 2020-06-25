@@ -70,9 +70,6 @@ public class Primitives {
         return isPrimitive(type) || isWrapperType(type);
     }
 
-    public static boolean isChar(Type type) {
-        return type == char.class || type == Character.class || type == Character.TYPE;
-    }
 
     /**
      * Returns the corresponding wrapper type of {@code type} if it is a primitive
@@ -135,19 +132,48 @@ public class Primitives {
         return 0;
     }
 
-    private static final List<Class> INTEGER_COMPAT_TYPES = Collects.<Class>asList(
-            byte.class,
-            Byte.class,
-            Byte.TYPE,
-            short.class,
-            Short.TYPE,
-            Short.class,
-            int.class,
-            Integer.TYPE,
-            Integer.class
-    );
-
     public static boolean isIntegerCompatible(Class clazz) {
-        return INTEGER_COMPAT_TYPES.contains(clazz);
+        return isInteger(clazz) || isByte(clazz) || isShort(clazz);
+    }
+
+    public static boolean isChar(Type type) {
+        // char.class 等价于  Character.TYPE
+        return type == char.class || type == Character.class ;
+    }
+
+    public static boolean isByte(Type type) {
+        // byte.class 等价于  Byte.TYPE
+        return type == byte.class || type == Byte.class ;
+    }
+
+    public static boolean isShort(Type type) {
+        // short.class 等价于  Short.TYPE
+        return type == short.class || type == Short.class ;
+    }
+
+    public static boolean isInteger(Type type) {
+        // int.class 等价于  Integer.TYPE
+        return type == int.class || type == Integer.class ;
+    }
+
+    public static boolean isLong(Type type) {
+        // long.class 等价于  Long.TYPE
+        return type == long.class || type == Long.class ;
+    }
+
+
+    public static boolean isFloat(Type type) {
+        // float.class 等价于  Float.TYPE
+        return type == float.class || type == Float.class ;
+    }
+
+    public static boolean isDouble(Type type) {
+        // double.class 等价于  Double.TYPE
+        return type == double.class || type == Double.class ;
+    }
+
+    public static boolean isBoolean(Type type) {
+        // boolean.class 等价于  Boolean.TYPE
+        return type == boolean.class || type == Boolean.class ;
     }
 }
