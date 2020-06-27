@@ -1,10 +1,12 @@
 package com.jn.langx.util.reflect.type;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Primitives {
@@ -64,6 +66,11 @@ public class Primitives {
         return WRAPPER_TO_PRIMITIVE_TYPE.containsKey(Preconditions.checkNotNull(type));
     }
 
+    public static boolean isPrimitiveOrPrimitiveWrapperType(Type type) {
+        return isPrimitive(type) || isWrapperType(type);
+    }
+
+
     /**
      * Returns the corresponding wrapper type of {@code type} if it is a primitive
      * type; otherwise returns {@code type} itself. Idempotent.
@@ -107,7 +114,7 @@ public class Primitives {
     }
 
 
-    public static short sizeOf(Class<?> type){
+    public static short sizeOf(Class<?> type) {
         Preconditions.checkArgument(isPrimitive(type));
         if (type == boolean.class || type == byte.class) {
             return 1;
@@ -123,5 +130,50 @@ public class Primitives {
         }
         // void
         return 0;
+    }
+
+    public static boolean isIntegerCompatible(Class clazz) {
+        return isInteger(clazz) || isByte(clazz) || isShort(clazz);
+    }
+
+    public static boolean isChar(Type type) {
+        // char.class 等价于  Character.TYPE
+        return type == char.class || type == Character.class ;
+    }
+
+    public static boolean isByte(Type type) {
+        // byte.class 等价于  Byte.TYPE
+        return type == byte.class || type == Byte.class ;
+    }
+
+    public static boolean isShort(Type type) {
+        // short.class 等价于  Short.TYPE
+        return type == short.class || type == Short.class ;
+    }
+
+    public static boolean isInteger(Type type) {
+        // int.class 等价于  Integer.TYPE
+        return type == int.class || type == Integer.class ;
+    }
+
+    public static boolean isLong(Type type) {
+        // long.class 等价于  Long.TYPE
+        return type == long.class || type == Long.class ;
+    }
+
+
+    public static boolean isFloat(Type type) {
+        // float.class 等价于  Float.TYPE
+        return type == float.class || type == Float.class ;
+    }
+
+    public static boolean isDouble(Type type) {
+        // double.class 等价于  Double.TYPE
+        return type == double.class || type == Double.class ;
+    }
+
+    public static boolean isBoolean(Type type) {
+        // boolean.class 等价于  Boolean.TYPE
+        return type == boolean.class || type == Boolean.class ;
     }
 }

@@ -8,6 +8,11 @@ public class ShortConverter implements Converter<Object, Short> {
     private IntegerConverter integerConverter = IntegerConverter.INSTANCE;
 
     @Override
+    public boolean isConvertible(Class sourceClass, Class targetClass) {
+        return integerConverter.isConvertible(sourceClass, targetClass);
+    }
+
+    @Override
     public Short apply(Object input) {
         Integer integer = integerConverter.apply(input);
         return Numbers.convertNumberToTargetClass(integer, Short.class);

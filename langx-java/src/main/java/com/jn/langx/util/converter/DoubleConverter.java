@@ -4,9 +4,18 @@ import com.jn.langx.Converter;
 import com.jn.langx.exception.ValueConvertException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Numbers;
+import com.jn.langx.util.reflect.type.Primitives;
 
 public class DoubleConverter implements Converter<Object, Double> {
     public static final DoubleConverter INSTANCE = new DoubleConverter();
+
+    @Override
+    public boolean isConvertible(Class sourceClass, Class targetClass) {
+        if(Primitives.isDouble(targetClass)){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public Double apply(Object input) {
