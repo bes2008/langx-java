@@ -973,6 +973,31 @@ public class Reflects {
         return candidate;
     }
 
+    public static String extractFieldName(Member member){
+        if(member instanceof Field){
+            return member.getName();
+        }
+        if(member instanceof Method){
+            return extractFieldName((Method) member);
+        }
+        return null;
+    }
+
+    public static String extractFieldName(Method method){
+        if(isGetterOrSetter(method)){
+            String methodName = method.getName();
+            String fieldName = null;
+            if(methodName.startsWith("set") || methodName.startsWith("get")){
+                fieldName = methodName.substring(3);
+            }
+            if(methodName.startsWith("is")){
+                fieldName = methodName.substring(2);
+            }
+            return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length()>1 ? fieldName.substring(1) :"");
+        }
+        return null;
+    }
+
     public static boolean isSetter(@NonNull Method method) {
         if(isGetterOrSetter(method)){
             String methodName = method.getName();
