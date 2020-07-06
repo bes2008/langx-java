@@ -81,4 +81,12 @@ public class PagingRequest<E> {
         }
         return -1;
     }
+
+    public PagingResult<E> getResult() {
+        return result;
+    }
+
+    public void setResult(PagingResult<E> result) {
+        this.result = result;
+    }
 }
