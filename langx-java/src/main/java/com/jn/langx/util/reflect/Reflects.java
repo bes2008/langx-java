@@ -12,6 +12,7 @@ import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
+import com.jn.langx.util.reflect.signature.TypeSignatures;
 import com.jn.langx.util.reflect.type.Types;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
@@ -110,7 +111,7 @@ public class Reflects {
     }
 
     public static String getJvmSignature(@NonNull Class clazz) {
-        return Types.getTypeSignature(getFQNClassName(clazz));
+        return TypeSignatures.toTypeSignature(getFQNClassName(clazz));
     }
 
     public static URL getCodeLocation(@NonNull Class clazz) {

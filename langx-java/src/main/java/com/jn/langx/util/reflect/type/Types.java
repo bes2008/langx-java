@@ -3,6 +3,7 @@ package com.jn.langx.util.reflect.type;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.reflect.signature.TypeSignatures;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -83,31 +84,7 @@ public class Types {
      * @return signature
      */
     public static String getTypeSignature(@NonNull String typeString) {
-        Preconditions.checkNotNull(typeString);
-        String signature = "";
-        if ("boolean".equals(typeString)) {
-            signature = "Z";
-        } else if ("byte".equals(typeString)) {
-            signature = "B";
-        } else if ("char".equals(typeString)) {
-            signature = "C";
-        } else if ("short".equals(typeString)) {
-            signature = "S";
-        } else if ("int".equals(typeString)) {
-            signature = "I";
-        } else if ("long".equals(typeString)) {
-            signature = "J";
-        } else if ("float".equals(typeString)) {
-            signature = "F";
-        } else if ("double".equals(typeString)) {
-            signature = "D";
-        } else if (typeString.endsWith("[]")) {
-            String componentType = typeString.substring(0, typeString.length() - 2);
-            signature = "[" + getTypeSignature(componentType);
-        } else {
-            signature = "L" + typeString.replace('.', '/') + ";";
-        }
-        return signature;
+        return TypeSignatures.toTypeSignature(typeString);
     }
 
 
