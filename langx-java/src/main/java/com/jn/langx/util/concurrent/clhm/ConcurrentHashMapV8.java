@@ -6,6 +6,11 @@ package com.jn.langx.util.concurrent.clhm;
  * http://creativecommons.org/publicdomain/zero/1.0/
  */
 
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Function2;
+
 import java.io.ObjectStreamField;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -244,20 +249,13 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
         long estimateSize();
 
         /** Applies the action to each untraversed element */
-        void forEachRemaining(Action<? super T> action);
+        void forEachRemaining(Consumer<? super T> action);
         /** If an element remains, applies the action and returns true. */
-        boolean tryAdvance(Action<? super T> action);
+        boolean tryAdvance(Consumer<? super T> action);
     }
 
-    // Sams
-    /** Interface describing a void action of one argument */
-    public interface Action<A> { void apply(A a); }
-    /** Interface describing a void action of two arguments */
-    public interface BiAction<A,B> { void apply(A a, B b); }
     /** Interface describing a function of one argument */
-    public interface Fun<A,T> { T apply(A a); }
     /** Interface describing a function of two arguments */
-    public interface BiFun<A,B,T> { T apply(A a, B b); }
     /** Interface describing a function mapping its argument to a double */
     public interface ObjectToDouble<A> { double apply(A a); }
     /** Interface describing a function mapping its argument to a long */
@@ -1600,18 +1598,18 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
         return (v = get(key)) == null ? defaultValue : v;
     }
 
-    public void forEach(BiAction<? super K, ? super V> action) {
+    public void forEach(Consumer2<? super K, ? super V> action) {
         if (action == null) throw new NullPointerException();
         Node<K,V>[] t;
         if ((t = table) != null) {
             Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
             for (Node<K,V> p; (p = it.advance()) != null; ) {
-                action.apply(p.key, p.val);
+                action.accept(p.key, p.val);
             }
         }
     }
 
-    public void replaceAll(BiFun<? super K, ? super V, ? extends V> function) {
+    public void replaceAll(Function2<? super K, ? super V, ? extends V> function) {
         if (function == null) throw new NullPointerException();
         Node<K,V>[] t;
         if ((t = table) != null) {
@@ -1652,7 +1650,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
      * @throws RuntimeException or Error if the mappingFunction does so,
      *         in which case the mapping is left unestablished
      */
-    public V computeIfAbsent(K key, Fun<? super K, ? extends V> mappingFunction) {
+    public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
         if (key == null || mappingFunction == null)
             throw new NullPointerException();
         int h = spread(key.hashCode());
@@ -1753,7 +1751,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
      * @throws RuntimeException or Error if the remappingFunction does so,
      *         in which case the mapping is unchanged
      */
-    public V computeIfPresent(K key, BiFun<? super K, ? super V, ? extends V> remappingFunction) {
+    public V computeIfPresent(K key, Function2<? super K, ? super V, ? extends V> remappingFunction) {
         if (key == null || remappingFunction == null)
             throw new NullPointerException();
         int h = spread(key.hashCode());
@@ -1843,8 +1841,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
      * @throws RuntimeException or Error if the remappingFunction does so,
      *         in which case the mapping is unchanged
      */
-    public V compute(K key,
-                     BiFun<? super K, ? super V, ? extends V> remappingFunction) {
+    public V compute(K key, Function2<? super K, ? super V, ? extends V> remappingFunction) {
         if (key == null || remappingFunction == null)
             throw new NullPointerException();
         int h = spread(key.hashCode());
@@ -1969,7 +1966,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
      * @throws RuntimeException or Error if the remappingFunction does so,
      *         in which case the mapping is unchanged
      */
-    public V merge(K key, V value, BiFun<? super V, ? super V, ? extends V> remappingFunction) {
+    public V merge(K key, V value, Function2<? super V, ? super V, ? extends V> remappingFunction) {
         if (key == null || value == null || remappingFunction == null)
             throw new NullPointerException();
         int h = spread(key.hashCode());
@@ -3382,19 +3379,19 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
         }
 
         @Override
-        public void forEachRemaining(Action<? super K> action) {
+        public void forEachRemaining(Consumer<? super K> action) {
             if (action == null) throw new NullPointerException();
             for (Node<K,V> p; (p = advance()) != null;)
-                action.apply(p.key);
+                action.accept(p.key);
         }
 
         @Override
-        public boolean tryAdvance(Action<? super K> action) {
+        public boolean tryAdvance(Consumer<? super K> action) {
             if (action == null) throw new NullPointerException();
             Node<K,V> p;
             if ((p = advance()) == null)
                 return false;
-            action.apply(p.key);
+            action.accept(p.key);
             return true;
         }
 
@@ -3421,19 +3418,19 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
         }
 
         @Override
-        public void forEachRemaining(Action<? super V> action) {
+        public void forEachRemaining(Consumer<? super V> action) {
             if (action == null) throw new NullPointerException();
             for (Node<K,V> p; (p = advance()) != null;)
-                action.apply(p.val);
+                action.accept(p.val);
         }
 
         @Override
-        public boolean tryAdvance(Action<? super V> action) {
+        public boolean tryAdvance(Consumer<? super V> action) {
             if (action == null) throw new NullPointerException();
             Node<K,V> p;
             if ((p = advance()) == null)
                 return false;
-            action.apply(p.val);
+            action.accept(p.val);
             return true;
         }
 
@@ -3462,19 +3459,19 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
         }
 
         @Override
-        public void forEachRemaining(Action<? super Map.Entry<K,V>> action) {
+        public void forEachRemaining(Consumer<? super Map.Entry<K,V>> action) {
             if (action == null) throw new NullPointerException();
             for (Node<K,V> p; (p = advance()) != null; )
-                action.apply(new MapEntry<K,V>(p.key, p.val, map));
+                action.accept(new MapEntry<K,V>(p.key, p.val, map));
         }
 
         @Override
-        public boolean tryAdvance(Action<? super Map.Entry<K,V>> action) {
+        public boolean tryAdvance(Consumer<? super Map.Entry<K,V>> action) {
             if (action == null) throw new NullPointerException();
             Node<K,V> p;
             if ((p = advance()) == null)
                 return false;
-            action.apply(new MapEntry<K,V>(p.key, p.val, map));
+            action.accept(new MapEntry<K,V>(p.key, p.val, map));
             return true;
         }
 
@@ -3775,13 +3772,13 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
             return new KeySpliterator<K,V>(t, f, 0, f, n < 0L ? 0L : n);
         }
 
-        public void forEach(Action<? super K> action) {
+        public void forEach(Consumer<? super K> action) {
             if (action == null) throw new NullPointerException();
             Node<K,V>[] t;
             if ((t = map.table) != null) {
                 Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
                 for (Node<K,V> p; (p = it.advance()) != null; )
-                    action.apply(p.key);
+                    action.accept(p.key);
             }
         }
     }
@@ -3838,13 +3835,13 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
             return new ValueSpliterator<K,V>(t, f, 0, f, n < 0L ? 0L : n);
         }
 
-        public void forEach(Action<? super V> action) {
+        public void forEach(Consumer<? super V> action) {
             if (action == null) throw new NullPointerException();
             Node<K,V>[] t;
             if ((t = map.table) != null) {
                 Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
                 for (Node<K,V> p; (p = it.advance()) != null; )
-                    action.apply(p.val);
+                    action.accept(p.val);
             }
         }
     }
@@ -3933,13 +3930,13 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
             return new EntrySpliterator<K,V>(t, f, 0, f, n < 0L ? 0L : n, m);
         }
 
-        public void forEach(Action<? super Map.Entry<K,V>> action) {
+        public void forEach(Consumer<? super Map.Entry<K,V>> action) {
             if (action == null) throw new NullPointerException();
             Node<K,V>[] t;
             if ((t = map.table) != null) {
                 Traverser<K,V> it = new Traverser<K,V>(t, t.length, 0, t.length);
                 for (Node<K,V> p; (p = it.advance()) != null; )
-                    action.apply(new MapEntry<K,V>(p.key, p.val, map));
+                    action.accept(new MapEntry<K,V>(p.key, p.val, map));
             }
         }
 

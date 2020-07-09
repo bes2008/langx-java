@@ -1,1 +1,1 @@
-copy from google code ConcurrentLinkedHashMap
+refactor from google code ConcurrentLinkedHashMap
