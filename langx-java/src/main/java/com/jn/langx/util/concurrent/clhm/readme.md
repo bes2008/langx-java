@@ -1,0 +1,1 @@
+copy from google code ConcurrentLinkedHashMap
