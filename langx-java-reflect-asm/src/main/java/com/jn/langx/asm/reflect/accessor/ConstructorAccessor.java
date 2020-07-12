@@ -23,7 +23,7 @@ abstract public class ConstructorAccessor<T> {
      * this$0 synthetic reference. The instantiated object will work as long as it actually don't use any member variable or method
      * fron the enclosing instance.
      */
-    abstract public T newInstance();
+    public abstract T newInstance();
 
     /**
      * Constructor for inner classes (non-static nested classes).
@@ -31,9 +31,9 @@ abstract public class ConstructorAccessor<T> {
      * @param enclosingInstance The instance of the enclosing type to which this inner instance is related to (assigned to its
      *                          synthetic this$0 field).
      */
-    abstract public T newInstance(Object enclosingInstance);
+    public abstract T newInstance(Object enclosingInstance);
 
-    static public <T> ConstructorAccessor<T> get(Class<T> type) {
+    public static <T> ConstructorAccessor<T> get(Class<T> type) {
         Class enclosingType = type.getEnclosingClass();
         boolean isNonStaticMemberClass = enclosingType != null && type.isMemberClass() && !Modifier.isStatic(type.getModifiers());
 
