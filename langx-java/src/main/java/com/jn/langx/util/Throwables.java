@@ -5,10 +5,10 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Level;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 
 import java.io.*;
 import java.lang.reflect.Method;
