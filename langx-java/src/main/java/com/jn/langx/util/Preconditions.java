@@ -114,7 +114,13 @@ public class Preconditions {
         return obj;
     }
 
-
+    /** Ensures that the state expression is true. */
+    public static void checkState(boolean expression) {
+        if (!expression) {
+            throw new IllegalStateException();
+        }
+    }
+    
     public static void checkArgument(boolean expression) {
         if (!expression) {
             throw new IllegalArgumentException();

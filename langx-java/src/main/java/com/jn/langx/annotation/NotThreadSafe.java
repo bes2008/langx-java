@@ -13,5 +13,5 @@ import static java.lang.annotation.ElementType.*;
 @Retention(RetentionPolicy.SOURCE)
 @Documented
 @Target(value = {TYPE, FIELD, PARAMETER})
-public @interface UnThreadSafe {
+public @interface NotThreadSafe {
 }

@@ -12,6 +12,7 @@ import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
+import com.jn.langx.util.reflect.signature.TypeSignatures;
 import com.jn.langx.util.reflect.type.Types;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
@@ -110,7 +111,7 @@ public class Reflects {
     }
 
     public static String getJvmSignature(@NonNull Class clazz) {
-        return Types.getTypeSignature(getFQNClassName(clazz));
+        return TypeSignatures.toTypeSignature(getFQNClassName(clazz));
     }
 
     public static URL getCodeLocation(@NonNull Class clazz) {
@@ -971,6 +972,31 @@ public class Reflects {
             }
         }
         return candidate;
+    }
+
+    public static String extractFieldName(Member member){
+        if(member instanceof Field){
+            return member.getName();
+        }
+        if(member instanceof Method){
+            return extractFieldName((Method) member);
+        }
+        return null;
+    }
+
+    public static String extractFieldName(Method method){
+        if(isGetterOrSetter(method)){
+            String methodName = method.getName();
+            String fieldName = null;
+            if(methodName.startsWith("set") || methodName.startsWith("get")){
+                fieldName = methodName.substring(3);
+            }
+            if(methodName.startsWith("is")){
+                fieldName = methodName.substring(2);
+            }
+            return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length()>1 ? fieldName.substring(1) :"");
+        }
+        return null;
     }
 
     public static boolean isSetter(@NonNull Method method) {
