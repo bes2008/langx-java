@@ -6,22 +6,22 @@ import java.security.ProtectionDomain;
 import java.util.HashSet;
 import java.util.WeakHashMap;
 
-class AccessClassLoader extends ClassLoader {
+class AccessorClassLoader extends ClassLoader {
     // Weak-references to class loaders, to avoid perm gen memory leaks, for example in app servers/web containters if the
     // reflectasm library (including this class) is loaded outside the deployed applications (WAR/EAR) using ReflectASM/Kryo (exts,
     // user classpath, etc).
     // The key is the parent class loader and the value is the AccessClassLoader, both are weak-referenced in the hash table.
-    static private final WeakHashMap<ClassLoader, WeakReference<AccessClassLoader>> accessClassLoaders = new WeakHashMap();
+    static private final WeakHashMap<ClassLoader, WeakReference<AccessorClassLoader>> accessClassLoaders = new WeakHashMap();
 
     // Fast-path for classes loaded in the same ClassLoader as this class.
-    static private final ClassLoader selfContextParentClassLoader = getParentClassLoader(AccessClassLoader.class);
-    static private volatile AccessClassLoader selfContextAccessClassLoader = new AccessClassLoader(selfContextParentClassLoader);
+    static private final ClassLoader selfContextParentClassLoader = getParentClassLoader(AccessorClassLoader.class);
+    static private volatile AccessorClassLoader selfContextAccessClassLoader = new AccessorClassLoader(selfContextParentClassLoader);
 
     static private volatile Method defineClassMethod;
 
     private final HashSet<String> localClassNames = new HashSet();
 
-    private AccessClassLoader(ClassLoader parent) {
+    private AccessorClassLoader(ClassLoader parent) {
         super(parent);
     }
 
@@ -117,14 +117,14 @@ class AccessClassLoader extends ClassLoader {
         return defineClassMethod;
     }
 
-    static AccessClassLoader get(Class type) {
+    static AccessorClassLoader get(Class type) {
         ClassLoader parent = getParentClassLoader(type);
         // 1. fast-path:
         if (selfContextParentClassLoader.equals(parent)) {
             if (selfContextAccessClassLoader == null) {
                 synchronized (accessClassLoaders) { // DCL with volatile semantics
                     if (selfContextAccessClassLoader == null) {
-                        selfContextAccessClassLoader = new AccessClassLoader(selfContextParentClassLoader);
+                        selfContextAccessClassLoader = new AccessorClassLoader(selfContextParentClassLoader);
                     }
                 }
             }
@@ -132,16 +132,16 @@ class AccessClassLoader extends ClassLoader {
         }
         // 2. normal search:
         synchronized (accessClassLoaders) {
-            WeakReference<AccessClassLoader> ref = accessClassLoaders.get(parent);
+            WeakReference<AccessorClassLoader> ref = accessClassLoaders.get(parent);
             if (ref != null) {
-                AccessClassLoader accessClassLoader = ref.get();
+                AccessorClassLoader accessClassLoader = ref.get();
                 if (accessClassLoader != null)
                     return accessClassLoader;
                 else
                     accessClassLoaders.remove(parent); // the value has been GC-reclaimed, but still not the key (defensive sanity)
             }
-            AccessClassLoader accessClassLoader = new AccessClassLoader(parent);
-            accessClassLoaders.put(parent, new WeakReference<AccessClassLoader>(accessClassLoader));
+            AccessorClassLoader accessClassLoader = new AccessorClassLoader(parent);
+            accessClassLoaders.put(parent, new WeakReference<AccessorClassLoader>(accessClassLoader));
             return accessClassLoader;
         }
     }

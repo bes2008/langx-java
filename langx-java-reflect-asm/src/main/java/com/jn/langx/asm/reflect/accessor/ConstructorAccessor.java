@@ -44,7 +44,7 @@ abstract public class ConstructorAccessor<T> {
         }
 
         Class accessorClass;
-        AccessClassLoader loader = AccessClassLoader.get(type);
+        AccessorClassLoader loader = AccessorClassLoader.get(type);
         synchronized (loader) {
             accessorClass = loader.loadAccessClass(accessClassName);
             if (accessorClass == null) {
@@ -99,7 +99,7 @@ abstract public class ConstructorAccessor<T> {
         } catch (Throwable t) {
             throw new RuntimeException("Exception constructing constructor access class: " + accessClassName, t);
         }
-        if (!(access instanceof PublicConstructorAccessor) && !AccessClassLoader.areInSameRuntimeClassLoader(type, accessorClass)) {
+        if (!(access instanceof PublicConstructorAccessor) && !AccessorClassLoader.areInSameRuntimeClassLoader(type, accessorClass)) {
             // Must test this after the try-catch block, whether the class has been loaded as if has been defined.
             // Throw a Runtime exception here instead of an IllegalAccessError when invoking newInstance()
             throw new RuntimeException((!isNonStaticMemberClass

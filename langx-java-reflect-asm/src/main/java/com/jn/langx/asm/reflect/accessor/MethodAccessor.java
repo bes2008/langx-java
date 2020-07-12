@@ -108,7 +108,7 @@ public abstract class MethodAccessor {
         }
 
         Class accessClass;
-        AccessClassLoader loader = AccessClassLoader.get(type);
+        AccessorClassLoader loader = AccessorClassLoader.get(type);
         synchronized (loader) {
             accessClass = loader.loadAccessClass(accessorClassName);
             if (accessClass == null) {

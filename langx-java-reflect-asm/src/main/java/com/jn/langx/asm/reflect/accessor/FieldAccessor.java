@@ -124,7 +124,7 @@ public abstract class FieldAccessor {
         if (accessClassName.startsWith("java.")) accessClassName = "langxreflectasm." + accessClassName;
 
         Class accessClass;
-        AccessClassLoader loader = AccessClassLoader.get(type);
+        AccessorClassLoader loader = AccessorClassLoader.get(type);
         synchronized (loader) {
             accessClass = loader.loadAccessClass(accessClassName);
             if (accessClass == null) {
