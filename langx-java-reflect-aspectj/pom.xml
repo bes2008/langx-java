@@ -12,7 +12,7 @@
     <artifactId>langx-java-reflect-aspectj</artifactId>
 
     <properties>
-        <aspectj.version>1.6.12</aspectj.version>
+        <aspectj.version>1.6.0</aspectj.version>
 
     </properties>
 
@@ -26,6 +26,7 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
