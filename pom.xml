@@ -51,6 +51,7 @@
         <module>langx-java</module>
         <module>langx-java8</module>
         <module>langx-java-reflect-aspectj</module>
+        <module>langx-java-reflect-asm</module>
     </modules>
     <dependencyManagement>
         <dependencies>
