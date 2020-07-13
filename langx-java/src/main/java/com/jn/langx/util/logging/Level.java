@@ -1,9 +1,11 @@
 package com.jn.langx.util.logging;
 
+import com.jn.langx.util.enums.base.CommonEnum;
+import com.jn.langx.util.enums.base.EnumDelegate;
 import org.slf4j.spi.LocationAwareLogger;
 
 
-public enum Level {
+public enum Level implements CommonEnum {
 
     ERROR(LocationAwareLogger.ERROR_INT, "ERROR"),
     WARN(LocationAwareLogger.WARN_INT, "WARN"),
@@ -11,24 +13,40 @@ public enum Level {
     DEBUG(LocationAwareLogger.DEBUG_INT, "DEBUG"),
     TRACE(LocationAwareLogger.TRACE_INT, "TRACE");
 
-    private int levelInt;
-    private String levelStr;
-
+    private EnumDelegate delegate;
     Level(int i, String s) {
-        levelInt = i;
-        levelStr = s;
+        this(i, s, s);
+    }
+
+    Level(int i, String s, String displayText) {
+        this.delegate = new EnumDelegate(i, s, displayText);
     }
 
     public int toInt() {
-        return levelInt;
+        return this.getCode();
     }
 
     /**
      * Returns the string representation of this Level.
      */
     public String toString() {
-        return levelStr;
+        return this.getName();
     }
 
+
+    @Override
+    public int getCode() {
+        return this.delegate.getCode();
+    }
+
+    @Override
+    public String getName() {
+        return this.delegate.getName();
+    }
+
+    @Override
+    public String getDisplayText() {
+        return this.delegate.getDisplayText();
+    }
 }
 
