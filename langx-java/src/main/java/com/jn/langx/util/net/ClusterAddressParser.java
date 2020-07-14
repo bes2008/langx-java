@@ -1,9 +1,12 @@
 package com.jn.langx.util.net;
 
 import com.jn.langx.Parser;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Predicate2;
 import org.slf4j.Logger;
@@ -25,7 +28,6 @@ import java.util.List;
  */
 public class ClusterAddressParser implements Parser<String, List<NetworkAddress>> {
     private static final Logger logger = LoggerFactory.getLogger(ClusterAddressParser.class);
-    private static final String delimiters = ",:";
     private int defaultPort = -1;
 
     public ClusterAddressParser() {
@@ -35,13 +37,33 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
         setDefaultPort(defaultPort);
     }
 
-    public int getDefaultPort() {
-        return defaultPort;
+    /**
+     * 转换为 host1:port1,host2:port2,host3:port3结构
+     *
+     * @return
+     */
+    public static String normalize(List<NetworkAddress> addresses, final ClusterAddressStyle style) {
+        Preconditions.checkNotEmpty(addresses);
+        final StringBuilder builder = new StringBuilder(256);
+        Collects.forEach(addresses, new Consumer2<Integer, NetworkAddress>() {
+            @Override
+            public void accept(Integer index, NetworkAddress address) {
+                if (index > 0) {
+                    builder.append(",");
+                }
+                if (style == ClusterAddressStyle.HOST_PORT_PAIR) {
+                    builder.append(address.getHost() + ":" + address.getPort());
+                } else if (style == ClusterAddressStyle.PORT_AT_END) {
+                    builder.append(address.getHost());
+                }
+            }
+        });
+        if (style == ClusterAddressStyle.PORT_AT_END) {
+            builder.append(":" + addresses.get(addresses.size() - 1).getPort());
+        }
+        return builder.toString();
     }
 
-    public void setDefaultPort(int defaultPort) {
-        this.defaultPort = defaultPort;
-    }
 
     public List<NetworkAddress> parse(String s) {
         if (Strings.isBlank(s)) {
@@ -56,7 +78,6 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
             String[] ipSegments = segment.split(":");
             if (ipSegments.length < 1) {
                 // ignore
-
             } else if (ipSegments.length == 1) {
                 // 只有 ip, 且是ipv4
                 ret.add(new NetworkAddress(ipSegments[0], 0));
@@ -117,5 +138,29 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
         return ret;
     }
 
+    public String normalize(String s, ClusterAddressStyle style) {
+        List<NetworkAddress> addresses = parse(s);
+        if (Emptys.isEmpty(addresses)) {
+            return "";
+        }
+        return normalize(addresses, style);
+    }
 
+    public String normalize(String s) {
+        return normalize(s, ClusterAddressStyle.HOST_PORT_PAIR);
+    }
+
+    public static enum ClusterAddressStyle {
+        HOST_PORT_PAIR,
+        PORT_AT_END;
+    }
+
+
+    public int getDefaultPort() {
+        return defaultPort;
+    }
+
+    public void setDefaultPort(int defaultPort) {
+        this.defaultPort = defaultPort;
+    }
 }
