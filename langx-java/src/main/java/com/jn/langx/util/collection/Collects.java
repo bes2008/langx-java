@@ -15,6 +15,7 @@ import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
+import com.jn.langx.util.struct.Entry;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
@@ -1069,16 +1070,22 @@ public class Collects {
         }
     }
 
-    public static <E, C extends Collection<E>> Integer firstOccurrence(C c, final E item) {
-        final SimpleIntegerCounter counter = new SimpleIntegerCounter(-1);
-        Collects.findFirst(c, new Predicate<E>() {
+    public static <E, C extends Collection<E>> int firstOccurrence(C c, final E item) {
+        return firstOccurrence(c, new Predicate2<Integer, E>() {
             @Override
-            public boolean test(E value) {
-                counter.increment();
+            public boolean test(Integer key, E value) {
                 return Objects.equals(value, item);
             }
         });
-        return counter.get();
+    }
+
+    public static <E, C extends Collection<E>> int firstOccurrence(C c, Predicate2<Integer, E> predicate){
+        List<Pair<Integer, E>> pairs = Collects.findNPairs(c, predicate,1);
+        if(Emptys.isEmpty(pairs)){
+            return -1;
+        }
+        Pair<Integer, E> pair = pairs.get(0);
+        return pair.getKey();
     }
 
 
@@ -1193,6 +1200,31 @@ public class Collects {
 
         return ret;
     }
+
+
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <E, C extends Collection<E>> List<Pair<Integer,E>> findNPairs(@Nullable C collection, @Nullable Predicate2<Integer,E> predicate, final int n) {
+        final List<Pair<Integer,E>> ret = Collects.emptyArrayList();
+        if (n <= 0 || Emptys.isEmpty(collection)) {
+            return ret;
+        }
+
+        forEach(collection, predicate, new Consumer2<Integer, E>() {
+            @Override
+            public void accept(Integer index,E e) {
+                ret.add(new Entry<Integer, E>(index, e));
+            }
+        }, new Predicate2<Integer,E>() {
+            @Override
+            public boolean test(Integer index,E value) {
+                return ret.size() == n;
+            }
+        });
+        return ret;
+    }
+
 
     /**
      * find the first matched element, null if not found
