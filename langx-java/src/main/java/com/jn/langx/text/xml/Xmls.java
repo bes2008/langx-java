@@ -19,6 +19,10 @@ import java.io.*;
 public class Xmls {
     private static final String NULL_XML_STR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
+    public static Document getXmlDoc(InputStream xml) throws Exception{
+        return getXmlDoc(null, xml);
+    }
+
     public static Document getXmlDoc(EntityResolver entityResolver, final InputStream xml) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(false);

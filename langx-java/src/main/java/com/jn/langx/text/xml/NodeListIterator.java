@@ -14,11 +14,17 @@ public class NodeListIterator extends UnmodifiableIterator<Node> {
 
     @Override
     public boolean hasNext() {
+        if(nodeList==null){
+            return false;
+        }
         return currentIndex < nodeList.getLength();
     }
 
     @Override
     public Node next() {
+        if(nodeList==null){
+            return null;
+        }
         Node node = nodeList.item(currentIndex);
         this.currentIndex++;
         return node;
