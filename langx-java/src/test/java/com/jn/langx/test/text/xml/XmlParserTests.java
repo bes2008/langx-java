@@ -17,7 +17,11 @@ import java.util.List;
 
 public class XmlParserTests {
     public static void main(String[] args) throws Throwable {
-        List<String> poms = Collects.newArrayList("/xmls/asm-parent-3.3.1.pom", "/xmls/antlr-2.7.7.pom", "/xmls/servlet-api-2.5.pom");
+        List<String> poms = Collects.newArrayList(
+                "/xmls/asm-parent-3.3.1.pom",
+                "/xmls/antlr-2.7.7.pom",
+                "/xmls/servlet-api-2.5.pom",
+                "/xmls/beanshell-2.0b4.pom");
         Collects.forEach(poms, new Consumer<String>() {
             @Override
             public void accept(String s) {

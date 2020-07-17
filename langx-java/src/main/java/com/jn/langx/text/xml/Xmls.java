@@ -1,10 +1,12 @@
 package com.jn.langx.text.xml;
 
+import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
+import com.jn.langx.text.xml.resolver.DTDEntityResolver;
+import com.jn.langx.text.xml.resolver.NullEntityResolver;
+import com.jn.langx.util.io.IOs;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import org.xml.sax.ErrorHandler;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,22 +21,40 @@ import java.io.*;
 public class Xmls {
     private static final String NULL_XML_STR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
-    public static Document getXmlDoc(InputStream xml) throws Exception{
+    public static Document getXmlDoc(InputStream xml) throws Exception {
         return getXmlDoc(null, xml);
     }
 
     public static Document getXmlDoc(EntityResolver entityResolver, final InputStream xml) throws Exception {
+        return getXmlDoc(entityResolver, null, xml);
+    }
+
+    public static Document getXmlDoc(EntityResolver entityResolver, ErrorHandler errorHandler, final InputStream xml) throws Exception {
+        return getXmlDoc(entityResolver, errorHandler, xml, true);
+    }
+
+    public static Document getXmlDoc(EntityResolver entityResolver, ErrorHandler errorHandler, final InputStream xml, boolean namespaceAware) throws Exception {
+        return getXmlDoc(entityResolver, errorHandler, xml, false, false, namespaceAware);
+    }
+
+    public static Document getXmlDoc(
+            EntityResolver entityResolver,
+            ErrorHandler errorHandler,
+            final InputStream xml,
+            boolean ignoreComments,
+            boolean ignoringElementContentWhitespace,
+            boolean namespaceAware) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setIgnoringComments(false);
-        factory.setIgnoringElementContentWhitespace(false);
-        factory.setNamespaceAware(true);
+        factory.setIgnoringComments(ignoreComments);
+        factory.setIgnoringElementContentWhitespace(ignoringElementContentWhitespace);
+        factory.setNamespaceAware(namespaceAware);
         if (entityResolver != null) {
             factory.setValidating(true);
         }
         final DocumentBuilder builder = factory.newDocumentBuilder();
         entityResolver = ((entityResolver == null) ? new NullEntityResolver() : entityResolver);
         builder.setEntityResolver(entityResolver);
-        builder.setErrorHandler(new ErrorHandler());
+        builder.setErrorHandler(errorHandler == null ? new RaiseErrorHandler() : errorHandler);
         return builder.parse(xml);
     }
 
@@ -77,68 +97,7 @@ public class Xmls {
         } catch (Exception ex) {
             throw ex;
         } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException ex2) {
-                }
-            }
-        }
-    }
-
-    public static class DTDEntityResolver implements EntityResolver {
-        private InputStream dtdInputStream;
-
-        public DTDEntityResolver(final InputStream dtdInputStream) {
-            this.dtdInputStream = dtdInputStream;
-        }
-
-        @Override
-        public InputSource resolveEntity(final String publicId, final String systemId) throws SAXException, IOException {
-            InputSource source = null;
-            try {
-                File file = null;
-                if (systemId != null && !systemId.isEmpty()) {
-                    file = new File(systemId);
-                } else if (publicId != null && !publicId.isEmpty()) {
-                    file = new File(publicId);
-                }
-                if (file != null && file.exists()) {
-                    source = new InputSource(new FileInputStream(file));
-                }
-                if (source == null) {
-                    if (this.dtdInputStream != null) {
-                        return new InputSource(this.dtdInputStream);
-                    }
-                    source = new InputSource(new ByteArrayInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".getBytes()));
-                }
-            } catch (Exception ex) {
-            }
-            return source;
-        }
-    }
-
-    public static class NullEntityResolver implements EntityResolver {
-        @Override
-        public InputSource resolveEntity(final String publicId, final String systemId) throws SAXException, IOException {
-            return new InputSource(new ByteArrayInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".getBytes()));
-        }
-    }
-
-    public static class ErrorHandler implements org.xml.sax.ErrorHandler {
-        @Override
-        public void warning(final SAXParseException exception) throws SAXException {
-            throw exception;
-        }
-
-        @Override
-        public void error(final SAXParseException exception) throws SAXException {
-            throw exception;
-        }
-
-        @Override
-        public void fatalError(final SAXParseException exception) throws SAXException {
-            throw exception;
+            IOs.close(input);
         }
     }
 }
