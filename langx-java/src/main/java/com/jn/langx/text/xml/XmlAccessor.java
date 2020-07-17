@@ -6,16 +6,36 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.xpath.*;
 import java.util.Map;
 
 public class XmlAccessor {
     private static final Logger logger = LoggerFactory.getLogger((Class) XmlAccessor.class);
+    private String defaultNamespacePrefix = null;
+
+    /**
+     * XML中没有指定命名空间，或者只有W3C标准命名空间时，用这个
+     */
+    public XmlAccessor() {
+
+    }
+
+    /**
+     * XML中指定了非标准的命名空间时，用这个
+     */
+    public XmlAccessor(String defaultNamespacePrefix) {
+        setDefaultNamespacePrefix(defaultNamespacePrefix);
+    }
+
+    public String getDefaultNamespacePrefix() {
+        return defaultNamespacePrefix;
+    }
+
+    public void setDefaultNamespacePrefix(String defaultNamespacePrefix) {
+        this.defaultNamespacePrefix = defaultNamespacePrefix;
+    }
 
     public void setElementAttribute(final Document doc, final XPathFactory factory, final String elementXpath, final String attributeName, final String attributeValue) throws Exception {
         if (Emptys.isEmpty(attributeName)) {
@@ -36,11 +56,6 @@ public class XmlAccessor {
         }
     }
 
-    public Element getElement(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
-        final XPath xpath = factory.newXPath();
-        final XPathExpression exp = xpath.compile(elementXpath);
-        return (Element) exp.evaluate(doc, XPathConstants.NODE);
-    }
 
     public void setElementAttributes(final Document doc, final XPathFactory factory, final String elementXpath, final Map<String, String> attrs) throws Exception {
         if (Emptys.isEmpty(attrs)) {
@@ -123,10 +138,46 @@ public class XmlAccessor {
         }
     }
 
+    public Node getNode(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+        final XPath xpath = factory.newXPath();
+        xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        final XPathExpression exp = xpath.compile(elementXpath);
+        return (Node) exp.evaluate(doc, XPathConstants.NODE);
+    }
+
+    public Element getElement(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+        return (Element) getNode(doc, factory, elementXpath);
+    }
+
+    public Attr getAttr(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+        return (Attr) getNode(doc, factory, elementXpath);
+    }
+
     public NodeList getNodeList(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
+        xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
         final XPathExpression exp = xpath.compile(elementXpath);
         return (NodeList) exp.evaluate(doc, XPathConstants.NODESET);
     }
 
+    public String getString(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+        final XPath xpath = factory.newXPath();
+        xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        final XPathExpression exp = xpath.compile(elementXpath);
+        return (String) exp.evaluate(doc, XPathConstants.STRING);
+    }
+
+    public Number getNumber(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+        final XPath xpath = factory.newXPath();
+        xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        final XPathExpression exp = xpath.compile(elementXpath);
+        return (Number) exp.evaluate(doc, XPathConstants.NUMBER);
+    }
+
+    public Boolean getBoolean(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+        final XPath xpath = factory.newXPath();
+        xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        final XPathExpression exp = xpath.compile(elementXpath);
+        return (Boolean) exp.evaluate(doc, XPathConstants.BOOLEAN);
+    }
 }

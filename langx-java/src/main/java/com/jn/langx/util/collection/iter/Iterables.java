@@ -3,12 +3,13 @@ package com.jn.langx.util.collection.iter;
 import com.jn.langx.util.Objects;
 import com.jn.langx.util.collection.Arrs;
 
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
 public class Iterables {
-    public boolean isIterable(Object obj){
+    public static boolean isIterable(Object obj){
         if(Objects.isNull(obj)){
             return false;
         }
@@ -29,4 +30,15 @@ public class Iterables {
         }
         return false;
     }
+
+   public static <E> NullIterator<E> nullIterator(){
+        return NullIterator.INSTANCE;
+   }
+
+   public static <E> Iterator<E> getIterator(Iterable<E> iterable){
+        if(iterable==null){
+            return iterable.iterator();
+        }
+        return nullIterator();
+   }
 }
