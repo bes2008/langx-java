@@ -2,6 +2,7 @@ package com.jn.langx.test.text.xml;
 
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.text.xml.Namespaces;
 import com.jn.langx.text.xml.XmlAccessor;
 import com.jn.langx.text.xml.Xmls;
 import com.jn.langx.util.collection.Collects;
@@ -16,9 +17,7 @@ import java.util.List;
 
 public class XmlParserTests {
     public static void main(String[] args) throws Throwable {
-
-        //, "/xmls/antlr-2.7.7.pom", "/xmls/servlet-api-2.5.pom"
-        List<String> poms = Collects.newArrayList("/xmls/asm-parent-3.3.1.pom");
+        List<String> poms = Collects.newArrayList("/xmls/asm-parent-3.3.1.pom", "/xmls/antlr-2.7.7.pom", "/xmls/servlet-api-2.5.pom");
         Collects.forEach(poms, new Consumer<String>() {
             @Override
             public void accept(String s) {
@@ -27,10 +26,16 @@ public class XmlParserTests {
                     Resource resource = Resources.loadClassPathResource(s);
                     inputStream = resource.getInputStream();
                     Document document = Xmls.getXmlDoc(null, inputStream);
-                    System.out.println(document.getDocumentElement().getNamespaceURI());
 
-                    String xpathExpressionString = "/x:project/x:groupId";
-                    Element element = new XmlAccessor("x").getElement(document, XPathFactory.newInstance(), xpathExpressionString);
+                    String xpathExpressionString = null;
+                    Element element;
+                    if (Namespaces.hasCustomNamespace(document)) {
+                        xpathExpressionString = "/x:project/x:groupId";
+                        element = new XmlAccessor("x").getElement(document, XPathFactory.newInstance(), xpathExpressionString);
+                    } else {
+                        xpathExpressionString = "/project/groupId";
+                        element = new XmlAccessor().getElement(document, XPathFactory.newInstance(), xpathExpressionString);
+                    }
                     System.out.println(element.getTextContent());
                 } catch (Throwable ex) {
                     ex.printStackTrace();
