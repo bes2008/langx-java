@@ -93,7 +93,12 @@ public class Calendars {
     public static int getField(@NonNull Calendar calendar, @NonNull DateField field) {
         Preconditions.checkNotNull(calendar);
         Preconditions.checkNotNull(field);
-        return calendar.get(field.getField());
+        return getField(calendar, field.getField());
+    }
+
+
+    public static int getField(@NonNull Calendar calendar, @NonNull int field){
+        return calendar.get(field);
     }
 
     public static int getYears(@NonNull Calendar calendar) {

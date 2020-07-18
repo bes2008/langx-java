@@ -1523,6 +1523,10 @@ public class Collects {
         return result;
     }
 
+    public static <E> List<E> reverse(@Nullable List<E> list){
+        return reverse(list, false);
+    }
+
     /**
      * Reverse a list, return an new list when the argument 'newOne' is true
      */

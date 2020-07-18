@@ -173,13 +173,13 @@ public class CronExpression implements Serializable {
 
     protected static final int YEAR_TO_GIVEUP_SCHEDULING_AT = 2299;
 
-    protected static final int SECOND = 0;
-    protected static final int MINUTE = 1;
-    protected static final int HOUR = 2;
-    protected static final int DAY_OF_MONTH = 3;
-    protected static final int MONTH = 4;
-    protected static final int DAY_OF_WEEK = 5;
-    protected static final int YEAR = 6;
+    public static final int SECOND = 0;
+    public static final int MINUTE = 1;
+    public static final int HOUR = 2;
+    public static final int DAY_OF_MONTH = 3;
+    public static final int MONTH = 4;
+    public static final int DAY_OF_WEEK = 5;
+    public static final int YEAR = 6;
     protected static final int ALL_SPEC_INT = 99; // '*'
     protected static final int NO_SPEC_INT = 98; // '?'
     protected static final Integer ALL_SPEC = ALL_SPEC_INT;
@@ -925,7 +925,7 @@ public class CronExpression implements Serializable {
         }
     }
 
-    protected TreeSet getSet(int type) {
+    public TreeSet getSet(int type) {
         switch (type) {
             case SECOND:
                 return seconds;
@@ -991,11 +991,19 @@ public class CronExpression implements Serializable {
         return integer;
     }
 
-    private static class ValueSet {
-
+    public static class ValueSet {
         public int value;
-
         public int pos;
+        public ValueSet(){}
+
+        public ValueSet(int value, int pos){
+            this.value = value;
+            this.pos = pos;
+        }
+
+        public boolean isInvalid(){
+            return this.pos ==-1 && value==-1;
+        }
     }
 
 }
