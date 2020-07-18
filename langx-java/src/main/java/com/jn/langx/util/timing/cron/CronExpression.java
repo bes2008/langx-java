@@ -990,11 +990,13 @@ public class CronExpression implements Serializable {
 
         return integer;
     }
+
+    private static class ValueSet {
+
+        public int value;
+
+        public int pos;
+    }
+
 }
 
-class ValueSet {
-
-    public int value;
-
-    public int pos;
-}

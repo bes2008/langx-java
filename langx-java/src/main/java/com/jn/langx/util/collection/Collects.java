@@ -1404,12 +1404,16 @@ public class Collects {
         return new LinkedHashSet<E>(Emptys.isEmpty(collection) ? Collections.EMPTY_LIST : collection);
     }
 
+    public static <E> E[] limit(E[] array, int maxSize){
+        return (E[])toArray(limit(asList(array), maxSize));
+    }
+
     /**
      * truncate a collection using subList(0, maxSize)
      */
     public static <E, C extends Collection<E>> List<E> limit(@Nullable C collection, int maxSize) {
         if (Emptys.isEmpty(collection)) {
-            return emptyLinkedList();
+            return emptyArrayList();
         }
 
         Preconditions.checkTrue(maxSize >= 0);
@@ -1421,12 +1425,16 @@ public class Collects {
         return list.subList(0, maxSize);
     }
 
+    public static <E> E[] skip(@Nullable E[] array, int n){
+        return (E[])toArray(skip(asList(array),n));
+    }
+
     /**
      * skip n elements, get a collection using subList(n, size)
      */
     public static <E, C extends Collection<E>> List<E> skip(@Nullable C collection, int n) {
         if (Emptys.isEmpty(collection)) {
-            return emptyLinkedList();
+            return emptyArrayList();
         }
         Preconditions.checkTrue(n >= 0);
         List<E> list = (collection instanceof List) ? (List<E>) collection : new LinkedList<E>(collection);

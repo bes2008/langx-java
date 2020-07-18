@@ -151,69 +151,52 @@ public class Strings {
     }
 
     public static String join(@NonNull final String separator, @Nullable final Iterable objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, objects.iterator());
     }
 
-    public static String join(@NonNull final String separator, @Nullable final Object[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
-        return join(separator, Collects.asIterable(objects));
-    }
+
 
     public static String join(@NonNull final String separator, @Nullable final Integer[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, Collects.asIterable(objects));
     }
 
     public static String join(@NonNull final String separator, @Nullable final Long[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, Collects.asIterable(objects));
     }
 
     public static String join(@NonNull final String separator, @Nullable final Float[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, Collects.asIterable(objects));
     }
 
     public static String join(@NonNull final String separator, @Nullable final Double[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, Collects.asIterable(objects));
     }
 
     public static String join(@NonNull final String separator, @Nullable final Short[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, Collects.asIterable(objects));
     }
 
     public static String join(@NonNull final String separator, @Nullable final Byte[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, Collects.asIterable(objects));
     }
 
     public static String join(@NonNull final String separator, @Nullable final Character[] objects) {
-        if (Emptys.isEmpty(objects)) {
-            return "";
-        }
         return join(separator, Collects.asIterable(objects));
     }
 
     public static String join(@NonNull final String separator, @Nullable final String[] objects) {
+        return join(separator, Collects.asIterable(objects));
+    }
+
+    public static <E>String join(@NonNull final String separator, @Nullable final E[] objects, int startIndex){
+        return join(separator, objects, startIndex,objects.length-startIndex);
+    }
+
+    public static <E>String join(@NonNull final String separator, @Nullable final E[] objects, int startIndex, int length){
+        return join(separator,Collects.limit(Collects.skip(objects, startIndex),length));
+    }
+
+    public static String join(@NonNull final String separator, @Nullable final Object[] objects) {
         if (Emptys.isEmpty(objects)) {
             return "";
         }
