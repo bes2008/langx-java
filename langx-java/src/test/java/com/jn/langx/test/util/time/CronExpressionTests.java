@@ -1,6 +1,7 @@
 package com.jn.langx.test.util.time;
 
 import com.jn.langx.util.Dates;
+import com.jn.langx.util.Objects;
 import com.jn.langx.util.timing.cron.CronExpression;
 import com.jn.langx.util.timing.cron.CronExpressionBuilder;
 import com.jn.langx.util.timing.cron.CronExpressionType;
@@ -12,7 +13,6 @@ import java.util.Date;
 public class CronExpressionTests {
     Date date = new Date();
 
-    @Test
     public void test01() throws Throwable {
         System.out.println("======test01 start=========");
         System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss));
@@ -24,13 +24,23 @@ public class CronExpressionTests {
             date = Dates.addSeconds(date, 13);
             Date nextDate = null;
             nextDate = CronExpressions.nextTime(cronExpression, date);
-            System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + Dates.format(nextDate, Dates.yyyy_MM_dd_HH_mm_ss));
+
+            Date nextDate2 = cronExpression.getTimeAfter(date);
+
+            String nextDate1String = Dates.format(nextDate, Dates.yyyy_MM_dd_HH_mm_ss);
+            String nextDate2String = Dates.format(nextDate2, Dates.yyyy_MM_dd_HH_mm_ss);
+            boolean equals = Objects.equals(nextDate1String, nextDate2String);
+            if(equals){
+                System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + nextDate1String);
+            }else {
+                System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + nextDate1String + "\t" + "next2: " + nextDate2String);
+            }
+
             i++;
         }
         System.out.println("======test01 end=========");
     }
 
-    @Test
     public void test02() throws Throwable {
         System.out.println("======test02 start=========");
         System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss));
@@ -43,7 +53,16 @@ public class CronExpressionTests {
             date = Dates.addSeconds(date, 13);
             Date nextDate = null;
             nextDate = CronExpressions.nextTime(cronExpression, date);
-            System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + Dates.format(nextDate, Dates.yyyy_MM_dd_HH_mm_ss));
+            Date nextDate2 = cronExpression.getTimeAfter(date);
+
+            String nextDate1String = Dates.format(nextDate, Dates.yyyy_MM_dd_HH_mm_ss);
+            String nextDate2String = Dates.format(nextDate2, Dates.yyyy_MM_dd_HH_mm_ss);
+            boolean equals = Objects.equals(nextDate1String, nextDate2String);
+            if(equals){
+                System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + nextDate1String);
+            }else {
+                System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + nextDate1String + "\t" + "next2: " + nextDate2String);
+            }
             i++;
         }
         System.out.println("======test02 end=========");
