@@ -64,21 +64,21 @@ public class CronExpressions {
         fieldScopeMap.put(CronExpression.YEAR, Collects.asList(cron.getSet(CronExpression.YEAR)));
 
         // 把每一个字段的值都校正到下一个时间点上该字段的正确值
-        List<CronExpression.ValueSet> cursors = Collects.asList(new CronExpression.ValueSet[]{
+        List<Cursor> cursors = Collects.asList(
                 correctingFieldCursor(second, fieldScopeMap.get(CronExpression.SECOND)),
                 correctingFieldCursor(minute, fieldScopeMap.get(CronExpression.MINUTE)),
                 correctingFieldCursor(hour, fieldScopeMap.get(CronExpression.HOUR)),
                 correctingFieldCursor(dayOfMonth, fieldScopeMap.get(CronExpression.DAY_OF_MONTH)),
                 correctingFieldCursor(month, fieldScopeMap.get(CronExpression.MONTH)),
                 correctingFieldCursor(dayOfWeek, fieldScopeMap.get(CronExpression.DAY_OF_WEEK)),
-                correctingFieldCursor(year, fieldScopeMap.get(CronExpression.YEAR))}
+                correctingFieldCursor(year, fieldScopeMap.get(CronExpression.YEAR))
         );
 
         // 找到第一个需要清零的索引后，进行低位字段清零操作
-        List<CronExpression.ValueSet> reverseCursors = Collects.reverse(cursors, true);
-        final int firstLessThanExpectValueField = Collects.firstOccurrence(reverseCursors, new Predicate2<Integer, CronExpression.ValueSet>() {
+        List<Cursor> reverseCursors = Collects.reverse(cursors, true);
+        final int firstLessThanExpectValueField = Collects.firstOccurrence(reverseCursors, new Predicate2<Integer, Cursor>() {
             @Override
-            public boolean test(Integer field, CronExpression.ValueSet cursor) {
+            public boolean test(Integer field, Cursor cursor) {
                 if (!cursor.isInvalid()) {
                     if (field == (6 - CronExpression.DAY_OF_WEEK)) {
                         if (cursor.value == 98) {
@@ -97,14 +97,14 @@ public class CronExpressions {
         });
         if (firstLessThanExpectValueField != -1) {
             // 执行清零
-            Collects.forEach(reverseCursors, new Predicate2<Integer, CronExpression.ValueSet>() {
+            Collects.forEach(reverseCursors, new Predicate2<Integer, Cursor>() {
                 @Override
-                public boolean test(Integer field, CronExpression.ValueSet cursor) {
+                public boolean test(Integer field, Cursor cursor) {
                     return field > firstLessThanExpectValueField;
                 }
-            }, new Consumer2<Integer, CronExpression.ValueSet>() {
+            }, new Consumer2<Integer, Cursor>() {
                 @Override
-                public void accept(Integer field, CronExpression.ValueSet cursor) {
+                public void accept(Integer field, Cursor cursor) {
                     if (!cursor.isInvalid()) {
                         if (field == (6 - CronExpression.DAY_OF_WEEK)) {
                             if (cursor.value == 98) {
@@ -125,12 +125,12 @@ public class CronExpressions {
         }
 
 
-        CronExpression.ValueSet secondCursor = cursors.get(CronExpression.SECOND);
+        Cursor secondCursor = cursors.get(CronExpression.SECOND);
         List<Integer> secondScope = fieldScopeMap.get(CronExpression.SECOND);
         // 如果游标正好在当前秒，或者 满格
         if (secondCursor.value == second || secondCursor.pos == secondScope.size() - 1) {
             int value;
-            CronExpression.ValueSet cursor;
+            Cursor cursor;
             int field = CronExpression.SECOND;
             List<Integer> fieldScope;
 
@@ -199,12 +199,12 @@ public class CronExpressions {
      * @param scope
      * @return
      */
-    private static CronExpression.ValueSet correctingFieldCursor(final int currentValue, List<Integer> scope) {
+    private static Cursor correctingFieldCursor(final int currentValue, List<Integer> scope) {
         if (Emptys.isEmpty(scope)) {
-            return new CronExpression.ValueSet(-1, -1);
+            return new Cursor(-1, -1);
         }
 
-        final CronExpression.ValueSet cursor = new CronExpression.ValueSet(currentValue, -1);
+        final Cursor cursor = new Cursor(currentValue, -1);
 
         Collects.forEach(scope, new Predicate2<Integer, Integer>() {
                     @Override
@@ -237,7 +237,7 @@ public class CronExpressions {
      * @param scope         指定字段的游标
      * @return 返回的是 下一个 field 是否需要进 1
      */
-    private static boolean toNextPosition(int currentValue, CronExpression.ValueSet currentCursor, List<Integer> scope) {
+    private static boolean toNextPosition(int currentValue, Cursor currentCursor, List<Integer> scope) {
         Preconditions.checkNotEmpty(scope);
         Preconditions.checkTrue(!currentCursor.isInvalid());
 
@@ -261,5 +261,20 @@ public class CronExpressions {
 
     public Date nextTime(String cron, Date time) {
         return nextTime(cron, CronExpressionType.QUARTZ, time);
+    }
+
+    private static class Cursor {
+        public int value;
+        public int pos;
+        public Cursor(){}
+        public Cursor(int value, int pos){
+            this.value =value;
+            this.pos =pos;
+        }
+
+        public boolean isInvalid(){
+            return this.pos ==-1 && value==-1;
+        }
+
     }
 }
