@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 public class XmlElementAttributeAccessor extends BasedStringAccessor<String, Element> {
     @Override
     public Object get(String attributeName) {
-        return getString(attributeName, null);
+        return getString(attributeName, (String) null);
     }
 
     @Override

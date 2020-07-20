@@ -4,6 +4,7 @@ import com.jn.langx.Accessor;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.exception.IllegalValueException;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.function.Function;
 
 public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     private T t;
@@ -23,8 +24,18 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     public abstract Object get(K key);
 
     @Override
+    public Object get(K key, @NonNull Function<Object, Object> mapper) {
+        return mapper.apply(get(key));
+    }
+
+    @Override
     public String getString(K key) {
-        return getString(key, null);
+        return getString(key, (String)null);
+    }
+
+    @Override
+    public String getString(K key, Function<String, String> mapper) {
+        return mapper.apply(getString(key));
     }
 
     @Override
@@ -32,7 +43,12 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public Character getCharacter(K key) {
-        return getCharacter(key, null);
+        return getCharacter(key, (Character) null);
+    }
+
+    @Override
+    public Character getCharacter(K key, Function<Character, Character> mapper) {
+        return mapper.apply(getCharacter(key));
     }
 
     @Override
@@ -48,8 +64,13 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public Byte getByte(K key, Function<Byte, Byte> mapper) {
+        return mapper.apply(getByte(key));
+    }
+
+    @Override
     public Byte getByte(K key) {
-        return getByte(key, null);
+        return getByte(key, (Byte) null);
     }
 
     @Override
@@ -66,8 +87,13 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public Integer getInteger(K key, Function<Integer, Integer> mapper) {
+        return mapper.apply(getInteger(key));
+    }
+
+    @Override
     public Integer getInteger(K key) {
-        return getInteger(key, null);
+        return getInteger(key,(Integer) null);
     }
 
     @Override
@@ -80,8 +106,12 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public Short getShort(K key, Function<Short, Short> mapper) {
+        return mapper.apply(getShort(key));
+    }
+    @Override
     public Short getShort(K key) {
-        return getShort(key, null);
+        return getShort(key, (Short) null);
     }
 
     @Override
@@ -94,8 +124,13 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public Double getDouble(K key, Function<Double, Double> mapper) {
+        return mapper.apply(getDouble(key));
+    }
+
+    @Override
     public Double getDouble(K key) {
-        return getDouble(key, null);
+        return getDouble(key,(Double) null);
     }
 
     @Override
@@ -108,8 +143,13 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public Float getFloat(K key, Function<Float, Float> mapper) {
+        return mapper.apply(getFloat(key));
+    }
+
+    @Override
     public Float getFloat(K key) {
-        return getFloat(key, null);
+        return getFloat(key, (Float) null);
     }
 
     @Override
@@ -122,8 +162,13 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public Long getLong(K key, Function<Long, Long> mapper) {
+        return mapper.apply(getLong(key));
+    }
+
+    @Override
     public Long getLong(K key) {
-        return getLong(key, null);
+        return getLong(key,(Long) null);
     }
 
     @Override
@@ -136,8 +181,13 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public Boolean getBoolean(K key, Function<Boolean, Boolean> mapper) {
+        return mapper.apply(getBoolean(key));
+    }
+
+    @Override
     public Boolean getBoolean(K key) {
-        return getBoolean(key, null);
+        return getBoolean(key,(Boolean) null);
     }
 
     @Override

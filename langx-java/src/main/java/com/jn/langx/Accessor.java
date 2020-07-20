@@ -1,5 +1,8 @@
 package com.jn.langx;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.function.Function;
+
 /**
  * A object's accessor, use it, you can get value from T object;
  * <pre>
@@ -21,41 +24,56 @@ public interface Accessor<K, T> {
 
     Object get(K key);
 
+    Object get(K key, @NonNull Function<Object,Object> mapper);
+
     String getString(K key);
 
     String getString(K key, String defaultValue);
+
+    String getString(K key, @NonNull Function<String,String> mapper);
 
     Character getCharacter(K key);
 
     Character getCharacter(K key, Character defaultValue);
 
+    Character getCharacter(K key, @NonNull Function<Character,Character> mapper);
+
     Byte getByte(K key);
 
     Byte getByte(K key, Byte defaultValue);
+
+    Byte getByte(K key, @NonNull Function<Byte,Byte> mapper);
 
     Short getShort(K key);
 
     Short getShort(K key, Short defaultValue);
 
+    Short getShort(K key, @NonNull Function<Short,Short> mapper);
+
     Integer getInteger(K key);
 
     Integer getInteger(K key, Integer defaultValue);
+    Integer getInteger(K key, @NonNull Function<Integer,Integer> mapper);
 
     Double getDouble(K key);
 
     Double getDouble(K key, Double defaultValue);
+    Double getDouble(K key, @NonNull Function<Double,Double> mapper);
 
     Float getFloat(K key);
 
     Float getFloat(K key, Float defaultValue);
+    Float getFloat(K key, @NonNull Function<Float,Float> mapper);
 
     Long getLong(K key);
 
     Long getLong(K key, Long defaultValue);
+    Long getLong(K key, @NonNull Function<Long,Long> mapper);
 
     Boolean getBoolean(K key);
 
     Boolean getBoolean(K key, Boolean defaultValue);
+    Boolean getBoolean(K key, @NonNull Function<Boolean,Boolean> mapper);
 
     void set(K key, Object value);
 
