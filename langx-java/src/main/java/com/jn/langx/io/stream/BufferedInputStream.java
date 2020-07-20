@@ -1,4 +1,4 @@
-package com.jn.langx.util.io;
+package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Preconditions;
 

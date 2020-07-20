@@ -1,5 +1,7 @@
 package com.jn.langx.util.io;
 
+import com.jn.langx.io.stream.ByteArrayOutputStream;
+import com.jn.langx.io.stream.StringBuilderWriter;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
@@ -201,7 +203,7 @@ public class IOs {
      * @throws IOException if an I/O error occurs
      */
     public static InputStream toBufferedInputStream(final InputStream input) throws IOException {
-        return ByteArrayOutputStream.toBufferedInputStream(input);
+        return com.jn.langx.io.stream.ByteArrayOutputStream.toBufferedInputStream(input);
     }
 
     /**
@@ -226,7 +228,7 @@ public class IOs {
      * @throws IOException if an I/O error occurs
      */
     public static InputStream toBufferedInputStream(final InputStream input, final int size) throws IOException {
-        return ByteArrayOutputStream.toBufferedInputStream(input, size);
+        return com.jn.langx.io.stream.ByteArrayOutputStream.toBufferedInputStream(input, size);
     }
 
     /**
@@ -340,38 +342,38 @@ public class IOs {
     }
 
     /**
-     * Returns the given InputStream if it is already a {@link BufferedInputStream}, otherwise creates a
+     * Returns the given InputStream if it is already a {@link com.jn.langx.io.stream.BufferedInputStream}, otherwise creates a
      * BufferedInputStream from the given InputStream.
      *
      * @param inputStream the InputStream to wrap or return (not null)
-     * @return the given InputStream or a new {@link BufferedInputStream} for the given InputStream
+     * @return the given InputStream or a new {@link com.jn.langx.io.stream.BufferedInputStream} for the given InputStream
      * @throws NullPointerException if the input parameter is null
      */
-    public static BufferedInputStream buffer(final InputStream inputStream) {
+    public static com.jn.langx.io.stream.BufferedInputStream buffer(final InputStream inputStream) {
         // reject null early on rather than waiting for IO operation to fail
         if (inputStream == null) { // not checked by BufferedInputStream
             throw new NullPointerException();
         }
-        return inputStream instanceof BufferedInputStream ?
-                (BufferedInputStream) inputStream : new BufferedInputStream(inputStream);
+        return inputStream instanceof com.jn.langx.io.stream.BufferedInputStream ?
+                (com.jn.langx.io.stream.BufferedInputStream) inputStream : new com.jn.langx.io.stream.BufferedInputStream(inputStream);
     }
 
     /**
-     * Returns the given InputStream if it is already a {@link BufferedInputStream}, otherwise creates a
+     * Returns the given InputStream if it is already a {@link com.jn.langx.io.stream.BufferedInputStream}, otherwise creates a
      * BufferedInputStream from the given InputStream.
      *
      * @param inputStream the InputStream to wrap or return (not null)
      * @param size        the buffer size, if a new BufferedInputStream is created.
-     * @return the given InputStream or a new {@link BufferedInputStream} for the given InputStream
+     * @return the given InputStream or a new {@link com.jn.langx.io.stream.BufferedInputStream} for the given InputStream
      * @throws NullPointerException if the input parameter is null
      */
-    public static BufferedInputStream buffer(final InputStream inputStream, final int size) {
+    public static com.jn.langx.io.stream.BufferedInputStream buffer(final InputStream inputStream, final int size) {
         // reject null early on rather than waiting for IO operation to fail
         if (inputStream == null) { // not checked by BufferedInputStream
             throw new NullPointerException();
         }
-        return inputStream instanceof BufferedInputStream ?
-                (BufferedInputStream) inputStream : new BufferedInputStream(inputStream, size);
+        return inputStream instanceof com.jn.langx.io.stream.BufferedInputStream ?
+                (com.jn.langx.io.stream.BufferedInputStream) inputStream : new com.jn.langx.io.stream.BufferedInputStream(inputStream, size);
     }
 
     // read toByteArray
@@ -389,9 +391,9 @@ public class IOs {
      * @throws IOException          if an I/O error occurs
      */
     public static byte[] toByteArray(final InputStream input) throws IOException {
-        ByteArrayOutputStream output = null;
+        com.jn.langx.io.stream.ByteArrayOutputStream output = null;
         try {
-            output = new ByteArrayOutputStream();
+            output = new com.jn.langx.io.stream.ByteArrayOutputStream();
             copy(input, output);
             return output.toByteArray();
         } finally {
@@ -490,7 +492,7 @@ public class IOs {
      * @throws IOException          if an I/O error occurs
      */
     public static byte[] toByteArray(final Reader input, final Charset encoding) throws IOException {
-        ByteArrayOutputStream output = null;
+        com.jn.langx.io.stream.ByteArrayOutputStream output = null;
         try {
             output = new ByteArrayOutputStream();
             copy(input, output, encoding);
@@ -2156,11 +2158,11 @@ public class IOs {
         if (input1 == input2) {
             return true;
         }
-        if (!(input1 instanceof BufferedInputStream)) {
-            input1 = new BufferedInputStream(input1);
+        if (!(input1 instanceof com.jn.langx.io.stream.BufferedInputStream)) {
+            input1 = new com.jn.langx.io.stream.BufferedInputStream(input1);
         }
-        if (!(input2 instanceof BufferedInputStream)) {
-            input2 = new BufferedInputStream(input2);
+        if (!(input2 instanceof com.jn.langx.io.stream.BufferedInputStream)) {
+            input2 = new com.jn.langx.io.stream.BufferedInputStream(input2);
         }
 
         int ch = input1.read();

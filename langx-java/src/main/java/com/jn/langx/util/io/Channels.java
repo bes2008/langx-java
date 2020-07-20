@@ -2,6 +2,7 @@ package com.jn.langx.util.io;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.io.stream.DelimiterBasedReadableByteChannel;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;

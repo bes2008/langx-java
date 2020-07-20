@@ -5,7 +5,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
-import com.jn.langx.util.io.NullOutputStream;
+import com.jn.langx.io.stream.NullOutputStream;
 
 import java.io.FileFilter;
 import java.io.*;
