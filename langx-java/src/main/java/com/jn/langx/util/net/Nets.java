@@ -609,6 +609,13 @@ public class Nets {
     }
 
 
+    public static boolean isValidPort(int port){
+        if (port < 0 || port > 0xFFFF){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * <p>Finds the first index in the {@code CharSequence} that matches the
      * specified character.</p>

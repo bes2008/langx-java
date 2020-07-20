@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
@@ -61,7 +59,13 @@ public class IOs {
         try {
             if (target instanceof Closeable) {
                 ((Closeable) target).close();
-            } else {
+            }else if(target instanceof Socket){
+                ((Socket)target).close();
+            }else if(target instanceof ServerSocket){
+                ((ServerSocket)target).close();
+            } else if(target instanceof DatagramSocket){
+                ((DatagramSocket)target).close();
+            }else {
                 Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
             }
         } catch (Throwable ex) {
