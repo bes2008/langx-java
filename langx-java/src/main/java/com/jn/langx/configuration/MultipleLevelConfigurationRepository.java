@@ -3,13 +3,11 @@ package com.jn.langx.configuration;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Consumer2;
-import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.function.*;
 import com.jn.langx.util.struct.Holder;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -100,6 +98,15 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
             return (T)repository.getById(id);
         }
         return null;
+    }
+
+    public T getById(final String id, Function<List<T>, T> mapper){
+        return mapper.apply(Pipeline.of(delegates.keySet()).map(new Function<String, T>() {
+            @Override
+            public T apply(String repositoryName) {
+                return getById(repositoryName, id);
+            }
+        }).asList());
     }
 
     public void removeById(final String id, final boolean sync) {
