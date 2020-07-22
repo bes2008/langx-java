@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -143,6 +140,25 @@ public class PKIs {
             IOs.close(inputStream);
         }
         return keyStore;
+    }
+
+
+    public static void persist(KeyStore keyStore, File file, String password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException{
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(file);
+            persist(keyStore, outputStream, password);
+        }finally {
+            IOs.close(outputStream);
+        }
+    }
+
+    public static void persist(KeyStore keyStore, OutputStream outputStream, String password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException{
+        persist(keyStore,outputStream, password.toCharArray());
+    }
+
+    public static void persist(KeyStore keyStore, OutputStream outputStream, char[] password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException{
+        keyStore.store(outputStream, password);
     }
 
     public static KeyPair findKeyPair(KeyStore keyStore, String alias, String password) {
