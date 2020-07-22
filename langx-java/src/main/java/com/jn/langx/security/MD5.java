@@ -21,37 +21,18 @@
 
 package com.jn.langx.security;
 
-import com.jn.langx.util.Radixs;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 /**
  * @author fs1194361820@163.com
+ * @see MessageDigests#md5(String)
  */
+@Deprecated
 public class MD5 {
-    private static MessageDigest md5MsgDigest;
-
-    static {
-        try {
-            md5MsgDigest = MessageDigest.getInstance("md5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public static String getMD5(String srcMsg) {
         if (srcMsg == null) {
             throw new IllegalArgumentException("srcMsg is null.");
         }
-        md5MsgDigest.update(srcMsg.getBytes());
-        byte[] md5Bytes = md5MsgDigest.digest();
-        return Radixs.toHex2(md5Bytes).toUpperCase();
+        return MessageDigests.md5(srcMsg);
     }
 
-    public static void main(String[] args) {
-        System.out.println(MD5.getMD5("hello"));
-        System.out.println(MD5.getMD5("world"));
-    }
 }

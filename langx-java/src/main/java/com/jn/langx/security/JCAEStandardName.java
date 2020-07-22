@@ -1,9 +1,6 @@
 package com.jn.langx.security;
 
-import java.security.AlgorithmParameterGenerator;
-import java.security.KeyPairGenerator;
-import java.security.MessageDigest;
-import java.security.Signature;
+import java.security.*;
 
 /**
  * <p>
@@ -46,6 +43,12 @@ import java.security.Signature;
  */
 public enum JCAEStandardName {
 
+    /********************Perso Random Number Generate *******/
+    @Algorithm(name="NativePRNG", type = SecureRandom.class)
+    NativePRNG,
+    @Algorithm(name="SHA1PRNG", type = SecureRandom.class)
+    SHA1PRNG,
+
     /*********************MessageDigest**********************/
     @Algorithm(name = "SHA-1", type = MessageDigest.class)
     SHA_1,
@@ -85,8 +88,11 @@ public enum JCAEStandardName {
 
 
     /********************KeyStore***************************/
+    // https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#Key
     JKS,
-    PKCS_12("PKCS#12");
+    JCEKS,
+    PKCS12,
+    DKS;
 
     JCAEStandardName() {
         Algorithm algorithm = null;

@@ -16,7 +16,6 @@ import java.io.*;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class FileDigestGenerator {
     public static void main(String[] args) {
         FileDigestGenerator generator = new FileDigestGenerator();
         long strat = System.currentTimeMillis();
-        System.out.println("MD5, SHA-1:   " + generator.generate("D:\\mvn_repo\\org\\springframework.zip",null, "MD5", "SHA-1"));
+        System.out.println("MD5, SHA-1:   " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", null, "MD5", "SHA-1"));
         long t2 = System.currentTimeMillis();
         System.out.println("SHA-1: " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", "SHA-1"));
         long t3 = System.currentTimeMillis();
@@ -80,7 +79,7 @@ public class FileDigestGenerator {
         return Pipeline.of(getFileDigest(filePath, reader, Pipeline.of(algorithms).map(new Function<String, MessageDigest>() {
             @Override
             public MessageDigest apply(String algorithm) {
-                return newDigest(algorithm);
+                return MessageDigests.newDigest(algorithm);
             }
         }).asList())).map(new Function<byte[], String>() {
             @Override
@@ -94,7 +93,7 @@ public class FileDigestGenerator {
         return getFileDigest(filePath, reader, Pipeline.of(algorithms).map(new Function<String, MessageDigest>() {
             @Override
             public MessageDigest apply(String algorithm) {
-                return newDigest(algorithm);
+                return MessageDigests.newDigest(algorithm);
             }
         }).asList());
     }
@@ -151,17 +150,6 @@ public class FileDigestGenerator {
 
     public static String getFileDigest(String filePath, String algorithm) throws FileNotFoundException {
         return getFileDigest(filePath, algorithm, null);
-    }
-
-    public static MessageDigest newDigest(String algorithm) {
-        try {
-            if (algorithm == null) {
-                algorithm = "MD5";
-            }
-            return MessageDigest.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        }
     }
 
 
