@@ -31,7 +31,7 @@ JDK中提供的对称加密算法有：
 
 所有的 拥有 private key, public key的算法，都是非对称加密算法。这两个合起来被称为 key pair。
 
-例如：DSA, RSA, AES
+例如：DES, AES, RSA
 ```
 非对称加密算法，用作加密时：
     用的是接收方的key pair，即发送方使用 接收方的public key加密，接收方使用接收方的 private key解密。

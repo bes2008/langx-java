@@ -45,8 +45,18 @@ public enum JCAEStandardName {
     /********************Perso Random Number Generate *******/
     @Algorithm(name="NativePRNG", apply = SecureRandom.class)
     NativePRNG,
+    @Algorithm(name="NativePRNGBlocking", apply = SecureRandom.class)
+    NativePRNGBlocking,
+    @Algorithm(name="NativePRNGNonBlocking", apply = SecureRandom.class)
+    NativePRNGNonBlocking,
+    @Algorithm(name="PKCS11", apply = SecureRandom.class)
+    PKCS11PRNG,
+    @Algorithm(name="DRBG", apply = SecureRandom.class)
+    DRBG,
     @Algorithm(name="SHA1PRNG", apply = SecureRandom.class)
     SHA1PRNG,
+    @Algorithm(name="Windows-PRNG", apply = SecureRandom.class)
+    Windows_PRNG,
 
     /*********************MessageDigest**********************/
     @Algorithm(name = "SHA-1", apply = MessageDigest.class)
@@ -69,29 +79,49 @@ public enum JCAEStandardName {
     RSA,
 
     /********************Digital Signature***************************/
-    @Algorithm(name = "SHA1withDSA", apply = Signature.class)
-    SHA1_DSA,
+    @Algorithm(name = "NONEwithRSA", apply = Signature.class)
+    NONE_DSA,
     @Algorithm(name = "MD2withRSA", apply = Signature.class)
     MD2_RSA,
-    @Algorithm(name = "MD2withRSA", apply = Signature.class)
+    @Algorithm(name = "MD5withRSA", apply = Signature.class)
     MD5_RSA,
     @Algorithm(name = "SHA1withRSA", apply = Signature.class)
     SHA1_RSA,
-
+    @Algorithm(name = "SHA224withRSA", apply = Signature.class)
+    SHA224_RSA,
+    @Algorithm(name = "SHA256withRSA", apply = Signature.class)
+    SHA256_RSA,
+    @Algorithm(name = "SHA384withRSA", apply = Signature.class)
+    SHA384_RSA,
+    @Algorithm(name = "SHA512withRSA", apply = Signature.class)
+    SHA512_RSA,
+    @Algorithm(name = "SHA512/224withRSA", apply = Signature.class)
+    SHA512_224_RSA,
+    @Algorithm(name = "SHA512/256withRSA", apply = Signature.class)
+    SHA512_256_RSA,
+    @Algorithm(name = "SHA3-224withRSA", apply = Signature.class)
+    SHA3_224_RSA,
+    @Algorithm(name = "SHA3-256withRSA", apply = Signature.class)
+    SHA3_256_RSA,
+    @Algorithm(name = "SHA3-384withRSA", apply = Signature.class)
+    SHA3_384_RSA,
+    @Algorithm(name = "SHA3-512withRSA", apply = Signature.class)
+    SHA3_512_RSA,
+    @Algorithm(name = "SHA1withDSA", apply = Signature.class)
+    SHA1_DSA,
     ECDSA,
-    NONEwithDSA,
-
 
     /************************Certificate*****************************/
     X509("X.509"),
 
 
-    /********************KeyStore***************************/
+    /********************KeyStore types***************************/
     // https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#Key
-    JKS,
     JCEKS,
-    PKCS12,
-    DKS;
+    JKS,
+    DKS,
+    PKCS11,
+    PKCS12;
 
     JCAEStandardName() {
         Algorithm algorithm = null;
