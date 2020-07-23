@@ -42,41 +42,40 @@ import java.security.*;
  * @author fs1194361820@163.com
  */
 public enum JCAEStandardName {
-
     /********************Perso Random Number Generate *******/
-    @Algorithm(name="NativePRNG", type = SecureRandom.class)
+    @Algorithm(name="NativePRNG", apply = SecureRandom.class)
     NativePRNG,
-    @Algorithm(name="SHA1PRNG", type = SecureRandom.class)
+    @Algorithm(name="SHA1PRNG", apply = SecureRandom.class)
     SHA1PRNG,
 
     /*********************MessageDigest**********************/
-    @Algorithm(name = "SHA-1", type = MessageDigest.class)
+    @Algorithm(name = "SHA-1", apply = MessageDigest.class)
     SHA_1,
-    @Algorithm(name = "SHA-256", type = MessageDigest.class)
+    @Algorithm(name = "SHA-256", apply = MessageDigest.class)
     SHA_256,
-    @Algorithm(name = "SHA-384", type = MessageDigest.class)
+    @Algorithm(name = "SHA-384", apply = MessageDigest.class)
     SHA_384,
-    @Algorithm(name = "SHA-512", type = MessageDigest.class)
+    @Algorithm(name = "SHA-512", apply = MessageDigest.class)
     SHA_512,
-    @Algorithm(name = "MD2", type = MessageDigest.class)
+    @Algorithm(name = "MD2", apply = MessageDigest.class)
     MD2,
-    @Algorithm(name = "MD5", type = MessageDigest.class)
+    @Algorithm(name = "MD5", apply = MessageDigest.class)
     MD5,
 
     /*********************KeyPair, Key Parameter*************/
-    @Algorithm(name = "DSA", type = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
+    @Algorithm(name = "DSA", apply = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
     DSA,
-    @Algorithm(name = "RSA", type = KeyPairGenerator.class)
+    @Algorithm(name = "RSA", apply = KeyPairGenerator.class)
     RSA,
 
     /********************Digital Signature***************************/
-    @Algorithm(name = "SHA1withDSA", type = Signature.class)
+    @Algorithm(name = "SHA1withDSA", apply = Signature.class)
     SHA1_DSA,
-    @Algorithm(name = "MD2withRSA", type = Signature.class)
+    @Algorithm(name = "MD2withRSA", apply = Signature.class)
     MD2_RSA,
-    @Algorithm(name = "MD2withRSA", type = Signature.class)
+    @Algorithm(name = "MD2withRSA", apply = Signature.class)
     MD5_RSA,
-    @Algorithm(name = "SHA1withRSA", type = Signature.class)
+    @Algorithm(name = "SHA1withRSA", apply = Signature.class)
     SHA1_RSA,
 
     ECDSA,

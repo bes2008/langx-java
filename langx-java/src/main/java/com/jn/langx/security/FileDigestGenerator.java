@@ -24,12 +24,12 @@ public class FileDigestGenerator {
 
     public static void main(String[] args) {
         FileDigestGenerator generator = new FileDigestGenerator();
-        long strat = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         System.out.println("MD5, SHA-1:   " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", null, "MD5", "SHA-1"));
         long t2 = System.currentTimeMillis();
         System.out.println("SHA-1: " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", "SHA-1"));
         long t3 = System.currentTimeMillis();
-        System.out.println("MD5 time: " + (t2 - strat));
+        System.out.println("MD5 time: " + (t2 - start));
         System.out.println("SHA-1 time: " + (t3 - t2));
     }
 
