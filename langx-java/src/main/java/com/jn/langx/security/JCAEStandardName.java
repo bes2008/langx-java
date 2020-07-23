@@ -39,6 +39,8 @@ import java.security.*;
  * <p>
  * JCE中的名称太多了，也没有什么规律，这里就不指明了。可以参考：<a href="http://docs.oracle.com/javase/1.5.0/docs/guide/security/CryptoSpec.html#AppB">JCE 实例名称说明</a>
  *
+ *
+ * https://docs.oracle.com/en/java/javase/14/security/oracle-providers.html#GUID-FE2D2E28-C991-4EF9-9DBE-2A4982726313
  * @author fs1194361820@163.com
  */
 public enum JCAEStandardName {
