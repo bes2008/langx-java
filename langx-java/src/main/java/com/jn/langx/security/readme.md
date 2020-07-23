@@ -22,8 +22,10 @@ https://docs.oracle.com/en/java/javase/14/security/java-security-overview1.html
 
 JDK中提供的对称加密算法有：
 ```
-    1）DH： Diffie-Hellman 算法，但它本质是一种创建 key的算法，而不是一种加密算法
-    2）PBE：password based encryption，基于密码的加密算法
+    1）DESede
+    2）DES
+    3）AES
+    4）Blowfish
 ```
 
 ### 1.2.2 Asymmetric encryption algorithm 非对称加密
@@ -31,7 +33,8 @@ JDK中提供的对称加密算法有：
 
 所有的 拥有 private key, public key的算法，都是非对称加密算法。这两个合起来被称为 key pair。
 
-例如：DES, AES, RSA
+例如：DSA, RSA, ECC
+
 ```
 非对称加密算法，用作加密时：
     用的是接收方的key pair，即发送方使用 接收方的public key加密，接收方使用接收方的 private key解密。
@@ -45,7 +48,7 @@ JDK中提供的对称加密算法有：
 
 用的是发送方的密钥，即发送方使用发送方的私钥加密，接收方使用发送方的公钥解密
 	
-例如：DSA, RSA, ECDSA		
+例如：DSA, RSA, ECDSA, DH		
 
 
 # 2. Message Digest 算法使用说明
