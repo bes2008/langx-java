@@ -131,4 +131,12 @@ public class Maths {
         String string = nf.format(value);
         return Double.parseDouble(string);
     }
+
+    public static int pow2Int(int pow){
+        return Numbers.toInt(Math.pow(2,pow));
+    }
+
+    public static int pow2Long(int pow){
+        return Numbers.toInt(Math.pow(2,pow));
+    }
 }

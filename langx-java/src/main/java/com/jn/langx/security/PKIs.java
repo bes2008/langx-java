@@ -33,7 +33,7 @@ public class PKIs {
         return keyFactory.generatePublic(keySpec);
     }
 
-    public static PrivateKey createPrivateKey(@NonNull String algorithm, @Nullable String provider, KeySpec keySpec) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
+    public static PrivateKey createPrivateKey(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         Preconditions.checkNotNull(keySpec);
         KeyFactory keyFactory = getKeyFactory(algorithm, provider);
         return keyFactory.generatePrivate(keySpec);
@@ -44,7 +44,7 @@ public class PKIs {
         return Strings.isEmpty(provider) ? KeyFactory.getInstance(algorithm) : KeyFactory.getInstance(algorithm, provider);
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, KeySpec privateKeySpec, KeySpec publicKeySpec) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
+    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec privateKeySpec, @NonNull KeySpec publicKeySpec) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         KeyFactory keyFactory = getKeyFactory(algorithm, provider);
         PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
         PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
@@ -56,7 +56,7 @@ public class PKIs {
         return Strings.isEmpty(provider) ? KeyPairGenerator.getInstance(algorithm) : KeyPairGenerator.getInstance(algorithm, provider);
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull int keyLength, SecureRandom secureRandom) throws NoSuchAlgorithmException, NoSuchProviderException {
+    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull int keyLength, @Nullable SecureRandom secureRandom) throws NoSuchAlgorithmException, NoSuchProviderException {
         Preconditions.checkTrue(keyLength > 0);
         KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
 
@@ -68,7 +68,7 @@ public class PKIs {
         return keyPairGenerator.generateKeyPair();
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull AlgorithmParameterSpec parameterSpec, @Nullable SecureRandom secureRandom) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
         Preconditions.checkNotNull(parameterSpec);
         KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
 
@@ -80,7 +80,7 @@ public class PKIs {
         return keyPairGenerator.generateKeyPair();
     }
 
-    public static SecretKey createSecretKey(String algorithm, @Nullable String provider, KeySpec keySpec) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
+    public static SecretKey createSecretKey(String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         return getSecretKeyFactory(algorithm, provider).generateSecret(keySpec);
     }
 
@@ -143,29 +143,29 @@ public class PKIs {
     }
 
 
-    public static void persist(KeyStore keyStore, File file, String password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException{
+    public static void persist(KeyStore keyStore, File file, @NonNull String password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(file);
             persist(keyStore, outputStream, password);
-        }finally {
+        } finally {
             IOs.close(outputStream);
         }
     }
 
-    public static void persist(KeyStore keyStore, OutputStream outputStream, String password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException{
-        persist(keyStore,outputStream, password.toCharArray());
+    public static void persist(@NonNull KeyStore keyStore, @NonNull OutputStream outputStream, @NonNull String password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+        persist(keyStore, outputStream, password.toCharArray());
     }
 
-    public static void persist(KeyStore keyStore, OutputStream outputStream, char[] password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException{
+    public static void persist(@NonNull KeyStore keyStore, @NonNull OutputStream outputStream, @NonNull char[] password) throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
         keyStore.store(outputStream, password);
     }
 
-    public static KeyPair findKeyPair(KeyStore keyStore, String alias, String password) {
+    public static KeyPair findKeyPair(@NonNull KeyStore keyStore, String alias, String password) {
         return findKeyPair(keyStore, alias, password.toCharArray());
     }
 
-    public static KeyPair findKeyPair(KeyStore keyStore, String alias, char[] password) {
+    public static KeyPair findKeyPair(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull char[] password) {
         try {
             if (!keyStore.containsAlias(alias) && keyStore.isKeyEntry(alias)) {
                 return null;
@@ -183,11 +183,11 @@ public class PKIs {
         return null;
     }
 
-    public static SecretKey findSecretKey(KeyStore keyStore, String alias, String password) {
+    public static SecretKey findSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull String password) {
         return findSecretKey(keyStore, alias, password.toCharArray());
     }
 
-    public static SecretKey findSecretKey(KeyStore keyStore, String alias, char[] password) {
+    public static SecretKey findSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull char[] password) {
         try {
             if (!keyStore.containsAlias(alias) && keyStore.isKeyEntry(alias)) {
                 return null;
@@ -202,20 +202,19 @@ public class PKIs {
         return null;
     }
 
-    public static Certificate findCertificate(KeyStore keyStore, String alias) {
+    public static Certificate findCertificate(@NonNull KeyStore keyStore, @NonNull String alias) {
         try {
             if (!keyStore.containsAlias(alias)) {
                 return null;
             }
-            Certificate certificate = keyStore.getCertificate(alias);
-            return certificate;
+            return keyStore.getCertificate(alias);
         } catch (Throwable ex) {
             logger.warn("can't find a valid certificate, the alias is {}", alias);
         }
         return null;
     }
 
-    public static List<Certificate> findCertificateChain(KeyStore keyStore, String alias) {
+    public static List<Certificate> findCertificateChain(@NonNull KeyStore keyStore, @NonNull String alias) {
         try {
             if (!keyStore.containsAlias(alias)) {
                 return null;
@@ -228,7 +227,7 @@ public class PKIs {
         return null;
     }
 
-    public static PublicKey findPublicKey(KeyStore keyStore, String alias) {
+    public static PublicKey findPublicKey(@NonNull KeyStore keyStore, @NonNull String alias) {
         Certificate certificate = findCertificate(keyStore, alias);
         PublicKey publicKey = null;
         if (certificate != null) {
@@ -237,15 +236,15 @@ public class PKIs {
         return publicKey;
     }
 
-    public static void setSecretKey(KeyStore keyStore, String alias, SecretKey secretKey, char[] password) throws KeyStoreException {
+    public static void setSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull SecretKey secretKey, @NonNull char[] password) throws KeyStoreException {
         keyStore.setKeyEntry(alias, secretKey, password, null);
     }
 
-    public static void setPrivateKey(KeyStore keyStore, String alias, PrivateKey privateKey, char[] password, List<Certificate> certificateChain) throws KeyStoreException {
+    public static void setPrivateKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull PrivateKey privateKey, @NonNull char[] password, @NonNull List<Certificate> certificateChain) throws KeyStoreException {
         keyStore.setKeyEntry(alias, privateKey, password, Collects.toArray(certificateChain, Certificate[].class));
     }
 
-    public static void setCertificate(KeyStore keyStore, String alias, Certificate certificate) throws KeyStoreException {
+    public static void setCertificate(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull Certificate certificate) throws KeyStoreException {
         keyStore.setCertificateEntry(alias, certificate);
     }
 }

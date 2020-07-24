@@ -82,7 +82,7 @@ public enum JCAEStandardName {
 
     /********************Digital Signature***************************/
     @Algorithm(name = "NONEwithRSA", apply = Signature.class)
-    NONE_DSA,
+    NONE_RSA,
     @Algorithm(name = "MD2withRSA", apply = Signature.class)
     MD2_RSA,
     @Algorithm(name = "MD5withRSA", apply = Signature.class)

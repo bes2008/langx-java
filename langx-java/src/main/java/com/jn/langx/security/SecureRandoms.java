@@ -1,5 +1,7 @@
 package com.jn.langx.security;
 
+import com.jn.langx.util.Strings;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
@@ -18,7 +20,7 @@ public class SecureRandoms {
     }
 
     public static SecureRandom getSecureRandom(String algorithm) throws NoSuchAlgorithmException, NoSuchProviderException {
-        return SecureRandom.getInstance(algorithm);
+        return Strings.isEmpty(algorithm) ? new SecureRandom() : SecureRandom.getInstance(algorithm);
     }
 
     public static SecureRandom getSecureRandom(String algorithm, String provider) throws NoSuchAlgorithmException, NoSuchProviderException {
