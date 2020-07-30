@@ -1,0 +1,22 @@
+language: java
+matrix:
+  include:
+    - jdk: openjdk8
+      env: compilejdk=openjdk8
+    - jdk: openjdk10
+        env: compilejdk=openjdk10
+
+git:
+  quiet: true
+branches:
+  only:
+    - master
+
+notifications:
+  slack:
+    on_success: always
+  email:
+    recipients:
+      - fs1194361820@163.com
+    on_success: never
+    on_failure: always
