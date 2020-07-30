@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
@@ -92,6 +93,10 @@ public class PKIs {
     public static KeyGenerator getSecretKeyGenerator(@NonNull String algorithm, @Nullable String provider) throws NoSuchAlgorithmException, NoSuchProviderException {
         Preconditions.checkNotNull(algorithm);
         return Strings.isEmpty(provider) ? KeyGenerator.getInstance(algorithm) : KeyGenerator.getInstance(algorithm, provider);
+    }
+
+    public static SecretKey createSecretKey(String algorithm, byte[] password){
+        return new SecretKeySpec(password,algorithm);
     }
 
     public static SecretKey createSecretKey(@NonNull String algorithm, @Nullable String provider, @Nullable Integer keyLength, @Nullable SecureRandom secureRandom) throws NoSuchAlgorithmException, NoSuchProviderException {
