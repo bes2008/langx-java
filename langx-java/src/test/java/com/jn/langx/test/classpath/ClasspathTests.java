@@ -52,15 +52,17 @@ public class ClasspathTests {
 
 
     private void showFileResource(AbstractLocatableResource fileResource) {
-        System.out.println("===========");
-        System.out.println("location:" + fileResource.getLocation());
-        System.out.println("path:" + fileResource.getPath());
-        System.out.println("prefix:" + fileResource.getPrefix());
-        System.out.println("exists:" + fileResource.exists());
-        System.out.println("isReadable:" + fileResource.isReadable());
-        System.out.println("absolutePath:" + fileResource.getAbsolutePath());
-        System.out.println("contentLength:" + fileResource.contentLength());
-        System.out.println("toString:" + fileResource.toString());
+        if(fileResource!=null) {
+            System.out.println("===========");
+            System.out.println("location:" + fileResource.getLocation());
+            System.out.println("path:" + fileResource.getPath());
+            System.out.println("prefix:" + fileResource.getPrefix());
+            System.out.println("exists:" + fileResource.exists());
+            System.out.println("isReadable:" + fileResource.isReadable());
+            System.out.println("absolutePath:" + fileResource.getAbsolutePath());
+            System.out.println("contentLength:" + fileResource.contentLength());
+            System.out.println("toString:" + fileResource.toString());
+        }
     }
 
 }
