@@ -31,9 +31,6 @@ public class NetworkAddress {
 
     @Override
     public String toString() {
-        return "NetworkAddress{" +
-                "host='" + host + '\'' +
-                ", port=" + port +
-                '}';
+        return port> 0 ?(host+":"+port) : host;
     }
 }
