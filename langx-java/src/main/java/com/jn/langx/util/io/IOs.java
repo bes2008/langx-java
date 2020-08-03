@@ -12,6 +12,9 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,10 +24,9 @@ import java.util.List;
  */
 @SuppressWarnings({"unused"})
 public class IOs {
-    private static final Logger logger = LoggerFactory.getLogger(IOs.class);
     public static final int EOF = -1;
     public static final String LINE_SEPARATOR = LineDelimiter.DEFAULT.getValue();
-
+    private static final Logger logger = LoggerFactory.getLogger(IOs.class);
     /**
      * The default buffer size ({@value}) to use for
      * {@link #copyLarge(InputStream, OutputStream)}
@@ -59,13 +61,19 @@ public class IOs {
         try {
             if (target instanceof Closeable) {
                 ((Closeable) target).close();
-            }else if(target instanceof Socket){
-                ((Socket)target).close();
-            }else if(target instanceof ServerSocket){
-                ((ServerSocket)target).close();
-            } else if(target instanceof DatagramSocket){
-                ((DatagramSocket)target).close();
-            }else {
+            } else if (target instanceof Socket) {
+                ((Socket) target).close();
+            } else if (target instanceof ServerSocket) {
+                ((ServerSocket) target).close();
+            } else if (target instanceof DatagramSocket) {
+                ((DatagramSocket) target).close();
+            } else if (target instanceof ResultSet) {
+                ((ResultSet) target).close();
+            } else if (target instanceof Statement) {
+                ((Statement) target).close();
+            } else if (target instanceof Connection) {
+                ((Connection) target).close();
+            } else {
                 Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
             }
         } catch (Throwable ex) {
