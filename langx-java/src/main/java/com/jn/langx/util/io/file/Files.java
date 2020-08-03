@@ -1,11 +1,11 @@
 package com.jn.langx.util.io.file;
 
 import com.jn.langx.exception.FileExistsException;
+import com.jn.langx.io.stream.NullOutputStream;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
-import com.jn.langx.io.stream.NullOutputStream;
 
 import java.io.FileFilter;
 import java.io.*;
@@ -15,6 +15,7 @@ import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.zip.CRC32;
@@ -32,6 +33,14 @@ public class Files {
      * The file copy buffer size (30 MB)
      */
     private static final long FILE_COPY_BUFFER_SIZE = ONE_MB * 30;
+    /**
+     * The maximum size of array to allocate.
+     * Some VMs reserve some header words in an array.
+     * Attempts to allocate larger arrays may result in
+     * OutOfMemoryError: Requested array size exceeds VM limit
+     */
+    private static final int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
+    private static final int BUFFER_SIZE = 8192;
 
     public static String getSuffix(File file) {
         return Filenames.getSuffix(file.getAbsolutePath());
@@ -414,6 +423,8 @@ public class Files {
         doCopyFile(srcFile, destFile, preserveFileDate);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Copy bytes from a <code>File</code> to an <code>OutputStream</code>.
      * <p>
@@ -494,8 +505,6 @@ public class Files {
             destFile.setLastModified(srcFile.lastModified());
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Copies a directory to within another directory preserving the file dates.
@@ -705,6 +714,8 @@ public class Files {
         doCopyDirectory(srcDir, destDir, filter, preserveFileDate, exclusionList);
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * checks requirements for file copy
      *
@@ -770,8 +781,6 @@ public class Files {
             destDir.setLastModified(srcDir.lastModified());
         }
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Copies bytes from the URL <code>source</code> to a file
@@ -874,6 +883,8 @@ public class Files {
         }
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Copies a file or directory to within another directory preserving the file dates.
      * <p>
@@ -939,8 +950,6 @@ public class Files {
         }
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Deletes a directory recursively.
      *
@@ -995,6 +1004,7 @@ public class Files {
         }
     }
 
+//-----------------------------------------------------------------------
 
     /**
      * Cleans a directory without deleting it.
@@ -1044,8 +1054,6 @@ public class Files {
         }
         return files;
     }
-
-//-----------------------------------------------------------------------
 
     /**
      * Deletes a file. If file is a directory, delete it and all sub-directories.
@@ -1112,6 +1120,8 @@ public class Files {
         }
     }
 
+    //-----------------------------------------------------------------------
+
     /**
      * Cleans a directory without deleting it.
      *
@@ -1136,7 +1146,6 @@ public class Files {
         }
     }
 
-
     /**
      * Makes any necessary but nonexistent parent directories for a given File. If the parent directory cannot be
      * created then an IOException is thrown.
@@ -1152,8 +1161,6 @@ public class Files {
         }
         forceMkdir(parent);
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Returns the size of the specified file or directory. If the provided
@@ -1188,6 +1195,8 @@ public class Files {
 
     }
 
+    // Private method, must be invoked will a directory parameter
+
     /**
      * Returns the size of the specified file or directory. If the provided
      * {@link File} is a regular file, then the file's length is returned.
@@ -1218,6 +1227,8 @@ public class Files {
 
     }
 
+    // Internal method - does not check existence
+
     /**
      * Counts the size of a directory recursively (sum of the length of all files).
      * <p>
@@ -1234,8 +1245,6 @@ public class Files {
         checkDirectory(directory);
         return sizeOfDirectory0(directory);
     }
-
-    // Private method, must be invoked will a directory parameter
 
     /**
      * the size of a director
@@ -1266,7 +1275,7 @@ public class Files {
         return size;
     }
 
-    // Internal method - does not check existence
+    // Must be called with a directory
 
     /**
      * the size of a file
@@ -1282,6 +1291,8 @@ public class Files {
         }
     }
 
+    // internal method; if file does not exist will return 0
+
     /**
      * Counts the size of a directory recursively (sum of the length of all files).
      *
@@ -1293,8 +1304,6 @@ public class Files {
         checkDirectory(directory);
         return sizeOfDirectoryBig0(directory);
     }
-
-    // Must be called with a directory
 
     /**
      * Finds the size of a directory
@@ -1322,7 +1331,7 @@ public class Files {
         return size;
     }
 
-    // internal method; if file does not exist will return 0
+    //-----------------------------------------------------------------------
 
     /**
      * Returns the size of a file
@@ -1353,8 +1362,6 @@ public class Files {
         }
     }
 
-    //-----------------------------------------------------------------------
-
     /**
      * Tests if the specified <code>File</code> is newer than the reference
      * <code>File</code>.
@@ -1378,6 +1385,9 @@ public class Files {
         }
         return isFileNewer(file, reference.lastModified());
     }
+
+
+    //-----------------------------------------------------------------------
 
     /**
      * Tests if the specified <code>File</code> is newer than the specified
@@ -1418,7 +1428,6 @@ public class Files {
         return file.exists() && file.lastModified() > timeMillis;
     }
 
-
     //-----------------------------------------------------------------------
 
     /**
@@ -1458,8 +1467,6 @@ public class Files {
         }
         return file.exists() && file.lastModified() < timeMillis;
     }
-
-    //-----------------------------------------------------------------------
 
     /**
      * Computes the checksum of a file using the CRC32 checksum routine.
@@ -1688,7 +1695,6 @@ public class Files {
         }
     }
 
-
     public static boolean exists(File file) {
         return file != null && file.exists();
     }
@@ -1701,4 +1707,57 @@ public class Files {
         return file != null && file.canWrite();
     }
 
+    public static byte[] readAllBytes(File file) throws IOException {
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            long filesize = file.length();
+            if (filesize > (long) MAX_BUFFER_SIZE)
+                throw new OutOfMemoryError("Required array size too large");
+
+            return read(inputStream, (int) filesize);
+        } finally {
+            IOs.close(inputStream);
+        }
+    }
+
+    /**
+     * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
+     * about how many bytes the stream will have.
+     *
+     * @param source      the input stream to read from
+     * @param initialSize the initial size of the byte array to allocate
+     * @return a byte array containing the bytes read from the file
+     * @throws IOException      if an I/O error occurs reading from the stream
+     * @throws OutOfMemoryError if an array of the required size cannot be allocated
+     */
+    private static byte[] read(InputStream source, int initialSize) throws IOException {
+        int capacity = initialSize;
+        byte[] buf = new byte[capacity];
+        int nread = 0;
+        int n;
+        for (; ; ) {
+            // read to EOF which may read more or less than initialSize (eg: file
+            // is truncated while we are reading)
+            while ((n = source.read(buf, nread, capacity - nread)) > 0)
+                nread += n;
+
+            // if last call to source.read() returned -1, we are done
+            // otherwise, try to read one more byte; if that failed we're done too
+            if (n < 0 || (n = source.read()) < 0)
+                break;
+
+            // one more byte was read; need to allocate a larger buffer
+            if (capacity <= MAX_BUFFER_SIZE - capacity) {
+                capacity = Math.max(capacity << 1, BUFFER_SIZE);
+            } else {
+                if (capacity == MAX_BUFFER_SIZE)
+                    throw new OutOfMemoryError("Required array size too large");
+                capacity = MAX_BUFFER_SIZE;
+            }
+            buf = Arrays.copyOf(buf, capacity);
+            buf[nread++] = (byte) n;
+        }
+        return (capacity == nread) ? buf : Arrays.copyOf(buf, nread);
+    }
 }

@@ -1,4 +1,4 @@
-package com.jn.langx.util.mime;
+package com.jn.langx.http.mime;
 
 
 import com.jn.langx.annotation.Nullable;
@@ -128,7 +128,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
      * @param other   the other MimeType
      * @param charset the character set
      * @throws IllegalArgumentException if any of the parameters contains illegal characters
-     * @since 4.3
+     * 
      */
     public MimeType(MimeType other, Charset charset) {
         this(other.getType(), other.getSubtype(), addCharsetParameter(charset, other.getParameters()));
@@ -263,7 +263,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
      * Return the character set, as indicated by a {@code charset} parameter, if any.
      *
      * @return the character set, or {@code null} if not available
-     * @since 4.3
+     * 
      */
     @Nullable
     public Charset getCharset() {
@@ -381,7 +381,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
      *
      * @param other the other mime type to compare to
      * @return whether the two mime types have the same type and subtype
-     * @since 5.1.4
+     * 
      */
     public boolean equalsTypeAndSubtype(@Nullable MimeType other) {
         if (other == null) {
@@ -397,7 +397,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
      *
      * @param mimeTypes the list of mime types to perform the check against
      * @return whether the list contains the given mime type
-     * @since 5.1.4
+     * 
      */
     public boolean isPresentIn(Collection<? extends MimeType> mimeTypes) {
         for (MimeType mimeType : mimeTypes) {
@@ -428,7 +428,7 @@ public class MimeType implements Comparable<MimeType>, Serializable {
      * {@code MimeType} are equal, performing case-insensitive comparisons
      * for {@link Charset Charsets}.
      *
-     * @since 4.2
+     * 
      */
     private boolean parametersAreEqual(MimeType other) {
         if (this.parameters.size() != other.parameters.size()) {

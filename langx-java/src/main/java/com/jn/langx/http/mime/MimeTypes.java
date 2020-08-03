@@ -1,4 +1,4 @@
-package com.jn.langx.util.mime;
+package com.jn.langx.http.mime;
 
 
 import com.jn.langx.annotation.Nullable;
@@ -169,7 +169,6 @@ public class MimeTypes {
      *
      * @param mimeType the string to parse
      * @return the mime type
-     * @throws InvalidMimeTypeException if the string cannot be parsed
      */
     public static MimeType parseMimeType(String mimeType) {
         if (Strings.isBlank(mimeType)) {
@@ -251,7 +250,6 @@ public class MimeTypes {
      *
      * @param mimeTypes the string to parse
      * @return the list of mime types
-     * @throws InvalidMimeTypeException if the string cannot be parsed
      */
     public static List<MimeType> parseMimeTypes(String mimeTypes) {
         if (Strings.isBlank(mimeTypes)) {
