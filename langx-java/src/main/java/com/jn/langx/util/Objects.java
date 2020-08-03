@@ -272,6 +272,13 @@ public final class Objects {
         return value;
     }
 
+    public static <T> T useValueIfEmpty(T value, T defaultValue) {
+        if (isEmpty(value)) {
+            return defaultValue;
+        }
+        return value;
+    }
+
     public static <T> T requireNonNullElseGet(T obj, Supplier0<? extends T> supplier) {
         return (obj != null) ? obj
                 : requireNonNull(requireNonNull(supplier, "supplier").get(), "supplier.get()");
