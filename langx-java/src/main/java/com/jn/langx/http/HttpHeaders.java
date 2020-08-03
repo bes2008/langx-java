@@ -4,6 +4,7 @@ package com.jn.langx.http;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.http.mime.MediaType;
+import com.jn.langx.util.StringJoiner;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
