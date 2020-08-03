@@ -1,4 +1,4 @@
-package com.jn.langx.util.mime;
+package com.jn.langx.http.mime;
 
 
 /**
