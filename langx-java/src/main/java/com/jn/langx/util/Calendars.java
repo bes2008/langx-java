@@ -4,7 +4,6 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.enums.base.EnumDelegate;
-import com.jn.langx.util.jodatime.Interval;
 
 import java.util.Calendar;
 import java.util.List;
@@ -65,32 +64,6 @@ public class Calendars {
         return (getNumberOfFirstDayInMonth(year, month) + day - 1) % 7;
     }
 
-    /**
-     * 获取一个时间点所在那一周的起止时间
-     * 有的国家是从 周一到周日
-     * 有的国家是从 周日到周六
-     * 有的国家是从 周六到周五
-     * <pre>
-     *
-     * 星期一：Monday（Mon.）
-     * 星期二：Tuesday（Tues.）
-     * 星期三：Wednesday（Wed.）
-     * 星期四：Thursday（Thur./Thurs.）
-     * 星期五：Friday（Fri.）
-     * 星期六：Saturday（Sat.）
-     * 星期日：Sunday（Sun.）
-     * </pre>
-     *
-     * @param millis time millis
-     */
-    public static Interval getWeek(long millis, RecentIntervalType recentWeekType) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(millis);
-
-        calendar.getFirstDayOfWeek();
-
-        return null;
-    }
 
     public static int getField(@NonNull Calendar calendar, @NonNull DateField field) {
         Preconditions.checkNotNull(calendar);

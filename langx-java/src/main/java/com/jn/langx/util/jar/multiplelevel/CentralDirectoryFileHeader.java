@@ -1,9 +1,13 @@
 package com.jn.langx.util.jar.multiplelevel;
 
 import com.jn.langx.util.Bytes;
-import com.jn.langx.util.jodatime.LocalDateTime;
+import com.jn.langx.util.Calendars;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * A ZIP File "Central directory file header record" (CDFH).
@@ -118,8 +122,18 @@ final class CentralDirectoryFileHeader implements FileHeader {
         //return localDateTime.toEpochSecond(ZoneId.systemDefault().getRules().getOffset(localDateTime)) * 1000;
 
         // Joda-time API:
-        LocalDateTime localDateTime = new LocalDateTime(year, month, dayOfMonth, hour, minute, second);
-        return localDateTime.toDate().getTime();
+        //LocalDateTime localDateTime = new LocalDateTime(year, month, dayOfMonth, hour, minute, second);
+        //return localDateTime.toDate().getTime();
+
+        // Java 5 Calender API:
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
+        Calendars.setYears(calendar,year);
+        Calendars.setMonths(calendar,month,true);
+        Calendars.setDays(calendar,dayOfMonth);
+        Calendars.setHours(calendar,hour);
+        Calendars.setMinutes(calendar,minute);
+        Calendars.setSeconds(calendar,second);
+        return calendar.getTimeInMillis() - calendar.getTimeZone() .getRawOffset() * 1000;
     }
 
     long getCrc() {
