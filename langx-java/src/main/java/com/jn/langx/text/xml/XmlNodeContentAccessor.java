@@ -29,6 +29,11 @@ public class XmlNodeContentAccessor extends BasedStringAccessor<XPathExpression,
     }
 
     @Override
+    public boolean has(XPathExpression key) {
+        return get(key) != null;
+    }
+
+    @Override
     public String getString(XPathExpression exp, String defaultValue) {
         Object content = get(exp);
         if (content == null) {

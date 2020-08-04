@@ -19,6 +19,11 @@ public class MapAccessor extends BasedStringAccessor<String, Map<String, Object>
     }
 
     @Override
+    public boolean has(String key) {
+        return getTarget().containsKey(key);
+    }
+
+    @Override
     public String getString(String key, String defaultValue) {
         Object value = get(key);
         if (value == null) {

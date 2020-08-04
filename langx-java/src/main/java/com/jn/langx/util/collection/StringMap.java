@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.http.HttpQueryStrings;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,18 +34,8 @@ public class StringMap extends HashMap<String, String> {
     /**
      * 只适用于一个name对应一个value的场景
      * @param url
-     * @return
      */
     public static StringMap httpUrlParameters(String url) {
-        if (url == null) {
-            return EMPTY;
-        }
-        int paramPartStartIndex = url.indexOf("?") + 1;
-        if (paramPartStartIndex == 0 || paramPartStartIndex == url.length()) {
-            return EMPTY;
-        }
-        int paramPartEndIndex = url.indexOf("#");
-        String queryString = paramPartEndIndex == -1 ? url.substring(paramPartStartIndex) : url.substring(paramPartStartIndex, paramPartEndIndex);
-        return new StringMap(queryString, "=", "&");
+        return HttpQueryStrings.getQueryStringStringMap(url);
     }
 }

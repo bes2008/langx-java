@@ -10,14 +10,14 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     private T t;
 
     @Override
-    public void setTarget(@NonNull T target) {
-        Preconditions.checkNotNull(target);
-        this.t = target;
+    public T getTarget() {
+        return t;
     }
 
     @Override
-    public T getTarget() {
-        return t;
+    public void setTarget(@NonNull T target) {
+        Preconditions.checkNotNull(target);
+        this.t = target;
     }
 
     @Override
@@ -29,8 +29,13 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
+    public boolean has(K key) {
+        return get(key) != null;
+    }
+
+    @Override
     public String getString(K key) {
-        return getString(key, (String)null);
+        return getString(key, (String) null);
     }
 
     @Override
@@ -93,7 +98,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public Integer getInteger(K key) {
-        return getInteger(key,(Integer) null);
+        return getInteger(key, (Integer) null);
     }
 
     @Override
@@ -109,6 +114,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     public Short getShort(K key, Function<Short, Short> mapper) {
         return mapper.apply(getShort(key));
     }
+
     @Override
     public Short getShort(K key) {
         return getShort(key, (Short) null);
@@ -130,7 +136,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public Double getDouble(K key) {
-        return getDouble(key,(Double) null);
+        return getDouble(key, (Double) null);
     }
 
     @Override
@@ -168,7 +174,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public Long getLong(K key) {
-        return getLong(key,(Long) null);
+        return getLong(key, (Long) null);
     }
 
     @Override
@@ -187,7 +193,7 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public Boolean getBoolean(K key) {
-        return getBoolean(key,(Boolean) null);
+        return getBoolean(key, (Boolean) null);
     }
 
     @Override

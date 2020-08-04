@@ -25,7 +25,7 @@ import java.util.*;
 public class LinkedMultiValueMap<K, V> implements MultiValueMap<K, V>, Serializable, Cloneable {
 
     private static final long serialVersionUID = 3801124242820219131L;
-
+    public static final LinkedMultiValueMap EMPTY = new LinkedMultiValueMap();
     private final Map<K, List<V>> targetMap;
 
 

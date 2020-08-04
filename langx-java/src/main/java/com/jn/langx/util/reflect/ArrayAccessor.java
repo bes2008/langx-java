@@ -29,6 +29,11 @@ public class ArrayAccessor<E> extends BasedStringAccessor<Integer, E> {
         super.setTarget(target);
     }
 
+    @Override
+    public boolean has(Integer index) {
+        int length = Array.getLength(getTarget());
+        return index >=0 && index < length;
+    }
 
     @Override
     public Object get(Integer index) {

@@ -31,10 +31,11 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
         setTarget0(expectedLength, values);
     }
 
-    @Override
-    public void setTarget(Collection target) {
-        Preconditions.checkNotNull(target);
-        setTarget0(target.size(), target);
+    public static Tuple of(Object... objects) {
+        if (objects == null) {
+            return new Tuple(Collects.emptyArrayList());
+        }
+        return new Tuple(Collects.asList(objects));
     }
 
     private void setTarget0(int expectedLength, Collection values) {
@@ -52,6 +53,17 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
     @Override
     public List getTarget() {
         return this.elements;
+    }
+
+    @Override
+    public void setTarget(Collection target) {
+        Preconditions.checkNotNull(target);
+        setTarget0(target.size(), target);
+    }
+
+    @Override
+    public boolean has(Integer index) {
+        return index >= 0 && index < this.elements.size();
     }
 
     @Override
@@ -74,13 +86,6 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
     @Override
     public Iterator iterator() {
         return elements.iterator();
-    }
-
-    public static Tuple of(Object... objects) {
-        if (objects == null) {
-            return new Tuple(Collects.emptyArrayList());
-        }
-        return new Tuple(Collects.asList(objects));
     }
 
     public int size() {

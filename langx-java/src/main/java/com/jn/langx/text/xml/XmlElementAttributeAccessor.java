@@ -24,4 +24,9 @@ public class XmlElementAttributeAccessor extends BasedStringAccessor<String, Ele
             attr.setValue(attributeValue);
         }
     }
+
+    @Override
+    public boolean has(String attributeName) {
+        return getTarget().getAttributeNode(attributeName) != null;
+    }
 }

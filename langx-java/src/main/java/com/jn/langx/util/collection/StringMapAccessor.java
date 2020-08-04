@@ -24,6 +24,11 @@ public class StringMapAccessor extends BasedStringAccessor<String, StringMap> {
     }
 
     @Override
+    public boolean has(String key) {
+        return getTarget().containsKey(key);
+    }
+
+    @Override
     public String getString(String key, String defaultValue) {
         return getTarget().get(key);
     }

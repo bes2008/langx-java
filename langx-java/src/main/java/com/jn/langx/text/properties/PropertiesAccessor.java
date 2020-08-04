@@ -23,6 +23,11 @@ public class PropertiesAccessor extends BasedStringAccessor<String, Properties> 
     }
 
     @Override
+    public boolean has(String key) {
+        return getTarget().containsKey(key);
+    }
+
+    @Override
     public String getString(String key, String defaultValue) {
         return getTarget().getProperty(key, defaultValue);
     }

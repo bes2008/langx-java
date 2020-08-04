@@ -22,6 +22,8 @@ public interface Accessor<K, T> {
 
     T getTarget();
 
+    boolean has(K key);
+
     Object get(K key);
 
     Object get(K key, @NonNull Function<Object,Object> mapper);

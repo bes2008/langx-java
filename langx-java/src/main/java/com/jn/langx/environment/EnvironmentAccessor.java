@@ -10,6 +10,11 @@ public class EnvironmentAccessor extends BasedStringAccessor<String, Environment
     }
 
     @Override
+    public boolean has(String key) {
+        return getTarget().getProperty(key) != null;
+    }
+
+    @Override
     public String getString(String key, String defaultValue) {
         return getTarget().getProperty(key, defaultValue);
     }

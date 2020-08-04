@@ -34,6 +34,11 @@ public class FieldAccessor extends BasedStringAccessor<String, Object> {
     }
 
     @Override
+    public boolean has(String key) {
+        return Reflects.getAnyField(getTarget().getClass(), key) != null;
+    }
+
+    @Override
     public String getString(String key, String defaultValue) {
         Object value = get(key);
         if (value == null) {
