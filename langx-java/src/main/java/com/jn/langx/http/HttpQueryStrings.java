@@ -3,7 +3,6 @@ package com.jn.langx.http;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
-import com.jn.langx.util.struct.Entry;
 
 public class HttpQueryStrings {
     public static StringMap getQueryStringStringMap(String url) {
@@ -29,6 +28,6 @@ public class HttpQueryStrings {
         }
         int paramPartEndIndex = url.indexOf("#");
         String queryString = paramPartEndIndex == -1 ? url.substring(paramPartStartIndex) : url.substring(paramPartStartIndex, paramPartEndIndex);
-        return Entry.getMultiValueMap(queryString, "=", "&");
+        return com.jn.langx.util.struct.Entry.getMultiValueMap(queryString, "=", "&");
     }
 }
