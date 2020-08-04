@@ -4,6 +4,8 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
+import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
 import java.util.ArrayList;
@@ -50,20 +52,17 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
         return StringTemplates.formatWithBean("{key: ${key}, value: ${value}}", this);
     }
 
-    public static Entry<String, String> newEntry(String keyValue, String spec)
-            throws IllegalArgumentException {
+    public static Entry<String, String> newEntry(String keyValue, String spec) throws IllegalArgumentException {
         Preconditions.checkArgument(Emptys.isNotEmpty(spec),"argument 'spec' is null .");
         Preconditions.checkArgument(Emptys.isNotEmpty(keyValue),"argument 'keyValue' is null .");
         int index = keyValue.indexOf(spec);
         if (index == -1) {
             return new Entry<String, String>(keyValue.trim(), "");
         }
-        return new Entry<String, String>(keyValue.substring(0, index).trim(),
-                keyValue.substring(index + spec.length()).trim());
+        return new Entry<String, String>(keyValue.substring(0, index).trim(), keyValue.substring(index + spec.length()).trim());
     }
 
-    public static Map<String, String> getMap(String str, String keyValueSpec,
-                                             String entrySpec) {
+    public static Map<String, String> getMap(String str, String keyValueSpec,  String entrySpec) {
         Map<String, String> map = new HashMap<String, String>();
         if (Emptys.isEmpty(str)) {
             return map;
@@ -84,8 +83,28 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
         return map;
     }
 
-    public static List<Map<String, String>> getMapList(String src,
-                                                       String keyValueSpec, String entrySpec, String listSpecFlag) {
+    public static MultiValueMap<String,String> getMultiValueMap(String str, String keyValueSpec, String entrySpec) {
+        MultiValueMap<String,String> map = new LinkedMultiValueMap<String, String>();
+        if (Emptys.isEmpty(str)) {
+            return map;
+        }
+        String[] entryArray = str.split(entrySpec);
+        Entry<String, String> entry = null;
+        for (String keyValue : entryArray) {
+            try {
+                entry = Entry.newEntry(keyValue, keyValueSpec);
+            } catch (IllegalArgumentException ex) {
+                entry = null;
+            }
+            if (entry != null) {
+                map.add(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return map;
+    }
+
+    public static List<Map<String, String>> getMapList(String src, String keyValueSpec, String entrySpec, String listSpecFlag) {
         List<String> strList = new ArrayList<String>();
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
         if (Emptys.isEmpty(listSpecFlag)) {

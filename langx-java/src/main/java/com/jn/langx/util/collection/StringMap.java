@@ -29,6 +29,11 @@ public class StringMap extends HashMap<String, String> {
         this(com.jn.langx.util.struct.Entry.getMap(src, keyValueSpec, entrySpec));
     }
 
+    /**
+     * 只适用于一个name对应一个value的场景
+     * @param url
+     * @return
+     */
     public static StringMap httpUrlParameters(String url) {
         if (url == null) {
             return EMPTY;
