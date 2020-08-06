@@ -44,13 +44,13 @@ public class ConverterService {
     /**
      * 没有 source 类型，只有 target 类型
      */
-    private final Map<Class, Converter> registry1 = new ConcurrentHashMap<Class, Converter>(BUILTIN);
+    private final Map<Class, Converter> target_registry = new ConcurrentHashMap<Class, Converter>(BUILTIN);
     /**
      * 有 source 类型，也有 target 类型
      * key： target class
      * sub key: source class
      */
-    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> registry0 = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
+    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> target_source_registry = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
 
     public void register(@NonNull Class targetClass, @Nullable Class sourceClass, @NonNull Converter converter) {
         if (sourceClass == null) {
@@ -59,7 +59,7 @@ public class ConverterService {
         }
         Preconditions.checkNotNull(targetClass);
         Preconditions.checkNotNull(converter);
-        ConcurrentHashMap<Class, Converter> map = Maps.putIfAbsent(registry0, targetClass, new Function<Class, ConcurrentHashMap<Class, Converter>>() {
+        ConcurrentHashMap<Class, Converter> map = Maps.putIfAbsent(target_source_registry, targetClass, new Function<Class, ConcurrentHashMap<Class, Converter>>() {
             @Override
             public ConcurrentHashMap<Class, Converter> apply(Class input) {
                 return new ConcurrentHashMap<Class, Converter>();
@@ -71,7 +71,7 @@ public class ConverterService {
     public void register(@NonNull Class targetClass, @NonNull Converter converter) {
         Preconditions.checkNotNull(targetClass);
         Preconditions.checkNotNull(converter);
-        registry1.put(targetClass, converter);
+        target_registry.put(targetClass, converter);
     }
 
     public <T> T convert(@Nullable Object obj, @NonNull Class<T> targetClass) {
@@ -98,7 +98,7 @@ public class ConverterService {
     public <S, T> Converter<S, T> findConverter(@Nullable S source, @NonNull Class<T> targetClass) {
         Preconditions.checkNotNull(targetClass);
         if (source == null) {
-            return registry1.get(targetClass);
+            return target_registry.get(targetClass);
         }
 
         Converter converter = findConverter(source.getClass(), targetClass);
@@ -126,7 +126,7 @@ public class ConverterService {
         Preconditions.checkNotNull(sourceClass);
         Preconditions.checkNotNull(targetClass);
 
-        ConcurrentHashMap<Class, Converter> mapping = registry0.get(targetClass);
+        ConcurrentHashMap<Class, Converter> mapping = target_source_registry.get(targetClass);
         if (mapping != null) {
             Converter converter = mapping.get(sourceClass);
             if (converter != null) {
