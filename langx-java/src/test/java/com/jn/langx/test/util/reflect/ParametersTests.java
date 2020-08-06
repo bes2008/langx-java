@@ -34,10 +34,12 @@ public class ParametersTests {
         System.out.println(constructorParameters);
 
 
+        /*
         Method showMethod = Reflects.getAnyMethod(ParametersTests.class, "show", List.class);
         List<MethodParameter> showMethodParameters = Reflects.getMethodParameters("langx_aspectj", showMethod);
         Type type = Types.resolve(null, null, showMethodParameters.get(0).getParameterizedType());
         System.out.println(showMethodParameters);
+        */
 
     }
 
