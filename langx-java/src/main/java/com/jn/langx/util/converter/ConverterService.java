@@ -103,9 +103,9 @@ public class ConverterService {
 
         Converter converter = findConverter(source.getClass(), targetClass);
         if (converter == null) {
-            converter = findConverter(null, targetClass);
+            converter = target_registry.get(targetClass);
         }
-        if (converter == null && source != null) {
+        if (converter == null) {
             if (source.getClass() == targetClass) {
                 return NoopConverter.INSTANCE;
             }
