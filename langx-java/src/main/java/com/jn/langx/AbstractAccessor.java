@@ -19,53 +19,53 @@ public abstract class AbstractAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public <X, V> V get(K key, @NonNull Function<X, V> mapper) {
-        return mapper.apply((X) get(key));
+    public Object get(K key, @NonNull Function<Object, Object> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> String getString(K key, Function<X, String> mapper) {
-        return mapper.apply((X) get(key));
+    public String getString(K key, Function<Object, String> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Character getCharacter(K key, Function<X, Character> mapper) {
-        return mapper.apply((X) get(key));
+    public Character getCharacter(K key, Function<Object, Character> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Byte getByte(K key, Function<X, Byte> mapper) {
-        return mapper.apply((X) get(key));
+    public Byte getByte(K key, Function<Object, Byte> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Integer getInteger(K key, Function<X, Integer> mapper) {
-        return mapper.apply((X) get(key));
+    public Integer getInteger(K key, Function<Object, Integer> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Short getShort(K key, Function<X, Short> mapper) {
-        return mapper.apply((X) get(key));
+    public Short getShort(K key, Function<Object, Short> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Double getDouble(K key, Function<X, Double> mapper) {
-        return mapper.apply((X) get(key));
+    public Double getDouble(K key, Function<Object, Double> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Float getFloat(K key, Function<X, Float> mapper) {
-        return mapper.apply((X) get(key));
+    public Float getFloat(K key, Function<Object, Float> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Long getLong(K key, Function<X, Long> mapper) {
-        return mapper.apply((X) get(key));
+    public Long getLong(K key, Function<Object, Long> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
-    public <X> Boolean getBoolean(K key, Function<X, Boolean> mapper) {
-        return mapper.apply((X) get(key));
+    public Boolean getBoolean(K key, Function<Object, Boolean> mapper) {
+        return mapper.apply(get(key));
     }
 
 
