@@ -8,6 +8,8 @@ import com.jn.langx.exception.ValueConvertException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Maps;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate2;
 
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConverterService {
+    public static final ConverterService DEFAULT = new ConverterService();
     /**
      * key: target class
      * value:
@@ -38,11 +41,16 @@ public class ConverterService {
         BUILTIN.put(Boolean.class, BooleanConverter.INSTANCE);
     }
 
-
-    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> registry0 = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
+    /**
+     * 没有 source 类型，只有 target 类型
+     */
     private final Map<Class, Converter> registry1 = new ConcurrentHashMap<Class, Converter>(BUILTIN);
-
-    public static final ConverterService DEFAULT = new ConverterService();
+    /**
+     * 有 source 类型，也有 target 类型
+     * key： target class
+     * sub key: source class
+     */
+    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> registry0 = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
 
     public void register(@NonNull Class targetClass, @Nullable Class sourceClass, @NonNull Converter converter) {
         if (sourceClass == null) {
@@ -51,11 +59,12 @@ public class ConverterService {
         }
         Preconditions.checkNotNull(targetClass);
         Preconditions.checkNotNull(converter);
-        ConcurrentHashMap<Class, Converter> map = registry0.get(targetClass);
-        if (map == null) {
-            map = new ConcurrentHashMap<Class, Converter>();
-            registry0.put(targetClass, map);
-        }
+        ConcurrentHashMap<Class, Converter> map = Maps.putIfAbsent(registry0, targetClass, new Function<Class, ConcurrentHashMap<Class, Converter>>() {
+            @Override
+            public ConcurrentHashMap<Class, Converter> apply(Class input) {
+                return new ConcurrentHashMap<Class, Converter>();
+            }
+        });
         map.put(sourceClass, converter);
     }
 
@@ -66,13 +75,26 @@ public class ConverterService {
     }
 
     public <T> T convert(@Nullable Object obj, @NonNull Class<T> targetClass) {
-        Converter converter = findConverter(obj == null ? null : obj.getClass(), targetClass);
+        Converter converter = findConverter(obj, targetClass);
+
         if (converter == null) {
+            if (obj == null) {
+                return null;
+            }
             throw new ValueConvertException(StringTemplates.formatWithPlaceholder("Can't cast {} to {}", obj, targetClass));
         }
         return (T) converter.apply(obj);
     }
 
+    /**
+     * 根据 source 是否 为 null 自行决定从哪个registry
+     *
+     * @param source
+     * @param targetClass
+     * @param <S>
+     * @param <T>
+     * @return
+     */
     public <S, T> Converter<S, T> findConverter(@Nullable S source, @NonNull Class<T> targetClass) {
         Preconditions.checkNotNull(targetClass);
         if (source == null) {
@@ -83,10 +105,23 @@ public class ConverterService {
         if (converter == null) {
             converter = findConverter(null, targetClass);
         }
+        if (converter == null && source != null) {
+            if (source.getClass() == targetClass) {
+                return NoopConverter.INSTANCE;
+            }
+        }
         return converter;
     }
 
-
+    /**
+     * 从 target-source-registry 中找
+     *
+     * @param sourceClass
+     * @param targetClass
+     * @param <S>
+     * @param <T>
+     * @return
+     */
     public <S, T> Converter<S, T> findConverter(@NonNull Class<S> sourceClass, @NonNull final Class<T> targetClass) {
         Preconditions.checkNotNull(sourceClass);
         Preconditions.checkNotNull(targetClass);
