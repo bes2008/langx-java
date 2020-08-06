@@ -32,12 +32,13 @@ public class ParametersTests {
         Constructor constructor = Reflects.getConstructor(Java8MethodParameter.class, Parameter.class);
         List<ConstructorParameter> constructorParameters = Reflects.getConstructorParameters(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME, constructor);
         System.out.println(constructorParameters);
-        */
+
 
         Method showMethod = Reflects.getAnyMethod(ParametersTests.class, "show", List.class);
         List<MethodParameter> showMethodParameters = Reflects.getMethodParameters(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME, showMethod);
         Type type = Types.resolve(null, null, showMethodParameters.get(0).getParameterizedType());
         System.out.println(showMethodParameters);
+         */
     }
 
     public void show(List<String> ids) {
