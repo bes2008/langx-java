@@ -3,66 +3,66 @@ package com.jn.langx.util.valuegetter;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.function.Function;
 
-public interface ValueGetter2<K> extends ValueGetter<K, Object>{
+public interface ValueGetter2<K> extends ValueGetter<K, Object> {
     @Override
     Object get(K key);
 
     boolean has(K key);
 
-    Object get(K key, @NonNull Function<Object, Object> mapper);
+    <X, V> V get(K key, @NonNull Function<X, V> mapper);
 
     String getString(K key);
 
     String getString(K key, String defaultValue);
 
-    String getString(K key, @NonNull Function<Object, String> mapper);
+    <X> String getString(K key, @NonNull Function<X, String> mapper);
 
     Character getCharacter(K key);
 
     Character getCharacter(K key, Character defaultValue);
 
-    Character getCharacter(K key, @NonNull Function<Object, Character> mapper);
+    <X> Character getCharacter(K key, @NonNull Function<X, Character> mapper);
 
     Byte getByte(K key);
 
     Byte getByte(K key, Byte defaultValue);
 
-    Byte getByte(K key, @NonNull Function<Object, Byte> mapper);
+    <X> Byte getByte(K key, @NonNull Function<X, Byte> mapper);
 
     Short getShort(K key);
 
     Short getShort(K key, Short defaultValue);
 
-    Short getShort(K key, @NonNull Function<Object, Short> mapper);
+    <X> Short getShort(K key, @NonNull Function<X, Short> mapper);
 
     Integer getInteger(K key);
 
     Integer getInteger(K key, Integer defaultValue);
 
-    Integer getInteger(K key, @NonNull Function<Object, Integer> mapper);
+    <X> Integer getInteger(K key, @NonNull Function<X, Integer> mapper);
 
     Double getDouble(K key);
 
     Double getDouble(K key, Double defaultValue);
 
-    Double getDouble(K key, @NonNull Function<Object, Double> mapper);
+    <X> Double getDouble(K key, @NonNull Function<X, Double> mapper);
 
     Float getFloat(K key);
 
     Float getFloat(K key, Float defaultValue);
 
-    Float getFloat(K key, @NonNull Function<Object, Float> mapper);
+    <X> Float getFloat(K key, @NonNull Function<X, Float> mapper);
 
     Long getLong(K key);
 
     Long getLong(K key, Long defaultValue);
 
-    Long getLong(K key, @NonNull Function<Object, Long> mapper);
+    <X> Long getLong(K key, @NonNull Function<X, Long> mapper);
 
     Boolean getBoolean(K key);
 
     Boolean getBoolean(K key, Boolean defaultValue);
 
-    Boolean getBoolean(K key, @NonNull Function<Object, Boolean> mapper);
+    <X> Boolean getBoolean(K key, @NonNull Function<X, Boolean> mapper);
 
 }
