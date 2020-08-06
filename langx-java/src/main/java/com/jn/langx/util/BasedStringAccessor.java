@@ -39,8 +39,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public String getString(K key, Function<String, String> mapper) {
-        return mapper.apply(getString(key));
+    public String getString(K key, Function<Object, String> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -52,8 +52,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Character getCharacter(K key, Function<Character, Character> mapper) {
-        return mapper.apply(getCharacter(key));
+    public Character getCharacter(K key, Function<Object, Character> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -69,8 +69,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Byte getByte(K key, Function<Byte, Byte> mapper) {
-        return mapper.apply(getByte(key));
+    public Byte getByte(K key, Function<Object, Byte> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -92,8 +92,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Integer getInteger(K key, Function<Integer, Integer> mapper) {
-        return mapper.apply(getInteger(key));
+    public Integer getInteger(K key, Function<Object, Integer> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -111,8 +111,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Short getShort(K key, Function<Short, Short> mapper) {
-        return mapper.apply(getShort(key));
+    public Short getShort(K key, Function<Object, Short> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -130,8 +130,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Double getDouble(K key, Function<Double, Double> mapper) {
-        return mapper.apply(getDouble(key));
+    public Double getDouble(K key, Function<Object, Double> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -149,8 +149,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Float getFloat(K key, Function<Float, Float> mapper) {
-        return mapper.apply(getFloat(key));
+    public Float getFloat(K key, Function<Object, Float> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -168,8 +168,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Long getLong(K key, Function<Long, Long> mapper) {
-        return mapper.apply(getLong(key));
+    public Long getLong(K key, Function<Object, Long> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
@@ -187,8 +187,8 @@ public abstract class BasedStringAccessor<K, T> implements Accessor<K, T> {
     }
 
     @Override
-    public Boolean getBoolean(K key, Function<Boolean, Boolean> mapper) {
-        return mapper.apply(getBoolean(key));
+    public Boolean getBoolean(K key, Function<Object, Boolean> mapper) {
+        return mapper.apply(get(key));
     }
 
     @Override
