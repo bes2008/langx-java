@@ -10,9 +10,18 @@ import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.reflect.Reflects;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class Enums {
 
+    /**
+     * 基于 ordinal
+     *
+     * @param value
+     * @param targetClass
+     * @param <T>
+     * @return
+     */
     public static <T extends Enum<T>> T ofValue(final int value, Class<T> targetClass) {
         Preconditions.checkTrue(targetClass.isEnum(), targetClass.getName() + " not an enum class");
         return Collects.findFirst(EnumSet.allOf(targetClass), new Predicate<T>() {
@@ -23,6 +32,14 @@ public class Enums {
         });
     }
 
+    /**
+     * 基于 code属性，或者 ordinal
+     *
+     * @param tClass
+     * @param code
+     * @param <T>
+     * @return
+     */
     public static <T extends Enum<T>> T ofCode(@NonNull final Class<T> tClass, final int code) {
         Preconditions.checkNotNull(tClass);
         T t = null;
@@ -46,6 +63,14 @@ public class Enums {
         return t;
     }
 
+    /**
+     * 基于name
+     *
+     * @param tClass
+     * @param name
+     * @param <T>
+     * @return
+     */
     public static <T extends Enum<T>> T ofName(@NonNull final Class<T> tClass, final String name) {
         Preconditions.checkNotNull(tClass);
         T t = null;
@@ -129,4 +154,13 @@ public class Enums {
         }
         throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("{} not a enum class", Reflects.getFQNClassName(targetClass)));
     }
+
+    public static <T extends Enum<T>> EnumSet<T> getEnumSet(Class<T> enumClass) {
+        return EnumSet.allOf(enumClass);
+    }
+
+    public static <T extends Enum<T>> List<T> getEnumList(Class<T> enumClass) {
+        return Collects.asList(getEnumSet(enumClass));
+    }
+
 }

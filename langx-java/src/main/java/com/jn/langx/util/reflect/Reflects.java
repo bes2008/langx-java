@@ -750,13 +750,16 @@ public class Reflects {
     public static <V> V invokeAnyStaticMethod(Class clazz, String methodName, Class[] parameterTypes, Object[] parameters, boolean force, boolean throwException) {
         try {
             Method method = getAnyMethod(clazz, methodName, parameterTypes);
+            if (method == null) {
+                throw new NoSuchMethodException();
+            }
             if (Modifiers.isStatic(method)) {
                 return invoke(method, null, parameters, force, throwException);
             }
-            throw new NoSuchMethodException();
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
+        return null;
     }
 
     public static String getMethodString(@Nullable String clazzFQN,
@@ -974,47 +977,43 @@ public class Reflects {
         return candidate;
     }
 
-    public static String extractFieldName(Member member){
-        if(member instanceof Field){
+    public static String extractFieldName(Member member) {
+        if (member instanceof Field) {
             return member.getName();
         }
-        if(member instanceof Method){
+        if (member instanceof Method) {
             return extractFieldName((Method) member);
         }
         return null;
     }
 
-    public static String extractFieldName(Method method){
-        if(isGetterOrSetter(method)){
+    public static String extractFieldName(Method method) {
+        if (isGetterOrSetter(method)) {
             String methodName = method.getName();
             String fieldName = null;
-            if(methodName.startsWith("set") || methodName.startsWith("get")){
+            if (methodName.startsWith("set") || methodName.startsWith("get")) {
                 fieldName = methodName.substring(3);
             }
-            if(methodName.startsWith("is")){
+            if (methodName.startsWith("is")) {
                 fieldName = methodName.substring(2);
             }
-            return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length()>1 ? fieldName.substring(1) :"");
+            return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length() > 1 ? fieldName.substring(1) : "");
         }
         return null;
     }
 
     public static boolean isSetter(@NonNull Method method) {
-        if(isGetterOrSetter(method)){
+        if (isGetterOrSetter(method)) {
             String methodName = method.getName();
-            if(methodName.startsWith("set")){
-                return true;
-            }
+            return methodName.startsWith("set");
         }
         return false;
     }
 
     public static boolean isGetter(@NonNull Method method) {
-        if(isGetterOrSetter(method)){
+        if (isGetterOrSetter(method)) {
             String methodName = method.getName();
-            if(methodName.startsWith("get") || methodName.startsWith("is")){
-                return true;
-            }
+            return methodName.startsWith("get") || methodName.startsWith("is");
         }
         return false;
     }
@@ -1051,10 +1050,7 @@ public class Reflects {
         fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
         Class beanClass = method.getDeclaringClass();
         Field field = getAnyField(beanClass, fieldName);
-        if (field == null) {
-            return false;
-        }
-        return true;
+        return field != null;
     }
 
     public static boolean makeAccessible(@NonNull Field field) {
