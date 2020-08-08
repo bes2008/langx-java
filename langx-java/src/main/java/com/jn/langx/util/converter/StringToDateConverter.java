@@ -11,7 +11,7 @@ public class StringToDateConverter implements Converter<String, Date> {
     private String pattern;
 
     public StringToDateConverter(){
-        this(Dates.yyyy_MM_dd_HH_mm_ss);
+        this(Dates.yyyy_MM_dd_HH_mm_ss_SSS);
     }
 
     public StringToDateConverter(String pattern){
