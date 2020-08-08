@@ -1,6 +1,6 @@
 package com.jn.langx.util.net;
 
-public class NetworkAddress {
+public class NetworkAddress implements Comparable<NetworkAddress>{
     private String host;
     private int port;
 
@@ -27,6 +27,11 @@ public class NetworkAddress {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    @Override
+    public int compareTo(NetworkAddress o) {
+        return this.toString().compareTo(o.toString());
     }
 
     @Override
