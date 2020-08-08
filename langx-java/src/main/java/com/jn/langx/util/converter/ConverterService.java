@@ -24,6 +24,13 @@ public class ConverterService {
      */
     private static final Map<Class, Converter> BUILTIN = new HashMap<Class, Converter>();
 
+    /**
+     * 有 source 类型，也有 target 类型
+     * key： target class
+     * sub key: source class
+     */
+    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> target_source_registry = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
+
     static {
         BUILTIN.put(Byte.class, ByteConverter.INSTANCE);
         BUILTIN.put(byte.class, ByteConverter.INSTANCE);
@@ -49,12 +56,7 @@ public class ConverterService {
      * 没有 source 类型，只有 target 类型
      */
     private final Map<Class, Converter> target_registry = new ConcurrentHashMap<Class, Converter>(BUILTIN);
-    /**
-     * 有 source 类型，也有 target 类型
-     * key： target class
-     * sub key: source class
-     */
-    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> target_source_registry = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
+
 
     public void register(@NonNull Class targetClass, @Nullable Class sourceClass, @NonNull Converter converter) {
         if (sourceClass == null) {
