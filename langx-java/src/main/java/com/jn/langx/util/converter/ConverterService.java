@@ -12,6 +12,7 @@ import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate2;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,32 +23,32 @@ public class ConverterService {
      * key: target class
      * value:
      */
-    private static final Map<Class, Converter> BUILTIN = new HashMap<Class, Converter>();
+    private static final Map<Class, Converter> TARGET_BUILTIN = new HashMap<Class, Converter>();
 
-    /**
-     * 有 source 类型，也有 target 类型
-     * key： target class
-     * sub key: source class
-     */
-    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> target_source_registry = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>();
+    private static final Map<Class, ConcurrentHashMap<Class, Converter>> TARGET_SOURCE_BUILTIN = new HashMap<Class, ConcurrentHashMap<Class, Converter>>();
 
     static {
-        BUILTIN.put(Byte.class, ByteConverter.INSTANCE);
-        BUILTIN.put(byte.class, ByteConverter.INSTANCE);
-        BUILTIN.put(Short.class, ShortConverter.INSTANCE);
-        BUILTIN.put(short.class, ShortConverter.INSTANCE);
-        BUILTIN.put(char.class, CharacterConverter.INSTANCE);
-        BUILTIN.put(Character.class, CharacterConverter.INSTANCE);
-        BUILTIN.put(Integer.class, IntegerConverter.INSTANCE);
-        BUILTIN.put(int.class, IntegerConverter.INSTANCE);
-        BUILTIN.put(Long.class, LongConverter.INSTANCE);
-        BUILTIN.put(long.class, LongConverter.INSTANCE);
-        BUILTIN.put(Float.class, FloatConverter.INSTANCE);
-        BUILTIN.put(float.class, FloatConverter.INSTANCE);
-        BUILTIN.put(Double.class, DoubleConverter.INSTANCE);
-        BUILTIN.put(double.class, DoubleConverter.INSTANCE);
-        BUILTIN.put(boolean.class, BooleanConverter.INSTANCE);
-        BUILTIN.put(Boolean.class, BooleanConverter.INSTANCE);
+        TARGET_BUILTIN.put(Byte.class, ByteConverter.INSTANCE);
+        TARGET_BUILTIN.put(byte.class, ByteConverter.INSTANCE);
+        TARGET_BUILTIN.put(Short.class, ShortConverter.INSTANCE);
+        TARGET_BUILTIN.put(short.class, ShortConverter.INSTANCE);
+        TARGET_BUILTIN.put(char.class, CharacterConverter.INSTANCE);
+        TARGET_BUILTIN.put(Character.class, CharacterConverter.INSTANCE);
+        TARGET_BUILTIN.put(Integer.class, IntegerConverter.INSTANCE);
+        TARGET_BUILTIN.put(int.class, IntegerConverter.INSTANCE);
+        TARGET_BUILTIN.put(Long.class, LongConverter.INSTANCE);
+        TARGET_BUILTIN.put(long.class, LongConverter.INSTANCE);
+        TARGET_BUILTIN.put(Float.class, FloatConverter.INSTANCE);
+        TARGET_BUILTIN.put(float.class, FloatConverter.INSTANCE);
+        TARGET_BUILTIN.put(Double.class, DoubleConverter.INSTANCE);
+        TARGET_BUILTIN.put(double.class, DoubleConverter.INSTANCE);
+        TARGET_BUILTIN.put(boolean.class, BooleanConverter.INSTANCE);
+        TARGET_BUILTIN.put(Boolean.class, BooleanConverter.INSTANCE);
+
+        ConcurrentHashMap<Class, Converter> toDateConverterMap = new ConcurrentHashMap<Class, Converter>();
+        toDateConverterMap.put(String.class, StringToDateConverter.INSTANCE);
+        toDateConverterMap.put(Long.class, LongToDateConverter.INSTANCE);
+        TARGET_SOURCE_BUILTIN.put(Date.class, toDateConverterMap);
 
         DEFAULT = new ConverterService();
     }
@@ -55,8 +56,14 @@ public class ConverterService {
     /**
      * 没有 source 类型，只有 target 类型
      */
-    private final Map<Class, Converter> target_registry = new ConcurrentHashMap<Class, Converter>(BUILTIN);
+    private final Map<Class, Converter> target_registry = new ConcurrentHashMap<Class, Converter>(TARGET_BUILTIN);
 
+    /**
+     * 有 source 类型，也有 target 类型
+     * key： target class
+     * sub key: source class
+     */
+    private ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>> target_source_registry = new ConcurrentHashMap<Class, ConcurrentHashMap<Class, Converter>>(TARGET_SOURCE_BUILTIN);
 
     public void register(@NonNull Class targetClass, @Nullable Class sourceClass, @NonNull Converter converter) {
         if (sourceClass == null) {
