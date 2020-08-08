@@ -51,6 +51,10 @@ public class Chars {
         return c - 48;
     }
 
+    public static char from(int i){
+        return (char)(i + 48);
+    }
+
     public static char toLowerCase(char c) {
         return isUpperCase(c) ? (char) (c + 32) : c;
     }

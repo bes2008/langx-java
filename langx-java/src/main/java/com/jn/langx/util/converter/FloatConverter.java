@@ -6,6 +6,7 @@ import com.jn.langx.util.reflect.type.Primitives;
 
 public class FloatConverter implements Converter<Object, Float> {
     public static final FloatConverter INSTANCE = new FloatConverter();
+
     private static final DoubleConverter doubleConverter = DoubleConverter.INSTANCE;
 
     @Override

@@ -4,9 +4,8 @@ import com.jn.langx.Converter;
 import com.jn.langx.util.Numbers;
 
 public class ByteConverter implements Converter<Object, Byte> {
-    public static final ByteConverter INSTANCE = new ByteConverter();
     private static final IntegerConverter integerConverter = IntegerConverter.INSTANCE;
-
+    public static final ByteConverter INSTANCE = new ByteConverter();
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
         return integerConverter.isConvertible(sourceClass, targetClass);

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConverterService {
-    public static final ConverterService DEFAULT = new ConverterService();
+    public static final ConverterService DEFAULT;
     /**
      * key: target class
      * value:
@@ -29,6 +29,8 @@ public class ConverterService {
         BUILTIN.put(byte.class, ByteConverter.INSTANCE);
         BUILTIN.put(Short.class, ShortConverter.INSTANCE);
         BUILTIN.put(short.class, ShortConverter.INSTANCE);
+        BUILTIN.put(char.class, CharacterConverter.INSTANCE);
+        BUILTIN.put(Character.class, CharacterConverter.INSTANCE);
         BUILTIN.put(Integer.class, IntegerConverter.INSTANCE);
         BUILTIN.put(int.class, IntegerConverter.INSTANCE);
         BUILTIN.put(Long.class, LongConverter.INSTANCE);
@@ -39,6 +41,8 @@ public class ConverterService {
         BUILTIN.put(double.class, DoubleConverter.INSTANCE);
         BUILTIN.put(boolean.class, BooleanConverter.INSTANCE);
         BUILTIN.put(Boolean.class, BooleanConverter.INSTANCE);
+
+        DEFAULT = new ConverterService();
     }
 
     /**
