@@ -18,6 +18,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * @author jinuo.fang
@@ -73,6 +74,8 @@ public class IOs {
                 ((Statement) target).close();
             } else if (target instanceof Connection) {
                 ((Connection) target).close();
+            } else if (target instanceof Scanner) {
+                ((Scanner) target).close();
             } else {
                 Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
             }
