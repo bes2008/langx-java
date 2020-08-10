@@ -14,14 +14,14 @@ import java.security.spec.X509EncodedKeySpec;
 public class RSAs {
     private static final String algorithmTransformation = "RSA/ECB/PKCS1Padding";
 
-    public static byte[] encrypt(byte[] bytes, byte[] pubkey) {
-        return encrypt(bytes, pubkey, algorithmTransformation, null, null);
+    public static byte[] encrypt(byte[] bytes, byte[] pubKey) {
+        return encrypt(bytes, pubKey, algorithmTransformation, null, null);
     }
 
-    public static byte[] encrypt(byte[] bytes, byte[] pubkey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        Preconditions.checkNotEmpty(pubkey, "RSA public key is empty");
+    public static byte[] encrypt(byte[] bytes, byte[] pubKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
+        Preconditions.checkNotEmpty(pubKey, "RSA public key is empty");
         try {
-            PublicKey publicKey = PKIs.createPublicKey("RSA", provider == null ? null : provider.getName(), new X509EncodedKeySpec(pubkey));
+            PublicKey publicKey = PKIs.createPublicKey("RSA", provider == null ? null : provider.getName(), new X509EncodedKeySpec(pubKey));
             Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, Cipher.ENCRYPT_MODE, publicKey, secureRandom);
             return Ciphers.encrypt(cipher, bytes);
         } catch (Throwable ex) {
