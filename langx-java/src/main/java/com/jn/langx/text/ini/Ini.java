@@ -1,11 +1,7 @@
 package com.jn.langx.text.ini;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -15,7 +11,6 @@ import java.util.Scanner;
 import java.util.Set;
 
 import com.jn.langx.configuration.ConfigurationException;
-import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
@@ -41,6 +36,7 @@ public class Ini implements Map<String, Ini.Section> {
     public static final String SECTION_PREFIX = "[";
     public static final String SECTION_SUFFIX = "]";
     protected static final char ESCAPE_TOKEN = '\\';
+    private static final Logger logger = LoggerFactory.getLogger(Ini.class);
     private static final transient Logger log = LoggerFactory.getLogger(Ini.class);
     private final Map<String, Ini.Section> sections;
 
@@ -73,7 +69,7 @@ public class Ini implements Map<String, Ini.Section> {
             throw new IllegalArgumentException("Resource Path argument cannot be null or empty.");
         } else {
             Ini ini = new Ini();
-            ini.loadFromPath(resourcePath);
+            ini.loadFile(resourcePath);
             return ini;
         }
     }
@@ -153,32 +149,22 @@ public class Ini implements Map<String, Ini.Section> {
         return value != null ? value : defaultValue;
     }
 
-    public void loadFromPath(String resourcePath) throws ConfigurationException {
-        InputStream is;
+    public void loadFile(String resourcePath) throws ConfigurationException {
+        InputStream is = null;
         try {
             is = Resources.loadFileResource(resourcePath).getInputStream();
+            this.load(is);
         } catch (IOException ioe) {
             throw new ConfigurationException(ioe);
+        } finally {
+            IOs.close(is);
         }
 
-        this.load(is);
+
     }
 
     public void load(String iniConfig) throws ConfigurationException {
-        this.load(new Scanner(iniConfig));
-    }
-
-    public void load(Resource resource) throws ConfigurationException{
-        InputStream in = null;
-        try{
-            in = resource.getInputStream();
-            load(in);
-        }catch (IOException ex){
-            throw new ConfigurationException(ex);
-        }finally {
-            IOs.close(in);
-        }
-
+        this.load(new StringReader(iniConfig));
     }
 
     public void load(InputStream is) throws ConfigurationException {
@@ -196,20 +182,35 @@ public class Ini implements Map<String, Ini.Section> {
         }
     }
 
+
     public void load(Reader reader) {
-        Scanner scanner = new Scanner(reader);
+        String sectionName = "";
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        StringBuilder sectionContent = new StringBuilder();
 
+        String rawLine = null;
         try {
-            this.load(scanner);
-        } finally {
-            try {
-                scanner.close();
-            } catch (Exception var9) {
-                log.debug("Unable to cleanly close the InputStream scanner.  Non-critical - ignoring.", var9);
+            while ((rawLine = bufferedReader.readLine()) != null) {
+                String line = Strings.trim(rawLine);
+                if (line != null && !line.startsWith("#") && !line.startsWith(";")) {
+                    String newSectionName = getSectionName(line);
+                    if (newSectionName != null) {
+                        this.addSection(sectionName, sectionContent);
+                        sectionContent = new StringBuilder();
+                        sectionName = newSectionName;
+                        if (log.isDebugEnabled()) {
+                            log.debug("Parsing [" + newSectionName + "]");
+                        }
+                    } else {
+                        sectionContent.append(rawLine).append("\n");
+                    }
+                }
             }
-
+        } catch (IOException ex) {
+            logger.error(ex.getMessage(), ex);
         }
 
+        this.addSection(sectionName, sectionContent);
     }
 
     public void merge(Map<String, Ini.Section> m) {
@@ -241,30 +242,6 @@ public class Ini implements Map<String, Ini.Section> {
 
     }
 
-    public void load(Scanner scanner) {
-        String sectionName = "";
-        StringBuilder sectionContent = new StringBuilder();
-
-        while (scanner.hasNextLine()) {
-            String rawLine = scanner.nextLine();
-            String line = Strings.trim(rawLine);
-            if (line != null && !line.startsWith("#") && !line.startsWith(";")) {
-                String newSectionName = getSectionName(line);
-                if (newSectionName != null) {
-                    this.addSection(sectionName, sectionContent);
-                    sectionContent = new StringBuilder();
-                    sectionName = newSectionName;
-                    if (log.isDebugEnabled()) {
-                        log.debug("Parsing [" + newSectionName + "]");
-                    }
-                } else {
-                    sectionContent.append(rawLine).append("\n");
-                }
-            }
-        }
-
-        this.addSection(sectionName, sectionContent);
-    }
 
     public boolean equals(Object obj) {
         if (obj instanceof Ini) {
@@ -286,11 +263,11 @@ public class Ini implements Map<String, Ini.Section> {
             Collects.forEach(this.sections, new Consumer2<String, Section>() {
                 @Override
                 public void accept(String sectionName, Section section) {
-                    sb.append("["+sectionName+"]").append("\n");
+                    sb.append("[" + sectionName + "]").append("\n");
                     Collects.forEach(section.props, new Consumer2<String, String>() {
                         @Override
                         public void accept(String key, String value) {
-                            sb.append(key+"="+value).append("\n");
+                            sb.append(key + "=" + value).append("\n");
                         }
                     });
                     sb.append("\n");
@@ -458,7 +435,7 @@ public class Ini implements Map<String, Ini.Section> {
                     line = lineBuffer.toString();
                     lineBuffer = new StringBuilder();
                     String[] kvPair = splitKeyValue(line);
-                    if(kvPair!=null && kvPair.length==2) {
+                    if (kvPair != null && kvPair.length == 2) {
                         props.put(kvPair[0], kvPair[1]);
                     }
                 }
