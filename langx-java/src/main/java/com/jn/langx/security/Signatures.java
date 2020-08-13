@@ -2,6 +2,7 @@ package com.jn.langx.security;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 
 import java.security.*;
@@ -35,4 +36,23 @@ public class Signatures {
         return signature;
     }
 
+    public static boolean verify(Signature initedSignaturer, byte[] data, byte[] signature) throws SignatureException{
+        Preconditions.checkNotNull(initedSignaturer);
+        initedSignaturer.update(data);
+        return initedSignaturer.verify(signature);
+    }
+
+    public static boolean verify(@NonNull String algorithm, @Nullable String provider,@NonNull PublicKey publicKey, byte[] data, byte[] signature ) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException,SignatureException  {
+        return verify(createSignature(algorithm, provider, publicKey), data, signature);
+    }
+
+    public static byte[] sign(Signature initedSignaturer, byte[] data) throws SignatureException{
+        Preconditions.checkNotNull(initedSignaturer);
+        initedSignaturer.update(data);
+        return initedSignaturer.sign();
+    }
+
+    public static byte[] sign(@NonNull String algorithm, @Nullable String provider,@NonNull PrivateKey privateKey, @Nullable SecureRandom secureRandom, @NonNull byte[] data)throws NoSuchAlgorithmException, NoSuchProviderException,SignatureException,InvalidKeyException {
+        return sign(createSignature(algorithm, provider, privateKey, secureRandom),data);
+    }
 }
