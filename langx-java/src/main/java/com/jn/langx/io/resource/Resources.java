@@ -14,6 +14,7 @@ import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.struct.Holder;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -26,6 +27,10 @@ public class Resources {
 
     public static <V extends Resource> V loadResource(@NonNull String location, @Nullable ClassLoader classLoader) {
         return new DefaultResourceLoader(classLoader).loadResource(location);
+    }
+
+    public static FileResource loadFileResource(@NonNull File file) {
+        return loadFileResource(file.getAbsolutePath(), null);
     }
 
     public static FileResource loadFileResource(@NonNull String location) {
