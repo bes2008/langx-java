@@ -1,6 +1,7 @@
 package com.jn.langx.test.security.signature.dsa;
 
 import com.jn.langx.codec.Hex;
+import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.security.KeyFileIOs;
@@ -21,12 +22,14 @@ public class JavaAPIDSATests {
             String src = "你好呀";
 // 初始化：
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DSA");
-            keyPairGenerator.initialize(512);
+            keyPairGenerator.initialize(1024);
             KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
             DSAPublicKey dsaPublicKey = (DSAPublicKey) keyPair.getPublic();
             DSAPrivateKey dsaPrivateKey = (DSAPrivateKey) keyPair.getPrivate();
 // 签名：
+
+            printContent("-----BEGIN DSA PRIVATE KEY-----", "-----END DSA PRIVATE KEY-----", dsaPrivateKey.getEncoded());
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(dsaPrivateKey.getEncoded());
             KeyFactory keyFactory = KeyFactory.getInstance("DSA");
             PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
@@ -36,6 +39,8 @@ public class JavaAPIDSATests {
             byte arr[] = signature.sign();
             System.out.println("jdk dsa sign:" + Hex.encodeHex(arr));
 // 验证签名
+
+            printContent("-----BEGIN DSA PUBLIC KEY-----", "-----END DSA PUBLIC KEY-----", dsaPublicKey.getEncoded());
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(dsaPublicKey.getEncoded());
             keyFactory = KeyFactory.getInstance("DSA");
             PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
@@ -49,13 +54,44 @@ public class JavaAPIDSATests {
         }
     }
 
+    private String buildKeyContent(String startLine, String endLine, byte[] bytes) {
+        StringBuilder builder = new StringBuilder();
+        String base64Key = Base64.encodeBase64String(bytes);
+        builder.append(startLine).append("\n");
+        int offset = 0;
+        while (offset < base64Key.length()) {
+            int toIndex = offset + 64;
+            if (toIndex > base64Key.length()) {
+                toIndex = base64Key.length();
+            }
+            builder.append(base64Key,offset, toIndex).append("\r");
+            offset = toIndex;
+        }
+        builder.append(endLine).append("\n");
+        return builder.toString();
+    }
+    private void printContent(String startLine, String endLine, byte[] bytes) {
+        String base64Key = Base64.encodeBase64String(bytes);
+        System.out.println(startLine);
+        int offset = 0;
+        while (offset < base64Key.length()) {
+            int toIndex = offset + 64;
+            if (toIndex > base64Key.length()) {
+                toIndex = base64Key.length();
+            }
+            System.out.println(base64Key.substring(offset, toIndex));
+            offset = toIndex;
+        }
+        System.out.println(endLine);
+    }
+
     @Test
     public void jdkDSA2() {
         try {
 
             String src = "你好呀";
 // 签名：
-            Resource privateResource = Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_private_key_pkcs8.pem");
+            Resource privateResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_private_key_pkcs8.pem");
             byte[] privateKeyBytes = KeyFileIOs.readKeyFileAndBase64Decode(privateResource);
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance("DSA");
@@ -66,7 +102,7 @@ public class JavaAPIDSATests {
             byte arr[] = signature.sign();
             System.out.println("jdk dsa sign:" + Hex.encodeHex(arr));
 // 验证签名
-            Resource publicResource = Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_public_key.pem");
+            Resource publicResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_public_key.pem");
             byte[] publicKeyBytes = KeyFileIOs.readKeyFileAndBase64Decode(publicResource);
 
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKeyBytes);
