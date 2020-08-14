@@ -12,7 +12,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 public class DSAs {
-    public static final String DSA_INSTANCE_ALGORITHM = "SHA256withDSA";
+    public static final String DSA_INSTANCE_ALGORITHM = "SHA1withDSA";
 
     public static byte[] sign(byte[] privateKey, @NonNull byte[] data) {
         PrivateKey privKey = PKIs.createPrivateKey("DSA", null, new PKCS8EncodedKeySpec(privateKey));
@@ -44,12 +44,12 @@ public class DSAs {
     }
 
     public static boolean verify(@Nullable String signatureInstanceAlgorithm, @NonNull byte[] publicKey, byte[] data, byte[] signature) {
-        PublicKey pubKey = PKIs.createPublicKey("RSA", null, new X509EncodedKeySpec(publicKey));
+        PublicKey pubKey = PKIs.createPublicKey("DSA", null, new X509EncodedKeySpec(publicKey));
         return verify(signatureInstanceAlgorithm, (String) null, pubKey, data, signature);
     }
 
     public static boolean verify(@Nullable String signatureInstanceAlgorithm, @Nullable String provider, @NonNull byte[] publicKey, byte[] data, byte[] signature) {
-        PublicKey pubKey = PKIs.createPublicKey("RSA", null, new X509EncodedKeySpec(publicKey));
+        PublicKey pubKey = PKIs.createPublicKey("DSA", null, new X509EncodedKeySpec(publicKey));
         return verify(signatureInstanceAlgorithm, (String) null, pubKey, data, signature);
     }
 

@@ -28,8 +28,8 @@ public class PKIs {
     private static final Logger logger = LoggerFactory.getLogger(PKIs.class);
 
     public static PublicKey createPublicKey(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
+        Preconditions.checkNotNull(keySpec);
         try {
-            Preconditions.checkNotNull(keySpec);
             KeyFactory keyFactory = getKeyFactory(algorithm, provider);
             return keyFactory.generatePublic(keySpec);
         } catch (Throwable ex) {
@@ -38,8 +38,8 @@ public class PKIs {
     }
 
     public static PrivateKey createPrivateKey(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
+        Preconditions.checkNotNull(keySpec);
         try {
-            Preconditions.checkNotNull(keySpec);
             KeyFactory keyFactory = getKeyFactory(algorithm, provider);
             return keyFactory.generatePrivate(keySpec);
         } catch (Throwable ex) {
@@ -48,8 +48,8 @@ public class PKIs {
     }
 
     public static KeyFactory getKeyFactory(@NonNull String algorithm, @Nullable String provider) {
+        Preconditions.checkNotNull(algorithm);
         try {
-            Preconditions.checkNotNull(algorithm);
             return Strings.isEmpty(provider) ? KeyFactory.getInstance(algorithm) : KeyFactory.getInstance(algorithm, provider);
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
