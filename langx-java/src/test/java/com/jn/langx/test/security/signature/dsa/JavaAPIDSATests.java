@@ -4,8 +4,10 @@ import com.jn.langx.codec.Hex;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.security.DSAs;
 import com.jn.langx.security.KeyFileIOs;
 import com.jn.langx.security.PKIs;
+import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
 import java.security.*;
@@ -119,4 +121,20 @@ public class JavaAPIDSATests {
             System.out.println(e);
         }
     }
+
+
+    @Test
+    public void test() {
+        Resource privateResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_private_key_pkcs8.pem");
+        byte[] privateKey = KeyFileIOs.readKeyFileAndBase64Decode(privateResource);
+        String content = "你好，JAVAAPI 生成的 DSA";
+        byte[] data = content.getBytes(Charsets.UTF_8);
+        byte[] signature = DSAs.sign(privateKey, data);
+        Resource publicResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_public_key.pem");
+        byte[] publicKey = KeyFileIOs.readKeyFileAndBase64Decode(publicResource);
+        if(DSAs.verify(publicKey, data, signature)){
+            System.out.println("验证通过");
+        }
+    }
+
 }
