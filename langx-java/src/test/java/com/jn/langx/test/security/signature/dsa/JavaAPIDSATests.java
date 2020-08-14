@@ -10,6 +10,7 @@ import com.jn.langx.security.PKIs;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.security.*;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
@@ -38,7 +39,7 @@ public class JavaAPIDSATests {
             Signature signature = Signature.getInstance("SHA1withDSA");
             signature.initSign(privateKey);
             signature.update(src.getBytes());
-            byte arr[] = signature.sign();
+            byte[] arr = signature.sign();
             System.out.println("jdk dsa sign:" + Hex.encodeHex(arr));
 // 验证签名
 
@@ -56,35 +57,8 @@ public class JavaAPIDSATests {
         }
     }
 
-    private String buildKeyContent(String startLine, String endLine, byte[] bytes) {
-        StringBuilder builder = new StringBuilder();
-        String base64Key = Base64.encodeBase64String(bytes);
-        builder.append(startLine).append("\n");
-        int offset = 0;
-        while (offset < base64Key.length()) {
-            int toIndex = offset + 64;
-            if (toIndex > base64Key.length()) {
-                toIndex = base64Key.length();
-            }
-            builder.append(base64Key,offset, toIndex).append("\r");
-            offset = toIndex;
-        }
-        builder.append(endLine).append("\n");
-        return builder.toString();
-    }
-    private void printContent(String startLine, String endLine, byte[] bytes) {
-        String base64Key = Base64.encodeBase64String(bytes);
-        System.out.println(startLine);
-        int offset = 0;
-        while (offset < base64Key.length()) {
-            int toIndex = offset + 64;
-            if (toIndex > base64Key.length()) {
-                toIndex = base64Key.length();
-            }
-            System.out.println(base64Key.substring(offset, toIndex));
-            offset = toIndex;
-        }
-        System.out.println(endLine);
+    private void printContent(String startLine, String endLine, byte[] bytes) throws IOException {
+        KeyFileIOs.writeKey(bytes, System.out, startLine, endLine);
     }
 
     @Test
@@ -101,7 +75,7 @@ public class JavaAPIDSATests {
             Signature signature = Signature.getInstance("SHA1withDSA");
             signature.initSign(privateKey);
             signature.update(src.getBytes());
-            byte arr[] = signature.sign();
+            byte[] arr = signature.sign();
             System.out.println("jdk dsa sign:" + Hex.encodeHex(arr));
 // 验证签名
             Resource publicResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_public_key.pem");
@@ -132,7 +106,7 @@ public class JavaAPIDSATests {
         byte[] signature = DSAs.sign(privateKey, data);
         Resource publicResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_public_key.pem");
         byte[] publicKey = KeyFileIOs.readKeyFileAndBase64Decode(publicResource);
-        if(DSAs.verify(publicKey, data, signature)){
+        if (DSAs.verify(publicKey, data, signature)) {
             System.out.println("验证通过");
         }
     }
