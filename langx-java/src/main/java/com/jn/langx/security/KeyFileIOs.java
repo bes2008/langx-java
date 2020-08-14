@@ -50,6 +50,7 @@ public class KeyFileIOs {
                         }
                     } else {
                         builder.append(line);
+                        System.out.println(line);
                     }
                 }
             }
