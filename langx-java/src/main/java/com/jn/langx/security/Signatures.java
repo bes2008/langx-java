@@ -10,6 +10,12 @@ import java.security.*;
 import java.security.cert.Certificate;
 
 public class Signatures {
+    /**
+     *
+     * @param algorithm 算法名称，要根据标准规范来，不能只是 DSA或者 RSA
+     * @param provider 算法提供商
+     * @return Signature对象
+     */
     public static Signature createSignature(@NonNull String algorithm, @Nullable String provider) {
         try {
             return Strings.isEmpty(provider) ? Signature.getInstance(algorithm) : Signature.getInstance(algorithm, provider);
