@@ -1,29 +1,48 @@
 package com.jn.langx.security;
 
+import com.jn.langx.security.exception.SecurityException;
 import com.jn.langx.util.Strings;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 
 public class SecureRandoms {
-    public static SecureRandom getNativePRNG() throws NoSuchAlgorithmException, NoSuchProviderException {
-        return getSecureRandom(JCAEStandardName.NativePRNG.getName());
+    public static SecureRandom getNativePRNG() {
+        try {
+            return getSecureRandom(JCAEStandardName.NativePRNG.getName());
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
     }
 
-    public static SecureRandom getSHA1PRNG() throws NoSuchAlgorithmException, NoSuchProviderException {
-        return getSecureRandom(JCAEStandardName.SHA1PRNG.getName(), "SUN");
+    public static SecureRandom getSHA1PRNG() {
+        try {
+            return getSecureRandom(JCAEStandardName.SHA1PRNG.getName(), "SUN");
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
     }
 
-    public static SecureRandom getSHA1PRNG(String provider) throws NoSuchAlgorithmException, NoSuchProviderException {
-        return getSecureRandom(JCAEStandardName.SHA1PRNG.getName(), provider);
+    public static SecureRandom getSHA1PRNG(String provider) {
+        try {
+            return getSecureRandom(JCAEStandardName.SHA1PRNG.getName(), provider);
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
     }
 
-    public static SecureRandom getSecureRandom(String algorithm) throws NoSuchAlgorithmException, NoSuchProviderException {
-        return Strings.isEmpty(algorithm) ? new SecureRandom() : SecureRandom.getInstance(algorithm);
+    public static SecureRandom getSecureRandom(String algorithm) {
+        try {
+            return Strings.isEmpty(algorithm) ? new SecureRandom() : SecureRandom.getInstance(algorithm);
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
     }
 
-    public static SecureRandom getSecureRandom(String algorithm, String provider) throws NoSuchAlgorithmException, NoSuchProviderException {
-        return SecureRandom.getInstance(algorithm, provider);
+    public static SecureRandom getSecureRandom(String algorithm, String provider) {
+        try {
+            return SecureRandom.getInstance(algorithm, provider);
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
     }
 }
