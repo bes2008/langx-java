@@ -1,5 +1,7 @@
 package com.jn.langx.security;
 
+import com.jn.langx.security.exception.SecurityException;
+
 import java.security.*;
 
 /**

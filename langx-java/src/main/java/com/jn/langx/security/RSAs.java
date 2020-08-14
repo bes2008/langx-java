@@ -1,5 +1,6 @@
 package com.jn.langx.security;
 
+import com.jn.langx.security.exception.SecurityException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
 
@@ -40,7 +41,7 @@ public class RSAs {
             Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, Cipher.DECRYPT_MODE, privateKey, secureRandom);
             return Ciphers.decrypt(cipher, bytes);
         } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+            throw new SecurityException(ex.getMessage(),ex);
         }
     }
 }
