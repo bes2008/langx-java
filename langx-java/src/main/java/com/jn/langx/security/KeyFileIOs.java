@@ -65,10 +65,6 @@ public class KeyFileIOs {
     }
 
     public static String readKeyAsString(Resource resource){
-        return readKeyFile(resource);
-    }
-
-    public static String readKeyFile(Resource resource) {
         Preconditions.checkNotNull(resource);
         String filepath = resource.toString();
         BufferedReader bufferedReader = null;
@@ -112,6 +108,11 @@ public class KeyFileIOs {
         return builder.toString();
     }
 
+    @Deprecated
+    public static String readKeyFile(Resource resource) {
+        return readKeyAsString(resource);
+    }
+
     public static void writeKey(@NonNull Key key, @NonNull File file) throws IOException {
         writeKey(key.getEncoded(), file, null);
     }
@@ -139,13 +140,18 @@ public class KeyFileIOs {
     public static void writeKey(byte[] keyBytes, OutputStream outputStream, KeyFormat keyFormat, String startLine, String endLine) throws IOException {
         Preconditions.checkNotNull(keyBytes);
         Preconditions.checkNotNull(outputStream);
+        writeKey(keyBytes, new OutputStreamWriter(outputStream), keyFormat, startLine, endLine);
+    }
+
+    public static void writeKey(byte[] keyBytes, Writer writer, KeyFormat keyFormat, String startLine, String endLine) throws IOException {
+        Preconditions.checkNotNull(keyBytes);
+        Preconditions.checkNotNull(writer);
         keyFormat = Objects.useValueIfNull(keyFormat, KeyFormat.BASE64);
 
-
-        outputStream.write(LineDelimiter.DEFAULT.getValue().getBytes());
+        writer.write(LineDelimiter.DEFAULT.getValue());
         if (Strings.isNotBlank(startLine)) {
-            outputStream.write(startLine.trim().getBytes(Charsets.UTF_8));
-            outputStream.write(LineDelimiter.DEFAULT.getValue().getBytes());
+            writer.write(startLine.trim());
+            writer.write(LineDelimiter.DEFAULT.getValue());
         }
 
         String encodedKeyString = null;
@@ -167,16 +173,15 @@ public class KeyFileIOs {
             if (toIndex > encodedKeyString.length()) {
                 toIndex = encodedKeyString.length();
             }
-            outputStream.write(encodedKeyString.substring(offset, toIndex).getBytes(Charsets.UTF_8));
-            outputStream.write(LineDelimiter.DEFAULT.getValue().getBytes());
+            writer.write(encodedKeyString.substring(offset, toIndex));
+            writer.write(LineDelimiter.DEFAULT.getValue());
             offset = toIndex;
         }
 
         if (Strings.isNotBlank(endLine)) {
-            outputStream.write(endLine.trim().getBytes(Charsets.UTF_8));
-            outputStream.write(LineDelimiter.DEFAULT.getValue().getBytes());
+            writer.write(endLine.trim());
+            writer.write(LineDelimiter.DEFAULT.getValue());
         }
-
     }
 
     public static enum KeyFormat {
@@ -184,6 +189,5 @@ public class KeyFileIOs {
         BASE64,
         UTF8
     }
-
 
 }
