@@ -4,6 +4,8 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.Hex;
 import com.jn.langx.codec.base64.Base64;
+import com.jn.langx.io.resource.ByteArrayResource;
+import com.jn.langx.io.resource.InputStreamResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.security.exception.KeyFileFormatException;
@@ -31,7 +33,7 @@ public class KeyFileIOs {
 
     public static byte[] readKey(Resource resource, KeyFormat keyFormat) {
         try {
-            String content = readKeyFile(resource);
+            String content = readKeyAsString(resource);
             if (Emptys.isEmpty(content)) {
                 throw new NullPointerException();
             }
@@ -52,6 +54,18 @@ public class KeyFileIOs {
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
+    }
+
+    public static String readKeyAsString(byte[] bytes){
+        return readKeyAsString(new ByteArrayResource(bytes));
+    }
+
+    public static String readKeyAsString(InputStream inputStream){
+        return readKeyAsString(new InputStreamResource(inputStream));
+    }
+
+    public static String readKeyAsString(Resource resource){
+        return readKeyFile(resource);
     }
 
     public static String readKeyFile(Resource resource) {
@@ -84,7 +98,6 @@ public class KeyFileIOs {
                         }
                     } else {
                         builder.append(line);
-                        System.out.println(line);
                     }
                 }
             }
