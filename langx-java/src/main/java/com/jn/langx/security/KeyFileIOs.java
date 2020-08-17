@@ -8,6 +8,7 @@ import com.jn.langx.io.resource.ByteArrayResource;
 import com.jn.langx.io.resource.InputStreamResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.io.stream.StringBuilderWriter;
 import com.jn.langx.security.exception.KeyFileFormatException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.*;
@@ -182,6 +183,11 @@ public class KeyFileIOs {
             writer.write(endLine.trim());
             writer.write(LineDelimiter.DEFAULT.getValue());
         }
+    }
+
+    public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyFormat keyFormat, String startLine, String endLine) throws IOException{
+        StringBuilderWriter writer = new StringBuilderWriter(stringBuilder);
+        writeKey(keyBytes, writer, keyFormat, startLine, endLine);
     }
 
     public static enum KeyFormat {
