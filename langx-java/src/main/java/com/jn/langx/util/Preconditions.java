@@ -462,4 +462,47 @@ public class Preconditions {
         return fromIndex;
     }
 
+    /**
+     *
+     * @since 2.8.7
+     */
+    public static int positive(final int n, final String name) {
+        if (n <= 0) {
+            throw new IllegalArgumentException(name + " may not be negative or zero");
+        }
+        return n;
+    }
+
+    /**
+     *
+     * @since 2.8.7
+     */
+    public static long positive(final long n, final String name) {
+        if (n <= 0) {
+            throw new IllegalArgumentException(name + " may not be negative or zero");
+        }
+        return n;
+    }
+
+    /**
+     *
+     * @since 2.8.7
+     */
+    public static int notNegative(final int n, final String name) {
+        if (n < 0) {
+            throw new IllegalArgumentException(name + " may not be negative");
+        }
+        return n;
+    }
+
+    /**
+     *
+     * @since 2.8.7
+     */
+    public static long notNegative(final long n, final String name) {
+        if (n < 0) {
+            throw new IllegalArgumentException(name + " may not be negative");
+        }
+        return n;
+    }
 }
