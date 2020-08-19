@@ -20,6 +20,7 @@ public final class RestRespBody<T> {
         this.data = data;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
+        this.timestamp = System.currentTimeMillis();
     }
 
     public boolean isSuccess() {
