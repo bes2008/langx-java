@@ -6,11 +6,14 @@ public final class RestRespBody<T> {
     private boolean success;
     private T data;
     private int statusCode;
+    private long timestamp;
     private String errorCode;
     private String errorMessage;
+
     public RestRespBody(){
 
     }
+
     public RestRespBody(boolean success, int statusCode, T data, String errorCode, String errorMessage){
         this.success = success;
         this.statusCode = statusCode;
@@ -229,4 +232,11 @@ public final class RestRespBody<T> {
         return new RestRespBody<T>(false, statusCode , null, errorCode, errorMessage);
     }
 
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
 }
