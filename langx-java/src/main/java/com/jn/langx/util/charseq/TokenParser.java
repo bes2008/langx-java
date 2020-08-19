@@ -1,31 +1,12 @@
-package com.jn.langx.http.charseq;
+package com.jn.langx.util.charseq;
 
 
 import com.jn.langx.text.ParserCursor;
+import com.jn.langx.util.Chars;
 
 import java.util.BitSet;
 
 public class TokenParser {
-
-    public static BitSet INIT_BITSET(final int ... b) {
-        final BitSet bitset = new BitSet();
-        for (final int aB : b) {
-            bitset.set(aB);
-        }
-        return bitset;
-    }
-
-    /** US-ASCII CR, carriage return (13) */
-    public static final char CR = '\r';
-
-    /** US-ASCII LF, line feed (10) */
-    public static final char LF = '\n';
-
-    /** US-ASCII SP, space (32) */
-    public static final char SP = ' ';
-
-    /** US-ASCII HT, horizontal-tab (9) */
-    public static final char HT = '\t';
 
     /** Double quote */
     public static final char DQUOTE = '\"';
@@ -33,9 +14,6 @@ public class TokenParser {
     /** Backward slash / escape character */
     public static final char ESCAPE = '\\';
 
-    public static boolean isWhitespace(final char ch) {
-        return ch == SP || ch == HT || ch == CR || ch == LF;
-    }
 
     public static final TokenParser INSTANCE = new TokenParser();
 
@@ -55,7 +33,7 @@ public class TokenParser {
             final char current = buf.charAt(cursor.getPos());
             if (delimiters != null && delimiters.get(current)) {
                 break;
-            } else if (isWhitespace(current)) {
+            } else if (Chars.isWhitespace(current)) {
                 skipWhiteSpace(buf, cursor);
                 whitespace = true;
             } else {
@@ -86,7 +64,7 @@ public class TokenParser {
             final char current = buf.charAt(cursor.getPos());
             if (delimiters != null && delimiters.get(current)) {
                 break;
-            } else if (isWhitespace(current)) {
+            } else if (Chars.isWhitespace(current)) {
                 skipWhiteSpace(buf, cursor);
                 whitespace = true;
             } else if (current == DQUOTE) {
@@ -119,7 +97,7 @@ public class TokenParser {
         final int indexTo = cursor.getUpperBound();
         for (int i = indexFrom; i < indexTo; i++) {
             final char current = buf.charAt(i);
-            if (!isWhitespace(current)) {
+            if (!Chars.isWhitespace(current)) {
                 break;
             }
             pos++;
@@ -144,7 +122,7 @@ public class TokenParser {
         final int indexTo = cursor.getUpperBound();
         for (int i = indexFrom; i < indexTo; i++) {
             final char current = buf.charAt(i);
-            if ((delimiters != null && delimiters.get(current)) || isWhitespace(current)) {
+            if ((delimiters != null && delimiters.get(current)) || Chars.isWhitespace(current)) {
                 break;
             }
             pos++;
@@ -170,8 +148,7 @@ public class TokenParser {
         final int indexTo = cursor.getUpperBound();
         for (int i = indexFrom; i < indexTo; i++) {
             final char current = buf.charAt(i);
-            if ((delimiters != null && delimiters.get(current))
-                    || isWhitespace(current) || current == DQUOTE) {
+            if ((delimiters != null && delimiters.get(current)) || Chars.isWhitespace(current) || current == DQUOTE) {
                 break;
             }
             pos++;
@@ -217,7 +194,7 @@ public class TokenParser {
                 }
                 if (current == ESCAPE) {
                     escaped = true;
-                } else if (current != CR && current != LF) {
+                } else if (Chars.isNotCRAndLF(current)) {
                     dst.append(current);
                 }
             }

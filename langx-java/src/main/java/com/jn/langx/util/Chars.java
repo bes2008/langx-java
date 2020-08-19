@@ -2,6 +2,24 @@ package com.jn.langx.util;
 
 public class Chars {
     /**
+     * \r
+     */
+    public static final int CR = 13; // <US-ASCII CR, carriage return (13)>
+    /**
+     * \n
+     */
+    public static final int LF = 10; // <US-ASCII LF, linefeed (10)>
+    /**
+     * ' '
+     */
+    public static final int SPACE = 32;  // <US-ASCII SP, space (32)>
+    /**
+     * \t
+     */
+    public static final int TAB = 9;  // <US-ASCII HT, horizontal-tab (9)>
+
+
+    /**
      * Determines if the specified character (Unicode code point) is an alphabet.
      * <p>
      * A character is considered to be alphabetic if its general category type,
@@ -122,5 +140,17 @@ public class Chars {
      */
     public static int compare(final char x, final char y) {
         return x - y;
+    }
+
+    public static boolean isWhitespace(final char ch) {
+        return ch == SPACE || ch == TAB || isCRorLF(ch);
+    }
+
+    public static boolean isCRorLF(final char ch){
+        return ch == CR || ch == LF;
+    }
+
+    public static boolean isNotCRAndLF(final char ch){
+        return ch != CR && ch != LF;
     }
 }

@@ -1,5 +1,4 @@
-package com.jn.langx.http.charseq;
-
+package com.jn.langx.util.charseq;
 
 import com.jn.langx.util.Preconditions;
 
@@ -13,7 +12,7 @@ public final class ByteArrayBuffer implements Serializable {
     private int len;
 
     /**
-     * Creates an instance of {@link org.apache.http.util.ByteArrayBuffer} with the given initial
+     * Creates an instance of {@link ByteArrayBuffer} with the given initial
      * capacity.
      *
      * @param capacity the capacity
@@ -25,9 +24,9 @@ public final class ByteArrayBuffer implements Serializable {
     }
 
     private void expand(final int newlen) {
-        final byte newbuffer[] = new byte[Math.max(this.buffer.length << 1, newlen)];
-        System.arraycopy(this.buffer, 0, newbuffer, 0, this.len);
-        this.buffer = newbuffer;
+        final byte newBuffer[] = new byte[Math.max(this.buffer.length << 1, newlen)];
+        System.arraycopy(this.buffer, 0, newBuffer, 0, this.len);
+        this.buffer = newBuffer;
     }
 
     /**
@@ -204,7 +203,7 @@ public final class ByteArrayBuffer implements Serializable {
      *
      * @param   required   the minimum required capacity.
      *
-     * @since 4.1
+     * @since 2.8.7
      */
     public void ensureCapacity(final int required) {
         if (required <= 0) {
@@ -283,7 +282,7 @@ public final class ByteArrayBuffer implements Serializable {
      *   within the given bounds, or {@code -1} if the byte does
      *   not occur.
      *
-     * @since 4.1
+     * @since 2.8.7
      */
     public int indexOf(final byte b, final int from, final int to) {
         int beginIndex = from;
@@ -315,7 +314,7 @@ public final class ByteArrayBuffer implements Serializable {
      * @return  the index of the first occurrence of the byte in the
      *   buffer, or {@code -1} if the byte does not occur.
      *
-     * @since 4.1
+     * @since 2.8.7
      */
     public int indexOf(final byte b) {
         return indexOf(b, 0, this.len);

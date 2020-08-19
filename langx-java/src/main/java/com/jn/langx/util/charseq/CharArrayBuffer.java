@@ -1,9 +1,10 @@
-package com.jn.langx.http.charseq;
+package com.jn.langx.util.charseq;
 
 
 import java.io.Serializable;
 import java.nio.CharBuffer;
 
+import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
 
 /**
@@ -431,10 +432,10 @@ public final class CharArrayBuffer implements CharSequence, Serializable {
         }
         int beginIndex0 = beginIndex;
         int endIndex0 = endIndex;
-        while (beginIndex0 < endIndex && HttpChars.isWhitespace(this.buffer[beginIndex0])) {
+        while (beginIndex0 < endIndex && Chars.isWhitespace(this.buffer[beginIndex0])) {
             beginIndex0++;
         }
-        while (endIndex0 > beginIndex0 && HttpChars.isWhitespace(this.buffer[endIndex0 - 1])) {
+        while (endIndex0 > beginIndex0 && Chars.isWhitespace(this.buffer[endIndex0 - 1])) {
             endIndex0--;
         }
         return new String(this.buffer, beginIndex0, endIndex0 - beginIndex0);
