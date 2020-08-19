@@ -73,6 +73,18 @@ public class Preconditions {
         return obj;
     }
 
+    /**
+     * @since 2.8.7
+     */
+    public static <T> T checkNotNull(@NonNull T obj, @Nullable final String errorMessage, Object... params) {
+       return checkNotNull(obj, new Supplier<Object[], String>() {
+           @Override
+           public String get(Object[] args) {
+               return StringTemplates.formatWithPlaceholder(errorMessage, args);
+           }
+       }, params);
+    }
+
     public static <T> T checkNotNull(@NonNull T obj, @Nullable Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (obj == null) {
             if (errorMessageSupplier == null) {
@@ -103,6 +115,19 @@ public class Preconditions {
         }
         return obj;
     }
+
+    /**
+     * @since 2.8.7
+     */
+    public static <T> T checkNotEmpty(@NonNull T obj, final @Nullable String errorMessage, Object... params) {
+        return checkNotEmpty(obj, new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] args) {
+                return StringTemplates.formatWithPlaceholder(errorMessage, args);
+            }
+        }, params);
+    }
+
 
     public static <T> T checkNotEmpty(@NonNull T obj, @Nullable Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (Emptys.isEmpty(obj)) {
@@ -138,6 +163,18 @@ public class Preconditions {
         }
     }
 
+    /**
+     * @since 2.8.7
+     */
+    public static <T> void checkArgument(boolean expression, final @Nullable String errorMessage, Object... params) {
+        checkArgument(expression, new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] args) {
+                return StringTemplates.formatWithPlaceholder(errorMessage, args);
+            }
+        }, params);
+    }
+
     public static void checkArgument(boolean expression, Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (!expression) {
             if (Objects.isNull(errorMessageSupplier)) {
@@ -164,6 +201,19 @@ public class Preconditions {
             }
         }
     }
+
+    /**
+     * @since 2.8.7
+     */
+    public static <T> void checkTrue(boolean expression, final @Nullable String errorMessage, Object... params) {
+        checkTrue(expression, new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] args) {
+                return StringTemplates.formatWithPlaceholder(errorMessage, args);
+            }
+        }, params);
+    }
+
 
     public static void checkTrue(boolean expression, Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (!expression) {
@@ -463,7 +513,6 @@ public class Preconditions {
     }
 
     /**
-     *
      * @since 2.8.7
      */
     public static int positive(final int n, final String name) {
@@ -474,7 +523,6 @@ public class Preconditions {
     }
 
     /**
-     *
      * @since 2.8.7
      */
     public static long positive(final long n, final String name) {
@@ -485,7 +533,6 @@ public class Preconditions {
     }
 
     /**
-     *
      * @since 2.8.7
      */
     public static int notNegative(final int n, final String name) {
@@ -496,7 +543,6 @@ public class Preconditions {
     }
 
     /**
-     *
      * @since 2.8.7
      */
     public static long notNegative(final long n, final String name) {
