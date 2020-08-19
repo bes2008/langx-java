@@ -9,6 +9,7 @@ import java.util.Map;
 public class Maps {
 
     public static <K,V> V putIfAbsent(@NonNull Map<K, V> map, @NonNull K key, final V value){
+        // jdk 8 中，value 为 supplier时，不会走参数有supplier的方法，很纳闷
         if(value instanceof Supplier){
             final Supplier<K,V> supplier = (Supplier<K, V>)value;
             putIfAbsent(map, key,new Function<K, V>() {
