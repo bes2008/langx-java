@@ -1,7 +1,6 @@
 package com.jn.langx.util.charseq;
 
 
-import com.jn.langx.text.ParserCursor;
 import com.jn.langx.util.Chars;
 
 import java.util.BitSet;
