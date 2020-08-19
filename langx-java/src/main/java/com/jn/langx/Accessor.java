@@ -13,7 +13,7 @@ import com.jn.langx.util.valuegetter.ValueGetter2;
  * @see com.jn.langx.util.collection.StringMapAccessor
  * @see com.jn.langx.util.reflect.FieldAccessor
  * @see com.jn.langx.text.properties.PropertiesAccessor
- * @see com.jn.langx.text.HttpQueryStringAccessor
+ * @see com.jn.langx.http.HttpQueryStringAccessor;
  * @see com.jn.langx.util.reflect.ArrayAccessor
  */
 public interface Accessor<K, T> extends ValueGetter2<K> {

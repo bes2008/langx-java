@@ -1,8 +1,7 @@
-package com.jn.langx.text;
+package com.jn.langx.http;
 
 import com.jn.langx.Parser;
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.http.HttpQueryStrings;
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Collects;
