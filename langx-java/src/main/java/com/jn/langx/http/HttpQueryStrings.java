@@ -98,7 +98,7 @@ public class HttpQueryStrings {
                     return;
                 }
                 Class valueClass = value.getClass();
-                Function<Object, String> mapper = converterMap.get(valueClass);
+                Function<Object, String> mapper = converterMap != null ? converterMap.get(valueClass) : null;
                 if (mapper != null) {
                     String v = mapper.apply(value);
                     if (v != null) {
