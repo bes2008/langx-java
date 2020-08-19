@@ -14,7 +14,6 @@
 [![maven](https://img.shields.io/badge/maven-v2.8.7-green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:2.8.7)
 
 
-![访问统计](https://visitor-badge.glitch.me/badge?page_id=fangjinuo)
 
 # langx-java
 Java lang extensions
