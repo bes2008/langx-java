@@ -9,20 +9,19 @@ import java.util.Map;
 public class Maps {
 
     public static <K,V> V putIfAbsent(@NonNull Map<K, V> map, @NonNull K key, final V value){
-        return putIfAbsent(map, key, new Supplier<K, V>() {
-            @Override
-            public V get(K input) {
-                return value;
-            }
-        });
-    }
-
-
-    public static <K,V> V putIfAbsent(@NonNull Map<K, V> map, @NonNull K key, final Supplier<K, V> supplier){
+        if(value instanceof Supplier){
+            final Supplier<K,V> supplier = (Supplier<K, V>)value;
+            putIfAbsent(map, key,new Function<K, V>() {
+                @Override
+                public V apply(K key) {
+                    return supplier.get(key);
+                }
+            });
+        }
         return putIfAbsent(map, key, new Function<K, V>() {
             @Override
             public V apply(K key) {
-                return supplier.get(key);
+                return value;
             }
         });
     }
@@ -36,5 +35,13 @@ public class Maps {
             }
         }
         return v;
+    }
+
+    public static <K, V> V putIfAbsent(@NonNull Map<K, V> map, @NonNull K key, final Supplier<K, V> supplier) {
+        return putIfAbsent(map, key, new Function<K, V>() {
+            public V apply(K key) {
+                return supplier.get(key);
+            }
+        });
     }
 }

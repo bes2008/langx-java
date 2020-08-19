@@ -5,7 +5,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.function.Consumer2;
-import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.function.Function;
 
 import java.io.Serializable;
 import java.util.*;
@@ -28,9 +28,9 @@ public class MultiValueMapAdapter<K, V> implements MultiValueMap<K, V>, Serializ
 
     @Override
     public void add(K key, @Nullable V value) {
-        List<V> values = Maps.putIfAbsent(this.map, key, new Supplier<K, List<V>>() {
+        List<V> values = Maps.putIfAbsent(this.map, key, new Function<K, List<V>>() {
             @Override
-            public List<V> get(K input) {
+            public List<V> apply(K input) {
                 return new LinkedList<V>();
             }
         });
@@ -39,9 +39,9 @@ public class MultiValueMapAdapter<K, V> implements MultiValueMap<K, V>, Serializ
 
     @Override
     public void addAll(K key, List<? extends V> values) {
-        List<V> currentValues = Maps.putIfAbsent(this.map, key, new Supplier<K, List<V>>() {
+        List<V> currentValues = Maps.putIfAbsent(this.map, key, new Function<K, List<V>>() {
             @Override
-            public List<V> get(K input) {
+            public List<V> apply(K input) {
                 return new LinkedList<V>();
             }
         });
