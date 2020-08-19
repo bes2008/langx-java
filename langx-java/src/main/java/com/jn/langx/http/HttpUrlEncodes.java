@@ -1,7 +1,7 @@
 package com.jn.langx.http;
 
-import com.jn.langx.http.charseq.CharArrayBuffer;
-import com.jn.langx.http.charseq.TokenParser;
+import com.jn.langx.util.charseq.CharArrayBuffer;
+import com.jn.langx.util.charseq.TokenParser;
 import com.jn.langx.text.ParserCursor;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
