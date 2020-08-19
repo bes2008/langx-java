@@ -10,7 +10,7 @@ import com.jn.langx.util.Preconditions;
 /**
  * A resizable char array.
  *
- * @since 4.0
+ * @since 2.8.7
  */
 public final class CharArrayBuffer implements CharSequence, Serializable {
 
@@ -443,7 +443,7 @@ public final class CharArrayBuffer implements CharSequence, Serializable {
 
     /**
      * {@inheritDoc}
-     * @since 4.4
+     * @since 2.8.7
      */
     @Override
     public CharSequence subSequence(final int beginIndex, final int endIndex) {

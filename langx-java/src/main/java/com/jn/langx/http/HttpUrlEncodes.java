@@ -39,7 +39,7 @@ public class HttpUrlEncodes {
      * @param charset parameter charset.
      * @return list of query parameters.
      *
-     * @since 4.5
+     * @since 2.8.7
      */
     public static List <StringNameValuePair> parse(final URI uri, final Charset charset) {
         Preconditions.checkNotNull(uri, "URI");
@@ -58,7 +58,7 @@ public class HttpUrlEncodes {
      * @param charset charset to use when decoding the parameters.
      * @return list of query parameters.
      *
-     * @since 4.2
+     * @since 2.8.7
      */
     public static List<StringNameValuePair> parse(final String s, final Charset charset) {
         if (s == null) {
@@ -78,7 +78,7 @@ public class HttpUrlEncodes {
      * @param separators parameter separators.
      * @return list of query parameters.
      *
-     * @since 4.3
+     * @since 2.8.7
      */
     public static List<StringNameValuePair> parse(final String s, final Charset charset, final char... separators) {
         if (s == null) {
@@ -100,7 +100,7 @@ public class HttpUrlEncodes {
      *            element separators.
      * @return a list of {@link StringNameValuePair} as built from the URI's query portion.
      *
-     * @since 4.4
+     * @since 2.8.7
      */
     public static List<StringNameValuePair> parse(
             final CharArrayBuffer buf, final Charset charset, final char... separators) {
@@ -174,7 +174,7 @@ public class HttpUrlEncodes {
      * @param s       URI path component.
      * @param charset parameter charset.
      * @return list of segments.
-     * @since 4.5
+     * @since 2.8.7
      */
     public static List<String> parsePathSegments(final CharSequence s, final Charset charset) {
         Preconditions.checkNotNull(s, "Char sequence is null");
@@ -190,7 +190,7 @@ public class HttpUrlEncodes {
      *
      * @param s URI path component.
      * @return list of segments.
-     * @since 4.5
+     * @since 2.8.7
      */
     public static List<String> parsePathSegments(final CharSequence s) {
         return parsePathSegments(s, Charsets.UTF_8);
@@ -202,7 +202,7 @@ public class HttpUrlEncodes {
      * @param segments the segments.
      * @param charset  parameter charset.
      * @return URI path component
-     * @since 4.5
+     * @since 2.8.7
      */
     public static String formatSegments(final Iterable<String> segments, final Charset charset) {
         Preconditions.checkNotNull(segments, "Segments is null");
@@ -218,7 +218,7 @@ public class HttpUrlEncodes {
      *
      * @param segments the segments.
      * @return URI path component
-     * @since 4.5
+     * @since 2.8.7
      */
     public static String formatSegments(final String... segments) {
         return formatSegments(Arrays.asList(segments), Charsets.UTF_8);
@@ -246,7 +246,7 @@ public class HttpUrlEncodes {
      * @param parameterSeparator The parameter separator, by convention, {@code '&'} or {@code ';'}.
      * @param charset            The encoding to use.
      * @return An {@code application/x-www-form-urlencoded} string
-     * @since 4.3
+     * @since 2.8.7
      */
     public static String format(
             final List<? extends StringNameValuePair> parameters,
@@ -275,7 +275,7 @@ public class HttpUrlEncodes {
      * @param parameters The parameters to include.
      * @param charset    The encoding to use.
      * @return An {@code application/x-www-form-urlencoded} string
-     * @since 4.2
+     * @since 2.8.7
      */
     public static String format(
             final Iterable<? extends StringNameValuePair> parameters,
@@ -291,7 +291,7 @@ public class HttpUrlEncodes {
      * @param parameterSeparator The parameter separator, by convention, {@code '&'} or {@code ';'}.
      * @param charset            The encoding to use.
      * @return An {@code application/x-www-form-urlencoded} string
-     * @since 4.3
+     * @since 2.8.7
      */
     public static String format(
             final Iterable<? extends StringNameValuePair> parameters,

@@ -262,7 +262,7 @@ public class HttpUrlBuilder {
      *
      * @return this.
      *
-     * @since 4.5.8
+     * @since 2.8.7
      */
     public HttpUrlBuilder setPathSegments(final String... pathSegments) {
         this.pathSegments = pathSegments.length > 0 ? Arrays.asList(pathSegments) : null;
@@ -276,7 +276,7 @@ public class HttpUrlBuilder {
      *
      * @return this.
      *
-     * @since 4.5.8
+     * @since 2.8.7
      */
     public HttpUrlBuilder setPathSegments(final List<String> pathSegments) {
         this.pathSegments = pathSegments != null && pathSegments.size() > 0 ? new ArrayList<String>(pathSegments) : null;
@@ -304,7 +304,7 @@ public class HttpUrlBuilder {
      * will remove custom query if present.
      * </p>
      *
-     * @since 4.3
+     * @since 2.8.7
      */
     public HttpUrlBuilder setParameters(final List <StringNameValuePair> nvps) {
         if (this.queryParams == null) {
@@ -327,7 +327,7 @@ public class HttpUrlBuilder {
      * will remove custom query if present.
      * </p>
      *
-     * @since 4.3
+     * @since 2.8.7
      */
     public HttpUrlBuilder addParameters(final List <StringNameValuePair> nvps) {
         if (this.queryParams == null) {
@@ -348,7 +348,7 @@ public class HttpUrlBuilder {
      * will remove custom query if present.
      * </p>
      *
-     * @since 4.3
+     * @since 2.8.7
      */
     public HttpUrlBuilder setParameters(final StringNameValuePair... nvps) {
         if (this.queryParams == null) {
@@ -414,7 +414,7 @@ public class HttpUrlBuilder {
     /**
      * Clears URI query parameters.
      *
-     * @since 4.3
+     * @since 2.8.7
      */
     public HttpUrlBuilder clearParameters() {
         this.queryParams = null;
@@ -431,7 +431,7 @@ public class HttpUrlBuilder {
      * will remove query parameters if present.
      * </p>
      *
-     * @since 4.3
+     * @since 2.8.7
      */
     public HttpUrlBuilder setCustomQuery(final String query) {
         this.query = query;
@@ -452,14 +452,14 @@ public class HttpUrlBuilder {
     }
 
     /**
-     * @since 4.3
+     * @since 2.8.7
      */
     public boolean isAbsolute() {
         return this.scheme != null;
     }
 
     /**
-     * @since 4.3
+     * @since 2.8.7
      */
     public boolean isOpaque() {
         return this.pathSegments == null && this.encodedPath == null;
@@ -482,7 +482,7 @@ public class HttpUrlBuilder {
     }
 
     /**
-     * @since 4.5.8
+     * @since 2.8.7
      */
     public boolean isPathEmpty() {
         return (this.pathSegments == null || this.pathSegments.isEmpty()) &&
@@ -490,7 +490,7 @@ public class HttpUrlBuilder {
     }
 
     /**
-     * @since 4.5.8
+     * @since 2.8.7
      */
     public List<String> getPathSegments() {
         return this.pathSegments != null ? new ArrayList<String>(this.pathSegments) : Collections.<String>emptyList();
@@ -508,7 +508,7 @@ public class HttpUrlBuilder {
     }
 
     /**
-     * @since 4.5.8
+     * @since 2.8.7
      */
     public boolean isQueryEmpty() {
         return (this.queryParams == null || this.queryParams.isEmpty()) && this.encodedQuery == null;
