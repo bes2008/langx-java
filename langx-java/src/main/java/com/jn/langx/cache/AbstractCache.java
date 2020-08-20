@@ -137,7 +137,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         if (value == null) {
             remove(key, RemoveCause.EXPLICIT);
         } else if (expire < now) {
-            remove(key, RemoveCause.EXPRIED);
+            remove(key, RemoveCause.EXPIRED);
         } else {
             writeLock.lock();
             try {
@@ -227,7 +227,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
 
                 return entry.getValue();
             } else {
-                remove(key, RemoveCause.EXPRIED);
+                remove(key, RemoveCause.EXPIRED);
             }
         }
         V value = null;
@@ -349,8 +349,8 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
                         @Override
                         public void accept(Entry<K, V> entry) {
                             K key = entry.getKey();
-                            if (key != null) {
-                                expireTimeIndex.get(entry.getExpireTime()).remove(key);
+                            if(key!=null) {
+                                remove(key, RemoveCause.REPLACED);
                             }
                         }
                     });
@@ -383,7 +383,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
                 Collects.forEach(keys, new Consumer2<Integer, K>() {
                     @Override
                     public void accept(Integer expireTime, K key) {
-                        remove(key, RemoveCause.EXPRIED);
+                        remove(key, RemoveCause.EXPIRED);
                     }
                 });
             }
