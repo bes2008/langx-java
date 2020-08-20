@@ -33,9 +33,16 @@ public class Entry<K, V> extends ReferenceEntry<K, V> {
 
     private int age = 0;
 
+    @Override
     public V getValue() {
-        lastReadTime = System.currentTimeMillis();
-        lastUsedTime = lastReadTime;
+        return getValue(true);
+    }
+
+    public V getValue(boolean updateTime) {
+        if(updateTime) {
+            lastReadTime = System.currentTimeMillis();
+            lastUsedTime = lastReadTime;
+        }
         return super.getValue();
     }
 
@@ -77,6 +84,18 @@ public class Entry<K, V> extends ReferenceEntry<K, V> {
 
     public long getLastWriteTime() {
         return lastWriteTime;
+    }
+
+    public void setLastReadTime(long lastReadTime) {
+        this.lastReadTime = lastReadTime;
+    }
+
+    public void setLastWriteTime(long lastWriteTime) {
+        this.lastWriteTime = lastWriteTime;
+    }
+
+    public void setLastUsedTime(long lastUsedTime) {
+        this.lastUsedTime = lastUsedTime;
     }
 
     public long getExpireTime() {

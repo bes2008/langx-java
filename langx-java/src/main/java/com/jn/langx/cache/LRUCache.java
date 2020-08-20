@@ -60,6 +60,16 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
     }
 
     @Override
+    protected void beforeRead(Entry<K, V> entry) {
+        removeFromCache(entry,null);
+    }
+
+    @Override
+    protected void afterRead(Entry<K, V> entry) {
+        addToCache(entry);
+    }
+
+    @Override
     protected List<Entry<K, V>> forceEvict(final int count) {
 
         final List<Entry<K, V>> evicted = new ArrayList<Entry<K, V>>();

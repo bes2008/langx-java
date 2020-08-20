@@ -42,6 +42,14 @@ public class FIFOCache<K, V> extends AbstractCache<K, V> {
     }
 
     @Override
+    protected void beforeRead(Entry<K, V> entry) {
+    }
+
+    @Override
+    protected void afterRead(Entry<K, V> entry) {
+    }
+
+    @Override
     protected void removeFromCache(Entry<K, V> entry, RemoveCause removeCause) {
         K key = entry.getKey();
         if (key != null) {
