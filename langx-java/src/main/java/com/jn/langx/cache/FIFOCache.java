@@ -1,10 +1,8 @@
 package com.jn.langx.cache;
 
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.timing.timer.Timer;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -21,13 +19,13 @@ public class FIFOCache<K, V> extends AbstractCache<K, V> {
         super(maxCapacity, evictExpiredInterval, timer);
     }
 
-    private LinkedHashMap<K, Entry<K, V>> queue = new LinkedHashMap<K, Entry<K, V>>();
+    private LinkedHashMap<K, K> queue = new LinkedHashMap<K, K>();
 
     @Override
     protected void addToCache(Entry<K, V> entry) {
         K key = entry.getKey();
         if (key != null) {
-            queue.put(key, entry);
+            queue.put(key, key);
         }
     }
 
@@ -58,18 +56,7 @@ public class FIFOCache<K, V> extends AbstractCache<K, V> {
     }
 
     @Override
-    protected List<Entry<K, V>> forceEvict(int count) {
-        final List<Entry<K, V>> ret = new ArrayList<Entry<K, V>>();
-        Pipeline.of(new ArrayList<K>(queue.keySet())).limit(count).forEach(new Consumer<K>() {
-            @Override
-            public void accept(K k) {
-                Entry<K, V> entry = queue.remove(k);
-                if (entry != null) {
-                    ret.add(entry);
-                }
-            }
-        });
-
-        return ret;
+    protected List<K> forceEvict(int count) {
+        return Pipeline.of(queue.keySet()).findN(count).asList();
     }
 }

@@ -9,12 +9,14 @@ import com.jn.langx.util.concurrent.completion.CompletableFuture;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timer;
+import org.junit.Test;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class CacheTests {
 
+    @Test
     public void test0() throws Throwable {
         final Timer timer = new HashedWheelTimer(Executors.defaultThreadFactory());
         CompletableFuture f1 = CompletableFuture.runAsync(new Runnable() {
@@ -81,7 +83,7 @@ public class CacheTests {
         cache.set("14", "c", 140, TimeUnit.SECONDS);
 
 
-        Collects.forEach(Arrs.range(10), new Consumer<Integer>() {
+        Collects.forEach(Arrs.range(20), new Consumer<Integer>() {
             @Override
             public void accept(Integer index) {
                 try {
@@ -89,12 +91,12 @@ public class CacheTests {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (index < 1) {
-                    System.out.println(cache.get("1"));
+                if (index %2 ==1) {
+                    System.out.println(cache.get("10"));
                 }
                 System.out.println(cache.size());
             }
         });
-
+        System.out.println(cache);
     }
 }

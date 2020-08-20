@@ -358,14 +358,11 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
             if (forceEvictCount > 0) {
                 writeLock.lock();
                 try {
-                    List<Entry<K, V>> cleared = forceEvict(forceEvictCount);
-                    Collects.forEach(cleared, new Consumer<Entry<K, V>>() {
+                    List<K> cleared = forceEvict(forceEvictCount);
+                    Collects.forEach(cleared, new Consumer<K>() {
                         @Override
-                        public void accept(Entry<K, V> entry) {
-                            K key = entry.getKey();
-                            if (key != null) {
-                                remove(key, RemoveCause.REPLACED);
-                            }
+                        public void accept(K key) {
+                            remove(key, RemoveCause.REPLACED);
                         }
                     });
                 } finally {
@@ -382,7 +379,12 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         }
     }
 
-    protected abstract List<Entry<K, V>> forceEvict(int count);
+    /**
+     * 用于找到将被强制清除的
+     * @param count
+     * @return
+     */
+    protected abstract List<K> forceEvict(int count);
 
     private void clearExpired() {
         long now = System.currentTimeMillis();
