@@ -24,7 +24,7 @@ public class CacheBuilder<K, V> {
     private long refreshAfterAccess = Long.MAX_VALUE;
 
     // unit: mills
-    private long evictExpiredInterval = Long.MAX_VALUE;
+    private long evictExpiredInterval = 5 * 60 * 1000;
     private RemoveListener<K, V> removeListener;
     private int maxCapacity = Integer.MAX_VALUE;
 
