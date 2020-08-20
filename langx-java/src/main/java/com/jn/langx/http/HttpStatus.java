@@ -528,7 +528,11 @@ public enum HttpStatus {
      * @see #series()
      */
     public boolean is1xxInformational() {
-        return (series() == Series.INFORMATIONAL);
+        return is1xxInformational(this.value);
+    }
+
+    public static boolean is1xxInformational(int statusCode) {
+        return Series.valueOf(statusCode) == Series.INFORMATIONAL;
     }
 
     /**
@@ -539,7 +543,11 @@ public enum HttpStatus {
      * @see #series()
      */
     public boolean is2xxSuccessful() {
-        return (series() == Series.SUCCESSFUL);
+        return is2xxSuccessful(this.value);
+    }
+
+    public static boolean is2xxSuccessful(int statusCode) {
+        return Series.valueOf(statusCode) == Series.SUCCESSFUL;
     }
 
     /**
@@ -550,7 +558,11 @@ public enum HttpStatus {
      * @see #series()
      */
     public boolean is3xxRedirection() {
-        return (series() == Series.REDIRECTION);
+        return is3xxRedirection(this.value);
+    }
+
+    public static boolean is3xxRedirection(int statusCode) {
+        return Series.valueOf(statusCode) == Series.REDIRECTION;
     }
 
     /**
@@ -561,7 +573,11 @@ public enum HttpStatus {
      * @see #series()
      */
     public boolean is4xxClientError() {
-        return (series() == Series.CLIENT_ERROR);
+        return is4xxClientError(this.value);
+    }
+
+    public static boolean is4xxClientError(int statusCode) {
+        return Series.valueOf(statusCode) == Series.CLIENT_ERROR;
     }
 
     /**
@@ -572,7 +588,11 @@ public enum HttpStatus {
      * @see #series()
      */
     public boolean is5xxServerError() {
-        return (series() == Series.SERVER_ERROR);
+        return is5xxServerError(this.value);
+    }
+
+    public static boolean is5xxServerError(int statusCode) {
+        return Series.valueOf(statusCode) == Series.SERVER_ERROR;
     }
 
     /**
@@ -593,7 +613,7 @@ public enum HttpStatus {
      */
     @Override
     public String toString() {
-        return this.value + " " + name();
+        return this.value + "";
     }
 
 

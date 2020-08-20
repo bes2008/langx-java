@@ -74,8 +74,17 @@ public final class RestRespBody<T> {
      * 200
      */
     public static <T> RestRespBody<T> ok(T data){
+        return success(data);
+    }
+
+
+    /**
+     * 200
+     */
+    public static <T> RestRespBody<T> success(T data){
         return success(HttpStatus.OK.value(), data);
     }
+
 
     /**
      * 200
