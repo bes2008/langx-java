@@ -1,7 +1,7 @@
 package com.jn.langx.cache;
 
 public enum RemoveCause {
-    EXPRIED,
+    EXPIRED,
     EXPLICIT,
     COLLECTED,
     REPLACED,
