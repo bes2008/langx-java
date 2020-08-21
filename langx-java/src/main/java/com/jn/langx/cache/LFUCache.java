@@ -1,5 +1,6 @@
 package com.jn.langx.cache;
 
+import com.jn.langx.annotation.Unreleased;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.timing.timer.Timer;
 
@@ -11,7 +12,8 @@ import java.util.TreeMap;
  * 使用频度最少的
  * Least Frequently Used
  */
-public class LFUCache <K, V> extends AbstractCache<K, V> {
+@Unreleased
+class LFUCache <K, V> extends AbstractCache<K, V> {
     public LFUCache() {
         super(Integer.MAX_VALUE, 60 * 1000);
     }
