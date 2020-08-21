@@ -6,6 +6,11 @@ import com.jn.langx.util.timing.timer.Timer;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * 先进先出队列
+ * @param <K>
+ * @param <V>
+ */
 public class FIFOCache<K, V> extends AbstractCache<K, V> {
     public FIFOCache() {
         super(Integer.MAX_VALUE, 60 * 1000);

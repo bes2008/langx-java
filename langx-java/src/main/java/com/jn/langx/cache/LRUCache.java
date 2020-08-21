@@ -6,6 +6,11 @@ import com.jn.langx.util.timing.timer.Timer;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * 最近最少使用
+ * @param <K>
+ * @param <V>
+ */
 public class LRUCache<K, V> extends AbstractCache<K, V> {
 
     /**
