@@ -727,6 +727,14 @@ public class Strings {
         return containsAny(cs, toCharArray(searchChars));
     }
 
+    public static boolean contains(final CharSequence cs, final CharSequence searchChars){
+        return contains(cs, searchChars, false);
+    }
+
+    public static boolean contains(final CharSequence cs, final CharSequence searchChars, boolean ignoreCase){
+        return indexOf(cs, searchChars, ignoreCase)!=-1;
+    }
+
 
 // Padding
     //-----------------------------------------------------------------------
@@ -3047,12 +3055,12 @@ public class Strings {
      *  Changed signature from indexOf(String, String) to indexOf(CharSequence, CharSequence)
      */
     public static int indexOf(final CharSequence seq, final CharSequence searchSeq) {
-        if (seq == null || searchSeq == null) {
-            return INDEX_NOT_FOUND;
-        }
-        return indexOf(seq, searchSeq, 0);
+        return indexOf(seq, searchSeq, false);
     }
 
+    public static int indexOf(final CharSequence seq, final CharSequence searchSeq, boolean ignoreCase) {
+        return indexOf(seq, searchSeq, 0, ignoreCase);
+    }
     /**
      * <p>Finds the first index within a CharSequence, handling {@code null}.
      * This method uses {@link String#indexOf(String, int)} if possible.</p>
@@ -3087,11 +3095,20 @@ public class Strings {
      *  Changed signature from indexOf(String, String, int) to indexOf(CharSequence, CharSequence, int)
      */
     public static int indexOf(final CharSequence seq, final CharSequence searchSeq, final int startPos) {
+        return indexOf(seq, searchSeq, startPos, false);
+    }
+
+    public static int indexOf(final CharSequence seq, final CharSequence searchSeq, final int startPos, boolean ignoreCase){
         if (seq == null || searchSeq == null) {
             return INDEX_NOT_FOUND;
         }
+        if(ignoreCase) {
+            return seq.toString().toLowerCase().indexOf(searchSeq.toString().toLowerCase(), startPos);
+        }
         return seq.toString().indexOf(searchSeq.toString(), startPos);
     }
+
+
 
     //-----------------------------------------------------------------------
 
