@@ -303,12 +303,21 @@ public final class Objects {
         return value;
     }
 
-
-    public static <T> T requireNonNullElseGet(T obj, Supplier0<? extends T> supplier) {
-        return (obj != null) ? obj
-                : requireNonNull(requireNonNull(supplier, "supplier").get(), "supplier.get()");
+    @Deprecated
+    public static <T> T requireNonNullElseGet(T obj,final Supplier0<? extends T> supplier) {
+        return useValueIfMatch(obj, Functions.<T>nullPredicate(), new Supplier<T, T>() {
+            @Override
+            public T get(T input) {
+                return supplier.get();
+            }
+        });
     }
 
+    /**
+     * @see #useValueIfNull(Object, Object)
+     * @see #useValueIfMatch(Object, Predicate, Object)
+     */
+    @Deprecated
     public static <T> T requireNonNullElse(T obj, T defaultObj) {
         return (obj != null) ? obj : requireNonNull(defaultObj, "defaultObj");
     }
