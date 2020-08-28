@@ -2,6 +2,8 @@ package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Functions;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.function.Supplier0;
 
@@ -266,18 +268,41 @@ public final class Objects {
     }
 
     public static <T> T useValueIfNull(T value, T defaultValue) {
-        if (value == null) {
+        return useValueIfMatch(value, Functions.<T>nullPredicate(), defaultValue);
+    }
+
+    public static <T> T useValueIfEmpty(T value, T defaultValue) {
+        return useValueIfMatch(value, Functions.<T>emptyPredicate(), defaultValue);
+    }
+
+    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, T defaultValue){
+        if(predicate.test(value)){
             return defaultValue;
         }
         return value;
     }
 
-    public static <T> T useValueIfEmpty(T value, T defaultValue) {
-        if (isEmpty(value)) {
+    public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, T defaultValue){
+        if(!predicate.test(value)){
             return defaultValue;
         }
         return value;
     }
+
+    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, Supplier<T,T> supplier){
+        if(predicate.test(value)){
+            return supplier.get(value);
+        }
+        return value;
+    }
+
+    public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, Supplier<T,T> supplier){
+        if(!predicate.test(value)){
+            return supplier.get(value);
+        }
+        return value;
+    }
+
 
     public static <T> T requireNonNullElseGet(T obj, Supplier0<? extends T> supplier) {
         return (obj != null) ? obj
