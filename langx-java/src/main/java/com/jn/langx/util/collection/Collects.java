@@ -1070,7 +1070,7 @@ public class Collects {
         }
     }
 
-    public static <E, C extends Collection<E>> int firstOccurrence(C c, final E item) {
+    public static <E, C extends Collection<E>> Integer firstOccurrence(C c, final E item) {
         return firstOccurrence(c, new Predicate2<Integer, E>() {
             @Override
             public boolean test(Integer key, E value) {
