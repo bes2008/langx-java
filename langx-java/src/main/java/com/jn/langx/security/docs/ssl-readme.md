@@ -11,3 +11,4 @@ SSLContext ： 用于创建 SSLSocket, SSLEngine。创建SSLContext时，需要�
  
 如果是在客户端使用SSLContext，只认证服务端是否合法，则只需要创建TrustManager
 
+https://segmentfault.com/a/1190000002963044
