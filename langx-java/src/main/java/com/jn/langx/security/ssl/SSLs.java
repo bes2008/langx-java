@@ -1,11 +1,16 @@
 package com.jn.langx.security.ssl;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
 public class SSLs {
     private SSLs(){}
+
+    public static X509TrustManager noopX509TrustManager(){
+        return new NoopTrustManager();
+    }
 
     /**
      * Creates default factory based on the standard JSSE trust material
@@ -14,7 +19,7 @@ public class SSLs {
      *
      * @return the default SSL socket factory
      */
-    public static SSLContext createDefaultSSLContext() throws SSLInitializationException {
+    public static SSLContext defaultSSLContext() throws SSLInitializationException {
         try {
             final SSLContext sslcontext = SSLContext.getInstance(SSLContextBuilder.TLS);
             sslcontext.init(null, null, null);
@@ -30,16 +35,16 @@ public class SSLs {
      * Creates default SSL context based on system properties. This method obtains
      * default SSL context by calling {@code SSLContext.getInstance("Default")}.
      * Please note that {@code Default} algorithm is supported as of Java 6.
-     * This method will fall back onto {@link #createDefaultSSLContext()} when
+     * This method will fall back onto {@link #defaultSSLContext()} when
      * {@code Default} algorithm is not available.
      *
      * @return default system SSL context
      */
-    public static SSLContext createSystemDefaultSSLContext() throws SSLInitializationException {
+    public static SSLContext systemDefaultSSLContext() throws SSLInitializationException {
         try {
             return SSLContext.getDefault();
         } catch (final NoSuchAlgorithmException ex) {
-            return createDefaultSSLContext();
+            return defaultSSLContext();
         }
     }
 
