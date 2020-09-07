@@ -1,9 +1,9 @@
-package com.jn.langx.security.jsse.ssl;
+package com.jn.langx.security.ssl;
 
 import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.enums.base.EnumDelegate;
 
-public enum ProtocolVersion implements CommonEnum {
+public enum SSLProtocolVersion implements CommonEnum {
     NONE(-1,"NONE","NONE"),
     SSLv2Hello(2,"SSLv2Hello","SSLv2Hello"),
     SSLv30(768,"SSLv3","SSLv3"),
@@ -14,7 +14,7 @@ public enum ProtocolVersion implements CommonEnum {
     ;
     private EnumDelegate delegate;
 
-    private ProtocolVersion(int code, String name ,String displayText){
+    private SSLProtocolVersion(int code, String name , String displayText){
         delegate = new EnumDelegate(code, name, displayText);
     }
 

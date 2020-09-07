@@ -1,4 +1,4 @@
-package com.jn.langx.security.jsse.ssl;
+package com.jn.langx.security.ssl;
 
 public class SSLs {
     private SSLs(){}
