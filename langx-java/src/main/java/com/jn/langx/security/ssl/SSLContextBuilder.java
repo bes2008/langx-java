@@ -2,7 +2,9 @@ package com.jn.langx.security.ssl;
 
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.enums.Enums;
 
 import javax.net.ssl.*;
 import java.io.File;
@@ -12,7 +14,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 
 /**
@@ -44,8 +48,19 @@ public class SSLContextBuilder {
         this.trustmanagers = new LinkedHashSet<TrustManager>();
     }
 
-    public SSLContextBuilder useProtocol(final String protocol) {
-        this.protocol = protocol;
+    public SSLContextBuilder setProtocol(String protocol) {
+        protocol = Strings.useValueIfEmpty(protocol, TLS);
+        SSLProtocolVersion protocolVersion = null;
+        if ("SSL".equals(protocol)) {
+            protocolVersion = SSLProtocolVersion.SSLv30;
+        } else {
+            protocolVersion = Enums.ofName(SSLProtocolVersion.class, protocol);
+        }
+        return setProtocol(protocolVersion);
+    }
+
+    public SSLContextBuilder setProtocol(final SSLProtocolVersion protocol) {
+        this.protocol = protocol == null ? TLS : protocol.getName();
         return this;
     }
 
@@ -54,7 +69,7 @@ public class SSLContextBuilder {
         return this;
     }
 
-    public SSLContextBuilder loadTrustMaterial( final KeyStore truststore,final TrustStrategy trustStrategy) throws NoSuchAlgorithmException, KeyStoreException {
+    public SSLContextBuilder loadTrustMaterial(final KeyStore truststore, final TrustStrategy trustStrategy) throws NoSuchAlgorithmException, KeyStoreException {
         final TrustManagerFactory tmfactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmfactory.init(truststore);
         final TrustManager[] tms = tmfactory.getTrustManagers();
