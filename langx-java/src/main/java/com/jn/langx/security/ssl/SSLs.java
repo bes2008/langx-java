@@ -14,7 +14,7 @@ public class SSLs {
      *
      * @return the default SSL socket factory
      */
-    public static SSLContext createDefault() throws SSLInitializationException {
+    public static SSLContext createDefaultSSLContext() throws SSLInitializationException {
         try {
             final SSLContext sslcontext = SSLContext.getInstance(SSLContextBuilder.TLS);
             sslcontext.init(null, null, null);
@@ -30,16 +30,16 @@ public class SSLs {
      * Creates default SSL context based on system properties. This method obtains
      * default SSL context by calling {@code SSLContext.getInstance("Default")}.
      * Please note that {@code Default} algorithm is supported as of Java 6.
-     * This method will fall back onto {@link #createDefault()} when
+     * This method will fall back onto {@link #createDefaultSSLContext()} when
      * {@code Default} algorithm is not available.
      *
      * @return default system SSL context
      */
-    public static SSLContext createSystemDefault() throws SSLInitializationException {
+    public static SSLContext createSystemDefaultSSLContext() throws SSLInitializationException {
         try {
             return SSLContext.getDefault();
         } catch (final NoSuchAlgorithmException ex) {
-            return createDefault();
+            return createDefaultSSLContext();
         }
     }
 
@@ -48,7 +48,7 @@ public class SSLs {
      *
      * @return default system SSL context
      */
-    public static SSLContextBuilder custom() {
+    public static SSLContextBuilder customSSLContext() {
         return SSLContextBuilder.create();
     }
 

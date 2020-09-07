@@ -21,6 +21,13 @@
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.8.1</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <resources>
