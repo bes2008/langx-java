@@ -21,18 +21,16 @@
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
 
+    <dependencies>
+    </dependencies>
     <build>
         <resources>
             <resource>
-                <directory>${basedir}/src/main/java/com/jn/langx/util/jodatime/tz/data</directory>
-                <targetPath>${project.build.outputDirectory}/com/jn/langx/util/jodatime/tz/data</targetPath>
-            </resource>
-            <resource>
-                <directory>${basedir}/src/main/java/com/jn/langx/http/mime</directory>
-                <targetPath>${project.build.outputDirectory}/com/jn/langx/http/mime</targetPath>
-                <includes>
-                    <include>mime.types</include>
-                </includes>
+                <directory>${basedir}/src/main/java</directory>
+                <targetPath>${project.build.outputDirectory}</targetPath>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
             </resource>
         </resources>
     </build>

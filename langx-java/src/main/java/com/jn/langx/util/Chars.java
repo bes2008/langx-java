@@ -1,5 +1,11 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.io.Charsets;
+
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.util.Arrays;
+
 public class Chars {
     /**
      * \r
@@ -153,4 +159,63 @@ public class Chars {
     public static boolean isNotCRAndLF(final char ch){
         return ch != CR && ch != LF;
     }
+
+    /**
+     * Decodes the provided byte[] to a UTF-8 char[]. This is done while avoiding
+     * conversions to String. The provided byte[] is not modified by this method, so
+     * the caller needs to take care of clearing the value if it is sensitive.
+     */
+    public static char[] utf8BytesToChars(byte[] utf8Bytes) {
+        final ByteBuffer byteBuffer = ByteBuffer.wrap(utf8Bytes);
+        final CharBuffer charBuffer = Charsets.UTF_8.decode(byteBuffer);
+        final char[] chars;
+        if (charBuffer.hasArray()) {
+            // there is no guarantee that the char buffers backing array is the right size
+            // so we need to make a copy
+            chars = Arrays.copyOfRange(charBuffer.array(), charBuffer.position(), charBuffer.limit());
+            Arrays.fill(charBuffer.array(), (char) 0); // clear sensitive data
+        } else {
+            final int length = charBuffer.limit() - charBuffer.position();
+            chars = new char[length];
+            charBuffer.get(chars);
+            // if the buffer is not read only we can reset and fill with 0's
+            if (!charBuffer.isReadOnly()) {
+                charBuffer.clear(); // reset
+                for (int i = 0; i < charBuffer.limit(); i++) {
+                    charBuffer.put((char) 0);
+                }
+            }
+        }
+        return chars;
+    }
+
+    /**
+     * Encodes the provided char[] to a UTF-8 byte[]. This is done while avoiding
+     * conversions to String. The provided char[] is not modified by this method, so
+     * the caller needs to take care of clearing the value if it is sensitive.
+     */
+    public static byte[] toUtf8Bytes(char[] chars) {
+        final CharBuffer charBuffer = CharBuffer.wrap(chars);
+        final ByteBuffer byteBuffer = Charsets.UTF_8.encode(charBuffer);
+        final byte[] bytes;
+        if (byteBuffer.hasArray()) {
+            // there is no guarantee that the byte buffers backing array is the right size
+            // so we need to make a copy
+            bytes = Arrays.copyOfRange(byteBuffer.array(), byteBuffer.position(), byteBuffer.limit());
+            Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
+        } else {
+            final int length = byteBuffer.limit() - byteBuffer.position();
+            bytes = new byte[length];
+            byteBuffer.get(bytes);
+            // if the buffer is not read only we can reset and fill with 0's
+            if (!byteBuffer.isReadOnly()) {
+                byteBuffer.clear(); // reset
+                for (int i = 0; i < byteBuffer.limit(); i++) {
+                    byteBuffer.put((byte) 0);
+                }
+            }
+        }
+        return bytes;
+    }
+
 }
