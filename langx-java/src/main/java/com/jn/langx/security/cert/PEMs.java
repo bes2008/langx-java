@@ -552,7 +552,7 @@ final class PEMs {
         throw new SecurityException("Error parsing key algorithm identifier. Algorithm with OID [" + oidString + "] is not supported");
     }
 
-    static List<Certificate> readCertificates(Collection<File> certFiles) throws CertificateException, IOException {
+    public static List<Certificate> readCertificates(Collection<File> certFiles) throws CertificateException, IOException {
         CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
         List<Certificate> certificates = new ArrayList<Certificate>(certFiles.size());
         for (File path : certFiles) {
