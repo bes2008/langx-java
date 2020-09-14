@@ -21,8 +21,6 @@
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
 
-    <dependencies>
-    </dependencies>
     <build>
         <resources>
             <resource>
