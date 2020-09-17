@@ -21,6 +21,11 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 public class Resources {
+
+    public static <V extends Resource> V loadResource(@NonNull Location location){
+        return Locations.<V>newResource(location.toString());
+    }
+
     public static <V extends Resource> V loadResource(@NonNull String location) {
         return loadResource(location, null);
     }

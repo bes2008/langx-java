@@ -15,7 +15,7 @@ public class Locations {
         return null;
     }
 
-    public static Resource newResource(String location) {
+    public static <V extends Resource> V newResource(String location) {
         return new DefaultResourceLoader().loadResource(location);
     }
 
