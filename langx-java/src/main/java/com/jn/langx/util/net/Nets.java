@@ -1327,17 +1327,26 @@ public class Nets {
      * Returns a {@link Set} of {@link InetAddress} that are non-loopback or mac.
      */
     public static Set<InetAddress> getAddresses() {
-        Set<InetAddress> allAddresses = new LinkedHashSet<InetAddress>();
+        final Set<InetAddress> allAddresses = new LinkedHashSet<InetAddress>();
         Map<String, Set<InetAddress>> interfaceAddressMap = getNetworkInterfaceAddresses();
         for (Map.Entry<String, Set<InetAddress>> entry : interfaceAddressMap.entrySet()) {
             Set<InetAddress> addresses = entry.getValue();
             if (!addresses.isEmpty()) {
-                for (InetAddress address : addresses) {
-                    allAddresses.add(address);
-                }
+                allAddresses.addAll(addresses);
             }
         }
         return allAddresses;
+    }
+
+    /**
+     * 获取本机IP
+     */
+    public static InetAddress getCurrentAddress(){
+        try {
+            return chooseAddress();
+        }catch (UnknownHostException ex){
+            return null;
+        }
     }
 
 
@@ -1349,7 +1358,7 @@ public class Nets {
         if (addresses.contains(InetAddress.getLocalHost())) {
             //Then if local host address is not bound to a loop-back interface, use it.
             return InetAddress.getLocalHost();
-        } else if (addresses != null && !addresses.isEmpty()) {
+        } else if (Emptys.isNotEmpty(addresses)) {
             //else return the first available addrress
             return addresses.toArray(new InetAddress[addresses.size()])[0];
         } else {

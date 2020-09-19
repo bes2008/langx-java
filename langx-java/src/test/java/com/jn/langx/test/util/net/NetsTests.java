@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class NetsTests {
     @Test
-    public void testGetNetworkInterfaces() throws Throwable{
+    public void testGetNetworkInterfaces() throws Throwable {
         Map<String, Set<InetAddress>> a = Nets.getNetworkInterfaceAddresses(null, null);
         System.out.println("net address mappings:");
         System.out.println(a);
@@ -45,8 +45,11 @@ public class NetsTests {
                 return Nets.toAddressString(address);
             }
         }).asList());
-        System.out.println(InetAddress.getLocalHost().getHostName());
-        System.out.println(Nets.toAddressString(InetAddress.getLocalHost()));
+        InetAddress currentAddress = Nets.getCurrentAddress();
+        if (currentAddress != null) {
+            System.out.println(currentAddress.getHostName());
+            System.out.println(Nets.toAddressString(currentAddress));
+        }
         System.out.println(Nets.getFirstValidMac());
     }
 }
