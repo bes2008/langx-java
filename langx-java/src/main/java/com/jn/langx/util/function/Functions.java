@@ -1,10 +1,8 @@
 package com.jn.langx.util.function;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Maths;
+import com.jn.langx.util.*;
 import com.jn.langx.util.Objects;
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 
@@ -312,11 +310,15 @@ public class Functions {
     }
 
     public static Predicate<String> stringContainsPredicate(final String cantained) {
+        return stringContainsPredicate(cantained, false);
+    }
+
+    public static Predicate<String> stringContainsPredicate(final String cantained,  final boolean ignoreCase) {
         Preconditions.checkTrue(Emptys.isNotEmpty(cantained));
         return new Predicate<String>() {
             @Override
             public boolean test(String value) {
-                return value.contains(cantained);
+                return Strings.contains(value, cantained, ignoreCase);
             }
         };
     }

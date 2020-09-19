@@ -609,8 +609,8 @@ public class Nets {
     }
 
 
-    public static boolean isValidPort(int port){
-        if (port < 0 || port > 0xFFFF){
+    public static boolean isValidPort(int port) {
+        if (port < 0 || port > 0xFFFF) {
             return false;
         }
         return true;
@@ -965,12 +965,12 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                             <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
-     *                                                                                                             defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
-     *                                                                                                             following the updated guidelines in
-     *                                                                                                             <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
-     *                                                                                                             <li>{@code false} to strictly follow rfc 5952</li>
-     *                                                                                                             </ul>
+     *                                                                                                                                                                   <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
+     *                                                                                                                                                                   defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
+     *                                                                                                                                                                   following the updated guidelines in
+     *                                                                                                                                                                   <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
+     *                                                                                                                                                                   <li>{@code false} to strictly follow rfc 5952</li>
+     *                                                                                                                                                                   </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
@@ -1244,9 +1244,51 @@ public class Nets {
         return Collects.emptyArrayList();
     }
 
+    private static final List<String> virtualInterfaces = Collects.newArrayList(
+            "virtualbox", " kernel debug ", "ppp0", "6to4", "loopback", "miniport", "virbr"
+    );
+
+    public static String getMac() {
+        List<NetworkInterface> interfaces = getNetworkInterfaces();
+        NetworkInterface networkInterface = Pipeline.of(interfaces).findFirst(new Predicate<NetworkInterface>() {
+            @Override
+            public boolean test(NetworkInterface networkInterface) {
+                final String displayName = networkInterface.getDisplayName();
+                if (Collects.anyMatch(virtualInterfaces, new Predicate<String>() {
+                    @Override
+                    public boolean test(String value) {
+                        return Strings.contains(displayName, value, true);
+                    }
+                })) {
+                    return false;
+                }
+                final String name = networkInterface.getName();
+                if (Collects.anyMatch(virtualInterfaces, new Predicate<String>() {
+                    @Override
+                    public boolean test(String value) {
+                        return Strings.contains(name, value, true);
+                    }
+                })) {
+                    return false;
+                }
+                try {
+                    return Emptys.isNotEmpty(networkInterface.getHardwareAddress());
+                } catch (Throwable ex) {
+                    return false;
+                }
+            }
+        });
+        return getMac(networkInterface);
+    }
+
     @Nullable
-    public static String getMac(@NonNull NetworkInterface networkInterface) throws SocketException {
-        byte[] macBytes = networkInterface.getHardwareAddress();
+    public static String getMac(@NonNull NetworkInterface networkInterface) {
+        byte[] macBytes = null;
+        try {
+            macBytes = networkInterface.getHardwareAddress();
+        } catch (SocketException ex) {
+            return null;
+        }
         if (Emptys.isNotEmpty(macBytes)) {
             return getMac(macBytes);
         }
