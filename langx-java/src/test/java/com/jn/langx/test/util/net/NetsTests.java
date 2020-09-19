@@ -1,7 +1,9 @@
 package com.jn.langx.test.util.net;
 
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.net.Nets;
 import org.junit.Test;
 
@@ -13,7 +15,7 @@ import java.util.Set;
 
 public class NetsTests {
     @Test
-    public void testGetNetworkInterfaces() {
+    public void testGetNetworkInterfaces() throws Throwable{
         Map<String, Set<InetAddress>> a = Nets.getNetworkInterfaceAddresses(null, null);
         System.out.println("net address mappings:");
         System.out.println(a);
@@ -34,6 +36,17 @@ public class NetsTests {
         });
         System.out.println("=====================");
         System.out.println("first mac:");
-        System.out.println(Nets.getMac());
+        NetworkInterface firstValid = Nets.getFirstValidNetworkInterface();
+        System.out.println(firstValid);
+
+        System.out.println(Pipeline.<InetAddress>of(Nets.addressesFromNetworkInterface(firstValid)).map(new Function<InetAddress, String>() {
+            @Override
+            public String apply(InetAddress address) {
+                return Nets.toAddressString(address);
+            }
+        }).asList());
+        System.out.println(InetAddress.getLocalHost().getHostName());
+        System.out.println(Nets.toAddressString(InetAddress.getLocalHost()));
+        System.out.println(Nets.getFirstValidMac());
     }
 }

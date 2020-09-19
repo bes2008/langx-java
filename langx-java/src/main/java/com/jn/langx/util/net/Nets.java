@@ -1248,9 +1248,12 @@ public class Nets {
             "virtualbox", " kernel debug ", "ppp0", "6to4", "loopback", "miniport", "virbr"
     );
 
-    public static String getMac() {
+    /**
+     * 获取第一个有效的网卡接口
+     */
+    public static NetworkInterface getFirstValidNetworkInterface() {
         List<NetworkInterface> interfaces = getNetworkInterfaces();
-        NetworkInterface networkInterface = Pipeline.of(interfaces).findFirst(new Predicate<NetworkInterface>() {
+        return Pipeline.of(interfaces).findFirst(new Predicate<NetworkInterface>() {
             @Override
             public boolean test(NetworkInterface networkInterface) {
                 final String displayName = networkInterface.getDisplayName();
@@ -1278,11 +1281,18 @@ public class Nets {
                 }
             }
         });
+    }
+
+    public static String getFirstValidMac(){
+        NetworkInterface networkInterface = getFirstValidNetworkInterface();
         return getMac(networkInterface);
     }
 
     @Nullable
     public static String getMac(@NonNull NetworkInterface networkInterface) {
+        if(networkInterface==null){
+            return null;
+        }
         byte[] macBytes = null;
         try {
             macBytes = networkInterface.getHardwareAddress();
