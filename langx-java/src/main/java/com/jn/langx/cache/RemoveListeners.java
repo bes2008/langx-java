@@ -10,6 +10,19 @@ public class RemoveListeners {
     private RemoveListeners() {
     }
 
+    public static class NoopRemoveListener<K, V> implements RemoveListener<K, V> {
+        @Override
+        public void onRemove(K key, V value, RemoveCause cause) {
+            // noop
+        }
+    }
+
+    private static final NoopRemoveListener noopRemoveListener = new NoopRemoveListener();
+
+    public static <K, V> RemoveListener<K, V> noop() {
+        return noopRemoveListener;
+    }
+
     public static <K, V> RemoveListener<K, V> async(final RemoveListener<K, V> listener, final Executor executor) {
         Preconditions.checkNotNull(listener);
         Preconditions.checkNotNull(executor);
