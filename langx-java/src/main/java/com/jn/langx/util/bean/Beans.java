@@ -4,14 +4,19 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Functions;
+import com.jn.langx.util.function.Predicate;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class Beans {
-    public static <BEAN, CI extends Iterable<BEAN>, O> List<O> getFieldList(CI collection, Function<BEAN, O> function) {
-        return Pipeline.of(collection).map(function).asList();
+    public static <BEAN, CI extends Iterable<BEAN>, O> List<O> getFieldList(CI beans, Function<BEAN, O> fieldExtractor) {
+        return Pipeline.of(beans).map(fieldExtractor).asList();
+    }
+
+    public static <BEAN, CI extends Iterable<BEAN>, O> List<O> getFieldList(CI beans, Predicate<BEAN> predicate, Function<BEAN, O> fieldExtractor) {
+        return Pipeline.of(beans).filter(predicate).map(fieldExtractor).asList();
     }
 
     public static <BEAN, CI extends Iterable<BEAN>, O> Set<O> getFieldSet(CI collection, Function<BEAN, O> function) {
