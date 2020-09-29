@@ -85,37 +85,37 @@ public class PropertyPlaceholderHandler {
      * Replaces all placeholders of format {@code ${name}} with the corresponding
      * property from the supplied {@link Properties}.
      *
-     * @param value      the value containing the placeholders to be replaced
+     * @param template      the value containing the placeholders to be replaced
      * @param properties the {@code Properties} to use for replacement
      * @return the supplied value with placeholders replaced inline
      */
-    public String replacePlaceholders(String value, final Properties properties) {
+    public String replacePlaceholders(String template, final Properties properties) {
         Preconditions.checkNotNull(properties, "'properties' must not be null");
-        return replacePlaceholders(value, new PropertiesPlaceholderParser(properties));
+        return replacePlaceholders(template, new PropertiesPlaceholderParser(properties));
     }
 
     /**
      * Replaces all placeholders of format {@code ${name}} with the value returned
      * from the supplied {@link PlaceholderParser}.
      *
-     * @param value               the value containing the placeholders to be replaced
+     * @param template               the value containing the placeholders to be replaced
      * @param placeholderResolver the {@code PlaceholderResolver} to use for replacement
      * @return the supplied value with placeholders replaced inline
      */
-    public String replacePlaceholders(String value, PlaceholderParser placeholderResolver) {
-        Preconditions.checkNotNull(value, "'value' must not be null");
-        return parseStringValue(value, placeholderResolver, null);
+    public String replacePlaceholders(String template, PlaceholderParser placeholderResolver) {
+        Preconditions.checkNotNull(template, "'value' must not be null");
+        return parseStringValue(template, placeholderResolver, null);
     }
 
     protected String parseStringValue(
-            String value, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders) {
+            String template, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders) {
 
-        int startIndex = value.indexOf(this.placeholderPrefix);
+        int startIndex = template.indexOf(this.placeholderPrefix);
         if (startIndex == -1) {
-            return value;
+            return template;
         }
 
-        StringBuilder result = new StringBuilder(value);
+        StringBuilder result = new StringBuilder(template);
         while (startIndex != -1) {
             int endIndex = findPlaceholderEndIndex(result, startIndex);
             if (endIndex != -1) {
@@ -157,7 +157,7 @@ public class PropertyPlaceholderHandler {
                     startIndex = result.indexOf(this.placeholderPrefix, endIndex + this.placeholderSuffix.length());
                 } else {
                     throw new IllegalArgumentException("Could not resolve placeholder '" +
-                            placeholder + "'" + " in value \"" + value + "\"");
+                            placeholder + "'" + " in value \"" + template + "\"");
                 }
                 visitedPlaceholders.remove(originalPlaceholder);
             } else {
