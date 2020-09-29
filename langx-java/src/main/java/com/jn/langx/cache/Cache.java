@@ -4,6 +4,8 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.function.Supplier;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +27,8 @@ public interface Cache<K, V> {
     V get(@NonNull K key, @Nullable Supplier<K, V> loader);
 
     V remove(@NonNull K key);
+
+    List<V> remove(Collection<K> keys);
 
     void refresh(@NonNull K key);
 

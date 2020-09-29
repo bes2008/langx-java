@@ -350,6 +350,18 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         return remove(key, RemoveCause.EXPLICIT);
     }
 
+    @Override
+    public List<V> remove(Collection<K> keys) {
+        final List<V> list = Collects.emptyArrayList();
+        Collects.forEach(keys, new Consumer<K>() {
+            @Override
+            public void accept(K key) {
+                V v = remove(key);
+                list.add(v);
+            }
+        });
+        return list;
+    }
 
     private void evictExpired() {
         if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapacity * capacityHeightWater)) {
