@@ -10,9 +10,12 @@ import com.jn.langx.util.function.Supplier0;
 import java.nio.Buffer;
 import java.util.*;
 
-public final class Objects {
-    private Objects() {
-        throw new AssertionError("No com.jn.langx.util.Objects instances for you!");
+/**
+ * 推荐使用 Objs
+ */
+@Deprecated
+public class Objects {
+    protected Objects() {
     }
 
     /**
