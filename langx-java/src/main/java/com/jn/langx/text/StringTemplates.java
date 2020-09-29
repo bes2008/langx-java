@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.valuegetter.ValueGetter2;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -173,6 +174,24 @@ public class StringTemplates {
      */
     public static String format(String template, Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
+    }
+
+    public static String format(String template, Pattern variablePattern, final PlaceholderParser variableValueProvider){
+        return format(template, variablePattern, new Function2<String, Object[], String>() {
+            @Override
+            public String apply(String variable, Object[] arguments) {
+                return variableValueProvider.parse(variable);
+            }
+        });
+    }
+
+    public static String format(String template, Pattern variablePattern, final ValueGetter2<String> valueGetter){
+        return format(template, variablePattern, new Function2<String, Object[], String>() {
+            @Override
+            public String apply(String variable, Object[] arguments) {
+                return valueGetter.getString(variable);
+            }
+        });
     }
 
     public static TemplateFluenter fluenter(String template) {
