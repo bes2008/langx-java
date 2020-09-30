@@ -25,8 +25,6 @@ public class PropertyPlaceholderHandler {
 
     static {
         wellKnownSimplePrefixes.put("}", "{");
-        wellKnownSimplePrefixes.put("]", "[");
-        wellKnownSimplePrefixes.put(")", "(");
     }
 
 

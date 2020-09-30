@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 
 public class MapBasedStringFormatter extends CustomPatternStringFormatter {
     public static enum PatternStyle {
-        $(Pattern.compile("\\$\\{\\w+\\}")),
-        PLACE_HOLDER(Pattern.compile("\\{\\w+\\}"));
+        $(Pattern.compile("\\$\\{\\w+(\\.\\w)*\\}")),
+        PLACE_HOLDER(Pattern.compile("\\{\\w+(\\.\\w)*\\}"));
 
         private Pattern pattern;
 

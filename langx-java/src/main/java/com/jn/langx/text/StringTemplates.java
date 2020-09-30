@@ -173,22 +173,25 @@ public class StringTemplates {
      * @return formatted string
      */
     public static String format(String template, Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
+        // 需要自己剔除变量的前后标记
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
     }
 
-    public static String format(String template, Pattern variablePattern, final PlaceholderParser variableValueProvider){
+    public static String format(String template, Pattern variablePattern, final PlaceholderParser variableValueProvider) {
         return format(template, variablePattern, new Function2<String, Object[], String>() {
             @Override
             public String apply(String variable, Object[] arguments) {
+                // 需要自己剔除变量的前后标记
                 return variableValueProvider.parse(variable);
             }
         });
     }
 
-    public static String format(String template, Pattern variablePattern, final ValueGetter2<String> valueGetter){
+    public static String format(String template, Pattern variablePattern, final ValueGetter2<String> valueGetter) {
         return format(template, variablePattern, new Function2<String, Object[], String>() {
             @Override
             public String apply(String variable, Object[] arguments) {
+                // 需要自己剔除变量的前后标记
                 return valueGetter.getString(variable);
             }
         });
