@@ -10,16 +10,48 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public interface Cache<K, V> {
+    /**
+     * set a key-value to cache, with out expire time never
+     * @param key the key
+     * @param value the value
+     */
     void set(@NonNull K key, @Nullable V value);
 
-    void set(@NonNull K key, @Nullable V value, long expire);
+    /**
+     * set a key-value to cache, with the specified expire time
+     * @param key the key
+     * @param value the value
+     * @param expireTime the expire time
+     */
+    void set(@NonNull K key, @Nullable V value, long expireTime);
 
-    void set(@NonNull K key, @Nullable V value, long expire, TimeUnit timeUnit);
+    /**
+     * set a key-value to cache, with the specified expire time
+     * @param key the key
+     * @param value the value
+     * @param ttl the time-to-live time, the live time
+     */
+    void set(@NonNull K key, @Nullable V value, long ttl, TimeUnit timeUnit);
 
+    /**
+     * get by key
+     * @param key the key
+     * @return the value, null if key is not exist
+     */
     V get(@NonNull K key);
 
+    /**
+     * multiple get
+     * @param keys get the specified keys
+     * @return the values
+     */
     Map<K, V> getAll(@NonNull Iterable<K> keys);
 
+    /**
+     * multiple get
+     * @param keys get the specified keys
+     * @return the values
+     */
     Map<K, V> getAllIfPresent(@NonNull Iterable<K> keys);
 
     V getIfPresent(@NonNull K key);
