@@ -15,7 +15,7 @@ public class StringTemplate {
     /**
      * index pattern
      */
-    public final static Pattern defaultPattern = Pattern.compile("\\{\\d+\\}");
+    public final static Pattern defaultPattern = Pattern.compile("\\{\\d+}");
     private final static Function2<String, Object[], String> defaultValueGetter = new IndexBasedValueGetter();
 
     private Pattern variablePattern = defaultPattern;
@@ -89,7 +89,10 @@ public class StringTemplate {
         }
 
         private int getIndex(String matched) {
-            String indexString = matched.substring(1, matched.length() - 1);
+            String indexString = matched;
+            if(matched.startsWith("{") && matched.endsWith("}")) {
+                indexString = matched.substring(1, matched.length() - 1);
+            }
             int index = Integer.parseInt(indexString);
             if (index < 0) {
                 index = 0;

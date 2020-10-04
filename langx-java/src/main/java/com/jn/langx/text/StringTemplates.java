@@ -192,7 +192,12 @@ public class StringTemplates {
             @Override
             public String apply(String variable, Object[] arguments) {
                 // 需要自己剔除变量的前后标记
-                variable = variable.replace(startFlag, "").replace(endFlag, "");
+                if (variable.startsWith(startFlag)) {
+                    variable = variable.substring(startFlag.length());
+                }
+                if (variable.endsWith(endFlag)) {
+                    variable = variable.substring(0, variable.length() - endFlag.length());
+                }
                 return valueGetter.apply(variable, args);
             }
         });

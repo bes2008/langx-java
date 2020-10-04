@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * placeholder: {}
  */
 public class PlaceholderStringFormatter extends CustomPatternStringFormatter {
-    private static final Pattern orderPattern = Pattern.compile("\\{\\}");
+    private static final Pattern orderPattern = Pattern.compile("\\{}");
 
     public PlaceholderStringFormatter() {
         setValueGetter(null);
