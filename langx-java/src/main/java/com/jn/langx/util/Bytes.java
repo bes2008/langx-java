@@ -10,6 +10,12 @@ import java.io.*;
 public final class Bytes {
     private Bytes() { /* no instances */ }
 
+    public static final byte SPACE = (byte) ' ';
+    public static final byte TAB = (byte) '\t';
+    public static final byte CARRIAGE_RETURN = (byte) '\r';
+    public static final byte LINE_FEED = (byte) '\n';
+
+
     /**
      * Used to supply bytes.
      */

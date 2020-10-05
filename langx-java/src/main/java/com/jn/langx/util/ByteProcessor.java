@@ -1,7 +1,5 @@
 package com.jn.langx.util;
 
-import static com.jn.langx.util.ByteProcessors.*;
-
 /**
  * Provides a mechanism to iterate over a collection of bytes.
  */
@@ -51,22 +49,22 @@ public interface ByteProcessor {
     /**
      * Aborts on a {@code CR ('\r')}.
      */
-    ByteProcessor FIND_CR = new ByteProcessor.IndexOfProcessor(CARRIAGE_RETURN);
+    ByteProcessor FIND_CR = new ByteProcessor.IndexOfProcessor(Bytes.CARRIAGE_RETURN);
 
     /**
      * Aborts on a non-{@code CR ('\r')}.
      */
-    ByteProcessor FIND_NON_CR = new ByteProcessor.IndexNotOfProcessor(CARRIAGE_RETURN);
+    ByteProcessor FIND_NON_CR = new ByteProcessor.IndexNotOfProcessor(Bytes.CARRIAGE_RETURN);
 
     /**
      * Aborts on a {@code LF ('\n')}.
      */
-    ByteProcessor FIND_LF = new ByteProcessor.IndexOfProcessor(LINE_FEED);
+    ByteProcessor FIND_LF = new ByteProcessor.IndexOfProcessor(Bytes.LINE_FEED);
 
     /**
      * Aborts on a non-{@code LF ('\n')}.
      */
-    ByteProcessor FIND_NON_LF = new ByteProcessor.IndexNotOfProcessor(LINE_FEED);
+    ByteProcessor FIND_NON_LF = new ByteProcessor.IndexNotOfProcessor(Bytes.LINE_FEED);
 
     /**
      * Aborts on a semicolon {@code (';')}.
@@ -81,7 +79,7 @@ public interface ByteProcessor {
     /**
      * Aborts on a ascii space character ({@code ' '}).
      */
-    ByteProcessor FIND_ASCII_SPACE = new ByteProcessor.IndexOfProcessor(SPACE);
+    ByteProcessor FIND_ASCII_SPACE = new ByteProcessor.IndexOfProcessor(Bytes.SPACE);
 
     /**
      * Aborts on a {@code CR ('\r')} or a {@code LF ('\n')}.
@@ -89,7 +87,7 @@ public interface ByteProcessor {
     ByteProcessor FIND_CRLF = new ByteProcessor() {
         @Override
         public boolean process(byte value) {
-            return value != CARRIAGE_RETURN && value != LINE_FEED;
+            return value != Bytes.CARRIAGE_RETURN && value != Bytes.LINE_FEED;
         }
     };
 
@@ -99,7 +97,7 @@ public interface ByteProcessor {
     ByteProcessor FIND_NON_CRLF = new ByteProcessor() {
         @Override
         public boolean process(byte value) {
-            return value == CARRIAGE_RETURN || value == LINE_FEED;
+            return value == Bytes.CARRIAGE_RETURN || value == Bytes.LINE_FEED;
         }
     };
 
@@ -109,7 +107,7 @@ public interface ByteProcessor {
     ByteProcessor FIND_LINEAR_WHITESPACE = new ByteProcessor() {
         @Override
         public boolean process(byte value) {
-            return value != SPACE && value != HTAB;
+            return value != Bytes.SPACE && value != Bytes.TAB;
         }
     };
 
@@ -119,7 +117,7 @@ public interface ByteProcessor {
     ByteProcessor FIND_NON_LINEAR_WHITESPACE = new ByteProcessor() {
         @Override
         public boolean process(byte value) {
-            return value == SPACE || value == HTAB;
+            return value == Bytes.SPACE || value == Bytes.TAB;
         }
     };
 

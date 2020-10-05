@@ -108,13 +108,11 @@ public class Emptys {
         if (object instanceof EmptyEvalutible) {
             return ((EmptyEvalutible) object).isEmpty();
         }
-
-        if (object instanceof Reference) {
-            return ((Reference) object).isNull();
-        }
-
         if (object instanceof Holder) {
             return ((Holder) object).isEmpty();
+        }
+        if (object instanceof Reference) {
+            return ((Reference) object).isNull();
         }
         return false;
     }
@@ -166,6 +164,10 @@ public class Emptys {
 
         if (object.getClass().isEnum()) {
             return 1;
+        }
+        if (object instanceof Holder) {
+            Holder holder = (Holder) object;
+            return getLength(holder.get());
         }
         return Pipeline.of(object).asList().size();
     }
