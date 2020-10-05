@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * Private key details.
  *
- * @since 4.4
+ * @since 2.8.8
  */
 public final class PrivateKeyDetails {
 
