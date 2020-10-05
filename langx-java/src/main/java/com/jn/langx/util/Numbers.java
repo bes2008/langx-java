@@ -8,6 +8,8 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Numbers {
     private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
@@ -105,6 +107,48 @@ public class Numbers {
             throw new NumberFormatException("A blank string is not a valid number");
         }
         return new BigDecimal(str);
+    }
+
+    /**
+     * 判断是否为0
+     * @param number
+     * @return 如为 0， 则返回true
+     */
+    public static boolean isZero(Number number) {
+        if (number == null) {
+            return true;
+        }
+        if (number instanceof Byte) {
+            return number.equals(Byte.valueOf("0"));
+        }
+        if (number instanceof Short) {
+            return number.equals(Short.valueOf("0"));
+        }
+        if (number instanceof Integer) {
+            return number.intValue() == 0;
+        }
+        if (number instanceof Long) {
+            return number.longValue() == 0L;
+        }
+        if (number instanceof Float) {
+            return number.floatValue() == 0F;
+        }
+        if (number instanceof Double) {
+            return number.doubleValue() == 0D;
+        }
+        if (number instanceof AtomicInteger) {
+            return ((AtomicInteger) number).get() == 0;
+        }
+        if (number instanceof BigInteger) {
+            return ((BigInteger) number).intValue() == 0;
+        }
+        if (number instanceof AtomicLong) {
+            return number.longValue() == 0L;
+        }
+        if (number instanceof BigDecimal) {
+            return new BigDecimal(0).equals(number);
+        }
+        return false;
     }
 
     private static boolean isAllZeros(String str) {

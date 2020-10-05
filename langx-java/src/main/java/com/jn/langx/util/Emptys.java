@@ -5,16 +5,12 @@ import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Reference;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Emptys {
 
@@ -31,42 +27,6 @@ public class Emptys {
     public static final X509Certificate[] EMPTY_X509_CERTIFICATES = {};
     public static final javax.security.cert.X509Certificate[] EMPTY_JAVAX_X509_CERTIFICATES = {};
 
-    private static boolean isZero(Number number) {
-        if (number == null) {
-            return true;
-        }
-        if (number instanceof Byte) {
-            return number.equals(Byte.valueOf("0"));
-        }
-        if (number instanceof Short) {
-            return number.equals(Short.valueOf("0"));
-        }
-        if (number instanceof Integer) {
-            return number.intValue() == 0;
-        }
-        if (number instanceof Long) {
-            return number.longValue() == 0L;
-        }
-        if (number instanceof Float) {
-            return number.floatValue() == 0F;
-        }
-        if (number instanceof Double) {
-            return number.doubleValue() == 0D;
-        }
-        if (number instanceof AtomicInteger) {
-            return ((AtomicInteger) number).get() == 0;
-        }
-        if (number instanceof BigInteger) {
-            return ((BigInteger) number).intValue() == 0;
-        }
-        if (number instanceof AtomicLong) {
-            return number.longValue() == 0L;
-        }
-        if (number instanceof BigDecimal) {
-            return new BigDecimal(0).equals(number);
-        }
-        return false;
-    }
 
     public static boolean isEmpty(Object object) {
         if (object == null) {
@@ -82,7 +42,7 @@ public class Emptys {
         }
 
         if (object instanceof Number) {
-            return isZero((Number) object);
+            return Numbers.isZero((Number) object);
         }
 
         if (object instanceof Buffer) {
