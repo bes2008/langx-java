@@ -10,7 +10,9 @@ import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.AbstractList;
 import java.util.List;
@@ -24,6 +26,21 @@ public class Throwables {
     private Throwables() {
     }
 
+    /**
+     * * 把异常栈dump到一个字符串中
+     *
+     * @param t 和getStackTraceAsString同一个作用
+     * @return 异常栈字符串
+     */
+    public static String stringify(final Throwable t) {
+        return getStackTraceAsString(t);
+    }
+
+    /**
+     * 把异常栈dump到一个字符串中
+     *
+     * @deprecated 改用 {@link #stringify(Throwable)}
+     */
     public static String getStackTraceAsString(Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
@@ -36,6 +53,9 @@ public class Throwables {
     }
 
 
+    /**
+     * 当 ex instanceof Error 时，抛出该Error
+     */
     public static Throwable throwIfError(Throwable ex) {
         if (ex instanceof Error) {
             throw (Error) ex;
@@ -43,6 +63,9 @@ public class Throwables {
         return ex;
     }
 
+    /**
+     * 当 ex instanceof RuntimeException 时，抛出该 Exception
+     */
     public static Throwable throwIfRuntimeException(Throwable ex) {
         if (ex instanceof RuntimeException) {
             throw (RuntimeException) ex;
@@ -50,6 +73,9 @@ public class Throwables {
         return ex;
     }
 
+    /**
+     * 当 ex instanceof IOException 时，抛出该 Exception
+     */
     public static Throwable throwIfIOException(Throwable ex) throws IOException {
         if (ex instanceof IOException) {
             throw (IOException) ex;
@@ -57,6 +83,9 @@ public class Throwables {
         return ex;
     }
 
+    /**
+     * 当 !(ex instanceof RuntimeException) 时，转为 RuntimeException
+     */
     public static RuntimeException wrapAsRuntimeException(Throwable ex) {
         if (ex instanceof RuntimeException) {
             return (RuntimeException) ex;
@@ -64,6 +93,9 @@ public class Throwables {
         return new RuntimeException(ex);
     }
 
+    /**
+     * 把任何异常转为 RuntimeException，并throw
+     */
     public static void throwAsRuntimeException(Throwable ex) {
         if (ex instanceof RuntimeException) {
             throw (RuntimeException) ex;
@@ -71,6 +103,9 @@ public class Throwables {
         throw new RuntimeException(ex);
     }
 
+    /**
+     * 根据异常栈获取到 root cause
+     */
     public static Throwable getRootCause(Throwable ex) {
         while (ex.getCause() != null) {
             ex = ex.getCause();
@@ -90,6 +125,14 @@ public class Throwables {
         log(null, null, null, ex);
     }
 
+    /**
+     * 把异常记录到日志中
+     *
+     * @param logger  the logger，默认为 Throwables.logger
+     * @param level   log level, 默认为 ERROR
+     * @param message 异常消息
+     * @param ex      异常
+     */
     public static void log(@Nullable Logger logger, @Nullable Level level, @Nullable String message, @NonNull Throwable ex) {
         Preconditions.checkNotNull(ex);
         message = Emptys.isEmpty(message) ? ex.getMessage() : message;
@@ -258,12 +301,24 @@ public class Throwables {
         return Reflects.invoke(method, receiver, params, true, true);
     }
 
+    /**
+     * 当执行某个Function时，出现任何Exception，Error时，则返回默认值。
+     * 所以该方法是用于 执行 func,并忽略掉任何的异常。
+     *
+     * @param logger       当出现throwable时，用该 logger 去做日志记录
+     * @param valueIfError 当出现 throwable时，返回该值
+     * @param func         要执行的function
+     * @param arg          function 执行时，需要传递的参数
+     * @param <I>          Function<I,O>的输入参数类型
+     * @param <O>          Function<I,O>的输出参数类型
+     * @return 返回 function执行的结果，如果执行过程中出错，则返回 valueIfError
+     */
     public static <I, O> O ignoreThrowable(@Nullable Logger logger,
                                            @Nullable O valueIfError,
                                            @NonNull ThrowableFunction<I, O> func,
-                                           @Nullable I input) {
+                                           @Nullable I arg) {
         try {
-            return func.apply(input);
+            return func.apply(arg);
         } catch (Throwable ex) {
             logger = logger == null ? Throwables.logger : logger;
             logger.error(ex.getMessage(), ex);
@@ -271,13 +326,27 @@ public class Throwables {
         }
     }
 
+    /**
+     * 当执行某个Function时，出现任何Exception，Error时，则返回默认值。
+     * 所以该方法是用于 执行 func,并忽略掉任何的异常。
+     *
+     * @param logger       当出现throwable时，用该 logger 去做日志记录
+     * @param valueIfError 当出现 throwable时，返回该值
+     * @param func         要执行的function
+     * @param arg1         function 执行时，需要传递的参数
+     * @param arg2         function 执行时，需要传递的参数
+     * @param <I1>         Function<I1,I2,O>的第一个输入参数类型
+     * @param <I2>         Function<I1,I2,O>的第二个输入参数类型
+     * @param <O>          Function<I1,I2,O>的输出参数类型
+     * @return 返回 function执行的结果，如果执行过程中出错，则返回 valueIfError
+     */
     public static <I1, I2, O> O ignoreThrowable(@Nullable Logger logger,
                                                 @Nullable O valueIfError,
                                                 @NonNull ThrowableFunction2<I1, I2, O> func,
-                                                @Nullable I1 input1,
-                                                @Nullable I2 input2) {
+                                                @Nullable I1 arg1,
+                                                @Nullable I2 arg2) {
         try {
-            return func.apply(input1, input2);
+            return func.apply(arg1, arg2);
         } catch (Throwable ex) {
             logger = logger == null ? Throwables.logger : logger;
             logger.error(ex.getMessage(), ex);
@@ -285,13 +354,25 @@ public class Throwables {
         }
     }
 
+    /**
+     * 执行指定的function，如果执行过程中，出现了指定的那些异常 throwables，则返回 valuesIfError，其他的异常则抛出。
+     *
+     * @param logger       当出现throwable时，用该 logger 去做日志记录
+     * @param valueIfError 当出现 指定的异常时，返回该值
+     * @param throwables   指定的异常
+     * @param func         要执行的函数
+     * @param arg          func的参数
+     * @param <I>          func的输入参数类型
+     * @param <O>          func的输出参数类型
+     * @return 返回func的输入结果，如果有指定的错误发生，则返回 valueIfError
+     */
     public static <I, O> O ignoreExceptions(@Nullable Logger logger,
                                             @Nullable O valueIfError,
                                             @NonNull List<Class<Throwable>> throwables,
                                             @NonNull ThrowableFunction<I, O> func,
-                                            @Nullable I input) {
+                                            @Nullable I arg) {
         try {
-            return func.apply(input);
+            return func.apply(arg);
         } catch (Throwable ex) {
             final Class exClass = ex.getClass();
             if (Collects.noneMatch(throwables, new Predicate<Class<Throwable>>() {
@@ -307,14 +388,28 @@ public class Throwables {
         }
     }
 
+    /**
+     * 执行指定的function，如果执行过程中，出现了指定的那些异常 throwables，则返回 valuesIfError，其他的异常则抛出。
+     *
+     * @param logger       当出现throwable时，用该 logger 去做日志记录
+     * @param valueIfError 当出现 指定的异常时，返回该值
+     * @param throwables   指定的异常
+     * @param func         要执行的函数
+     * @param arg1         func的第一个参数
+     * @param arg2         func的第二个参数
+     * @param <I1>         func的第一个输入参数类型
+     * @param <I2>         func的第二个输入参数类型
+     * @param <O>          func的输出参数类型
+     * @return 返回func的输入结果，如果有指定的错误发生，则返回 valueIfError
+     */
     public static <I1, I2, O> O ignoreExceptions(@Nullable Logger logger,
                                                  @Nullable O valueIfError,
                                                  @NonNull List<Class<Throwable>> throwables,
                                                  @NonNull ThrowableFunction2<I1, I2, O> func,
-                                                 @Nullable I1 input1,
-                                                 @Nullable I2 input2) {
+                                                 @Nullable I1 arg1,
+                                                 @Nullable I2 arg2) {
         try {
-            return func.apply(input1, input2);
+            return func.apply(arg1, arg2);
         } catch (Throwable ex) {
             final Class exClass = ex.getClass();
             if (Collects.noneMatch(throwables, new Predicate<Class<Throwable>>() {
@@ -330,11 +425,5 @@ public class Throwables {
         }
     }
 
-    public static String stringify(final Throwable t) {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        PrintStream stream = new PrintStream(output);
-        t.printStackTrace(stream);
 
-        return output.toString();
-    }
 }
