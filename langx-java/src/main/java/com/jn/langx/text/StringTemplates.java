@@ -177,13 +177,13 @@ public class StringTemplates {
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
     }
 
-    public static String format(String template, final String startFlag, final String endFlag, final Function2<String, Object[], String> valueGetter, final Object... args) {
-        String startFlagPattern = startFlag.replace("$", "\\$")
+    public static String format(String template, final String variableStartFlag, final String variableEndFlag, final Function2<String, Object[], String> valueGetter, final Object... args) {
+        String startFlagPattern = variableStartFlag.replace("$", "\\$")
                 .replace("[", "\\[")
                 .replace("{", "\\{")
                 .replace("(", "\\)");
 
-        String endFlagPattern = endFlag.replace("$", "\\$")
+        String endFlagPattern = variableEndFlag.replace("$", "\\$")
                 .replace("]", "\\]")
                 .replace("}", "\\}")
                 .replace(")", "\\)");
@@ -192,11 +192,11 @@ public class StringTemplates {
             @Override
             public String apply(String variable, Object[] arguments) {
                 // 需要自己剔除变量的前后标记
-                if (variable.startsWith(startFlag)) {
-                    variable = variable.substring(startFlag.length());
+                if (variable.startsWith(variableStartFlag)) {
+                    variable = variable.substring(variableStartFlag.length());
                 }
-                if (variable.endsWith(endFlag)) {
-                    variable = variable.substring(0, variable.length() - endFlag.length());
+                if (variable.endsWith(variableEndFlag)) {
+                    variable = variable.substring(0, variable.length() - variableEndFlag.length());
                 }
                 return valueGetter.apply(variable, args);
             }
@@ -213,8 +213,8 @@ public class StringTemplates {
         });
     }
 
-    public static String format(String template, final String startFlag, final String endFlag, final PlaceholderParser variableValueProvider) {
-        return format(template, startFlag, endFlag, new Function2<String, Object[], String>() {
+    public static String format(String template, final String variableStartFlag, final String variableEndFlag, final PlaceholderParser variableValueProvider) {
+        return format(template, variableStartFlag, variableEndFlag, new Function2<String, Object[], String>() {
             @Override
             public String apply(String variable, Object[] arguments) {
                 // 需要自己剔除变量的前后标记
@@ -223,8 +223,8 @@ public class StringTemplates {
         });
     }
 
-    public static String format(String template, final String startFlag, final String endFlag, final ValueGetter2<String> valueGetter) {
-        return format(template, startFlag, endFlag, new Function2<String, Object[], String>() {
+    public static String format(String template, final String variableStartFlag, final String variableEndFlag, final ValueGetter2<String> valueGetter) {
+        return format(template, variableStartFlag, variableEndFlag, new Function2<String, Object[], String>() {
             @Override
             public String apply(String variable, Object[] arguments) {
                 // 需要自己剔除变量的前后标记

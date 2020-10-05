@@ -4,6 +4,7 @@ import com.jn.langx.test.bean.Person;
 import com.jn.langx.text.StringTemplateFormatterChain;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Function2;
 import org.junit.Test;
 
 import java.util.Map;
@@ -107,6 +108,31 @@ public class StringTemplateTests {
                 .formatWithMap(map)
                 .formatWithBean(p).get());
 
+    }
+
+    @Test
+    public void testTemplateExtractVariable() {
+        final Person p = newBean();
+        String template = "ID: ${id}, name: ${name}, age: ${age}, desc: ${desc}, xxxx: ${xxxx}";
+        System.out.println(StringTemplates.format(template, "${", "}",
+                new Function2<String, Object[], String>() {
+                    @Override
+                    public String apply(String variable, Object[] args) {
+                        if ("id".equals(variable)) {
+                            return p.getId();
+                        }
+                        if ("name".equals(variable)) {
+                            return p.getName();
+                        }
+                        if ("age".equals(variable)) {
+                            return "" + p.getAge();
+                        }
+                        if ("desc".equals(variable)) {
+                            return p.getDesc();
+                        }
+                        return "${" + variable + "}";
+                    }
+                }));
     }
 
 }
