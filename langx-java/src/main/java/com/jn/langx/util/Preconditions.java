@@ -49,7 +49,7 @@ public class Preconditions {
         if (predicate.test(argument)) {
             return argument;
         }
-        if (Objects.isNull(messageSupplier)) {
+        if (Objs.isNull(messageSupplier)) {
             throw new IllegalArgumentException();
         } else {
             throw new IllegalArgumentException(messageSupplier.get(params));

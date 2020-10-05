@@ -3146,7 +3146,7 @@ public class Strings {
      * @return the index where the search char was found, -1 if not found
      * updated to behave more like <code>String</code>
      */
-    static int lastIndexOf(final CharSequence cs, final int searchChar, int start) {
+    public static int lastIndexOf(final CharSequence cs, final int searchChar, int start) {
         if (cs instanceof String) {
             return ((String) cs).lastIndexOf(searchChar, start);
         }
@@ -3193,7 +3193,7 @@ public class Strings {
      * @param start      the start index
      * @return the index where the search sequence was found
      */
-    static int lastIndexOf(final CharSequence cs, final CharSequence searchChar, final int start) {
+    public static int lastIndexOf(final CharSequence cs, final CharSequence searchChar, final int start) {
         return cs.toString().lastIndexOf(searchChar.toString(), start);
     }
 
@@ -3203,7 +3203,7 @@ public class Strings {
      * @param cs the {@code CharSequence} to be processed
      * @return the resulting char array
      */
-    static char[] toCharArray(final CharSequence cs) {
+    public static char[] toCharArray(final CharSequence cs) {
         if (cs instanceof String) {
             return ((String) cs).toCharArray();
         }
@@ -3226,7 +3226,7 @@ public class Strings {
      * @param length     character length of the region
      * @return whether the region matched
      */
-    static boolean regionMatches(final CharSequence cs, final boolean ignoreCase, final int thisStart,
+    public static boolean regionMatches(final CharSequence cs, final boolean ignoreCase, final int thisStart,
                                  final CharSequence substring, final int start, final int length) {
         if (cs instanceof String && substring instanceof String) {
             return ((String) cs).regionMatches(ignoreCase, thisStart, (String) substring, start, length);

@@ -177,6 +177,14 @@ public class StringTemplates {
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
     }
 
+    /**
+     * 模板变量替换
+     * @param template 模板
+     * @param variableStartFlag 变量的regexp pattern的前缀标识，例如 { 或 ${
+     * @param variableEndFlag 变量的regexp pattern的后缀标识，例如 { 或 ${
+     * @return 替换后排的字符串
+     * @since 2.10.1
+     */
     public static String format(String template, final String variableStartFlag, final String variableEndFlag, final Function2<String, Object[], String> valueGetter, final Object... args) {
         String startFlagPattern = variableStartFlag.replace("$", "\\$")
                 .replace("[", "\\[")
@@ -203,6 +211,14 @@ public class StringTemplates {
         });
     }
 
+    /**
+     * 模板变量替换
+     * @param template 模板
+     * @param variablePattern 变量的regexp pattern
+     * @param variableValueProvider 用于提供变量值
+     * @return 替换后排的字符串
+     * @since 2.10.1
+     */
     public static String format(String template, Pattern variablePattern, final PlaceholderParser variableValueProvider) {
         return format(template, variablePattern, new Function2<String, Object[], String>() {
             @Override
@@ -213,6 +229,10 @@ public class StringTemplates {
         });
     }
 
+    /**
+     * 模板替换
+     * @return 2.10.1
+     */
     public static String format(String template, final String variableStartFlag, final String variableEndFlag, final PlaceholderParser variableValueProvider) {
         return format(template, variableStartFlag, variableEndFlag, new Function2<String, Object[], String>() {
             @Override
@@ -223,6 +243,10 @@ public class StringTemplates {
         });
     }
 
+    /**
+     * 模板替换
+     * @return 2.10.1
+     */
     public static String format(String template, final String variableStartFlag, final String variableEndFlag, final ValueGetter2<String> valueGetter) {
         return format(template, variableStartFlag, variableEndFlag, new Function2<String, Object[], String>() {
             @Override
