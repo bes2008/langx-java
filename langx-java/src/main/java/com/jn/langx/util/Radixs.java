@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.util.regex.Pattern;
 
 /**
+ * 进制转换工具
+ * <pre>
  * 10进制		二进制		8进制		16进制
  * 1		    1		    1		    1
  * 10		    1010		12		    A
@@ -12,6 +14,12 @@ import java.util.regex.Pattern;
  * 18		    10010		22		    12
  * 100		    1100100		144		    64
  * 100=64+32+4=1100100
+ * </pre>
+ *
+ * binary: 二进制
+ * otc: 八进制
+ * decimal: 十进制
+ * hex：十六进制
  */
 public class Radixs {
     public static String toRadix(int b, int radix) {
