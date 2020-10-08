@@ -1,7 +1,5 @@
 package com.jn.langx.util.io;
 
-import com.jn.langx.util.Emptys;
-
 import java.io.*;
 
 /**
@@ -21,7 +19,7 @@ public class ObjectIOs {
      */
     public static <T> byte[] serialize(T obj) throws IOException {
         if (obj == null) {
-            return Emptys.EMPTY_BYTES;
+            return null;
         }
         ObjectOutputStream output = null;
         try {
