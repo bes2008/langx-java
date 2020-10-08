@@ -1,5 +1,9 @@
 package com.jn.langx.util.io;
 
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.reflect.Reflects;
+
 import java.io.*;
 
 /**
@@ -33,7 +37,7 @@ public class ObjectIOs {
     }
 
     public static <T> T deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
-        if (bytes == null || bytes.length == 0) {
+        if (Emptys.isEmpty(bytes)) {
             return null;
         }
         ObjectInputStream input = null;
@@ -44,5 +48,16 @@ public class ObjectIOs {
         } finally {
             IOs.close(input);
         }
+    }
+
+    public static <T> T deserialize(byte[] bytes, Class<T> targetType) throws IOException, ClassNotFoundException {
+        T obj = deserialize(bytes);
+        if (obj == null) {
+            return null;
+        }
+        if (Reflects.isInstance(obj, targetType)) {
+            return obj;
+        }
+        throw new ClassCastException(StringTemplates.formatWithPlaceholder("Class {} is not been cast to {}", Reflects.getFQNClassName(obj.getClass()), Reflects.getFQNClassName(targetType)));
     }
 }

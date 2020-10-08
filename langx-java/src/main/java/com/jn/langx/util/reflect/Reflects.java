@@ -1162,6 +1162,21 @@ public class Reflects {
         return set.contains(getFQNClassName(clazz));
     }
 
+    /**
+     * 判断 obj 是否是 targetType 的实例
+     * @param object
+     * @param targetType
+     * @param <T>
+     * @return 如果是，返回true
+     *
+     * @since 2.10.2
+     */
+    public static <T> boolean isInstance(T object, @NonNull Class targetType){
+        Preconditions.checkNotNull(object);
+        Preconditions.checkNotNull(targetType);
+        return targetType.isInstance(object);
+    }
+
     public static <E> Class<E> getComponentType(E[] array) {
         Preconditions.checkNotNull(array);
         Class clazz = array.getClass();
