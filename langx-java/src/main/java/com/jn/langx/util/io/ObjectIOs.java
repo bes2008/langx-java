@@ -19,7 +19,7 @@ public class ObjectIOs {
      * @return
      * @throws IOException
      */
-    public static byte[] serialize(Object obj) throws IOException {
+    public static <T> byte[] serialize(T obj) throws IOException {
         if (obj == null) {
             return Emptys.EMPTY_BYTES;
         }
@@ -34,7 +34,7 @@ public class ObjectIOs {
         }
     }
 
-    public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+    public static <T> T deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
         if (bytes == null || bytes.length == 0) {
             return null;
         }
@@ -42,7 +42,7 @@ public class ObjectIOs {
         try {
             ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
             input = new ObjectInputStream(bai);
-            return input.readObject();
+            return (T) input.readObject();
         } finally {
             IOs.close(input);
         }
