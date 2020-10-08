@@ -4,6 +4,9 @@ import com.jn.langx.util.Emptys;
 
 import java.io.*;
 
+/**
+ * @since 2.10.2
+ */
 public class ObjectIOs {
     private ObjectIOs() {
     }
