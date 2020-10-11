@@ -1,14 +1,17 @@
 package com.jn.langx.util;
 
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.text.properties.PropertiesAccessor;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.StringMap;
+import com.jn.langx.util.function.Functions;
+import com.jn.langx.util.function.Predicate;
 
 import java.util.List;
 import java.util.Locale;
 
 /**
  * 提供当前进程的系统属性值
+ *
  * @author jinuo.fang
  */
 public class SystemPropertys {
@@ -67,6 +70,7 @@ public class SystemPropertys {
 
     /**
      * OS PATH environment variable
+     *
      * @return 返回系统属性：java.library.path
      */
     public static String getJavaLibraryPath() {
@@ -76,6 +80,7 @@ public class SystemPropertys {
 
     /**
      * JRE home directory
+     *
      * @return 返回系统属性：java.home
      */
     public static String getJREHome() {
@@ -84,6 +89,7 @@ public class SystemPropertys {
 
     /**
      * JRE version
+     *
      * @return 返回系统属性：java.runtime.version
      */
     public static String getJREVersion() {
@@ -170,11 +176,36 @@ public class SystemPropertys {
     /**
      * @return 返回系统属性：line.separator
      */
-    public static String getLineSeparator(){
+    public static String getLineSeparator() {
         return System.getProperty("line.separator");
     }
 
     public static PropertiesAccessor getAccessor() {
         return new PropertiesAccessor(System.getProperties());
+    }
+
+    /**
+     * 如果不存在 指定的key,则设置为 value
+     *
+     * @param key
+     * @param value
+     * @since 2.10.2
+     */
+    public static void setPropertyIfAbsent(String key, String value) {
+        setPropertyIfMatched(key, Functions.<String>nullPredicate(), value);
+    }
+
+    /**
+     * 如果根据key获取到的值满足 predicate, 则将值设置为value
+     *
+     * @param key
+     * @param value
+     * @since 2.10.2
+     */
+    public static void setPropertyIfMatched(String key, Predicate<String> predicate, String value) {
+        String v = System.getProperty(key);
+        if (predicate.test(v)) {
+            System.setProperty(key, value);
+        }
     }
 }
