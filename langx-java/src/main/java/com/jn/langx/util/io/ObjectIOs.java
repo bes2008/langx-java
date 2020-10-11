@@ -1,7 +1,9 @@
 package com.jn.langx.util.io;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
 
 import java.io.*;
@@ -25,12 +27,28 @@ public class ObjectIOs {
         if (obj == null) {
             return null;
         }
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        try {
+            serialize(obj, bao);
+            return bao.toByteArray();
+        } finally {
+            IOs.close(bao);
+        }
+    }
+
+    /**
+     * 序列化到指定的输出流
+     */
+    public static <T> void serialize(T obj, @NonNull OutputStream outputStream) throws IOException {
+        if (obj == null) {
+            return;
+        }
+        Preconditions.checkNotNull(outputStream, "the output stream is null");
         ObjectOutputStream output = null;
         try {
-            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            output = new ObjectOutputStream(bao);
+            output = new ObjectOutputStream(outputStream);
             output.writeObject(obj);
-            return bao.toByteArray();
+            output.flush();
         } finally {
             IOs.close(output);
         }
