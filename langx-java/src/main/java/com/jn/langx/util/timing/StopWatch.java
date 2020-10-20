@@ -21,10 +21,6 @@ import java.util.List;
  * <p>This class is normally used to verify performance during proof-of-concepts
  * and in development, rather than as part of production applications.
  *
- * @author Rod Johnson
- * @author Juergen Hoeller
- * @author Sam Brannen
- * @since May 2, 2001
  */
 public class StopWatch {
 
@@ -85,12 +81,30 @@ public class StopWatch {
         this.setKeepTaskList(keepTaskList);
     }
 
+    public static StopWatch createAndStart(){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        return stopWatch;
+    }
+
+    public static StopWatch createAndStart(String id){
+        StopWatch stopWatch = new StopWatch(id);
+        stopWatch.start();
+        return stopWatch;
+    }
+
+    public static StopWatch createAndStart(String id, boolean keepTaskList){
+        StopWatch stopWatch = new StopWatch(id, keepTaskList);
+        stopWatch.start();
+        return stopWatch;
+    }
+
+
     /**
      * Return the id of this stop watch, as specified on construction.
      *
      * @return the id (empty String by default)
      * @see #StopWatch(String)
-     * @since 4.2.2
      */
     public String getId() {
         return this.id;
@@ -165,7 +179,6 @@ public class StopWatch {
      * Return the name of the currently running task, if any.
      *
      * @see #isRunning()
-     * @since 4.2.2
      */
     @Nullable
     public String currentTaskName() {
