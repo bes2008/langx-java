@@ -113,7 +113,19 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
      * @since 1.4
      */
     public static String encodeHexString(final byte[] data) {
-        return new String(encodeHex(data));
+        return encodeHexString(data, true);
+    }
+
+    /**
+     *
+     * @param data
+     * @param lowerCase
+     * @return
+     *
+     * @since 2.10.3
+     */
+    public static String encodeHexString(final  byte[] data, boolean lowerCase){
+        return new String(encodeHex(data, lowerCase));
     }
 
     /**
