@@ -18,7 +18,6 @@ import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.struct.Entry;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
-import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -1079,9 +1078,9 @@ public class Collects {
         });
     }
 
-    public static <E, C extends Collection<E>> int firstOccurrence(C c, Predicate2<Integer, E> predicate){
-        List<Pair<Integer, E>> pairs = Collects.findNPairs(c, predicate,1);
-        if(Emptys.isEmpty(pairs)){
+    public static <E, C extends Collection<E>> int firstOccurrence(C c, Predicate2<Integer, E> predicate) {
+        List<Pair<Integer, E>> pairs = Collects.findNPairs(c, predicate, 1);
+        if (Emptys.isEmpty(pairs)) {
             return -1;
         }
         Pair<Integer, E> pair = pairs.get(0);
@@ -1205,20 +1204,20 @@ public class Collects {
     /**
      * find the first matched element, null if not found
      */
-    public static <E, C extends Collection<E>> List<Pair<Integer,E>> findNPairs(@Nullable C collection, @Nullable Predicate2<Integer,E> predicate, final int n) {
-        final List<Pair<Integer,E>> ret = Collects.emptyArrayList();
+    public static <E, C extends Collection<E>> List<Pair<Integer, E>> findNPairs(@Nullable C collection, @Nullable Predicate2<Integer, E> predicate, final int n) {
+        final List<Pair<Integer, E>> ret = Collects.emptyArrayList();
         if (n <= 0 || Emptys.isEmpty(collection)) {
             return ret;
         }
 
         forEach(collection, predicate, new Consumer2<Integer, E>() {
             @Override
-            public void accept(Integer index,E e) {
+            public void accept(Integer index, E e) {
                 ret.add(new Entry<Integer, E>(index, e));
             }
-        }, new Predicate2<Integer,E>() {
+        }, new Predicate2<Integer, E>() {
             @Override
-            public boolean test(Integer index,E value) {
+            public boolean test(Integer index, E value) {
                 return ret.size() == n;
             }
         });
@@ -1302,6 +1301,10 @@ public class Collects {
         return hasRemoved;
     }
 
+    public static boolean anyMatch(@NonNull Predicate<Object> predicate, Object... array) {
+        return anyMatch(asList(array), predicate);
+    }
+
 
     /**
      * has any element match the specified condition
@@ -1317,6 +1320,7 @@ public class Collects {
         return false;
     }
 
+
     /**
      * has any element match the specified condition
      *
@@ -1329,6 +1333,10 @@ public class Collects {
             return entry != null;
         }
         return false;
+    }
+
+    public static boolean allMatch(@NonNull Predicate predicate, @Nullable Object... collection) {
+        return allMatch(asList(collection), predicate);
     }
 
     /**
@@ -1363,6 +1371,10 @@ public class Collects {
             }
         }
         return true;
+    }
+
+    public static boolean noneMatch(@NonNull Predicate predicate, @Nullable Object... collection) {
+        return noneMatch(asList(collection), predicate);
     }
 
     /**
@@ -1404,8 +1416,8 @@ public class Collects {
         return new LinkedHashSet<E>(Emptys.isEmpty(collection) ? Collections.EMPTY_LIST : collection);
     }
 
-    public static <E> E[] limit(E[] array, int maxSize){
-        return (E[])toArray(limit(asList(array), maxSize));
+    public static <E> E[] limit(E[] array, int maxSize) {
+        return (E[]) toArray(limit(asList(array), maxSize));
     }
 
     /**
@@ -1425,8 +1437,8 @@ public class Collects {
         return list.subList(0, maxSize);
     }
 
-    public static <E> E[] skip(@Nullable E[] array, int n){
-        return (E[])toArray(skip(asList(array),n));
+    public static <E> E[] skip(@Nullable E[] array, int n) {
+        return (E[]) toArray(skip(asList(array), n));
     }
 
     /**
@@ -1523,7 +1535,7 @@ public class Collects {
         return result;
     }
 
-    public static <E> List<E> reverse(@Nullable List<E> list){
+    public static <E> List<E> reverse(@Nullable List<E> list) {
         return reverse(list, false);
     }
 

@@ -1,7 +1,9 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Reference;
 
@@ -27,6 +29,18 @@ public class Emptys {
     public static final X509Certificate[] EMPTY_X509_CERTIFICATES = {};
     public static final javax.security.cert.X509Certificate[] EMPTY_JAVAX_X509_CERTIFICATES = {};
 
+    public static boolean isAnyEmpty(Object... args) {
+        return Collects.anyMatch(Functions.emptyPredicate(), args);
+    }
+
+    public static boolean isNoneEmpty(Object... args) {
+        return Collects.noneMatch(Functions.emptyPredicate(), args);
+    }
+
+
+    public static boolean isAllEmpty(Object... args) {
+        return Collects.allMatch(Functions.emptyPredicate(), args);
+    }
 
     public static boolean isEmpty(Object object) {
         if (object == null) {
