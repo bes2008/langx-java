@@ -1,5 +1,9 @@
 package com.jn.langx.util.reflect.type;
 
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.reflect.Reflects;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -20,35 +24,43 @@ import java.lang.reflect.Type;
  * @param <T>
  */
 public abstract class ParameterizedTypeGetter<T> {
-    private final Type rawType;
+    private Type rawType;
+    private Type[] actualTypeArguments;
 
     protected ParameterizedTypeGetter() {
-        rawType = getSuperclassTypeParameter(getClass());
+        parseSuperclassTypeParameter(getClass());
     }
 
-    Type getSuperclassTypeParameter(Class<?> clazz) {
+    void parseSuperclassTypeParameter(Class<?> clazz) {
         Type genericSuperclass = clazz.getGenericSuperclass();
         if (genericSuperclass instanceof Class) {
-            // try to climb up the hierarchy until meet something useful
-            if (ParameterizedTypeGetter.class != genericSuperclass) {
-                return getSuperclassTypeParameter(clazz.getSuperclass());
-            }
-
-            throw new RuntimeException("'" + getClass() + "' extends TypeReference but misses the type parameter. "
-                    + "Remove the extension or add a type parameter to it.");
+            throw new RuntimeException(StringTemplates.formatWithPlaceholder("{} is not a parameterized type", Reflects.getFQNClassName(clazz)));
         }
-
         Type rawType = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
-        // TODO remove this when Reflector is fixed to return Types
         if (rawType instanceof ParameterizedType) {
             rawType = ((ParameterizedType) rawType).getRawType();
         }
+        this.rawType = rawType;
+        actualTypeArguments = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+    }
 
+
+    /**
+     * 外层类型
+     *
+     * @return
+     */
+    public final Type getRawType() {
         return rawType;
     }
 
-    public final Type getRawType() {
-        return rawType;
+    public final Type getActualArgumentType(int index) {
+        Preconditions.checkIndex(index, actualTypeArguments == null ? 0 : actualTypeArguments.length);
+        return actualTypeArguments[index];
+    }
+
+    public final Type getType() {
+        return getActualArgumentType(0);
     }
 
     @Override
