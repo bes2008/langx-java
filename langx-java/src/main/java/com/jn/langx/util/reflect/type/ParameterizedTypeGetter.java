@@ -36,14 +36,19 @@ public abstract class ParameterizedTypeGetter<T> {
         if (genericSuperclass instanceof Class) {
             throw new RuntimeException(StringTemplates.formatWithPlaceholder("{} is not a parameterized type", Reflects.getFQNClassName(clazz)));
         }
-        Type rawType = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
-        if (rawType instanceof ParameterizedType) {
-            rawType = ((ParameterizedType) rawType).getRawType();
-        }
-        this.rawType = rawType;
-        actualTypeArguments = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
-    }
 
+        this.actualTypeArguments = ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        if (actualTypeArguments.length > 0) {
+            Type rawType = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
+            if (rawType instanceof ParameterizedType) {
+                rawType = ((ParameterizedType) rawType).getRawType();
+            }
+            this.rawType = rawType;
+        } else {
+            this.rawType = clazz;
+        }
+
+    }
 
     /**
      * 外层类型
