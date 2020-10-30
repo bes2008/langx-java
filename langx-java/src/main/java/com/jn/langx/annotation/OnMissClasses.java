@@ -12,5 +12,5 @@ import static java.lang.annotation.ElementType.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({TYPE})
 public @interface OnMissClasses {
-
+    String[] value();
 }
