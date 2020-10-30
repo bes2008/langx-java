@@ -76,11 +76,28 @@ public class ClassLoaders {
         return cl;
     }
 
-    public static ClassLoader getSystemClassLoader(){
+    public static ClassLoader getSystemClassLoader() {
         try {
             return ClassLoader.getSystemClassLoader();
         } catch (final SecurityException se) {
             return null;
         }
     }
+
+    public static boolean hasClass(@NonNull String classFQN, @Nullable ClassLoader classLoader) {
+        Preconditions.checkNotNull(classFQN, "the calss name is null or empty");
+
+        while (classFQN.endsWith(".class")) {
+            classFQN = classFQN.substring(0, classFQN.length() - ".class".length());
+        }
+
+        Class c = null;
+        try {
+            c = loadClass(classFQN, classLoader);
+        } catch (Throwable ex) {
+            // ignore it
+        }
+        return c != null;
+    }
+
 }

@@ -1141,6 +1141,12 @@ public class Collects {
         return holder.get();
     }
 
+    /**
+     * find the first matched element, null if not found
+     */
+    public static <E, C extends Collection<E>> E findFirst(@Nullable C collection) {
+        return findFirst(collection, Functions.<E>nonNullPredicate());
+    }
 
     /**
      * find the first matched element, null if not found
