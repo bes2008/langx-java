@@ -2,6 +2,7 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.exception.RuntimeIOException;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.IOs;
@@ -101,6 +102,10 @@ public class Throwables {
             throw (RuntimeException) ex;
         }
         throw new RuntimeException(ex);
+    }
+
+    public static RuntimeIOException wrapAsRuntimeIOException(IOException ex){
+        return new RuntimeIOException(ex);
     }
 
     /**

@@ -2,7 +2,9 @@ package com.jn.langx.util.io;
 
 import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.io.stream.StringBuilderWriter;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1630,6 +1632,12 @@ public class IOs {
         write(data, output, Charsets.getCharset(encoding));
     }
 
+    public static void write(final String data, final Writer output, final String encoding) throws IOException {
+        if (Emptys.isNotEmpty(data)) {
+            write(data.getBytes(encoding), output);
+        }
+    }
+
     // write StringBuffer
     //-----------------------------------------------------------------------
 
@@ -1642,6 +1650,13 @@ public class IOs {
      * @throws IOException          if an I/O error occurs
      */
     public static void write(final StringBuffer data, final Writer output)
+            throws IOException {
+        if (data != null) {
+            output.write(data.toString());
+        }
+    }
+
+    public static void write(final StringBuilder data, final Writer output)
             throws IOException {
         if (data != null) {
             output.write(data.toString());
@@ -1665,6 +1680,12 @@ public class IOs {
         write(data, output, (String) null);
     }
 
+    public static void write(final StringBuilder data, final OutputStream output)
+            throws IOException {
+        write(data, output, (String) null);
+    }
+
+
     /**
      * Writes chars from a <code>StringBuffer</code> to bytes on an
      * <code>OutputStream</code> using the specified character encoding.
@@ -1683,6 +1704,13 @@ public class IOs {
      *                                                      .UnsupportedEncodingException} in version 2.2 if the encoding is not supported.
      */
     public static void write(final StringBuffer data, final OutputStream output, final String encoding)
+            throws IOException {
+        if (data != null) {
+            output.write(data.toString().getBytes(Charsets.getCharset(encoding)));
+        }
+    }
+
+    public static void write(final StringBuilder data, final OutputStream output, final String encoding)
             throws IOException {
         if (data != null) {
             output.write(data.toString().getBytes(Charsets.getCharset(encoding)));
@@ -2676,4 +2704,12 @@ public class IOs {
         }
     }
 
+    public static int getRemaining(InputStream inputStream) {
+        Preconditions.checkNotNull(inputStream);
+        try {
+            return inputStream.available();
+        } catch (IOException ex) {
+            throw Throwables.wrapAsRuntimeIOException(ex);
+        }
+    }
 }

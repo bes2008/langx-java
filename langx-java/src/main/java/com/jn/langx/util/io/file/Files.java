@@ -14,6 +14,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -1759,5 +1760,27 @@ public class Files {
             buf[nread++] = (byte) n;
         }
         return (capacity == nread) ? buf : Arrays.copyOf(buf, nread);
+    }
+
+    public static void write(String bytes, File file) throws IOException {
+        write(bytes, Charsets.getDefault(), file, true);
+    }
+
+    public static void write(String bytes, File file, boolean append) throws IOException {
+        write(bytes, Charsets.getDefault(), file, append);
+    }
+
+    public static void write(String bytes, Charset charset, File file) throws IOException {
+        write(bytes, charset, file, true);
+    }
+
+    public static void write(String bytes, Charset charset, File file, boolean append) throws IOException {
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(file, append);
+            IOs.write(bytes.getBytes(charset), fileWriter);
+        } finally {
+            IOs.close(fileWriter);
+        }
     }
 }
