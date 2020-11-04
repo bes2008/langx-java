@@ -26,11 +26,14 @@ public class IODebugger {
     }
 
     public static String showBytes(ByteBuffer byteBuffer, Charset charset) {
-        int position = byteBuffer.position();
-        byte[] bytes = new byte[byteBuffer.remaining()];
-        byteBuffer.get(bytes);
-        byteBuffer.position(position);
-        return showBytes(bytes, charset);
+        if (byteBuffer.remaining() > 0) {
+            int position = byteBuffer.position();
+            byte[] bytes = new byte[byteBuffer.remaining()];
+            byteBuffer.get(bytes);
+            byteBuffer.position(position);
+            return showBytes(bytes, charset);
+        }
+        return "";
     }
 
     public static String showBytes(@NonNull InputStream inputStream) {
