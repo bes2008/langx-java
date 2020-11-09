@@ -21,8 +21,9 @@ public abstract class Buffer {
         limit(lim);
         position(pos);
         if (mark >= 0) {
-            if (mark > pos)
+            if (mark > pos) {
                 throw new IllegalArgumentException();
+            }
             this.mark = mark;
         }
     }
@@ -55,8 +56,9 @@ public abstract class Buffer {
      * @throws IllegalArgumentException If the preconditions on <tt>newPosition</tt> do not hold
      */
     public final Buffer position(int newPosition) {
-        if ((newPosition > limit) || (newPosition < 0))
+        if ((newPosition > limit) || (newPosition < 0)) {
             throw new IllegalArgumentException();
+        }
         position = newPosition;
         if (mark > position) mark = -1;
         return this;
@@ -82,8 +84,9 @@ public abstract class Buffer {
      * @throws IllegalArgumentException If the preconditions on <tt>newLimit</tt> do not hold
      */
     public final Buffer limit(int newLimit) {
-        if ((newLimit > capacity) || (newLimit < 0))
+        if ((newLimit > capacity) || (newLimit < 0)) {
             throw new IllegalArgumentException();
+        }
         limit = newLimit;
         if (position > limit) position = limit;
         if (mark > limit) mark = -1;
@@ -111,8 +114,9 @@ public abstract class Buffer {
      */
     public final Buffer reset() {
         int m = mark;
-        if (m < 0)
+        if (m < 0) {
             throw new InvalidMarkException();
+        }
         position = m;
         return this;
     }
