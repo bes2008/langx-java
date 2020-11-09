@@ -1,6 +1,12 @@
 package com.jn.langx.text.xml;
 
 
+import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
+
+import java.util.List;
+
 /**
  * 根节点：/ <br>
  * 当前节点：.<br>
@@ -58,5 +64,16 @@ public class XPaths {
      */
     public static String a_or_BandC(String expA, String expB, String expC) {
         return expA + " or (" + expB + " and " + expC + ")";
+    }
+
+    public static String useNamespace(String xpathExpr, final String namespacePrefix) {
+        String[] segments = Strings.split(xpathExpr, "/");
+        List<String> prefixedSegments = Pipeline.of(segments).clearNulls().map(new Function<String, String>() {
+            @Override
+            public String apply(String segment) {
+                return namespacePrefix + ":" + segment;
+            }
+        }).asList();
+        return "/" + Strings.join("/", prefixedSegments);
     }
 }
