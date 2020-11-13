@@ -3,6 +3,7 @@ package com.jn.langx.aspectj.reflect;
 import com.jn.langx.annotation.Name;
 import com.jn.langx.aspectj.coderepository.Repositorys;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.Platform;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
@@ -56,6 +57,12 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
             meta.setName(parameterName);
         }
         // 获取参数，这里拿到的参数很可能跟之前获取的不一样
+        if (this.delegate == null) {
+            if (Platform.JAVA_VERSION_INT >= 8) {
+                logger.error("Can't find the langx-java8.jar in the classpath");
+            }
+        }
+
         MethodParameter delegate = this.delegate.get(meta);
         if (Strings.isEmpty(parameterName)) {
             parameterName = delegate.getName();

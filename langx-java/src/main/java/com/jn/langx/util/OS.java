@@ -225,9 +225,7 @@ public final class OS {
                 } else if (family.equals(FAMILY_OPENVMS)) {
                     isFamily = OS_NAME.indexOf(FAMILY_OPENVMS) > -1;
                 } else {
-                    throw new IllegalArgumentException(
-                            "Don\'t know how to detect os family \"" + family
-                                    + "\"");
+                    throw new IllegalArgumentException("Don't know how to detect os family: " + family);
                 }
             }
             if (name != null) {
