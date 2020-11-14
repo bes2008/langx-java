@@ -1,6 +1,6 @@
 package com.jn.langx.invocation.aop;
 
-import com.jn.langx.invocation.SimpleInvocationHandler;
+import com.jn.langx.invocation.proxy.SimpleInvocationHandler;
 
 import java.lang.reflect.Method;
 import java.util.List;

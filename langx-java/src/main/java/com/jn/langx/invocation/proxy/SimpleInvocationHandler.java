@@ -1,4 +1,7 @@
-package com.jn.langx.invocation;
+package com.jn.langx.invocation.proxy;
+
+import com.jn.langx.invocation.GenericMethodInvocation;
+import com.jn.langx.invocation.MethodInvocation;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

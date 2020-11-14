@@ -1,7 +1,7 @@
 package com.jn.langx.invocation.proxy.targetdelegate;
 
 import com.jn.langx.invocation.MethodInvocation;
-import com.jn.langx.invocation.SimpleInvocationHandler;
+import com.jn.langx.invocation.proxy.SimpleInvocationHandler;
 
 /**
  * Use it, the delegate will be the target
