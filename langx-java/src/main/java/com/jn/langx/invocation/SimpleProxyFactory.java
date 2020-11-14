@@ -1,4 +1,7 @@
-package com.jn.langx.proxy;
+package com.jn.langx.invocation;
+
+import com.jn.langx.invocation.proxy.ProxyFactory;
+import com.jn.langx.invocation.proxy.Proxys;
 
 import java.lang.reflect.InvocationHandler;
 

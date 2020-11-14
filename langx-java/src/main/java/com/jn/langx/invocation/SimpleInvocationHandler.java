@@ -1,4 +1,4 @@
-package com.jn.langx.proxy;
+package com.jn.langx.invocation;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -24,10 +24,10 @@ public class SimpleInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return execute(new AbstractMethodInvocation(proxy, target, method, args));
+        return execute(new GenericMethodInvocation(proxy, target, method, args));
     }
 
-    protected Object execute(AbstractMethodInvocation methodInvocation) throws Throwable {
-        return methodInvocation.getMethod().invoke(methodInvocation.getTarget(), methodInvocation.getArguments());
+    protected Object execute(MethodInvocation methodInvocation) throws Throwable {
+        return methodInvocation.getJoinPoint().invoke(methodInvocation.getThis(), methodInvocation.getArguments());
     }
 }

@@ -1,7 +1,7 @@
-package com.jn.langx.proxy.aop;
+package com.jn.langx.invocation.aop;
 
 import com.jn.langx.factory.Provider;
-import com.jn.langx.proxy.MethodInvocation;
+import com.jn.langx.invocation.MethodInvocation;
 
 import java.util.List;
 

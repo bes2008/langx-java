@@ -1,7 +1,6 @@
-package com.jn.langx.proxy.aop;
+package com.jn.langx.invocation.aop;
 
-import com.jn.langx.proxy.AbstractMethodInvocation;
-import com.jn.langx.proxy.MethodInvocation;
+import com.jn.langx.invocation.GenericMethodInvocation;
 import com.jn.langx.util.Emptys;
 
 import java.lang.reflect.InvocationTargetException;
@@ -9,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AopMethodInvocation extends AbstractMethodInvocation implements MethodInvocation {
+public class AopMethodInvocation extends GenericMethodInvocation {
     private List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
     private int currentInterceptorIndex = -1;
 
@@ -24,34 +23,20 @@ public class AopMethodInvocation extends AbstractMethodInvocation implements Met
     }
 
     @Override
-    public Method getJoinPoint() {
-        return this.method;
-    }
-
-    @Override
-    public Object[] getArguments() {
-        return this.arguments;
-    }
-
-    @Override
-    public Object getThis() {
-        return this.target;
-    }
-
-    @Override
     public Object proceed() throws Throwable {
         if (currentInterceptorIndex == interceptors.size() - 1) {
-            return doJoinPoint();
+            return doProceed();
         }
         currentInterceptorIndex++;
         MethodInterceptor interceptor = interceptors.get(currentInterceptorIndex);
         return interceptor.intercept(this);
     }
 
-    protected Object doJoinPoint() {
+    protected Object doProceed() {
         try {
+            Method method = getJoinPoint();
             method.setAccessible(true);
-            return method.invoke(this.target, arguments);
+            return method.invoke(this.getThis(), getArguments());
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {

@@ -1,6 +1,6 @@
-package com.jn.langx.proxy.aop;
+package com.jn.langx.invocation.aop;
 
-import com.jn.langx.proxy.ConstructorInvocation;
+import com.jn.langx.invocation.ConstructorInvocation;
 
 import java.lang.reflect.Constructor;
 

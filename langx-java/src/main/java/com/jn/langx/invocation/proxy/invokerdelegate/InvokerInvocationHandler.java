@@ -1,6 +1,6 @@
-package com.jn.langx.proxy.invokerdelegate;
+package com.jn.langx.invocation.proxy.invokerdelegate;
 
-import com.jn.langx.proxy.SimpleInvocationHandler;
+import com.jn.langx.invocation.SimpleInvocationHandler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

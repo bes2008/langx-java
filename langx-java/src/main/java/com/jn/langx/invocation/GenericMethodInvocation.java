@@ -1,14 +1,14 @@
-package com.jn.langx.proxy;
+package com.jn.langx.invocation;
 
 import java.lang.reflect.Method;
 
-public class AbstractMethodInvocation implements MethodInvocation {
-    protected Method method;
-    protected Object target;
-    protected Object[] arguments;
-    protected Object proxy;
+public class GenericMethodInvocation implements MethodInvocation {
+    private Method method;
+    private Object target;
+    private Object[] arguments;
+    private Object proxy;
 
-    public AbstractMethodInvocation(Object proxy, Object target, Method method, Object[] arguments) {
+    public GenericMethodInvocation(Object proxy, Object target, Method method, Object[] arguments) {
         this.arguments = arguments;
         this.proxy = proxy;
         this.target = target;
@@ -21,10 +21,6 @@ public class AbstractMethodInvocation implements MethodInvocation {
 
     public void setMethod(Method method) {
         this.method = method;
-    }
-
-    public Object getTarget() {
-        return target;
     }
 
     public void setTarget(Object target) {
@@ -54,7 +50,7 @@ public class AbstractMethodInvocation implements MethodInvocation {
 
     @Override
     public Object getThis() {
-        return getTarget();
+        return target;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.jn.langx.proxy;
+package com.jn.langx.invocation;
 
 import java.lang.reflect.Constructor;
 
