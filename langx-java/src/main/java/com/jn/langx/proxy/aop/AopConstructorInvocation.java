@@ -1,8 +1,10 @@
 package com.jn.langx.proxy.aop;
 
+import com.jn.langx.proxy.ConstructorInvocation;
+
 import java.lang.reflect.Constructor;
 
-public class DefaultConstructorInvocation implements ConstructorInvocation {
+public class AopConstructorInvocation implements ConstructorInvocation {
     private Constructor constructor;
     private Object[] arguments;
 

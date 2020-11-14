@@ -24,10 +24,10 @@ public class SimpleInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return execute(new MethodInvocation(proxy, target, method, args));
+        return execute(new AbstractMethodInvocation(proxy, target, method, args));
     }
 
-    protected Object execute(MethodInvocation methodInvocation) throws Throwable {
+    protected Object execute(AbstractMethodInvocation methodInvocation) throws Throwable {
         return methodInvocation.getMethod().invoke(methodInvocation.getTarget(), methodInvocation.getArguments());
     }
 }

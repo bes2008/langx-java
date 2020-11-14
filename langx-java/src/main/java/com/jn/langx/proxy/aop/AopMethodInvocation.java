@@ -1,5 +1,7 @@
 package com.jn.langx.proxy.aop;
 
+import com.jn.langx.proxy.AbstractMethodInvocation;
+import com.jn.langx.proxy.MethodInvocation;
 import com.jn.langx.util.Emptys;
 
 import java.lang.reflect.InvocationTargetException;
@@ -7,11 +9,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultMethodInvocation extends com.jn.langx.proxy.MethodInvocation implements MethodInvocation {
+public class AopMethodInvocation extends AbstractMethodInvocation implements MethodInvocation {
     private List<MethodInterceptor> interceptors = new ArrayList<MethodInterceptor>();
     private int currentInterceptorIndex = -1;
 
-    public DefaultMethodInvocation(Object proxy, Object target, Method method, Object[] arguments) {
+    public AopMethodInvocation(Object proxy, Object target, Method method, Object[] arguments) {
         super(proxy, target, method, arguments);
     }
 

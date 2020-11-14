@@ -1,6 +1,6 @@
 package com.jn.langx.proxy.targetdelegate;
 
-import com.jn.langx.proxy.MethodInvocation;
+import com.jn.langx.proxy.AbstractMethodInvocation;
 import com.jn.langx.proxy.SimpleInvocationHandler;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +17,7 @@ public class DelegateInvocationHandler extends SimpleInvocationHandler {
     }
 
     @Override
-    protected Object execute(MethodInvocation methodInvocation) throws Throwable {
+    protected Object execute(AbstractMethodInvocation methodInvocation) throws Throwable {
         try {
             Object delegate = this.delegateProvider.get(methodInvocation);
             Object obj = delegate == null ? target : delegate;

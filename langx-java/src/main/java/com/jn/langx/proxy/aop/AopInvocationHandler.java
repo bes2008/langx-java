@@ -15,7 +15,7 @@ public class AopInvocationHandler extends SimpleInvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        DefaultMethodInvocation methodInvocation = new DefaultMethodInvocation(proxy, target, method, args);
+        AopMethodInvocation methodInvocation = new AopMethodInvocation(proxy, target, method, args);
         List<MethodInterceptor> interceptorChain = interceptorChainProvider.get(methodInvocation);
         methodInvocation.setInterceptors(interceptorChain);
         return methodInvocation.proceed();

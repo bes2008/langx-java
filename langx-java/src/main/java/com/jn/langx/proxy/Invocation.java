@@ -1,4 +1,4 @@
-package com.jn.langx.proxy.aop;
+package com.jn.langx.proxy;
 
 import java.lang.reflect.Member;
 
