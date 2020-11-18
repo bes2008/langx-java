@@ -2,6 +2,7 @@ package com.jn.langx.util.reflect;
 
 import com.jn.langx.annotation.Name;
 import com.jn.langx.annotation.Singleton;
+import com.jn.langx.registry.Registry;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
@@ -16,15 +17,15 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 @Singleton
-public class ParameterServiceRegistry {
+public class ParameterServiceRegistry implements Registry<String, ParameterSupplier> {
     private static final ParameterServiceRegistry INSTANCE = new ParameterServiceRegistry();
     private static final MethodParameterSupplier methodParameterSupplier;
     private static final ConstructorParameterSupplier constructorParameterSupplier;
     private static final Map<String, MethodParameterSupplier> methodParameterSupplierRegistry = new HashMap<String, MethodParameterSupplier>();
     private static final Map<String, ConstructorParameterSupplier> constructorParameterSupplierRegistry = new HashMap<String, ConstructorParameterSupplier>();
 
-    private static final String JAVA_6_SUPPLIER_NAME = "langx_java6";
-    private static final String JAVA_8_SUPPLIER_NAME = "langx_java8";
+    public static final String JAVA_6_SUPPLIER_NAME = "langx_java6";
+    public static final String JAVA_8_SUPPLIER_NAME = "langx_java8";
 
     private ParameterServiceRegistry() {
 
@@ -61,15 +62,7 @@ public class ParameterServiceRegistry {
             @Override
             public void accept(MethodParameterSupplier supplier) {
                 if (supplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
-                    Class<? extends MethodParameterSupplier> clazz = supplier.getClass();
-                    String name = Reflects.getFQNClassName(clazz);
-                    methodParameterSupplierRegistry.put(name, supplier);
-                    if (Reflects.hasAnnotation(clazz, Name.class)) {
-                        Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
-                        name = nameAnno.value();
-                        methodParameterSupplierRegistry.put(name, supplier);
-                    }
-
+                    registerInternal(supplier);
                 }
             }
         });
@@ -82,15 +75,7 @@ public class ParameterServiceRegistry {
             @Override
             public void accept(final ConstructorParameterSupplier supplier) {
                 if (supplier.getClass().getPackage().getName().startsWith("com.jn.langx.")) {
-                    Class<? extends ConstructorParameterSupplier> clazz = supplier.getClass();
-                    String name = Reflects.getFQNClassName(clazz);
-                    constructorParameterSupplierRegistry.put(name, supplier);
-                    if (Reflects.hasAnnotation(clazz, Name.class)) {
-                        Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
-                        name = nameAnno.value();
-                        constructorParameterSupplierRegistry.put(name, supplier);
-                    }
-
+                    registerInternal(supplier);
                 }
             }
         });
@@ -216,4 +201,54 @@ public class ParameterServiceRegistry {
         }
     }
 
+    private static void registerInternal(ConstructorParameterSupplier supplier) {
+        Class<? extends ConstructorParameterSupplier> clazz = supplier.getClass();
+        String name = Reflects.getFQNClassName(clazz);
+        constructorParameterSupplierRegistry.put(name, supplier);
+        if (Reflects.hasAnnotation(clazz, Name.class)) {
+            Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
+            name = nameAnno.value();
+            constructorParameterSupplierRegistry.put(name, supplier);
+        }
+    }
+
+    private static void registerInternal(MethodParameterSupplier supplier) {
+        Class<? extends MethodParameterSupplier> clazz = supplier.getClass();
+        String name = Reflects.getFQNClassName(clazz);
+        methodParameterSupplierRegistry.put(name, supplier);
+        if (Reflects.hasAnnotation(clazz, Name.class)) {
+            Name nameAnno = Reflects.getAnnotation(clazz, Name.class);
+            name = nameAnno.value();
+            methodParameterSupplierRegistry.put(name, supplier);
+        }
+
+    }
+
+    @Override
+    public void register(ParameterSupplier parameterSupplier) {
+        if (parameterSupplier != null) {
+            if (parameterSupplier instanceof MethodParameterSupplier) {
+                registerInternal((MethodParameterSupplier)parameterSupplier);
+            }
+            else if(parameterSupplier instanceof ConstructorParameterSupplier){
+                registerInternal((ConstructorParameterSupplier)parameterSupplier);
+            }
+        }
+    }
+
+    @Override
+    public void register(String name, ParameterSupplier parameterSupplier) {
+        if (parameterSupplier != null) {
+            if (parameterSupplier instanceof MethodParameterSupplier) {
+                register(name, (MethodParameterSupplier) parameterSupplier);
+            } else if (parameterSupplier instanceof ConstructorParameterSupplier) {
+                register(name, (ConstructorParameterSupplier) parameterSupplier);
+            }
+        }
+    }
+
+    @Override
+    public ParameterSupplier get(String input) {
+        return null;
+    }
 }

@@ -88,6 +88,10 @@ public class Emptys {
         if (object instanceof Reference) {
             return ((Reference) object).isNull();
         }
+
+        if (object instanceof com.jn.langx.util.collection.buffer.Buffer) {
+            return ((com.jn.langx.util.collection.buffer.Buffer) object).hasRemaining();
+        }
         return false;
     }
 
