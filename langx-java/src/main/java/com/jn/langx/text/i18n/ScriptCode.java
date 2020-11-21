@@ -26,8 +26,7 @@ import java.util.regex.Pattern;
 /**
  * <a href="http://en.wikipedia.org/wiki/ISO_15924">ISO 15924<a> script code.
  *
- * @author Takahiko Kawasaki
- * @since 1.2
+ * 
  */
 public enum ScriptCode {
 
@@ -41,7 +40,7 @@ public enum ScriptCode {
      * @see #Zxxx Zxxx: 997 Code for unwritten languages
      * @see #Zyyy Zyyy: 998 Code for undetermined script
      * @see #Zzzz Zzzz: 999 Code for uncoded script
-     * @since 1.14
+     * 
      */
     Undefined(-1, "Undefined"),
 
@@ -1107,7 +1106,7 @@ public enum ScriptCode {
      *
      * @param code ISO 15924 alpha-4 code. Or "Undefined" (case insensitive).
      * @return A {@code ScriptCode} instance, or {@code null} if not found.
-     * @since 1.13
+     * 
      */
     public static ScriptCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
@@ -1233,7 +1232,7 @@ public enum ScriptCode {
      * an empty list is returned.
      * @throws IllegalArgumentException               {@code regex} is {@code null}.
      * @throws java.util.regex.PatternSyntaxException {@code regex} failed to be compiled.
-     * @since 1.11
+     * 
      */
     public static List<ScriptCode> findByName(String regex) {
         if (regex == null) {
@@ -1273,7 +1272,7 @@ public enum ScriptCode {
      * @return List of {@code ScriptCode}. If nothing has matched,
      * an empty list is returned.
      * @throws IllegalArgumentException {@code pattern} is {@code null}.
-     * @since 1.11
+     * 
      */
     public static List<ScriptCode> findByName(Pattern pattern) {
         if (pattern == null) {
