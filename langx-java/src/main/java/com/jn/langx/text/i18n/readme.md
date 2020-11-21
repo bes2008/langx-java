@@ -48,6 +48,44 @@ Locale 中的country字段是大小写不敏感的，但是总是会全大写的
 
 ## ResourceBundle
 
+一个ResourceBundle对象，代表了一个国际化文件。
+同一类的国际化文件，有一个共同的名字，称为 basename
+
+在ResourceBundle这个类里本身又有全局的cache，用于存储系统中所有的ResourceBundle。
+假设我们把一个软件系统，按照功能类别进行国际化的文件进行归类。通常大致会分为如下几类：
+
++ 错误消息
++ 需要国际化的名词、语句
+
+Bundle里存放有消息，在运行时，我们会从Bundle里拉取消息来使用。对于Web应用来讲，肯定要给用户返回的消息是用户期望的语言的（浏览器里可以设置，有的网站在页面上也可以进行切换）。
+
+ResourceBundle里提供了很多的static方法：
+```text
+public static final ResourceBundle getBundle(String baseName);
+public static final ResourceBundle getBundle(String baseName, Control control);
+public static final ResourceBundle getBundle(String baseName, Locale locale);
+public static final ResourceBundle getBundle(String baseName, Locale targetLocale,Control control);
+public static ResourceBundle getBundle(String baseName, Locale locale, ClassLoader loader);
+public static ResourceBundle getBundle(String baseName, Locale targetLocale, ClassLoader loader, Control control);
+```
+由上述的方法参数可知，会有4个参数：
++ basename: 就理解为ResourceBundle的basename名称
++ targetLocale: 其要找的locale
++ classloader: 默认为System ClassLoader。如果你的
++ control: 控制bundle获取的顺序等等
+
+
+在ResourceBundle内部，维护了一个static的 ResourceBundle Cache，cache 的key是由 basename, locale, classloader 三元组组成的。
+
+
+
+# I18nMessageRegistry
+
+提供了 Message Registry API，此外提供了基于JDK ResourceBundle的默认实现：JdkResourceBundleI18nRegistry
+
+也可以自定义其他的I18nMessageRegistry
+
+
 
 
 
