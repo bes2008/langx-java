@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * @see <a href="http://www.currency-iso.org/en/home/tables/table-a1.html"
  * >The official currency &amp; funds code list</a>
  * @see <a href="http://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a>
- * @since 1.9
+ * 
  */
 public enum CurrencyCode {
     /**
@@ -45,7 +45,7 @@ public enum CurrencyCode {
      * </p>
      *
      * @see #XXX XXX: 999 No currency
-     * @since 1.14
+     * 
      */
     UNDEFINED("Undefined", -1, -1),
 
@@ -348,7 +348,7 @@ public enum CurrencyCode {
      * @see <a href="http://www.currency-iso.org/dam/isocy/downloads/dl_currency_iso_amendment_161.pdf"
      * >ISO 4217 AMENDMENT NUMBER 161</a>
      * @see #BYR
-     * @since 1.19
+     * 
      */
     BYN("Belarusian Ruble", 933, 2, CountryCode.BY),
 
@@ -1266,7 +1266,7 @@ public enum CurrencyCode {
      * @see #MRO
      * @see <a href="https://www.currency-iso.org/dam/isocy/downloads/dl_currency_iso_amendment_165.pdf"
      * >ISO 4217 AMENDMENT NUMBER 165</a>
-     * @since 1.23
+     * 
      */
     MRU("Ouguiya", 929, 2, CountryCode.MR),
 
@@ -1572,7 +1572,7 @@ public enum CurrencyCode {
      * </ul>
      *
      * @see #RUB
-     * @since 1.20
+     * 
      * @deprecated
      */
     RUR("Russian Ruble", 810, 2, CountryCode.RU),
@@ -1754,7 +1754,7 @@ public enum CurrencyCode {
      * @see #STD
      * @see <a href="https://www.currency-iso.org/dam/isocy/downloads/dl_currency_iso_amendment_164.pdf"
      * >ISO 4217 AMENDMENT NUMBER 164</a>
-     * @since 1.23
+     * 
      */
     STN("Dobra", 930, 2, CountryCode.ST),
 
@@ -2472,7 +2472,7 @@ public enum CurrencyCode {
      *             alpha-3 code. Or {@code "UNDEFINED"} (case insensitive).
      * @return A {@code CurrencyCode} instance, or {@code null} if not found.
      * @see #getByCode(String, boolean)
-     * @since 1.13
+     * 
      */
     public static CurrencyCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
@@ -2577,7 +2577,7 @@ public enum CurrencyCode {
      * @return List of {@code CurrencyCode} instances. If there is no
      * {@code CurrencyCode} instance whose country list contains
      * the specified country, the size of the returned list is zero.
-     * @since 1.13
+     * 
      */
     public static List<CurrencyCode> getByCountryIgnoreCase(String country) {
         return getByCountry(country, false);
@@ -2648,7 +2648,7 @@ public enum CurrencyCode {
      * an empty list is returned.
      * @throws IllegalArgumentException               {@code regex} is {@code null}.
      * @throws java.util.regex.PatternSyntaxException {@code regex} failed to be compiled.
-     * @since 1.11
+     * 
      */
     public static List<CurrencyCode> findByName(String regex) {
         if (regex == null) {
@@ -2689,7 +2689,7 @@ public enum CurrencyCode {
      * @return List of {@code CurrencyCde}. If nothing has matched,
      * an empty list is returned.
      * @throws IllegalArgumentException {@code pattern} is {@code null}.
-     * @since 1.11
+     * 
      */
     public static List<CurrencyCode> findByName(Pattern pattern) {
         if (pattern == null) {
