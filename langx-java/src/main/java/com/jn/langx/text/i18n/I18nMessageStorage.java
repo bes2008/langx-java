@@ -2,6 +2,7 @@ package com.jn.langx.text.i18n;
 
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 
 import java.util.Locale;
 
@@ -19,28 +20,28 @@ public interface I18nMessageStorage {
     @NonNull
     Locale getLocale();
 
-    String getMessage(String key, Object... args);
+    String getMessage(@NonNull String key, @Nullable Object... args);
 
-    String getMessage(ClassLoader classLoader, String key, Object... args);
-
-
-    String getMessage(LanguageCode languageCode, String key, Object... args);
-
-    String getMessage(LanguageCode languageCode, ClassLoader classLoader, String key, Object... args);
+    String getMessage(@Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
 
-    String getMessage(LocaleCode localeCode, String key, Object... args);
+    String getMessage(@Nullable LanguageCode languageCode, @NonNull String key, @Nullable Object... args);
 
-    String getMessage(LocaleCode localeCode, ClassLoader classLoader, String key, Object... args);
-
-
-    String getMessage(Locale locale, String key, Object... args);
-
-    String getMessage(Locale locale, ClassLoader classLoader, String key, Object... args);
+    String getMessage(@Nullable LanguageCode languageCode, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
 
-    String getMessage(String basename, Locale locale, String key, Object... args);
+    String getMessage(@Nullable LocaleCode localeCode, @NonNull String key, @Nullable Object... args);
 
-    String getMessage(String basename, Locale locale, ClassLoader classLoader, String key, Object... args);
+    String getMessage(@Nullable LocaleCode localeCode, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
+
+
+    String getMessage(@Nullable Locale locale, @NonNull String key, @Nullable Object... args);
+
+    String getMessage(@Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
+
+
+    String getMessage(@Nullable String basename, @Nullable Locale locale, @NonNull String key, @Nullable Object... args);
+
+    String getMessage(@Nullable String basename, @Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
 }
