@@ -47,9 +47,8 @@ public class JdkResourceBundleI18nMessageStorage extends AbstractI18nMessageStor
         if (args == null) {
             args = NO_ARGS;
         }
-        MessageFormat messageFormat = new MessageFormat("");
-        messageFormat.setLocale(locale);
-        messageFormat.applyPattern(message);
-        return messageFormat.format(args);
+        // https://blog.csdn.net/new03/article/details/84826958
+        MessageFormat formatter = new MessageFormat(message, locale);
+        return formatter.format(args);
     }
 }

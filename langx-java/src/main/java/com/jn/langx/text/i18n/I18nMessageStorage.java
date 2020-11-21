@@ -20,7 +20,7 @@ public interface I18nMessageStorage {
     @NonNull
     Locale getLocale();
 
-    String getMessage(@NonNull String key, @Nullable Object... args);
+    String getMessage(@NonNull String key, @Nullable Object[] args);
 
     String getMessage(@Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
@@ -40,8 +40,8 @@ public interface I18nMessageStorage {
     String getMessage(@Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
 
-    String getMessage(@Nullable String basename, @Nullable Locale locale, @NonNull String key, @Nullable Object... args);
+    String getMessage(@Nullable String basename,@Nullable Locale locale,  @NonNull String key, @Nullable Object... args);
 
-    String getMessage(@Nullable String basename, @Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
+    String getMessage(@Nullable String basename,@Nullable Locale locale,  @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
 }

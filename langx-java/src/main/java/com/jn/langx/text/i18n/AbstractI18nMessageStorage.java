@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
     @Override
-    public String getMessage(@NonNull String key, @Nullable Object... args) {
+    public String getMessage(@NonNull String key, @Nullable Object[] args) {
         return getMessage((ClassLoader) null, key, args);
     }
 
@@ -41,17 +41,17 @@ public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
 
     @Override
     public String getMessage(@Nullable Locale locale, @NonNull String key, @Nullable Object... args) {
-        return getMessage(locale, null, key, args);
+        return getMessage(null, locale, key, args);
     }
 
     @Override
     public String getMessage(@Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args) {
-        return getMessage(getDefaultBaseName(), locale, classLoader, key, args);
+        return getMessage(null, locale, classLoader, key, args);
     }
 
     @Override
     public String getMessage(@Nullable String basename, @Nullable Locale locale, @NonNull String key, @Nullable Object... args) {
-        return getMessage(basename, locale, null, key, args);
+        return getMessage(basename, locale, (ClassLoader) null, key, args);
     }
 
     @Override
