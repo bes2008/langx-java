@@ -7,23 +7,40 @@ import java.util.Locale;
 
 public interface I18nMessageRegistry {
 
-    String getDefaultBundleName();
+    String getDefaultBaseName();
 
+    /**
+     * 设置默认的locale
+     *
+     * @param locale
+     */
     void setLocal(@NonNull Locale locale);
 
     @NonNull
     Locale getLocale();
 
-    Locale getLocale(String language);
+    String getMessage(String key, Object... args);
 
-    String getMessage(String key);
+    String getMessage(ClassLoader classLoader, String key, Object... args);
 
-    String getMessage(Locale locale, String key);
+
+    String getMessage(LanguageCode languageCode, String key, Object... args);
+
+    String getMessage(LanguageCode languageCode, ClassLoader classLoader, String key, Object... args);
+
+
+    String getMessage(LocaleCode localeCode, String key, Object... args);
+
+    String getMessage(LocaleCode localeCode, ClassLoader classLoader, String key, Object... args);
+
 
     String getMessage(Locale locale, String key, Object... args);
 
-    String getMessage(String bundleName, Locale locale, String key);
+    String getMessage(Locale locale, ClassLoader classLoader, String key, Object... args);
+
 
     String getMessage(String bundleName, Locale locale, String key, Object... args);
+
+    String getMessage(String bundleName, Locale locale, ClassLoader classLoader, String key, Object... args);
 
 }

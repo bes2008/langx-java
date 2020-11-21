@@ -1,17 +1,17 @@
-package com.jn.langx.text.i18n;
+package com.jn.langx.http;
 
 import java.util.*;
 
-class I18nTokenizer implements Iterator {
+public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
     private static final String LOCALE_SEPARATOR = ",";
     private static final char QUALITY_SEPARATOR = ';';
     private static final Float DEFAULT_QUALITY = 1.0F;
     private ArrayList locales = new ArrayList(3);
 
-    public I18nTokenizer(String header) {
-        I18nTokenizer.AcceptLanguage acceptLang;
+    public HttpAcceptLanguageHeaderTokenizer(String header) {
+        HttpAcceptLanguageHeaderTokenizer.AcceptLanguage acceptLang;
         for (StringTokenizer tok = new StringTokenizer(header, ","); tok.hasMoreTokens(); this.locales.add(acceptLang)) {
-            acceptLang = new I18nTokenizer.AcceptLanguage();
+            acceptLang = new HttpAcceptLanguageHeaderTokenizer.AcceptLanguage();
             String element = tok.nextToken().trim();
             int index;
             if ((index = element.indexOf(59)) != -1) {
@@ -45,7 +45,7 @@ class I18nTokenizer implements Iterator {
         if (this.locales.isEmpty()) {
             throw new NoSuchElementException();
         } else {
-            return ((I18nTokenizer.AcceptLanguage) this.locales.remove(0)).locale;
+            return ((HttpAcceptLanguageHeaderTokenizer.AcceptLanguage) this.locales.remove(0)).locale;
         }
     }
 
@@ -58,11 +58,11 @@ class I18nTokenizer implements Iterator {
         Float quality;
 
         private AcceptLanguage() {
-            this.quality = I18nTokenizer.DEFAULT_QUALITY;
+            this.quality = HttpAcceptLanguageHeaderTokenizer.DEFAULT_QUALITY;
         }
 
         public final int compareTo(Object acceptLang) {
-            return this.quality.compareTo(((I18nTokenizer.AcceptLanguage) acceptLang).quality);
+            return this.quality.compareTo(((HttpAcceptLanguageHeaderTokenizer.AcceptLanguage) acceptLang).quality);
         }
     }
 }
