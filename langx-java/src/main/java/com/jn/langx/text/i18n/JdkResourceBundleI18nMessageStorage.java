@@ -1,7 +1,9 @@
 package com.jn.langx.text.i18n;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.function.Function2;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -37,7 +39,7 @@ public class JdkResourceBundleI18nMessageStorage extends AbstractI18nMessageStor
 
 
     @Override
-    protected String getMessageInternal(String basename, Locale locale, ClassLoader classLoader, String key, Object... args) {
+    protected String getMessageInternal(final String basename, final Locale locale, final ClassLoader classLoader, String key, Object... args) {
 
         ResourceBundle bundle = ResourceBundle.getBundle(basename, locale, classLoader);
         if (bundle == null) {
@@ -48,7 +50,16 @@ public class JdkResourceBundleI18nMessageStorage extends AbstractI18nMessageStor
             args = NO_ARGS;
         }
         // https://blog.csdn.net/new03/article/details/84826958
-        MessageFormat formatter = new MessageFormat(message, locale);
-        return formatter.format(args);
+        // 使用 {0},{1},{2}... 来进行参数替换
+        //MessageFormat formatter = new MessageFormat(message, locale);
+        //message = formatter.format(args);
+
+        message = StringTemplates.formatWithIndex(message, args);
+        return StringTemplates.format(message, "${", "}", new Function2<String, Object[], String>() {
+            @Override
+            public String apply(String variable, Object[] args) {
+                return getMessageInternal(basename, locale, classLoader, variable);
+            }
+        });
     }
 }

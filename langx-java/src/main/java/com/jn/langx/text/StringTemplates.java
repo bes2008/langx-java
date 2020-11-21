@@ -82,7 +82,7 @@ public class StringTemplates {
      * @return formatted string
      * @see #formatWithIndex(String, Object...)
      */
-    public static String format(String template, Object... args) {
+    public static String format(String template, Object[] args) {
         return new IndexStringFormatter().format(template, args);
     }
 
@@ -196,7 +196,7 @@ public class StringTemplates {
                 .replace("}", "\\}")
                 .replace(")", "\\)");
 
-        return format(template, startFlagPattern + "\\w+(\\.\\w+)*" + endFlagPattern, new Function2<String, Object[], String>() {
+        return format(template, startFlagPattern + "[\\w\\-]+(\\.[\\w\\-]+)*" + endFlagPattern, new Function2<String, Object[], String>() {
             @Override
             public String apply(String variable, Object[] arguments) {
                 // 需要自己剔除变量的前后标记

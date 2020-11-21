@@ -12,6 +12,11 @@ public class JdkI18nTests {
         String message = messageStorage.getMessage("jdk_bundle_test", LocaleCode.zh.toLocale(), "every_second");
         System.out.println(message);
 
+        message = messageStorage.getMessage("jdk_bundle_test", LocaleCode.zh.toLocale(), "between_weekday_description_format","x","y");
+        System.out.println(message);
+
+        message = messageStorage.getMessage("jdk_bundle_test", LocaleCode.zh.toLocale(), "test_dolar_variable", "01","2020");
+        System.out.println(message);
     }
 
 }
