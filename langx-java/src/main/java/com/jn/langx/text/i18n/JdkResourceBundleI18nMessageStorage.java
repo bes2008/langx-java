@@ -7,12 +7,12 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class JdkResourceBundleI18nRegistry extends AbstractI18nMessageRegistry {
+public class JdkResourceBundleI18nMessageStorage extends AbstractI18nMessageStorage {
     private static final Object[] NO_ARGS = new Object[0];
     private String defaultBundleBaseName = "i18n";
     private Locale defaultLocale = Locale.getDefault();
 
-    public JdkResourceBundleI18nRegistry() {
+    public JdkResourceBundleI18nMessageStorage() {
     }
 
     @Override

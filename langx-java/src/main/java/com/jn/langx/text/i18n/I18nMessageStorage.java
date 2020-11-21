@@ -5,7 +5,7 @@ import com.jn.langx.annotation.NonNull;
 
 import java.util.Locale;
 
-public interface I18nMessageRegistry {
+public interface I18nMessageStorage {
 
     String getDefaultBaseName();
 

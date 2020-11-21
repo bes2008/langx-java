@@ -6,7 +6,7 @@ import com.jn.langx.util.Emptys;
 
 import java.util.Locale;
 
-public abstract class AbstractI18nMessageRegistry implements I18nMessageRegistry {
+public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
     @Override
     public String getMessage(String key, Object... args) {
         return getMessage((ClassLoader) null, key, args);
