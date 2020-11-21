@@ -23,56 +23,24 @@ import java.util.regex.Pattern;
 
 
 /**
- * <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a>
- * language code.
+ * Language Code 有两类：
+ * 一个是 <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a>规范的，称为 alpha 2 . 是由2个小写字母构成。
+ * 一个是 alpha 3。
+ * 如果一个language 既有 alpha 2 的code,又有 alpha 3的code，则必须使用 alpha 2的。
+ * <p>
+ * 所有的Language Code，可以在IANA Language Subtag Registry 找到：
+ * http://www.iana.org/assignments/language-subtag-registry/language-subtag-registry。
  * <p>
  * <p>
- * Enum names of this enum themselves are represented by
- * <a href="http://en.wikipedia.org/wiki/ISO_639-1">ISO 639-1</a> code
- * (2-letter lower-case alphabets).
- * </p>
- * <p>
- * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
- * <span style="color: darkgreen;">// List all the language codes.</span>
- * for (LanguageCode code : LanguageCode.values())
- * {
- * <span style="color: darkgreen;">// For example, "[ar] Arabic" is printed.</span>
- * System.out.format(<span style="color: darkred;">"[%s] %s\n"</span>, code, code.{@link #getName()});
- * }
- * <p>
- * <span style="color: darkgreen;">// Get a LanguageCode instance by ISO 639-1 code.</span>
- * LanguageCode code = LanguageCode.{@link #getByCode(String) getByCode}(<span style="color: darkred;">"fr"</span>);
- * <p>
- * <span style="color: darkgreen;">// Convert to a Locale instance.</span>
- * Locale locale = code.{@link #toLocale()};
- * <p>
- * <span style="color: darkgreen;">// Get a LanguageCode by a Locale instance.</span>
- * code = LanguageCode.{@link #getByLocale(Locale) getByLocale}(locale);
- * <p>
- * <span style="color: darkgreen;">// Get a list by a regular expression for names.
- * //
- * // The list will contain:
- * //
- * //     LanguageCode.an : Aragonese
- * //     LanguageCode.ja : Japanese
- * //     LanguageCode.jv : Javanese
- * //     LanguageCode.su : Sundanese
- * //     LanguageCode.zh : Chinese
- * //</span>
- * List&lt;LanguageCode&gt; list = LanguageCode.{@link #findByName(String) findByName}(<span style="color: darkred;">".*nese"</span>);
- * </pre>
+ * 该枚举类代表了language alpha 2的 code
+ * 如果要使用language alpha3 的code，请使用 LanguageAlpha3Code类
  *
  * @author jinuo.fang
  */
 public enum LanguageCode {
     /**
      * Undefined.
-     * <p>
-     * <p>
      * This is not an official ISO 639-1 code.
-     * </p>
-     *
-     * @since 1.14
      */
     undefined() {
         @Override
@@ -2378,7 +2346,6 @@ public enum LanguageCode {
      *
      * @return <a href="http://en.wikipedia.org/wiki/ISO_639-2">ISO 639-2</a>
      * language code.
-     * @since 1.1
      */
     public LanguageAlpha3Code getAlpha3() {
         return null;
@@ -2433,7 +2400,6 @@ public enum LanguageCode {
      *             ("he", "yi" and "id", respectively). For example, if "in" is given,
      *             this method returns {@link #id LanguageCode.id}.
      * @return A {@code LanguageCode} instance, or {@code null} if not found.
-     * @since 1.13
      */
     public static LanguageCode getByCodeIgnoreCase(String code) {
         return getByCode(code, false);
@@ -2595,7 +2561,6 @@ public enum LanguageCode {
      * an empty list is returned.
      * @throws IllegalArgumentException               {@code regex} is {@code null}.
      * @throws java.util.regex.PatternSyntaxException {@code regex} failed to be compiled.
-     * @since 1.11
      */
     public static List<LanguageCode> findByName(String regex) {
         if (regex == null) {
@@ -2637,7 +2602,6 @@ public enum LanguageCode {
      * @return List of {@code LanguageCode}. If nothing has matched,
      * an empty list is returned.
      * @throws IllegalArgumentException {@code pattern} is {@code null}.
-     * @since 1.11
      */
     public static List<LanguageCode> findByName(Pattern pattern) {
         if (pattern == null) {
