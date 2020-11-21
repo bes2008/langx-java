@@ -39,8 +39,8 @@ public interface I18nMessageStorage {
     String getMessage(Locale locale, ClassLoader classLoader, String key, Object... args);
 
 
-    String getMessage(String bundleName, Locale locale, String key, Object... args);
+    String getMessage(String basename, Locale locale, String key, Object... args);
 
-    String getMessage(String bundleName, Locale locale, ClassLoader classLoader, String key, Object... args);
+    String getMessage(String basename, Locale locale, ClassLoader classLoader, String key, Object... args);
 
 }
