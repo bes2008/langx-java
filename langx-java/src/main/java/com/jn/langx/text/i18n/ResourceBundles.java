@@ -23,7 +23,7 @@ public class ResourceBundles {
 
     public static String getString(@NonNull final String basename, @NonNull final Locale locale, @NonNull final ClassLoader classLoader, @NonNull final String key, Object... args) {
         ResourceBundle bundle = ResourceBundle.getBundle(basename, locale, classLoader);
-        return getString(basename, key, args);
+        return getString(bundle, key, args);
     }
 
     public static String getString(final ResourceBundle bundle, String key, Object... args) {
