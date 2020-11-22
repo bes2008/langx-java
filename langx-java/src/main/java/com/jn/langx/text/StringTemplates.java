@@ -74,17 +74,7 @@ public class StringTemplates {
         };
     }
 
-    /**
-     * format based index: {0}, {1}, {2}
-     *
-     * @param template the string template
-     * @param args     args
-     * @return formatted string
-     * @see #formatWithIndex(String, Object...)
-     */
-    public static String format(String template, Object... args) {
-        return new IndexStringFormatter().format(template, args);
-    }
+
 
     public static Supplier<Object[], String> supplier(final String template) {
         return new Supplier<Object[], String>() {
@@ -255,6 +245,18 @@ public class StringTemplates {
                 return valueGetter.getString(variable);
             }
         });
+    }
+
+    /**
+     * format based index: {0}, {1}, {2}
+     *
+     * @param template the string template
+     * @param args     args
+     * @return formatted string
+     * @see #formatWithIndex(String, Object...)
+     */
+    public static String format(String template, Object... args) {
+        return new IndexStringFormatter().format(template, args);
     }
 
     public static TemplateFluenter fluenter(String template) {
