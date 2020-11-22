@@ -48,17 +48,19 @@ public class JdkResourceBundleI18nMessageStorage extends AbstractI18nMessageStor
         if (args == null) {
             args = NO_ARGS;
         }
-        // https://blog.csdn.net/new03/article/details/84826958
-        // 使用 {0},{1},{2}... 来进行参数替换
-        //MessageFormat formatter = new MessageFormat(message, locale);
-        //message = formatter.format(args);
 
-        message = StringTemplates.formatWithIndex(message, args);
-        return StringTemplates.format(message, "${", "}", new Function2<String, Object[], String>() {
+        message = StringTemplates.format(message, "${", "}", new Function2<String, Object[], String>() {
             @Override
             public String apply(String variable, Object[] args) {
                 return getMessageInternal(basename, locale, classLoader, variable);
             }
         });
+
+        // https://blog.csdn.net/new03/article/details/84826958
+        // 使用 {0},{1},{2}... 来进行参数替换
+        //MessageFormat formatter = new MessageFormat(message, locale);
+        //message = formatter.format(args);
+        message = StringTemplates.formatWithIndex(message, args);
+        return message;
     }
 }
