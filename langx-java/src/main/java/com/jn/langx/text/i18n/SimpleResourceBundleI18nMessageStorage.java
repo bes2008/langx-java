@@ -1,18 +1,26 @@
 package com.jn.langx.text.i18n;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Function2;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class JdkResourceBundleI18nMessageStorage extends AbstractResourceBundleI18nMessageStorage {
+public class SimpleResourceBundleI18nMessageStorage extends AbstractResourceBundleI18nMessageStorage {
+    private ResourceBundle bundle;
+
+    public void setBundle(ResourceBundle bundle) {
+        Preconditions.checkNotNull(bundle);
+        this.bundle = bundle;
+        setLocale(bundle.getLocale());
+    }
 
     @Override
-    protected String getMessageInternal(final String basename, final Locale locale, final ClassLoader classLoader, String key, Object... args) {
-
-        ResourceBundle bundle = ResourceBundle.getBundle(basename, locale, classLoader);
+    protected String getMessageInternal(@Nullable final String basename, @Nullable final Locale locale, final @Nullable ClassLoader classLoader, @NonNull String key, Object... args) {
         if (bundle == null) {
             return null;
         }
@@ -35,4 +43,5 @@ public class JdkResourceBundleI18nMessageStorage extends AbstractResourceBundleI
         message = StringTemplates.formatWithIndex(message, args);
         return message;
     }
+
 }

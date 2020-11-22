@@ -82,7 +82,7 @@ public class StringTemplates {
      * @return formatted string
      * @see #formatWithIndex(String, Object...)
      */
-    public static String format(String template, Object[] args) {
+    public static String format(String template, Object... args) {
         return new IndexStringFormatter().format(template, args);
     }
 

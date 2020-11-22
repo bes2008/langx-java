@@ -7,6 +7,19 @@ import com.jn.langx.util.ClassLoaders;
 import java.util.Locale;
 
 public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
+    private Locale locale = Locale.getDefault();
+
+    @Override
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        if(locale!=null) {
+            this.locale = locale;
+        }
+    }
+
     @Override
     public String getMessage(@NonNull String key, @Nullable Object[] args) {
         return getMessage((ClassLoader) null, key, args);

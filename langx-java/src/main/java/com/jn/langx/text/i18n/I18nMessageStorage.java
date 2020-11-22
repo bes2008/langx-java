@@ -13,7 +13,7 @@ public interface I18nMessageStorage {
      *
      * @param locale
      */
-    void setLocal(@NonNull Locale locale);
+    void setLocale(@NonNull Locale locale);
 
     @NonNull
     Locale getLocale();
