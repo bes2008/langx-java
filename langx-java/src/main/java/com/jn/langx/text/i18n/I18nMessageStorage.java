@@ -8,8 +8,6 @@ import java.util.Locale;
 
 public interface I18nMessageStorage {
 
-    String getDefaultBaseName();
-
     /**
      * 设置默认的locale
      *
@@ -39,9 +37,5 @@ public interface I18nMessageStorage {
 
     String getMessage(@Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
-
-    String getMessage(@Nullable String basename,@Nullable Locale locale,  @NonNull String key, @Nullable Object... args);
-
-    String getMessage(@Nullable String basename,@Nullable Locale locale,  @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
 }

@@ -3,8 +3,6 @@ package com.jn.langx.text.i18n;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.ClassLoaders;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Preconditions;
 
 import java.util.Locale;
 
@@ -41,35 +39,18 @@ public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
 
     @Override
     public String getMessage(@Nullable Locale locale, @NonNull String key, @Nullable Object... args) {
-        return getMessage(null, locale, key, args);
+        return getMessageInternal(locale, null, key, args);
     }
 
     @Override
     public String getMessage(@Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args) {
-        return getMessage(null, locale, classLoader, key, args);
+        return getMessageInternal(locale, classLoader, key, args);
     }
 
-    @Override
-    public String getMessage(@Nullable String basename, @Nullable Locale locale, @NonNull String key, @Nullable Object... args) {
-        return getMessage(basename, locale, (ClassLoader) null, key, args);
-    }
+    protected abstract String getMessageInternal(@NonNull Locale locale, @NonNull ClassLoader classLoader, @NonNull String key, Object... args);
 
-    @Override
-    public String getMessage(@Nullable String basename, @Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args) {
-        Preconditions.checkNotEmpty(key, "the key is null or empty");
-        return getMessageInternal(getBundleBaseName(basename), toLocale(locale), getClassLoader(classLoader), key, args);
-    }
 
-    protected abstract String getMessageInternal(@NonNull String basename, @NonNull Locale locale, @NonNull ClassLoader classLoader, @NonNull String key, Object... args);
-
-    private String getBundleBaseName(String basename) {
-        if (Emptys.isEmpty(basename)) {
-            return getDefaultBaseName();
-        }
-        return basename;
-    }
-
-    private Locale toLocale(Object locale) {
+    protected Locale toLocale(Object locale) {
         if (locale == null) {
             return getLocale();
         }
@@ -85,7 +66,7 @@ public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
         return getLocale();
     }
 
-    private ClassLoader getClassLoader(ClassLoader classLoader) {
+    protected ClassLoader getClassLoader(ClassLoader classLoader) {
         if (classLoader == null) {
             return ClassLoaders.getDefaultClassLoader();
         }

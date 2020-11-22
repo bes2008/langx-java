@@ -8,7 +8,7 @@ import com.jn.langx.util.function.Function2;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class JdkResourceBundleI18nMessageStorage extends AbstractI18nMessageStorage {
+public class JdkResourceBundleI18nMessageStorage extends AbstractResourceBundleI18nMessageStorage {
     private static final Object[] NO_ARGS = new Object[0];
     private String defaultBundleBaseName = "i18n";
     private Locale defaultLocale = Locale.getDefault();
