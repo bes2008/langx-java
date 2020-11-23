@@ -19,7 +19,6 @@ public abstract class AbstractResourceBundleI18nMessageStorage extends AbstractI
         }
     }
 
-
     public String getMessage(@Nullable String basename, @Nullable Locale locale, @NonNull String key, @Nullable Object... args) {
         return getMessage(basename, locale, null, key, args);
     }

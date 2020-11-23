@@ -6,9 +6,9 @@ import com.jn.langx.util.ClassLoaders;
 
 import java.util.Locale;
 
-public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
+public abstract class AbstractI18nMessageStorage implements HierarchicalI18nMessageStorage {
     private Locale locale = Locale.getDefault();
-
+    private I18nMessageStorage parent;
     @Override
     public Locale getLocale() {
         return locale;
@@ -18,6 +18,16 @@ public abstract class AbstractI18nMessageStorage implements I18nMessageStorage {
         if(locale!=null) {
             this.locale = locale;
         }
+    }
+
+    @Override
+    public void setParent(I18nMessageStorage parent) {
+        this.parent = parent;
+    }
+
+    @Override
+    public I18nMessageStorage getParent() {
+        return parent;
     }
 
     @Override
