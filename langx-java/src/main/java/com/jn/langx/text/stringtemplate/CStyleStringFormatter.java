@@ -1,7 +1,5 @@
 package com.jn.langx.text.stringtemplate;
 
-import com.jn.langx.text.StringTemplateFormatter;
-
 /**
  * %d
  * %s

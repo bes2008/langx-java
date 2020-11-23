@@ -1,6 +1,6 @@
 package com.jn.langx.test.util.reflect;
 
-import com.jn.langx.text.StringTemplate;
+import com.jn.langx.text.stringtemplate.StringTemplate;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;

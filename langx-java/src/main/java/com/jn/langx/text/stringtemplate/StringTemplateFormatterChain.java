@@ -1,6 +1,5 @@
 package com.jn.langx.text.stringtemplate;
 
-import com.jn.langx.text.StringTemplateFormatter;
 import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
