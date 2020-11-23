@@ -20,7 +20,7 @@ public abstract class AbstractResourceBundleI18nMessageStorage extends AbstractI
     }
 
     public String getMessage(@Nullable String basename, @Nullable Locale locale, @NonNull String key, @Nullable Object... args) {
-        return getMessage(basename, locale, null, key, args);
+        return getMessage(basename, locale, getClassLoader(null), key, args);
     }
 
     public String getMessage(@Nullable String basename, @Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args) {

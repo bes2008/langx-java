@@ -14,7 +14,7 @@ public class ResourceBundles {
     }
 
     public static String getString(@NonNull final String basename, @NonNull String key, Object... args) {
-        return getString(basename, Locale.getDefault(), key, args);
+        return getString(basename, Locale.getDefault(), ClassLoaders.getDefaultClassLoader(), key, args);
     }
 
     public static String getString(@NonNull final String basename, @NonNull Locale locale, @NonNull String key, Object... args) {
