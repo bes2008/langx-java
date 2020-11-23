@@ -1,4 +1,6 @@
-package com.jn.langx.text.formatter;
+package com.jn.langx.text.stringtemplate;
+
+import com.jn.langx.text.StringTemplateFormatter;
 
 /**
  * %d

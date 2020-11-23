@@ -2,7 +2,7 @@ package com.jn.langx.text;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.text.formatter.*;
+import com.jn.langx.text.stringtemplate.*;
 import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.function.Function2;

@@ -1,4 +1,4 @@
-package com.jn.langx.text.formatter;
+package com.jn.langx.text;
 
 import com.jn.langx.Formatter;
 

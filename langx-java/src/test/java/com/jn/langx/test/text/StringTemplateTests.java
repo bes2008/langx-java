@@ -1,7 +1,7 @@
 package com.jn.langx.test.text;
 
 import com.jn.langx.test.bean.Person;
-import com.jn.langx.text.formatter.StringTemplateFormatterChain;
+import com.jn.langx.text.stringtemplate.StringTemplateFormatterChain;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function2;
