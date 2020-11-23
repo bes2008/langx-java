@@ -9,6 +9,7 @@ public final class RestRespBody<T> {
     private long timestamp;
     private String errorCode;
     private String errorMessage;
+    private transient String url;
 
     public RestRespBody(){
 
@@ -21,6 +22,14 @@ public final class RestRespBody<T> {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
         this.timestamp = System.currentTimeMillis();
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public boolean isSuccess() {
