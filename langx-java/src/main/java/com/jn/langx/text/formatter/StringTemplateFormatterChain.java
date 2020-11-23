@@ -1,4 +1,4 @@
-package com.jn.langx.text;
+package com.jn.langx.text.formatter;
 
 import com.jn.langx.util.Objects;
 import com.jn.langx.util.Preconditions;

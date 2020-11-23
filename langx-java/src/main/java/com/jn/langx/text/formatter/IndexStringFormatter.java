@@ -1,5 +1,7 @@
-package com.jn.langx.text;
+package com.jn.langx.text.formatter;
 
+import com.jn.langx.text.StringTemplate;
+import com.jn.langx.text.formatter.CustomPatternStringFormatter;
 import com.jn.langx.util.function.Function2;
 
 import java.util.regex.Pattern;

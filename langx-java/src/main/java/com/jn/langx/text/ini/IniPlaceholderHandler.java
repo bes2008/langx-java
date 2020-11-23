@@ -1,7 +1,7 @@
 package com.jn.langx.text.ini;
 
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.text.PlaceholderParser;
+import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import org.slf4j.Logger;

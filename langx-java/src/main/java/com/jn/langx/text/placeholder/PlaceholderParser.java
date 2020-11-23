@@ -1,4 +1,4 @@
-package com.jn.langx.text;
+package com.jn.langx.text.placeholder;
 
 import com.jn.langx.Parser;
 

@@ -1,6 +1,6 @@
 package com.jn.langx.text.ini;
 
-import com.jn.langx.text.PlaceholderParser;
+import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.Emptys;
 
 
