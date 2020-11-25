@@ -1,4 +1,4 @@
-package com.jn.langx.util.os.hardware.cpuid;
+package com.jn.langx.util.os.hardware.cpu;
 
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
@@ -10,7 +10,7 @@ import com.jn.langx.util.struct.Holder;
 import java.io.IOException;
 import java.util.List;
 
-public class LinuxGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
+public class WindowsGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
     private final Holder<String> result = new Holder<String>();
 
     @Override
@@ -30,8 +30,7 @@ public class LinuxGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
         }
     }
 
-    @Override
     public String getCpuId() {
-        return null;
+        return result.get();
     }
 }

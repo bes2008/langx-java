@@ -1,4 +1,4 @@
-package com.jn.langx.util.os.hardware.cpuid;
+package com.jn.langx.util.os.hardware.cpu;
 
 import com.jn.langx.commandline.AbstractExecuteStreamHandler;
 
