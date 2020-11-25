@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

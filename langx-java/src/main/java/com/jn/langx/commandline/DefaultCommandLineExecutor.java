@@ -19,7 +19,7 @@ import java.util.Map;
  *  <li>define a set of expected exit values</li>
  *  <li>terminate any started processes when the main process is terminating using a ProcessDestroyer</li>
  * </ul>
- *
+ * <p>
  * The following example shows the basic usage:
  *
  * <pre>
@@ -32,35 +32,51 @@ import java.util.Map;
  */
 public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
-    /** taking care of output and error stream */
+    /**
+     * taking care of output and error stream
+     */
     private ExecuteStreamHandler streamHandler;
 
-    /** the working directory of the process */
+    /**
+     * the working directory of the process
+     */
     private File workingDirectory;
 
-    /** monitoring of long running processes */
+    /**
+     * monitoring of long running processes
+     */
     private ExecuteWatchdog watchdog;
 
-    /** the exit values considered to be successful */
+    /**
+     * the exit values considered to be successful
+     */
     private int[] exitValues;
 
-    /** launches the command in a new process */
+    /**
+     * launches the command in a new process
+     */
     private final CommandLauncher launcher;
 
-    /** optional cleanup of started processes */ 
+    /**
+     * optional cleanup of started processes
+     */
     private ProcessDestroyer processDestroyer;
 
-    /** worker thread for asynchronous execution */
+    /**
+     * worker thread for asynchronous execution
+     */
     private Thread executorThread;
 
-    /** the first exception being caught to be thrown to the caller */
+    /**
+     * the first exception being caught to be thrown to the caller
+     */
     private IOException exceptionCaught;
 
     /**
      * Default constructor creating a default {@code PumpStreamHandler}
      * and sets the working directory of the subprocess to the current
      * working directory.
-     *
+     * <p>
      * The {@code PumpStreamHandler} pumps the output of the subprocess
      * into our {@code System.out} and {@code System.err} to avoid
      * into our {@code System.out} and {@code System.err} to avoid
@@ -106,14 +122,14 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * @see CommandLineExecutor#getProcessDestroyer()
      */
     public ProcessDestroyer getProcessDestroyer() {
-      return this.processDestroyer;
+        return this.processDestroyer;
     }
 
     /**
      * @see CommandLineExecutor#setProcessDestroyer(ProcessDestroyer)
      */
     public void setProcessDestroyer(final ProcessDestroyer processDestroyer) {
-      this.processDestroyer = processDestroyer;
+        this.processDestroyer = processDestroyer;
     }
 
     /**
@@ -147,14 +163,14 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         if (workingDirectory != null && !workingDirectory.exists()) {
             throw new IOException(workingDirectory + " doesn't exist.");
         }
-        
+
         return executeInternal(command, environment, workingDirectory, streamHandler);
 
     }
 
     /**
      * @see CommandLineExecutor#execute(CommandLine,
-     *      com.jn.langx.commandline.ExecuteResultHandler)
+     * com.jn.langx.commandline.ExecuteResultHandler)
      */
     public void execute(final CommandLine command, final ExecuteResultHandler handler)
             throws ExecuteException, IOException {
@@ -163,10 +179,10 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
     /**
      * @see CommandLineExecutor#execute(CommandLine,
-     *      java.util.Map, com.jn.langx.commandline.ExecuteResultHandler)
+     * java.util.Map, com.jn.langx.commandline.ExecuteResultHandler)
      */
     public void execute(final CommandLine command, final Map<String, String> environment,
-            final ExecuteResultHandler handler) throws ExecuteException, IOException {
+                        final ExecuteResultHandler handler) throws ExecuteException, IOException {
 
         if (workingDirectory != null && !workingDirectory.exists()) {
             throw new IOException(workingDirectory + " doesn't exist.");
@@ -176,10 +192,8 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
             watchdog.setProcessNotStarted();
         }
 
-        final Runnable runnable = new Runnable()
-        {
-            public void run()
-            {
+        final Runnable runnable = new Runnable() {
+            public void run() {
                 int exitValue = CommandLineExecutor.INVALID_EXITVALUE;
                 try {
                     exitValue = executeInternal(command, environment, workingDirectory, streamHandler);
@@ -196,27 +210,31 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         getExecutorThread().start();
     }
 
-    /** @see CommandLineExecutor#setExitValue(int) */
+    /**
+     * @see CommandLineExecutor#setExitValue(int)
+     */
     public void setExitValue(final int value) {
-        this.setExitValues(new int[] {value});
+        this.setExitValues(new int[]{value});
     }
 
 
-    /** @see CommandLineExecutor#setExitValues(int[]) */
+    /**
+     * @see CommandLineExecutor#setExitValues(int[])
+     */
     public void setExitValues(final int[] values) {
         this.exitValues = values == null ? null : (int[]) values.clone();
     }
 
-    /** @see CommandLineExecutor#isFailure(int) */
+    /**
+     * @see CommandLineExecutor#isFailure(int)
+     */
     public boolean isFailure(final int exitValue) {
 
         if (this.exitValues == null) {
             return false;
-        }
-        else if (this.exitValues.length == 0) {
+        } else if (this.exitValues.length == 0) {
             return this.launcher.isFailure(exitValue);
-        }
-        else {
+        } else {
             for (final int exitValue2 : this.exitValues) {
                 if (exitValue2 == exitValue) {
                     return false;
@@ -231,7 +249,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * asynchronous execution.
      *
      * @param runnable the runnable passed to the thread
-     * @param name the name of the thread
+     * @param name     the name of the thread
      * @return the thread
      */
     protected Thread createThread(final Runnable runnable, final String name) {
@@ -241,18 +259,14 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     /**
      * Creates a process that runs a command.
      *
-     * @param command
-     *            the command to run
-     * @param env
-     *            the environment for the command
-     * @param dir
-     *            the working directory for the command
+     * @param command the command to run
+     * @param env     the environment for the command
+     * @param dir     the working directory for the command
      * @return the process started
-     * @throws IOException
-     *             forwarded from the particular launcher used
+     * @throws IOException forwarded from the particular launcher used
      */
     protected Process launch(final CommandLine command, final Map<String, String> env,
-            final File dir) throws IOException {
+                             final File dir) throws IOException {
 
         if (this.launcher == null) {
             throw new IllegalStateException("CommandLauncher can not be null");
@@ -272,7 +286,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     protected Thread getExecutorThread() {
         return executorThread;
     }
-    
+
     /**
      * Close the streams belonging to the given Process.
      *
@@ -282,22 +296,19 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
         try {
             process.getInputStream().close();
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             setExceptionCaught(e);
         }
 
         try {
             process.getOutputStream().close();
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             setExceptionCaught(e);
         }
 
         try {
             process.getErrorStream().close();
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             setExceptionCaught(e);
         }
     }
@@ -306,36 +317,36 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * Execute an internal process. If the executing thread is interrupted while waiting for the
      * child process to return the child process will be killed.
      *
-     * @param command the command to execute
+     * @param command     the command to execute
      * @param environment the execution environment
-     * @param dir the working directory
-     * @param streams process the streams (in, out, err) of the process
+     * @param dir         the working directory
+     * @param streamHandler     process the streams (in, out, err) of the process
      * @return the exit code of the process
      * @throws IOException executing the process failed
      */
     private int executeInternal(final CommandLine command, final Map<String, String> environment,
-            final File dir, final ExecuteStreamHandler streams) throws IOException {
+                                final File dir, final ExecuteStreamHandler streamHandler) throws IOException {
 
         setExceptionCaught(null);
 
         final Process process = this.launch(command, environment, dir);
 
         try {
-            streams.setProcessInputStream(process.getOutputStream());
-            streams.setProcessOutputStream(process.getInputStream());
-            streams.setProcessErrorStream(process.getErrorStream());
+            streamHandler.setSubProcessInputStream(process.getOutputStream());
+            streamHandler.setSubProcessOutputStream(process.getInputStream());
+            streamHandler.setSubProcessErrorStream(process.getErrorStream());
         } catch (final IOException e) {
             process.destroy();
             throw e;
         }
 
-        streams.start();
+        streamHandler.start();
 
         try {
 
             // add the process to the list of those to destroy if the VM exits
             if (this.getProcessDestroyer() != null) {
-              this.getProcessDestroyer().add(process);
+                this.getProcessDestroyer().add(process);
             }
 
             // associate the watchdog with the newly created process
@@ -349,23 +360,21 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
                 exitValue = process.waitFor();
             } catch (final InterruptedException e) {
                 process.destroy();
-            }
-            finally {
+            } finally {
                 // see http://bugs.sun.com/view_bug.do?bug_id=6420270
                 // see https://issues.apache.org/jira/browse/EXEC-46
                 // Process.waitFor should clear interrupt status when throwing InterruptedException
                 // but we have to do that manually
                 Thread.interrupted();
-            }            
+            }
 
             if (watchdog != null) {
                 watchdog.stop();
             }
 
             try {
-                streams.stop();
-            }
-            catch (final IOException e) {
+                streamHandler.stop();
+            } catch (final IOException e) {
                 setExceptionCaught(e);
             }
 
@@ -393,7 +402,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         } finally {
             // remove the process to the list of those to destroy if the VM exits
             if (this.getProcessDestroyer() != null) {
-              this.getProcessDestroyer().remove(process);
+                this.getProcessDestroyer().remove(process);
             }
         }
     }

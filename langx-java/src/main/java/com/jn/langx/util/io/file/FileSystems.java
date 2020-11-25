@@ -1,6 +1,6 @@
 package com.jn.langx.util.io.file;
 
-import com.jn.langx.util.Platform;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;

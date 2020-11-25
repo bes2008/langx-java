@@ -1,6 +1,6 @@
 package com.jn.langx.net.hosts;
 
-import com.jn.langx.util.Platform;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.io.Charsets;
 
 import java.net.Inet4Address;

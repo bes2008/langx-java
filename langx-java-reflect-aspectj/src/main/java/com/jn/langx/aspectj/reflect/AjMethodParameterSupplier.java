@@ -3,7 +3,7 @@ package com.jn.langx.aspectj.reflect;
 import com.jn.langx.annotation.Name;
 import com.jn.langx.aspectj.coderepository.Repositorys;
 import com.jn.langx.lifecycle.InitializationException;
-import com.jn.langx.util.Platform;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;

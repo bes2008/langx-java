@@ -12,7 +12,6 @@ import com.jn.langx.commandline.util.CommandLineDebugUtils;
  * of the parent process. If output or error stream are set to null, any feedback
  * from that stream will be lost.
  *
- * @version $Id: PumpStreamHandler.java 1557263 2014-01-10 21:18:09Z ggregory $
  */
 public class PumpStreamHandler implements ExecuteStreamHandler {
 
@@ -93,7 +92,7 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
      *
      * @param is the <CODE>InputStream</CODE>.
      */
-    public void setProcessOutputStream(final InputStream is) {
+    public void setSubProcessOutputStream(final InputStream is) {
         if (out != null) {
             createProcessOutputPump(is, out);
         }
@@ -105,7 +104,7 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
      *
      * @param is the <CODE>InputStream</CODE>.
      */
-    public void setProcessErrorStream(final InputStream is) {
+    public void setSubProcessErrorStream(final InputStream is) {
         if (err != null) {
             createProcessErrorPump(is, err);
         }
@@ -117,7 +116,7 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
      *
      * @param os the <CODE>OutputStream</CODE>.
      */
-    public void setProcessInputStream(final OutputStream os) {
+    public void setSubProcessInputStream(final OutputStream os) {
         if (input != null) {
             if (input == System.in) {
                 inputThread = createSystemInPump(input, os);

@@ -8,7 +8,6 @@ import java.io.OutputStream;
  * Used by {@code Execute} to handle input and output stream of
  * subprocesses.
  *
- * @version $Id: ExecuteStreamHandler.java 1636064 2014-11-01 22:01:19Z ggregory $
  */
 public interface ExecuteStreamHandler {
 
@@ -20,7 +19,7 @@ public interface ExecuteStreamHandler {
      * @throws IOException
      *             thrown when an I/O exception occurs.
      */
-    void setProcessInputStream(OutputStream os) throws IOException;
+    void setSubProcessInputStream(OutputStream os) throws IOException;
 
     /**
      * Install a handler for the error stream of the subprocess.
@@ -30,7 +29,7 @@ public interface ExecuteStreamHandler {
      * @throws IOException
      *             thrown when an I/O exception occurs.
      */
-    void setProcessErrorStream(InputStream is) throws IOException;
+    void setSubProcessErrorStream(InputStream is) throws IOException;
 
     /**
      * Install a handler for the output stream of the subprocess.
@@ -40,7 +39,7 @@ public interface ExecuteStreamHandler {
      * @throws IOException
      *             thrown when an I/O exception occurs.
      */
-    void setProcessOutputStream(InputStream is) throws IOException;
+    void setSubProcessOutputStream(InputStream is) throws IOException;
 
     /**
      * Start handling of the streams.

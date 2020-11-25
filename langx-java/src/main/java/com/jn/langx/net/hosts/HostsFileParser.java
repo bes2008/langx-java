@@ -1,7 +1,7 @@
 package com.jn.langx.net.hosts;
 
 
-import com.jn.langx.util.Platform;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.net.Nets;
 import org.slf4j.Logger;

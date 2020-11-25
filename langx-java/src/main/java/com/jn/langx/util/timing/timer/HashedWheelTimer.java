@@ -2,7 +2,7 @@ package com.jn.langx.util.timing.timer;
 
 
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Platform;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.memory.leak.ResourceLeakDetector;
 import com.jn.langx.util.memory.leak.ResourceLeakDetectorFactory;
 import com.jn.langx.util.memory.leak.ResourceLeakTracker;

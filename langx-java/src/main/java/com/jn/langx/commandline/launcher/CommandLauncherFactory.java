@@ -1,7 +1,7 @@
 
 package com.jn.langx.commandline.launcher;
 
-import com.jn.langx.util.OS;
+import com.jn.langx.util.os.OS;
 
 /**
  * Builds a command launcher for the OS and JVM we are running under.

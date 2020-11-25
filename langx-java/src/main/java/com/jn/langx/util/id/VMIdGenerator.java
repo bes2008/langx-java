@@ -1,7 +1,7 @@
 package com.jn.langx.util.id;
 
 import com.jn.langx.IdGenerator;
-import com.jn.langx.util.Platform;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.id.vm.UID;
 import com.jn.langx.util.id.vm.VMID;

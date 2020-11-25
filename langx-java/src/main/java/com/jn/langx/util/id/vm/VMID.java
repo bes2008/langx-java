@@ -1,7 +1,7 @@
 package com.jn.langx.util.id.vm;
 
 
-import com.jn.langx.util.Platform;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
 import java.io.Serializable;
