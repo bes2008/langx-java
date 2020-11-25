@@ -10,7 +10,7 @@ import com.jn.langx.util.struct.Holder;
 import java.io.IOException;
 import java.util.List;
 
-public class WindowsGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
+class WindowsGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
     private final Holder<String> result = new Holder<String>();
 
     @Override

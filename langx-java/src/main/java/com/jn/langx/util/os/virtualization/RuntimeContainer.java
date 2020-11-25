@@ -3,8 +3,20 @@ package com.jn.langx.util.os.virtualization;
 import java.util.Map;
 
 public class RuntimeContainer {
+    /**
+     * 容器类型，目前最为流行的是 docker
+     */
     private String type;
     private Map<String, String> props;
+
+    public RuntimeContainer(String type){
+        this.type = type;
+    }
+
+    public RuntimeContainer(String type, Map<String, String> props){
+        this.type = type;
+        this.props = props;
+    }
 
     public String getType() {
         return type;

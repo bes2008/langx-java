@@ -10,7 +10,7 @@ import com.jn.langx.util.struct.Holder;
 import java.io.IOException;
 import java.util.List;
 
-public class LinuxGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
+class LinuxGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
     private final Holder<String> result = new Holder<String>();
 
     @Override
@@ -21,9 +21,12 @@ public class LinuxGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
             String cpuId = Collects.findFirst(lines, new Predicate<String>() {
                 @Override
                 public boolean test(String line) {
-                    return Strings.isNotBlank(line) && Strings.indexOf(line, "ProcessorId", true) < 0;
+                    return Strings.isNotBlank(line);
                 }
             });
+            if (Strings.startsWith(cpuId, "ID:")) {
+                cpuId = cpuId.substring("ID:".length());
+            }
             if (Emptys.isNotEmpty(cpuId)) {
                 result.set(cpuId.trim());
             }

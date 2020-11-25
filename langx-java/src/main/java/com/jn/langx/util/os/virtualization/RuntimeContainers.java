@@ -1,4 +1,4 @@
-package com.jn.langx.util.os.hardware.cpu;
+package com.jn.langx.util.os.virtualization;
 
 import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.DaemonCommandLineExecutor;
@@ -8,27 +8,25 @@ import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+public class RuntimeContainers {
+    private static final Logger logger = LoggerFactory.getLogger(RuntimeContainers.class);
 
-public class CPUs {
-    private static final Logger logger = LoggerFactory.getLogger(CPUs.class);
-    private static Holder<String> cpuId;
+    private static Holder<RuntimeContainer> runtimeContainer;
 
-    private CPUs() {
-    }
-
-    public static final String getCpuId() {
-        if (cpuId == null) {
+    public static RuntimeContainer getRuntimeContainer() {
+        if (runtimeContainer == null) {
             DefaultCommandLineExecutor executor = new DaemonCommandLineExecutor();
             CommandLine commandLine = null;
-            GetCpuIdStreamHandler handler = null;
+            GetRuntimeContainerHandler handler = null;
             if (OS.isFamilyWindows()) {
                 commandLine = CommandLine.parse("wmic cpu get ProcessorId");
-                handler = new WindowsGetCpuIdStreamHandler();
+                handler = null;
             } else if (OS.isFamilyUnix()) {
                 commandLine = CommandLine.parse("sudo dmidecode -t 4 | grep ID");
-                handler = new LinuxGetCpuIdStreamHandler();
+                handler = new LinuxGetRuntimeContainerHandler();
             }
             if (commandLine != null && handler != null) {
+
                 try {
                     executor.setStreamHandler(handler);
                     executor.execute(commandLine);
@@ -38,8 +36,11 @@ public class CPUs {
             } else {
                 logger.error("Unsupported operation for current platform");
             }
-            cpuId = new Holder<String>(handler.getCpuId());
+            runtimeContainer = new Holder<RuntimeContainer>(handler.getContainer());
+
         }
-        return cpuId.get();
+        return runtimeContainer.get();
     }
+
+
 }
