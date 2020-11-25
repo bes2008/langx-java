@@ -1,13 +1,13 @@
 package com.jn.langx.test.commandline;
 
-import com.jn.langx.util.os.hardware.cpu.Cpus;
+import com.jn.langx.util.os.hardware.cpu.CPUs;
 import org.junit.Test;
 
 public class HardwaresTests {
 
     @Test
     public void testGetCpuId() throws Throwable{
-        String id = Cpus.getCpuId();
+        String id = CPUs.getCpuId();
         System.out.println(id);
     }
 

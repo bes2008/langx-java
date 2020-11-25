@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class Cpus {
-    private static final Logger logger = LoggerFactory.getLogger(Cpus.class);
+public class CPUs {
+    private static final Logger logger = LoggerFactory.getLogger(CPUs.class);
     private static String cpuId;
 
-    private Cpus() {
+    private CPUs() {
     }
 
     public static final String getCpuId() {
