@@ -3,9 +3,9 @@ package com.jn.langx.util.os;
 import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.DaemonCommandLineExecutor;
 import com.jn.langx.commandline.DefaultCommandLineExecutor;
-import com.jn.langx.util.os.hardware.GetCpuIdStreamHandler;
-import com.jn.langx.util.os.hardware.unix.linux.LinuxGetCpuIdStreamHandler;
-import com.jn.langx.util.os.hardware.windows.WindowsGetCpuIdStreamHandler;
+import com.jn.langx.util.os.hardware.cpuid.GetCpuIdStreamHandler;
+import com.jn.langx.util.os.hardware.cpuid.LinuxGetCpuIdStreamHandler;
+import com.jn.langx.util.os.hardware.cpuid.WindowsGetCpuIdStreamHandler;
 
 public class Infrastructures {
     private static String cpuId;

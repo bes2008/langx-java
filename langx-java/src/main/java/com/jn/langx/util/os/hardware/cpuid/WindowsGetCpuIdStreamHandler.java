@@ -1,10 +1,9 @@
-package com.jn.langx.util.os.hardware.windows;
+package com.jn.langx.util.os.hardware.cpuid;
 
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.os.hardware.GetCpuIdStreamHandler;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.struct.Holder;
 
