@@ -19,14 +19,13 @@ public class RuntimeContainers {
             CommandLine commandLine = null;
             GetRuntimeContainerHandler handler = null;
             if (OS.isFamilyWindows()) {
-                commandLine = CommandLine.parse("wmic cpu get ProcessorId");
+                // commandLine = CommandLine.parse("wmic cpu get ProcessorId");
                 handler = null;
             } else if (OS.isFamilyUnix()) {
-                commandLine = CommandLine.parse("sudo dmidecode -t 4 | grep ID");
+                commandLine = CommandLine.parse("cat /proc/1/cpuset");
                 handler = new LinuxGetRuntimeContainerHandler();
             }
             if (commandLine != null && handler != null) {
-
                 try {
                     executor.setStreamHandler(handler);
                     executor.execute(commandLine);
