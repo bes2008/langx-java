@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 
-//import org.apache.commons.exec.OS;
-
 /**
  * Wrapper for environment variables.
  */

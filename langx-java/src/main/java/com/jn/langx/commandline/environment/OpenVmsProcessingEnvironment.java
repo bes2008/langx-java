@@ -11,7 +11,6 @@ package com.jn.langx.commandline.environment;
  * Helper class to determine the environment variable
  * for VMS.
  *
- * @version $Id: OpenVmsProcessingEnvironment.java 1636056 2014-11-01 21:12:52Z ggregory $
  * @deprecated No longer needed
  */
 @Deprecated
