@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * The main abstraction to start an external process.
- *
+ * <p>
  * The interface allows to
  * <ul>
  *  <li>set a current working directory for the subprocess</li>
@@ -16,7 +16,7 @@ import java.util.Map;
  *  <li>define a set of expected exit values</li>
  *  <li>terminate any started processes when the main process is terminating using a ProcessDestroyer</li>
  * </ul>
- *
+ * <p>
  * The following example shows the basic usage:
  *
  * <pre>
@@ -30,7 +30,9 @@ import java.util.Map;
 
 public interface CommandLineExecutor {
 
-    /** Invalid exit code. */
+    /**
+     * Invalid exit code.
+     */
     int INVALID_EXITVALUE = 0xdeadbeef;
 
     /**
@@ -51,7 +53,7 @@ public interface CommandLineExecutor {
      *  <li>an empty array for auto-detect of successful exit codes relying on {@link CommandLineExecutor#isFailure(int)}</li>
      *  <li>null to indicate to skip checking of exit codes</li>
      * </ul>
-     *
+     * <p>
      * If an undefined exit value is returned by the process then
      * {@link CommandLineExecutor#execute(CommandLine)}  will
      * throw an {@link com.jn.langx.commandline.ExecuteException}.
@@ -74,8 +76,8 @@ public interface CommandLineExecutor {
     /**
      * Get the StreamHandler used for providing input and
      * retrieving the output.
-     * 
-     * @return the StreamHandler 
+     *
+     * @return the StreamHandler
      */
     ExecuteStreamHandler getStreamHandler();
 
@@ -99,7 +101,7 @@ public interface CommandLineExecutor {
     ExecuteWatchdog getWatchdog();
 
     /**
-     * Set the watchdog used to kill of processes running, 
+     * Set the watchdog used to kill of processes running,
      * typically, too long time.
      *
      * @param watchDog the watchdog
@@ -144,26 +146,26 @@ public interface CommandLineExecutor {
      * @param command the command to execute
      * @return process exit value
      * @throws ExecuteException execution of subprocess failed or the
-     *          subprocess returned a exit value indicating a failure
-     *          {@link CommandLineExecutor#setExitValue(int)}.
+     *                          subprocess returned a exit value indicating a failure
+     *                          {@link CommandLineExecutor#setExitValue(int)}.
      */
     int execute(CommandLine command)
-        throws ExecuteException, IOException;
+            throws ExecuteException, IOException;
 
     /**
      * Methods for starting synchronous execution.
      *
-     * @param command the command to execute
+     * @param command     the command to execute
      * @param environment The environment for the new process. If null, the
-     *          environment of the current process is used.
+     *                    environment of the current process is used.
      * @return process exit value
      * @throws ExecuteException execution of subprocess failed or the
-     *          subprocess returned a exit value indicating a failure
-     *          {@link CommandLineExecutor#setExitValue(int)}.
+     *                          subprocess returned a exit value indicating a failure
+     *                          {@link CommandLineExecutor#setExitValue(int)}.
      */
     int execute(CommandLine command, Map<String, String> environment)
-        throws ExecuteException, IOException;
-    
+            throws ExecuteException, IOException;
+
     /**
      * Methods for starting asynchronous execution. The child process inherits
      * all environment variables of the parent process. Result provided to
@@ -174,19 +176,19 @@ public interface CommandLineExecutor {
      * @throws ExecuteException execution of subprocess failed
      */
     void execute(CommandLine command, ExecuteResultHandler handler)
-        throws ExecuteException, IOException;
+            throws ExecuteException, IOException;
 
     /**
      * Methods for starting asynchronous execution. The child process inherits
      * all environment variables of the parent process. Result provided to
      * callback handler.
      *
-     * @param command the command to execute
+     * @param command     the command to execute
      * @param environment The environment for the new process. If null, the
-     *          environment of the current process is used.
-     * @param handler capture process termination and exit code 
-     * @throws ExecuteException execution of subprocess failed     
+     *                    environment of the current process is used.
+     * @param handler     capture process termination and exit code
+     * @throws ExecuteException execution of subprocess failed
      */
     void execute(CommandLine command, Map<String, String> environment, ExecuteResultHandler handler)
-        throws ExecuteException, IOException;
+            throws ExecuteException, IOException;
 }

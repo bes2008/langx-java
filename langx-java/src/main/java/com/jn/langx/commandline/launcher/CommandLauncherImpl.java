@@ -12,8 +12,6 @@ import java.util.Map;
  * A command launcher for a particular JVM/OS platform. This class is a general
  * purpose command launcher which can only launch commands in the current
  * working directory.
- *
- * @version $Id: CommandLauncherImpl.java 1557338 2014-01-11 10:34:22Z sebb $
  */
 public abstract class CommandLauncherImpl implements CommandLauncher {
 
@@ -23,12 +21,12 @@ public abstract class CommandLauncherImpl implements CommandLauncher {
         return Runtime.getRuntime().exec(cmd.toStrings(), envVar);
     }
 
-    public abstract Process exec(final CommandLine cmd, final Map<String, String> env,
-            final File workingDir) throws IOException;
+    public abstract Process exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException;
 
-    /** @see com.jn.langx.commandline.launcher.CommandLauncher#isFailure(int) */
-    public boolean isFailure(final int exitValue)
-    {
+    /**
+     * @see com.jn.langx.commandline.launcher.CommandLauncher#isFailure(int)
+     */
+    public boolean isFailure(final int exitValue) {
         // non zero exit value signals failure
         return exitValue != 0;
     }

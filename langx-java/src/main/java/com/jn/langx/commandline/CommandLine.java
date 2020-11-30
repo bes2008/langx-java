@@ -3,12 +3,7 @@ package com.jn.langx.commandline;
 import com.jn.langx.commandline.util.CommandLineStringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
 
 
 /**
@@ -41,7 +36,7 @@ public class CommandLine {
 
     /**
      * Create a command line from a string.
-     * 
+     *
      * @param line the first element becomes the executable, the rest the arguments
      * @return the parsed command line
      * @throws IllegalArgumentException If line is null or all whitespace
@@ -53,13 +48,13 @@ public class CommandLine {
     /**
      * Create a command line from a string.
      *
-     * @param line the first element becomes the executable, the rest the arguments
+     * @param line            the first element becomes the executable, the rest the arguments
      * @param substitutionMap the name/value pairs used for substitution
      * @return the parsed command line
      * @throws IllegalArgumentException If line is null or all whitespace
      */
     public static CommandLine parse(final String line, final Map<String, ?> substitutionMap) {
-                
+
         if (line == null) {
             throw new IllegalArgumentException("Command line can not be null");
         } else if (line.trim().length() == 0) {
@@ -83,18 +78,18 @@ public class CommandLine {
      * @param executable the executable
      */
     public CommandLine(final String executable) {
-        this.isFile=false;
-        this.executable=toCleanExecutable(executable);
+        this.isFile = false;
+        this.executable = toCleanExecutable(executable);
     }
 
     /**
      * Create a command line without any arguments.
      *
-     * @param  executable the executable file
+     * @param executable the executable file
      */
     public CommandLine(final File executable) {
-        this.isFile=true;
-        this.executable=toCleanExecutable(executable.getAbsolutePath());
+        this.isFile = true;
+        this.executable = toCleanExecutable(executable.getAbsolutePath());
     }
 
     /**
@@ -102,19 +97,16 @@ public class CommandLine {
      *
      * @param other the instance to copy
      */
-    public CommandLine(final CommandLine other)
-    {
+    public CommandLine(final CommandLine other) {
         this.executable = other.getExecutable();
         this.isFile = other.isFile();
         this.arguments.addAll(other.arguments);
 
-        if (other.getSubstitutionMap() != null)
-        {
+        if (other.getSubstitutionMap() != null) {
             final Map<String, Object> omap = new HashMap<String, Object>();
             this.substitutionMap = omap;
             final Iterator<String> iterator = other.substitutionMap.keySet().iterator();
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 final String key = iterator.next();
                 omap.put(key, other.getSubstitutionMap().get(key));
             }
@@ -123,7 +115,7 @@ public class CommandLine {
 
     /**
      * Returns the executable.
-     * 
+     *
      * @return The executable
      */
     public String getExecutable() {
@@ -136,7 +128,7 @@ public class CommandLine {
     /**
      * Was a file being used to set the executable?
      *
-     * @return true if a file was used for setting the executable 
+     * @return true if a file was used for setting the executable
      */
     public boolean isFile() {
         return isFile;
@@ -144,7 +136,7 @@ public class CommandLine {
 
     /**
      * Add multiple arguments. Handles parsing of quotes and whitespace.
-     * 
+     *
      * @param addArguments An array of arguments
      * @return The command line itself
      */
@@ -155,7 +147,7 @@ public class CommandLine {
     /**
      * Add multiple arguments.
      *
-     * @param addArguments An array of arguments
+     * @param addArguments  An array of arguments
      * @param handleQuoting Add the argument with/without handling quoting
      * @return The command line itself
      */
@@ -173,8 +165,8 @@ public class CommandLine {
      * Add multiple arguments. Handles parsing of quotes and whitespace.
      * Please note that the parsing can have undesired side-effects therefore
      * it is recommended to build the command line incrementally.
-     * 
-     * @param addArguments An string containing multiple arguments. 
+     *
+     * @param addArguments An string containing multiple arguments.
      * @return The command line itself
      */
     public CommandLine addArguments(final String addArguments) {
@@ -186,7 +178,7 @@ public class CommandLine {
      * Please note that the parsing can have undesired side-effects therefore
      * it is recommended to build the command line incrementally.
      *
-     * @param addArguments An string containing multiple arguments.
+     * @param addArguments  An string containing multiple arguments.
      * @param handleQuoting Add the argument with/without handling quoting
      * @return The command line itself
      */
@@ -210,34 +202,32 @@ public class CommandLine {
         return this.addArgument(argument, true);
     }
 
-   /**
-    * Add a single argument.
-    *
-    * @param argument The argument to add
-    * @param handleQuoting Add the argument with/without handling quoting
-    * @return The command line itself
-    */
-   public CommandLine addArgument(final String argument, final boolean handleQuoting) {
+    /**
+     * Add a single argument.
+     *
+     * @param argument      The argument to add
+     * @param handleQuoting Add the argument with/without handling quoting
+     * @return The command line itself
+     */
+    public CommandLine addArgument(final String argument, final boolean handleQuoting) {
 
-       if (argument == null)
-       {
-           return this;
-       }
+        if (argument == null) {
+            return this;
+        }
 
-       // check if we can really quote the argument - if not throw an
-       // IllegalArgumentException
-       if (handleQuoting)
-       {
-           CommandLineStringUtils.quoteArgument(argument);
-       }
+        // check if we can really quote the argument - if not throw an
+        // IllegalArgumentException
+        if (handleQuoting) {
+            CommandLineStringUtils.quoteArgument(argument);
+        }
 
-       arguments.add(new Argument(argument, handleQuoting));
-       return this;
-   }
+        arguments.add(new Argument(argument, handleQuoting));
+        return this;
+    }
 
     /**
      * Returns the expanded and quoted command line arguments.
-     *  
+     *
      * @return The quoted arguments
      */
     public String[] getArguments() {
@@ -246,7 +236,7 @@ public class CommandLine {
         String expandedArgument;
         final String[] result = new String[arguments.size()];
 
-        for (int i=0; i<result.length; i++) {
+        for (int i = 0; i < result.length; i++) {
             currArgument = arguments.get(i);
             expandedArgument = expandArgument(currArgument.getValue());
             result[i] = currArgument.isHandleQuoting() ? CommandLineStringUtils.quoteArgument(expandedArgument) : expandedArgument;
@@ -265,7 +255,7 @@ public class CommandLine {
     /**
      * Set the substitutionMap to expand variables in the
      * command line.
-     * 
+     *
      * @param substitutionMap the map
      */
     public void setSubstitutionMap(final Map<String, ?> substitutionMap) {
@@ -280,14 +270,14 @@ public class CommandLine {
     public String[] toStrings() {
         final String[] result = new String[arguments.size() + 1];
         result[0] = this.getExecutable();
-        System.arraycopy(getArguments(), 0, result, 1, result.length-1);
+        System.arraycopy(getArguments(), 0, result, 1, result.length - 1);
         return result;
     }
 
     /**
      * Stringify operator returns the command line as a string.
      * Parameters are correctly quoted when containing a space or
-     * left untouched if the are already quoted. 
+     * left untouched if the are already quoted.
      *
      * @return the command line as single string
      */
@@ -312,10 +302,9 @@ public class CommandLine {
     /**
      * Crack a command line.
      *
-     * @param toProcess
-     *            the command line to process
+     * @param toProcess the command line to process
      * @return the command line broken into strings. An empty or null toProcess
-     *         parameter results in a zero sized array
+     * parameter results in a zero sized array
      */
     private static String[] translateCommandline(final String toProcess) {
         if (toProcess == null || toProcess.length() == 0) {
@@ -337,37 +326,37 @@ public class CommandLine {
         while (tok.hasMoreTokens()) {
             final String nextTok = tok.nextToken();
             switch (state) {
-            case inQuote:
-                if ("\'".equals(nextTok)) {
-                    lastTokenHasBeenQuoted = true;
-                    state = normal;
-                } else {
-                    current.append(nextTok);
-                }
-                break;
-            case inDoubleQuote:
-                if ("\"".equals(nextTok)) {
-                    lastTokenHasBeenQuoted = true;
-                    state = normal;
-                } else {
-                    current.append(nextTok);
-                }
-                break;
-            default:
-                if ("\'".equals(nextTok)) {
-                    state = inQuote;
-                } else if ("\"".equals(nextTok)) {
-                    state = inDoubleQuote;
-                } else if (" ".equals(nextTok)) {
-                    if (lastTokenHasBeenQuoted || current.length() != 0) {
-                        list.add(current.toString());
-                        current = new StringBuilder();
+                case inQuote:
+                    if ("\'".equals(nextTok)) {
+                        lastTokenHasBeenQuoted = true;
+                        state = normal;
+                    } else {
+                        current.append(nextTok);
                     }
-                } else {
-                    current.append(nextTok);
-                }
-                lastTokenHasBeenQuoted = false;
-                break;
+                    break;
+                case inDoubleQuote:
+                    if ("\"".equals(nextTok)) {
+                        lastTokenHasBeenQuoted = true;
+                        state = normal;
+                    } else {
+                        current.append(nextTok);
+                    }
+                    break;
+                default:
+                    if ("\'".equals(nextTok)) {
+                        state = inQuote;
+                    } else if ("\"".equals(nextTok)) {
+                        state = inDoubleQuote;
+                    } else if (" ".equals(nextTok)) {
+                        if (lastTokenHasBeenQuoted || current.length() != 0) {
+                            list.add(current.toString());
+                            current = new StringBuilder();
+                        }
+                    } else {
+                        current.append(nextTok);
+                    }
+                    lastTokenHasBeenQuoted = false;
+                    break;
             }
         }
 
@@ -409,19 +398,16 @@ public class CommandLine {
         private final String value;
         private final boolean handleQuoting;
 
-        private Argument(final String value, final boolean handleQuoting)
-        {
+        private Argument(final String value, final boolean handleQuoting) {
             this.value = value.trim();
             this.handleQuoting = handleQuoting;
         }
 
-        private String getValue()
-        {
+        private String getValue() {
             return value;
         }
 
-        private boolean isHandleQuoting()
-        {
+        private boolean isHandleQuoting() {
             return handleQuoting;
         }
     }

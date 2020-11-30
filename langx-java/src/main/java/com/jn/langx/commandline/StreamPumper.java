@@ -8,38 +8,48 @@ import com.jn.langx.commandline.util.CommandLineDebugUtils;
 
 /**
  * Copies all data from an input stream to an output stream.
- *
- * @version $Id: StreamPumper.java 1557263 2014-01-10 21:18:09Z ggregory $
  */
 public class StreamPumper implements Runnable {
 
-    /** the default size of the internal buffer for copying the streams */
+    /**
+     * the default size of the internal buffer for copying the streams
+     */
     private static final int DEFAULT_SIZE = 1024;
 
-    /** the input stream to pump from */
+    /**
+     * the input stream to pump from
+     */
     private final InputStream is;
 
-    /** the output stream to pmp into */
+    /**
+     * the output stream to pmp into
+     */
     private final OutputStream os;
 
-    /** the size of the internal buffer for copying the streams */ 
+    /**
+     * the size of the internal buffer for copying the streams
+     */
     private final int size;
 
-    /** was the end of the stream reached */
+    /**
+     * was the end of the stream reached
+     */
     private boolean finished;
 
-    /** close the output stream when exhausted */
+    /**
+     * close the output stream when exhausted
+     */
     private final boolean closeWhenExhausted;
-    
+
     /**
      * Create a new stream pumper.
-     * 
-     * @param is input stream to read data from
-     * @param os output stream to write data to.
+     *
+     * @param is                 input stream to read data from
+     * @param os                 output stream to write data to.
      * @param closeWhenExhausted if true, the output stream will be closed when the input is exhausted.
      */
     public StreamPumper(final InputStream is, final OutputStream os,
-            final boolean closeWhenExhausted) {
+                        final boolean closeWhenExhausted) {
         this.is = is;
         this.os = os;
         this.size = DEFAULT_SIZE;
@@ -49,13 +59,13 @@ public class StreamPumper implements Runnable {
     /**
      * Create a new stream pumper.
      *
-     * @param is input stream to read data from
-     * @param os output stream to write data to.
+     * @param is                 input stream to read data from
+     * @param os                 output stream to write data to.
      * @param closeWhenExhausted if true, the output stream will be closed when the input is exhausted.
-     * @param size the size of the internal buffer for copying the streams
+     * @param size               the size of the internal buffer for copying the streams
      */
     public StreamPumper(final InputStream is, final OutputStream os,
-            final boolean closeWhenExhausted, final int size) {
+                        final boolean closeWhenExhausted, final int size) {
         this.is = is;
         this.os = os;
         this.size = size > 0 ? size : DEFAULT_SIZE;
@@ -64,7 +74,7 @@ public class StreamPumper implements Runnable {
 
     /**
      * Create a new stream pumper.
-     * 
+     *
      * @param is input stream to read data from
      * @param os output stream to write data to.
      */
@@ -97,7 +107,7 @@ public class StreamPumper implements Runnable {
                     os.close();
                 } catch (final IOException e) {
                     final String msg = "Got exception while closing exhausted output stream";
-                    CommandLineDebugUtils.handleException(msg ,e);
+                    CommandLineDebugUtils.handleException(msg, e);
                 }
             }
             synchronized (this) {
@@ -109,7 +119,7 @@ public class StreamPumper implements Runnable {
 
     /**
      * Tells whether the end of the stream has been reached.
-     * 
+     *
      * @return true is the stream has been exhausted.
      */
     public synchronized boolean isFinished() {
@@ -118,10 +128,9 @@ public class StreamPumper implements Runnable {
 
     /**
      * This method blocks until the stream pumper finishes.
-     * 
-     * @exception InterruptedException
-     *                if any thread interrupted the current thread before or while the current thread was waiting for a
-     *                notification.
+     *
+     * @throws InterruptedException if any thread interrupted the current thread before or while the current thread was waiting for a
+     *                              notification.
      * @see #isFinished()
      */
     public synchronized void waitFor() throws InterruptedException {

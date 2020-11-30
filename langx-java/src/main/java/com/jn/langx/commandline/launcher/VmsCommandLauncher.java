@@ -41,8 +41,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
      * JAVA$FORK_SUPPORT_CHDIR needs to be set to TRUE.
      */
     @Override
-    public Process exec(final CommandLine cmd, final Map<String, String> env,
-            final File workingDir) throws IOException {
+    public Process exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException {
         final CommandLine vmsCmd = new CommandLine(
                 createCommandFile(cmd, env).getPath()
         );
@@ -50,7 +49,9 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
         return super.exec(vmsCmd, env, workingDir);
     }
 
-    /** @see com.jn.langx.commandline.launcher.CommandLauncher#isFailure(int) */
+    /**
+     * @see com.jn.langx.commandline.launcher.CommandLauncher#isFailure(int)
+     */
     @Override
     public boolean isFailure(final int exitValue) {
         // even exit value signals failure
@@ -67,7 +68,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
         script.deleteOnExit();
         PrintWriter out = null;
         try {
-            out = new PrintWriter(new FileWriter(script.getAbsolutePath(),true));
+            out = new PrintWriter(new FileWriter(script.getAbsolutePath(), true));
 
             // add the environment as global symbols for the DCL script
             if (env != null) {
@@ -89,7 +90,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
                             }
                             sb.append(c);
                         }
-                        value=sb.toString();
+                        value = sb.toString();
                     }
                     out.print(value);
                     out.println('\"');
@@ -100,12 +101,12 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
             if (cmd.isFile()) {// We assume it is it a script file
                 out.print("$ @");
                 // This is a bit crude, but seems to work
-                final String parts[] = CommandLineStringUtils.split(command,"/");
+                final String parts[] = CommandLineStringUtils.split(command, "/");
                 out.print(parts[0]); // device
                 out.print(":[");
                 out.print(parts[1]); // top level directory
-                final int lastPart = parts.length-1;
-                for (int i=2; i< lastPart; i++) {
+                final int lastPart = parts.length - 1;
+                for (int i = 2; i < lastPart; i++) {
                     out.print(".");
                     out.print(parts[i]);
                 }
@@ -113,7 +114,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
                 out.print(parts[lastPart]);
             } else {
                 out.print("$ ");
-                out.print(command);                
+                out.print(command);
             }
             final String[] args = cmd.getArguments();
             for (final String arg : args) {

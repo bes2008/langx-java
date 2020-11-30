@@ -14,13 +14,19 @@ public class InputStreamPumper implements Runnable {
 
     public static final int SLEEPING_TIME = 100;
 
-    /** the input stream to pump from */
+    /**
+     * the input stream to pump from
+     */
     private final InputStream is;
 
-    /** the output stream to pmp into */
+    /**
+     * the output stream to pmp into
+     */
     private final OutputStream os;
 
-    /** flag to stop the stream pumping */
+    /**
+     * flag to stop the stream pumping
+     */
     private volatile boolean stop;
 
 
@@ -52,7 +58,7 @@ public class InputStreamPumper implements Runnable {
             }
         } catch (final Exception e) {
             final String msg = "Got exception while reading/writing the stream";
-            CommandLineDebugUtils.handleException(msg ,e);
+            CommandLineDebugUtils.handleException(msg, e);
         } finally {
         }
     }

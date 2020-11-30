@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 /**
  * Supplement of commons-lang, the stringSubstitution() was in a simpler
  * implementation available in an older commons-lang implementation.
- *
+ * <p>
  * This class is not part of the public API and could change without
  * warning.
  *
@@ -41,12 +41,9 @@ public class CommandLineStringUtils {
      * <li>underscore character
      * </ul>
      *
-     * @param argStr
-     *            the argument string to be processed
-     * @param vars
-     *            name/value pairs used for substitution
-     * @param isLenient
-     *            ignore a key not found in vars or throw a RuntimeException?
+     * @param argStr    the argument string to be processed
+     * @param vars      name/value pairs used for substitution
+     * @param isLenient ignore a key not found in vars or throw a RuntimeException?
      * @return String target string with replacements.
      */
     public static StringBuffer stringSubstitution(final String argStr, final Map<? super String, ?> vars, final boolean isLenient) {
@@ -63,7 +60,7 @@ public class CommandLineStringUtils {
 
         final int argStrLength = argStr.length();
 
-        for (int cIdx = 0; cIdx < argStrLength;) {
+        for (int cIdx = 0; cIdx < argStrLength; ) {
 
             char ch = argStr.charAt(cIdx);
             char del = ' ';
@@ -94,9 +91,8 @@ public class CommandLineStringUtils {
                                 // for a file we have to fix the separator chars to allow
                                 // cross-platform compatibility
                                 value = fixFileSeparatorChar(((File) temp).getAbsolutePath());
-                            }
-                            else {
-                                value = temp != null ? temp.toString() : null;    
+                            } else {
+                                value = temp != null ? temp.toString() : null;
                             }
 
                             if (value != null) {
@@ -119,8 +115,7 @@ public class CommandLineStringUtils {
                         }
 
                         cIdx++;
-                    }
-                    else {
+                    } else {
                         argBuf.append(ch);
                         ++cIdx;
                     }
@@ -157,14 +152,14 @@ public class CommandLineStringUtils {
     /**
      * Fixes the file separator char for the target platform
      * using the following replacement.
-     * 
+     *
      * <ul>
      *  <li>'/' &#x2192; File.separatorChar</li>
      *  <li>'\\' &#x2192; File.separatorChar</li>
      * </ul>
      *
      * @param arg the argument to fix
-     * @return the transformed argument 
+     * @return the transformed argument
      */
     public static String fixFileSeparatorChar(final String arg) {
         return arg.replace(SLASH_CHAR, File.separatorChar).replace(
@@ -174,7 +169,7 @@ public class CommandLineStringUtils {
     /**
      * Concatenates an array of string using a separator.
      *
-     * @param strings the strings to concatenate
+     * @param strings   the strings to concatenate
      * @param separator the separator between two strings
      * @return the concatenated strings
      */
@@ -209,7 +204,7 @@ public class CommandLineStringUtils {
         while (cleanedArgument.startsWith(SINGLE_QUOTE) || cleanedArgument.startsWith(DOUBLE_QUOTE)) {
             cleanedArgument = cleanedArgument.substring(1);
         }
-        
+
         while (cleanedArgument.endsWith(SINGLE_QUOTE) || cleanedArgument.endsWith(DOUBLE_QUOTE)) {
             cleanedArgument = cleanedArgument.substring(0, cleanedArgument.length() - 1);
         }

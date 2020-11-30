@@ -5,8 +5,7 @@ package com.jn.langx.commandline.util;
  *
  * @version $Id: DebugUtils.java 1636203 2014-11-02 22:26:31Z ggregory $
  */
-public class CommandLineDebugUtils
-{
+public class CommandLineDebugUtils {
     /**
      * System property to determine how to handle exceptions. When
      * set to "false" we rethrow the otherwise silently catched
@@ -26,7 +25,7 @@ public class CommandLineDebugUtils
      * Handles an exception based on the system properties.
      *
      * @param msg message describing the problem
-     * @param e an exception being handled
+     * @param e   an exception being handled
      */
     public static void handleException(final String msg, final Exception e) {
 

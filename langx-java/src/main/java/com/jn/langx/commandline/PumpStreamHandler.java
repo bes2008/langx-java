@@ -11,7 +11,6 @@ import com.jn.langx.commandline.util.CommandLineDebugUtils;
  * Copies standard output and error of sub-processes to standard output and error
  * of the parent process. If output or error stream are set to null, any feedback
  * from that stream will be lost.
- *
  */
 public class PumpStreamHandler implements ExecuteStreamHandler {
 
@@ -31,10 +30,14 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
 
     private InputStreamPumper inputStreamPumper;
 
-    /** the timeout in ms the implementation waits when stopping the pumper threads */
+    /**
+     * the timeout in ms the implementation waits when stopping the pumper threads
+     */
     private long stopTimeout;
 
-    /** the last exception being caught */
+    /**
+     * the last exception being caught
+     */
     private IOException caught = null;
 
     /**

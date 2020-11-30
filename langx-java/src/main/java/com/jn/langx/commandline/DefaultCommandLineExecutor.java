@@ -317,10 +317,10 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * Execute an internal process. If the executing thread is interrupted while waiting for the
      * child process to return the child process will be killed.
      *
-     * @param command     the command to execute
-     * @param environment the execution environment
-     * @param dir         the working directory
-     * @param streamHandler     process the streams (in, out, err) of the process
+     * @param command       the command to execute
+     * @param environment   the execution environment
+     * @param dir           the working directory
+     * @param streamHandler process the streams (in, out, err) of the process
      * @return the exit code of the process
      * @throws IOException executing the process failed
      */

@@ -8,22 +8,19 @@ import java.util.Map.Entry;
 
 /**
  * Wrapper for environment variables.
- *
- * @version $Id: EnvironmentUtils.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
-public class EnvironmentUtils
-{
+public class EnvironmentUtils {
 
     private static final DefaultProcessingEnvironment PROCESSING_ENVIRONMENT_IMPLEMENTATION;
-    
+
     static {
 //        if (OS.isFamilyOpenVms()) {
 //            PROCESSING_ENVIRONMENT_IMPLEMENTATION = new OpenVmsProcessingEnvironment();
 //        } else {
-            PROCESSING_ENVIRONMENT_IMPLEMENTATION = new DefaultProcessingEnvironment();
+        PROCESSING_ENVIRONMENT_IMPLEMENTATION = new DefaultProcessingEnvironment();
 //        }
     }
-    
+
     /**
      * Disable constructor.
      */
@@ -36,7 +33,7 @@ public class EnvironmentUtils
      *
      * @param environment the environment to use, may be {@code null}
      * @return array of key=value assignment strings or {@code null} if and only if
-     *     the input map was {@code null}
+     * the input map was {@code null}
      */
     public static String[] toStrings(final Map<String, String> environment) {
         if (environment == null) {
@@ -45,7 +42,7 @@ public class EnvironmentUtils
         final String[] result = new String[environment.size()];
         int i = 0;
         for (final Entry<String, String> entry : environment.entrySet()) {
-            final String key  = entry.getKey() == null ? "" : entry.getKey().toString();
+            final String key = entry.getKey() == null ? "" : entry.getKey().toString();
             final String value = entry.getValue() == null ? "" : entry.getValue().toString();
             result[i] = key + "=" + value;
             i++;
@@ -71,13 +68,13 @@ public class EnvironmentUtils
      * If the key matches an existing key, the previous setting is replaced.
      *
      * @param environment the current environment
-     * @param keyAndValue the key/value pair 
+     * @param keyAndValue the key/value pair
      */
     public static void addVariableToEnvironment(final Map<String, String> environment, final String keyAndValue) {
-        final String[] parsedVariable = parseEnvironmentVariable(keyAndValue);        
+        final String[] parsedVariable = parseEnvironmentVariable(keyAndValue);
         environment.put(parsedVariable[0], parsedVariable[1]);
     }
-    
+
     /**
      * Split a key/value pair into a String[]. It is assumed
      * that the ky/value pair contains a '=' character.
@@ -99,5 +96,5 @@ public class EnvironmentUtils
 
         return result;
     }
-    
+
 }

@@ -5,10 +5,8 @@ import java.util.Vector;
 
 /**
  * Generalization of {@code ExecuteWatchdog}
- * 
- * @see com.jn.langx.commandline.ExecuteWatchdog
  *
- * @version $Id: Watchdog.java 1636056 2014-11-01 21:12:52Z ggregory $
+ * @see com.jn.langx.commandline.ExecuteWatchdog
  */
 public class Watchdog implements Runnable {
 
@@ -36,7 +34,7 @@ public class Watchdog implements Runnable {
     protected final void fireTimeoutOccured() {
         final Enumeration<TimeoutObserver> e = observers.elements();
         while (e.hasMoreElements()) {
-            e.nextElement().timeoutOccured(this);
+            e.nextElement().onTimeout(this);
         }
     }
 
@@ -73,5 +71,5 @@ public class Watchdog implements Runnable {
             fireTimeoutOccured();
         }
     }
-    
+
 }

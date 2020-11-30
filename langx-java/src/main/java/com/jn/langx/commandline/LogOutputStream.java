@@ -9,24 +9,30 @@ import java.io.OutputStream;
  * error stream of then external process. The implementation
  * parses the incoming data to construct a line and passes
  * the complete line to an user-defined implementation.
- *
- * @version $Id: LogOutputStream.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 public abstract class LogOutputStream
-  extends OutputStream {
+        extends OutputStream {
 
-    /** Initial buffer size. */
+    /**
+     * Initial buffer size.
+     */
     private static final int INTIAL_SIZE = 132;
 
-    /** Carriage return */
+    /**
+     * Carriage return
+     */
     private static final int CR = 0x0d;
 
-    /** Linefeed */
+    /**
+     * Linefeed
+     */
     private static final int LF = 0x0a;
 
-    /** the internal buffer */
+    /**
+     * the internal buffer
+     */
     private final ByteArrayOutputStream buffer = new ByteArrayOutputStream(
-      INTIAL_SIZE);
+            INTIAL_SIZE);
 
     private boolean skip = false;
 
@@ -104,7 +110,7 @@ public abstract class LogOutputStream
     /**
      * Write a block of characters to the output stream
      *
-     * @param b the array containing the data
+     * @param b   the array containing the data
      * @param off the offset into the array where data starts
      * @param len the length of block
      * @throws java.io.IOException if the data cannot be written into the stream.
@@ -147,8 +153,7 @@ public abstract class LogOutputStream
     /**
      * Logs a line to the log system of the user.
      *
-     * @param line
-     *            the line to log.
+     * @param line the line to log.
      */
     protected void processLine(final String line) {
         processLine(line, level);
@@ -157,7 +162,7 @@ public abstract class LogOutputStream
     /**
      * Logs a line to the log system of the user.
      *
-     * @param line the line to log.
+     * @param line     the line to log.
      * @param logLevel the log level to use
      */
     protected abstract void processLine(final String line, final int logLevel);

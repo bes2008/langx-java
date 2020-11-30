@@ -8,16 +8,24 @@ package com.jn.langx.commandline;
  */
 public class DefaultExecuteResultHandler implements ExecuteResultHandler {
 
-    /** the interval polling the result */
+    /**
+     * the interval polling the result
+     */
     private static final int SLEEP_TIME_MS = 50;
 
-    /** Keep track if the process is still running */
+    /**
+     * Keep track if the process is still running
+     */
     private volatile boolean hasResult;
 
-    /** The exit value of the finished process */
+    /**
+     * The exit value of the finished process
+     */
     private volatile int exitValue;
 
-    /** Any offending exception */
+    /**
+     * Any offending exception
+     */
     private volatile ExecuteException exception;
 
     /**
@@ -41,7 +49,7 @@ public class DefaultExecuteResultHandler implements ExecuteResultHandler {
      * @see com.jn.langx.commandline.ExecuteResultHandler#onProcessFailed(com.jn.langx.commandline.ExecuteException)
      */
     public void onProcessFailed(final ExecuteException e) {
-        this.exitValue = e.getExitValue();            
+        this.exitValue = e.getExitValue();
         this.exception = e;
         this.hasResult = true;
     }
@@ -92,10 +100,10 @@ public class DefaultExecuteResultHandler implements ExecuteResultHandler {
      * not yet terminated, the calling thread will be blocked until the
      * process exits.
      *
-     * @exception  InterruptedException if the current thread is
-     *             {@linkplain Thread#interrupt() interrupted} by another
-     *             thread while it is waiting, then the wait is ended and
-     *             an {@link InterruptedException} is thrown.
+     * @throws InterruptedException if the current thread is
+     *                              {@linkplain Thread#interrupt() interrupted} by another
+     *                              thread while it is waiting, then the wait is ended and
+     *                              an {@link InterruptedException} is thrown.
      */
     public void waitFor() throws InterruptedException {
 
@@ -112,10 +120,10 @@ public class DefaultExecuteResultHandler implements ExecuteResultHandler {
      * process exits.
      *
      * @param timeout the maximum time to wait in milliseconds
-     * @exception  InterruptedException if the current thread is
-     *             {@linkplain Thread#interrupt() interrupted} by another
-     *             thread while it is waiting, then the wait is ended and
-     *             an {@link InterruptedException} is thrown.
+     * @throws InterruptedException if the current thread is
+     *                              {@linkplain Thread#interrupt() interrupted} by another
+     *                              thread while it is waiting, then the wait is ended and
+     *                              an {@link InterruptedException} is thrown.
      */
     public void waitFor(final long timeout) throws InterruptedException {
 

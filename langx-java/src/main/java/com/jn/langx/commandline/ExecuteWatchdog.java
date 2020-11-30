@@ -121,14 +121,14 @@ public class ExecuteWatchdog implements TimeoutObserver {
      */
     public synchronized void destroyProcess() {
         ensureStarted();
-        this.timeoutOccured(null);
+        this.onTimeout(null);
         this.stop();
     }
 
     /**
      * Called after watchdog has finished.
      */
-    public synchronized void timeoutOccured(final Watchdog w) {
+    public synchronized void onTimeout(final Watchdog w) {
         try {
             try {
                 // We must check if the process was not stopped
