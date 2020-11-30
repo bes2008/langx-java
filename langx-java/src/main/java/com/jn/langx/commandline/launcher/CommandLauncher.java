@@ -10,23 +10,17 @@ import java.util.Map;
 /**
  * Interface to shield the caller from the various platform-dependent
  * implementations.
- *
- * @version $Id: CommandLauncher.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 public interface CommandLauncher {
 
     /**
      * Launches the given command in a new process.
-     * 
-     * @param cmd
-     *            The command to execute
-     * @param env
-     *            The environment for the new process. If null, the environment
+     *
+     * @param cmd The command to execute
+     * @param env The environment for the new process. If null, the environment
      *            of the current process is used.
-     * 
      * @return the newly created process
-     * @throws IOException
-     *             if attempting to run a command in a specific directory
+     * @throws IOException if attempting to run a command in a specific directory
      */
     Process exec(final CommandLine cmd, final Map<String, String> env)
             throws IOException;
@@ -34,22 +28,17 @@ public interface CommandLauncher {
     /**
      * Launches the given command in a new process, in the given working
      * directory.
-     * 
-     * @param cmd
-     *            The command to execute
-     * @param env
-     *            The environment for the new process. If null, the environment
-     *            of the current process is used.
-     * @param workingDir
-     *            The directory to start the command in. If null, the current
-     *            directory is used
      *
+     * @param cmd        The command to execute
+     * @param env        The environment for the new process. If null, the environment
+     *                   of the current process is used.
+     * @param workingDir The directory to start the command in. If null, the current
+     *                   directory is used
      * @return the newly created process
-     * @throws IOException
-     *             if trying to change directory
+     * @throws IOException if trying to change directory
      */
     Process exec(final CommandLine cmd, final Map<String, String> env,
-            final File workingDir) throws IOException;
+                 final File workingDir) throws IOException;
 
 
     /**

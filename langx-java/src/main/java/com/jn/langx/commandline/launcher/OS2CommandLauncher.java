@@ -16,8 +16,6 @@ import java.util.Map;
  * </p>
  * Please not that this class is currently unused because the Java13CommandLauncher
  * is used for 0S/2
- *
- * @version $Id: OS2CommandLauncher.java 1557338 2014-01-11 10:34:22Z sebb $
  */
 public class OS2CommandLauncher extends CommandLauncherProxy {
 

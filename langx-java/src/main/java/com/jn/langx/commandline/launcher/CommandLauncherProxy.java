@@ -9,8 +9,6 @@ import java.util.Map;
 /**
  * A command launcher that proxies another command launcher. Sub-classes
  * override exec(args, env, workdir)
- *
- * @version $Id: CommandLauncherProxy.java 1557338 2014-01-11 10:34:22Z sebb $
  */
 public abstract class CommandLauncherProxy extends CommandLauncherImpl {
 

@@ -16,8 +16,6 @@ import java.util.Set;
  * A command launcher for VMS that writes the command to a temporary DCL script
  * before launching commands. This is due to limitations of both the DCL
  * interpreter and the Java VM implementation.
- *
- * @version $Id: VmsCommandLauncher.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 public class VmsCommandLauncher extends Java13CommandLauncher {
 

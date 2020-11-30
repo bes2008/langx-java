@@ -10,8 +10,6 @@ import java.util.Map;
 /**
  * A command launcher for Windows XP/2000/NT that uses 'cmd.exe' when launching
  * commands in directories other than the current working directory.
- *
- * @version $Id: WinNTCommandLauncher.java 1557338 2014-01-11 10:34:22Z sebb $
  */
 public class WinNTCommandLauncher extends CommandLauncherProxy {
     public WinNTCommandLauncher(final CommandLauncher launcher) {

@@ -5,8 +5,6 @@ import com.jn.langx.util.os.OS;
 
 /**
  * Builds a command launcher for the OS and JVM we are running under.
- *
- * @version $Id: CommandLauncherFactory.java 1556869 2014-01-09 16:51:11Z britter $
  */
 public final class CommandLauncherFactory {
 

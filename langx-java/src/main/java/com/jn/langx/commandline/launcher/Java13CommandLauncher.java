@@ -11,8 +11,6 @@ import java.util.Map;
 /**
  * A command launcher for JDK/JRE 1.3 (and higher). Uses the built-in
  * Runtime.exec() command
- *
- * @version $Id: Java13CommandLauncher.java 1557338 2014-01-11 10:34:22Z sebb $
  */
 public class Java13CommandLauncher extends CommandLauncherImpl {
 
