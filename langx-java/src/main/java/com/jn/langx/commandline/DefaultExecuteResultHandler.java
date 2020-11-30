@@ -3,8 +3,6 @@ package com.jn.langx.commandline;
 /**
  * A default implementation of 'ExecuteResultHandler' used for asynchronous
  * process handling.
- *
- * @version $Id: DefaultExecuteResultHandler.java 1636057 2014-11-01 21:14:00Z ggregory $
  */
 public class DefaultExecuteResultHandler implements ExecuteResultHandler {
 
