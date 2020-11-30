@@ -5,7 +5,6 @@ package com.jn.langx.commandline;
  * process is started asynchronously the callback provides you with the result of
  * the executed process, i.e. the exit value or an exception.
  *
- * @version $Id: ExecuteResultHandler.java 1636056 2014-11-01 21:12:52Z ggregory $
  * @see CommandLineExecutor#execute(CommandLine, java.util.Map, ExecuteResultHandler)
  */
 public interface ExecuteResultHandler {

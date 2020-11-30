@@ -1,14 +1,12 @@
 package com.jn.langx.commandline;
 
+import com.jn.langx.commandline.util.CommandLineDebugUtils;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.jn.langx.commandline.util.CommandLineDebugUtils;
-
 /**
  * Copies all data from an System.input stream to an output stream of the executed process.
- *
- * @version $Id: InputStreamPumper.java 1557263 2014-01-10 21:18:09Z ggregory $
  */
 public class InputStreamPumper implements Runnable {
 

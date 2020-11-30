@@ -4,8 +4,6 @@ import java.io.IOException;
 
 /**
  * An exception indicating that the executing a subprocesses failed.
- *
- * @version $Id: ExecuteException.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 public class ExecuteException extends IOException {
 
