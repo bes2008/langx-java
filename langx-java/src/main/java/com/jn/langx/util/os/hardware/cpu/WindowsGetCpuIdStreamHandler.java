@@ -5,17 +5,15 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.IOs;
-import com.jn.langx.util.struct.Holder;
 
 import java.io.IOException;
 import java.util.List;
 
 class WindowsGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
-    private final Holder<String> result = new Holder<String>();
 
     @Override
     public void start() throws IOException {
-        result.reset();
+        this.outputContent.reset();
         if (this.subProcessOutputStream != null) {
             List<String> lines = IOs.readLines(this.subProcessOutputStream);
             String cpuId = Collects.findFirst(lines, new Predicate<String>() {
@@ -25,12 +23,12 @@ class WindowsGetCpuIdStreamHandler extends GetCpuIdStreamHandler {
                 }
             });
             if (Emptys.isNotEmpty(cpuId)) {
-                result.set(cpuId.trim());
+                outputContent.set(cpuId.trim());
             }
         }
     }
 
     public String getCpuId() {
-        return result.get();
+        return outputContent.get();
     }
 }

@@ -1,20 +1,18 @@
 package com.jn.langx.util.os.virtualization;
 
 import com.jn.langx.util.io.IOs;
-import com.jn.langx.util.struct.Holder;
 
 import java.io.IOException;
 
 class LinuxGetRuntimeContainerHandler extends GetRuntimeContainerHandler {
-    private final Holder<RuntimeContainer> containerHolder = new Holder<RuntimeContainer>();
 
     public RuntimeContainer getContainer() {
-        return containerHolder.get();
+        return (RuntimeContainer) outputContent.get();
     }
 
     @Override
     public void start() throws IOException {
-        containerHolder.reset();
+        this.outputContent.reset();
         String content = IOs.readAsString(this.subProcessOutputStream);
         content.trim();
 
@@ -25,7 +23,7 @@ class LinuxGetRuntimeContainerHandler extends GetRuntimeContainerHandler {
 
         // docker
         if (content.startsWith("/docker/")) {
-            containerHolder.set(new RuntimeContainer("docker"));
+            outputContent.set(new RuntimeContainer("docker"));
         }
     }
 }
