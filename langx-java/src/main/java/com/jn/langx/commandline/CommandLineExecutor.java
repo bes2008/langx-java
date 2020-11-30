@@ -24,8 +24,6 @@ import java.util.Map;
  * CommandLine cl = new CommandLine("ls -l");
  * int exitvalue = exec.execute(cl);
  * </pre>
- *
- * @version $Id: Executor.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 
 public interface CommandLineExecutor {
