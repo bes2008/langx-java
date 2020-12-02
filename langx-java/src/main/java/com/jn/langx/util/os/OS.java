@@ -95,6 +95,14 @@ public final class OS {
         return isFamily("aix");
     }
 
+    public static boolean isFamilySolaris() {
+        return isFamily("solaris");
+    }
+
+    public static boolean isFamilySunOs() {
+        return isFamily("sunos");
+    }
+
     public static boolean isFamilyDOS() {
         return isFamily(FAMILY_DOS);
     }
@@ -137,6 +145,38 @@ public final class OS {
 
     public static boolean isFamilyWin9x() {
         return isFamily(FAMILY_WIN9X);
+    }
+
+    public static boolean isWindows95() {
+        return isOs("windows", "windows 9", null, "4.0");
+    }
+
+    public static boolean isWindows98() {
+        return isOs("windows", "windows 9", null, "4.1");
+    }
+
+    public static boolean isWindowsME() {
+        return isOs("windows", null, null, "4.9");
+    }
+
+    public static boolean isWindowsNT() {
+        return isOs("windows", "windows nt", null, "4.9");
+    }
+
+    public static boolean isWindows2000() {
+        return isOs("windows", null, null, "5.0");
+    }
+
+    public static boolean isWindowsXP() {
+        return isOs("windows", null, null, "5.1");
+    }
+
+    public static boolean isWindowsVista() {
+        return isOs("windows", null, null, "6.0");
+    }
+
+    public static boolean isWindows7() {
+        return isOs("windows", null, null, "6.1");
     }
 
     public static boolean isFamilyZOS() {
@@ -226,7 +266,7 @@ public final class OS {
                     isFamily = OS_NAME.contains(FAMILY_OS_400);
                 } else if (familyFlag.equals(FAMILY_OPENVMS)) {
                     isFamily = OS_NAME.contains(FAMILY_OPENVMS);
-                } else{
+                } else {
                     isFamily = OS_NAME.contains(familyFlag);
                 }
             }
@@ -237,7 +277,7 @@ public final class OS {
                 isArch = archFlag.equals(OS_ARCH);
             }
             if (versionFlag != null) {
-                isVersion = versionFlag.equals(OS_VERSION);
+                isVersion = Strings.startsWith(OS_VERSION, versionFlag);
             }
             retValue = isFamily && isName && isArch && isVersion;
         }
