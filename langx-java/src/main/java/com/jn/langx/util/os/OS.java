@@ -18,6 +18,8 @@
 
 package com.jn.langx.util.os;
 
+import com.jn.langx.util.Strings;
+
 import java.util.Locale;
 
 /**
@@ -88,12 +90,29 @@ public final class OS {
         return isOs(family, null, null, null);
     }
 
+
+    public static boolean isFamilyAIX() {
+        return isFamily("aix");
+    }
+
     public static boolean isFamilyDOS() {
         return isFamily(FAMILY_DOS);
     }
 
     public static boolean isFamilyMac() {
         return isFamily(FAMILY_MAC);
+    }
+
+    public static boolean isMaxOSX() {
+        return isFamilyMac() && isOs(null, "mac os x", null, null);
+    }
+
+    public static boolean isFamilyHP_UX() {
+        return isFamily("hp-ux");
+    }
+
+    public static boolean isFamilyIrix() {
+        return isFamily("irix");
     }
 
     public static boolean isFamilyNetware() {
@@ -168,66 +187,57 @@ public final class OS {
      * Determines if the OS on which Ant is executing matches the given OS
      * family, name, architecture and version
      *
-     * @param family  The OS family
-     * @param name    The OS name
-     * @param arch    The OS architecture
-     * @param version The OS version
+     * @param familyFlag  The OS family
+     * @param nameFlag    The OS name
+     * @param archFlag    The OS architecture
+     * @param versionFlag The OS version
      * @return true if the OS matches
      */
-    public static boolean isOs(final String family, final String name,
-                               final String arch, final String version) {
+    public static boolean isOs(final String familyFlag, final String nameFlag, final String archFlag, final String versionFlag) {
         boolean retValue = false;
 
-        if (family != null || name != null || arch != null || version != null) {
+        if (familyFlag != null || nameFlag != null || archFlag != null || versionFlag != null) {
 
             boolean isFamily = true;
             boolean isName = true;
             boolean isArch = true;
             boolean isVersion = true;
 
-            if (family != null) {
-                if (family.equals(FAMILY_WINDOWS)) {
-                    isFamily = OS_NAME.indexOf(FAMILY_WINDOWS) > -1;
-                } else if (family.equals(FAMILY_OS_2)) {
-                    isFamily = OS_NAME.indexOf(FAMILY_OS_2) > -1;
-                } else if (family.equals(FAMILY_NETWARE)) {
-                    isFamily = OS_NAME.indexOf(FAMILY_NETWARE) > -1;
-                } else if (family.equals(FAMILY_DOS)) {
-                    isFamily = PATH_SEP.equals(";")
-                            && !isFamily(FAMILY_NETWARE);
-                } else if (family.equals(FAMILY_MAC)) {
-                    isFamily = OS_NAME.indexOf(FAMILY_MAC) > -1;
-                } else if (family.equals(FAMILY_TANDEM)) {
-                    isFamily = OS_NAME.indexOf("nonstop_kernel") > -1;
-                } else if (family.equals(FAMILY_UNIX)) {
-                    isFamily = PATH_SEP.equals(":")
-                            && !isFamily(FAMILY_OPENVMS)
-                            && (!isFamily(FAMILY_MAC) || OS_NAME.endsWith("x"));
-                } else if (family.equals(FAMILY_WIN9X)) {
-                    isFamily = isFamily(FAMILY_WINDOWS)
-                            && (OS_NAME.indexOf("95") >= 0
-                            || OS_NAME.indexOf("98") >= 0
-                            || OS_NAME.indexOf("me") >= 0 || OS_NAME
-                            .indexOf("ce") >= 0);
-                } else if (family.equals(FAMILY_Z_OS)) {
-                    isFamily = OS_NAME.indexOf(FAMILY_Z_OS) > -1
-                            || OS_NAME.indexOf("os/390") > -1;
-                } else if (family.equals(FAMILY_OS_400)) {
-                    isFamily = OS_NAME.indexOf(FAMILY_OS_400) > -1;
-                } else if (family.equals(FAMILY_OPENVMS)) {
-                    isFamily = OS_NAME.indexOf(FAMILY_OPENVMS) > -1;
-                } else {
-                    throw new IllegalArgumentException("Don't know how to detect os family: " + family);
+            if (familyFlag != null) {
+                if (familyFlag.equals(FAMILY_WINDOWS)) {
+                    isFamily = OS_NAME.contains(FAMILY_WINDOWS);
+                } else if (familyFlag.equals(FAMILY_OS_2)) {
+                    isFamily = OS_NAME.contains(FAMILY_OS_2);
+                } else if (familyFlag.equals(FAMILY_NETWARE)) {
+                    isFamily = OS_NAME.contains(FAMILY_NETWARE);
+                } else if (familyFlag.equals(FAMILY_DOS)) {
+                    isFamily = PATH_SEP.equals(";") && !isFamily(FAMILY_NETWARE);
+                } else if (familyFlag.equals(FAMILY_MAC)) {
+                    isFamily = OS_NAME.contains(FAMILY_MAC);
+                } else if (familyFlag.equals(FAMILY_TANDEM)) {
+                    isFamily = OS_NAME.contains("nonstop_kernel");
+                } else if (familyFlag.equals(FAMILY_UNIX)) {
+                    isFamily = PATH_SEP.equals(":") && !isFamily(FAMILY_OPENVMS) && (!isFamily(FAMILY_MAC) || OS_NAME.endsWith("x"));
+                } else if (familyFlag.equals(FAMILY_WIN9X)) {
+                    isFamily = isFamily(FAMILY_WINDOWS) && (OS_NAME.contains("95") || OS_NAME.contains("98") || OS_NAME.contains("me") || OS_NAME.contains("ce"));
+                } else if (familyFlag.equals(FAMILY_Z_OS)) {
+                    isFamily = OS_NAME.contains(FAMILY_Z_OS) || OS_NAME.contains("os/390");
+                } else if (familyFlag.equals(FAMILY_OS_400)) {
+                    isFamily = OS_NAME.contains(FAMILY_OS_400);
+                } else if (familyFlag.equals(FAMILY_OPENVMS)) {
+                    isFamily = OS_NAME.contains(FAMILY_OPENVMS);
+                } else{
+                    isFamily = OS_NAME.contains(familyFlag);
                 }
             }
-            if (name != null) {
-                isName = name.equals(OS_NAME);
+            if (nameFlag != null) {
+                isName = Strings.startsWith(OS_NAME, nameFlag);
             }
-            if (arch != null) {
-                isArch = arch.equals(OS_ARCH);
+            if (archFlag != null) {
+                isArch = archFlag.equals(OS_ARCH);
             }
-            if (version != null) {
-                isVersion = version.equals(OS_VERSION);
+            if (versionFlag != null) {
+                isVersion = versionFlag.equals(OS_VERSION);
             }
             retValue = isFamily && isName && isArch && isVersion;
         }
