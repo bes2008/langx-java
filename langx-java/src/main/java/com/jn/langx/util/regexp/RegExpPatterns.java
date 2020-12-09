@@ -84,7 +84,7 @@ public class RegExpPatterns {
             }
             return false;
         }
-        if(Emptys.isEmpty(string)){
+        if (Emptys.isEmpty(string)) {
             return false;
         }
         return pattern.matcher(string).matches();
