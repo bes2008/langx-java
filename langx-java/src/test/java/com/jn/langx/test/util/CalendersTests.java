@@ -7,10 +7,8 @@ import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.TimeZone;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 标准时间：GMT时间，也叫格林威治平时，也叫 UTC时间。
@@ -39,17 +37,29 @@ import java.util.TimeZone;
 public class CalendersTests {
     @Test
     public void testCalender() {
+        System.out.println("------测试时区偏移量-------");
+        // 中国时区：统一按照中国上海来定义，也就是东八区。
         TimeZone timeZone = Calendar.getInstance().getTimeZone();
         System.out.println(timeZone.getRawOffset());
         System.out.println(8 * 3600 * 1000);
-
+        System.out.println("-------基于UTC，进行本地化-------");
         long now = new Date().getTime();
-        long actual_now = now + timeZone.getRawOffset();
-        long actual_zero = (now - actual_now % Dates.DAY_TO_MILLIS);
-        System.out.println(now + ", " + Dates.format(new Date(now), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
-        System.out.println(actual_now + ", " + Dates.format(new Date(actual_now), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
-        System.out.println(actual_zero + ", " + Dates.format(new Date(actual_zero), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
+        System.out.println(now + ",         直接使用SimpleDateFormat:" + new SimpleDateFormat(Dates.yyyy_MM_dd_HH_mm_ss_SSS).format(new Date(now)));
+        System.out.println(now + ",             最常用的格式化显示方式:" + Dates.format(new Date(now),Dates.yyyy_MM_dd_HH_mm_ss_SSS));
+        System.out.println(now + ",            按照 UTC时间来进行显示:" + Dates.getSimpleDateFormat(Dates.yyyy_MM_dd_HH_mm_ss_SSS, TimeZone.getTimeZone("UTC")).format(new Date(now)));
+        System.out.println(now + ",  转换为易于当地人(所在时区)读的时间:" + Dates.format(new Date(now), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
+        // 根据上面，得出的结论：我们日常使用SimpleDateFormat();本质就是根据UTC时间并结合当地时区，进行转换为易于当地人读的格式。
 
+        System.out.println("--------展现时区转换的本质--------");
+        // UTC + TimeZone.offset = locale Time
+        long actual_now = now + timeZone.getRawOffset();
+
+        System.out.println(actual_now + ", 这个是真正的以UTC时区来表示当地时间：" + Dates.getSimpleDateFormat(Dates.yyyy_MM_dd_HH_mm_ss_SSS, TimeZone.getTimeZone("UTC")).format(new Date(actual_now)));
+        System.out.println("因此得出结论：SimpleDateFormat的本质，就是 标准UTC 时间 + offset ，就是要表示当地时间的真实数字");
+
+        System.out.println("--------每天的 0 时------");
+        long actual_zero = (now - actual_now % Dates.DAY_TO_MILLIS);
+        System.out.println(actual_zero + ", 基于时区 offset来计算每天0时:     " + Dates.format(new Date(actual_zero), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
 
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(now);
@@ -58,7 +68,7 @@ public class CalendersTests {
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         long todayZero = c.getTimeInMillis();
-        System.out.println(todayZero + ", " + Dates.format(new Date(todayZero), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
+        System.out.println(todayZero + ", 用Calender来计算每天 0 时:       " + Dates.format(new Date(todayZero), Dates.yyyy_MM_dd_HH_mm_ss_SSS));
 
         long standardZero = now - now % Dates.DAY_TO_MILLIS;
         System.out.println(standardZero + "," + new Date(standardZero));
