@@ -9,10 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class SimpleStack<E> implements Stack<E> {
-    private List<E> list;
+    protected List<E> list;
 
     public SimpleStack() {
-        this.list = Collects.emptyLinkedList();
+        this.list = Collects.emptyArrayList();
     }
 
     public SimpleStack(Collection<E> list) {
