@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -75,6 +76,16 @@ public class FileTypes {
         FileInputStream in = null;
         try {
             in = new FileInputStream(file);
+            return readFileMagic(in);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            IOs.close(in);
+        }
+    }
+
+    public static String readFileMagic(InputStream in) {
+        try {
             byte[] bytes = new byte[28];
             int length = IOs.read(in, bytes);
             if (length > 0) {
@@ -84,10 +95,9 @@ public class FileTypes {
             return null;
         } catch (Throwable ex) {
             throw new RuntimeException(ex);
-        } finally {
-            IOs.close(in);
         }
     }
+
 
     public static String getFileType(File file) {
         String fileHexHeader = readFileMagic(file);
