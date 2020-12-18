@@ -58,7 +58,7 @@ public class FileTypes {
         if (entry != null) {
             List<String> types = (List<String>) entry.getValue();
             if (Emptys.isNotEmpty(types)) {
-                types.get(0);
+                return types.get(0);
             }
         }
         return null;
@@ -89,7 +89,14 @@ public class FileTypes {
             byte[] bytes = new byte[28];
             int length = IOs.read(in, bytes);
             if (length > 0) {
-                byte[] bs = new byte[length];
+                byte[] bs = null;
+                if (length < 28) {
+                    bs = new byte[length];
+                    System.arraycopy(bytes, 0, bs, 0, length);
+                } else {
+                    bs = bytes;
+                }
+
                 return Hex.encodeHexString(bs, true);
             }
             return null;
