@@ -223,9 +223,22 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
     }
 
     public InputStream getInputStream() throws IOException {
-        InputStream is;
+        InputStream is = null;
         if (this.clazz != null) {
-            is = this.clazz.getResourceAsStream(getPath());
+            String path = getPath();
+            if (!path.startsWith("/")) {
+                String packageName = Reflects.getPackageName(clazz);
+                packageName = Classpaths.packageToPath(packageName);
+                path = path.replace(packageName + "/", "");
+            }
+            try {
+                is = this.clazz.getResourceAsStream(path);
+            } catch (Throwable ex) {
+                // ignore
+            }
+            if (is == null) {
+                is = this.clazz.getClassLoader().getResourceAsStream(getPath());
+            }
         } else if (this.classLoader != null) {
             is = this.classLoader.getResourceAsStream(getPath());
         } else {

@@ -1,5 +1,8 @@
 package com.jn.langx.util.regexp;
 
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Emptys;
+
 import java.util.regex.Pattern;
 
 public class RegExpPatterns {
@@ -68,5 +71,23 @@ public class RegExpPatterns {
     /**
      * QQ 号
      */
-    public static Pattern PATTERN_QQ=Pattern.compile("[1-9]\\d{4,9}");
+    public static Pattern PATTERN_QQ = Pattern.compile("[1-9]\\d{4,9}");
+
+    public static boolean test(String pattern, String string) {
+        return test(Pattern.compile(pattern), string);
+    }
+
+    public static boolean test(@Nullable Pattern pattern, @Nullable String string) {
+        if (pattern == null) {
+            if (Emptys.isEmpty(string)) {
+                return true;
+            }
+            return false;
+        }
+        if (Emptys.isEmpty(string)) {
+            return false;
+        }
+        return pattern.matcher(string).matches();
+    }
+
 }

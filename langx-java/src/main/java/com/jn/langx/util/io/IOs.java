@@ -1,8 +1,10 @@
 package com.jn.langx.util.io;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.io.stream.StringBuilderWriter;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.reflect.Reflects;
@@ -1003,190 +1005,6 @@ public class IOs {
         return resource;
     }
 
-    // readLines
-    //-----------------------------------------------------------------------
-
-    /**
-     * Gets the contents of an <code>InputStream</code> as a list of Strings,
-     * one entry per line, using the default character encoding of the platform.
-     * <p>
-     * This method buffers the input internally, so there is no need to use a
-     * <code>BufferedInputStream</code>.
-     *
-     * @param input the <code>InputStream</code> to read from, not null
-     * @return the list of Strings, never null
-     * @throws NullPointerException if the input is null
-     * @throws IOException          if an I/O error occurs
-     */
-    public static List<String> readLines(final InputStream input) throws IOException {
-        return readLines(input, Charset.defaultCharset());
-    }
-
-    /**
-     * Gets the contents of an <code>InputStream</code> as a list of Strings,
-     * one entry per line, using the specified character encoding.
-     * <p>
-     * This method buffers the input internally, so there is no need to use a
-     * <code>BufferedInputStream</code>.
-     *
-     * @param input    the <code>InputStream</code> to read from, not null
-     * @param encoding the encoding to use, null means platform default
-     * @return the list of Strings, never null
-     * @throws NullPointerException if the input is null
-     * @throws IOException          if an I/O error occurs
-     */
-    public static List<String> readLines(final InputStream input, final Charset encoding) throws IOException {
-        final InputStreamReader reader = new InputStreamReader(input, Charsets.getCharset(encoding));
-        return readLines(reader);
-    }
-
-    /**
-     * Gets the contents of an <code>InputStream</code> as a list of Strings,
-     * one entry per line, using the specified character encoding.
-     * <p>
-     * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
-     * <p>
-     * This method buffers the input internally, so there is no need to use a
-     * <code>BufferedInputStream</code>.
-     *
-     * @param input    the <code>InputStream</code> to read from, not null
-     * @param encoding the encoding to use, null means platform default
-     * @return the list of Strings, never null
-     * @throws NullPointerException                         if the input is null
-     * @throws IOException                                  if an I/O error occurs
-     * @throws java.nio.charset.UnsupportedCharsetException thrown instead of {@link java.io
-     *                                                      .UnsupportedEncodingException} in version 2.2 if the
-     *                                                      encoding is not supported.
-     */
-    public static List<String> readLines(final InputStream input, final String encoding) throws IOException {
-        return readLines(input, Charsets.getCharset(encoding));
-    }
-
-    /**
-     * Gets the contents of a <code>Reader</code> as a list of Strings,
-     * one entry per line.
-     * <p>
-     * This method buffers the input internally, so there is no need to use a
-     * <code>BufferedReader</code>.
-     *
-     * @param input the <code>Reader</code> to read from, not null
-     * @return the list of Strings, never null
-     * @throws NullPointerException if the input is null
-     * @throws IOException          if an I/O error occurs
-     */
-    public static List<String> readLines(final Reader input) throws IOException {
-        final BufferedReader reader = toBufferedReader(input);
-        final List<String> list = new ArrayList<String>();
-        String line = reader.readLine();
-        while (line != null) {
-            list.add(line);
-            line = reader.readLine();
-        }
-        return list;
-    }
-
-    // lineIterator
-    //-----------------------------------------------------------------------
-
-    /**
-     * Returns an Iterator for the lines in a <code>Reader</code>.
-     * <p>
-     * <code>LineIterator</code> holds a reference to the open
-     * <code>Reader</code> specified here. When you have finished with the
-     * iterator you should close the reader to free internal resources.
-     * This can be done by closing the reader directly, or by calling
-     * {@link LineIterator#close()}.
-     * <p>
-     * The recommended usage pattern is:
-     * <pre>
-     * try {
-     *   LineIterator it = IOUtils.lineIterator(reader);
-     *   while (it.hasNext()) {
-     *     String line = it.nextLine();
-     *     /// do something with line
-     *   }
-     * } finally {
-     *   IOUtils.closeQuietly(reader);
-     * }
-     * </pre>
-     *
-     * @param reader the <code>Reader</code> to read from, not null
-     * @return an Iterator of the lines in the reader, never null
-     * @throws IllegalArgumentException if the reader is null
-     */
-    public static LineIterator lineIterator(final Reader reader) {
-        return new LineIterator(reader);
-    }
-
-    /**
-     * Returns an Iterator for the lines in an <code>InputStream</code>, using
-     * the character encoding specified (or default encoding if null).
-     * <p>
-     * <code>LineIterator</code> holds a reference to the open
-     * <code>InputStream</code> specified here. When you have finished with
-     * the iterator you should close the stream to free internal resources.
-     * This can be done by closing the stream directly, or by calling
-     * {@link LineIterator#close()}.
-     * <p>
-     * The recommended usage pattern is:
-     * <pre>
-     * try {
-     *   LineIterator it = IOUtils.lineIterator(stream, charset);
-     *   while (it.hasNext()) {
-     *     String line = it.nextLine();
-     *     /// do something with line
-     *   }
-     * } finally {
-     *   IOUtils.closeQuietly(stream);
-     * }
-     * </pre>
-     *
-     * @param input    the <code>InputStream</code> to read from, not null
-     * @param encoding the encoding to use, null means platform default
-     * @return an Iterator of the lines in the reader, never null
-     * @throws IllegalArgumentException if the input is null
-     * @throws IOException              if an I/O error occurs, such as if the encoding is invalid
-     */
-    public static LineIterator lineIterator(final InputStream input, final Charset encoding) throws IOException {
-        return new LineIterator(new InputStreamReader(input, Charsets.getCharset(encoding)));
-    }
-
-    /**
-     * Returns an Iterator for the lines in an <code>InputStream</code>, using
-     * the character encoding specified (or default encoding if null).
-     * <p>
-     * <code>LineIterator</code> holds a reference to the open
-     * <code>InputStream</code> specified here. When you have finished with
-     * the iterator you should close the stream to free internal resources.
-     * This can be done by closing the stream directly, or by calling
-     * {@link LineIterator#close()}.
-     * <p>
-     * The recommended usage pattern is:
-     * <pre>
-     * try {
-     *   LineIterator it = IOUtils.lineIterator(stream, "UTF-8");
-     *   while (it.hasNext()) {
-     *     String line = it.nextLine();
-     *     /// do something with line
-     *   }
-     * } finally {
-     *   IOUtils.closeQuietly(stream);
-     * }
-     * </pre>
-     *
-     * @param input    the <code>InputStream</code> to read from, not null
-     * @param encoding the encoding to use, null means platform default
-     * @return an Iterator of the lines in the reader, never null
-     * @throws IllegalArgumentException                     if the input is null
-     * @throws IOException                                  if an I/O error occurs, such as if the encoding is invalid
-     * @throws java.nio.charset.UnsupportedCharsetException thrown instead of {@link java.io
-     *                                                      .UnsupportedEncodingException} in version 2.2 if the
-     *                                                      encoding is not supported.
-     */
-    public static LineIterator lineIterator(final InputStream input, final String encoding) throws IOException {
-        return lineIterator(input, Charsets.getCharset(encoding));
-    }
 
     //-----------------------------------------------------------------------
 
@@ -2591,6 +2409,34 @@ public class IOs {
     }
 
     /**
+     * @param byteBuffer the bytes source
+     * @param position   the position in the bytes source
+     * @param maxLength  the max length will read
+     * @return
+     */
+    public static byte[] read(@NonNull ByteBuffer byteBuffer, int position, int maxLength) {
+        if (byteBuffer == null) {
+            return new byte[0];
+        }
+        Preconditions.checkArgument(position >= 0, "the position argument is wrong: {}", position);
+        if (maxLength < 0) {
+            maxLength = Integer.MAX_VALUE;
+        }
+
+        int remaining = byteBuffer.limit() - position;
+        if (remaining < 1) {
+            return new byte[0];
+        }
+
+        byteBuffer.position(position);
+
+        int length = Maths.min(remaining, maxLength);
+
+        byte[] bytes = new byte[length];
+        byteBuffer.get(bytes);
+        return bytes;
+    }
+    /**
      * Reads the requested number of characters or fail if there are not enough left.
      * <p>
      * This allows for the possibility that {@link Reader#read(char[], int, int)} may
@@ -2712,4 +2558,191 @@ public class IOs {
             throw Throwables.wrapAsRuntimeIOException(ex);
         }
     }
+
+    // readLines
+    //-----------------------------------------------------------------------
+
+    /**
+     * Gets the contents of an <code>InputStream</code> as a list of Strings,
+     * one entry per line, using the default character encoding of the platform.
+     * <p>
+     * This method buffers the input internally, so there is no need to use a
+     * <code>BufferedInputStream</code>.
+     *
+     * @param input the <code>InputStream</code> to read from, not null
+     * @return the list of Strings, never null
+     * @throws NullPointerException if the input is null
+     * @throws IOException          if an I/O error occurs
+     */
+    public static List<String> readLines(final InputStream input) throws IOException {
+        return readLines(input, Charset.defaultCharset());
+    }
+
+    /**
+     * Gets the contents of an <code>InputStream</code> as a list of Strings,
+     * one entry per line, using the specified character encoding.
+     * <p>
+     * This method buffers the input internally, so there is no need to use a
+     * <code>BufferedInputStream</code>.
+     *
+     * @param input    the <code>InputStream</code> to read from, not null
+     * @param encoding the encoding to use, null means platform default
+     * @return the list of Strings, never null
+     * @throws NullPointerException if the input is null
+     * @throws IOException          if an I/O error occurs
+     */
+    public static List<String> readLines(final InputStream input, final Charset encoding) throws IOException {
+        final InputStreamReader reader = new InputStreamReader(input, Charsets.getCharset(encoding));
+        return readLines(reader);
+    }
+
+    /**
+     * Gets the contents of an <code>InputStream</code> as a list of Strings,
+     * one entry per line, using the specified character encoding.
+     * <p>
+     * Character encoding names can be found at
+     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <p>
+     * This method buffers the input internally, so there is no need to use a
+     * <code>BufferedInputStream</code>.
+     *
+     * @param input    the <code>InputStream</code> to read from, not null
+     * @param encoding the encoding to use, null means platform default
+     * @return the list of Strings, never null
+     * @throws NullPointerException                         if the input is null
+     * @throws IOException                                  if an I/O error occurs
+     * @throws java.nio.charset.UnsupportedCharsetException thrown instead of {@link java.io
+     *                                                      .UnsupportedEncodingException} in version 2.2 if the
+     *                                                      encoding is not supported.
+     */
+    public static List<String> readLines(final InputStream input, final String encoding) throws IOException {
+        return readLines(input, Charsets.getCharset(encoding));
+    }
+
+    /**
+     * Gets the contents of a <code>Reader</code> as a list of Strings,
+     * one entry per line.
+     * <p>
+     * This method buffers the input internally, so there is no need to use a
+     * <code>BufferedReader</code>.
+     *
+     * @param input the <code>Reader</code> to read from, not null
+     * @return the list of Strings, never null
+     * @throws NullPointerException if the input is null
+     * @throws IOException          if an I/O error occurs
+     */
+    public static List<String> readLines(final Reader input) throws IOException {
+        final BufferedReader reader = toBufferedReader(input);
+        final List<String> list = new ArrayList<String>();
+        String line = reader.readLine();
+        while (line != null) {
+            list.add(line);
+            line = reader.readLine();
+        }
+        return list;
+    }
+
+    // lineIterator
+    //-----------------------------------------------------------------------
+
+    /**
+     * Returns an Iterator for the lines in a <code>Reader</code>.
+     * <p>
+     * <code>LineIterator</code> holds a reference to the open
+     * <code>Reader</code> specified here. When you have finished with the
+     * iterator you should close the reader to free internal resources.
+     * This can be done by closing the reader directly, or by calling
+     * {@link LineIterator#close()}.
+     * <p>
+     * The recommended usage pattern is:
+     * <pre>
+     * try {
+     *   LineIterator it = IOUtils.lineIterator(reader);
+     *   while (it.hasNext()) {
+     *     String line = it.nextLine();
+     *     /// do something with line
+     *   }
+     * } finally {
+     *   IOUtils.closeQuietly(reader);
+     * }
+     * </pre>
+     *
+     * @param reader the <code>Reader</code> to read from, not null
+     * @return an Iterator of the lines in the reader, never null
+     * @throws IllegalArgumentException if the reader is null
+     */
+    public static LineIterator lineIterator(final Reader reader) {
+        return new LineIterator(reader);
+    }
+
+    /**
+     * Returns an Iterator for the lines in an <code>InputStream</code>, using
+     * the character encoding specified (or default encoding if null).
+     * <p>
+     * <code>LineIterator</code> holds a reference to the open
+     * <code>InputStream</code> specified here. When you have finished with
+     * the iterator you should close the stream to free internal resources.
+     * This can be done by closing the stream directly, or by calling
+     * {@link LineIterator#close()}.
+     * <p>
+     * The recommended usage pattern is:
+     * <pre>
+     * try {
+     *   LineIterator it = IOUtils.lineIterator(stream, charset);
+     *   while (it.hasNext()) {
+     *     String line = it.nextLine();
+     *     /// do something with line
+     *   }
+     * } finally {
+     *   IOUtils.closeQuietly(stream);
+     * }
+     * </pre>
+     *
+     * @param input    the <code>InputStream</code> to read from, not null
+     * @param encoding the encoding to use, null means platform default
+     * @return an Iterator of the lines in the reader, never null
+     * @throws IllegalArgumentException if the input is null
+     * @throws IOException              if an I/O error occurs, such as if the encoding is invalid
+     */
+    public static LineIterator lineIterator(final InputStream input, final Charset encoding) throws IOException {
+        return new LineIterator(new InputStreamReader(input, Charsets.getCharset(encoding)));
+    }
+
+    /**
+     * Returns an Iterator for the lines in an <code>InputStream</code>, using
+     * the character encoding specified (or default encoding if null).
+     * <p>
+     * <code>LineIterator</code> holds a reference to the open
+     * <code>InputStream</code> specified here. When you have finished with
+     * the iterator you should close the stream to free internal resources.
+     * This can be done by closing the stream directly, or by calling
+     * {@link LineIterator#close()}.
+     * <p>
+     * The recommended usage pattern is:
+     * <pre>
+     * try {
+     *   LineIterator it = IOUtils.lineIterator(stream, "UTF-8");
+     *   while (it.hasNext()) {
+     *     String line = it.nextLine();
+     *     /// do something with line
+     *   }
+     * } finally {
+     *   IOUtils.closeQuietly(stream);
+     * }
+     * </pre>
+     *
+     * @param input    the <code>InputStream</code> to read from, not null
+     * @param encoding the encoding to use, null means platform default
+     * @return an Iterator of the lines in the reader, never null
+     * @throws IllegalArgumentException                     if the input is null
+     * @throws IOException                                  if an I/O error occurs, such as if the encoding is invalid
+     * @throws java.nio.charset.UnsupportedCharsetException thrown instead of {@link java.io
+     *                                                      .UnsupportedEncodingException} in version 2.2 if the
+     *                                                      encoding is not supported.
+     */
+    public static LineIterator lineIterator(final InputStream input, final String encoding) throws IOException {
+        return lineIterator(input, Charsets.getCharset(encoding));
+    }
+
+
 }

@@ -278,6 +278,14 @@ public class Objects {
         return useValueIfMatch(value, Functions.<T>emptyPredicate(), defaultValue);
     }
 
+    public static <T> T useValueIfNull(T value, Supplier<T,T> supplier) {
+        return useValueIfMatch(value, Functions.<T>nullPredicate(), supplier);
+    }
+
+    public static <T> T useValueIfEmpty(T value, Supplier<T,T> supplier) {
+        return useValueIfMatch(value, Functions.<T>emptyPredicate(), supplier);
+    }
+
     public static <T> T useValueIfMatch(T value, Predicate<T> predicate, T defaultValue){
         if(predicate.test(value)){
             return defaultValue;
