@@ -2,6 +2,7 @@ package com.jn.langx.util.collection.stack;
 
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.iter.ReverseListIterator;
 import com.jn.langx.util.function.Consumer;
 
 import java.util.Collection;
@@ -60,7 +61,7 @@ public class SimpleStack<E> implements Stack<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return list.iterator();
+        return new ReverseListIterator<E>(list);
     }
 
     @Override

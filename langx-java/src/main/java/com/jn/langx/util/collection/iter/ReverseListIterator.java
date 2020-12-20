@@ -41,7 +41,7 @@ public class ReverseListIterator<E> implements Iterator<E> {
      * @throws NoSuchElementException
      */
     public E next() {
-        if (current <= 0) {
+        if (current < 0) {
             throw new NoSuchElementException();
         }
 
