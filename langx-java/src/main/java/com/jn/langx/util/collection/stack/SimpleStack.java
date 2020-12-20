@@ -6,6 +6,7 @@ import com.jn.langx.util.collection.iter.ReverseListIterator;
 import com.jn.langx.util.function.Consumer;
 
 import java.util.Collection;
+import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,14 +32,24 @@ public class SimpleStack<E> implements Stack<E> {
 
     @Override
     public E pop() {
-        return isEmpty() ? null : list.remove(0);
+        if (!isEmpty()) {
+            return list.remove(size() - 1);
+        }
+        throw new EmptyStackException();
     }
 
     @Override
     public E peek() {
-        return list.get(0);
+        if (!isEmpty()) {
+            return list.get(size() - 1);
+        }
+        throw new EmptyStackException();
     }
 
+    /**
+     * @param   o   the desired object.
+     * @return
+     */
     @Override
     public int search(Object o) {
         return Collects.firstOccurrence(this, (E) o);
@@ -92,7 +103,7 @@ public class SimpleStack<E> implements Stack<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        Collects.forEach((Collection<E>)c, new Consumer<E>() {
+        Collects.forEach((Collection<E>) c, new Consumer<E>() {
             @Override
             public void accept(E e) {
                 add(e);
