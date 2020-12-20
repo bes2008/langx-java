@@ -4,6 +4,7 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.Collection;
+import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -29,12 +30,18 @@ public class ThreadSafeStack<E> implements Stack<E> {
 
     @Override
     public E pop() {
-        return deque.pop();
+        if(deque.isEmpty()){
+            throw new EmptyStackException();
+        }
+        return deque.pollLast();
     }
 
     @Override
     public E peek() {
-        return deque.peek();
+        if(deque.isEmpty()){
+            throw new EmptyStackException();
+        }
+        return deque.peekLast();
     }
 
     @Override
@@ -59,7 +66,7 @@ public class ThreadSafeStack<E> implements Stack<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return deque.iterator();
+        return deque.descendingIterator();
     }
 
     @Override
