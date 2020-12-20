@@ -31,7 +31,7 @@ public class ReverseListIterator<E> implements Iterator<E> {
      * @return True if there are more elements.
      */
     public boolean hasNext() {
-        return current > 0;
+        return current >= 0;
     }
 
     /**
