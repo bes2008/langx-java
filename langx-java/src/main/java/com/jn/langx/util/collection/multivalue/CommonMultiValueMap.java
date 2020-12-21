@@ -132,7 +132,7 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
     }
 
     @Override
-    public int totalCount() {
+    public int total() {
         final SimpleIntegerCounter counter = new SimpleIntegerCounter(0);
         Collects.forEach(this.targetMap, new Consumer2<K, Collection<V>>() {
             @Override
@@ -145,7 +145,7 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
 
     @Override
     public boolean isEmpty() {
-        return totalCount() < 1;
+        return total() < 1;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> {
 
     @Override
     public E get(final int index) {
-        if (index < 0 || index >= map.totalCount()) {
+        if (index < 0 || index >= map.total()) {
             throw new IndexOutOfBoundsException();
         }
         com.jn.langx.util.struct.Entry<Integer, Integer> coordinate = getCoordinate(index);
@@ -41,7 +41,7 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> {
     }
 
     private com.jn.langx.util.struct.Entry<Integer, Integer> getCoordinate(final int index) {
-        if (index < 0 || index >= map.totalCount()) {
+        if (index < 0 || index >= map.total()) {
             throw new IndexOutOfBoundsException();
         }
         final SimpleIntegerCounter counter = new SimpleIntegerCounter();
@@ -299,7 +299,7 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> {
     public List<E> subList(final int fromIndex, int toIndex) {
         int size = size();
         Preconditions.checkIndex(fromIndex, size);
-        toIndex = Maths.min(this.map.totalCount(), toIndex);
+        toIndex = Maths.min(this.map.total(), toIndex);
         Preconditions.checkIndex(toIndex, size);
 
         final com.jn.langx.util.struct.Entry<Integer, Integer> fromCoordinate = getCoordinate(fromIndex);
@@ -351,7 +351,7 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> {
 
     @Override
     public int size() {
-        return map.totalCount();
+        return map.total();
     }
 
     @Override

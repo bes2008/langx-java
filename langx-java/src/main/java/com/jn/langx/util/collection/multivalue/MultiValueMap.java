@@ -78,6 +78,6 @@ public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
      */
     Map<K, V> toSingleValueMap();
 
-    int totalCount();
+    int total();
 
 }
