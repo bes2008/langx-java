@@ -11,6 +11,9 @@ public interface PatternMatcher {
      */
     void setTrimPattern(boolean trimPattern);
 
+
+    void setPatternExpression(String patternExpression);
+
     /**
      * 测试是否匹配
      *

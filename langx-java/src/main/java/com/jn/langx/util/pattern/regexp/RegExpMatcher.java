@@ -23,13 +23,14 @@ public class RegExpMatcher extends AbstractPatternMatcher {
     }
 
     public RegExpMatcher(String regexp, boolean caseSensitive, boolean trimPattern) {
-        setRegexp(regexp);
+        setPatternExpression(regexp);
         setCaseSensitive(caseSensitive);
         setTrimPattern(trimPattern);
     }
 
-    public void setRegexp(String regexp) {
-        this.regexp = regexp;
+    @Override
+    public void setPatternExpression(String patternExpression) {
+        this.regexp = patternExpression;
     }
 
     @Override

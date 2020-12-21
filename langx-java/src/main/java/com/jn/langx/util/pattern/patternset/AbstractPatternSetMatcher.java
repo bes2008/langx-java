@@ -10,7 +10,7 @@ import com.jn.langx.util.pattern.AbstractPatternMatcher;
 public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> extends AbstractPatternMatcher {
     protected PatternSet<PatternEntry> defaultPatternSet;
     /**
-     * 只在使用 #setDefaultExpression, #setPatternSetExpression 时，要求该字段不能为null
+     * 只在使用 #setDefaultExpression, #setPatternExpression 时，要求该字段不能为null
      */
     @Nullable
     private PatternSetExpressionParser<PatternEntry> expressionParser;
@@ -35,7 +35,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
     public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @NonNull PatternSet<PatternEntry> defaultPatternSet, String patternSetExpression) {
         setExpressionParser(expressionParser);
         setDefaultPatternSet(defaultPatternSet);
-        setPatternSetExpression(patternSetExpression);
+        setPatternExpression(patternSetExpression);
     }
 
     public void setExpressionParser(PatternSetExpressionParser<PatternEntry> expressionParser) {
@@ -62,7 +62,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
         this.patternSet = patternSet;
     }
 
-    public void setPatternSetExpression(String expression) {
+    public void setPatternExpression(String expression) {
         if (Strings.isNotEmpty(expression)) {
             Preconditions.checkNotNull(expressionParser, "the expression parser is null");
             setPatternSet(patternSet);
