@@ -1,6 +1,7 @@
 package com.jn.langx.util.pattern.patternset;
 
 import com.jn.langx.Named;
+import com.jn.langx.annotation.NonNull;
 
 /**
  * <pre>
@@ -10,6 +11,11 @@ import com.jn.langx.Named;
  * </pre>
  */
 public class AntStyleStringMatcher<PatternEntry extends Named> extends AbstractPatternSetMatcher<PatternEntry> {
+
+    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @NonNull String defaultPatternExpression) {
+        super(expressionParser, defaultPatternExpression);
+    }
+
     @Override
     public boolean match(String string) {
         return false;
