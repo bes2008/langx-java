@@ -3,15 +3,10 @@ package com.jn.langx.http;
 import com.jn.langx.Parser;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.BasedStringAccessor;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMapAccessor;
-import com.jn.langx.util.function.Consumer2;
-
-import java.util.List;
 
 /**
  * @author jinuo.fang
@@ -69,14 +64,7 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
     public StringMap getStringMap() {
         MultiValueMap<String, String> multiValueMap = getMultiValueMap();
         final StringMap map = new StringMap();
-        Collects.forEach(multiValueMap, new Consumer2<String, List<String>>() {
-            @Override
-            public void accept(String key, List<String> values) {
-                if (Emptys.isNotEmpty(values)) {
-                    map.put(key, values.get(0));
-                }
-            }
-        });
+        map.putAll(multiValueMap.toSingleValueMap());
         return map;
     }
 

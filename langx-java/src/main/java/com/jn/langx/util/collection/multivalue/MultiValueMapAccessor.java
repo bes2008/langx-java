@@ -2,7 +2,9 @@ package com.jn.langx.util.collection.multivalue;
 
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.collection.Collects;
 
+import java.util.Collection;
 import java.util.List;
 
 public class MultiValueMapAccessor<V> extends BasedStringAccessor<String, MultiValueMap<String, V>> {
@@ -18,7 +20,11 @@ public class MultiValueMapAccessor<V> extends BasedStringAccessor<String, MultiV
     }
 
     public List<V> getValueList(String key) {
-        return this.getTarget().get(key);
+        Collection<V> vs = this.getTarget().get(key);
+        if (vs == null) {
+            return null;
+        }
+        return Collects.asList(vs);
     }
 
     @Override

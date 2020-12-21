@@ -12,6 +12,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -74,9 +75,9 @@ public class HttpQueryStrings {
     public static String toQueryString(MultiValueMap<String, String> map) {
         final StringJoiner joiner = new StringJoiner("&", "", "");
 
-        Collects.forEach(map, new Consumer2<String, List<String>>() {
+        Collects.forEach(map, new Consumer2<String, Collection<String>>() {
             @Override
-            public void accept(final String key, List<String> values) {
+            public void accept(final String key, Collection<String> values) {
                 Collects.forEach(values, new Consumer<String>() {
                     @Override
                     public void accept(String value) {

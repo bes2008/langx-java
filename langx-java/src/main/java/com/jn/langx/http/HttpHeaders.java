@@ -468,12 +468,12 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      */
     public static String formatHeaders(MultiValueMap<String, String> headers) {
         return "[" + Strings.join(", ", Pipeline.of(headers.entrySet())
-                .map(new Function<Entry<String, List<String>>, String>() {
+                .map(new Function<Entry<String, Collection<String>>, String>() {
                     @Override
-                    public String apply(Entry<String, List<String>> entry) {
-                        List<String> values = entry.getValue();
+                    public String apply(Entry<String, Collection<String>> entry) {
+                        Collection<String> values = entry.getValue();
                         return entry.getKey() + ":" + (values.size() == 1 ?
-                                "\"" + values.get(0) + "\"" :
+                                "\"" + Collects.asList(values).get(0) + "\"" :
                                 Strings.join(", ", Pipeline.of(values)
                                         .map(new Function<String, String>() {
                                             @Override
@@ -527,8 +527,8 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * @return the list of header values, or an empty list
      */
     public List<String> getOrEmpty(Object headerName) {
-        List<String> values = get(headerName);
-        return (values != null ? values : Collects.<String>emptyArrayList());
+        Collection<String> values = get(headerName);
+        return (values != null ? Collects.asList(values) : Collects.<String>emptyArrayList());
     }
 
     /**
@@ -537,7 +537,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * <p>Returns an empty list when the acceptable media types are unspecified.
      */
     public List<MediaType> getAccept() {
-        return MediaType.parseMediaTypes(get(ACCEPT));
+        return MediaType.parseMediaTypes(Collects.asList(get(ACCEPT)));
     }
 
     /**
@@ -1090,16 +1090,16 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
         set(RANGE, value);
     }
 
-    public void setExpires(long time){
+    public void setExpires(long time) {
         set(EXPIRES, this.dateFormatter.format(new Date(time)));
     }
 
-    public Date getExpires(){
+    public Date getExpires() {
         String value = getFirst(EXPIRES);
-        if(Strings.isNotEmpty(value)){
+        if (Strings.isNotEmpty(value)) {
             try {
                 Date date = this.dateFormatter.parse(value);
-            }catch (ParseException ex){
+            } catch (ParseException ex) {
 
             }
         }
@@ -1270,7 +1270,6 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * @param headerName  the header name
      * @param headerValue the header value
      * @throws UnsupportedOperationException if adding headers is not supported
-     * @see #put(String, List)
      * @see #set(String, String)
      */
     @Override
@@ -1279,7 +1278,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     }
 
     @Override
-    public void addAll(String key, List<? extends String> values) {
+    public void addAll(String key, Collection<? extends String> values) {
         this.headers.addAll(key, values);
     }
 
@@ -1297,7 +1296,6 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * @param headerName  the header name
      * @param headerValue the header value
      * @throws UnsupportedOperationException if adding headers is not supported
-     * @see #put(String, List)
      * @see #add(String, String)
      */
     @Override
@@ -1338,21 +1336,25 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     @Override
     @Nullable
     public List<String> get(Object key) {
-        return this.headers.get(key);
+        Collection<String> vs = this.headers.get(key);
+        if (vs == null) {
+            return null;
+        }
+        return Collects.asList(vs);
     }
 
     @Override
-    public List<String> put(String key, List<String> value) {
+    public Collection<String> put(String key, Collection<String> value) {
         return this.headers.put(key, value);
     }
 
     @Override
-    public List<String> remove(Object key) {
+    public Collection<String> remove(Object key) {
         return this.headers.remove(key);
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends List<String>> map) {
+    public void putAll(Map<? extends String, ? extends Collection<String>> map) {
         this.headers.putAll(map);
     }
 
@@ -1367,12 +1369,12 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     }
 
     @Override
-    public Collection<List<String>> values() {
+    public Collection<Collection<String>> values() {
         return this.headers.values();
     }
 
     @Override
-    public Set<Map.Entry<String, List<String>>> entrySet() {
+    public Set<Map.Entry<String, Collection<String>>> entrySet() {
         return this.headers.entrySet();
     }
 

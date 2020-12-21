@@ -3,7 +3,7 @@ package com.jn.langx.util.collection.multivalue;
 
 import com.jn.langx.annotation.Nullable;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -13,7 +13,7 @@ import java.util.Map;
  * @param <V> the value element type
  * @author Arjen Poutsma
  */
-public interface MultiValueMap<K, V> extends Map<K, List<V>> {
+public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
 
     /**
      * Return the first value for the given key.
@@ -38,7 +38,7 @@ public interface MultiValueMap<K, V> extends Map<K, List<V>> {
      * @param key    they key
      * @param values the values to be added
      */
-    void addAll(K key, List<? extends V> values);
+    void addAll(K key, Collection<? extends V> values);
 
     /**
      * Add all the values of the given {@code MultiValueMap} to the current values.
