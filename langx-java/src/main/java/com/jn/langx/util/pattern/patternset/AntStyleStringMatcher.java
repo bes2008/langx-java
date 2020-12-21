@@ -20,15 +20,15 @@ public class AntStyleStringMatcher extends AbstractPatternSetMatcher<StringPatte
         super(new GenericPatternSetExpressionParser<StringPatternEntry>(new StringPatternEntry.Factory()), defaultPatternExpression, patternExpression);
     }
 
-    public AntStyleStringMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull String defaultPatternExpression) {
+    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull String defaultPatternExpression) {
         super(expressionParser, defaultPatternExpression);
     }
 
-    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet) {
+    public AntStyleStringMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet) {
         super(expressionParser, defaultPatternSet);
     }
 
-    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet, PatternSet patternSet) {
+    public AntStyleStringMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet, PatternSet patternSet) {
         super(expressionParser, defaultPatternSet, patternSet);
     }
 

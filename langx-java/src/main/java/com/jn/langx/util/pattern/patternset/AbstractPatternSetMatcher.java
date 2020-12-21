@@ -65,7 +65,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
     public void setPatternExpression(String expression) {
         if (Strings.isNotEmpty(expression)) {
             Preconditions.checkNotNull(expressionParser, "the expression parser is null");
-            setPatternSet(patternSet);
+            setPatternSet(expressionParser.parse(expression));
         }
     }
 }

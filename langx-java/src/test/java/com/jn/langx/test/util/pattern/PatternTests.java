@@ -18,9 +18,14 @@ public class PatternTests {
         Assert.assertEquals(false, regExpMatcher.match("a0.x"));
     }
 
+    @Test
     public void antStringPatternSetTests() {
-        AntStyleStringMatcher antStyleStringMatcher = new AntStyleStringMatcher(null);
-
+        AntStyleStringMatcher antStyleStringMatcher = new AntStyleStringMatcher((String) null, "/views/products/**/*.cfm");
+        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/SE10/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/SE10/details.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/ST80/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/ST80/details.cfm"));
     }
 
 }
