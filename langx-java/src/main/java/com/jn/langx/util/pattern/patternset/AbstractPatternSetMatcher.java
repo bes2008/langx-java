@@ -32,9 +32,9 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
         setPatternSet(patternSet);
     }
 
-    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @NonNull PatternSet<PatternEntry> defaultPatternSet, String patternSetExpression) {
+    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable String defaultPatternSet, String patternSetExpression) {
         setExpressionParser(expressionParser);
-        setDefaultPatternSet(defaultPatternSet);
+        setDefaultExpression(defaultPatternSet);
         setPatternExpression(patternSetExpression);
     }
 

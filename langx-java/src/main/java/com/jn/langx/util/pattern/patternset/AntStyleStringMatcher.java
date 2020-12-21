@@ -1,6 +1,7 @@
 package com.jn.langx.util.pattern.patternset;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 
 /**
  * <pre>
@@ -15,8 +16,24 @@ public class AntStyleStringMatcher extends AbstractPatternSetMatcher<StringPatte
         this(new GenericPatternSetExpressionParser<StringPatternEntry>(new StringPatternEntry.Factory()), defaultPatternExpression);
     }
 
-    public AntStyleStringMatcher(PatternSetExpressionParser<StringPatternEntry> parser, @NonNull String defaultPatternExpression){
-        super(parser, defaultPatternExpression);
+    public AntStyleStringMatcher(String defaultPatternExpression, @NonNull String patternExpression) {
+        super(new GenericPatternSetExpressionParser<StringPatternEntry>(new StringPatternEntry.Factory()), defaultPatternExpression, patternExpression);
+    }
+
+    public AntStyleStringMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull String defaultPatternExpression) {
+        super(expressionParser, defaultPatternExpression);
+    }
+
+    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet) {
+        super(expressionParser, defaultPatternSet);
+    }
+
+    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet, PatternSet patternSet) {
+        super(expressionParser, defaultPatternSet, patternSet);
+    }
+
+    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull String defaultPatternExpression, String patternSetExpression) {
+        super(expressionParser, defaultPatternExpression, patternSetExpression);
     }
 
     @Override
