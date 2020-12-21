@@ -2,13 +2,12 @@ package com.jn.langx.util.pattern.regexp;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.pattern.PatternMatcher;
+import com.jn.langx.util.pattern.AbstractPatternMatcher;
 
 import java.util.regex.Pattern;
 
-public class RegExpMatcher implements PatternMatcher {
-    private boolean caseSensitive = false;
-    private boolean trimPattern = true;
+public class RegExpMatcher extends AbstractPatternMatcher {
+
     private String regexp;
     private Pattern pattern;
 
@@ -27,16 +26,6 @@ public class RegExpMatcher implements PatternMatcher {
         setRegexp(regexp);
         setCaseSensitive(caseSensitive);
         setTrimPattern(trimPattern);
-    }
-
-    @Override
-    public void setCaseSensitive(boolean caseSensitive) {
-        this.caseSensitive = caseSensitive;
-    }
-
-    @Override
-    public void setTrimPattern(boolean trimPattern) {
-        this.trimPattern = trimPattern;
     }
 
     public void setRegexp(String regexp) {
