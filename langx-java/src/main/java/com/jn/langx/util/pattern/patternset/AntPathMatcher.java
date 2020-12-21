@@ -4,6 +4,9 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Strings;
 
+/**
+ * https://github.com/Mach-II/Mach-II-Framework/wiki/ANT-Style-Pattern-Matcher
+ */
 public class AntPathMatcher extends AbstractPatternSetMatcher<StringPatternEntry> {
 
     /**
