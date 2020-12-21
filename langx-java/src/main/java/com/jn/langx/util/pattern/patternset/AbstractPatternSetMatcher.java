@@ -1,13 +1,16 @@
 package com.jn.langx.util.pattern.patternset;
 
 import com.jn.langx.Named;
-import com.jn.langx.util.pattern.PatternMatcher;
+import com.jn.langx.util.pattern.AbstractPatternMatcher;
 
-public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> implements PatternMatcher {
-    private PatternSetExpressionParser<PatternEntry> parser;
+public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> extends AbstractPatternMatcher {
+    protected PatternSet<PatternEntry> patternSet;
 
-    public void setParser(PatternSetExpressionParser<PatternEntry> parser) {
-        this.parser = parser;
+    public PatternSet<PatternEntry> getPatternSet() {
+        return patternSet;
     }
 
+    public void setPatternSet(PatternSet<PatternEntry> patternSet) {
+        this.patternSet = patternSet;
+    }
 }

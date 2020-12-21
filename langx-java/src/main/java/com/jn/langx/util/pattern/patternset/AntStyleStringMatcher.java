@@ -9,6 +9,9 @@ import com.jn.langx.Named;
  * **	匹配0或者更多的目录
  * </pre>
  */
-public abstract class AntStyleMatcher<PatternEntry extends Named> extends AbstractPatternSetMatcher<PatternEntry> {
-
+public class AntStyleStringMatcher<PatternEntry extends Named> extends AbstractPatternSetMatcher<PatternEntry> {
+    @Override
+    public boolean match(String string) {
+        return false;
+    }
 }
