@@ -45,10 +45,24 @@ public class RegExpMatcher extends AbstractPatternMatcher {
             }
             if (trimPattern) {
                 regexp = Strings.trim(regexp);
+                if (Strings.isEmpty(regexp)) {
+                    throw new IllegalArgumentException("illegal regexp pattern");
+                }
+            }
+            if (global) {
+                if (!Strings.startsWith(regexp, "^")) {
+                    regexp = "^" + regexp;
+                }
+                if (!Strings.endsWith(regexp, "&")) {
+                    regexp = regexp + "$";
+                }
             }
             pattern = Pattern.compile(regexp, flag);
         }
 
+        if (trimPattern) {
+            string = Strings.trim(string);
+        }
         return pattern.matcher(string).matches();
     }
 }

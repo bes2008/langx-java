@@ -3,8 +3,11 @@ package com.jn.langx.util.pattern.patternset;
 import com.jn.langx.Named;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.pattern.AbstractPatternMatcher;
 
 public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> extends AbstractPatternMatcher {
@@ -68,4 +71,36 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
             setPatternSet(expressionParser.parse(expression));
         }
     }
+
+    @Override
+    public boolean match(final String string) {
+        PatternSet patternSet = defaultPatternSet;
+        if (Emptys.isNotEmpty(this.patternSet)) {
+            patternSet = this.patternSet;
+        }
+
+        if (Emptys.isEmpty(patternSet)) {
+            throw new IllegalStateException("has no any pattern");
+        }
+
+        boolean matched = Collects.anyMatch(this.patternSet.getIncludes(), new Predicate<PatternEntry>() {
+            @Override
+            public boolean test(PatternEntry patternEntry) {
+                return doMatch(patternEntry.getName(), string, global);
+            }
+        });
+
+        if (matched) {
+            matched = Collects.noneMatch(this.patternSet.getExcludes(), new Predicate<PatternEntry>() {
+                @Override
+                public boolean test(PatternEntry patternEntry) {
+                    return doMatch(patternEntry.getName(), string, global);
+                }
+            });
+        }
+
+        return matched;
+    }
+
+    protected abstract boolean doMatch(String pattern, String string, boolean fullMatch);
 }

@@ -4,6 +4,7 @@ public abstract class AbstractPatternMatcher implements PatternMatcher{
 
     protected boolean caseSensitive = false;
     protected boolean trimPattern = true;
+    protected boolean global = false;
 
     @Override
     public void setCaseSensitive(boolean caseSensitive) {
@@ -13,5 +14,10 @@ public abstract class AbstractPatternMatcher implements PatternMatcher{
     @Override
     public void setTrimPattern(boolean trimPattern) {
         this.trimPattern = trimPattern;
+    }
+
+    @Override
+    public void setGlobal(boolean global) {
+        this.global = global;
     }
 }

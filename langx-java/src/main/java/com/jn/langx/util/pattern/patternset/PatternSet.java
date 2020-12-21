@@ -14,7 +14,7 @@ public class PatternSet<PatternEntry extends Named> implements Named {
     private String name;
 
     /**
-     * 解析 expression 时使用的分隔符
+     * 解析 expression 时使用的分隔符, pattern 间的分隔符
      */
     private String separator;
     /**

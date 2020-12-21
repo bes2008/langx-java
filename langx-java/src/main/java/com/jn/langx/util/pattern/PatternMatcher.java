@@ -11,6 +11,11 @@ public interface PatternMatcher {
      */
     void setTrimPattern(boolean trimPattern);
 
+    /**
+     * 是否做全部匹配
+     * @param global
+     */
+    void setGlobal(boolean global);
 
     void setPatternExpression(String patternExpression);
 
