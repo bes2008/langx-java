@@ -5,6 +5,7 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.*;
+import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 
 import java.util.*;
 
@@ -86,7 +87,7 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
         if (key == null || value == null) {
             return;
         }
-        if(!containsKey(key)){
+        if (!containsKey(key)) {
             add(key, value);
         }
     }
@@ -131,8 +132,20 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
     }
 
     @Override
+    public int totalCount() {
+        final SimpleIntegerCounter counter = new SimpleIntegerCounter(0);
+        Collects.forEach(this.targetMap, new Consumer2<K, Collection<V>>() {
+            @Override
+            public void accept(K key, Collection<V> values) {
+                counter.increment(values.size());
+            }
+        });
+        return counter.get();
+    }
+
+    @Override
     public boolean isEmpty() {
-        return this.targetMap.isEmpty();
+        return totalCount() < 1;
     }
 
     @Override

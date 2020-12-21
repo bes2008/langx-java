@@ -1407,4 +1407,9 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
         }
     }
 
+
+    @Override
+    public int totalCount() {
+        return headers.totalCount();
+    }
 }
