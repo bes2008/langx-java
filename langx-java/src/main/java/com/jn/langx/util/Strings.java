@@ -282,6 +282,15 @@ public class Strings {
      * every element in string[] has the trim() invoked
      */
     public static String[] split(@Nullable String string, @Nullable String separator) {
+        return split(string, separator, true);
+    }
+
+
+    /**
+     * split a string, the returned array is not contains: whitespace, null.
+     * every element in string[] has the trim() invoked
+     */
+    public static String[] split(@Nullable String string, @Nullable String separator, final boolean doTrim) {
         if (Emptys.isEmpty(string)) {
             return new String[0];
         }
@@ -299,7 +308,11 @@ public class Strings {
         return Pipeline.of(tokenizer).map(new Function<Object, String>() {
             @Override
             public String apply(Object input) {
-                return input.toString().trim();
+                if (doTrim) {
+                    return input.toString().trim();
+                } else {
+                    return input.toString();
+                }
             }
         }).filter(new Predicate<String>() {
             @Override
@@ -3227,7 +3240,7 @@ public class Strings {
      * @return whether the region matched
      */
     public static boolean regionMatches(final CharSequence cs, final boolean ignoreCase, final int thisStart,
-                                 final CharSequence substring, final int start, final int length) {
+                                        final CharSequence substring, final int start, final int length) {
         if (cs instanceof String && substring instanceof String) {
             return ((String) cs).regionMatches(ignoreCase, thisStart, (String) substring, start, length);
         }
