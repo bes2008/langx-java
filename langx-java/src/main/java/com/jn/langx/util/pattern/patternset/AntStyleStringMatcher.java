@@ -1,6 +1,5 @@
 package com.jn.langx.util.pattern.patternset;
 
-import com.jn.langx.Named;
 import com.jn.langx.annotation.NonNull;
 
 /**
@@ -10,10 +9,14 @@ import com.jn.langx.annotation.NonNull;
  * **	匹配0或者更多的目录
  * </pre>
  */
-public class AntStyleStringMatcher<PatternEntry extends Named> extends AbstractPatternSetMatcher<PatternEntry> {
+public class AntStyleStringMatcher extends AbstractPatternSetMatcher<StringPatternEntry> {
 
-    public AntStyleStringMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @NonNull String defaultPatternExpression) {
-        super(expressionParser, defaultPatternExpression);
+    public AntStyleStringMatcher(@NonNull String defaultPatternExpression) {
+        this(new GenericPatternSetExpressionParser<StringPatternEntry>(new StringPatternEntry.Factory()), defaultPatternExpression);
+    }
+
+    public AntStyleStringMatcher(PatternSetExpressionParser<StringPatternEntry> parser, @NonNull String defaultPatternExpression){
+        super(parser, defaultPatternExpression);
     }
 
     @Override
