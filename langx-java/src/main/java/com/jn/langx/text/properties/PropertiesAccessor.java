@@ -41,4 +41,8 @@ public class PropertiesAccessor extends BasedStringAccessor<String, Properties> 
         getTarget().setProperty(key, value.toString());
     }
 
+    @Override
+    public void remove(String key) {
+        getTarget().remove(key);
+    }
 }

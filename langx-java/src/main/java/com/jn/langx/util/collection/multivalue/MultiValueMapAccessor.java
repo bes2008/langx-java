@@ -41,4 +41,8 @@ public class MultiValueMapAccessor<V> extends BasedStringAccessor<String, MultiV
         getTarget().add(key, (V) value);
     }
 
+    @Override
+    public void remove(String key) {
+        getTarget().remove(key);
+    }
 }

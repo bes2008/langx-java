@@ -36,4 +36,9 @@ public class MapAccessor extends BasedStringAccessor<String, Map<String, Object>
     public void set(String key, Object value) {
         getTarget().put(key, value);
     }
+
+    @Override
+    public void remove(String key) {
+        getTarget().remove(key);
+    }
 }

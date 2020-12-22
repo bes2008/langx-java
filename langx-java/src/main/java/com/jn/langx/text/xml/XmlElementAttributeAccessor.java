@@ -26,6 +26,14 @@ public class XmlElementAttributeAccessor extends BasedStringAccessor<String, Ele
     }
 
     @Override
+    public void remove(String attributeName) {
+        Attr attr = getTarget().getAttributeNode(attributeName);
+        if (attr != null) {
+            attr.getOwnerElement().removeAttribute(attributeName);
+        }
+    }
+
+    @Override
     public boolean has(String attributeName) {
         return getTarget().getAttributeNode(attributeName) != null;
     }

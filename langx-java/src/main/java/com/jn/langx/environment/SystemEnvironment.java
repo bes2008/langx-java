@@ -25,6 +25,9 @@ public class SystemEnvironment implements Environment {
     @Override
     public void setProperty(String key, String value) {
         Preconditions.checkNotNull(key);
+        if (value == null) {
+            System.clearProperty(key);
+        }
         System.setProperty(key, value);
     }
 }

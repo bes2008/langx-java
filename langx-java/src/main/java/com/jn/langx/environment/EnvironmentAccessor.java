@@ -23,4 +23,9 @@ public class EnvironmentAccessor extends BasedStringAccessor<String, Environment
     public void set(String key, Object value) {
         getTarget().setProperty(key, value.toString());
     }
+
+    @Override
+    public void remove(String key) {
+        getTarget().setProperty(key,null);
+    }
 }

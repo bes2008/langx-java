@@ -59,4 +59,21 @@ public class XmlNodeContentAccessor extends BasedStringAccessor<XPathExpression,
             throw Throwables.wrapAsRuntimeException(exception);
         }
     }
+
+    @Override
+    public void remove(XPathExpression exp) {
+        Node node = null;
+        Throwable exception = null;
+        try {
+            node = (Node) exp.evaluate(getTarget(), XPathConstants.NODE);
+            if (node != null && node.getParentNode() != null) {
+                node.getParentNode().removeChild(node);
+            }
+        } catch (XPathExpressionException ex) {
+            exception = ex;
+        }
+        if (exception != null) {
+            throw Throwables.wrapAsRuntimeException(exception);
+        }
+    }
 }

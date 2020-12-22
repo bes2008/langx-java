@@ -78,6 +78,11 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
     }
 
     @Override
+    public void remove(Integer index) {
+        set(index, null);
+    }
+
+    @Override
     public void set(Integer index, Object value) {
         Preconditions.checkTrue(index < maxSize && index >= 0);
         this.elements.set(index, value);

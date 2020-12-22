@@ -40,4 +40,6 @@ public interface Accessor<K, T> extends ValueGetter2<K> {
     void setBoolean(K key, boolean value);
 
     void setChar(K key, char value);
+
+    void remove(K key);
 }

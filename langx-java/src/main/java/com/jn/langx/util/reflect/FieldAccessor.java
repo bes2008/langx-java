@@ -57,5 +57,8 @@ public class FieldAccessor extends BasedStringAccessor<String, Object> {
         set(field, value);
     }
 
-
+    @Override
+    public void remove(String field) {
+        set(field, null);
+    }
 }

@@ -50,4 +50,9 @@ public class ArrayAccessor<E> extends BasedStringAccessor<Integer, E> {
     public void set(Integer index, Object value) {
         Array.set(getTarget(), index, value);
     }
+
+    @Override
+    public void remove(Integer index) {
+        set(index, null);
+    }
 }

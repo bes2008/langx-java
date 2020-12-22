@@ -81,4 +81,8 @@ public class HttpQueryStringAccessor extends BasedStringAccessor<String, String>
         delegate.set(key, value);
     }
 
+    @Override
+    public void remove(String key) {
+        delegate.remove(key);
+    }
 }

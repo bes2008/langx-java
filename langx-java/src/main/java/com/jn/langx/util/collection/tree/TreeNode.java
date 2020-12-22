@@ -204,4 +204,9 @@ public class TreeNode<T extends TreeNode> extends BasedStringAccessor<String, Ma
     public void set(String key, Object value) {
         getTarget().put(key, value);
     }
+
+    @Override
+    public void remove(String key) {
+        getTarget().remove(key);
+    }
 }

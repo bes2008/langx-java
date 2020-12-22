@@ -42,4 +42,8 @@ public class StringMapAccessor extends BasedStringAccessor<String, StringMap> {
         }
     }
 
+    @Override
+    public void remove(String key) {
+        getTarget().remove(key);
+    }
 }
