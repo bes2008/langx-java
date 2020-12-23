@@ -5,8 +5,10 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.RuntimeIOException;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Level;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +24,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
 public class Throwables {
-    private static final Logger logger = LoggerFactory.getLogger(Throwables.class);
+    public static final Logger logger = LoggerFactory.getLogger(Throwables.class);
 
     private Throwables() {
     }
@@ -104,7 +106,7 @@ public class Throwables {
         throw new RuntimeException(ex);
     }
 
-    public static RuntimeIOException wrapAsRuntimeIOException(IOException ex){
+    public static RuntimeIOException wrapAsRuntimeIOException(IOException ex) {
         return new RuntimeIOException(ex);
     }
 
@@ -127,7 +129,7 @@ public class Throwables {
     }
 
     public static void log(@NonNull Throwable ex) {
-        log(null, null, null, ex);
+        Loggers.log(null, null, (Supplier<Object[], String>) null, ex);
     }
 
     /**
@@ -140,39 +142,7 @@ public class Throwables {
      */
     public static void log(@Nullable Logger logger, @Nullable Level level, @Nullable String message, @NonNull Throwable ex) {
         Preconditions.checkNotNull(ex);
-        message = Emptys.isEmpty(message) ? ex.getMessage() : message;
-        logger = logger == null ? Throwables.logger : logger;
-        level = level == null ? Level.ERROR : level;
-        switch (level) {
-            case TRACE:
-                if (logger.isTraceEnabled()) {
-                    logger.trace(message, ex);
-                }
-                break;
-            case DEBUG:
-                if (logger.isDebugEnabled()) {
-                    logger.debug(message, ex);
-                }
-                break;
-            case INFO:
-                if (logger.isInfoEnabled()) {
-                    logger.info(message, ex);
-                }
-                break;
-            case WARN:
-                if (logger.isWarnEnabled()) {
-                    logger.warn(message, ex);
-                }
-                break;
-            case ERROR:
-                if (logger.isErrorEnabled()) {
-                    logger.error(message, ex);
-                }
-                break;
-            default:
-                logger.warn(message, ex);
-                break;
-        }
+        Loggers.log(1, logger, level, ex, message);
     }
 
     /**
