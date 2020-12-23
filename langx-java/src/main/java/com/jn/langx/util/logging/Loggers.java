@@ -20,26 +20,6 @@ public class Loggers {
         log(1, null, null, ex, (Supplier<Object[], String>) null, null);
     }
 
-    public static void log(@Nullable Logger logger, @Nullable Level level, Supplier<Object[], String> messageSupplier, Object... args) {
-        log(1, logger, level, null, messageSupplier, args);
-    }
-
-    public static void log(@Nullable Logger logger, @Nullable Level level, String message, Object... args) {
-        log(1, logger, level, null, buildPlaceholderMessageSupplierOrNull(message, args), args);
-    }
-
-    public static void log(int count, @Nullable Logger logger, @Nullable Level level, Supplier<Object[], String> messageSupplier, Object... args) {
-        log(count, logger, level, null, messageSupplier, args);
-    }
-
-    public static void log(int count, @Nullable Logger logger, @Nullable Level level, String message, Object... args) {
-        log(count, logger, level, null, buildPlaceholderMessageSupplierOrNull(message, args), args);
-    }
-
-    public static void log(@Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, Supplier<Object[], String> messageSupplier, Object... args) {
-        log(1, logger, level, ex, messageSupplier, args);
-    }
-
     public static void log(@Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, String message, Object... args) {
         log(1, logger, level, ex, buildPlaceholderMessageSupplierOrNull(message, args), args);
     }

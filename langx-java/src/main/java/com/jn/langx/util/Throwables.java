@@ -129,7 +129,7 @@ public class Throwables {
     }
 
     public static void log(@NonNull Throwable ex) {
-        Loggers.log(null, null, (Supplier<Object[], String>) null, ex);
+        Loggers.log(1, null, null, ex, (Supplier<Object[], String>) null, null);
     }
 
     /**
