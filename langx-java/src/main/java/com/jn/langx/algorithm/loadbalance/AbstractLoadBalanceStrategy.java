@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractLoadBalanceStrategy<NODE extends Node,INVOCATION> implements LoadBalanceStrategy<NODE,INVOCATION> {
     private Logger logger = LoggerFactory.getLogger(getClass());
-    protected final ConcurrentHashMap<String, Node> nodeMap = new ConcurrentHashMap<String, Node>();
+    protected final ConcurrentHashMap<String, NODE> nodeMap = new ConcurrentHashMap<String, NODE>();
     @Nullable
     private Weighter weighter;
 
@@ -50,7 +50,7 @@ public abstract class AbstractLoadBalanceStrategy<NODE extends Node,INVOCATION> 
         // 过滤掉没有注册的 node
         reachableNodes = Pipeline.of(reachableNodes).filter(new Predicate<NODE>() {
             @Override
-            public boolean test(Node node) {
+            public boolean test(NODE node) {
                 return nodeMap.containsKey(node.getId());
             }
         }).asList();
