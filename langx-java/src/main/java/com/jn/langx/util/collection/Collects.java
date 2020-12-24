@@ -20,6 +20,7 @@ import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.jn.langx.util.function.Functions.emptyHashSetSupplier0;
@@ -160,6 +161,10 @@ public class Collects {
 
     public static <E> E[] emptyArray(@Nullable Class<E> componentType) {
         return Arrs.createArray(Primitives.wrap(componentType), 0);
+    }
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
+        return new ConcurrentHashMap<K, V>();
     }
 
     public static <E> ArrayList<E> newArrayList(@Nullable Iterable<E> elements) {
