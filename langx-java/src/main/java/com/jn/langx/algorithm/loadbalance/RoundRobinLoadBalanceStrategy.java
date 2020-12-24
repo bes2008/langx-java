@@ -10,10 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class RoundRobinLoadBalanceStrategy extends AbstractLoadBalanceStrategy {
+public class RoundRobinLoadBalanceStrategy<NODE extends Node, INVOCATION> extends AbstractLoadBalanceStrategy<NODE, INVOCATION> {
 
     private static final int RECYCLE_PERIOD = 60000;
-    private InvocationKeyGetter invocationKeyGetter = new UndefinedInvocationKeyGetter();
+    private InvocationKeyGetter<NODE, INVOCATION> invocationKeyGetter = new UndefinedInvocationKeyGetter<NODE, INVOCATION>();
 
     protected static class WeightedRoundRobin {
         private int weight;
@@ -56,8 +56,8 @@ public class RoundRobinLoadBalanceStrategy extends AbstractLoadBalanceStrategy {
 
 
     @Override
-    protected Node doSelect(List<Node> reachableNodes, Object any) {
-        String key = invocationKeyGetter.get(reachableNodes.get(0), any);
+    protected NODE doSelect(List<NODE> reachableNodes, INVOCATION invocation) {
+        String key = invocationKeyGetter.get(reachableNodes.get(0), invocation);
         ConcurrentMap<String, WeightedRoundRobin> map = Maps.putIfAbsent(invocationWeightMap, key, new Supplier<String, ConcurrentMap<String, WeightedRoundRobin>>() {
             @Override
             public ConcurrentMap<String, WeightedRoundRobin> get(String k) {
@@ -68,11 +68,11 @@ public class RoundRobinLoadBalanceStrategy extends AbstractLoadBalanceStrategy {
         int totalWeight = 0;
         long maxCurrent = Long.MIN_VALUE;
         final long now = System.currentTimeMillis();
-        Node selectedNode = null;
+        NODE selectedNode = null;
         WeightedRoundRobin selectedWRR = null;
-        for (Node reachableNode : reachableNodes) {
+        for (NODE reachableNode : reachableNodes) {
             String identifyString = reachableNode.getId();
-            final int weight = getWeight(reachableNode, any);
+            final int weight = getWeight(reachableNode, invocation);
             WeightedRoundRobin weightedRoundRobin = Maps.putIfAbsent(map, identifyString, new Supplier<String, WeightedRoundRobin>() {
                 @Override
                 public WeightedRoundRobin get(String k) {

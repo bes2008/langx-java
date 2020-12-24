@@ -4,10 +4,10 @@ import com.jn.langx.annotation.Nullable;
 
 import java.util.List;
 
-public interface LoadBalanceStrategy {
-    void addNode(Node node);
+public interface LoadBalanceStrategy<NODE extends Node, INVOCATION> {
+    void addNode(NODE node);
 
-    void removeNode(Node node);
+    void removeNode(NODE node);
 
-    Node select(List<Node> reachableNodes, @Nullable Object any);
+    NODE select(List<NODE> reachableNodes, @Nullable INVOCATION invocation);
 }

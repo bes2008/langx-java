@@ -11,20 +11,20 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractLoadBalanceStrategy implements LoadBalanceStrategy {
+public abstract class AbstractLoadBalanceStrategy<NODE extends Node,INVOCATION> implements LoadBalanceStrategy<NODE,INVOCATION> {
     private Logger logger = LoggerFactory.getLogger(getClass());
     protected final ConcurrentHashMap<String, Node> nodeMap = new ConcurrentHashMap<String, Node>();
     @Nullable
     private Weighter weighter;
 
     @Override
-    public void addNode(Node node) {
+    public void addNode(NODE node) {
         Preconditions.checkNotNull(node, "the node is null");
         nodeMap.put(node.getId(), node);
     }
 
     @Override
-    public void removeNode(Node node) {
+    public void removeNode(NODE node) {
         Preconditions.checkNotNull(node, "the node is null");
     }
 
@@ -36,19 +36,19 @@ public abstract class AbstractLoadBalanceStrategy implements LoadBalanceStrategy
     /**
      * 获取node的权重
      */
-    public int getWeight(Node node, Object any) {
+    public int getWeight(NODE node, INVOCATION invocation) {
         if (weighter != null) {
-            return weighter.getWeight(node, any);
+            return weighter.getWeight(node, invocation);
         }
         return 0;
     }
 
-    protected abstract Node doSelect(List<Node> reachableNodes, Object any);
+    protected abstract NODE doSelect(List<NODE> reachableNodes, INVOCATION invocation);
 
     @Override
-    public Node select(List<Node> reachableNodes, Object any) {
+    public NODE select(List<NODE> reachableNodes, INVOCATION invocation) {
         // 过滤掉没有注册的 node
-        reachableNodes = Pipeline.of(reachableNodes).filter(new Predicate<Node>() {
+        reachableNodes = Pipeline.of(reachableNodes).filter(new Predicate<NODE>() {
             @Override
             public boolean test(Node node) {
                 return nodeMap.containsKey(node.getId());
@@ -63,6 +63,6 @@ public abstract class AbstractLoadBalanceStrategy implements LoadBalanceStrategy
         if (reachableNodes.size() == 1) {
             return reachableNodes.get(0);
         }
-        return doSelect(reachableNodes, any);
+        return doSelect(reachableNodes, invocation);
     }
 }
