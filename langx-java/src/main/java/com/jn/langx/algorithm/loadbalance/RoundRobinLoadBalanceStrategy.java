@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class RoundRobinLoadBalanceStrategy extends AbstractLBStrategy {
+public class RoundRobinLoadBalanceStrategy extends AbstractLoadBalanceStrategy {
 
     private static final int RECYCLE_PERIOD = 60000;
     private InvocationKeyGetter invocationKeyGetter = new UndefinedInvocationKeyGetter();

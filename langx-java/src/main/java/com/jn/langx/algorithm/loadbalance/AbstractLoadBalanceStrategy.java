@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractLBStrategy implements LoadBalanceStrategy {
+public abstract class AbstractLoadBalanceStrategy implements LoadBalanceStrategy {
     private Logger logger = LoggerFactory.getLogger(getClass());
     protected final ConcurrentHashMap<String, Node> nodeMap = new ConcurrentHashMap<String, Node>();
     @Nullable
