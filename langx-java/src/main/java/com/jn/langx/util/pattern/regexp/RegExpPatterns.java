@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class RegExpPatterns {
     private RegExpPatterns() {
     }
-
+    public static final Pattern COMMA_SPLIT_PATTERN = Pattern.compile("\\s*[,]+\\s*");
 
     /**
      * 16进制字符串
