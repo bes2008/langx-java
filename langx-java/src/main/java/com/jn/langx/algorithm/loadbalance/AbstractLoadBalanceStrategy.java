@@ -11,11 +11,22 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractLoadBalanceStrategy<NODE extends Node,INVOCATION> implements LoadBalanceStrategy<NODE,INVOCATION> {
+public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION> implements LoadBalanceStrategy<NODE, INVOCATION> {
     private Logger logger = LoggerFactory.getLogger(getClass());
+    private String name;
     protected final ConcurrentHashMap<String, NODE> nodeMap = new ConcurrentHashMap<String, NODE>();
     @Nullable
     private Weighter weighter;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public void addNode(NODE node) {
