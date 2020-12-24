@@ -13,6 +13,15 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
     protected Map<K, Collection<V>> targetMap;
     private Supplier<K, Collection<V>> valuesSupplier;
 
+    public CommonMultiValueMap() {
+        this(new HashMap<K, Collection<V>>(), new Supplier<K, Collection<V>>() {
+            @Override
+            public Collection<V> get(K input) {
+                return Collects.emptyArrayList();
+            }
+        });
+    }
+
     public CommonMultiValueMap(@NonNull Supplier0<Map> mapSupplier, @NonNull Supplier<K, Collection<V>> valuesSupplier) {
         this(mapSupplier.get(), valuesSupplier);
     }
