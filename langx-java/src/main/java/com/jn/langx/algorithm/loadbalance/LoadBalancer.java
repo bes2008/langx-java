@@ -11,8 +11,6 @@ public interface LoadBalancer<NODE extends Node, INVOCATION> {
 
     boolean hasNode(NODE node);
 
-    NODE getNode(NODE node);
-
     void markDown(NODE node);
 
     List<NODE> getNodes();
