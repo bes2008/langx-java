@@ -1,7 +1,7 @@
 package com.jn.langx.algorithm.loadbalance;
 
-public interface LoadBalancerAware<NODE extends Node, INVOCATION> {
-    LoadBalancer<NODE, INVOCATION> getLoadBalancer();
+public interface LoadBalancerAware {
+    LoadBalancer getLoadBalancer();
 
-    void setLoadBalancer(LoadBalancer<NODE, INVOCATION> loadBalancer);
+    void setLoadBalancer(LoadBalancer loadBalancer);
 }

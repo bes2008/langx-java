@@ -35,7 +35,7 @@ public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION>
         return loadBalancer;
     }
 
-    public void setLoadBalancer(LoadBalancer<NODE, INVOCATION> loadBalancer) {
+    public void setLoadBalancer(LoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }
 
