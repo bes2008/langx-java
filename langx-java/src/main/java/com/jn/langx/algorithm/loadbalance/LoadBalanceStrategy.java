@@ -5,10 +5,6 @@ import com.jn.langx.annotation.Nullable;
 
 import java.util.List;
 
-public interface LoadBalanceStrategy<NODE extends Node, INVOCATION> extends Named {
-    void addNode(NODE node);
-
-    void removeNode(NODE node);
-
+public interface LoadBalanceStrategy<NODE extends Node, INVOCATION> extends Named, LoadBalancerAware<NODE, INVOCATION> {
     NODE select(List<NODE> reachableNodes, @Nullable INVOCATION invocation);
 }

@@ -2,21 +2,19 @@ package com.jn.langx.algorithm.loadbalance;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION> implements LoadBalanceStrategy<NODE, INVOCATION> {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private String name;
-    protected final ConcurrentHashMap<String, NODE> nodeMap = new ConcurrentHashMap<String, NODE>();
     @Nullable
     private Weighter weighter;
+    private LoadBalancer<NODE, INVOCATION> loadBalancer;
 
     @Override
     public String getName() {
@@ -28,20 +26,17 @@ public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION>
         this.name = name;
     }
 
-    @Override
-    public void addNode(NODE node) {
-        Preconditions.checkNotNull(node, "the node is null");
-        nodeMap.put(node.getId(), node);
-    }
-
-    @Override
-    public void removeNode(NODE node) {
-        Preconditions.checkNotNull(node, "the node is null");
-    }
-
-
     public void setWeighter(Weighter weighter) {
         this.weighter = weighter;
+    }
+
+    @Override
+    public LoadBalancer<NODE, INVOCATION> getLoadBalancer() {
+        return loadBalancer;
+    }
+
+    public void setLoadBalancer(LoadBalancer<NODE, INVOCATION> loadBalancer) {
+        this.loadBalancer = loadBalancer;
     }
 
     /**
@@ -62,11 +57,11 @@ public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION>
         reachableNodes = Pipeline.of(reachableNodes).filter(new Predicate<NODE>() {
             @Override
             public boolean test(NODE node) {
-                return nodeMap.containsKey(node.getId());
+                return getLoadBalancer().hasNode(node.getId());
             }
         }).asList();
 
-        if (Emptys.isEmpty(reachableNodes) || nodeMap.isEmpty()) {
+        if (Emptys.isEmpty(reachableNodes) || getLoadBalancer().isEmpty()) {
             logger.warn("Can't find any reachable nodes");
             return null;
         }
