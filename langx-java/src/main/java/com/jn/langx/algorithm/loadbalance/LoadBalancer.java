@@ -19,7 +19,7 @@ public interface LoadBalancer<NODE extends Node, INVOCATION> {
 
     List<NODE> getNodes(Predicate<NODE> predicate);
 
-    List<NODE> chooseNode(INVOCATION invocation);
+    NODE chooseNode(INVOCATION invocation);
 
     boolean isEmpty();
 }
