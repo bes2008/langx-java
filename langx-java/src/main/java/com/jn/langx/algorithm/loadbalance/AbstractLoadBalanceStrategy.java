@@ -57,7 +57,7 @@ public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION>
         reachableNodes = Pipeline.of(reachableNodes).filter(new Predicate<NODE>() {
             @Override
             public boolean test(NODE node) {
-                return getLoadBalancer().hasNode(node.getId());
+                return getLoadBalancer().hasNode(node);
             }
         }).asList();
 

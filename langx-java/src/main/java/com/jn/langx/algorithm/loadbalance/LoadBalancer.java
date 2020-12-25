@@ -9,11 +9,11 @@ public interface LoadBalancer<NODE extends Node, INVOCATION> {
 
     void removeNode(NODE node);
 
-    boolean hasNode(String nodeId);
+    boolean hasNode(NODE node);
 
-    NODE getNode(String nodeId);
+    NODE getNode(NODE node);
 
-    void markDown(String nodeId);
+    void markDown(NODE node);
 
     List<NODE> getNodes();
 
