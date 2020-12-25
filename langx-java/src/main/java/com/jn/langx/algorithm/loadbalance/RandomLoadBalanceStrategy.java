@@ -4,7 +4,12 @@ import com.jn.langx.util.random.ThreadLocalRandom;
 
 import java.util.List;
 
-public abstract class RandomLoadBalanceStrategy<NODE extends Node, INVOCATION> extends AbstractLoadBalanceStrategy<NODE, INVOCATION> {
+public class RandomLoadBalanceStrategy<NODE extends Node, INVOCATION> extends AbstractLoadBalanceStrategy<NODE, INVOCATION> {
+
+    public RandomLoadBalanceStrategy() {
+        setName("Random");
+    }
+
 
     @Override
     protected NODE doSelect(List<NODE> aliveNodes, INVOCATION invocation) {

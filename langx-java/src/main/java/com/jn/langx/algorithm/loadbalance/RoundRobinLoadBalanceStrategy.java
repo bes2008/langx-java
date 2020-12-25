@@ -12,6 +12,10 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class RoundRobinLoadBalanceStrategy<NODE extends Node, INVOCATION> extends AbstractLoadBalanceStrategy<NODE, INVOCATION> {
 
+    public RoundRobinLoadBalanceStrategy(){
+        setName("RoundRobin");
+    }
+
     private static final int RECYCLE_PERIOD = 60000;
     private InvocationKeyGetter<NODE, INVOCATION> invocationKeyGetter = new UndefinedInvocationKeyGetter<NODE, INVOCATION>();
 
