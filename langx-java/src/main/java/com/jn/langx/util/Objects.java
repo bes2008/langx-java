@@ -1,14 +1,14 @@
 package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
-import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.function.Supplier0;
 
-import java.nio.Buffer;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 推荐使用 Objs
@@ -278,44 +278,44 @@ public class Objects {
         return useValueIfMatch(value, Functions.<T>emptyPredicate(), defaultValue);
     }
 
-    public static <T> T useValueIfNull(T value, Supplier<T,T> supplier) {
+    public static <T> T useValueIfNull(T value, Supplier<T, T> supplier) {
         return useValueIfMatch(value, Functions.<T>nullPredicate(), supplier);
     }
 
-    public static <T> T useValueIfEmpty(T value, Supplier<T,T> supplier) {
+    public static <T> T useValueIfEmpty(T value, Supplier<T, T> supplier) {
         return useValueIfMatch(value, Functions.<T>emptyPredicate(), supplier);
     }
 
-    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, T defaultValue){
-        if(predicate.test(value)){
+    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, T defaultValue) {
+        if (predicate.test(value)) {
             return defaultValue;
         }
         return value;
     }
 
-    public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, T defaultValue){
-        if(!predicate.test(value)){
+    public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, T defaultValue) {
+        if (!predicate.test(value)) {
             return defaultValue;
         }
         return value;
     }
 
-    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, Supplier<T,T> supplier){
-        if(predicate.test(value)){
+    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, Supplier<T, T> supplier) {
+        if (predicate.test(value)) {
             return supplier.get(value);
         }
         return value;
     }
 
-    public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, Supplier<T,T> supplier){
-        if(!predicate.test(value)){
+    public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, Supplier<T, T> supplier) {
+        if (!predicate.test(value)) {
             return supplier.get(value);
         }
         return value;
     }
 
     @Deprecated
-    public static <T> T requireNonNullElseGet(T obj,final Supplier0<? extends T> supplier) {
+    public static <T> T requireNonNullElseGet(T obj, final Supplier0<? extends T> supplier) {
         return useValueIfMatch(obj, Functions.<T>nullPredicate(), new Supplier<T, T>() {
             @Override
             public T get(T input) {
