@@ -1,4 +1,4 @@
-package com.jn.langx.algorithm.loadbalance;
+package com.jn.langx.cluster.loadbalance;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;

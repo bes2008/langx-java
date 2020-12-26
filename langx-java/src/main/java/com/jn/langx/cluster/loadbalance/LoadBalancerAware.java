@@ -1,4 +1,4 @@
-package com.jn.langx.algorithm.loadbalance;
+package com.jn.langx.cluster.loadbalance;
 
 public interface LoadBalancerAware {
     LoadBalancer getLoadBalancer();

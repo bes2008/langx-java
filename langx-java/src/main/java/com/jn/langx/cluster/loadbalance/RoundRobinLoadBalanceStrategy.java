@@ -1,4 +1,4 @@
-package com.jn.langx.algorithm.loadbalance;
+package com.jn.langx.cluster.loadbalance;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Maps;
