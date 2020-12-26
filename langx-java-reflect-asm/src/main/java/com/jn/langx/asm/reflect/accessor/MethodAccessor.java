@@ -9,6 +9,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@SuppressWarnings("all")
 public abstract class MethodAccessor {
     private String[] methodNames;
     private Class[][] parameterTypes;
