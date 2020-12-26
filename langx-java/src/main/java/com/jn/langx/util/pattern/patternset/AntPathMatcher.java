@@ -16,27 +16,31 @@ public class AntPathMatcher extends AbstractPatternSetMatcher<StringPatternEntry
 
     private String pathSeparator = DEFAULT_PATH_SEPARATOR;
 
-    public AntPathMatcher(@NonNull String defaultPatternExpression) {
+    public AntPathMatcher() {
+        this(null);
+    }
+
+    public AntPathMatcher(@Nullable String defaultPatternExpression) {
         this(new GenericPatternSetExpressionParser<StringPatternEntry>(new StringPatternEntry.Factory()), defaultPatternExpression);
     }
 
-    public AntPathMatcher(String defaultPatternExpression, @NonNull String patternExpression) {
+    public AntPathMatcher(@Nullable String defaultPatternExpression, @NonNull String patternExpression) {
         super(new GenericPatternSetExpressionParser<StringPatternEntry>(new StringPatternEntry.Factory()), defaultPatternExpression, patternExpression);
     }
 
-    public AntPathMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull String defaultPatternExpression) {
+    public AntPathMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @Nullable String defaultPatternExpression) {
         super(expressionParser, defaultPatternExpression);
     }
 
-    public AntPathMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet) {
+    public AntPathMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @Nullable PatternSet<StringPatternEntry> defaultPatternSet) {
         super(expressionParser, defaultPatternSet);
     }
 
-    public AntPathMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull PatternSet<StringPatternEntry> defaultPatternSet, PatternSet patternSet) {
+    public AntPathMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @Nullable PatternSet<StringPatternEntry> defaultPatternSet, PatternSet patternSet) {
         super(expressionParser, defaultPatternSet, patternSet);
     }
 
-    public AntPathMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @NonNull String defaultPatternExpression, String patternSetExpression) {
+    public AntPathMatcher(@NonNull PatternSetExpressionParser<StringPatternEntry> expressionParser, @Nullable String defaultPatternExpression, String patternSetExpression) {
         super(expressionParser, defaultPatternExpression, patternSetExpression);
     }
 

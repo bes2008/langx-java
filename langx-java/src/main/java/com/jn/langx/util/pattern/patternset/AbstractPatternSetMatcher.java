@@ -19,17 +19,17 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
     private PatternSetExpressionParser<PatternEntry> expressionParser;
     protected PatternSet<PatternEntry> patternSet;
 
-    public AbstractPatternSetMatcher(@Nullable PatternSetExpressionParser<PatternEntry> expressionParser, @NonNull String defaultPatternExpression) {
+    public AbstractPatternSetMatcher(@Nullable PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable String defaultPatternExpression) {
         setExpressionParser(expressionParser);
         setDefaultExpression(defaultPatternExpression);
     }
 
-    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @NonNull PatternSet<PatternEntry> defaultPatternSet) {
+    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet) {
         setExpressionParser(expressionParser);
         setDefaultPatternSet(defaultPatternSet);
     }
 
-    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @NonNull PatternSet<PatternEntry> defaultPatternSet, PatternSet patternSet) {
+    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet, PatternSet patternSet) {
         setExpressionParser(expressionParser);
         setDefaultPatternSet(defaultPatternSet);
         setPatternSet(patternSet);
@@ -50,11 +50,11 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
         return defaultPatternSet;
     }
 
-    public void setDefaultPatternSet(PatternSet<PatternEntry> defaultPatternSet) {
+    public void setDefaultPatternSet(@Nullable PatternSet<PatternEntry> defaultPatternSet) {
         this.defaultPatternSet = defaultPatternSet;
     }
 
-    public void setDefaultExpression(String defaultExpression) {
+    public void setDefaultExpression(@Nullable String defaultExpression) {
         if (Strings.isNotEmpty(defaultExpression)) {
             Preconditions.checkNotNull(expressionParser, "the expression parser is null");
             setDefaultPatternSet(expressionParser.parse(defaultExpression));
@@ -65,7 +65,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
         this.patternSet = patternSet;
     }
 
-    public void setPatternExpression(String expression) {
+    public void setPatternExpression(@Nullable String expression) {
         if (Strings.isNotEmpty(expression)) {
             Preconditions.checkNotNull(expressionParser, "the expression parser is null");
             setPatternSet(expressionParser.parse(expression));
