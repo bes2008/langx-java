@@ -1,13 +1,20 @@
 package com.jn.langx.util.collection.buffer;
 
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.buffer.exception.InvalidMarkException;
 import com.jn.langx.util.collection.buffer.exception.ReadOnlyBufferException;
 
-public abstract class Buffer {
+import java.nio.BufferOverflowException;
+import java.nio.BufferUnderflowException;
+import java.util.List;
+
+public abstract class Buffer<E, BF extends Buffer> {
 
     // Invariants: mark <= position <= limit <= capacity
     private int mark = -1;
+    // index
     private int position = 0;
+    // 实际长度
     private int limit;
     private int capacity;
 
@@ -15,8 +22,9 @@ public abstract class Buffer {
     // after checking invariants.
     //
     public Buffer(int mark, int pos, int lim, int cap) {    // package-private
-        if (cap < 0)
+        if (cap < 0) {
             throw new IllegalArgumentException();
+        }
         this.capacity = cap;
         limit(lim);
         position(pos);
@@ -64,6 +72,12 @@ public abstract class Buffer {
         return this;
     }
 
+    protected final int checkIndex(int i) {                       // package-private
+        if ((i < 0) || (i >= limit))
+            throw new IndexOutOfBoundsException();
+        return i;
+    }
+
     /**
      * Returns this buffer's limit. </p>
      *
@@ -74,6 +88,7 @@ public abstract class Buffer {
     }
 
     /**
+     * 需要扩容时，才能调用该方法。
      * Sets this buffer's limit.  If the position is larger than the new limit
      * then it is set to the new limit.  If the mark is defined and larger than
      * the new limit then it is discarded. </p>
@@ -88,8 +103,12 @@ public abstract class Buffer {
             throw new IllegalArgumentException();
         }
         limit = newLimit;
-        if (position > limit) position = limit;
-        if (mark > limit) mark = -1;
+        if (position > limit) {
+            position = limit;
+        }
+        if (mark > limit) {
+            mark = -1;
+        }
         return this;
     }
 
@@ -214,6 +233,35 @@ public abstract class Buffer {
         return position < limit;
     }
 
+    protected final int nextGetIndex() {                          // package-private
+        if (position >= limit)
+            throw new BufferUnderflowException();
+        return position++;
+    }
+
+    final int nextGetIndex(int nb) {                    // package-private
+        if (limit - position < nb)
+            throw new BufferUnderflowException();
+        int p = position;
+        position += nb;
+        return p;
+    }
+
+
+    /**
+     * Checks the current position against the limit, throwing a {@link
+     * BufferOverflowException} if it is not smaller than the limit, and then
+     * increments the position.
+     *
+     * @return The current position value, before it is incremented
+     */
+    final int nextPutIndex() {                          // package-private
+        if (position >= limit)
+            throw new BufferOverflowException();
+        return position++;
+    }
+
+
     /**
      * Tells whether or not this buffer is read-only. </p>
      *
@@ -275,4 +323,34 @@ public abstract class Buffer {
      * @since 2.10.6
      */
     public abstract int arrayOffset();
+
+
+    /**
+     * @param e
+     * @return
+     * @since 3.3.1
+     */
+    public abstract BF put(@Nullable E e);
+
+    /**
+     * @param index
+     * @param e
+     * @return
+     * @since 3.3.1
+     */
+    public abstract BF put(int index, @Nullable E e);
+
+    /**
+     * @return
+     * @since 3.3.1
+     */
+    public abstract E get();
+
+    /**
+     * @param index 起始位置
+     * @param maxLength 最多获取数量，如果小于0 ，则从指定位置到limit
+     * @return
+     * @since 3.3.1
+     */
+    public abstract List<E> get(int index, int maxLength);
 }
