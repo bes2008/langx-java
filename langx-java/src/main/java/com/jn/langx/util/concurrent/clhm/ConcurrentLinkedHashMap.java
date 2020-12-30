@@ -198,7 +198,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * Creates an instance based on the builder's configuration.
      */
     @SuppressWarnings({"unchecked", "cast"})
-    public ConcurrentLinkedHashMap(Builder<K, V> builder) {
+    private ConcurrentLinkedHashMap(Builder<K, V> builder) {
         // The data store and its maximum capacity
         concurrencyLevel = builder.concurrencyLevel;
         capacity = new AtomicLong(Math.min(builder.capacity, MAXIMUM_CAPACITY));
