@@ -12,7 +12,7 @@
     <name>langx</name>
 
     <description>
-        Java lang extensions, a supplement to , replacement  of a Guava, commons-lang
+        Java lang extensions, a supplement to , replacement  of a Guava, commons-lang, hutool
     </description>
     <url>https://github.com/fangjinuo/langx-java</url>
     <developers>
