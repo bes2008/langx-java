@@ -1468,27 +1468,27 @@ public class Collects {
     }
 
     public static <E, K> List<List<E>> partitionBy(Iterator<E> c, Function<E, K> classifier) {
-        return asList(collect(c, partioningBy(classifier)).values());
+        return asList(collect(c, partitioningBy(classifier)).values());
     }
 
     public static <E, K> List<List<E>> partitionBy(Iterator<E> c, Function2<Integer, E, K> classifier) {
-        return asList(collect(c, partioningBy(classifier)).values());
+        return asList(collect(c, partitioningBy(classifier)).values());
     }
 
     public static <E, K> List<List<E>> partitionBy(E[] c, Function<E, K> classifier) {
-        return asList(collect(c, partioningBy(classifier)).values());
+        return asList(collect(c, partitioningBy(classifier)).values());
     }
 
     public static <E, K> List<List<E>> partitionBy(E[] c, Function2<Integer, E, K> classifier) {
-        return asList(collect(c, partioningBy(classifier)).values());
+        return asList(collect(c, partitioningBy(classifier)).values());
     }
 
     public static <E, K> List<List<E>> partitionBy(Iterable<E> c, Function<E, K> classifier) {
-        return asList(collect(c, partioningBy(classifier)).values());
+        return asList(collect(c, partitioningBy(classifier)).values());
     }
 
     public static <E, K> List<List<E>> partitionBy(Iterable<E> c, Function2<Integer, E, K> classifier) {
-        return asList(collect(c, partioningBy(classifier)).values());
+        return asList(collect(c, partitioningBy(classifier)).values());
     }
 
     public static <E> List<List<E>> partitionBySize(Iterable<E> c, final int partitionSize) {
@@ -2140,7 +2140,7 @@ public class Collects {
         };
     }
 
-    public static <E, K> Collector<E, Map<K, List<E>>> partioningBy(@NonNull final Function<E, K> classifier) {
+    public static <E, K> Collector<E, Map<K, List<E>>> partitioningBy(@NonNull final Function<E, K> classifier) {
         return groupingBy(classifier, new Supplier0<Map<K, List<E>>>() {
             @Override
             public Map<K, List<E>> get() {
@@ -2154,7 +2154,7 @@ public class Collects {
         });
     }
 
-    public static <E, K> Collector<E, Map<K, List<E>>> partioningBy(@NonNull final Function2<Integer, E, K> classifier) {
+    public static <E, K> Collector<E, Map<K, List<E>>> partitioningBy(@NonNull final Function2<Integer, E, K> classifier) {
         return groupingBy(classifier, new Supplier0<Map<K, List<E>>>() {
             @Override
             public Map<K, List<E>> get() {
