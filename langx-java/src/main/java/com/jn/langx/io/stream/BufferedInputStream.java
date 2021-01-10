@@ -77,8 +77,10 @@ public class BufferedInputStream extends FilterInputStream {
         if (length != -1) {
             buf = ByteBuffer.wrap(realBuf, 0, length);
         } else {
-            buf.clear();
-            buf.limit(0);
+            if (buf != null) {
+                buf.clear();
+                buf.limit(0);
+            }
         }
     }
 
