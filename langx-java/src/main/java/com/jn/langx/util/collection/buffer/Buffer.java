@@ -1,27 +1,25 @@
 package com.jn.langx.util.collection.buffer;
 
-import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.buffer.exception.InvalidMarkException;
 import com.jn.langx.util.collection.buffer.exception.ReadOnlyBufferException;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
-import java.util.List;
 
-public abstract class Buffer<E, BF extends Buffer> {
+public abstract class Buffer<BF extends Buffer> {
 
     // Invariants: mark <= position <= limit <= capacity
-    private int mark = -1;
+    private long mark = -1;
     // index
-    private int position = 0;
+    private long position = 0;
     // 实际长度
-    private int limit;
-    private int capacity;
+    private long limit;
+    private long capacity;
 
     // Creates a new buffer with the given mark, position, limit, and capacity,
     // after checking invariants.
     //
-    public Buffer(int mark, int pos, int lim, int cap) {    // package-private
+    public Buffer(long mark, long pos, long lim, long cap) {    // package-private
         if (cap < 0) {
             throw new IllegalArgumentException();
         }
@@ -41,7 +39,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      *
      * @return The capacity of this buffer
      */
-    public final int capacity() {
+    public final long capacity() {
         return capacity;
     }
 
@@ -50,7 +48,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      *
      * @return The position of this buffer
      */
-    public final int position() {
+    public final long position() {
         return position;
     }
 
@@ -63,7 +61,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      * @return This buffer
      * @throws IllegalArgumentException If the preconditions on <tt>newPosition</tt> do not hold
      */
-    public final Buffer position(int newPosition) {
+    public final Buffer<BF> position(long newPosition) {
         if ((newPosition > limit) || (newPosition < 0)) {
             throw new IllegalArgumentException();
         }
@@ -72,7 +70,7 @@ public abstract class Buffer<E, BF extends Buffer> {
         return this;
     }
 
-    protected final int checkIndex(int i) {                       // package-private
+    protected final long checkIndex(long i) {                       // package-private
         if ((i < 0) || (i >= limit))
             throw new IndexOutOfBoundsException();
         return i;
@@ -83,7 +81,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      *
      * @return The limit of this buffer
      */
-    public final int limit() {
+    public final long limit() {
         return limit;
     }
 
@@ -98,7 +96,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      * @return This buffer
      * @throws IllegalArgumentException If the preconditions on <tt>newLimit</tt> do not hold
      */
-    public final Buffer limit(int newLimit) {
+    public final Buffer<BF> limit(long newLimit) {
         if ((newLimit > capacity) || (newLimit < 0)) {
             throw new IllegalArgumentException();
         }
@@ -132,7 +130,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      * @throws InvalidMarkException If the mark has not been set
      */
     public final Buffer reset() {
-        int m = mark;
+        long m = mark;
         if (m < 0) {
             throw new InvalidMarkException();
         }
@@ -218,7 +216,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      *
      * @return The number of elements remaining in this buffer
      */
-    public final int remaining() {
+    public final long remaining() {
         return limit - position;
     }
 
@@ -233,16 +231,17 @@ public abstract class Buffer<E, BF extends Buffer> {
         return position < limit;
     }
 
-    protected final int nextGetIndex() {                          // package-private
+    protected final long nextGetIndex() {
         if (position >= limit)
             throw new BufferUnderflowException();
         return position++;
     }
 
-    final int nextGetIndex(int nb) {                    // package-private
-        if (limit - position < nb)
+    protected final long nextGetIndex(long nb) {
+        if (limit - position < nb) {
             throw new BufferUnderflowException();
-        int p = position;
+        }
+        long p = position;
         position += nb;
         return p;
     }
@@ -255,7 +254,7 @@ public abstract class Buffer<E, BF extends Buffer> {
      *
      * @return The current position value, before it is incremented
      */
-    final int nextPutIndex() {                          // package-private
+    protected final long nextPutIndex() {
         if (position >= limit)
             throw new BufferOverflowException();
         return position++;
@@ -322,35 +321,6 @@ public abstract class Buffer<E, BF extends Buffer> {
      * @throws UnsupportedOperationException If this buffer is not backed by an accessible array
      * @since 2.10.6
      */
-    public abstract int arrayOffset();
+    public abstract long arrayOffset();
 
-
-    /**
-     * @param e
-     * @return
-     * @since 3.3.1
-     */
-    public abstract BF put(@Nullable E e);
-
-    /**
-     * @param index
-     * @param e
-     * @return
-     * @since 3.3.1
-     */
-    public abstract BF put(int index, @Nullable E e);
-
-    /**
-     * @return
-     * @since 3.3.1
-     */
-    public abstract E get();
-
-    /**
-     * @param index 起始位置
-     * @param maxLength 最多获取数量，如果小于0 ，则从指定位置到limit
-     * @return
-     * @since 3.3.1
-     */
-    public abstract List<E> get(int index, int maxLength);
 }

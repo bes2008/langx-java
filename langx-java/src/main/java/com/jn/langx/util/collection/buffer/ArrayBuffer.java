@@ -2,13 +2,11 @@ package com.jn.langx.util.collection.buffer;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Maths;
-import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer;
 
 import java.util.List;
 
-public class ArrayBuffer<E> extends Buffer<E, ArrayBuffer<E>> {
+public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
     private E[] array;
 
     // 起点偏移量
@@ -60,37 +58,37 @@ public class ArrayBuffer<E> extends Buffer<E, ArrayBuffer<E>> {
     }
 
     @Override
-    public int arrayOffset() {
+    public long arrayOffset() {
         return offset;
     }
 
     @Override
     public ArrayBuffer<E> put(@Nullable E e) {
-        array[idx(nextPutIndex())] = e;
+        array[(int) idx(nextPutIndex())] = e;
         return this;
     }
 
     @Override
-    public ArrayBuffer<E> put(int index, @Nullable E e) {
-        array[idx(checkIndex(index))] = e;
+    public ArrayBuffer<E> put(long index, @Nullable E e) {
+        array[(int) idx(checkIndex(index))] = e;
         return this;
     }
 
-    private int idx(int position) {
+    private long idx(long position) {
         return offset + position;
     }
 
     @Override
     public E get() {
-        return array[idx(nextGetIndex())];
+        return array[(int) idx(nextGetIndex())];
     }
 
     public E get(int index) {
-        return array[idx(checkIndex(index))];
+        return array[(int) idx(checkIndex(index))];
     }
 
     @Override
-    public List<E> get(int index, int maxlength) {
+    public List<E> get(long index, long maxlength) {
         final List<E> list = Collects.emptyArrayList();
         if (maxlength < 0) {
             maxlength = remaining();
@@ -98,14 +96,10 @@ public class ArrayBuffer<E> extends Buffer<E, ArrayBuffer<E>> {
         if (maxlength == 0 || remaining() == 0) {
             return list;
         }
-        int len = Maths.min(remaining(), maxlength);
-
-        Collects.forEach(Arrs.range(len), new Consumer<Integer>() {
-            @Override
-            public void accept(Integer integer) {
-                list.add(get());
-            }
-        });
+        long len = Maths.minLong(remaining(), maxlength);
+        for (; len >= 0; len--) {
+            list.add(get());
+        }
         return list;
     }
 }
