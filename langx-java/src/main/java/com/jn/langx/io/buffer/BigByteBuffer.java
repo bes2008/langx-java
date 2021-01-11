@@ -14,14 +14,15 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     private final List<ByteBuffer> segments = Collects.emptyArrayList();
 
     private boolean readonly = false;
-    private int segmentSize;
-    private boolean direct;
+    private final int segmentSize;
+    private final boolean direct;
 
-    public BigByteBuffer(byte[] bytes, long cap, int segmentSize) {
+    public BigByteBuffer(byte[] bytes, long cap, int segmentSize, boolean readonly) {
         this(cap, false, segmentSize);
         for (int i = 0; i < bytes.length; i++) {
             put(bytes[i]);
         }
+        this.readonly = readonly;
     }
 
     public BigByteBuffer(long cap, int segmentSize) {
@@ -37,6 +38,10 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
         Preconditions.checkArgument(segmentSize >= DataSize.kb(4).toInt());
         this.direct = direct;
         this.segmentSize = segmentSize;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
     }
 
     private ByteBuffer newBuffer() {
@@ -87,11 +92,13 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     }
 
     public BigByteBuffer put(byte b) {
+        Preconditions.checkState(!readonly, "the byte buffer is readonly");
         getSegmentForPut().put(b);
         return this;
     }
 
     public BigByteBuffer put(long index, byte b) {
+        Preconditions.checkState(!readonly, "the byte buffer is readonly");
         ByteBuffer segment = segments.get(segmentIndex(checkIndex(index)));
         segment.put((int) (index % segmentSize), b);
         return this;
