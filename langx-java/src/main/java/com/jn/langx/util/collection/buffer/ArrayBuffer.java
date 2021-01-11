@@ -14,7 +14,7 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
     private int offset = 0;
 
     public ArrayBuffer(int maxCapacity) {
-        super(-1, 0, 0, maxCapacity);
+        super(-1, 0, maxCapacity, maxCapacity);
         this.array = (E[]) new Object[maxCapacity];
     }
 
@@ -84,7 +84,7 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
         return array[(int) idx(nextGetIndex())];
     }
 
-    public E get(int index) {
+    public E get(long index) {
         return array[(int) idx(checkIndex(index))];
     }
 
@@ -94,7 +94,7 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
         final List<E> list = Collects.emptyArrayList();
         long len = Maths.minLong(limit() - checkIndex(index), maxLength);
         for (; len >= 0; len--) {
-            list.add(get());
+            list.add(get(index++));
         }
         return list;
     }
