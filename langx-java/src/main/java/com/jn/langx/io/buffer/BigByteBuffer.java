@@ -17,6 +17,21 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     private int segmentSize;
     private boolean direct;
 
+    public BigByteBuffer(byte[] bytes, long cap, int segmentSize) {
+        this(cap, false, segmentSize);
+        for (int i = 0; i < bytes.length; i++) {
+            put(bytes[i]);
+        }
+    }
+
+    public BigByteBuffer(long cap, int segmentSize) {
+        this(cap, false, segmentSize);
+    }
+
+    public BigByteBuffer(long cap, boolean direct, int segmentSize) {
+        this(-1L, 0, cap, cap, direct, segmentSize);
+    }
+
     public BigByteBuffer(long mark, long pos, long lim, long cap, boolean direct, int segmentSize) {
         super(mark, pos, lim, cap);
         Preconditions.checkArgument(segmentSize >= DataSize.kb(4).toInt());
@@ -92,7 +107,7 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     }
 
     public ByteBuffer get(long index, int maxLength) {
-        Preconditions.checkArgument(maxLength>=0);
+        Preconditions.checkArgument(maxLength >= 0);
         if (maxLength > limit() - index) {
             maxLength = (int) (limit() - index);
         }
