@@ -13,8 +13,11 @@ public class ArrayBufferTests {
         for (int i = 0; i < maxLength; i++) {
             buffer.put(i);
         }
-        printWithIndex(buffer);
 
+        buffer.flip();
+
+        printWithIndex(buffer);
+        buffer.rewind();
         System.out.println("\n=====================");
 
         buffer.put(78, 781);
@@ -43,7 +46,7 @@ public class ArrayBufferTests {
     }
 
     private void print(ArrayBuffer<Integer> buffer) {
-        buffer.rewind();
+
         for (int i = 0; i < 32; i++) {
             if (buffer.hasRemaining()) {
                 System.out.print(buffer.get());
