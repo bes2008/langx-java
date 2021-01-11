@@ -42,10 +42,15 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
         this.offset = offset;
     }
 
+    private boolean readonly = false;
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
+    }
 
     @Override
     public boolean isReadOnly() {
-        return false;
+        return readonly;
     }
 
     @Override
@@ -65,12 +70,14 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
 
     @Override
     public ArrayBuffer<E> put(@Nullable E e) {
+        Preconditions.checkState(!readonly, "the buffer is readonly");
         array[(int) idx(nextPutIndex())] = e;
         return this;
     }
 
     @Override
     public ArrayBuffer<E> put(long index, @Nullable E e) {
+        Preconditions.checkState(!readonly, "the buffer is readonly");
         array[(int) idx(checkIndex(index))] = e;
         return this;
     }
