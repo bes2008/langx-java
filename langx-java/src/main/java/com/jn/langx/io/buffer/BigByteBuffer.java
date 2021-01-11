@@ -17,12 +17,13 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     private final int segmentSize;
     private final boolean direct;
 
-    public BigByteBuffer(byte[] bytes, long cap, int segmentSize, boolean readonly) {
+    public BigByteBuffer(byte[] bytes, long cap, int segmentSize) {
         this(cap, false, segmentSize);
-        for (int i = 0; i < bytes.length; i++) {
-            put(bytes[i]);
+        if (bytes != null) {
+            for (int i = 0; i < bytes.length; i++) {
+                put(bytes[i]);
+            }
         }
-        this.readonly = readonly;
     }
 
     public BigByteBuffer(long cap, int segmentSize) {
