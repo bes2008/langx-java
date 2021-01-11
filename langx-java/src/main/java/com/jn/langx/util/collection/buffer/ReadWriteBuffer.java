@@ -32,6 +32,12 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
     public abstract E get();
 
     /**
+     * @return
+     * @since 3.3.2
+     */
+    public abstract E get(long index);
+
+    /**
      * @param index     起始位置
      * @param maxLength 最多获取数量，如果小于0 ，则从指定位置到limit
      * @return
