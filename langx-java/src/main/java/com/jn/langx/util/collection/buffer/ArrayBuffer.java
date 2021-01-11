@@ -2,6 +2,7 @@ package com.jn.langx.util.collection.buffer;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.List;
@@ -88,15 +89,10 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
     }
 
     @Override
-    public List<E> get(long index, long maxlength) {
+    public List<E> get(long index, long maxLength) {
+        Preconditions.checkArgument(maxLength >= 0);
         final List<E> list = Collects.emptyArrayList();
-        if (maxlength < 0) {
-            maxlength = remaining();
-        }
-        if (maxlength == 0 || remaining() == 0) {
-            return list;
-        }
-        long len = Maths.minLong(remaining(), maxlength);
+        long len = Maths.minLong(limit() - checkIndex(index), maxLength);
         for (; len >= 0; len--) {
             list.add(get());
         }
