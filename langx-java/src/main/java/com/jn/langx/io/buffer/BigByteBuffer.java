@@ -4,6 +4,7 @@ import com.jn.langx.util.DataSize;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.buffer.Buffer;
+import com.jn.langx.util.function.Consumer;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class BigByteBuffer extends Buffer<BigByteBuffer> {
     private final List<ByteBuffer> segments = Collects.emptyArrayList();
-
+    public static final int MIN_SEGMENT_SIZE = DataSize.kb(4).toInt();
     private boolean readonly = false;
     private final int segmentSize;
     private final boolean direct;
@@ -26,6 +27,10 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
         }
     }
 
+    public BigByteBuffer(long cap) {
+        this(cap, false, MIN_SEGMENT_SIZE);
+    }
+
     public BigByteBuffer(long cap, int segmentSize) {
         this(cap, false, segmentSize);
     }
@@ -36,13 +41,49 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
 
     public BigByteBuffer(long mark, long pos, long lim, long cap, boolean direct, int segmentSize) {
         super(mark, pos, lim, cap);
-        Preconditions.checkArgument(segmentSize >= DataSize.kb(4).toInt());
+        Preconditions.checkArgument(segmentSize >= MIN_SEGMENT_SIZE);
         this.direct = direct;
         this.segmentSize = segmentSize;
     }
 
     public void setReadonly(boolean readonly) {
         this.readonly = readonly;
+    }
+
+    @Override
+    public BigByteBuffer clear() {
+        super.clear();
+        Collects.forEach(segments, new Consumer<ByteBuffer>() {
+            @Override
+            public void accept(ByteBuffer buffer) {
+                buffer.clear();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public BigByteBuffer flip() {
+        super.flip();
+        Collects.forEach(segments, new Consumer<ByteBuffer>() {
+            @Override
+            public void accept(ByteBuffer buffer) {
+                buffer.flip();
+            }
+        });
+        return this;
+    }
+
+    @Override
+    public BigByteBuffer rewind() {
+        super.rewind();
+        Collects.forEach(segments, new Consumer<ByteBuffer>() {
+            @Override
+            public void accept(ByteBuffer buffer) {
+                buffer.rewind();
+            }
+        });
+        return this;
     }
 
     private ByteBuffer newBuffer() {
@@ -57,10 +98,13 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
         if (position() >= limit()) {
             throw new BufferOverflowException();
         }
-        ByteBuffer segment = segments.get(segmentIndex(nextPutIndex()));
-        if (segment == null) {
+        int segmentIndex = segmentIndex(nextPutIndex());
+        ByteBuffer segment;
+        if (segmentIndex > segments.size() - 1) {
             segment = newBuffer();
             segments.add(segment);
+        } else {
+            segment = segments.get(segmentIndex);
         }
         return segment;
     }
@@ -91,6 +135,7 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     public final long arrayOffset() {
         return 0L;
     }
+
 
     public BigByteBuffer put(byte b) {
         Preconditions.checkState(!readonly, "the byte buffer is readonly");
