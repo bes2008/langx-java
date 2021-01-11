@@ -1,12 +1,13 @@
 package com.jn.langx.util.collection.buffer;
 
+import com.jn.langx.io.Rewindable;
 import com.jn.langx.util.collection.buffer.exception.InvalidMarkException;
 import com.jn.langx.util.collection.buffer.exception.ReadOnlyBufferException;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 
-public abstract class Buffer<BF extends Buffer> {
+public abstract class Buffer<BF extends Buffer> implements Rewindable {
 
     // Invariants: mark <= position <= limit <= capacity
     private long mark = -1;
