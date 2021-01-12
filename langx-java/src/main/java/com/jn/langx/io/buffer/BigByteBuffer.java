@@ -18,13 +18,17 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     private final int segmentSize;
     private final boolean direct;
 
+    public BigByteBuffer() {
+        this(MIN_SEGMENT_SIZE);
+    }
+
+    public BigByteBuffer(int segmentSize) {
+        this(Long.MAX_VALUE, segmentSize);
+    }
+
     public BigByteBuffer(byte[] bytes, long cap, int segmentSize) {
         this(cap, false, segmentSize);
-        if (bytes != null) {
-            for (int i = 0; i < bytes.length; i++) {
-                put(bytes[i]);
-            }
-        }
+        this.put(bytes);
     }
 
     public BigByteBuffer(long cap) {
@@ -140,6 +144,15 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
     public BigByteBuffer put(byte b) {
         Preconditions.checkState(!readonly, "the byte buffer is readonly");
         getSegmentForPut().put(b);
+        return this;
+    }
+
+    public BigByteBuffer put(byte[] bytes) {
+        if (bytes != null) {
+            for (int i = 0; i < bytes.length; i++) {
+                put(bytes[i]);
+            }
+        }
         return this;
     }
 

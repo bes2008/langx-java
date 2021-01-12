@@ -2,6 +2,7 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.io.Rewindable;
 import com.jn.langx.io.buffer.BigByteBuffer;
+import com.jn.langx.io.buffer.BigByteBufferBuilder;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 
@@ -10,11 +11,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class RewindableInputStream extends FilterInputStream implements Rewindable<Void> {
+    private BigByteBufferBuilder bufferBuilder;
     private BigByteBuffer buffer;
     private volatile boolean closed = false;
 
     public RewindableInputStream(InputStream in) {
         super(in);
+        bufferBuilder = new BigByteBufferBuilder();
+    }
+
+    public RewindableInputStream(InputStream in, boolean direct, int segmentSize) {
+        super(in);
+        bufferBuilder = new BigByteBufferBuilder().segmentSize(segmentSize).direct(direct);
+    }
+
+    public RewindableInputStream(InputStream in, boolean direct, long capacity, int segmentSize) {
+        super(in);
+        bufferBuilder = new BigByteBufferBuilder().capacity(capacity).segmentSize(segmentSize).direct(direct);
     }
 
     @Override
@@ -83,6 +96,7 @@ public class RewindableInputStream extends FilterInputStream implements Rewindab
     public void close() throws IOException {
         if (!closed) {
             this.closed = true;
+            this.buffer = null;
             super.close();
         }
     }
@@ -114,7 +128,7 @@ public class RewindableInputStream extends FilterInputStream implements Rewindab
     }
 
     private void doRead() throws IOException {
-        BigByteBuffer bf = new BigByteBuffer(Integer.MAX_VALUE);
+        BigByteBuffer bf = bufferBuilder.build();
 
         while (true) {
             int bt = in.read();

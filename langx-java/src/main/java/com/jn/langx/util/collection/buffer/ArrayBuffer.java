@@ -4,7 +4,9 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
 
+import java.util.Collection;
 import java.util.List;
 
 public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
@@ -79,6 +81,23 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
     public ArrayBuffer<E> put(long index, @Nullable E e) {
         Preconditions.checkState(!readonly, "the buffer is readonly");
         array[(int) idx(checkIndex(index))] = e;
+        return this;
+    }
+
+    @Override
+    public ArrayBuffer<E> put(E[] es) {
+        put(Collects.newArrayList(es));
+        return this;
+    }
+
+    @Override
+    public ArrayBuffer<E> put(Collection<E> es) {
+        Collects.forEach(es, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                put(e);
+            }
+        });
         return this;
     }
 
