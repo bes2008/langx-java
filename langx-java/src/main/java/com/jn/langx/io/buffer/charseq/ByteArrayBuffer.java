@@ -1,4 +1,4 @@
-package com.jn.langx.util.charseq;
+package com.jn.langx.io.buffer.charseq;
 
 import com.jn.langx.util.Preconditions;
 
