@@ -571,11 +571,17 @@ public class Reflects {
         }
     }
 
+    public static <E> boolean hasConstructor(@NonNull Class<E> clazz, Class... parameterTypes) {
+        return getConstructor(clazz, parameterTypes) != null;
+    }
+
     public static <E> Constructor<E> getConstructor(@NonNull Class<E> clazz, Class... parameterTypes) {
         try {
             return clazz.getDeclaredConstructor(parameterTypes);
         } catch (NoSuchMethodException ex) {
-            logger.warn(ex.getMessage(), ex);
+            if (logger.isDebugEnabled()) {
+                logger.debug(ex.getMessage(), ex);
+            }
             return null;
         }
     }
@@ -585,24 +591,32 @@ public class Reflects {
         try {
             return clazz.newInstance();
         } catch (Throwable ex) {
-            logger.warn("Create {} instance fail", getFQNClassName(clazz), ex);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Create {} instance fail", getFQNClassName(clazz), ex);
+            }
             return null;
         }
     }
 
-    public static <E> E newInstance(@NonNull Class<E> clazz, @Nullable Class[] parameterTypes, @NonNull Object[] parameters) {
+    public static <E> E newInstance(@NonNull Class<E> clazz, @Nullable Class[] parameterTypes, @NonNull Object... parameters) {
         Preconditions.checkNotNull(clazz);
         Constructor<E> constructor = getConstructor(clazz, parameterTypes);
         if (constructor != null) {
-            try {
-                return constructor.newInstance(parameters);
-            } catch (Throwable ex) {
-                logger.warn("Create {} instance fail", getFQNClassName(clazz), ex);
-                return null;
-            }
+            return newInstance(constructor, parameters);
         }
         return null;
+    }
 
+    public static <E> E newInstance(@NonNull Constructor<E> constructor, @Nullable Object... parameters) {
+        Preconditions.checkNotNull(constructor, "the constructor is null");
+        try {
+            return constructor.newInstance(parameters);
+        } catch (Throwable ex) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Create {} instance fail", getFQNClassName(constructor.getDeclaringClass()), ex);
+            }
+            return null;
+        }
     }
 
     public static Method getPublicMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
@@ -1164,14 +1178,14 @@ public class Reflects {
 
     /**
      * 判断 obj 是否是 targetType 的实例
+     *
      * @param object
      * @param targetType
      * @param <T>
      * @return 如果是，返回true
-     *
      * @since 2.10.2
      */
-    public static <T> boolean isInstance(T object, @NonNull Class targetType){
+    public static <T> boolean isInstance(T object, @NonNull Class targetType) {
         Preconditions.checkNotNull(object);
         Preconditions.checkNotNull(targetType);
         return targetType.isInstance(object);
