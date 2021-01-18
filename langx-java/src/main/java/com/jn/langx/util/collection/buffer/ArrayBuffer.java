@@ -2,8 +2,11 @@ package com.jn.langx.util.collection.buffer;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
 
+import java.util.Collection;
 import java.util.List;
 
 public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
@@ -13,7 +16,7 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
     private int offset = 0;
 
     public ArrayBuffer(int maxCapacity) {
-        super(-1, 0, 0, maxCapacity);
+        super(-1, 0, maxCapacity, maxCapacity);
         this.array = (E[]) new Object[maxCapacity];
     }
 
@@ -41,10 +44,15 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
         this.offset = offset;
     }
 
+    private boolean readonly = false;
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
+    }
 
     @Override
     public boolean isReadOnly() {
-        return false;
+        return readonly;
     }
 
     @Override
@@ -64,13 +72,32 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
 
     @Override
     public ArrayBuffer<E> put(@Nullable E e) {
+        Preconditions.checkState(!readonly, "the buffer is readonly");
         array[(int) idx(nextPutIndex())] = e;
         return this;
     }
 
     @Override
     public ArrayBuffer<E> put(long index, @Nullable E e) {
+        Preconditions.checkState(!readonly, "the buffer is readonly");
         array[(int) idx(checkIndex(index))] = e;
+        return this;
+    }
+
+    @Override
+    public ArrayBuffer<E> put(E[] es) {
+        put(Collects.newArrayList(es));
+        return this;
+    }
+
+    @Override
+    public ArrayBuffer<E> put(Collection<E> es) {
+        Collects.forEach(es, new Consumer<E>() {
+            @Override
+            public void accept(E e) {
+                put(e);
+            }
+        });
         return this;
     }
 
@@ -83,22 +110,17 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
         return array[(int) idx(nextGetIndex())];
     }
 
-    public E get(int index) {
+    public E get(long index) {
         return array[(int) idx(checkIndex(index))];
     }
 
     @Override
-    public List<E> get(long index, long maxlength) {
+    public List<E> get(long index, long maxLength) {
+        Preconditions.checkArgument(maxLength >= 0);
         final List<E> list = Collects.emptyArrayList();
-        if (maxlength < 0) {
-            maxlength = remaining();
-        }
-        if (maxlength == 0 || remaining() == 0) {
-            return list;
-        }
-        long len = Maths.minLong(remaining(), maxlength);
+        long len = Maths.minLong(limit() - checkIndex(index), maxLength);
         for (; len >= 0; len--) {
-            list.add(get());
+            list.add(get(index++));
         }
         return list;
     }

@@ -77,12 +77,12 @@ public class Preconditions {
      * @since 2.8.7
      */
     public static <T> T checkNotNull(@NonNull T obj, @Nullable final String errorMessage, Object... params) {
-       return checkNotNull(obj, new Supplier<Object[], String>() {
-           @Override
-           public String get(Object[] args) {
-               return StringTemplates.formatWithPlaceholder(errorMessage, args);
-           }
-       }, params);
+        return checkNotNull(obj, new Supplier<Object[], String>() {
+            @Override
+            public String get(Object[] args) {
+                return StringTemplates.formatWithPlaceholder(errorMessage, args);
+            }
+        }, params);
     }
 
     public static <T> T checkNotNull(@NonNull T obj, @Nullable Supplier<Object[], String> errorMessageSupplier, Object... params) {
@@ -139,13 +139,21 @@ public class Preconditions {
         return obj;
     }
 
-    /** Ensures that the state expression is true. */
+    /**
+     * Ensures that the state expression is true.
+     */
     public static void checkState(boolean expression) {
         if (!expression) {
             throw new IllegalStateException();
         }
     }
-    
+
+    public static void checkState(boolean expression, String errorMessage) {
+        if (!expression) {
+            throw new IllegalStateException(errorMessage);
+        }
+    }
+
     public static void checkArgument(boolean expression) {
         if (!expression) {
             throw new IllegalArgumentException();

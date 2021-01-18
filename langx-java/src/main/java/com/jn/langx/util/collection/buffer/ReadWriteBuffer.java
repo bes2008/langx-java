@@ -2,6 +2,7 @@ package com.jn.langx.util.collection.buffer;
 
 import com.jn.langx.annotation.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buffer<BF> {
@@ -18,6 +19,16 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
     public abstract BF put(@Nullable E e);
 
     /**
+     * @since 3.3.2
+     */
+    public abstract BF put(E[] es);
+
+    /**
+     * @since 3.3.2
+     */
+    public abstract BF put(Collection<E> es);
+
+    /**
      * @param index
      * @param e
      * @return
@@ -30,6 +41,12 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
      * @since 3.3.1
      */
     public abstract E get();
+
+    /**
+     * @return
+     * @since 3.3.2
+     */
+    public abstract E get(long index);
 
     /**
      * @param index     起始位置

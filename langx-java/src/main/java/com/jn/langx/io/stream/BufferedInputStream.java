@@ -178,7 +178,7 @@ public class BufferedInputStream extends FilterInputStream {
      *                     invoking its {@link #close()} method,
      *                     or an I/O error occurs.
      */
-    public synchronized int read(byte b[], int off, int len)
+    public synchronized int read(byte[] b, int off, int len)
             throws IOException {
         return read1(b, off, len);
     }

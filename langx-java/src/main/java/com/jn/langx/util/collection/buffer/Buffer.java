@@ -1,12 +1,13 @@
 package com.jn.langx.util.collection.buffer;
 
+import com.jn.langx.io.Rewindable;
 import com.jn.langx.util.collection.buffer.exception.InvalidMarkException;
 import com.jn.langx.util.collection.buffer.exception.ReadOnlyBufferException;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 
-public abstract class Buffer<BF extends Buffer> {
+public abstract class Buffer<BF extends Buffer> implements Rewindable {
 
     // Invariants: mark <= position <= limit <= capacity
     private long mark = -1;
@@ -61,13 +62,15 @@ public abstract class Buffer<BF extends Buffer> {
      * @return This buffer
      * @throws IllegalArgumentException If the preconditions on <tt>newPosition</tt> do not hold
      */
-    public final Buffer<BF> position(long newPosition) {
+    public final BF position(long newPosition) {
         if ((newPosition > limit) || (newPosition < 0)) {
             throw new IllegalArgumentException();
         }
         position = newPosition;
-        if (mark > position) mark = -1;
-        return this;
+        if (mark > position) {
+            mark = -1;
+        }
+        return (BF)this;
     }
 
     protected final long checkIndex(long i) {                       // package-private
@@ -96,7 +99,7 @@ public abstract class Buffer<BF extends Buffer> {
      * @return This buffer
      * @throws IllegalArgumentException If the preconditions on <tt>newLimit</tt> do not hold
      */
-    public final Buffer<BF> limit(long newLimit) {
+    public final BF limit(long newLimit) {
         if ((newLimit > capacity) || (newLimit < 0)) {
             throw new IllegalArgumentException();
         }
@@ -107,7 +110,7 @@ public abstract class Buffer<BF extends Buffer> {
         if (mark > limit) {
             mark = -1;
         }
-        return this;
+        return (BF)this;
     }
 
     /**
@@ -115,9 +118,9 @@ public abstract class Buffer<BF extends Buffer> {
      *
      * @return This buffer
      */
-    public final Buffer mark() {
+    public final BF mark() {
         mark = position;
-        return this;
+        return (BF)this;
     }
 
     /**
@@ -129,13 +132,13 @@ public abstract class Buffer<BF extends Buffer> {
      * @return This buffer
      * @throws InvalidMarkException If the mark has not been set
      */
-    public final Buffer reset() {
+    public final BF reset() {
         long m = mark;
         if (m < 0) {
             throw new InvalidMarkException();
         }
         position = m;
-        return this;
+        return (BF)this;
     }
 
     /**
@@ -155,11 +158,11 @@ public abstract class Buffer<BF extends Buffer> {
      *
      * @return This buffer
      */
-    public final Buffer clear() {
+    public BF clear() {
         position = 0;
         limit = capacity;
         mark = -1;
-        return this;
+        return (BF)this;
     }
 
     /**
@@ -182,11 +185,11 @@ public abstract class Buffer<BF extends Buffer> {
      *
      * @return This buffer
      */
-    public final Buffer flip() {
+    public BF flip() {
         limit = position;
         position = 0;
         mark = -1;
-        return this;
+        return (BF)this;
     }
 
     /**
@@ -204,10 +207,10 @@ public abstract class Buffer<BF extends Buffer> {
      *
      * @return This buffer
      */
-    public final Buffer rewind() {
+    public BF rewind() {
         position = 0;
         mark = -1;
-        return this;
+        return (BF)this;
     }
 
     /**
