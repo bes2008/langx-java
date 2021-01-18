@@ -11,21 +11,21 @@ public class ThreadLocalHolder<V> implements ValueHolder<V> {
     }
 
     public ThreadLocalHolder(final Supplier0<V> supplier) {
-        local = new ThreadLocal<V>() {
+        this.local = new ThreadLocal<V>() {
             @Override
             protected V initialValue() {
-                return supplier==null? null:supplier.get();
+                return supplier == null ? null : supplier.get();
             }
         };
     }
 
     public ThreadLocalHolder(final V value) {
-        local = new ThreadLocal<V>() {
+        this(new Supplier0<V>() {
             @Override
-            protected V initialValue() {
+            public V get() {
                 return value;
             }
-        };
+        });
     }
 
     @Override
