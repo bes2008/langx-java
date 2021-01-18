@@ -11,13 +11,15 @@ import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.pattern.AbstractPatternMatcher;
 
 public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> extends AbstractPatternMatcher {
-    protected PatternSet<PatternEntry> defaultPatternSet;
+    @Nullable
+    private PatternSet<PatternEntry> defaultPatternSet;
     /**
      * 只在使用 #setDefaultExpression, #setPatternExpression 时，要求该字段不能为null
      */
     @Nullable
     private PatternSetExpressionParser<PatternEntry> expressionParser;
-    protected PatternSet<PatternEntry> patternSet;
+    @Nullable
+    private PatternSet<PatternEntry> patternSet;
 
     public AbstractPatternSetMatcher(@Nullable PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable String defaultPatternExpression) {
         setExpressionParser(expressionParser);
@@ -29,7 +31,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
         setDefaultPatternSet(defaultPatternSet);
     }
 
-    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet, PatternSet patternSet) {
+    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet, PatternSet<PatternEntry> patternSet) {
         setExpressionParser(expressionParser);
         setDefaultPatternSet(defaultPatternSet);
         setPatternSet(patternSet);
