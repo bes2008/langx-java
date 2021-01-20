@@ -1,6 +1,7 @@
 package com.jn.langx.security;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.exception.SecurityException;
@@ -31,19 +32,19 @@ import java.util.List;
 public class PKIs {
     private static final Logger logger = LoggerFactory.getLogger(PKIs.class);
 
-    public static PublicKey createPublicKey(@NonNull String algorithm, String provider, String base64PublicKey) {
+    public static PublicKey createPublicKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64PublicKey) {
         Preconditions.checkNotEmpty(base64PublicKey, "the public key is null or empty");
         X509EncodedKeySpec pubX509 = new X509EncodedKeySpec(Base64.decodeBase64(base64PublicKey));
         return createPublicKey(algorithm, provider, pubX509);
     }
 
-    public static PublicKey createPublicKey(@NonNull String algorithm, String provider, byte[] base64PublicKey) {
+    public static PublicKey createPublicKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty byte[] base64PublicKey) {
         Preconditions.checkNotEmpty(base64PublicKey, "the public key is null or empty");
         X509EncodedKeySpec pubX509 = new X509EncodedKeySpec(Base64.decodeBase64(base64PublicKey));
         return createPublicKey(algorithm, provider, pubX509);
     }
 
-    public static PublicKey createPublicKey(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
+    public static PublicKey createPublicKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
         Preconditions.checkNotNull(keySpec, "the public key is null");
         try {
             KeyFactory keyFactory = getKeyFactory(algorithm, provider);
@@ -53,19 +54,19 @@ public class PKIs {
         }
     }
 
-    public static PrivateKey createPrivateKey(@NonNull String algorithm, String provider, String base64PrivateKey) {
+    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64PrivateKey) {
         Preconditions.checkNotEmpty(base64PrivateKey, "the private key is null or empty");
         PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
         return createPrivateKey(algorithm, provider, priPKCS8);
     }
 
-    public static PrivateKey createPrivateKey(@NonNull String algorithm, String provider, byte[] base64PrivateKey) {
+    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty byte[] base64PrivateKey) {
         Preconditions.checkNotEmpty(base64PrivateKey, "the private key is null or empty");
         PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
         return createPrivateKey(algorithm, provider, priPKCS8);
     }
 
-    public static PrivateKey createPrivateKey(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
+    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
         Preconditions.checkNotNull(keySpec, "the private key is null");
         try {
             KeyFactory keyFactory = getKeyFactory(algorithm, provider);
@@ -75,7 +76,7 @@ public class PKIs {
         }
     }
 
-    public static KeyFactory getKeyFactory(@NonNull String algorithm, @Nullable String provider) {
+    public static KeyFactory getKeyFactory(@NotEmpty String algorithm, @Nullable String provider) {
         Preconditions.checkNotNull(algorithm);
         try {
             return Strings.isEmpty(provider) ? KeyFactory.getInstance(algorithm) : KeyFactory.getInstance(algorithm, provider);
@@ -84,17 +85,17 @@ public class PKIs {
         }
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull String base64PrivateKey, @NonNull String base64PublicKey) {
+    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull String base64PrivateKey, @NonNull String base64PublicKey) {
         return createKeyPair(algorithm, provider, base64PrivateKey.getBytes(Charsets.UTF_8), base64PublicKey.getBytes(Charsets.UTF_8));
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull byte[] base64PrivateKey, @NonNull byte[] base64PublicKey) {
+    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull byte[] base64PrivateKey, @NonNull byte[] base64PublicKey) {
         PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
         X509EncodedKeySpec pubX509 = new X509EncodedKeySpec(Base64.decodeBase64(base64PublicKey));
         return createKeyPair(algorithm, provider, priPKCS8, pubX509);
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec privateKeySpec, @NonNull KeySpec publicKeySpec) {
+    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec privateKeySpec, @NonNull KeySpec publicKeySpec) {
         try {
             KeyFactory keyFactory = getKeyFactory(algorithm, provider);
             PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
@@ -105,7 +106,7 @@ public class PKIs {
         }
     }
 
-    public static KeyPairGenerator getKeyPairGenerator(@NonNull String algorithm, @Nullable String provider) {
+    public static KeyPairGenerator getKeyPairGenerator(@NotEmpty String algorithm, @Nullable String provider) {
         try {
             Preconditions.checkNotNull(algorithm);
             return Strings.isEmpty(provider) ? KeyPairGenerator.getInstance(algorithm) : KeyPairGenerator.getInstance(algorithm, provider);
@@ -114,7 +115,7 @@ public class PKIs {
         }
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull int keyLength, @Nullable SecureRandom secureRandom) {
+    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull int keyLength, @Nullable SecureRandom secureRandom) {
         try {
             Preconditions.checkTrue(keyLength > 0);
             KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
@@ -130,7 +131,7 @@ public class PKIs {
         }
     }
 
-    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull AlgorithmParameterSpec parameterSpec, @Nullable SecureRandom secureRandom) {
+    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull AlgorithmParameterSpec parameterSpec, @Nullable SecureRandom secureRandom) {
         try {
             Preconditions.checkNotNull(parameterSpec);
             KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
@@ -146,7 +147,7 @@ public class PKIs {
         }
     }
 
-    public static SecretKey createSecretKey(String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
+    public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
         try {
             return getSecretKeyFactory(algorithm, provider).generateSecret(keySpec);
         } catch (Throwable ex) {
@@ -154,7 +155,7 @@ public class PKIs {
         }
     }
 
-    public static SecretKeyFactory getSecretKeyFactory(@NonNull String algorithm, @Nullable String provider) {
+    public static SecretKeyFactory getSecretKeyFactory(@NotEmpty String algorithm, @Nullable String provider) {
         try {
             Preconditions.checkNotNull(algorithm);
             return Strings.isEmpty(provider) ? SecretKeyFactory.getInstance(algorithm) : SecretKeyFactory.getInstance(algorithm, provider);
@@ -163,7 +164,7 @@ public class PKIs {
         }
     }
 
-    public static KeyGenerator getSecretKeyGenerator(@NonNull String algorithm, @Nullable String provider) {
+    public static KeyGenerator getSecretKeyGenerator(@NotEmpty String algorithm, @Nullable String provider) {
         try {
             Preconditions.checkNotNull(algorithm);
             return Strings.isEmpty(provider) ? KeyGenerator.getInstance(algorithm) : KeyGenerator.getInstance(algorithm, provider);
@@ -172,11 +173,11 @@ public class PKIs {
         }
     }
 
-    public static SecretKey createSecretKey(String algorithm, byte[] password) {
+    public static SecretKey createSecretKey(@NotEmpty String algorithm, byte[] password) {
         return new SecretKeySpec(password, algorithm);
     }
 
-    public static SecretKey createSecretKey(@NonNull String algorithm, @Nullable String provider, @Nullable Integer keyLength, @Nullable SecureRandom secureRandom) {
+    public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @Nullable Integer keyLength, @Nullable SecureRandom secureRandom) {
         Preconditions.checkTrue(keyLength != null || secureRandom != null);
         try {
 
@@ -194,7 +195,7 @@ public class PKIs {
         }
     }
 
-    public static SecretKey createSecretKey(@NonNull String algorithm, @Nullable String provider, @Nullable AlgorithmParameterSpec parameterSpec, @Nullable SecureRandom secureRandom) {
+    public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @Nullable AlgorithmParameterSpec parameterSpec, @Nullable SecureRandom secureRandom) {
         Preconditions.checkTrue(parameterSpec != null || secureRandom != null);
         try {
             KeyGenerator secretKeyGenerator = getSecretKeyGenerator(algorithm, provider);

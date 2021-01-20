@@ -39,7 +39,7 @@ public class Ciphers {
         }
     }
 
-    public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
+    public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
             if (secureRandom == null) {
@@ -53,7 +53,7 @@ public class Ciphers {
         }
     }
 
-    public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, AlgorithmParameters parameters, SecureRandom secureRandom) {
+    public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
             if (secureRandom == null) {
