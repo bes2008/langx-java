@@ -2,10 +2,12 @@ package com.jn.langx.security;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.exception.SecurityException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,8 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.List;
 
 /**
@@ -26,6 +30,16 @@ import java.util.List;
  */
 public class PKIs {
     private static final Logger logger = LoggerFactory.getLogger(PKIs.class);
+
+    public static PublicKey createPublicKey(String algorithm, String provider, String base64PublicKey) {
+        X509EncodedKeySpec pubX509 = new X509EncodedKeySpec(Base64.decodeBase64(base64PublicKey));
+        return createPublicKey(algorithm, provider, pubX509);
+    }
+
+    public static PublicKey createPublicKey(String algorithm, String provider, byte[] base64PublicKey) {
+        X509EncodedKeySpec pubX509 = new X509EncodedKeySpec(Base64.decodeBase64(base64PublicKey));
+        return createPublicKey(algorithm, provider, pubX509);
+    }
 
     public static PublicKey createPublicKey(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
         Preconditions.checkNotNull(keySpec);
@@ -35,6 +49,16 @@ public class PKIs {
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }
+    }
+
+    public static PrivateKey createPrivateKey(String algorithm, String provider, String base64PrivateKey) {
+        PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
+        return createPrivateKey(algorithm, provider, priPKCS8);
+    }
+
+    public static PrivateKey createPrivateKey(String algorithm, String provider, byte[] base64PrivateKey) {
+        PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
+        return createPrivateKey(algorithm, provider, priPKCS8);
     }
 
     public static PrivateKey createPrivateKey(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
@@ -54,6 +78,16 @@ public class PKIs {
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }
+    }
+
+    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull String base64PrivateKey, @NonNull String base64PublicKey) {
+        return createKeyPair(algorithm, provider, base64PrivateKey.getBytes(Charsets.UTF_8), base64PublicKey.getBytes(Charsets.UTF_8));
+    }
+
+    public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull byte[] base64PrivateKey, @NonNull byte[] base64PublicKey) {
+        PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
+        X509EncodedKeySpec pubX509 = new X509EncodedKeySpec(Base64.decodeBase64(base64PublicKey));
+        return createKeyPair(algorithm, provider, priPKCS8, pubX509);
     }
 
     public static KeyPair createKeyPair(@NonNull String algorithm, @Nullable String provider, @NonNull KeySpec privateKeySpec, @NonNull KeySpec publicKeySpec) {
