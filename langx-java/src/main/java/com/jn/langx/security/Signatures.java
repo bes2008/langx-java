@@ -9,6 +9,9 @@ import com.jn.langx.util.Strings;
 import java.security.*;
 import java.security.cert.Certificate;
 
+/**
+ * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Signature
+ */
 public class Signatures {
     /**
      *
