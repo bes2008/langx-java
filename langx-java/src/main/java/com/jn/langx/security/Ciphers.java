@@ -1,8 +1,13 @@
 package com.jn.langx.security;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.security.exception.SecurityException;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 
 import javax.crypto.Cipher;
 import java.security.AlgorithmParameters;
@@ -95,5 +100,34 @@ public class Ciphers {
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }
+    }
+
+    /**
+     * https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#trans
+     * <p>
+     * transformation 有两种形式：
+     * <pre>
+     *    1) 只有algorithm name
+     *    2) 由3部分构成：{algorithm name}/{mode}/padding
+     * </pre>
+     */
+    public static String createAlgorithmTransformation(String transformation) {
+        Preconditions.checkNotEmpty(transformation, "the cipher algorithm transformation is null or empty");
+        String[] components = Strings.split(transformation, "/");
+        if (components.length == 0) {
+            throw new IllegalParameterException(StringTemplates.formatWithPlaceholder("the cipher algorithm transformation is illegal: {}", transformation));
+        }
+        if (components.length < 3) {
+            return components[0];
+        }
+        return createAlgorithmTransformation(components[0], components[1], components[2]);
+    }
+
+    public static String createAlgorithmTransformation(@NotEmpty String algorithm, @NotEmpty String mode, @NotEmpty String padding) {
+        Preconditions.checkNotEmpty(algorithm, "the algorithm is null or empty");
+        Preconditions.checkNotEmpty(mode, "the mode is null or empty");
+        Preconditions.checkNotEmpty(padding, "the padding is null or empty");
+
+        return StringTemplates.formatWithPlaceholder("{}/{}/{}", algorithm, mode, padding);
     }
 }
