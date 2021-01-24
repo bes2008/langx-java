@@ -68,7 +68,7 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex == null) {
+                            if (ex != null) {
                                 lgr.trace(message, ex);
                             } else {
                                 lgr.trace(message);
@@ -83,7 +83,7 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex == null) {
+                            if (ex != null) {
                                 lgr.debug(message, ex);
                             } else {
                                 lgr.debug(message);
@@ -97,7 +97,7 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex == null) {
+                            if (ex != null) {
                                 lgr.info(message, ex);
                             } else {
                                 lgr.info(message);
@@ -111,7 +111,7 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex == null) {
+                            if (ex != null) {
                                 lgr.warn(message, ex);
                             } else {
                                 lgr.warn(message);
@@ -125,7 +125,7 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex == null) {
+                            if (ex != null) {
                                 lgr.error(message, ex);
                             } else {
                                 lgr.error(message);
@@ -138,7 +138,7 @@ public class Loggers {
                 Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                     @Override
                     public void accept(Integer index) {
-                        if (ex == null) {
+                        if (ex != null) {
                             lgr.warn(message, ex);
                         } else {
                             lgr.warn(message);
