@@ -17,4 +17,6 @@ package com.jn.langx.configuration;
 import com.jn.langx.Parser;
 
 public interface ConfigurationParser<I, T extends Configuration> extends Parser<I, T> {
+    @Override
+    T parse(I input);
 }

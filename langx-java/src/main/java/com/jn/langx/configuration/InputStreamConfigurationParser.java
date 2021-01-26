@@ -18,4 +18,7 @@ import java.io.InputStream;
 
 public interface InputStreamConfigurationParser<T extends Configuration> extends ConfigurationParser<InputStream, T> {
     void setEncoding(String encoding);
+
+    @Override
+    T parse(InputStream input);
 }

@@ -7,4 +7,13 @@ import java.io.File;
 
 public interface FileFilter extends java.io.FileFilter, Filter<File>, Predicate<File>, FilenameFilter {
     boolean accept(File e);
+
+    @Override
+    boolean test(File value);
+
+    @Override
+    boolean test(File key, String value);
+
+    @Override
+    boolean accept(File dir, String name);
 }

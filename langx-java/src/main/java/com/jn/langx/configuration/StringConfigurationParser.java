@@ -15,4 +15,6 @@
 package com.jn.langx.configuration;
 
 public interface StringConfigurationParser<T extends Configuration> extends ConfigurationParser<String, T> {
+    @Override
+    T parse(String string);
 }
