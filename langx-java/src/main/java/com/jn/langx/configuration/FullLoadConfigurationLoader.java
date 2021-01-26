@@ -8,4 +8,7 @@ import java.util.List;
  */
 public interface FullLoadConfigurationLoader<T extends Configuration> extends ConfigurationLoader<T> {
     List<T> loadAll();
+
+    @Override
+    T load(String id);
 }

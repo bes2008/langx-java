@@ -8,4 +8,7 @@ public interface BinaryOperator<Left extends Expression, Right extends Expressio
     void setRight(Right right);
     Left getLeft();
     Right getRight();
+
+    @Override
+    Result execute();
 }

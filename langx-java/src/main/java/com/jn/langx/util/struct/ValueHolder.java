@@ -4,4 +4,10 @@ public interface ValueHolder<V> extends Reference<V>{
     void set(V v);
     void reset();
     boolean isEmpty();
+
+    @Override
+    V get();
+
+    @Override
+    boolean isNull();
 }

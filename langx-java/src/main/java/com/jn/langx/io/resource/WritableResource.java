@@ -41,4 +41,7 @@ public interface WritableResource extends Resource {
      * @see #getOutputStream()
      */
     WritableByteChannel writableChannel() throws IOException;
+
+    @Override
+    Object getRealResource();
 }
