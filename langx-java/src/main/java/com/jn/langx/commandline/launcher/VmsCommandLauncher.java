@@ -1,6 +1,7 @@
 package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
+import com.jn.langx.commandline.ProcessAdapter;
 import com.jn.langx.commandline.util.CommandLineStringUtils;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
      * Launches the given command in a new process.
      */
     @Override
-    public Process exec(final CommandLine cmd, final Map<String, String> env)
+    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env)
             throws IOException {
         final CommandLine vmsCmd = new CommandLine(
                 createCommandFile(cmd, env).getPath()
@@ -39,7 +40,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
      * JAVA$FORK_SUPPORT_CHDIR needs to be set to TRUE.
      */
     @Override
-    public Process exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException {
+    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException {
         final CommandLine vmsCmd = new CommandLine(
                 createCommandFile(cmd, env).getPath()
         );

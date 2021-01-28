@@ -1,6 +1,7 @@
 package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
+import com.jn.langx.commandline.InstructionSequence;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.Map;
  * Interface to shield the caller from the various platform-dependent
  * implementations.
  */
-public interface CommandLauncher {
+public interface CommandLauncher<P extends InstructionSequence> {
 
     /**
      * Launches the given command in a new process.
@@ -22,7 +23,7 @@ public interface CommandLauncher {
      * @return the newly created process
      * @throws IOException if attempting to run a command in a specific directory
      */
-    Process exec(final CommandLine cmd, final Map<String, String> env)
+    P exec(final CommandLine cmd, final Map<String, String> env)
             throws IOException;
 
     /**
@@ -37,8 +38,8 @@ public interface CommandLauncher {
      * @return the newly created process
      * @throws IOException if trying to change directory
      */
-    Process exec(final CommandLine cmd, final Map<String, String> env,
-                 final File workingDir) throws IOException;
+    P exec(final CommandLine cmd, final Map<String, String> env,
+                             final File workingDir) throws IOException;
 
 
     /**

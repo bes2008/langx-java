@@ -112,7 +112,7 @@ public interface CommandLineExecutor {
      *
      * @return the ProcessDestroyer
      */
-    ProcessDestroyer getProcessDestroyer();
+    InstructionSequenceDestroyer getProcessDestroyer();
 
     /**
      * Get the handler for cleanup of started processes if the main process
@@ -120,7 +120,7 @@ public interface CommandLineExecutor {
      *
      * @param processDestroyer the ProcessDestroyer
      */
-    void setProcessDestroyer(ProcessDestroyer processDestroyer);
+    void setProcessDestroyer(InstructionSequenceDestroyer processDestroyer);
 
     /**
      * Get the working directory of the created process.

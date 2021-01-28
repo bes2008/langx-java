@@ -38,7 +38,7 @@ public class ExecuteWatchdog implements TimeoutObserver {
     /**
      * The process to execute and watch for duration.
      */
-    private Process process;
+    private InstructionSequence process;
 
     /**
      * Is a user-supplied timeout in use
@@ -96,7 +96,7 @@ public class ExecuteWatchdog implements TimeoutObserver {
      * @param processToMonitor the process to monitor. It cannot be {@code null}
      * @throws IllegalStateException if a process is still being monitored.
      */
-    public synchronized void start(final Process processToMonitor) {
+    public synchronized void start(final InstructionSequence processToMonitor) {
         if (processToMonitor == null) {
             throw new NullPointerException("process is null.");
         }

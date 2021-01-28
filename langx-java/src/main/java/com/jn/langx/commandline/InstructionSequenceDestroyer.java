@@ -5,9 +5,8 @@ package com.jn.langx.commandline;
  * typically when the VM exits
  * @see com.jn.langx.commandline.ShutdownHookProcessDestroyer
  *
- * @version $Id: ProcessDestroyer.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
-public interface ProcessDestroyer {
+public interface InstructionSequenceDestroyer {
 
     /**
      * Returns {@code true} if the specified
@@ -20,7 +19,7 @@ public interface ProcessDestroyer {
      *      {@link java.lang.Process} was
      *      successfully added
      */
-    boolean add(Process process);
+    boolean add(InstructionSequence process);
 
     /**
      * Returns {@code true} if the specified
@@ -33,7 +32,7 @@ public interface ProcessDestroyer {
      *      {@link java.lang.Process} was
      *      successfully removed
      */
-    boolean remove(Process process);
+    boolean remove(InstructionSequence process);
 
     /**
      * Returns the number of registered processes.

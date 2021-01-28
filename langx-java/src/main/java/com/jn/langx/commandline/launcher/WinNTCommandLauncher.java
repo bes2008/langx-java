@@ -1,6 +1,7 @@
 package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
+import com.jn.langx.commandline.ProcessAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class WinNTCommandLauncher extends CommandLauncherProxy {
      * @throws IOException forwarded from the exec method of the command launcher
      */
     @Override
-    public Process exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException {
+    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException {
         if (workingDir == null) {
             return exec(cmd, env);
         }

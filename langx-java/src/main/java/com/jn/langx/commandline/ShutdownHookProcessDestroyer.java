@@ -6,12 +6,12 @@ import java.util.Vector;
 /**
  * Destroys all registered {@code Process}es when the VM exits.
  */
-public class ShutdownHookProcessDestroyer implements ProcessDestroyer, Runnable {
+public class ShutdownHookProcessDestroyer implements InstructionSequenceDestroyer, Runnable {
 
     /**
      * the list of currently running processes
      */
-    private final Vector<Process> processes = new Vector<Process>();
+    private final Vector<ProcessAdapter> processes = new Vector<ProcessAdapter>();
 
     /**
      * The thread registered at the JVM to execute the shutdown handler
@@ -122,13 +122,13 @@ public class ShutdownHookProcessDestroyer implements ProcessDestroyer, Runnable 
      * @return {@code true} if the specified {@code Process} was
      * successfully added
      */
-    public boolean add(final Process process) {
+    public boolean add(final InstructionSequence process) {
         synchronized (processes) {
             // if this list is empty, register the shutdown hook
             if (processes.size() == 0) {
                 addShutdownHook();
             }
-            processes.addElement(process);
+            processes.addElement((ProcessAdapter) process);
             return processes.contains(process);
         }
     }
@@ -141,7 +141,7 @@ public class ShutdownHookProcessDestroyer implements ProcessDestroyer, Runnable 
      * @return {@code true} if the specified {@code Process} was
      * successfully removed
      */
-    public boolean remove(final Process process) {
+    public boolean remove(final InstructionSequence process) {
         synchronized (processes) {
             final boolean processRemoved = processes.removeElement(process);
             if (processRemoved && processes.size() == 0) {
@@ -166,9 +166,9 @@ public class ShutdownHookProcessDestroyer implements ProcessDestroyer, Runnable 
     public void run() {
         synchronized (processes) {
             running = true;
-            final Enumeration<Process> e = processes.elements();
+            final Enumeration<ProcessAdapter> e = processes.elements();
             while (e.hasMoreElements()) {
-                final Process process = e.nextElement();
+                final ProcessAdapter process = e.nextElement();
                 try {
                     process.destroy();
                 } catch (final Throwable t) {

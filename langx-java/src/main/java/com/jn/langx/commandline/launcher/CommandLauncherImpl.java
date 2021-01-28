@@ -1,6 +1,8 @@
 package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
+import com.jn.langx.commandline.InstructionSequence;
+import com.jn.langx.commandline.ProcessAdapter;
 import com.jn.langx.commandline.environment.EnvironmentUtils;
 
 import java.io.File;
@@ -13,15 +15,15 @@ import java.util.Map;
  * purpose command launcher which can only launch commands in the current
  * working directory.
  */
-public abstract class CommandLauncherImpl implements CommandLauncher {
+public abstract class CommandLauncherImpl implements CommandLauncher<ProcessAdapter> {
 
-    public Process exec(final CommandLine cmd, final Map<String, String> env)
+    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env)
             throws IOException {
         final String[] envVar = EnvironmentUtils.toStrings(env);
-        return Runtime.getRuntime().exec(cmd.toStrings(), envVar);
+        return new ProcessAdapter(Runtime.getRuntime().exec(cmd.toStrings(), envVar));
     }
 
-    public abstract Process exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException;
+    public abstract ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException;
 
     /**
      * @see com.jn.langx.commandline.launcher.CommandLauncher#isFailure(int)
@@ -30,4 +32,5 @@ public abstract class CommandLauncherImpl implements CommandLauncher {
         // non zero exit value signals failure
         return exitValue != 0;
     }
+
 }

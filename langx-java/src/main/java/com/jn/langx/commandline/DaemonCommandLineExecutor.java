@@ -1,7 +1,7 @@
 package com.jn.langx.commandline;
 
 /**
- * Runs daemon processes asynchronously. Callers are expected to register a {@link ProcessDestroyer} before executing
+ * Runs daemon processes asynchronously. Callers are expected to register a {@link InstructionSequenceDestroyer} before executing
  * any processes.
  *
  * @since 2.5.0

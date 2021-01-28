@@ -60,7 +60,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     /**
      * optional cleanup of started processes
      */
-    private ProcessDestroyer processDestroyer;
+    private InstructionSequenceDestroyer processDestroyer;
 
     /**
      * worker thread for asynchronous execution
@@ -121,14 +121,14 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     /**
      * @see CommandLineExecutor#getProcessDestroyer()
      */
-    public ProcessDestroyer getProcessDestroyer() {
+    public InstructionSequenceDestroyer getProcessDestroyer() {
         return this.processDestroyer;
     }
 
     /**
-     * @see CommandLineExecutor#setProcessDestroyer(ProcessDestroyer)
+     * @see CommandLineExecutor#setProcessDestroyer(InstructionSequenceDestroyer)
      */
-    public void setProcessDestroyer(final ProcessDestroyer processDestroyer) {
+    public void setProcessDestroyer(final InstructionSequenceDestroyer processDestroyer) {
         this.processDestroyer = processDestroyer;
     }
 
@@ -265,8 +265,8 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * @return the process started
      * @throws IOException forwarded from the particular launcher used
      */
-    protected Process launch(final CommandLine command, final Map<String, String> env,
-                             final File dir) throws IOException {
+    protected InstructionSequence launch(final CommandLine command, final Map<String, String> env,
+                                    final File dir) throws IOException {
 
         if (this.launcher == null) {
             throw new IllegalStateException("CommandLauncher can not be null");
@@ -292,7 +292,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      *
      * @param process the <CODE>Process</CODE>.
      */
-    private void closeProcessStreams(final Process process) {
+    private void closeProcessStreams(final InstructionSequence process) {
 
         try {
             process.getInputStream().close();
@@ -329,7 +329,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
         setExceptionCaught(null);
 
-        final Process process = this.launch(command, environment, dir);
+        final InstructionSequence process = this.launch(command, environment, dir);
 
         try {
             streamHandler.setSubProcessInputStream(process.getOutputStream());
