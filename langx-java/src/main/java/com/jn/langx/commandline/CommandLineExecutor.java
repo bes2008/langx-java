@@ -35,9 +35,7 @@ public interface CommandLineExecutor {
 
     /**
      * Define the {@code exitValue} of the process to be considered
-     * successful. If a different exit value is returned by
-     * the process then {@link CommandLineExecutor#execute(CommandLine)}
-     * will throw an {@link com.jn.langx.commandline.ExecuteException}
+     * successful.
      *
      * @param value the exit code representing successful execution
      */
@@ -52,9 +50,6 @@ public interface CommandLineExecutor {
      *  <li>null to indicate to skip checking of exit codes</li>
      * </ul>
      * <p>
-     * If an undefined exit value is returned by the process then
-     * {@link CommandLineExecutor#execute(CommandLine)}  will
-     * throw an {@link com.jn.langx.commandline.ExecuteException}.
      *
      * @param values a list of the exit codes
      */
@@ -71,24 +66,6 @@ public interface CommandLineExecutor {
      */
     boolean isFailure(final int exitValue);
 
-    /**
-     * Get the StreamHandler used for providing input and
-     * retrieving the output.
-     *
-     * @return the StreamHandler
-     */
-    ExecuteStreamHandler getStreamHandler();
-
-    /**
-     * Set a custom the StreamHandler used for providing
-     * input and retrieving the output. If you don't provide
-     * a proper stream handler the executed process might block
-     * when writing to stdout and/or stderr (see
-     * {@link java.lang.Process Process}).
-     *
-     * @param streamHandler the stream handler
-     */
-    void setStreamHandler(ExecuteStreamHandler streamHandler);
 
     /**
      * Get the watchdog used to kill of processes running,
@@ -147,8 +124,8 @@ public interface CommandLineExecutor {
      *                          subprocess returned a exit value indicating a failure
      *                          {@link CommandLineExecutor#setExitValue(int)}.
      */
-    int execute(CommandLine command)
-            throws ExecuteException, IOException;
+    int execute(CommandLine command) throws ExecuteException, IOException;
+    int execute(boolean async, CommandLine command) throws ExecuteException, IOException;
 
     /**
      * Methods for starting synchronous execution.
@@ -161,8 +138,8 @@ public interface CommandLineExecutor {
      *                          subprocess returned a exit value indicating a failure
      *                          {@link CommandLineExecutor#setExitValue(int)}.
      */
-    int execute(CommandLine command, Map<String, String> environment)
-            throws ExecuteException, IOException;
+    int execute( CommandLine command, Map<String, String> environment) throws ExecuteException, IOException;
+    int execute(boolean async, CommandLine command, Map<String, String> environment) throws ExecuteException, IOException;
 
     /**
      * Methods for starting asynchronous execution. The child process inherits
@@ -173,8 +150,8 @@ public interface CommandLineExecutor {
      * @param handler capture process termination and exit code
      * @throws ExecuteException execution of subprocess failed
      */
-    void execute(CommandLine command, ExecuteResultHandler handler)
-            throws ExecuteException, IOException;
+    int execute(CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException;
+    int execute(boolean async, CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException;
 
     /**
      * Methods for starting asynchronous execution. The child process inherits
@@ -187,6 +164,11 @@ public interface CommandLineExecutor {
      * @param handler     capture process termination and exit code
      * @throws ExecuteException execution of subprocess failed
      */
-    void execute(CommandLine command, Map<String, String> environment, ExecuteResultHandler handler)
-            throws ExecuteException, IOException;
+    int execute(CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws ExecuteException, IOException;
+    int execute(boolean async, CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws ExecuteException, IOException;
+
+    ExecuteStreamHandler getStreamHandler();
+
+    void setStreamHandler(ExecuteStreamHandler streamHandler);
+
 }

@@ -2,10 +2,15 @@ package com.jn.langx.commandline;
 
 import com.jn.langx.commandline.launcher.CommandLauncher;
 import com.jn.langx.commandline.launcher.CommandLauncherFactory;
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Throwables;
+import com.jn.langx.util.concurrent.completion.CompletableFuture;
+import com.jn.langx.util.function.Supplier0;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 
 /**
@@ -27,11 +32,9 @@ import java.util.Map;
  * CommandLine cl = new CommandLine("ls -l");
  * int exitvalue = exec.execute(cl);
  * </pre>
- *
- * @version $Id: DefaultExecutor.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 public class DefaultCommandLineExecutor implements CommandLineExecutor {
-
+    private ExecutorService executorService;
     /**
      * taking care of output and error stream
      */
@@ -62,15 +65,27 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      */
     private InstructionSequenceDestroyer processDestroyer;
 
-    /**
-     * worker thread for asynchronous execution
-     */
-    private Thread executorThread;
 
     /**
      * the first exception being caught to be thrown to the caller
      */
-    private IOException exceptionCaught;
+    private Throwable exceptionCaught;
+
+    public ExecuteStreamHandler getStreamHandler() {
+        return streamHandler;
+    }
+
+    public void setStreamHandler(ExecuteStreamHandler streamHandler) {
+        this.streamHandler = streamHandler;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
+    }
 
     /**
      * Default constructor creating a default {@code PumpStreamHandler}
@@ -88,20 +103,6 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         this.exitValues = new int[0];
         this.workingDirectory = new File(".");
         this.exceptionCaught = null;
-    }
-
-    /**
-     * @see CommandLineExecutor#getStreamHandler()
-     */
-    public ExecuteStreamHandler getStreamHandler() {
-        return streamHandler;
-    }
-
-    /**
-     * @see CommandLineExecutor#setStreamHandler(com.jn.langx.commandline.ExecuteStreamHandler)
-     */
-    public void setStreamHandler(final ExecuteStreamHandler streamHandler) {
-        this.streamHandler = streamHandler;
     }
 
     /**
@@ -146,68 +147,74 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         this.workingDirectory = dir;
     }
 
-    /**
-     * @see CommandLineExecutor#execute(CommandLine)
-     */
-    public int execute(final CommandLine command) throws ExecuteException,
-            IOException {
-        return execute(command, (Map<String, String>) null);
+    @Override
+    public int execute(CommandLine command) throws ExecuteException, IOException {
+        return execute(false, command);
     }
 
-    /**
-     * @see CommandLineExecutor#execute(CommandLine, java.util.Map)
-     */
-    public int execute(final CommandLine command, final Map<String, String> environment)
-            throws ExecuteException, IOException {
-
-        if (workingDirectory != null && !workingDirectory.exists()) {
-            throw new IOException(workingDirectory + " doesn't exist.");
-        }
-
-        return executeInternal(command, environment, workingDirectory, streamHandler);
-
+    public int execute(boolean async, final CommandLine command) throws IOException {
+        return execute(async, command, (Map<String, String>) null);
     }
 
-    /**
-     * @see CommandLineExecutor#execute(CommandLine,
-     * com.jn.langx.commandline.ExecuteResultHandler)
-     */
-    public void execute(final CommandLine command, final ExecuteResultHandler handler)
-            throws ExecuteException, IOException {
-        execute(command, null, handler);
+    @Override
+    public int execute(CommandLine command, Map<String, String> environment) throws ExecuteException, IOException {
+        return execute(false, command, environment);
     }
 
-    /**
-     * @see CommandLineExecutor#execute(CommandLine,
-     * java.util.Map, com.jn.langx.commandline.ExecuteResultHandler)
-     */
-    public void execute(final CommandLine command, final Map<String, String> environment,
-                        final ExecuteResultHandler handler) throws ExecuteException, IOException {
+    public int execute(boolean async, final CommandLine command, final Map<String, String> environment) throws IOException {
+        return execute(async, command, environment, null, null, null);
+    }
 
-        if (workingDirectory != null && !workingDirectory.exists()) {
-            throw new IOException(workingDirectory + " doesn't exist.");
-        }
+    @Override
+    public int execute(CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException {
+        return execute(false, command, handler);
+    }
 
+    public int execute(boolean async, final CommandLine command, final ExecuteResultHandler handler) throws IOException {
+        return execute(async, command, null, null, null, handler);
+    }
+
+    @Override
+    public int execute(CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws ExecuteException, IOException {
+        return execute(false, command, environment, workingDirectory, streamHandler, handler);
+    }
+
+    public int execute(boolean async, final CommandLine command, final Map<String, String> environment, File workingDir, ExecuteStreamHandler executeStreamHandler, final ExecuteResultHandler resultHandler) throws IOException {
         if (watchdog != null) {
             watchdog.setProcessNotStarted();
         }
-
-        final Runnable runnable = new Runnable() {
-            public void run() {
-                int exitValue = CommandLineExecutor.INVALID_EXITVALUE;
-                try {
-                    exitValue = executeInternal(command, environment, workingDirectory, streamHandler);
-                    handler.onProcessComplete(exitValue);
-                } catch (final ExecuteException e) {
-                    handler.onProcessFailed(e);
-                } catch (final Exception e) {
-                    handler.onProcessFailed(new ExecuteException("Execution failed", exitValue, e));
-                }
+        final ExecuteStreamHandler streamHandler = Objs.useValueIfNull(executeStreamHandler, this.streamHandler);
+        final File workingDirectory = Objs.useValueIfNull(workingDir, this.getWorkingDirectory());
+        Supplier0<Integer> task = new Supplier0<Integer>() {
+            @Override
+            public Integer get() {
+                return doExecute(command, environment, workingDirectory, streamHandler, resultHandler);
             }
         };
+        CompletableFuture<Integer> future = executorService == null ? CompletableFuture.supplyAsync(task) : CompletableFuture.supplyAsync(task, executorService);
 
-        this.executorThread = createThread(runnable, "Exec Default Executor");
-        getExecutorThread().start();
+        if (!async) {
+            try {
+                return future.get();
+            } catch (Throwable ex) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }
+        }
+        return -1;
+    }
+
+    private int doExecute(final CommandLine command, final Map<String, String> environment, File workingDir, ExecuteStreamHandler executeStreamHandler, final ExecuteResultHandler resultHandler) {
+        int exitValue = CommandLineExecutor.INVALID_EXITVALUE;
+        try {
+            exitValue = executeInternal(command, environment, workingDirectory, streamHandler);
+            resultHandler.onProcessComplete(exitValue);
+        } catch (final ExecuteException e) {
+            resultHandler.onProcessFailed(e);
+        } catch (final Exception e) {
+            resultHandler.onProcessFailed(new ExecuteException("Execution failed", exitValue, e));
+        }
+
+        return exitValue;
     }
 
     /**
@@ -245,47 +252,27 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     }
 
     /**
-     * Factory method to create a thread waiting for the result of an
-     * asynchronous execution.
-     *
-     * @param runnable the runnable passed to the thread
-     * @param name     the name of the thread
-     * @return the thread
-     */
-    protected Thread createThread(final Runnable runnable, final String name) {
-        return new Thread(runnable, name);
-    }
-
-    /**
      * Creates a process that runs a command.
      *
-     * @param command the command to run
-     * @param env     the environment for the command
-     * @param dir     the working directory for the command
+     * @param command    the command to run
+     * @param env        the environment for the command
+     * @param workingDir the working directory for the command
      * @return the process started
      * @throws IOException forwarded from the particular launcher used
      */
     protected InstructionSequence launch(final CommandLine command, final Map<String, String> env,
-                                    final File dir) throws IOException {
+                                         final File workingDir) throws IOException {
 
         if (this.launcher == null) {
             throw new IllegalStateException("CommandLauncher can not be null");
         }
 
-        if (dir != null && !dir.exists()) {
-            throw new IOException(dir + " doesn't exist.");
+        if (workingDir != null && !workingDir.exists()) {
+            throw new IOException(workingDir + " doesn't exist.");
         }
-        return this.launcher.exec(command, env, dir);
+        return this.launcher.exec(command, env, workingDir);
     }
 
-    /**
-     * Get the worker thread being used for asynchronous execution.
-     *
-     * @return the worker thread
-     */
-    protected Thread getExecutorThread() {
-        return executorThread;
-    }
 
     /**
      * Close the streams belonging to the given Process.
@@ -324,8 +311,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * @return the exit code of the process
      * @throws IOException executing the process failed
      */
-    private int executeInternal(final CommandLine command, final Map<String, String> environment,
-                                final File dir, final ExecuteStreamHandler streamHandler) throws IOException {
+    protected int executeInternal(final CommandLine command, final Map<String, String> environment, final File dir, final ExecuteStreamHandler streamHandler) throws IOException {
 
         setExceptionCaught(null);
 
@@ -381,7 +367,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
             closeProcessStreams(process);
 
             if (getExceptionCaught() != null) {
-                throw getExceptionCaught();
+                throw Throwables.wrapAsRuntimeException(getExceptionCaught());
             }
 
             if (watchdog != null) {
@@ -412,7 +398,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      *
      * @param e the IOException
      */
-    private void setExceptionCaught(final IOException e) {
+    private void setExceptionCaught(final Throwable e) {
         if (this.exceptionCaught == null) {
             this.exceptionCaught = e;
         }
@@ -423,7 +409,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      *
      * @return the first IOException being caught
      */
-    private IOException getExceptionCaught() {
+    private Throwable getExceptionCaught() {
         return this.exceptionCaught;
     }
 

@@ -1,7 +1,6 @@
 package com.jn.langx.util.os.hardware.cpu;
 
 import com.jn.langx.commandline.CommandLine;
-import com.jn.langx.commandline.DaemonCommandLineExecutor;
 import com.jn.langx.commandline.DefaultCommandLineExecutor;
 import com.jn.langx.util.os.OS;
 import com.jn.langx.util.struct.Holder;
@@ -18,7 +17,7 @@ public class CPUs {
 
     public static final String getCpuId() {
         if (cpuId == null) {
-            DefaultCommandLineExecutor executor = new DaemonCommandLineExecutor();
+            DefaultCommandLineExecutor executor = new DefaultCommandLineExecutor();
             CommandLine commandLine = null;
             GetCpuIdStreamHandler handler = null;
             if (OS.isFamilyWindows()) {

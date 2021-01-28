@@ -1,7 +1,6 @@
 package com.jn.langx.util.os.virtualization;
 
 import com.jn.langx.commandline.CommandLine;
-import com.jn.langx.commandline.DaemonCommandLineExecutor;
 import com.jn.langx.commandline.DefaultCommandLineExecutor;
 import com.jn.langx.util.os.OS;
 import com.jn.langx.util.struct.Holder;
@@ -15,7 +14,7 @@ public class RuntimeContainers {
 
     public static RuntimeContainer getRuntimeContainer() {
         if (runtimeContainer == null) {
-            DefaultCommandLineExecutor executor = new DaemonCommandLineExecutor();
+            DefaultCommandLineExecutor executor = new DefaultCommandLineExecutor();
             CommandLine commandLine = null;
             GetRuntimeContainerHandler handler = null;
             if (OS.isFamilyWindows()) {
