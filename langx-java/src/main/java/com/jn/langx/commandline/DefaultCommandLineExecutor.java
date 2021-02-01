@@ -2,9 +2,11 @@ package com.jn.langx.commandline;
 
 import com.jn.langx.commandline.launcher.CommandLauncher;
 import com.jn.langx.commandline.launcher.CommandLauncherFactory;
+import com.jn.langx.commandline.launcher.LocalCommandLauncher;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.completion.CompletableFuture;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Supplier0;
 
 import java.io.File;
@@ -40,6 +42,8 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      */
     private ExecuteStreamHandler streamHandler;
 
+    private ExecuteResultHandler resultHandler;
+
     /**
      * the working directory of the process
      */
@@ -58,7 +62,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     /**
      * launches the command in a new process
      */
-    private final CommandLauncher launcher;
+    private CommandLauncher launcher;
 
     /**
      * optional cleanup of started processes
@@ -76,7 +80,19 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     }
 
     public void setStreamHandler(ExecuteStreamHandler streamHandler) {
-        this.streamHandler = streamHandler;
+        if (streamHandler != null) {
+            this.streamHandler = streamHandler;
+        }
+    }
+
+    public ExecuteResultHandler getResultHandler() {
+        return resultHandler;
+    }
+
+    public void setResultHandler(ExecuteResultHandler resultHandler) {
+        if (resultHandler != null) {
+            this.resultHandler = resultHandler;
+        }
     }
 
     public ExecutorService getExecutorService() {
@@ -99,10 +115,17 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      */
     public DefaultCommandLineExecutor() {
         this.streamHandler = new PumpStreamHandler();
+        this.resultHandler = new DefaultExecuteResultHandler();
         this.launcher = CommandLauncherFactory.createVMLauncher();
         this.exitValues = new int[0];
         this.workingDirectory = new File(".");
         this.exceptionCaught = null;
+    }
+
+    public void setLauncher(CommandLauncher launcher) {
+        if (launcher != null) {
+            this.launcher = launcher;
+        }
     }
 
     /**
@@ -185,17 +208,24 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         }
         final ExecuteStreamHandler streamHandler = Objs.useValueIfNull(executeStreamHandler, this.streamHandler);
         final File workingDirectory = Objs.useValueIfNull(workingDir, this.getWorkingDirectory());
+        final ExecuteResultHandler executeResultHandler = Objs.useValueIfNull(resultHandler, this.resultHandler);
         Supplier0<Integer> task = new Supplier0<Integer>() {
             @Override
             public Integer get() {
-                return doExecute(command, environment, workingDirectory, streamHandler, resultHandler);
+                return doExecute(command, environment, workingDirectory, streamHandler, executeResultHandler);
             }
         };
         CompletableFuture<Integer> future = executorService == null ? CompletableFuture.supplyAsync(task) : CompletableFuture.supplyAsync(task, executorService);
 
         if (!async) {
             try {
-                return future.get();
+                return future.exceptionally(new Function<Throwable, Integer>() {
+                    @Override
+                    public Integer apply(Throwable ex) {
+                        setExceptionCaught(ex);
+                        return -1;
+                    }
+                }).get();
             } catch (Throwable ex) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }
@@ -260,15 +290,18 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * @return the process started
      * @throws IOException forwarded from the particular launcher used
      */
-    protected InstructionSequence launch(final CommandLine command, final Map<String, String> env,
-                                         final File workingDir) throws IOException {
+    protected InstructionSequence launch(final CommandLine command, final Map<String, String> env, final File workingDir) throws IOException {
 
         if (this.launcher == null) {
             throw new IllegalStateException("CommandLauncher can not be null");
         }
-
-        if (workingDir != null && !workingDir.exists()) {
+        if (workingDir == null) {
             throw new IOException(workingDir + " doesn't exist.");
+        }
+        if (launcher instanceof LocalCommandLauncher) {
+            if (!workingDir.exists()) {
+                throw new IOException(workingDir + " doesn't exist.");
+            }
         }
         return this.launcher.exec(command, env, workingDir);
     }
@@ -351,7 +384,9 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
                 // see https://issues.apache.org/jira/browse/EXEC-46
                 // Process.waitFor should clear interrupt status when throwing InterruptedException
                 // but we have to do that manually
-                Thread.interrupted();
+                if (process instanceof ProcessAdapter) {
+                    Thread.interrupted();
+                }
             }
 
             if (watchdog != null) {

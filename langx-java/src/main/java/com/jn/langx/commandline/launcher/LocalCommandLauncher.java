@@ -15,7 +15,7 @@ import java.util.Map;
  * purpose command launcher which can only launch commands in the current
  * working directory.
  */
-public abstract class CommandLauncherImpl implements CommandLauncher<ProcessAdapter> {
+public abstract class LocalCommandLauncher implements CommandLauncher<ProcessAdapter> {
 
     public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env)
             throws IOException {

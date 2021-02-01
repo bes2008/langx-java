@@ -171,4 +171,8 @@ public interface CommandLineExecutor {
 
     void setStreamHandler(ExecuteStreamHandler streamHandler);
 
+
+    ExecuteResultHandler getResultHandler();
+
+    void setResultHandler(ExecuteResultHandler resultHandler);
 }

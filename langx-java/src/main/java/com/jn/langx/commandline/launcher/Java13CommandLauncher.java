@@ -13,7 +13,7 @@ import java.util.Map;
  * A command launcher for JDK/JRE 1.3 (and higher). Uses the built-in
  * Runtime.exec() command
  */
-public class Java13CommandLauncher extends CommandLauncherImpl {
+public class Java13CommandLauncher extends LocalCommandLauncher {
 
     /**
      * Constructor

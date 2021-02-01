@@ -1,7 +1,6 @@
 package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
-import com.jn.langx.commandline.InstructionSequence;
 import com.jn.langx.commandline.ProcessAdapter;
 
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.util.Map;
  * A command launcher that proxies another command launcher. Sub-classes
  * override exec(args, env, workdir)
  */
-public abstract class CommandLauncherProxy extends CommandLauncherImpl {
+public abstract class CommandLauncherProxy extends LocalCommandLauncher {
 
     public CommandLauncherProxy(final CommandLauncher<ProcessAdapter> launcher) {
         myLauncher = launcher;
