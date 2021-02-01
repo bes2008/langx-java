@@ -3,7 +3,6 @@ package com.jn.langx.commandline.util;
 /**
  * Provides debugging support.
  *
- * @version $Id: DebugUtils.java 1636203 2014-11-02 22:26:31Z ggregory $
  */
 public class CommandLineDebugUtils {
     /**

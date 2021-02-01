@@ -1,6 +1,7 @@
 package com.jn.langx.commandline;
 
 import com.jn.langx.commandline.util.CommandLineStringUtils;
+import com.jn.langx.util.Strings;
 
 import java.io.File;
 import java.util.*;
@@ -284,6 +285,11 @@ public class CommandLine {
     @Override
     public String toString() {
         return "[" + CommandLineStringUtils.toString(toStrings(), ", ") + "]";
+    }
+
+    public String getCommandLineString(){
+        String[] strings = toStrings();
+        return Strings.join(" ", strings);
     }
 
     // --- Implementation ---------------------------------------------------

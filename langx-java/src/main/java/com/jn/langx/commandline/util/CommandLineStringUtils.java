@@ -14,7 +14,6 @@ import java.util.StringTokenizer;
  * This class is not part of the public API and could change without
  * warning.
  *
- * @version $Id: StringUtils.java 1636204 2014-11-02 22:30:31Z ggregory $
  */
 public class CommandLineStringUtils {
 
