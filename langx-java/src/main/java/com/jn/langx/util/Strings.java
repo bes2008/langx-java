@@ -26,8 +26,6 @@ import java.util.regex.Pattern;
 public class Strings {
     private Strings() {
     }
-
-    public static final String WHITESPACE = " \n\r\f\t";
     /**
      * Represents a failed index search.
      */
@@ -35,16 +33,21 @@ public class Strings {
 
     private static final int PAD_LIMIT = 8192;
 
+
+    public static final String WHITESPACE = " \n\r\f\t";
     /**
      * 空格
      */
     public static final String SPACE = " ";
-
-
     /**
      * 空字符串 {@code ""}.
      */
     public static final String EMPTY = "";
+
+    public static final String SINGLE_QUOTE = "'";
+    public static final String DOUBLE_QUOTE = "\"";
+    public static final char SLASH_CHAR = '/';
+    public static final char BACKSLASH_CHAR = '\\';
 
     /**
      * judge a string is null or ""

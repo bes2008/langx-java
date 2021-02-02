@@ -10,8 +10,6 @@ import java.util.*;
 /**
  * CommandLine objects help handling command lines specifying processes to
  * execute. The class can be used to a command line by an application.
- *
- * @version $Id: CommandLine.java 1613094 2014-07-24 12:20:14Z ggregory $
  */
 public class CommandLine {
 
@@ -284,10 +282,10 @@ public class CommandLine {
      */
     @Override
     public String toString() {
-        return "[" + CommandLineStringUtils.toString(toStrings(), ", ") + "]";
+        return "[" + Strings.join(", ", toStrings()) + "]";
     }
 
-    public String getCommandLineString(){
+    public String getCommandLineString() {
         String[] strings = toStrings();
         return Strings.join(" ", strings);
     }
@@ -301,8 +299,7 @@ public class CommandLine {
      * @return the expanded string
      */
     private String expandArgument(final String argument) {
-        final StringBuffer stringBuffer = CommandLineStringUtils.stringSubstitution(argument, this.getSubstitutionMap(), true);
-        return stringBuffer.toString();
+        return CommandLineStringUtils.stringSubstitution(argument, this.getSubstitutionMap(), true).toString();
     }
 
     /**
@@ -313,7 +310,7 @@ public class CommandLine {
      * parameter results in a zero sized array
      */
     private static String[] translateCommandline(final String toProcess) {
-        if (toProcess == null || toProcess.length() == 0) {
+        if (Strings.isEmpty(toProcess)) {
             // no command? no string
             return new String[0];
         }
@@ -324,7 +321,7 @@ public class CommandLine {
         final int inQuote = 1;
         final int inDoubleQuote = 2;
         int state = normal;
-        final StringTokenizer tok = new StringTokenizer(toProcess, "\"\' ", true);
+        final StringTokenizer tok = new StringTokenizer(toProcess, "\"' ", true);
         final ArrayList<String> list = new ArrayList<String>();
         StringBuilder current = new StringBuilder();
         boolean lastTokenHasBeenQuoted = false;
@@ -333,7 +330,7 @@ public class CommandLine {
             final String nextTok = tok.nextToken();
             switch (state) {
                 case inQuote:
-                    if ("\'".equals(nextTok)) {
+                    if (Strings.SINGLE_QUOTE.equals(nextTok)) {
                         lastTokenHasBeenQuoted = true;
                         state = normal;
                     } else {
@@ -349,7 +346,7 @@ public class CommandLine {
                     }
                     break;
                 default:
-                    if ("\'".equals(nextTok)) {
+                    if (Strings.SINGLE_QUOTE.equals(nextTok)) {
                         state = inQuote;
                     } else if ("\"".equals(nextTok)) {
                         state = inDoubleQuote;

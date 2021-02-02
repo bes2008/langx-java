@@ -1,11 +1,10 @@
 package com.jn.langx.commandline.util;
 
 
+import com.jn.langx.util.Strings;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Supplement of commons-lang, the stringSubstitution() was in a simpler
@@ -13,14 +12,9 @@ import java.util.StringTokenizer;
  * <p>
  * This class is not part of the public API and could change without
  * warning.
- *
  */
 public class CommandLineStringUtils {
 
-    private static final String SINGLE_QUOTE = "\'";
-    private static final String DOUBLE_QUOTE = "\"";
-    private static final char SLASH_CHAR = '/';
-    private static final char BACKSLASH_CHAR = '\\';
 
     /**
      * Perform a series of substitutions.
@@ -45,9 +39,9 @@ public class CommandLineStringUtils {
      * @param isLenient ignore a key not found in vars or throw a RuntimeException?
      * @return String target string with replacements.
      */
-    public static StringBuffer stringSubstitution(final String argStr, final Map<? super String, ?> vars, final boolean isLenient) {
+    public static StringBuilder stringSubstitution(final String argStr, final Map<? super String, ?> vars, final boolean isLenient) {
 
-        final StringBuffer argBuf = new StringBuffer();
+        final StringBuilder argBuf = new StringBuilder();
 
         if (argStr == null || argStr.length() == 0) {
             return argBuf;
@@ -131,22 +125,6 @@ public class CommandLineStringUtils {
         return argBuf;
     }
 
-    /**
-     * Split a string into an array of strings based
-     * on a separator.
-     *
-     * @param input     what to split
-     * @param splitChar what to split on
-     * @return the array of strings
-     */
-    public static String[] split(final String input, final String splitChar) {
-        final StringTokenizer tokens = new StringTokenizer(input, splitChar);
-        final List<String> strList = new ArrayList<String>();
-        while (tokens.hasMoreTokens()) {
-            strList.add(tokens.nextToken());
-        }
-        return strList.toArray(new String[strList.size()]);
-    }
 
     /**
      * Fixes the file separator char for the target platform
@@ -161,27 +139,10 @@ public class CommandLineStringUtils {
      * @return the transformed argument
      */
     public static String fixFileSeparatorChar(final String arg) {
-        return arg.replace(SLASH_CHAR, File.separatorChar).replace(
-                BACKSLASH_CHAR, File.separatorChar);
+        return arg.replace(Strings.SLASH_CHAR, File.separatorChar).replace(
+                Strings.BACKSLASH_CHAR, File.separatorChar);
     }
 
-    /**
-     * Concatenates an array of string using a separator.
-     *
-     * @param strings   the strings to concatenate
-     * @param separator the separator between two strings
-     * @return the concatenated strings
-     */
-    public static String toString(final String[] strings, final String separator) {
-        final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < strings.length; i++) {
-            if (i > 0) {
-                sb.append(separator);
-            }
-            sb.append(strings[i]);
-        }
-        return sb.toString();
-    }
 
     /**
      * Put quotes around the given String if necessary.
@@ -200,26 +161,25 @@ public class CommandLineStringUtils {
         String cleanedArgument = argument.trim();
 
         // strip the quotes from both ends
-        while (cleanedArgument.startsWith(SINGLE_QUOTE) || cleanedArgument.startsWith(DOUBLE_QUOTE)) {
+        while (cleanedArgument.startsWith(Strings.SINGLE_QUOTE) || cleanedArgument.startsWith(Strings.DOUBLE_QUOTE)) {
             cleanedArgument = cleanedArgument.substring(1);
         }
 
-        while (cleanedArgument.endsWith(SINGLE_QUOTE) || cleanedArgument.endsWith(DOUBLE_QUOTE)) {
+        while (cleanedArgument.endsWith(Strings.SINGLE_QUOTE) || cleanedArgument.endsWith(Strings.DOUBLE_QUOTE)) {
             cleanedArgument = cleanedArgument.substring(0, cleanedArgument.length() - 1);
         }
 
         final StringBuilder buf = new StringBuilder();
-        if (cleanedArgument.indexOf(DOUBLE_QUOTE) > -1) {
-            if (cleanedArgument.indexOf(SINGLE_QUOTE) > -1) {
+        if (cleanedArgument.contains(Strings.DOUBLE_QUOTE)) {
+            if (cleanedArgument.contains(Strings.SINGLE_QUOTE)) {
                 throw new IllegalArgumentException(
                         "Can't handle single and double quotes in same argument");
             }
-            return buf.append(SINGLE_QUOTE).append(cleanedArgument).append(
-                    SINGLE_QUOTE).toString();
-        } else if (cleanedArgument.indexOf(SINGLE_QUOTE) > -1
-                || cleanedArgument.indexOf(" ") > -1) {
-            return buf.append(DOUBLE_QUOTE).append(cleanedArgument).append(
-                    DOUBLE_QUOTE).toString();
+            return buf.append(Strings.SINGLE_QUOTE).append(cleanedArgument).append(
+                    Strings.SINGLE_QUOTE).toString();
+        } else if (cleanedArgument.contains(Strings.SINGLE_QUOTE) || cleanedArgument.contains(" ")) {
+            return buf.append(Strings.DOUBLE_QUOTE).append(cleanedArgument).append(
+                    Strings.DOUBLE_QUOTE).toString();
         } else {
             return cleanedArgument;
         }
@@ -233,7 +193,7 @@ public class CommandLineStringUtils {
      * @return true when the argument is quoted
      */
     public static boolean isQuoted(final String argument) {
-        return argument.startsWith(SINGLE_QUOTE) && argument.endsWith(SINGLE_QUOTE)
-                || argument.startsWith(DOUBLE_QUOTE) && argument.endsWith(DOUBLE_QUOTE);
+        return argument.startsWith(Strings.SINGLE_QUOTE) && argument.endsWith(Strings.SINGLE_QUOTE)
+                || argument.startsWith(Strings.DOUBLE_QUOTE) && argument.endsWith(Strings.DOUBLE_QUOTE);
     }
 }
