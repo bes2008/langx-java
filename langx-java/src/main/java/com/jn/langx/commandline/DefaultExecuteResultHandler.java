@@ -61,7 +61,7 @@ public class DefaultExecuteResultHandler implements ExecuteResultHandler {
     public ExecuteException getException() {
 
         if (!hasResult) {
-            throw new IllegalStateException("The process has not exited yet therefore no result is available ...");
+            throw new IllegalStateException("The instruction sequence has not exited yet therefore no result is available ...");
         }
 
         return exception;
@@ -76,7 +76,7 @@ public class DefaultExecuteResultHandler implements ExecuteResultHandler {
     public int getExitValue() {
 
         if (!hasResult) {
-            throw new IllegalStateException("The process has not exited yet therefore no result is available ...");
+            throw new IllegalStateException("The instruction sequence has not exited yet therefore no result is available ...");
         }
 
         return exitValue;

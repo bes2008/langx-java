@@ -8,6 +8,8 @@ import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.completion.CompletableFuture;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Supplier0;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import java.util.concurrent.ExecutorService;
  * </pre>
  */
 public class DefaultCommandLineExecutor implements CommandLineExecutor {
+    private Logger logger = LoggerFactory.getLogger(DefaultCommandLineExecutor.class);
     private ExecutorService executorService;
     /**
      * taking care of output and error stream
@@ -423,7 +426,24 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         } finally {
             // remove the process to the list of those to destroy if the VM exits
             if (this.getProcessDestroyer() != null) {
-                this.getProcessDestroyer().remove(process);
+                try {
+                    this.getProcessDestroyer().remove(process);
+                } catch (Throwable ex) {
+                    logger.error(ex.getMessage(), ex);
+                }
+            }
+            if (this.watchdog != null) {
+                try {
+                    this.watchdog.stop();
+                } catch (Throwable ex) {
+                    logger.error(ex.getMessage(), ex);
+                }
+            } else {
+                try {
+                    process.destroy();
+                } catch (Throwable ex) {
+                    logger.error(ex.getMessage(), ex);
+                }
             }
         }
     }
