@@ -10,6 +10,10 @@ import com.jn.langx.util.hash.HashCodeBuilder;
 
 import java.util.regex.Pattern;
 
+/**
+ * @see FilePermission
+ */
+@Deprecated
 public class UnixFileAccessMode {
     private static final Pattern PATTERN = Pattern.compile("^[01]+$");
     private static final char TRUE = '1';

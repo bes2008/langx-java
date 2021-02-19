@@ -1,6 +1,8 @@
 package com.jn.langx.util.io.file;
 
 
+import com.jn.langx.util.Radixs;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,6 +99,12 @@ public enum FilePermission {
         return (mask & val) == val;
     }
 
+    /**
+     * 根据 unix 权限码转换成响应的权限，参数是 10进制的
+     *
+     * @param mask
+     * @return
+     */
     public static Set<FilePermission> fromMask(int mask) {
         final List<FilePermission> perms = new LinkedList<FilePermission>();
         for (FilePermission p : FilePermission.values()) {
@@ -107,6 +115,12 @@ public enum FilePermission {
         return new HashSet<FilePermission>(perms);
     }
 
+    /**
+     * 转换为 unix 权限码，返回数据是 10进制的
+     *
+     * @param perms
+     * @return
+     */
     public static int toMask(Set<FilePermission> perms) {
         int mask = 0;
         for (FilePermission p : perms) {
@@ -115,4 +129,19 @@ public enum FilePermission {
         return mask;
     }
 
+    public static String toOctal(int permissions) {
+        return toOctal(fromMask(permissions));
+    }
+
+    public static String toOctal(Set<FilePermission> permissions) {
+        return Radixs.toOtc(toMask(permissions));
+    }
+
+    public static String toBinary(int permissions){
+        return toBinary(fromMask(permissions));
+    }
+
+    public static String toBinary(Set<FilePermission> permissions) {
+        return Radixs.toBinary(toMask(permissions));
+    }
 }
