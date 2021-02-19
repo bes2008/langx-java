@@ -130,6 +130,11 @@ public class Filenames {
         return filePath.trim().replaceAll("\\\\", "/").replaceAll("/+", "/");
     }
 
+    public static String getParentPath(String filepath){
+        String filename = extractFilename(filepath);
+        return filepath.substring(0,filepath.length() - filename.length());
+    }
+
     public static String extractFilename(String filePath) {
         return extractFilename(filePath, true);
     }
