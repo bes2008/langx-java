@@ -63,18 +63,47 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
         return out;
     }
 
+    /**
+     * @since 3.4.2
+     */
+    public static byte[] encodeHexAsBytes(String data) {
+        return encodeHexAsBytes(data, true);
+    }
+
+    /**
+     * @since 3.4.2
+     */
+    public static byte[] encodeHexAsBytes(String data, boolean toLowerCase) {
+        String hex = encodeHexToString(data, toLowerCase);
+        return hex.getBytes(Charsets.UTF_8);
+    }
+
+
+    /**
+     * @since 3.4.1
+     */
     public static String encodeHexToString(String data) {
         return encodeHexToString(data, true);
     }
 
+
+    /**
+     * @since 3.4.1
+     */
     public static String encodeHexToString(String data, boolean toLowerCase) {
         return new String(encodeHex(data, toLowerCase));
     }
 
+    /**
+     * @since 3.4.1
+     */
     public static char[] encodeHex(String data) {
         return encodeHex(data, true);
     }
 
+    /**
+     * @since 3.4.1
+     */
     public static char[] encodeHex(String data, boolean toLowerCase) {
         return encodeHex(data.getBytes(Charsets.UTF_8), toLowerCase);
     }

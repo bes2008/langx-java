@@ -10,6 +10,8 @@ import com.jn.langx.util.reflect.type.Primitives;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
+
 public class ClassLoaders {
     private static final Logger logger = LoggerFactory.getLogger(ClassLoaders.class);
 
@@ -192,6 +194,37 @@ public class ClassLoaders {
         } catch (ClassNotFoundException e) {
             return false;
         }
+    }
+
+    /**
+     * @since 3.4.2
+     */
+    public static InputStream getResourceAsStream(String name) {
+
+        InputStream is = THREAD_CL_ACCESSOR.getResourceStream(name);
+
+        if (is == null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Resource [" + name + "] was not found via the thread context ClassLoader.  Trying the " +
+                        "current ClassLoader...");
+            }
+            is = CLASS_CL_ACCESSOR.getResourceStream(name);
+        }
+
+        if (is == null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Resource [" + name + "] was not found via the current class loader.  Trying the " +
+                        "system/application ClassLoader...");
+            }
+            is = SYSTEM_CL_ACCESSOR.getResourceStream(name);
+        }
+
+        if (is == null && logger.isDebugEnabled()) {
+            logger.debug("Resource [" + name + "] was not found via the thread context, current, or " +
+                    "system/application ClassLoaders.  All heuristics have been exhausted.  Returning null.");
+        }
+
+        return is;
     }
 
 }
