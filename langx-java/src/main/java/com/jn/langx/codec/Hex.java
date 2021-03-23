@@ -203,7 +203,7 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
      * @see #decodeHex(char[])
      */
     @Override
-    public Object decode(final Object object) throws DecoderException {
+    public byte[] decode(final Object object) throws DecoderException {
         try {
             final char[] charArray = object instanceof String ? ((String) object).toCharArray() : (char[]) object;
             return decodeHex(charArray);
@@ -246,7 +246,7 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
      * @see #encodeHex(byte[])
      */
     @Override
-    public Object encode(final Object object) throws EncoderException {
+    public char[] encode(final Object object) throws EncoderException {
         try {
             final byte[] byteArray = object instanceof String ?
                     ((String) object).getBytes(this.getCharset()) : (byte[]) object;
