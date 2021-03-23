@@ -122,16 +122,24 @@ public class Strings {
         return useValueIfBlank(str, null);
     }
 
+    @Deprecated
     /**
      * Trim a string, if the string is null, will return empty string:""
      *
      * @param str a specified string
      * @return a new string after trim
+     * @deprecated
+     * @see #trimToEmpty(String) (String)
      */
     public static String trimOrEmpty(String str) {
         return getEmptyIfNull(str).trim();
     }
 
+    @Deprecated
+    /**
+     * @deprecated
+     * @see #trimToNull(String)
+     */
     public static String trimOrNull(String str) {
         if (isBlank(str)) {
             return null;
