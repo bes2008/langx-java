@@ -154,7 +154,7 @@ public class Strings {
     }
 
     public static String join(@NonNull final String separator, @Nullable final Iterable objects) {
-        return join(separator, objects.iterator());
+        return join(separator,objects == null? null: objects.iterator());
     }
 
 
