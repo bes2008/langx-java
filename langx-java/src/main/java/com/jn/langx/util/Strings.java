@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 public class Strings {
     private Strings() {
     }
+
     /**
      * Represents a failed index search.
      */
@@ -131,6 +132,12 @@ public class Strings {
         return getEmptyIfNull(str).trim();
     }
 
+    public static String trimOrNull(String str) {
+        if (isBlank(str)) {
+            return null;
+        }
+        return str.trim();
+    }
 
     /**
      * append all objects with the specified separator
@@ -154,7 +161,7 @@ public class Strings {
     }
 
     public static String join(@NonNull final String separator, @Nullable final Iterable objects) {
-        return join(separator,objects == null? null: objects.iterator());
+        return join(separator, objects == null ? null : objects.iterator());
     }
 
 
@@ -294,23 +301,27 @@ public class Strings {
      * every element in string[] has the trim() invoked
      */
     public static String[] split(@Nullable String string, @Nullable String separator, final boolean doTrim) {
+        return split(string, separator, doTrim, true);
+    }
+
+    /**
+     * split a string, the returned array is not contains: whitespace, null.
+     * every element in string[] has the trim() invoked
+     */
+    public static String[] split(@Nullable String string, @Nullable String separator, final boolean doTrim, final boolean ignoreEmptyTokens) {
         if (Emptys.isEmpty(string)) {
             return new String[0];
         }
-
+        Pipeline<String> pipeline = null;
         if (Emptys.isEmpty(separator)) {
-            return Pipeline.of(string.split("")).filter(new Predicate<String>() {
-                @Override
-                public boolean test(String value) {
-                    return isNotBlank(value);
-                }
-            }).toArray(String[].class);
+            pipeline = Pipeline.of(string.split(""));
+        } else {
+            StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
+            pipeline = Pipeline.of(tokenizer);
         }
-
-        StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
-        return Pipeline.of(tokenizer).map(new Function<Object, String>() {
+        return pipeline.map(new Function<String, String>() {
             @Override
-            public String apply(Object input) {
+            public String apply(String input) {
                 if (doTrim) {
                     return input.toString().trim();
                 } else {
@@ -320,10 +331,15 @@ public class Strings {
         }).filter(new Predicate<String>() {
             @Override
             public boolean test(String value) {
-                return Strings.isNotBlank(value);
+                if (ignoreEmptyTokens) {
+                    return Strings.isNotBlank(value);
+                } else {
+                    return true;
+                }
             }
         }).toArray(String[].class);
     }
+
 
     /**
      * Helper to decode half of a hexadecimal number from a string.
@@ -3285,6 +3301,10 @@ public class Strings {
         }
 
         return true;
+    }
+
+    public static String[] toStringArray(Iterable<String> strings) {
+        return Pipeline.of(strings).toArray(String[].class);
     }
 
 }
