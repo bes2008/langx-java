@@ -23,8 +23,10 @@ public class Primitives {
      */
     private static final Map<Class<?>, Class<?>> WRAPPER_TO_PRIMITIVE_TYPE;
 
-    // Sad that we can't use a BiMap. :(
-
+    /**
+     * @since 3.4.1
+     */
+    private static final HashMap<String, Class<?>> primClasses = new HashMap<String, Class<?>>(8, 1.0F);
     static {
         Map<Class<?>, Class<?>> primToWrap = new HashMap<Class<?>, Class<?>>(16);
         Map<Class<?>, Class<?>> wrapToPrim = new HashMap<Class<?>, Class<?>>(16);
@@ -41,6 +43,17 @@ public class Primitives {
 
         PRIMITIVE_TO_WRAPPER_TYPE = Collections.unmodifiableMap(primToWrap);
         WRAPPER_TO_PRIMITIVE_TYPE = Collections.unmodifiableMap(wrapToPrim);
+
+        // @since 3.4.1
+        primClasses.put("boolean", boolean.class);
+        primClasses.put("byte", byte.class);
+        primClasses.put("char", char.class);
+        primClasses.put("short", short.class);
+        primClasses.put("int", int.class);
+        primClasses.put("long", long.class);
+        primClasses.put("float", float.class);
+        primClasses.put("double", double.class);
+        primClasses.put("void", void.class);
     }
 
     private static void add(Map<Class<?>, Class<?>> forward,
@@ -175,5 +188,9 @@ public class Primitives {
     public static boolean isBoolean(Type type) {
         // boolean.class 等价于  Boolean.TYPE
         return type == boolean.class || type == Boolean.class ;
+    }
+
+    public static Class get(String name){
+        return primClasses.get(name);
     }
 }

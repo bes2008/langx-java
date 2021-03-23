@@ -2,10 +2,16 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.classpath.classloader.ClassLoaderAccessor;
+import com.jn.langx.classpath.classloader.ExceptionIgnoringAccessor;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.reflect.type.Primitives;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClassLoaders {
+    private static final Logger logger = LoggerFactory.getLogger(ClassLoaders.class);
 
     public static Class loadClass(@NonNull String className) throws ClassNotFoundException {
         return loadClass(className, (ClassLoader) null);
@@ -98,6 +104,82 @@ public class ClassLoaders {
             // ignore it
         }
         return c != null;
+    }
+
+    /**
+     * @since 3.4.1
+     */
+    private static final ClassLoaderAccessor THREAD_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
+        @Override
+        protected ClassLoader doGetClassLoader() throws Throwable {
+            return Thread.currentThread().getContextClassLoader();
+        }
+    };
+
+    /**
+     * @since 3.4.1
+     */
+    private static final ClassLoaderAccessor CLASS_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
+        @Override
+        protected ClassLoader doGetClassLoader() throws Throwable {
+            return ClassLoaders.class.getClassLoader();
+        }
+    };
+
+    /**
+     * @since 3.4.1
+     */
+    private static final ClassLoaderAccessor SYSTEM_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
+        @Override
+        protected ClassLoader doGetClassLoader() throws Throwable {
+            return ClassLoader.getSystemClassLoader();
+        }
+    };
+
+    /**
+     * Attempts to load the specified class name from the current thread's
+     * {@link Thread#getContextClassLoader() context class loader}, then the
+     * current ClassLoader (<code>ClassUtils.class.getClassLoader()</code>), then the system/application
+     * ClassLoader (<code>ClassLoader.getSystemClassLoader()</code>, in that order.  If any of them cannot locate
+     * the specified class, an <code>UnknownClassException</code> is thrown (our RuntimeException equivalent of
+     * the JRE's <code>ClassNotFoundException</code>.
+     *
+     * @param fqcn the fully qualified class name to load
+     * @return the located class
+     * @throws ClassNotFoundException if the class cannot be found.
+     * @since 3.4.1
+     */
+    public static Class<?> forName(String fqcn) throws ClassNotFoundException {
+
+        Class<?> clazz = THREAD_CL_ACCESSOR.loadClass(fqcn);
+
+        if (clazz == null) {
+            if (logger.isTraceEnabled()) {
+                logger.trace("Unable to load class named [" + fqcn +
+                        "] from the thread context ClassLoader.  Trying the current ClassLoader...");
+            }
+            clazz = CLASS_CL_ACCESSOR.loadClass(fqcn);
+        }
+
+        if (clazz == null) {
+            if (logger.isTraceEnabled()) {
+                logger.trace("Unable to load class named [" + fqcn + "] from the current ClassLoader.  " +
+                        "Trying the system/application ClassLoader...");
+            }
+            clazz = SYSTEM_CL_ACCESSOR.loadClass(fqcn);
+        }
+
+        if (clazz == null) {
+            clazz = Primitives.get(fqcn);
+        }
+
+        if (clazz == null) {
+            String msg = "Unable to load class named [" + fqcn + "] from the thread context, current, or " +
+                    "system/application ClassLoaders.  All heuristics have been exhausted.  Class could not be found.";
+            throw new ClassNotFoundException(msg);
+        }
+
+        return clazz;
     }
 
 }

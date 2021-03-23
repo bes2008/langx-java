@@ -619,6 +619,22 @@ public class Reflects {
         }
     }
 
+    public static List<Method> getAnnotatedMethods(final Class<?> type, final Class<? extends Annotation> annotation) {
+        final List<Method> methods = new ArrayList<Method>();
+        Class<?> clazz = type;
+        while (!Object.class.equals(clazz)) {
+            Method[] currentClassMethods = clazz.getDeclaredMethods();
+            for (final Method method : currentClassMethods) {
+                if (annotation == null || method.isAnnotationPresent(annotation)) {
+                    methods.add(method);
+                }
+            }
+            // move to the upper class in the hierarchy in search for more methods
+            clazz = clazz.getSuperclass();
+        }
+        return methods;
+    }
+
     public static Method getPublicMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
         Method method;
         try {
