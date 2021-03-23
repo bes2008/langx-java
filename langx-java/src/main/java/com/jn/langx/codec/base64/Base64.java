@@ -507,13 +507,17 @@ public class Base64 extends BaseNCodec {
      * single-line non-chunking (commons-codec-1.5).
      *
      * @param binaryData binary data to encode
-     * @return String containing Base64 characters.
+     * @return String containing Base64 characters (ASCII)
      * (NOTE:  1.4 chunked the output, whereas 1.5 does not).
      */
     public static String encodeBase64String(final byte[] binaryData) {
         return Strings.newStringUsAscii(encodeBase64(binaryData, false));
     }
 
+    /**
+     * @return UTF-8
+     * @since 3.4.1
+     */
     public static String encodeBase64ToString(final byte[] binaryData) {
         return new String(encodeBase64(binaryData, false), Charsets.UTF_8);
     }
