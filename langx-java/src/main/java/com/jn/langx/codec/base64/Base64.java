@@ -4,6 +4,7 @@ package com.jn.langx.codec.base64;
 import com.jn.langx.codec.BaseNCodec;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.io.Charsets;
 
 import java.math.BigInteger;
 
@@ -513,6 +514,10 @@ public class Base64 extends BaseNCodec {
         return Strings.newStringUsAscii(encodeBase64(binaryData, false));
     }
 
+    public static String encodeBase64ToString(final byte[] binaryData) {
+        return new String(encodeBase64(binaryData, false), Charsets.UTF_8);
+    }
+
     /**
      * Encodes binary data using a URL-safe variation of the base64 algorithm but does not chunk the output. The
      * url-safe variation emits - and _ instead of + and / characters.
@@ -617,6 +622,11 @@ public class Base64 extends BaseNCodec {
         return new Base64().decode(base64String);
     }
 
+
+    public static String decodeBase64ToString(String base64String){
+        return new String(decodeBase64(base64String), Charsets.UTF_8);
+    }
+
     /**
      * Decodes Base64 data into octets.
      * <p>
@@ -628,6 +638,11 @@ public class Base64 extends BaseNCodec {
      */
     public static byte[] decodeBase64(final byte[] base64Data) {
         return new Base64().decode(base64Data);
+    }
+
+
+    public static String decodeBase64ToString(byte[] base64Data){
+        return new String(decodeBase64(base64Data), Charsets.UTF_8);
     }
 
     // Implementation of the Encoder Interface
