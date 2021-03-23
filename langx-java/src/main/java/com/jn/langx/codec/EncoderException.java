@@ -5,7 +5,7 @@ package com.jn.langx.codec;
  * {@link Encoder} encounters a encoding specific exception such as invalid data, inability to calculate a checksum,
  * characters outside of the expected range.
  */
-public class EncoderException extends Exception {
+public class EncoderException extends RuntimeException {
 
     /**
      * Declares the Serial Version Uid.
