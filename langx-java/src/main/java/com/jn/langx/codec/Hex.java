@@ -28,6 +28,10 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
     private static final char[] DIGITS_UPPER =
             {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
+    public static byte[] decodeHex(String data) {
+        return decodeHex(data.toCharArray());
+    }
+
     /**
      * Converts an array of characters representing hexadecimal values into an array of bytes of those same values. The
      * returned array will be half the length of the passed array, as it takes two characters to represent any given
@@ -57,6 +61,22 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
         }
 
         return out;
+    }
+
+    public static String encodeHexToString(String data) {
+        return encodeHexToString(data, true);
+    }
+
+    public static String encodeHexToString(String data, boolean toLowerCase) {
+        return new String(encodeHex(data, toLowerCase));
+    }
+
+    public static char[] encodeHex(String data) {
+        return encodeHex(data, true);
+    }
+
+    public static char[] encodeHex(String data, boolean toLowerCase) {
+        return encodeHex(data.getBytes(Charsets.UTF_8), toLowerCase);
     }
 
     /**
@@ -117,14 +137,12 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
     }
 
     /**
-     *
      * @param data
      * @param lowerCase
      * @return
-     *
      * @since 2.10.3
      */
-    public static String encodeHexString(final  byte[] data, boolean lowerCase){
+    public static String encodeHexString(final byte[] data, boolean lowerCase) {
         return new String(encodeHex(data, lowerCase));
     }
 
