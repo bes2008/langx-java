@@ -111,7 +111,7 @@ public class ClassLoaders {
     /**
      * @since 3.4.1
      */
-    private static final ClassLoaderAccessor THREAD_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
+    public static final ClassLoaderAccessor THREAD_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
         @Override
         protected ClassLoader doGetClassLoader() throws Throwable {
             return Thread.currentThread().getContextClassLoader();
@@ -121,7 +121,7 @@ public class ClassLoaders {
     /**
      * @since 3.4.1
      */
-    private static final ClassLoaderAccessor CLASS_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
+    public static final ClassLoaderAccessor CLASS_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
         @Override
         protected ClassLoader doGetClassLoader() throws Throwable {
             return ClassLoaders.class.getClassLoader();
@@ -131,7 +131,7 @@ public class ClassLoaders {
     /**
      * @since 3.4.1
      */
-    private static final ClassLoaderAccessor SYSTEM_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
+    public static final ClassLoaderAccessor SYSTEM_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
         @Override
         protected ClassLoader doGetClassLoader() throws Throwable {
             return ClassLoader.getSystemClassLoader();
