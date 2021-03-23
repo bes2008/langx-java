@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>3.4.1</version>
 
-    <name>langx</name>
+    <name>${groupId} :: ${artifactId} :: ${version} </name>
 
     <description>
         Java lang extensions, a supplement to , replacement  of a Guava, commons-lang, hutool

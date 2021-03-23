@@ -12,9 +12,8 @@
 
     <artifactId>langx-java8</artifactId>
     <packaging>jar</packaging>
+    <name>${groupId} :: ${artifactId} :: ${version} </name>
 
-
-    <name>langx-java8</name>
 
     <description>
         Java8 Extensions
