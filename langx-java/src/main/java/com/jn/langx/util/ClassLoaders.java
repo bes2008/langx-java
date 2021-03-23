@@ -182,4 +182,16 @@ public class ClassLoaders {
         return clazz;
     }
 
+    /**
+     * @since 3.4.1
+     */
+    public static boolean isAvailable(String fullyQualifiedClassName) {
+        try {
+            forName(fullyQualifiedClassName);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
 }
