@@ -2620,6 +2620,13 @@ public class Strings {
 
     // Equals
     //-----------------------------------------------------------------------
+    public static boolean equals(final CharSequence cs1, final CharSequence cs2, boolean ignoreCase) {
+        if(!ignoreCase){
+            return equals(cs1, cs2);
+        }else{
+            return equalsIgnoreCase(cs1,cs2);
+        }
+    }
 
     /**
      * <p>Compares two CharSequences, returning {@code true} if they represent
