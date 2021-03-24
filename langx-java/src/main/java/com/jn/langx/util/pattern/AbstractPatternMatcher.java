@@ -2,7 +2,13 @@ package com.jn.langx.util.pattern;
 
 public abstract class AbstractPatternMatcher implements PatternMatcher{
 
+    /**
+     * 是否大小写敏感
+     */
     protected boolean caseSensitive = false;
+    /**
+     * 匹配之前，是否对 pattern 进行 trim 操作
+     */
     protected boolean trimPattern = true;
     protected boolean global = false;
 
