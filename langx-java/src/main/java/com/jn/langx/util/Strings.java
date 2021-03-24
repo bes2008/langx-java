@@ -2620,6 +2620,14 @@ public class Strings {
 
     // Equals
     //-----------------------------------------------------------------------
+
+    /**
+     * @since 3.4.2
+     * @param cs1
+     * @param cs2
+     * @param ignoreCase 是否忽略大小写
+     * @return 是否相等
+     */
     public static boolean equals(final CharSequence cs1, final CharSequence cs2, boolean ignoreCase) {
         if(!ignoreCase){
             return equals(cs1, cs2);

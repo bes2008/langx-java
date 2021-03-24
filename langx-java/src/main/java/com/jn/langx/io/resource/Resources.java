@@ -104,6 +104,7 @@ public class Resources {
     /**
      * @param resource the resource location
      * @return whether the resource exists or not
+     * @since 3.4.2
      */
     public static boolean exists(String resource) {
         Resource res = loadResource(resource);
@@ -113,6 +114,13 @@ public class Resources {
         return res.exists();
     }
 
+    /**
+     *
+     * @param resource
+     * @return
+     * @throws IOException
+     * @since 3.4.2
+     */
     public static InputStream getInputStream(String resource) throws IOException {
         Resource res = loadResource(resource);
         if (res == null) {

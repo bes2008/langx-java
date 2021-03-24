@@ -5,6 +5,7 @@ import com.jn.langx.util.pattern.AbstractPatternMatcher;
 
 /**
  * 单纯的文本匹配
+ * @since 3.4.2
  */
 public abstract class TextPatternMatcher extends AbstractPatternMatcher {
     protected String pattern;
