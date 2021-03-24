@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 
 public class Resources {
 
-    public static <V extends Resource> V loadResource(@NonNull Location location){
+    public static <V extends Resource> V loadResource(@NonNull Location location) {
         return Locations.<V>newResource(location.toString());
     }
 
@@ -99,6 +99,26 @@ public class Resources {
 
     public static InputStreamResource asInputStreamResource(@NonNull InputStream inputStream, @Nullable String description) {
         return new InputStreamResource(inputStream, description);
+    }
+
+    /**
+     * @param resource the resource location
+     * @return whether the resource exists or not
+     */
+    public static boolean exists(String resource) {
+        Resource res = loadResource(resource);
+        if (res == null) {
+            return false;
+        }
+        return res.exists();
+    }
+
+    public static InputStream getInputStream(String resource) throws IOException {
+        Resource res = loadResource(resource);
+        if (res == null) {
+            throw new IOException(StringTemplates.formatWithPlaceholder("Can't find the resource: {}", resource));
+        }
+        return res.getInputStream();
     }
 
 
