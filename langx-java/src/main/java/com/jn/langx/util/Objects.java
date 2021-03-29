@@ -1,5 +1,6 @@
 package com.jn.langx.util;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
@@ -229,7 +230,7 @@ public class Objects {
      * @param obj a reference to be checked against {@code null}
      * @return {@code true} if the provided reference is non-{@code null}
      * otherwise {@code false}
-     * @apiNote This method exists to be used as a
+     *  This method exists to be used as a
      * {@link com.jn.langx.util.function.Predicate}, {@code filter(Objects::nonNull)}
      * @see com.jn.langx.util.function.Predicate
      */
@@ -299,11 +300,19 @@ public class Objects {
         return value;
     }
 
-    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, Supplier<T, T> supplier) {
+    public static <T> T useValueIfMatch(T value, Predicate<T> predicate, Supplier<T, T> defaultSupplier) {
         if (predicate.test(value)) {
-            return supplier.get(value);
+            return defaultSupplier.get(value);
         }
         return value;
+    }
+
+    public static <T> T useValueIfMatch(@NonNull Supplier0<T> valueSupplier, Predicate<T> predicate, Supplier<T, T> defaultSupplier) {
+        T value = null;
+        if (valueSupplier != null) {
+            value = valueSupplier.get();
+        }
+        return useValueIfMatch(value, predicate, defaultSupplier);
     }
 
     public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, Supplier<T, T> supplier) {
@@ -313,23 +322,12 @@ public class Objects {
         return value;
     }
 
-    @Deprecated
-    public static <T> T requireNonNullElseGet(T obj, final Supplier0<? extends T> supplier) {
-        return useValueIfMatch(obj, Functions.<T>nullPredicate(), new Supplier<T, T>() {
-            @Override
-            public T get(T input) {
-                return supplier.get();
-            }
-        });
-    }
-
-    /**
-     * @see #useValueIfNull(Object, Object)
-     * @see #useValueIfMatch(Object, Predicate, Object)
-     */
-    @Deprecated
-    public static <T> T requireNonNullElse(T obj, T defaultObj) {
-        return (obj != null) ? obj : requireNonNull(defaultObj, "defaultObj");
+    public static <T> T useValueIfNotMatch(@NonNull Supplier0<T> valueSupplier, Predicate<T> predicate, Supplier<T, T> defaultSupplier) {
+        T value = null;
+        if (valueSupplier != null) {
+            value = valueSupplier.get();
+        }
+        return useValueIfMatch(value, predicate, defaultSupplier);
     }
 
     /**
