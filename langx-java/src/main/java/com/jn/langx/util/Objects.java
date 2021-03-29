@@ -13,7 +13,6 @@ import java.util.List;
 /**
  * 推荐使用 Objs
  */
-@Deprecated
 public class Objects {
     protected Objects() {
     }
