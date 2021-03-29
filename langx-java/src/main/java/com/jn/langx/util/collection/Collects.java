@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.*;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
@@ -40,6 +41,10 @@ public class Collects {
      */
     public static <K, V> Hashtable emptyHashtable() {
         return new Hashtable<K, V>();
+    }
+
+    public static <K, V>  Map<K,V> unmodifiableMap(Map<K,V> map){
+        return Collections.unmodifiableMap(Objs.useValueIfNull(map, Collects.<K, V>emptyHashMap()));
     }
 
     /**
@@ -110,6 +115,10 @@ public class Collects {
         return emptyHashSet(false);
     }
 
+    public static <E> Set<E> unmodifiableSet(Set<E> set){
+        return Collections.unmodifiableSet(Objs.useValueIfNull(set, Collects.<E>emptyHashSet()));
+    }
+
     /**
      * Get a empty, mutable java.util.HashSet or java.util.LinkedHashSet
      *
@@ -138,6 +147,9 @@ public class Collects {
         return new TreeSet<E>(comparator);
     }
 
+    public static <E> List<E> unmodifiableArrayList(List<E> list){
+        return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
+    }
 
     /**
      * Get a empty, mutable java.util.ArrayList
