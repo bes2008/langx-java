@@ -4,7 +4,6 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Objects;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.*;
@@ -1090,7 +1089,7 @@ public class Collects {
         return firstOccurrence(c, new Predicate2<Integer, E>() {
             @Override
             public boolean test(Integer key, E value) {
-                return Objects.equals(value, item);
+                return Objs.equals(value, item);
             }
         });
     }
@@ -2329,7 +2328,7 @@ public class Collects {
         }
         ArrayList<E> arrayList = (list instanceof ArrayList) ? (ArrayList<E>) list : newArrayList(list);
         for (int i = startIndex; i < endIndex; i++) {
-            if (Objects.equals(arrayList.get(i), e)) {
+            if (Objs.equals(arrayList.get(i), e)) {
                 return i;
             }
         }
@@ -2375,7 +2374,7 @@ public class Collects {
         }
         ArrayList<E> arrayList = (list instanceof ArrayList) ? (ArrayList<E>) list : newArrayList(list);
         for (int i = endIndex - 1; i >= startIndex; i--) {
-            if (Objects.equals(arrayList.get(i), e)) {
+            if (Objs.equals(arrayList.get(i), e)) {
                 return i;
             }
         }
