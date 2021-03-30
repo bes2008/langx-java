@@ -1,8 +1,8 @@
 package com.jn.langx.util.function;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.*;
 import com.jn.langx.util.Objects;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 
@@ -12,7 +12,7 @@ public class Functions {
     /*******************************************
      *   Function, Mapper
      *******************************************/
-    public static <E> Function<E, E> noopFunction(){
+    public static <E> Function<E, E> noopFunction() {
         return new Function<E, E>() {
             @Override
             public E apply(E input) {
@@ -21,7 +21,7 @@ public class Functions {
         };
     }
 
-    public static <E> Mapper<E, E> noopMapper(){
+    public static <E> Mapper<E, E> noopMapper() {
         return new Mapper<E, E>() {
             @Override
             public E apply(E input) {
@@ -171,7 +171,7 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> emptyPredicate(){
+    public static <E> Predicate<E> emptyPredicate() {
         return new Predicate<E>() {
             @Override
             public boolean test(E value) {
@@ -180,7 +180,7 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> notEmptyPredicate(){
+    public static <E> Predicate<E> notEmptyPredicate() {
         return new Predicate<E>() {
             @Override
             public boolean test(E value) {
@@ -189,15 +189,15 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> truePredicate(){
+    public static <E> Predicate<E> truePredicate() {
         return booleanPredicate(true);
     }
 
-    public static <E> Predicate<E> falsePredicate(){
+    public static <E> Predicate<E> falsePredicate() {
         return booleanPredicate(false);
     }
 
-    public static <E> Predicate<E> booleanPredicate(final boolean value){
+    public static <E> Predicate<E> booleanPredicate(final boolean value) {
         return new Predicate<E>() {
             @Override
             public boolean test(E element) {
@@ -206,26 +206,24 @@ public class Functions {
         };
     }
 
-    public static <E1,E2> Predicate2<E1,E2> truePredicate2(){
+    public static <E1, E2> Predicate2<E1, E2> truePredicate2() {
         return booleanPredicate2(true);
     }
 
-    public static <E1,E2> Predicate2<E1,E2> falsePredicate2(){
+    public static <E1, E2> Predicate2<E1, E2> falsePredicate2() {
         return booleanPredicate2(false);
     }
 
-    public static <E1,E2> Predicate2<E1,E2> booleanPredicate2(final boolean value){
-        return new Predicate2<E1,E2>() {
+    public static <E1, E2> Predicate2<E1, E2> booleanPredicate2(final boolean value) {
+        return new Predicate2<E1, E2>() {
             @Override
-            public boolean test(E1 e1,E2 e2) {
+            public boolean test(E1 e1, E2 e2) {
                 return value;
             }
         };
     }
 
-    public static <E> Predicate<E> allPredicate(@NonNull Predicate<E>... predicates) {
-        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
-        Preconditions.checkTrue(predicates.length >= 1);
+    public static <E> Predicate<E> allPredicate(List<Predicate<E>> predicates) {
         final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
         return new Predicate<E>() {
             @Override
@@ -240,9 +238,13 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> anyPredicate(@NonNull Predicate<E>... predicates) {
+    public static <E> Predicate<E> allPredicate(@NonNull Predicate<E>... predicates) {
         Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
         Preconditions.checkTrue(predicates.length >= 1);
+        return allPredicate(Collects.asList(predicates));
+    }
+
+    public static <E> Predicate<E> anyPredicate(List<Predicate<E>> predicates) {
         final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
         return new Predicate<E>() {
             @Override
@@ -255,6 +257,33 @@ public class Functions {
                 });
             }
         };
+    }
+
+    public static <E> Predicate<E> anyPredicate(@NonNull Predicate<E>... predicates) {
+        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
+        Preconditions.checkTrue(predicates.length >= 1);
+        return anyPredicate(Collects.asList(predicates));
+    }
+
+    public static <E> Predicate<E> nonePredicate(List<Predicate<E>> predicates) {
+        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
+        return new Predicate<E>() {
+            @Override
+            public boolean test(final E value) {
+                return pipeline.noneMatch(new Predicate<Predicate<E>>() {
+                    @Override
+                    public boolean test(Predicate<E> filter) {
+                        return filter.test(value);
+                    }
+                });
+            }
+        };
+    }
+
+    public static <E> Predicate<E> nonePredicate(Predicate<E>... predicates) {
+        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
+        Preconditions.checkTrue(predicates.length >= 1);
+        return nonePredicate(Collects.asList(predicates));
     }
 
     public static <E> Predicate<E> andPredicate(@NonNull Predicate<E>... predicates) {
@@ -313,7 +342,7 @@ public class Functions {
         return stringContainsPredicate(cantained, false);
     }
 
-    public static Predicate<String> stringContainsPredicate(final String cantained,  final boolean ignoreCase) {
+    public static Predicate<String> stringContainsPredicate(final String cantained, final boolean ignoreCase) {
         Preconditions.checkTrue(Emptys.isNotEmpty(cantained));
         return new Predicate<String>() {
             @Override

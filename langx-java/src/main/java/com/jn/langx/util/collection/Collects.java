@@ -42,7 +42,7 @@ public class Collects {
         return new Hashtable<K, V>();
     }
 
-    public static <K, V>  Map<K,V> unmodifiableMap(Map<K,V> map){
+    public static <K, V> Map<K, V> unmodifiableMap(Map<K, V> map) {
         return Collections.unmodifiableMap(Objs.useValueIfNull(map, Collects.<K, V>emptyHashMap()));
     }
 
@@ -114,7 +114,7 @@ public class Collects {
         return emptyHashSet(false);
     }
 
-    public static <E> Set<E> unmodifiableSet(Set<E> set){
+    public static <E> Set<E> unmodifiableSet(Set<E> set) {
         return Collections.unmodifiableSet(Objs.useValueIfNull(set, Collects.<E>emptyHashSet()));
     }
 
@@ -146,7 +146,7 @@ public class Collects {
         return new TreeSet<E>(comparator);
     }
 
-    public static <E> List<E> unmodifiableArrayList(List<E> list){
+    public static <E> List<E> unmodifiableArrayList(List<E> list) {
         return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
     }
 
@@ -2403,5 +2403,12 @@ public class Collects {
 
     public static <E> int lastIndexOf(E[] list, E e, int startIndex, int endIndex) {
         return lastIndexOf(asList(list), e, startIndex, endIndex);
+    }
+
+    public static <E> E apply(E input, Function<E, E>... mappers) {
+        for (int i = 0; i < mappers.length; i++) {
+            input = mappers[i].apply(input);
+        }
+        return input;
     }
 }
