@@ -149,6 +149,25 @@ public class Functions {
     }
 
 
+    public static Function<String, String> toLowerCase(){
+        return new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return input.toLowerCase();
+            }
+        };
+    }
+
+    public static Function<String, String> toUpperCase(){
+        return new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return input.toUpperCase();
+            }
+        };
+    }
+
+
     /**********************************************
      *   Predicate
      **********************************************/
