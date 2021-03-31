@@ -287,37 +287,11 @@ public class Functions {
     }
 
     public static <E> Predicate<E> andPredicate(@NonNull Predicate<E>... predicates) {
-        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
-        Preconditions.checkTrue(predicates.length >= 2);
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
-        return new Predicate<E>() {
-            @Override
-            public boolean test(final E value) {
-                return pipeline.allMatch(new Predicate<Predicate<E>>() {
-                    @Override
-                    public boolean test(Predicate<E> filter) {
-                        return filter.test(value);
-                    }
-                });
-            }
-        };
+        return allPredicate(predicates);
     }
 
     public static <E> Predicate<E> orPredicate(@NonNull Predicate<E>... predicates) {
-        Preconditions.checkTrue(Emptys.isNotEmpty(predicates));
-        Preconditions.checkTrue(predicates.length >= 2);
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
-        return new Predicate<E>() {
-            @Override
-            public boolean test(final E value) {
-                return pipeline.anyMatch(new Predicate<Predicate<E>>() {
-                    @Override
-                    public boolean test(Predicate<E> filter) {
-                        return filter.test(value);
-                    }
-                });
-            }
-        };
+        return anyPredicate(predicates);
     }
 
     public static <E1, E2> Predicate2<E1, E2> deepEqualsPredicate() {
