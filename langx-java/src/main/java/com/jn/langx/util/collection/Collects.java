@@ -114,8 +114,12 @@ public class Collects {
         return emptyHashSet(false);
     }
 
-    public static <E> Set<E> unmodifiableSet(Set<E> set) {
-        return Collections.unmodifiableSet(Objs.useValueIfNull(set, Collects.<E>emptyHashSet()));
+    public static <E> Set<E> unmodifiableSet(Collection<E> collection) {
+        return Collections.unmodifiableSet(asSet(collection));
+    }
+
+    public static <E> Set<E> unmodifiableSet(E... elements) {
+        return Collections.unmodifiableSet(asSet(elements));
     }
 
     /**
@@ -144,6 +148,10 @@ public class Collects {
             return emptyTreeSet();
         }
         return new TreeSet<E>(comparator);
+    }
+
+    public static <E> List<E> unmodifiableArrayList(E... elements) {
+        return unmodifiableArrayList(asList(elements));
     }
 
     public static <E> List<E> unmodifiableArrayList(List<E> list) {
