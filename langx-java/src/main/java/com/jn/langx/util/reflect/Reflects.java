@@ -757,6 +757,17 @@ public class Reflects {
         }
     }
 
+    public static <V> V invokeGetterOrFiled(Object object, String field, boolean force, boolean throwException){
+        Preconditions.checkNotNull(object, "the object is null");
+        Preconditions.checkNotEmpty(field,"the field name is null or empty");
+        Method method = getGetter(object.getClass(), field);
+        if(method!=null){
+            return invoke(method, object, new Object[0], force, throwException);
+        }
+        return getAnyFieldValue(object, field, force, throwException);
+    }
+
+
     private static <V> V invokeMethodOrNull(@NonNull Method method, @NonNull Object object, @Nullable Object[] parameters, boolean throwException) throws IllegalAccessException, InvocationTargetException {
         try {
             return (V) method.invoke(object, parameters);
@@ -978,6 +989,12 @@ public class Reflects {
         return method != null && isSubClassOrEquals(field.getType(), method.getParameterTypes()[0]);
     }
 
+    /**
+     * 找到 public 的, 非 static 的 Getter
+     * @param clazz
+     * @param field
+     * @return
+     */
     public static Method getGetter(Class clazz, String field) {
         String simple = "get" + field;
         String simpleIsGet = "is" + field;
@@ -993,13 +1010,13 @@ public class Reflects {
             }
         }
 
-        for (Method meth : clazz.getMethods()) {
-            if (Modifiers.isPublic(meth) && !Modifiers.isStatic(meth) && meth.getParameterTypes().length == 0) {
-                String methodName = meth.getName();
-                if ((getter.equals(methodName) || field.equals(methodName) || ((isGet.equals(methodName) || simpleIsGet.equals(methodName)) && meth.getReturnType() == boolean.class)
+        for (Method method : clazz.getMethods()) {
+            if (Modifiers.isPublic(method) && !Modifiers.isStatic(method) && method.getParameterTypes().length == 0) {
+                String methodName = method.getName();
+                if ((getter.equals(methodName) || field.equals(methodName) || ((isGet.equals(methodName) || simpleIsGet.equals(methodName)) && method.getReturnType() == boolean.class)
                         || simple.equals(methodName))) {
-                    if (candidate == null || isSubClassOrEquals(candidate.getReturnType(), meth.getReturnType())) {
-                        candidate = meth;
+                    if (candidate == null || isSubClassOrEquals(candidate.getReturnType(), method.getReturnType())) {
+                        candidate = method;
                     }
                 }
             }
