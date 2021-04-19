@@ -6,6 +6,8 @@ public interface Attributable {
 
     Object getAttribute(String name);
 
+    boolean hasAttribute(String name);
+
     void removeAttribute(String name);
 
     Iterable<String> getAttributeNames();
