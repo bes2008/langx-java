@@ -23,9 +23,9 @@ public class Graph<T> {
      */
     public static final int VISIT_COLOR_BLACK = 3;
     /**
-     * Map<String, Vertex> of graph verticies
+     * Map<String, Vertex> of graph vertices
      */
-    private Map<String, Vertex<T>> verticies;
+    private Map<String, Vertex<T>> vertices;
     /**
      * Vector<Edge> of edges in the graph
      */
@@ -39,7 +39,7 @@ public class Graph<T> {
      * Construct a new graph without any vertices or edges
      */
     public Graph() {
-        verticies = new LinkedHashMap<String, Vertex<T>>();
+        vertices = new LinkedHashMap<String, Vertex<T>>();
         edges = new ArrayList<Edge<T>>();
     }
 
@@ -49,7 +49,7 @@ public class Graph<T> {
      * @return true if there are no verticies in the graph
      */
     public boolean isEmpty() {
-        return verticies.size() == 0;
+        return vertices.size() == 0;
     }
 
     /**
@@ -59,8 +59,8 @@ public class Graph<T> {
      * @return true if the vertex was added, false if it was already in the graph.
      */
     public boolean addVertex(Vertex<T> v) {
-        if (!verticies.containsValue(v)) {
-            verticies.put(v.getName(), v);
+        if (!vertices.containsValue(v)) {
+            vertices.put(v.getName(), v);
             return true;
         }
         return false;
@@ -72,7 +72,7 @@ public class Graph<T> {
      * @return the number of verticies in the graph.
      */
     public int size() {
-        return verticies.size();
+        return vertices.size();
     }
 
     /**
@@ -92,7 +92,7 @@ public class Graph<T> {
      */
     public void setRootVertex(Vertex<T> root) {
         this.rootVertex = root;
-        if (!verticies.containsValue(root))
+        if (!vertices.containsValue(root))
             addVertex(root);
     }
 
@@ -112,7 +112,7 @@ public class Graph<T> {
      * @return the graph vertices
      */
     public List<Vertex<T>> getVertices() {
-        return new ArrayList<Vertex<T>>(verticies.values());
+        return new ArrayList<Vertex<T>>(vertices.values());
     }
 
     /**
@@ -126,9 +126,9 @@ public class Graph<T> {
      *                                  the graph
      */
     public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost) throws IllegalArgumentException {
-        if (!verticies.containsValue(from))
+        if (!vertices.containsValue(from))
             throw new IllegalArgumentException("from is not in graph");
-        if (!verticies.containsValue(to))
+        if (!vertices.containsValue(to))
             throw new IllegalArgumentException("to is not in graph");
 
         Edge<T> e = new Edge<T>(from, to, cost);
@@ -172,10 +172,10 @@ public class Graph<T> {
      * @return true if the Vertex was removed
      */
     public boolean removeVertex(Vertex<T> v) {
-        if (!verticies.containsValue(v))
+        if (!vertices.containsValue(v))
             return false;
 
-        verticies.remove(v.getName());
+        vertices.remove(v.getName());
         if (v == rootVertex)
             rootVertex = null;
 
@@ -222,7 +222,7 @@ public class Graph<T> {
      * @see Vertex#clearMark()
      */
     public void clearMark() {
-        for (Vertex<T> w : verticies.values())
+        for (Vertex<T> w : vertices.values())
             w.clearMark();
     }
 
@@ -320,7 +320,7 @@ public class Graph<T> {
      * matches are found
      */
     public Vertex<T> findVertexByName(String name) {
-        return verticies.get(name);
+        return vertices.get(name);
     }
 
     /**
@@ -333,7 +333,7 @@ public class Graph<T> {
      */
     public Vertex<T> findVertexByData(T data, Comparator<T> compare) {
         Vertex<T> match = null;
-        for (Vertex<T> v : verticies.values()) {
+        for (Vertex<T> v : vertices.values()) {
             if (compare.compare(data, v.getData()) == 0) {
                 match = v;
                 break;
@@ -356,11 +356,11 @@ public class Graph<T> {
     public Edge<T>[] findCycles() {
         ArrayList<Edge<T>> cycleEdges = new ArrayList<Edge<T>>();
         // Mark all verticies as white
-        for (int n = 0; n < verticies.size(); n++) {
+        for (int n = 0; n < vertices.size(); n++) {
             Vertex<T> v = getVertex(n);
             v.setMarkState(VISIT_COLOR_WHITE);
         }
-        for (int n = 0; n < verticies.size(); n++) {
+        for (int n = 0; n < vertices.size(); n++) {
             Vertex<T> v = getVertex(n);
             visit(v, cycleEdges);
         }
@@ -388,7 +388,7 @@ public class Graph<T> {
 
     public String toString() {
         StringBuilder tmp = new StringBuilder("Graph[");
-        for (Vertex<T> v : verticies.values())
+        for (Vertex<T> v : vertices.values())
             tmp.append(v);
         tmp.append(']');
         return tmp.toString();
