@@ -7,7 +7,7 @@ package com.jn.langx.util.collection.graph;
 public class Edge<T> {
     private Vertex<T> from;
     private Vertex<T> to;
-    private int cost;
+    private int weight;
     private boolean mark;
 
     /**
@@ -23,14 +23,14 @@ public class Edge<T> {
     /**
      * Create an edge between from and to with the given cost.
      *
-     * @param from the starting vertex
-     * @param to   the ending vertex
-     * @param cost the cost of the edge
+     * @param from   the starting vertex
+     * @param to     the ending vertex
+     * @param weight the weight of the edge
      */
-    public Edge(Vertex<T> from, Vertex<T> to, int cost) {
+    public Edge(Vertex<T> from, Vertex<T> to, int weight) {
         this.from = from;
         this.to = to;
-        this.cost = cost;
+        this.weight = weight;
         mark = false;
     }
 
@@ -57,8 +57,8 @@ public class Edge<T> {
      *
      * @return cost of the edge
      */
-    public int getCost() {
-        return cost;
+    public int getWeight() {
+        return weight;
     }
 
     /**
@@ -94,8 +94,8 @@ public class Edge<T> {
         tmp.append(from.getName());
         tmp.append(",to: ");
         tmp.append(to.getName());
-        tmp.append(", cost: ");
-        tmp.append(cost);
+        tmp.append(", weight: ");
+        tmp.append(weight);
         tmp.append("]");
         return tmp.toString();
     }

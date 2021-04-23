@@ -126,11 +126,12 @@ public class Graph<T> {
      *                                  the graph
      */
     public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost) throws IllegalArgumentException {
-        if (!vertices.containsValue(from))
-            throw new IllegalArgumentException("from is not in graph");
-        if (!vertices.containsValue(to))
-            throw new IllegalArgumentException("to is not in graph");
-
+        if (!vertices.containsValue(from)) {
+            throw new IllegalArgumentException("from vertex is not in graph");
+        }
+        if (!vertices.containsValue(to)) {
+            throw new IllegalArgumentException("to vertex is not in graph");
+        }
         Edge<T> e = new Edge<T>(from, to, cost);
         if (from.findEdge(to) != null)
             return false;
@@ -143,7 +144,7 @@ public class Graph<T> {
     }
 
     /**
-     * Insert a bidirectional Edge<T> in the graph
+     * Insert a bidirectional (两个方向的) Edge<T> in the graph
      *
      * @param from - the Edge<T> starting vertex
      * @param to   - the Edge<T> ending vertex
@@ -355,7 +356,7 @@ public class Graph<T> {
      */
     public Edge<T>[] findCycles() {
         ArrayList<Edge<T>> cycleEdges = new ArrayList<Edge<T>>();
-        // Mark all verticies as white
+        // Mark all vertices as white
         for (int n = 0; n < vertices.size(); n++) {
             Vertex<T> v = getVertex(n);
             v.setMarkState(VISIT_COLOR_WHITE);

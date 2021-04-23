@@ -1,6 +1,8 @@
 package com.jn.langx.util.collection.graph;
 
 
+import com.jn.langx.AbstractNamed;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +11,9 @@ import java.util.List;
  *
  * @param <T>
  */
-public class Vertex<T> {
+public class Vertex<T> extends AbstractNamed {
     private List<Edge<T>> incomingEdges;
     private List<Edge<T>> outgoingEdges;
-    private String name;
     private boolean mark;
     private int markState;
     private T data;
@@ -42,17 +43,11 @@ public class Vertex<T> {
     public Vertex(String n, T data) {
         incomingEdges = new ArrayList<Edge<T>>();
         outgoingEdges = new ArrayList<Edge<T>>();
-        name = n;
         mark = false;
-        this.data = data;
+        setName(n);
+        setData(data);
     }
 
-    /**
-     * @return the possibly null name of the vertex
-     */
-    public String getName() {
-        return name;
-    }
 
     /**
      * @return the possibly null data of the vertex
@@ -78,12 +73,13 @@ public class Vertex<T> {
      * @return true if the edge was added, false otherwise
      */
     public boolean addEdge(Edge<T> e) {
-        if (e.getFrom() == this)
+        if (e.getFrom() == this) {
             outgoingEdges.add(e);
-        else if (e.getTo() == this)
+        } else if (e.getTo() == this) {
             incomingEdges.add(e);
-        else
+        } else {
             return false;
+        }
         return true;
     }
 
@@ -225,29 +221,29 @@ public class Vertex<T> {
     }
 
     /**
-     * What is the cost from this vertext to the dest vertex.
+     * What is the cost from this vertex to the dest vertex.
      *
      * @param dest - the destination vertex.
      * @return Return Integer.MAX_VALUE if we have no edge to dest,
      * 0 if dest is this vertex, the cost of the outgoing edge
      * otherwise.
      */
-    public int cost(Vertex<T> dest) {
+    public int weight(Vertex<T> dest) {
         if (dest == this)
             return 0;
 
         Edge<T> e = findEdge(dest);
-        int cost = Integer.MAX_VALUE;
+        int weight = Integer.MAX_VALUE;
         if (e != null)
-            cost = e.getCost();
-        return cost;
+            weight = e.getWeight();
+        return weight;
     }
 
     /**
      * Is there an outgoing edge ending at dest.
      *
      * @param dest - the vertex to check
-     * @return true if there is an outgoing edge ending
+     * @return true if there is an outgoing edge ending`
      * at vertex, false otherwise.
      */
     public boolean hasEdge(Vertex<T> dest) {
@@ -307,7 +303,7 @@ public class Vertex<T> {
      * edges.
      */
     public String toString() {
-        StringBuffer tmp = new StringBuffer("Vertex(");
+        StringBuilder tmp = new StringBuilder("Vertex(");
         tmp.append(name);
         tmp.append(", data=");
         tmp.append(data);
@@ -319,7 +315,7 @@ public class Vertex<T> {
             tmp.append('{');
             tmp.append(e.getFrom().name);
             tmp.append(',');
-            tmp.append(e.getCost());
+            tmp.append(e.getWeight());
             tmp.append('}');
         }
         tmp.append("], out:[");
@@ -330,7 +326,7 @@ public class Vertex<T> {
             tmp.append('{');
             tmp.append(e.getTo().name);
             tmp.append(',');
-            tmp.append(e.getCost());
+            tmp.append(e.getWeight());
             tmp.append('}');
         }
         tmp.append(']');
