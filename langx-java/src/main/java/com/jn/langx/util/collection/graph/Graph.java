@@ -59,7 +59,7 @@ public class Graph<T> {
      * @return true if the vertex was added, false if it was already in the graph.
      */
     public boolean addVertex(Vertex<T> v) {
-        if (verticies.containsValue(v) == false) {
+        if (!verticies.containsValue(v)) {
             verticies.put(v.getName(), v);
             return true;
         }
@@ -92,7 +92,7 @@ public class Graph<T> {
      */
     public void setRootVertex(Vertex<T> root) {
         this.rootVertex = root;
-        if (verticies.containsValue(root) == false)
+        if (!verticies.containsValue(root))
             addVertex(root);
     }
 
@@ -103,15 +103,15 @@ public class Graph<T> {
      * @return the nth Vertex
      */
     public Vertex<T> getVertex(int n) {
-        return getVerticies().get(n);
+        return getVertices().get(n);
     }
 
     /**
-     * Get the graph verticies
+     * Get the graph vertices
      *
-     * @return the graph verticies
+     * @return the graph vertices
      */
-    public List<Vertex<T>> getVerticies() {
+    public List<Vertex<T>> getVertices() {
         return new ArrayList<Vertex<T>>(verticies.values());
     }
 
@@ -125,11 +125,10 @@ public class Graph<T> {
      * @throws IllegalArgumentException if from/to are not verticies in
      *                                  the graph
      */
-    public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost)
-            throws IllegalArgumentException {
-        if (verticies.containsValue(from) == false)
+    public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost) throws IllegalArgumentException {
+        if (!verticies.containsValue(from))
             throw new IllegalArgumentException("from is not in graph");
-        if (verticies.containsValue(to) == false)
+        if (!verticies.containsValue(to))
             throw new IllegalArgumentException("to is not in graph");
 
         Edge<T> e = new Edge<T>(from, to, cost);
@@ -153,8 +152,7 @@ public class Graph<T> {
      * @throws IllegalArgumentException if from/to are not verticies in
      *                                  the graph
      */
-    public boolean insertBiEdge(Vertex<T> from, Vertex<T> to, int cost)
-            throws IllegalArgumentException {
+    public boolean insertBiEdge(Vertex<T> from, Vertex<T> to, int cost) throws IllegalArgumentException {
         return addEdge(from, to, cost) && addEdge(to, from, cost);
     }
 
@@ -389,7 +387,7 @@ public class Graph<T> {
     }
 
     public String toString() {
-        StringBuffer tmp = new StringBuffer("Graph[");
+        StringBuilder tmp = new StringBuilder("Graph[");
         for (Vertex<T> v : verticies.values())
             tmp.append(v);
         tmp.append(']');
