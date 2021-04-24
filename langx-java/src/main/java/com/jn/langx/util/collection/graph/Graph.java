@@ -1,6 +1,8 @@
 package com.jn.langx.util.collection.graph;
 
 
+import com.jn.langx.util.collection.Collects;
+
 import java.util.*;
 
 /**
@@ -256,9 +258,15 @@ public class Graph<T> {
      * @return the graph edges
      */
     public List<Edge<T>> getEdges() {
-        return this.edges;
+        return Collects.newArrayList(this.edges);
     }
 
+    public boolean removeEdge(String from, String to){
+        if(hasVertex(from) && hasVertex(to)){
+            return removeEdge(getVertex(from), getVertex(to));
+        }
+        return false;
+    }
 
     /**
      * Remove an Edge<T> from the graph
