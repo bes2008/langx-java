@@ -52,19 +52,6 @@ public class Graph<T> {
         return vertices.size() == 0;
     }
 
-    /**
-     * Add a vertex to the graph
-     *
-     * @param v the Vertex to add
-     * @return true if the vertex was added, false if it was already in the graph.
-     */
-    public boolean addVertex(Vertex<T> v) {
-        if (!vertices.containsValue(v)) {
-            vertices.put(v.getName(), v);
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Get the vertex count.
@@ -85,86 +72,45 @@ public class Graph<T> {
     }
 
     /**
-     * Set a root vertex. If root does no exist in the graph it is added.
+     * Set a vertex vertex. If vertex does no exist in the graph it is added.
      *
-     * @param root - the vertex to set as the root and optionally add if it
-     *             does not exist in the graph.
+     * @param vertex - the vertex to set as the vertex and optionally add if it
+     *               does not exist in the graph.
      */
-    public void setRootVertex(Vertex<T> root) {
-        this.rootVertex = root;
-        if (!vertices.containsValue(root))
-            addVertex(root);
-    }
-
-    /**
-     * Get the given Vertex.
-     *
-     * @param n the index [0, size()-1] of the Vertex to access
-     * @return the nth Vertex
-     */
-    public Vertex<T> getVertex(int n) {
-        return getVertices().get(n);
-    }
-
-    /**
-     * Get the graph vertices
-     *
-     * @return the graph vertices
-     */
-    public List<Vertex<T>> getVertices() {
-        return new ArrayList<Vertex<T>>(vertices.values());
-    }
-
-    /**
-     * Insert a directed, weighted Edge<T> into the graph.
-     *
-     * @param from - the Edge<T> starting vertex
-     * @param to   - the Edge<T> ending vertex
-     * @param cost - the Edge<T> weight/cost
-     * @return true if the Edge<T> was added, false if from already has this Edge<T>
-     * @throws IllegalArgumentException if from/to are not verticies in
-     *                                  the graph
-     */
-    public boolean addEdge(Vertex<T> from, Vertex<T> to, int cost) throws IllegalArgumentException {
-        if (!vertices.containsValue(from)) {
-            throw new IllegalArgumentException("from vertex is not in graph");
+    public void setRootVertex(Vertex<T> vertex) {
+        this.rootVertex = vertex;
+        if (hasVertex(vertex.getName())) {
+            addVertex(vertex);
         }
-        if (!vertices.containsValue(to)) {
-            throw new IllegalArgumentException("to vertex is not in graph");
-        }
-        Edge<T> e = new Edge<T>(from, to, cost);
-        if (from.findEdge(to) != null)
-            return false;
-        else {
-            from.addEdge(e);
-            to.addEdge(e);
-            edges.add(e);
+    }
+
+
+    public boolean addVertex(String name, T data) {
+        return addVertex(new Vertex<T>(name, data));
+    }
+
+    /**
+     * Add a vertex to the graph
+     *
+     * @param v the Vertex to add
+     * @return true if the vertex was added, false if it was already in the graph.
+     */
+    public boolean addVertex(Vertex<T> v) {
+        if (hasVertex(v.getName())) {
+            vertices.put(v.getName(), v);
             return true;
         }
+        return false;
     }
 
-    /**
-     * Insert a bidirectional (两个方向的) Edge<T> in the graph
-     *
-     * @param from - the Edge<T> starting vertex
-     * @param to   - the Edge<T> ending vertex
-     * @param cost - the Edge<T> weight/cost
-     * @return true if edges between both nodes were added, false otherwise
-     * @throws IllegalArgumentException if from/to are not verticies in
-     *                                  the graph
-     */
-    public boolean insertBiEdge(Vertex<T> from, Vertex<T> to, int cost) throws IllegalArgumentException {
-        return addEdge(from, to, cost) && addEdge(to, from, cost);
+    public boolean removeVertex(String name) {
+        Vertex vertex = getVertex(name);
+        if (vertex != null) {
+            return removeVertex(vertex);
+        }
+        return false;
     }
 
-    /**
-     * Get the graph edges
-     *
-     * @return the graph edges
-     */
-    public List<Edge<T>> getEdges() {
-        return this.edges;
-    }
 
     /**
      * Remove a vertex from the graph
@@ -173,12 +119,14 @@ public class Graph<T> {
      * @return true if the Vertex was removed
      */
     public boolean removeVertex(Vertex<T> v) {
-        if (!vertices.containsValue(v))
+        if (hasVertex(v.getName())) {
             return false;
+        }
 
         vertices.remove(v.getName());
-        if (v == rootVertex)
+        if (v == rootVertex) {
             rootVertex = null;
+        }
 
         // Remove the edges associated with v
         for (int n = 0; n < v.getOutgoingEdgeCount(); n++) {
@@ -196,6 +144,121 @@ public class Graph<T> {
         }
         return true;
     }
+
+
+    /**
+     * Get the graph vertices
+     *
+     * @return the graph vertices
+     */
+    public List<Vertex<T>> getVertices() {
+        return new ArrayList<Vertex<T>>(vertices.values());
+    }
+
+    /**
+     * Get the given Vertex.
+     *
+     * @param n the index [0, size()-1] of the Vertex to access
+     * @return the nth Vertex
+     */
+    public Vertex<T> getVertex(int n) {
+        return getVertices().get(n);
+    }
+
+
+    /**
+     * Search the verticies for one with name.
+     *
+     * @param name - the vertex name
+     * @return the first vertex with a matching name, null if no
+     * matches are found
+     */
+    public Vertex<T> getVertex(String name) {
+        return vertices.get(name);
+    }
+
+    public boolean hasVertex(String name) {
+        return getVertex(name) == null;
+    }
+
+    /**
+     * Search the verticies for one with data.
+     *
+     * @param data    - the vertex data to match
+     * @param compare - the comparator to perform the match
+     * @return the first vertex with a matching data, null if no
+     * matches are found
+     */
+    public Vertex<T> findVertexByData(T data, Comparator<T> compare) {
+        Vertex<T> match = null;
+        for (Vertex<T> v : vertices.values()) {
+            if (compare.compare(data, v.getData()) == 0) {
+                match = v;
+                break;
+            }
+        }
+        return match;
+    }
+
+    public boolean addEdge(String from, String to, int weight) throws IllegalArgumentException {
+        if (hasVertex(from)) {
+            throw new IllegalArgumentException("from vertex " + from + " is not in graph");
+        }
+        if (hasVertex(to)) {
+            throw new IllegalArgumentException("to vertex " + to + " is not in graph");
+        }
+        return addEdge(getVertex(from), getVertex(to), weight);
+    }
+
+    /**
+     * Insert a directed, weighted Edge<T> into the graph.
+     *
+     * @param from   - the Edge<T> starting vertex
+     * @param to     - the Edge<T> ending vertex
+     * @param weight - the Edge<T> weight
+     * @return true if the Edge<T> was added, false if from already has this Edge<T>
+     */
+    public boolean addEdge(Vertex<T> from, Vertex<T> to, int weight) {
+        if (hasVertex(from.getName())) {
+            addVertex(from);
+        }
+        if (hasVertex(to.getName())) {
+            addVertex(to);
+        }
+        Edge<T> e = new Edge<T>(from, to, weight);
+        if (from.findEdge(to) != null)
+            return false;
+        else {
+            from.addEdge(e);
+            to.addEdge(e);
+            edges.add(e);
+            return true;
+        }
+    }
+
+    /**
+     * Insert a bidirectional (两个方向的) Edge<T> in the graph
+     *
+     * @param from - the Edge<T> starting vertex
+     * @param to   - the Edge<T> ending vertex
+     * @param weight - the Edge<T> weight/cost
+     * @return true if edges between both nodes were added, false otherwise
+     * @throws IllegalArgumentException if from/to are not verticies in
+     *                                  the graph
+     */
+    public boolean insertBiEdge(Vertex<T> from, Vertex<T> to, int weight){
+        return addEdge(from, to, weight) && addEdge(to, from, weight);
+    }
+
+    /**
+     * Get the graph edges
+     *
+     * @return the graph edges
+     */
+    public List<Edge<T>> getEdges() {
+        return this.edges;
+    }
+
 
     /**
      * Remove an Edge<T> from the graph
@@ -217,23 +280,25 @@ public class Graph<T> {
     }
 
     /**
-     * Clear the mark state of all verticies in the graph by calling
-     * clearMark() on all verticies.
+     * Clear the mark state of all vertices in the graph by calling
+     * clearMark() on all vertices.
      *
-     * @see Vertex#clearMark()
+     * @see Vertex#clearVisitedFlag() ()
      */
-    public void clearMark() {
-        for (Vertex<T> w : vertices.values())
-            w.clearMark();
+    public void clearVertexVisitedFlag() {
+        for (Vertex<T> w : vertices.values()) {
+            w.clearVisitedFlag();
+        }
     }
 
     /**
      * Clear the mark state of all edges in the graph by calling
      * clearMark() on all edges.
      */
-    public void clearEdges() {
-        for (Edge<T> e : edges)
-            e.clearMark();
+    public void clearEdgesVisitedFlag() {
+        for (Edge<T> e : edges) {
+            e.clearVisitedFlag();
+        }
     }
 
     /**
@@ -242,16 +307,16 @@ public class Graph<T> {
      *
      * @param v       - the Vertex to start the search from
      * @param visitor - the vistor to inform prior to
-     * @throws Exception if visitor.visit throws an exception
      * @see Visitor#visit(Graph, Vertex)
      */
     public void depthFirstSearch(Vertex<T> v, Visitor<T> visitor) {
-        if (visitor != null)
+        if (visitor != null) {
             visitor.visit(this, v);
+        }
         v.visit();
         for (int i = 0; i < v.getOutgoingEdgeCount(); i++) {
             Edge<T> e = v.getOutgoingEdge(i);
-            if (!e.getTo().visited()) {
+            if (!e.getTo().isVisited()) {
                 depthFirstSearch(e.getTo(), visitor);
             }
         }
@@ -266,7 +331,6 @@ public class Graph<T> {
      * @param v       - the search starting point
      * @param visitor - the vistor whose vist method is called prior
      *                to visting a vertex.
-     * @throws Exception if vistor.visit throws an exception
      */
     public void breadthFirstSearch(Vertex<T> v, Visitor<T> visitor) {
         LinkedList<Vertex<T>> q = new LinkedList<Vertex<T>>();
@@ -280,7 +344,7 @@ public class Graph<T> {
             for (int i = 0; i < v.getOutgoingEdgeCount(); i++) {
                 Edge<T> e = v.getOutgoingEdge(i);
                 Vertex<T> to = e.getTo();
-                if (!to.visited()) {
+                if (!to.isVisited()) {
                     q.add(to);
                     if (visitor != null)
                         visitor.visit(this, to);
@@ -291,6 +355,7 @@ public class Graph<T> {
     }
 
     /**
+     * 生成树算法
      * Find the spanning tree using a DFS starting from v.
      *
      * @param v       - the vertex to start the search from
@@ -299,49 +364,21 @@ public class Graph<T> {
      */
     public void dfsSpanningTree(Vertex<T> v, DFSVisitor<T> visitor) {
         v.visit();
-        if (visitor != null)
+        if (visitor != null) {
             visitor.visit(this, v);
-
+        }
         for (int i = 0; i < v.getOutgoingEdgeCount(); i++) {
             Edge<T> e = v.getOutgoingEdge(i);
-            if (!e.getTo().visited()) {
-                if (visitor != null)
+            if (!e.getTo().isVisited()) {
+                if (visitor != null) {
                     visitor.visit(this, v, e);
-                e.mark();
+                }
+                e.visit();
                 dfsSpanningTree(e.getTo(), visitor);
             }
         }
     }
 
-    /**
-     * Search the verticies for one with name.
-     *
-     * @param name - the vertex name
-     * @return the first vertex with a matching name, null if no
-     * matches are found
-     */
-    public Vertex<T> findVertexByName(String name) {
-        return vertices.get(name);
-    }
-
-    /**
-     * Search the verticies for one with data.
-     *
-     * @param data    - the vertex data to match
-     * @param compare - the comparator to perform the match
-     * @return the first vertex with a matching data, null if no
-     * matches are found
-     */
-    public Vertex<T> findVertexByData(T data, Comparator<T> compare) {
-        Vertex<T> match = null;
-        for (Vertex<T> v : vertices.values()) {
-            if (compare.compare(data, v.getData()) == 0) {
-                match = v;
-                break;
-            }
-        }
-        return match;
-    }
 
     /**
      * Search the graph for cycles. In order to detect cycles, we use

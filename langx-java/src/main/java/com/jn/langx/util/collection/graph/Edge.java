@@ -8,7 +8,7 @@ public class Edge<T> {
     private Vertex<T> from;
     private Vertex<T> to;
     private int weight;
-    private boolean mark;
+    private boolean visited = false;
 
     /**
      * Create a zero cost edge between from and to
@@ -31,7 +31,6 @@ public class Edge<T> {
         this.from = from;
         this.to = to;
         this.weight = weight;
-        mark = false;
     }
 
     /**
@@ -61,18 +60,22 @@ public class Edge<T> {
         return weight;
     }
 
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     /**
      * Set the mark flag of the edge
      */
-    public void mark() {
-        mark = true;
+    public void visit() {
+        visited = true;
     }
 
     /**
      * Clear the edge mark flag
      */
-    public void clearMark() {
-        mark = false;
+    public void clearVisitedFlag() {
+        visited = false;
     }
 
     /**
@@ -80,8 +83,8 @@ public class Edge<T> {
      *
      * @return edge mark flag
      */
-    public boolean isMarked() {
-        return mark;
+    public boolean isVisited() {
+        return visited;
     }
 
     /**

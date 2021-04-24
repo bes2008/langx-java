@@ -2,8 +2,11 @@ package com.jn.langx.util.collection.graph;
 
 
 import com.jn.langx.AbstractNamed;
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.hash.HashCodeBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,10 +15,11 @@ import java.util.List;
  * @param <T>
  */
 public class Vertex<T> extends AbstractNamed {
-    private List<Edge<T>> incomingEdges;
-    private List<Edge<T>> outgoingEdges;
-    private boolean mark;
+    private List<Edge<T>> incomingEdges = Collects.emptyArrayList();
+    private List<Edge<T>> outgoingEdges = Collects.emptyArrayList();
+    private boolean visited = false;
     private int markState;
+    @Nullable
     private T data;
 
     /**
@@ -41,9 +45,6 @@ public class Vertex<T> extends AbstractNamed {
      * @param data - data associated with vertex
      */
     public Vertex(String n, T data) {
-        incomingEdges = new ArrayList<Edge<T>>();
-        outgoingEdges = new ArrayList<Edge<T>>();
-        mark = false;
         setName(n);
         setData(data);
     }
@@ -86,23 +87,23 @@ public class Vertex<T> extends AbstractNamed {
     /**
      * Add an outgoing edge ending at to.
      *
-     * @param to   - the destination vertex
-     * @param cost the edge cost
+     * @param to     - the destination vertex
+     * @param weight the edge weight
      */
-    public void addOutgoingEdge(Vertex<T> to, int cost) {
-        Edge<T> out = new Edge<T>(this, to, cost);
-        outgoingEdges.add(out);
+    public void addOutgoingEdge(Vertex<T> to, int weight) {
+        Edge<T> out = new Edge<T>(this, to, weight);
+        addEdge(out);
     }
 
     /**
      * Add an incoming edge starting at from
      *
-     * @param from - the starting vertex
-     * @param cost the edge cost
+     * @param from   - the starting vertex
+     * @param weight the edge weight
      */
-    public void addIncomingEdge(Vertex<T> from, int cost) {
-        Edge<T> out = new Edge<T>(this, from, cost);
-        incomingEdges.add(out);
+    public void addIncomingEdge(Vertex<T> from, int weight) {
+        Edge<T> incoming = new Edge<T>(from, this, weight);
+        addEdge(incoming);
     }
 
     /**
@@ -113,12 +114,13 @@ public class Vertex<T> extends AbstractNamed {
      * @return true it has an edge
      */
     public boolean hasEdge(Edge<T> e) {
-        if (e.getFrom() == this)
+        if (e.getFrom() == this) {
             return outgoingEdges.contains(e);
-        else if (e.getTo() == this)
+        } else if (e.getTo() == this) {
             return incomingEdges.contains(e);
-        else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -129,12 +131,13 @@ public class Vertex<T> extends AbstractNamed {
      * edge was not connected to this vertex
      */
     public boolean remove(Edge<T> e) {
-        if (e.getFrom() == this)
+        if (e.getFrom() == this) {
             outgoingEdges.remove(e);
-        else if (e.getTo() == this)
+        } else if (e.getTo() == this) {
             incomingEdges.remove(e);
-        else
+        } else {
             return false;
+        }
         return true;
     }
 
@@ -160,7 +163,7 @@ public class Vertex<T> extends AbstractNamed {
      *
      * @return incoming edge list
      */
-    public List getIncomingEdges() {
+    public List<Edge<T>> getIncomingEdges() {
         return this.incomingEdges;
     }
 
@@ -186,7 +189,7 @@ public class Vertex<T> extends AbstractNamed {
      *
      * @return outgoing edge list
      */
-    public List getOutgoingEdges() {
+    public List<Edge<T>> getOutgoingEdges() {
         return this.outgoingEdges;
     }
 
@@ -200,8 +203,9 @@ public class Vertex<T> extends AbstractNamed {
      */
     public Edge<T> findEdge(Vertex<T> dest) {
         for (Edge<T> e : outgoingEdges) {
-            if (e.getTo() == dest)
+            if (e.getTo() == dest) {
                 return e;
+            }
         }
         return null;
     }
@@ -214,10 +218,11 @@ public class Vertex<T> extends AbstractNamed {
      * otherwise.
      */
     public Edge<T> findEdge(Edge<T> e) {
-        if (outgoingEdges.contains(e))
+        if (outgoingEdges.contains(e)) {
             return e;
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -229,13 +234,15 @@ public class Vertex<T> extends AbstractNamed {
      * otherwise.
      */
     public int weight(Vertex<T> dest) {
-        if (dest == this)
+        if (dest == this) {
             return 0;
+        }
 
         Edge<T> e = findEdge(dest);
         int weight = Integer.MAX_VALUE;
-        if (e != null)
+        if (e != null) {
             weight = e.getWeight();
+        }
         return weight;
     }
 
@@ -247,7 +254,7 @@ public class Vertex<T> extends AbstractNamed {
      * at vertex, false otherwise.
      */
     public boolean hasEdge(Vertex<T> dest) {
-        return (findEdge(dest) != null);
+        return findEdge(dest) != null;
     }
 
     /**
@@ -255,15 +262,15 @@ public class Vertex<T> extends AbstractNamed {
      *
      * @return true is visit has been called
      */
-    public boolean visited() {
-        return mark;
+    public boolean isVisited() {
+        return visited;
     }
 
     /**
      * Set the vertex mark flag.
      */
-    public void mark() {
-        mark = true;
+    private void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
     /**
@@ -288,14 +295,41 @@ public class Vertex<T> extends AbstractNamed {
      * Visit the vertex and set the mark flag to true.
      */
     public void visit() {
-        mark();
+        setVisited(true);
     }
 
     /**
      * Clear the visited mark flag.
      */
-    public void clearMark() {
-        mark = false;
+    public void clearVisitedFlag() {
+        setVisited(false);
+    }
+
+    public boolean isRoot() {
+        return getIncomingEdgeCount() == 0;
+    }
+
+    public boolean isLeaf() {
+        return getOutgoingEdgeCount() == 0;
+    }
+
+    public boolean isIsolated() {
+        return isRoot() && isLeaf();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vertex<?> vertex = (Vertex<?>) o;
+        return Objs.equals(this.name, vertex.name);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().with(name).with(data).build();
     }
 
     /**
