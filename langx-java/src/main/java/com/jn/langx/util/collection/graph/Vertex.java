@@ -177,6 +177,15 @@ public class Vertex<T> extends AbstractNamed {
         }).asList();
     }
 
+    public List<String> getIncomingVertexNames(){
+        return Pipeline.of(getIncomingVertices()).map(new Function<Vertex<T>, String>() {
+            @Override
+            public String apply(Vertex<T> vertex) {
+                return vertex.getName();
+            }
+        }).asList();
+    }
+
     /**
      * @return the count of incoming edges
      */
@@ -204,12 +213,21 @@ public class Vertex<T> extends AbstractNamed {
     }
 
 
-    public List<Vertex> getOutgoingVertices() {
+    public List<Vertex<T>> getOutgoingVertices() {
         List<Edge<T>> edges = getIncomingEdges();
-        return Pipeline.of(edges).map(new Function<Edge<T>, Vertex>() {
+        return Pipeline.of(edges).map(new Function<Edge<T>, Vertex<T>>() {
             @Override
-            public Vertex apply(Edge<T> edge) {
+            public Vertex<T> apply(Edge<T> edge) {
                 return edge.getTo();
+            }
+        }).asList();
+    }
+
+    public List<String> getOutgoingVertexNames(){
+        return Pipeline.of(getOutgoingVertices()).map(new Function<Vertex<T>, String>() {
+            @Override
+            public String apply(Vertex<T> vertex) {
+                return vertex.getName();
             }
         }).asList();
     }

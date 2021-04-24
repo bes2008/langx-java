@@ -29,15 +29,15 @@ public class Graph<T> {
     /**
      * Map<String, Vertex> of graph vertices
      */
-    private Map<String, Vertex<T>> vertices;
+    protected Map<String, Vertex<T>> vertices;
     /**
      * Vector<Edge> of edges in the graph
      */
-    private List<Edge<T>> edges;
+    protected List<Edge<T>> edges;
     /**
      * The vertex identified as the root of the graph
      */
-    private Vertex<T> rootVertex;
+    protected Vertex<T> rootVertex;
 
     /**
      * Construct a new graph without any vertices or edges
@@ -294,6 +294,19 @@ public class Graph<T> {
             edges.remove(e);
             return true;
         }
+    }
+
+    public boolean hasEdge(String from, String to){
+        Vertex<T> fromVertex = getVertex(from);
+        Vertex<T> toVertex = getVertex(to);
+        if(fromVertex==null || toVertex==null){
+            return false;
+        }
+        return fromVertex.getOutgoingVertices().contains(toVertex);
+    }
+
+    public boolean hasBiEdge(String from, String to){
+        return hasEdge(from, to) && hasEdge(to, from);
     }
 
 
