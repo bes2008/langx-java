@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Graphs {
-    public final static Integer NOT_VISITED = 0;
-    public final static Integer VISITING = 1;
-    public final static Integer VISITED = 2;
 
     private static final Supplier<String, VisitStatus> NOT_VISITED_SUPPLIER = new Supplier<String, VisitStatus>() {
         @Override
@@ -71,7 +68,7 @@ public class Graphs {
     public static List<String> introducesCycle(final Vertex vertex, final Map<String, VisitStatus> vertexStateMap) {
         final LinkedList<String> cycleStack = new LinkedList<String>();
 
-        final boolean hasCycle = dfsVisit(vertex, cycleStack, vertexStateMap);
+        final boolean hasCycle = dfsVisitCheckCycle(vertex, cycleStack, vertexStateMap);
 
         if (hasCycle) {
             // we have a situation like: [b, a, c, d, b, f, g, h].
@@ -95,15 +92,15 @@ public class Graphs {
     }
 
 
-    private static boolean dfsVisit(final Vertex vertex, final LinkedList<String> cycle,
-                                    final Map<String, VisitStatus> vertexStateMap) {
+    private static boolean dfsVisitCheckCycle(final Vertex vertex, final LinkedList<String> cycle,
+                                              final Map<String, VisitStatus> vertexStateMap) {
         cycle.addFirst(vertex.getName());
 
         Graphs.beginVisit(vertexStateMap, vertex.getName());
         List<Vertex> outgoing = vertex.getOutgoingVertices();
         for (Vertex v : outgoing) {
             if (Graphs.isNotVisited(vertexStateMap, v.getName())) {
-                final boolean hasCycle = dfsVisit(v, cycle, vertexStateMap);
+                final boolean hasCycle = dfsVisitCheckCycle(v, cycle, vertexStateMap);
                 if (hasCycle) {
                     return true;
                 }
