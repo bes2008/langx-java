@@ -47,7 +47,7 @@ public class Graphs {
         List<String> retValue = null;
         for (Vertex vertex : vertices) {
             if (Graphs.isNotVisited(vertexStateMap, vertex.getName())) {
-                retValue = introducesCycle(vertex, vertexStateMap);
+                retValue = detectCycle(vertex, vertexStateMap);
                 if (retValue != null) {
                     break;
                 }
@@ -65,7 +65,7 @@ public class Graphs {
      * @param vertexStateMap
      * @return
      */
-    public static List<String> introducesCycle(final Vertex vertex, final Map<String, VisitStatus> vertexStateMap) {
+    public static List<String> detectCycle(final Vertex vertex, final Map<String, VisitStatus> vertexStateMap) {
         final LinkedList<String> cycleStack = new LinkedList<String>();
 
         final boolean hasCycle = dfsVisitCheckCycle(vertex, cycleStack, vertexStateMap);
@@ -86,9 +86,9 @@ public class Graphs {
         return null;
     }
 
-    public static List<String> introducesCycle(final Vertex vertex) {
+    public static List<String> detectCycle(final Vertex vertex) {
         final Map<String, VisitStatus> vertexStateMap = Graphs.newVisitStatusMap();
-        return introducesCycle(vertex, vertexStateMap);
+        return detectCycle(vertex, vertexStateMap);
     }
 
 

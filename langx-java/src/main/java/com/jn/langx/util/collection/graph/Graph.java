@@ -2,6 +2,8 @@ package com.jn.langx.util.collection.graph;
 
 
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 
 import java.util.*;
 
@@ -157,6 +159,15 @@ public class Graph<T> {
         return new ArrayList<Vertex<T>>(vertices.values());
     }
 
+    public List<String> getVerticNames() {
+        return Pipeline.of(getVertices()).map(new Function<Vertex<T>, String>() {
+            @Override
+            public String apply(Vertex<T> vertex) {
+                return vertex.getName();
+            }
+        }).asList();
+    }
+
     /**
      * Get the given Vertex.
      *
@@ -248,7 +259,7 @@ public class Graph<T> {
      * @throws IllegalArgumentException if from/to are not verticies in
      *                                  the graph
      */
-    public boolean insertBiEdge(Vertex<T> from, Vertex<T> to, int weight) {
+    public boolean addBiEdge(Vertex<T> from, Vertex<T> to, int weight) {
         return addEdge(from, to, weight) && addEdge(to, from, weight);
     }
 
@@ -290,8 +301,9 @@ public class Graph<T> {
 
     public String toString() {
         StringBuilder tmp = new StringBuilder("Graph[");
-        for (Vertex<T> v : vertices.values())
+        for (Vertex<T> v : vertices.values()) {
             tmp.append(v);
+        }
         tmp.append(']');
         return tmp.toString();
     }
