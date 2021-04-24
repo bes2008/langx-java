@@ -5,6 +5,8 @@ import com.jn.langx.AbstractNamed;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
 import java.util.List;
@@ -17,8 +19,6 @@ import java.util.List;
 public class Vertex<T> extends AbstractNamed {
     private List<Edge<T>> incomingEdges = Collects.emptyArrayList();
     private List<Edge<T>> outgoingEdges = Collects.emptyArrayList();
-    private boolean visited = false;
-    private int markState;
     @Nullable
     private T data;
 
@@ -167,6 +167,16 @@ public class Vertex<T> extends AbstractNamed {
         return this.incomingEdges;
     }
 
+    public List<Vertex<T>> getIncomingVertices() {
+        List<Edge<T>> edges = getIncomingEdges();
+        return Pipeline.of(edges).map(new Function<Edge<T>, Vertex<T>>() {
+            @Override
+            public Vertex<T> apply(Edge<T> edge) {
+                return edge.getFrom();
+            }
+        }).asList();
+    }
+
     /**
      * @return the count of incoming edges
      */
@@ -191,6 +201,17 @@ public class Vertex<T> extends AbstractNamed {
      */
     public List<Edge<T>> getOutgoingEdges() {
         return this.outgoingEdges;
+    }
+
+
+    public List<Vertex> getOutgoingVertices() {
+        List<Edge<T>> edges = getIncomingEdges();
+        return Pipeline.of(edges).map(new Function<Edge<T>, Vertex>() {
+            @Override
+            public Vertex apply(Edge<T> edge) {
+                return edge.getTo();
+            }
+        }).asList();
     }
 
     /**
@@ -257,54 +278,6 @@ public class Vertex<T> extends AbstractNamed {
         return findEdge(dest) != null;
     }
 
-    /**
-     * Has this vertex been marked during a visit
-     *
-     * @return true is visit has been called
-     */
-    public boolean isVisited() {
-        return visited;
-    }
-
-    /**
-     * Set the vertex mark flag.
-     */
-    private void setVisited(boolean visited) {
-        this.visited = visited;
-    }
-
-    /**
-     * Set the mark state to state.
-     *
-     * @param state the state
-     */
-    public void setMarkState(int state) {
-        markState = state;
-    }
-
-    /**
-     * Get the mark state value.
-     *
-     * @return the mark state
-     */
-    public int getMarkState() {
-        return markState;
-    }
-
-    /**
-     * Visit the vertex and set the mark flag to true.
-     */
-    public void visit() {
-        setVisited(true);
-    }
-
-    /**
-     * Clear the visited mark flag.
-     */
-    public void clearVisitedFlag() {
-        setVisited(false);
-    }
-
     public boolean isRoot() {
         return getIncomingEdgeCount() == 0;
     }
@@ -344,8 +317,9 @@ public class Vertex<T> extends AbstractNamed {
         tmp.append("), in:[");
         for (int i = 0; i < incomingEdges.size(); i++) {
             Edge<T> e = incomingEdges.get(i);
-            if (i > 0)
+            if (i > 0) {
                 tmp.append(',');
+            }
             tmp.append('{');
             tmp.append(e.getFrom().name);
             tmp.append(',');
@@ -355,8 +329,9 @@ public class Vertex<T> extends AbstractNamed {
         tmp.append("], out:[");
         for (int i = 0; i < outgoingEdges.size(); i++) {
             Edge<T> e = outgoingEdges.get(i);
-            if (i > 0)
+            if (i > 0) {
                 tmp.append(',');
+            }
             tmp.append('{');
             tmp.append(e.getTo().name);
             tmp.append(',');
