@@ -83,9 +83,7 @@ public class Graph<T> {
      */
     public void setRootVertex(Vertex<T> vertex) {
         this.rootVertex = vertex;
-        if (hasVertex(vertex.getName())) {
-            addVertex(vertex);
-        }
+        addVertex(vertex);
     }
 
 
@@ -100,7 +98,7 @@ public class Graph<T> {
      * @return true if the vertex was added, false if it was already in the graph.
      */
     public boolean addVertex(Vertex<T> v) {
-        if (hasVertex(v.getName())) {
+        if (!hasVertex(v.getName())) {
             vertices.put(v.getName(), v);
             return true;
         }
@@ -123,7 +121,7 @@ public class Graph<T> {
      * @return true if the Vertex was removed
      */
     public boolean removeVertex(Vertex<T> v) {
-        if (hasVertex(v.getName())) {
+        if (!hasVertex(v.getName())) {
             return false;
         }
 
@@ -214,10 +212,10 @@ public class Graph<T> {
     }
 
     public boolean addEdge(String from, String to, int weight) throws IllegalArgumentException {
-        if (hasVertex(from)) {
+        if (!hasVertex(from)) {
             throw new IllegalArgumentException("from vertex " + from + " is not in graph");
         }
-        if (hasVertex(to)) {
+        if (!hasVertex(to)) {
             throw new IllegalArgumentException("to vertex " + to + " is not in graph");
         }
         return addEdge(getVertex(from), getVertex(to), weight);
@@ -232,10 +230,10 @@ public class Graph<T> {
      * @return true if the Edge<T> was added, false if from already has this Edge<T>
      */
     public boolean addEdge(Vertex<T> from, Vertex<T> to, int weight) {
-        if (hasVertex(from.getName())) {
+        if (!hasVertex(from.getName())) {
             addVertex(from);
         }
-        if (hasVertex(to.getName())) {
+        if (!hasVertex(to.getName())) {
             addVertex(to);
         }
         Edge<T> e = new Edge<T>(from, to, weight);
