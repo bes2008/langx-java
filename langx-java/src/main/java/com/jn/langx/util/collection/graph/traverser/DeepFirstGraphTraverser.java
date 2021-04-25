@@ -9,18 +9,9 @@ import java.util.Map;
  *
  * @param <T>
  */
-public class DeepFirstGraphTraverser<T> implements GraphTraverser<T> {
-    @Override
-    public void traverse(Graph<T> graph, String vertexName, VertexConsumer<T> consumer) {
-        Vertex v = graph.getVertex(vertexName);
-        if (v == null) {
-            throw new IllegalArgumentException("the vertex (" + vertexName + ") is not exists");
-        }
-        Map<String, VisitStatus> visitStatusMap = Graphs.newVisitStatusMap();
-        traverse(visitStatusMap, graph, v, null, consumer);
-    }
+public class DeepFirstGraphTraverser<T> extends AbstractGraphTraverser<T> {
 
-    private void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex v, Edge<T> edge, VertexConsumer<T> consumer) {
+    protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> v, Edge<T> edge, VertexConsumer<T> consumer) {
         if (consumer != null) {
             consumer.accept(graph, v, edge);
         }

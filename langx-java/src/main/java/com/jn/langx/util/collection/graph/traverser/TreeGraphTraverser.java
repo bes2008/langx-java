@@ -5,21 +5,15 @@ import com.jn.langx.util.collection.graph.*;
 import java.util.Map;
 
 /**
+ * spanningTree
+ * <p>
  * 深度优先遍历，但遍历时，先遍历父节点
+ *
  * @param <T>
  */
-public class TreeGraphTraverser<T> implements GraphTraverser<T> {
-    @Override
-    public void traverse(Graph<T> graph, String vertexName, VertexConsumer<T> consumer) {
-        Vertex v = graph.getVertex(vertexName);
-        if (v == null) {
-            throw new IllegalArgumentException("the vertex (" + vertexName + ") is not exists");
-        }
-        Map<String, VisitStatus> visitStatusMap = Graphs.newVisitStatusMap();
-        spanningTreeTraverse(visitStatusMap, graph, v, null, consumer);
-    }
+public class TreeGraphTraverser<T> extends AbstractGraphTraverser<T> {
 
-    private void spanningTreeTraverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex v, Edge<T> edge, VertexConsumer<T> consumer) {
+    protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> v, Edge<T> edge, VertexConsumer<T> consumer) {
         if (consumer != null) {
             consumer.accept(graph, v, edge);
         }
@@ -31,7 +25,7 @@ public class TreeGraphTraverser<T> implements GraphTraverser<T> {
                     consumer.accept(graph, v, e);
                 }
                 Graphs.finishVisit(visitStatusMap, v.getName());
-                spanningTreeTraverse(visitStatusMap, graph, e.getTo(), e, consumer);
+                traverse(visitStatusMap, graph, e.getTo(), e, consumer);
             }
         }
     }

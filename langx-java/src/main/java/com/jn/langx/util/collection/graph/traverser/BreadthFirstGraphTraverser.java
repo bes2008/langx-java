@@ -7,20 +7,18 @@ import java.util.Map;
 
 /**
  * 广度优先遍历，先从最高层遍历，逐层遍历
+ *
  * @param <T>
  */
-public class BreadthFirstGraphTraverser<T> implements GraphTraverser<T> {
+public class BreadthFirstGraphTraverser<T> extends AbstractGraphTraverser<T> {
+
     @Override
-    public void traverse(Graph<T> graph, String vertexName, VertexConsumer<T> consumer) {
-        Vertex v = graph.getVertex(vertexName);
-        if (v == null) {
-            throw new IllegalArgumentException("the vertex (" + vertexName + ") is not exists");
-        }
+    protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> v, Edge<T> edge, VertexConsumer<T> consumer) {
         LinkedList<Vertex<T>> q = new LinkedList<Vertex<T>>();
-        Map<String, VisitStatus> visitStatusMap = Graphs.newVisitStatusMap();
+
         q.add(v);
         if (consumer != null) {
-            consumer.accept(graph, v,null);
+            consumer.accept(graph, v, null);
         }
         Graphs.finishVisit(visitStatusMap, v.getName());
         while (!q.isEmpty()) {
