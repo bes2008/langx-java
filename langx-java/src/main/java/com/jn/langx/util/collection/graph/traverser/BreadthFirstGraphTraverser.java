@@ -13,18 +13,18 @@ import java.util.Map;
 public class BreadthFirstGraphTraverser<T> extends AbstractGraphTraverser<T> {
 
     @Override
-    protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> v, Edge<T> edge, VertexConsumer<T> consumer) {
+    protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> vertex, Edge<T> edge, VertexConsumer<T> consumer) {
         LinkedList<Vertex<T>> q = new LinkedList<Vertex<T>>();
 
-        q.add(v);
+        q.add(vertex);
         if (consumer != null) {
-            consumer.accept(graph, v, null);
+            consumer.accept(graph, vertex, null);
         }
-        Graphs.finishVisit(visitStatusMap, v.getName());
+        Graphs.finishVisit(visitStatusMap, vertex.getName());
         while (!q.isEmpty()) {
-            v = q.removeFirst();
-            for (int i = 0; i < v.getOutgoingEdgeCount(); i++) {
-                Edge<T> e = v.getOutgoingEdge(i);
+            vertex = q.removeFirst();
+            for (int i = 0; i < vertex.getOutgoingEdgeCount(); i++) {
+                Edge<T> e = vertex.getOutgoingEdge(i);
                 Vertex<T> to = e.getTo();
                 if (Graphs.isNotVisited(visitStatusMap, to.getName())) {
                     q.add(to);

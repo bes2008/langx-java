@@ -11,13 +11,13 @@ import java.util.Map;
  */
 public class DeepFirstGraphTraverser<T> extends AbstractGraphTraverser<T> {
 
-    protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> v, Edge<T> edge, VertexConsumer<T> consumer) {
+    protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> vertex, Edge<T> edge, VertexConsumer<T> consumer) {
         if (consumer != null) {
-            consumer.accept(graph, v, edge);
+            consumer.accept(graph, vertex, edge);
         }
-        Graphs.finishVisit(visitStatusMap, v.getName());
-        for (int i = 0; i < v.getOutgoingEdgeCount(); i++) {
-            Edge<T> e = v.getOutgoingEdge(i);
+        Graphs.finishVisit(visitStatusMap, vertex.getName());
+        for (int i = 0; i < vertex.getOutgoingEdgeCount(); i++) {
+            Edge<T> e = vertex.getOutgoingEdge(i);
             if (Graphs.isNotVisited(visitStatusMap, e.getTo().getName())) {
                 traverse(visitStatusMap, graph, e.getTo(), e, consumer);
             }
