@@ -211,14 +211,30 @@ public class Graph<T> {
         return match;
     }
 
+    public boolean addEdge(String from, String to) throws IllegalArgumentException {
+        return this.addEdge(from, to, 0);
+    }
+
     public boolean addEdge(String from, String to, int weight) throws IllegalArgumentException {
+        return this.addEdge(from, to, null, weight);
+    }
+
+    public boolean addEdge(String from, String to, String label, int weight) throws IllegalArgumentException {
         if (!hasVertex(from)) {
             throw new IllegalArgumentException("from vertex " + from + " is not in graph");
         }
         if (!hasVertex(to)) {
             throw new IllegalArgumentException("to vertex " + to + " is not in graph");
         }
-        return addEdge(getVertex(from), getVertex(to), weight);
+        return addEdge(getVertex(from), getVertex(to), label, weight);
+    }
+
+    public boolean addEdge(Vertex<T> from, Vertex<T> to) {
+        return this.addEdge(from, to, 0);
+    }
+
+    public boolean addEdge(Vertex<T> from, Vertex<T> to, int weight) {
+        return this.addEdge(from, to, null, weight);
     }
 
     /**
@@ -229,14 +245,14 @@ public class Graph<T> {
      * @param weight - the Edge<T> weight
      * @return true if the Edge<T> was added, false if from already has this Edge<T>
      */
-    public boolean addEdge(Vertex<T> from, Vertex<T> to, int weight) {
+    public boolean addEdge(Vertex<T> from, Vertex<T> to, String label, int weight) {
         if (!hasVertex(from.getName())) {
             addVertex(from);
         }
         if (!hasVertex(to.getName())) {
             addVertex(to);
         }
-        Edge<T> e = new Edge<T>(from, to, weight);
+        Edge<T> e = new Edge<T>(from, to, label, weight);
         if (from.findEdge(to) != null)
             return false;
         else {
@@ -296,16 +312,16 @@ public class Graph<T> {
         }
     }
 
-    public boolean hasEdge(String from, String to){
+    public boolean hasEdge(String from, String to) {
         Vertex<T> fromVertex = getVertex(from);
         Vertex<T> toVertex = getVertex(to);
-        if(fromVertex==null || toVertex==null){
+        if (fromVertex == null || toVertex == null) {
             return false;
         }
         return fromVertex.getOutgoingVertices().contains(toVertex);
     }
 
-    public boolean hasBiEdge(String from, String to){
+    public boolean hasBiEdge(String from, String to) {
         return hasEdge(from, to) && hasEdge(to, from);
     }
 

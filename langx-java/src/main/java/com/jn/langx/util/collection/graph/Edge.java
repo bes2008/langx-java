@@ -1,12 +1,16 @@
 package com.jn.langx.util.collection.graph;
 
 
+import com.jn.langx.text.StringTemplates;
+
 /**
  * A directed, weighted edge in a graph
  */
 public class Edge<T> {
     private Vertex<T> from;
     private Vertex<T> to;
+    private String label;
+
     private int weight;
 
     /**
@@ -19,6 +23,14 @@ public class Edge<T> {
         this(from, to, 0);
     }
 
+    public Edge(Vertex<T> from, Vertex<T> to, String label) {
+        this(from, to, label, 0);
+    }
+
+    public Edge(Vertex<T> from, Vertex<T> to, int weight) {
+        this(from, to, null, 0);
+    }
+
     /**
      * Create an edge between from and to with the given cost.
      *
@@ -26,10 +38,11 @@ public class Edge<T> {
      * @param to     the ending vertex
      * @param weight the weight of the edge
      */
-    public Edge(Vertex<T> from, Vertex<T> to, int weight) {
+    public Edge(Vertex<T> from, Vertex<T> to, String label, int weight) {
         this.from = from;
         this.to = to;
         this.weight = weight;
+        setLabel(label);
     }
 
     /**
@@ -70,13 +83,14 @@ public class Edge<T> {
      * @return string rep with from/to vertex names and cost
      */
     public String toString() {
-        StringBuffer tmp = new StringBuffer("Edge[from: ");
-        tmp.append(from.getName());
-        tmp.append(",to: ");
-        tmp.append(to.getName());
-        tmp.append(", weight: ");
-        tmp.append(weight);
-        tmp.append("]");
-        return tmp.toString();
+        return StringTemplates.formatWithPlaceholder("from: {}, to: {}, label: {}, weight:{}", from.getName(), to.getName(), label, weight);
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

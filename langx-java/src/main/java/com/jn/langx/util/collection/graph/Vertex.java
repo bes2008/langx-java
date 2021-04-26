@@ -3,7 +3,9 @@ package com.jn.langx.util.collection.graph;
 
 import com.jn.langx.AbstractNamed;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
@@ -177,7 +179,7 @@ public class Vertex<T> extends AbstractNamed {
         }).asList();
     }
 
-    public List<String> getIncomingVertexNames(){
+    public List<String> getIncomingVertexNames() {
         return Pipeline.of(getIncomingVertices()).map(new Function<Vertex<T>, String>() {
             @Override
             public String apply(Vertex<T> vertex) {
@@ -223,7 +225,7 @@ public class Vertex<T> extends AbstractNamed {
         }).asList();
     }
 
-    public List<String> getOutgoingVertexNames(){
+    public List<String> getOutgoingVertexNames() {
         return Pipeline.of(getOutgoingVertices()).map(new Function<Vertex<T>, String>() {
             @Override
             public String apply(Vertex<T> vertex) {
@@ -333,29 +335,24 @@ public class Vertex<T> extends AbstractNamed {
         tmp.append(", data=");
         tmp.append(data);
         tmp.append("), in:[");
-        for (int i = 0; i < incomingEdges.size(); i++) {
-            Edge<T> e = incomingEdges.get(i);
-            if (i > 0) {
-                tmp.append(',');
+
+
+        String in = Strings.join(",", Pipeline.of(incomingEdges).map(new Function<Edge<T>, String>() {
+            @Override
+            public String apply(Edge<T> e) {
+                return StringTemplates.formatWithPlaceholder("from: {}, edge_label: {}, weight:{}", e.getFrom().getName(), e.getLabel(), e.getWeight());
             }
-            tmp.append('{');
-            tmp.append(e.getFrom().name);
-            tmp.append(',');
-            tmp.append(e.getWeight());
-            tmp.append('}');
-        }
+        }).asList());
+        tmp.append(in);
         tmp.append("], out:[");
-        for (int i = 0; i < outgoingEdges.size(); i++) {
-            Edge<T> e = outgoingEdges.get(i);
-            if (i > 0) {
-                tmp.append(',');
+
+        String out = Strings.join(",", Pipeline.of(outgoingEdges).map(new Function<Edge<T>, String>() {
+            @Override
+            public String apply(Edge<T> e) {
+                return StringTemplates.formatWithPlaceholder("to: {}, edge_label: {}, weight:{}", e.getTo().getName(), e.getLabel(), e.getWeight());
             }
-            tmp.append('{');
-            tmp.append(e.getTo().name);
-            tmp.append(',');
-            tmp.append(e.getWeight());
-            tmp.append('}');
-        }
+        }).asList());
+        tmp.append(out);
         tmp.append(']');
         return tmp.toString();
     }
