@@ -113,29 +113,44 @@ public class Graphs {
         return false;
     }
 
-    public static <T> List<Vertex<T>> dfsSort(final Graph<T> graph) {
-        final List<Vertex<T>> ret = new ArrayList<Vertex<T>>();
+    public static final DeepFirstGraphTraverser DFS = new DeepFirstGraphTraverser();
 
+    public static <T> void dfsAction(final Graph<T> graph, final VertexConsumer<T> consumer) {
         Collects.forEach(graph.getVertices(), new Consumer<Vertex<T>>() {
             @Override
             public void accept(Vertex<T> vertex) {
-                ret.addAll(dfsSort(graph, vertex.getName()));
+                dfsAction(graph, vertex.getName(), consumer);
             }
         });
-        return ret;
     }
 
-    public static <T> List<Vertex<T>> dfsSort(Graph<T> graph, final String vertexName) {
-        // we need to use addFirst method so we will use LinkedList explicitly
-        final List<Vertex<T>> retValue = new LinkedList<Vertex<T>>();
+    public static <T> void dfsAction(final Graph<T> graph, final String vertexName, final VertexConsumer<T> consumer) {
+        DFS.traverse(graph, vertexName, consumer);
+    }
+
+
+    public static <T> List<Vertex<T>> dfsSort(final Graph<T> graph) {
+        final List<Vertex<T>> retValue = new ArrayList<Vertex<T>>();
         VertexConsumer<T> consumer = new VertexConsumer<T>() {
             @Override
             public void accept(Graph<T> graph, Vertex<T> vertex, Edge<T> edge) {
                 retValue.add(vertex);
             }
         };
-        DeepFirstGraphTraverser<T> dfs = new DeepFirstGraphTraverser<T>();
-        dfs.traverse(graph, vertexName, consumer);
+        dfsAction(graph, consumer);
+        return retValue;
+    }
+
+    public static <T> List<Vertex<T>> dfsSort(Graph<T> graph, final String vertexName) {
+        // we need to use addFirst method so we will use LinkedList explicitly
+        final List<Vertex<T>> retValue = new ArrayList<Vertex<T>>();
+        VertexConsumer<T> consumer = new VertexConsumer<T>() {
+            @Override
+            public void accept(Graph<T> graph, Vertex<T> vertex, Edge<T> edge) {
+                retValue.add(vertex);
+            }
+        };
+        dfsAction(graph, vertexName, consumer);
         return retValue;
     }
 }
