@@ -3,6 +3,7 @@ package com.jn.langx.text.xml;
 import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
 import com.jn.langx.text.xml.resolver.DTDEntityResolver;
 import com.jn.langx.text.xml.resolver.NullEntityResolver;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.IOs;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -83,7 +84,7 @@ public class Xmls {
         trans.transform(new DOMSource(doc), new StreamResult(file));
     }
 
-    public static <T> T handleXml(final String xmlpath, final XmlDocumentHandler<T> handler) throws Exception {
+    public static <T> T handleXml(final String xmlpath, final XmlDocumentHandler<T> handler) {
         InputStream input = null;
         Document doc = null;
         try {
@@ -95,7 +96,7 @@ public class Xmls {
             doc = getXmlDoc(null, input);
             return handler.handle(doc);
         } catch (Exception ex) {
-            throw ex;
+            throw Throwables.wrapAsRuntimeException(ex);
         } finally {
             IOs.close(input);
         }

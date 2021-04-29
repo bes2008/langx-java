@@ -19,6 +19,10 @@ import java.util.List;
  * 并列关系：|<br>
  * 约束关系：[]<br>
  *
+ *
+ * 避免注入的方案：
+ * https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_in_Java_Cheat_Sheet.html
+ *
  * @author jinuo.fang
  */
 public class XPaths {
