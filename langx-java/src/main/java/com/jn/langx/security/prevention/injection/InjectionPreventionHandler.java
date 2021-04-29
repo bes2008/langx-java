@@ -1,6 +1,5 @@
-package com.jn.langx.security.prvention;
+package com.jn.langx.security.prevention.injection;
 
-import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -10,32 +9,21 @@ import com.jn.langx.util.struct.Holder;
 
 import java.util.List;
 
-/**
- * 目前这个做法，太过暴力，不适合将其运用到所有的参数上。
- */
-public class SqlInjectionPreventionHandler implements Function<String,String> {
-    private final List<String> DEFAULT_REMOVED_SYMBOLS = Collects.asList(
-            "--","/*","*/","waitfor delay",
-            "#","|", "&", ";", "$", "%", "@", "'", "\"", "<", ">", "(", ")", "+", "\t", "\r", "\f", ",", "\\"
+public class InjectionPreventionHandler implements Function<String, String> {
+    private List<String> blacklist = null;
 
-    );
-
-
-
-    protected List<String> removedSymbols = null;
-
-    public void setRemovedSymbols(List<String> removedSymbols) {
-        this.removedSymbols = removedSymbols;
+    public void setBlacklist(List<String> blacklist) {
+        this.blacklist = blacklist;
     }
 
-    public List<String> getRemovedSymbols() {
-        return Objs.useValueIfEmpty(removedSymbols, DEFAULT_REMOVED_SYMBOLS);
+    public List<String> getBlacklist() {
+        return this.blacklist;
     }
 
     @Override
     public String apply(String value) {
         final Holder<String> stringHolder = new Holder<String>(value);
-        Collects.forEach(getRemovedSymbols(), new Consumer<String>() {
+        Collects.forEach(getBlacklist(), new Consumer<String>() {
             @Override
             public void accept(String str) {
                 String v = stringHolder.get();
@@ -50,5 +38,4 @@ public class SqlInjectionPreventionHandler implements Function<String,String> {
         });
         return stringHolder.get();
     }
-
 }
