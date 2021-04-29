@@ -6,30 +6,29 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.Preconditions;
 
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CodingErrorAction;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.*;
 
 
 public final class Charsets {
     private Charsets() {
     }
 
-    public static Charset getDefault(){
+    public static Charset getDefault() {
         return Charset.defaultCharset();
     }
 
-    public static final Charset GBK = Charset.forName("GBK");
-    public static final Charset GB2312 = Charset.forName("GB2312");
+    public static final Charset GBK = Charset.forName("GBK" );
+    public static final Charset GB2312 = Charset.forName("GB2312" );
 
-    public static final Charset UTF_8 = Charset.forName("UTF-8");
-    public static final Charset UTF_16BE = Charset.forName("UTF-16BE");
-    public static final Charset UTF_16LE = Charset.forName("UTF-16LE");
-    public static final Charset UTF_16 = Charset.forName("UTF-16");
+    public static final Charset UTF_8 = Charset.forName("UTF-8" );
+    public static final Charset UTF_16BE = Charset.forName("UTF-16BE" );
+    public static final Charset UTF_16LE = Charset.forName("UTF-16LE" );
+    public static final Charset UTF_16 = Charset.forName("UTF-16" );
 
-    public static final Charset US_ASCII = Charset.forName("US-ASCII");
-    public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1");
+    public static final Charset US_ASCII = Charset.forName("US-ASCII" );
+    public static final Charset ISO_8859_1 = Charset.forName("ISO-8859-1" );
 
     public static Charset getCharset(@Nullable final Charset charset) {
         return charset == null ? Charset.defaultCharset() : charset;
@@ -78,7 +77,7 @@ public final class Charsets {
      * @return The encoder for the specified {@code charset}
      */
     public static CharsetEncoder encoder(@NonNull Charset charset) {
-        Preconditions.checkNotNull(charset, "charset");
+        Preconditions.checkNotNull(charset, "charset" );
         CharsetEncoder e = GlobalThreadLocalMap.getEncoder(charset);
         e.reset().onMalformedInput(CodingErrorAction.REPLACE).onUnmappableCharacter(CodingErrorAction.REPLACE);
         return e;
@@ -95,7 +94,7 @@ public final class Charsets {
      */
     public static CharsetDecoder decoder(@NonNull Charset charset, @NonNull CodingErrorAction malformedInputAction,
                                          @NonNull CodingErrorAction unmappableCharacterAction) {
-        Preconditions.checkNotNull(charset, "charset");
+        Preconditions.checkNotNull(charset, "charset" );
         CharsetDecoder d = charset.newDecoder();
         d.onMalformedInput(malformedInputAction).onUnmappableCharacter(unmappableCharacterAction);
         return d;
@@ -119,10 +118,38 @@ public final class Charsets {
      * @return The decoder for the specified {@code charset}
      */
     public static CharsetDecoder decoder(@NonNull Charset charset) {
-        Preconditions.checkNotNull(charset, "charset");
+        Preconditions.checkNotNull(charset, "charset" );
 
         CharsetDecoder d = GlobalThreadLocalMap.getDecoder(charset);
         d.reset().onMalformedInput(CodingErrorAction.REPLACE).onUnmappableCharacter(CodingErrorAction.REPLACE);
         return d;
     }
+
+    public static byte[] encode(Charset charset, CharSequence string) {
+        return encode(charset.newEncoder(), string);
+    }
+
+    public static byte[] encode(CharsetEncoder encoder, CharSequence string) {
+        try {
+            ByteBuffer bytes = encoder.encode(CharBuffer.wrap(string));
+            byte[] bytesCopy = new byte[bytes.limit()];
+            System.arraycopy(bytes.array(), 0, bytesCopy, 0, bytes.limit());
+            return bytesCopy;
+        } catch (CharacterCodingException ex) {
+            throw new IllegalArgumentException("Encoding failed", ex);
+        }
+    }
+
+    public static String decode(Charset charset, byte[] bytes) {
+        return decode(charset.newDecoder(), bytes);
+    }
+
+    public static String decode(CharsetDecoder decoder, byte[] bytes) {
+        try {
+            return decoder.decode(ByteBuffer.wrap(bytes)).toString();
+        } catch (CharacterCodingException ex) {
+            throw new IllegalArgumentException("Decoding failed", ex);
+        }
+    }
+
 }
