@@ -158,7 +158,7 @@ public class Graph<T> {
         return new ArrayList<Vertex<T>>(vertices.values());
     }
 
-    public List<String> getVerticNames() {
+    public List<String> getVertexNames() {
         return Pipeline.of(getVertices()).map(new Function<Vertex<T>, String>() {
             @Override
             public String apply(Vertex<T> vertex) {
