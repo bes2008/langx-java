@@ -1,6 +1,7 @@
 package com.jn.langx.test.util.collection;
 
 import com.jn.langx.util.collection.graph.DAG;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class GraphTests {
@@ -23,6 +24,12 @@ public class GraphTests {
         dag.addEdge("B2", "C2");
 
         System.out.println(dag);
+
+        Assert.assertEquals(dag.hasVertex("a"), false);
+        Assert.assertEquals(dag.getRootVertex(), null);
+        System.out.println(dag.getVertexNames());
+        System.out.println(dag.getVertices());
+        System.out.println(dag.getEdges());
     }
 
 
