@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection.graph;
 
 
+import com.jn.langx.util.StringJoiner;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
@@ -189,7 +190,7 @@ public class Graph<T> {
     }
 
     public boolean hasVertex(String name) {
-        return getVertex(name) == null;
+        return getVertex(name) != null;
     }
 
     /**
@@ -327,12 +328,11 @@ public class Graph<T> {
 
 
     public String toString() {
-        StringBuilder tmp = new StringBuilder("Graph[");
+        StringJoiner joiner = new StringJoiner(",", "Graph[", "]");
         for (Vertex<T> v : vertices.values()) {
-            tmp.append(v);
+            joiner.add(v.toString());
         }
-        tmp.append(']');
-        return tmp.toString();
+        return joiner.toString();
     }
 
 }

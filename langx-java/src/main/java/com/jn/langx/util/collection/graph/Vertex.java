@@ -330,17 +330,17 @@ public class Vertex<T> extends AbstractNamed {
      * edges.
      */
     public String toString() {
-        StringBuilder tmp = new StringBuilder("Vertex(");
+        StringBuilder tmp = new StringBuilder("Vertex(name: ");
         tmp.append(name);
-        tmp.append(", data=");
+        tmp.append(", data:");
         tmp.append(data);
-        tmp.append("), in:[");
+        tmp.append(", in:[");
 
 
         String in = Strings.join(",", Pipeline.of(incomingEdges).map(new Function<Edge<T>, String>() {
             @Override
             public String apply(Edge<T> e) {
-                return StringTemplates.formatWithPlaceholder("from: {}, edge_label: {}, weight:{}", e.getFrom().getName(), e.getLabel(), e.getWeight());
+                return StringTemplates.formatWithPlaceholder("{from: {}, edge_label: {}, weight:{}}", e.getFrom().getName(), e.getLabel(), e.getWeight());
             }
         }).asList());
         tmp.append(in);
@@ -349,11 +349,12 @@ public class Vertex<T> extends AbstractNamed {
         String out = Strings.join(",", Pipeline.of(outgoingEdges).map(new Function<Edge<T>, String>() {
             @Override
             public String apply(Edge<T> e) {
-                return StringTemplates.formatWithPlaceholder("to: {}, edge_label: {}, weight:{}", e.getTo().getName(), e.getLabel(), e.getWeight());
+                return StringTemplates.formatWithPlaceholder("{to: {}, edge_label: {}, weight:{}}", e.getTo().getName(), e.getLabel(), e.getWeight());
             }
         }).asList());
         tmp.append(out);
         tmp.append(']');
+        tmp.append(")");
         return tmp.toString();
     }
 }
