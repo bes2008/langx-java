@@ -1,7 +1,10 @@
 package com.jn.langx.util.collection.graph;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.graph.traverser.BreadthFirstGraphTraverser;
 import com.jn.langx.util.collection.graph.traverser.DeepFirstGraphTraverser;
+import com.jn.langx.util.collection.graph.traverser.TreeGraphTraverser;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Supplier;
 
@@ -114,27 +117,24 @@ public class Graphs {
     }
 
     public static final DeepFirstGraphTraverser DFS = new DeepFirstGraphTraverser();
+    public static final TreeGraphTraverser TDFS = new TreeGraphTraverser();
+    public static final BreadthFirstGraphTraverser BFS = new BreadthFirstGraphTraverser();
 
-    public static <T> void dfsAction(final Graph<T> graph, final VertexConsumer<T> consumer) {
+    public static <T> void traverse(final GraphTraverser traverser, final Graph<T> graph, final VertexConsumer<T> consumer) {
         final Map<String, VisitStatus> visitStatusMap = new LinkedHashMap<String, VisitStatus>();
         Collects.forEach(graph.getVertices(), new Consumer<Vertex<T>>() {
             @Override
             public void accept(Vertex<T> vertex) {
-                dfsAction(visitStatusMap, graph, vertex.getName(), consumer);
+                traverser.traverse(visitStatusMap, graph, vertex.getName(), consumer);
             }
         });
     }
 
-    public static <T> void dfsAction(final Graph<T> graph, final String vertexName, final VertexConsumer<T> consumer) {
-        DFS.traverse(graph, vertexName, consumer);
+    public static <T> void traverse(@NonNull GraphTraverser traverser, Graph<T> graph, String vertexName, final VertexConsumer<T> consumer) {
+        traverser.traverse(graph, vertexName, consumer);
     }
 
-    public static <T> void dfsAction(Map<String, VisitStatus> visitStatusMap, final Graph<T> graph, final String vertexName, final VertexConsumer<T> consumer) {
-        DFS.traverse(visitStatusMap, graph, vertexName, consumer);
-    }
-
-
-    public static <T> List<Vertex<T>> dfsSort(final Graph<T> graph) {
+    public static <T> List<Vertex<T>> sort(@NonNull GraphTraverser traverser, Graph<T> graph) {
         final List<Vertex<T>> retValue = new ArrayList<Vertex<T>>();
         VertexConsumer<T> consumer = new VertexConsumer<T>() {
             @Override
@@ -142,20 +142,46 @@ public class Graphs {
                 retValue.add(vertex);
             }
         };
-        dfsAction(graph, consumer);
+        traverse(traverser, graph, consumer);
         return retValue;
+    }
+
+    public static <T> List<Vertex<T>> sort(@NonNull GraphTraverser traverser, Graph<T> graph, String vertexName) {
+        final List<Vertex<T>> retValue = new ArrayList<Vertex<T>>();
+        VertexConsumer<T> consumer = new VertexConsumer<T>() {
+            @Override
+            public void accept(Graph<T> graph, Vertex<T> vertex, Edge<T> edge) {
+                retValue.add(vertex);
+            }
+        };
+        traverse(traverser, graph, vertexName, consumer);
+        return retValue;
+    }
+
+    public static <T> List<Vertex<T>> dfsSort(final Graph<T> graph) {
+        return sort(DFS, graph);
     }
 
     public static <T> List<Vertex<T>> dfsSort(Graph<T> graph, final String vertexName) {
-        // we need to use addFirst method so we will use LinkedList explicitly
-        final List<Vertex<T>> retValue = new ArrayList<Vertex<T>>();
-        VertexConsumer<T> consumer = new VertexConsumer<T>() {
-            @Override
-            public void accept(Graph<T> graph, Vertex<T> vertex, Edge<T> edge) {
-                retValue.add(vertex);
-            }
-        };
-        dfsAction(graph, vertexName, consumer);
-        return retValue;
+        return sort(DFS, graph, vertexName);
     }
+
+
+    public static <T> List<Vertex<T>> tdfsSort(final Graph<T> graph) {
+        return sort(TDFS, graph);
+    }
+
+    public static <T> List<Vertex<T>> tdfsSort(Graph<T> graph, final String vertexName) {
+        return sort(TDFS, graph, vertexName);
+    }
+
+    public static <T> List<Vertex<T>> bfsSort(Graph<T> graph, final String vertexName) {
+        return sort(BFS, graph, vertexName);
+    }
+
+    public static <T> List<Vertex<T>> bfsSort(final Graph<T> graph) {
+        return sort(BFS, graph);
+    }
+
+
 }

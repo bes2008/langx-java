@@ -2,7 +2,6 @@ package com.jn.langx.test.util.collection;
 
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.graph.DAG;
-import com.jn.langx.util.collection.graph.Graph;
 import com.jn.langx.util.collection.graph.Graphs;
 import com.jn.langx.util.collection.graph.Vertex;
 import com.jn.langx.util.function.Function;
@@ -39,6 +38,8 @@ public class GraphTests {
         System.out.println(dag.getEdges());
 
 
+        System.out.println("============================");
+
         List<Vertex> vertices = Graphs.dfsSort(dag, "A");
         List<String> vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
             @Override
@@ -46,7 +47,7 @@ public class GraphTests {
                 return input.getName();
             }
         }).asList();
-        System.out.println("dfs A: \t" + vertexNames);
+        System.out.println("dfs A:\t" + vertexNames);
 
         vertices = Graphs.dfsSort(dag);
         vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
@@ -55,9 +56,47 @@ public class GraphTests {
                 return input.getName();
             }
         }).asList();
-        System.out.println("dfs: \t" + vertexNames);
+        System.out.println("dfs:\t" + vertexNames);
 
+        System.out.println("============================");
 
+        vertices = Graphs.tdfsSort(dag, "A");
+        vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
+            @Override
+            public String apply(Vertex input) {
+                return input.getName();
+            }
+        }).asList();
+        System.out.println("tdfs A:\t" + vertexNames);
+
+        vertices = Graphs.tdfsSort(dag);
+        vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
+            @Override
+            public String apply(Vertex input) {
+                return input.getName();
+            }
+        }).asList();
+        System.out.println("tdfs:\t" + vertexNames);
+
+        System.out.println("============================");
+
+        vertices = Graphs.bfsSort(dag, "A");
+        vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
+            @Override
+            public String apply(Vertex input) {
+                return input.getName();
+            }
+        }).asList();
+        System.out.println("bfs A:\t" + vertexNames);
+
+        vertices = Graphs.bfsSort(dag);
+        vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
+            @Override
+            public String apply(Vertex input) {
+                return input.getName();
+            }
+        }).asList();
+        System.out.println("bfs:\t" + vertexNames);
 
     }
 
