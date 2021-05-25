@@ -116,16 +116,21 @@ public class Graphs {
     public static final DeepFirstGraphTraverser DFS = new DeepFirstGraphTraverser();
 
     public static <T> void dfsAction(final Graph<T> graph, final VertexConsumer<T> consumer) {
+        final Map<String, VisitStatus> visitStatusMap = new LinkedHashMap<String, VisitStatus>();
         Collects.forEach(graph.getVertices(), new Consumer<Vertex<T>>() {
             @Override
             public void accept(Vertex<T> vertex) {
-                dfsAction(graph, vertex.getName(), consumer);
+                dfsAction(visitStatusMap, graph, vertex.getName(), consumer);
             }
         });
     }
 
     public static <T> void dfsAction(final Graph<T> graph, final String vertexName, final VertexConsumer<T> consumer) {
         DFS.traverse(graph, vertexName, consumer);
+    }
+
+    public static <T> void dfsAction(Map<String, VisitStatus> visitStatusMap, final Graph<T> graph, final String vertexName, final VertexConsumer<T> consumer) {
+        DFS.traverse(visitStatusMap, graph, vertexName, consumer);
     }
 
 

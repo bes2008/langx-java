@@ -17,10 +17,8 @@ public class BreadthFirstGraphTraverser<T> extends AbstractGraphTraverser<T> {
         LinkedList<Vertex<T>> q = new LinkedList<Vertex<T>>();
 
         q.add(vertex);
-        if (consumer != null) {
-            consumer.accept(graph, vertex, null);
-        }
-        Graphs.finishVisit(visitStatusMap, vertex.getName());
+        doVisit(visitStatusMap, graph, vertex, edge, consumer);
+
         while (!q.isEmpty()) {
             vertex = q.removeFirst();
             for (int i = 0; i < vertex.getOutgoingEdgeCount(); i++) {

@@ -18,10 +18,8 @@ public class DeepFirstGraphTraverser<T> extends AbstractGraphTraverser<T> {
                 traverse(visitStatusMap, graph, e.getTo(), e, consumer);
             }
         }
-        if (consumer != null) {
-            consumer.accept(graph, vertex, edge);
-        }
-        Graphs.finishVisit(visitStatusMap, vertex.getName());
+
+        doVisit(visitStatusMap, graph, vertex, edge, consumer);
     }
 
 

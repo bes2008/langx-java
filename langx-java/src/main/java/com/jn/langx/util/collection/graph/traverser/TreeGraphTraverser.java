@@ -14,17 +14,10 @@ import java.util.Map;
 public class TreeGraphTraverser<T> extends AbstractGraphTraverser<T> {
 
     protected void traverse(Map<String, VisitStatus> visitStatusMap, Graph<T> graph, Vertex<T> vertex, Edge<T> edge, VertexConsumer<T> consumer) {
-        if (consumer != null) {
-            consumer.accept(graph, vertex, edge);
-        }
-        Graphs.finishVisit(visitStatusMap, vertex.getName());
+        doVisit(visitStatusMap, graph, vertex, edge, consumer);
         for (int i = 0; i < vertex.getOutgoingEdgeCount(); i++) {
             Edge<T> e = vertex.getOutgoingEdge(i);
             if (Graphs.isNotVisited(visitStatusMap, e.getTo().getName())) {
-                if (consumer != null) {
-                    consumer.accept(graph, vertex, e);
-                }
-                Graphs.finishVisit(visitStatusMap, vertex.getName());
                 traverse(visitStatusMap, graph, e.getTo(), e, consumer);
             }
         }

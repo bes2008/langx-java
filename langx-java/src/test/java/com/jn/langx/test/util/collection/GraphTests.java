@@ -39,14 +39,26 @@ public class GraphTests {
         System.out.println(dag.getEdges());
 
 
-        List<Vertex> vertices = Graphs.dfsSort(dag,"A");
+        List<Vertex> vertices = Graphs.dfsSort(dag, "A");
         List<String> vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
             @Override
             public String apply(Vertex input) {
                 return input.getName();
             }
         }).asList();
-        System.out.println(vertexNames);
+        System.out.println("dfs A: \t" + vertexNames);
+
+        vertices = Graphs.dfsSort(dag);
+        vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
+            @Override
+            public String apply(Vertex input) {
+                return input.getName();
+            }
+        }).asList();
+        System.out.println("dfs: \t" + vertexNames);
+
+
+
     }
 
 
