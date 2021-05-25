@@ -16,8 +16,8 @@ public class GraphTests {
     public void test() {
         DAG dag = new DAG();
         dag.addVertex("A", "A");
-        dag.addVertex("B2", "B2");
         dag.addVertex("B1", "B1");
+        dag.addVertex("B2", "B2");
         dag.addVertex("C1", "C1");
         dag.addVertex("C2", "C2");
 
