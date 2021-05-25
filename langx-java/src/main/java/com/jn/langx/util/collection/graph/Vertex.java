@@ -216,7 +216,7 @@ public class Vertex<T> extends AbstractNamed {
 
 
     public List<Vertex<T>> getOutgoingVertices() {
-        List<Edge<T>> edges = getIncomingEdges();
+        List<Edge<T>> edges = getOutgoingEdges();
         return Pipeline.of(edges).map(new Function<Edge<T>, Vertex<T>>() {
             @Override
             public Vertex<T> apply(Edge<T> edge) {

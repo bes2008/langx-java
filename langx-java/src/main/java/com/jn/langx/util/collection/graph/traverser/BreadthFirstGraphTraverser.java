@@ -26,11 +26,9 @@ public class BreadthFirstGraphTraverser<T> extends AbstractGraphTraverser<T> {
                 Vertex<T> to = e.getTo();
                 if (Graphs.isNotVisited(visitStatusMap, to.getName())) {
                     q.add(to);
-                    if (consumer != null) {
-                        consumer.accept(graph, to, e);
-                    }
-                    Graphs.finishVisit(visitStatusMap, to.getName());
+                    doVisit(visitStatusMap, graph, to, e, consumer);
                 }
+
             }
         }
     }

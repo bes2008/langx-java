@@ -1,11 +1,16 @@
 package com.jn.langx.util.collection.graph;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.graph.traverser.BreadthFirstGraphTraverser;
 import com.jn.langx.util.collection.graph.traverser.DeepFirstGraphTraverser;
 import com.jn.langx.util.collection.graph.traverser.TreeGraphTraverser;
+import com.jn.langx.util.comparator.IntegerComparator;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Supplier;
 
 import java.util.*;
@@ -168,11 +173,79 @@ public class Graphs {
 
 
     public static <T> List<Vertex<T>> tdfsSort(final Graph<T> graph) {
-        return sort(TDFS, graph);
+        final List<Vertex<T>> retValue = new ArrayList<Vertex<T>>();
+        VertexConsumer<T> consumer = new VertexConsumer<T>() {
+            @Override
+            public void accept(Graph<T> graph, Vertex<T> vertex, Edge<T> edge) {
+                // 对它的所有outgoing遍历，找到已存在于 retValue 中的，所有依赖的最小索引，然后执行 insert
+                int minToIndex = -1;
+                List<Integer> indexes = Pipeline.of(vertex.getOutgoingVertices())
+                        .map(new Function<Vertex<T>, Integer>() {
+                            @Override
+                            public Integer apply(Vertex<T> to) {
+                                return retValue.lastIndexOf(to);
+                            }
+                        }).filter(new Predicate<Integer>() {
+                            @Override
+                            public boolean test(Integer index) {
+                                return index >= 0;
+                            }
+                        }).asList();
+                if (Objs.isNotEmpty(indexes)) {
+                    if (indexes.size() == 1) {
+                        minToIndex = indexes.get(0);
+                    } else {
+                        minToIndex = Pipeline.of(indexes).min(new IntegerComparator());
+                    }
+                }
+
+                if (minToIndex < 0) {
+                    retValue.add(vertex);
+                } else {
+                    retValue.add(minToIndex, vertex);
+                }
+            }
+        };
+        traverse(TDFS, graph, consumer);
+        return Collects.asList(retValue);
     }
 
     public static <T> List<Vertex<T>> tdfsSort(Graph<T> graph, final String vertexName) {
-        return sort(TDFS, graph, vertexName);
+        final List<Vertex<T>> retValue = new ArrayList<Vertex<T>>();
+        VertexConsumer<T> consumer = new VertexConsumer<T>() {
+            @Override
+            public void accept(Graph<T> graph, Vertex<T> vertex, Edge<T> edge) {
+                // 对它的所有outgoing遍历，找到已存在于 retValue 中的，所有依赖的最小索引，然后执行 insert
+                int minToIndex = -1;
+                List<Integer> indexes = Pipeline.of(vertex.getOutgoingVertices())
+                        .map(new Function<Vertex<T>, Integer>() {
+                            @Override
+                            public Integer apply(Vertex<T> to) {
+                                return retValue.lastIndexOf(to);
+                            }
+                        }).filter(new Predicate<Integer>() {
+                            @Override
+                            public boolean test(Integer index) {
+                                return index >= 0;
+                            }
+                        }).asList();
+                if (Objs.isNotEmpty(indexes)) {
+                    if (indexes.size() == 1) {
+                        minToIndex = indexes.get(0);
+                    } else {
+                        minToIndex = Pipeline.of(indexes).min(new IntegerComparator());
+                    }
+                }
+
+                if (minToIndex < 0) {
+                    retValue.add(vertex);
+                } else {
+                    retValue.add(minToIndex, vertex);
+                }
+            }
+        };
+        traverse(TDFS, graph, vertexName, consumer);
+        return Collects.asList(retValue);
     }
 
     public static <T> List<Vertex<T>> bfsSort(Graph<T> graph, final String vertexName) {
