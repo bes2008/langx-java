@@ -4,6 +4,7 @@ package com.jn.langx.util.collection.graph;
 import com.jn.langx.util.StringJoiner;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Function;
 
 import java.util.*;
@@ -132,19 +133,64 @@ public class Graph<T> {
         }
 
         // Remove the edges associated with v
-        for (int n = 0; n < v.getOutgoingEdgeCount(); n++) {
-            Edge<T> e = v.getOutgoingEdge(n);
+        for (int n = 0; n < v.getOutgoingEdgeCount();) {
+            Edge<T> e = v.getOutgoingEdge(0);
             v.remove(e);
             Vertex<T> to = e.getTo();
             to.remove(e);
             edges.remove(e);
         }
-        for (int n = 0; n < v.getIncomingEdgeCount(); n++) {
-            Edge<T> e = v.getIncomingEdge(n);
+        for (int n = 0; n < v.getIncomingEdgeCount(); ) {
+            Edge<T> e = v.getIncomingEdge(0);
             v.remove(e);
-            Vertex<T> predecessor = e.getFrom();
-            predecessor.remove(e);
+            Vertex<T> from = e.getFrom();
+            from.remove(e);
+            edges.remove(e);
         }
+        return true;
+    }
+
+    public boolean removeVertex(String vertexName, boolean removeUnsharedOutgoing){
+        Vertex vertex = getVertex(vertexName);
+        if (vertex != null) {
+            return removeVertex(vertex, removeUnsharedOutgoing);
+        }
+        return false;
+    }
+
+    public boolean removeVertex(Vertex<T> v, boolean removeUnsharedOutgoing) {
+        if (!removeUnsharedOutgoing) {
+            removeVertex(v);
+        }
+
+        if (!hasVertex(v.getName())) {
+            return false;
+        }
+        v = getVertex(v.getName());
+        // 第一步: 先进行 树状的DFS排序，找到所有的子子孙孙节点，
+        List<Vertex<T>> outgoingVertices = Graphs.tdfsSort(this, v.getName());
+
+        // 第二步：找出所有的非共享的 outgoing节点
+        final List<Vertex<T>> willRemovedVertices = new ArrayList<Vertex<T>>();
+        willRemovedVertices.add(v);
+        Collects.forEach(outgoingVertices, new Consumer<Vertex<T>>() {
+            @Override
+            public void accept(Vertex<T> vertex) {
+                List<Vertex<T>> incomings = Collects.newArrayList(vertex.getIncomingVertices());
+                incomings.removeAll(willRemovedVertices);
+                if (incomings.isEmpty()) {
+                    willRemovedVertices.add(vertex);
+                }
+            }
+        });
+        // 反向移除节点
+        Pipeline.of(willRemovedVertices).reverse(true)
+                .forEach(new Consumer<Vertex<T>>() {
+                    @Override
+                    public void accept(Vertex<T> vertex) {
+                        removeVertex(vertex);
+                    }
+                });
         return true;
     }
 

@@ -99,6 +99,20 @@ public class GraphTests {
         }).asList();
         System.out.println("bfs:\t" + vertexNames);
 
+
+        System.out.println("============================");
+        // 移除 B1
+        dag.removeVertex("B1", true);
+
+
+        vertices = Graphs.dfsSort(dag);
+        vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
+            @Override
+            public String apply(Vertex input) {
+                return input.getName();
+            }
+        }).asList();
+        System.out.println("dfs:\t" + vertexNames);
     }
 
 
