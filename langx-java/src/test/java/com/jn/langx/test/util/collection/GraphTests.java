@@ -1,8 +1,15 @@
 package com.jn.langx.test.util.collection;
 
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.graph.DAG;
+import com.jn.langx.util.collection.graph.Graph;
+import com.jn.langx.util.collection.graph.Graphs;
+import com.jn.langx.util.collection.graph.Vertex;
+import com.jn.langx.util.function.Function;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
 
 public class GraphTests {
 
@@ -30,6 +37,16 @@ public class GraphTests {
         System.out.println(dag.getVertexNames());
         System.out.println(dag.getVertices());
         System.out.println(dag.getEdges());
+
+
+        List<Vertex> vertices = Graphs.dfsSort(dag,"A");
+        List<String> vertexNames = Pipeline.of(vertices).map(new Function<Vertex, String>() {
+            @Override
+            public String apply(Vertex input) {
+                return input.getName();
+            }
+        }).asList();
+        System.out.println(vertexNames);
     }
 
 

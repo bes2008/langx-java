@@ -1512,6 +1512,7 @@ public class Collects {
 
     /**
      * 第二个参数为分区总数，不是单个分区中的数据量
+     *
      * @param c
      * @param partitionSize
      * @param <E>
@@ -1529,6 +1530,7 @@ public class Collects {
 
     /**
      * 第二个参数为单个分区中的数据量
+     *
      * @param c
      * @param partitionSize
      * @param <E>
@@ -1757,24 +1759,33 @@ public class Collects {
         return map;
     }
 
-    public static <E, C extends Collection<E>> void addAll(@NonNull final C collection, @Nullable Iterable<E> iterable) {
-        Preconditions.checkNotNull(collection);
+    public static <E, C extends Collection<E>> void addAll(@NonNull final C dest, @Nullable Iterable<E> iterable) {
+        Preconditions.checkNotNull(dest);
         if (Emptys.isNotEmpty(iterable)) {
             forEach(iterable, new Consumer<E>() {
                 @Override
                 public void accept(E e) {
-                    collection.add(e);
+                    dest.add(e);
                 }
             });
         }
     }
 
-    public static <E, C extends Collection<E>> void addAll(@NonNull C collection, @Nullable E... iterator) {
-        addAll(collection, Collects.<E>asIterable(iterator));
+    public static <E, C extends Collection<E>> void addAll(@NonNull C dest, @Nullable E... iterator) {
+        addAll(dest, Collects.<E>asIterable(iterator));
     }
 
-    public static <E, C extends Collection<E>> void addAll(@NonNull C collection, @Nullable Iterator<E> iterator) {
-        addAll(collection, Collects.<E>asIterable(iterator));
+    public static <E, C extends Collection<E>> void addAll(@NonNull C dest, @Nullable Iterator<E> iterator) {
+        addAll(dest, Collects.<E>asIterable(iterator));
+    }
+
+    public static <E, C extends Collection<E>> void addTo(@NonNull C srcCollection, @Nullable C targetCollection) {
+        addAll(targetCollection, srcCollection);
+    }
+
+    public static <E1, C1 extends Collection<E1>, E2, C2 extends Collection<E2>> void addTo(C1 srcCollection, C2 targetCollection, Function<E1, E2> mapper) {
+        Collection<E2> mapped = Collects.map(srcCollection, mapper);
+        addTo(mapped, targetCollection);
     }
 
     /**
