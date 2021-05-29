@@ -21,11 +21,9 @@ import java.util.*;
  * @param <V>
  *            The value type that the trie holds.
  *
- * @author Christian Beikov
  *
  */
-public class TrieMap<V> extends AbstractMap<CharSequence, V> implements
-        Serializable, Map<CharSequence, V> {
+public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializable, Map<CharSequence, V> {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,12 +57,10 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements
         }
 
         public TrieNode<V> cloneDeep() {
-            final TrieNode<V> node = new TrieNode<V>(value, inUse,
-                    children.size());
+            final TrieNode<V> node = new TrieNode<V>(value, inUse, children.size());
             final Map<Character, TrieNode<V>> nodeChildren = node.children;
 
-            for (final Map.Entry<Character, TrieNode<V>> entry : children
-                    .entrySet()) {
+            for (final Map.Entry<Character, TrieNode<V>> entry : children.entrySet()) {
                 nodeChildren.put(entry.getKey(), entry.getValue().cloneDeep());
             }
 
@@ -74,6 +70,9 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements
 
     private final TrieNode<V> root;
     int size;
+    /**
+     * 修改次数
+     */
     transient int modCount;
 
     /**
@@ -113,9 +112,8 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements
      *            Whether null is allowed or not
      */
     @SuppressWarnings("unchecked")
-    private TrieMap(final Map<CharSequence, ? extends V> map,
-                    final boolean nullAllowed) {
-        if ((nullAllowed && map == null) || !(map instanceof TrieMap<?>)) {
+    private TrieMap(final Map<CharSequence, ? extends V> map, final boolean nullAllowed) {
+        if (nullAllowed  || !(map instanceof TrieMap<?>)) {
             this.root = new TrieNode<V>(false);
         } else {
             this.root = ((TrieMap<V>) map).root.cloneDeep();
@@ -165,8 +163,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements
             /* We found the node and it is in use, so replace the value */
             replacedValue = currentNode.value;
 
-            if (replacedValue != value
-                    && (replacedValue == null || !replacedValue.equals(value))) {
+            if (replacedValue != value && (replacedValue == null || !replacedValue.equals(value))) {
                 currentNode.value = value;
             }
         } else {
@@ -405,8 +402,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements
 
     private static CharSequence keyCheck(final CharSequence key) {
         if (key == null) {
-            throw new IllegalArgumentException(
-                    "This map does not support null keys");
+            throw new IllegalArgumentException("This map does not support null keys");
         }
 
         return key;

@@ -106,5 +106,19 @@ http://www.pinyin.info/rules/initials_finals.html
 
 Houbb pinyin, duguying-pinyin 他们的功能基本一样，duguying-pinyin支持的汉字、词汇等都比 houbbpinyin少，所以这两个中，可以优先选择 houbb 。
 
+从功能上来看，目前的Pinyin库，都能满足简单的需求，
+从字库上来看，其实根本不需要那么多的字库，原因很简单的：
+
++ 汉语中，有绝大部分的汉字都是只有一个发音的，多音字占少数
++ 多音字则是在不同的语境，不同的词汇组合上，发出不同的音而已
+
+所以合理的实现是这样的：
++ 维护一个单音的map（字-拼音）
++ 维护一个多音的map(字-拼音 list)
++ 维护一个多音字的词汇表，用 trie 或者用 多key的hashmap (第一个key是多音字本身)。
+
+
+
+
 
     
