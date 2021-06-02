@@ -9,7 +9,7 @@ public class PosixFilePermissions {
     /**
      * FilePermission mask
      */
-    private final int permissions;
+    private int permissions;
     private final boolean isOwner;
     private final boolean isInGroup;
 
@@ -62,7 +62,15 @@ public class PosixFilePermissions {
         return FilePermission.OTH_W.isIn(permissions);
     }
 
-    public Set<FilePermission> getPermissionSet(){
+    public void addPermission(FilePermission filePermission) {
+        this.permissions = this.permissions |= filePermission.getVal();
+    }
+
+    public void removePermission(FilePermission filePermission) {
+        this.permissions = this.permissions &= ~filePermission.getVal();
+    }
+
+    public Set<FilePermission> getPermissionSet() {
         return FilePermission.fromMask(this.permissions);
     }
 }

@@ -144,4 +144,8 @@ public enum FilePermission {
     public static String toBinary(Set<FilePermission> permissions) {
         return Radixs.toBinary(toMask(permissions));
     }
+
+    public int getVal(){
+        return val;
+    }
 }
