@@ -4,6 +4,9 @@ package com.jn.langx.util.io.file;
  * 基于 FilePermission 进行封装，进行基于用户、用户组等待判断
  */
 public class PosixPermission {
+    /**
+     * FilePermission mask
+     */
     private final int permissions;
     private final boolean isOwner;
     private final boolean isInGroup;
