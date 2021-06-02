@@ -63,11 +63,11 @@ public class PosixFilePermissions {
     }
 
     public void addPermission(FilePermission filePermission) {
-        this.permissions = this.permissions |= filePermission.getVal();
+        this.permissions |= filePermission.getVal();
     }
 
     public void removePermission(FilePermission filePermission) {
-        this.permissions = this.permissions &= ~filePermission.getVal();
+        this.permissions &= ~filePermission.getVal();
     }
 
     public Set<FilePermission> getPermissionSet() {
