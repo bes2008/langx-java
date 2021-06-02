@@ -1,9 +1,11 @@
 package com.jn.langx.util.io.file;
 
+import java.util.Set;
+
 /**
  * 基于 FilePermission 进行封装，进行基于用户、用户组等待判断
  */
-public class PosixPermission {
+public class PosixFilePermissions {
     /**
      * FilePermission mask
      */
@@ -11,7 +13,7 @@ public class PosixPermission {
     private final boolean isOwner;
     private final boolean isInGroup;
 
-    public PosixPermission(int permissions, boolean isOwner, boolean isInGroup) {
+    public PosixFilePermissions(int permissions, boolean isOwner, boolean isInGroup) {
         this.permissions = permissions;
         this.isOwner = isOwner;
         this.isInGroup = isInGroup;
@@ -58,5 +60,9 @@ public class PosixPermission {
             return FilePermission.GRP_W.isIn(permissions);
         }
         return FilePermission.OTH_W.isIn(permissions);
+    }
+
+    public Set<FilePermission> getPermissionSet(){
+        return FilePermission.fromMask(this.permissions);
     }
 }
