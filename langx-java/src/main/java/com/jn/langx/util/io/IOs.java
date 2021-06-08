@@ -65,13 +65,7 @@ public class IOs {
         try {
             if (target instanceof Closeable) {
                 ((Closeable) target).close();
-            } else if (target instanceof Socket) {
-                ((Socket) target).close();
-            } else if (target instanceof ServerSocket) {
-                ((ServerSocket) target).close();
-            } else if (target instanceof DatagramSocket) {
-                ((DatagramSocket) target).close();
-            } else if (target instanceof ResultSet) {
+            }  else if (target instanceof ResultSet) {
                 ((ResultSet) target).close();
             } else if (target instanceof Statement) {
                 ((Statement) target).close();
@@ -79,7 +73,13 @@ public class IOs {
                 ((Connection) target).close();
             } else if (target instanceof Scanner) {
                 ((Scanner) target).close();
-            } else {
+            } else if (target instanceof Socket) {
+                ((Socket) target).close();
+            } else if (target instanceof ServerSocket) {
+                ((ServerSocket) target).close();
+            } else if (target instanceof DatagramSocket) {
+                ((DatagramSocket) target).close();
+            }else {
                 Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
             }
         } catch (Throwable ex) {
