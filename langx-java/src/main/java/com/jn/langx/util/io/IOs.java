@@ -3,6 +3,8 @@ package com.jn.langx.util.io;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.io.stream.StringBuilderWriter;
+import com.jn.langx.lifecycle.Destroyable;
+import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
@@ -65,7 +67,11 @@ public class IOs {
         try {
             if (target instanceof Closeable) {
                 ((Closeable) target).close();
-            }  else if (target instanceof ResultSet) {
+            } else if (target instanceof Lifecycle) {
+                ((Lifecycle) target).shutdown();
+            } else if (target instanceof Destroyable) {
+                ((Destroyable) target).destroy();
+            } else if (target instanceof ResultSet) {
                 ((ResultSet) target).close();
             } else if (target instanceof Statement) {
                 ((Statement) target).close();
@@ -79,7 +85,7 @@ public class IOs {
                 ((ServerSocket) target).close();
             } else if (target instanceof DatagramSocket) {
                 ((DatagramSocket) target).close();
-            }else {
+            } else {
                 Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
             }
         } catch (Throwable ex) {
@@ -2746,9 +2752,9 @@ public class IOs {
 
     /**
      * {@link InputStream#read()} 返回值 范围是 0-255， -1 代表流结束。
-     *
+     * <p>
      * 而通常我们读到的数据都是以 byte 范围的。java中 byte 范围的数据是在 -128 ~ 127
-     *
+     * <p>
      * 也就是说，存在 -1 ~ -128 这些数，也就是执行 read()一旦返回 -1，就会中断流的读取，而实际上流并未结束。
      * 解决该问题的办法，就是两者范围统一。
      *
@@ -2760,7 +2766,7 @@ public class IOs {
     }
 
     public static final int filterInputStreamRead(int theByte) {
-        return filterInputStreamRead((byte)theByte);
+        return filterInputStreamRead((byte) theByte);
     }
 
 }
