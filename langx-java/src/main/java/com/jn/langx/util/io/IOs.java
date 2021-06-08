@@ -27,7 +27,6 @@ import java.util.Scanner;
 /**
  * @author jinuo.fang
  */
-@SuppressWarnings({"unused"})
 public class IOs {
     public static final int EOF = -1;
     public static final String LINE_SEPARATOR = LineDelimiter.DEFAULT.getValue();
@@ -2436,6 +2435,7 @@ public class IOs {
         byteBuffer.get(bytes);
         return bytes;
     }
+
     /**
      * Reads the requested number of characters or fail if there are not enough left.
      * <p>
@@ -2744,5 +2744,23 @@ public class IOs {
         return lineIterator(input, Charsets.getCharset(encoding));
     }
 
+    /**
+     * {@link InputStream#read()} 返回值 范围是 0-255， -1 代表流结束。
+     *
+     * 而通常我们读到的数据都是以 byte 范围的。java中 byte 范围的数据是在 -128 ~ 127
+     *
+     * 也就是说，存在 -1 ~ -128 这些数，也就是执行 read()一旦返回 -1，就会中断流的读取，而实际上流并未结束。
+     * 解决该问题的办法，就是两者范围统一。
+     *
+     * @param theByte
+     * @return
+     */
+    public static final int filterInputStreamRead(byte theByte) {
+        return theByte < 0 ? (theByte + 256) : theByte;
+    }
+
+    public static final int filterInputStreamRead(int theByte) {
+        return filterInputStreamRead((byte)theByte);
+    }
 
 }
