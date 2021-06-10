@@ -84,11 +84,7 @@
         </dependency>
         -->
 
-        <dependency>
-            <groupId>org.cometd.java</groupId>
-            <artifactId>cometd-java-server-common</artifactId>
-            <version>7.0.3</version>
-        </dependency>
+
     </dependencies>
     <build>
         <resources>
