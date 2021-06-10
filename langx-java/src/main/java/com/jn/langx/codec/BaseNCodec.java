@@ -11,7 +11,7 @@ import java.util.Arrays;
  * This class is thread-safe.
  * </p>
  */
-public abstract class BaseNCodec implements ICodec<byte[]> {
+public abstract class BaseNCodec implements BinaryCodec {
 
     /**
      * Holds thread context so classes can be thread-safe.
