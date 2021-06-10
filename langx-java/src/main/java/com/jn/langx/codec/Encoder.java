@@ -15,9 +15,9 @@ public interface Encoder<I,O> {
      *
      * @param source An object to encode
      * @return An "encoded" Object
-     * @throws EncoderException An encoder exception is thrown if the encoder experiences a failure condition during the encoding
+     * @throws CodecException An encoder exception is thrown if the encoder experiences a failure condition during the encoding
      *                          process.
      */
-    O encode(I source) throws EncoderException;
+    O encode(I source) throws CodecException;
 }
 

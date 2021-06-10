@@ -17,10 +17,10 @@ public interface Decoder<I,O> {
      *
      * @param source the object to decode
      * @return a 'decoded" object
-     * @throws DecoderException a decoder exception can be thrown for any number of reasons. Some good candidates are that the
+     * @throws CodecException a decoder exception can be thrown for any number of reasons. Some good candidates are that the
      *                          parameter passed to this method is null, a param cannot be cast to the appropriate type for a
      *                          specific encoder.
      */
-    O decode(I source) throws DecoderException;
+    O decode(I source) throws CodecException;
 }
 

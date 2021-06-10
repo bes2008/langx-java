@@ -11,7 +11,7 @@ import java.util.Arrays;
  * This class is thread-safe.
  * </p>
  */
-public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
+public abstract class BaseNCodec implements ICodec<byte[]> {
 
     /**
      * Holds thread context so classes can be thread-safe.
@@ -304,11 +304,11 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      *
      * @param obj Object to encode
      * @return An object (of type byte[]) containing the Base-N encoded data which corresponds to the byte[] supplied.
-     * @throws EncoderException if the parameter supplied is not of type byte[]
+     * @throws CodecException if the parameter supplied is not of type byte[]
      */
-    public Object encodeObject(final Object obj) throws EncoderException {
+    public Object encodeObject(final Object obj) throws CodecException {
         if (!(obj instanceof byte[])) {
-            throw new EncoderException("Parameter supplied to Base-N encode is not a byte[]");
+            throw new CodecException("Parameter supplied to Base-N encode is not a byte[]");
         }
         return encode((byte[]) obj);
     }
@@ -344,15 +344,15 @@ public abstract class BaseNCodec implements BinaryEncoder, BinaryDecoder {
      * @param obj Object to decode
      * @return An object (of type byte[]) containing the binary data which corresponds to the byte[] or String
      * supplied.
-     * @throws DecoderException if the parameter supplied is not of type byte[]
+     * @throws CodecException if the parameter supplied is not of type byte[]
      */
-    public Object decodeObject(final Object obj) throws DecoderException {
+    public Object decodeObject(final Object obj) throws CodecException {
         if (obj instanceof byte[]) {
             return decode((byte[]) obj);
         } else if (obj instanceof String) {
             return decode((String) obj);
         } else {
-            throw new DecoderException("Parameter supplied to Base-N decode is not a byte[] or a String");
+            throw new CodecException("Parameter supplied to Base-N decode is not a byte[] or a String");
         }
     }
 
