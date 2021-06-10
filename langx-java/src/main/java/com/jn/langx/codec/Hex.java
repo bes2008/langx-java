@@ -249,8 +249,7 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
      *                          char[]
      * @see #decodeHex(char[])
      */
-    @Override
-    public byte[] decode(final Object object) throws DecoderException {
+    public byte[] decodeObject(final Object object) throws DecoderException {
         try {
             final char[] charArray = object instanceof String ? ((String) object).toCharArray() : (char[]) object;
             return decodeHex(charArray);
@@ -292,8 +291,7 @@ public class Hex implements BinaryEncoder, BinaryDecoder {
      * @throws EncoderException Thrown if the given object is not a String or byte[]
      * @see #encodeHex(byte[])
      */
-    @Override
-    public char[] encode(final Object object) throws EncoderException {
+    public char[] encodeObject(final Object object) throws EncoderException {
         try {
             final byte[] byteArray = object instanceof String ?
                     ((String) object).getBytes(this.getCharset()) : (byte[]) object;

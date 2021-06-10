@@ -3,7 +3,7 @@ package com.jn.langx.codec;
 /**
  * Defines common decoding methods for byte array decoders.
  */
-public interface BinaryDecoder extends Decoder {
+public interface BinaryDecoder extends Decoder<byte[], byte[]> {
 
     /**
      * Decodes a byte array and returns the results as a byte array.

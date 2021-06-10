@@ -8,7 +8,7 @@ package com.jn.langx.codec;
  * <p>
  * One of the two interfaces at the center of the codec package.
  */
-public interface Decoder {
+public interface Decoder<I,O> {
 
     /**
      * Decodes an "encoded" Object and returns a "decoded" Object. Note that the implementation of this interface will
@@ -21,6 +21,6 @@ public interface Decoder {
      *                          parameter passed to this method is null, a param cannot be cast to the appropriate type for a
      *                          specific encoder.
      */
-    Object decode(Object source) throws DecoderException;
+    O decode(I source) throws DecoderException;
 }
 

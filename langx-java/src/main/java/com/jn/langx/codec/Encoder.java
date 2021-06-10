@@ -7,7 +7,7 @@ package com.jn.langx.codec;
  * common generic interface which allows a user to pass a generic Object to any Encoder implementation
  * in the codec package.
  */
-public interface Encoder {
+public interface Encoder<I,O> {
 
     /**
      * Encodes an "Object" and returns the encoded content as an Object. The Objects here may just be
@@ -18,6 +18,6 @@ public interface Encoder {
      * @throws EncoderException An encoder exception is thrown if the encoder experiences a failure condition during the encoding
      *                          process.
      */
-    Object encode(Object source) throws EncoderException;
+    O encode(I source) throws EncoderException;
 }
 

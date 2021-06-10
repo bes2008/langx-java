@@ -4,7 +4,7 @@ package com.jn.langx.codec;
 /**
  * Defines common encoding methods for byte array encoders.
  */
-public interface BinaryEncoder extends Encoder {
+public interface BinaryEncoder extends Encoder<byte[], byte[]> {
 
     /**
      * Encodes a byte array and return the encoded data as a byte array.
