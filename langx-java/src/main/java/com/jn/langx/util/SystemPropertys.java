@@ -208,4 +208,15 @@ public class SystemPropertys {
             System.setProperty(key, value);
         }
     }
+
+    /**
+     * 如果根据key获取到的值满足 predicate, 则将值设置为value
+     *
+     * @param key
+     * @param value
+     * @since 3.5.6
+     */
+    public static void setProperty(String key, String value){
+        System.setProperty(key, value);
+    }
 }
