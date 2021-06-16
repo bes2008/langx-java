@@ -107,7 +107,10 @@ public class Channels {
         }, new Predicate2<Integer, byte[]>() {
             @Override
             public boolean test(Integer index, byte[] value) {
-                return breakPredicate == null || breakPredicate.test(index, lineValueHolder.get());
+                if (breakPredicate == null) {
+                    return false;
+                }
+                return breakPredicate.test(index, lineValueHolder.get());
             }
         });
     }
