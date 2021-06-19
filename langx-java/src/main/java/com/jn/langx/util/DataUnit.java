@@ -30,6 +30,25 @@ public enum DataUnit {
         return symbols;
     }
 
+    public String getStandardSymbol(){
+        return getSymbols().get(0);
+    }
+
+    public String getLessUnitSymbol(){
+        String symbol = getStandardSymbol();
+        if(symbol.length()==1){
+            return symbol;
+        }
+        else{
+            if(symbol.endsWith("b")){
+                return symbol.substring(0,symbol.length()-1);
+            }else{
+                return symbol;
+            }
+        }
+    }
+
+
     public long getBytes() {
         return bytes;
     }
