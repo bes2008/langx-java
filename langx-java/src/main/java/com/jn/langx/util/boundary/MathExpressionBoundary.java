@@ -36,10 +36,10 @@ public class MathExpressionBoundary extends CommonExpressionBoundary {
             }
 
             if (low != null) {
-                setLow(buildLow(low, expression.startsWith("[")));
+                addPredicate(buildLow(low, expression.startsWith("[")));
             }
             if (high != null) {
-                setHigh(buildHigh(high, expression.endsWith("]")));
+                addPredicate(buildHigh(high, expression.endsWith("]")));
             }
         }
     }
