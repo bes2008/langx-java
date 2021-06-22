@@ -1,13 +1,9 @@
 package com.jn.langx.util.boundary;
 
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 
-public class MathExpressionBoundary extends ExpressionBoundary {
-    private Predicate<String> low = Functions.truePredicate();
-    private Predicate<String> high = Functions.truePredicate();
+public class MathExpressionBoundary extends CommonExpressionBoundary {
 
     public MathExpressionBoundary() {
     }
@@ -17,16 +13,9 @@ public class MathExpressionBoundary extends ExpressionBoundary {
     }
 
     @Override
-    public boolean test(String value) {
-        Preconditions.checkState(low != null && high != null);
-        return low.test(value) && high.test(value);
-    }
-
-    @Override
     public void setExpression(String expression) {
         if ((expression.startsWith("[") || expression.startsWith("(")) && (expression.endsWith("]") || expression.endsWith(")"))) {
-            this.expression = expression;
-
+            super.setExpression(expression);
             String lowAndHighString = expression.substring(1, expression.length() - 1).trim();
             String[] lowAndHigh = Strings.split(lowAndHighString, ",");
             if (lowAndHigh.length > 2 || lowAndHigh.length == 0) {
@@ -55,17 +44,6 @@ public class MathExpressionBoundary extends ExpressionBoundary {
         }
     }
 
-    public void setLow(Predicate<String> low) {
-        if (low != null) {
-            this.low = low;
-        }
-    }
-
-    public void setHigh(Predicate<String> high) {
-        if (high != null) {
-            this.high = high;
-        }
-    }
 
     private Predicate<String> buildLow(final String low, final boolean judgeEquals) {
         return new Predicate<String>() {
