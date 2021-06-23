@@ -8,10 +8,11 @@ public class MapAccessor extends BasedStringAccessor<String, Map<String, Object>
     public MapAccessor() {
     }
 
-    public MapAccessor(Map<String, Object> target) {
+    public MapAccessor(Map target) {
         this();
         setTarget(target);
     }
+
 
     @Override
     public Object get(String key) {
