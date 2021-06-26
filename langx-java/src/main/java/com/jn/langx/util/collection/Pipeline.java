@@ -24,6 +24,10 @@ public class Pipeline<E> {
         return new Pipeline<O>(Collects.map(this.collection, mapper));
     }
 
+    public <I> Pipeline<I> flat(){
+        return flatMap(Functions.<I>noopFunction());
+    }
+
     public <I, O> Pipeline<O> flatMap(Function<I, O> mapper) {
         Collection<Collection<I>> c = (Collection<Collection<I>>) this.collection;
         Collection<O> list = Collects.flatMap(c, mapper);

@@ -858,6 +858,10 @@ public class Collects {
         return result;
     }
 
+    public static <E> Collection<E> flat(Collection<Collection<E>> collections){
+        return flatMap(collections, Functions.<E>noopFunction());
+    }
+
     /**
      * map a collection to another, flat it
      */
