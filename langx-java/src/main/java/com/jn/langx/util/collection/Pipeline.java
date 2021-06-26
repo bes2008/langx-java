@@ -224,7 +224,7 @@ public class Pipeline<E> {
     }
 
     public boolean contains(E e) {
-        return collection.contains(e);
+        return Collects.contains(collection, e);
     }
 
     public Pipeline<E> subPipeline(int offset, int limit) {

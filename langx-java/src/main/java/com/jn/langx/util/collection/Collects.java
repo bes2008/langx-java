@@ -1906,6 +1906,23 @@ public class Collects {
         });
     }
 
+    public static <E> boolean contains(E[] collection, final E obj) {
+        return contains(collection, obj, null);
+    }
+
+    public static <E> boolean contains(Collection<E> collection, final E obj) {
+        return contains(collection, obj, null);
+    }
+
+    public static <E> boolean contains(E[] collection, @Nullable final E obj, @Nullable Predicate<E> predicate) {
+        return contains(asCollection(Collects.<E>asIterable(collection)), obj, predicate);
+    }
+
+    public static <E> boolean contains(Collection<E> collection, @Nullable final E obj, @Nullable Predicate<E> predicate) {
+        Predicate<E> p = predicate == null ? Functions.<E>equalsPredicate(obj) : predicate;
+        return Collects.anyMatch(collection, predicate);
+    }
+
     /**
      * test c1 contains all elements in c2
      */

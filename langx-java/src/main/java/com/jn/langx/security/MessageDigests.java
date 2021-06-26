@@ -4,6 +4,8 @@ import com.jn.langx.codec.Hex;
 import com.jn.langx.security.hash.MessageDigestHasher;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.io.Charsets;
 
 import java.io.BufferedInputStream;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class MessageDigests {
 
@@ -100,5 +103,16 @@ public class MessageDigests {
         }
     }
 
+    public static boolean isKnownMessageDigitAlgorithm(String algorithm) {
+        List<JCAEStandardName> names = JCAEStandardName.findAlgorithms(MessageDigest.class);
+        return Pipeline.of(names)
+                .map(new Function<JCAEStandardName, String>() {
+                    @Override
+                    public String apply(JCAEStandardName n) {
+                        return n.getName().toUpperCase();
+                    }
+                })
+                .contains(algorithm.toUpperCase());
+    }
 
 }

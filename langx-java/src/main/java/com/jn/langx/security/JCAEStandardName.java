@@ -1,8 +1,15 @@
 package com.jn.langx.security;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.security.exception.SecurityException;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Predicate;
 
 import java.security.*;
+import java.util.EnumSet;
+import java.util.List;
 
 /**
  * <p>
@@ -40,26 +47,27 @@ import java.security.*;
  * <p>
  * <p>
  * JCE中的名称太多了，也没有什么规律，这里就不指明了。可以参考：<a href="http://docs.oracle.com/javase/1.5.0/docs/guide/security/CryptoSpec.html#AppB">JCE 实例名称说明</a>
- *
- *
+ * <p>
+ * <p>
  * https://docs.oracle.com/en/java/javase/14/security/oracle-providers.html#GUID-FE2D2E28-C991-4EF9-9DBE-2A4982726313
+ *
  * @author fs1194361820@163.com
  */
 public enum JCAEStandardName {
     /********************Perso Random Number Generate *******/
-    @Algorithm(name="NativePRNG", apply = SecureRandom.class)
+    @Algorithm(name = "NativePRNG", apply = SecureRandom.class)
     NativePRNG,
-    @Algorithm(name="NativePRNGBlocking", apply = SecureRandom.class)
+    @Algorithm(name = "NativePRNGBlocking", apply = SecureRandom.class)
     NativePRNGBlocking,
-    @Algorithm(name="NativePRNGNonBlocking", apply = SecureRandom.class)
+    @Algorithm(name = "NativePRNGNonBlocking", apply = SecureRandom.class)
     NativePRNGNonBlocking,
-    @Algorithm(name="PKCS11", apply = SecureRandom.class)
+    @Algorithm(name = "PKCS11", apply = SecureRandom.class)
     PKCS11PRNG,
-    @Algorithm(name="DRBG", apply = SecureRandom.class)
+    @Algorithm(name = "DRBG", apply = SecureRandom.class)
     DRBG,
-    @Algorithm(name="SHA1PRNG", apply = SecureRandom.class)
+    @Algorithm(name = "SHA1PRNG", apply = SecureRandom.class)
     SHA1PRNG,
-    @Algorithm(name="Windows-PRNG", apply = SecureRandom.class)
+    @Algorithm(name = "Windows-PRNG", apply = SecureRandom.class)
     Windows_PRNG,
 
     /*********************MessageDigest**********************/
@@ -132,12 +140,12 @@ public enum JCAEStandardName {
         try {
             algorithm = JCAEStandardName.class.getDeclaredField(name()).getAnnotation(Algorithm.class);
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
         } catch (SecurityException e) {
-            e.printStackTrace();
         }
         if (algorithm != null) {
             this.name = algorithm.name();
+            this.isAlgorithm = true;
+            this.scenarios = algorithm.apply();
         } else {
             this.name = name();
         }
@@ -149,6 +157,8 @@ public enum JCAEStandardName {
 
     //	Override the Enum#name
     private String name;
+    private boolean isAlgorithm = false;
+    private Class[] scenarios;
 
     public String getName() {
         return this.name;
@@ -158,4 +168,26 @@ public enum JCAEStandardName {
     public String toString() {
         return this.name;
     }
+
+    public boolean isAlgorithm() {
+        return this.isAlgorithm;
+    }
+
+    public Class[] getScenarios() {
+        return this.scenarios;
+    }
+
+    public static List<JCAEStandardName> findAlgorithms(@NonNull final Class scenario) {
+        Preconditions.checkNotNull(scenario);
+        return Pipeline.of(EnumSet.allOf(JCAEStandardName.class))
+                .filter(new Predicate<JCAEStandardName>() {
+                    @Override
+                    public boolean test(JCAEStandardName sn) {
+                        return sn.isAlgorithm() && Collects.contains(sn.scenarios, scenario);
+                    }
+                })
+                .asList();
+    }
+
+
 }
