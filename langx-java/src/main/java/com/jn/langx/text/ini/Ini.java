@@ -30,12 +30,12 @@ import org.slf4j.LoggerFactory;
  * </pre>
  */
 public class Ini implements Map<String, Ini.Section> {
-    public static final String DEFAULT_SECTION_NAME = "";
-    public static final String COMMENT_POUND = "#";
-    public static final String COMMENT_SEMICOLON = ";";
-    public static final String SECTION_PREFIX = "[";
-    public static final String SECTION_SUFFIX = "]";
-    protected static final char ESCAPE_TOKEN = '\\';
+    private static final String DEFAULT_SECTION_NAME = "";
+    private static final String COMMENT_POUND = "#";
+    private static final String COMMENT_SEMICOLON = ";";
+    private static final String SECTION_PREFIX = "[";
+    private static final String SECTION_SUFFIX = "]";
+    private static final char ESCAPE_TOKEN = '\\';
     private static final Logger logger = LoggerFactory.getLogger(Ini.class);
     private static final transient Logger log = LoggerFactory.getLogger(Ini.class);
     private final Map<String, Ini.Section> sections;
@@ -76,7 +76,7 @@ public class Ini implements Map<String, Ini.Section> {
 
     protected static boolean isSectionHeader(String line) {
         String s = Strings.useValueIfBlank(line, "");
-        return s.startsWith("[") && s.endsWith("]");
+        return s.startsWith(SECTION_PREFIX) && s.endsWith(SECTION_SUFFIX);
     }
 
     protected static String getSectionName(String line) {
@@ -192,7 +192,7 @@ public class Ini implements Map<String, Ini.Section> {
         try {
             while ((rawLine = bufferedReader.readLine()) != null) {
                 String line = Strings.trim(rawLine);
-                if (line != null && !line.startsWith("#") && !line.startsWith(";")) {
+                if (line != null && !line.startsWith(COMMENT_POUND) && !line.startsWith(COMMENT_SEMICOLON)) {
                     String newSectionName = getSectionName(line);
                     if (newSectionName != null) {
                         this.addSection(sectionName, sectionContent);
@@ -263,7 +263,7 @@ public class Ini implements Map<String, Ini.Section> {
             Collects.forEach(this.sections, new Consumer2<String, Section>() {
                 @Override
                 public void accept(String sectionName, Section section) {
-                    sb.append("[" + sectionName + "]").append("\n");
+                    sb.append(SECTION_PREFIX + sectionName + SECTION_SUFFIX).append("\n");
                     Collects.forEach(section.props, new Consumer2<String, String>() {
                         @Override
                         public void accept(String key, String value) {
@@ -370,7 +370,7 @@ public class Ini implements Map<String, Ini.Section> {
                 int length = line.length();
                 int backslashCount = 0;
 
-                for (int i = length - 1; i > 0 && line.charAt(i) == '\\'; --i) {
+                for (int i = length - 1; i > 0 && line.charAt(i) == ESCAPE_TOKEN; --i) {
                     ++backslashCount;
                 }
 
@@ -383,7 +383,7 @@ public class Ini implements Map<String, Ini.Section> {
         }
 
         private static boolean isCharEscaped(CharSequence s, int index) {
-            return index > 0 && s.charAt(index) == '\\';
+            return index > 0 && s.charAt(index) == ESCAPE_TOKEN;
         }
 
         protected static String[] splitKeyValue(String keyValueLine) {
