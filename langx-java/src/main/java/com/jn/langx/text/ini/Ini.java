@@ -206,18 +206,6 @@ public class Ini implements Map<String, Ini.Section> {
     }
 
     public void merge(Map<String, Ini.Section> m) {
-        Entry entry;
-        Ini.Section section;
-        if (m != null) {
-            for (Iterator var2 = m.entrySet().iterator(); var2.hasNext(); section.putAll((Map) entry.getValue())) {
-                entry = (Entry) var2.next();
-                section = this.getSection((String) entry.getKey());
-                if (section == null) {
-                    section = this.addSection((String) entry.getKey());
-                }
-            }
-        }
-
         Collects.forEach(m, new Consumer2<String, Section>() {
             @Override
             public void accept(String key, Section section) {
