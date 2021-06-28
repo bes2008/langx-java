@@ -1,15 +1,6 @@
 package com.jn.langx.text.ini;
 
 
-import java.io.*;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-
 import com.jn.langx.configuration.ConfigurationException;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Emptys;
@@ -19,6 +10,9 @@ import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.io.IOs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * <pre>
@@ -41,7 +35,7 @@ public class Ini implements Map<String, Ini.Section> {
     private final Map<String, Ini.Section> sections;
 
     public Ini() {
-        this.sections = new LinkedHashMap();
+        this.sections = new LinkedHashMap<String, Section>();
     }
 
     public Ini(Ini defaults) {
@@ -56,7 +50,6 @@ public class Ini implements Map<String, Ini.Section> {
                 Ini.Section copy = new Ini.Section(section);
                 this.sections.put(section.getName(), copy);
             }
-
         }
     }
 
@@ -110,7 +103,7 @@ public class Ini implements Map<String, Ini.Section> {
 
     public Ini.Section getSection(String sectionName) {
         String name = cleanName(sectionName);
-        return (Ini.Section) this.sections.get(name);
+        return this.sections.get(name);
     }
 
     public Ini.Section addSection(String sectionName) {
@@ -126,7 +119,7 @@ public class Ini implements Map<String, Ini.Section> {
 
     public Ini.Section removeSection(String sectionName) {
         String name = cleanName(sectionName);
-        return (Ini.Section) this.sections.remove(name);
+        return this.sections.remove(name);
     }
 
     public void setSectionProperty(String sectionName, String propertyName, String propertyValue) {
@@ -160,7 +153,6 @@ public class Ini implements Map<String, Ini.Section> {
             IOs.close(is);
         }
 
-
     }
 
     public void load(String iniConfig) throws ConfigurationException {
@@ -178,7 +170,7 @@ public class Ini implements Map<String, Ini.Section> {
                 throw new ConfigurationException(ex);
             }
 
-            this.load((Reader) isr);
+            this.load(isr);
         }
     }
 
@@ -192,7 +184,7 @@ public class Ini implements Map<String, Ini.Section> {
         try {
             while ((rawLine = bufferedReader.readLine()) != null) {
                 String line = Strings.trim(rawLine);
-                if (line != null && !line.startsWith(COMMENT_POUND) && !line.startsWith(COMMENT_SEMICOLON)) {
+                if ( !line.startsWith(COMMENT_POUND) && !line.startsWith(COMMENT_SEMICOLON)) {
                     String newSectionName = getSectionName(line);
                     if (newSectionName != null) {
                         this.addSection(sectionName, sectionContent);
@@ -232,7 +224,7 @@ public class Ini implements Map<String, Ini.Section> {
         if (content.length() > 0) {
             String contentString = content.toString();
             String cleaned = Strings.trim(contentString);
-            if (cleaned != null) {
+            if (Strings.isNotEmpty(cleaned)) {
                 Ini.Section section = new Ini.Section(name, contentString);
                 if (!section.isEmpty()) {
                     this.sections.put(name, section);
@@ -259,7 +251,6 @@ public class Ini implements Map<String, Ini.Section> {
     public String toString() {
         if (Emptys.isNotEmpty(this.sections)) {
             final StringBuilder sb = new StringBuilder(256);
-            int i = 0;
             Collects.forEach(this.sections, new Consumer2<String, Section>() {
                 @Override
                 public void accept(String sectionName, Section section) {
@@ -293,15 +284,15 @@ public class Ini implements Map<String, Ini.Section> {
     }
 
     public Ini.Section get(Object key) {
-        return (Ini.Section) this.sections.get(key);
+        return this.sections.get(key);
     }
 
     public Ini.Section put(String key, Ini.Section value) {
-        return (Ini.Section) this.sections.put(key, value);
+        return this.sections.put(key, value);
     }
 
     public Ini.Section remove(Object key) {
-        return (Ini.Section) this.sections.remove(key);
+        return this.sections.remove(key);
     }
 
     public void putAll(Map<? extends String, ? extends Ini.Section> m) {
@@ -333,7 +324,7 @@ public class Ini implements Map<String, Ini.Section> {
                 throw new NullPointerException("name");
             } else {
                 this.name = name;
-                this.props = new LinkedHashMap();
+                this.props = new LinkedHashMap<String, String>();
             }
         }
 
@@ -342,18 +333,14 @@ public class Ini implements Map<String, Ini.Section> {
                 throw new NullPointerException("name");
             } else {
                 this.name = name;
-                Object props;
+                Map<String, String> props;
                 if (Strings.isNotBlank(sectionContent)) {
                     props = toMapProps(sectionContent);
                 } else {
-                    props = new LinkedHashMap();
+                    props = new LinkedHashMap<String, String>();
                 }
 
-                if (props != null) {
-                    this.props = (Map) props;
-                } else {
-                    this.props = new LinkedHashMap();
-                }
+                this.props = props;
 
             }
         }
@@ -410,7 +397,7 @@ public class Ini implements Map<String, Ini.Section> {
 
                 String key = Strings.trim(keyBuffer.toString());
                 String value = Strings.trim(valueBuffer.toString());
-                if (key != null && value != null) {
+                if (Strings.isNotEmpty(key) && Strings.isNotEmpty(value)) {
                     Ini.log.trace("Discovered key/value pair: {} = {}", key, value);
                     return new String[]{key, value};
                 } else {
@@ -421,7 +408,7 @@ public class Ini implements Map<String, Ini.Section> {
         }
 
         private static Map<String, String> toMapProps(String content) {
-            Map<String, String> props = new LinkedHashMap();
+            Map<String, String> props = new LinkedHashMap<String, String>();
             StringBuilder lineBuffer = new StringBuilder();
             Scanner scanner = new Scanner(content);
 
@@ -465,7 +452,7 @@ public class Ini implements Map<String, Ini.Section> {
         }
 
         public String get(Object key) {
-            return (String) this.props.get(key);
+            return this.props.get(key);
         }
 
         public boolean isEmpty() {
@@ -477,7 +464,7 @@ public class Ini implements Map<String, Ini.Section> {
         }
 
         public String put(String key, String value) {
-            return (String) this.props.put(key, value);
+            return this.props.put(key, value);
         }
 
         public void putAll(Map<? extends String, ? extends String> m) {
@@ -485,7 +472,7 @@ public class Ini implements Map<String, Ini.Section> {
         }
 
         public String remove(Object key) {
-            return (String) this.props.remove(key);
+            return this.props.remove(key);
         }
 
         public int size() {
