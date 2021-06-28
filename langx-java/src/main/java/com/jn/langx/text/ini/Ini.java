@@ -6,7 +6,9 @@ import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.IOs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,13 +45,13 @@ public class Ini implements Map<String, Ini.Section> {
         if (defaults == null) {
             throw new NullPointerException("Defaults cannot be null.");
         } else {
-            Iterator var2 = defaults.getSections().iterator();
-
-            while (var2.hasNext()) {
-                Ini.Section section = (Ini.Section) var2.next();
-                Ini.Section copy = new Ini.Section(section);
-                this.sections.put(section.getName(), copy);
-            }
+            Collects.forEach(defaults.sections, new Consumer<Section>() {
+                @Override
+                public void accept(Section section) {
+                    Ini.Section copy = new Ini.Section(section);
+                    Ini.this.sections.put(section.getName(), copy);
+                }
+            });
         }
     }
 
@@ -80,14 +82,12 @@ public class Ini implements Map<String, Ini.Section> {
     public boolean isEmpty() {
         Collection<Ini.Section> sections = this.sections.values();
         if (!sections.isEmpty()) {
-            Iterator var2 = sections.iterator();
-
-            while (var2.hasNext()) {
-                Ini.Section section = (Ini.Section) var2.next();
-                if (!section.isEmpty()) {
-                    return false;
+            return Collects.allMatch(sections, new Predicate<Section>() {
+                @Override
+                public boolean test(Section section) {
+                    return section.isEmpty();
                 }
-            }
+            });
         }
 
         return true;
@@ -180,11 +180,11 @@ public class Ini implements Map<String, Ini.Section> {
         BufferedReader bufferedReader = new BufferedReader(reader);
         StringBuilder sectionContent = new StringBuilder();
 
-        String rawLine = null;
+        String rawLine;
         try {
             while ((rawLine = bufferedReader.readLine()) != null) {
                 String line = Strings.trim(rawLine);
-                if ( !line.startsWith(COMMENT_POUND) && !line.startsWith(COMMENT_SEMICOLON)) {
+                if (!line.startsWith(COMMENT_POUND) && !line.startsWith(COMMENT_SEMICOLON)) {
                     String newSectionName = getSectionName(line);
                     if (newSectionName != null) {
                         this.addSection(sectionName, sectionContent);
@@ -217,6 +217,18 @@ public class Ini implements Map<String, Ini.Section> {
                 }
             }
         }
+
+        Collects.forEach(m, new Consumer2<String, Section>() {
+            @Override
+            public void accept(String key, Section section) {
+                if (section == null) {
+                    section = Ini.this.addSection(key);
+                    if (section != null) {
+                        section.putAll(section);
+                    }
+                }
+            }
+        });
 
     }
 
