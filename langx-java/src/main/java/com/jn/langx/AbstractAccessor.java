@@ -1,6 +1,7 @@
 package com.jn.langx;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Function;
 
@@ -16,6 +17,16 @@ public abstract class AbstractAccessor<K, T> implements Accessor<K, T> {
     public void setTarget(@NonNull T target) {
         Preconditions.checkNotNull(target);
         this.t = target;
+    }
+
+    @Override
+    public boolean isNull(K key) {
+        return !has(key) || get(key)==null;
+    }
+
+    @Override
+    public boolean isEmpty(K key) {
+        return Objs.isEmpty(key);
     }
 
     @Override

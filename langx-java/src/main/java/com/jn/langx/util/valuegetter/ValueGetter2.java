@@ -7,6 +7,20 @@ public interface ValueGetter2<K> extends ValueGetter<K, Object>{
     @Override
     Object get(K key);
 
+    /**
+     * 指定key不存在，或者存在key但值为null，这两种情况都返回true
+     * @param key
+     * @return
+     */
+    boolean isNull(K key);
+
+    /**
+     * key对应的值，可以被Objs.isEmpty 判断为true
+     * @param key
+     * @return
+     */
+    boolean isEmpty(K key);
+
     boolean has(K key);
 
     Object get(K key, @NonNull Function<Object, Object> mapper);
