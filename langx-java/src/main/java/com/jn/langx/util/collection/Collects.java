@@ -1924,7 +1924,7 @@ public class Collects {
 
     public static <E> boolean contains(Collection<E> collection, @Nullable final E obj, @Nullable Predicate<E> predicate) {
         Predicate<E> p = predicate == null ? Functions.<E>equalsPredicate(obj) : predicate;
-        return Collects.anyMatch(collection, predicate);
+        return Collects.anyMatch(collection, p);
     }
 
     /**
