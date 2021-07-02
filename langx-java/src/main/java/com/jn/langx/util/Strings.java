@@ -665,7 +665,7 @@ public class Strings {
      * both {@code null}
      * @see java.lang.String#endsWith(String)
      */
-    private static boolean endsWith(final CharSequence str, final CharSequence suffix, final boolean ignoreCase) {
+    public static boolean endsWith(final CharSequence str, final CharSequence suffix, final boolean ignoreCase) {
         if (str == null || suffix == null) {
             return str == null && suffix == null;
         }
