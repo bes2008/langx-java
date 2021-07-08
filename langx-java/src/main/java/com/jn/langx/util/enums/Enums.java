@@ -7,6 +7,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.reflect.Reflects;
 
 import java.util.EnumSet;
@@ -129,27 +130,36 @@ public class Enums {
     }
 
     public static <T extends Enum<T>> T ofField(Class<T> targetClass, final String field, final Object value) {
-        Preconditions.checkNotNull(targetClass);
-        Preconditions.checkNotNull(field);
-        if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
-            return Collects.findFirst(EnumSet.allOf(targetClass), new Predicate<T>() {
-                @Override
-                public boolean test(T e) {
-                    Object fieldValue = Reflects.getAnyFieldValue(e, field, true, false);
-                    return Objects.deepEquals(fieldValue, value);
-                }
-            });
-        }
-        throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("{} not a enum class", Reflects.getFQNClassName(targetClass)));
+        return ofField(targetClass, field, value, null);
+    }
+
+    public static <T extends Enum<T>> T ofField(Class<T> targetClass, final String field, final Supplier0<Object> valueSupplier) {
+        return ofField(targetClass, field, valueSupplier, null);
     }
 
     public static <T extends Enum<T>> T ofField(Class<T> targetClass, final String field, final Object value, Predicate<T> predicate) {
+        return ofField(targetClass, field, new Supplier0<Object>() {
+            @Override
+            public Object get() {
+                return value;
+            }
+        }, predicate);
+    }
+
+    public static <T extends Enum<T>> T ofField(Class<T> targetClass, final String field, final Supplier0<Object> valueSupplier, Predicate<T> predicate) {
         Preconditions.checkNotNull(targetClass);
         Preconditions.checkNotNull(field);
-        if (predicate == null) {
-            return ofField(targetClass, field, value);
-        }
         if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
+            if (predicate == null) {
+                return Collects.findFirst(EnumSet.allOf(targetClass), new Predicate<T>() {
+                    @Override
+                    public boolean test(T e) {
+                        Object fieldValue = Reflects.getAnyFieldValue(e, field, true, false);
+                        Object expectedValue = valueSupplier == null ? null : valueSupplier.get();
+                        return Objects.deepEquals(fieldValue, expectedValue);
+                    }
+                });
+            }
             return Collects.findFirst(EnumSet.allOf(targetClass), predicate);
         }
         throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("{} not a enum class", Reflects.getFQNClassName(targetClass)));
