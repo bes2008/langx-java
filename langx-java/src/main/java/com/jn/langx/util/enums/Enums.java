@@ -96,6 +96,30 @@ public class Enums {
         return t;
     }
 
+    public static <T extends Enum<T>> T ofToString(@NonNull final Class<T> tClass, final String value) {
+        Preconditions.checkNotNull(tClass);
+        T t = null;
+        if (Reflects.isSubClass(CommonEnum.class, tClass)) {
+            t = Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    CommonEnum y = (CommonEnum) e;
+                    return y.toString().equals(value);
+                }
+            });
+        }
+        if (t == null) {
+            t = Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    return e.toString().equals(value);
+                }
+            });
+        }
+
+        return t;
+    }
+
     public static <T extends Enum<T>> T ofDisplayText(@NonNull final Class<T> tClass, final String displayText) {
         Preconditions.checkNotNull(tClass);
         T t = null;
