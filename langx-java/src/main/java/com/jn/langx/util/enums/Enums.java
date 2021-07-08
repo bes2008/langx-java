@@ -197,4 +197,30 @@ public class Enums {
         return Collects.asList(getEnumSet(enumClass));
     }
 
+
+    public static int getIndex(Enum e) {
+        return e.ordinal();
+    }
+
+    public static int getCode(Enum e) {
+        if (e instanceof CommonEnum) {
+            return ((CommonEnum) e).getCode();
+        }
+        return getIndex(e);
+    }
+
+    public static String getName(Enum e) {
+        if (e instanceof CommonEnum) {
+            return ((CommonEnum) e).getName();
+        }
+        return e.name();
+    }
+
+    public static String getDisplayText(Enum e) {
+        if (e instanceof CommonEnum) {
+            return ((CommonEnum) e).getDisplayText();
+        }
+        return e.name();
+    }
+
 }
