@@ -70,8 +70,11 @@ Key主要分为 ：
 	Secret Key：对称加密 key
 
 
+# 4. PKCS 标准
 
+参考：https://www.cnblogs.com/lsgxeva/p/11701011.html
 
+https://blog.csdn.net/qq_39385118/article/details/107510032
 
 
 
