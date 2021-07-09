@@ -1,6 +1,6 @@
 package com.jn.langx.security.keyspec.parser.der;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.codec.hex.Hex;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -202,7 +202,7 @@ public final class DerParser {
             switch (type) {
                 case DerParser.OCTET_STRING:
                     // octet string is basically a byte array
-                    return toHexString(value);
+                    return Hex.encodeHexString(value);
                 case DerParser.NUMERIC_STRING:
                 case DerParser.PRINTABLE_STRING:
                 case DerParser.VIDEOTEX_STRING:
@@ -264,17 +264,5 @@ public final class DerParser {
         }
     }
 
-    private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
-    private static String toHexString(byte[] bytes) {
-        Objects.requireNonNull(bytes);
-        StringBuilder sb = new StringBuilder(2 * bytes.length);
-
-        for (int i = 0; i < bytes.length; i++) {
-            byte b = bytes[i];
-            sb.append(HEX_DIGITS[b >> 4 & 0xf]).append(HEX_DIGITS[b & 0xf]);
-        }
-
-        return sb.toString();
-    }
 
 }
