@@ -1,12 +1,12 @@
-package com.jn.langx.security.keyspec.parser;
+package com.jn.langx.security.keyspec.parser.der;
 
-import com.jn.langx.security.cert.DerParser;
+import com.jn.langx.security.keyspec.parser.PrivateKeySpecParser;
 import com.jn.langx.util.Throwables;
 
 import java.math.BigInteger;
 import java.security.spec.RSAPrivateCrtKeySpec;
 
-public class RsaPkcs1PrivateKeySpecParser implements PrivateKeySpecParser<RSAPrivateCrtKeySpec>{
+public class RsaPkcs1PrivateKeySpecParser implements PrivateKeySpecParser<RSAPrivateCrtKeySpec> {
     @Override
     public RSAPrivateCrtKeySpec get(byte[] derEncodedBytes) {
         try {

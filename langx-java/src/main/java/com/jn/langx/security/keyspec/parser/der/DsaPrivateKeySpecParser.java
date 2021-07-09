@@ -1,12 +1,12 @@
-package com.jn.langx.security.keyspec.parser;
+package com.jn.langx.security.keyspec.parser.der;
 
-import com.jn.langx.security.cert.DerParser;
+import com.jn.langx.security.keyspec.parser.PrivateKeySpecParser;
 import com.jn.langx.util.Throwables;
 
 import java.math.BigInteger;
 import java.security.spec.DSAPrivateKeySpec;
 
-public class DsaPrivateKeySpecParser implements PrivateKeySpecParser<DSAPrivateKeySpec>{
+public class DsaPrivateKeySpecParser implements PrivateKeySpecParser<DSAPrivateKeySpec> {
     @Override
     public DSAPrivateKeySpec get(byte[] derEncodedBytes) {
         try {

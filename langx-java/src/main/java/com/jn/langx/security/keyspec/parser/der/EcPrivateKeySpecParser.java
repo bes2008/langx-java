@@ -1,6 +1,6 @@
-package com.jn.langx.security.keyspec.parser;
+package com.jn.langx.security.keyspec.parser.der;
 
-import com.jn.langx.security.cert.DerParser;
+import com.jn.langx.security.keyspec.parser.PrivateKeySpecParser;
 import com.jn.langx.util.Throwables;
 
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPrivateKeySpec;
 
-public class EcPrivateKeySpecParser implements PrivateKeySpecParser<ECPrivateKeySpec>{
+public class EcPrivateKeySpecParser implements PrivateKeySpecParser<ECPrivateKeySpec> {
     @Override
     public ECPrivateKeySpec get(byte[] derEncodedBytes) {
         try {
