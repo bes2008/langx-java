@@ -14,7 +14,7 @@ import java.math.BigInteger;
  * Based on https://github.com/groovenauts/jmeter_oauth_plugin/blob/master/jmeter/src/
  * main/java/org/apache/jmeter/protocol/oauth/sampler/PrivateKeyReader.java
  */
-final class DerParser {
+public final class DerParser {
     // Constructed Flag
     private static final int CONSTRUCTED = 0x20;
 
@@ -38,12 +38,12 @@ final class DerParser {
     private InputStream derInputStream;
     private int maxAsnObjectLength;
 
-    DerParser(byte[] bytes) {
+    public DerParser(byte[] bytes) {
         this.derInputStream = new ByteArrayInputStream(bytes);
         this.maxAsnObjectLength = bytes.length;
     }
 
-    Asn1Object readAsn1Object() throws IOException {
+    public Asn1Object readAsn1Object() throws IOException {
         int tag = derInputStream.read();
         if (tag == -1) {
             throw new IOException("Invalid DER: stream too short, missing tag");
@@ -116,7 +116,7 @@ final class DerParser {
      *
      * @author zhang
      */
-    static class Asn1Object {
+    public static class Asn1Object {
 
         protected final int type;
         protected final int length;

@@ -54,16 +54,16 @@ public class PKIs {
         }
     }
 
-    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64PrivateKey) {
-        Preconditions.checkNotEmpty(base64PrivateKey, "the private key is null or empty");
-        PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
-        return createPrivateKey(algorithm, provider, priPKCS8);
+    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64Pkcs8PrivateKey) {
+        Preconditions.checkNotEmpty(base64Pkcs8PrivateKey, "the private key is null or empty");
+        PKCS8EncodedKeySpec pkcs8PrivKey = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64Pkcs8PrivateKey));
+        return createPrivateKey(algorithm, provider, pkcs8PrivKey);
     }
 
-    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty byte[] base64PrivateKey) {
-        Preconditions.checkNotEmpty(base64PrivateKey, "the private key is null or empty");
-        PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64PrivateKey));
-        return createPrivateKey(algorithm, provider, priPKCS8);
+    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty byte[] base64Pkcs8PrivateKey) {
+        Preconditions.checkNotEmpty(base64Pkcs8PrivateKey, "the private key is null or empty");
+        PKCS8EncodedKeySpec pkcs8PrivKey = new PKCS8EncodedKeySpec(Base64.decodeBase64(base64Pkcs8PrivateKey));
+        return createPrivateKey(algorithm, provider, pkcs8PrivKey);
     }
 
     public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
