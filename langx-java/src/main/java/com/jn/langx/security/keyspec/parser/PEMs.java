@@ -1,4 +1,4 @@
-package com.jn.langx.security.cert;
+package com.jn.langx.security.keyspec.parser;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.MessageDigests;
@@ -31,8 +31,8 @@ import java.security.cert.CertificateFactory;
 import java.security.spec.*;
 import java.util.*;
 
-final class PEMs {
 
+public class PEMs {
     public static final String PKCS1_HEADER = "-----BEGIN RSA PRIVATE KEY-----";
     public static final String PKCS1_FOOTER = "-----END RSA PRIVATE KEY-----";
     public static final String OPENSSL_DSA_HEADER = "-----BEGIN DSA PRIVATE KEY-----";
