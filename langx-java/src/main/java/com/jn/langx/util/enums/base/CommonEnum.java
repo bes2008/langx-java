@@ -1,9 +1,9 @@
 package com.jn.langx.util.enums.base;
 
-public interface CommonEnum {
-    int getCode();
+import com.jn.langx.Named;
 
-    String getName();
+public interface CommonEnum extends Named {
+    int getCode();
 
     String getDisplayText();
 }

@@ -1,5 +1,6 @@
 package com.jn.langx.util.enums;
 
+import com.jn.langx.Named;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objects;
@@ -80,6 +81,15 @@ public class Enums {
                 @Override
                 public boolean test(T e) {
                     CommonEnum y = (CommonEnum) e;
+                    return y.getName().equals(name);
+                }
+            });
+        }
+        if (t == null && Reflects.isSubClass(Named.class, tClass)) {
+            t = Collects.findFirst(EnumSet.allOf(tClass), new Predicate<T>() {
+                @Override
+                public boolean test(T e) {
+                    Named y = (Named) e;
                     return y.getName().equals(name);
                 }
             });
@@ -212,6 +222,9 @@ public class Enums {
     public static String getName(Enum e) {
         if (e instanceof CommonEnum) {
             return ((CommonEnum) e).getName();
+        }
+        if (e instanceof Named) {
+            return ((Named) e).getName();
         }
         return e.name();
     }
