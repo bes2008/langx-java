@@ -34,8 +34,9 @@ public class RuntimeContainers {
             } else {
                 logger.error("Unsupported operation for current platform");
             }
-            runtimeContainer = new Holder<RuntimeContainer>(handler.getContainer());
-
+            if (handler != null) {
+                runtimeContainer = new Holder<RuntimeContainer>(handler.getContainer());
+            }
         }
         return runtimeContainer.get();
     }

@@ -13,8 +13,10 @@ import com.jn.langx.util.reflect.Reflects;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 public class Enums {
+    private Enums(){}
 
     /**
      * 基于 ordinal
@@ -199,7 +201,7 @@ public class Enums {
         throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("{} not a enum class", Reflects.getFQNClassName(targetClass)));
     }
 
-    public static <T extends Enum<T>> EnumSet<T> getEnumSet(Class<T> enumClass) {
+    public static <T extends Enum<T>> Set<T> getEnumSet(Class<T> enumClass) {
         return EnumSet.allOf(enumClass);
     }
 

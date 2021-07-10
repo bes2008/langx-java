@@ -27,7 +27,7 @@ public class CPUs {
                 commandLine = CommandLine.parse("sudo dmidecode -t 4 | grep ID");
                 handler = new LinuxGetCpuIdStreamHandler();
             }
-            if (commandLine != null && handler != null) {
+            if (commandLine != null) {
                 try {
                     executor.setStreamHandler(handler);
                     executor.execute(commandLine);
@@ -37,7 +37,9 @@ public class CPUs {
             } else {
                 logger.error("Unsupported operation for current platform");
             }
-            cpuId = new Holder<String>(handler.getCpuId());
+            if (handler != null) {
+                cpuId = new Holder<String>(handler.getCpuId());
+            }
         }
         return cpuId.get();
     }

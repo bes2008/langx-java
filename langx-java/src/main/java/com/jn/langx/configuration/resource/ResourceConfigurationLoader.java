@@ -1,5 +1,6 @@
 package com.jn.langx.configuration.resource;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.configuration.Configuration;
 import com.jn.langx.configuration.ConfigurationLoader;
 import com.jn.langx.configuration.InputStreamConfigurationParser;
@@ -7,6 +8,7 @@ import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceLocationProvider;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.util.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +39,10 @@ public class ResourceConfigurationLoader<T extends Configuration> implements Con
     }
 
     @Override
-    public T load(String configurationId) {
+    public T load(@NonNull String configurationId) {
+        Preconditions.checkNotEmpty(configurationId, "the configuration id is null or empty");
         Location location = resourceLocationProvider.get(configurationId);
-        if (location == null) {
-            logger.warn("Can't find the location for configuration : {}", configurationId);
-        }
+        Preconditions.checkNotNull(location, "Can't find the location for configuration : {}", configurationId);
         T configuration = null;
         Resource resource = Resources.loadResource(location);
         if (resource != null && resource.exists()) {
@@ -55,7 +56,7 @@ public class ResourceConfigurationLoader<T extends Configuration> implements Con
             } catch (IOException ex) {
                 logger.error(ex.getMessage(), ex);
             }
-        }else{
+        } else {
             logger.error("Location {} is not exists", location);
         }
         return null;

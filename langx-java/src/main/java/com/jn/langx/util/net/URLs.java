@@ -3,6 +3,7 @@ package com.jn.langx.util.net;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.jar.multiplelevel.MultipleLevelURLStreamHandler;
 import org.slf4j.Logger;
@@ -211,7 +212,7 @@ public class URLs {
                 } finally {
                     if (Emptys.isNotNull(con)) {
                         try {
-                            con.getInputStream().close();
+                            IOs.close(con.getInputStream());
                         } catch (IOException ex) {
                             // ignore it
                         }

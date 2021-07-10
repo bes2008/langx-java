@@ -1,6 +1,7 @@
 package com.jn.langx.util.jar.multiplelevel;
 
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
 /**
@@ -18,11 +19,11 @@ final class StringSequence implements CharSequence {
 
     private int hash;
 
-    StringSequence(String source) {
+    StringSequence(@NonNull String source) {
         this(source, 0, (source != null) ? source.length() : -1);
     }
 
-    StringSequence(String source, int start, int end) {
+    StringSequence(@NonNull String source, int start, int end) {
         Preconditions.checkNotNull(source, "Source must not be null");
         if (start < 0) {
             throw new StringIndexOutOfBoundsException(start);
