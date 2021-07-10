@@ -1,10 +1,14 @@
-package com.jn.langx.security.cert;
+package com.jn.langx.security.keyspec.parser;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.MessageDigests;
 import com.jn.langx.security.PKIs;
 import com.jn.langx.security.exception.KeyFileFormatException;
 import com.jn.langx.security.exception.SecurityException;
+import com.jn.langx.security.keyspec.parser.der.DerParser;
+import com.jn.langx.security.keyspec.parser.der.DsaPrivateKeySpecParser;
+import com.jn.langx.security.keyspec.parser.der.EcPrivateKeySpecParser;
+import com.jn.langx.security.keyspec.parser.der.RsaPkcs1PrivateKeySpecParser;
 import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier0;
@@ -20,31 +24,29 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.interfaces.ECKey;
 import java.security.spec.*;
 import java.util.*;
 
-final class PEMs {
 
-    private static final String PKCS1_HEADER = "-----BEGIN RSA PRIVATE KEY-----";
-    private static final String PKCS1_FOOTER = "-----END RSA PRIVATE KEY-----";
-    private static final String OPENSSL_DSA_HEADER = "-----BEGIN DSA PRIVATE KEY-----";
-    private static final String OPENSSL_DSA_FOOTER = "-----END DSA PRIVATE KEY-----";
-    private static final String OPENSSL_DSA_PARAMS_HEADER = "-----BEGIN DSA PARAMETERS-----";
-    private static final String OPENSSL_DSA_PARAMS_FOOTER = "-----END DSA PARAMETERS-----";
-    private static final String PKCS8_HEADER = "-----BEGIN PRIVATE KEY-----";
-    private static final String PKCS8_FOOTER = "-----END PRIVATE KEY-----";
-    private static final String PKCS8_ENCRYPTED_HEADER = "-----BEGIN ENCRYPTED PRIVATE KEY-----";
-    private static final String PKCS8_ENCRYPTED_FOOTER = "-----END ENCRYPTED PRIVATE KEY-----";
-    private static final String OPENSSL_EC_HEADER = "-----BEGIN EC PRIVATE KEY-----";
-    private static final String OPENSSL_EC_FOOTER = "-----END EC PRIVATE KEY-----";
-    private static final String OPENSSL_EC_PARAMS_HEADER = "-----BEGIN EC PARAMETERS-----";
-    private static final String OPENSSL_EC_PARAMS_FOOTER = "-----END EC PARAMETERS-----";
+public class PEMs {
+    public static final String PKCS1_HEADER = "-----BEGIN RSA PRIVATE KEY-----";
+    public static final String PKCS1_FOOTER = "-----END RSA PRIVATE KEY-----";
+    public static final String OPENSSL_DSA_HEADER = "-----BEGIN DSA PRIVATE KEY-----";
+    public static final String OPENSSL_DSA_FOOTER = "-----END DSA PRIVATE KEY-----";
+    public static final String OPENSSL_DSA_PARAMS_HEADER = "-----BEGIN DSA PARAMETERS-----";
+    public static final String OPENSSL_DSA_PARAMS_FOOTER = "-----END DSA PARAMETERS-----";
+    public static final String PKCS8_HEADER = "-----BEGIN PRIVATE KEY-----";
+    public static final String PKCS8_FOOTER = "-----END PRIVATE KEY-----";
+    public static final String PKCS8_ENCRYPTED_HEADER = "-----BEGIN ENCRYPTED PRIVATE KEY-----";
+    public static final String PKCS8_ENCRYPTED_FOOTER = "-----END ENCRYPTED PRIVATE KEY-----";
+    public static final String OPENSSL_EC_HEADER = "-----BEGIN EC PRIVATE KEY-----";
+    public static final String OPENSSL_EC_FOOTER = "-----END EC PRIVATE KEY-----";
+    public static final String OPENSSL_EC_PARAMS_HEADER = "-----BEGIN EC PARAMETERS-----";
+    public static final String OPENSSL_EC_PARAMS_FOOTER = "-----END EC PARAMETERS-----";
     private static final String HEADER = "-----BEGIN";
 
     private PEMs() {
@@ -59,44 +61,48 @@ final class PEMs {
      * @param passwordSupplier A password supplier for the potentially encrypted (password protected) key
      * @return a private key from the contents of the file
      */
-    public static PrivateKey readPrivateKey(File keyFile, Supplier0<char[]> passwordSupplier) throws IOException, GeneralSecurityException {
+    public static PrivateKey readPrivateKey(File keyFile, Supplier0<char[]> passwordSupplier) throws GeneralSecurityException {
         BufferedReader bReader = null;
         try {
             bReader = new BufferedReader(new InputStreamReader(Files.openInputStream(keyFile), Charsets.UTF_8));
-            String line = bReader.readLine();
+            return readPrivateKey(bReader, passwordSupplier);
+        } finally {
+            IOs.close(bReader);
+        }
+    }
+
+    public static PrivateKey readPrivateKey(BufferedReader pemKeyFile, Supplier0<char[]> passwordSupplier) throws GeneralSecurityException {
+        try {
+            String line = pemKeyFile.readLine();
             while (null != line && !line.startsWith(HEADER)) {
-                line = bReader.readLine();
+                line = pemKeyFile.readLine();
             }
             if (null == line) {
-                throw new KeyFileFormatException("Error parsing Private Key [" + keyFile.getAbsolutePath() + "], file is empty");
+                throw new KeyFileFormatException("Error parsing Private Key,file is empty");
             }
             if (PKCS8_ENCRYPTED_HEADER.equals(line.trim())) {
                 char[] password = passwordSupplier.get();
                 if (password == null) {
-                    throw new KeyFileFormatException("cannot read encrypted key [" + keyFile.getAbsolutePath() + "] without a password");
+                    throw new KeyFileFormatException("Cannot read encrypted key without a password");
                 }
-                return parsePKCS8Encrypted(bReader, password);
+                return parsePKCS8Encrypted(pemKeyFile, password);
             } else if (PKCS8_HEADER.equals(line.trim())) {
-                return parsePKCS8(bReader);
+                return parsePKCS8(pemKeyFile);
             } else if (PKCS1_HEADER.equals(line.trim())) {
-                return parsePKCS1Rsa(bReader, passwordSupplier);
+                return parsePKCS1Rsa(pemKeyFile, passwordSupplier);
             } else if (OPENSSL_DSA_HEADER.equals(line.trim())) {
-                return parseOpenSslDsa(bReader, passwordSupplier);
+                return parseOpenSslDsa(pemKeyFile, passwordSupplier);
             } else if (OPENSSL_DSA_PARAMS_HEADER.equals(line.trim())) {
-                return parseOpenSslDsa(removeDsaHeaders(bReader), passwordSupplier);
+                return parseOpenSslDsa(removeDsaHeaders(pemKeyFile), passwordSupplier);
             } else if (OPENSSL_EC_HEADER.equals(line.trim())) {
-                return parseOpenSslEC(bReader, passwordSupplier);
+                return parseOpenSslEC(pemKeyFile, passwordSupplier);
             } else if (OPENSSL_EC_PARAMS_HEADER.equals(line.trim())) {
-                return parseOpenSslEC(removeECHeaders(bReader), passwordSupplier);
+                return parseOpenSslEC(removeECHeaders(pemKeyFile), passwordSupplier);
             } else {
-                throw new KeyFileFormatException("error parsing Private Key [" + keyFile.getAbsolutePath() + "], file does not contain a supported key format");
+                throw new KeyFileFormatException("error parsing Private Key, file does not contain a supported key format");
             }
-        } catch (FileNotFoundException e) {
-            throw new SecurityException("private key file [" + keyFile.getAbsolutePath() + "] does not exist", e);
-        } catch (IOException e) {
-            throw new SecurityException("private key file [" + keyFile.getAbsolutePath() + "] cannot be parsed", e);
-        } finally {
-            IOs.close(bReader);
+        }  catch (IOException e) {
+            throw new SecurityException("private key file cannot be parsed", e);
         }
     }
 
@@ -151,6 +157,8 @@ final class PEMs {
     /**
      * Creates a {@link PrivateKey} from the contents of {@code bReader} that contains an plaintext private key encoded in
      * PKCS#8
+     *
+     * 用于从 PEM 文件中读取 private key
      *
      * @param bReader the {@link BufferedReader} containing the key file contents
      * @return {@link PrivateKey}
@@ -207,7 +215,7 @@ final class PEMs {
             throw new IOException("Malformed PEM file, PEM footer is invalid or missing");
         }
         byte[] keyBytes = possiblyDecryptPKCS1Key(pemHeaders, sb.toString(), passwordSupplier);
-        ECPrivateKeySpec ecSpec = parseEcDer(keyBytes);
+        ECPrivateKeySpec ecSpec = new EcPrivateKeySpecParser().get(keyBytes);
         return PKIs.createPrivateKey("EC", null, ecSpec);
     }
 
@@ -245,7 +253,7 @@ final class PEMs {
             throw new IOException("Malformed PEM file, PEM footer is invalid or missing");
         }
         byte[] keyBytes = possiblyDecryptPKCS1Key(pemHeaders, sb.toString(), passwordSupplier);
-        RSAPrivateCrtKeySpec spec = parseRsaDer(keyBytes);
+        RSAPrivateCrtKeySpec spec = new RsaPkcs1PrivateKeySpecParser().get(keyBytes);
         return PKIs.createPrivateKey("RSA", null, spec);
     }
 
@@ -283,7 +291,7 @@ final class PEMs {
             throw new IOException("Malformed PEM file, PEM footer is invalid or missing");
         }
         byte[] keyBytes = possiblyDecryptPKCS1Key(pemHeaders, sb.toString(), passwordSupplier);
-        DSAPrivateKeySpec spec = parseDsaDer(keyBytes);
+        DSAPrivateKeySpec spec = new DsaPrivateKeySpecParser().get(keyBytes);
         return PKIs.createPrivateKey("DSA", null, spec);
     }
 
@@ -456,71 +464,6 @@ final class PEMs {
         } else {
             throw new IllegalStateException("Hexadecimal string [" + hexString + "] has odd length and cannot be converted to a byte array");
         }
-    }
-
-    /**
-     * Parses a DER encoded EC key to an {@link ECPrivateKeySpec} using a minimal {@link DerParser}
-     *
-     * @param keyBytes the private key raw bytes
-     * @return {@link ECPrivateKeySpec}
-     * @throws IOException if the DER encoded key can't be parsed
-     */
-    private static ECPrivateKeySpec parseEcDer(byte[] keyBytes) throws IOException,
-            GeneralSecurityException {
-        DerParser parser = new DerParser(keyBytes);
-        DerParser.Asn1Object sequence = parser.readAsn1Object();
-        parser = sequence.getParser();
-        parser.readAsn1Object().getInteger(); // version
-        String keyHex = parser.readAsn1Object().getString();
-        BigInteger privateKeyInt = new BigInteger(keyHex, 16);
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC");
-        AlgorithmParameterSpec prime256v1ParamSpec = new ECGenParameterSpec("secp256r1");
-        keyPairGenerator.initialize(prime256v1ParamSpec);
-        ECParameterSpec parameterSpec = ((ECKey) keyPairGenerator.generateKeyPair().getPrivate()).getParams();
-        return new ECPrivateKeySpec(privateKeyInt, parameterSpec);
-    }
-
-    /**
-     * Parses a DER encoded RSA key to a {@link RSAPrivateCrtKeySpec} using a minimal {@link DerParser}
-     *
-     * @param keyBytes the private key raw bytes
-     * @return {@link RSAPrivateCrtKeySpec}
-     * @throws IOException if the DER encoded key can't be parsed
-     */
-    private static RSAPrivateCrtKeySpec parseRsaDer(byte[] keyBytes) throws IOException {
-        DerParser parser = new DerParser(keyBytes);
-        DerParser.Asn1Object sequence = parser.readAsn1Object();
-        parser = sequence.getParser();
-        parser.readAsn1Object().getInteger(); // (version) We don't need it but must read to get to modulus
-        BigInteger modulus = parser.readAsn1Object().getInteger();
-        BigInteger publicExponent = parser.readAsn1Object().getInteger();
-        BigInteger privateExponent = parser.readAsn1Object().getInteger();
-        BigInteger prime1 = parser.readAsn1Object().getInteger();
-        BigInteger prime2 = parser.readAsn1Object().getInteger();
-        BigInteger exponent1 = parser.readAsn1Object().getInteger();
-        BigInteger exponent2 = parser.readAsn1Object().getInteger();
-        BigInteger coefficient = parser.readAsn1Object().getInteger();
-        return new RSAPrivateCrtKeySpec(modulus, publicExponent, privateExponent, prime1, prime2, exponent1, exponent2, coefficient);
-    }
-
-    /**
-     * Parses a DER encoded DSA key to a {@link DSAPrivateKeySpec} using a minimal {@link DerParser}
-     *
-     * @param keyBytes the private key raw bytes
-     * @return {@link DSAPrivateKeySpec}
-     * @throws IOException if the DER encoded key can't be parsed
-     */
-    private static DSAPrivateKeySpec parseDsaDer(byte[] keyBytes) throws IOException {
-        DerParser parser = new DerParser(keyBytes);
-        DerParser.Asn1Object sequence = parser.readAsn1Object();
-        parser = sequence.getParser();
-        parser.readAsn1Object().getInteger(); // (version) We don't need it but must read to get to p
-        BigInteger p = parser.readAsn1Object().getInteger();
-        BigInteger q = parser.readAsn1Object().getInteger();
-        BigInteger g = parser.readAsn1Object().getInteger();
-        parser.readAsn1Object().getInteger(); // we don't need x
-        BigInteger x = parser.readAsn1Object().getInteger();
-        return new DSAPrivateKeySpec(x, p, q, g);
     }
 
     /**

@@ -1,6 +1,6 @@
-package com.jn.langx.security.cert;
+package com.jn.langx.security.keyspec.parser.der;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.codec.hex.Hex;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.math.BigInteger;
  * Based on https://github.com/groovenauts/jmeter_oauth_plugin/blob/master/jmeter/src/
  * main/java/org/apache/jmeter/protocol/oauth/sampler/PrivateKeyReader.java
  */
-final class DerParser {
+public final class DerParser {
     // Constructed Flag
     private static final int CONSTRUCTED = 0x20;
 
@@ -38,12 +38,12 @@ final class DerParser {
     private InputStream derInputStream;
     private int maxAsnObjectLength;
 
-    DerParser(byte[] bytes) {
+    public DerParser(byte[] bytes) {
         this.derInputStream = new ByteArrayInputStream(bytes);
         this.maxAsnObjectLength = bytes.length;
     }
 
-    Asn1Object readAsn1Object() throws IOException {
+    public Asn1Object readAsn1Object() throws IOException {
         int tag = derInputStream.read();
         if (tag == -1) {
             throw new IOException("Invalid DER: stream too short, missing tag");
@@ -116,7 +116,7 @@ final class DerParser {
      *
      * @author zhang
      */
-    static class Asn1Object {
+    public static class Asn1Object {
 
         protected final int type;
         protected final int length;
@@ -202,7 +202,7 @@ final class DerParser {
             switch (type) {
                 case DerParser.OCTET_STRING:
                     // octet string is basically a byte array
-                    return toHexString(value);
+                    return Hex.encodeHexString(value);
                 case DerParser.NUMERIC_STRING:
                 case DerParser.PRINTABLE_STRING:
                 case DerParser.VIDEOTEX_STRING:
@@ -264,17 +264,5 @@ final class DerParser {
         }
     }
 
-    private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
-    private static String toHexString(byte[] bytes) {
-        Objects.requireNonNull(bytes);
-        StringBuilder sb = new StringBuilder(2 * bytes.length);
-
-        for (int i = 0; i < bytes.length; i++) {
-            byte b = bytes[i];
-            sb.append(HEX_DIGITS[b >> 4 & 0xf]).append(HEX_DIGITS[b & 0xf]);
-        }
-
-        return sb.toString();
-    }
 
 }

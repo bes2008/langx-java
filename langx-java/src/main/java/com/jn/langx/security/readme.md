@@ -40,6 +40,12 @@ JDK中提供的对称加密算法有：
     用的是接收方的key pair，即发送方使用 接收方的public key加密，接收方使用接收方的 private key解密。
 非对称加密算法，用作签名时：
     用的是发送方的key pair，即发送方使用 发送方的private key加密，接收方使用发送方的 public key解密。
+
+
+非对称加密算法，在PKCS系列规范中（定义私钥的），PKCS#1 是针对RSA的，PKCS #8是一种通用的规范，DSA、RSA、ECC都可使用。
+1）在Java中，RSA、DSA、ECC 等都采用 PKCS #8 规范格式。
+2）在Python中，对于RSA，默认采用 PKCS#1规范。
+
 ```    
 
 
@@ -64,8 +70,11 @@ Key主要分为 ：
 	Secret Key：对称加密 key
 
 
+# 4. PKCS 标准
 
+参考：https://www.cnblogs.com/lsgxeva/p/11701011.html
 
+https://blog.csdn.net/qq_39385118/article/details/107510032
 
 
 

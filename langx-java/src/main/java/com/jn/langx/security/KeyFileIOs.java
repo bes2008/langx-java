@@ -177,12 +177,14 @@ public class KeyFileIOs {
             writer.write(encodedKeyString.substring(offset, toIndex));
             writer.write(LineDelimiter.DEFAULT.getValue());
             offset = toIndex;
+            writer.flush();
         }
 
         if (Strings.isNotBlank(endLine)) {
             writer.write(endLine.trim());
             writer.write(LineDelimiter.DEFAULT.getValue());
         }
+        writer.flush();
     }
 
     public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyFormat keyFormat, String startLine, String endLine) throws IOException{
