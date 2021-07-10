@@ -1,12 +1,13 @@
 package com.jn.langx.util.pattern.patternset;
 
+import com.jn.langx.Nameable;
 import com.jn.langx.Named;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.List;
 
-public class PatternSet<PatternEntry extends Named> implements Named {
+public class PatternSet<PatternEntry extends Named> implements Nameable {
     /**
      * 为PatternSet 命名
      */

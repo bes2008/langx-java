@@ -1,6 +1,6 @@
 package com.jn.langx;
 
-public abstract class AbstractNamed implements Named {
+public abstract class AbstractNameable implements Nameable {
     protected String name;
 
     @Override

@@ -1,8 +1,9 @@
 package com.jn.langx.text;
 
+import com.jn.langx.Nameable;
 import com.jn.langx.Named;
 
-public interface PropertySource extends Named {
+public interface PropertySource extends Nameable {
 
     /**
      * whether contains the specified property or not

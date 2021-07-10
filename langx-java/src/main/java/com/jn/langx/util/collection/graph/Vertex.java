@@ -1,7 +1,7 @@
 package com.jn.langx.util.collection.graph;
 
 
-import com.jn.langx.AbstractNamed;
+import com.jn.langx.AbstractNameable;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public class Vertex<T> extends AbstractNamed {
+public class Vertex<T> extends AbstractNameable {
     private List<Edge<T>> incomingEdges = Collects.emptyArrayList();
     private List<Edge<T>> outgoingEdges = Collects.emptyArrayList();
     @Nullable

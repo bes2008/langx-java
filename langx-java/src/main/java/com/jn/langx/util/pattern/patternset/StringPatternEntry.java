@@ -1,8 +1,8 @@
 package com.jn.langx.util.pattern.patternset;
 
-import com.jn.langx.Named;
+import com.jn.langx.Nameable;
 
-public class StringPatternEntry implements Named {
+public class StringPatternEntry implements Nameable {
     private String name;
 
     public StringPatternEntry(){
