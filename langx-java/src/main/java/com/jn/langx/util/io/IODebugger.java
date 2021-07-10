@@ -17,7 +17,7 @@ public class IODebugger {
 
     public static String showBytes(@NonNull byte[] bytes, @Nullable Charset charset) {
         Preconditions.checkNotNull(bytes);
-        return charset == null ? new String(bytes) : new String(bytes, charset);
+        return charset == null ? new String(bytes, Charsets.UTF_8) : new String(bytes, charset);
     }
 
 

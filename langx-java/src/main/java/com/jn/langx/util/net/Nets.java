@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
@@ -290,7 +291,7 @@ public class Nets {
         Process process = new ProcessBuilder("sysctl", sysctlKey).start();
         try {
             InputStream is = process.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
+            InputStreamReader isr = new InputStreamReader(is, Charsets.UTF_8);
             BufferedReader br = new BufferedReader(isr);
             try {
                 String line = br.readLine();

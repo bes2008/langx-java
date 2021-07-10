@@ -108,7 +108,7 @@ public class IOs {
         byte[] bytes = new byte[1024];
         int length;
         while ((length = reader.read(bytes)) != -1) {
-            stringBuilder.append(new String(bytes, 0, length));
+            stringBuilder.append(new String(bytes, 0, length, Charsets.UTF_8));
         }
         return stringBuilder.toString();
     }

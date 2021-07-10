@@ -72,7 +72,7 @@ public class KeyFileIOs {
         StringBuilder builder = new StringBuilder(2048);
         try {
             InputStream inputStream = resource.getInputStream();
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charsets.UTF_8));
             String line = null;
             boolean beginLineFound = false;
             boolean endLineFound = false;
@@ -141,7 +141,7 @@ public class KeyFileIOs {
     public static void writeKey(byte[] keyBytes, OutputStream outputStream, KeyFormat keyFormat, String startLine, String endLine) throws IOException {
         Preconditions.checkNotNull(keyBytes);
         Preconditions.checkNotNull(outputStream);
-        writeKey(keyBytes, new OutputStreamWriter(outputStream), keyFormat, startLine, endLine);
+        writeKey(keyBytes, new OutputStreamWriter(outputStream, Charsets.UTF_8), keyFormat, startLine, endLine);
     }
 
     public static void writeKey(byte[] keyBytes, Writer writer, KeyFormat keyFormat, String startLine, String endLine) throws IOException {

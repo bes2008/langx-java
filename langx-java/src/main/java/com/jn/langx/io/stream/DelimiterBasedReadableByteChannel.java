@@ -2,6 +2,7 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.io.Charsets;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -27,7 +28,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
 
     public void setDelimiter(String delimiter) {
         Preconditions.checkTrue(Strings.isNotEmpty(delimiter), "delimiter is null or empty");
-        this.delimiter = ByteBuffer.wrap(delimiter.getBytes());
+        this.delimiter = ByteBuffer.wrap(delimiter.getBytes(Charsets.UTF_8));
     }
 
     @Override

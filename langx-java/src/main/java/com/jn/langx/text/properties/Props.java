@@ -5,6 +5,7 @@ import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 
 import java.io.*;
@@ -44,7 +45,7 @@ public class Props {
     }
 
     public static Properties loadFromString(String string) throws IOException {
-        return load(Resources.asByteArrayResource(string.getBytes()));
+        return load(Resources.asByteArrayResource(string.getBytes(Charsets.UTF_8)));
     }
 
     public static Properties load(Resource resource) throws IOException {

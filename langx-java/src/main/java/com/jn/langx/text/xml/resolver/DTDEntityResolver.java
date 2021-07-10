@@ -1,5 +1,6 @@
 package com.jn.langx.text.xml.resolver;
 
+import com.jn.langx.util.io.Charsets;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -30,7 +31,7 @@ public class DTDEntityResolver implements EntityResolver {
                 if (this.dtdInputStream != null) {
                     return new InputSource(this.dtdInputStream);
                 }
-                source = new InputSource(new ByteArrayInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".getBytes()));
+                source = new InputSource(new ByteArrayInputStream("<?xml version=\"1.0\" encoding=\"UTF-8\"?>".getBytes(Charsets.UTF_8)));
             }
         } catch (Exception ex) {
         }

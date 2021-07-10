@@ -20,7 +20,7 @@ public class LineDelimiter {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         PrintWriter out = new PrintWriter(bout, true);
         out.println();
-        DEFAULT = new LineDelimiter(new String(bout.toByteArray()));
+        DEFAULT = new LineDelimiter(new String(bout.toByteArray(),Charsets.UTF_8));
     }
 
     public static final LineDelimiter CRLF = new LineDelimiter(CR_LF);

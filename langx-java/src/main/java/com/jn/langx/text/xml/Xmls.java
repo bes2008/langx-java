@@ -4,6 +4,7 @@ import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
 import com.jn.langx.text.xml.resolver.DTDEntityResolver;
 import com.jn.langx.text.xml.resolver.NullEntityResolver;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -63,7 +64,7 @@ public class Xmls {
         if (srcIsPath) {
             return getXmlDoc(dtdInputStream, src);
         }
-        return getXmlDoc(new DTDEntityResolver(dtdInputStream), new ByteArrayInputStream(src.getBytes()));
+        return getXmlDoc(new DTDEntityResolver(dtdInputStream), new ByteArrayInputStream(src.getBytes(Charsets.UTF_8)));
     }
 
     public static Document getXmlDoc(final InputStream dtdInputStream, final String xmlfilepathOrURI) throws Exception {
