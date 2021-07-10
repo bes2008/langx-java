@@ -1,11 +1,10 @@
 package com.jn.langx.test.security.key;
 
+import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.security.KeyFileIOs;
 import com.jn.langx.security.PKIs;
-import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.io.Charsets;
-import org.bouncycastle.util.encoders.Base64;
 import org.junit.Test;
 
 import java.security.KeyPair;
@@ -56,8 +55,8 @@ public class KeyFileIOTests {
                 "d2uNRtoIkkKceZf0GFhwGFphLbIYVb27I1PlMY6uvOPP4JcE2uJ/cmQNsNi/bP9w" +
                 "KB3uSpXWQ+X+";
 
-        byte[] pkcs1_bytes= Base64.decode(pkcs1_base64ed);
-        byte[] pkcs8_bytes= Base64.decode(pkcs8_base64ed);
+        byte[] pkcs1_bytes= Base64.decodeBase64(pkcs1_base64ed);
+        byte[] pkcs8_bytes= Base64.decodeBase64(pkcs8_base64ed);
 
         // 在 pkcs1_bytes 前面 放26个 byte，就变成了 ： pkcs8_bytes
         // [48, -126, 2, 117, 2, 1, 0, 48, 13, 6,9, 42, -122, -9, 13, 1,1,1,504, -126, 2,95]
