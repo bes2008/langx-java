@@ -8,18 +8,12 @@ import java.util.*;
 public class MBeans {
     public static Map<String, Object> getAttributes(JMXConnection connection, String objectName, List<String> attributeNames) {
         MBean mbean = getMBean(connection, objectName, attributeNames);
-        if (mbean != null) {
-            return mbean.getAttributeMap();
-        }
-        return Collections.emptyMap();
+        return mbean.getAttributeMap();
     }
 
     public static Object getAttribute(JMXConnection connection, String objectName, String attributeName) {
         MBean mbean = getMBean(connection, objectName, Collects.asList(attributeName));
-        if (mbean != null) {
-            return mbean.getAttribute(attributeName);
-        }
-        return null;
+        return mbean.getAttribute(attributeName);
     }
 
     public static MBean getMBean(JMXConnection connection, String objectName, List<String> attributeNames) {
