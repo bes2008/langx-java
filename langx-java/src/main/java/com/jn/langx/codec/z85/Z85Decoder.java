@@ -11,9 +11,11 @@ public class Z85Decoder implements Decoder<String, byte[]> {
     public byte[] decode(String string) throws CodecException {
         int remainder = string.length() % 5;
         int padding = 5 - (remainder == 0 ? 5 : remainder);
+        StringBuilder stringBuilder = new StringBuilder(string);
         for (int p = 0; p < padding; ++p) {
-            string += encodeTable[encodeTable.length - 1];
+            stringBuilder.append(encodeTable[encodeTable.length - 1]);
         }
+        string = stringBuilder.toString();
         int length = string.length();
         byte[] bytes = new byte[(length * 4 / 5) - padding];
         long value = 0;

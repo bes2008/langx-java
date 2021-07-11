@@ -2787,7 +2787,7 @@ public class Strings {
      * @see String#compareTo(String)
      */
     public static int compare(final String str1, final String str2, final boolean nullIsLess) {
-        if (str1 == str2) {
+        if (Objs.equals(str1,str2)) {
             return 0;
         }
         if (str1 == null) {
@@ -2878,7 +2878,7 @@ public class Strings {
      * @see String#compareToIgnoreCase(String)
      */
     public static int compareIgnoreCase(final String str1, final String str2, final boolean nullIsLess) {
-        if (str1 == str2) {
+        if (Objs.equals(str1,str2)) {
             return 0;
         }
         if (str1 == null) {

@@ -392,10 +392,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * @see <a href="https://tools.ietf.org/html/rfc7235#section-4.1">Section 4.1 of RFC 7235</a>
      */
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    /**
-     * An empty {@code HttpHeaders} instance (immutable).
-     */
-    public static final HttpHeaders EMPTY = new HttpHeaders(new LinkedMultiValueMap(0));
+
     private static final long serialVersionUID = -8578554704772377436L;
     /**
      * Pattern matching ETag multiple field values in headers such as "If-Match", "If-None-Match".
@@ -415,6 +412,11 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      */
 
     private final SimpleDateFormat dateFormatter = Dates.getSimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", GMT, Locale.US);
+
+    /**
+     * An empty {@code HttpHeaders} instance (immutable).
+     */
+    public static final HttpHeaders EMPTY = new HttpHeaders(new LinkedMultiValueMap(0));
     /**
      * Date formats with time zone as specified in the HTTP RFC to use for parsing.
      *

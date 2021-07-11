@@ -14,10 +14,10 @@
 
 package com.jn.langx.configuration;
 
-import com.jn.langx.Delegatable;
+import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.enums.base.EnumDelegate;
 
-public enum ConfigurationEventType implements Delegatable<EnumDelegate> {
+public enum ConfigurationEventType implements CommonEnum{
     ADD(0, "ADD", "add a configuration"),
     REMOVE(1, "REMOVE", "remove a configuration"),
     UPDATE(2, "UPDATE", "update a configuration");
@@ -30,12 +30,17 @@ public enum ConfigurationEventType implements Delegatable<EnumDelegate> {
 
 
     @Override
-    public EnumDelegate getDelegate() {
-        return delegate;
+    public int getCode() {
+        return this.delegate.getCode();
     }
 
     @Override
-    public void setDelegate(EnumDelegate delegate) {
-        this.delegate = delegate;
+    public String getDisplayText() {
+        return this.delegate.getDisplayText();
+    }
+
+    @Override
+    public String getName() {
+        return this.delegate.getName();
     }
 }

@@ -53,7 +53,7 @@ public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
         throw new UnsupportedOperationException(this.getClass().getName() + " does not support remove()");
     }
 
-    private class AcceptLanguage implements Comparable {
+    private static class AcceptLanguage implements Comparable {
         Locale locale;
         Float quality;
 

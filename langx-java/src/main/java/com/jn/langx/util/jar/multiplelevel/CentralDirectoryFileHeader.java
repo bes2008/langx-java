@@ -15,7 +15,7 @@ import java.util.TimeZone;
  * @see <a href="https://en.wikipedia.org/wiki/Zip_%28file_format%29">Zip File Format</a>
  */
 
-final class CentralDirectoryFileHeader implements FileHeader {
+final class CentralDirectoryFileHeader implements FileHeader, Cloneable{
 
     private static final AsciiBytes SLASH = new AsciiBytes("/");
 

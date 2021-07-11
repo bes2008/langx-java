@@ -12,7 +12,7 @@ import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 
 import java.util.*;
 
-public class OrderedList<E extends Ordered> extends AbstractList<E> {
+public class OrderedList<E extends Ordered> extends AbstractList<E> implements Cloneable {
     /**
      * key: order
      */

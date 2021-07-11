@@ -505,7 +505,7 @@ public class HttpUrlEncodes {
      * @param charset the charset to use
      * @return encoded string
      */
-    private static String decodeFormFields(final String content, final String charset) {
+    public static String decodeFormFields(final String content, final String charset) {
         if (content == null) {
             return null;
         }

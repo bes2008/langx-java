@@ -267,8 +267,7 @@ public class Types {
 
         String prefix = "[";
         while (genericComponentType instanceof GenericArrayType) {
-            genericComponentType = ((GenericArrayType) genericComponentType)
-                    .getGenericComponentType();
+            genericComponentType = ((GenericArrayType) genericComponentType).getGenericComponentType();
             prefix = prefix + "[";
         }
 
