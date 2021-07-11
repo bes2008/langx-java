@@ -11,13 +11,13 @@ class AccessorClassLoader extends ClassLoader {
     // reflectasm library (including this class) is loaded outside the deployed applications (WAR/EAR) using ReflectASM/Kryo (exts,
     // user classpath, etc).
     // The key is the parent class loader and the value is the AccessClassLoader, both are weak-referenced in the hash table.
-    static private final WeakHashMap<ClassLoader, WeakReference<AccessorClassLoader>> accessClassLoaders = new WeakHashMap();
+    private static final WeakHashMap<ClassLoader, WeakReference<AccessorClassLoader>> accessClassLoaders = new WeakHashMap();
 
     // Fast-path for classes loaded in the same ClassLoader as this class.
-    static private final ClassLoader selfContextParentClassLoader = getParentClassLoader(AccessorClassLoader.class);
-    static private volatile AccessorClassLoader selfContextAccessClassLoader = new AccessorClassLoader(selfContextParentClassLoader);
+    private static final ClassLoader selfContextParentClassLoader = getParentClassLoader(AccessorClassLoader.class);
+    private static volatile AccessorClassLoader selfContextAccessClassLoader = new AccessorClassLoader(selfContextParentClassLoader);
 
-    static private volatile Method defineClassMethod;
+    private static volatile Method defineClassMethod;
 
     private final HashSet<String> localClassNames = new HashSet();
 
@@ -93,7 +93,7 @@ class AccessorClassLoader extends ClassLoader {
         return loader1 == loader2;
     }
 
-    static private ClassLoader getParentClassLoader(Class type) {
+    private static ClassLoader getParentClassLoader(Class type) {
         ClassLoader parent = type.getClassLoader();
         if (parent == null) {
             parent = ClassLoader.getSystemClassLoader();
@@ -101,7 +101,7 @@ class AccessorClassLoader extends ClassLoader {
         return parent;
     }
 
-    static private Method getDefineClassMethod() throws Exception {
+    private static Method getDefineClassMethod() throws Exception {
         if (defineClassMethod == null) {
             synchronized (accessClassLoaders) {
                 if (defineClassMethod == null) {
