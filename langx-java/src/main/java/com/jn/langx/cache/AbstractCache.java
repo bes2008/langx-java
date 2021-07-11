@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Dates;
+import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
@@ -366,7 +367,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private void evictExpired() {
         if ((evictExpiredInterval >= 0 && System.currentTimeMillis() >= nextEvictExpiredTime) || (map.size() > maxCapacity * capacityHeightWater)) {
             clearExpired();
-            int forceEvictCount = map.size() - new Float(maxCapacity * capacityHeightWater).intValue();
+            int forceEvictCount = map.size() - Numbers.toInt(maxCapacity * capacityHeightWater);
             if (forceEvictCount > 0) {
                 writeLock.lock();
                 try {

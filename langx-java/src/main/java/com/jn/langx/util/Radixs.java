@@ -46,7 +46,7 @@ public class Radixs {
     }
 
     public static String toBinary(long b) {
-        return toRadix(new Long(b).intValue(), 2);
+        return toRadix(Numbers.toInt(b), 2);
     }
 
     public static boolean isOctal(int b) {
@@ -79,7 +79,7 @@ public class Radixs {
     }
 
     public static String toOtc(long b) {
-        return toRadix(new Long(b).intValue(), 8);
+        return toRadix(Numbers.toInt(b), 8);
     }
 
     public static String toDecimal(byte b) {
@@ -99,7 +99,7 @@ public class Radixs {
     }
 
     public static String toDecimal(long b) {
-        return toRadix(new Long(b).intValue(), 10);
+        return toRadix(Numbers.toInt(b), 10);
     }
 
     public static String toHex2(byte[] bytes) {
@@ -151,11 +151,11 @@ public class Radixs {
     }
 
     public static String toHex(long b) {
-        return toRadix(new Long(b).intValue(), 16);
+        return toRadix(Numbers.toInt(b), 16);
     }
 
     public static String toHex2(long b) {
-        return Strings.completingLength(toRadix(new Long(b).intValue(), 16), 2, '0', true);
+        return Strings.completingLength(toRadix(Numbers.toInt(b), 16), 2, '0', true);
     }
 
     public static int binaryToDecimal(String binary) {

@@ -20,25 +20,25 @@ public class ParallelingComparator implements Comparator, Serializable {
         int deltaMax = new Double(Math.pow(2, leftMoveUnit + 1)).intValue() - 1;
         int result = 0;
 
-        Boolean isNegative = null;
+        boolean isNegative = false;
         for (int i = 0; i < delegates.size(); i++) {
             Comparator comparator = delegates.get(i);
             int delta = comparator.compare(o1, o2);
-            if (isNegative == null) {
+            if (!isNegative) {
                 if (delta != 0) {
                     isNegative = delta < 0;
                 }
             }
             int leftMove = (delegates.size() - 1 - i) * leftMoveUnit;
 
-            if (i > 0 && isNegative != null && ((delta > 0 && isNegative) || (delta < 0 && !isNegative))) {
+            if (i > 0 &&  ((delta > 0 && isNegative) || (delta < 0 && !isNegative))) {
                 result = result + ((deltaMax - 1 - (Math.abs(delta) % deltaMax)) << leftMove);
             } else {
                 result = result + ((Math.abs(delta) % deltaMax) << leftMove);
             }
         }
-        if (isNegative != null && isNegative) {
-            return 0 - result;
+        if (isNegative) {
+            return - result;
         }
         return result;
     }
