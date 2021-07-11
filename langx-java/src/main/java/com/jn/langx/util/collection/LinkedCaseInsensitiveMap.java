@@ -3,6 +3,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
 
@@ -66,10 +67,14 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     /**
      * Copy constructor.
      */
-    @SuppressWarnings("unchecked")
-    private LinkedCaseInsensitiveMap(LinkedCaseInsensitiveMap<V> other) {
-        this.targetMap = (LinkedHashMap<String, V>) other.targetMap.clone();
-        this.locale = other.locale;
+    public LinkedCaseInsensitiveMap(Map<String,V> other, Locale locale) {
+        this(other.size(), locale);
+        Collects.forEach(other, new Consumer2<String,V>() {
+            @Override
+            public void accept(String key, V value) {
+                put(key, value);
+            }
+        });
     }
 
 
@@ -191,7 +196,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 
     @Override
     public LinkedCaseInsensitiveMap<V> clone() {
-        return new LinkedCaseInsensitiveMap<V>(this);
+        return new LinkedCaseInsensitiveMap<V>(this.targetMap, this.locale);
     }
 
     @Override

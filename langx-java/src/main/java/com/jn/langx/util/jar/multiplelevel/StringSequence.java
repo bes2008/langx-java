@@ -2,6 +2,7 @@ package com.jn.langx.util.jar.multiplelevel;
 
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.util.Preconditions;
 
 /**
@@ -19,8 +20,8 @@ final class StringSequence implements CharSequence {
 
     private int hash;
 
-    StringSequence(@NonNull String source) {
-        this(source, 0, (source != null) ? source.length() : -1);
+    StringSequence(@NotEmpty String source) {
+        this(source == null ? "" : source, 0, source == null ? 0 : source.length());
     }
 
     StringSequence(@NonNull String source, int start, int end) {

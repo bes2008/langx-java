@@ -265,10 +265,10 @@ public class Types {
         Type clz = genericArrayType;
         Type genericComponentType = genericArrayType.getGenericComponentType();
 
-        String prefix = "[";
+        StringBuilder prefix = new StringBuilder("[");
         while (genericComponentType instanceof GenericArrayType) {
             genericComponentType = ((GenericArrayType) genericComponentType).getGenericComponentType();
-            prefix = prefix + "[";
+            prefix.append("[");
         }
 
         if (genericComponentType instanceof Class<?>) {
