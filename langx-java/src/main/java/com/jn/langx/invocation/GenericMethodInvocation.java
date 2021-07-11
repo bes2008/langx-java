@@ -1,5 +1,7 @@
 package com.jn.langx.invocation;
 
+import com.jn.langx.util.collection.Arrs;
+
 import java.lang.reflect.Method;
 
 public class GenericMethodInvocation implements MethodInvocation {
@@ -28,7 +30,7 @@ public class GenericMethodInvocation implements MethodInvocation {
     }
 
     public Object[] getArguments() {
-        return arguments;
+        return Arrs.copy(arguments);
     }
 
     public void setArguments(Object[] arguments) {

@@ -3,10 +3,12 @@ package com.jn.langx.util.collection;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Numbers;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.type.Primitives;
+import com.jn.langx.util.struct.Holder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -257,4 +259,34 @@ public class Arrs {
         }
     }
 
+    public static <E> E[] copy(final E... objs) {
+        if (Objs.isEmpty(objs)) {
+            return (E[]) new Object[0];
+        }
+        Class componentType = objs.getClass().getComponentType();
+        E[] newArray = (E[]) createArray(componentType, objs.length);
+        for (int i = 0; i < newArray.length; i++) {
+            newArray[i] = objs[i];
+        }
+        return newArray;
+    }
+
+    public static <E> boolean isMixedArray(E[] objs) {
+        final Holder<Class> elementType = new Holder<Class>();
+        boolean isMixed = Collects.anyMatch(new Predicate<Object>() {
+            @Override
+            public boolean test(Object element) {
+                if (element != null) {
+                    if (elementType.isNull()) {
+                        elementType.set(element.getClass());
+                    } else {
+                        return elementType.get() != element.getClass();
+                    }
+                }
+                return false;
+            }
+        }, objs);
+        objs.getClass().getComponentType();
+        return isMixed;
+    }
 }

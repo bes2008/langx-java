@@ -1,6 +1,7 @@
 package com.jn.langx.invocation.aop;
 
 import com.jn.langx.invocation.ConstructorInvocation;
+import com.jn.langx.util.collection.Arrs;
 
 import java.lang.reflect.Constructor;
 
@@ -10,7 +11,7 @@ public class AopConstructorInvocation implements ConstructorInvocation {
 
     @Override
     public Object[] getArguments() {
-        return arguments;
+        return Arrs.copy(arguments);
     }
 
     @Override

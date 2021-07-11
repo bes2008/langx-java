@@ -1,6 +1,7 @@
 package com.jn.langx.asm.reflect.accessor;
 
 
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.reflect.Reflects;
 import org.objectweb.asm.*;
 
@@ -8,6 +9,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings("all")
 public abstract class MethodAccessor {
@@ -68,16 +70,16 @@ public abstract class MethodAccessor {
                 "Unable to find non-private method: " + methodName + " with " + paramsCount + " params.");
     }
 
-    public String[] getMethodNames() {
-        return methodNames;
+    public List<String> getMethodNames() {
+        return Collects.newArrayList(methodNames);
     }
 
-    public Class[][] getParameterTypes() {
-        return parameterTypes;
+    public List<Class[]> getParameterTypes() {
+        return Collects.newArrayList(parameterTypes);
     }
 
-    public Class[] getReturnTypes() {
-        return returnTypes;
+    public List<Class> getReturnTypes() {
+        return Collects.newArrayList(returnTypes);
     }
 
     /**
@@ -85,7 +87,7 @@ public abstract class MethodAccessor {
      *
      * @param type Must not be a primitive type, or void.
      */
-    static public MethodAccessor get(Class type) {
+    public static MethodAccessor get(Class type) {
         boolean isInterface = type.isInterface();
         if (!isInterface && type.getSuperclass() == null && type != Object.class) {
             throw new IllegalArgumentException("The type must not be an interface, a primitive type, or void.");
@@ -297,7 +299,7 @@ public abstract class MethodAccessor {
         }
     }
 
-    static private void addDeclaredMethodsToList(Class type, ArrayList<Method> methods) {
+    private static void addDeclaredMethodsToList(Class type, ArrayList<Method> methods) {
         Method[] declaredMethods = type.getDeclaredMethods();
         for (int i = 0, n = declaredMethods.length; i < n; i++) {
             Method method = declaredMethods[i];
@@ -308,7 +310,7 @@ public abstract class MethodAccessor {
         }
     }
 
-    static private void recursiveAddInterfaceMethodsToList(Class interfaceType, ArrayList<Method> methods) {
+    private static void recursiveAddInterfaceMethodsToList(Class interfaceType, ArrayList<Method> methods) {
         addDeclaredMethodsToList(interfaceType, methods);
         for (Class nextInterface : interfaceType.getInterfaces()) {
             recursiveAddInterfaceMethodsToList(nextInterface, methods);
