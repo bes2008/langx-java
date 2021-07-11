@@ -42,4 +42,11 @@ public class ArrsTests {
         Integer[] b = Arrs.range(0, 10, 1);
         Assert.assertArrayEquals(a, b);
     }
+
+    @Test
+    public void copyTests(){
+        int[] intArr = new int[]{1,2,3,4,5};
+    }
+
+
 }

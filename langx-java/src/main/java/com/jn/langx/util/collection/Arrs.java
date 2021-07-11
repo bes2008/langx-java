@@ -52,7 +52,10 @@ public class Arrs {
     }
 
     /**
-     * Create an array with the specified length
+     * Create an array with the specified length.
+     * <p>
+     * int.class => Integer[]
+     * Integer.class => Integer[]
      */
     public static <E> E[] createArray(@Nullable Class<E> componentType, int length) {
         Preconditions.checkTrue(length >= 0);

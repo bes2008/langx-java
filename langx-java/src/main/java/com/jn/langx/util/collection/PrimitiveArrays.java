@@ -2,6 +2,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.function.Supplier;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Primitive array wrapper
  */
+@SuppressWarnings({"unused", "rawtypes"})
 public class PrimitiveArrays {
     public static final Class BYTE_ARRAY_CLASS = byte[].class;
     public static final Class SHORT_ARRAY_CLASS = short[].class;
@@ -20,7 +22,7 @@ public class PrimitiveArrays {
     public static final Class CHAR_ARRAY_CLASS = char[].class;
     public static final Class BOOLEAN_ARRAY_CLASS = boolean[].class;
 
-    private static final List<Class> PRIMITIVE_ARRAY_CLASSES = Collects.asList(
+    public static final List<Class> PRIMITIVE_ARRAY_CLASSES = Collects.asList(Collects.asList(
             BYTE_ARRAY_CLASS,
             SHORT_ARRAY_CLASS,
             INT_ARRAY_CLASS,
@@ -29,7 +31,9 @@ public class PrimitiveArrays {
             DOUBLE_ARRAY_CLASS,
             CHAR_ARRAY_CLASS,
             BOOLEAN_ARRAY_CLASS
-    );
+    ), false);
+
+    private PrimitiveArrays(){}
 
     public static boolean isPrimitiveArray(Class clazz) {
         return clazz != null && PRIMITIVE_ARRAY_CLASSES.contains(clazz);
@@ -56,15 +60,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Boolean[] wrap(@Nullable boolean[] values, boolean resultNullable) {
+    public static Boolean[] wrap(@Nullable final boolean[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Boolean[0];
         }
-        Boolean[] ret = new Boolean[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return Arrs.createArray(Boolean.class, values.length, new Supplier<Integer, Boolean>() {
+            @Override
+            public Boolean get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -74,15 +79,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static boolean[] unwrap(@Nullable Boolean[] values, boolean resultNullable) {
+    public static boolean[] unwrap(@Nullable final Boolean[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new boolean[0];
         }
-        boolean[] ret = new boolean[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createBooleanArray(values.length, new Supplier<Integer, Boolean>() {
+            @Override
+            public Boolean get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -92,15 +98,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Character[] wrap(@Nullable char[] values, boolean resultNullable) {
+    public static Character[] wrap(@Nullable final char[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Character[0];
         }
-        Character[] ret = new Character[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return Arrs.createArray(Character.class, values.length, new Supplier<Integer, Character>() {
+            @Override
+            public Character get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -110,15 +117,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static char[] unwrap(@Nullable Character[] values, boolean resultNullable) {
+    public static char[] unwrap(@Nullable final Character[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new char[0];
         }
-        char[] ret = new char[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createCharArray(values.length, new Supplier<Integer, Character>() {
+            @Override
+            public Character get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -128,15 +136,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Byte[] wrap(@Nullable byte[] values, boolean resultNullable) {
+    public static Byte[] wrap(@Nullable final byte[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Byte[0];
         }
-        Byte[] ret = new Byte[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return Arrs.createArray(Byte.class, values.length, new Supplier<Integer, Byte>() {
+            @Override
+            public Byte get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -146,15 +155,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static byte[] unwrap(@Nullable Byte[] values, boolean resultNullable) {
+    public static byte[] unwrap(@Nullable final Byte[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new byte[0];
         }
-        byte[] ret = new byte[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createByteArray(values.length, new Supplier<Integer, Byte>() {
+            @Override
+            public Byte get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -164,15 +174,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Short[] wrap(@Nullable short[] values, boolean resultNullable) {
+    public static Short[] wrap(@Nullable final short[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Short[0];
         }
-        Short[] ret = new Short[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return Arrs.createArray(Short.class, values.length, new Supplier<Integer, Short>() {
+            @Override
+            public Short get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -182,15 +193,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static short[] unwrap(@Nullable Short[] values, boolean resultNullable) {
+    public static short[] unwrap(@Nullable final Short[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new short[0];
         }
-        short[] ret = new short[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createShortArray(values.length, new Supplier<Integer, Short>() {
+            @Override
+            public Short get(Integer i) {
+                return values[i];
+            }
+        });
     }
 
     /**
@@ -200,15 +212,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Integer[] wrap(@Nullable int[] values, boolean resultNullable) {
+    public static Integer[] wrap(@Nullable final int[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Integer[0];
         }
-        Integer[] ret = new Integer[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return Arrs.createArray(Integer.class, values.length, new Supplier<Integer, Integer>() {
+            @Override
+            public Integer get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -218,15 +231,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static int[] unwrap(@Nullable Integer[] values, boolean resultNullable) {
+    public static int[] unwrap(@Nullable final Integer[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new int[0];
         }
-        int[] ret = new int[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createIntArray(values.length, new Supplier<Integer, Integer>() {
+            @Override
+            public Integer get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -236,15 +250,18 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Float[] wrap(@Nullable float[] values, boolean resultNullable) {
+    public static Float[] wrap(@Nullable final float[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Float[0];
         }
-        Float[] ret = new Float[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+
+        return Arrs.createArray(Float.class, values.length, new Supplier<Integer, Float>() {
+            @Override
+            public Float get(Integer index) {
+                return values[index];
+            }
+        });
+
     }
 
     /**
@@ -254,15 +271,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static float[] unwrap(@Nullable Float[] values, boolean resultNullable) {
+    public static float[] unwrap(@Nullable final Float[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new float[0];
         }
-        float[] ret = new float[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createFloatArray(values.length, new Supplier<Integer, Float>() {
+            @Override
+            public Float get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -272,15 +290,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Long[] wrap(@Nullable long[] values, boolean resultNullable) {
+    public static Long[] wrap(@Nullable final long[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Long[0];
         }
-        Long[] ret = new Long[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return Arrs.createArray(Long.class, values.length, new Supplier<Integer, Long>() {
+            @Override
+            public Long get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -290,15 +309,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static long[] unwrap(@Nullable Long[] values, boolean resultNullable) {
+    public static long[] unwrap(@Nullable final Long[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new long[0];
         }
-        long[] ret = new long[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createLongArray(values.length, new Supplier<Integer, Long>() {
+            @Override
+            public Long get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -308,15 +328,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static Double[] wrap(@Nullable double[] values, boolean resultNullable) {
+    public static Double[] wrap(@Nullable final double[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new Double[0];
         }
-        Double[] ret = new Double[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return Arrs.createArray(Double.class, values.length, new Supplier<Integer, Double>() {
+            @Override
+            public Double get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -326,15 +347,16 @@ public class PrimitiveArrays {
      * @param resultNullable whether return null when source is null or not
      * @return result
      */
-    public static double[] unwrap(@Nullable Double[] values, boolean resultNullable) {
+    public static double[] unwrap(@Nullable final Double[] values, boolean resultNullable) {
         if (values == null) {
             return resultNullable ? null : new double[0];
         }
-        double[] ret = new double[values.length];
-        for (int i = 0; i < values.length; i++) {
-            ret[i] = values[i];
-        }
-        return ret;
+        return createDoubleArray(values.length, new Supplier<Integer, Double>() {
+            @Override
+            public Double get(Integer index) {
+                return values[index];
+            }
+        });
     }
 
     /**
@@ -389,11 +411,11 @@ public class PrimitiveArrays {
      * @param a2 the other array to be tested for equality
      * @return <tt>true</tt> if the two arrays are equal
      */
-    public static boolean equals(short[] a, short a2[]) {
+    public static boolean equals(short[] a, short[] a2) {
         return Arrays.equals(a, a2);
     }
 
-    public static boolean equals(short[] a, Short a2[]) {
+    public static boolean equals(short[] a, Short[] a2) {
         return Arrays.equals(a, unwrap(a2, true));
     }
 
@@ -525,5 +547,157 @@ public class PrimitiveArrays {
      */
     public static boolean equals(Object[] a, Object[] a2) {
         return Arrays.equals(a, a2);
+    }
+
+    public static byte[] createByteArray(int length, final byte initValue) {
+        return createByteArray(length, new Supplier<Integer, Byte>() {
+            @Override
+            public Byte get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static byte[] createByteArray(int length, Supplier<Integer, Byte> initValueSupplier) {
+        byte[] array = new byte[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
+    }
+
+    public static short[] createShortArray(int length, final short initValue) {
+        return createShortArray(length, new Supplier<Integer, Short>() {
+            @Override
+            public Short get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static short[] createShortArray(int length, Supplier<Integer, Short> initValueSupplier) {
+        short[] array = new short[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
+    }
+
+    public static char[] createCharArray(int length, final char initValue) {
+        return createCharArray(length, new Supplier<Integer, Character>() {
+            @Override
+            public Character get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static char[] createCharArray(int length, Supplier<Integer, Character> initValueSupplier) {
+        char[] array = new char[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
+    }
+
+    public static int[] createIntArray(int length, final int initValue) {
+        return createIntArray(length, new Supplier<Integer, Integer>() {
+            @Override
+            public Integer get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static int[] createIntArray(int length, Supplier<Integer, Integer> initValueSupplier) {
+        int[] array = new int[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
+    }
+
+    public static long[] createLongArray(int length, final long initValue) {
+        return createLongArray(length, new Supplier<Integer, Long>() {
+            @Override
+            public Long get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static long[] createLongArray(int length, Supplier<Integer, Long> initValueSupplier) {
+        long[] array = new long[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
+    }
+
+    public static float[] createFloatArray(int length, final float initValue) {
+        return createFloatArray(length, new Supplier<Integer, Float>() {
+            @Override
+            public Float get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static float[] createFloatArray(int length, Supplier<Integer, Float> initValueSupplier) {
+        float[] array = new float[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
+    }
+
+    public static double[] createDoubleArray(int length, final Double initValue) {
+        return createDoubleArray(length, new Supplier<Integer, Double>() {
+            @Override
+            public Double get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static double[] createDoubleArray(int length, Supplier<Integer, Double> initValueSupplier) {
+        double[] array = new double[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
+    }
+
+    public static boolean[] createBooleanArray(int length, final boolean initValue) {
+        return createBooleanArray(length, new Supplier<Integer, Boolean>() {
+            @Override
+            public Boolean get(Integer index) {
+                return initValue;
+            }
+        });
+    }
+
+    public static boolean[] createBooleanArray(int length, Supplier<Integer, Boolean> initValueSupplier) {
+        boolean[] array = new boolean[length];
+        if (initValueSupplier != null) {
+            for (int i = 0; i < length; i++) {
+                array[i] = initValueSupplier.get(i);
+            }
+        }
+        return array;
     }
 }
