@@ -1,4 +1,4 @@
-package com.jn.langx.codec;
+package com.jn.langx.codec.h64;
 
 
 import java.io.IOException;

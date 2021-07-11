@@ -2,7 +2,7 @@ package com.jn.langx.security.hash;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.codec.Hex;
+import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.MessageDigests;
 import com.jn.langx.util.Emptys;

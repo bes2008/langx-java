@@ -1,6 +1,6 @@
 package com.jn.langx.util.io.file;
 
-import com.jn.langx.codec.Hex;
+import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.properties.Props;

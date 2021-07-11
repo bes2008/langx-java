@@ -1,6 +1,6 @@
 package com.jn.langx.security;
 
-import com.jn.langx.codec.Hex;
+import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.hash.MessageDigestHasher;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
