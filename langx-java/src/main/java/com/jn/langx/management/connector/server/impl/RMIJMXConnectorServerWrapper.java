@@ -233,7 +233,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
     }
 
     public void setProtocols(String[] protocols) {
-        this.protocols = protocols;
+        this.protocols = Arrs.copy(protocols);
     }
 
     public boolean isClientAuth() {

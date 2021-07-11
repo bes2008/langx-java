@@ -7,6 +7,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.MessageDigests;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.collection.PrimitiveArrays;
 
 import java.security.MessageDigest;
 
@@ -31,7 +32,7 @@ public class MessageDigestHasher {
     }
 
     public void setSalt(byte[] salt) {
-        this.salt = salt;
+        this.salt = PrimitiveArrays.copy(salt);
     }
 
     public int getIterations() {

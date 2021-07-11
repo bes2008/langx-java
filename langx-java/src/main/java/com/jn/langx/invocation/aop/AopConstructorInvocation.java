@@ -34,6 +34,6 @@ public class AopConstructorInvocation implements ConstructorInvocation {
     }
 
     public void setArguments(Object[] arguments) {
-        this.arguments = arguments;
+        this.arguments = Arrs.copy(arguments);
     }
 }

@@ -1,6 +1,7 @@
 package com.jn.langx.asm.reflect.accessor;
 
 
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.reflect.Reflects;
 import org.objectweb.asm.*;
@@ -54,7 +55,7 @@ public abstract class FieldAccessor {
     }
 
     public void setFields(Field[] fields) {
-        this.fields = fields;
+        this.fields = Arrs.copy(fields);
     }
 
     public abstract void set(Object instance, int fieldIndex, Object value);

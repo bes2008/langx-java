@@ -11,7 +11,7 @@ public class GenericMethodInvocation implements MethodInvocation {
     private Object proxy;
 
     public GenericMethodInvocation(Object proxy, Object target, Method method, Object[] arguments) {
-        this.arguments = arguments;
+       setArguments(arguments);
         this.proxy = proxy;
         this.target = target;
         this.method = method;
@@ -34,7 +34,7 @@ public class GenericMethodInvocation implements MethodInvocation {
     }
 
     public void setArguments(Object[] arguments) {
-        this.arguments = arguments;
+        this.arguments = Arrs.copy(arguments);
     }
 
     public Object getProxy() {

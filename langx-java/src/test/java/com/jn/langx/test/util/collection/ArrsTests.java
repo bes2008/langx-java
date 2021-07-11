@@ -7,6 +7,8 @@ import com.jn.langx.util.reflect.Reflects;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Date;
+
 public class ArrsTests {
     @Test
     public void isArrayTests() {
@@ -52,8 +54,36 @@ public class ArrsTests {
                 return input;
             }
         });
+        int[] arr2 = PrimitiveArrays.copy(array);
+
+        String[] strings = Arrs.createArray(String.class, 10, new Supplier<Integer, String>() {
+            @Override
+            public String get(Integer index) {
+                return "str-" + index;
+            }
+        });
+
+        String[] strings2 = Arrs.copy(strings);
+
+        Object[] objects = new Object[]{
+                "ssss",
+                0x22,
+                32,
+                'c',
+                true,
+                new Date(),
+                3.3F,
+                23.2D
+        };
+
+        Object[] objects2= Arrs.copy(objects);
+
+        Object[] objects3= Arrs.copy(array);
 
         System.out.println(array);
+        System.out.println(arr2);
+        System.out.println(strings);
+        System.out.println(strings2);
     }
 
 

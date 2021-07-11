@@ -21,7 +21,7 @@ public final class PrivateKeyDetails {
     public PrivateKeyDetails(final String type, final X509Certificate[] certChain) {
         super();
         this.type = Preconditions.checkNotNull(type, "Private key type");
-        this.certChain = certChain;
+        this.certChain = Arrs.copy(certChain);
     }
 
     public String getType() {

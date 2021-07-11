@@ -65,7 +65,7 @@ public class VMID implements Serializable {
      * @see #getInstance()  For getting a VMID instance reference.
      */
     public VMID(final byte[] address, final String pid, final UID uid) {
-        this.address = address;
+        this.address = PrimitiveArrays.copy(address);
         this.pid = pid;
         this.uid = uid;
 

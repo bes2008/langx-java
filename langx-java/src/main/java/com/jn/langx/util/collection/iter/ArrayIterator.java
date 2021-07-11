@@ -26,7 +26,7 @@ public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterabl
             if (PrimitiveArrays.isPrimitiveArray(array.getClass())) {
                 this.array = PrimitiveArrays.wrap(array);
             } else {
-                this.array = (E[]) array;
+                this.array = Arrs.copy((E[]) array);
             }
         } else {
             this.array = null;
@@ -41,7 +41,7 @@ public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterabl
     }
 
     public ArrayIterator(E[] array, boolean reversed) {
-        this.array = array;
+        this.array = Arrs.copy(array);
         this.length = array == null ? 0 : array.length;
         this.reversed = reversed;
         this.index = reversed ? (this.length - 1) : 0;
