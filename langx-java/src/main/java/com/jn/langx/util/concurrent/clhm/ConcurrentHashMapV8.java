@@ -2401,8 +2401,9 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
                 }
                 for (int sc;;) {
                     if (U.compareAndSwapInt(this, SIZECTL, sc = sizeCtl, ++sc)) {
-                        if (sc != -1)
+                        if (sc != -1) {
                             return;
+                        }
                         finishing = advance = true;
                         i = n; // recheck before commit
                         break;

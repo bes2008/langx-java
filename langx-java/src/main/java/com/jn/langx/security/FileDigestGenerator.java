@@ -22,17 +22,6 @@ import java.util.List;
 public class FileDigestGenerator {
     private boolean lowercase = true;
 
-    public static void main(String[] args) {
-        FileDigestGenerator generator = new FileDigestGenerator();
-        long start = System.currentTimeMillis();
-        System.out.println("MD5, SHA-1:   " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", null, "MD5", "SHA-1"));
-        long t2 = System.currentTimeMillis();
-        System.out.println("SHA-1: " + generator.generate("D:\\mvn_repo\\org\\springframework.zip", "SHA-1"));
-        long t3 = System.currentTimeMillis();
-        System.out.println("MD5 time: " + (t2 - start));
-        System.out.println("SHA-1 time: " + (t3 - t2));
-    }
-
     public String generate(String filePath, String algorithm) {
         return generate(filePath, null, algorithm);
     }

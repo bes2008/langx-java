@@ -3,6 +3,7 @@ package com.jn.langx.util.collection;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -127,7 +128,7 @@ public class Arrs {
         Preconditions.checkTrue(start >= 0);
         Preconditions.checkTrue(end >= start);
         Preconditions.checkTrue(step >= 1);
-        int length = new Double(Math.floor((end - 1 - start) / step)).intValue() + 1;
+        int length = (end - 1 - start) / step + 1;
         Preconditions.checkTrue(length >= 0);
         return createArray(Integer.class, length, new Supplier<Integer, Integer>() {
             @Override

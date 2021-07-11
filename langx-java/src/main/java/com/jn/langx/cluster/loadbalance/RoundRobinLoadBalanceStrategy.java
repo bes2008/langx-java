@@ -38,7 +38,7 @@ public class RoundRobinLoadBalanceStrategy<NODE extends Node, INVOCATION> extend
         }
 
         public void sel(int total) {
-            current.addAndGet(-1 * total);
+            current.addAndGet(-1L * total);
         }
 
         public long getLastUpdate() {

@@ -299,7 +299,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
             throw new IllegalStateException("CommandLauncher can not be null");
         }
         if (workingDir == null) {
-            throw new IOException(workingDir + " doesn't exist.");
+            throw new IOException(" the work directory is not exist.");
         }
         if (launcher instanceof LocalCommandLauncher) {
             if (!workingDir.exists()) {
