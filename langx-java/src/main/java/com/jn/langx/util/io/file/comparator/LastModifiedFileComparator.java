@@ -2,10 +2,11 @@ package com.jn.langx.util.io.file.comparator;
 
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class LastModifiedFileComparator implements Comparator<File> {
-
+public class LastModifiedFileComparator implements Comparator<File>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Compare the last the last modified date/time of two files.

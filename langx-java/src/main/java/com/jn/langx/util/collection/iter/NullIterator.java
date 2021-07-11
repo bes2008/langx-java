@@ -1,12 +1,10 @@
 package com.jn.langx.util.collection.iter;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class NullIterator<E> implements Iterator<E> {
     public static final NullIterator INSTANCE = new NullIterator();
-
-    public NullIterator(){
-    }
 
     @Override
     public boolean hasNext() {
@@ -15,11 +13,11 @@ public class NullIterator<E> implements Iterator<E> {
 
     @Override
     public E next() {
-        return null;
+       throw new NoSuchElementException();
     }
 
     @Override
     public void remove() {
-
+        throw new UnsupportedOperationException();
     }
 }

@@ -7,9 +7,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
 public class LineDelimiter {
-    public static char CR = '\r';
-    public static char LF = '\n';
-    public static String CR_LF = "" + CR + LF;
+    public static final char CR = '\r';
+    public static final char LF = '\n';
+    public static final String CR_LF = "" + CR + LF;
 
     /**
      * the line delimiter constant of the current O/S.

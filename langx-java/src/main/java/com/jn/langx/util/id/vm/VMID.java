@@ -213,7 +213,7 @@ public class VMID implements Serializable, Cloneable {
      * The address used when conventional methods fail to return the address
      * of the current machine.
      */
-    public static final byte[] UNKNOWN_HOST = {0, 0, 0, 0};
+    static final byte[] UNKNOWN_HOST = {0, 0, 0, 0};
 
     /**
      * Return the current host internet address.

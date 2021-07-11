@@ -3,9 +3,12 @@ package com.jn.langx.util.io.file.comparator;
 import com.jn.langx.util.io.file.Files;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class SizeFileComparator implements Comparator<File> {
+public class SizeFileComparator implements Comparator<File>, Serializable {
+
+    private static final long serialVersionUID = 1L;
     /**
      * Whether the sum of the directory's contents should be calculated.
      */
