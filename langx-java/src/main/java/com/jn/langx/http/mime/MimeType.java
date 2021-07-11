@@ -581,7 +581,9 @@ public class MimeType implements Comparable<MimeType>, Serializable {
      *
      * @param <T> the type of mime types that may be compared by this comparator
      */
-    public static class SpecificityComparator<T extends MimeType> implements Comparator<T> {
+    public static class SpecificityComparator<T extends MimeType> implements Comparator<T>, Serializable {
+
+        private static final long serialVersionUID = 1L;
 
         @Override
         public int compare(T mimeType1, T mimeType2) {

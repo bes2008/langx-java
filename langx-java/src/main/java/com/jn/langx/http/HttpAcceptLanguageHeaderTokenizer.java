@@ -1,5 +1,7 @@
 package com.jn.langx.http;
 
+import com.jn.langx.util.Objs;
+
 import java.util.*;
 
 public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
@@ -63,6 +65,25 @@ public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
 
         public final int compareTo(Object acceptLang) {
             return this.quality.compareTo(((HttpAcceptLanguageHeaderTokenizer.AcceptLanguage) acceptLang).quality);
+        }
+        public boolean equals(Object acceptLang){
+            if(acceptLang==null){
+                return false;
+            }
+            if(acceptLang==this){
+                return true;
+            }
+            if(acceptLang.getClass()!=this.getClass()){
+                return false;
+            }
+            AcceptLanguage ac = (AcceptLanguage)acceptLang;
+            if(!Objs.equals(this.locale, ac.locale)){
+                return false;
+            }
+            if(!Objs.equals(this.quality, ac.quality)){
+                return false;
+            }
+            return true;
         }
     }
 }

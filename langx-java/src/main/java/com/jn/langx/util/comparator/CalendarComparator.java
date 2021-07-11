@@ -1,9 +1,11 @@
 package com.jn.langx.util.comparator;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Comparator;
 
-public class CalendarComparator implements Comparator<Calendar> {
+public class CalendarComparator implements Comparator<Calendar>, Serializable {
+    private static final long serialVersionUID = 1L;
     public static final CalendarComparator INSTANCE = new CalendarComparator();
 
     public int compare(Calendar x, Calendar y) {

@@ -1,5 +1,7 @@
 package com.jn.langx.util.net;
 
+import com.jn.langx.util.Objs;
+
 public class NetworkAddress implements Comparable<NetworkAddress>{
     private String host;
     private int port;
@@ -32,6 +34,27 @@ public class NetworkAddress implements Comparable<NetworkAddress>{
     @Override
     public int compareTo(NetworkAddress o) {
         return this.toString().compareTo(o.toString());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()){
+            return false;
+        }
+
+        NetworkAddress that = (NetworkAddress) o;
+        if (port != that.port) {
+            return false;
+        }
+       return Objs.equals(host, that.host);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = host != null ? host.hashCode() : 0;
+        result = 31 * result + port;
+        return result;
     }
 
     @Override

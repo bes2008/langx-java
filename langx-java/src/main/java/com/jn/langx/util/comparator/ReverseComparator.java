@@ -1,8 +1,10 @@
 package com.jn.langx.util.comparator;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class ReverseComparator<V> implements Comparator<V> {
+public class ReverseComparator<V> implements Comparator<V>, Serializable {
+    private static final long serialVersionUID = 1L;
     private Comparator<V> delegate;
 
     public ReverseComparator(Comparator<V> delegate) {

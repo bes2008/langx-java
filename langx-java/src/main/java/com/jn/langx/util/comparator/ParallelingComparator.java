@@ -3,12 +3,14 @@ package com.jn.langx.util.comparator;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 @SuppressWarnings({"unchecked"})
-public class ParallelingComparator implements Comparator {
+public class ParallelingComparator implements Comparator, Serializable {
+    private static final long serialVersionUID = 1L;
     private final List<Comparator> delegates = new ArrayList<Comparator>();
 
     @Deprecated
