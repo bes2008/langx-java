@@ -297,6 +297,8 @@ public class MimeTypes {
                 case '\\':
                     i++;
                     break;
+                default:
+                    break;
             }
             i++;
         }

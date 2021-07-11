@@ -185,7 +185,6 @@ public final class CsvPrinter implements Flushable, Closeable {
                     if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
                         i++;
                     }
-                    //$FALL-THROUGH$ break intentionally excluded.
                 case LF:
                     println();
                     out.append(format.getCommentMarker().charValue());

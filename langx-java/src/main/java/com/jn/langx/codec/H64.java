@@ -36,6 +36,7 @@ public class H64 {
                 case 1: val |= s << 8; break;
                 case 2: val |= s << 16; break;
                 case 3: val |= s << 24; break;
+                default: break;
             }
         }
         return val;

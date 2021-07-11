@@ -35,8 +35,11 @@ public abstract class MethodAccessor {
      * Returns the index of the first method with the specified name.
      */
     public int getIndex(String methodName) {
-        for (int i = 0, n = methodNames.length; i < n; i++)
-            if (methodNames[i].equals(methodName)) return i;
+        for (int i = 0, n = methodNames.length; i < n; i++) {
+            if (methodNames[i].equals(methodName)){
+                return i;
+            }
+        }
         throw new IllegalArgumentException("Unable to find non-private method: " + methodName);
     }
 
@@ -44,8 +47,11 @@ public abstract class MethodAccessor {
      * Returns the index of the first method with the specified name and param types.
      */
     public int getIndex(String methodName, Class... paramTypes) {
-        for (int i = 0, n = methodNames.length; i < n; i++)
-            if (methodNames[i].equals(methodName) && Arrays.equals(paramTypes, parameterTypes[i])) return i;
+        for (int i = 0, n = methodNames.length; i < n; i++) {
+            if (methodNames[i].equals(methodName) && Arrays.equals(paramTypes, parameterTypes[i])){
+                return i;
+            }
+        }
         throw new IllegalArgumentException("Unable to find non-private method: " + methodName + " " + Arrays.toString(paramTypes));
     }
 
@@ -53,8 +59,11 @@ public abstract class MethodAccessor {
      * Returns the index of the first method with the specified name and the specified number of arguments.
      */
     public int getIndex(String methodName, int paramsCount) {
-        for (int i = 0, n = methodNames.length; i < n; i++)
-            if (methodNames[i].equals(methodName) && parameterTypes[i].length == paramsCount) return i;
+        for (int i = 0, n = methodNames.length; i < n; i++) {
+            if (methodNames[i].equals(methodName) && parameterTypes[i].length == paramsCount){
+                return i;
+            }
+        }
         throw new IllegalArgumentException(
                 "Unable to find non-private method: " + methodName + " with " + paramsCount + " params.");
     }
@@ -78,8 +87,9 @@ public abstract class MethodAccessor {
      */
     static public MethodAccessor get(Class type) {
         boolean isInterface = type.isInterface();
-        if (!isInterface && type.getSuperclass() == null && type != Object.class)
+        if (!isInterface && type.getSuperclass() == null && type != Object.class) {
             throw new IllegalArgumentException("The type must not be an interface, a primitive type, or void.");
+        }
 
         ArrayList<Method> methods = new ArrayList<Method>();
         if (!isInterface) {
@@ -88,9 +98,9 @@ public abstract class MethodAccessor {
                 addDeclaredMethodsToList(nextClass, methods);
                 nextClass = nextClass.getSuperclass();
             }
-        } else
+        } else {
             recursiveAddInterfaceMethodsToList(type, methods);
-
+        }
         int n = methods.size();
         String[] methodNames = new String[n];
         Class[][] parameterTypes = new Class[n][];
@@ -204,6 +214,8 @@ public abstract class MethodAccessor {
                                     case Type.OBJECT:
                                         mv.visitTypeInsn(Opcodes.CHECKCAST, paramType.getInternalName());
                                         break;
+                                    default:
+                                        break;
                                 }
                                 buffer.append(paramType.getDescriptor());
                             }
@@ -298,7 +310,8 @@ public abstract class MethodAccessor {
 
     static private void recursiveAddInterfaceMethodsToList(Class interfaceType, ArrayList<Method> methods) {
         addDeclaredMethodsToList(interfaceType, methods);
-        for (Class nextInterface : interfaceType.getInterfaces())
+        for (Class nextInterface : interfaceType.getInterfaces()) {
             recursiveAddInterfaceMethodsToList(nextInterface, methods);
+        }
     }
 }

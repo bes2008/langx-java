@@ -731,6 +731,8 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
                 case HIR_RESIDENT:
                     owner.size--;
                     break;
+                default:
+                    break;
             }
             state = Recency.HIR_NONRESIDENT;
         }

@@ -14,14 +14,16 @@ public abstract class FieldAccessor {
     private Field[] fields;
 
     public int getIndex(String fieldName) {
-        for (int i = 0, n = fieldNames.length; i < n; i++)
+        for (int i = 0, n = fieldNames.length; i < n; i++) {
             if (fieldNames[i].equals(fieldName)) return i;
+        }
         throw new IllegalArgumentException("Unable to find non-private field: " + fieldName);
     }
 
     public int getIndex(Field field) {
-        for (int i = 0, n = fields.length; i < n; i++)
+        for (int i = 0, n = fields.length; i < n; i++) {
             if (fields[i].equals(field)) return i;
+        }
         throw new IllegalArgumentException("Unable to find non-private field: " + field);
     }
 
@@ -242,6 +244,8 @@ public abstract class FieldAccessor {
                     case Type.OBJECT:
                         mv.visitTypeInsn(Opcodes.CHECKCAST, fieldType.getInternalName());
                         break;
+                    default:
+                        break;
                 }
 
                 mv.visitFieldInsn(Opcodes.PUTFIELD, field.getDeclaringClass().getName().replace('.', '/'), field.getName(),
@@ -306,6 +310,8 @@ public abstract class FieldAccessor {
                         break;
                     case Type.DOUBLE:
                         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
+                        break;
+                    default:
                         break;
                 }
 
