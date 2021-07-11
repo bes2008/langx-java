@@ -1,12 +1,14 @@
 package com.jn.langx.asm.reflect.accessor;
 
 
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.reflect.Reflects;
 import org.objectweb.asm.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class FieldAccessor {
     private String[] fieldNames;
@@ -35,68 +37,68 @@ public abstract class FieldAccessor {
         return get(instance, getIndex(fieldName));
     }
 
-    public String[] getFieldNames() {
-        return fieldNames;
+    public List<String> getFieldNames() {
+        return Collects.newArrayList(fieldNames);
     }
 
-    public Class[] getFieldTypes() {
-        return fieldTypes;
+    public List<Class> getFieldTypes() {
+        return Collects.newArrayList(fieldTypes);
     }
 
     public int getFieldCount() {
         return fieldTypes.length;
     }
 
-    public Field[] getFields() {
-        return fields;
+    public List<Field> getFields() {
+        return Collects.newArrayList(fields);
     }
 
     public void setFields(Field[] fields) {
         this.fields = fields;
     }
 
-    abstract public void set(Object instance, int fieldIndex, Object value);
+    public abstract void set(Object instance, int fieldIndex, Object value);
 
-    abstract public void setBoolean(Object instance, int fieldIndex, boolean value);
+    public abstract void setBoolean(Object instance, int fieldIndex, boolean value);
 
-    abstract public void setByte(Object instance, int fieldIndex, byte value);
+    public abstract void setByte(Object instance, int fieldIndex, byte value);
 
-    abstract public void setShort(Object instance, int fieldIndex, short value);
+    public abstract void setShort(Object instance, int fieldIndex, short value);
 
-    abstract public void setInt(Object instance, int fieldIndex, int value);
+    public abstract void setInt(Object instance, int fieldIndex, int value);
 
-    abstract public void setLong(Object instance, int fieldIndex, long value);
+    public abstract void setLong(Object instance, int fieldIndex, long value);
 
-    abstract public void setDouble(Object instance, int fieldIndex, double value);
+    public abstract void setDouble(Object instance, int fieldIndex, double value);
 
-    abstract public void setFloat(Object instance, int fieldIndex, float value);
+    public abstract void setFloat(Object instance, int fieldIndex, float value);
 
-    abstract public void setChar(Object instance, int fieldIndex, char value);
+    public abstract void setChar(Object instance, int fieldIndex, char value);
 
-    abstract public Object get(Object instance, int fieldIndex);
+    public abstract Object get(Object instance, int fieldIndex);
 
-    abstract public String getString(Object instance, int fieldIndex);
+    public abstract String getString(Object instance, int fieldIndex);
 
-    abstract public char getChar(Object instance, int fieldIndex);
+    public abstract char getChar(Object instance, int fieldIndex);
 
-    abstract public boolean getBoolean(Object instance, int fieldIndex);
+    public abstract boolean getBoolean(Object instance, int fieldIndex);
 
-    abstract public byte getByte(Object instance, int fieldIndex);
+    public abstract byte getByte(Object instance, int fieldIndex);
 
-    abstract public short getShort(Object instance, int fieldIndex);
+    public abstract short getShort(Object instance, int fieldIndex);
 
-    abstract public int getInt(Object instance, int fieldIndex);
+    public abstract int getInt(Object instance, int fieldIndex);
 
-    abstract public long getLong(Object instance, int fieldIndex);
+    public abstract long getLong(Object instance, int fieldIndex);
 
-    abstract public double getDouble(Object instance, int fieldIndex);
+    public abstract double getDouble(Object instance, int fieldIndex);
 
-    abstract public float getFloat(Object instance, int fieldIndex);
+    public abstract float getFloat(Object instance, int fieldIndex);
 
     /**
      * @param type Must not be the Object class, an interface, a primitive type, or void.
      */
-    static public FieldAccessor get(Class type) {
+    public static FieldAccessor get(Class type) {
         if (type.getSuperclass() == null)
             throw new IllegalArgumentException("The type must not be the Object class, an interface, a primitive type, or void.");
 
@@ -171,7 +173,7 @@ public abstract class FieldAccessor {
         }
     }
 
-    static private void insertConstructor(ClassWriter cw) {
+    private static void insertConstructor(ClassWriter cw) {
         MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mv.visitCode();
         mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -181,7 +183,7 @@ public abstract class FieldAccessor {
         mv.visitEnd();
     }
 
-    static private void insertSetObject(ClassWriter cw, String classNameInternal, ArrayList<Field> fields) {
+    private static void insertSetObject(ClassWriter cw, String classNameInternal, ArrayList<Field> fields) {
         int maxStack = 6;
         MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "set", "(Ljava/lang/Object;ILjava/lang/Object;)V", null, null);
         mv.visitCode();
@@ -261,7 +263,7 @@ public abstract class FieldAccessor {
         mv.visitEnd();
     }
 
-    static private void insertGetObject(ClassWriter cw, String classNameInternal, ArrayList<Field> fields) {
+    private static void insertGetObject(ClassWriter cw, String classNameInternal, ArrayList<Field> fields) {
         int maxStack = 6;
         MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "get", "(Ljava/lang/Object;I)Ljava/lang/Object;", null, null);
         mv.visitCode();
@@ -326,7 +328,7 @@ public abstract class FieldAccessor {
         mv.visitEnd();
     }
 
-    static private void insertGetString(ClassWriter cw, String classNameInternal, ArrayList<Field> fields) {
+    private static void insertGetString(ClassWriter cw, String classNameInternal, ArrayList<Field> fields) {
         int maxStack = 6;
         MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "getString", "(Ljava/lang/Object;I)Ljava/lang/String;", null, null);
         mv.visitCode();
@@ -375,7 +377,7 @@ public abstract class FieldAccessor {
         mv.visitEnd();
     }
 
-    static private void insertSetPrimitive(ClassWriter cw, String classNameInternal, ArrayList<Field> fields,
+    private static void insertSetPrimitive(ClassWriter cw, String classNameInternal, ArrayList<Field> fields,
                                            Type primitiveType) {
         int maxStack = 6;
         int maxLocals = 4; // See correction below for LLOAD and DLOAD
@@ -471,7 +473,7 @@ public abstract class FieldAccessor {
         mv.visitEnd();
     }
 
-    static private void insertGetPrimitive(ClassWriter cw, String classNameInternal, ArrayList<Field> fields,
+    private static void insertGetPrimitive(ClassWriter cw, String classNameInternal, ArrayList<Field> fields,
                                            Type primitiveType) {
         int maxStack = 6;
         final String getterMethodName;
@@ -562,7 +564,7 @@ public abstract class FieldAccessor {
         mv.visitEnd();
     }
 
-    static private MethodVisitor insertThrowExceptionForFieldNotFound(MethodVisitor mv) {
+    private static MethodVisitor insertThrowExceptionForFieldNotFound(MethodVisitor mv) {
         mv.visitTypeInsn(Opcodes.NEW, "java/lang/IllegalArgumentException");
         mv.visitInsn(Opcodes.DUP);
         mv.visitTypeInsn(Opcodes.NEW, "java/lang/StringBuilder");
@@ -577,7 +579,7 @@ public abstract class FieldAccessor {
         return mv;
     }
 
-    static private MethodVisitor insertThrowExceptionForFieldType(MethodVisitor mv, String fieldType) {
+    private static MethodVisitor insertThrowExceptionForFieldType(MethodVisitor mv, String fieldType) {
         mv.visitTypeInsn(Opcodes.NEW, "java/lang/IllegalArgumentException");
         mv.visitInsn(Opcodes.DUP);
         mv.visitTypeInsn(Opcodes.NEW, "java/lang/StringBuilder");

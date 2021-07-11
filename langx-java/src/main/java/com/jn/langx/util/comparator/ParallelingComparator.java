@@ -1,6 +1,7 @@
 package com.jn.langx.util.comparator;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Preconditions;
 
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class ParallelingComparator implements Comparator, Serializable {
     private int compare0(Object o1, Object o2) {
         Preconditions.checkTrue(isValid());
         int leftMoveUnit = 32 / delegates.size();
-        int deltaMax = new Double(Math.pow(2, leftMoveUnit + 1)).intValue() - 1;
+        int deltaMax = Numbers.toInt(Math.pow(2, leftMoveUnit + 1)) - 1;
         int result = 0;
 
         boolean isNegative = false;
