@@ -1775,9 +1775,9 @@ public class Files {
     }
 
     public static void write(String bytes, Charset charset, File file, boolean append) throws IOException {
-        FileWriter fileWriter = null;
+        BufferedWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(file, append);
+            fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, append), charset));
             IOs.write(bytes.getBytes(charset), fileWriter);
         } finally {
             IOs.close(fileWriter);

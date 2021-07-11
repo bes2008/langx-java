@@ -4,6 +4,7 @@ package com.jn.langx.util.io;
 import com.jn.langx.annotation.NonNull;
 
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 public class LineDelimiter {
@@ -18,7 +19,7 @@ public class LineDelimiter {
 
     static {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        PrintWriter out = new PrintWriter(bout, true);
+        PrintWriter out = new PrintWriter(new OutputStreamWriter(bout, Charsets.UTF_8), true);
         out.println();
         DEFAULT = new LineDelimiter(new String(bout.toByteArray(),Charsets.UTF_8));
     }

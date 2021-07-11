@@ -239,7 +239,7 @@ public class Nets {
                     // try / catch block.
                     // See https://github.com/netty/netty/issues/4936
                     if (file.exists()) {
-                        in = new BufferedReader(new FileReader(file));
+                        in = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charsets.UTF_8));
                         somaxconn = Integer.parseInt(in.readLine());
                         if (logger.isDebugEnabled()) {
                             logger.debug("{}: {}", file, somaxconn);

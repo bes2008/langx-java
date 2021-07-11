@@ -28,7 +28,7 @@ public class MessageDigestHasher {
     private String algorithmName;
 
     public byte[] getSalt() {
-        return salt;
+        return PrimitiveArrays.copy(salt);
     }
 
     public void setSalt(byte[] salt) {

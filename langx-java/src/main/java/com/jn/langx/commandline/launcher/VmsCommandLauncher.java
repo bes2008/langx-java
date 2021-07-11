@@ -2,13 +2,10 @@ package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.ProcessAdapter;
-import com.jn.langx.commandline.util.CommandLineStringUtils;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.io.Charsets;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -68,8 +65,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
         script.deleteOnExit();
         PrintWriter out = null;
         try {
-            out = new PrintWriter(new FileWriter(script.getAbsolutePath(), true));
-
+            out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(script.getAbsolutePath(), true), Charsets.UTF_8));
             // add the environment as global symbols for the DCL script
             if (env != null) {
                 final Set<Entry<String, String>> entries = env.entrySet();

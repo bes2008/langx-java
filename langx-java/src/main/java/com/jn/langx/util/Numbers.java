@@ -111,6 +111,7 @@ public class Numbers {
 
     /**
      * 判断是否为0
+     *
      * @param number
      * @return 如为 0， 则返回true
      */
@@ -354,6 +355,7 @@ public class Numbers {
             //Requesting a specific type..
             String numeric = str.substring(0, str.length() - 1);
             boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+            Number number = null;
             switch (lastChar) {
                 case 'l':
                 case 'L':
@@ -361,48 +363,49 @@ public class Numbers {
                             && exp == null
                             && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
                         try {
-                            return createLong(numeric);
+                            number = createLong(numeric);
+                            break;
                         } catch (NumberFormatException nfe) {
                             //Too big for a long
                         }
-                        return createBigInteger(numeric);
-
+                        number = createBigInteger(numeric);
                     }
-                    throw new NumberFormatException(str + " is not a valid number.");
+                    break;
                 case 'f':
                 case 'F':
                     try {
                         Float f = createFloat(numeric);
                         if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
-                            //If it's too big for a float or the float value = 0 and the string
-                            //has non-zeros in it, then float does not have the precision we want
-                            return f;
+                            number = f;
                         }
-
                     } catch (NumberFormatException nfe) {
                         // ignore the bad number
                     }
-                    //$FALL-THROUGH$
+                    break;
                 case 'd':
                 case 'D':
                     try {
                         Double d = createDouble(numeric);
                         if (!(d.isInfinite() || (d.floatValue() == 0.0D && !allZeros))) {
-                            return d;
+                            number = d;
+                            break;
                         }
                     } catch (NumberFormatException nfe) {
-                        // ignore the bad number
                     }
                     try {
-                        return createBigDecimal(numeric);
+                        number = createBigDecimal(numeric);
                     } catch (NumberFormatException e) {
-                        // ignore the bad number
                     }
-                    //$FALL-THROUGH$
+                    break;
                 default:
-                    throw new NumberFormatException(str + " is not a valid number.");
-
+                    break;
             }
+            if (number == null) {
+                throw new NumberFormatException(str + " is not a valid number.");
+            } else {
+                return number;
+            }
+
         } else {
             //User doesn't have a preference on the return type, so let's start
             //small and go from there...
@@ -695,27 +698,27 @@ public class Numbers {
         return (negative ? result.negate() : result);
     }
 
-    public static int toInt(Number number){
+    public static int toInt(Number number) {
         return number.intValue();
     }
 
-    public static long toLong(Number number){
+    public static long toLong(Number number) {
         return number.longValue();
     }
 
-    public static double toDouble(Number number){
+    public static double toDouble(Number number) {
         return number.doubleValue();
     }
 
-    public static float toFloat(Number number){
+    public static float toFloat(Number number) {
         return number.floatValue();
     }
 
-    public static short toShort(Number number){
+    public static short toShort(Number number) {
         return number.shortValue();
     }
 
-    public static byte toByte(Number number){
+    public static byte toByte(Number number) {
         return number.byteValue();
     }
 

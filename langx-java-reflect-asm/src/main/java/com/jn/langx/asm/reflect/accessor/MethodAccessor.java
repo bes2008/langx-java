@@ -261,6 +261,8 @@ public abstract class MethodAccessor {
                                 case Type.DOUBLE:
                                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
                                     break;
+                                default:
+                                    break;
                             }
 
                             mv.visitInsn(Opcodes.ARETURN);

@@ -18,7 +18,7 @@ public class JavaBeanContext implements Context {
         if (hashtable == null) {
             new JavaBeanContext();
         } else {
-            this.env = hashtable;
+            this.env = new Hashtable(hashtable);
         }
     }
 
@@ -235,7 +235,7 @@ public class JavaBeanContext implements Context {
 
     @Override
     public Hashtable<?, ?> getEnvironment() throws NamingException {
-        return env;
+        return new Hashtable<Object, Object>(env);
     }
 
     @Override

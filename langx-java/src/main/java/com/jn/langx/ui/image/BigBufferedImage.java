@@ -2,6 +2,7 @@ package com.jn.langx.ui.image;
 
 import com.jn.langx.util.DataSizes;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.io.IOs;
 
 import javax.imageio.ImageIO;
@@ -187,7 +188,7 @@ public class BigBufferedImage extends BufferedImage {
 
     private static class FileDataBuffer extends DataBuffer {
 
-        private final String id = "buffer-" + System.currentTimeMillis() + "-" + ((int) (Math.random() * 1000));
+        private final String id = "buffer-" + System.currentTimeMillis() + "-" + GlobalThreadLocalMap.getRandom().nextInt(1000);
         private File dir;
         private String path;
         private File[] files;

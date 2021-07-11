@@ -49,11 +49,11 @@ public class MBean {
     }
 
     public Hashtable<String, String> getOptions() {
-        return options;
+        return new Hashtable<String, String>(options);
     }
 
     public void setOptions(Hashtable<String, String> options) {
-        this.options = options;
+        this.options = new Hashtable<String, String>(options);
     }
 
     public Map<String, Object> getAttributeMap() {
