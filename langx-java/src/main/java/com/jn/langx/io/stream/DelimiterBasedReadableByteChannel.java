@@ -143,7 +143,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
 
                 // found
                 delimiter.clear();
-                firstByteOfDelimiter = delimiter.get();
+                //firstByteOfDelimiter = delimiter.get();
 
                 int current = buf.position();
                 buf.reset();

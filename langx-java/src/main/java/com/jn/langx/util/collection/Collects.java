@@ -1419,7 +1419,6 @@ public class Collects {
     public static <E, C extends Collection<E>> boolean noneMatch(@Nullable C collection, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
-            Iterator<E> iterator = collection.iterator();
             for (E e : collection) {
                 if (predicate.test(e)) {
                     return false;

@@ -129,7 +129,8 @@ public class Throwables {
     }
 
     public static void log(@NonNull Throwable ex) {
-        Loggers.log(1, null, null, ex, (Supplier<Object[], String>) null, null);
+        Preconditions.checkNotNull(ex);
+        Loggers.log(1, null, null, ex, (Supplier<Object[], String>) null);
     }
 
     /**
