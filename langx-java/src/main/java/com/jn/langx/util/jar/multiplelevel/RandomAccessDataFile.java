@@ -1,5 +1,7 @@
 package com.jn.langx.util.jar.multiplelevel;
 
+import com.jn.langx.util.Preconditions;
+
 import java.io.*;
 
 /**
@@ -122,7 +124,8 @@ public class RandomAccessDataFile implements RandomAccessData {
 
         @Override
         public int read(byte[] b) throws IOException {
-            return read(b, 0, (b != null) ? b.length : 0);
+            Preconditions.checkNotNull(b, "the bytes is null");
+            return read(b, 0, b.length);
         }
 
         @Override

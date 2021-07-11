@@ -210,7 +210,7 @@ public class URLs {
                     // ignore it
                     return -1;
                 } finally {
-                    if (Emptys.isNotNull(con)) {
+                    if (con!=null) {
                         try {
                             IOs.close(con.getInputStream());
                         } catch (IOException ex) {

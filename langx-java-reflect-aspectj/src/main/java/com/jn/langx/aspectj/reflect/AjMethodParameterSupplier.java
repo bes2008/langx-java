@@ -3,9 +3,10 @@ package com.jn.langx.aspectj.reflect;
 import com.jn.langx.annotation.Name;
 import com.jn.langx.aspectj.coderepository.Repositorys;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.jar.JarNotFoundException;
 import com.jn.langx.util.os.Platform;
-import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
 import com.jn.langx.util.reflect.Reflects;
@@ -63,7 +64,7 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
                 throw new JarNotFoundException("Can't find the langx-java8.jar in the classpath");
             }
         }
-
+        Preconditions.checkNotNull(delegate);
         MethodParameter delegate = this.delegate.get(meta);
         if (Strings.isEmpty(parameterName)) {
             parameterName = delegate.getName();

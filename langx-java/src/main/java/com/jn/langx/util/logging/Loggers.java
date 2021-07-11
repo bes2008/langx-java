@@ -17,7 +17,7 @@ public class Loggers {
     private static final Logger logger = LoggerFactory.getLogger(Throwables.class);
 
     public static void log(@NonNull Throwable ex) {
-        log(1, null, null, ex, (Supplier<Object[], String>) null, null);
+        log(1, null, null, ex, (Supplier<Object[], String>) null );
     }
 
     public static void log(@Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, String message, Object... args) {
