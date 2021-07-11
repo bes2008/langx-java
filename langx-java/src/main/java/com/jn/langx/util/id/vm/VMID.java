@@ -30,11 +30,11 @@ import java.util.Arrays;
  *    to strings.
  *
  */
-public class VMID implements Serializable, Cloneable {
+public class VMID implements Serializable {
     /**
      * The serialVersionUID
      */
-    private static final long serialVersionUID = -4339675822939194520L;
+    private static final long serialVersionUID = 1L;
     /**
      * The address of the current virtual machine
      */
@@ -163,19 +163,6 @@ public class VMID implements Serializable, Cloneable {
         }
 
         return false;
-    }
-
-    /**
-     * Returns a copy of this VMID.
-     *
-     * @return A copy of this VMID.
-     */
-    public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new InternalError();
-        }
     }
 
     /**
