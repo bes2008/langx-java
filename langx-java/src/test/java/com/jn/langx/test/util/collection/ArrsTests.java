@@ -1,6 +1,7 @@
 package com.jn.langx.test.util.collection;
 
 import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.Reflects;
 import org.junit.Assert;
@@ -44,8 +45,15 @@ public class ArrsTests {
     }
 
     @Test
-    public void copyTests(){
-        int[] intArr = new int[]{1,2,3,4,5};
+    public void copyTests() {
+        int[] array = PrimitiveArrays.createIntArray(10, new Supplier<Integer, Integer>() {
+            @Override
+            public Integer get(Integer input) {
+                return input;
+            }
+        });
+
+        System.out.println(array);
     }
 
 

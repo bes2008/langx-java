@@ -1,6 +1,7 @@
 package com.jn.langx.management.connector.server.impl;
 
 import com.jn.langx.management.connector.server.JMXConnectorServerWrapper;
+import com.jn.langx.util.collection.Arrs;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -220,7 +221,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
     }
 
     public String[] getCiphers() {
-        return ciphers;
+        return Arrs.copy(ciphers);
     }
 
     public void setCiphers(String[] ciphers) {
@@ -228,7 +229,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
     }
 
     public String[] getProtocols() {
-        return protocols;
+        return Arrs.copy(protocols);
     }
 
     public void setProtocols(String[] protocols) {

@@ -3,6 +3,7 @@ package com.jn.langx.security.ssl;
 
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Arrs;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public final class PrivateKeyDetails {
     }
 
     public X509Certificate[] getCertChain() {
-        return certChain;
+        return Arrs.copy(certChain);
     }
 
     @Override

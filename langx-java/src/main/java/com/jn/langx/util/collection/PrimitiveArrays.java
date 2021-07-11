@@ -33,7 +33,8 @@ public class PrimitiveArrays {
             BOOLEAN_ARRAY_CLASS
     ), false);
 
-    private PrimitiveArrays(){}
+    private PrimitiveArrays() {
+    }
 
     public static boolean isPrimitiveArray(Class clazz) {
         return clazz != null && PRIMITIVE_ARRAY_CLASSES.contains(clazz);
@@ -700,4 +701,77 @@ public class PrimitiveArrays {
         }
         return array;
     }
+
+    public static byte[] copy(final byte[] values) {
+        return createByteArray(values.length, new Supplier<Integer, Byte>() {
+            @Override
+            public Byte get(Integer index) {
+                return values[index];
+            }
+        });
+    }
+
+    public static short[] copy(final short[] values) {
+        return createShortArray(values.length, new Supplier<Integer, Short>() {
+            @Override
+            public Short get(Integer input) {
+                return values[input];
+            }
+        });
+    }
+
+    public static int[] copy(final int[] values) {
+        return createIntArray(values.length, new Supplier<Integer, Integer>() {
+            @Override
+            public Integer get(Integer input) {
+                return values[input];
+            }
+        });
+    }
+
+    public static boolean[] copy(final boolean[] values) {
+        return createBooleanArray(values.length, new Supplier<Integer, Boolean>() {
+            @Override
+            public Boolean get(Integer input) {
+                return values[input];
+            }
+        });
+    }
+
+    public static char[] copy(final char[] values) {
+        return createCharArray(values.length, new Supplier<Integer, Character>() {
+            @Override
+            public Character get(Integer input) {
+                return values[input];
+            }
+        });
+    }
+
+    public static float[] copy(final float[] values) {
+        return createFloatArray(values.length, new Supplier<Integer, Float>() {
+            @Override
+            public Float get(Integer input) {
+                return values[input];
+            }
+        });
+    }
+
+    public static double[] copy(final double[] values) {
+        return createDoubleArray(values.length, new Supplier<Integer, Double>() {
+            @Override
+            public Double get(Integer input) {
+                return values[input];
+            }
+        });
+    }
+
+    public static long[] copy(final long[] values) {
+        return createLongArray(values.length, new Supplier<Integer, Long>() {
+            @Override
+            public Long get(Integer input) {
+                return values[input];
+            }
+        });
+    }
+
 }

@@ -3,6 +3,7 @@ package com.jn.langx.security;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.security.exception.SecurityException;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
@@ -174,7 +175,7 @@ public enum JCAEStandardName {
     }
 
     public Class[] getScenarios() {
-        return this.scenarios;
+        return Arrs.copy(this.scenarios);
     }
 
     public static List<JCAEStandardName> findAlgorithms(@NonNull final Class scenario) {

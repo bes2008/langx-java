@@ -1,6 +1,7 @@
 package com.jn.langx.util.id.vm;
 
 
+import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
@@ -93,7 +94,7 @@ public class VMID implements Serializable {
      * @return The address portion of this VMID.
      */
     public final byte[] getAddress() {
-        return address;
+        return PrimitiveArrays.copy(address);
     }
 
     /**
