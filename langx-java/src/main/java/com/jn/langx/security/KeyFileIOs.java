@@ -122,8 +122,8 @@ public class KeyFileIOs {
         writeKey(key.getEncoded(), file, keyFormat);
     }
 
-    public static void writeKey(@NonNull Key key, @NonNull File file, KeyFormat keyFormat, @Nullable String startLine, @Nullable String endLine) throws IOException {
-        writeKey(key.getEncoded(), file, keyFormat, startLine, endLine);
+    public static void writeKey(@NonNull Key key, @NonNull File file, KeyFormat keyFormat, @Nullable String headerLine, @Nullable String footerLine) throws IOException {
+        writeKey(key.getEncoded(), file, keyFormat, headerLine, footerLine);
     }
 
     public static void writeKey(byte[] keyBytes, File file) throws IOException {
@@ -134,24 +134,24 @@ public class KeyFileIOs {
         writeKey(keyBytes, file, keyFormat, null, null);
     }
 
-    public static void writeKey(byte[] keyBytes, File file, KeyFormat keyFormat, String startLine, String endLine) throws IOException {
-        writeKey(keyBytes, new FileOutputStream(file, true), keyFormat, startLine, endLine);
+    public static void writeKey(byte[] keyBytes, File file, KeyFormat keyFormat, String headerLine, String footerLine) throws IOException {
+        writeKey(keyBytes, new FileOutputStream(file, true), keyFormat, headerLine, footerLine);
     }
 
-    public static void writeKey(byte[] keyBytes, OutputStream outputStream, KeyFormat keyFormat, String startLine, String endLine) throws IOException {
+    public static void writeKey(byte[] keyBytes, OutputStream outputStream, KeyFormat keyFormat, String headerLine, String footerLine) throws IOException {
         Preconditions.checkNotNull(keyBytes);
         Preconditions.checkNotNull(outputStream);
-        writeKey(keyBytes, new OutputStreamWriter(outputStream, Charsets.UTF_8), keyFormat, startLine, endLine);
+        writeKey(keyBytes, new OutputStreamWriter(outputStream, Charsets.UTF_8), keyFormat, headerLine, footerLine);
     }
 
-    public static void writeKey(byte[] keyBytes, Writer writer, KeyFormat keyFormat, String startLine, String endLine) throws IOException {
+    public static void writeKey(byte[] keyBytes, Writer writer, KeyFormat keyFormat, String headLine, String footerLine) throws IOException {
         Preconditions.checkNotNull(keyBytes);
         Preconditions.checkNotNull(writer);
         keyFormat = Objects.useValueIfNull(keyFormat, KeyFormat.BASE64);
 
         writer.write(LineDelimiter.DEFAULT.getValue());
-        if (Strings.isNotBlank(startLine)) {
-            writer.write(startLine.trim());
+        if (Strings.isNotBlank(headLine)) {
+            writer.write(headLine.trim());
             writer.write(LineDelimiter.DEFAULT.getValue());
         }
 
@@ -180,16 +180,16 @@ public class KeyFileIOs {
             writer.flush();
         }
 
-        if (Strings.isNotBlank(endLine)) {
-            writer.write(endLine.trim());
+        if (Strings.isNotBlank(footerLine)) {
+            writer.write(footerLine.trim());
             writer.write(LineDelimiter.DEFAULT.getValue());
         }
         writer.flush();
     }
 
-    public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyFormat keyFormat, String startLine, String endLine) throws IOException{
+    public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyFormat keyFormat, String headerLine, String footerLine) throws IOException{
         StringBuilderWriter writer = new StringBuilderWriter(stringBuilder);
-        writeKey(keyBytes, writer, keyFormat, startLine, endLine);
+        writeKey(keyBytes, writer, keyFormat, headerLine, footerLine);
     }
 
     public static enum KeyFormat {
