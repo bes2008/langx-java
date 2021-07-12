@@ -1,4 +1,4 @@
-package com.jn.langx.security.keyspec.parser.pem;
+package com.jn.langx.security.keyspec.pem;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.jn.langx.security.keyspec.parser;
+package com.jn.langx.security.keyspec;
 
 import com.jn.langx.factory.Factory;
 

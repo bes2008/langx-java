@@ -1,4 +1,4 @@
-package com.jn.langx.security.keyspec.parser.der;
+package com.jn.langx.security.keyspec.der;
 
 import com.jn.langx.codec.hex.Hex;
 
