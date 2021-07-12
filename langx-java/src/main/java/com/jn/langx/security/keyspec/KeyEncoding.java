@@ -1,6 +1,6 @@
 package com.jn.langx.security.keyspec;
 
-public enum KeyEncode {
+public enum KeyEncoding {
     HEX,
     BASE64,
     UTF8

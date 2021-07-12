@@ -1,23 +1,23 @@
 package com.jn.langx.security.keyspec.pem;
 
 import com.jn.langx.Nameable;
-import com.jn.langx.security.keyspec.KeyEncode;
+import com.jn.langx.security.keyspec.KeyEncoding;
 
 public class PemKeyFormat implements Nameable {
     private String name;
     private String header;
     private String footer;
-    private KeyEncode encode;
+    private KeyEncoding encode;
 
     public PemKeyFormat() {
 
     }
 
     public PemKeyFormat(String name, String header, String footer) {
-        this(name, header, footer, KeyEncode.BASE64);
+        this(name, header, footer, KeyEncoding.BASE64);
     }
 
-    public PemKeyFormat(String name, String header, String footer, KeyEncode keyEncode) {
+    public PemKeyFormat(String name, String header, String footer, KeyEncoding keyEncode) {
         setHeader(header);
         setFooter(footer);
         setEncode(keyEncode);
@@ -48,11 +48,11 @@ public class PemKeyFormat implements Nameable {
         this.footer = footer;
     }
 
-    public KeyEncode getEncode() {
+    public KeyEncoding getEncode() {
         return encode;
     }
 
-    public void setEncode(KeyEncode encode) {
+    public void setEncode(KeyEncoding encode) {
         this.encode = encode;
     }
 }

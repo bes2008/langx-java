@@ -10,7 +10,7 @@ import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.io.stream.StringBuilderWriter;
 import com.jn.langx.security.exception.KeyFileFormatException;
-import com.jn.langx.security.keyspec.KeyEncode;
+import com.jn.langx.security.keyspec.KeyEncoding;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.*;
 import com.jn.langx.util.io.Charsets;
@@ -25,23 +25,23 @@ public class PemFileIOs {
         return readKey(Resources.loadFileResource(file));
     }
 
-    public static byte[] readKey(File file, KeyEncode keyFormat) {
-        return readKey(Resources.loadFileResource(file), keyFormat);
+    public static byte[] readKey(File file, KeyEncoding encoding) {
+        return readKey(Resources.loadFileResource(file), encoding);
     }
 
     public static byte[] readKey(Resource resource) {
-        return readKey(resource, KeyEncode.BASE64);
+        return readKey(resource, KeyEncoding.BASE64);
     }
 
-    public static byte[] readKey(Resource resource, KeyEncode keyFormat) {
+    public static byte[] readKey(Resource resource, KeyEncoding encoding) {
         try {
             String content = readKeyAsString(resource);
             if (Emptys.isEmpty(content)) {
                 throw new NullPointerException();
             }
-            keyFormat = Objects.useValueIfNull(keyFormat, KeyEncode.BASE64);
+            encoding = Objects.useValueIfNull(encoding, KeyEncoding.BASE64);
             byte[] bytes = null;
-            switch (keyFormat) {
+            switch (encoding) {
                 case HEX:
                     bytes = content.getBytes(Charsets.UTF_8);
                     break;
@@ -119,36 +119,36 @@ public class PemFileIOs {
         writeKey(key.getEncoded(), file, null);
     }
 
-    public static void writeKey(@NonNull Key key, @NonNull File file, KeyEncode keyFormat) throws IOException {
-        writeKey(key.getEncoded(), file, keyFormat);
+    public static void writeKey(@NonNull Key key, @NonNull File file, KeyEncoding encoding) throws IOException {
+        writeKey(key.getEncoded(), file, encoding);
     }
 
-    public static void writeKey(@NonNull Key key, @NonNull File file, KeyEncode keyFormat, @Nullable String headerLine, @Nullable String footerLine) throws IOException {
-        writeKey(key.getEncoded(), file, keyFormat, headerLine, footerLine);
+    public static void writeKey(@NonNull Key key, @NonNull File file, KeyEncoding encoding, @Nullable String headerLine, @Nullable String footerLine) throws IOException {
+        writeKey(key.getEncoded(), file, encoding, headerLine, footerLine);
     }
 
     public static void writeKey(byte[] keyBytes, File file) throws IOException {
         writeKey(keyBytes, file, null, null, null);
     }
 
-    public static void writeKey(byte[] keyBytes, File file, KeyEncode keyFormat) throws IOException {
-        writeKey(keyBytes, file, keyFormat, null, null);
+    public static void writeKey(byte[] keyBytes, File file, KeyEncoding encoding) throws IOException {
+        writeKey(keyBytes, file, encoding, null, null);
     }
 
-    public static void writeKey(byte[] keyBytes, File file, KeyEncode keyFormat, String headerLine, String footerLine) throws IOException {
-        writeKey(keyBytes, new FileOutputStream(file, true), keyFormat, headerLine, footerLine);
+    public static void writeKey(byte[] keyBytes, File file, KeyEncoding encoding, String headerLine, String footerLine) throws IOException {
+        writeKey(keyBytes, new FileOutputStream(file, true), encoding, headerLine, footerLine);
     }
 
-    public static void writeKey(byte[] keyBytes, OutputStream outputStream, KeyEncode keyFormat, String headerLine, String footerLine) throws IOException {
+    public static void writeKey(byte[] keyBytes, OutputStream outputStream, KeyEncoding encoding, String headerLine, String footerLine) throws IOException {
         Preconditions.checkNotNull(keyBytes);
         Preconditions.checkNotNull(outputStream);
-        writeKey(keyBytes, new OutputStreamWriter(outputStream, Charsets.UTF_8), keyFormat, headerLine, footerLine);
+        writeKey(keyBytes, new OutputStreamWriter(outputStream, Charsets.UTF_8), encoding, headerLine, footerLine);
     }
 
-    public static void writeKey(byte[] keyBytes, Writer writer, KeyEncode keyFormat, String headLine, String footerLine) throws IOException {
+    public static void writeKey(byte[] keyBytes, Writer writer, KeyEncoding encoding, String headLine, String footerLine) throws IOException {
         Preconditions.checkNotNull(keyBytes);
         Preconditions.checkNotNull(writer);
-        keyFormat = Objects.useValueIfNull(keyFormat, KeyEncode.BASE64);
+        encoding = Objects.useValueIfNull(encoding, KeyEncoding.BASE64);
 
         writer.write(LineDelimiter.DEFAULT.getValue());
         if (Strings.isNotBlank(headLine)) {
@@ -157,7 +157,7 @@ public class PemFileIOs {
         }
 
         String encodedKeyString = null;
-        switch (keyFormat) {
+        switch (encoding) {
             case BASE64:
                 encodedKeyString = Base64.encodeBase64String(keyBytes);
                 break;
@@ -188,9 +188,9 @@ public class PemFileIOs {
         writer.flush();
     }
 
-    public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyEncode keyFormat, String headerLine, String footerLine) throws IOException{
+    public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyEncoding encoding, String headerLine, String footerLine) throws IOException{
         StringBuilderWriter writer = new StringBuilderWriter(stringBuilder);
-        writeKey(keyBytes, writer, keyFormat, headerLine, footerLine);
+        writeKey(keyBytes, writer, encoding, headerLine, footerLine);
     }
 
 
