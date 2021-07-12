@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 
@@ -60,37 +61,41 @@ public class Dates {
         return format(new Date(millis), pattern);
     }
 
-    public static String format(@NonNull Date date, @NonNull String pattern) {
+    public static String format(@NonNull Date date) {
+        return format(date, yyyy_MM_dd_HH_mm_ss);
+    }
+
+    public static String format(@NonNull Date date, @NotEmpty String pattern) {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(date);
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern).format(date);
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern) {
+    public static SimpleDateFormat getSimpleDateFormat(@NotEmpty String pattern) {
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern);
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable Locale locale) {
+    public static SimpleDateFormat getSimpleDateFormat(@NotEmpty String pattern, @Nullable Locale locale) {
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern, locale);
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable TimeZone timeZone) {
+    public static SimpleDateFormat getSimpleDateFormat(@NotEmpty String pattern, @Nullable TimeZone timeZone) {
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZone);
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable String timeZoneId) {
+    public static SimpleDateFormat getSimpleDateFormat(@NotEmpty String pattern, @Nullable String timeZoneId) {
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZoneId);
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
+    public static SimpleDateFormat getSimpleDateFormat(@NotEmpty String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZone, locale);
     }
 
-    public static SimpleDateFormat getSimpleDateFormat(@NonNull String pattern, @Nullable String timeZoneId, @Nullable Locale locale) {
+    public static SimpleDateFormat getSimpleDateFormat(@NotEmpty String pattern, @Nullable String timeZoneId, @Nullable Locale locale) {
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZoneId, locale);
     }
 
-    public static Date parse(String dateString, String pattern) {
+    public static Date parse(String dateString, @NotEmpty String pattern) {
         try {
             return GlobalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
         } catch (ParseException ex) {
@@ -427,15 +432,15 @@ public class Dates {
         return nextTime(System.currentTimeMillis(), durationInMills);
     }
 
-    public static long nowMills(){
+    public static long nowMills() {
         return System.currentTimeMillis();
     }
 
-    public static Date now(){
+    public static Date now() {
         return new Date();
     }
 
-    public static String nowReadableString(){
+    public static String nowReadableString() {
         return format(new Date(), yyyy_MM_dd_HH_mm_ss);
     }
 
