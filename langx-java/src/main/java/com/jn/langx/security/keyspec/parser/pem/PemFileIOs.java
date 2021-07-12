@@ -1,4 +1,4 @@
-package com.jn.langx.security;
+package com.jn.langx.security.keyspec.parser.pem;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
@@ -19,7 +19,7 @@ import com.jn.langx.util.io.LineDelimiter;
 import java.io.*;
 import java.security.Key;
 
-public class KeyFileIOs {
+public class PemFileIOs {
     public static byte[] readKey(File file) {
         return readKey(Resources.loadFileResource(file));
     }

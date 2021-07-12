@@ -4,7 +4,7 @@ import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.security.DSAs;
-import com.jn.langx.security.KeyFileIOs;
+import com.jn.langx.security.keyspec.parser.pem.PemFileIOs;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
@@ -56,7 +56,7 @@ public class JavaAPIDSATests {
     }
 
     private void printContent(String startLine, String endLine, byte[] bytes) throws IOException {
-        KeyFileIOs.writeKey(bytes, System.out, null, startLine, endLine);
+        PemFileIOs.writeKey(bytes, System.out, null, startLine, endLine);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class JavaAPIDSATests {
             String src = "你好呀";
 // 签名：
             Resource privateResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_private_key_pkcs8.pem");
-            byte[] privateKeyBytes = KeyFileIOs.readKey(privateResource);
+            byte[] privateKeyBytes = PemFileIOs.readKey(privateResource);
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance("DSA");
             PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
@@ -77,7 +77,7 @@ public class JavaAPIDSATests {
             System.out.println("jdk dsa sign:" + Hex.encodeHex(arr));
 // 验证签名
             Resource publicResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_public_key.pem");
-            byte[] publicKeyBytes = KeyFileIOs.readKey(publicResource);
+            byte[] publicKeyBytes = PemFileIOs.readKey(publicResource);
 
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(publicKeyBytes);
             keyFactory = KeyFactory.getInstance("DSA");
@@ -98,12 +98,12 @@ public class JavaAPIDSATests {
     @Test
     public void test() {
         Resource privateResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_private_key_pkcs8.pem");
-        byte[] privateKey = KeyFileIOs.readKey(privateResource);
+        byte[] privateKey = PemFileIOs.readKey(privateResource);
         String content = "你好，JAVAAPI 生成的 DSA";
         byte[] data = content.getBytes(Charsets.UTF_8);
         byte[] signature = DSAs.sign(privateKey, data);
         Resource publicResource = Resources.loadClassPathResource("/security/dsa/data/javaapi/dsa_public_key.pem");
-        byte[] publicKey = KeyFileIOs.readKey(publicResource);
+        byte[] publicKey = PemFileIOs.readKey(publicResource);
         if (DSAs.verify(publicKey, data, signature)) {
             System.out.println("验证通过");
         }

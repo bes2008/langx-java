@@ -2,7 +2,7 @@ package com.jn.langx.test.security.key;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
-import com.jn.langx.security.KeyFileIOs;
+import com.jn.langx.security.keyspec.parser.pem.PemFileIOs;
 import com.jn.langx.security.PKIs;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
@@ -15,13 +15,13 @@ public class KeyFileIOTests {
     public void test0() throws Throwable{
         KeyPair keyPair = PKIs.createKeyPair("RSA", null, 1024, null);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        KeyFileIOs.writeKey(keyPair.getPublic().getEncoded(), byteArrayOutputStream, KeyFileIOs.KeyFormat.BASE64, "------ PUBLIC KEY ------", "------ END PUBLIC KEY -------");
+        PemFileIOs.writeKey(keyPair.getPublic().getEncoded(), byteArrayOutputStream, PemFileIOs.KeyFormat.BASE64, "------ PUBLIC KEY ------", "------ END PUBLIC KEY -------");
         System.out.println(byteArrayOutputStream.toString(Charsets.UTF_8));
 
         System.out.println("====================================================================");
 
         KeyPair keyPair2 = PKIs.createKeyPair("RSA", null, 1024, null);
-        KeyFileIOs.writeKey(keyPair2.getPublic().getEncoded(), System.out, KeyFileIOs.KeyFormat.BASE64, "------ PUBLIC KEY ------", "------ END PUBLIC KEY -------");
+        PemFileIOs.writeKey(keyPair2.getPublic().getEncoded(), System.out, PemFileIOs.KeyFormat.BASE64, "------ PUBLIC KEY ------", "------ END PUBLIC KEY -------");
     }
 
     @Test
