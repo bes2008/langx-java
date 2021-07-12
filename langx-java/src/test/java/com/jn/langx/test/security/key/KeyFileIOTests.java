@@ -6,6 +6,7 @@ import com.jn.langx.security.keyspec.KeyEncoding;
 import com.jn.langx.security.keyspec.pem.PemFileIOs;
 import com.jn.langx.security.PKIs;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
 import org.junit.Test;
 
 import java.security.KeyPair;
@@ -18,6 +19,13 @@ public class KeyFileIOTests {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         PemFileIOs.writeKey(keyPair.getPublic().getEncoded(), byteArrayOutputStream, KeyEncoding.BASE64, "------ PUBLIC KEY ------", "------ END PUBLIC KEY -------");
         System.out.println(byteArrayOutputStream.toString(Charsets.UTF_8));
+        IOs.close(byteArrayOutputStream);
+
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        PemFileIOs.writeKey(keyPair.getPrivate(), byteArrayOutputStream, KeyEncoding.BASE64,null,null);
+        System.out.println(byteArrayOutputStream.toString(Charsets.UTF_8));
+        IOs.close(byteArrayOutputStream);
+
 
         System.out.println("====================================================================");
 

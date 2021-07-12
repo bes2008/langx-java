@@ -46,9 +46,10 @@ public class PEMs {
 
     private static final String HEADER = "-----BEGIN";
 
-    public static final GenericRegistry<PemKeyFormat> DEFAULT_PEM_STYLE_REGISTRY = new GenericRegistry<PemKeyFormat>();
+    private static final GenericRegistry<PemKeyFormat> DEFAULT_PEM_STYLE_REGISTRY;
 
     static {
+        DEFAULT_PEM_STYLE_REGISTRY = new GenericRegistry<PemKeyFormat>();
         // PKCS#1 是 专门的 RSA 规范格式
         DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("PKCS#1", "-----BEGIN RSA PRIVATE KEY-----", "-----END RSA PRIVATE KEY-----"));
         // PKCS#8 是公共的 非对称加密算法的格式，RSA、DSA、EC都可以用
@@ -61,6 +62,9 @@ public class PEMs {
         DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("OPENSSL::EC", "-----BEGIN EC PRIVATE KEY-----", "-----END EC PRIVATE KEY-----"));
         DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("OPENSSL::EC::PARAMS", "-----BEGIN EC PARAMETERS-----", "-----END EC PARAMETERS-----"));
 
+    }
+    public static GenericRegistry<PemKeyFormat> getDefaultPemStyleRegistry(){
+        return DEFAULT_PEM_STYLE_REGISTRY;
     }
 
     private PEMs() {

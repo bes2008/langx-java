@@ -19,6 +19,7 @@ import com.jn.langx.util.io.LineDelimiter;
 
 import java.io.*;
 import java.security.Key;
+import java.security.PrivateKey;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateCrtKey;
@@ -119,25 +120,46 @@ public class PemFileIOs {
     }
 
     public static void writeKey(@NonNull Key key, @NonNull File file) throws IOException {
-        KeyEncoding encoding = null;
-        if (key instanceof RSAPrivateCrtKey) {
-            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#1").getEncoding();
-        } else if (key instanceof DSAPrivateKey) {
-            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::DSA").getEncoding();
-        } else if (key instanceof ECPrivateKey) {
-            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::EC").getEncoding();
-        }else if("PKCS#8".equals(key.getFormat())){
-            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#8").getEncoding();
-        }
-        writeKey(key.getEncoded(), file, encoding);
+        writeKey(key, file, null);
     }
 
     public static void writeKey(@NonNull Key key, @NonNull File file, KeyEncoding encoding) throws IOException {
-        writeKey(key.getEncoded(), file, encoding);
+        writeKey(key, file, encoding, null, null);
     }
 
     public static void writeKey(@NonNull Key key, @NonNull File file, KeyEncoding encoding, @Nullable String headerLine, @Nullable String footerLine) throws IOException {
-        writeKey(key.getEncoded(), file, encoding, headerLine, footerLine);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(file);
+            writeKey(key, out, encoding, headerLine, footerLine);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
+        } finally {
+            IOs.close(out);
+        }
+
+    }
+
+    public static void writeKey(@NonNull Key key, @NonNull OutputStream outputStream, KeyEncoding encoding, @Nullable String headerLine, @Nullable String footerLine) throws IOException {
+        encoding = encoding == null ? KeyEncoding.BASE64 : encoding;
+
+        PemKeyFormat keyFormat = null;
+        if (key instanceof PrivateKey) {
+            if (key instanceof RSAPrivateCrtKey) {
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get("PKCS#1");
+            } else if (key instanceof DSAPrivateKey) {
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get("OPENSSL::DSA");
+            } else if (key instanceof ECPrivateKey) {
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get("OPENSSL::EC");
+            } else if ("PKCS#8".equals(key.getFormat())) {
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get("PKCS#8");
+            }
+        }
+        if (keyFormat != null) {
+            headerLine = headerLine == null ? keyFormat.getHeader() : headerLine;
+            footerLine = footerLine == null ? keyFormat.getFooter() : footerLine;
+        }
+        writeKey(key.getEncoded(), outputStream, encoding, headerLine, footerLine);
     }
 
     public static void writeKey(byte[] keyBytes, File file) throws IOException {

@@ -18,6 +18,7 @@ public class PemKeyFormat implements Nameable {
     }
 
     public PemKeyFormat(String name, String header, String footer, KeyEncoding keyEncode) {
+        setName(name);
         setHeader(header);
         setFooter(footer);
         setEncoding(keyEncode);
