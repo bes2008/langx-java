@@ -2,8 +2,8 @@ package com.jn.langx.security.keyspec.pem;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.codec.base64.Base64;
+import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.io.resource.ByteArrayResource;
 import com.jn.langx.io.resource.InputStreamResource;
 import com.jn.langx.io.resource.Resource;
@@ -19,6 +19,9 @@ import com.jn.langx.util.io.LineDelimiter;
 
 import java.io.*;
 import java.security.Key;
+import java.security.interfaces.DSAPrivateKey;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.RSAPrivateCrtKey;
 
 public class PemFileIOs {
     public static byte[] readKey(File file) {
@@ -58,15 +61,15 @@ public class PemFileIOs {
         }
     }
 
-    public static String readKeyAsString(byte[] bytes){
+    public static String readKeyAsString(byte[] bytes) {
         return readKeyAsString(new ByteArrayResource(bytes));
     }
 
-    public static String readKeyAsString(InputStream inputStream){
+    public static String readKeyAsString(InputStream inputStream) {
         return readKeyAsString(new InputStreamResource(inputStream));
     }
 
-    public static String readKeyAsString(Resource resource){
+    public static String readKeyAsString(Resource resource) {
         Preconditions.checkNotNull(resource);
         String filepath = resource.toString();
         BufferedReader bufferedReader = null;
@@ -116,7 +119,17 @@ public class PemFileIOs {
     }
 
     public static void writeKey(@NonNull Key key, @NonNull File file) throws IOException {
-        writeKey(key.getEncoded(), file, null);
+        KeyEncoding encoding = null;
+        if (key instanceof RSAPrivateCrtKey) {
+            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#1").getEncoding();
+        } else if (key instanceof DSAPrivateKey) {
+            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::DSA").getEncoding();
+        } else if (key instanceof ECPrivateKey) {
+            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::EC").getEncoding();
+        }else if("PKCS#8".equals(key.getFormat())){
+            encoding = PEMs.DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#8").getEncoding();
+        }
+        writeKey(key.getEncoded(), file, encoding);
     }
 
     public static void writeKey(@NonNull Key key, @NonNull File file, KeyEncoding encoding) throws IOException {
@@ -188,7 +201,7 @@ public class PemFileIOs {
         writer.flush();
     }
 
-    public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyEncoding encoding, String headerLine, String footerLine) throws IOException{
+    public static void writeKey(byte[] keyBytes, StringBuilder stringBuilder, KeyEncoding encoding, String headerLine, String footerLine) throws IOException {
         StringBuilderWriter writer = new StringBuilderWriter(stringBuilder);
         writeKey(keyBytes, writer, encoding, headerLine, footerLine);
     }

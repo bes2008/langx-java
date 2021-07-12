@@ -7,7 +7,7 @@ public class PemKeyFormat implements Nameable {
     private String name;
     private String header;
     private String footer;
-    private KeyEncoding encode;
+    private KeyEncoding encoding;
 
     public PemKeyFormat() {
 
@@ -20,7 +20,7 @@ public class PemKeyFormat implements Nameable {
     public PemKeyFormat(String name, String header, String footer, KeyEncoding keyEncode) {
         setHeader(header);
         setFooter(footer);
-        setEncode(keyEncode);
+        setEncoding(keyEncode);
     }
 
     public void setName(String name) {
@@ -48,11 +48,11 @@ public class PemKeyFormat implements Nameable {
         this.footer = footer;
     }
 
-    public KeyEncoding getEncode() {
-        return encode;
+    public KeyEncoding getEncoding() {
+        return encoding;
     }
 
-    public void setEncode(KeyEncoding encode) {
-        this.encode = encode;
+    public void setEncoding(KeyEncoding encoding) {
+        this.encoding = encoding;
     }
 }
