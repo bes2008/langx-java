@@ -32,12 +32,12 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
     private ConcurrentReferenceHashMap<K, Entry<K, V>> map;
     private Loader<K, V> globalLoader;
-    // unit: seconds
-    private long expireAfterWrite = Long.MAX_VALUE;
-    // unit: seconds
-    private long expireAfterRead = Long.MAX_VALUE;
-    // unit: seconds
-    private long refreshAfterAccess = Long.MAX_VALUE;
+    // unit: seconds, 大于 0 时有效，用于在发生了写操作时，更新过期时间
+    private long expireAfterWrite = -1;
+    // unit: seconds, 大于 0 时有效，用于在发生了写操作时，更新过期时间
+    private long expireAfterRead = -1;
+    // unit: seconds, 大于 0 时有效。 用于在一个key没有过期时，对它进行 reload 操作
+    private long refreshAfterAccess = -1;
     // unit: mills
     private volatile long evictExpiredInterval;
     // unit: mills
@@ -209,11 +209,12 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         Entry<K, V> entry = map.get(key);
         if (entry != null) {
             if (!entry.isExpired()) {
-                long nextRefreshTime = Dates.nextTime(entry.getLastUsedTime(), TimeUnit.SECONDS.toMillis(refreshAfterAccess));
-                if (System.currentTimeMillis() > nextRefreshTime) {
-                    return refresh(key, true);
+                if (refreshAfterAccess > 0) {
+                    long nextRefreshTime = Dates.nextTime(entry.getLastUsedTime(), TimeUnit.SECONDS.toMillis(refreshAfterAccess));
+                    if (System.currentTimeMillis() > nextRefreshTime) {
+                        return refresh(key, true);
+                    }
                 }
-
                 incrementUsedCount(entry);
                 if (expireAfterRead > 0) {
                     writeLock.lock();
@@ -394,6 +395,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
 
     /**
      * 用于找到将被强制清除的
+     *
      * @param count
      * @return
      */

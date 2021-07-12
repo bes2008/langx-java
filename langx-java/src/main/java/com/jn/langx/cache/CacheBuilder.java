@@ -147,8 +147,8 @@ public class CacheBuilder<K, V> {
         Preconditions.checkTrue(Reflects.isSubClass(AbstractCache.class, cacheClass), StringTemplates.formatWithPlaceholder("Your cache calss {} is not a subclass of {}", Reflects.getFQNClassName(cacheClass), Reflects.getFQNClassName(AbstractCache.class)));
         AbstractCache<K, V> cache = Reflects.<AbstractCache<K, V>>newInstance(cacheClass);
         Preconditions.checkNotNull(cache);
-        cache.setExpireAfterRead(expireAfterRead < 0 ? Long.MAX_VALUE : expireAfterRead);
-        cache.setExpireAfterWrite(expireAfterWrite < 0 ? Long.MAX_VALUE : expireAfterWrite);
+        cache.setExpireAfterRead(expireAfterRead);
+        cache.setExpireAfterWrite(expireAfterWrite);
         cache.setRefreshAfterAccess(refreshAfterAccess < 0 ? Long.MAX_VALUE : refreshAfterAccess);
         cache.setGlobalLoader(loader);
         cache.setMaxCapacity(maxCapacity < 0 ? Integer.MAX_VALUE : maxCapacity);
