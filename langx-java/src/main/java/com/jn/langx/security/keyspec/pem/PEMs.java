@@ -40,13 +40,13 @@ import java.util.*;
 
 public class PEMs {
     private static final String HEADER = "-----BEGIN";
-    public static final String PKCS1="PKCS#1";
-    public static final String PKCS8="PKCS#8";
-    public static final String PKCS8_ENCRYPTED="PKCS#8:ENCRYPTED";
-    public static final String OPENSSL_DSA="OPENSSL::DSA";
-    public static final String OPENSSL_DSA_PARAMS="OPENSSL::DSA::PARAMS";
-    public static final String OPENSSL_EC="OPENSSL::EC";
-    public static final String OPENSSL_EC_PARAMS="OPENSSL::EC::PARAMS";
+    public static final String PKCS1 = "PKCS#1";
+    public static final String PKCS8 = "PKCS#8";
+    public static final String PKCS8_ENCRYPTED = "PKCS#8:ENCRYPTED";
+    public static final String OPENSSL_DSA = "OPENSSL::DSA";
+    public static final String OPENSSL_DSA_PARAMS = "OPENSSL::DSA::PARAMS";
+    public static final String OPENSSL_EC = "OPENSSL::EC";
+    public static final String OPENSSL_EC_PARAMS = "OPENSSL::EC::PARAMS";
 
     private static final GenericRegistry<PemKeyFormat> DEFAULT_PEM_STYLE_REGISTRY;
 
@@ -65,7 +65,8 @@ public class PEMs {
         DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(OPENSSL_EC_PARAMS, "-----BEGIN EC PARAMETERS-----", "-----END EC PARAMETERS-----"));
 
     }
-    public static GenericRegistry<PemKeyFormat> getDefaultPemStyleRegistry(){
+
+    public static GenericRegistry<PemKeyFormat> getDefaultPemStyleRegistry() {
         return DEFAULT_PEM_STYLE_REGISTRY;
     }
 
@@ -100,23 +101,23 @@ public class PEMs {
             if (null == line) {
                 throw new KeyFileFormatException("Error parsing Private Key,file is empty");
             }
-            if (DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#8:ENCRYPTED").getHeader().equals(line.trim())) {
+            if (DEFAULT_PEM_STYLE_REGISTRY.get(PKCS8_ENCRYPTED).getHeader().equals(line.trim())) {
                 char[] password = passwordSupplier.get();
                 if (password == null) {
                     throw new KeyFileFormatException("Cannot read encrypted key without a password");
                 }
                 return parsePKCS8Encrypted(pemKeyFile, password);
-            } else if (DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#8").getHeader().equals(line.trim())) {
+            } else if (DEFAULT_PEM_STYLE_REGISTRY.get(PKCS8).getHeader().equals(line.trim())) {
                 return parsePKCS8(pemKeyFile);
-            } else if (DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#1").getHeader().equals(line.trim())) {
+            } else if (DEFAULT_PEM_STYLE_REGISTRY.get(PKCS1).getHeader().equals(line.trim())) {
                 return parsePKCS1Rsa(pemKeyFile, passwordSupplier);
-            } else if (DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::DSA").getHeader().equals(line.trim())) {
+            } else if (DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_DSA).getHeader().equals(line.trim())) {
                 return parseOpenSslDsa(pemKeyFile, passwordSupplier);
-            } else if (DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::DSA::PARAMS").getHeader().equals(line.trim())) {
+            } else if (DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_DSA_PARAMS).getHeader().equals(line.trim())) {
                 return parseOpenSslDsa(removeDsaHeaders(pemKeyFile), passwordSupplier);
-            } else if (DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::EC").getHeader().equals(line.trim())) {
+            } else if (DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_EC).getHeader().equals(line.trim())) {
                 return parseOpenSslEC(pemKeyFile, passwordSupplier);
-            } else if (DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::EC::PARAMS").getHeader().equals(line.trim())) {
+            } else if (DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_EC_PARAMS).getHeader().equals(line.trim())) {
                 return parseOpenSslEC(removeECHeaders(pemKeyFile), passwordSupplier);
             } else {
                 throw new KeyFileFormatException("error parsing Private Key, file does not contain a supported key format");
@@ -134,7 +135,7 @@ public class PEMs {
      */
     private static BufferedReader removeECHeaders(BufferedReader bReader) throws IOException {
         String line = bReader.readLine();
-        String openssl_ec_params_footer = DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::EC::PARAMS").getFooter();
+        String openssl_ec_params_footer = DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_EC_PARAMS).getFooter();
         while (line != null) {
             if (openssl_ec_params_footer.equals(line.trim())) {
                 break;
@@ -146,7 +147,7 @@ public class PEMs {
             throw new IOException("Malformed PEM file, EC Parameters footer is missing");
         }
         // Verify that the key starts with the correct header before passing it to parseOpenSslEC
-        String openssl_ec_header = DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::EC").getHeader();
+        String openssl_ec_header = DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_EC).getHeader();
         if (!openssl_ec_header.equals(bReader.readLine())) {
             throw new IOException("Malformed PEM file, EC Key header is missing");
         }
@@ -161,8 +162,8 @@ public class PEMs {
      */
     private static BufferedReader removeDsaHeaders(BufferedReader bReader) throws IOException {
         String line = bReader.readLine();
-        String openssl_dsa_header = DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::DSA").getHeader();
-        String openssl_dsa_params_footer = DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::DSA::PARAMS").getFooter();
+        String openssl_dsa_header = DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_DSA).getHeader();
+        String openssl_dsa_params_footer = DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_DSA_PARAMS).getFooter();
         while (line != null) {
             if (openssl_dsa_params_footer.equals(line.trim())) {
                 break;
@@ -193,7 +194,7 @@ public class PEMs {
     private static PrivateKey parsePKCS8(BufferedReader bReader) throws IOException, GeneralSecurityException {
         StringBuilder sb = new StringBuilder();
         String line = bReader.readLine();
-        String pkcs8_footer = DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#8").getFooter();
+        String pkcs8_footer = DEFAULT_PEM_STYLE_REGISTRY.get(PKCS8).getFooter();
         while (line != null) {
             if (pkcs8_footer.equals(line.trim())) {
                 break;
@@ -224,7 +225,7 @@ public class PEMs {
         StringBuilder sb = new StringBuilder();
         String line = bReader.readLine();
         Map<String, String> pemHeaders = new HashMap<String, String>();
-        String openssl_ec_footer = DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::EC").getFooter();
+        String openssl_ec_footer = DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_EC).getFooter();
         while (line != null) {
             if (openssl_ec_footer.equals(line.trim())) {
                 break;
@@ -261,7 +262,7 @@ public class PEMs {
         StringBuilder sb = new StringBuilder();
         String line = bReader.readLine();
         Map<String, String> pemHeaders = new HashMap<String, String>();
-        String pkcs1_footer = DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#1").getFooter();
+        String pkcs1_footer = DEFAULT_PEM_STYLE_REGISTRY.get(PKCS1).getFooter();
         while (line != null) {
             if (pkcs1_footer.equals(line.trim())) {
                 // Unencrypted
@@ -299,7 +300,7 @@ public class PEMs {
         StringBuilder sb = new StringBuilder();
         String line = bReader.readLine();
         Map<String, String> pemHeaders = new HashMap<String, String>();
-        String openssl_dsa_footer = DEFAULT_PEM_STYLE_REGISTRY.get("OPENSSL::DSA").getFooter();
+        String openssl_dsa_footer = DEFAULT_PEM_STYLE_REGISTRY.get(OPENSSL_DSA).getFooter();
         while (line != null) {
             if (openssl_dsa_footer.equals(line.trim())) {
                 // Unencrypted
@@ -336,7 +337,7 @@ public class PEMs {
             GeneralSecurityException {
         StringBuilder sb = new StringBuilder();
         String line = bReader.readLine();
-        String pkcs8_encrypted_footer = DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#8:ENCRYPTED").getFooter();
+        String pkcs8_encrypted_footer = DEFAULT_PEM_STYLE_REGISTRY.get(PKCS8_ENCRYPTED).getFooter();
         while (line != null) {
             if (pkcs8_encrypted_footer.equals(line.trim())) {
                 break;
@@ -523,7 +524,7 @@ public class PEMs {
         throw new SecurityException("Error parsing key algorithm identifier. Algorithm with OID [" + oidString + "] is not supported");
     }
 
-    public static List<Certificate> readCertificates(Collection<File> certFiles) throws CertificateException, IOException {
+    public static List<Certificate> readCertificates(Collection<File> certFiles) throws CertificateException {
         CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
         List<Certificate> certificates = new ArrayList<Certificate>(certFiles.size());
         for (File path : certFiles) {

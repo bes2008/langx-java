@@ -6,7 +6,7 @@ import java.util.*;
 
 @SuppressWarnings({"all"})
 public class CommonTree implements Tree<TreeNode> {
-    private static final long serialVersionUID = 8663945462770387472L;
+    private static final long serialVersionUID = 1L;
     private transient Map<String, TreeNode> nodeMap = new HashMap();
     private List<TreeNode> nodes = new LinkedList<TreeNode>();
 

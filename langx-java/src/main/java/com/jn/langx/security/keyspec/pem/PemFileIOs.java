@@ -146,13 +146,13 @@ public class PemFileIOs {
         PemKeyFormat keyFormat = null;
         if (key instanceof PrivateKey) {
             if (key instanceof RSAPrivateCrtKey) {
-                keyFormat = PEMs.getDefaultPemStyleRegistry().get("PKCS#1");
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get(PEMs.PKCS1);
             } else if (key instanceof DSAPrivateKey) {
-                keyFormat = PEMs.getDefaultPemStyleRegistry().get("OPENSSL::DSA");
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get(PEMs.OPENSSL_DSA);
             } else if (key instanceof ECPrivateKey) {
-                keyFormat = PEMs.getDefaultPemStyleRegistry().get("OPENSSL::EC");
-            } else if ("PKCS#8".equals(key.getFormat())) {
-                keyFormat = PEMs.getDefaultPemStyleRegistry().get("PKCS#8");
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get(PEMs.OPENSSL_EC);
+            } else if (PEMs.PKCS8.equals(key.getFormat())) {
+                keyFormat = PEMs.getDefaultPemStyleRegistry().get(PEMs.PKCS8);
             }
         }
         if (keyFormat != null) {
