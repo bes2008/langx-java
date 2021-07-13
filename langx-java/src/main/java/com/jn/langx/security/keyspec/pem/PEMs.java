@@ -40,22 +40,29 @@ import java.util.*;
 
 public class PEMs {
     private static final String HEADER = "-----BEGIN";
+    public static final String PKCS1="PKCS#1";
+    public static final String PKCS8="PKCS#8";
+    public static final String PKCS8_ENCRYPTED="PKCS#8:ENCRYPTED";
+    public static final String OPENSSL_DSA="OPENSSL::DSA";
+    public static final String OPENSSL_DSA_PARAMS="OPENSSL::DSA::PARAMS";
+    public static final String OPENSSL_EC="OPENSSL::EC";
+    public static final String OPENSSL_EC_PARAMS="OPENSSL::EC::PARAMS";
 
     private static final GenericRegistry<PemKeyFormat> DEFAULT_PEM_STYLE_REGISTRY;
 
     static {
         DEFAULT_PEM_STYLE_REGISTRY = new GenericRegistry<PemKeyFormat>();
         // PKCS#1 是 专门的 RSA 规范格式
-        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("PKCS#1", "-----BEGIN RSA PRIVATE KEY-----", "-----END RSA PRIVATE KEY-----"));
+        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(PKCS1, "-----BEGIN RSA PRIVATE KEY-----", "-----END RSA PRIVATE KEY-----"));
         // PKCS#8 是公共的 非对称加密算法的格式，RSA、DSA、EC都可以用
-        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("PKCS#8", "-----BEGIN PRIVATE KEY-----", "-----END PRIVATE KEY-----"));
-        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("PKCS#8:ENCRYPTED", "-----BEGIN ENCRYPTED PRIVATE KEY-----", "-----END ENCRYPTED PRIVATE KEY-----"));
+        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(PKCS8, "-----BEGIN PRIVATE KEY-----", "-----END PRIVATE KEY-----"));
+        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(PKCS8_ENCRYPTED, "-----BEGIN ENCRYPTED PRIVATE KEY-----", "-----END ENCRYPTED PRIVATE KEY-----"));
         // Linux系统里，OPEN SSL 这个工具，生成的DSA的头，也可以是 这样的：
-        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("OPENSSL::DSA", "-----BEGIN DSA PRIVATE KEY-----", "-----END DSA PRIVATE KEY-----"));
-        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("OPENSSL::DSA::PARAMS", "-----BEGIN DSA PARAMETERS-----", "-----END DSA PARAMETERS-----"));
+        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(OPENSSL_DSA, "-----BEGIN DSA PRIVATE KEY-----", "-----END DSA PRIVATE KEY-----"));
+        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(OPENSSL_DSA_PARAMS, "-----BEGIN DSA PARAMETERS-----", "-----END DSA PARAMETERS-----"));
         // Linux系统里，OPEN SSL 这个工具，生成的DSA的头，也可以是 这样的：
-        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("OPENSSL::EC", "-----BEGIN EC PRIVATE KEY-----", "-----END EC PRIVATE KEY-----"));
-        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat("OPENSSL::EC::PARAMS", "-----BEGIN EC PARAMETERS-----", "-----END EC PARAMETERS-----"));
+        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(OPENSSL_EC, "-----BEGIN EC PRIVATE KEY-----", "-----END EC PRIVATE KEY-----"));
+        DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(OPENSSL_EC_PARAMS, "-----BEGIN EC PARAMETERS-----", "-----END EC PARAMETERS-----"));
 
     }
     public static GenericRegistry<PemKeyFormat> getDefaultPemStyleRegistry(){
