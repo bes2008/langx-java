@@ -39,11 +39,6 @@ import java.util.*;
 
 
 public class PEMs {
-
-
-    public static final String PKCS1_FOOTER = "-----END RSA PRIVATE KEY-----";
-
-
     private static final String HEADER = "-----BEGIN";
 
     private static final GenericRegistry<PemKeyFormat> DEFAULT_PEM_STYLE_REGISTRY;
@@ -259,9 +254,9 @@ public class PEMs {
         StringBuilder sb = new StringBuilder();
         String line = bReader.readLine();
         Map<String, String> pemHeaders = new HashMap<String, String>();
-
+        String pkcs1_footer = DEFAULT_PEM_STYLE_REGISTRY.get("PKCS#1").getFooter();
         while (line != null) {
-            if (PKCS1_FOOTER.equals(line.trim())) {
+            if (pkcs1_footer.equals(line.trim())) {
                 // Unencrypted
                 break;
             }
@@ -274,7 +269,7 @@ public class PEMs {
             }
             line = bReader.readLine();
         }
-        if (null == line || !PKCS1_FOOTER.equals(line.trim())) {
+        if (null == line || !pkcs1_footer.equals(line.trim())) {
             throw new IOException("Malformed PEM file, PEM footer is invalid or missing");
         }
         byte[] keyBytes = possiblyDecryptPKCS1Key(pemHeaders, sb.toString(), passwordSupplier);
