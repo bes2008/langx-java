@@ -429,6 +429,9 @@ public class Dates {
     }
 
     public static long nextTime(long durationInMills) {
+        if (durationInMills < 0) {
+            return Long.MAX_VALUE;
+        }
         return nextTime(System.currentTimeMillis(), durationInMills);
     }
 

@@ -32,9 +32,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
     private ConcurrentReferenceHashMap<K, Entry<K, V>> map;
     private Loader<K, V> globalLoader;
-    // unit: seconds, 大于 0 时有效，用于在发生了写操作时，更新过期时间
+    // unit: seconds, 大于 0 时有效，用于在发生了写操作时，更新过期时间。 < 0 时代表无过期时间，即永不过期
     private long expireAfterWrite = -1;
-    // unit: seconds, 大于 0 时有效，用于在发生了写操作时，更新过期时间
+    // unit: seconds, 大于 0 时有效，用于在发生了写操作时，更新过期时间。<=0 时，代表不启用该特性
     private long expireAfterRead = -1;
     // unit: seconds, 大于 0 时有效。 用于在一个key没有过期时，对它进行 reload 操作
     private long refreshAfterAccess = -1;
@@ -121,8 +121,9 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
 
     @Override
     public void set(@NonNull K key, @Nullable V value, long duration, TimeUnit timeUnit) {
-        Preconditions.checkTrue(duration >= 0);
-        duration = timeUnit.toMillis(duration);
+        if (duration >= 0) {
+            duration = timeUnit.toMillis(duration);
+        }
         set(key, value, Dates.nextTime(duration));
     }
 
