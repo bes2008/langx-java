@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>3.5.10</version>
 
-    <name>${groupId} :: ${artifactId} :: ${version} </name>
+    <name>${groupId}:${artifactId}:${version}</name>
 
     <description>
         Java lang extensions, a supplement to , replacement  of a Guava, commons-lang, hutool

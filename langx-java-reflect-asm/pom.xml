@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>langx-java-reflect-asm</artifactId>
-    <name>${groupId} :: ${artifactId} :: ${version} </name>
+    <name>${groupId}:${artifactId}:${version}</name>
     <dependencies>
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
