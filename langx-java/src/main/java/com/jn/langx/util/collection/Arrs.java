@@ -3,7 +3,6 @@ package com.jn.langx.util.collection;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Supplier;
@@ -263,8 +262,8 @@ public class Arrs {
     }
 
     public static <E> E[] copy(final E... objs) {
-        if (Objs.isEmpty(objs)) {
-            return (E[]) new Object[0];
+        if (objs == null) {
+            return null;
         }
         Class componentType = objs.getClass().getComponentType();
         E[] newArray = (E[]) createArray(componentType, objs.length);

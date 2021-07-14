@@ -64,7 +64,8 @@ public class ArrsTests {
         });
 
         String[] strings2 = Arrs.copy(strings);
-
+        String[] emptyArr2 = Arrs.copy(new String[0]);
+        String[] emptyArr = Arrs.copy(null);
         Object[] objects = new Object[]{
                 "ssss",
                 0x22,
