@@ -27,4 +27,8 @@ public class CommonBoundary implements Boundary {
         }
     }
 
+    protected List<Predicate<String>> getPredicates(){
+        return this.predicates;
+    }
+
 }
