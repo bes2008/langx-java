@@ -1348,8 +1348,23 @@ public class Collects {
     public static <E, C extends Collection<E>> boolean anyMatch(@Nullable C collection, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(predicate);
         if (Emptys.isNotEmpty(collection)) {
-            E e = findFirst(collection, predicate);
-            return e != null;
+            // 不能采用 findFirst ，原因是 如果 predicat 就是来 取null 或者 empty的，而collection 中恰好有 null 或者 empty，那么取到时，结果也是 null
+            // 没办法说清楚返回值是否为取到的结果
+            // E e = findFirst(collection, predicate);
+            // return e != null;
+            final Holder<Boolean> found = new Holder<Boolean>(false);
+            forEach(collection, predicate, new Consumer<E>() {
+                @Override
+                public void accept(E e) {
+                    found.set(true);
+                }
+            }, new Predicate<E>() {
+                @Override
+                public boolean test(E value) {
+                    return found.get();
+                }
+            });
+            return found.get();
         }
         return false;
     }

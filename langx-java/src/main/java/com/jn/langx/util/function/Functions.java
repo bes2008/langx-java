@@ -429,4 +429,16 @@ public class Functions {
             }
         };
     }
+
+    /******************************************
+     *  noop consumer
+     ******************************************/
+    public static <T> Consumer<T> noopConsumer(){
+        return new Consumer<T>() {
+            @Override
+            public void accept(T t) {
+
+            }
+        };
+    }
 }

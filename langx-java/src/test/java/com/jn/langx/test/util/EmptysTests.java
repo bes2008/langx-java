@@ -30,4 +30,24 @@ public class EmptysTests {
         Assert.assertFalse(Emptys.isEmpty(new ArrayList<String>(Collects.asList(new String[]{"a", "b"}))));
     }
 
+    @Test
+    public void allMatch(){
+        System.out.println(Emptys.isAllEmpty(null,null));
+        System.out.println(Emptys.isAllEmpty(null,null,1));
+    }
+
+    @Test
+    public void anyMatch(){
+        System.out.println(Emptys.isAnyEmpty(null,null));
+        System.out.println(Emptys.isAnyEmpty(null,null,1));
+        System.out.println(Emptys.isAnyEmpty('3',2,1));
+    }
+
+    @Test
+    public void noneMatch(){
+        System.out.println(Emptys.isNoneEmpty(null,null));
+        System.out.println(Emptys.isNoneEmpty(null,null,1));
+        System.out.println(Emptys.isNoneEmpty('3',2,1));
+    }
+
 }
