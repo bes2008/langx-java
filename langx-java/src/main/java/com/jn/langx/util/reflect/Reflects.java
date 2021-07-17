@@ -51,7 +51,7 @@ public class Reflects {
     }
 
     public static boolean isLambda(@NonNull Class<?> clazz) {
-        return clazz.isSynthetic() && lamdbaPattern.matcher(getSimpleClassName(clazz)).matches();
+        return clazz!=null && clazz.isSynthetic() && lamdbaPattern.matcher(getSimpleClassName(clazz)).matches();
     }
 
     public static boolean isStatic(@NonNull Class<?> clazz) {
@@ -72,6 +72,19 @@ public class Reflects {
 
     public static boolean isConcrete(@NonNull Class clazz) {
         return !clazz.isInterface() && !Modifiers.isAbstract(clazz);
+    }
+
+    public static Class<? extends Member> memberType(Member member) {
+        Preconditions.checkNotNull(member, "member");
+        if (member instanceof Field) {
+            return Field.class;
+        } else if (member instanceof Method) {
+            return Method.class;
+        } else if (member instanceof Constructor) {
+            return Constructor.class;
+        } else {
+            throw new IllegalArgumentException("Unsupported implementation class for Member, " + member.getClass());
+        }
     }
 
     public static String getSimpleClassName(@NonNull Object obj) {

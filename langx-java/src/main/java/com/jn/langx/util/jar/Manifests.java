@@ -66,6 +66,7 @@ public class Manifests {
                 jarFile = new JarFile(new File(location.toURI()));
                 return jarFile.getManifest();
             } catch (Throwable ex) {
+                logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
                 IOs.close(jarFile);
             }
         }
