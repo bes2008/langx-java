@@ -14,14 +14,22 @@ import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
 public class Platform {
     private static final Logger logger = LoggerFactory.getLogger(Platform.class);
+    private static final String    OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
+
     public static final boolean isWindows = isWindows0();
     public static final int JAVA_VERSION_INT = javaVersion();
     public static final boolean isAndroid = isAndroid0();
     public static final boolean isKaffeJVM = isKaffeJVM();
     private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
     public static final boolean isGroovyAvailable = isGroovyAvailable0();
+    public static final boolean isMaxOS = OS.isMaxOSX();
+    public static final boolean isOSX=isOSX();
     public static final String processId = getProcessId0();
 
+
+    private static boolean isOSX() {
+        return OSNAME.startsWith("macosx") || OSNAME.startsWith("osx");
+    }
     private static boolean isWindows0() {
         return System.getProperty("os.name", "").toLowerCase(Locale.US).contains("win");
     }
@@ -41,8 +49,8 @@ public class Platform {
         // Android sets this property to Dalvik, regardless of whether it actually is.
         String vmName = System.getProperty("java.vm.name");
         boolean isAndroid = "Dalvik".equals(vmName);
-        if(!isAndroid){
-            String runtime= System.getProperty("java.runtime.name");
+        if (!isAndroid) {
+            String runtime = System.getProperty("java.runtime.name");
             isAndroid = Strings.getEmptyIfNull(runtime).toLowerCase().contains("android");
         }
         if (isAndroid) {
@@ -176,7 +184,7 @@ public class Platform {
         if (null != javaHome) {
             File binDir = new File(javaHome, "bin");
             if (binDir.isDirectory() && binDir.canRead()) {
-                String[] execs = new String[] { "java", "java.exe" };
+                String[] execs = new String[]{"java", "java.exe"};
                 for (int i = 0; i < execs.length; i++) {
                     result = new File(binDir, execs[i]);
                     if (result.canRead()) {

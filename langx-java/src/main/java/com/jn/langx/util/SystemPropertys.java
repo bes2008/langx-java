@@ -5,7 +5,11 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.Locale;
 
@@ -15,7 +19,7 @@ import java.util.Locale;
  * @author jinuo.fang
  */
 public class SystemPropertys {
-
+    private static final Logger logger = LoggerFactory.getLogger(SystemPropertys.class);
     public static final String NEWLINE = System.getProperty("line.separator", "\n");
 
     private static final StringMap javaVersionToClassVersion = new StringMap();
@@ -179,6 +183,50 @@ public class SystemPropertys {
     public static String getLineSeparator() {
         return System.getProperty("line.separator");
     }
+
+    public static String get(String key) {
+        return get(key, null);
+    }
+    /**
+     * Returns the value of the Java system property with the specified
+     * {@code key}, while falling back to the specified default value if
+     * the property access fails.
+     *
+     * @return the property value.
+     *         {@code def} if there's no such property or if an access to the
+     *         specified property is not allowed.
+     */
+    public static String get(final String key, String def) {
+        if (key == null) {
+            throw new NullPointerException("key");
+        }
+        if (key.isEmpty()) {
+            throw new IllegalArgumentException("key must not be empty.");
+        }
+
+        String value = null;
+        try {
+            if (System.getSecurityManager() == null) {
+                value = System.getProperty(key);
+            } else {
+                value = AccessController.doPrivileged(new PrivilegedAction<String>() {
+                    @Override
+                    public String run() {
+                        return System.getProperty(key);
+                    }
+                });
+            }
+        } catch (SecurityException e) {
+            logger.warn("Unable to retrieve a system property '{}'; default values will be used.", key, e);
+        }
+
+        if (value == null) {
+            return def;
+        }
+
+        return value;
+    }
+
 
     public static PropertiesAccessor getAccessor() {
         return new PropertiesAccessor(System.getProperties());
