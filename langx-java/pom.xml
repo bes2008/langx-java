@@ -89,7 +89,6 @@
             <version>1.60</version>
         </dependency>
         -->
-
     </dependencies>
     <build>
         <resources>
@@ -99,6 +98,13 @@
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
             </resource>
         </resources>
     </build>
