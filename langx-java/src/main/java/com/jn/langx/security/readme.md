@@ -27,7 +27,7 @@ JDK中提供的对称加密算法有：
     3）AES
     4）Blowfish
     5）3DES
-    6）RC
+    6）RC系列（RC2, RC4, RC5）
 ```
 
 ### 1.2.2 Asymmetric encryption algorithm 非对称加密
