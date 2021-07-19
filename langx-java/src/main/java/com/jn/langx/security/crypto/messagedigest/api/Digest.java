@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.messagedigest.digest;
+package com.jn.langx.security.crypto.messagedigest.api;
 
 /**
  * interface that a message digest conforms to.
