@@ -1,6 +1,6 @@
 package com.jn.langx.test.security.messagedigest;
 
-import com.jn.langx.security.messagedigest.MD5;
+import com.jn.langx.security.messagedigest.MessageDigests;
 import org.junit.Test;
 
 import java.io.*;
@@ -67,7 +67,7 @@ public class MessageDigestTest {
 
     //	@Test
     public void md5Test(){
-        System.out.println(MD5.getMD5("hello"));
+        System.out.println(MessageDigests.md5("hello"));
     }
 
     //	@Test
