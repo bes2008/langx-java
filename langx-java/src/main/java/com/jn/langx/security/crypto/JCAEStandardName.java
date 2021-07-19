@@ -1,7 +1,7 @@
 package com.jn.langx.security.crypto;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.security.exception.SecurityException;
+import com.jn.langx.security.SecurityException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;

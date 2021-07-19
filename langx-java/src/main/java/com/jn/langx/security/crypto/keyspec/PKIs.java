@@ -4,7 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
-import com.jn.langx.security.exception.SecurityException;
+import com.jn.langx.security.SecurityException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;

@@ -5,7 +5,7 @@ import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.security.crypto.messagedigest.MessageDigests;
 import com.jn.langx.security.crypto.keyspec.PKIs;
 import com.jn.langx.security.crypto.keyspec.KeyFileFormatException;
-import com.jn.langx.security.exception.SecurityException;
+import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.crypto.keyspec.der.DerParser;
 import com.jn.langx.security.crypto.keyspec.der.DsaPrivateKeySpecParser;
 import com.jn.langx.security.crypto.keyspec.der.EcPrivateKeySpecParser;

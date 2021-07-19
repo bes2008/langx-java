@@ -1,4 +1,4 @@
-package com.jn.langx.security.exception;
+package com.jn.langx.security;
 
 public class SecurityException  extends RuntimeException{
     public SecurityException() {

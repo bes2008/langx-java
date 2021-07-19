@@ -1,7 +1,6 @@
 package com.jn.langx.security;
 
 import com.jn.langx.security.crypto.JCAEStandardName;
-import com.jn.langx.security.exception.SecurityException;
 import com.jn.langx.util.Strings;
 
 import java.security.SecureRandom;
