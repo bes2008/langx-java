@@ -1,5 +1,6 @@
-package com.jn.langx.security;
+package com.jn.langx.security.crypto;
 
+import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.util.Strings;
 
