@@ -1,7 +1,7 @@
 package com.jn.langx.security.crypto.messagedigest.provider.sm3;
 
-import com.jn.langx.security.provider.SecurityProviderConfigurer;
-import com.jn.langx.security.provider.LangxSecurityProvider;
+import com.jn.langx.security.crypto.provider.SecurityProviderConfigurer;
+import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 
 public class SM3DigestProviderConfigurer implements SecurityProviderConfigurer {
     @Override

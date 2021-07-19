@@ -1,4 +1,4 @@
-package com.jn.langx.security.provider;
+package com.jn.langx.security.crypto.provider;
 
 import com.jn.langx.annotation.NonNull;
 
