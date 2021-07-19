@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.keyspec;
+package com.jn.langx.security.crypto.key;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.NotEmpty;

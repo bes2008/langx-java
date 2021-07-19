@@ -1,6 +1,6 @@
 package com.jn.langx.security.crypto.cipher;
 
-import com.jn.langx.security.crypto.keyspec.PKIs;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;

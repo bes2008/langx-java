@@ -2,9 +2,9 @@ package com.jn.langx.test.security.key;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
-import com.jn.langx.security.crypto.keyspec.KeyEncoding;
-import com.jn.langx.security.crypto.keyspec.pem.PemFileIOs;
-import com.jn.langx.security.crypto.keyspec.PKIs;
+import com.jn.langx.security.crypto.key.spec.KeyEncoding;
+import com.jn.langx.security.crypto.key.spec.pem.PemFileIOs;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import org.junit.Test;

@@ -1,15 +1,15 @@
-package com.jn.langx.security.crypto.keyspec.pem;
+package com.jn.langx.security.crypto.key.spec.pem;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.registry.GenericRegistry;
+import com.jn.langx.security.crypto.key.spec.der.DerParser;
+import com.jn.langx.security.crypto.key.spec.der.DsaPrivateKeySpecParser;
+import com.jn.langx.security.crypto.key.spec.der.EcPrivateKeySpecParser;
 import com.jn.langx.security.crypto.messagedigest.MessageDigests;
-import com.jn.langx.security.crypto.keyspec.PKIs;
-import com.jn.langx.security.crypto.keyspec.KeyFileFormatException;
+import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
 import com.jn.langx.security.SecurityException;
-import com.jn.langx.security.crypto.keyspec.der.DerParser;
-import com.jn.langx.security.crypto.keyspec.der.DsaPrivateKeySpecParser;
-import com.jn.langx.security.crypto.keyspec.der.EcPrivateKeySpecParser;
-import com.jn.langx.security.crypto.keyspec.der.RsaPkcs1PrivateKeySpecParser;
+import com.jn.langx.security.crypto.key.spec.der.RsaPkcs1PrivateKeySpecParser;
 import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier0;

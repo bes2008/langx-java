@@ -1,6 +1,6 @@
-package com.jn.langx.security.crypto.keyspec.der;
+package com.jn.langx.security.crypto.key.spec.der;
 
-import com.jn.langx.security.crypto.keyspec.PrivateKeySpecParser;
+import com.jn.langx.security.crypto.key.spec.PrivateKeySpecParser;
 
 import java.security.spec.PKCS8EncodedKeySpec;
 

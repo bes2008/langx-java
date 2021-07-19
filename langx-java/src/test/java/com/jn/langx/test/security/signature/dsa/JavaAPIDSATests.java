@@ -4,7 +4,7 @@ import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.security.crypto.signer.DSAs;
-import com.jn.langx.security.crypto.keyspec.pem.PemFileIOs;
+import com.jn.langx.security.crypto.key.spec.pem.PemFileIOs;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 

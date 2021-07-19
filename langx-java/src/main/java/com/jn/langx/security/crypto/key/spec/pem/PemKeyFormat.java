@@ -1,7 +1,7 @@
-package com.jn.langx.security.crypto.keyspec.pem;
+package com.jn.langx.security.crypto.key.spec.pem;
 
 import com.jn.langx.Nameable;
-import com.jn.langx.security.crypto.keyspec.KeyEncoding;
+import com.jn.langx.security.crypto.key.spec.KeyEncoding;
 
 public class PemKeyFormat implements Nameable {
     private String name;

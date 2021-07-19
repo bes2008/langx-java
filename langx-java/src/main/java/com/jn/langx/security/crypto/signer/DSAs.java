@@ -2,7 +2,7 @@ package com.jn.langx.security.crypto.signer;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.security.crypto.keyspec.PKIs;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Strings;
 
 import java.security.PrivateKey;
