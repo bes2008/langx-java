@@ -1,4 +1,4 @@
-package com.jn.langx.security.messagedigest.digest.impl;
+package com.jn.langx.security.messagedigest.digest.impl.sm3;
 
 import com.jn.langx.security.messagedigest.digest.GeneralDigest;
 import com.jn.langx.util.Bytes;

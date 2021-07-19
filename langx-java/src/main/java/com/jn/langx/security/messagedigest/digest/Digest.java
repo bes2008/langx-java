@@ -2,6 +2,8 @@ package com.jn.langx.security.messagedigest.digest;
 
 /**
  * interface that a message digest conforms to.
+ *
+ * 这是一套自定义的 digest 规范，跟官方接口 MessageDigest 没有关系
  */
 public interface Digest
 {

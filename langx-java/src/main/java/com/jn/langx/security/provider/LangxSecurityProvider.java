@@ -1,13 +1,13 @@
-package com.jn.langx.security.messagedigest;
+package com.jn.langx.security.provider;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
 import java.security.Provider;
 
-public class LangxDigestProvider extends Provider implements ConfigurableProvider {
+public class LangxSecurityProvider extends Provider implements ConfigurableSecurityProvider {
 
-    public LangxDigestProvider(String name, double version, String info) {
+    public LangxSecurityProvider(String name, double version, String info) {
         super(name, version, info);
     }
 
@@ -32,4 +32,8 @@ public class LangxDigestProvider extends Provider implements ConfigurableProvide
     }
 
 
+
+    private void setup(){
+
+    }
 }
