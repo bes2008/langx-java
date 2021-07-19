@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto;
+package com.jn.langx.security.crypto.cipher;
 
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.keyspec.PKIs;
