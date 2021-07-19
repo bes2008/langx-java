@@ -1,7 +1,7 @@
-package com.jn.langx.security;
+package com.jn.langx.security.messagedigest;
 
 import com.jn.langx.codec.hex.Hex;
-import com.jn.langx.security.hash.MessageDigestHasher;
+import com.jn.langx.security.JCAEStandardName;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Pipeline;

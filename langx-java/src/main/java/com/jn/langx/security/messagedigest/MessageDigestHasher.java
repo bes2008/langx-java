@@ -1,10 +1,9 @@
-package com.jn.langx.security.hash;
+package com.jn.langx.security.messagedigest;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
-import com.jn.langx.security.MessageDigests;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.collection.PrimitiveArrays;

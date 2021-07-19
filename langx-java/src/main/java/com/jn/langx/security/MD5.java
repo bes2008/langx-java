@@ -21,6 +21,8 @@
 
 package com.jn.langx.security;
 
+import com.jn.langx.security.messagedigest.MessageDigests;
+
 /**
  * @author fs1194361820@163.com
  * @see MessageDigests#md5(String)
