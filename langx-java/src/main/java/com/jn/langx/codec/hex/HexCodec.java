@@ -11,24 +11,24 @@ import static com.jn.langx.codec.hex.Hex.decodeHex;
 
 /**
  * Converts hexadecimal Strings. The charset used for certain operation can be set, the default is set in
- * {@link #DEFAULT_CHARSET_NAME}
+ * {@link Charsets#UTF_8}
  * <p>
  * This class is thread-safe.
  */
 public class HexCodec implements BinaryCodec {
 
-    public static final Charset DEFAULT_CHARSET = Charsets.UTF_8;
-    public static final String DEFAULT_CHARSET_NAME = "UTF-8";
-
-
+    /**
+     * encode时，把任意的bytes 转换成 16进制字符串后，再用该 字符集进行编码
+     * decode时，把任意的bytes 用该字符集解码成 16进制字符数组，再转为二进制 也就是 byte[]
+     */
     private final Charset charset;
 
     /**
-     * Creates a new codec with the default charset name {@link #DEFAULT_CHARSET}
+     * Creates a new codec with the default charset name {@link Charsets#UTF_8}
      */
     public HexCodec() {
         // use default encoding
-        this.charset = DEFAULT_CHARSET;
+        this.charset = Charsets.UTF_8;
     }
 
     /**
@@ -68,26 +68,6 @@ public class HexCodec implements BinaryCodec {
     }
 
     /**
-     * Converts a String or an array of character bytes representing hexadecimal values into an array of bytes of those
-     * same values. The returned array will be half the length of the passed String or array, as it takes two characters
-     * to represent any given byte. An exception is thrown if the passed char array has an odd number of elements.
-     *
-     * @param object A String or, an array of character bytes containing hexadecimal digits
-     * @return A byte array containing binary data decoded from the supplied byte array (representing characters).
-     * @throws CodecException Thrown if an odd number of characters is supplied to this function or the object is not a String or
-     *                          char[]
-     * @see {@link Hex#decodeHex(char[])}
-     */
-    public byte[] decodeObject(final Object object) throws CodecException {
-        try {
-            final char[] charArray = object instanceof String ? ((String) object).toCharArray() : (char[]) object;
-            return decodeHex(charArray);
-        } catch (final ClassCastException e) {
-            throw new CodecException(e.getMessage(), e);
-        }
-    }
-
-    /**
      * Converts an array of bytes into an array of bytes for the characters representing the hexadecimal values of each
      * byte in order. The returned array will be double the length of the passed array, as it takes two characters to
      * represent any given byte.
@@ -104,30 +84,6 @@ public class HexCodec implements BinaryCodec {
     @Override
     public byte[] encode(final byte[] array) {
         return Hex.encodeHexString(array).getBytes(this.getCharset());
-    }
-
-    /**
-     * Converts a String or an array of bytes into an array of characters representing the hexadecimal values of each
-     * byte in order. The returned array will be double the length of the passed String or array, as it takes two
-     * characters to represent any given byte.
-     * <p>
-     * The conversion from hexadecimal characters to bytes to be encoded to performed with the charset named by
-     * {@link #getCharset()}.
-     * </p>
-     *
-     * @param object a String, or byte[] to convert to Hex characters
-     * @return A char[] containing hexadecimal characters
-     * @throws CodecException Thrown if the given object is not a String or byte[]
-     * @see {@link Hex#encodeHex(byte[])}
-     */
-    public char[] encodeObject(final Object object) throws CodecException {
-        try {
-            final byte[] byteArray = object instanceof String ?
-                    ((String) object).getBytes(this.getCharset()) : (byte[]) object;
-            return Hex.encodeHex(byteArray);
-        } catch (final ClassCastException e) {
-            throw new CodecException(e.getMessage(), e);
-        }
     }
 
     /**
