@@ -2,7 +2,7 @@ package com.jn.langx.security;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.hex.Hex;
-import com.jn.langx.security.crypto.messagedigest.messagedigest.MessageDigests;
+import com.jn.langx.security.crypto.messagedigest.MessageDigests;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;

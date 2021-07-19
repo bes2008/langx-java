@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.messagedigest.messagedigest.digest;
+package com.jn.langx.security.crypto.messagedigest.digest;
 
 
 import com.jn.langx.util.Bytes;

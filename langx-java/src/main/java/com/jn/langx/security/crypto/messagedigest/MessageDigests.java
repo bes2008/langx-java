@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.messagedigest.messagedigest;
+package com.jn.langx.security.crypto.messagedigest;
 
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.JCAEStandardName;
