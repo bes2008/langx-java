@@ -1,4 +1,4 @@
-package com.jn.langx.security.messagedigest.provider.sm3;
+package com.jn.langx.security.crypto.messagedigest.messagedigest.provider.sm3;
 
 import com.jn.langx.security.provider.SecurityProviderConfigurer;
 import com.jn.langx.security.provider.LangxSecurityProvider;

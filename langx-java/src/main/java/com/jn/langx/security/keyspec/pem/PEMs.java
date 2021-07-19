@@ -2,7 +2,7 @@ package com.jn.langx.security.keyspec.pem;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.registry.GenericRegistry;
-import com.jn.langx.security.messagedigest.MessageDigests;
+import com.jn.langx.security.crypto.messagedigest.messagedigest.MessageDigests;
 import com.jn.langx.security.PKIs;
 import com.jn.langx.security.exception.KeyFileFormatException;
 import com.jn.langx.security.exception.SecurityException;
