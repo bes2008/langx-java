@@ -1,4 +1,4 @@
-package com.jn.langx.security.exception;
+package com.jn.langx.security.crypto.keyspec;
 
 public class KeyFileFormatException extends RuntimeException{
     public KeyFileFormatException() {

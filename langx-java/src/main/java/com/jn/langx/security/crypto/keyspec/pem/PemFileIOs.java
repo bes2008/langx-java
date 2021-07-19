@@ -9,7 +9,7 @@ import com.jn.langx.io.resource.InputStreamResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.io.stream.StringBuilderWriter;
-import com.jn.langx.security.exception.KeyFileFormatException;
+import com.jn.langx.security.crypto.keyspec.KeyFileFormatException;
 import com.jn.langx.security.crypto.keyspec.KeyEncoding;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.*;
