@@ -1,5 +1,6 @@
 package com.jn.langx.test.codec;
 
+import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Maths;
@@ -115,5 +116,8 @@ public class ByteTests {
     @Test
     public void test3(){
         System.out.println(Radixs.toBinary('a'));
+        System.out.println(Radixs.toHex('a'));
+        char[] hex_a=new char[]{'6','1'};
+        System.out.println(new String(Hex.decodeHex(hex_a),Charsets.UTF_8));
     }
 }

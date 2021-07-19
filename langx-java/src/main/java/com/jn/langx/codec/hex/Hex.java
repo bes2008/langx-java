@@ -67,9 +67,9 @@ public class Hex {
 
         // two characters form the hex value.
         for (int i = 0, j = 0; j < len; i++) {
-            int f = toDigit(data[j], j) << 4;
+            int f = toDecimal(data[j], j) << 4;
             j++;
-            f = f | toDigit(data[j], j);
+            f = f | toDecimal(data[j], j);
             j++;
             out[i] = (byte) (f & 0xFF);
         }
@@ -213,13 +213,13 @@ public class Hex {
 
     /**
      * Converts a hexadecimal character to an integer.
-     *
+     * 转成 10进制
      * @param ch    A character to convert to an integer digit
      * @param index The index of the character in the source
      * @return An integer
      * @throws CodecException Thrown if ch is an illegal hex character
      */
-    protected static int toDigit(final char ch, final int index) throws CodecException {
+    private static int toDecimal(final char ch, final int index) throws CodecException {
         final int digit = Character.digit(ch, 16);
         if (digit == -1) {
             throw new CodecException("Illegal hexadecimal character " + ch + " at index " + index);
