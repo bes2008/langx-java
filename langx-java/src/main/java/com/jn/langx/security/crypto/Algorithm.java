@@ -1,4 +1,4 @@
-package com.jn.langx.security;
+package com.jn.langx.security.crypto;
 
 import java.lang.annotation.*;
 

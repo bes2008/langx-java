@@ -1,9 +1,9 @@
 package com.jn.langx.test.security;
 
-import com.jn.langx.security.JCAEStandardName;
+import com.jn.langx.security.crypto.JCAEStandardName;
 import org.junit.Test;
 
-import static com.jn.langx.security.JCAEStandardName.MD5_RSA;
+import static com.jn.langx.security.crypto.JCAEStandardName.MD5_RSA;
 
 public class JCAEngineInstanceNameTest {
     @Test
