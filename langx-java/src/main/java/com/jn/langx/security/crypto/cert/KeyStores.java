@@ -1,4 +1,4 @@
-package com.jn.langx.security.cert;
+package com.jn.langx.security.crypto.cert;
 
 import java.io.File;
 import java.security.KeyStore;

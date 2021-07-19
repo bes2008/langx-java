@@ -1,6 +1,6 @@
 package com.jn.langx.test.security.messagedigest;
 
-import com.jn.langx.security.FileDigestGenerator;
+import com.jn.langx.security.crypto.messagedigest.FileDigestGenerator;
 import org.junit.Test;
 
 public class FileDigestTests {

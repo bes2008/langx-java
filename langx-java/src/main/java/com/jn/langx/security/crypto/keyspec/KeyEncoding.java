@@ -1,4 +1,4 @@
-package com.jn.langx.security.keyspec;
+package com.jn.langx.security.crypto.keyspec;
 
 public enum KeyEncoding {
     HEX,

@@ -1,6 +1,6 @@
-package com.jn.langx.security.keyspec.der;
+package com.jn.langx.security.crypto.keyspec.der;
 
-import com.jn.langx.security.keyspec.PrivateKeySpecParser;
+import com.jn.langx.security.crypto.keyspec.PrivateKeySpecParser;
 import com.jn.langx.util.Throwables;
 
 import java.math.BigInteger;

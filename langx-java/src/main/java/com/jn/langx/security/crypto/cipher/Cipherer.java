@@ -1,4 +1,4 @@
-package com.jn.langx.security.cipher;
+package com.jn.langx.security.crypto.cipher;
 
 public interface Cipherer<ORIGIN, ENCRYPTED> {
 
