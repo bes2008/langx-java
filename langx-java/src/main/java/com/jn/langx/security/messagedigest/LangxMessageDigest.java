@@ -10,8 +10,7 @@ public class LangxMessageDigest extends MessageDigest {
     protected Digest delegate;
     protected int digestSize;
 
-    protected LangxMessageDigest(
-            Digest digest) {
+    protected LangxMessageDigest(Digest digest) {
         super(digest.getAlgorithmName());
 
         this.delegate = digest;
@@ -29,15 +28,11 @@ public class LangxMessageDigest extends MessageDigest {
         delegate.reset();
     }
 
-    public void engineUpdate(
-            byte input) {
+    public void engineUpdate(byte input) {
         delegate.update(input);
     }
 
-    public void engineUpdate(
-            byte[] input,
-            int offset,
-            int len) {
+    public void engineUpdate(byte[] input, int offset, int len) {
         delegate.update(input, offset, len);
     }
 
