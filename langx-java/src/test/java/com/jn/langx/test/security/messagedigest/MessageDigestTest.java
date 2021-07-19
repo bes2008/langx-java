@@ -1,6 +1,6 @@
 package com.jn.langx.test.security.messagedigest;
 
-import com.jn.langx.security.MD5;
+import com.jn.langx.security.messagedigest.MD5;
 import org.junit.Test;
 
 import java.io.*;

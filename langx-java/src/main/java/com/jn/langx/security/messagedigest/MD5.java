@@ -19,7 +19,7 @@
  *
  */
 
-package com.jn.langx.security;
+package com.jn.langx.security.messagedigest;
 
 import com.jn.langx.security.messagedigest.MessageDigests;
 
