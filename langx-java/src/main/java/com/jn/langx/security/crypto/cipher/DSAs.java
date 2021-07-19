@@ -1,7 +1,8 @@
-package com.jn.langx.security;
+package com.jn.langx.security.crypto.cipher;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.security.Signatures;
 import com.jn.langx.util.Strings;
 
 import java.security.PrivateKey;

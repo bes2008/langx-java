@@ -3,7 +3,7 @@ package com.jn.langx.security.crypto.keyspec.pem;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.security.crypto.messagedigest.MessageDigests;
-import com.jn.langx.security.PKIs;
+import com.jn.langx.security.crypto.cipher.PKIs;
 import com.jn.langx.security.exception.KeyFileFormatException;
 import com.jn.langx.security.exception.SecurityException;
 import com.jn.langx.security.crypto.keyspec.der.DerParser;

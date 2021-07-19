@@ -4,7 +4,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.security.crypto.keyspec.KeyEncoding;
 import com.jn.langx.security.crypto.keyspec.pem.PemFileIOs;
-import com.jn.langx.security.PKIs;
+import com.jn.langx.security.crypto.cipher.PKIs;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import org.junit.Test;

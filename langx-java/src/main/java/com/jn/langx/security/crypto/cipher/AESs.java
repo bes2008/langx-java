@@ -1,4 +1,4 @@
-package com.jn.langx.security;
+package com.jn.langx.security.crypto.cipher;
 
 import com.jn.langx.security.exception.SecurityException;
 import com.jn.langx.util.Preconditions;

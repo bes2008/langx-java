@@ -2,7 +2,7 @@ package com.jn.langx.test.security.key;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.crypto.JCAEStandardName;
-import com.jn.langx.security.PKIs;
+import com.jn.langx.security.crypto.cipher.PKIs;
 import com.jn.langx.security.SecureRandoms;
 import com.jn.langx.security.Signatures;
 import org.junit.Test;
