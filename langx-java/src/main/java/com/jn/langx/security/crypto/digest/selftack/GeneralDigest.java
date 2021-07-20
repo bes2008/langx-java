@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.api;
+package com.jn.langx.security.crypto.digest.selftack;
 
 
 import com.jn.langx.util.Bytes;
