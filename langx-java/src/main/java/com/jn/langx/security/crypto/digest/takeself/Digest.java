@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.selftack;
+package com.jn.langx.security.crypto.digest.takeself;
 
 /**
  * interface that a message digest conforms to.

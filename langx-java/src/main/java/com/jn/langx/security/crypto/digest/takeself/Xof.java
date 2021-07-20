@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.selftack;
+package com.jn.langx.security.crypto.digest.takeself;
 
 /**
  * With FIPS PUB 202 a new kind of message digest was announced which supported extendable output, or variable digest sizes.

@@ -1,8 +1,8 @@
 package com.jn.langx.security.crypto.digest.provider.sm3;
 
 import com.jn.langx.security.crypto.digest.LangxMessageDigest;
-import com.jn.langx.security.crypto.digest.selftack.Xof;
-import com.jn.langx.security.crypto.digest.selftack.impl.SM3Digest;
+import com.jn.langx.security.crypto.digest.takeself.Xof;
+import com.jn.langx.security.crypto.digest.takeself.impl.SM3Digest;
 
 public class SM3MessageDigest extends LangxMessageDigest {
     public SM3MessageDigest(){
