@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Supplier;
 
@@ -22,6 +23,12 @@ public class PrimitiveArrays {
     public static final Class CHAR_ARRAY_CLASS = char[].class;
     public static final Class BOOLEAN_ARRAY_CLASS = boolean[].class;
 
+    /**
+     * The index value when an element is not found in a list or array: {@code -1}.
+     * This value is returned by methods in this class and can also be used in comparisons with values returned by
+     * various method from {@link java.util.List}.
+     */
+    public static final int INDEX_NOT_FOUND = -1;
     public static final List<Class> PRIMITIVE_ARRAY_CLASSES = Collects.asList(Collects.asList(
             BYTE_ARRAY_CLASS,
             SHORT_ARRAY_CLASS,
@@ -33,7 +40,7 @@ public class PrimitiveArrays {
             BOOLEAN_ARRAY_CLASS
     ), false);
 
-    private PrimitiveArrays() {
+    protected PrimitiveArrays() {
     }
 
     public static boolean isPrimitiveArray(Class clazz) {
@@ -774,4 +781,954 @@ public class PrimitiveArrays {
         });
     }
 
+
+    // boolean IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final boolean[] array, final boolean valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null}
+     *  array input
+     */
+    public static int indexOf(final boolean[] array, final boolean valueToFind, int startIndex) {
+        if (Objs.isEmpty(array)) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        for (int i = startIndex; i < array.length; i++) {
+            if (valueToFind == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    // byte IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final byte[] array, final byte valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final byte[] array, final byte valueToFind, int startIndex) {
+        if (array == null) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        for (int i = startIndex; i < array.length; i++) {
+            if (valueToFind == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    // char IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * @since 2.1
+     */
+    public static int indexOf(final char[] array, final char valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * @since 2.1
+     */
+    public static int indexOf(final char[] array, final char valueToFind, int startIndex) {
+        if (array == null) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        for (int i = startIndex; i < array.length; i++) {
+            if (valueToFind == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    // double IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final double[] array, final double valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value within a given tolerance in the array.
+     * This method will return the index of the first value which falls between the region
+     * defined by valueToFind - tolerance and valueToFind + tolerance.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param tolerance tolerance of the search
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final double[] array, final double valueToFind, final double tolerance) {
+        return indexOf(array, valueToFind, 0, tolerance);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final double[] array, final double valueToFind, int startIndex) {
+        if (Objs.isEmpty(array)) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        final boolean searchNaN = Double.isNaN(valueToFind);
+        for (int i = startIndex; i < array.length; i++) {
+            final double element = array[i];
+            if (valueToFind == element || (searchNaN && Double.isNaN(element))) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     * This method will return the index of the first value which falls between the region
+     * defined by valueToFind - tolerance and valueToFind + tolerance.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @param tolerance tolerance of the search
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final double[] array, final double valueToFind, int startIndex, final double tolerance) {
+        if (Objs.isEmpty(array)) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        final double min = valueToFind - tolerance;
+        final double max = valueToFind + tolerance;
+        for (int i = startIndex; i < array.length; i++) {
+            if (array[i] >= min && array[i] <= max) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    // float IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final float[] array, final float valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final float[] array, final float valueToFind, int startIndex) {
+        if (Objs.isEmpty(array)) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        final boolean searchNaN = Float.isNaN(valueToFind);
+        for (int i = startIndex; i < array.length; i++) {
+            final float element = array[i];
+            if (valueToFind == element || (searchNaN && Float.isNaN(element))) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    // int IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final int[] array, final int valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final int[] array, final int valueToFind, int startIndex) {
+        if (array == null) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        for (int i = startIndex; i < array.length; i++) {
+            if (valueToFind == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    // long IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final long[] array, final long valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final long[] array, final long valueToFind, int startIndex) {
+        if (array == null) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        for (int i = startIndex; i < array.length; i++) {
+            if (valueToFind == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+
+    // short IndexOf
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Finds the index of the given value in the array.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final short[] array, final short valueToFind) {
+        return indexOf(array, valueToFind, 0);
+    }
+
+    /**
+     * <p>Finds the index of the given value in the array starting at the given index.
+     *
+     * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
+     *
+     * <p>A negative startIndex is treated as zero. A startIndex larger than the array
+     * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
+     *
+     * @param array  the array to search through for the object, may be {@code null}
+     * @param valueToFind  the value to find
+     * @param startIndex  the index to start searching at
+     * @return the index of the value within the array,
+     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     */
+    public static int indexOf(final short[] array, final short valueToFind, int startIndex) {
+        if (array == null) {
+            return INDEX_NOT_FOUND;
+        }
+        if (startIndex < 0) {
+            startIndex = 0;
+        }
+        for (int i = startIndex; i < array.length; i++) {
+            if (valueToFind == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static boolean[] insert(final int index, final boolean[] array, final boolean... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final boolean[] result = new boolean[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static byte[] insert(final int index, final byte[] array, final byte... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final byte[] result = new byte[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static char[] insert(final int index, final char[] array, final char... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final char[] result = new char[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static double[] insert(final int index, final double[] array, final double... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final double[] result = new double[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static float[] insert(final int index, final float[] array, final float... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final float[] result = new float[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static int[] insert(final int index, final int[] array, final int... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final int[] result = new int[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static long[] insert(final int index, final long[] array, final long... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final long[] result = new long[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static short[] insert(final int index, final short[] array, final short... values) {
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final short[] result = new short[array.length + values.length];
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    /**
+     * <p>Inserts elements into an array at the given index (starting from zero).</p>
+     *
+     * <p>When an array is returned, it is always a new array.</p>
+     *
+     * <pre>
+     * ArrayUtils.insert(index, null, null)      = null
+     * ArrayUtils.insert(index, array, null)     = cloned copy of 'array'
+     * ArrayUtils.insert(index, null, values)    = null
+     * </pre>
+     *
+     * @param <T> The type of elements in {@code array} and {@code values}
+     * @param index the position within {@code array} to insert the new values
+     * @param array the array to insert the values into, may be {@code null}
+     * @param values the new values to insert, may be {@code null}
+     * @return The new array.
+     * @throws IndexOutOfBoundsException if {@code array} is provided
+     * and either {@code index < 0} or {@code index > array.length}
+     * @since 3.6
+     */
+    public static <T> T[] insert(final int index, final T[] array, final T... values) {
+        /*
+         * Note on use of @SafeVarargs:
+         *
+         * By returning null when 'array' is null, we avoid returning the vararg
+         * array to the caller. We also avoid relying on the type of the vararg
+         * array, by inspecting the component type of 'array'.
+         */
+
+        if (array == null) {
+            return null;
+        }
+        if (Objs.isEmpty(values)) {
+            return clone(array);
+        }
+        if (index < 0 || index > array.length) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Length: " + array.length);
+        }
+
+        final Class<?> type = array.getClass().getComponentType();
+        @SuppressWarnings("unchecked") // OK, because array and values are of type T
+        final
+        T[] result = (T[]) Array.newInstance(type, array.length + values.length);
+
+        System.arraycopy(values, 0, result, index, values.length);
+        if (index > 0) {
+            System.arraycopy(array, 0, result, 0, index);
+        }
+        if (index < array.length) {
+            System.arraycopy(array, index, result, index + values.length, array.length - index);
+        }
+        return result;
+    }
+
+    public static boolean[] clone(final boolean[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * <p>Clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param array  the array to clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static byte[] clone(final byte[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * <p>Clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param array  the array to clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static char[] clone(final char[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * <p>Clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param array  the array to clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static double[] clone(final double[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * <p>Clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param array  the array to clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static float[] clone(final float[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * <p>Clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param array  the array to clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static int[] clone(final int[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * <p>Clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param array  the array to clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static long[] clone(final long[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * <p>Clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param array  the array to clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static short[] clone(final short[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    // Clone
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Shallow clones an array returning a typecast result and handling
+     * {@code null}.
+     *
+     * <p>The objects in the array are not cloned, thus there is no special
+     * handling for multi-dimensional arrays.
+     *
+     * <p>This method returns {@code null} for a {@code null} input array.
+     *
+     * @param <T> the component type of the array
+     * @param array  the array to shallow clone, may be {@code null}
+     * @return the cloned array, {@code null} if {@code null} input
+     */
+    public static <T> T[] clone(final T[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
 }

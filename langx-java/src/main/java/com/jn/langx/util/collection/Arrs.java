@@ -15,7 +15,7 @@ import java.util.Arrays;
 /**
  * Array tools
  */
-public class Arrs {
+public class Arrs extends PrimitiveArrays{
 
     /**
      * get the length if argument is an array, else -1

@@ -1,5 +1,6 @@
 package com.jn.langx.test.util.collection;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Supplier;
@@ -65,7 +66,7 @@ public class ArrsTests {
 
         String[] strings2 = Arrs.copy(strings);
         String[] emptyArr2 = Arrs.copy(new String[0]);
-        String[] emptyArr = Arrs.copy(null);
+        String[] emptyArr = Arrs.copy((String) null);
         Object[] objects = new Object[]{
                 "ssss",
                 0x22,
@@ -79,12 +80,21 @@ public class ArrsTests {
 
         Object[] objects2= Arrs.copy(objects);
 
-        Object[] objects3= Arrs.copy(array);
+        int[] objects3= Arrs.copy(array);
 
         System.out.println(array);
         System.out.println(arr2);
         System.out.println(strings);
         System.out.println(strings2);
+    }
+
+
+    @Test
+    public void indexOfTests(){
+        int[] array = new int[]{1,2,3,4,5};
+        System.out.println(Arrs.indexOf(array,3));
+
+        System.out.println(Objs.isEmpty(array));
     }
 
 
