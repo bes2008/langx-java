@@ -79,11 +79,25 @@ public enum JCAEStandardName {
     @Algorithm(name = "SHA-384", apply = MessageDigest.class)
     SHA_384,
     @Algorithm(name = "SHA-512", apply = MessageDigest.class)
+    SHA3,
+    @Algorithm(name = "SHA3", apply = MessageDigest.class)
+    SHA3_224,
+    @Algorithm(name = "SHA3-224", apply = MessageDigest.class)
+    SHA3_256,
+    @Algorithm(name = "SHA3-256", apply = MessageDigest.class)
+    SHA3_384,
+    @Algorithm(name = "SHA3-384", apply = MessageDigest.class)
+    SHA3_512,
+    @Algorithm(name = "SHA3-512", apply = MessageDigest.class)
     SHA_512,
     @Algorithm(name = "MD2", apply = MessageDigest.class)
     MD2,
+    @Algorithm(name = "MD4", apply = MessageDigest.class)
+    MD4,
     @Algorithm(name = "MD5", apply = MessageDigest.class)
     MD5,
+    @Algorithm(name = "SM3", apply = MessageDigest.class)
+    SM3,
 
     /*********************KeyPair, Key Parameter*************/
     @Algorithm(name = "DSA", apply = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
