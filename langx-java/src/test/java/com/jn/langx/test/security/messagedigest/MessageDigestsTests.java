@@ -12,5 +12,8 @@ public class MessageDigestsTests {
         System.out.println(MessageDigests.getDigestHexString("MD4", str));
         System.out.println(MessageDigests.getDigestHexString("MD5", str));
         System.out.println(MessageDigests.getDigestHexString("SM3", str));
+        System.out.println(MessageDigests.getDigestHexString("SHA1", str));
+        System.out.println(MessageDigests.getDigestHexString("SHA-1", str));
+        System.out.println(MessageDigests.getDigestHexString("SHA3", str));
     }
 }
