@@ -1,6 +1,8 @@
 package com.jn.langx.security.crypto.digest;
 
 import com.jn.langx.codec.hex.Hex;
+import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
@@ -99,7 +101,15 @@ public class MessageDigests {
             }
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            return null;
+            if (!Securitys.langxProviderInstalled()) {
+                Securitys.setupLangxProvider();
+                try {
+                    return MessageDigest.getInstance(algorithm);
+                } catch (NoSuchAlgorithmException e2) {
+                    throw new SecurityException(e2);
+                }
+            }
+            throw new SecurityException(e);
         }
     }
 
