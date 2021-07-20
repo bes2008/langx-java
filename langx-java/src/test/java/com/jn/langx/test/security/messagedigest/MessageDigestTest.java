@@ -1,6 +1,6 @@
 package com.jn.langx.test.security.messagedigest;
 
-import com.jn.langx.security.crypto.messagedigest.MessageDigests;
+import com.jn.langx.security.crypto.digest.MessageDigests;
 import org.junit.Test;
 
 import java.io.*;

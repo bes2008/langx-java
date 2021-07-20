@@ -1,6 +1,6 @@
-package com.jn.langx.security.crypto.messagedigest.api.impl;
+package com.jn.langx.security.crypto.digest.api.impl;
 
-import com.jn.langx.security.crypto.messagedigest.api.GeneralDigest;
+import com.jn.langx.security.crypto.digest.api.GeneralDigest;
 import com.jn.langx.util.Bytes;
 import com.jn.langx.util.Memoable;
 

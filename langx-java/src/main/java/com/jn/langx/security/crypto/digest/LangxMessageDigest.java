@@ -1,8 +1,8 @@
-package com.jn.langx.security.crypto.messagedigest;
+package com.jn.langx.security.crypto.digest;
 
 
-import com.jn.langx.security.crypto.messagedigest.api.Digest;
-import com.jn.langx.security.crypto.messagedigest.api.Xof;
+import com.jn.langx.security.crypto.digest.api.Digest;
+import com.jn.langx.security.crypto.digest.api.Xof;
 
 import java.security.MessageDigest;
 

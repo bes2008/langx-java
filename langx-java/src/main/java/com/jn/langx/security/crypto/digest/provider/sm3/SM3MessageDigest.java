@@ -1,8 +1,8 @@
-package com.jn.langx.security.crypto.messagedigest.provider.sm3;
+package com.jn.langx.security.crypto.digest.provider.sm3;
 
-import com.jn.langx.security.crypto.messagedigest.LangxMessageDigest;
-import com.jn.langx.security.crypto.messagedigest.api.Xof;
-import com.jn.langx.security.crypto.messagedigest.api.impl.SM3Digest;
+import com.jn.langx.security.crypto.digest.LangxMessageDigest;
+import com.jn.langx.security.crypto.digest.api.Xof;
+import com.jn.langx.security.crypto.digest.api.impl.SM3Digest;
 
 public class SM3MessageDigest extends LangxMessageDigest {
     public SM3MessageDigest(){

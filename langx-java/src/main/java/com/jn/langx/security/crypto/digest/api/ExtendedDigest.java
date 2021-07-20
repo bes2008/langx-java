@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.messagedigest.api;
+package com.jn.langx.security.crypto.digest.api;
 
 public interface ExtendedDigest extends Digest {
     /**

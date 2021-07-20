@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.messagedigest;
+package com.jn.langx.security.crypto.digest;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.hex.Hex;

@@ -1,9 +1,10 @@
-package com.jn.langx.security.crypto.messagedigest;
+package com.jn.langx.security.crypto.digest;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
+import com.jn.langx.security.crypto.AlgorithmUnregisteredException;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.collection.PrimitiveArrays;
@@ -104,6 +105,9 @@ public class MessageDigestHasher {
      */
     protected byte[] doHash(byte[] bytes, byte[] salt, int hashIterations) {
         MessageDigest digest = MessageDigests.newDigest(algorithmName);
+        if (digest == null) {
+            throw new AlgorithmUnregisteredException(algorithmName);
+        }
         if (Emptys.isNotEmpty(salt)) {
             digest.reset();
             digest.update(salt);
