@@ -777,4 +777,5 @@ public class Numbers {
         }
         return !isDouble(number) && !isInteger(number);
     }
+
 }
