@@ -1,5 +1,6 @@
 package com.jn.langx.security.gm.crypto.sm4;
 
+import com.jn.langx.security.gm.crypto.sm4.internal._SM4BlockCipher;
 import org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher;
 /**
  * @see // cn.gmssl.crypto.impl.SM4JCE$ECB
@@ -7,6 +8,6 @@ import org.bouncycastle.jcajce.provider.symmetric.util.BaseBlockCipher;
 public class SM4EcbBlockCipher extends BaseBlockCipher
 {
     public SM4EcbBlockCipher() {
-        super(new SM4BlockCipher());
+        super(new _SM4BlockCipher());
     }
 }
