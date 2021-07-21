@@ -6,7 +6,7 @@ import com.jn.langx.security.gm.crypto.sm2.impl.NoneWithSM2;
 import com.jn.langx.security.gm.crypto.sm2.impl.SM2KeyAgreement;
 import com.jn.langx.security.gm.crypto.sm2.impl.SM3WithSM2;
 import com.jn.langx.security.gm.crypto.sm3.HMacSM3;
-import com.jn.langx.security.gm.crypto.sm3.SM3Jce;
+import com.jn.langx.security.gm.crypto.sm3.SM3MessageDigest;
 import com.jn.langx.security.gm.crypto.sm4.SM4CbcBlockCipher;
 import com.jn.langx.security.gm.crypto.sm4.SM4CtrBlockCipher;
 import com.jn.langx.security.gm.crypto.sm4.SM4EcbBlockCipher;
@@ -37,7 +37,7 @@ public class GmJceProvider extends Provider {
         this.put("Cipher.SM4/CBC", Reflects.getFQNClassName(SM4CbcBlockCipher.class));
         this.put("Cipher.SM4/CTR", Reflects.getFQNClassName(SM4CtrBlockCipher.class));
         this.put("Cipher.SM2", Reflects.getFQNClassName(Sm2Cipher.class));
-        this.put("MessageDigest.SM3", Reflects.getFQNClassName(SM3Jce.class));
+        this.put("MessageDigest.SM3", Reflects.getFQNClassName(SM3MessageDigest.class));
         this.put("Mac.HmacSM3", Reflects.getFQNClassName(HMacSM3.class));
         this.put("KeyAgreement.SM2", Reflects.getFQNClassName(SM2KeyAgreement.class));
         this.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM3WithSM2.class));

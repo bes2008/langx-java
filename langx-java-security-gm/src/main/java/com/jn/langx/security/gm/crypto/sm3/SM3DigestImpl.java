@@ -4,7 +4,7 @@ package com.jn.langx.security.gm.crypto.sm3;
 import org.bouncycastle.crypto.digests.GeneralDigest;
 import org.bouncycastle.crypto.util.Pack;
 
-public class SM3 extends GeneralDigest
+public class SM3DigestImpl extends GeneralDigest
 {
     private static final int DIGEST_LENGTH = 32;
     private int H1;
@@ -18,7 +18,7 @@ public class SM3 extends GeneralDigest
     private int[] word;
     private int wordOff;
 
-    public SM3() {
+    public SM3DigestImpl() {
         this.word = new int[68];
         this.reset();
     }
