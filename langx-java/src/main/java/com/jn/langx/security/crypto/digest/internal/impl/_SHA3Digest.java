@@ -1,11 +1,11 @@
-package com.jn.langx.security.crypto.digest.takeself.impl;
+package com.jn.langx.security.crypto.digest.internal.impl;
 
 /**
  * implementation of SHA-3 based on following KeccakNISTInterface.c from http://keccak.noekeon.org/
  * <p>
  * Following the naming conventions used in the C source code to enable easy review of the implementation.
  */
-public class SHA3Digest extends KeccakDigest
+public class _SHA3Digest extends _KeccakDigest
 {
     private static int checkBitLength(int bitLength)
     {
@@ -21,17 +21,17 @@ public class SHA3Digest extends KeccakDigest
         }
     }
 
-    public SHA3Digest()
+    public _SHA3Digest()
     {
         this(256);
     }
 
-    public SHA3Digest(int bitLength)
+    public _SHA3Digest(int bitLength)
     {
         super(checkBitLength(bitLength));
     }
 
-    public SHA3Digest(SHA3Digest source) {
+    public _SHA3Digest(_SHA3Digest source) {
         super(source);
     }
 

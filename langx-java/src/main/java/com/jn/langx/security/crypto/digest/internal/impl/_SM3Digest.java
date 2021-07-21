@@ -1,6 +1,6 @@
-package com.jn.langx.security.crypto.digest.takeself.impl;
+package com.jn.langx.security.crypto.digest.internal.impl;
 
-import com.jn.langx.security.crypto.digest.takeself.GeneralDigest;
+import com.jn.langx.security.crypto.digest.internal.GeneralDigest;
 import com.jn.langx.util.Bytes;
 import com.jn.langx.util.Memoable;
 
@@ -16,7 +16,7 @@ import com.jn.langx.util.Memoable;
  * including the SHA-256 which was a origin for
  * this specification.
  */
-public class SM3Digest extends GeneralDigest
+public class _SM3Digest extends GeneralDigest
 {
     private static final int DIGEST_LENGTH = 32;   // bytes
     private static final int BLOCK_SIZE = 64 / 4; // of 32 bit ints (16 ints)
@@ -50,7 +50,7 @@ public class SM3Digest extends GeneralDigest
     /**
      * Standard constructor
      */
-    public SM3Digest()
+    public _SM3Digest()
     {
         reset();
     }
@@ -59,14 +59,14 @@ public class SM3Digest extends GeneralDigest
      * Copy constructor.  This will copy the state of the provided
      * message digest.
      */
-    public SM3Digest(SM3Digest t)
+    public _SM3Digest(_SM3Digest t)
     {
         super(t);
 
         copyIn(t);
     }
 
-    private void copyIn(SM3Digest t)
+    private void copyIn(_SM3Digest t)
     {
         System.arraycopy(t.V, 0, this.V, 0, this.V.length);
         System.arraycopy(t.inwords, 0, this.inwords, 0, this.inwords.length);
@@ -85,12 +85,12 @@ public class SM3Digest extends GeneralDigest
 
 
     public Memoable copy(){
-        return new SM3Digest(this);
+        return new _SM3Digest(this);
     }
 
     public void reset(Memoable other)
     {
-        SM3Digest d = (SM3Digest)other;
+        _SM3Digest d = (_SM3Digest)other;
 
         super.copyIn(d);
         copyIn(d);

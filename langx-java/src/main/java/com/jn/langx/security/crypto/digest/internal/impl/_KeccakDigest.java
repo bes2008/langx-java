@@ -1,6 +1,6 @@
-package com.jn.langx.security.crypto.digest.takeself.impl;
+package com.jn.langx.security.crypto.digest.internal.impl;
 
-import com.jn.langx.security.crypto.digest.takeself.ExtendedDigest;
+import com.jn.langx.security.crypto.digest.internal.ExtendedDigest;
 import com.jn.langx.util.Bytes;
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.Arrays;
  * <p>
  * Following the naming conventions used in the C source code to enable easy review of the implementation.
  */
-public class KeccakDigest implements ExtendedDigest
+public class _KeccakDigest implements ExtendedDigest
 {
     private static long[] KeccakRoundConstants = new long[]{ 0x0000000000000001L, 0x0000000000008082L,
             0x800000000000808aL, 0x8000000080008000L, 0x000000000000808bL, 0x0000000080000001L, 0x8000000080008081L,
@@ -26,17 +26,17 @@ public class KeccakDigest implements ExtendedDigest
     protected int fixedOutputLength;
     protected boolean squeezing;
 
-    public KeccakDigest()
+    public _KeccakDigest()
     {
         this(288);
     }
 
-    public KeccakDigest(int bitLength)
+    public _KeccakDigest(int bitLength)
     {
         init(bitLength);
     }
 
-    public KeccakDigest(KeccakDigest source)
+    public _KeccakDigest(_KeccakDigest source)
     {
         System.arraycopy(source.state, 0, this.state, 0, source.state.length);
         System.arraycopy(source.dataQueue, 0, this.dataQueue, 0, source.dataQueue.length);

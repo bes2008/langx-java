@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.takeself;
+package com.jn.langx.security.crypto.digest.internal;
 
 /**
  * interface that a message digest conforms to.

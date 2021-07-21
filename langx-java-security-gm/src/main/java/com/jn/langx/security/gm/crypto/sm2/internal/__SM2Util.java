@@ -2,7 +2,7 @@ package com.jn.langx.security.gm.crypto.sm2.internal;
 
 
 import com.jn.langx.security.GmJceProvider;
-import com.jn.langx.security.crypto.digest.takeself.impl.SM3Digest;
+import com.jn.langx.security.crypto.digest.internal.impl._SM3Digest;
 import com.jn.langx.security.gm.crypto.sm2.SM2ParameterSpec;
 import com.jn.langx.security.gm.util._utils;
 import org.bouncycastle.crypto.Digest;
@@ -48,7 +48,7 @@ public class __SM2Util {
         final byte[] intToBytes4 = _utils.intToBytes(bigInteger4, m);
         final byte[] intToBytes5 = _utils.intToBytes(bigInteger5, m);
         final byte[] intToBytes6 = _utils.intToBytes(bigInteger6, m);
-        final SM3Digest sm3 = new SM3Digest();
+        final _SM3Digest sm3 = new _SM3Digest();
         sm3.update(array, 0, array.length);
         sm3.update(bytes, 0, bytes.length);
         sm3.update(intToBytes, 0, intToBytes.length);

@@ -1,6 +1,6 @@
 package com.jn.langx.security.gm.crypto.sm2.internal;
 
-import com.jn.langx.security.crypto.digest.takeself.impl.SM3Digest;
+import com.jn.langx.security.crypto.digest.internal.impl._SM3Digest;
 import com.jn.langx.security.gm.util.MyBigInteger;
 import com.jn.langx.security.gm.util._utils;
 import org.bouncycastle.asn1.*;
@@ -51,7 +51,7 @@ public class __SM2Encryption {
         for (int i = 0; i < array.length; ++i) {
             array2[i] = (byte) (array[i] ^ kdf[i]);
         }
-        final SM3Digest sm3 = new SM3Digest();
+        final _SM3Digest sm3 = new _SM3Digest();
         final byte[] array3 = new byte[sm3.getDigestSize()];
         sm3.update(intToBytes, 0, intToBytes.length);
         sm3.update(array, 0, array.length);
@@ -65,7 +65,7 @@ public class __SM2Encryption {
         final ECParameterSpec parameters = ecPrivateKey.getParameters();
         parameters.getH();
         final BigInteger d = ecPrivateKey.getD();
-        final SM3Digest sm3 = new SM3Digest();
+        final _SM3Digest sm3 = new _SM3Digest();
         final BigInteger positiveValue = ((ASN1Integer) instance.getObjectAt(0)).getPositiveValue();
         final BigInteger positiveValue2 = ((ASN1Integer) instance.getObjectAt(1)).getPositiveValue();
         final byte[] octets = ((ASN1OctetString) instance.getObjectAt(3)).getOctets();

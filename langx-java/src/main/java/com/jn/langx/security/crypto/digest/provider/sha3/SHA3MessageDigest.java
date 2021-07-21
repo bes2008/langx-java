@@ -1,9 +1,9 @@
 package com.jn.langx.security.crypto.digest.provider.sha3;
 
 import com.jn.langx.security.crypto.digest.LangxMessageDigest;
-import com.jn.langx.security.crypto.digest.takeself.Digest;
-import com.jn.langx.security.crypto.digest.takeself.Xof;
-import com.jn.langx.security.crypto.digest.takeself.impl.SHA3Digest;
+import com.jn.langx.security.crypto.digest.internal.Digest;
+import com.jn.langx.security.crypto.digest.internal.Xof;
+import com.jn.langx.security.crypto.digest.internal.impl._SHA3Digest;
 
 public class SHA3MessageDigest extends LangxMessageDigest {
 
@@ -12,7 +12,7 @@ public class SHA3MessageDigest extends LangxMessageDigest {
     }
 
     public SHA3MessageDigest(int length){
-        this(new SHA3Digest(length));
+        this(new _SHA3Digest(length));
     }
 
 

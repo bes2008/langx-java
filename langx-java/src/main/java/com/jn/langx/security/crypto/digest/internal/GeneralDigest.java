@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.takeself;
+package com.jn.langx.security.crypto.digest.internal;
 
 
 import com.jn.langx.util.Bytes;

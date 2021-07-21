@@ -1,8 +1,8 @@
 package com.jn.langx.security.crypto.digest;
 
 
-import com.jn.langx.security.crypto.digest.takeself.Digest;
-import com.jn.langx.security.crypto.digest.takeself.Xof;
+import com.jn.langx.security.crypto.digest.internal.Digest;
+import com.jn.langx.security.crypto.digest.internal.Xof;
 
 import java.security.MessageDigest;
 

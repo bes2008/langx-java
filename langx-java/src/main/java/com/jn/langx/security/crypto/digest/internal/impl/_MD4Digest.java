@@ -1,7 +1,7 @@
-package com.jn.langx.security.crypto.digest.takeself.impl;
+package com.jn.langx.security.crypto.digest.internal.impl;
 
 
-import com.jn.langx.security.crypto.digest.takeself.GeneralDigest;
+import com.jn.langx.security.crypto.digest.internal.GeneralDigest;
 import com.jn.langx.util.Memoable;
 
 /**
@@ -11,7 +11,7 @@ import com.jn.langx.util.Memoable;
  * <b>NOTE</b>: This algorithm is only included for backwards compatability
  * with legacy applications, it's not secure, don't use it for anything new!
  */
-public class MD4Digest extends GeneralDigest {
+public class _MD4Digest extends GeneralDigest {
     private static final int DIGEST_LENGTH = 16;
 
     private int H1, H2, H3, H4;         // IV's
@@ -22,7 +22,7 @@ public class MD4Digest extends GeneralDigest {
     /**
      * Standard constructor
      */
-    public MD4Digest() {
+    public _MD4Digest() {
         reset();
     }
 
@@ -30,13 +30,13 @@ public class MD4Digest extends GeneralDigest {
      * Copy constructor.  This will copy the state of the provided
      * message digest.
      */
-    public MD4Digest(MD4Digest t) {
+    public _MD4Digest(_MD4Digest t) {
         super(t);
 
         copyIn(t);
     }
 
-    private void copyIn(MD4Digest t) {
+    private void copyIn(_MD4Digest t) {
         super.copyIn(t);
 
         H1 = t.H1;
@@ -258,11 +258,11 @@ public class MD4Digest extends GeneralDigest {
     }
 
     public Memoable copy() {
-        return new MD4Digest(this);
+        return new _MD4Digest(this);
     }
 
     public void reset(Memoable other) {
-        MD4Digest d = (MD4Digest) other;
+        _MD4Digest d = (_MD4Digest) other;
 
         copyIn(d);
     }
