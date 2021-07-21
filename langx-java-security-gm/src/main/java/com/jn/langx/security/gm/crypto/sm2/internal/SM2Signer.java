@@ -1,6 +1,7 @@
 package com.jn.langx.security.gm.crypto.sm2.internal;
 
 
+import com.jn.langx.security.gm.util.MyBigInteger;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.DSA;
 import org.bouncycastle.crypto.params.ECKeyParameters;

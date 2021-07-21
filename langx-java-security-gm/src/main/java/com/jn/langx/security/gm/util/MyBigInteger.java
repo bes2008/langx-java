@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.sm2.internal;
+package com.jn.langx.security.gm.util;
 
 import java.math.BigInteger;
 import java.util.Random;

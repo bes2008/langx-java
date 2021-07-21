@@ -1,6 +1,7 @@
 package com.jn.langx.security.gm.crypto.sm2.internal;
 
 import com.jn.langx.security.crypto.digest.takeself.impl.SM3Digest;
+import com.jn.langx.security.gm.util.MyBigInteger;
 import com.jn.langx.security.gm.util._utils;
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;

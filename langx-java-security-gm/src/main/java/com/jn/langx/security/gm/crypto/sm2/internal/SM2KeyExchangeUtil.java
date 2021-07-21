@@ -3,6 +3,7 @@ package com.jn.langx.security.gm.crypto.sm2.internal;
 
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.gm.crypto.sm3.SM3DigestImpl;
+import com.jn.langx.security.gm.util.MyBigInteger;
 import com.jn.langx.security.gm.util._utils;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
