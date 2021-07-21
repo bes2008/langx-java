@@ -4,7 +4,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.SecureRandoms;
-import com.jn.langx.security.crypto.signer.Signatures;
+import com.jn.langx.security.crypto.signature.Signatures;
 import org.junit.Test;
 import sun.security.rsa.RSAPrivateCrtKeyImpl;
 import sun.security.rsa.RSAPublicKeyImpl;
