@@ -8,7 +8,7 @@ import java.math.*;
 /**
  * @ses cn.gmssl.crypto.SM2KeyExchangeParams
  */
-public class SM2KeyExchangeParameterSepc implements AlgorithmParameterSpec
+public class SM2KeyExchangeParameterSpec implements AlgorithmParameterSpec
 {
     private PublicKey publicKey;
     private PublicKey peerPublicKey;
@@ -18,7 +18,7 @@ public class SM2KeyExchangeParameterSepc implements AlgorithmParameterSpec
     private int keyLength;
     boolean active;
 
-    public SM2KeyExchangeParameterSepc(final PublicKey publicKey, final PublicKey peerPublicKey, final BigInteger random, final byte[] idLocal, final byte[] idRemote, final int keyLength, final boolean active) {
+    public SM2KeyExchangeParameterSpec(final PublicKey publicKey, final PublicKey peerPublicKey, final BigInteger random, final byte[] idLocal, final byte[] idRemote, final int keyLength, final boolean active) {
         this.publicKey = null;
         this.peerPublicKey = null;
         this.random = null;

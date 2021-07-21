@@ -44,14 +44,14 @@ public class SM2KeyAgreement extends KeyAgreementSpi {
 
     @Override
     protected void engineInit(final Key key, final AlgorithmParameterSpec algorithmParameterSpec, final SecureRandom secureRandom) throws InvalidKeyException, InvalidAlgorithmParameterException {
-        if (!(algorithmParameterSpec instanceof SM2KeyExchangeParameterSepc)) {
+        if (!(algorithmParameterSpec instanceof SM2KeyExchangeParameterSpec)) {
             throw new InvalidAlgorithmParameterException("SM2 key agreement requires SM2KeyExchangeParams for init");
         }
         if (!(key instanceof ECPrivateKey)) {
             throw new InvalidKeyException("SM2 key agreement requires ECPrivateKey for initialisation");
         }
         this.privateKey = (ECPrivateKey) key;
-        final SM2KeyExchangeParameterSepc sm2KeyExchangeParams = (SM2KeyExchangeParameterSepc) algorithmParameterSpec;
+        final SM2KeyExchangeParameterSpec sm2KeyExchangeParams = (SM2KeyExchangeParameterSpec) algorithmParameterSpec;
         this.random = sm2KeyExchangeParams.getRandom();
         if (this.random == null) {
             throw new InvalidAlgorithmParameterException("random cannot be null");
