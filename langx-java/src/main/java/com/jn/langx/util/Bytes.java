@@ -301,6 +301,10 @@ public final class Bytes {
         }
     }
 
+    public static int bigEndianToInt(final byte b, final byte b2, final byte b3, final byte b4) {
+        return (b << 24 & 0xFF000000) | (b2 << 16 & 0xFF0000) | (b3 << 8 & 0xFF00) | (b4 & 0xFF);
+    }
+
     public static byte[] intToBigEndian(int n) {
         byte[] bs = new byte[4];
         intToBigEndian(n, bs, 0);
