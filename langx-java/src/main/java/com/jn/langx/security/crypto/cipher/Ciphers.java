@@ -130,4 +130,11 @@ public class Ciphers {
 
         return StringTemplates.formatWithPlaceholder("{}/{}/{}", algorithm, mode, padding);
     }
+
+    public static String extractAlgorithm(String transformation){
+        Preconditions.checkNotEmpty(transformation, "the cipher algorithm transformation is null or empty");
+        String[] segments = Strings.split(transformation,"/");
+        Preconditions.checkNotEmpty(segments,"invalid transformation: {}", transformation);
+        return segments[0];
+    }
 }

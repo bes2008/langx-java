@@ -1,9 +1,8 @@
 package com.jn.langx.security.crypto.cipher;
 
-import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Throwables;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -11,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.Provider;
 import java.security.SecureRandom;
 
-public class AESs {
+public class AESs extends Symmetrics {
     private static final String algorithmTransformation = "AES/ECB/PKCS5Padding";
 
 
@@ -37,14 +36,7 @@ public class AESs {
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] aesKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        Preconditions.checkNotEmpty(aesKey, "AES key is empty");
-        try {
-            SecretKey secretKey = new SecretKeySpec(aesKey, "AES");
-            Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, Cipher.ENCRYPT_MODE, secretKey, secureRandom);
-            return Ciphers.encrypt(cipher, bytes);
-        } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
-        }
+        return encrypt(bytes, aesKey, "AES", algorithmTransformation, provider, secureRandom);
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] aesKey) {
@@ -59,7 +51,7 @@ public class AESs {
             Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, Cipher.DECRYPT_MODE, secretKey, secureRandom);
             return Ciphers.decrypt(cipher, bytes);
         } catch (Throwable ex) {
-             throw new SecurityException(ex.getMessage(),ex);
+            throw new SecurityException(ex.getMessage(), ex);
         }
     }
 
