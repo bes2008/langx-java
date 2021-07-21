@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2.internal;
 
 import com.jn.langx.security.crypto.digest.takeself.impl.SM3Digest;
 import com.jn.langx.security.gm.util._utils;
@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-public class SM2Encryption {
+public class __SM2Encryption {
     public static byte[] encrypt_der(final ECPublicKey ecPublicKey, final byte[] array, SecureRandom instance) throws Exception {
         if (instance == null) {
             instance = SecureRandom.getInstance("SHA1PRNG");

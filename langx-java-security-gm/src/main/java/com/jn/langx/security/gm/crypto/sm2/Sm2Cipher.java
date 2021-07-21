@@ -1,6 +1,6 @@
 package com.jn.langx.security.gm.crypto.sm2;
 
-import com.jn.langx.security.gm.crypto.sm2.impl.SM2Encryption;
+import com.jn.langx.security.gm.crypto.sm2.internal.__SM2Encryption;
 import com.jn.langx.security.gm.crypto.skf.SKF_PrivateKey;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
@@ -109,13 +109,13 @@ public class Sm2Cipher extends CipherSpi
         try {
             byte[] array3;
             if (this.opmode == 1) {
-                array3 = SM2Encryption.encrypt_der((ECPublicKey)this.key, array2, this.random);
+                array3 = __SM2Encryption.encrypt_der((ECPublicKey)this.key, array2, this.random);
             }
             else {
                 if (this.opmode != 2) {
                     throw new RuntimeException("unsupported mode in sm2 : " + this.opmode);
                 }
-                array3 = SM2Encryption.decrypt_der((ECPrivateKey)this.key, array2);
+                array3 = __SM2Encryption.decrypt_der((ECPrivateKey)this.key, array2);
             }
             return array3;
         }
@@ -133,7 +133,7 @@ public class Sm2Cipher extends CipherSpi
     protected byte[] engineWrap(final Key key) throws IllegalBlockSizeException, InvalidKeyException {
         final ECPublicKey ecPublicKey = (ECPublicKey)this.key;
         try {
-            return SM2Encryption.encrypt_der(ecPublicKey, key.getEncoded(), this.random);
+            return __SM2Encryption.encrypt_der(ecPublicKey, key.getEncoded(), this.random);
         }
         catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -145,7 +145,7 @@ public class Sm2Cipher extends CipherSpi
         final ECPrivateKey ecPrivateKey = (ECPrivateKey)this.key;
         byte[] decrypt_der;
         try {
-            decrypt_der = SM2Encryption.decrypt_der(ecPrivateKey, array);
+            decrypt_der = __SM2Encryption.decrypt_der(ecPrivateKey, array);
         }
         catch (Exception ex) {
             throw new RuntimeException(ex);

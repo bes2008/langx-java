@@ -52,7 +52,7 @@
         <module>langx-java8</module>
         <module>langx-java-reflect-aspectj</module>
         <module>langx-java-reflect-asm</module>
-        <module>langx-java-gmssl</module>
+        <module>langx-java-security-gm</module>
     </modules>
     <dependencyManagement>
         <dependencies>

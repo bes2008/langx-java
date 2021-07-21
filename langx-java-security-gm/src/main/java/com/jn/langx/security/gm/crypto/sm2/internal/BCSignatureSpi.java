@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2.internal;
 
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.crypto.CipherParameters;

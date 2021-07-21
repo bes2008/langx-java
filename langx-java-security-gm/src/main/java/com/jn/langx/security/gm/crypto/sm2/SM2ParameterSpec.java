@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2;
 
 
 import java.security.PublicKey;

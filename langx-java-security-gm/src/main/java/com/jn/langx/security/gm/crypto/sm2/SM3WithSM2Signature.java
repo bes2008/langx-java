@@ -1,8 +1,9 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2;
 
 
 import com.jn.langx.security.GmJceProvider;
 import com.jn.langx.security.gm.crypto.skf.SKF_PrivateKey;
+import com.jn.langx.security.gm.crypto.sm2.internal.*;
 import com.jn.langx.security.gm.crypto.sm3.SM3DigestImpl;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.DERSequence;
@@ -16,15 +17,15 @@ import java.math.BigInteger;
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 
-public class SM3WithSM2 extends BCSignatureSpi {
-    private boolean skf;
+public class SM3WithSM2Signature extends BCSignatureSpi {
+    private boolean skfEnabled;
     private SKF_PrivateKey skfPri;
     private ECPublicKey publicKey;
     public byte[] id;
 
-    public SM3WithSM2() {
+    public SM3WithSM2Signature() {
         super(new SM3DigestImpl(), new SM2Signer(), new StdDSAEncoder());
-        this.skf = false;
+        this.skfEnabled = false;
         this.skfPri = null;
         this.publicKey = null;
         this.id = null;
@@ -38,7 +39,7 @@ public class SM3WithSM2 extends BCSignatureSpi {
         final SM2ParameterSpec sm2ParameterSpec = (SM2ParameterSpec) algorithmParameterSpec;
         final PublicKey publicKey = sm2ParameterSpec.getPublicKey();
         try {
-            this.publicKey = SM2Util.toTsgECPublicKey(publicKey);
+            this.publicKey = __SM2Util.toTsgECPublicKey(publicKey);
         } catch (Exception ex) {
             throw new RuntimeException("toTsgECPublicKey");
         }
@@ -47,8 +48,8 @@ public class SM3WithSM2 extends BCSignatureSpi {
 
     @Override
     protected void engineInitSign(final PrivateKey privateKey) throws InvalidKeyException {
-        this.skf = (privateKey instanceof SKF_PrivateKey);
-        if (this.skf) {
+        this.skfEnabled = (privateKey instanceof SKF_PrivateKey);
+        if (this.skfEnabled) {
             this.skfPri = (SKF_PrivateKey) privateKey;
         } else {
             super.engineInitSign(privateKey);
@@ -64,7 +65,7 @@ public class SM3WithSM2 extends BCSignatureSpi {
                 final ECPoint multiply = parameters.getG().multiply(d);
                 this.publicKey = (ECPublicKey) KeyFactory.getInstance("SM2", GmJceProvider.NAME).generatePublic(new ECPublicKeySpec(parameters.getCurve().createPoint(multiply.getX().toBigInteger(), multiply.getY().toBigInteger(), false), parameters));
             }
-            SM2Util.Z(this.id, this.publicKey, this.digest);
+            __SM2Util.Z(this.id, this.publicKey, this.digest);
         } catch (Exception ex) {
             throw new InvalidKeyException(ex);
         }
@@ -72,7 +73,7 @@ public class SM3WithSM2 extends BCSignatureSpi {
 
     @Override
     protected byte[] engineSign() throws SignatureException {
-        if (this.skf) {
+        if (this.skfEnabled) {
             final byte[] array = new byte[this.digest.getDigestSize()];
             this.digest.doFinal(array, 0);
             try {
@@ -96,13 +97,13 @@ public class SM3WithSM2 extends BCSignatureSpi {
     protected void engineInitVerify(final PublicKey publicKey) throws InvalidKeyException {
         super.engineInitVerify(publicKey);
         try {
-            this.publicKey = SM2Util.toTsgECPublicKey(publicKey);
+            this.publicKey = __SM2Util.toTsgECPublicKey(publicKey);
         } catch (Exception ex) {
             throw new RuntimeException("toTsgECPublicKey");
         }
         if (this.id == null) {
             this.id = "1234567812345678".getBytes();
         }
-        SM2Util.Z(this.id, this.publicKey, this.digest);
+        __SM2Util.Z(this.id, this.publicKey, this.digest);
     }
 }

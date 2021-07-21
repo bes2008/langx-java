@@ -13,9 +13,13 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.fangjinuo.langx</groupId>
+            <artifactId>langx-java</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.60</version>
+            <version>1.47</version>
         </dependency>
     </dependencies>
 </project>

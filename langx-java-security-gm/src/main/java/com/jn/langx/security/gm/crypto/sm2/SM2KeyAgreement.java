@@ -1,7 +1,7 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2;
 
 
-import com.jn.langx.security.gm.crypto.sm2.SM2KeyExchangeParameterSepc;
+import com.jn.langx.security.gm.crypto.sm2.internal.SM2KeyExchangeUtil;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.math.ec.ECPoint;

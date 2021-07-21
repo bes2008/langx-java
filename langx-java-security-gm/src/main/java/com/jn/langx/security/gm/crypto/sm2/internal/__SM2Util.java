@@ -1,12 +1,12 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2.internal;
 
 
 import com.jn.langx.security.GmJceProvider;
 import com.jn.langx.security.crypto.digest.takeself.impl.SM3Digest;
+import com.jn.langx.security.gm.crypto.sm2.SM2ParameterSpec;
 import com.jn.langx.security.gm.util._utils;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.bouncycastle.jce.spec.ECParameterSpec;
 import org.bouncycastle.math.ec.ECCurve;
 import org.bouncycastle.math.ec.ECPoint;
@@ -21,7 +21,7 @@ import java.security.spec.*;
 /**
  * @see // cn.gmssl.crypto.impl.sm2
  */
-class SM2Util {
+public class __SM2Util {
 
     public static byte[] Z(byte[] bytes, final ECPublicKey ecPublicKey, final Digest digest) {
         if (bytes == null) {

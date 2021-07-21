@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2.internal;
 
 
 import com.jn.langx.codec.hex.Hex;
@@ -39,8 +39,8 @@ public class SM2KeyExchangeUtil {
         final BigInteger bigInteger2 = multiply.getX().toBigInteger();
         final BigInteger bigInteger3 = multiply.getY().toBigInteger();
         final SM3DigestImpl sm3 = new SM3DigestImpl();
-        final byte[] z = SM2Util.Z(array, ecPublicKey, sm3);
-        final byte[] z2 = SM2Util.Z(array2, ecPublicKey2, sm3);
+        final byte[] z = __SM2Util.Z(array, ecPublicKey, sm3);
+        final byte[] z2 = __SM2Util.Z(array2, ecPublicKey2, sm3);
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             byteArrayOutputStream.write(_utils.intToBytes(bigInteger2));
@@ -68,8 +68,8 @@ public class SM2KeyExchangeUtil {
         final BigInteger bigInteger2 = multiply.getX().toBigInteger();
         final BigInteger bigInteger3 = multiply.getY().toBigInteger();
         final SM3DigestImpl sm3 = new SM3DigestImpl();
-        final byte[] z = SM2Util.Z(array, ecPublicKey, sm3);
-        final byte[] z2 = SM2Util.Z(array2, ecPublicKey2, sm3);
+        final byte[] z = __SM2Util.Z(array, ecPublicKey, sm3);
+        final byte[] z2 = __SM2Util.Z(array2, ecPublicKey2, sm3);
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             byteArrayOutputStream.write(_utils.intToBytes(bigInteger2));

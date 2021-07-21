@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.sm2.impl;
+package com.jn.langx.security.gm.crypto.sm2.internal;
 
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.jcajce.provider.asymmetric.util.DSAEncoder;
