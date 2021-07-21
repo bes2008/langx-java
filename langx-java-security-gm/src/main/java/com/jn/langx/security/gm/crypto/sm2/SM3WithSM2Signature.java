@@ -4,7 +4,7 @@ package com.jn.langx.security.gm.crypto.sm2;
 import com.jn.langx.security.GmJceProvider;
 import com.jn.langx.security.gm.crypto.skf.SKF_PrivateKey;
 import com.jn.langx.security.gm.crypto.sm2.internal.*;
-import com.jn.langx.security.gm.crypto.sm3.SM3DigestImpl;
+import com.jn.langx.security.gm.crypto.sm3.internal._SM3DigestImpl;
 import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
@@ -24,7 +24,7 @@ public class SM3WithSM2Signature extends BCSignatureSpi {
     public byte[] id;
 
     public SM3WithSM2Signature() {
-        super(new SM3DigestImpl(), new SM2Signer(), new StdDSAEncoder());
+        super(new _SM3DigestImpl(), new SM2Signer(), new StdDSAEncoder());
         this.skfEnabled = false;
         this.skfPri = null;
         this.publicKey = null;

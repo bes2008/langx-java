@@ -2,7 +2,7 @@ package com.jn.langx.security.gm.crypto.sm2.internal;
 
 
 import com.jn.langx.codec.hex.Hex;
-import com.jn.langx.security.gm.crypto.sm3.SM3DigestImpl;
+import com.jn.langx.security.gm.crypto.sm3.internal._SM3DigestImpl;
 import com.jn.langx.security.gm.util.MyBigInteger;
 import com.jn.langx.security.gm.util._utils;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
@@ -39,7 +39,7 @@ public class SM2KeyExchangeUtil {
         final ECPoint multiply = ecPublicKey2.getQ().add(ecPoint2.multiply(add2)).multiply(ecPublicKey.getParameters().getH().multiply(mod));
         final BigInteger bigInteger2 = multiply.getX().toBigInteger();
         final BigInteger bigInteger3 = multiply.getY().toBigInteger();
-        final SM3DigestImpl sm3 = new SM3DigestImpl();
+        final _SM3DigestImpl sm3 = new _SM3DigestImpl();
         final byte[] z = __SM2Util.Z(array, ecPublicKey, sm3);
         final byte[] z2 = __SM2Util.Z(array2, ecPublicKey2, sm3);
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -68,7 +68,7 @@ public class SM2KeyExchangeUtil {
         final ECPoint multiply = ecPublicKey2.getQ().add(ecPoint2.multiply(add2)).multiply(ecPublicKey.getParameters().getH().multiply(mod));
         final BigInteger bigInteger2 = multiply.getX().toBigInteger();
         final BigInteger bigInteger3 = multiply.getY().toBigInteger();
-        final SM3DigestImpl sm3 = new SM3DigestImpl();
+        final _SM3DigestImpl sm3 = new _SM3DigestImpl();
         final byte[] z = __SM2Util.Z(array, ecPublicKey, sm3);
         final byte[] z2 = __SM2Util.Z(array2, ecPublicKey2, sm3);
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -109,7 +109,7 @@ public class SM2KeyExchangeUtil {
     }
 
     public static byte[] KDF(final byte[] array, final int n) {
-        final SM3DigestImpl sm3 = new SM3DigestImpl();
+        final _SM3DigestImpl sm3 = new _SM3DigestImpl();
         final int n2 = sm3.getDigestSize() * 8;
         final byte[] array2 = new byte[n / 8];
         int i;
