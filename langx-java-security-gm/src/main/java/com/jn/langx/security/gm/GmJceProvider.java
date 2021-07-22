@@ -31,14 +31,8 @@ public class GmJceProvider extends Provider {
 
     public GmJceProvider() {
         super(NAME, 1.0, INFO);
-        this.put("Cipher.SM4", Reflects.getFQNClassName(SM4EcbBlockCipher.class));
-        this.put("Cipher.SM4/CBC", Reflects.getFQNClassName(SM4CbcBlockCipher.class));
-        this.put("AlgorithmParameters.SM4", Reflects.getFQNClassName(SM4AlgorithmParameters.class));
-        this.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(SM4AlgorithmParameterGeneratorSpi.class));
-        this.put("KeyGenerator.SM4", Reflects.getFQNClassName(SM4KeyGeneratorSpi.class));
+
         this.put("Cipher.SM2", Reflects.getFQNClassName(Sm2Cipher.class));
-        this.put("MessageDigest.SM3", Reflects.getFQNClassName(SM3MessageDigest.class));
-        this.put("Mac.HmacSM3", Reflects.getFQNClassName(HMacWithSM3.class));
         this.put("KeyAgreement.SM2", Reflects.getFQNClassName(SM2KeyAgreement.class));
         this.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM3WithSM2Signature.class));
         this.put("Signature.SM3WithSM2", Reflects.getFQNClassName(SM3WithSM2Signature.class));
@@ -54,5 +48,15 @@ public class GmJceProvider extends Provider {
         this.put("KeyStore.JKS", "sun.security.provider.JavaKeyStore$JKS");
         this.put("KeyStore.PKCS12", Reflects.getFQNClassName(JDKPKCS12KeyStore.BCPKCS12KeyStore.class));
         this.put("CertPathValidator.PKIX", Reflects.getFQNClassName(PKIXCertPathValidatorSpi.class));
+
+        this.put("MessageDigest.SM3", Reflects.getFQNClassName(SM3MessageDigest.class));
+        this.put("Mac.HmacSM3", Reflects.getFQNClassName(HMacWithSM3.class));
+
+        this.put("Cipher.SM4", Reflects.getFQNClassName(SM4EcbBlockCipher.class));
+        this.put("Cipher.SM4/CBC", Reflects.getFQNClassName(SM4CbcBlockCipher.class));
+        this.put("AlgorithmParameters.SM4", Reflects.getFQNClassName(SM4AlgorithmParameters.class));
+        this.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(SM4AlgorithmParameterGeneratorSpi.class));
+        this.put("KeyGenerator.SM4", Reflects.getFQNClassName(SM4KeyGeneratorSpi.class));
+
     }
 }

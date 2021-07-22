@@ -86,9 +86,17 @@ public class Ciphers {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
             if (secureRandom == null) {
-                cipher.init(operateMode, key, parameters);
+                if (parameters != null) {
+                    cipher.init(operateMode, key, parameters);
+                } else {
+                    cipher.init(operateMode, key);
+                }
             } else {
-                cipher.init(operateMode, key, parameters, secureRandom);
+                if (parameters != null) {
+                    cipher.init(operateMode, key, parameters, secureRandom);
+                } else {
+                    cipher.init(operateMode, key, secureRandom);
+                }
             }
             return cipher;
         } catch (Throwable ex) {
@@ -129,12 +137,23 @@ public class Ciphers {
     public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier) {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, true);
     }
+    public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier,@Nullable AlgorithmParameterSpec parameterSpec) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec,true);
+    }
+
 
     public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier) {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, false);
     }
+    public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier,@Nullable AlgorithmParameterSpec parameterSpec) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec,false);
+    }
 
     public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, boolean encrypt) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, null, encrypt);
+    }
+
+    public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable AlgorithmParameterSpec parameterSpec, boolean encrypt) {
         Preconditions.checkNotEmpty(keyBytes, "{} key is empty", algorithm);
         Preconditions.checkArgument(!Emptys.isAllEmpty(algorithm, algorithmTransformation), "the algorithm and algorithmTransformation is empty");
         Preconditions.checkNotNull(keySupplier, "the key supplier is null");
@@ -150,7 +169,7 @@ public class Ciphers {
 
         try {
             Key key = keySupplier.get(keyBytes, algorithm, provider);
-            Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, secureRandom);
+            Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameterSpec, secureRandom);
             return Ciphers.decrypt(cipher, bytes);
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
