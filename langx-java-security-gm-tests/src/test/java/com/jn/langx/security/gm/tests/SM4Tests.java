@@ -4,7 +4,6 @@ import com.jn.langx.security.gm.GmJceProvider;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
-import com.jn.langx.security.gm.crypto.sm4.SM4KeyGenerator;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 

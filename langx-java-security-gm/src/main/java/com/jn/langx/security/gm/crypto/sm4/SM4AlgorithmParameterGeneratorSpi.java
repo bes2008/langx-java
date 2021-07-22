@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
-public class SM4AlgorithmParameterGenerator extends BaseAlgorithmParameterGenerator {
+public class SM4AlgorithmParameterGeneratorSpi extends BaseAlgorithmParameterGenerator {
     protected void engineInit(
             AlgorithmParameterSpec genParamSpec,
             SecureRandom random)

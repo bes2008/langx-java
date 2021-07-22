@@ -34,7 +34,7 @@ public class GmJceProvider extends Provider {
         this.put("Cipher.SM4", Reflects.getFQNClassName(SM4EcbBlockCipher.class));
         this.put("Cipher.SM4/CBC", Reflects.getFQNClassName(SM4CbcBlockCipher.class));
         this.put("AlgorithmParameters.SM4", Reflects.getFQNClassName(SM4AlgorithmParameters.class));
-        this.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(SM4AlgorithmParameterGenerator.class));
+        this.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(SM4AlgorithmParameterGeneratorSpi.class));
         this.put("KeyGenerator.SM4", Reflects.getFQNClassName(SM4KeyGeneratorSpi.class));
         this.put("Cipher.SM2", Reflects.getFQNClassName(Sm2Cipher.class));
         this.put("MessageDigest.SM3", Reflects.getFQNClassName(SM3MessageDigest.class));
