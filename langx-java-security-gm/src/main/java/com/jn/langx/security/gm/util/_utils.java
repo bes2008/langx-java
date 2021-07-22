@@ -34,7 +34,7 @@ public class _utils {
         sm2_OID_SM2_PUBLICKEY = "1.2.840.10045.2.1";
         sm2_OID_SM2_256CURVE = "1.2.156.10197.1.301";
     }
-    public static ECParameterSpec getSM2NamedCuve() {
+    public static ECParameterSpec getSM2NamedCurve() {
         final ECCurve.Fp fp = new ECCurve.Fp(_utils.sm2_p, _utils.sm2_a, _utils.sm2_b);
         return new ECNamedCurveParameterSpec(_utils.sm2_OID_SM2_256CURVE, fp, fp.createPoint(_utils.sm2_xG, _utils.sm2_yG, false), _utils.sm2_n);
     }

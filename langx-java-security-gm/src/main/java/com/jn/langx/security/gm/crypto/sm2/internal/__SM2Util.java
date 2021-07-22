@@ -22,10 +22,10 @@ import java.security.spec.*;
  * @see // cn.gmssl.crypto.impl.sm2
  */
 public class __SM2Util {
-
+    private static final String DEFAULT_SM2_ID = "1234567812345678";
     public static byte[] Z(byte[] bytes, final ECPublicKey ecPublicKey, final Digest digest) {
         if (bytes == null) {
-            bytes = "1234567812345678".getBytes();
+            bytes = DEFAULT_SM2_ID.getBytes();
         }
         final int n = bytes.length * 8;
         final ECCurve curve = ecPublicKey.getParameters().getCurve();
@@ -65,7 +65,7 @@ public class __SM2Util {
 
     public static byte[] Z(byte[] bytes, final ECPublicKey ecPublicKey, final MessageDigest messageDigest) throws Exception {
         if (bytes == null) {
-            bytes = "1234567812345678".getBytes();
+            bytes = DEFAULT_SM2_ID.getBytes();
         }
         final int n = bytes.length * 8;
         final ECCurve curve = ecPublicKey.getParameters().getCurve();
@@ -104,7 +104,7 @@ public class __SM2Util {
 
     public static byte[] Z(byte[] bytes, final java.security.interfaces.ECPublicKey ecPublicKey, final MessageDigest messageDigest) throws Exception {
         if (bytes == null) {
-            bytes = "1234567812345678".getBytes();
+            bytes = DEFAULT_SM2_ID.getBytes();
         }
         final int n = bytes.length * 8;
         final EllipticCurve curve = ecPublicKey.getParams().getCurve();
@@ -166,7 +166,7 @@ public class __SM2Util {
 
     public static byte[] getId(final X509Certificate x509Certificate, final int n) {
         try {
-            return "1234567812345678".getBytes();
+            return DEFAULT_SM2_ID.getBytes();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -177,7 +177,7 @@ public class __SM2Util {
             final Signature instance = Signature.getInstance("SM3withSM2");
             final String name = instance.getProvider().getName();
             if (GmJceProvider.NAME.equals(name)) {
-                instance.setParameter(new SM2ParameterSpec("1234567812345678".getBytes(), publicKey));
+                instance.setParameter(new SM2ParameterSpec(DEFAULT_SM2_ID.getBytes(), publicKey));
             }
             instance.initSign(privateKey);
             return instance;
@@ -190,13 +190,13 @@ public class __SM2Util {
         if (!(publicKey instanceof java.security.interfaces.ECPublicKey)) {
             return (ECPublicKey) publicKey;
         }
-        return (ECPublicKey) KeyFactory.getInstance("SM2", "GMJCE").generatePublic(new ECPublicKeySpec(((java.security.interfaces.ECPublicKey) publicKey).getW(), getStandardECParamSpec()));
+        return (ECPublicKey) KeyFactory.getInstance("SM2", GmJceProvider.NAME).generatePublic(new ECPublicKeySpec(((java.security.interfaces.ECPublicKey) publicKey).getW(), getStandardECParamSpec()));
     }
 
     public static ECPrivateKey toTsgECPrivateKey(final PrivateKey privateKey) throws Exception {
         if (!(privateKey instanceof java.security.interfaces.ECPrivateKey)) {
             return (ECPrivateKey) privateKey;
         }
-        return (ECPrivateKey) KeyFactory.getInstance("SM2", "GMJCE").generatePrivate(new ECPrivateKeySpec(((java.security.interfaces.ECPrivateKey) privateKey).getS(), getStandardECParamSpec()));
+        return (ECPrivateKey) KeyFactory.getInstance("SM2", GmJceProvider.NAME).generatePrivate(new ECPrivateKeySpec(((java.security.interfaces.ECPrivateKey) privateKey).getS(), getStandardECParamSpec()));
     }
 }

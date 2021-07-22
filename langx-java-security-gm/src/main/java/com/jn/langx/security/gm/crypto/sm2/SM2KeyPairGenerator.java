@@ -32,7 +32,7 @@ public class SM2KeyPairGenerator extends KeyPairGeneratorSpi
     private ECKeyPairGenerator engine;
     private String algorithm;
     private boolean initialised;
-    private int strength;
+    private int keySize;
     private AlgorithmParameterSpec params;
     private ProviderConfiguration configuration;
 
@@ -41,18 +41,18 @@ public class SM2KeyPairGenerator extends KeyPairGeneratorSpi
         this.engine = new ECKeyPairGenerator();
         this.algorithm = null;
         this.initialised = false;
-        this.strength = 256;
+        this.keySize = 256;
         this.params = null;
         this.algorithm = "SM2";
         this.configuration = BouncyCastleProvider.CONFIGURATION;
     }
 
     @Override
-    public void initialize(final int strength, final SecureRandom secureRandom) {
-        this.strength = strength;
-        if (strength == 256) {
+    public void initialize(final int keysize, final SecureRandom secureRandom) {
+        this.keySize = keysize;
+        if (keysize == 256) {
             try {
-                this.initialize(_utils.getSM2NamedCuve(), secureRandom);
+                this.initialize(_utils.getSM2NamedCurve(), secureRandom);
                 return;
             }
             catch (InvalidAlgorithmParameterException ex) {
@@ -84,18 +84,14 @@ public class SM2KeyPairGenerator extends KeyPairGeneratorSpi
     @Override
     public KeyPair generateKeyPair() {
         if (!this.initialised) {
-            this.initialize(this.strength, new SecureRandom());
+            this.initialize(this.keySize, new SecureRandom());
         }
         final AsymmetricCipherKeyPair generateKeyPair = this.engine.generateKeyPair();
         final ECPublicKeyParameters ecPublicKeyParameters = (ECPublicKeyParameters)generateKeyPair.getPublic();
         final ECPrivateKeyParameters ecPrivateKeyParameters = (ECPrivateKeyParameters)generateKeyPair.getPrivate();
-        if (this.params instanceof ECParameterSpec) {
-            final ECParameterSpec ecParameterSpec = (ECParameterSpec)this.params;
-            final BCECPublicKey bcecPublicKey = new BCECPublicKey(this.algorithm, ecPublicKeyParameters, ecParameterSpec, this.configuration);
-            return new KeyPair(bcecPublicKey, new BCECPrivateKey(this.algorithm, ecPrivateKeyParameters, bcecPublicKey, ecParameterSpec, this.configuration));
-        }
-        final java.security.spec.ECParameterSpec ecParameterSpec2 = (java.security.spec.ECParameterSpec)this.params;
-        final BCECPublicKey bcecPublicKey2 = new BCECPublicKey(this.algorithm, ecPublicKeyParameters, ecParameterSpec2, this.configuration);
-        return new KeyPair(bcecPublicKey2, new BCECPrivateKey(this.algorithm, ecPrivateKeyParameters, bcecPublicKey2, ecParameterSpec2, this.configuration));
+        java.security.spec.ECParameterSpec parameterSpec = (java.security.spec.ECParameterSpec)this.params;
+        BCECPublicKey bcecPublicKey = new BCECPublicKey(this.algorithm, ecPublicKeyParameters, parameterSpec, this.configuration);
+        BCECPrivateKey privateKey = new BCECPrivateKey(this.algorithm, ecPrivateKeyParameters, bcecPublicKey, parameterSpec, this.configuration);
+        return new KeyPair(bcecPublicKey, privateKey);
     }
 }

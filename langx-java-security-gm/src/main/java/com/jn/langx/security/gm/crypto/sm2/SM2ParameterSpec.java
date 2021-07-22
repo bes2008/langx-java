@@ -10,7 +10,6 @@ public class SM2ParameterSpec implements AlgorithmParameterSpec {
 
     public SM2ParameterSpec(final byte[] id, final PublicKey publicKey) {
         this.id = null;
-        this.publicKey = null;
         this.publicKey = publicKey;
         this.id = id;
     }
