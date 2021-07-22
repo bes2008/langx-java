@@ -18,8 +18,8 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Cipher
@@ -28,10 +28,11 @@ public class Ciphers {
     protected Ciphers() {
     }
 
-    protected static final Map<String, String> algorithmToTransformationMapping = new HashMap<String, String>();
+    protected static final Map<String, String> algorithmToTransformationMapping = new ConcurrentHashMap<String, String>();
 
     static {
         algorithmToTransformationMapping.put("AES", "AES/ECB/PKCS5Padding");
+        algorithmToTransformationMapping.put("SM2", "SM2/ECB/PKCS5Padding");
         algorithmToTransformationMapping.put("SM4", "SM4/ECB/PKCS5Padding");
         algorithmToTransformationMapping.put("RSA", "RSA/ECB/PKCS1Padding");
     }
@@ -40,6 +41,9 @@ public class Ciphers {
         return algorithmToTransformationMapping.get(algorithm);
     }
 
+    public static void addDefaultTransformation(String algorithm, String transformation) {
+        algorithmToTransformationMapping.put(algorithm, transformation);
+    }
 
     public static Cipher createEmptyCipher(@NonNull String algorithmTransformation, @Nullable Provider provider) {
         try {
