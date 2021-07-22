@@ -34,6 +34,6 @@ public class SM4Tests {
                 null,
                 SecureRandom.getInstance("SHA1PRNG")
                 );
-        System.out.println(new String(encryptedBytes));
+        System.out.println(new String(decryptedBytes));
     }
 }
