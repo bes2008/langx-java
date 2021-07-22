@@ -13,7 +13,7 @@ import java.security.spec.ECPrivateKeySpec;
 
 public class EcPrivateKeySpecParser implements PrivateKeySpecParser<ECPrivateKeySpec> {
     @Override
-    public ECPrivateKeySpec get(byte[] derEncodedBytes) {
+    public ECPrivateKeySpec parse(byte[] derEncodedBytes) {
         try {
             DerParser parser = new DerParser(derEncodedBytes);
             DerParser.Asn1Object sequence = parser.readAsn1Object();

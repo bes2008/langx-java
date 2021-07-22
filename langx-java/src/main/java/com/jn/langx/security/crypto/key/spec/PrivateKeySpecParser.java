@@ -1,6 +1,6 @@
 package com.jn.langx.security.crypto.key.spec;
 
-import com.jn.langx.factory.Factory;
+import com.jn.langx.Parser;
 
 import java.security.spec.KeySpec;
 
@@ -17,7 +17,7 @@ import java.security.spec.KeySpec;
  *
  * @param <KS>
  */
-public interface PrivateKeySpecParser<KS extends KeySpec> extends Factory<byte[], KS> {
+public interface PrivateKeySpecParser<KS extends KeySpec> extends Parser<byte[], KS> {
     @Override
-    KS get(byte[] encodedBytes);
+    KS parse(byte[] encodedBytes);
 }

@@ -1,17 +1,7 @@
 package com.jn.langx.security.crypto.cipher;
 
-import com.jn.langx.security.crypto.key.PKIs;
-import com.jn.langx.security.SecurityException;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Throwables;
-
-import javax.crypto.Cipher;
-import java.security.PrivateKey;
 import java.security.Provider;
-import java.security.PublicKey;
 import java.security.SecureRandom;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
 /**
  * 公钥都是 X509的。
@@ -21,37 +11,22 @@ import java.security.spec.X509EncodedKeySpec;
  * pkcs 8 比pkcs 1中的内容更丰富一些。
  * 但两种可以相互转换的。
  */
-public class RSAs {
-    private static final String algorithmTransformation = "RSA/ECB/PKCS1Padding";
+public class RSAs extends Asymmetrics {
 
     public static byte[] encrypt(byte[] bytes, byte[] pubKey) {
-        return encrypt(bytes, pubKey, algorithmTransformation, null, null);
+        return encrypt(bytes, pubKey, null, null, null);
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] pubKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        Preconditions.checkNotEmpty(pubKey, "RSA public key is empty");
-        try {
-            PublicKey publicKey = PKIs.createPublicKey("RSA", provider == null ? null : provider.getName(), new X509EncodedKeySpec(pubKey));
-            Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, Cipher.ENCRYPT_MODE, publicKey, secureRandom);
-            return Ciphers.encrypt(cipher, bytes);
-        } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
-        }
+        return encrypt(bytes, pubKey, "RSA", algorithmTransformation, provider, secureRandom);
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] priKey) {
-        return decrypt(bytes, priKey, algorithmTransformation, null, null);
+        return decrypt(bytes, priKey, null, null, null);
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] priKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        Preconditions.checkNotEmpty(priKey, "RSA private key is empty");
-        try {
-            PrivateKey privateKey = PKIs.createPrivateKey("RSA", provider == null ? null : provider.getName(), new PKCS8EncodedKeySpec(priKey));
-            Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, Cipher.DECRYPT_MODE, privateKey, secureRandom);
-            return Ciphers.decrypt(cipher, bytes);
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
+        return decrypt(bytes, priKey, "RSA", algorithmTransformation, provider, secureRandom);
     }
 
 
@@ -120,8 +95,7 @@ public class RSAs {
     }
 
     /**
-     *
-     * @param pkcs8PrivateKey  符合pkcs#8 标准的 der 格式的 bytes，并且是 未加密的
+     * @param pkcs8PrivateKey 符合pkcs#8 标准的 der 格式的 bytes，并且是 未加密的
      * @return pkcs#1 标准的 der格式的bytes
      */
     public static byte[] pkcs8_to_pkcs1(byte[] pkcs8PrivateKey) {

@@ -5,7 +5,9 @@ import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedKeySupplier;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 
@@ -16,6 +18,8 @@ import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Cipher
@@ -23,6 +27,19 @@ import java.security.spec.AlgorithmParameterSpec;
 public class Ciphers {
     protected Ciphers() {
     }
+
+    protected static final Map<String, String> algorithmToTransformationMapping = new HashMap<String, String>();
+
+    static {
+        algorithmToTransformationMapping.put("AES", "AES/ECB/PKCS5Padding");
+        algorithmToTransformationMapping.put("SM4", "SM4/ECB/PKCS5Padding");
+        algorithmToTransformationMapping.put("RSA", "RSA/ECB/PKCS1Padding");
+    }
+
+    public static String getDefaultTransformation(String algorithm) {
+        return algorithmToTransformationMapping.get(algorithm);
+    }
+
 
     public static Cipher createEmptyCipher(@NonNull String algorithmTransformation, @Nullable Provider provider) {
         try {
@@ -100,6 +117,37 @@ public class Ciphers {
     public static byte[] decrypt(Cipher cipher, byte[] data) {
         try {
             return cipher.doFinal(data);
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, true);
+    }
+
+    public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, false);
+    }
+
+    public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, boolean encrypt) {
+        Preconditions.checkNotEmpty(keyBytes, "{} key is empty", algorithm);
+        Preconditions.checkArgument(!Emptys.isAllEmpty(algorithm, algorithmTransformation), "the algorithm and algorithmTransformation is empty");
+        Preconditions.checkNotNull(keySupplier, "the key supplier is null");
+        if (Emptys.isEmpty(algorithm)) {
+            algorithm = Ciphers.extractAlgorithm(algorithmTransformation);
+        }
+        if (Emptys.isEmpty(algorithmTransformation)) {
+            algorithmTransformation = getDefaultTransformation(algorithm);
+            if (Emptys.isEmpty(algorithmTransformation)) {
+                algorithmTransformation = Ciphers.createAlgorithmTransformation(algorithm, "ECB", "PKCS5Padding");
+            }
+        }
+
+        try {
+            Key key = keySupplier.get(keyBytes, algorithm, provider);
+            Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, secureRandom);
+            return Ciphers.decrypt(cipher, bytes);
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }

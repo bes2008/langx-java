@@ -8,7 +8,7 @@ import java.security.spec.DSAPrivateKeySpec;
 
 public class DsaPrivateKeySpecParser implements PrivateKeySpecParser<DSAPrivateKeySpec> {
     @Override
-    public DSAPrivateKeySpec get(byte[] derEncodedBytes) {
+    public DSAPrivateKeySpec parse(byte[] derEncodedBytes) {
         try {
             DerParser parser = new DerParser(derEncodedBytes);
             DerParser.Asn1Object sequence = parser.readAsn1Object();

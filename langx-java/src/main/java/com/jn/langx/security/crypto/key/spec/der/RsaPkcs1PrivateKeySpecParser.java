@@ -8,7 +8,7 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 
 public class RsaPkcs1PrivateKeySpecParser implements PrivateKeySpecParser<RSAPrivateCrtKeySpec> {
     @Override
-    public RSAPrivateCrtKeySpec get(byte[] derEncodedBytes) {
+    public RSAPrivateCrtKeySpec parse(byte[] derEncodedBytes) {
         try {
             DerParser parser = new DerParser(derEncodedBytes);
             DerParser.Asn1Object sequence = parser.readAsn1Object();

@@ -2,13 +2,13 @@ package com.jn.langx.security.crypto.key.spec.pem;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.registry.GenericRegistry;
-import com.jn.langx.security.crypto.key.spec.der.DerParser;
-import com.jn.langx.security.crypto.key.spec.der.DsaPrivateKeySpecParser;
-import com.jn.langx.security.crypto.key.spec.der.EcPrivateKeySpecParser;
+import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
-import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.crypto.key.spec.der.DerParser;
+import com.jn.langx.security.crypto.key.spec.der.DsaPrivateKeySpecParser;
+import com.jn.langx.security.crypto.key.spec.der.EcPrivateKeySpecParser;
 import com.jn.langx.security.crypto.key.spec.der.RsaPkcs1PrivateKeySpecParser;
 import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
@@ -243,7 +243,7 @@ public class PEMs {
             throw new IOException("Malformed PEM file, PEM footer is invalid or missing");
         }
         byte[] keyBytes = possiblyDecryptPKCS1Key(pemHeaders, sb.toString(), passwordSupplier);
-        ECPrivateKeySpec ecSpec = new EcPrivateKeySpecParser().get(keyBytes);
+        ECPrivateKeySpec ecSpec = new EcPrivateKeySpecParser().parse(keyBytes);
         return PKIs.createPrivateKey("EC", null, ecSpec);
     }
 
@@ -281,7 +281,7 @@ public class PEMs {
             throw new IOException("Malformed PEM file, PEM footer is invalid or missing");
         }
         byte[] keyBytes = possiblyDecryptPKCS1Key(pemHeaders, sb.toString(), passwordSupplier);
-        RSAPrivateCrtKeySpec spec = new RsaPkcs1PrivateKeySpecParser().get(keyBytes);
+        RSAPrivateCrtKeySpec spec = new RsaPkcs1PrivateKeySpecParser().parse(keyBytes);
         return PKIs.createPrivateKey("RSA", null, spec);
     }
 
@@ -319,7 +319,7 @@ public class PEMs {
             throw new IOException("Malformed PEM file, PEM footer is invalid or missing");
         }
         byte[] keyBytes = possiblyDecryptPKCS1Key(pemHeaders, sb.toString(), passwordSupplier);
-        DSAPrivateKeySpec spec = new DsaPrivateKeySpecParser().get(keyBytes);
+        DSAPrivateKeySpec spec = new DsaPrivateKeySpecParser().parse(keyBytes);
         return PKIs.createPrivateKey("DSA", null, spec);
     }
 
