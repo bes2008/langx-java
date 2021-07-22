@@ -175,8 +175,8 @@ public class PKIs {
         }
     }
 
-    public static SecretKey createSecretKey(@NotEmpty String algorithm, byte[] password) {
-        return new SecretKeySpec(password, algorithm);
+    public static SecretKey createSecretKey(@NotEmpty String algorithm, byte[] bytes) {
+        return new SecretKeySpec(bytes, algorithm);
     }
 
     public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @Nullable Integer keyLength, @Nullable SecureRandom secureRandom) {

@@ -1,7 +1,7 @@
 package com.jn.langx.security.gm.crypto.sm2.internal;
 
 
-import com.jn.langx.security.GmJceProvider;
+import com.jn.langx.security.gm.GmJceProvider;
 import com.jn.langx.security.crypto.digest.internal.impl._SM3Digest;
 import com.jn.langx.security.gm.crypto.sm2.SM2ParameterSpec;
 import com.jn.langx.security.gm.util._utils;

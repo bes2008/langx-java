@@ -1,6 +1,6 @@
 package com.jn.langx.security.gm.crypto.sm2;
 
-import com.jn.langx.security.GmJceProvider;
+import com.jn.langx.security.gm.GmJceProvider;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedKeySupplier;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;

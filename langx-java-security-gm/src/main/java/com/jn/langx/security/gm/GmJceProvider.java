@@ -1,4 +1,4 @@
-package com.jn.langx.security;
+package com.jn.langx.security.gm;
 
 import com.jn.langx.security.gm.crypto.sm2.Sm2Cipher;
 import com.jn.langx.security.gm.crypto.sm2.SM2KeyPairGenerator;
@@ -7,8 +7,7 @@ import com.jn.langx.security.gm.crypto.sm2.SM2KeyAgreement;
 import com.jn.langx.security.gm.crypto.sm2.SM3WithSM2Signature;
 import com.jn.langx.security.gm.crypto.sm3.HMacWithSM3;
 import com.jn.langx.security.gm.crypto.sm3.SM3MessageDigest;
-import com.jn.langx.security.gm.crypto.sm4.SM4CbcBlockCipher;
-import com.jn.langx.security.gm.crypto.sm4.SM4EcbBlockCipher;
+import com.jn.langx.security.gm.crypto.sm4.*;
 import com.jn.langx.util.reflect.Reflects;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyPairGeneratorSpi;
@@ -34,6 +33,9 @@ public class GmJceProvider extends Provider {
         super(NAME, 1.0, INFO);
         this.put("Cipher.SM4", Reflects.getFQNClassName(SM4EcbBlockCipher.class));
         this.put("Cipher.SM4/CBC", Reflects.getFQNClassName(SM4CbcBlockCipher.class));
+        this.put("AlgorithmParameters.SM4", Reflects.getFQNClassName(SM4AlgorithmParameters.class));
+        this.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(SM4AlgorithmParameterGenerator.class));
+        this.put("KeyGenerator.SM4", Reflects.getFQNClassName(SM4KeyGenerator.class));
         this.put("Cipher.SM2", Reflects.getFQNClassName(Sm2Cipher.class));
         this.put("MessageDigest.SM3", Reflects.getFQNClassName(SM3MessageDigest.class));
         this.put("Mac.HmacSM3", Reflects.getFQNClassName(HMacWithSM3.class));
