@@ -13,7 +13,7 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Symmetrics {
+public class Symmetrics extends Ciphers{
     private static final Map<String, String> algorithmToTransformationMapping = new HashMap<String, String>();
 
     static {

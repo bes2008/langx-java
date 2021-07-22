@@ -21,6 +21,9 @@ import java.security.spec.AlgorithmParameterSpec;
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Cipher
  */
 public class Ciphers {
+    protected Ciphers() {
+    }
+
     public static Cipher createEmptyCipher(@NonNull String algorithmTransformation, @Nullable Provider provider) {
         try {
             Cipher cipher = provider == null ? Cipher.getInstance(algorithmTransformation) : Cipher.getInstance(algorithmTransformation, provider);
@@ -131,10 +134,10 @@ public class Ciphers {
         return StringTemplates.formatWithPlaceholder("{}/{}/{}", algorithm, mode, padding);
     }
 
-    public static String extractAlgorithm(String transformation){
+    public static String extractAlgorithm(String transformation) {
         Preconditions.checkNotEmpty(transformation, "the cipher algorithm transformation is null or empty");
-        String[] segments = Strings.split(transformation,"/");
-        Preconditions.checkNotEmpty(segments,"invalid transformation: {}", transformation);
+        String[] segments = Strings.split(transformation, "/");
+        Preconditions.checkNotEmpty(segments, "invalid transformation: {}", transformation);
         return segments[0];
     }
 }
