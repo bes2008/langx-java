@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto;
+package com.jn.langx.security.gm.crypto.digest;
 
 import org.bouncycastle.crypto.digests.GeneralDigest;
 import org.bouncycastle.util.Memoable;

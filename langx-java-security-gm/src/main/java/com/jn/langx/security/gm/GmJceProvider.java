@@ -1,7 +1,7 @@
 package com.jn.langx.security.gm;
 
-import com.jn.langx.security.gm.crypto.SM2CipherSpi;
-import com.jn.langx.security.gm.crypto.SM2KeyFactorySpi;
+import com.jn.langx.security.gm.crypto.asymmetric.sm2.SM2CipherSpi;
+import com.jn.langx.security.gm.crypto.asymmetric.sm2.SM2KeyFactorySpi;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;

@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto;
+package com.jn.langx.security.gm.crypto.asymmetric.sm2;
 
 import com.jn.langx.util.Throwables;
 import org.bouncycastle.crypto.engines.SM2Engine;

@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto;
+package com.jn.langx.security.gm.crypto.asymmetric.sm2;
 
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 
