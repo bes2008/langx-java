@@ -32,7 +32,7 @@ public class Ciphers {
 
     static {
         algorithmToTransformationMapping.put("AES", "AES/ECB/PKCS5Padding");
-        algorithmToTransformationMapping.put("SM2", "SM2/ECB/PKCS7Padding");
+        algorithmToTransformationMapping.put("SM2", "SM2");
         algorithmToTransformationMapping.put("SM4", "SM4/ECB/PKCS5Padding");
         algorithmToTransformationMapping.put("RSA", "RSA/ECB/PKCS1Padding");
     }
@@ -137,16 +137,18 @@ public class Ciphers {
     public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier) {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, true);
     }
-    public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier,@Nullable AlgorithmParameterSpec parameterSpec) {
-        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec,true);
+
+    public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable AlgorithmParameterSpec parameterSpec) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec, true);
     }
 
 
     public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier) {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, false);
     }
-    public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier,@Nullable AlgorithmParameterSpec parameterSpec) {
-        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec,false);
+
+    public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable AlgorithmParameterSpec parameterSpec) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec, false);
     }
 
     public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, boolean encrypt) {
@@ -214,20 +216,24 @@ public class Ciphers {
 
     /**
      * 获取用于密钥生成的算法<br>
-     * 获取XXXwithXXX算法的后半部分算法，如果为ECDSA或SM2，返回算法为EC
+     * 获取XXXwithXXX算法的后半部分算法，如果为ECDSA，返回算法为EC
+     *
      * @param algorithm XXXwithXXX算法
      * @return 算法
      */
     public static String getAlgorithmAfterWith(String algorithm) {
         Preconditions.checkNotNull(algorithm, "algorithm must be not null !");
-        if(algorithm.contains("SM2") || algorithm.contains("EC")) {
+        if (algorithm.contains("SM2") || algorithm.contains("EC")) {
             int indexOfWith = Strings.lastIndexOfIgnoreCase(algorithm, "with");
             if (indexOfWith > 0) {
                 algorithm = Strings.substring(algorithm, indexOfWith + "with".length());
             }
         }
-        if ("ECDSA".equalsIgnoreCase(algorithm) || "SM2".equalsIgnoreCase(algorithm)) {
+        if ("ECDSA".equalsIgnoreCase(algorithm)) {
             algorithm = "EC";
+        }
+        if ("SM2".equalsIgnoreCase(algorithm)) {
+            algorithm = "SM2";
         }
         return algorithm;
     }

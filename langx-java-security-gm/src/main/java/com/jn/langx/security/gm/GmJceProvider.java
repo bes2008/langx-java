@@ -1,9 +1,11 @@
 package com.jn.langx.security.gm;
 
-import com.jn.langx.security.gm.crypto.SM2EcbBlockCipherSpi;
+import com.jn.langx.security.gm.crypto.SM2CipherSpi;
+import com.jn.langx.security.gm.crypto.SM2KeyFactorySpi;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.AlgorithmParametersSpi;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyPairGeneratorSpi;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -27,15 +29,20 @@ public class GmJceProvider extends Provider {
         super(NAME, 1.0, INFO);
         Map<String, String> map = new HashMap<String,String>();
 
-        map.put("Cipher.SM2", Reflects.getFQNClassName(SM2EcbBlockCipherSpi.class));
+        // map.put("KeyAgreement.SM2", Reflects.getFQNClassName(KeyAgreementSpi.class));
+        // map.put("Cipher.SM2", Reflects.getFQNClassName(SM2EcbBlockCipherSpi.class));
         //    this.put("KeyAgreement.SM2", Reflects.getFQNClassName(SM2KeyAgreement.class));
         //    this.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM3WithSM2Signature.class));
         //    this.put("Signature.SM3WithSM2", Reflects.getFQNClassName(SM3WithSM2Signature.class));
         //    this.put("Signature.NoneWithSM2", Reflects.getFQNClassName(NoneWithSM2Signature.class));
+        map.put("Cipher.SM2", Reflects.getFQNClassName(SM2CipherSpi.class));
+        map.put("AlgorithmParameters.SM2", Reflects.getFQNClassName(AlgorithmParametersSpi.class));
         map.put("KeyFactory.ECDSA", Reflects.getFQNClassName(KeyFactorySpi.ECDSA.class));
         map.put("KeyFactory.EC", Reflects.getFQNClassName(KeyFactorySpi.EC.class));
-        map.put("Alg.Alias.KeyFactory.SM2", "EC");
-        map.put("Alg.Alias.KeyFactory.1.2.840.10045.2.1", "EC");
+        map.put("KeyFactory.SM2", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
+        map.put("KeyFactory.1.2.840.10045.2.1", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
+        //map.put("Alg.Alias.KeyFactory.SM2", "EC");
+        //map.put("Alg.Alias.KeyFactory.1.2.840.10045.2.1", "EC");
         map.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(KeyPairGeneratorSpi.EC.class));
         Collects.forEach(map, new Consumer2<String, String>() {
             @Override
