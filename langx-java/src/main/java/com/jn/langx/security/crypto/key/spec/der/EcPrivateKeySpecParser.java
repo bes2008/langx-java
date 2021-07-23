@@ -11,6 +11,23 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPrivateKeySpec;
 
+/**
+ *
+ * Key-Length:
+ * 192-bit (curve secp192r1),
+ * 233-bit (curve sect233k1),
+ * 224-bit (curve secp224k1),
+ * 256-bit (curves secp256k1 and Curve25519),
+ * 283-bit (curve sect283k1),
+ * 384-bit (curves p384 and secp384r1),
+ * 409-bit (curve sect409r1),
+ * 414-bit (curve Curve41417),
+ * 448-bit (curve Curve448-Goldilocks),
+ * 511-bit (curve M-511),
+ * 521-bit (curve P-521),
+ * 571-bit (curve sect571k1)
+ * and many others.
+ */
 public class EcPrivateKeySpecParser implements PrivateKeySpecParser<ECPrivateKeySpec> {
     @Override
     public ECPrivateKeySpec parse(byte[] derEncodedBytes) {

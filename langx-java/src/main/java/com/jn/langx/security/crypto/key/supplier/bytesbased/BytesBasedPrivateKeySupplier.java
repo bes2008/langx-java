@@ -3,6 +3,7 @@ package com.jn.langx.security.crypto.key.supplier.bytesbased;
 import com.jn.langx.Parser;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.spec.der.DsaPrivateKeySpecParser;
 import com.jn.langx.security.crypto.key.spec.der.EcPrivateKeySpecParser;
@@ -39,7 +40,8 @@ public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<Priva
 
     @Override
     public PrivateKey get(@NonNull final byte[] bytes, @NonNull final String algorithm, @Nullable Provider provider) {
-        Collection<Parser<byte[], ? extends KeySpec>> parsers = keySpecParsers.get(algorithm);
+        String _algorithm = Asymmetrics.getAlgorithmAfterWith(algorithm);
+        Collection<Parser<byte[], ? extends KeySpec>> parsers = keySpecParsers.get(_algorithm);
         final Holder<KeySpec> keySpecHolder = new Holder<KeySpec>();
         Pipeline.of(parsers)
                 .add(Pkcs8PrivateKeySpecParser.INSTANCE)
@@ -49,10 +51,10 @@ public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<Priva
                         KeySpec keySpec = null;
                         try {
                             keySpec = parser.parse(bytes);
-                            if(keySpec!=null){
+                            if (keySpec != null) {
                                 keySpecHolder.set(keySpec);
                             }
-                        }catch (Throwable ex){
+                        } catch (Throwable ex) {
                             logger.warn(ex.getMessage(), ex);
                         }
                     }
@@ -62,8 +64,8 @@ public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<Priva
                         return !keySpecHolder.isNull();
                     }
                 });
-        if(!keySpecHolder.isNull()){
-            PrivateKey privateKey = PKIs.createPrivateKey(algorithm, provider == null ? null : provider.getName(), keySpecHolder.get());
+        if (!keySpecHolder.isNull()) {
+            PrivateKey privateKey = PKIs.createPrivateKey(_algorithm, provider == null ? null : provider.getName(), keySpecHolder.get());
             return privateKey;
         }
         return null;

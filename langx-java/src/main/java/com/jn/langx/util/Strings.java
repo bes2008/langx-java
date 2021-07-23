@@ -2309,6 +2309,119 @@ public class Strings {
         return str.substring(offset);
     }
 
+    /**
+     * <p>Gets a substring from the specified String avoiding exceptions.</p>
+     *
+     * <p>A negative start position can be used to start {@code n}
+     * characters from the end of the String.</p>
+     *
+     * <p>A {@code null} String will return {@code null}.
+     * An empty ("") String will return "".</p>
+     *
+     * <pre>
+     * StringUtils.substring(null, *)   = null
+     * StringUtils.substring("", *)     = ""
+     * StringUtils.substring("abc", 0)  = "abc"
+     * StringUtils.substring("abc", 2)  = "c"
+     * StringUtils.substring("abc", 4)  = ""
+     * StringUtils.substring("abc", -2) = "bc"
+     * StringUtils.substring("abc", -4) = "abc"
+     * </pre>
+     *
+     * @param str  the String to get the substring from, may be null
+     * @param start  the position to start from, negative means
+     *  count back from the end of the String by this many characters
+     * @return substring from start position, {@code null} if null String input
+     */
+    public static String substring(final String str, int start) {
+        if (str == null) {
+            return null;
+        }
+
+        // handle negatives, which means last n characters
+        if (start < 0) {
+            start = str.length() + start; // remember start is negative
+        }
+
+        if (start < 0) {
+            start = 0;
+        }
+        if (start > str.length()) {
+            return EMPTY;
+        }
+
+        return str.substring(start);
+    }
+
+    /**
+     * <p>Gets a substring from the specified String avoiding exceptions.</p>
+     *
+     * <p>A negative start position can be used to start/end {@code n}
+     * characters from the end of the String.</p>
+     *
+     * <p>The returned substring starts with the character in the {@code start}
+     * position and ends before the {@code end} position. All position counting is
+     * zero-based -- i.e., to start at the beginning of the string use
+     * {@code start = 0}. Negative start and end positions can be used to
+     * specify offsets relative to the end of the String.</p>
+     *
+     * <p>If {@code start} is not strictly to the left of {@code end}, ""
+     * is returned.</p>
+     *
+     * <pre>
+     * StringUtils.substring(null, *, *)    = null
+     * StringUtils.substring("", * ,  *)    = "";
+     * StringUtils.substring("abc", 0, 2)   = "ab"
+     * StringUtils.substring("abc", 2, 0)   = ""
+     * StringUtils.substring("abc", 2, 4)   = "c"
+     * StringUtils.substring("abc", 4, 6)   = ""
+     * StringUtils.substring("abc", 2, 2)   = ""
+     * StringUtils.substring("abc", -2, -1) = "b"
+     * StringUtils.substring("abc", -4, 2)  = "ab"
+     * </pre>
+     *
+     * @param str  the String to get the substring from, may be null
+     * @param start  the position to start from, negative means
+     *  count back from the end of the String by this many characters
+     * @param end  the position to end at (exclusive), negative means
+     *  count back from the end of the String by this many characters
+     * @return substring from start position to end position,
+     *  {@code null} if null String input
+     */
+    public static String substring(final String str, int start, int end) {
+        if (str == null) {
+            return null;
+        }
+
+        // handle negatives
+        if (end < 0) {
+            end = str.length() + end; // remember end is negative
+        }
+        if (start < 0) {
+            start = str.length() + start; // remember start is negative
+        }
+
+        // check length next
+        if (end > str.length()) {
+            end = str.length();
+        }
+
+        // if start is greater than end, return ""
+        if (start > end) {
+            return EMPTY;
+        }
+
+        if (start < 0) {
+            start = 0;
+        }
+        if (end < 0) {
+            end = 0;
+        }
+
+        return str.substring(start, end);
+    }
+
+
     // Stripping
     //-----------------------------------------------------------------------
 
@@ -3250,6 +3363,92 @@ public class Strings {
      */
     public static int lastIndexOf(final CharSequence cs, final CharSequence searchChar, final int start) {
         return cs.toString().lastIndexOf(searchChar.toString(), start);
+    }
+
+    /**
+     * <p>Case in-sensitive find of the last index within a CharSequence.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code -1}.
+     * A negative start position returns {@code -1}.
+     * An empty ("") search CharSequence always matches unless the start position is negative.
+     * A start position greater than the string length searches the whole string.</p>
+     *
+     * <pre>
+     * StringUtils.lastIndexOfIgnoreCase(null, *)          = -1
+     * StringUtils.lastIndexOfIgnoreCase(*, null)          = -1
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "A")  = 7
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "B")  = 5
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "AB") = 4
+     * </pre>
+     *
+     * @param str  the CharSequence to check, may be null
+     * @param searchStr  the CharSequence to find, may be null
+     * @return the first index of the search CharSequence,
+     *  -1 if no match or {@code null} string input
+     * @since 2.5
+     * @since 3.0 Changed signature from lastIndexOfIgnoreCase(String, String) to lastIndexOfIgnoreCase(CharSequence, CharSequence)
+     */
+    public static int lastIndexOfIgnoreCase(final CharSequence str, final CharSequence searchStr) {
+        if (str == null || searchStr == null) {
+            return INDEX_NOT_FOUND;
+        }
+        return lastIndexOfIgnoreCase(str, searchStr, str.length());
+    }
+
+    /**
+     * <p>Case in-sensitive find of the last index within a CharSequence
+     * from the specified position.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code -1}.
+     * A negative start position returns {@code -1}.
+     * An empty ("") search CharSequence always matches unless the start position is negative.
+     * A start position greater than the string length searches the whole string.
+     * The search starts at the startPos and works backwards; matches starting after the start
+     * position are ignored.
+     * </p>
+     *
+     * <pre>
+     * StringUtils.lastIndexOfIgnoreCase(null, *, *)          = -1
+     * StringUtils.lastIndexOfIgnoreCase(*, null, *)          = -1
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "A", 8)  = 7
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "B", 8)  = 5
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "AB", 8) = 4
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "B", 9)  = 5
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "B", -1) = -1
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "A", 0)  = 0
+     * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "B", 0)  = -1
+     * </pre>
+     *
+     * @param str  the CharSequence to check, may be null
+     * @param searchStr  the CharSequence to find, may be null
+     * @param startPos  the start position
+     * @return the last index of the search CharSequence (always &le; startPos),
+     *  -1 if no match or {@code null} input
+     * @since 2.5
+     * @since 3.0 Changed signature from lastIndexOfIgnoreCase(String, String, int) to lastIndexOfIgnoreCase(CharSequence, CharSequence, int)
+     */
+    public static int lastIndexOfIgnoreCase(final CharSequence str, final CharSequence searchStr, int startPos) {
+        if (str == null || searchStr == null) {
+            return INDEX_NOT_FOUND;
+        }
+        final int searchStrLength = searchStr.length();
+        final int strLength = str.length();
+        if (startPos > strLength - searchStrLength) {
+            startPos = strLength - searchStrLength;
+        }
+        if (startPos < 0) {
+            return INDEX_NOT_FOUND;
+        }
+        if (searchStrLength == 0) {
+            return startPos;
+        }
+
+        for (int i = startPos; i >= 0; i--) {
+            if (regionMatches(str, true, i, searchStr, 0, searchStrLength)) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
     }
 
     /**
