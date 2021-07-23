@@ -3,7 +3,6 @@ package com.jn.langx.security.gm.tests;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.gm.GmJceProvider;
 import com.jn.langx.security.gm.crypto.symmetric.sm4.SM4s;
-import com.jn.langx.security.gm.crypto.symmetric.sm4._sm4;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
@@ -37,9 +36,6 @@ public class SM4Tests {
             }
         });
 
-        String encryptedString = _sm4.encryptCbcDataTimes(string, "2", 1);
-        String decryptedString = _sm4.decryptCbcDataTimes(encryptedString, "2", 1);
-        System.out.println(decryptedString);
 
         SecretKey sm4key = PKIs.createSecretKey("SM4", (String) null, 128, null);
 
