@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.util;
+package com.jn.langx.security.bc.util;
 
 import java.math.BigInteger;
 import java.util.Random;

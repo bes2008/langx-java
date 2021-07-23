@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.symmetric.sm4;
+package com.jn.langx.security.bc.crypto.symmetric.sm4;
 
 
 import com.jn.langx.codec.base64.Base64;

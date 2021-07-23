@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto.asymmetric.sm2;
+package com.jn.langx.security.bc.crypto.asymmetric.sm2;
 
 import com.jn.langx.util.Throwables;
 import org.bouncycastle.crypto.engines.SM2Engine;
@@ -67,13 +67,10 @@ public class SM2CipherSpi extends BaseCipherSpi {
         throw new UnsupportedOperationException();
     }
 
-
-    @Override
     protected void engineUpdateAAD(byte[] bytes, int i, int i1) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
     protected void engineUpdateAAD(ByteBuffer byteBuffer) {
         throw new UnsupportedOperationException();
     }

@@ -1,12 +1,12 @@
-package com.jn.langx.security.gm.crypto.asymmetric.sm2;
+package com.jn.langx.security.bc.crypto.asymmetric.sm2;
 
+import com.jn.langx.util.reflect.Reflects;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.CryptoException;
 import org.bouncycastle.crypto.params.ParametersWithID;
 import org.bouncycastle.crypto.params.ParametersWithRandom;
 import org.bouncycastle.crypto.signers.SM2Signer;
 import org.bouncycastle.jcajce.provider.asymmetric.util.ECUtil;
-import org.bouncycastle.jcajce.spec.SM2ParameterSpec;
 import org.bouncycastle.jcajce.util.BCJcaJceHelper;
 import org.bouncycastle.jcajce.util.JcaJceHelper;
 
@@ -17,7 +17,7 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
     private final JcaJceHelper helper = new BCJcaJceHelper();
 
     private AlgorithmParameters engineParams;
-    private SM2ParameterSpec paramSpec;
+    private AlgorithmParameterSpec paramSpec;
 
     private final SM2Signer signer;
 
@@ -25,12 +25,12 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         this.signer = signer;
     }
 
-    protected void engineInitVerify(PublicKey publicKey)
-            throws InvalidKeyException {
+    protected void engineInitVerify(PublicKey publicKey) throws InvalidKeyException {
         CipherParameters param = ECUtil.generatePublicKeyParameter(publicKey);
 
         if (paramSpec != null) {
-            param = new ParametersWithID(param, paramSpec.getID());
+            byte[] id = extractId();
+            param = new ParametersWithID(param, id);
         }
 
         signer.init(false, param);
@@ -46,10 +46,25 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         }
 
         if (paramSpec != null) {
-            signer.init(true, new ParametersWithID(param, paramSpec.getID()));
+            byte[] id = extractId();
+            signer.init(true, new ParametersWithID(param, id));
         } else {
             signer.init(true, param);
         }
+    }
+
+    private byte[] extractId() {
+        byte[] id = null;
+        if (paramSpec != null) {
+
+            if (paramSpec instanceof IDGetter) {
+                id = ((IDGetter) paramSpec).getID();
+            } else if (Reflects.getFQNClassName(paramSpec.getClass()).equals("org.bouncycastle.jcajce.spec.SM2ParameterSpec")) {
+                id = Reflects.invokeAnyMethod(paramSpec, "getID", new Class[0], new Object[0], true, true);
+            }
+
+        }
+        return id;
     }
 
     protected void engineUpdate(byte b)
@@ -76,11 +91,13 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         return signer.verifySignature(bytes);
     }
 
-    protected void engineSetParameter(
-            AlgorithmParameterSpec params)
-            throws InvalidAlgorithmParameterException {
+    protected void engineSetParameter(AlgorithmParameterSpec params) throws InvalidAlgorithmParameterException {
         if (params instanceof SM2ParameterSpec) {
-            paramSpec = (SM2ParameterSpec) params;
+            paramSpec = params;
+        } else if (params instanceof IDGetter) {
+            paramSpec = params;
+        } else if (paramSpec != null && Reflects.getFQNClassName(paramSpec.getClass()).equals("org.bouncycastle.jcajce.spec.SM2ParameterSpec")) {
+            paramSpec = params;
         } else {
             throw new InvalidAlgorithmParameterException("only SM2ParameterSpec supported");
         }
