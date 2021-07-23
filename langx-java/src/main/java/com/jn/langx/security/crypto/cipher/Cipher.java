@@ -2,7 +2,7 @@ package com.jn.langx.security.crypto.cipher;
 
 import com.jn.langx.security.SecurityException;
 
-public interface Cipherer<ORIGIN, ENCRYPTED> {
+public interface Cipher<ORIGIN, ENCRYPTED> {
 
     ENCRYPTED encrypt(ORIGIN text);
 

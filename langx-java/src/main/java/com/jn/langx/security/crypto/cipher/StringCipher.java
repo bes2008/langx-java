@@ -1,6 +1,6 @@
 package com.jn.langx.security.crypto.cipher;
 
-public interface StringCipherer extends Cipherer<String, String> {
+public interface StringCipher extends Cipher<String, String> {
     @Override
     String encrypt(String text);
 
