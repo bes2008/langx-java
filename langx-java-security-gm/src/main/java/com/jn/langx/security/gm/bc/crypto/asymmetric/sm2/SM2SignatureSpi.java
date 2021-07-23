@@ -1,4 +1,4 @@
-package com.jn.langx.security.bc.crypto.asymmetric.sm2;
+package com.jn.langx.security.gm.bc.crypto.asymmetric.sm2;
 
 import com.jn.langx.util.reflect.Reflects;
 import org.bouncycastle.crypto.CipherParameters;

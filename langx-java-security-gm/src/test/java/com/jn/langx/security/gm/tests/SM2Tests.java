@@ -4,7 +4,7 @@ import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
-import com.jn.langx.security.bc.GmBCInitializer;
+import com.jn.langx.security.gm.bc.GmBCInitializer;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
