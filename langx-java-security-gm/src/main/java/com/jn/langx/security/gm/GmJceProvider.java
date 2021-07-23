@@ -1,6 +1,6 @@
 package com.jn.langx.security.gm;
 
-import com.jn.langx.security.gm.crypto.SM2EcbBlockCipher;
+import com.jn.langx.security.gm.crypto.SM2EcbBlockCipherSpi;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;
@@ -27,7 +27,7 @@ public class GmJceProvider extends Provider {
         super(NAME, 1.0, INFO);
         Map<String, String> map = new HashMap<String,String>();
 
-        map.put("Cipher.SM2", Reflects.getFQNClassName(SM2EcbBlockCipher.class));
+        map.put("Cipher.SM2", Reflects.getFQNClassName(SM2EcbBlockCipherSpi.class));
         //    this.put("KeyAgreement.SM2", Reflects.getFQNClassName(SM2KeyAgreement.class));
         //    this.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM3WithSM2Signature.class));
         //    this.put("Signature.SM3WithSM2", Reflects.getFQNClassName(SM3WithSM2Signature.class));

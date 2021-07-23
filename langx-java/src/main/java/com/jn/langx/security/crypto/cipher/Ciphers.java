@@ -211,4 +211,25 @@ public class Ciphers {
         Preconditions.checkNotEmpty(segments, "invalid transformation: {}", transformation);
         return segments[0];
     }
+
+    /**
+     * 获取用于密钥生成的算法<br>
+     * 获取XXXwithXXX算法的后半部分算法，如果为ECDSA或SM2，返回算法为EC
+     * @param algorithm XXXwithXXX算法
+     * @return 算法
+     */
+    public static String getAlgorithmAfterWith(String algorithm) {
+        Preconditions.checkNotNull(algorithm, "algorithm must be not null !");
+        if(algorithm.contains("SM2") || algorithm.contains("EC")) {
+            int indexOfWith = Strings.lastIndexOfIgnoreCase(algorithm, "with");
+            if (indexOfWith > 0) {
+                algorithm = Strings.substring(algorithm, indexOfWith + "with".length());
+            }
+        }
+        if ("ECDSA".equalsIgnoreCase(algorithm) || "SM2".equalsIgnoreCase(algorithm)) {
+            algorithm = "EC";
+        }
+        return algorithm;
+    }
+
 }
