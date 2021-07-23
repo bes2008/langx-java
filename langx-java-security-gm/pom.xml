@@ -13,6 +13,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+            <version>5.7.5</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
             <artifactId>langx-java</artifactId>
         </dependency>
