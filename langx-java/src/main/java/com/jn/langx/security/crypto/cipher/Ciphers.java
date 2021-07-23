@@ -12,10 +12,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 
 import javax.crypto.Cipher;
-import java.security.AlgorithmParameters;
-import java.security.Key;
-import java.security.Provider;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Map;
@@ -142,6 +139,19 @@ public class Ciphers {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec, true);
     }
 
+    public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
+        return encrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+            @Override
+            public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+                return parameters;
+            }
+        });
+    }
+
+    public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable AlgorithmParameterSupplier parameterSupplier) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSupplier, true);
+    }
+
 
     public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier) {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, false);
@@ -151,11 +161,35 @@ public class Ciphers {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec, false);
     }
 
-    public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, boolean encrypt) {
-        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, null, encrypt);
+    public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
+        return decrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+            @Override
+            public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+                return parameters;
+            }
+        });
     }
 
-    public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable AlgorithmParameterSpec parameterSpec, boolean encrypt) {
+
+    public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameterSupplier parameterSupplier) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSupplier, false);
+    }
+
+
+    public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, boolean encrypt) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, (AlgorithmParameterSpec) null, encrypt);
+    }
+
+    public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameterSpec parameterSpec, boolean encrypt) {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+            @Override
+            public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+                return parameterSpec;
+            }
+        }, encrypt);
+    }
+
+    public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable AlgorithmParameterSupplier parameterSupplier, boolean encrypt) {
         Preconditions.checkNotEmpty(keyBytes, "{} key is empty", algorithm);
         Preconditions.checkArgument(!Emptys.isAllEmpty(algorithm, algorithmTransformation), "the algorithm and algorithmTransformation is empty");
         Preconditions.checkNotNull(keySupplier, "the key supplier is null");
@@ -168,10 +202,37 @@ public class Ciphers {
                 algorithmTransformation = Ciphers.createAlgorithmTransformation(algorithm, "ECB", "PKCS5Padding");
             }
         }
-
+        AlgorithmParameterSpec parameterSpec = null;
+        AlgorithmParameters parameters = null;
+        Object parameter = null;
+        if (parameterSupplier != null) {
+            parameter = parameterSupplier.get(algorithm, algorithmTransformation, provider, secureRandom);
+            if (parameter != null) {
+                if (parameter instanceof AlgorithmParameterSpec) {
+                    parameterSpec = (AlgorithmParameterSpec) parameter;
+                } else if (parameter instanceof AlgorithmParameters) {
+                    parameters = (AlgorithmParameters) parameter;
+                } else if (parameter instanceof AlgorithmParameterGenerator) {
+                    AlgorithmParameterGenerator parameterGenerator = (AlgorithmParameterGenerator) parameter;
+                    parameters = parameterGenerator.generateParameters();
+                }
+            }
+        }
+        if (parameterSpec == null && parameters == null && provider != null) {
+            try {
+                parameters = AlgorithmParameters.getInstance(algorithm, provider);
+            } catch (NoSuchAlgorithmException ex) {
+                // ignore it
+            }
+        }
         try {
             Key key = keySupplier.get(keyBytes, algorithm, provider);
-            Cipher cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameterSpec, secureRandom);
+            Cipher cipher = null;
+            if (parameters != null) {
+                cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameters, secureRandom);
+            } else {
+                cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameterSpec, secureRandom);
+            }
             return Ciphers.decrypt(cipher, bytes);
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);

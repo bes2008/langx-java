@@ -1,8 +1,10 @@
 package com.jn.langx.security.gm.tests;
 
+import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
 import com.jn.langx.security.gm.GmJceProvider;
-import com.jn.langx.security.gm.crypto.symmetric.sm4.SM4s;
+import com.jn.langx.security.gm.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
@@ -11,6 +13,8 @@ import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
 import javax.crypto.SecretKey;
+import java.security.Provider;
+import java.security.SecureRandom;
 
 
 public class SM4Tests {
@@ -39,16 +43,23 @@ public class SM4Tests {
 
         SecretKey sm4key = PKIs.createSecretKey("SM4", (String) null, 128, null);
 
-        byte[] encryptedBytes = SM4s.encrypt(string.getBytes(Charsets.UTF_8),
+        byte[] encryptedBytes = Symmetrics.encrypt(string.getBytes(Charsets.UTF_8),
                 sm4key.getEncoded(),
+                "SM4",
                 "SM4/ECB/PKCS5Padding",
-                null,null
+                (Provider) null,
+                (SecureRandom) null,
+                new ByteBasedSecretKeySupplier(),
+                new SM4AlgorithmSpecSupplier()
         );
 
-        byte[] decryptedBytes = SM4s.decrypt(encryptedBytes,
+        byte[] decryptedBytes = Symmetrics.decrypt(encryptedBytes,
                 sm4key.getEncoded(),
+                "SM4",
                 "SM4/ECB/PKCS5Padding",
-                null,null
+                null, null,
+                new ByteBasedSecretKeySupplier(),
+                new SM4AlgorithmSpecSupplier()
         );
         System.out.println(new String(decryptedBytes));
     }
