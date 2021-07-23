@@ -62,11 +62,11 @@ public class Signatures {
         }
     }
 
-    public static boolean verify(Signature initedSignaturer, byte[] data, byte[] signature) {
+    public static boolean verify(Signature initedSignature, byte[] data, byte[] signature) {
         try {
-            Preconditions.checkNotNull(initedSignaturer);
-            initedSignaturer.update(data);
-            return initedSignaturer.verify(signature);
+            Preconditions.checkNotNull(initedSignature);
+            initedSignature.update(data);
+            return initedSignature.verify(signature);
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }
