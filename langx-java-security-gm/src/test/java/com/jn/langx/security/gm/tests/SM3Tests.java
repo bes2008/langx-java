@@ -2,7 +2,7 @@ package com.jn.langx.security.gm.tests;
 
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.crypto.digest.MessageDigests;
-import com.jn.langx.security.gm.GmJceProvider;
+import com.jn.langx.security.bc.GmBCInitializer;
 import com.jn.langx.util.io.Charsets;
 import org.bouncycastle.jcajce.provider.digest.SM3;
 import org.junit.Test;
@@ -13,7 +13,7 @@ public class SM3Tests {
 
     @Test
     public void test() {
-        new GmJceProvider();
+        new GmBCInitializer();
         System.out.println(MessageDigests.getDigestHexString("SM3", string));
         System.out.println(MessageDigests.getDigestHexString("SM3", string));
         System.out.println(Hex.encodeHexString(new SM3.Digest().digest(string.getBytes(Charsets.UTF_8))));

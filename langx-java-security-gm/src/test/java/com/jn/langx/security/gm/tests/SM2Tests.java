@@ -4,7 +4,7 @@ import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
-import com.jn.langx.security.gm.GmJceProvider;
+import com.jn.langx.security.bc.GmBCInitializer;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class SM2Tests {
 
     @Test
     public void test() throws Throwable {
-        new GmJceProvider();
+        new GmBCInitializer();
         SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
         KeyPair keyPair = PKIs.createKeyPair("SM2", null, 256, secureRandom);
         byte[] encryptedBytes = Asymmetrics.encrypt(string.getBytes(Charsets.UTF_8), keyPair.getPublic().getEncoded(), "SM2", null, null, secureRandom, new BytesBasedPublicKeySupplier());
