@@ -121,7 +121,9 @@ public class PKIs {
         try {
             Preconditions.checkTrue(keyLength > 0);
             KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
-
+            if("SM2".equals(algorithm)){
+                keyLength = 256;
+            }
             if (secureRandom == null) {
                 keyPairGenerator.initialize(keyLength);
             } else {

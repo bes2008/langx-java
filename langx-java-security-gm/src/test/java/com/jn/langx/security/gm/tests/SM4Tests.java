@@ -2,6 +2,7 @@ package com.jn.langx.security.gm.tests;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.gm.GmJceProvider;
 import com.jn.langx.security.gm.crypto.SM4s;
 import com.jn.langx.security.gm.crypto._sm4;
 import com.jn.langx.text.StringTemplates;
@@ -21,18 +22,20 @@ public class SM4Tests {
         //Securitys.addProvider(new GmJceProvider());
 
         String string = "abcde_12345";
-        final BouncyCastleProvider provider = new BouncyCastleProvider();
-        Securitys.addProvider(provider);
 
-        Pipeline.of(provider.keySet()).filter(new Predicate<Object>() {
+        new GmJceProvider();
+        // final BouncyCastleProvider provider = new BouncyCastleProvider();
+        //Securitys.addProvider(provider);
+
+        Pipeline.of(GmJceProvider.bouncyCastleProvider.keySet()).filter(new Predicate<Object>() {
             @Override
             public boolean test(Object key) {
-                return key.toString().contains("SM4");//&& !Strings.contains(key.toString(),"mac", true) && !Strings.contains(key.toString(),"poly", true);
+                return key.toString().contains("SM2");//&& !Strings.contains(key.toString(),"mac", true) && !Strings.contains(key.toString(),"poly", true);
             }
         }).forEach(new Consumer<Object>() {
             @Override
             public void accept(Object key) {
-                System.out.println(StringTemplates.formatWithPlaceholder("{} : {}", key, provider.getProperty(key.toString())));
+                System.out.println(StringTemplates.formatWithPlaceholder("{} : {}", key, GmJceProvider.bouncyCastleProvider.getProperty(key.toString())));
             }
         });
 

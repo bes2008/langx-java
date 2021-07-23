@@ -1,37 +1,50 @@
 package com.jn.langx.security.gm;
 
 import com.jn.langx.security.gm.crypto.SM2EcbBlockCipher;
-import com.jn.langx.security.gm.crypto.SM2KeyPairGeneratorSpi;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyPairGeneratorSpi;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.Provider;
 import java.security.Security;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GmJceProvider extends Provider {
     private static final long serialVersionUID = 1443132961964116159L;
     private static final String INFO = "GM JCE provider";
     public static final String NAME = "langx-security-gm-provider";
-
+    public static BouncyCastleProvider bouncyCastleProvider = new BouncyCastleProvider();
 
     static {
-        Security.addProvider(new BouncyCastleProvider());
+        Security.addProvider(bouncyCastleProvider);
     }
 
     public GmJceProvider() {
         super(NAME, 1.0, INFO);
+        Map<String, String> map = new HashMap<String,String>();
 
-        this.put("Cipher.SM2", Reflects.getFQNClassName(SM2EcbBlockCipher.class));
+        map.put("Cipher.SM2", Reflects.getFQNClassName(SM2EcbBlockCipher.class));
         //    this.put("KeyAgreement.SM2", Reflects.getFQNClassName(SM2KeyAgreement.class));
         //    this.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM3WithSM2Signature.class));
         //    this.put("Signature.SM3WithSM2", Reflects.getFQNClassName(SM3WithSM2Signature.class));
         //    this.put("Signature.NoneWithSM2", Reflects.getFQNClassName(NoneWithSM2Signature.class));
-        this.put("KeyFactory.ECDSA", Reflects.getFQNClassName(KeyFactorySpi.ECDSA.class));
-        this.put("KeyFactory.EC", Reflects.getFQNClassName(KeyFactorySpi.EC.class));
-        this.put("Alg.Alias.KeyFactory.SM2", "EC");
-        this.put("Alg.Alias.KeyFactory.1.2.840.10045.2.1", "EC");
-        this.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(SM2KeyPairGeneratorSpi.class));
+        map.put("KeyFactory.ECDSA", Reflects.getFQNClassName(KeyFactorySpi.ECDSA.class));
+        map.put("KeyFactory.EC", Reflects.getFQNClassName(KeyFactorySpi.EC.class));
+        map.put("Alg.Alias.KeyFactory.SM2", "EC");
+        map.put("Alg.Alias.KeyFactory.1.2.840.10045.2.1", "EC");
+        map.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(KeyPairGeneratorSpi.EC.class));
+        Collects.forEach(map, new Consumer2<String, String>() {
+            @Override
+            public void accept(String key, String value) {
+                if(!bouncyCastleProvider.containsKey(key)){
+                    bouncyCastleProvider.addAlgorithm(key, value);
+                }
+            }
+        });
 
         //    this.put("KeyPairGenerator.ECDSA", Reflects.getFQNClassName(KeyPairGeneratorSpi.ECDSA.class));
     /*
