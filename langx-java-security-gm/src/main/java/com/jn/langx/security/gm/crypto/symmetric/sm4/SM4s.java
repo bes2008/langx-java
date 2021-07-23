@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto;
+package com.jn.langx.security.gm.crypto.symmetric.sm4;
 
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.Symmetrics;

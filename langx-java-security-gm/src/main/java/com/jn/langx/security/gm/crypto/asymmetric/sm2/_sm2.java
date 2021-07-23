@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto;
+package com.jn.langx.security.gm.crypto.asymmetric.sm2;
 
 import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
@@ -20,7 +20,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 
-public class _sm2 {
+class _sm2 {
     /**
      * 构建ECDomainParameters对象
      *

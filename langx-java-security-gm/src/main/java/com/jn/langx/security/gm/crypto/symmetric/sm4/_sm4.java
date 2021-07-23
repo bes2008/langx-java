@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.crypto;
+package com.jn.langx.security.gm.crypto.symmetric.sm4;
 
 
 import com.jn.langx.codec.base64.Base64;
@@ -12,7 +12,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 
-public class _sm4 {
+class _sm4 {
 
     private static Logger logger = LoggerFactory.getLogger(_sm4.class);
 
