@@ -1,16 +1,14 @@
 package com.jn.langx.security.gm.tests;
 
-import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.gm.GmJceProvider;
-import com.jn.langx.security.gm.crypto.SM4s;
-import com.jn.langx.security.gm.crypto._sm4;
+import com.jn.langx.security.gm.crypto.symmetric.sm4.SM4s;
+import com.jn.langx.security.gm.crypto.symmetric.sm4._sm4;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Test;
 
 import javax.crypto.SecretKey;
