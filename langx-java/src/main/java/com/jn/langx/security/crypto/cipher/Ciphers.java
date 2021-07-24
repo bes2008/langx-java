@@ -234,7 +234,11 @@ public class Ciphers extends Securitys {
             } else {
                 cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameterSpec, secureRandom);
             }
-            return Ciphers.decrypt(cipher, bytes);
+            if(encrypt){
+                return Ciphers.encrypt(cipher, bytes);
+            }else {
+                return Ciphers.decrypt(cipher, bytes);
+            }
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }
