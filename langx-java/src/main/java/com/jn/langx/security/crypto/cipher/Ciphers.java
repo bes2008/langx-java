@@ -52,6 +52,12 @@ public class Ciphers extends Securitys {
         }
     }
 
+    /**
+     * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
+     * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
+     *
+     * @return
+     */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
@@ -66,6 +72,12 @@ public class Ciphers extends Securitys {
         }
     }
 
+    /**
+     * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
+     * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
+     *
+     * @return
+     */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
@@ -80,6 +92,12 @@ public class Ciphers extends Securitys {
         }
     }
 
+    /**
+     * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
+     * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
+     *
+     * @return
+     */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
@@ -234,9 +252,9 @@ public class Ciphers extends Securitys {
             } else {
                 cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameterSpec, secureRandom);
             }
-            if(encrypt){
+            if (encrypt) {
                 return Ciphers.encrypt(cipher, bytes);
-            }else {
+            } else {
                 return Ciphers.decrypt(cipher, bytes);
             }
         } catch (Throwable ex) {
