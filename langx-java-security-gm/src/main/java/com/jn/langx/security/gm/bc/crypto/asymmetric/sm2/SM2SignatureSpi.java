@@ -27,19 +27,20 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
 
     protected void engineInitVerify(PublicKey publicKey) throws InvalidKeyException {
         CipherParameters param = ECUtil.generatePublicKeyParameter(publicKey);
-
+        // 验签时， appRandom 必然是 null
         if (paramSpec != null) {
             byte[] id = extractId();
-            param = new ParametersWithID(param, id);
+            if (id != null) {
+                param = new ParametersWithID(param, id);
+            }
         }
 
         signer.init(false, param);
     }
 
-    protected void engineInitSign(
-            PrivateKey privateKey)
-            throws InvalidKeyException {
+    protected void engineInitSign(PrivateKey privateKey) throws InvalidKeyException {
         CipherParameters param = ECUtil.generatePrivateKeyParameter(privateKey);
+
 
         if (appRandom != null) {
             param = new ParametersWithRandom(param, appRandom);
@@ -47,10 +48,11 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
 
         if (paramSpec != null) {
             byte[] id = extractId();
-            signer.init(true, new ParametersWithID(param, id));
-        } else {
-            signer.init(true, param);
+            if (id != null) {
+                param = new ParametersWithID(param, id);
+            }
         }
+        signer.init(true, param);
     }
 
     private byte[] extractId() {
@@ -67,18 +69,15 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         return id;
     }
 
-    protected void engineUpdate(byte b)
-            throws SignatureException {
+    protected void engineUpdate(byte b) throws SignatureException {
         signer.update(b);
     }
 
-    protected void engineUpdate(byte[] bytes, int off, int length)
-            throws SignatureException {
+    protected void engineUpdate(byte[] bytes, int off, int length) throws SignatureException {
         signer.update(bytes, off, length);
     }
 
-    protected byte[] engineSign()
-            throws SignatureException {
+    protected byte[] engineSign() throws SignatureException {
         try {
             return signer.generateSignature();
         } catch (CryptoException e) {
@@ -86,8 +85,7 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         }
     }
 
-    protected boolean engineVerify(byte[] bytes)
-            throws SignatureException {
+    protected boolean engineVerify(byte[] bytes) throws SignatureException {
         return signer.verifySignature(bytes);
     }
 
@@ -118,14 +116,11 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         return engineParams;
     }
 
-    protected void engineSetParameter(
-            String param,
-            Object value) {
+    protected void engineSetParameter(String param, Object value) {
         throw new UnsupportedOperationException("engineSetParameter unsupported");
     }
 
-    protected Object engineGetParameter(
-            String param) {
+    protected Object engineGetParameter(String param) {
         throw new UnsupportedOperationException("engineGetParameter unsupported");
     }
 

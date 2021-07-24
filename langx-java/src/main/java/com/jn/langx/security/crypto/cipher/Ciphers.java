@@ -161,7 +161,7 @@ public class Ciphers extends Securitys {
     public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
         return encrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
             @Override
-            public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+            public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameters;
             }
         });
@@ -183,7 +183,7 @@ public class Ciphers extends Securitys {
     public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
         return decrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
             @Override
-            public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+            public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameters;
             }
         });
@@ -202,7 +202,7 @@ public class Ciphers extends Securitys {
     public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameterSpec parameterSpec, boolean encrypt) {
         return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
             @Override
-            public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+            public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameterSpec;
             }
         }, encrypt);
@@ -221,11 +221,14 @@ public class Ciphers extends Securitys {
                 algorithmTransformation = Ciphers.createAlgorithmTransformation(algorithm, "ECB", "PKCS5Padding");
             }
         }
+
+        Key key = keySupplier.get(keyBytes, algorithm, provider);
+
         AlgorithmParameterSpec parameterSpec = null;
         AlgorithmParameters parameters = null;
         Object parameter = null;
         if (parameterSupplier != null) {
-            parameter = parameterSupplier.get(algorithm, algorithmTransformation, provider, secureRandom);
+            parameter = parameterSupplier.get(key, algorithm, algorithmTransformation, provider, secureRandom);
             if (parameter != null) {
                 if (parameter instanceof AlgorithmParameterSpec) {
                     parameterSpec = (AlgorithmParameterSpec) parameter;
@@ -245,7 +248,7 @@ public class Ciphers extends Securitys {
             }
         }
         try {
-            Key key = keySupplier.get(keyBytes, algorithm, provider);
+
             Cipher cipher = null;
             if (parameters != null) {
                 cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameters, secureRandom);
@@ -300,12 +303,12 @@ public class Ciphers extends Securitys {
 
     /**
      * 获取用于密钥生成的算法<br>
-     * 获取XXXwithXXX算法的后半部分算法，如果为ECDSA，返回算法为EC
+     * 获取XXXwithXXX算法，这种算法通常是 签名算法，with 前面部分是摘要算法或者None，with 后面部分是 加密算法，通常是非对称加密算法。
      *
      * @param algorithm XXXwithXXX算法
      * @return 算法
      */
-    public static String getAlgorithmAfterWith(String algorithm) {
+    public static String extractCipherAlgorithm(String algorithm) {
         Preconditions.checkNotNull(algorithm, "algorithm must be not null !");
         if (algorithm.contains("SM2") || algorithm.contains("EC")) {
             int indexOfWith = Strings.lastIndexOfIgnoreCase(algorithm, "with");
@@ -313,11 +316,14 @@ public class Ciphers extends Securitys {
                 algorithm = Strings.substring(algorithm, indexOfWith + "with".length());
             }
         }
-        if ("ECDSA".equalsIgnoreCase(algorithm)) {
+        if (Strings.contains(algorithm, "with", true)) {
+            int indexOfWith = Strings.lastIndexOfIgnoreCase(algorithm, "with");
+            algorithm = Strings.substring(algorithm, indexOfWith + "with".length());
+        } else if ("ECDSA".equalsIgnoreCase(algorithm)) {
             algorithm = "EC";
         }
-        if ("SM2".equalsIgnoreCase(algorithm)) {
-            algorithm = "SM2";
+        if (Strings.startsWith(algorithm, "EC", true)) {
+            algorithm = "EC";
         }
         return algorithm;
     }

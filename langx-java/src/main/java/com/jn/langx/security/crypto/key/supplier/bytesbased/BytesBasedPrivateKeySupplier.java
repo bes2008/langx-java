@@ -40,7 +40,7 @@ public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<Priva
 
     @Override
     public PrivateKey get(@NonNull final byte[] bytes, @NonNull final String algorithm, @Nullable Provider provider) {
-        String _algorithm = Asymmetrics.getAlgorithmAfterWith(algorithm);
+        String _algorithm = Asymmetrics.extractCipherAlgorithm(algorithm);
         Collection<Parser<byte[], ? extends KeySpec>> parsers = keySpecParsers.get(_algorithm);
         final Holder<KeySpec> keySpecHolder = new Holder<KeySpec>();
         Pipeline.of(parsers)

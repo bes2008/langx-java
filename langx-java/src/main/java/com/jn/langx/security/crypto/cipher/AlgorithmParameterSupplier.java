@@ -1,5 +1,6 @@
 package com.jn.langx.security.crypto.cipher;
 
+import java.security.Key;
 import java.security.Provider;
 import java.security.SecureRandom;
 
@@ -9,5 +10,5 @@ import java.security.SecureRandom;
  * @see java.security.AlgorithmParameters
  */
 public interface AlgorithmParameterSupplier {
-    public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom);
+    public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom);
 }

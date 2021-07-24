@@ -84,7 +84,7 @@ class _sm2 {
         Preconditions.checkNotNull(algorithm, "algorithm must be not null !");
         Preconditions.checkNotNull(key, "key must be not null !");
         KeySpec keySpec = new PKCS8EncodedKeySpec(key);
-        algorithm = Asymmetrics.getAlgorithmAfterWith(algorithm);
+        algorithm = Asymmetrics.extractCipherAlgorithm(algorithm);
         return getKeyFactory(algorithm).generatePrivate(keySpec);
     }
 

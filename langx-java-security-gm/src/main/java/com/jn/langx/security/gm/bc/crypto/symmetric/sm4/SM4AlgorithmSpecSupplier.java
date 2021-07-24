@@ -9,6 +9,7 @@ import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
 
 import javax.crypto.spec.IvParameterSpec;
+import java.security.Key;
 import java.security.Provider;
 import java.security.SecureRandom;
 
@@ -19,7 +20,7 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
     public static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(SM4AlgorithmSpecSupplier.class).getBytes(Charsets.UTF_8);
 
     @Override
-    public Object get(String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+    public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
         if(Strings.contains(transform, "CBC")) {
             IvParameterSpec ivParameterSpec = null;
             if (secureRandom == null) {

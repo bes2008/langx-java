@@ -10,7 +10,7 @@ import java.security.spec.X509EncodedKeySpec;
 public class BytesBasedPublicKeySupplier implements BytesBasedKeySupplier<PublicKey>{
     @Override
     public PublicKey get(byte[] bytes, String algorithm, Provider provider) {
-        algorithm = Asymmetrics.getAlgorithmAfterWith(algorithm);
+        algorithm = Asymmetrics.extractCipherAlgorithm(algorithm);
         PublicKey publicKey = PKIs.createPublicKey(algorithm, provider == null ? null : provider.getName(), new X509EncodedKeySpec(bytes));
         return publicKey;
     }
