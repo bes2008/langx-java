@@ -51,9 +51,9 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
 
 
     private void load(){
-        Collects.forEach(ServiceLoader.load(SecurityProviderConfigurer.class), new Consumer<SecurityProviderConfigurer>() {
+        Collects.forEach(ServiceLoader.load(LangxSecurityProviderConfigurer.class), new Consumer<LangxSecurityProviderConfigurer>() {
             @Override
-            public void accept(SecurityProviderConfigurer configurer) {
+            public void accept(LangxSecurityProviderConfigurer configurer) {
                 configurer.configure(LangxSecurityProvider.this);
             }
         });

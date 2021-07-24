@@ -1,10 +1,10 @@
 package com.jn.langx.security.crypto.digest.provider.sm3;
 
-import com.jn.langx.security.crypto.provider.SecurityProviderConfigurer;
+import com.jn.langx.security.crypto.provider.LangxSecurityProviderConfigurer;
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.util.reflect.Reflects;
 
-public class SM3DigestProviderConfigurer implements SecurityProviderConfigurer {
+public class SM3DigestProviderConfigurer implements LangxSecurityProviderConfigurer {
     @Override
     public void configure(LangxSecurityProvider provider) {
         provider.addAlgorithm("MessageDigest.SM3", Reflects.getFQNClassName(SM3MessageDigest.class));

@@ -1,10 +1,10 @@
 package com.jn.langx.security.crypto.digest.provider.md4;
 
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
-import com.jn.langx.security.crypto.provider.SecurityProviderConfigurer;
+import com.jn.langx.security.crypto.provider.LangxSecurityProviderConfigurer;
 import com.jn.langx.util.reflect.Reflects;
 
-public class MD4DigestProviderConfigurer implements SecurityProviderConfigurer {
+public class MD4DigestProviderConfigurer implements LangxSecurityProviderConfigurer {
     @Override
     public void configure(LangxSecurityProvider provider) {
         provider.addAlgorithm("MessageDigest.MD4", Reflects.getFQNClassName(MD4MessageDigest.class));

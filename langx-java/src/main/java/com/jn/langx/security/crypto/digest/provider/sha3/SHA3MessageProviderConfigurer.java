@@ -1,10 +1,10 @@
 package com.jn.langx.security.crypto.digest.provider.sha3;
 
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
-import com.jn.langx.security.crypto.provider.SecurityProviderConfigurer;
+import com.jn.langx.security.crypto.provider.LangxSecurityProviderConfigurer;
 import com.jn.langx.util.reflect.Reflects;
 
-public class SHA3MessageProviderConfigurer implements SecurityProviderConfigurer {
+public class SHA3MessageProviderConfigurer implements LangxSecurityProviderConfigurer {
     @Override
     public void configure(LangxSecurityProvider provider) {
         provider.addAlgorithm("MessageDigest.SHA-3", Reflects.getFQNClassName(SHA3MessageDigest.class));

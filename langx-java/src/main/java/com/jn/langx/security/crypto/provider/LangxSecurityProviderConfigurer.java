@@ -1,5 +1,5 @@
 package com.jn.langx.security.crypto.provider;
 
-public interface SecurityProviderConfigurer {
+public interface LangxSecurityProviderConfigurer {
     void configure(LangxSecurityProvider provider);
 }
