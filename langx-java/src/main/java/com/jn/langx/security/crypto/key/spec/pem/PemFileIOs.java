@@ -9,6 +9,7 @@ import com.jn.langx.io.resource.InputStreamResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.io.stream.StringBuilderWriter;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
 import com.jn.langx.security.crypto.key.spec.KeyEncoding;
 import com.jn.langx.text.StringTemplates;
@@ -24,7 +25,7 @@ import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 
-public class PemFileIOs {
+public class PemFileIOs extends Securitys {
     public static byte[] readKey(File file) {
         return readKey(Resources.loadFileResource(file));
     }

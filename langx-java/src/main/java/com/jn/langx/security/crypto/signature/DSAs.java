@@ -2,6 +2,7 @@ package com.jn.langx.security.crypto.signature;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Strings;
 
@@ -12,7 +13,7 @@ import java.security.SecureRandom;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-public class DSAs {
+public class DSAs extends Securitys {
     public static final String DSA_INSTANCE_ALGORITHM = "SHA1withDSA";
 
     public static byte[] sign(byte[] privateKey, @NonNull byte[] data) {

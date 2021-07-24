@@ -1,10 +1,12 @@
 package com.jn.langx.security.crypto.cert;
 
+import com.jn.langx.security.Securitys;
+
 import java.io.File;
 import java.security.KeyStore;
 import java.util.Locale;
 
-public class KeyStores {
+public class KeyStores extends Securitys {
     /**
      * Make a best guess about the "type" (see {@link KeyStore#getType()}) of the keystore file located at the given {@code Path}.
      * This method only references the <em>file name</em> of the keystore, it does not look at its contents.

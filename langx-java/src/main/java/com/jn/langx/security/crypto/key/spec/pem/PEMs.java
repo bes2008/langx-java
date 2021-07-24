@@ -3,6 +3,7 @@ package com.jn.langx.security.crypto.key.spec.pem;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
@@ -38,7 +39,7 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.util.*;
 
 
-public class PEMs {
+public class PEMs extends Securitys {
     private static final String HEADER = "-----BEGIN";
     public static final String PKCS1 = "PKCS#1";
     public static final String PKCS8 = "PKCS#8";

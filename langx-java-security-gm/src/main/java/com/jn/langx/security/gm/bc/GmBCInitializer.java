@@ -1,9 +1,11 @@
 package com.jn.langx.security.gm.bc;
 
 import com.jn.langx.lifecycle.AbstractInitializable;
-import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2KeyFactorySpi;
+import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.gm.GmInitializer;
 import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2CipherSpi;
+import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2KeyFactorySpi;
 import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2SignatureSpi;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
@@ -14,21 +16,17 @@ import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyPairGeneratorSpi;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.Serializable;
+import java.security.Provider;
 import java.security.Security;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GmBCInitializer extends AbstractInitializable implements GmInitializer, Serializable {
     private static final long serialVersionUID = 1443132961964116159L;
-    public static BouncyCastleProvider bouncyCastleProvider = new BouncyCastleProvider();
 
-    static {
-        Security.addProvider(bouncyCastleProvider);
-    }
-
-    public GmBCInitializer() {
+    @Override
+    protected void doInit() throws InitializationException {
         Map<String, String> map = new HashMap<String, String>();
-
 
         // sm2
         map.put("Signature.SM3WithSM2", Reflects.getFQNClassName(SM2SignatureSpi.SM3WithSM2.class));
@@ -46,25 +44,26 @@ public class GmBCInitializer extends AbstractInitializable implements GmInitiali
         map.put("Alg.Alias.MessageDigest.SM3", "SM3");
         map.put("Alg.Alias.MessageDigest.1.2.156.197.1.401", "SM3");
 
+        // sm4
+        map.put("AlgorithmParameters.SM4", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.symmetric.SM4.AlgParams.class));
+        map.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.symmetric.SM4.AlgParamGen.class));
+        map.put("Cipher.SM4", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.symmetric.SM4.ECB.class));
+        map.put("KeyGenerator.SM4", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.symmetric.SM4.KeyGen.class));
+
+        Provider provider = Security.getProvider("BC");
+        if (provider == null) {
+            provider = new BouncyCastleProvider();
+            Securitys.addProvider(provider);
+        }
+        final Provider _provider = provider;
         Collects.forEach(map, new Consumer2<String, String>() {
             @Override
             public void accept(String key, String value) {
-                if (!bouncyCastleProvider.containsKey(key)) {
-                    bouncyCastleProvider.addAlgorithm(key, value);
+                if (!_provider.containsKey(key)) {
+                    _provider.put(key, value);
                 }
             }
         });
 
-
-/*
-        this.put("MessageDigest.SM3", Reflects.getFQNClassName(SM3MessageDigest.class));
-        this.put("Mac.HmacSM3", Reflects.getFQNClassName(HMacWithSM3.class));
-
-        this.put("Cipher.SM4", Reflects.getFQNClassName(SM4EcbBlockCipher.class));
-        this.put("Cipher.SM4/CBC", Reflects.getFQNClassName(SM4CbcBlockCipher.class));
-        this.put("AlgorithmParameters.SM4", Reflects.getFQNClassName(SM4AlgorithmParameters.class));
-        this.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(SM4AlgorithmParameterGeneratorSpi.class));
-        this.put("KeyGenerator.SM4", Reflects.getFQNClassName(SM4KeyGeneratorSpi.class));
-    */
     }
 }

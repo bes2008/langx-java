@@ -3,6 +3,7 @@ package com.jn.langx.security.crypto.signature;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 
@@ -12,7 +13,7 @@ import java.security.cert.Certificate;
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Signature
  */
-public class Signatures {
+public class Signatures extends Securitys {
     /**
      *
      * @param algorithm 算法名称，要根据标准规范来，不能只是 DSA或者 RSA

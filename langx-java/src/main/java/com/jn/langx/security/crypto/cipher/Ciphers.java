@@ -5,6 +5,7 @@ import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedKeySupplier;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Cipher
  */
-public class Ciphers {
+public class Ciphers extends Securitys {
     protected Ciphers() {
     }
 

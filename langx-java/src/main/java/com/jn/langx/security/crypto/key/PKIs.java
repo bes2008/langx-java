@@ -5,6 +5,7 @@ import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#Key
  */
-public class PKIs {
+public class PKIs extends Securitys {
     private static final Logger logger = LoggerFactory.getLogger(PKIs.class);
 
     public static PublicKey createPublicKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64PublicKey) {

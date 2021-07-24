@@ -22,32 +22,34 @@
             <version>1.59</version>
         </dependency>
     </dependencies>
+    <!--
+       <build>
+           <plugins>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jarsigner-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>jar-signature</id>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                        <configuration>
-                            <keystore>${basedir}/src/main/assembly/keystore/langx_keystore</keystore>
-                            <alias>langx</alias>
-                            <storepass>123456</storepass>
-                            <keypass>123456</keypass>
-                            <arguments>
-                                -J-Dfile.encoding=UTF-8
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+               <plugin>
+                   <groupId>org.apache.maven.plugins</groupId>
+                   <artifactId>maven-jarsigner-plugin</artifactId>
+                   <version>3.0.0</version>
+                   <executions>
+                       <execution>
+                           <id>jar-signature</id>
+                           <goals>
+                               <goal>sign</goal>
+                           </goals>
+                           <configuration>
+                               <keystore>${basedir}/src/main/assembly/keystore/langx_keystore</keystore>
+                               <alias>langx</alias>
+                               <storepass>123456</storepass>
+                               <keypass>123456</keypass>
+                               <arguments>
+                                   -J-Dfile.encoding=UTF-8
+                               </arguments>
+                           </configuration>
+                       </execution>
+                   </executions>
+               </plugin>
 
         </plugins>
     </build>
+     -->
 </project>

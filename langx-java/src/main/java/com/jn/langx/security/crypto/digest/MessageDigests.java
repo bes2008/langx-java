@@ -17,7 +17,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-public class MessageDigests {
+public class MessageDigests extends Securitys {
 
     public static String md5(InputStream inputStream) {
         return getDigestHexString(JCAEStandardName.MD5.getName(), inputStream);
@@ -101,6 +101,7 @@ public class MessageDigests {
             }
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
+            /*
             if (!Securitys.langxProviderInstalled()) {
                 Securitys.setupLangxProvider();
                 try {
@@ -109,6 +110,7 @@ public class MessageDigests {
                     throw new SecurityException(e2);
                 }
             }
+             */
             throw new SecurityException(e);
         }
     }

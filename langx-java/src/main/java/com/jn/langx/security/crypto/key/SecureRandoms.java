@@ -1,12 +1,13 @@
 package com.jn.langx.security.crypto.key;
 
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.util.Strings;
 
 import java.security.SecureRandom;
 
-public class SecureRandoms {
+public class SecureRandoms extends Securitys {
     public static SecureRandom getNativePRNG() {
         try {
             return getSecureRandom(JCAEStandardName.NativePRNG.getName());
