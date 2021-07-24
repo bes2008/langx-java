@@ -3,12 +3,7 @@ package com.jn.langx.security.gm.tests;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
-import com.jn.langx.security.gm.bc.GmBCInitializer;
 import com.jn.langx.security.gm.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
-import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
@@ -23,23 +18,6 @@ public class SM4Tests {
         //Securitys.addProvider(new GmJceProvider());
 
         String string = "abcde_12345";
-
-        new GmBCInitializer();
-        // final BouncyCastleProvider provider = new BouncyCastleProvider();
-        //Securitys.addProvider(provider);
-
-        Pipeline.of(GmBCInitializer.bouncyCastleProvider.keySet()).filter(new Predicate<Object>() {
-            @Override
-            public boolean test(Object key) {
-                return key.toString().contains("SM2");//&& !Strings.contains(key.toString(),"mac", true) && !Strings.contains(key.toString(),"poly", true);
-            }
-        }).forEach(new Consumer<Object>() {
-            @Override
-            public void accept(Object key) {
-                System.out.println(StringTemplates.formatWithPlaceholder("{} : {}", key, GmBCInitializer.bouncyCastleProvider.getProperty(key.toString())));
-            }
-        });
-
 
         SecretKey sm4key = PKIs.createSecretKey("SM4", (String) null, 128, null);
 
