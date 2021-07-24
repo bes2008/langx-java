@@ -1,23 +1,23 @@
 package com.jn.langx.security.crypto.digest.internal.impl;
 
-
 import com.jn.langx.security.crypto.digest.internal.GeneralDigest;
 import com.jn.langx.util.Bytes;
 import com.jn.langx.util.Memoable;
 
+
 /**
- * SHA-224 as described in RFC 3874
+ * FIPS 180-2 implementation of SHA-256.
+ *
  * <pre>
  *         block  word  digest
  * SHA-1   512    32    160
- * SHA-224 512    32    224
  * SHA-256 512    32    256
  * SHA-384 1024   64    384
  * SHA-512 1024   64    512
  * </pre>
  */
-public class _SHA224Digest extends GeneralDigest {
-    private static final int DIGEST_LENGTH = 28;
+public class _SHA256Digest extends GeneralDigest {
+    private static final int DIGEST_LENGTH = 32;
 
     private int H1, H2, H3, H4, H5, H6, H7, H8;
 
@@ -27,7 +27,7 @@ public class _SHA224Digest extends GeneralDigest {
     /**
      * Standard constructor
      */
-    public _SHA224Digest() {
+    public _SHA256Digest() {
         reset();
     }
 
@@ -35,13 +35,13 @@ public class _SHA224Digest extends GeneralDigest {
      * Copy constructor.  This will copy the state of the provided
      * message digest.
      */
-    public _SHA224Digest(_SHA224Digest t) {
+    public _SHA256Digest(_SHA256Digest t) {
         super(t);
 
-        doCopy(t);
+        copyIn(t);
     }
 
-    private void doCopy(_SHA224Digest t) {
+    private void copyIn(_SHA256Digest t) {
         super.copyIn(t);
 
         H1 = t.H1;
@@ -62,7 +62,7 @@ public class _SHA224Digest extends GeneralDigest {
      *
      * @param encodedState the encoded state from the originating digest.
      */
-    public _SHA224Digest(byte[] encodedState) {
+    public _SHA256Digest(byte[] encodedState) {
         super(encodedState);
 
         H1 = Bytes.bigEndianToInt(encodedState, 16);
@@ -80,8 +80,9 @@ public class _SHA224Digest extends GeneralDigest {
         }
     }
 
+
     public String getAlgorithmName() {
-        return "SHA-224";
+        return "SHA-256";
     }
 
     public int getDigestSize() {
@@ -111,9 +112,7 @@ public class _SHA224Digest extends GeneralDigest {
         X[15] = (int) (bitLength & 0xffffffff);
     }
 
-    public int doFinal(
-            byte[] out,
-            int outOff) {
+    public int doFinal(byte[] out, int outOff) {
         finish();
 
         Bytes.intToBigEndian(H1, out, outOff);
@@ -123,6 +122,7 @@ public class _SHA224Digest extends GeneralDigest {
         Bytes.intToBigEndian(H5, out, outOff + 16);
         Bytes.intToBigEndian(H6, out, outOff + 20);
         Bytes.intToBigEndian(H7, out, outOff + 24);
+        Bytes.intToBigEndian(H8, out, outOff + 28);
 
         reset();
 
@@ -135,17 +135,19 @@ public class _SHA224Digest extends GeneralDigest {
     public void reset() {
         super.reset();
 
-        /* SHA-224 initial hash value
+        /* SHA-256 initial hash value
+         * The first 32 bits of the fractional parts of the square roots
+         * of the first eight prime numbers
          */
 
-        H1 = 0xc1059ed8;
-        H2 = 0x367cd507;
-        H3 = 0x3070dd17;
-        H4 = 0xf70e5939;
-        H5 = 0xffc00b31;
-        H6 = 0x68581511;
-        H7 = 0x64f98fa7;
-        H8 = 0xbefa4fa4;
+        H1 = 0x6a09e667;
+        H2 = 0xbb67ae85;
+        H3 = 0x3c6ef372;
+        H4 = 0xa54ff53a;
+        H5 = 0x510e527f;
+        H6 = 0x9b05688c;
+        H7 = 0x1f83d9ab;
+        H8 = 0x5be0cd19;
 
         xOff = 0;
         for (int i = 0; i != X.length; i++) {
@@ -172,7 +174,6 @@ public class _SHA224Digest extends GeneralDigest {
         int f = H6;
         int g = H7;
         int h = H8;
-
 
         int t = 0;
         for (int i = 0; i < 8; i++) {
@@ -243,13 +244,13 @@ public class _SHA224Digest extends GeneralDigest {
         }
     }
 
-    /* SHA-224 functions */
+    /* SHA-256 functions */
     private int ch(int x, int y, int z) {
-        return ((x & y) ^ ((~x) & z));
+        return (x & y) ^ ((~x) & z);
     }
 
     private int maj(int x, int y, int z) {
-        return ((x & y) ^ (x & z) ^ (y & z));
+        return (x & y) ^ (x & z) ^ (y & z);
     }
 
     private int sum0(int x) {
@@ -268,7 +269,7 @@ public class _SHA224Digest extends GeneralDigest {
         return ((x >>> 17) | (x << 15)) ^ ((x >>> 19) | (x << 13)) ^ (x >>> 10);
     }
 
-    /* SHA-224 Constants
+    /* SHA-256 Constants
      * (represent the first 32 bits of the fractional parts of the
      * cube roots of the first sixty-four prime numbers)
      */
@@ -278,18 +279,19 @@ public class _SHA224Digest extends GeneralDigest {
             0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
             0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
             0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
-            0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+            0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+            0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
             0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     };
 
     public Memoable copy() {
-        return new _SHA224Digest(this);
+        return new _SHA256Digest(this);
     }
 
     public void reset(Memoable other) {
-        _SHA224Digest d = (_SHA224Digest) other;
+        _SHA256Digest d = (_SHA256Digest) other;
 
-        doCopy(d);
+        copyIn(d);
     }
 
     public byte[] getEncodedState() {
@@ -314,3 +316,4 @@ public class _SHA224Digest extends GeneralDigest {
         return state;
     }
 }
+
