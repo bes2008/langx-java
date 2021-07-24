@@ -2,3 +2,7 @@ com.jn.langx.security.crypto.digest.provider.sm3.SM3DigestProviderConfigurer
 com.jn.langx.security.crypto.digest.provider.md4.MD4DigestProviderConfigurer
 com.jn.langx.security.crypto.digest.provider.sha3.SHA3MessageProviderConfigurer
 com.jn.langx.security.crypto.digest.provider.sha224.SHA224DigestProviderConfigurer
+com.jn.langx.security.crypto.digest.provider.sha256.SHA256DigestProviderConfigurer
+com.jn.langx.security.crypto.digest.provider.sha384.SHA384DigestProviderConfigurer
+com.jn.langx.security.crypto.digest.provider.sha512.SHA512DigestProviderConfigurer
+com.jn.langx.security.crypto.digest.provider.whirlpool.WhirlpoolDigestProviderConfigurer
