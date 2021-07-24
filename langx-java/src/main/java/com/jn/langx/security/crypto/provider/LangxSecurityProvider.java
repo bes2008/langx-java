@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.security.Provider;
 import java.util.ServiceLoader;
 
+/**
+ * langx 没有经过签名，最好是只往里面放 message digest 算法，加密算法都是要求算法所在的Jar包进行过 签名的
+ */
 public class LangxSecurityProvider extends Provider implements ConfigurableSecurityProvider {
     private static final Logger logger = LoggerFactory.getLogger(LangxSecurityProvider.class);
     public static final String NAME= "langx-java-security-provider";
