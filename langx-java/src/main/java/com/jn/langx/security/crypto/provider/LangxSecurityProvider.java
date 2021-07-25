@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,11 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
         return containsKey(type + "." + name) || containsKey("Alg.Alias." + type + "." + name);
     }
 
+    @Override
+    public void addAlgorithm(String key, Class spiClass) {
+        this.addAlgorithm(key, Reflects.getFQNClassName(spiClass));
+    }
+
     public void addAlgorithm(String key, String value) {
         if (containsKey(key)) {
             logger.warn("duplicate provider key {} found, its value: {}", key, get(key));
@@ -38,33 +44,37 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
         put(key, value);
     }
 
-    public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull String className) {
+    public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull String spiClassName) {
         Preconditions.checkNotEmpty(type, "type is null or empty");
         Preconditions.checkNotEmpty(oid, "oid is null or empty");
-        Preconditions.checkNotEmpty(className, "className is null or empty");
+        Preconditions.checkNotEmpty(spiClassName, "the spi class name is null or empty for {}", type + "." + oid);
 
-        addAlgorithm(type + "." + oid, className);
-        addAlgorithm(type + ".OID." + oid, className);
+        addAlgorithm(type + "." + oid, spiClassName);
+        addAlgorithm(type + ".OID." + oid, spiClassName);
+    }
+
+    public void addAlias(String name, String alias) {
+        this.addAlgorithm("Alg.Alias." + name, alias);
+    }
+
+    public void addHmacAlgorithm(String digestAlgo, String hmacAlgoSpiClassName, String keyGenSpiClassName) {
+        String hmacAlgorithm = "HMAC" + digestAlgo;
+
+        this.addAlgorithm("Mac." + hmacAlgorithm, hmacAlgoSpiClassName);
+        this.addAlias("Mac.HMAC-" + digestAlgo, hmacAlgorithm);
+        this.addAlias("Mac.HMAC/" + digestAlgo, hmacAlgorithm);
+
+        this.addAlgorithm("KeyGenerator." + hmacAlgorithm, keyGenSpiClassName);
+        this.addAlias("KeyGenerator.HMAC-" + digestAlgo, hmacAlgorithm);
+        this.addAlias("KeyGenerator.HMAC/" + digestAlgo, hmacAlgorithm);
     }
 
 
-    protected void addHMACAlgorithm(String digestAlgorithm, String hmacAlgorithmClassName, String keyGeneratorClassName) {
+    public void addHmacOidAlias(String hmacOid, String digestAlgorithm) {
         String hmacAlgorithm = "HMAC" + digestAlgorithm;
 
-        this.addAlgorithm("Mac." + hmacAlgorithm, hmacAlgorithmClassName);
-        this.addAlgorithm("Alg.Alias.Mac.HMAC-" + digestAlgorithm, hmacAlgorithm);
-        this.addAlgorithm("Alg.Alias.Mac.HMAC/" + digestAlgorithm, hmacAlgorithm);
-        this.addAlgorithm("KeyGenerator." + hmacAlgorithm, keyGeneratorClassName);
-        this.addAlgorithm("Alg.Alias.KeyGenerator.HMAC-" + digestAlgorithm, hmacAlgorithm);
-        this.addAlgorithm("Alg.Alias.KeyGenerator.HMAC/" + digestAlgorithm, hmacAlgorithm);
-    }
-
-    protected void addHMACAlias(String algorithm, String oid)
-    {
-        String mainName = "HMAC" + algorithm;
-
-        this.addAlgorithm("Alg.Alias.Mac." + oid, mainName);
-        this.addAlgorithm("Alg.Alias.KeyGenerator." + oid, mainName);
+        this.addAlias("Mac." + hmacOid, hmacAlgorithm);
+        this.addAlias("KeyGenerator." + hmacOid, hmacAlgorithm);
     }
 
     private void setup() {

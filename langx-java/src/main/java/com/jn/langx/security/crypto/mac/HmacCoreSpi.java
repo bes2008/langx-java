@@ -15,8 +15,8 @@ import java.util.Arrays;
  */
 public class HmacCoreSpi extends MacSpi implements Cloneable {
     private MessageDigest messageDigest;
-    private byte[] k_ipad;
-    private byte[] k_opad;
+    private byte[] inputPad;
+    private byte[] outPad;
     private boolean first;
     private final int blockLen;
 
@@ -26,8 +26,8 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
             blockLength = 64;
         }
         this.blockLen = blockLength;
-        this.k_ipad = new byte[this.blockLen];
-        this.k_opad = new byte[this.blockLen];
+        this.inputPad = new byte[this.blockLen];
+        this.outPad = new byte[this.blockLen];
         this.first = true;
     }
 
@@ -61,8 +61,8 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
 
                 for (int i = 0; i < this.blockLen; ++i) {
                     byte b = i < keyBytes.length ? keyBytes[i] : 0;
-                    this.k_ipad[i] = (byte) (b ^ 54);
-                    this.k_opad[i] = (byte) (b ^ 92);
+                    this.inputPad[i] = (byte) (b ^ 54);
+                    this.outPad[i] = (byte) (b ^ 92);
                 }
 
                 Arrays.fill(keyBytes, (byte) 0);
@@ -73,7 +73,7 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
 
     protected void engineUpdate(byte b) {
         if (this.first) {
-            this.messageDigest.update(this.k_ipad);
+            this.messageDigest.update(this.inputPad);
             this.first = false;
         }
 
@@ -82,7 +82,7 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
 
     protected void engineUpdate(byte[] bytes, int off, int len) {
         if (this.first) {
-            this.messageDigest.update(this.k_ipad);
+            this.messageDigest.update(this.inputPad);
             this.first = false;
         }
 
@@ -91,7 +91,7 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
 
     protected void engineUpdate(ByteBuffer buffer) {
         if (this.first) {
-            this.messageDigest.update(this.k_ipad);
+            this.messageDigest.update(this.inputPad);
             this.first = false;
         }
 
@@ -100,14 +100,14 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
 
     protected byte[] engineDoFinal() {
         if (this.first) {
-            this.messageDigest.update(this.k_ipad);
+            this.messageDigest.update(this.inputPad);
         } else {
             this.first = true;
         }
 
         try {
             byte[] digest = this.messageDigest.digest();
-            this.messageDigest.update(this.k_opad);
+            this.messageDigest.update(this.outPad);
             this.messageDigest.update(digest);
             this.messageDigest.digest(digest, 0, digest.length);
             return digest;
@@ -127,8 +127,8 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
     public Object clone() throws CloneNotSupportedException {
         HmacCoreSpi var1 = (HmacCoreSpi) super.clone();
         var1.messageDigest = (MessageDigest) this.messageDigest.clone();
-        var1.k_ipad = Arrs.copy(this.k_ipad);
-        var1.k_opad = Arrs.copy(this.k_opad);
+        var1.inputPad = Arrs.copy(this.inputPad);
+        var1.outPad = Arrs.copy(this.outPad);
         return var1;
     }
 }
