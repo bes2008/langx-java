@@ -9,5 +9,7 @@ public class MD5DigestProviderConfigurer implements LangxSecurityProviderConfigu
     public void configure(LangxSecurityProvider provider) {
         provider.addAlgorithm("MessageDigest.MD5", Reflects.getFQNClassName(MD5MessageDigest.class));
         provider.addAlgorithm("Alg.Alias.MessageDigest.1.2.840.113549.2.5", "MD5");
+
+        provider.addHmacAlgorithm("MD5", HMacMD5Spi.class, HMacMD5KeyGeneratorSpi.class);
     }
 }

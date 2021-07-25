@@ -8,6 +8,14 @@ import com.jn.langx.util.Strings;
 import java.security.SecureRandom;
 
 public class SecureRandoms extends Securitys {
+    public static SecureRandom getDefault() {
+        try {
+            return getSecureRandom(JCAEStandardName.SHA1PRNG.getName(), "SUN");
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
     public static SecureRandom getNativePRNG() {
         try {
             return getSecureRandom(JCAEStandardName.NativePRNG.getName());
@@ -18,7 +26,7 @@ public class SecureRandoms extends Securitys {
 
     public static SecureRandom getSHA1PRNG() {
         try {
-            return getSecureRandom(JCAEStandardName.SHA1PRNG.getName(), "SUN");
+            return getSecureRandom(JCAEStandardName.SHA1PRNG.getName());
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }

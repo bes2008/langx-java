@@ -57,6 +57,11 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
         this.addAlgorithm("Alg.Alias." + name, alias);
     }
 
+    @Override
+    public void addHmacAlgorithm(String digestAlgo, Class hmacAlgoSpiClass, Class keyGenSpiClass) {
+        this.addHmacAlgorithm(digestAlgo, Reflects.getFQNClassName(hmacAlgoSpiClass), Reflects.getFQNClassName(keyGenSpiClass));
+    }
+
     public void addHmacAlgorithm(String digestAlgo, String hmacAlgoSpiClassName, String keyGenSpiClassName) {
         String hmacAlgorithm = "HMAC" + digestAlgo;
 

@@ -22,6 +22,7 @@ public interface ConfigurableSecurityProvider {
 
     void addAlias(String name, String alias);
 
+    void addHmacAlgorithm(String digestAlgo, Class hmacAlgoSpiClass, Class keyGenSpiClass);
     void addHmacAlgorithm(String digestAlgo, String hmacAlgoSpiClassName, String keyGenSpiClassName);
 
     void addHmacOidAlias(String hmacOid, String digestAlgorithm);
