@@ -8,6 +8,6 @@ public class MD4DigestProviderConfigurer implements LangxSecurityProviderConfigu
     @Override
     public void configure(LangxSecurityProvider provider) {
         provider.addAlgorithm("MessageDigest.MD4", Reflects.getFQNClassName(MD4MessageDigest.class));
-        provider.addAlgorithm("Alg.Alias.MessageDigest", "1.2.840.113549.2.4", "MD4");
+        provider.addAlgorithmOid("Alg.Alias.MessageDigest", "1.2.840.113549.2.4", "MD4");
     }
 }

@@ -8,6 +8,6 @@ public class WhirlpoolDigestProviderConfigurer implements LangxSecurityProviderC
     @Override
     public void configure(LangxSecurityProvider provider) {
         provider.addAlgorithm("MessageDigest.WHIRLPOOL", Reflects.getFQNClassName(WhirlpoolMessageDigest.class));
-        provider.addAlgorithm("MessageDigest", "1.0.10118.3.0.55", Reflects.getFQNClassName(WhirlpoolMessageDigest.class));
+        provider.addAlgorithmOid("MessageDigest", "1.0.10118.3.0.55", Reflects.getFQNClassName(WhirlpoolMessageDigest.class));
     }
 }

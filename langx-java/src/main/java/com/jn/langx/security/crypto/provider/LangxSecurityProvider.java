@@ -15,13 +15,14 @@ import java.util.ServiceLoader;
  */
 public class LangxSecurityProvider extends Provider implements ConfigurableSecurityProvider {
     private static final Logger logger = LoggerFactory.getLogger(LangxSecurityProvider.class);
-    public static final String NAME= "langx-java-security-provider";
+    public static final String NAME = "langx-java-security-provider";
+
     public LangxSecurityProvider(String name, double version, String info) {
         super(name, version, info);
         setup();
     }
 
-    public LangxSecurityProvider(){
+    public LangxSecurityProvider() {
         this(NAME, 1.0d, "com.jn.langx");
     }
 
@@ -37,7 +38,7 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
         put(key, value);
     }
 
-    public void addAlgorithm(@NonNull String type, @NonNull String oid, @NonNull String className) {
+    public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull String className) {
         Preconditions.checkNotEmpty(type, "type is null or empty");
         Preconditions.checkNotEmpty(oid, "oid is null or empty");
         Preconditions.checkNotEmpty(className, "className is null or empty");
@@ -47,13 +48,31 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
     }
 
 
+    protected void addHMACAlgorithm(String digestAlgorithm, String hmacAlgorithmClassName, String keyGeneratorClassName) {
+        String hmacAlgorithm = "HMAC" + digestAlgorithm;
 
-    private void setup(){
+        this.addAlgorithm("Mac." + hmacAlgorithm, hmacAlgorithmClassName);
+        this.addAlgorithm("Alg.Alias.Mac.HMAC-" + digestAlgorithm, hmacAlgorithm);
+        this.addAlgorithm("Alg.Alias.Mac.HMAC/" + digestAlgorithm, hmacAlgorithm);
+        this.addAlgorithm("KeyGenerator." + hmacAlgorithm, keyGeneratorClassName);
+        this.addAlgorithm("Alg.Alias.KeyGenerator.HMAC-" + digestAlgorithm, hmacAlgorithm);
+        this.addAlgorithm("Alg.Alias.KeyGenerator.HMAC/" + digestAlgorithm, hmacAlgorithm);
+    }
+
+    protected void addHMACAlias(String algorithm, String oid)
+    {
+        String mainName = "HMAC" + algorithm;
+
+        this.addAlgorithm("Alg.Alias.Mac." + oid, mainName);
+        this.addAlgorithm("Alg.Alias.KeyGenerator." + oid, mainName);
+    }
+
+    private void setup() {
         load();
     }
 
 
-    private void load(){
+    private void load() {
         Collects.forEach(ServiceLoader.load(LangxSecurityProviderConfigurer.class), new Consumer<LangxSecurityProviderConfigurer>() {
             @Override
             public void accept(LangxSecurityProviderConfigurer configurer) {
