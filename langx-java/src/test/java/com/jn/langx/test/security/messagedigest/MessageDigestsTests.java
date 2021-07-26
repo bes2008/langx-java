@@ -12,19 +12,26 @@ public class MessageDigestsTests {
         digestAndPrint("MD2", str);
         digestAndPrint("MD4", str);
         digestAndPrint("MD5", str);
+
         digestAndPrint("SM3", str);
+        // sha1
         digestAndPrint("SHA1", str);
         digestAndPrint("SHA-1", str);
+
+        // sha2
+        digestAndPrint("SHA-224", str);
+        digestAndPrint("SHA-256", str);
+        digestAndPrint("SHA-384", str);
+        digestAndPrint("SHA-512", str);
+
+        // sha3
         digestAndPrint("SHA3", str);
         digestAndPrint("SHA-3", str);
         digestAndPrint("SHA3-224", str);
         digestAndPrint("SHA3-256", str);
         digestAndPrint("SHA3-384", str);
         digestAndPrint("SHA3-512", str);
-        digestAndPrint("SHA-224", str);
-        digestAndPrint("SHA-256", str);
-        digestAndPrint("SHA-384", str);
-        digestAndPrint("SHA-512", str);
+
     }
 
     private void digestAndPrint(String algorithm, String content){

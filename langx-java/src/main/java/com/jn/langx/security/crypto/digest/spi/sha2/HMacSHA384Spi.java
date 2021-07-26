@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.spi.sha384;
+package com.jn.langx.security.crypto.digest.spi.sha2;
 
 import com.jn.langx.security.crypto.mac.HmacCoreSpi;
 

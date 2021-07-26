@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.spi.sha512;
+package com.jn.langx.security.crypto.digest.spi.sha2;
 
 import com.jn.langx.security.crypto.digest.LangxMessageDigest;
 import com.jn.langx.security.crypto.digest.internal.impl._SHA512tDigest;
