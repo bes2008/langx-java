@@ -26,8 +26,8 @@ public class BaseKeyGeneratorSpi extends KeyGeneratorSpi {
 
     protected boolean initialed = false;
 
-    public BaseKeyGeneratorSpi(String algName, int defaultKeySize) {
-        this(algName, defaultKeySize, new CipherKeyGeneratorEngine());
+    public BaseKeyGeneratorSpi(String algorithm, int defaultKeySize) {
+        this(algorithm, defaultKeySize, new CipherKeyGeneratorEngine());
     }
 
     public BaseKeyGeneratorSpi(String algName, int defaultKeySize, CipherKeyGeneratorEngine engine) {
