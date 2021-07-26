@@ -56,25 +56,25 @@ public class SHA3MessageDigestSpis {
 
     public static class HMacSHA3_224Spi extends HmacCoreSpi {
         public HMacSHA3_224Spi() {
-            super("HMACSHA3-224");
+            super("SHA3-224");
         }
     }
 
     public static class HMacSHA3_256Spi extends HmacCoreSpi {
         public HMacSHA3_256Spi() {
-            super("HMACSHA3-256");
+            super("SHA3-256");
         }
     }
 
     public static class HMacSHA3_384Spi extends HmacCoreSpi {
         public HMacSHA3_384Spi() {
-            super("HMACSHA3-384");
+            super("SHA3-384");
         }
     }
 
     public static class HMacSHA3_512Spi extends HmacCoreSpi {
         public HMacSHA3_512Spi() {
-            super("HMACSHA3-512");
+            super("SHA3-512");
         }
     }
 
