@@ -6,21 +6,21 @@ import com.jn.langx.security.crypto.digest.internal.Xof;
 
 import java.security.MessageDigest;
 
-public class LangxMessageDigest extends MessageDigest implements BufferSizeAware{
+public class LangxMessageDigestSpi extends MessageDigest implements BufferSizeAware{
     protected Digest delegate;
     /**
      * 产生的 digest 的长度，bytes
      */
     protected int digestSize;
 
-    protected LangxMessageDigest(Digest digest) {
+    protected LangxMessageDigestSpi(Digest digest) {
         super(digest.getAlgorithmName());
 
         this.delegate = digest;
         this.digestSize = digest.getDigestSize();
     }
 
-    protected LangxMessageDigest(Xof digest, int outputSize) {
+    protected LangxMessageDigestSpi(Xof digest, int outputSize) {
         super(digest.getAlgorithmName());
 
         this.delegate = digest;
