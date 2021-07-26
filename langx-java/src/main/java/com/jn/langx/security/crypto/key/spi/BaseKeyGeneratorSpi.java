@@ -13,11 +13,18 @@ import java.security.spec.AlgorithmParameterSpec;
 
 public class BaseKeyGeneratorSpi extends KeyGeneratorSpi {
     protected String algName;
+    /**
+     * unit in bytes
+     */
     protected int keySize;
+
+    /**
+     * unit in bytes
+     */
     protected int defaultKeySize;
     protected CipherKeyGeneratorEngine engine;
 
-    protected boolean initialised = false;
+    protected boolean initialed = false;
 
     public BaseKeyGeneratorSpi(String algName, int defaultKeySize) {
         this(algName, defaultKeySize, new CipherKeyGeneratorEngine());
@@ -43,14 +50,14 @@ public class BaseKeyGeneratorSpi extends KeyGeneratorSpi {
                 random = SecureRandoms.getDefault();
             }
             engine.init(keySize, random);
-            initialised = true;
+            initialed = true;
         } catch (IllegalArgumentException e) {
             throw new InvalidParameterException(e.getMessage());
         }
     }
 
     protected SecretKey engineGenerateKey() {
-        if (!initialised) {
+        if (!initialed) {
             engineInit(defaultKeySize, SecureRandoms.getDefault());
         }
 

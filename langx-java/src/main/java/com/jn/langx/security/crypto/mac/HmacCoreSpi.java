@@ -1,5 +1,6 @@
 package com.jn.langx.security.crypto.mac;
 
+import com.jn.langx.security.crypto.digest.BufferSizeAware;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.util.collection.Arrs;
 
@@ -18,16 +19,22 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
     private byte[] inputPad;
     private byte[] outPad;
     private boolean first;
-    private final int blockLen;
+    private final int blockLength;
 
     public HmacCoreSpi(MessageDigest digest, int blockLength) {
         this.messageDigest = digest;
+
         if (blockLength <= 8) {
-            blockLength = 64;
+            if (this.messageDigest instanceof BufferSizeAware) {
+                blockLength = ((BufferSizeAware) this.messageDigest).getBufferSize();
+            }
+            if (blockLength <= 8) {
+                blockLength = 64;
+            }
         }
-        this.blockLen = blockLength;
-        this.inputPad = new byte[this.blockLen];
-        this.outPad = new byte[this.blockLen];
+        this.blockLength = blockLength;
+        this.inputPad = new byte[this.blockLength];
+        this.outPad = new byte[this.blockLength];
         this.first = true;
     }
 
@@ -53,13 +60,13 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
             if (keyBytes == null) {
                 throw new InvalidKeyException("Missing key data");
             } else {
-                if (keyBytes.length > this.blockLen) {
+                if (keyBytes.length > this.blockLength) {
                     byte[] digest = this.messageDigest.digest(keyBytes);
                     Arrays.fill(keyBytes, (byte) 0);
                     keyBytes = digest;
                 }
 
-                for (int i = 0; i < this.blockLen; ++i) {
+                for (int i = 0; i < this.blockLength; ++i) {
                     byte b = i < keyBytes.length ? keyBytes[i] : 0;
                     this.inputPad[i] = (byte) (b ^ 54);
                     this.outPad[i] = (byte) (b ^ 92);
