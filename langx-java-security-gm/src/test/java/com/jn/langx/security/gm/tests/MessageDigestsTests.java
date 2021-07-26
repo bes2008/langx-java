@@ -8,7 +8,7 @@ import org.junit.Test;
 public class MessageDigestsTests {
     @Test
     public void test(){
-        String str = MessageDigestsTests.class.getName();
+        String str = "com.jn.langx.test.security.messagedigest.MessageDigestsTests";
         digestAndPrint("MD2", str);
         digestAndPrint("MD4", str);
         digestAndPrint("MD5", str);
@@ -25,8 +25,6 @@ public class MessageDigestsTests {
         digestAndPrint("SHA-512", str);
 
         // sha3
-        digestAndPrint("SHA3", str);
-        digestAndPrint("SHA-3", str);
         digestAndPrint("SHA3-224", str);
         digestAndPrint("SHA3-256", str);
         digestAndPrint("SHA3-384", str);

@@ -3,20 +3,14 @@ package com.jn.langx.security;
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.security.gm.GmInitializer;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer;
 
 import java.security.Provider;
 import java.security.Security;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.ServiceLoader;
-import java.util.Set;
 
 public class Securitys {
-    private static Set<Provider> GLOBAL_PROVIDERS = new LinkedHashSet<Provider>();
     private static volatile boolean providersLoaded = false;
-    private static int global_providers_count = 0;
 
     public static void setup() {
         if (!providersLoaded) {
@@ -24,23 +18,12 @@ public class Securitys {
                 loadProviders();
             }
         }
-        // 全局 Provider数量发生了改变
-        if (global_providers_count != GLOBAL_PROVIDERS.size()) {
-            Collects.forEach(GLOBAL_PROVIDERS, new Consumer<Provider>() {
-                @Override
-                public void accept(Provider provider) {
-                    addProvider(provider);
-                }
-            });
-            global_providers_count = GLOBAL_PROVIDERS.size();
-        }
     }
 
 
     private static void loadProviders() {
         loadGMSupports();
         loadLangxProvider();
-        providersLoaded = true;
     }
 
     public static Provider getProvider(String name) {
@@ -51,26 +34,24 @@ public class Securitys {
     }
 
     /**
-     * 调用 addProvider 只是将其添加到线程上下文中，
-     * 如果想要作为全局的，需要将其添加到 ${JAVA_HOME}/jre/lib/security/java.security 文件中
+     * 调用 addProvider 将其添加到全局，
+     * 虽然添加了，但不一定会被用上，使用的顺序，
+     * 其顺序由 ${JAVA_HOME}/jre/lib/security/java.security 文件来控制
      *
      * @param provider
      */
     public static void addProvider(Provider provider) {
-        addProvider(provider, false);
-    }
-
-    public static void addProvider(Provider provider, boolean global) {
         Security.addProvider(provider);
-        if (global) {
-            GLOBAL_PROVIDERS.add(provider);
-        }
     }
-
+    public static void insertProvider(Provider provider) {
+           insertProviderAt(provider, 1);
+    }
+    public static void insertProviderAt(Provider provider, int position){
+        Security.insertProviderAt(provider, position);
+    }
 
     public static void loadLangxProvider() {
-        // 虽然代码里这么写了，但其实是添加不到全局的Provider里的，原因是没有对langx-java.jar进行签名
-        addProvider(new LangxSecurityProvider(), true);
+        insertProvider(new LangxSecurityProvider());
     }
 
     public static boolean langxProviderInstalled() {
