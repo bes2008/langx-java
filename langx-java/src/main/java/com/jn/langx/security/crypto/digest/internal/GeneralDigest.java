@@ -8,7 +8,7 @@ import com.jn.langx.util.Memoable;
  * base implementation of MD4 family style digest as outlined in
  * "Handbook of Applied Cryptography", pages 344 - 347.
  */
-public abstract class GeneralDigest implements ExtendedDigest, Memoable {
+public abstract class GeneralDigest implements Digest, Memoable {
     private static final int BYTE_LENGTH = 64;
 
     private final byte[] xBuf = new byte[4];
@@ -128,7 +128,7 @@ public abstract class GeneralDigest implements ExtendedDigest, Memoable {
         Bytes.longToBigEndian(byteCount, state, 8);
     }
 
-    public int getByteLength() {
+    public int getBufferSize() {
         return BYTE_LENGTH;
     }
 

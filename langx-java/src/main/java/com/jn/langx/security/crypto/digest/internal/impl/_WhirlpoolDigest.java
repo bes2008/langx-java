@@ -1,6 +1,6 @@
 package com.jn.langx.security.crypto.digest.internal.impl;
 
-import com.jn.langx.security.crypto.digest.internal.ExtendedDigest;
+import com.jn.langx.security.crypto.digest.internal.Digest;
 import com.jn.langx.util.Memoable;
 
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Implementation of WhirlpoolDigest, based on Java source published by Barreto
  * and Rijmen.
  */
-public final class _WhirlpoolDigest implements Memoable, ExtendedDigest {
+public final class _WhirlpoolDigest implements Memoable, Digest {
     private static final int BYTE_LENGTH = 64;
 
     private static final int DIGEST_LENGTH_BYTES = 512 / 8;
@@ -339,7 +339,7 @@ public final class _WhirlpoolDigest implements Memoable, ExtendedDigest {
         return rv;
     }
 
-    public int getByteLength() {
+    public int getBufferSize() {
         return BYTE_LENGTH;
     }
 

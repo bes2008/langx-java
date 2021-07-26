@@ -1,14 +1,13 @@
 package com.jn.langx.security.crypto.digest.internal.impl;
 
-import com.jn.langx.security.crypto.digest.internal.ExtendedDigest;
+import com.jn.langx.security.crypto.digest.internal.Digest;
 import com.jn.langx.util.Bytes;
 import com.jn.langx.util.Memoable;
 
 /**
  * Base class for SHA-384 and SHA-512.
  */
-public abstract class _AbstractLongDigest
-        implements ExtendedDigest, Memoable {
+public abstract class _AbstractLongDigest implements Digest,  Memoable {
     private static final int BYTE_LENGTH = 128;
 
     private byte[] xBuf = new byte[8];
@@ -184,7 +183,7 @@ public abstract class _AbstractLongDigest
         }
     }
 
-    public int getByteLength() {
+    public int getBufferSize() {
         return BYTE_LENGTH;
     }
 

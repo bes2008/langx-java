@@ -4,7 +4,7 @@ package com.jn.langx.security.crypto.digest.internal;
  * With FIPS PUB 202 a new kind of message digest was announced which supported extendable output, or variable digest sizes.
  * This interface provides the extra method required to support variable output on an extended digest implementation.
  */
-public interface Xof extends ExtendedDigest
+public interface Xof extends Digest
 {
     /**
      * Output the results of the final calculation for this digest to outLen number of bytes.

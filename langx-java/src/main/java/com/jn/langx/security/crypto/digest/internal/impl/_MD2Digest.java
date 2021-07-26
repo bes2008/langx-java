@@ -1,14 +1,14 @@
 package com.jn.langx.security.crypto.digest.internal.impl;
 
 
-import com.jn.langx.security.crypto.digest.internal.ExtendedDigest;
+import com.jn.langx.security.crypto.digest.internal.Digest;
 import com.jn.langx.util.Memoable;
 
 /**
  * implementation of MD2
  * as outlined in RFC1319 by B.Kaliski from RSA Laboratories April 1992
  */
-public class _MD2Digest implements ExtendedDigest, Memoable {
+public class _MD2Digest implements Digest, Memoable {
     private static final int DIGEST_LENGTH = 16;
 
     /* X buffer */
@@ -220,7 +220,7 @@ public class _MD2Digest implements ExtendedDigest, Memoable {
             (byte) 159, (byte) 17, (byte) 131, (byte) 20
     };
 
-    public int getByteLength() {
+    public int getBufferSize() {
         return 16;
     }
 
