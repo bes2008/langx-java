@@ -43,7 +43,9 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
         }
         put(key, value);
     }
-
+    public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull Class spiClassName){
+        addAlgorithmOid(type, oid, Reflects.getFQNClassName(spiClassName));
+    }
     public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull String spiClassName) {
         Preconditions.checkNotEmpty(type, "type is null or empty");
         Preconditions.checkNotEmpty(oid, "oid is null or empty");
