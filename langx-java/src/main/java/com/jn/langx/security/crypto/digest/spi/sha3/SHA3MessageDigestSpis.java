@@ -28,24 +28,24 @@ public class SHA3MessageDigestSpis {
     }
 
 
-    public static class SHA3_224MessageDigest extends com.jn.langx.security.crypto.digest.spi.sha3.SHA3MessageDigest {
+    public static class SHA3_224MessageDigest extends SHA3MessageDigest {
         public SHA3_224MessageDigest(){
             super(224);
         }
     }
 
-    public static class SHA3_256MessageDigest extends com.jn.langx.security.crypto.digest.spi.sha3.SHA3MessageDigest {
+    public static class SHA3_256MessageDigest extends SHA3MessageDigest {
         public SHA3_256MessageDigest(){
             super(256);
         }
     }
-    public static class SHA3_384MessageDigest extends com.jn.langx.security.crypto.digest.spi.sha3.SHA3MessageDigest {
+    public static class SHA3_384MessageDigest extends SHA3MessageDigest {
         public SHA3_384MessageDigest(){
             super(384);
         }
     }
 
-    public static class SHA3_512MessageDigest extends com.jn.langx.security.crypto.digest.spi.sha3.SHA3MessageDigest {
+    public static class SHA3_512MessageDigest extends SHA3MessageDigest {
         public SHA3_512MessageDigest(){
             super(512);
         }
