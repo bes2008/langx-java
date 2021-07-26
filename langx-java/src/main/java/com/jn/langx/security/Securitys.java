@@ -37,16 +37,16 @@ public class Securitys {
      * 调用 addProvider 将其添加到全局，
      * 虽然添加了，但不一定会被用上，使用的顺序，
      * 其顺序由 ${JAVA_HOME}/jre/lib/security/java.security 文件来控制
-     *
-     * @param provider
      */
     public static void addProvider(Provider provider) {
         Security.addProvider(provider);
     }
+
     public static void insertProvider(Provider provider) {
-           insertProviderAt(provider, 1);
+        insertProviderAt(provider, 1);
     }
-    public static void insertProviderAt(Provider provider, int position){
+
+    public static void insertProviderAt(Provider provider, int position) {
         Security.insertProviderAt(provider, position);
     }
 
