@@ -80,7 +80,7 @@ public class MessageDigests extends Securitys {
     }
 
     public static byte[] digest(String algorithm, byte[] source, int iterations) {
-        return digest(algorithm, source, null, 1);
+        return digest(algorithm, source, null, iterations);
     }
 
     public static byte[] digest(String algorithm, byte[] source, byte[] salt, int iterations) {
@@ -101,16 +101,14 @@ public class MessageDigests extends Securitys {
             }
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
-            /*
             if (!Securitys.langxProviderInstalled()) {
-                Securitys.setupLangxProvider();
+                Securitys.setup();
                 try {
                     return MessageDigest.getInstance(algorithm);
                 } catch (NoSuchAlgorithmException e2) {
                     throw new SecurityException(e2);
                 }
             }
-             */
             throw new SecurityException(e);
         }
     }
