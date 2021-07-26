@@ -99,6 +99,7 @@ public class MessageDigests extends Securitys {
             if (algorithm == null) {
                 algorithm = "MD5";
             }
+            Securitys.setup();
             return MessageDigest.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
             if (!Securitys.langxProviderInstalled()) {
