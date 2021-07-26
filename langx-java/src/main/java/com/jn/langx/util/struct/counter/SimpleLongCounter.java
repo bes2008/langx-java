@@ -39,6 +39,18 @@ public class SimpleLongCounter implements Counter<Long> {
     }
 
     @Override
+    public Long getAndIncrement() {
+        return getAndIncrement(1L);
+    }
+
+    @Override
+    public Long getAndIncrement(Long delta) {
+        Long value = get();
+        increment(delta);
+        return value;
+    }
+
+    @Override
     public void set(Long value) {
         this.value = value;
     }

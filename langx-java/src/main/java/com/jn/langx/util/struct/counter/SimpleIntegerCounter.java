@@ -39,6 +39,18 @@ public class SimpleIntegerCounter implements Counter<Integer> {
     }
 
     @Override
+    public Integer getAndIncrement() {
+        return getAndIncrement(1);
+    }
+
+    @Override
+    public Integer getAndIncrement(Integer delta) {
+        Integer value = get();
+        increment(delta);
+        return value;
+    }
+
+    @Override
     public void set(Integer value) {
         this.value = value;
     }

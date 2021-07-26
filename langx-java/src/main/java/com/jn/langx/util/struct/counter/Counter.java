@@ -8,7 +8,8 @@ public interface Counter<E extends Number> {
     E decrement();
 
     E decrement(E delta);
-
+    E getAndIncrement();
+    E getAndIncrement(E delta);
     E get();
 
     void set(E value);
