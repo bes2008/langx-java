@@ -57,7 +57,7 @@ public class Securitys {
 
     public static void loadLangxProvider() {
         LangxSecurityProvider langxSecurityProvider = new LangxSecurityProvider();
-        // insertProvider(langxSecurityProvider);
+        insertProvider(langxSecurityProvider);
         // insert 后，由于 langx provider  并没有经过 Oracle官方签名，所以只能用它的 message digest算法，所有涉及到的加解密的算法都不可用
         // 如果去官网申请的话：https://www.oracle.com/java/technologies/javase/getcodesigningcertificate.html 这里是教程
 
