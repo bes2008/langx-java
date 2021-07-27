@@ -6,15 +6,19 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.CryptoException;
+import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.crypto.KeyGenerator;
+import javax.crypto.KeyGeneratorSpi;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.SecretKeySpec;
@@ -63,9 +67,9 @@ public class PKIs extends Securitys {
         return createPrivateKey(algorithm, provider, base64Pkcs8PrivateKey, true);
     }
 
-    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty byte[] pkcs8PrivateKey, boolean base64ed){
+    public static PrivateKey createPrivateKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty byte[] pkcs8PrivateKey, boolean base64ed) {
         Preconditions.checkNotEmpty(pkcs8PrivateKey, "the private key is null or empty");
-        PKCS8EncodedKeySpec pkcs8PrivKey = new PKCS8EncodedKeySpec(base64ed ? Base64.decodeBase64(pkcs8PrivateKey):pkcs8PrivateKey);
+        PKCS8EncodedKeySpec pkcs8PrivKey = new PKCS8EncodedKeySpec(base64ed ? Base64.decodeBase64(pkcs8PrivateKey) : pkcs8PrivateKey);
         return createPrivateKey(algorithm, provider, pkcs8PrivKey);
     }
 
@@ -122,7 +126,7 @@ public class PKIs extends Securitys {
         try {
             Preconditions.checkTrue(keyLength > 0);
             KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
-            if("SM2".equals(algorithm)){
+            if ("SM2".equals(algorithm)) {
                 keyLength = 256;
             }
             if (secureRandom == null) {
@@ -150,6 +154,41 @@ public class PKIs extends Securitys {
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }
+    }
+
+    public static KeyGenerator getKeyGenerator(@NonNull String algorithm, @Nullable String provider) {
+        Preconditions.checkNotEmpty(algorithm);
+        KeyGenerator keyGenerator = null;
+        try {
+            keyGenerator = Strings.isBlank(provider) ? KeyGenerator.getInstance(algorithm) : KeyGenerator.getInstance(algorithm, provider);
+            return keyGenerator;
+        } catch (Throwable ex) {
+            if (ex instanceof NoSuchAlgorithmException) {
+                if (Strings.startsWith(algorithm, "hmac", true)) {
+                    String keyGeneratorSpiClassName = Securitys.getLangxSecurityProvider().findAlgorithm("KeyGenerator", algorithm);
+                    if(ClassLoaders.hasClass(keyGeneratorSpiClassName, PKIs.class.getClassLoader())){
+                        try {
+                            Class keyGeneratorSpiClass = ClassLoaders.loadClass(keyGeneratorSpiClassName, PKIs.class.getClassLoader());
+                            KeyGeneratorSpi keyGeneratorSpi = Reflects.<KeyGeneratorSpi>newInstance(keyGeneratorSpiClass);
+                            LangxKeyGenerator generator = new LangxKeyGenerator(keyGeneratorSpi, Securitys.getLangxSecurityProvider(), algorithm);
+                            return generator;
+                        }catch (Throwable ex2){
+                            throw new CryptoException(ex);
+                        }
+                    }
+                }
+            }
+            throw new CryptoException(ex.getMessage(), ex);
+        }
+
+    }
+
+    public static SecretKey createSecretKey(String algorithm) {
+        KeyGenerator keyGenerator = getKeyGenerator(algorithm, null);
+        if (keyGenerator != null) {
+            return keyGenerator.generateKey();
+        }
+        return null;
     }
 
     public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
@@ -182,17 +221,17 @@ public class PKIs extends Securitys {
         return new SecretKeySpec(bytes, algorithm);
     }
 
-    public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @Nullable Integer keyLength, @Nullable SecureRandom secureRandom) {
-        Preconditions.checkTrue(keyLength != null || secureRandom != null);
+    public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @Nullable Integer keySize, @Nullable SecureRandom secureRandom) {
+        Preconditions.checkTrue(keySize != null || secureRandom != null);
         try {
 
             KeyGenerator secretKeyGenerator = getSecretKeyGenerator(algorithm, provider);
-            if (keyLength == null) {
+            if (keySize == null) {
                 secretKeyGenerator.init(secureRandom);
             } else if (secureRandom == null) {
-                secretKeyGenerator.init(keyLength);
+                secretKeyGenerator.init(keySize);
             } else {
-                secretKeyGenerator.init(keyLength, secureRandom);
+                secretKeyGenerator.init(keySize, secureRandom);
             }
             return secretKeyGenerator.generateKey();
         } catch (Throwable ex) {

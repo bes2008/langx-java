@@ -2,14 +2,18 @@ package com.jn.langx.security.crypto.provider;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.Provider;
+import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.TreeMap;
 
 /**
  * langx 没有经过签名，最好是只往里面放 message digest 算法，加密算法都是要求算法所在的Jar包进行过 签名的
@@ -17,6 +21,10 @@ import java.util.ServiceLoader;
 public class LangxSecurityProvider extends Provider implements ConfigurableSecurityProvider {
     private static final Logger logger = LoggerFactory.getLogger(LangxSecurityProvider.class);
     public static final String NAME = "langx-java-security-provider";
+
+
+    private Map<String, String> properties = new TreeMap<String, String>();
+    private Map<String, String> propertiesBackup = new LinkedCaseInsensitiveMap();
 
     public LangxSecurityProvider(String name, double version, String info) {
         super(name, version, info);
@@ -42,10 +50,14 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
             return;
         }
         put(key, value);
+        properties.put(key, value);
+        propertiesBackup.put(key, value);
     }
-    public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull Class spiClassName){
+
+    public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull Class spiClassName) {
         addAlgorithmOid(type, oid, Reflects.getFQNClassName(spiClassName));
     }
+
     public void addAlgorithmOid(@NonNull String type, @NonNull String oid, @NonNull String spiClassName) {
         Preconditions.checkNotEmpty(type, "type is null or empty");
         Preconditions.checkNotEmpty(oid, "oid is null or empty");
@@ -96,5 +108,22 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
                 configurer.configure(LangxSecurityProvider.this);
             }
         });
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+
+    public String findAlgorithm(String type, String algorithm) {
+        String value = propertiesBackup.get(type + "." + algorithm);
+        if (Strings.isNotEmpty(value)) {
+            return value;
+        }
+        String alias = propertiesBackup.get("Alg.Alias." + type + "." + algorithm);
+        if (Strings.isNotEmpty(alias)) {
+            value = propertiesBackup.get(type+"."+alias);
+        }
+        return value;
     }
 }

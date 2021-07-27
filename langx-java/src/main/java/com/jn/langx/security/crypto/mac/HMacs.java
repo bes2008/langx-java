@@ -1,8 +1,20 @@
 package com.jn.langx.security.crypto.mac;
 
+import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.CryptoException;
+import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.util.ClassLoaders;
+import com.jn.langx.util.Strings;
+import com.jn.langx.util.reflect.Reflects;
+
+import javax.crypto.Mac;
+import javax.crypto.MacSpi;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HMacs {
+public class HMacs extends Securitys {
     /**
      * key: message digest algorithm
      * value: block length
@@ -37,5 +49,46 @@ public class HMacs {
             return -1;
         }
         return length;
+    }
+
+    public static Mac createMac(String algorithm) {
+        Mac mac = null;
+        try {
+            mac = Mac.getInstance(algorithm);
+            return mac;
+        } catch (Throwable ex) {
+            if (ex instanceof NoSuchAlgorithmException) {
+                if (Strings.startsWith(algorithm, "hmac", true)) {
+                    String macSpiClassName = Securitys.getLangxSecurityProvider().findAlgorithm("Mac", algorithm);
+                    if (ClassLoaders.hasClass(macSpiClassName, PKIs.class.getClassLoader())) {
+                        try {
+                            Class macSpiClass = ClassLoaders.loadClass(macSpiClassName, PKIs.class.getClassLoader());
+                            MacSpi macSpi = Reflects.<MacSpi>newInstance(macSpiClass);
+                            mac = new LangxMac(macSpi, Securitys.getLangxSecurityProvider(), algorithm);
+                            return mac;
+                        } catch (Throwable ex2) {
+                            // ignore it
+                        }
+                    }
+                }
+            }
+
+            throw new CryptoException(ex);
+        }
+    }
+
+    public static byte[] hmac(String algorithm, byte[] secretKey, byte[] data) {
+        SecretKey key = new SecretKeySpec(secretKey, algorithm);
+        return hmac(algorithm, key, data);
+    }
+
+    public static byte[] hmac(String algorithm, SecretKey key, byte[] data) {
+        Mac mac = createMac(algorithm);
+        try {
+            mac.init(key);
+            return mac.doFinal(data);
+        } catch (Throwable ex) {
+            throw new CryptoException(ex);
+        }
     }
 }

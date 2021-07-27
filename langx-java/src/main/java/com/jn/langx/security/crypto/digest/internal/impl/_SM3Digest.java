@@ -16,8 +16,7 @@ import com.jn.langx.util.Memoable;
  * including the SHA-256 which was a origin for
  * this specification.
  */
-public class _SM3Digest extends GeneralDigest
-{
+public class _SM3Digest extends GeneralDigest {
     private static final int DIGEST_LENGTH = 32;   // bytes
     private static final int BLOCK_SIZE = 64 / 4; // of 32 bit ints (16 ints)
 
@@ -31,15 +30,12 @@ public class _SM3Digest extends GeneralDigest
     // Round constant T for processBlock() which is 32 bit integer rolled left up to (63 MOD 32) bit positions.
     private static final int[] T = new int[64];
 
-    static
-    {
-        for (int i = 0; i < 16; ++i)
-        {
+    static {
+        for (int i = 0; i < 16; ++i) {
             int t = 0x79CC4519;
             T[i] = (t << i) | (t >>> (32 - i));
         }
-        for (int i = 16; i < 64; ++i)
-        {
+        for (int i = 16; i < 64; ++i) {
             int n = i % 32;
             int t = 0x7A879D8A;
             T[i] = (t << n) | (t >>> (32 - n));
@@ -50,8 +46,7 @@ public class _SM3Digest extends GeneralDigest
     /**
      * Standard constructor
      */
-    public _SM3Digest()
-    {
+    public _SM3Digest() {
         reset();
     }
 
@@ -59,38 +54,33 @@ public class _SM3Digest extends GeneralDigest
      * Copy constructor.  This will copy the state of the provided
      * message digest.
      */
-    public _SM3Digest(_SM3Digest t)
-    {
+    public _SM3Digest(_SM3Digest t) {
         super(t);
 
         copyIn(t);
     }
 
-    private void copyIn(_SM3Digest t)
-    {
+    private void copyIn(_SM3Digest t) {
         System.arraycopy(t.V, 0, this.V, 0, this.V.length);
         System.arraycopy(t.inwords, 0, this.inwords, 0, this.inwords.length);
         xOff = t.xOff;
     }
 
-    public String getAlgorithmName()
-    {
+    public String getAlgorithmName() {
         return "SM3";
     }
 
-    public int getDigestSize()
-    {
+    public int getDigestSize() {
         return DIGEST_LENGTH;
     }
 
 
-    public Memoable copy(){
+    public Memoable copy() {
         return new _SM3Digest(this);
     }
 
-    public void reset(Memoable other)
-    {
-        _SM3Digest d = (_SM3Digest)other;
+    public void reset(Memoable other) {
+        _SM3Digest d = (_SM3Digest) other;
 
         super.copyIn(d);
         copyIn(d);
@@ -100,8 +90,7 @@ public class _SM3Digest extends GeneralDigest
     /**
      * reset the chaining variables
      */
-    public void reset()
-    {
+    public void reset() {
         super.reset();
 
         this.V[0] = 0x7380166F;
@@ -117,22 +106,15 @@ public class _SM3Digest extends GeneralDigest
     }
 
 
-    public int doFinal(byte[] out,
-                       int outOff)
-    {
+    public int doFinal(byte[] out, int outOff) {
         finish();
-
         Bytes.intToBigEndian(V, out, outOff);
-
         reset();
-
         return DIGEST_LENGTH;
     }
 
 
-    protected void processWord(byte[] in,
-                               int inOff)
-    {
+    protected void processWord(byte[] in, int inOff) {
         // Note: Inlined for performance
         // this.inwords[xOff] = Pack.bigEndianToInt(in, inOff);
         int n = (((in[inOff] & 0xff) << 24) |
@@ -143,16 +125,13 @@ public class _SM3Digest extends GeneralDigest
         this.inwords[this.xOff] = n;
         ++this.xOff;
 
-        if (this.xOff >= 16)
-        {
+        if (this.xOff >= 16) {
             processBlock();
         }
     }
 
-    protected void processLength(long bitLength)
-    {
-        if (this.xOff > (BLOCK_SIZE - 2))
-        {
+    protected void processLength(long bitLength) {
+        if (this.xOff > (BLOCK_SIZE - 2)) {
             // xOff == 15  --> can't fit the 64 bit length field at tail..
             this.inwords[this.xOff] = 0; // fill with zero
             ++this.xOff;
@@ -160,15 +139,14 @@ public class _SM3Digest extends GeneralDigest
             processBlock();
         }
         // Fill with zero words, until reach 2nd to last slot
-        while (this.xOff < (BLOCK_SIZE - 2))
-        {
+        while (this.xOff < (BLOCK_SIZE - 2)) {
             this.inwords[this.xOff] = 0;
             ++this.xOff;
         }
 
         // Store input data length in BITS
-        this.inwords[this.xOff++] = (int)(bitLength >>> 32);
-        this.inwords[this.xOff++] = (int)(bitLength);
+        this.inwords[this.xOff++] = (int) (bitLength >>> 32);
+        this.inwords[this.xOff++] = (int) (bitLength);
     }
 
 /*
@@ -209,49 +187,40 @@ ROLL 23 :  ((x << 23) | (x >>> (32-23)))
 
  */
 
-    private int P0(final int x)
-    {
+    private int P0(final int x) {
         final int r9 = ((x << 9) | (x >>> (32 - 9)));
         final int r17 = ((x << 17) | (x >>> (32 - 17)));
         return (x ^ r9 ^ r17);
     }
 
-    private int P1(final int x)
-    {
+    private int P1(final int x) {
         final int r15 = ((x << 15) | (x >>> (32 - 15)));
         final int r23 = ((x << 23) | (x >>> (32 - 23)));
         return (x ^ r15 ^ r23);
     }
 
-    private int FF0(final int x, final int y, final int z)
-    {
+    private int FF0(final int x, final int y, final int z) {
         return (x ^ y ^ z);
     }
 
-    private int FF1(final int x, final int y, final int z)
-    {
+    private int FF1(final int x, final int y, final int z) {
         return ((x & y) | (x & z) | (y & z));
     }
 
-    private int GG0(final int x, final int y, final int z)
-    {
+    private int GG0(final int x, final int y, final int z) {
         return (x ^ y ^ z);
     }
 
-    private int GG1(final int x, final int y, final int z)
-    {
+    private int GG1(final int x, final int y, final int z) {
         return ((x & y) | ((~x) & z));
     }
 
 
-    protected void processBlock()
-    {
-        for (int j = 0; j < 16; ++j)
-        {
+    protected void processBlock() {
+        for (int j = 0; j < 16; ++j) {
             this.W[j] = this.inwords[j];
         }
-        for (int j = 16; j < 68; ++j)
-        {
+        for (int j = 16; j < 68; ++j) {
             int wj3 = this.W[j - 3];
             int r15 = ((wj3 << 15) | (wj3 >>> (32 - 15)));
             int wj13 = this.W[j - 13];
@@ -269,8 +238,7 @@ ROLL 23 :  ((x << 23) | (x >>> (32-23)))
         int H = this.V[7];
 
 
-        for (int j = 0; j < 16; ++j)
-        {
+        for (int j = 0; j < 16; ++j) {
             int a12 = ((A << 12) | (A >>> (32 - 12)));
             int s1_ = a12 + E + T[j];
             int SS1 = ((s1_ << 7) | (s1_ >>> (32 - 7)));
@@ -290,8 +258,7 @@ ROLL 23 :  ((x << 23) | (x >>> (32-23)))
         }
 
         // Different FF,GG functions on rounds 16..63
-        for (int j = 16; j < 64; ++j)
-        {
+        for (int j = 16; j < 64; ++j) {
             int a12 = ((A << 12) | (A >>> (32 - 12)));
             int s1_ = a12 + E + T[j];
             int SS1 = ((s1_ << 7) | (s1_ >>> (32 - 7)));

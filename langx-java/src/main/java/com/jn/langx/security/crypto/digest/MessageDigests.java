@@ -105,7 +105,7 @@ public class MessageDigests extends Securitys {
             if (!Securitys.langxProviderInstalled()) {
                 Securitys.setup();
                 try {
-                    return MessageDigest.getInstance(algorithm);
+                    return MessageDigest.getInstance(algorithm, Securitys.getLangxSecurityProvider());
                 } catch (NoSuchAlgorithmException e2) {
                     throw new SecurityException(e2);
                 }

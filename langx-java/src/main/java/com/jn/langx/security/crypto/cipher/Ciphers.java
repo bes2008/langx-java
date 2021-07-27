@@ -6,6 +6,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.CryptoException;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedKeySupplier;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
@@ -138,7 +139,7 @@ public class Ciphers extends Securitys {
         try {
             return cipher.doFinal(data);
         } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
+            throw new CryptoException(ex.getMessage(), ex);
         }
     }
 
@@ -146,7 +147,7 @@ public class Ciphers extends Securitys {
         try {
             return cipher.doFinal(data);
         } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
+            throw new CryptoException(ex.getMessage(), ex);
         }
     }
 
@@ -261,7 +262,7 @@ public class Ciphers extends Securitys {
                 return Ciphers.decrypt(cipher, bytes);
             }
         } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
+            throw new CryptoException(ex.getMessage(), ex);
         }
     }
 

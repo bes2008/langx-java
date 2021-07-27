@@ -50,7 +50,8 @@ public class GmBCInitializer extends AbstractInitializable implements GmInitiali
         Provider provider = Security.getProvider("BC");
         if (provider == null) {
             provider = new BouncyCastleProvider();
-            Securitys.addProvider(provider);
+            //Securitys.addProvider(provider);
+            Securitys.insertProvider(provider);
         }
         final Provider _provider = provider;
         Collects.forEach(map, new Consumer2<String, String>() {

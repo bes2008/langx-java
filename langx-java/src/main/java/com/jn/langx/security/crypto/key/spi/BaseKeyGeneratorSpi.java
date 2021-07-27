@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
 public class BaseKeyGeneratorSpi extends KeyGeneratorSpi {
-    protected String algName;
+    protected String algorithm;
     /**
      * unit in bytes
      */
@@ -30,8 +30,8 @@ public class BaseKeyGeneratorSpi extends KeyGeneratorSpi {
         this(algorithm, defaultKeySize, new CipherKeyGeneratorEngine());
     }
 
-    public BaseKeyGeneratorSpi(String algName, int defaultKeySize, CipherKeyGeneratorEngine engine) {
-        this.algName = algName;
+    public BaseKeyGeneratorSpi(String algorithm, int defaultKeySize, CipherKeyGeneratorEngine engine) {
+        this.algorithm = algorithm;
         this.keySize = this.defaultKeySize = defaultKeySize;
         this.engine = engine;
     }
@@ -61,6 +61,6 @@ public class BaseKeyGeneratorSpi extends KeyGeneratorSpi {
             engineInit(defaultKeySize, SecureRandoms.getDefault());
         }
 
-        return new SecretKeySpec(engine.generateKey(), algName);
+        return new SecretKeySpec(engine.generateKey(), algorithm);
     }
 }
