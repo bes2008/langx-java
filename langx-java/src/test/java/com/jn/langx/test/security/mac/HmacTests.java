@@ -25,7 +25,9 @@ public class HmacTests {
                 "hmacmd2", "hmacmd4", "hmacmd5",
                 "hmacsm3",
                 "hmacsha1",
-                "hmacsha224", "hmacsha256", "hmacsha384", "hmacsha512"
+                "hmacsha224", "hmacsha256", "hmacsha384", "hmacsha512",
+                "hmacsha3-224","hmacsha3-256","hmacsha3-384","hmacsha3-512",
+                "hmacwhirlpool"
         };
         Collects.forEach(algorithms, new Consumer<String>() {
             @Override
@@ -42,7 +44,7 @@ public class HmacTests {
 
     private void doTest(String algorithm) throws Throwable {
         String str = "hello-123: hmac";
-
+        System.out.println(StringTemplates.formatWithPlaceholder("test algorithm: {}", algorithm));
         KeyGenerator keyGenerator = PKIs.getKeyGenerator(algorithm, null);
 
         System.out.println(StringTemplates.formatWithPlaceholder("key generator: {}", keyGenerator.getClass()));

@@ -166,14 +166,15 @@ public class PKIs extends Securitys {
             if (ex instanceof NoSuchAlgorithmException) {
                 if (Strings.startsWith(algorithm, "hmac", true)) {
                     String keyGeneratorSpiClassName = Securitys.getLangxSecurityProvider().findAlgorithm("KeyGenerator", algorithm);
-                    if(ClassLoaders.hasClass(keyGeneratorSpiClassName, PKIs.class.getClassLoader())){
+                    if (ClassLoaders.hasClass(keyGeneratorSpiClassName, PKIs.class.getClassLoader())) {
                         try {
                             Class keyGeneratorSpiClass = ClassLoaders.loadClass(keyGeneratorSpiClassName, PKIs.class.getClassLoader());
                             KeyGeneratorSpi keyGeneratorSpi = Reflects.<KeyGeneratorSpi>newInstance(keyGeneratorSpiClass);
-                            LangxKeyGenerator generator = new LangxKeyGenerator(keyGeneratorSpi, Securitys.getLangxSecurityProvider(), algorithm);
-                            return generator;
-                        }catch (Throwable ex2){
-                            throw new CryptoException(ex);
+                            if (keyGeneratorSpi != null) {
+                                LangxKeyGenerator generator = new LangxKeyGenerator(keyGeneratorSpi, Securitys.getLangxSecurityProvider(), algorithm);
+                                return generator;
+                            }
+                        } catch (Throwable ex2) {
                         }
                     }
                 }
@@ -209,12 +210,7 @@ public class PKIs extends Securitys {
     }
 
     public static KeyGenerator getSecretKeyGenerator(@NotEmpty String algorithm, @Nullable String provider) {
-        try {
-            Preconditions.checkNotNull(algorithm);
-            return Strings.isEmpty(provider) ? KeyGenerator.getInstance(algorithm) : KeyGenerator.getInstance(algorithm, provider);
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
+        return getKeyGenerator(algorithm, provider);
     }
 
     public static SecretKey createSecretKey(@NotEmpty String algorithm, byte[] bytes) {

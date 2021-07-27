@@ -32,6 +32,9 @@ public class MessageDigestsTests {
         digestAndPrint("SHA3-384", str);
         digestAndPrint("SHA3-512", str);
 
+        // whirlpool
+        digestAndPrint("whirlpool", str);
+
     }
 
     private void digestAndPrint(String algorithm, String content){

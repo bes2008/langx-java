@@ -92,19 +92,19 @@ public class SHA3MessageDigestSpis {
     }
 
     public static class HMacSHA3_256KeyGeneratorSpi extends HMacSHA3KeyGeneratorSpi {
-        public HMacSHA3_256KeyGeneratorSpi(int size) {
+        public HMacSHA3_256KeyGeneratorSpi() {
             super(256);
         }
     }
 
     public static class HMacSHA3_384KeyGeneratorSpi extends HMacSHA3KeyGeneratorSpi {
-        public HMacSHA3_384KeyGeneratorSpi(int size) {
+        public HMacSHA3_384KeyGeneratorSpi() {
             super(384);
         }
     }
 
     public static class HMacSHA3_512KeyGeneratorSpi extends HMacSHA3KeyGeneratorSpi {
-        public HMacSHA3_512KeyGeneratorSpi(int size) {
+        public HMacSHA3_512KeyGeneratorSpi() {
             super(512);
         }
     }
