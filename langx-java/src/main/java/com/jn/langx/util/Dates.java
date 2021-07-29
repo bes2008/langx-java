@@ -52,9 +52,15 @@ public class Dates {
 
     public static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
     public static final String yyyy_MM_dd_HH_mm_ss_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
+    // iso-8601
+    public static final String yyyy_MM_dd_T_HH_mm_ss="yyyy-MM-dd'T'HH:mm:ss";
+    // iso-8601 with zone
+    public static final String yyyy_MM_dd_T_HH_mm_ssZone="yyyy-MM-dd'T'HH:mm:ssZZ";
     public static final String yyyy_MM_dd = "yyyy-MM-dd";
     public static final String dd_MM_yyyy = "dd/MM/yyyy";
     public static final String HH_mm_ss = "HH:mm:ss";
+    public static final String HH_MM_ssZone = "HH:mm:ssZZ";
+
 
     public static String format(long millis, @NonNull String pattern) {
         Preconditions.checkTrue(millis >= 0);
