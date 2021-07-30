@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.tests;
+package com.jn.langx.security.gm.tests.bc;
 
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.crypto.digest.MessageDigests;

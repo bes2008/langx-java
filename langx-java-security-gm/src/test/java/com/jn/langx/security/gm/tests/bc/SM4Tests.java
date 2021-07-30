@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.tests;
+package com.jn.langx.security.gm.tests.bc;
 
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
