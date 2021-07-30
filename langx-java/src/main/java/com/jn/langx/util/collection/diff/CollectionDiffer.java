@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection.diff;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Differ;
 import com.jn.langx.util.comparator.EqualsComparator;
@@ -31,7 +32,7 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
     public CollectionDiffResult<E> diff(@Nullable Collection<E> oldCollection, @Nullable Collection<E> newCollection) {
         CollectionDiffResult<E> result = new CollectionDiffResult<E>();
 
-        if (oldCollection == null && newCollection == null) {
+        if (Objs.isEmpty(oldCollection) && Objs.isEmpty(newCollection)) {
             return result;
         }
 

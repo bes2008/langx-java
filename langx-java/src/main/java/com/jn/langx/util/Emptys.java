@@ -36,6 +36,18 @@ public class Emptys {
         if (object == null) {
             return true;
         }
+
+        if (object instanceof Collection) {
+            return ((Collection) object).isEmpty();
+        }
+
+        if (object instanceof Map) {
+            return ((Map) object).isEmpty();
+        }
+        if (object.getClass().isArray()) {
+            return Arrs.getLength(object) <= 0;
+        }
+
         if (object instanceof String) {
             return Strings.isEmpty((String) object);
         }
@@ -52,17 +64,6 @@ public class Emptys {
         if (object instanceof Buffer) {
             Buffer buff = (Buffer) object;
             return buff.hasRemaining();
-        }
-
-        if (object instanceof Collection) {
-            return ((Collection) object).isEmpty();
-        }
-
-        if (object instanceof Map) {
-            return ((Map) object).isEmpty();
-        }
-        if (object.getClass().isArray()) {
-            return Arrs.getLength(object) <= 0;
         }
 
         if (object.getClass().isEnum()) {
