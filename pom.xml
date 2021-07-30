@@ -7,12 +7,12 @@
     <groupId>com.github.fangjinuo.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>3.6.4</version>
+    <version>3.6.5</version>
 
     <name>${groupId}:${artifactId}:${version}</name>
 
     <description>
-        Java lang extensions, a supplement to , replacement  of a Guava, commons-lang, hutool
+        Java lang extensions, a supplement to , replacement of a Guava, commons-lang, hutool
     </description>
     <url>https://github.com/fangjinuo/langx-java</url>
     <developers>
@@ -52,6 +52,7 @@
         <module>langx-java8</module>
         <module>langx-java-reflect-aspectj</module>
         <module>langx-java-reflect-asm</module>
+        <module>langx-java-gmssl</module>
         <module>langx-java-security-gm</module>
     </modules>
     <dependencyManagement>
@@ -64,6 +65,11 @@
             <dependency>
                 <groupId>com.github.fangjinuo.langx</groupId>
                 <artifactId>langx-java8</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx</groupId>
+                <artifactId>langx-java-gmssl</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
