@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.tests.gmssl;
+package com.jn.langx.gmssl.tests;
 
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.util.io.Charsets;
