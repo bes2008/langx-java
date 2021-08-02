@@ -3,6 +3,7 @@ package com.jn.langx.security.gm.bc.crypto.symmetric.sm4;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.AlgorithmParameterSupplier;
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
@@ -19,9 +20,21 @@ import java.security.SecureRandom;
 public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
     public static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(SM4AlgorithmSpecSupplier.class).getBytes(Charsets.UTF_8);
 
+    public SM4AlgorithmSpecSupplier() {
+    }
+
+    private byte[] iv;
+
+    public SM4AlgorithmSpecSupplier(byte[] iv) {
+        this.iv = iv;
+    }
+
     @Override
     public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
-        if(Strings.contains(transform, "CBC")) {
+        if (Strings.contains(transform, "CBC")) {
+            if (Emptys.isNotEmpty(iv)) {
+                return new IvParameterSpec(iv);
+            }
             IvParameterSpec ivParameterSpec = null;
             if (secureRandom == null) {
                 try {
