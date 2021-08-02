@@ -15,9 +15,13 @@ public interface GmService extends Named {
 
     byte[] sm4Encrypt(byte[] data, byte[] secretKey);
 
-    byte[] sm4Encrypt(byte[] data, byte[] secretKey, byte[] iv);
+    byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey);
+
+    byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey, byte[] iv);
 
     byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey);
 
-    byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey, byte[] iv);
+    byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey);
+
+    byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey, byte[] iv);
 }
