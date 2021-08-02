@@ -53,7 +53,7 @@ public class GmsslGmService implements GmService {
      * @param secretKey
      * @param iv
      * @return 加密后的值
-     *
+     * <p>
      * SMS4 默认采用 PKC#7 padding
      */
     @Override
@@ -65,7 +65,7 @@ public class GmsslGmService implements GmService {
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        // 目前 ECB 模式会返回 null
+        // 目前 ECB 模式会返回 null, 这是有Bug的，
         return gmssl.symmetricEncrypt(cipher, data, secretKey, iv);
     }
 

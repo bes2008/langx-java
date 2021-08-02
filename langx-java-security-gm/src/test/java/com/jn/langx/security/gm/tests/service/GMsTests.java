@@ -55,11 +55,12 @@ public class GMsTests {
         GmService gmService = gms.getGmService(BcGmService.NAME);
         byte[] encryptedBytes = gmService.sm4Encrypt(str.getBytes(), "CBC", sm4Key, GmService.SM4_IV_DEFAULT);
         showSM4(gmService, "SM-CBC", sm4Key, null, encryptedBytes);
+        System.out.println(new String(gmService.sm4Decrypt(encryptedBytes, "CBC", sm4Key)));
 
         GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
         byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), "CBC", sm4Key, GmService.SM4_IV_DEFAULT);
         showSM4(gmService2, "SM-CBC", sm4Key, null, encryptedBytes2);
-
+        System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes, "CBC", sm4Key))));
     }
 
     public void showSM4(GmService service, String transformation, byte[] key, byte[] iv, byte[] encrypted) {
