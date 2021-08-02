@@ -7,7 +7,7 @@ import org.gmssl.GmSSL;
 
 public class GmsslGmService implements GmService {
     public static final String NAME = "GmSSL-GmService";
-    private GmSSL gmssl = new GmSSL();
+    private final GmSSL gmssl = new GmSSL();
 
     @Override
     public String getName() {
@@ -35,5 +35,25 @@ public class GmsslGmService implements GmService {
             bytes = gmssl.digest("SM3", bytes);
         }
         return bytes;
+    }
+
+    @Override
+    public byte[] sm4Encrypt(byte[] data, byte[] secretKey) {
+        return sm4Encrypt(data, secretKey, SM4_IV_DEFAULT);
+    }
+
+    @Override
+    public byte[] sm4Encrypt(byte[] data, byte[] secretKey, byte[] iv) {
+        return gmssl.symmetricEncrypt("SMS4", data, secretKey, iv);
+    }
+
+    @Override
+    public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
+        return sm4Decrypt(encryptedBytes, secretKey, SM4_IV_DEFAULT);
+    }
+
+    @Override
+    public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey, byte[] iv) {
+        return gmssl.symmetricDecrypt("SMS4", encryptedBytes, secretKey, iv);
     }
 }
