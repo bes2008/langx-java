@@ -20,7 +20,7 @@ import java.security.Security;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GmBCInitializer extends AbstractInitializable implements GmInitializer, Serializable {
+public class BcGmInitializer extends AbstractInitializable implements GmInitializer, Serializable {
     private static final long serialVersionUID = 1443132961964116159L;
 
     @Override
