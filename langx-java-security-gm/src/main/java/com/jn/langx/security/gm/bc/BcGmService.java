@@ -44,7 +44,7 @@ public class BcGmService implements GmService {
 
     @Override
     public byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey, byte[] iv) {
-        String transformation = Ciphers.createAlgorithmTransformation("SM4", Strings.isBlank(mode) ? "ECB" : mode.toUpperCase(), "PKCS7Padding");
+        String transformation = Ciphers.createAlgorithmTransformation("SM4", Strings.isBlank(mode) ? "CBC" : mode.toUpperCase(), "PKCS7Padding");
         if (transformation.contains("CBC")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;
@@ -65,7 +65,7 @@ public class BcGmService implements GmService {
 
     @Override
     public byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey, byte[] iv) {
-        String transformation = Ciphers.createAlgorithmTransformation("SM4", Strings.isBlank(mode) ? "ECB" : mode.toUpperCase(), "PKCS7Padding");
+        String transformation = Ciphers.createAlgorithmTransformation("SM4", Strings.isBlank(mode) ? "CBC" : mode.toUpperCase(), "PKCS7Padding");
         if (transformation.contains("CBC")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;

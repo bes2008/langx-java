@@ -59,7 +59,7 @@ public class GmsslGmService implements GmService {
     @Override
     public byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey, byte[] iv) {
         if (Emptys.isEmpty(mode)) {
-            mode = "ECB";
+            mode = "CBC";
         }
         String cipher = "SMS4-" + mode.toUpperCase();
         if (Emptys.isEmpty(iv)) {
@@ -81,7 +81,7 @@ public class GmsslGmService implements GmService {
     @Override
     public byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey, byte[] iv) {
         if (Emptys.isEmpty(mode)) {
-            mode = "ECB";
+            mode = "CBC";
         }
         String cipher = "SMS4-" + mode.toUpperCase();
         if (cipher.contains("-CBC")) {
