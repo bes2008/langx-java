@@ -6,11 +6,12 @@ import com.jn.langx.util.Maths;
 import org.gmssl.GmSSL;
 
 public class GmsslGmService implements GmService {
+    public static final String NAME = "GmSSL-GmService";
     private GmSSL gmssl = new GmSSL();
 
     @Override
     public String getName() {
-        return "GmSSL-GmService";
+        return NAME;
     }
 
     @Override
@@ -27,7 +28,7 @@ public class GmsslGmService implements GmService {
     public byte[] sm3(byte[] data, byte[] salt, int iterations) {
         byte[] bytes = data;
         if (Emptys.isNotEmpty(salt)) {
-            bytes = gmssl.digest("SM3", bytes);
+            bytes = gmssl.digest("SM3", salt);
         }
         iterations = Maths.max(1, iterations);
         for (int i = 0; i < iterations; i++) {

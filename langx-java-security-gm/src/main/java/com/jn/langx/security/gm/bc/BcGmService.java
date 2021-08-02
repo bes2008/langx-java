@@ -4,9 +4,11 @@ import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.gm.GmService;
 
 public class BcGmService implements GmService {
+    public static final String NAME = "BC-GmService";
+
     @Override
     public String getName() {
-        return "BC-GmService";
+        return NAME;
     }
 
     @Override

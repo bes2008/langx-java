@@ -18,6 +18,7 @@ public class GMs extends AbstractInitializable {
     private static final GMs INSTANCE = new GMs();
 
     private GMs() {
+        init();
     }
 
     public static GMs getGMs() {
@@ -39,5 +40,9 @@ public class GMs extends AbstractInitializable {
             GmService gmService = iter.next();
             registry.register(gmService);
         }
+    }
+
+    public GmService getGmService(String name) {
+        return registry.get(name);
     }
 }

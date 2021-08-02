@@ -76,7 +76,7 @@ public class MessageDigestHasher {
      */
     public MessageDigestHasher(@NonNull String algorithmName, @Nullable byte[] salt, int hashIterations) {
         setAlgorithmName(algorithmName);
-        setIterations(iterations);
+        setIterations(hashIterations);
         setSalt(salt);
     }
 
@@ -98,28 +98,29 @@ public class MessageDigestHasher {
     /**
      * Hashes the specified byte array using the given {@code salt} for the specified number of iterations.
      *
-     * @param bytes          the bytes to hash
-     * @param salt           the salt to use for the initial hash
-     * @param hashIterations the number of times the the {@code bytes} will be hashed (for attack resiliency).
+     * @param data       the bytes to hash
+     * @param salt       the salt to use for the initial hash
+     * @param iterations the number of times the the {@code bytes} will be hashed (for attack resiliency).
      * @return the hashed bytes.
      */
-    protected byte[] doHash(byte[] bytes, byte[] salt, int hashIterations) {
+    protected byte[] doHash(byte[] data, byte[] salt, int iterations) {
         MessageDigest digest = MessageDigests.newDigest(algorithmName);
         if (digest == null) {
             throw new AlgorithmUnregisteredException(algorithmName);
         }
+
+        byte[] bytes = data;
         if (Emptys.isNotEmpty(salt)) {
             digest.reset();
-            digest.update(salt);
+            bytes = digest.digest(salt);
         }
-        byte[] hashed = digest.digest(bytes);
-        int iterations = hashIterations - 1; //already hashed once above
-        //iterate remaining number:
+
+        iterations = Maths.max(1, iterations);
         for (int i = 0; i < iterations; i++) {
             digest.reset();
-            hashed = digest.digest(hashed);
+            bytes = digest.digest(bytes);
         }
-        return hashed;
+        return bytes;
     }
 
 }
