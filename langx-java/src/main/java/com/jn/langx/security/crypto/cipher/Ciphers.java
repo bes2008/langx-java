@@ -32,7 +32,7 @@ public class Ciphers extends Securitys {
     static {
         algorithmToTransformationMapping.put("AES", "AES/ECB/PKCS5Padding");
         algorithmToTransformationMapping.put("SM2", "SM2");
-        algorithmToTransformationMapping.put("SM4", "SM4/ECB/PKCS7Padding");
+        algorithmToTransformationMapping.put("SM4", "SM4/CBC/PKCS7Padding");
         algorithmToTransformationMapping.put("RSA", "RSA/ECB/PKCS1Padding");
     }
 
