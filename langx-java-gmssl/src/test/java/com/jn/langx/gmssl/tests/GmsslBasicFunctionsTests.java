@@ -28,7 +28,7 @@ public class GmsslBasicFunctionsTests {
     @Test
     public void showVersion(){
         System.out.println("versions: ");
-        System.out.println("\t" + Strings.join(",", gmssl.getVersions()));
+        System.out.println("\t" + Strings.join(",\n", gmssl.getVersions()));
     }
 
     @Test
