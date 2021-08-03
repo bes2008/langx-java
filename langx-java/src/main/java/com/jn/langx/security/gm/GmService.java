@@ -11,7 +11,7 @@ public interface GmService extends Named {
 
     byte[] sm2Sign(byte[] data, byte[] privateKey);
 
-    boolean verify(byte[] data, byte[] publicKey, byte[] signature);
+    boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature);
 
     byte[] sm3(byte[] data);
 

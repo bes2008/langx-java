@@ -25,6 +25,11 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
 
     @Override
     protected void doInit() throws InitializationException {
+       initProvider();
+
+    }
+
+    private void initProvider(){
         Map<String, String> map = new HashMap<String, String>();
 
         // sm2
@@ -61,8 +66,6 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
                 }
             }
         });
-
     }
-
 
 }

@@ -7,7 +7,9 @@ import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
+import com.jn.langx.security.crypto.signature.Signatures;
 import com.jn.langx.security.gm.GmService;
+import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2ParameterSpec;
 import com.jn.langx.security.gm.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
@@ -32,12 +34,15 @@ public class BcGmService implements GmService {
 
     @Override
     public byte[] sm2Sign(byte[] data, byte[] privateKey) {
-        return new byte[0];
+        SM2ParameterSpec parameterSpec = new SM2ParameterSpec();
+        return Signatures.sign(data, privateKey, "SM3WithSM2", null, null, parameterSpec);
     }
 
     @Override
-    public boolean verify(byte[] data, byte[] publicKey, byte[] signature) {
-        return false;
+    public boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature) {
+        SM2ParameterSpec parameterSpec = new SM2ParameterSpec();
+        boolean verified = Signatures.verify(data, signature, publicKey, "SM3WithSM2", null, parameterSpec);
+        return verified;
     }
 
     @Override

@@ -2,9 +2,9 @@ package com.jn.langx.security.gm.tests.service;
 
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.security.crypto.digest.MessageDigests;
-import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.gm.GMs;
 import com.jn.langx.security.gm.GmService;
+import com.jn.langx.security.gm.SM2KeyGenerator;
 import com.jn.langx.security.gm.SM4KeyGenerator;
 import com.jn.langx.security.gm.bc.BcGmService;
 import com.jn.langx.security.gm.gmssl.GmsslGmService;
@@ -21,37 +21,55 @@ public class GMsTests {
     @Test
     public void testSM2_cipher() {
         String str = "hello_234";
-        KeyPair keyPair = PKIs.createKeyPair("EC", null, 256, null);
+        KeyPair keyPair = new SM2KeyGenerator().genKeyPair();
 
         // 测试1：使用 BC SM2 进行 加解密
         GmService gmService = gms.getGmService(BcGmService.NAME);
         byte[] encrypted = gmService.sm2Encrypt(str.getBytes(), keyPair.getPublic().getEncoded());
-        byte[] bytes= gmService.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
+        byte[] bytes = gmService.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
         System.out.println(new String(bytes));
 
         // 测试2：使用 GmSSL  sm2encrypt-with-sha1 进行加解密
         GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
         byte[] encrypted2 = gmService2.sm2Encrypt(str.getBytes(), keyPair.getPublic().getEncoded());
-        byte[] bytes2= gmService2.sm2Decrypt(encrypted2, keyPair.getPrivate().getEncoded());
+        byte[] bytes2 = gmService2.sm2Decrypt(encrypted2, keyPair.getPrivate().getEncoded());
         System.out.println(new String(bytes2));
 
 
         // 测试3：先执行 sm3 digest ， 在用 bc  sm2 进行加密，最后用 gmssl sm2encrypt-with-sm3 解密
         byte[] digest = MessageDigests.digest("SM3", str.getBytes());
         byte[] encrypted3 = gmService.sm2Encrypt(digest, keyPair.getPublic().getEncoded());
-        byte[] bytes3= gmService2.sm2Decrypt(encrypted3, keyPair.getPrivate().getEncoded());
+        byte[] bytes3 = gmService2.sm2Decrypt(encrypted3, keyPair.getPrivate().getEncoded());
 
         System.out.println(new String(bytes3));
 
         // 测试4：
-        byte[] bytes4= gmService2.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
+        byte[] bytes4 = gmService2.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
         System.out.println(new String(bytes4));
 
     }
 
     @Test
     public void testSM2_sign() {
+        String str = "hello_234";
+        KeyPair keyPair = new SM2KeyGenerator().genKeyPair();
+        // 测试 1： 使用BC sm3withsm2 签名
+        GmService gmService = gms.getGmService(BcGmService.NAME);
+        byte[] signature = gmService.sm2Sign(str.getBytes(), keyPair.getPrivate().getEncoded());
+        boolean verified = gmService.sm2Verify(str.getBytes(), keyPair.getPublic().getEncoded(), signature);
+        System.out.println(Hex.encodeHexString(signature));
+        System.out.println(verified);
 
+        // 测试2：使用 GmSSL  sm2sign 进行签名、验证
+        GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
+        byte[] signature2 = gmService2.sm2Sign(str.getBytes(), keyPair.getPrivate().getEncoded());
+        boolean verified2 = gmService2.sm2Verify(str.getBytes(), keyPair.getPublic().getEncoded(), signature2);
+        System.out.println(Hex.encodeHexString(signature2));
+        System.out.println(verified2);
+
+        // 测试3：使用 gmssl api来 验证 bc 的前面
+        boolean verified3 = gmService2.sm2Verify(str.getBytes(), keyPair.getPublic().getEncoded(), signature);
+        System.out.println(verified3);
     }
 
     /**

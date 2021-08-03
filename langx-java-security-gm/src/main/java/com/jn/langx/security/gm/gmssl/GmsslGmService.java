@@ -52,9 +52,9 @@ public class GmsslGmService implements GmService {
     }
 
     @Override
-    public boolean verify(byte[] data, byte[] publicKey, byte[] signature) {
+    public boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature) {
         int ret = gmssl.verify("sm2sign", data, signature, publicKey);
-        return true;
+        return ret == 1;
     }
 
     @Override
