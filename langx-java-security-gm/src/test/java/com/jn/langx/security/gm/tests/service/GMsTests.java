@@ -1,6 +1,8 @@
 package com.jn.langx.security.gm.tests.service;
 
 import com.jn.langx.codec.hex.Hex;
+import com.jn.langx.security.crypto.digest.MessageDigests;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.gm.GMs;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.security.gm.SM4KeyGenerator;
@@ -9,10 +11,52 @@ import com.jn.langx.security.gm.gmssl.GmsslGmService;
 import com.jn.langx.text.StringTemplates;
 import org.junit.Test;
 
+import java.security.KeyPair;
+
 public class GMsTests {
 
     private static GMs gms = GMs.getGMs();
 
+
+    @Test
+    public void testSM2_cipher() {
+        String str = "hello_234";
+        KeyPair keyPair = PKIs.createKeyPair("EC", null, 256, null);
+
+        // 测试1：使用 BC SM2 进行 加解密
+        GmService gmService = gms.getGmService(BcGmService.NAME);
+        byte[] encrypted = gmService.sm2Encrypt(str.getBytes(), keyPair.getPublic().getEncoded());
+        byte[] bytes= gmService.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
+        System.out.println(new String(bytes));
+
+        // 测试2：使用 GmSSL  sm2encrypt-with-sha1 进行加解密
+        GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
+        byte[] encrypted2 = gmService2.sm2Encrypt(str.getBytes(), keyPair.getPublic().getEncoded());
+        byte[] bytes2= gmService2.sm2Decrypt(encrypted2, keyPair.getPrivate().getEncoded());
+        System.out.println(new String(bytes2));
+
+
+        // 测试3：先执行 sm3 digest ， 在用 bc  sm2 进行加密，最后用 gmssl sm2encrypt-with-sm3 解密
+        byte[] digest = MessageDigests.digest("SM3", str.getBytes());
+        byte[] encrypted3 = gmService.sm2Encrypt(digest, keyPair.getPublic().getEncoded());
+        byte[] bytes3= gmService2.sm2Decrypt(encrypted3, keyPair.getPrivate().getEncoded());
+
+        System.out.println(new String(bytes3));
+
+        // 测试4：
+        byte[] bytes4= gmService2.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
+        System.out.println(new String(bytes4));
+
+    }
+
+    @Test
+    public void testSM2_sign() {
+
+    }
+
+    /**
+     * 测试后证明，使用BC SM3，GmSSL SM3 结果一致，可以互通
+     */
     @Test
     public void testSM3() {
         String str = "hello_234";
@@ -46,6 +90,9 @@ public class GMsTests {
     }
 
 
+    /**
+     * 测试后证明，使用BC SM4，GmSSL SM4 结果一致，可以互通，可以互相解密
+     */
     @Test
     public void testSM4() {
         String str = "hello_234";
@@ -60,6 +107,8 @@ public class GMsTests {
         GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
         byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), "CBC", sm4Key, GmService.SM4_IV_DEFAULT);
         showSM4(gmService2, "SM-CBC", sm4Key, null, encryptedBytes2);
+        System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes2, "CBC", sm4Key))));
+
         System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes, "CBC", sm4Key))));
     }
 

@@ -5,6 +5,14 @@ import com.jn.langx.Named;
 public interface GmService extends Named {
     String getName();
 
+    byte[] sm2Encrypt(byte[] data, byte[] publicKey);
+
+    byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey);
+
+    byte[] sm2Sign(byte[] data, byte[] privateKey);
+
+    boolean verify(byte[] data, byte[] publicKey, byte[] signature);
+
     byte[] sm3(byte[] data);
 
     byte[] sm3(byte[] data, int iterations);

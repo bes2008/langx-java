@@ -3,15 +3,58 @@ package com.jn.langx.security.gm.gmssl;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
 import org.gmssl.GmSSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GmsslGmService implements GmService {
     public static final String NAME = "GmSSL-GmService";
+    private static final Logger logger = LoggerFactory.getLogger(GmsslGmService.class);
     private final GmSSL gmssl = new GmSSL();
 
     @Override
     public String getName() {
         return NAME;
+    }
+
+    /**
+     * GmSSL 在SM2 加解密这部分，只能用下面几个算法：
+     * <pre>
+     *     sm2encrypt-with-sm3,
+     *     sm2encrypt-with-sha1,
+     *     sm2encrypt-with-sha256,
+     *     sm2encrypt-with-sha512
+     * </pre>
+     *
+     * @param data
+     * @param publicKey
+     * @return
+     */
+    @Override
+    public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {
+        return gmssl.publicKeyEncrypt("sm2encrypt-with-sm3", data, publicKey);
+    }
+
+    @Override
+    public byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey) {
+        byte[] data = gmssl.publicKeyDecrypt("sm2encrypt-with-sm3", encryptedBytes, privateKey);
+        if (data == null) {
+            logErrors();
+        }
+        return data;
+    }
+
+    @Override
+    public byte[] sm2Sign(byte[] data, byte[] privateKey) {
+        return gmssl.sign("sm2sign", data, privateKey);
+    }
+
+    @Override
+    public boolean verify(byte[] data, byte[] publicKey, byte[] signature) {
+        int ret = gmssl.verify("sm2sign", data, signature, publicKey);
+        return true;
     }
 
     @Override
@@ -66,7 +109,11 @@ public class GmsslGmService implements GmService {
             iv = GmService.SM4_IV_DEFAULT;
         }
         // 目前 ECB 模式会返回 null, 这是有Bug的，
-        return gmssl.symmetricEncrypt(cipher, data, secretKey, iv);
+        byte[] bytes = gmssl.symmetricEncrypt(cipher, data, secretKey, iv);
+        if (bytes == null) {
+            logErrors();
+        }
+        return bytes;
     }
 
     public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
@@ -90,5 +137,17 @@ public class GmsslGmService implements GmService {
             }
         }
         return gmssl.symmetricDecrypt(cipher, encryptedBytes, secretKey, iv);
+    }
+
+    private void logErrors() {
+        String[] errors = gmssl.getErrorStrings();
+        if (errors != null) {
+            Collects.forEach(gmssl.getErrorStrings(), new Consumer<String>() {
+                @Override
+                public void accept(String s) {
+                    logger.error(s);
+                }
+            });
+        }
     }
 }

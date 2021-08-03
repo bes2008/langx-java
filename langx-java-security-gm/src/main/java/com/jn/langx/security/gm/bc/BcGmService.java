@@ -1,9 +1,12 @@
 package com.jn.langx.security.gm.bc;
 
+import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.security.gm.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.util.Emptys;
@@ -15,6 +18,26 @@ public class BcGmService implements GmService {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {
+        return Asymmetrics.encrypt(data, publicKey, "SM2", null, null, null, new BytesBasedPublicKeySupplier());
+    }
+
+    @Override
+    public byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey) {
+        return Asymmetrics.decrypt(encryptedBytes, privateKey, "SM2", null, null, null, new BytesBasedPrivateKeySupplier());
+    }
+
+    @Override
+    public byte[] sm2Sign(byte[] data, byte[] privateKey) {
+        return new byte[0];
+    }
+
+    @Override
+    public boolean verify(byte[] data, byte[] publicKey, byte[] signature) {
+        return false;
     }
 
     @Override
