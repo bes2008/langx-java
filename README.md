@@ -108,11 +108,21 @@ Java lang extensions
 + ClassPath Scanner
 + Local JNDI
 + Security checksum
-    + MD2
-    + MD4
-    + MD5
-    + SHA-1
-    + 支持大文件
+    + message digest
+        + MD2
+        + MD4
+        + MD5
+        + SHA-1
+        + SHA-224, SHA-256, SHA-384, SHA-512
+        + SHA3-224, SHA3-256, SHA3-384, SHA3-512
+        + Whirlpool
+    + Asymmetrics
+    + Symmetrics
+    + Signatures
+    + GM
+        + SM2
+        + SM3
+        + SM4
 + Radix converter
 + JMX management API
 + File Filter
