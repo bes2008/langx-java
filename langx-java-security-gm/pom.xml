@@ -20,10 +20,12 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.60</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
             <artifactId>langx-java-gmssl</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
