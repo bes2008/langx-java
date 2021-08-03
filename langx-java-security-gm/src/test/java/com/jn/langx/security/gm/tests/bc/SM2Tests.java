@@ -19,7 +19,8 @@ public class SM2Tests {
     public void test_encrypt_decrypt() throws Throwable {
         //SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
         SecureRandom secureRandom = null;
-        KeyPair keyPair = PKIs.createKeyPair("SM2", null, 256, secureRandom);
+        // KeyPair keyPair = PKIs.createKeyPair("SM2", null, 256, secureRandom);
+        KeyPair keyPair = PKIs.createKeyPair("EC", null, 256, secureRandom);
         byte[] encryptedBytes = Asymmetrics.encrypt(string.getBytes(Charsets.UTF_8), keyPair.getPublic().getEncoded(), "SM2", null, null, secureRandom, new BytesBasedPublicKeySupplier());
         byte[] decryptedBytes = Asymmetrics.decrypt(encryptedBytes, keyPair.getPrivate().getEncoded(), "SM2", null, null, secureRandom, new BytesBasedPrivateKeySupplier());
         System.out.println(new String(decryptedBytes, Charsets.UTF_8));
