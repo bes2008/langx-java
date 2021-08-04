@@ -5,6 +5,7 @@ import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 
@@ -98,5 +99,10 @@ public class Props {
 
     public static Map<String, String> toStringMap(@Nullable Properties properties, @Nullable Comparator<String> keyComparator) {
         return Collects.propertiesToStringMap(properties, keyComparator);
+    }
+
+    public static Map<String, String> filter(Properties properties, Predicate2<String, String> predicate) {
+        Map<String, String> map = toStringMap(properties);
+        return Collects.filter(map, predicate);
     }
 }
