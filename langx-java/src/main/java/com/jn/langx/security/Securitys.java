@@ -5,10 +5,11 @@ import com.jn.langx.security.gm.GmInitializer;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.struct.Holder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -21,6 +22,7 @@ import java.util.ServiceLoader;
 public class Securitys {
     private static volatile boolean providersLoaded = false;
     private static LangxSecurityProvider langxSecurityProvider;
+    private static Logger logger = LoggerFactory.getLogger(Securitys.class);
 
     public static void setup() {
         if (!providersLoaded) {
@@ -30,11 +32,6 @@ public class Securitys {
         }
     }
 
-
-    private static void loadProviders() {
-        loadGMSupports();
-        loadLangxProvider();
-    }
 
     public static Provider getProvider(String name) {
         if (Strings.isNotBlank(name)) {
@@ -88,28 +85,11 @@ public class Securitys {
 
         if (expectedProvider != null) {
             Map<String, String> properties = langxSecurityProvider.getProperties();
-            Collects.forEach(properties, new Consumer2<String, String>() {
-                @Override
-                public void accept(String key, String value) {
-                    expectedProvider.put(key, value);
-                }
-            });
-        } else {
-            // 借鸡生蛋，挂到 ext class loader 下的 某个 provider
-            if (!firstProviderInExtClassLoader.isNull()) {
-                URL langxJar = ClassLoaders.getJarUrl(Securitys.class);
-                if (langxJar.toString().endsWith(".jar") || URLs.isJarURL(langxJar) && firstProviderInExtClassLoader.get() != langxSecurityProvider) {
-                    if (ClassLoaders.addUrl(extClassLoader, langxJar)) {
-                        Map<String, String> properties = langxSecurityProvider.getProperties();
-                        Collects.forEach(properties, new Consumer2<String, String>() {
-                            @Override
-                            public void accept(String key, String value) {
-                                firstProviderInExtClassLoader.get().put(key, value);
-                            }
-                        });
-                    }
-                }
+            Iterator<Map.Entry<String, String>> entryIterator = properties.entrySet().iterator();
 
+            while (entryIterator.hasNext()) {
+                Map.Entry<String, String> entry = entryIterator.next();
+                expectedProvider.put(entry.getKey(), entry.getValue());
             }
         }
         // 如果上述两种借法都没成功，那么langx provider中的算法，只能使用  message digest算法和 hmac算法。
@@ -132,6 +112,11 @@ public class Securitys {
             GmInitializer initializer = iter.next();
             initializer.init();
         }
+    }
+
+    private static void loadProviders() {
+        loadGMSupports();
+        loadLangxProvider();
     }
 
     static {

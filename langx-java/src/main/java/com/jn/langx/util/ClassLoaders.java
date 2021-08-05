@@ -276,7 +276,7 @@ public class ClassLoaders {
                 return null;
             }
 
-            Method addURLMethod = Reflects.getDeclaredMethod(urlClassLoaderClass, "addURL", URL.class);
+            Method addURLMethod = Reflects.getAnyMethod(urlClassLoaderClass, "addURL", URL.class);
             if (addURLMethod != null) {
                 addURLMethod.setAccessible(true);
             }
@@ -286,7 +286,7 @@ public class ClassLoaders {
 
     /**
      * @param urlClassLoader a url class loader
-     * @param jarUrl the url for a jar
+     * @param jarUrl         the url for a jar
      * @since 3.6.6
      */
     public static boolean addUrl(URLClassLoader urlClassLoader, URL jarUrl) {
@@ -294,7 +294,7 @@ public class ClassLoaders {
             return false;
         }
         Method addURLMethod = addURLMethodMap.get(urlClassLoader.getClass());
-        if (addURLMethod == null) {
+        if (addURLMethod != null) {
             try {
                 Reflects.invoke(addURLMethod, urlClassLoader, new Object[]{jarUrl}, true, true);
             } catch (Throwable ex) {
@@ -305,12 +305,9 @@ public class ClassLoaders {
     }
 
 
-
     /**
-     *
      * @param klass
      * @return
-     *
      * @since 3.6.6
      */
     public static URL getJarUrl(Class<?> klass) {
@@ -319,10 +316,8 @@ public class ClassLoaders {
     }
 
     /**
-     *
      * @param klass
      * @return
-     *
      * @since 3.6.6
      */
     public static JarFile getJarFile(Class<?> klass) {
