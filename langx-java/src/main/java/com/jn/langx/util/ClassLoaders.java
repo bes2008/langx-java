@@ -53,6 +53,10 @@ public class ClassLoaders {
         }
     }
 
+    public static ClassLoader getExtClassLoader() {
+        return getSystemClassLoader().getParent();
+    }
+
     public static ClassLoader getSystemClassLoader() {
         if (System.getSecurityManager() == null) {
             return ClassLoader.getSystemClassLoader();
@@ -290,10 +294,27 @@ public class ClassLoaders {
      * @since 3.6.6
      */
     public static boolean addUrl(URLClassLoader urlClassLoader, URL jarUrl) {
+        return addUrl(urlClassLoader, jarUrl, false);
+    }
+
+    /**
+     * @param urlClassLoader a url class loader
+     * @param jarUrl         the url for a jar
+     * @since 3.6.6
+     */
+    public static boolean addUrl(URLClassLoader urlClassLoader, URL jarUrl, boolean force) {
         if (urlClassLoader == null || jarUrl == null) {
             return false;
         }
+        // 判断是否为 ext class loader
+        if (ClassLoaders.getExtClassLoader() == urlClassLoader) {
+            if (!force) {
+                return false;
+            }
+        }
+
         Method addURLMethod = addURLMethodMap.get(urlClassLoader.getClass());
+
         if (addURLMethod != null) {
             try {
                 Reflects.invoke(addURLMethod, urlClassLoader, new Object[]{jarUrl}, true, true);
