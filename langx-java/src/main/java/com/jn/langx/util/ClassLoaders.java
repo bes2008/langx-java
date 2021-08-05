@@ -4,15 +4,25 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.classpath.classloader.ClassLoaderAccessor;
 import com.jn.langx.classpath.classloader.ExceptionIgnoringAccessor;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Map;
+import java.util.jar.JarFile;
 
 public class ClassLoaders {
     private static final Logger logger = LoggerFactory.getLogger(ClassLoaders.class);
@@ -190,16 +200,14 @@ public class ClassLoaders {
 
         if (clazz == null) {
             if (logger.isTraceEnabled()) {
-                logger.trace("Unable to load class named [" + fqcn +
-                        "] from the thread context ClassLoader.  Trying the current ClassLoader...");
+                logger.trace("Unable to load class named [{}] from the thread context ClassLoader. Trying the current ClassLoader...", fqcn);
             }
             clazz = CLASS_CL_ACCESSOR.loadClass(fqcn);
         }
 
         if (clazz == null) {
             if (logger.isTraceEnabled()) {
-                logger.trace("Unable to load class named [" + fqcn + "] from the current ClassLoader.  " +
-                        "Trying the system/application ClassLoader...");
+                logger.trace("Unable to load class named [{}] from the current ClassLoader. Trying the system/application ClassLoader...", fqcn);
             }
             clazz = SYSTEM_CL_ACCESSOR.loadClass(fqcn);
         }
@@ -209,8 +217,7 @@ public class ClassLoaders {
         }
 
         if (clazz == null) {
-            String msg = "Unable to load class named [" + fqcn + "] from the thread context, current, or " +
-                    "system/application ClassLoaders.  All heuristics have been exhausted.  Class could not be found.";
+            String msg = StringTemplates.formatWithPlaceholder("Unable to load class named [{}] from the thread context, current, or system/application ClassLoaders.  All heuristics have been exhausted.  Class could not be found.", fqcn);
             throw new ClassNotFoundException(msg);
         }
 
@@ -238,26 +245,98 @@ public class ClassLoaders {
 
         if (is == null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Resource [" + name + "] was not found via the thread context ClassLoader.  Trying the " +
-                        "current ClassLoader...");
+                logger.debug("Resource [{}] was not found via the thread context ClassLoader.  Trying the current ClassLoader...", name);
             }
             is = CLASS_CL_ACCESSOR.getResourceStream(name);
         }
 
         if (is == null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Resource [" + name + "] was not found via the current class loader.  Trying the " +
-                        "system/application ClassLoader...");
+                logger.debug("Resource [{}] was not found via the current class loader.  Trying the system/application ClassLoader...", name);
             }
             is = SYSTEM_CL_ACCESSOR.getResourceStream(name);
         }
 
         if (is == null && logger.isDebugEnabled()) {
-            logger.debug("Resource [" + name + "] was not found via the thread context, current, or " +
-                    "system/application ClassLoaders.  All heuristics have been exhausted.  Returning null.");
+            logger.debug("Resource [{}] was not found via the thread context, current, or system/application ClassLoaders.  All heuristics have been exhausted.  Returning null.", name);
         }
 
         return is;
     }
 
+    /**
+     * key: Class<UrlClassLoader>
+     *
+     * @since 3.6.6
+     */
+    private static final Map<Class<?>, Method> addURLMethodMap = new NonAbsentHashMap<Class<?>, Method>(new Supplier<Class<?>, Method>() {
+        @Override
+        public Method get(Class<?> urlClassLoaderClass) {
+            if (!Reflects.isSubClassOrEquals(URLClassLoader.class, urlClassLoaderClass)) {
+                return null;
+            }
+
+            Method addURLMethod = Reflects.getDeclaredMethod(urlClassLoaderClass, "addURL", URL.class);
+            if (addURLMethod != null) {
+                addURLMethod.setAccessible(true);
+            }
+            return addURLMethod;
+        }
+    });
+
+    /**
+     * @param urlClassLoader a url class loader
+     * @param jarUrl the url for a jar
+     * @since 3.6.6
+     */
+    public static boolean addUrl(URLClassLoader urlClassLoader, URL jarUrl) {
+        if (urlClassLoader == null || jarUrl == null) {
+            return false;
+        }
+        Method addURLMethod = addURLMethodMap.get(urlClassLoader.getClass());
+        if (addURLMethod == null) {
+            try {
+                Reflects.invoke(addURLMethod, urlClassLoader, new Object[]{jarUrl}, true, true);
+            } catch (Throwable ex) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    /**
+     *
+     * @param klass
+     * @return
+     *
+     * @since 3.6.6
+     */
+    public static URL getJarUrl(Class<?> klass) {
+        URL location = Reflects.getCodeLocation(klass);
+        return location;
+    }
+
+    /**
+     *
+     * @param klass
+     * @return
+     *
+     * @since 3.6.6
+     */
+    public static JarFile getJarFile(Class<?> klass) {
+        URL location = Reflects.getCodeLocation(klass);
+        if (location != null) {
+            JarFile jarFile = null;
+            try {
+                jarFile = new JarFile(new File(location.toURI()));
+                return jarFile;
+            } catch (Throwable ex) {
+                logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
+                IOs.close(jarFile);
+            }
+        }
+        return null;
+    }
 }

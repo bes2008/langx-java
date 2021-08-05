@@ -2,11 +2,16 @@ package com.jn.langx.security;
 
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.security.gm.GmInitializer;
+import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.net.URLs;
+import com.jn.langx.util.struct.Holder;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Iterator;
@@ -57,26 +62,30 @@ public class Securitys {
 
     public static void loadLangxProvider() {
         LangxSecurityProvider langxSecurityProvider = new LangxSecurityProvider();
-        insertProvider(langxSecurityProvider);
-        // insert 后，由于 langx provider  并没有经过 Oracle官方签名，所以只能用它的 message digest算法，所有涉及到的加解密的算法都不可用
+        // 由于 langx provider  并没有经过 Oracle官方签名，所以只能用它的 message digest算法，所有涉及到的加解密的算法都不可用
         // 如果去官网申请的话：https://www.oracle.com/java/technologies/javase/getcodesigningcertificate.html 这里是教程
 
         // 采用借鸡生蛋的方式，将相关的属性加入到 JDK 默认提供的 providers中 ，这个方式也是不行的，虽然绕过了 Provider的认证过程，但因为放到的provider的 classloader 与你的类实际的classloader 不一样，所以仍然加载不到类。
         // 内置的 provider 的 classloader 要么是 bootstrap classloader,要么是 ext classloader
         Provider[] providers = Security.getProviders();
         ClassLoader appClassLoader = ClassLoader.getSystemClassLoader();
-        final ClassLoader extClassLoader = appClassLoader.getParent();
+        final URLClassLoader extClassLoader = (URLClassLoader) appClassLoader.getParent();
+        final Holder<Provider> firstProviderInExtClassLoader = new Holder<Provider>();
         final Provider expectedProvider = Collects.findFirst(Collects.asList(providers), new Predicate<Provider>() {
             @Override
             public boolean test(Provider provider) {
-                // 不是 boostrap class loader
+                // 不是 boostrap class loader和 ext class loader
                 ClassLoader providerCL = provider.getClass().getClassLoader();
                 if (providerCL != null && providerCL != extClassLoader) {
                     return true;
                 }
+                if (providerCL == extClassLoader && firstProviderInExtClassLoader.isNull()) {
+                    firstProviderInExtClassLoader.set(provider);
+                }
                 return false;
             }
         });
+
         if (expectedProvider != null) {
             Map<String, String> properties = langxSecurityProvider.getProperties();
             Collects.forEach(properties, new Consumer2<String, String>() {
@@ -85,7 +94,25 @@ public class Securitys {
                     expectedProvider.put(key, value);
                 }
             });
+        } else {
+            // 借鸡生蛋，挂到 ext class loader 下的 某个 provider
+            if (!firstProviderInExtClassLoader.isNull()) {
+                URL langxJar = ClassLoaders.getJarUrl(Securitys.class);
+                if (langxJar.toString().endsWith(".jar") || URLs.isJarURL(langxJar) && firstProviderInExtClassLoader.get() != langxSecurityProvider) {
+                    if (ClassLoaders.addUrl(extClassLoader, langxJar)) {
+                        Map<String, String> properties = langxSecurityProvider.getProperties();
+                        Collects.forEach(properties, new Consumer2<String, String>() {
+                            @Override
+                            public void accept(String key, String value) {
+                                firstProviderInExtClassLoader.get().put(key, value);
+                            }
+                        });
+                    }
+                }
+
+            }
         }
+        insertProvider(langxSecurityProvider);
         Securitys.langxSecurityProvider = langxSecurityProvider;
     }
 

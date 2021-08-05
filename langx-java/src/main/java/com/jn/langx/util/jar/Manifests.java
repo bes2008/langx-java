@@ -1,6 +1,7 @@
 package com.jn.langx.util.jar;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.reflect.Reflects;
@@ -59,16 +60,14 @@ public class Manifests {
     }
 
     public static Manifest getManifest(Class<?> klass) {
-        URL location = Reflects.getCodeLocation(klass);
-        if (location != null) {
-            JarFile jarFile = null;
-            try {
-                jarFile = new JarFile(new File(location.toURI()));
+        JarFile jarFile = ClassLoaders.getJarFile(klass);
+        try {
+            if (jarFile != null) {
                 return jarFile.getManifest();
-            } catch (Throwable ex) {
-                logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
-                IOs.close(jarFile);
             }
+        } catch (Throwable ex) {
+            logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
+            IOs.close(jarFile);
         }
         return null;
     }
