@@ -112,6 +112,8 @@ public class Securitys {
 
             }
         }
+        // 如果上述两种借法都没成功，那么langx provider中的算法，只能使用  message digest算法和 hmac算法。
+        // 原则上langx provider中的 hmac算法也是不能再用的，但如果你是使用 HMacs这个工具类的话，仍然是可以用的哟
         insertProvider(langxSecurityProvider);
         Securitys.langxSecurityProvider = langxSecurityProvider;
     }
