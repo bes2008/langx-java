@@ -31,7 +31,18 @@ public abstract class ParameterizedTypeGetter<T> {
         parseSuperclassTypeParameter(getClass());
     }
 
-    void parseSuperclassTypeParameter(Class<?> clazz) {
+    private ParameterizedTypeGetter(Type type) {
+        this.rawType = type;
+
+        if (Types.isParameterizedType(type)) {
+            this.actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
+            this.rawType = ((ParameterizedType) type).getRawType();
+        }
+    }
+
+    private void parseSuperclassTypeParameter(Class<?> clazz) {
+        // 参数 clazz 本质是 ParameterizedTypeGetter 的一个子类
+        // genericSuperclass 就是 ParameterizedTypeGetter 的泛型形态
         Type genericSuperclass = clazz.getGenericSuperclass();
         if (genericSuperclass instanceof Class) {
             throw new RuntimeException(StringTemplates.formatWithPlaceholder("{} is not a parameterized type", Reflects.getFQNClassName(clazz)));
@@ -48,6 +59,11 @@ public abstract class ParameterizedTypeGetter<T> {
             this.rawType = clazz;
         }
 
+    }
+
+    public static ParameterizedTypeGetter forType(Type type) {
+        return new ParameterizedTypeGetter(type) {
+        };
     }
 
     /**

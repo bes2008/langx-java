@@ -105,7 +105,6 @@ public class ParameterizedTypeImpl implements ParameterizedType {
 
         @Override
         public int hashCode() {
-            // this equals Arrays.hashCode(getLowerBounds()) ^ Arrays.hashCode(getUpperBounds());
             return (lowerBound != null ? 31 + lowerBound.hashCode() : 1)
                     ^ (31 + upperBound.hashCode());
         }
