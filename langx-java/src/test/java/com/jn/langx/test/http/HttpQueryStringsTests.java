@@ -25,17 +25,8 @@ public class HttpQueryStringsTests {
 
         MultiValueMap<String, String> multiValueMap = HttpQueryStrings.getQueryStringMultiValueMap(url);
 
-        String s = HttpQueryStrings.toQueryString(multiValueMap);
-        String encodedUrl = URLEncoder.encode(s, Charsets.UTF_8.name());
-        System.out.println("JDK URLEncoder encoded:        " + encodedUrl);
-        String encodedUrl2 = new UrlEncoder().encode(s, Charsets.UTF_8);
-        System.out.println("langx-java URLEncoder encoded: " + encodedUrl2);
-
-        String decodedURL = URLDecoder.decode(encodedUrl, Charsets.UTF_8.name());
-        System.out.println("JDK URLDecoder decoded:        " + decodedURL);
-        String decodedURL2 = URLDecoder.decode(encodedUrl2, Charsets.UTF_8.name());
-        System.out.println("langx-java URLDecoder decoded: " + decodedURL2);
-        System.out.println(multiValueMap);
+        String s = HttpQueryStrings.toQueryString(multiValueMap, true);
+        System.out.println(s);
 
 
     }

@@ -1,6 +1,7 @@
 package com.jn.langx.http;
 
 import com.jn.langx.Converter;
+import com.jn.langx.codec.CodecException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.StringJoiner;
 import com.jn.langx.util.collection.Collects;
@@ -11,9 +12,10 @@ import com.jn.langx.util.converter.ConverterService;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
+import com.jn.langx.util.io.Charsets;
 
+import java.net.URLEncoder;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public class HttpQueryStrings {
@@ -45,6 +47,7 @@ public class HttpQueryStrings {
 
     /**
      * 不会对URL中的特殊字符做处理
+     *
      * @param map
      * @return
      */
@@ -53,26 +56,41 @@ public class HttpQueryStrings {
         return toQueryString(multiValueMap);
     }
 
+    public static String toQueryString(Map<String, String> map) {
+        return toQueryString(map, false);
+    }
+
     /**
      * 不会对URL中的特殊字符做处理，如需处理，请调用 UrlEncoder 类
+     *
      * @param map
      * @return
      */
-    public static String toQueryString(Map<String, String> map) {
+    public static String toQueryString(Map<String, String> map, final boolean encode) {
         final StringJoiner joiner = new StringJoiner("&", "", "");
 
         Collects.forEach(map, new Consumer2<String, String>() {
             @Override
             public void accept(final String key, String value) {
-                        joiner.add(StringTemplates.formatWithPlaceholder("{}={}", key, value));
+                if (encode) {
+                    try {
+                        value = URLEncoder.encode(value, Charsets.UTF_8.name());
+                    } catch (Throwable ex) {
+                        throw new CodecException(ex);
+                    }
+                }
+                joiner.add(StringTemplates.formatWithPlaceholder("{}={}", key, value));
             }
         });
 
         return joiner.toString();
     }
 
-
     public static String toQueryString(MultiValueMap<String, String> map) {
+        return toQueryString(map, false);
+    }
+
+    public static String toQueryString(MultiValueMap<String, String> map, final boolean encode) {
         final StringJoiner joiner = new StringJoiner("&", "", "");
 
         Collects.forEach(map, new Consumer2<String, Collection<String>>() {
@@ -81,6 +99,13 @@ public class HttpQueryStrings {
                 Collects.forEach(values, new Consumer<String>() {
                     @Override
                     public void accept(String value) {
+                        if (encode) {
+                            try {
+                                value = URLEncoder.encode(value, Charsets.UTF_8.name());
+                            } catch (Throwable ex) {
+                                throw new CodecException(ex);
+                            }
+                        }
                         joiner.add(StringTemplates.formatWithPlaceholder("{}={}", key, value));
                     }
                 });
