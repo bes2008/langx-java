@@ -1876,6 +1876,27 @@ public class Strings {
     }
 
     /**
+     * Ensures the JSON field names begins with an upper case letter.
+     */
+    public static String upperCaseFirstLetter(String name) {
+        int firstLetterIndex = 0;
+        int limit = name.length() - 1;
+        for (; !Character.isLetter(name.charAt(firstLetterIndex)) && firstLetterIndex < limit; ++firstLetterIndex) ;
+
+        char firstLetter = name.charAt(firstLetterIndex);
+        if (Character.isUpperCase(firstLetter)) { //The letter is already uppercased, return the original
+            return name;
+        }
+
+        char uppercased = Character.toUpperCase(firstLetter);
+        if (firstLetterIndex == 0) { //First character in the string is the first letter, saves 1 substring
+            return uppercased + name.substring(1);
+        }
+
+        return name.substring(0, firstLetterIndex) + uppercased + name.substring(firstLetterIndex + 1);
+    }
+
+    /**
      * <p>Converts a String to lower case as per {@link String#toLowerCase()}.</p>
      * <p>
      * <p>A {@code null} input String returns {@code null}.</p>
@@ -2328,9 +2349,9 @@ public class Strings {
      * StringUtils.substring("abc", -4) = "abc"
      * </pre>
      *
-     * @param str  the String to get the substring from, may be null
-     * @param start  the position to start from, negative means
-     *  count back from the end of the String by this many characters
+     * @param str   the String to get the substring from, may be null
+     * @param start the position to start from, negative means
+     *              count back from the end of the String by this many characters
      * @return substring from start position, {@code null} if null String input
      */
     public static String substring(final String str, int start) {
@@ -2380,13 +2401,13 @@ public class Strings {
      * StringUtils.substring("abc", -4, 2)  = "ab"
      * </pre>
      *
-     * @param str  the String to get the substring from, may be null
-     * @param start  the position to start from, negative means
-     *  count back from the end of the String by this many characters
-     * @param end  the position to end at (exclusive), negative means
-     *  count back from the end of the String by this many characters
+     * @param str   the String to get the substring from, may be null
+     * @param start the position to start from, negative means
+     *              count back from the end of the String by this many characters
+     * @param end   the position to end at (exclusive), negative means
+     *              count back from the end of the String by this many characters
      * @return substring from start position to end position,
-     *  {@code null} if null String input
+     * {@code null} if null String input
      */
     public static String substring(final String str, int start, int end) {
         if (str == null) {
@@ -2735,17 +2756,17 @@ public class Strings {
     //-----------------------------------------------------------------------
 
     /**
-     * @since 3.4.2
      * @param cs1
      * @param cs2
      * @param ignoreCase 是否忽略大小写
      * @return 是否相等
+     * @since 3.4.2
      */
     public static boolean equals(final CharSequence cs1, final CharSequence cs2, boolean ignoreCase) {
-        if(!ignoreCase){
+        if (!ignoreCase) {
             return equals(cs1, cs2);
-        }else{
-            return equalsIgnoreCase(cs1,cs2);
+        } else {
+            return equalsIgnoreCase(cs1, cs2);
         }
     }
 
@@ -2900,7 +2921,7 @@ public class Strings {
      * @see String#compareTo(String)
      */
     public static int compare(final String str1, final String str2, final boolean nullIsLess) {
-        if (Objs.equals(str1,str2)) {
+        if (Objs.equals(str1, str2)) {
             return 0;
         }
         if (str1 == null) {
@@ -2991,7 +3012,7 @@ public class Strings {
      * @see String#compareToIgnoreCase(String)
      */
     public static int compareIgnoreCase(final String str1, final String str2, final boolean nullIsLess) {
-        if (Objs.equals(str1,str2)) {
+        if (Objs.equals(str1, str2)) {
             return 0;
         }
         if (str1 == null) {
@@ -3381,10 +3402,10 @@ public class Strings {
      * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "AB") = 4
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @param searchStr  the CharSequence to find, may be null
+     * @param str       the CharSequence to check, may be null
+     * @param searchStr the CharSequence to find, may be null
      * @return the first index of the search CharSequence,
-     *  -1 if no match or {@code null} string input
+     * -1 if no match or {@code null} string input
      * @since 2.5
      * @since 3.0 Changed signature from lastIndexOfIgnoreCase(String, String) to lastIndexOfIgnoreCase(CharSequence, CharSequence)
      */
@@ -3419,11 +3440,11 @@ public class Strings {
      * StringUtils.lastIndexOfIgnoreCase("aabaabaa", "B", 0)  = -1
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @param searchStr  the CharSequence to find, may be null
+     * @param str       the CharSequence to check, may be null
+     * @param searchStr the CharSequence to find, may be null
      * @param startPos  the start position
      * @return the last index of the search CharSequence (always &le; startPos),
-     *  -1 if no match or {@code null} input
+     * -1 if no match or {@code null} input
      * @since 2.5
      * @since 3.0 Changed signature from lastIndexOfIgnoreCase(String, String, int) to lastIndexOfIgnoreCase(CharSequence, CharSequence, int)
      */
