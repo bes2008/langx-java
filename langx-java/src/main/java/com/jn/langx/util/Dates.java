@@ -3,14 +3,15 @@ package com.jn.langx.util;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.struct.Holder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * https://www.iso.org/obp/ui#iso:std:iso:8601:-1:ed-1:v1:en
@@ -65,12 +66,15 @@ public class Dates {
     // iso-8601
     public static final String yyyy_MM_dd_T_HH_mm_ss = "yyyy-MM-dd'T'HH:mm:ss";
     // iso-8601 with zone
-    public static final String yyyy_MM_dd_T_HH_mm_ssZone = "yyyy-MM-dd'T'HH:mm:ssZZ";
+    public static final String yyyy_MM_dd_T_HH_mm_ssZone = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     public static final String HH_mm_ss = "HH:mm:ss";
     public static final String HH_mm_ss_CN = "HH时mm分ss秒";
     public static final String HH_MM_ssZone = "HH:mm:ssZZ";
-
+    /**
+     * @see SimpleDateFormat
+     */
+    public static final char[] DATE_FORMAT_FLAGS = {'G', 'y', 'Y', 'M', 'w', 'W', 'D', 'd', 'F', 'E', 'u', 'a', 'H', 'k', 'K', 'h', 'm', 's', 'S', 'z', 'Z', 'X'};
 
     public static String format(long millis, @NonNull String pattern) {
         Preconditions.checkTrue(millis >= 0);
@@ -112,11 +116,32 @@ public class Dates {
     }
 
     public static Date parse(String dateString, @NotEmpty String pattern) {
-        try {
-            return GlobalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
-        } catch (ParseException ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
-        }
+        return parse(dateString, new String[]{pattern});
+    }
+
+    public static Date parse(String dateString, String... patterns) {
+        return parse(dateString, Collects.asList(patterns));
+    }
+
+    public static Date parse(final String dateString, List<String> patterns) {
+        final Holder<Date> ret = new Holder<Date>();
+        Collects.forEach(patterns, new Consumer<String>() {
+            @Override
+            public void accept(String pattern) {
+                try {
+                    Date date = GlobalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
+                    ret.set(date);
+                } catch (ParseException ex) {
+                    throw Throwables.wrapAsRuntimeException(ex);
+                }
+            }
+        }, new Predicate<String>() {
+            @Override
+            public boolean test(String pattern) {
+                return !ret.isEmpty();
+            }
+        });
+        return ret.get();
     }
 
 
@@ -494,4 +519,9 @@ public class Dates {
         c.setTime(date);
         return c;
     }
+
+    public static TimeZone localTimeZone() {
+        return TimeZone.getDefault();
+    }
+
 }
