@@ -1,0 +1,112 @@
+package com.jn.langx.java8.util.time;
+
+import com.jn.langx.util.Dates;
+import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.NonAbsentHashMap;
+import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.struct.Holder;
+
+import java.lang.reflect.Method;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQuery;
+import java.util.Date;
+import java.util.Map;
+import java.util.TimeZone;
+
+public class Dates8 {
+    private static final ZoneOffset LOCAL_ZONE_OFFSET;
+    /**
+     * @see java.time.format.DateTimeFormatter
+     */
+    private static final char[] JAVA8_TIME_FORMAT_FLAGS = {'G', 'u', 'y', 'Y', 'M', 'L', 'w', 'W', 'D', 'd', 'Q', 'q', 'F', 'E', 'e', 'c', 'a', 'H', 'k', 'K', 'h', 'm', 's', 'S', 'A', 'n', 'N', 'V', 'z', 'Z', 'O', 'X', 'x'};
+    private static final char[] JAVA8_TIME_FORMAT_UNIQUE_FLAGS = {'L', 'Q', 'q', 'e', 'c', 'A', 'n', 'N', 'V', 'O', 'x'};
+
+    private static final LocalTime ZERO_TIME = LocalTime.of(0, 0, 0, 0);
+    private static Map<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>> temporalQueryMap = new NonAbsentHashMap<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>(new Supplier<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>() {
+        @Override
+        public Holder<TemporalQuery<?>> get(Class<? extends TemporalAccessor> tClass) {
+            Holder<TemporalQuery<?>> holder = new Holder<TemporalQuery<?>>();
+            Method method = Reflects.getDeclaredMethod(tClass, "from", TemporalAccessor.class);
+            if (method != null) {
+                method.setAccessible(true);
+                TemporalQuery<?> query = new TemporalQuery<Object>() {
+                    @Override
+                    public Object queryFrom(TemporalAccessor temporal) {
+                        return Reflects.invoke(method, null, new Object[]{temporal}, false, true);
+                    }
+                };
+            }
+            return holder;
+        }
+    });
+
+    public static ZoneId localZoneId() {
+        return ZoneId.systemDefault();
+    }
+
+    private static ZoneOffset _getLocalZoneOffset() {
+        return ZoneOffset.ofTotalSeconds(TimeZone.getDefault().getRawOffset() / 1000);
+    }
+
+    public static ZoneOffset localZoneOffset() {
+        return LOCAL_ZONE_OFFSET;
+    }
+
+    public static Date toDate(LocalDateTime localDateTime) {
+        Instant instant = localDateTime.toInstant(localZoneOffset());
+        long mills = instant.toEpochMilli();
+        return new Date(mills);
+    }
+
+    public static String format(TemporalAccessor temporal, String pattern) {
+        return format(temporal, pattern, null);
+    }
+
+    public static String format(TemporalAccessor temporal, String pattern, ZoneId zoneId) {
+        if (temporal instanceof LocalDate || temporal instanceof LocalDateTime) {
+            boolean formatZone = Strings.containsAny(pattern, 'Z', 'z', 'O', 'X', 'x');
+            if (formatZone) {
+                if (temporal instanceof LocalDate) {
+                    temporal = ZonedDateTime.of((LocalDate) temporal, ZERO_TIME, zoneId == null ? localZoneId() : zoneId);
+                }
+                if (temporal instanceof LocalDateTime) {
+                    temporal = toZonedDateTime((LocalDateTime) temporal, zoneId);
+                }
+            }
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        String ret = formatter.format(temporal);
+        return ret;
+    }
+
+    public static <T> T parse(String dt, String pattern, Class<T> tClass) {
+        T t = null;
+        if (Reflects.isSubClassOrEquals(TemporalAccessor.class, tClass)) {
+            TemporalAccessor temporalAccessor = DateTimeFormatter.ofPattern(pattern).parse(dt);
+            Holder<TemporalQuery<?>> queryHolder = temporalQueryMap.get(tClass);
+            if (!queryHolder.isEmpty()) {
+                t = (T) temporalAccessor.query(queryHolder.get());
+            }
+
+        } else if (tClass == Date.class) {
+            t = (T) Dates.parse(dt, pattern);
+        }
+        return t;
+    }
+
+
+    public static ZonedDateTime toZonedDateTime(LocalDateTime localDateTime) {
+        return toZonedDateTime(localDateTime, null);
+    }
+
+    public static ZonedDateTime toZonedDateTime(LocalDateTime localDateTime, ZoneId zoneId) {
+        return ZonedDateTime.of(localDateTime, zoneId == null ? localZoneId() : zoneId);
+    }
+
+    static {
+        LOCAL_ZONE_OFFSET = _getLocalZoneOffset();
+    }
+}
