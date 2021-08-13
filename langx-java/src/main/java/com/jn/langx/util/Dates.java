@@ -50,15 +50,25 @@ public class Dates {
     public static final long HOURS_TO_MILLIS = HOURS_TO_SECONDS * SECONDS_TO_MILLIS;
     public static final long DAY_TO_MILLIS = DAY_TO_SECONDS * SECONDS_TO_MILLIS;
 
+    public static final String yyyyMMdd = "yyyyMMdd";
+    public static final String yyyy_MM_dd = "yyyy-MM-dd";
+    public static final String yyyy_MM_dd_1 = "yyyy-M-d";
+    public static final String yyyy_MM_dd_CN = "yyyy年MM月dd日";
+    public static final String yyyy_MM_dd_CN_1 = "yyyy年M月d日";
+    public static final String dd_MM_yyyy = "dd/MM/yyyy";
+    public static final String MM_dd_yyyy = "MM/dd/yyyy";
+    public static final String MM_dd_yyyy_1 = "M/d/yyyy";
+
+    public static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
     public static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
     public static final String yyyy_MM_dd_HH_mm_ss_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
     // iso-8601
-    public static final String yyyy_MM_dd_T_HH_mm_ss="yyyy-MM-dd'T'HH:mm:ss";
+    public static final String yyyy_MM_dd_T_HH_mm_ss = "yyyy-MM-dd'T'HH:mm:ss";
     // iso-8601 with zone
-    public static final String yyyy_MM_dd_T_HH_mm_ssZone="yyyy-MM-dd'T'HH:mm:ssZZ";
-    public static final String yyyy_MM_dd = "yyyy-MM-dd";
-    public static final String dd_MM_yyyy = "dd/MM/yyyy";
+    public static final String yyyy_MM_dd_T_HH_mm_ssZone = "yyyy-MM-dd'T'HH:mm:ssZZ";
+
     public static final String HH_mm_ss = "HH:mm:ss";
+    public static final String HH_mm_ss_CN = "HH时mm分ss秒";
     public static final String HH_MM_ssZone = "HH:mm:ssZZ";
 
 
