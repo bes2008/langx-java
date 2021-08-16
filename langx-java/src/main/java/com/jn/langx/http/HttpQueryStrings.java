@@ -1,18 +1,23 @@
 package com.jn.langx.http;
 
-import com.jn.langx.Converter;
 import com.jn.langx.codec.CodecException;
+import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.StringJoiner;
+import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
-import com.jn.langx.util.converter.ConverterService;
+import com.jn.langx.util.collection.stack.SimpleStack;
+import com.jn.langx.util.collection.stack.Stack;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.reflect.type.Primitives;
 
 import java.net.URLEncoder;
 import java.util.Collection;
@@ -52,8 +57,12 @@ public class HttpQueryStrings {
      * @return
      */
     public static String toQueryString(Map<String, Object> map, final Map<Class, Function<Object, String>> converterMap) {
-        MultiValueMap<String, String> multiValueMap = toMultiValueMap(map, converterMap);
-        return toQueryString(multiValueMap);
+        return toQueryString(map, true, converterMap);
+    }
+
+    public static String toQueryString(Map<String, Object> map, boolean encode, final Map<Class, Function<Object, String>> converterMap) {
+        MultiValueMap<String, String> multiValueMap = toMultiValueMap(map, null, converterMap);
+        return toQueryString(multiValueMap, encode);
     }
 
     public static String toQueryString(Map<String, String> map) {
@@ -115,41 +124,68 @@ public class HttpQueryStrings {
         return joiner.toString();
     }
 
-    private static MultiValueMap<String, String> toMultiValueMap(Map<String, Object> map, final Map<Class, Function<Object, String>> converterMap) {
+    private static MultiValueMap<String, String> toMultiValueMap(Map<String, Object> map, Function2<String, String, String> keyMapper, final Map<Class, Function<Object, String>> converterMap) {
+        // 当值为 Object, Array 时，会把值放到 keyPrefixStack 中
+        final Stack<String> keyPrefixStack = new SimpleStack<String>();
+        keyPrefixStack.push("");
         final MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<String, String>();
-        Collects.forEach(map, new Consumer2<String, Object>() {
+        final Function2<String, String, String> keyBuilder = keyMapper == null ? new Function2<String, String, String>() {
             @Override
-            public void accept(final String key, final Object value) {
-                if (value == null) {
-                    return;
+            public String apply(String keyPrefix, String key) {
+                if (Strings.isEmpty(keyPrefix)) {
+                    return key;
                 }
-                Class valueClass = value.getClass();
-                Function<Object, String> mapper = converterMap != null ? converterMap.get(valueClass) : null;
-                if (mapper != null) {
-                    String v = mapper.apply(value);
-                    if (v != null) {
-                        multiValueMap.add(key, v);
-                    }
-                    return;
-                } else {
-                    Converter<Object, String> converter = new ConverterService().findConverter(value, String.class);
-                    if (converter != null) {
-                        String v = converter.apply(value);
-                        if (v != null) {
-                            multiValueMap.add(key, v);
-                            return;
+                if (Strings.isEmpty(key)) {
+                    return keyPrefix;
+                }
+                return keyPrefix + "." + key;
+            }
+        } : keyMapper;
+        Consumer2<String, Object> consumer = new Consumer2<String, Object>() {
+            @Override
+            public void accept(final String key, Object value) {
+                String prefix = keyPrefixStack.peek();
+                String handledValue = null;
+                if (value != null) {
+
+                    String handledKey = keyBuilder.apply(prefix, key);
+                    keyPrefixStack.push(handledKey);
+
+                    Class valueClass = value.getClass();
+                    if (converterMap != null && converterMap.containsKey(valueClass)) {
+                        Function<Object, String> converter = converterMap.get(valueClass);
+                        handledValue = converter.apply(value);
+                    } else {
+                        if (Primitives.isPrimitiveOrPrimitiveWrapperType(valueClass)) {
+                            if (Primitives.isPrimitive(valueClass)) {
+                                handledValue = "" + value;
+                            } else {
+                                handledValue = value.toString();
+                            }
+                        } else if (byte[].class == valueClass) {
+                            handledValue = Base64.encodeBase64String((byte[]) value);
+                        } else if (Arrs.isArray(value)) {
+                            final Consumer2<String, Object> consumer = this;
+                            Collects.forEach(value, new Consumer2<Integer, Object>() {
+                                @Override
+                                public void accept(Integer index, Object element) {
+                                    consumer.accept("", element);
+                                }
+                            });
+                        } else if (value instanceof Map) {
+                            Collects.forEach((Map) value, this);
+                        } else {
+                            handledValue = value.toString();
                         }
                     }
-                }
-                final Consumer2<String, Object> self = this;
-                Collects.forEach(Collects.asIterable(value), new Consumer<Object>() {
-                    @Override
-                    public void accept(Object item) {
-                        self.accept(key, item);
+                    if (handledValue != null) {
+                        multiValueMap.add(handledKey, handledValue);
                     }
-                });
+                    keyPrefixStack.pop();
+                }
             }
-        });
+        };
+        Collects.forEach(map, consumer);
         return multiValueMap;
     }
 
