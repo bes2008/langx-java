@@ -57,11 +57,11 @@ public class HttpQueryStrings {
      * @return
      */
     public static String toQueryString(Map<String, Object> map, final Map<Class, Function<Object, String>> converterMap) {
-        return toQueryString(map, true, converterMap);
+        return toQueryString(map, true, null, converterMap);
     }
 
-    public static String toQueryString(Map<String, Object> map, boolean encode, final Map<Class, Function<Object, String>> converterMap) {
-        MultiValueMap<String, String> multiValueMap = toMultiValueMap(map, null, converterMap);
+    public static String toQueryString(Map<String, Object> map, boolean encode, Function2<String, String, String> keyMapper, final Map<Class, Function<Object, String>> converterMap) {
+        MultiValueMap<String, String> multiValueMap = toMultiValueMap(map, keyMapper, converterMap);
         return toQueryString(multiValueMap, encode);
     }
 

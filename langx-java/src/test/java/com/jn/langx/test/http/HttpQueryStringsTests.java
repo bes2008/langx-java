@@ -40,7 +40,7 @@ public class HttpQueryStringsTests {
         map2.put("key", 2);
         map.put("hello4", map2);
 
-        String str = HttpQueryStrings.toQueryString(map, true, null);
+        String str = HttpQueryStrings.toQueryString(map, null);
         System.out.println(str);
     }
 
