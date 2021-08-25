@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.Words;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
@@ -155,17 +156,27 @@ public class Strings {
      * @return the new string
      */
     public static String join(@NonNull final String separator, @Nullable final Iterator objects) {
+        return join(separator, null, null, false, objects);
+    }
+
+    public static String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, final boolean filterNull, @Nullable final Iterator objects) {
         if (Emptys.isNull(objects)) {
             return "";
         }
-        final StringBuilder buf = new StringBuilder();
-        if (objects.hasNext()) {
-            buf.append(objects.next());
-        }
-        while (objects.hasNext()) {
-            buf.append(separator).append(objects.next());
-        }
-        return buf.toString();
+        final StringJoiner joiner = new StringJoiner(separator, useValueIfNull(prefix, ""), useValueIfNull(suffix, ""));
+        Collects.forEach(objects, new Consumer2<Integer, Object>() {
+            @Override
+            public void accept(Integer index, Object value) {
+                if (value == null) {
+                    if (!filterNull) {
+                        joiner.add(null);
+                    }
+                } else {
+                    joiner.add(value.toString());
+                }
+            }
+        });
+        return joiner.toString();
     }
 
     public static String join(@NonNull final String separator, @Nullable final Iterable objects) {
@@ -218,6 +229,30 @@ public class Strings {
             return "";
         }
         return join(separator, Collects.asIterable(objects));
+    }
+
+    public static String join(@NonNull final String separator, final int[] array) {
+        return join(separator, PrimitiveArrays.wrap(array));
+    }
+
+    public static String join(@NonNull final String separator, final float[] array) {
+        return join(separator, PrimitiveArrays.wrap(array));
+    }
+
+    public static String join(@NonNull final String separator, final double[] array) {
+        return join(separator, PrimitiveArrays.wrap(array));
+    }
+
+    public static String join(@NonNull final String separator, final char[] array) {
+        return join(separator, PrimitiveArrays.wrap(array));
+    }
+
+    public static String join(@NonNull final String separator, final boolean[] array) {
+        return join(separator, PrimitiveArrays.wrap(array));
+    }
+
+    public static String join(@NonNull final String separator, final long[] array) {
+        return join(separator, PrimitiveArrays.wrap(array));
     }
 
     public static String insert(@NonNull final String string, @Nullable final List<Integer> slotIndexes, @NonNull String insertment) {
