@@ -1,6 +1,8 @@
 package com.jn.langx.util;
 
 
+import java.io.IOException;
+
 /**
  * {@code StringJoiner} is used to construct a sequence of characters separated
  * by a delimiter and optionally starting with a supplied prefix
@@ -15,8 +17,7 @@ package com.jn.langx.util;
  * {@code suffix} is <code>"}"</code> and nothing has been added to the
  * {@code StringJoiner}.
  *
- * @apiNote
- * <p>The String {@code "[George:Sally:Fred]"} may be constructed as follows:
+ * @apiNote <p>The String {@code "[George:Sally:Fred]"} may be constructed as follows:
  *
  * <pre> {@code
  * StringJoiner sj = new StringJoiner(":", "[", "]");
@@ -25,7 +26,7 @@ package com.jn.langx.util;
  * }</pre>
  * <p>
  * A {@code StringJoiner} may be employed to create formatted output from a
- For example:
+ * For example:
  *
  * <pre> {@code
  * List<Integer> numbers = Arrays.asList(1, 2, 3, 4);
@@ -33,9 +34,8 @@ package com.jn.langx.util;
  *     .map(i -> i.toString())
  *     .collect(Collectors.joining(", "));
  * }</pre>
- *
  */
-public final class StringJoiner {
+public final class StringJoiner implements Appendable {
     private final String prefix;
     private final String delimiter;
     private final String suffix;
@@ -65,8 +65,8 @@ public final class StringJoiner {
      * {@code prefix} or {@code suffix} (or properties thereof) in the result,
      * unless {@code setEmptyValue} has first been called.
      *
-     * @param  delimiter the sequence of characters to be used between each
-     *         element added to the {@code StringJoiner} value
+     * @param delimiter the sequence of characters to be used between each
+     *                  element added to the {@code StringJoiner} value
      * @throws NullPointerException if {@code delimiter} is {@code null}
      */
     public StringJoiner(CharSequence delimiter) {
@@ -81,12 +81,12 @@ public final class StringJoiner {
      * {@code prefix + suffix} (or properties thereof) in the result, unless
      * {@code setEmptyValue} has first been called.
      *
-     * @param  delimiter the sequence of characters to be used between each
-     *         element added to the {@code StringJoiner}
-     * @param  prefix the sequence of characters to be used at the beginning
-     * @param  suffix the sequence of characters to be used at the end
+     * @param delimiter the sequence of characters to be used between each
+     *                  element added to the {@code StringJoiner}
+     * @param prefix    the sequence of characters to be used at the beginning
+     * @param suffix    the sequence of characters to be used at the end
      * @throws NullPointerException if {@code prefix}, {@code delimiter}, or
-     *         {@code suffix} is {@code null}
+     *                              {@code suffix} is {@code null}
      */
     public StringJoiner(CharSequence delimiter,
                         CharSequence prefix,
@@ -109,11 +109,11 @@ public final class StringJoiner {
      * called, the {@code StringJoiner} is no longer considered empty, even if
      * the element(s) added correspond to the empty {@code String}.
      *
-     * @param  emptyValue the characters to return as the value of an empty
-     *         {@code StringJoiner}
+     * @param emptyValue the characters to return as the value of an empty
+     *                   {@code StringJoiner}
      * @return this {@code StringJoiner} itself so the calls may be chained
      * @throws NullPointerException when the {@code emptyValue} parameter is
-     *         {@code null}
+     *                              {@code null}
      */
     public StringJoiner setEmptyValue(CharSequence emptyValue) {
         this.emptyValue = Objects.requireNonNull(emptyValue,
@@ -151,11 +151,32 @@ public final class StringJoiner {
      * element of the {@code StringJoiner} value. If {@code newElement} is
      * {@code null}, then {@code "null"} is added.
      *
-     * @param  newElement The element to add
+     * @param newElement The element to add
      * @return a reference to this {@code StringJoiner}
      */
     public StringJoiner add(CharSequence newElement) {
-        prepareBuilder().append(newElement);
+        try {
+            return (StringJoiner) append(newElement);
+        } catch (IOException ex) {
+            throw Throwables.wrapAsRuntimeIOException(ex);
+        }
+    }
+
+    @Override
+    public Appendable append(CharSequence csq) throws IOException {
+        prepareBuilder().append(csq);
+        return this;
+    }
+
+    @Override
+    public Appendable append(CharSequence csq, int start, int end) throws IOException {
+        prepareBuilder().append(csq, start, end);
+        return this;
+    }
+
+    @Override
+    public Appendable append(char c) throws IOException {
+        prepareBuilder().append(c);
         return this;
     }
 
@@ -175,8 +196,8 @@ public final class StringJoiner {
      *
      * @param other The {@code StringJoiner} whose contents should be merged
      *              into this one
-     * @throws NullPointerException if the other {@code StringJoiner} is null
      * @return This {@code StringJoiner}
+     * @throws NullPointerException if the other {@code StringJoiner} is null
      */
     public StringJoiner merge(StringJoiner other) {
         Objects.requireNonNull(other);

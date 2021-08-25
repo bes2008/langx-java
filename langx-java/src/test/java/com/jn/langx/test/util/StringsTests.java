@@ -54,11 +54,20 @@ public class StringsTests {
     }
 
     @Test
-    public void testIndexOf(){
+    public void testIndexOf() {
         String str = "abcde123fg34hklm_34534nopRst234Uvw4x_yz";
         System.out.println(Strings.indexOf(str, '4'));
         System.out.println(Strings.indexOf(str, '4', 20));
         System.out.println(Strings.indexOf(str, "nop"));
         System.out.println(Strings.indexOf(str, "nop", 20));
     }
+
+    @Test
+    public void testJoin() {
+        String string = "a, b, 23, af, (, {, }, 323";
+        String[] segments = Strings.split(string, ",");
+        String newString = Strings.join(", ", segments);
+        System.out.println(newString);
+    }
+
 }
