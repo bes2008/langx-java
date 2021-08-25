@@ -1,6 +1,7 @@
 package com.jn.langx.util.compress;
 
 
+import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.io.IOs;
 
 import java.io.*;
@@ -39,10 +40,34 @@ public class GZips {
      * @return Retourne la string decompressee
      */
     public static StringBuffer bytesToStringBuffer(byte[] in) {
+        return bytesToStringBuffer(in, new Supplier0<StringBuffer>() {
+            @Override
+            public StringBuffer get() {
+                return new StringBuffer();
+            }
+        });
+    }
+
+    /**
+     * @return Retourne la string decompressee
+     */
+    public static StringBuilder bytesToStringBuilder(byte[] in) {
+        return bytesToStringBuffer(in, new Supplier0<StringBuilder>() {
+            @Override
+            public StringBuilder get() {
+                return new StringBuilder();
+            }
+        });
+    }
+
+    /**
+     * @return Retourne la string decompressee
+     */
+    private static <T extends Appendable> T bytesToStringBuffer(byte[] in, Supplier0<T> supplier) {
+        T sb = supplier.get();
         if (in == null || in.length == 0) {
-            return new StringBuffer("");
+            return sb;
         }
-        StringBuffer sb = new StringBuffer();
         GZIPInputStream gz = null;
         try {
             gz = new GZIPInputStream(new BufferedInputStream(new ByteArrayInputStream(in)));
