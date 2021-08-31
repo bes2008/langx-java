@@ -1,7 +1,10 @@
 package com.jn.langx.http.rest;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.http.HttpMethod;
 import com.jn.langx.http.HttpStatus;
+import com.jn.langx.util.collection.multivalue.MultiValueMap;
+import com.jn.langx.util.collection.multivalue.MultiValueMaps;
 
 import java.util.Map;
 
@@ -15,10 +18,11 @@ public final class RestRespBody<T> {
     private String errorMessage;
     @Nullable
     private String url;
+    private HttpMethod method;
     @Nullable
-    private Map<String, String> responseHeaders;
+    private MultiValueMap<String, String> responseHeaders;
     @Nullable
-    private Map<String, String> requestHeaders;
+    private MultiValueMap<String, String> requestHeaders;
 
     public RestRespBody() {
 
@@ -269,19 +273,28 @@ public final class RestRespBody<T> {
         return timestamp;
     }
 
-    public Map<String, String> getResponseHeaders() {
+    public MultiValueMap<String, String> getResponseHeaders() {
         return responseHeaders;
     }
 
-    public void setResponseHeaders(Map<String, String> responseHeaders) {
+    public void setResponseHeaders(MultiValueMap<String, String> responseHeaders) {
         this.responseHeaders = responseHeaders;
     }
-
-    public Map<String, String> getRequestHeaders() {
+    public void setResponseHeaders(Map<String, String> responseHeaders) {
+        setResponseHeaders(MultiValueMaps.toMultiValueMap(responseHeaders));
+    }
+    public MultiValueMap<String, String> getRequestHeaders() {
         return requestHeaders;
     }
 
-    public void setRequestHeaders(Map<String, String> requestHeaders) {
+    public void setRequestHeaders(MultiValueMap<String, String> requestHeaders) {
         this.requestHeaders = requestHeaders;
+    }
+    public void setRequestHeaders(Map<String, String> requestHeaders) {
+        setRequestHeaders(MultiValueMaps.toMultiValueMap(requestHeaders));
+    }
+
+    public void setMethod(HttpMethod method) {
+        this.method = method;
     }
 }
