@@ -280,21 +280,44 @@ public final class RestRespBody<T> {
     public void setResponseHeaders(MultiValueMap<String, String> responseHeaders) {
         this.responseHeaders = responseHeaders;
     }
+
+    /**
+     * @param responseHeaders the http headers
+     * @since 3.6.8
+     */
     public void setResponseHeaders(Map<String, String> responseHeaders) {
         setResponseHeaders(MultiValueMaps.toMultiValueMap(responseHeaders));
     }
+
     public MultiValueMap<String, String> getRequestHeaders() {
         return requestHeaders;
     }
 
+    /**
+     * @param requestHeaders the http headers
+     * @since 3.6.8
+     */
     public void setRequestHeaders(MultiValueMap<String, String> requestHeaders) {
         this.requestHeaders = requestHeaders;
     }
+
     public void setRequestHeaders(Map<String, String> requestHeaders) {
         setRequestHeaders(MultiValueMaps.toMultiValueMap(requestHeaders));
     }
 
+    /**
+     * @param method the http method
+     * @since 3.6.8
+     */
     public void setMethod(HttpMethod method) {
         this.method = method;
+    }
+
+    /**
+     * @return the http method
+     * @since 3.6.8
+     */
+    public HttpMethod getMethod() {
+        return method;
     }
 }
