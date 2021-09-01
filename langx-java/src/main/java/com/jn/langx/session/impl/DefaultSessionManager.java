@@ -28,13 +28,6 @@ public class DefaultSessionManager implements SessionManager {
         this.sessionFactory = new SimpleSessionFactory();
     }
 
-    public void setDefaultTimeout(long defaultTimeout) {
-        this.defaultTimeout = defaultTimeout;
-    }
-
-    public long getDefaultTimeout() {
-        return defaultTimeout;
-    }
 
     @Override
     public Session createSession(SessionContext context) {
@@ -57,7 +50,7 @@ public class DefaultSessionManager implements SessionManager {
         Preconditions.checkNotEmpty(sessionId, "the session id is empty or null");
 
         repository.add(session);
-        if(session instanceof SessionManagerAware){
+        if (session instanceof SessionManagerAware) {
             ((SessionManagerAware) session).setSessionManager(this);
         }
         return session;
@@ -72,7 +65,7 @@ public class DefaultSessionManager implements SessionManager {
         Session session = repository.getById(sessionId);
         if (session != null && !session.isExpired()) {
             session.setLastAccessTime(new Date());
-            if(session instanceof SessionManagerAware){
+            if (session instanceof SessionManagerAware) {
                 ((SessionManagerAware) session).setSessionManager(this);
             }
             return session;
@@ -96,5 +89,12 @@ public class DefaultSessionManager implements SessionManager {
         this.sessionFactory = sessionFactory;
     }
 
+    public void setDefaultTimeout(long defaultTimeout) {
+        this.defaultTimeout = defaultTimeout;
+    }
+
+    public long getDefaultTimeout() {
+        return defaultTimeout;
+    }
 
 }
