@@ -1,4 +1,4 @@
-package com.jn.langx.session.exception;
+package com.jn.langx.session;
 
 /**
  * General security exception attributed to problems during interaction with the system during

@@ -1,7 +1,5 @@
 package com.jn.langx.session;
 
-import com.jn.langx.session.exception.SessionException;
-
 /**
  * A SessionManager manages the creation, maintenance, and clean-up of all application
  * {@link Session}s.

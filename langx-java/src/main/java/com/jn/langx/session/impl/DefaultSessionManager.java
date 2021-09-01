@@ -3,7 +3,7 @@ package com.jn.langx.session.impl;
 import com.jn.langx.event.EventPublisher;
 import com.jn.langx.event.EventPublisherAware;
 import com.jn.langx.session.*;
-import com.jn.langx.session.exception.SessionException;
+import com.jn.langx.session.SessionException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import org.slf4j.Logger;
