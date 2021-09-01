@@ -1,6 +1,6 @@
-package com.jn.langx.rpc.session;
+package com.jn.langx.session.impl;
 
-import com.jn.langx.rpc.session.exception.InvalidSessionException;
+import com.jn.langx.session.Session;
 import com.jn.langx.util.collection.AbstractAttributable;
 
 import java.util.Date;
@@ -11,7 +11,6 @@ import java.util.Date;
 public class SimpleSession extends AbstractAttributable implements Session {
     private String id;
     private Date startTime;
-    private Date stopTime;
     private Date lastAccessTime;
     private long timeout;
     private boolean expired;
@@ -32,14 +31,6 @@ public class SimpleSession extends AbstractAttributable implements Session {
         this.startTime = startTime;
     }
 
-    public Date getStopTime() {
-        return stopTime;
-    }
-
-    public void setStopTime(Date stopTime) {
-        this.stopTime = stopTime;
-    }
-
     public Date getLastAccessTime() {
         return lastAccessTime;
     }
@@ -48,12 +39,14 @@ public class SimpleSession extends AbstractAttributable implements Session {
         this.lastAccessTime = lastAccessTime;
     }
 
-    public long getTimeout() {
+    @Override
+    public long getMaxInactiveInterval() {
         return timeout;
     }
 
-    public void setTimeout(long timeout) {
-        this.timeout = timeout;
+    @Override
+    public void setMaxInactiveInterval(long maxIdleTimeInMillis) {
+        this.timeout = maxIdleTimeInMillis;
     }
 
     public boolean isExpired() {
@@ -62,11 +55,6 @@ public class SimpleSession extends AbstractAttributable implements Session {
 
     public void setExpired(boolean expired) {
         this.expired = expired;
-    }
-
-    @Override
-    public void touch() throws InvalidSessionException {
-        this.lastAccessTime = new Date();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.jn.langx.rpc.session.exception;
+package com.jn.langx.session.exception;
 
 
 /**

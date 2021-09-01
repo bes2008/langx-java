@@ -1,6 +1,6 @@
-package com.jn.langx.rpc.session;
+package com.jn.langx.session;
 
-import com.jn.langx.rpc.session.exception.SessionException;
+import com.jn.langx.session.exception.SessionException;
 
 /**
  * A SessionManager manages the creation, maintenance, and clean-up of all application
@@ -9,7 +9,6 @@ import com.jn.langx.rpc.session.exception.SessionException;
  * @since 3.7.0
  */
 public interface SessionManager {
-
     /**
      * Starts a new session based on the specified contextual initialization data, which can be used by the underlying
      * implementation to determine how exactly to create the internal Session instance.
@@ -26,6 +25,10 @@ public interface SessionManager {
      * @since 1.0
      */
     Session start(SessionContext context);
+
+    void setSessionFactory(SessionFactory sessionFactory);
+
+    SessionFactory getSessionFactory();
 
     /**
      * Retrieves the session corresponding to the specified contextual data (such as a session ID if applicable), or

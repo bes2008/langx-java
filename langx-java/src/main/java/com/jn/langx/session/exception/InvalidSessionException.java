@@ -1,5 +1,5 @@
-package com.jn.langx.rpc.session.exception;
-import com.jn.langx.rpc.session.Session;
+package com.jn.langx.session.exception;
+import com.jn.langx.session.Session;
 /**
  * Exception thrown when attempting to interact with the system under an established session
  * when that session is considered invalid.  The meaning of the term 'invalid' is based on

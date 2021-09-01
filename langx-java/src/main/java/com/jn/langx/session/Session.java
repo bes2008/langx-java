@@ -1,8 +1,7 @@
-package com.jn.langx.rpc.session;
+package com.jn.langx.session;
 
 
-import com.jn.langx.rpc.session.exception.ExpiredSessionException;
-import com.jn.langx.rpc.session.exception.InvalidSessionException;
+import com.jn.langx.session.exception.InvalidSessionException;
 import com.jn.langx.util.collection.Attributable;
 
 import java.util.Date;
@@ -48,6 +47,7 @@ public interface Session extends Attributable {
      * @see #touch()
      */
     Date getLastAccessTime();
+    void setLastAccessTime(Date date);
 
     /**
      * Returns the time in milliseconds that the session may remain idle before expiring.
@@ -63,7 +63,7 @@ public interface Session extends Attributable {
      * @return the time in milliseconds the session may remain idle before expiring.
      * @throws InvalidSessionException if the session has been stopped or expired prior to calling this method.
      */
-    long getTimeout() throws InvalidSessionException;
+    long getMaxInactiveInterval();
 
     /**
      * Sets the time in milliseconds that the session may remain idle before expiring.
@@ -80,41 +80,10 @@ public interface Session extends Attributable {
      * @param maxIdleTimeInMillis the time in milliseconds that the session may remain idle before expiring.
      * @throws InvalidSessionException if the session has been stopped or expired prior to calling this method.
      */
-    void setTimeout(long maxIdleTimeInMillis) throws InvalidSessionException;
+    void setMaxInactiveInterval(long maxIdleTimeInMillis);
 
 
-    /**
-     * Explicitly updates the {@link #getLastAccessTime() lastAccessTime} of this session to the current time when
-     * this method is invoked.  This method can be used to ensure a session does not time out.
-     * <p/>
-     * Most programmers won't use this method directly and will instead rely on the last access time to be updated
-     * automatically as a result of an incoming web request or remote procedure call/method invocation.
-     * <p/>
-     * However, this method is particularly useful when supporting rich-client applications such as
-     * Java Web Start app, Java or Flash applets, etc.  Although rare, it is possible in a rich-client
-     * environment that a user continuously interacts with the client-side application without a
-     * server-side method call ever being invoked.  If this happens over a long enough period of
-     * time, the user's server-side session could time-out.  Again, such cases are rare since most
-     * rich-clients frequently require server-side method invocations.
-     * <p/>
-     * In this example though, the user's session might still be considered valid because
-     * the user is actively &quot;using&quot; the application, just not communicating with the
-     * server. But because no server-side method calls are invoked, there is no way for the server
-     * to know if the user is sitting idle or not, so it must assume so to maintain session
-     * integrity.  This {@code touch()} method could be invoked by the rich-client application code during those
-     * times to ensure that the next time a server-side method is invoked, the invocation will not
-     * throw an {@link ExpiredSessionException ExpiredSessionException}.  In short terms, it could be used periodically
-     * to ensure a session does not time out.
-     * <p/>
-     * How often this rich-client &quot;maintenance&quot; might occur is entirely dependent upon
-     * the application and would be based on variables such as session timeout configuration,
-     * usage characteristics of the client application, network utilization and application server
-     * performance.
-     *
-     * @throws InvalidSessionException if this session has stopped or expired prior to calling this method.
-     */
-    void touch() throws InvalidSessionException;
-
+    boolean isExpired();
     /**
      * Explicitly stops (invalidates) this session and releases all associated resources.
      * <p/>

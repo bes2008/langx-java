@@ -1,4 +1,4 @@
-package com.jn.langx.rpc.session;
+package com.jn.langx.session;
 
 import com.jn.langx.factory.Factory;
 
@@ -8,4 +8,7 @@ import com.jn.langx.factory.Factory;
 public interface SessionFactory extends Factory<SessionContext, Session> {
     @Override
     Session get(SessionContext ctx);
+
+    SessionIdGenerator<SessionContext> getIdGenerator();
+    void setIdGenerator(SessionIdGenerator<SessionContext> idGenerator);
 }

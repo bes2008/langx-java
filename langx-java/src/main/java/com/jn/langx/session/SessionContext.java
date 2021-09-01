@@ -1,4 +1,4 @@
-package com.jn.langx.rpc.session;
+package com.jn.langx.session;
 
 /**
  * @since 3.7.0
