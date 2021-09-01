@@ -24,7 +24,7 @@ public interface SessionManager {
      * @see SessionFactory#get(SessionContext)
      * @since 1.0
      */
-    Session start(SessionContext context);
+    Session createSession(SessionContext context);
 
     void setSessionFactory(SessionFactory sessionFactory);
 
