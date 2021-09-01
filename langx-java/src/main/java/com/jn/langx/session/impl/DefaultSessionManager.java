@@ -26,6 +26,7 @@ public class DefaultSessionManager implements SessionManager {
 
     public DefaultSessionManager() {
         this.sessionFactory = new SimpleSessionFactory();
+        this.repository = new LocalSessionRepository();
     }
 
 
