@@ -6,6 +6,8 @@ import com.jn.langx.session.SessionContext;
 import com.jn.langx.session.SessionFactory;
 import com.jn.langx.session.SessionIdGenerator;
 
+import java.util.Date;
+
 /**
  * {@code SessionFactory} implementation that generates {@link SimpleSession} instances.
  * 创建session
@@ -23,6 +25,7 @@ public class SimpleSessionFactory implements SessionFactory {
     private Session createSession(SessionContext context) {
         SimpleSession session = new SimpleSession();
         session.setId(idGenerator.get(context));
+        session.setStartTime(new Date());
         return session;
     }
 

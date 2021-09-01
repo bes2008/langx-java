@@ -2,8 +2,12 @@ package com.jn.langx.session.impl;
 
 import com.jn.langx.session.*;
 import com.jn.langx.session.exception.SessionException;
+import com.jn.langx.util.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Default business-tier implementation of .  All session CRUD operations are
@@ -13,25 +17,58 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultSessionManager implements SessionManager {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultSessionManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultSessionManager.class);
 
     private SessionFactory sessionFactory;
-
     protected SessionRepository repository;
+    private long defaultTimeout = TimeUnit.MINUTES.toMillis(30); // units:mills, 30 min
 
     public DefaultSessionManager() {
         this.sessionFactory = new SimpleSessionFactory();
-        //    this.repository = new MemorySessionDAO();
+    }
+
+    public void setDefaultTimeout(long defaultTimeout) {
+        this.defaultTimeout = defaultTimeout;
+    }
+
+    public long getDefaultTimeout() {
+        return defaultTimeout;
     }
 
     @Override
     public Session createSession(SessionContext context) {
-        return null;
+        Session session = sessionFactory.get(context);
+
+        long maxInactiveInterval = session.getMaxInactiveInterval();
+        if (maxInactiveInterval <= 0L) {
+            session.setMaxInactiveInterval(defaultTimeout);
+        }
+
+        Date startTime = session.getStartTime();
+        Preconditions.checkNotNull(startTime, "the start time is null");
+
+        Date lastAccessTime = session.getLastAccessTime();
+        if (lastAccessTime == null) {
+            session.setLastAccessTime(new Date());
+        }
+
+        String sessionId = session.getId();
+        Preconditions.checkNotEmpty(sessionId, "the session id is empty or null");
+
+        repository.add(session);
+
+        return session;
     }
+
 
     @Override
     public Session getSession(String sessionId) throws SessionException {
-        return repository.getById(sessionId);
+        Session session = repository.getById(sessionId);
+        if (session != null && !session.isExpired()) {
+            session.setLastAccessTime(new Date());
+            return session;
+        }
+        return null;
     }
 
     public SessionRepository getRepository() {

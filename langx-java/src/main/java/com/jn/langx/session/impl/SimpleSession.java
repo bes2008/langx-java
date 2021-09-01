@@ -13,7 +13,7 @@ public class SimpleSession extends AbstractAttributable implements Session {
     private Date startTime;
     private Date lastAccessTime;
     private long timeout;
-    private boolean expired;
+    private Boolean expired;
 
     public String getId() {
         return id;
@@ -50,11 +50,10 @@ public class SimpleSession extends AbstractAttributable implements Session {
     }
 
     public boolean isExpired() {
+        if (expired == null) {
+            return (lastAccessTime.getTime() + timeout) <= System.currentTimeMillis();
+        }
         return expired;
-    }
-
-    public void setExpired(boolean expired) {
-        this.expired = expired;
     }
 
     @Override
