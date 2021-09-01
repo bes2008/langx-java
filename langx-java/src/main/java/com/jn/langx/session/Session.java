@@ -18,7 +18,6 @@ import java.util.Date;
  * @since 3.7.0
  */
 public interface Session extends Attributable {
-
     String getId();
 
     Date getStartTime();

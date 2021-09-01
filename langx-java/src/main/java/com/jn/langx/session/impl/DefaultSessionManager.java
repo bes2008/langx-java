@@ -3,6 +3,7 @@ package com.jn.langx.session.impl;
 import com.jn.langx.session.*;
 import com.jn.langx.session.exception.SessionException;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,7 @@ public class DefaultSessionManager implements SessionManager {
 
         long maxInactiveInterval = session.getMaxInactiveInterval();
         if (maxInactiveInterval <= 0L) {
-            session.setMaxInactiveInterval(defaultTimeout);
+            session.setMaxInactiveInterval(getDefaultTimeout());
         }
 
         Date startTime = session.getStartTime();
@@ -56,16 +57,24 @@ public class DefaultSessionManager implements SessionManager {
         Preconditions.checkNotEmpty(sessionId, "the session id is empty or null");
 
         repository.add(session);
-
+        if(session instanceof SessionManagerAware){
+            ((SessionManagerAware) session).setSessionManager(this);
+        }
         return session;
     }
 
 
     @Override
     public Session getSession(String sessionId) throws SessionException {
+        if (Strings.isBlank(sessionId)) {
+            return null;
+        }
         Session session = repository.getById(sessionId);
         if (session != null && !session.isExpired()) {
             session.setLastAccessTime(new Date());
+            if(session instanceof SessionManagerAware){
+                ((SessionManagerAware) session).setSessionManager(this);
+            }
             return session;
         }
         return null;

@@ -11,7 +11,7 @@ public enum TimeUnit2 implements CommonEnum {
     HOURS(TimeUnit.HOURS.ordinal(), "h", "hours", "时", TimeUnit.HOURS),
     MINUTES(TimeUnit.MINUTES.ordinal(), "m", "minutes", "分", TimeUnit.MINUTES),
     SECONDS(TimeUnit.SECONDS.ordinal(), "s", "seconds", "秒", TimeUnit.SECONDS),
-    MiLLIS(TimeUnit.MILLISECONDS.ordinal(), "ms", "milliseconds", "毫秒", TimeUnit.MILLISECONDS),
+    MiLLS(TimeUnit.MILLISECONDS.ordinal(), "ms", "milliseconds", "毫秒", TimeUnit.MILLISECONDS),
     MICROS(TimeUnit.MICROSECONDS.ordinal(), "micros", "microseconds", "微秒", TimeUnit.MICROSECONDS),
     NANOS(TimeUnit.MICROSECONDS.ordinal(), "nanos", "nanoseconds", "纳秒", TimeUnit.MICROSECONDS);
 
