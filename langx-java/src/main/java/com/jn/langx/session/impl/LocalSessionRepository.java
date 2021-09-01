@@ -6,6 +6,9 @@ import com.jn.langx.session.SessionRepository;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @since 3.7.0
+ */
 public class LocalSessionRepository implements SessionRepository {
     private Map<String, Session> map = new ConcurrentHashMap<String, Session>();
 

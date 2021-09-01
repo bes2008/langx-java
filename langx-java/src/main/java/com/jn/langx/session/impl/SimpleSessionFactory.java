@@ -11,10 +11,12 @@ import java.util.Date;
 /**
  * {@code SessionFactory} implementation that generates {@link SimpleSession} instances.
  * 创建session
+ *
  * @since 3.7.0
  */
 public class SimpleSessionFactory implements SessionFactory {
     private SessionIdGenerator<SessionContext> idGenerator;
+
     /**
      * Creates a new {@link SimpleSession SimpleSession} instance retaining the context's
      * {@link SessionContext} if one can be found.

@@ -11,9 +11,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Default business-tier implementation of .  All session CRUD operations are
- * delegated to an internal {@link SessionRepository}.
- *
  * @since 3.7.0
  */
 public class DefaultSessionManager implements SessionManager {

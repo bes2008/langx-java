@@ -2,13 +2,15 @@ package com.jn.langx.session.impl;
 
 import com.jn.langx.Delegatable;
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.annotation.Nullable;
 import com.jn.langx.cache.Cache;
 import com.jn.langx.session.Session;
 import com.jn.langx.session.SessionRepository;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @since 3.7.0
+ */
 public class CachedSessionRepository implements SessionRepository, Delegatable<SessionRepository> {
     @NonNull
     private Cache<String, Session> cache;
