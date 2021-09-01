@@ -1,5 +1,7 @@
 package com.jn.langx.session.impl;
 
+import com.jn.langx.event.EventPublisher;
+import com.jn.langx.event.EventPublisherAware;
 import com.jn.langx.session.*;
 import com.jn.langx.session.exception.SessionException;
 import com.jn.langx.util.Preconditions;
@@ -13,13 +15,15 @@ import java.util.concurrent.TimeUnit;
 /**
  * @since 3.7.0
  */
-public class DefaultSessionManager implements SessionManager {
+public class DefaultSessionManager implements SessionManager, EventPublisherAware {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultSessionManager.class);
 
     private SessionFactory sessionFactory;
     protected SessionRepository repository;
     private long defaultTimeout = TimeUnit.MINUTES.toMillis(30); // units:mills, 30 min
+    private EventPublisher<SessionEvent> eventPublisher;
+    private String domain = "SESSION";
 
     public DefaultSessionManager() {
         this.sessionFactory = new SimpleSessionFactory();
@@ -51,6 +55,9 @@ public class DefaultSessionManager implements SessionManager {
         if (session instanceof SessionManagerAware) {
             ((SessionManagerAware) session).setSessionManager(this);
         }
+        if (eventPublisher != null) {
+            eventPublisher.publish(new SessionEvent(this.domain, SessionEvent.SessionEventType.CREATED, session));
+        }
         return session;
     }
 
@@ -61,14 +68,33 @@ public class DefaultSessionManager implements SessionManager {
             return null;
         }
         Session session = repository.getById(sessionId);
-        if (session != null && !session.isExpired()) {
-            session.setLastAccessTime(new Date());
-            if (session instanceof SessionManagerAware) {
-                ((SessionManagerAware) session).setSessionManager(this);
+        if (session != null) {
+            if (!session.isExpired()) {
+                session.setLastAccessTime(new Date());
+                if (session instanceof SessionManagerAware) {
+                    ((SessionManagerAware) session).setSessionManager(this);
+                }
+                // 目的更新访问时间
+                repository.update(session);
+                return session;
+            } else {
+                repository.removeById(session.getId());
+                if (eventPublisher != null) {
+                    eventPublisher.publish(new SessionEvent(this.domain, SessionEvent.SessionEventType.EXPIRE, session));
+                }
             }
-            return session;
         }
         return null;
+    }
+
+    @Override
+    public void invalidate(Session session) {
+        if (session != null) {
+            repository.removeById(session.getId());
+            if (eventPublisher != null) {
+                eventPublisher.publish(new SessionEvent(this.domain, SessionEvent.SessionEventType.INVALIDATED, session));
+            }
+        }
     }
 
     public SessionRepository getRepository() {
@@ -95,4 +121,22 @@ public class DefaultSessionManager implements SessionManager {
         return defaultTimeout;
     }
 
+    @Override
+    public EventPublisher getEventPublisher() {
+        return eventPublisher;
+    }
+
+    @Override
+    public void setEventPublisher(EventPublisher publisher) {
+        this.eventPublisher = publisher;
+    }
+
+    @Override
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
 }

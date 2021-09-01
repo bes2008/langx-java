@@ -9,6 +9,9 @@ import com.jn.langx.session.exception.SessionException;
  * @since 3.7.0
  */
 public interface SessionManager {
+
+    String getDomain();
+
     /**
      * Starts a new session based on the specified contextual initialization data, which can be used by the underlying
      * implementation to determine how exactly to create the internal Session instance.
@@ -22,7 +25,6 @@ public interface SessionManager {
      *                {@link SessionFactory} when instantiating the internal {@code Session} instance.
      * @return the newly created session.
      * @see SessionFactory#get(SessionContext)
-     * @since 1.0
      */
     Session createSession(SessionContext context);
 
@@ -39,7 +41,8 @@ public interface SessionManager {
      * @return the {@code Session} instance corresponding to the given lookup key or {@code null} if no session
      * could be acquired.
      * @throws SessionException if a session was found but it was invalid (stopped/expired).
-     * @since 1.0
      */
-    Session getSession(String id) throws SessionException;
+    Session getSession(String id);
+
+    void invalidate(Session session);
 }
