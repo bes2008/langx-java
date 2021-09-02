@@ -136,7 +136,6 @@ public class DefaultSessionManager extends AbstractInitializable implements Sess
         this.eventPublisher.addEventListener(this.domain, sessionListener);
     }
 
-    @Override
     public String getDomain() {
         return domain;
     }

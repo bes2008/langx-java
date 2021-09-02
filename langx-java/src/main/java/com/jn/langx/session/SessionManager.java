@@ -7,7 +7,7 @@ package com.jn.langx.session;
  * @since 3.7.0
  */
 public interface SessionManager {
-
+    void setDomain(String domain);
     String getDomain();
 
     /**
