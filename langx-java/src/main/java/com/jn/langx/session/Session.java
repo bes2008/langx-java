@@ -32,6 +32,10 @@ public interface Session extends Attributable {
 
     boolean isExpired();
 
+    Date getExpireTime();
+
+    boolean isInvalid();
+
     void invalidate();
 
     @Override

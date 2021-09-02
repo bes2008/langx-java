@@ -15,7 +15,7 @@ public class SimpleSession extends AbstractAttributable implements Session, Sess
     private Date startTime;
     private Date lastAccessTime;
     private long maxInactiveInterval;
-    private Boolean expired;
+    private boolean invalid = false;
     private transient SessionManager sessionManager;
 
     public String getId() {
@@ -62,15 +62,25 @@ public class SimpleSession extends AbstractAttributable implements Session, Sess
     }
 
     public boolean isExpired() {
-        if (expired == null) {
-            return (lastAccessTime.getTime() + maxInactiveInterval) <= System.currentTimeMillis();
+        if (!invalid) {
+            return getExpireTime().getTime() <= System.currentTimeMillis();
         }
-        return expired;
+        return invalid;
+    }
+
+    @Override
+    public Date getExpireTime() {
+        return new Date(lastAccessTime.getTime() + maxInactiveInterval);
+    }
+
+    @Override
+    public boolean isInvalid() {
+        return invalid;
     }
 
     @Override
     public void invalidate() {
-        this.expired = true;
+        this.invalid = true;
         if (sessionManager != null) {
             sessionManager.invalidate(this);
         }
