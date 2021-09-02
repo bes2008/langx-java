@@ -26,7 +26,9 @@ public class SimpleSessionFactory implements SessionFactory {
      */
     private Session createSession(SessionContext context) {
         SimpleSession session = new SimpleSession();
-        session.setId(idGenerator.get(context));
+        String id = idGenerator.get(context);
+        context.setSessionId(id);
+        session.setId(id);
         session.setStartTime(new Date());
         return session;
     }

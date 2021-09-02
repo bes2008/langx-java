@@ -31,7 +31,9 @@ public class SimpleSession extends AbstractAttributable implements Session, Sess
     }
 
     public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+        if (this.startTime == null) {
+            this.startTime = startTime;
+        }
     }
 
     public Date getLastAccessTime() {
