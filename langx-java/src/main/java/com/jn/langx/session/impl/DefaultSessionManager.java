@@ -2,6 +2,9 @@ package com.jn.langx.session.impl;
 
 import com.jn.langx.event.EventPublisher;
 import com.jn.langx.event.EventPublisherAware;
+import com.jn.langx.event.local.SimpleEventPublisher;
+import com.jn.langx.lifecycle.AbstractInitializable;
+import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.session.*;
 import com.jn.langx.session.SessionException;
 import com.jn.langx.util.Preconditions;
@@ -15,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @since 3.7.0
  */
-public class DefaultSessionManager implements SessionManager, EventPublisherAware {
+public class DefaultSessionManager extends AbstractInitializable implements SessionManager, EventPublisherAware {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultSessionManager.class);
 
@@ -26,8 +29,6 @@ public class DefaultSessionManager implements SessionManager, EventPublisherAwar
     private String domain = "SESSION";
 
     public DefaultSessionManager() {
-        this.sessionFactory = new SimpleSessionFactory();
-        this.repository = new LocalSessionRepository();
     }
 
 
@@ -131,12 +132,30 @@ public class DefaultSessionManager implements SessionManager, EventPublisherAwar
         this.eventPublisher = publisher;
     }
 
+    public void addSessionListener(SessionListener sessionListener) {
+        this.eventPublisher.addEventListener(this.domain, sessionListener);
+    }
+
     @Override
     public String getDomain() {
         return domain;
     }
 
     public void setDomain(String domain) {
+        Preconditions.checkNotEmpty(domain);
         this.domain = domain;
+    }
+
+    @Override
+    protected void doInit() throws InitializationException {
+        if (this.eventPublisher == null) {
+            setEventPublisher(new SimpleEventPublisher());
+        }
+        if (this.sessionFactory == null) {
+            setSessionFactory(new SimpleSessionFactory());
+        }
+        if (this.repository == null) {
+            setRepository(new LocalSessionRepository());
+        }
     }
 }

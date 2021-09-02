@@ -71,5 +71,8 @@ public class SimpleSession extends AbstractAttributable implements Session, Sess
     @Override
     public void invalidate() {
         this.expired = true;
+        if (sessionManager != null) {
+            sessionManager.invalidate(this);
+        }
     }
 }
