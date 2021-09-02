@@ -5,4 +5,5 @@ package com.jn.langx.session;
  */
 public interface SessionContext {
     String getSessionId();
+    void setSessionId(String id);
 }

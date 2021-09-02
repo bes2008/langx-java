@@ -10,6 +10,11 @@ public class SimpleSessionContext implements SessionContext {
     }
 
     @Override
+    public void setSessionId(String id) {
+        this.sessionId = id;
+    }
+
+    @Override
     public String getSessionId() {
         return sessionId;
     }
