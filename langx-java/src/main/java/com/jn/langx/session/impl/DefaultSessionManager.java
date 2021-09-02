@@ -31,9 +31,15 @@ public class DefaultSessionManager extends AbstractInitializable implements Sess
     public DefaultSessionManager() {
     }
 
+    public Session getSession(SessionContext context) {
+        String id = context.getSessionId();
+        if (Strings.isNotBlank(id)) {
+            return getSession(id);
+        }
+        return createSession(context);
+    }
 
-    @Override
-    public Session createSession(SessionContext context) {
+    private Session createSession(SessionContext context) {
         Session session = sessionFactory.get(context);
 
         long maxInactiveInterval = session.getMaxInactiveInterval();
