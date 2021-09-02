@@ -39,11 +39,11 @@ public class HttpUrlBuilder {
     /**
      * Construct an instance from the string which must be a valid URI.
      *
-     * @param string a valid URI in string form
+     * @param url a valid URI in string form
      * @throws URISyntaxException if the input is not a valid URI
      */
-    public HttpUrlBuilder(final String string) throws URISyntaxException {
-        this(new URI(string), null);
+    public HttpUrlBuilder(final String url) throws URISyntaxException {
+        this(new URI(url), null);
     }
 
     /**
@@ -57,11 +57,11 @@ public class HttpUrlBuilder {
     /**
      * Construct an instance from the string which must be a valid URI.
      *
-     * @param string a valid URI in string form
+     * @param url a valid URI in string form
      * @throws URISyntaxException if the input is not a valid URI
      */
-    public HttpUrlBuilder(final String string, final Charset charset) throws URISyntaxException {
-        this(new URI(string), charset);
+    public HttpUrlBuilder(final String url, final Charset charset) throws URISyntaxException {
+        this(new URI(url), charset);
     }
 
     /**
