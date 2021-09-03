@@ -15,15 +15,10 @@
     <name>${groupId}:${artifactId}:${version}</name>
 
     <description>
-        Java lang extensions for java6+，a supplement to , replacement of a Guava, commons-lang.
+        Java lang extensions for java6+, a supplement to , replacement of a Guava, commons-lang.
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
     <dependencies>
-        <dependency>
-            <groupId>cn.featherfly.common</groupId>
-            <artifactId>common-db</artifactId>
-            <version>0.3.19</version>
-        </dependency>
     </dependencies>
     <build>
         <resources>
