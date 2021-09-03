@@ -8,7 +8,7 @@ import com.jn.langx.util.collection.multivalue.MultiValueMaps;
 
 import java.util.Map;
 
-public final class RestRespBody<T> {
+public  class RestRespBody<T> {
     private boolean success;
     @Nullable
     private T data;
