@@ -1,7 +1,7 @@
 package com.jn.langx.util.net.escaper;
 
 
-import com.jn.langx.escape.UnicodeEscaper;
+import com.jn.langx.util.escape.UnicodeEscaper;
 
 import static com.jn.langx.util.Preconditions.checkNotNull;
 

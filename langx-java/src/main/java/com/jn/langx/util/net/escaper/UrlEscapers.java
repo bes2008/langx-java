@@ -1,7 +1,7 @@
 package com.jn.langx.util.net.escaper;
 
 
-import com.jn.langx.escape.Escaper;
+import com.jn.langx.util.escape.Escaper;
 
 /**
  * {@code Escaper} instances suitable for strings to be included in particular sections of URLs.

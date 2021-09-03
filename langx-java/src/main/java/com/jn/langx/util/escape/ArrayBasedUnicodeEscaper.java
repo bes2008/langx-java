@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.jn.langx.escape;
+package com.jn.langx.util.escape;
 
 
 import com.jn.langx.annotation.Nullable;

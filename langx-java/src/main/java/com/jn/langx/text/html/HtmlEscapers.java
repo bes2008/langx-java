@@ -15,8 +15,8 @@
 package com.jn.langx.text.html;
 
 
-import com.jn.langx.escape.Escaper;
-import com.jn.langx.escape.Escapers;
+import com.jn.langx.util.escape.Escaper;
+import com.jn.langx.util.escape.Escapers;
 
 /**
  * {@code Escaper} instances suitable for strings to be included in HTML attribute values and
