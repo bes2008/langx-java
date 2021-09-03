@@ -1,6 +1,6 @@
 package com.jn.langx.distributed.session;
 
-import com.jn.langx.factory.Factory;
+import com.jn.langx.Factory;
 
 /**
  * @since 3.7.0

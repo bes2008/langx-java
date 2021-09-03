@@ -1,6 +1,6 @@
 package com.jn.langx.util.concurrent;
 
-import com.jn.langx.factory.Factory;
+import com.jn.langx.Factory;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 

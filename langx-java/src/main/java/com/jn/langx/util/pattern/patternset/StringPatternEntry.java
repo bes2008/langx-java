@@ -24,7 +24,7 @@ public class StringPatternEntry implements Nameable {
     }
 
 
-    public static class Factory implements com.jn.langx.factory.Factory<String, StringPatternEntry> {
+    public static class Factory implements com.jn.langx.Factory<String, StringPatternEntry> {
         @Override
         public StringPatternEntry get(String pattern) {
             return new StringPatternEntry(pattern);

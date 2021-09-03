@@ -1,6 +1,6 @@
 package com.jn.langx.registry;
 
-import com.jn.langx.factory.Factory;
+import com.jn.langx.Factory;
 
 public interface Registry<K, V> extends Factory<K, V> {
     void register(V v);

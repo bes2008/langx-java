@@ -2,7 +2,7 @@ package com.jn.langx.invocation.proxy.sparse;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.factory.Factory;
+import com.jn.langx.Factory;
 import com.jn.langx.invocation.aop.MethodInterceptor;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;

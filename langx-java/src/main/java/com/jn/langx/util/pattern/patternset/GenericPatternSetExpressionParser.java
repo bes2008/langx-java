@@ -3,7 +3,7 @@ package com.jn.langx.util.pattern.patternset;
 import com.jn.langx.Named;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.exception.ExpressionParseException;
-import com.jn.langx.factory.Factory;
+import com.jn.langx.Factory;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;

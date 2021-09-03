@@ -1,4 +1,4 @@
-package com.jn.langx.factory;
+package com.jn.langx;
 
 import com.jn.langx.util.function.Supplier;
 
