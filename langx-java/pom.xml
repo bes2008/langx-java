@@ -19,6 +19,11 @@
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
     <dependencies>
+        <dependency>
+            <groupId>cn.featherfly.common</groupId>
+            <artifactId>common-db</artifactId>
+            <version>0.3.19</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>

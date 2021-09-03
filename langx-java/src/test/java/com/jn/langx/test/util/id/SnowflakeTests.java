@@ -4,7 +4,7 @@ import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.id.SnowflakeIdGenerator;
+import com.jn.langx.distributed.id.snowflake.SnowflakeIdGenerator;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
