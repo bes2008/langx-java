@@ -1,4 +1,4 @@
-package com.jn.langx.http.mime;
+package com.jn.langx.net.mime;
 
 
 import com.jn.langx.annotation.Nullable;
