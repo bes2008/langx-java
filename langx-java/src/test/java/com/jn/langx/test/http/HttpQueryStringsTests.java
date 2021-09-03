@@ -1,6 +1,6 @@
 package com.jn.langx.test.http;
 
-import com.jn.langx.http.HttpQueryStrings;
+import com.jn.langx.util.net.http.HttpQueryStrings;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import org.junit.Test;

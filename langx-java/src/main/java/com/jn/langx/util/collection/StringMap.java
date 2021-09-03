@@ -1,6 +1,6 @@
 package com.jn.langx.util.collection;
 
-import com.jn.langx.http.HttpQueryStrings;
+import com.jn.langx.util.net.http.HttpQueryStrings;
 
 import java.util.HashMap;
 import java.util.Map;
