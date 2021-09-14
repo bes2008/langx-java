@@ -1,11 +1,13 @@
 package com.jn.langx.util.concurrent;
 
+import com.jn.langx.util.os.Platform;
+
 import java.util.concurrent.TimeUnit;
 
 public class ThreadPoolProperties {
 
-    private int coreSize;
-    private int maxSize;
+    private int coreSize = Platform.cpuCore();
+    private int maxSize = 2 * this.coreSize;
     private long keepAliveTime;
     private TimeUnit unit;
 

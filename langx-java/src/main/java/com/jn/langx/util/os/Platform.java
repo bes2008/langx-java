@@ -275,4 +275,9 @@ public class Platform {
     public static File getUserHomeDirectory() {
         return new File(getUserHomeDirectoryPath());
     }
+
+    public static int cpuCore(){
+        return Runtime.getRuntime().availableProcessors();
+    }
+
 }
