@@ -1,5 +1,7 @@
-package com.jn.langx;
+package com.jn.langx.util.concurrent.threadlocal;
 
+import com.jn.langx.Delegatable;
+import com.jn.langx.Factory;
 import com.jn.langx.util.Preconditions;
 
 public class ThreadLocalFactory<I, E> implements Factory<I, E>, Delegatable<Factory<I, E>> {
