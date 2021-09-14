@@ -8,8 +8,8 @@ public class ThreadPoolProperties {
 
     private int coreSize = Platform.cpuCore();
     private int maxSize = 2 * this.coreSize;
-    private long keepAliveTime;
-    private TimeUnit unit;
+    private long keepAliveTime = 3;
+    private TimeUnit unit = TimeUnit.SECONDS;
 
     public int getCoreSize() {
         return coreSize;
