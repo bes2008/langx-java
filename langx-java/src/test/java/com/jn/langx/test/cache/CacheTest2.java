@@ -12,14 +12,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class CacheTest2 {
-    @Test
+    //@Test
     public void test() throws Throwable {
         final Timer timer = new HashedWheelTimer(Executors.defaultThreadFactory());
         final Cache<String, String> cache = CacheBuilder.<String, String>newBuilder()
                 .cacheClass(LRUCache.class)
                 .timer(timer)
                 .removeListener(new RemoveListener<String, String>() {
-                    @Override
                     public void onRemove(String key, String value, RemoveCause cause) {
                         System.out.println(StringTemplates.formatWithPlaceholder("{} deleted: key:{}, value:{}, cause:{}", Dates.nowReadableString(), key, value, cause));
                     }
