@@ -57,7 +57,7 @@ final class StringSequence implements CharSequence {
         return new StringSequence(this.source, subSequenceStart, subSequenceEnd);
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return length() == 0;
     }
 

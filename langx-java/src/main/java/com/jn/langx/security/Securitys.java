@@ -66,30 +66,34 @@ public class Securitys {
         // 内置的 provider 的 classloader 要么是 bootstrap classloader,要么是 ext classloader
         Provider[] providers = Security.getProviders();
         ClassLoader appClassLoader = ClassLoader.getSystemClassLoader();
-        final URLClassLoader extClassLoader = (URLClassLoader) appClassLoader.getParent();
-        final Holder<Provider> firstProviderInExtClassLoader = new Holder<Provider>();
-        final Provider expectedProvider = Collects.findFirst(Collects.asList(providers), new Predicate<Provider>() {
-            @Override
-            public boolean test(Provider provider) {
-                // 不是 boostrap class loader和 ext class loader
-                ClassLoader providerCL = provider.getClass().getClassLoader();
-                if (providerCL != null && providerCL != extClassLoader) {
-                    return true;
+        // 从JDK9开始，引入了新的ClassLoader: PlatformClassLoader, 它不是一个URLClassLoader
+        if (appClassLoader.getParent() instanceof URLClassLoader) {
+            // 当JDK 小于9时，会进入这部分代码
+            final URLClassLoader extClassLoader = (URLClassLoader) appClassLoader.getParent();
+            final Holder<Provider> firstProviderInExtClassLoader = new Holder<Provider>();
+            final Provider expectedProvider = Collects.findFirst(Collects.asList(providers), new Predicate<Provider>() {
+                @Override
+                public boolean test(Provider provider) {
+                    // 不是 boostrap class loader和 ext class loader
+                    ClassLoader providerCL = provider.getClass().getClassLoader();
+                    if (providerCL != null && providerCL != extClassLoader) {
+                        return true;
+                    }
+                    if (providerCL == extClassLoader && firstProviderInExtClassLoader.isNull()) {
+                        firstProviderInExtClassLoader.set(provider);
+                    }
+                    return false;
                 }
-                if (providerCL == extClassLoader && firstProviderInExtClassLoader.isNull()) {
-                    firstProviderInExtClassLoader.set(provider);
+            });
+
+            if (expectedProvider != null) {
+                Map<String, String> properties = langxSecurityProvider.getProperties();
+                Iterator<Map.Entry<String, String>> entryIterator = properties.entrySet().iterator();
+
+                while (entryIterator.hasNext()) {
+                    Map.Entry<String, String> entry = entryIterator.next();
+                    expectedProvider.put(entry.getKey(), entry.getValue());
                 }
-                return false;
-            }
-        });
-
-        if (expectedProvider != null) {
-            Map<String, String> properties = langxSecurityProvider.getProperties();
-            Iterator<Map.Entry<String, String>> entryIterator = properties.entrySet().iterator();
-
-            while (entryIterator.hasNext()) {
-                Map.Entry<String, String> entry = entryIterator.next();
-                expectedProvider.put(entry.getKey(), entry.getValue());
             }
         }
         // 如果上述两种借法都没成功，那么langx provider中的算法，只能使用  message digest算法和 hmac算法。

@@ -232,27 +232,27 @@ public class Strings {
     }
 
     public static String join(@NonNull final String separator, final int[] array) {
-        return join(separator, PrimitiveArrays.wrap(array));
+        return join(separator, PrimitiveArrays.<Integer>wrap(array));
     }
 
     public static String join(@NonNull final String separator, final float[] array) {
-        return join(separator, PrimitiveArrays.wrap(array));
+        return join(separator, PrimitiveArrays.<Float>wrap(array));
     }
 
     public static String join(@NonNull final String separator, final double[] array) {
-        return join(separator, PrimitiveArrays.wrap(array));
+        return join(separator, PrimitiveArrays.<Double>wrap(array));
     }
 
     public static String join(@NonNull final String separator, final char[] array) {
-        return join(separator, PrimitiveArrays.wrap(array));
+        return join(separator, PrimitiveArrays.<Character>wrap(array));
     }
 
     public static String join(@NonNull final String separator, final boolean[] array) {
-        return join(separator, PrimitiveArrays.wrap(array));
+        return join(separator, PrimitiveArrays.<Boolean>wrap(array));
     }
 
     public static String join(@NonNull final String separator, final long[] array) {
-        return join(separator, PrimitiveArrays.wrap(array));
+        return join(separator, PrimitiveArrays.<Long>wrap(array));
     }
 
     public static String insert(@NonNull final String string, @Nullable final List<Integer> slotIndexes, @NonNull String insertment) {
