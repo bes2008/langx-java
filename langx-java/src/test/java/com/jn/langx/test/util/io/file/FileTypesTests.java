@@ -10,15 +10,23 @@ import java.io.File;
 public class FileTypesTests {
     @Test
     public void test() throws Throwable {
-        Resource r = Resources.loadClassPathResource("FileTypesTests.class", FileTypesTests.class);
-        String h = FileTypes.readFileMagic(r.getInputStream());
-        System.out.println(FileTypes.getType(h));
+        try {
+            Resource r = Resources.loadClassPathResource("FileTypesTests.class", FileTypesTests.class);
+            String h = FileTypes.readFileMagic(r.getInputStream());
+            System.out.println(FileTypes.getType(h));
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Test
     public void test2() throws Throwable {
-        File file = new File("D:/water_img.png");
-        String h = FileTypes.readFileMagic(file);
-        System.out.println(FileTypes.getType(h));
+        try {
+            File file = new File("D:/water_img.png");
+            String h = FileTypes.readFileMagic(file);
+            System.out.println(FileTypes.getType(h));
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
     }
 }

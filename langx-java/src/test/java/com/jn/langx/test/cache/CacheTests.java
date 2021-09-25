@@ -16,36 +16,31 @@ import java.util.concurrent.TimeUnit;
 
 public class CacheTests {
 
-    @Test
+    //@Test
     public void test0() throws Throwable {
         final Timer timer = new HashedWheelTimer(Executors.defaultThreadFactory());
         CompletableFuture f1 = CompletableFuture.runAsync(new Runnable() {
-            @Override
             public void run() {
                 testBasic(timer);
             }
         });
         CompletableFuture f2 = CompletableFuture.runAsync(new Runnable() {
-            @Override
             public void run() {
                 testBasic(timer);
             }
         });
 
         CompletableFuture f3 = CompletableFuture.runAsync(new Runnable() {
-            @Override
             public void run() {
                 testBasic(timer);
             }
         });
         CompletableFuture f4 = CompletableFuture.runAsync(new Runnable() {
-            @Override
             public void run() {
                 testBasic(timer);
             }
         });
         CompletableFuture.allOf(f1, f2, f3, f4).thenRun(new Runnable() {
-            @Override
             public void run() {
                 System.out.println("great");
             }
@@ -61,7 +56,6 @@ public class CacheTests {
                 .expireAfterWrite(60)
                 .timer(timer)
                 .removeListener(new RemoveListener<String, String>() {
-                    @Override
                     public void onRemove(String key, String value, RemoveCause cause) {
                         System.out.println(StringTemplates.formatWithPlaceholder("{} deleted: key:{}, value:{}, cause:{}", Dates.nowReadableString(), key, value, cause));
                     }
@@ -84,7 +78,7 @@ public class CacheTests {
 
 
         Collects.forEach(Arrs.range(20), new Consumer<Integer>() {
-            @Override
+            //@Override
             public void accept(Integer index) {
                 try {
                     Thread.sleep(8 * 1000);
