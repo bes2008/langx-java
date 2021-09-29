@@ -187,15 +187,54 @@ public class Arrs extends PrimitiveArrays{
         arr[j] = tmp;
     }
 
-    /**
-     * 反转索引
-     */
-    public static int reverseIndex(int length, int index) {
+    public static int toPositiveIndex(int length, int index){
         Preconditions.checkTrue(isValidIndex(length, index), "index " + index + " is invalid");
-        if (isPositiveIndex(length, index)) {
-            return index - length;
-        } else {
-            return length + index;
+        if(isNegativeIndex(length, index)){
+            return reverseIndex(length, index,true);
+        }
+        return index;
+    }
+
+    public static int[] toPositiveIndexes(int length, int fromIndex, int toIndex){
+        fromIndex = Arrs.toPositiveIndex(length, fromIndex);
+        toIndex = Arrs.toPositiveIndex(length, toIndex);
+        if(fromIndex>toIndex){
+            int t = fromIndex;
+            fromIndex = toIndex;
+            toIndex = t;
+        }
+        int[] arr = new int[]{fromIndex, toIndex};
+        return arr;
+    }
+
+    public static int reverseIndex(int length, int index){
+        return reverseIndex(length, index, false);
+    }
+
+    /**
+     *
+     * 正负之间反转索引：
+     *
+     *  0,   1,  2,   3,   4  // 正序遍历时的索引
+     * -5,  -4, -3   -2,  -1  // 倒序遍历时的索引
+     *
+     * 前后颠倒反转索引：
+     *  0,   1,  2,   3,   4  // 正序遍历时的索引
+     *  4,   3,  2    1,   0  // 倒序遍历是的索引
+     *
+     */
+    public static int reverseIndex(int length, int index, boolean positiveNegativeInterChangeMode) {
+        if(positiveNegativeInterChangeMode) {
+            Preconditions.checkTrue(isValidIndex(length, index), "index " + index + " is invalid");
+            if (isPositiveIndex(length, index)) {
+                return index - length;
+            } else {
+                return length + index;
+            }
+        }
+        else{
+            Preconditions.checkTrue(isPositiveIndex(length, index), "index " + index + " is invalid");
+            return length - 1 - index;
         }
     }
 
@@ -291,4 +330,6 @@ public class Arrs extends PrimitiveArrays{
         objs.getClass().getComponentType();
         return isMixed;
     }
+
+
 }

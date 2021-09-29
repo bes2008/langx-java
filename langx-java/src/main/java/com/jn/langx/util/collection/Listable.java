@@ -6,13 +6,20 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public interface Listable<E> extends Iterable<E>, EmptyEvalutible {
-    void add(E e);
+    boolean add(E e);
 
-    void remove(E e);
+    /**
+     * 移除第一个
+     * @param e
+     * @return
+     */
+    boolean remove(Object e);
 
-    void clear(E e);
+    boolean removeAll(Collection<?> collection);
 
-    void addAll(Collection<E> elements);
+    void clear();
+
+    boolean addAll(Collection<? extends E> elements);
 
     @Override
     Iterator<E> iterator();

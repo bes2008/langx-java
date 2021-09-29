@@ -10,6 +10,9 @@ import com.jn.langx.util.collection.diff.*;
 import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.collection.iter.IteratorIterable;
 import com.jn.langx.util.collection.iter.WrappedIterable;
+import com.jn.langx.util.collection.sequence.IterableSequence;
+import com.jn.langx.util.collection.sequence.ListSequence;
+import com.jn.langx.util.collection.sequence.SortedSetSequence;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
@@ -858,7 +861,7 @@ public class Collects {
         return result;
     }
 
-    public static <E> Collection<E> flat(Collection<Collection<E>> collections){
+    public static <E> Collection<E> flat(Collection<Collection<E>> collections) {
         return flatMap(collections, Functions.<E>noopFunction());
     }
 
@@ -2487,5 +2490,47 @@ public class Collects {
             input = mappers[i].apply(input);
         }
         return input;
+    }
+
+    public static <E> boolean isFirst(@Nullable E obj, @Nullable List<E> list) {
+        if(Objs.isEmpty(list)){
+            return false;
+        }
+        return Objs.equals(new ListSequence<E>(list).first(), obj);
+    }
+
+    public static <E> boolean isLast(@Nullable E obj, @Nullable List<E> list) {
+        if(Objs.isEmpty(list)){
+            return false;
+        }
+        return Objs.equals(new ListSequence<E>(list).last(), obj);
+    }
+
+    public static <E> boolean isFirst(@Nullable E obj, @Nullable Iterable<E> list) {
+        if(Objs.isEmpty(list)){
+            return false;
+        }
+        return Objs.equals(new IterableSequence<E>(list).first(), obj);
+    }
+
+    public static <E> boolean isLast(@Nullable E obj, @Nullable Iterable<E> list) {
+        if(Objs.isEmpty(list)){
+            return false;
+        }
+        return Objs.equals(new IterableSequence<E>(list).last(), obj);
+    }
+
+    public static <E> boolean isFirst(@Nullable E obj, @Nullable SortedSet<E> set) {
+        if(Objs.isEmpty(set)){
+            return false;
+        }
+        return Objs.equals(new SortedSetSequence<E>(set).first(), obj);
+    }
+
+    public static <E> boolean isLast(@Nullable E obj, @Nullable SortedSet<E> set) {
+        if(Objs.isEmpty(set)){
+            return false;
+        }
+        return Objs.equals(new SortedSetSequence<E>(set).last(), obj);
     }
 }

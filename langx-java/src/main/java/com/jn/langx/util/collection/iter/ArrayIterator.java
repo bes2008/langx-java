@@ -14,7 +14,7 @@ public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterabl
     private final E[] array;
     private int index = 0;
     private final int length;
-    private boolean reversed = false;
+    private boolean reversed;
 
     public ArrayIterator(Object array) {
         this(array, false);
