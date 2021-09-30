@@ -15,6 +15,10 @@ public class IterableSequence<E> implements Sequence<E> {
         this.delegate = new ListSequence<E>(list);
     }
 
+    public IterableSequence( ListSequence<E> sequence){
+        this.delegate  = sequence;
+    }
+
     @Override
     public E first() {
         return delegate.first();
@@ -154,6 +158,12 @@ public class IterableSequence<E> implements Sequence<E> {
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return delegate.subList(fromIndex, toIndex);
+    }
+
+    @Override
+    public IterableSequence<E> subSequence(int fromIndex, int toIndex) {
+        ListSequence<E> sequence = delegate.subSequence(fromIndex, toIndex);
+        return new IterableSequence<E>(sequence);
     }
 
     @Override

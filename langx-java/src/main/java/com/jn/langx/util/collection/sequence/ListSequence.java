@@ -2,15 +2,16 @@ package com.jn.langx.util.collection.sequence;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.*;
 
-public class ListSequence<E> implements Sequence<E>{
+public class ListSequence<E> implements Sequence<E> {
     private List<E> list;
 
-    public ListSequence(@Nullable List<E> list){
-        this.list = list == null ? Collects.<E>emptyArrayList():list;
+    public ListSequence(@Nullable List<E> list) {
+        this.list = list == null ? Collects.<E>emptyArrayList() : list;
     }
 
     @Override
@@ -20,7 +21,7 @@ public class ListSequence<E> implements Sequence<E>{
 
     @Override
     public E last() {
-        return list.get(list.size()-1);
+        return list.get(list.size() - 1);
     }
 
     @Override
@@ -149,6 +150,13 @@ public class ListSequence<E> implements Sequence<E>{
     }
 
     @Override
+    public ListSequence<E> subSequence(int fromIndex, int toIndex) {
+        int[] validIndexes = Arrs.toPositiveIndexes(size(), fromIndex, toIndex);
+        List<E> lst = subList(validIndexes[0], validIndexes[1]);
+        return new ListSequence<E>(lst);
+    }
+
+    @Override
     public List<E> subList(int fromIndex, int toIndex) {
         return list.subList(fromIndex, toIndex);
     }
@@ -160,6 +168,6 @@ public class ListSequence<E> implements Sequence<E>{
 
     @Override
     public String toString() {
-        return Strings.join(", ", "[","]", false, this.list.iterator());
+        return Strings.join(", ", "[", "]", false, this.list.iterator());
     }
 }

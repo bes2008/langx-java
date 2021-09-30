@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection.sequence;
 
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Tuple;
 
@@ -154,7 +155,13 @@ public class TupleSequence implements Sequence<Object> {
 
     @Override
     public List<Object> subList(int fromIndex, int toIndex) {
-        return tuple.getTarget().subList(fromIndex, toIndex);
+        int[] validIndexes = Arrs.toPositiveIndexes(size(), fromIndex, toIndex);
+        return tuple.getTarget().subList(validIndexes[0], validIndexes[1]);
+    }
+
+    @Override
+    public TupleSequence subSequence(int fromIndex, int toIndex) {
+        return new TupleSequence(new Tuple(subList(fromIndex, toIndex)));
     }
 
     @Override

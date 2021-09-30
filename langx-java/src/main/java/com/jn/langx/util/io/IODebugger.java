@@ -3,6 +3,7 @@ package com.jn.langx.util.io;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 
 import java.io.IOException;

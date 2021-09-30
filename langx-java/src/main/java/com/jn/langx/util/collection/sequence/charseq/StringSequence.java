@@ -1,15 +1,21 @@
 package com.jn.langx.util.collection.sequence.charseq;
 
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.collection.sequence.AbstractCharSequence;
+import com.jn.langx.util.collection.sequence.Sequence;
 import com.jn.langx.util.function.Consumer2;
 
 import java.util.Collection;
 import java.util.List;
 
 public class StringSequence extends AbstractCharSequence<String> {
+    public StringSequence(String str) {
+        this.charSequence = str;
+    }
+
     @Override
     public boolean add(Character character) {
         this.charSequence = this.charSequence + character;
@@ -68,7 +74,7 @@ public class StringSequence extends AbstractCharSequence<String> {
     @Override
     public Character set(int index, Character element) {
         String before = Strings.substring(this.charSequence, 0, index);
-        String after = index+1 >= size()? "": Strings.substring(this.charSequence, index+1, size());
+        String after = index + 1 >= size() ? "" : Strings.substring(this.charSequence, index + 1, size());
         StringBuilder builder = new StringBuilder(size());
         Character ch = this.charSequence.charAt(index);
         builder.append(before)
@@ -82,7 +88,7 @@ public class StringSequence extends AbstractCharSequence<String> {
     public void add(int index, Character element) {
         String before = Strings.substring(this.charSequence, 0, index);
         String after = Strings.substring(this.charSequence, index, size());
-        StringBuilder builder = new StringBuilder(size() +1);
+        StringBuilder builder = new StringBuilder(size() + 1);
         builder.append(before)
                 .append(element)
                 .append(after);
@@ -126,6 +132,13 @@ public class StringSequence extends AbstractCharSequence<String> {
     @Override
     public List<Character> asList() {
         return Collects.asList(PrimitiveArrays.<Character>wrap(charSequence.toCharArray()));
+    }
+
+    @Override
+    public StringSequence subSequence(int fromIndex, int toIndex) {
+        int[] validIndexes = Arrs.toPositiveIndexes(size(), fromIndex, toIndex);
+        String sub = toString().substring(validIndexes[0],validIndexes[1]);
+        return new StringSequence(sub);
     }
 
     @Override

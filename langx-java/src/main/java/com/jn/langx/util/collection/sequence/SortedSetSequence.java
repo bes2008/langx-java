@@ -2,6 +2,7 @@ package com.jn.langx.util.collection.sequence;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.*;
@@ -146,7 +147,16 @@ public class SortedSetSequence<E> implements Sequence<E> {
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return Collects.asList(set).subList(fromIndex, toIndex);
+        int[] validIndexes = Arrs.toPositiveIndexes(size(), fromIndex, toIndex);
+        return Collects.asList(set).subList(validIndexes[0], validIndexes[1]);
+    }
+
+    @Override
+    public SortedSetSequence<E> subSequence(int fromIndex, int toIndex) {
+        List<E> list = subList(fromIndex, toIndex);
+        TreeSet<E> set = new TreeSet<E>(this.set.comparator());
+        set.addAll(list);
+        return new SortedSetSequence<E>(set);
     }
 
     @Override

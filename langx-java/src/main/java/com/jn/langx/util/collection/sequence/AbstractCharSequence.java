@@ -150,7 +150,7 @@ public abstract class AbstractCharSequence<S extends CharSequence> implements Se
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        final Holder<List<Character>> comparedCharsHolder = new Holder<List<Character>>(Pipeline.of(c).filter(new Predicate() {
+        final Holder<List<Character>> comparedCharsHolder = new Holder<List<Character>>(Pipeline.<Object>of(c).filter(new Predicate() {
             @Override
             public boolean test(Object value) {
                 return Primitives.isChar(value.getClass());
