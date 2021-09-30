@@ -2,10 +2,12 @@ package com.jn.langx.util.collection.sequence.charseq;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.collection.sequence.AbstractCharSequence;
 import com.jn.langx.util.function.Consumer2;
 
 import java.util.Collection;
+import java.util.List;
 
 public class StringSequence extends AbstractCharSequence<String> {
     @Override
@@ -119,5 +121,15 @@ public class StringSequence extends AbstractCharSequence<String> {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Character> asList() {
+        return Collects.asList(PrimitiveArrays.<Character>wrap(charSequence.toCharArray()));
+    }
+
+    @Override
+    public String toString() {
+        return charSequence;
     }
 }

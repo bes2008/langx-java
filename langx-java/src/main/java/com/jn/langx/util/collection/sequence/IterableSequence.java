@@ -155,4 +155,14 @@ public class IterableSequence<E> implements Sequence<E> {
     public List<E> subList(int fromIndex, int toIndex) {
         return delegate.subList(fromIndex, toIndex);
     }
+
+    @Override
+    public String toString() {
+        return delegate.toString();
+    }
+
+    @Override
+    public List<E> asList() {
+        return delegate.asList();
+    }
 }

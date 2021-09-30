@@ -1,7 +1,11 @@
 package com.jn.langx.util;
 
 
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer2;
+
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * {@code StringJoiner} is used to construct a sequence of characters separated
@@ -160,6 +164,16 @@ public final class StringJoiner implements Appendable {
         } catch (IOException ex) {
             throw Throwables.wrapAsRuntimeIOException(ex);
         }
+    }
+
+    public StringJoiner append(Collection<? extends CharSequence> newElements){
+        Collects.forEach(newElements, new Consumer2<Integer, CharSequence>() {
+            @Override
+            public void accept(Integer key, CharSequence newElement) {
+                add(newElement);
+            }
+        });
+        return this;
     }
 
     @Override

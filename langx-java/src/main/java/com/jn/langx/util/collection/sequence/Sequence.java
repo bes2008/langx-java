@@ -85,4 +85,9 @@ public interface Sequence<E> extends List<E>, Listable<E> {
 
     @Override
     List<E> subList(int fromIndex, int toIndex);
+
+    List<E> asList();
+
+    @Override
+    String toString();
 }
