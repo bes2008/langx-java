@@ -189,7 +189,24 @@ public class Functions {
             }
         };
     }
+    public static <E1,E2> Predicate2<E1,E2> nonNullPredicate2() {
+        return new Predicate2<E1,E2>() {
+            @Override
+            public boolean test(E1 e1, E2 value) {
+                return value != null;
+            }
+        };
+    }
 
+
+    public static <E1,E2> Predicate2<E1,E2> nullPredicate2() {
+        return new Predicate2<E1,E2>() {
+            @Override
+            public boolean test(E1 e1, E2 value) {
+                return value == null;
+            }
+        };
+    }
     public static <E> Predicate<E> emptyPredicate() {
         return new Predicate<E>() {
             @Override

@@ -24,7 +24,7 @@ public class Pipeline<E> {
         return new Pipeline<O>(Collects.map(this.collection, mapper));
     }
 
-    public <O> Pipeline<O> flat(){
+    public <O> Pipeline<O> flat() {
         return flatMap(Functions.<O>noopFunction());
     }
 
@@ -47,6 +47,14 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> filter(Predicate<E> predicate, @Nullable Predicate<E> breakPredicate) {
+        return new Pipeline<E>(Collects.filter(this.collection, predicate, breakPredicate));
+    }
+
+    public Pipeline<E> filter(Predicate2<Integer, E> predicate) {
+        return filter(predicate, null);
+    }
+
+    public Pipeline<E> filter(Predicate2<Integer, E> predicate, @Nullable Predicate2<Integer, E> breakPredicate) {
         return new Pipeline<E>(Collects.filter(this.collection, predicate, breakPredicate));
     }
 

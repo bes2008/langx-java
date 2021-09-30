@@ -7,10 +7,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.enums.Enums;
-import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Consumer2;
-import com.jn.langx.util.function.Function;
-import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.*;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -160,22 +157,20 @@ public class Strings {
     }
 
     public static String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, final boolean filterNull, @Nullable final Iterator objects) {
+        return join(separator, prefix, suffix, objects, null, filterNull ? Functions.<Integer, String>nonNullPredicate2() : Functions.<Integer, String>truePredicate2());
+    }
+
+    public static String join(@NonNull final String separator, @Nullable String prefix, @Nullable String suffix, @Nullable final Iterator objects, Function<Object, String> mapper, Predicate2<Integer, String> predicate) {
         if (Emptys.isNull(objects)) {
             return "";
         }
-        final StringJoiner joiner = new StringJoiner(separator, useValueIfNull(prefix, ""), useValueIfNull(suffix, ""));
-        Collects.forEach(objects, new Consumer2<Integer, Object>() {
-            @Override
-            public void accept(Integer index, Object value) {
-                if (value == null) {
-                    if (!filterNull) {
-                        joiner.add(null);
-                    }
-                } else {
-                    joiner.add(value.toString());
-                }
-            }
-        });
+        mapper = mapper == null ? Functions.toStringFunction() : mapper;
+        List<String> strings = Pipeline.of(objects)
+                .map(mapper)
+                .asList();
+
+        final StringJoiner joiner = new StringJoiner(separator, useValueIfNull(prefix, ""), useValueIfNull(suffix, ""))
+                .append(strings, predicate);
         return joiner.toString();
     }
 

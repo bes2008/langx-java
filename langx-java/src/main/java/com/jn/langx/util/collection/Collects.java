@@ -757,24 +757,38 @@ public class Collects {
         return filter(anyObject, predicate, null);
     }
 
+
     /**
      * Filter any object with the specified predicate
      */
-    public static <E> Collection<E> filter(@Nullable Object anyObject, @NonNull final Predicate<E> predicate, @Nullable final Predicate<E> breakPredicate) {
-        Preconditions.checkNotNull(predicate);
+    public static <E> Collection<E> filter(@Nullable Object anyObject, @Nullable Predicate<E> consumePredicate, @Nullable final Predicate<E> breakPredicate) {
         Iterable<E> iterable = asIterable(anyObject);
         final Collection<E> result = emptyCollection(iterable);
-        forEach((Collection<E>) asCollection(iterable), null, new Consumer<E>() {
+        consumePredicate = consumePredicate == null? Functions.<E>truePredicate():consumePredicate;
+        forEach((Collection<E>) asCollection(iterable), consumePredicate, new Consumer<E>() {
             @Override
             public void accept(E e) {
-                if (predicate.test(e)) {
                     result.add(e);
-                }
             }
         }, breakPredicate);
         return result;
     }
 
+    /**
+     * Filter any object with the specified predicate
+     */
+    public static <E> Collection<E> filter(@Nullable Object anyObject, @Nullable Predicate2<Integer,E> consumePredicate, @Nullable final Predicate2<Integer, E> breakPredicate) {
+        Iterable<E> iterable = asIterable(anyObject);
+        final Collection<E> result = emptyCollection(iterable);
+        consumePredicate = consumePredicate == null? Functions.<Integer,E>truePredicate2():consumePredicate;
+        forEach((Collection<E>) asCollection(iterable), consumePredicate, new Consumer2<Integer, E>() {
+            @Override
+            public void accept(Integer index, E e) {
+                result.add(e);
+            }
+        }, breakPredicate);
+        return result;
+    }
 
     /**
      * Filter a map with the specified predicate

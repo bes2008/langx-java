@@ -3,6 +3,7 @@ package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Predicate2;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -166,15 +167,21 @@ public final class StringJoiner implements Appendable {
         }
     }
 
-    public StringJoiner append(Collection<? extends CharSequence> newElements){
-        Collects.forEach(newElements, new Consumer2<Integer, CharSequence>() {
+    public StringJoiner append(Collection<? extends CharSequence> newElements) {
+        return append(newElements, null);
+    }
+
+    public <E extends CharSequence> StringJoiner append(Collection<E> newElements, Predicate2<Integer, E> predicate) {
+        Consumer2<Integer, E> consumer = new Consumer2<Integer, E>() {
             @Override
-            public void accept(Integer key, CharSequence newElement) {
+            public void accept(Integer key, E newElement) {
                 add(newElement);
             }
-        });
+        };
+        Collects.forEach(newElements, predicate, consumer);
         return this;
     }
+
 
     @Override
     public Appendable append(CharSequence csq) throws IOException {
