@@ -3,6 +3,7 @@ package com.jn.langx.test.util.collection;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.collection.sequence.Sequence;
 import com.jn.langx.util.collection.sequence.charseq.StringSequence;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Operator2;
@@ -24,17 +25,22 @@ public class SequenceTests {
                 });
 
         StringSequence stringSequence = new StringSequence(a);
-        Consoles.println("content:", stringSequence);
-        Consoles.println("size:", stringSequence.size());
+        showSequenceInfo(stringSequence);
 
         stringSequence.set(2, 'a');
-        Consoles.println("content:", stringSequence);
-        Consoles.println("size:", stringSequence.size());
+        showSequenceInfo(stringSequence);
 
-        stringSequence.addAll(Collects.newArrayList( '字','符','串'));
-        Consoles.println("content:", stringSequence);
-        Consoles.println("size:", stringSequence.size());
+        stringSequence.addAll(Collects.newArrayList('字', '符', '串'));
+        showSequenceInfo(stringSequence);
 
-        StringSequence sequence = stringSequence.subSequence(6,-6);
+        stringSequence = stringSequence.subSequence(2, -2);
+        showSequenceInfo(stringSequence);
+    }
+
+    private void showSequenceInfo(Sequence sequence) {
+        Consoles.log("content:", sequence);
+        Consoles.log("size:", sequence.size());
+        Consoles.log("first:", sequence.first());
+        Consoles.log("last:", sequence.last());
     }
 }
