@@ -1,9 +1,8 @@
 package com.jn.langx.util.collection;
 
-import com.jn.langx.util.BasedStringAccessor;
-import com.jn.langx.util.Maths;
-import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.*;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.struct.Holder;
 
 import java.io.Serializable;
@@ -66,6 +65,10 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
         return index >= 0 && index < this.elements.size();
     }
 
+    public boolean contains(Object element) {
+        return this.elements.contains(element);
+    }
+
     @Override
     public Object get(Integer index) {
         return this.elements.get(index);
@@ -93,8 +96,12 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
         return elements.iterator();
     }
 
-    public int size() {
+    public int capacity() {
         return maxSize;
+    }
+
+    public int size() {
+        return elements.size();
     }
 
     @Override
@@ -136,5 +143,18 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
             return false;
         }
         return o1.equals(o2);
+    }
+
+    public Object[] toArray() {
+        return elements.toArray();
+    }
+
+    public <T> T[] toArray(T[] a) {
+        return elements.toArray(a);
+    }
+
+    @Override
+    public String toString() {
+        return Strings.join(", ","(",")",false,this.elements.iterator());
     }
 }
