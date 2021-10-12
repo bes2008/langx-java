@@ -395,7 +395,6 @@ public class Objects {
      * @param length    the upper-bound (exclusive) of the range
      * @return {@code fromIndex} if the sub-range within bounds of the range
      * @throws IndexOutOfBoundsException if the sub-range is out of bounds
-     * @since 9
      */
     public static int checkFromIndexSize(int fromIndex, int size, int length) {
         return Preconditions.checkFromIndexSize(fromIndex, size, length, null);
@@ -411,6 +410,13 @@ public class Objects {
 
     public static <T> int length(T object) {
         return Emptys.getLength(object);
+    }
+
+    public static Object[] swap(Object obj1,Object obj2){
+        Object temp = obj1;
+        obj1 = obj2;
+        obj2 = temp;
+        return new Object[]{obj1, obj2};
     }
 
 }
