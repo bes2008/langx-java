@@ -285,7 +285,7 @@ public class RestRespBody<T> {
      * @param responseHeaders the http headers
      * @since 3.6.8
      */
-    public void setResponseHeaders(Map<String, String> responseHeaders) {
+    public void withResponseHeaders(Map<String, String> responseHeaders) {
         setResponseHeaders(MultiValueMaps.toMultiValueMap(responseHeaders));
     }
 
@@ -301,7 +301,7 @@ public class RestRespBody<T> {
         this.requestHeaders = requestHeaders;
     }
 
-    public void setRequestHeaders(Map<String, String> requestHeaders) {
+    public void withRequestHeaders(Map<String, String> requestHeaders) {
         setRequestHeaders(MultiValueMaps.toMultiValueMap(requestHeaders));
     }
 
