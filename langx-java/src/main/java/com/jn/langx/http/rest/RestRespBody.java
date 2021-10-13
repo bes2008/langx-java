@@ -85,6 +85,62 @@ public class RestRespBody<T> {
         this.errorMessage = errorMessage;
     }
 
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public MultiValueMap<String, String> getResponseHeaders() {
+        return responseHeaders;
+    }
+
+    public void setResponseHeaders(MultiValueMap<String, String> responseHeaders) {
+        this.responseHeaders = responseHeaders;
+    }
+
+    /**
+     * @param responseHeaders the http headers
+     * @since 3.6.8
+     */
+    public void withResponseHeaders(Map<String, String> responseHeaders) {
+        setResponseHeaders(MultiValueMaps.toMultiValueMap(responseHeaders));
+    }
+
+    public MultiValueMap<String, String> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    /**
+     * @param requestHeaders the http headers
+     * @since 3.6.8
+     */
+    public void setRequestHeaders(MultiValueMap<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
+    }
+
+    public void withRequestHeaders(Map<String, String> requestHeaders) {
+        setRequestHeaders(MultiValueMaps.toMultiValueMap(requestHeaders));
+    }
+
+    /**
+     * @param method the http method
+     * @since 3.6.8
+     */
+    public void setMethod(HttpMethod method) {
+        this.method = method;
+    }
+
+    /**
+     * @return the http method
+     * @since 3.6.8
+     */
+    public HttpMethod getMethod() {
+        return method;
+    }
+
     /**
      * 200
      */
@@ -265,59 +321,4 @@ public class RestRespBody<T> {
         return new RestRespBody<T>(false, statusCode, null, errorCode, errorMessage);
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public MultiValueMap<String, String> getResponseHeaders() {
-        return responseHeaders;
-    }
-
-    public void setResponseHeaders(MultiValueMap<String, String> responseHeaders) {
-        this.responseHeaders = responseHeaders;
-    }
-
-    /**
-     * @param responseHeaders the http headers
-     * @since 3.6.8
-     */
-    public void withResponseHeaders(Map<String, String> responseHeaders) {
-        setResponseHeaders(MultiValueMaps.toMultiValueMap(responseHeaders));
-    }
-
-    public MultiValueMap<String, String> getRequestHeaders() {
-        return requestHeaders;
-    }
-
-    /**
-     * @param requestHeaders the http headers
-     * @since 3.6.8
-     */
-    public void setRequestHeaders(MultiValueMap<String, String> requestHeaders) {
-        this.requestHeaders = requestHeaders;
-    }
-
-    public void withRequestHeaders(Map<String, String> requestHeaders) {
-        setRequestHeaders(MultiValueMaps.toMultiValueMap(requestHeaders));
-    }
-
-    /**
-     * @param method the http method
-     * @since 3.6.8
-     */
-    public void setMethod(HttpMethod method) {
-        this.method = method;
-    }
-
-    /**
-     * @return the http method
-     * @since 3.6.8
-     */
-    public HttpMethod getMethod() {
-        return method;
-    }
 }
