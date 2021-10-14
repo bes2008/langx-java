@@ -1316,6 +1316,11 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     }
 
     @Override
+    public Map<String, List<String>> toMap() {
+        return this.headers.toMap();
+    }
+
+    @Override
     public int size() {
         return this.headers.size();
     }
