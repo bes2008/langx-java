@@ -6,6 +6,7 @@ import com.jn.langx.util.net.http.HttpStatus;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMaps;
 
+import java.util.List;
 import java.util.Map;
 
 public class RestRespBody<T> {
@@ -20,9 +21,9 @@ public class RestRespBody<T> {
     private String url;
     private HttpMethod method;
     @Nullable
-    private MultiValueMap<String, String> responseHeaders;
+    private Map<String, List<String>> responseHeaders;
     @Nullable
-    private MultiValueMap<String, String> requestHeaders;
+    private Map<String, List<String>> requestHeaders;
 
     public RestRespBody() {
 
@@ -93,12 +94,26 @@ public class RestRespBody<T> {
         return timestamp;
     }
 
-    public MultiValueMap<String, String> getResponseHeaders() {
+    public Map<String, List<String>> getResponseHeaders() {
         return responseHeaders;
     }
 
-    public void setResponseHeaders(MultiValueMap<String, String> responseHeaders) {
+    /**
+     * @param responseHeaders the http headers
+     * @since 4.0.3
+     */
+    public void setResponseHeaders(Map<String, List<String>> responseHeaders) {
         this.responseHeaders = responseHeaders;
+    }
+
+    /**
+     * @param responseHeaders the http headers
+     * @since 4.0.2
+     */
+    public void withResponseHeaders(MultiValueMap<String, String> responseHeaders) {
+        if (responseHeaders != null) {
+            setRequestHeaders(responseHeaders.toMap());
+        }
     }
 
     /**
@@ -106,23 +121,37 @@ public class RestRespBody<T> {
      * @since 3.6.8
      */
     public void withResponseHeaders(Map<String, String> responseHeaders) {
-        setResponseHeaders(MultiValueMaps.toMultiValueMap(responseHeaders));
+        withResponseHeaders(MultiValueMaps.toMultiValueMap(responseHeaders));
     }
 
-    public MultiValueMap<String, String> getRequestHeaders() {
+    public Map<String, List<String>> getRequestHeaders() {
         return requestHeaders;
+    }
+
+    /**
+     * @param requestHeaders the http headers
+     * @since 4.0.2
+     */
+    public void withRequestHeaders(MultiValueMap<String, String> requestHeaders) {
+        if (requestHeaders != null) {
+            setRequestHeaders(requestHeaders.toMap());
+        }
     }
 
     /**
      * @param requestHeaders the http headers
      * @since 3.6.8
      */
-    public void setRequestHeaders(MultiValueMap<String, String> requestHeaders) {
-        this.requestHeaders = requestHeaders;
+    public void withRequestHeaders(Map<String, String> requestHeaders) {
+        withRequestHeaders(MultiValueMaps.toMultiValueMap(requestHeaders));
     }
 
-    public void withRequestHeaders(Map<String, String> requestHeaders) {
-        setRequestHeaders(MultiValueMaps.toMultiValueMap(requestHeaders));
+    /**
+     * @param requestHeaders the http headers
+     * @since 4.0.3
+     */
+    public void setRequestHeaders(Map<String, List<String>> requestHeaders) {
+        this.requestHeaders = requestHeaders;
     }
 
     /**
