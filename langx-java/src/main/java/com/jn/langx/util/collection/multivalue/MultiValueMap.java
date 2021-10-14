@@ -4,6 +4,7 @@ package com.jn.langx.util.collection.multivalue;
 import com.jn.langx.annotation.Nullable;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -77,6 +78,8 @@ public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
      * @return a single value representation of this map
      */
     Map<K, V> toSingleValueMap();
+
+    Map<K, List<V>> toMap();
 
     int total();
 

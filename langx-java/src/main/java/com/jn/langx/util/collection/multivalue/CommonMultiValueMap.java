@@ -136,6 +136,20 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
     }
 
     @Override
+    public Map<K, List<V>> toMap() {
+        final LinkedHashMap<K, List<V>> map = new LinkedHashMap<K, List<V>>(this.targetMap.size());
+        Collects.forEach(this.targetMap, new Consumer2<K, Collection<V>>() {
+            @Override
+            public void accept(K key, Collection<V> values) {
+                if (Emptys.isNotEmpty(values)) {
+                    map.put(key, Collects.newArrayList(values));
+                }
+            }
+        });
+        return map;
+    }
+
+    @Override
     public int size() {
         return this.targetMap.size();
     }
