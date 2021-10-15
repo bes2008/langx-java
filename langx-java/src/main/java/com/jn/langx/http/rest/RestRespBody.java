@@ -103,7 +103,12 @@ public class RestRespBody<T> {
      * @since 4.0.3
      */
     public void setResponseHeaders(Map<String, List<String>> responseHeaders) {
-        this.responseHeaders = responseHeaders;
+        if(responseHeaders instanceof MultiValueMap){
+            MultiValueMap map = (MultiValueMap) responseHeaders;
+            setResponseHeaders(map.toMap());
+        }else {
+            this.responseHeaders = responseHeaders;
+        }
     }
 
     /**
@@ -151,7 +156,12 @@ public class RestRespBody<T> {
      * @since 4.0.3
      */
     public void setRequestHeaders(Map<String, List<String>> requestHeaders) {
-        this.requestHeaders = requestHeaders;
+        if (requestHeaders instanceof MultiValueMap) {
+            MultiValueMap map = (MultiValueMap) requestHeaders;
+            setRequestHeaders(map.toMap());
+        } else {
+            this.requestHeaders = requestHeaders;
+        }
     }
 
     /**

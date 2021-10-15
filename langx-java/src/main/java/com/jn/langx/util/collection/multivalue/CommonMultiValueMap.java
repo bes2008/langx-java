@@ -10,7 +10,13 @@ import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 import java.util.*;
 
 public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
+    /**
+     * 数据存储结构
+     */
     protected Map<K, Collection<V>> targetMap;
+    /**
+     * 当获取一个不存在的key时，会自动的调用 valuesSupplier 创建一个 Collection
+     */
     private Supplier<K, Collection<V>> valuesSupplier;
 
     public CommonMultiValueMap() {
