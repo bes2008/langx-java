@@ -14,6 +14,11 @@
     <description>
         Java lang extensions, a supplement to , replacement of a Guava, commons-lang, hutool
     </description>
+
+    <properties>
+        <slf4j.version>1.7.0</slf4j.version>
+    </properties>
+
     <url>https://github.com/fangjinuo/langx-java</url>
     <developers>
         <developer>
@@ -81,7 +86,17 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.0</version>
             <scope>provided</scope>
-            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
