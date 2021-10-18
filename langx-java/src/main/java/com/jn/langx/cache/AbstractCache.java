@@ -4,15 +4,18 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Dates;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
+import com.jn.langx.util.collection.iter.EnumerationIterable;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.struct.Holder;
@@ -42,6 +45,11 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     private volatile long evictExpiredInterval;
     // unit: mills
     private volatile long nextEvictExpiredTime;
+    // unit: mills
+    private volatile long nextRefreshAllTime;
+    // unit: mills，大于 0 时有效
+    private volatile long refreshAllInterval;
+    private Holder<Timeout> refreshAllTimeoutHolder = new Holder<Timeout>();
 
     private RemoveListener<K, V> removeListener;
     private int maxCapacity;
@@ -76,10 +84,16 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
     }
 
     protected AbstractCache(int maxCapacity, long evictExpiredInterval, Timer timer) {
+        this(maxCapacity, evictExpiredInterval, 0, timer);
+    }
+
+    protected AbstractCache(int maxCapacity, long evictExpiredInterval, long refreshAllInterval, Timer timer) {
         this.evictExpiredInterval = evictExpiredInterval;
+        this.refreshAllInterval = refreshAllInterval;
         Preconditions.checkTrue(evictExpiredInterval >= 0);
         this.maxCapacity = maxCapacity;
         computeNextEvictExpiredTime();
+        computeNextRefreshAllTime();
         this.timer = timer;
     }
 
@@ -95,11 +109,53 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         }
     }
 
+    class RefreshAllTask implements TimerTask {
+        private boolean fixedRate;
+        private long delayInMills;
+
+        public RefreshAllTask(boolean fixedRate, long delayInMills) {
+            this.fixedRate = fixedRate;
+            this.delayInMills = delayInMills;
+        }
+
+        @Override
+        public void run(Timeout timeout) throws Exception {
+            if (timeout.isCancelled()) {
+                // NOOP
+            } else {
+                refreshAllAsync(timeout);
+                computeNextRefreshAllTime(delayInMills);
+                if (fixedRate && !timeout.isCancelled()) {
+                    refreshAllTimeoutHolder.set(timer.newTimeout(this, nextRefreshAllTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS));
+                }
+            }
+        }
+    }
+
+    Timeout createRefreshAllTask(int delaySeconds, boolean fixedRate) {
+        long delayMills = TimeUnit.SECONDS.toMillis(delaySeconds);
+        Timeout timeout = timer.newTimeout(new RefreshAllTask(fixedRate, delayMills), delayMills, TimeUnit.MILLISECONDS);
+        return timeout;
+    }
+
     void computeNextEvictExpiredTime() {
         if (evictExpiredInterval < 0) {
             nextEvictExpiredTime = Long.MAX_VALUE;
+        } else {
+            nextEvictExpiredTime = Dates.nextTime(evictExpiredInterval);
         }
-        nextEvictExpiredTime = Dates.nextTime(evictExpiredInterval);
+    }
+
+    void computeNextRefreshAllTime() {
+        computeNextRefreshAllTime(this.refreshAllInterval);
+    }
+
+    void computeNextRefreshAllTime(long refreshAllInterval) {
+        if (refreshAllInterval < 0) {
+            nextRefreshAllTime = Long.MAX_VALUE;
+        } else {
+            nextRefreshAllTime = Dates.nextTime(refreshAllInterval);
+        }
     }
 
     public void setKeyReferenceType(ReferenceType keyReferenceType) {
@@ -292,7 +348,6 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
             return null;
         }
         Preconditions.checkNotNull(key);
-        evictExpired();
         Holder<Throwable> exceptionHolder = new Holder<Throwable>();
         V value = loadByGlobalLoader(key, exceptionHolder);
         if (value == null) {
@@ -306,6 +361,61 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         }
         return get(key);
     }
+
+    /**
+     * @param delay 延迟时间，delay <=0 代表立即刷新， 大于0则代表延迟刷新，单位是 s
+     * @param fixed 是否为固定频率的（周期）刷新，若为true，则delay 必须 >0
+     * @since 4.0.4
+     */
+    public void refreshAllAsync(int delay, boolean fixed) {
+        Preconditions.checkNotNull(timer, "");
+        if (fixed) {
+            Preconditions.checkTrue(delay > 0);
+        }
+        delay = Maths.max(delay, 0);
+        if (!fixed && delay == 0) {
+            refreshAllAsync(null);
+        } else {
+            Timeout timeout = createRefreshAllTask(delay, fixed);
+            if (fixed) {
+                refreshAllTimeoutHolder.set(timeout);
+            }
+        }
+    }
+
+    /**
+     * @param timeout
+     * @since 4.0.4
+     */
+    private void refreshAllAsync(@Nullable final Timeout timeout) {
+        List<K> keys = keys();
+        Collects.forEach(keys, new Consumer<K>() {
+            @Override
+            public void accept(K key) {
+                refresh(key, true);
+            }
+        }, new Predicate<K>() {
+            @Override
+            public boolean test(K key) {
+                if (timeout != null && timeout.isCancelled()) {
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * @since 4.0.4
+     */
+    @Override
+    public void cancelRefreshAll() {
+        if (!refreshAllTimeoutHolder.isEmpty()) {
+            Timeout timeout = refreshAllTimeoutHolder.get();
+            timeout.cancel();
+        }
+    }
+
 
     private V loadByGlobalLoader(@NonNull K key, @NonNull Holder<Throwable> error) {
         V value = null;
@@ -436,6 +546,14 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         return map.size();
     }
 
+    /**
+     * @since 4.0.4
+     */
+    @Override
+    public List<K> keys() {
+        return Collects.asList(new EnumerationIterable<K>(this.map.keys()));
+    }
+
     @Override
     public Map<K, V> toMap() {
         final Map<K, V> map = new HashMap<K, V>();
@@ -453,12 +571,18 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         if (!running) {
             running = true;
             computeNextEvictExpiredTime();
-            if (evictExpiredInterval > 0) {
+            computeNextRefreshAllTime();
+            if (evictExpiredInterval > 0 || refreshAllInterval > 0) {
                 if (timer == null) {
                     timer = new HashedWheelTimer(new CommonThreadFactory("Cache-Evict", false));
                     shutdownTimerSelf = true;
                 }
+            }
+            if (evictExpiredInterval > 0) {
                 timer.newTimeout(this.new EvictExpiredTask(), nextEvictExpiredTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+            }
+            if (refreshAllInterval > 0) {
+                refreshAllTimeoutHolder.set(timer.newTimeout(this.new RefreshAllTask(true, refreshAllInterval), refreshAllInterval, TimeUnit.MILLISECONDS));
             }
         }
     }
@@ -473,40 +597,44 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Lifecycle {
         }
     }
 
-    void setMap(ConcurrentReferenceHashMap<K, Entry<K, V>> map) {
+    protected void setMap(ConcurrentReferenceHashMap<K, Entry<K, V>> map) {
         this.map = map;
     }
 
-    void setGlobalLoader(Loader<K, V> globalLoader) {
+    protected void setGlobalLoader(Loader<K, V> globalLoader) {
         this.globalLoader = globalLoader;
     }
 
-    void setExpireAfterWrite(long expireAfterWrite) {
+    protected void setExpireAfterWrite(long expireAfterWrite) {
         this.expireAfterWrite = expireAfterWrite;
     }
 
-    void setExpireAfterRead(long expireAfterRead) {
+    protected void setExpireAfterRead(long expireAfterRead) {
         this.expireAfterRead = expireAfterRead;
     }
 
-    void setEvictExpiredInterval(long evictExpiredInterval) {
+    protected void setEvictExpiredInterval(long evictExpiredInterval) {
         this.evictExpiredInterval = evictExpiredInterval;
     }
 
-    void setRemoveListener(RemoveListener<K, V> removeListener) {
+    protected void setRemoveListener(RemoveListener<K, V> removeListener) {
         this.removeListener = removeListener;
     }
 
-    void setMaxCapacity(int maxCapacity) {
+    protected void setMaxCapacity(int maxCapacity) {
         this.maxCapacity = maxCapacity;
     }
 
-    void setCapacityHeightWater(float capacityHeightWater) {
+    protected void setCapacityHeightWater(float capacityHeightWater) {
         this.capacityHeightWater = capacityHeightWater;
     }
 
-    void setRefreshAfterAccess(long refreshAfterAccess) {
+    protected void setRefreshAfterAccess(long refreshAfterAccess) {
         this.refreshAfterAccess = refreshAfterAccess;
+    }
+
+    protected void setRefreshAllInterval(long refreshAllInterval) {
+        this.refreshAllInterval = refreshAllInterval;
     }
 
     public void setTimer(Timer timer) {

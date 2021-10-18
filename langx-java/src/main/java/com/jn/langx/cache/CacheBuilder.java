@@ -8,6 +8,7 @@ import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.timing.timer.Timer;
 
 import java.lang.ref.ReferenceQueue;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"unused"})
 public class CacheBuilder<K, V> {
@@ -22,6 +23,9 @@ public class CacheBuilder<K, V> {
     private long expireAfterRead = -1;
     // unit: seconds
     private long refreshAfterAccess = Long.MAX_VALUE;
+
+    // unit: mills
+    private long refreshAllInterval = TimeUnit.HOURS.toMillis(1);
 
     // unit: mills
     private long evictExpiredInterval = 5 * 60 * 1000;
@@ -153,6 +157,7 @@ public class CacheBuilder<K, V> {
         cache.setGlobalLoader(loader);
         cache.setMaxCapacity(maxCapacity < 0 ? Integer.MAX_VALUE : maxCapacity);
         cache.setEvictExpiredInterval(evictExpiredInterval < 0 ? Long.MAX_VALUE : evictExpiredInterval);
+        cache.setRefreshAllInterval(refreshAllInterval);
         cache.setCapacityHeightWater(capacityHeightWater <= 0 ? 0.95f : capacityHeightWater);
         // value is ReferenceEntry, so here is STRONG
         ConcurrentReferenceHashMap<K, Entry<K, V>> map = new ConcurrentReferenceHashMap<K, Entry<K, V>>(initialCapacity, 16, concurrencyLevel, keyReferenceType, ReferenceType.STRONG);

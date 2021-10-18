@@ -64,6 +64,24 @@ public interface Cache<K, V> {
 
     void refresh(@NonNull K key);
 
+    /**
+     * 刷新所有
+     * @param fixed 是否为固定频率的（周期）刷新，若为true，则delay 必须 >0
+     * @param delay 延迟时间，delay <=0 代表立即刷新， 大于0则代表延迟刷新
+     * @since 4.0.4
+     */
+    void refreshAllAsync(int delay, boolean fixed);
+
+    /**
+     * @since 4.0.4
+     */
+    void cancelRefreshAll();
+
+    /**
+     * @since 4.0.4
+     */
+    List<K> keys();
+
     void clean();
 
     int size();
