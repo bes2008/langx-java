@@ -51,7 +51,7 @@ public class Reflects {
     }
 
     public static boolean isLambda(@NonNull Class<?> clazz) {
-        return clazz!=null && clazz.isSynthetic() && lamdbaPattern.matcher(getSimpleClassName(clazz)).matches();
+        return clazz != null && clazz.isSynthetic() && lamdbaPattern.matcher(getSimpleClassName(clazz)).matches();
     }
 
     public static boolean isStatic(@NonNull Class<?> clazz) {
@@ -125,6 +125,14 @@ public class Reflects {
 
     public static String getJvmSignature(@NonNull Class clazz) {
         return TypeSignatures.toTypeSignature(getFQNClassName(clazz));
+    }
+
+    public static String getCodeLocationString(@NonNull Class clazz) {
+        URL url = getCodeLocation(clazz);
+        if (url == null) {
+            return null;
+        }
+        return url.toString();
     }
 
     public static URL getCodeLocation(@NonNull Class clazz) {
@@ -770,11 +778,11 @@ public class Reflects {
         }
     }
 
-    public static <V> V invokeGetterOrFiled(Object object, String field, boolean force, boolean throwException){
+    public static <V> V invokeGetterOrFiled(Object object, String field, boolean force, boolean throwException) {
         Preconditions.checkNotNull(object, "the object is null");
-        Preconditions.checkNotEmpty(field,"the field name is null or empty");
+        Preconditions.checkNotEmpty(field, "the field name is null or empty");
         Method method = getGetter(object.getClass(), field);
-        if(method!=null){
+        if (method != null) {
             return invoke(method, object, new Object[0], force, throwException);
         }
         return getAnyFieldValue(object, field, force, throwException);
@@ -1004,6 +1012,7 @@ public class Reflects {
 
     /**
      * 找到 public 的, 非 static 的 Getter
+     *
      * @param clazz
      * @param field
      * @return
