@@ -7,47 +7,47 @@ import java.util.concurrent.TimeUnit;
 
 public class ThreadPoolProperties {
 
-    private int coreThreads = Platform.cpuCore();
-    private int maxThreads = 2 * this.coreThreads;
+    private int coreSize = Platform.cpuCore();
+    private int maxSize = 2 * this.coreSize;
     private long keepAliveTime = 3;
     private TimeUnit unit = TimeUnit.SECONDS;
-    private int queueMaxSize = 100;
+    private int queueSize = 100;
 
-    public void setCoreThreads(int coreThreads) {
-        Preconditions.checkArgument(coreThreads > 0);
-        this.coreThreads = coreThreads;
+    public void setCoreSize(int coreSize) {
+        Preconditions.checkArgument(coreSize > 0);
+        this.coreSize = coreSize;
     }
 
-    public void setMaxThreads(int maxThreads) {
-        Preconditions.checkArgument(coreThreads > 0);
-        this.maxThreads = maxThreads;
+    public void setMaxSize(int maxSize) {
+        Preconditions.checkArgument(coreSize > 0);
+        this.maxSize = maxSize;
     }
 
-    public int getCoreThreads() {
-        return coreThreads;
+    public int getCoreSize() {
+        return coreSize;
     }
 
-    public int getMaxThreads() {
-        return maxThreads;
+    public int getMaxSize() {
+        return maxSize;
     }
 
-    public int getQueueMaxSize() {
-        return queueMaxSize;
+    public int getQueueSize() {
+        return queueSize;
     }
 
-    public void setQueueMaxSize(int queueMaxSize) {
-        this.queueMaxSize = queueMaxSize;
+    public void setQueueSize(int queueSize) {
+        this.queueSize = queueSize;
     }
 
     public ThreadPoolProperties() {
     }
 
     public ThreadPoolProperties(int coreThreads, int maxThreads, long keepAliveTime, TimeUnit unit, int queueSize) {
-        this.coreThreads = coreThreads;
-        this.maxThreads = maxThreads;
+        this.coreSize = coreThreads;
+        this.maxSize = maxThreads;
         this.keepAliveTime = keepAliveTime;
         this.unit = unit;
-        this.queueMaxSize = queueSize;
+        this.queueSize = queueSize;
     }
 
     public long getKeepAliveTime() {
