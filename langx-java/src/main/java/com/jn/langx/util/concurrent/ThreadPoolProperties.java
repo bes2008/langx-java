@@ -11,7 +11,7 @@ public class ThreadPoolProperties {
     private int maxThreads = 2 * this.coreThreads;
     private long keepAliveTime = 3;
     private TimeUnit unit = TimeUnit.SECONDS;
-    private int queueSize = 100;
+    private int queueMaxSize = 100;
 
     public void setCoreThreads(int coreThreads) {
         Preconditions.checkArgument(coreThreads > 0);
@@ -31,12 +31,12 @@ public class ThreadPoolProperties {
         return maxThreads;
     }
 
-    public int getQueueSize() {
-        return queueSize;
+    public int getQueueMaxSize() {
+        return queueMaxSize;
     }
 
-    public void setQueueSize(int queueSize) {
-        this.queueSize = queueSize;
+    public void setQueueMaxSize(int queueMaxSize) {
+        this.queueMaxSize = queueMaxSize;
     }
 
     public ThreadPoolProperties() {
@@ -47,7 +47,7 @@ public class ThreadPoolProperties {
         this.maxThreads = maxThreads;
         this.keepAliveTime = keepAliveTime;
         this.unit = unit;
-        this.queueSize = queueSize;
+        this.queueMaxSize = queueSize;
     }
 
     public long getKeepAliveTime() {
