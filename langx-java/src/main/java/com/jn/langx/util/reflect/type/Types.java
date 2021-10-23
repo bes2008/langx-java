@@ -483,4 +483,70 @@ public class Types {
         }
         return false;
     }
+
+
+    /**
+     * Returns the generic form of {@code supertype}. For example, if this is {@code
+     * ArrayList<String>}, this returns {@code Iterable<String>} given the input {@code
+     * Iterable.class}.
+     *
+     * @param supertype a superclass of, or interface implemented by, this.
+     */
+    static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
+        if (context instanceof WildcardType) {
+            // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
+            context = ((WildcardType)context).getUpperBounds()[0];
+        }
+        Preconditions.checkArgument(supertype.isAssignableFrom(contextRawType));
+        return resolve(context, contextRawType, getGenericSupertype(context, contextRawType, supertype));
+    }
+
+    /**
+     * Returns the component type of this array type.
+     * @throws ClassCastException if this type is not an array.
+     */
+    public static Type getArrayComponentType(Type array) {
+        return array instanceof GenericArrayType
+                ? ((GenericArrayType) array).getGenericComponentType()
+                : ((Class<?>) array).getComponentType();
+    }
+
+    /**
+     * Returns the element type of this collection type.
+     * @throws IllegalArgumentException if this type is not a collection.
+     */
+    public static Type getCollectionElementType(Type context, Class<?> contextRawType) {
+        Type collectionType = getSupertype(context, contextRawType, Collection.class);
+
+        if (collectionType instanceof WildcardType) {
+            collectionType = ((WildcardType)collectionType).getUpperBounds()[0];
+        }
+        if (collectionType instanceof ParameterizedType) {
+            return ((ParameterizedType) collectionType).getActualTypeArguments()[0];
+        }
+        return Object.class;
+    }
+
+    /**
+     * Returns a two element array containing this map's key and value types in
+     * positions 0 and 1 respectively.
+     */
+    public static Type[] getMapKeyAndValueTypes(Type context, Class<?> contextRawType) {
+        /*
+         * Work around a problem with the declaration of java.util.Properties. That
+         * class should extend Hashtable<String, String>, but it's declared to
+         * extend Hashtable<Object, Object>.
+         */
+        if (context == Properties.class) {
+            return new Type[] { String.class, String.class }; // TODO: test subclasses of Properties!
+        }
+
+        Type mapType = getSupertype(context, contextRawType, Map.class);
+        if (mapType instanceof ParameterizedType) {
+            ParameterizedType mapParameterizedType = (ParameterizedType) mapType;
+            return mapParameterizedType.getActualTypeArguments();
+        }
+        return new Type[] { Object.class, Object.class };
+    }
+
 }
