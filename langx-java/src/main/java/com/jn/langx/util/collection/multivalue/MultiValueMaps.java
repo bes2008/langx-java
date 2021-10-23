@@ -7,6 +7,7 @@ import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.struct.Pair;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class MultiValueMaps {
@@ -92,6 +93,7 @@ public class MultiValueMaps {
 
     /**
      * 将 数组 V[]中的每一个元素取出来，放到一个  MultiValueMap 中。
+     *
      * @since 2.10.6
      */
     public static <K1, V1, K2, V2> MultiValueMap<K2, V2> toMultiValueMap3(Map<K1, V1[]> map, @Nullable final Function2<K1, V1, K2> keyMapper, @Nullable final Function2<K1, V1, V2> valueMapper) {
@@ -153,4 +155,23 @@ public class MultiValueMaps {
         });
         return multiValueMap;
     }
+
+    public static <K, E> void copy(Map<K, Collection<E>> src, final MultiValueMap<K, E> dest) {
+        Collects.forEach(src, new Consumer2<K, Collection<E>>() {
+            @Override
+            public void accept(K key, Collection<E> value) {
+                dest.put(key, value);
+            }
+        });
+    }
+
+    public static <K, E> void copy(MultiValueMap<K, E> src, final Map<K, Collection<E>> dest) {
+        Collects.forEach(src, new Consumer2<K, Collection<E>>() {
+            @Override
+            public void accept(K key, Collection<E> value) {
+                dest.put(key, value);
+            }
+        });
+    }
+
 }
