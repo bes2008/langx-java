@@ -538,7 +538,7 @@ public class Types {
          * extend Hashtable<Object, Object>.
          */
         if (context == Properties.class) {
-            return new Type[] { String.class, String.class }; // TODO: test subclasses of Properties!
+            return new Type[] { String.class, String.class };
         }
 
         Type mapType = getSupertype(context, contextRawType, Map.class);
