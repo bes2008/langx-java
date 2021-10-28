@@ -288,7 +288,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V>{
      * @since 4.0.4
      */
     protected void refreshAllAsync(@Nullable final Timeout timeout) {
-        List<K> keys = keys();
+        Set<K> keys = keys();
         Collects.forEach(keys, new Consumer<K>() {
             @Override
             public void accept(K key) {
@@ -438,8 +438,8 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V>{
      * @since 4.0.4
      */
     @Override
-    public List<K> keys() {
-        return Collects.asList(new EnumerationIterable<K>(this.map.keys()));
+    public Set<K> keys() {
+        return Collects.asSet(new EnumerationIterable<K>(this.map.keys()));
     }
 
     @Override

@@ -83,7 +83,10 @@ public class CacheBuilder<K, V> {
      *
      * @param evictExpiredIntervalInMills the evict period
      * @return the cache builder
+     *
+     * @deprecated
      */
+    @Deprecated
     public CacheBuilder<K, V> evictExpiredInterval(long evictExpiredIntervalInMills, Timer timer) {
         return evictExpiredInterval(evictExpiredIntervalInMills).timer(timer);
     }
@@ -95,6 +98,11 @@ public class CacheBuilder<K, V> {
 
     public CacheBuilder<K, V> timer(Timer timer) {
         this.timer = timer;
+        return this;
+    }
+
+    public CacheBuilder<K,V> refreshAllInterval(long refreshIntervalInMills){
+        this.refreshAllInterval = refreshIntervalInMills;
         return this;
     }
 

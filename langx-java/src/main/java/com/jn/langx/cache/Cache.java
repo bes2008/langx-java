@@ -7,6 +7,7 @@ import com.jn.langx.util.function.Supplier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public interface Cache<K, V> {
@@ -85,7 +86,7 @@ public interface Cache<K, V> {
     /**
      * @since 4.0.4
      */
-    List<K> keys();
+    Set<K> keys();
 
     void clean();
 
