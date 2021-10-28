@@ -80,6 +80,11 @@ public interface Cache<K, V> {
     /**
      * @since 4.0.4
      */
+    void evictExpired();
+
+    /**
+     * @since 4.0.4
+     */
     List<K> keys();
 
     void clean();

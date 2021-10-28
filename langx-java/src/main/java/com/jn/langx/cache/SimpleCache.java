@@ -1,8 +1,5 @@
 package com.jn.langx.cache;
 
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.timing.timer.Timer;
-
 import java.util.List;
 
 /**
