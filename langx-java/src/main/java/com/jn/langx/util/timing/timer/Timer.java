@@ -29,4 +29,6 @@ public interface Timer {
      * this method
      */
     Set<Timeout> stop();
+
+    boolean isDistinctSupported();
 }
