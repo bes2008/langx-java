@@ -2,6 +2,8 @@ package com.jn.langx.util.timing.timer;
 
 
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.concurrent.ImmediateExecutor;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.memory.leak.ResourceLeakDetector;
 import com.jn.langx.util.memory.leak.ResourceLeakDetectorFactory;
@@ -92,7 +94,7 @@ public class HashedWheelTimer implements Timer {
     private final Queue<HashedWheelTimer.HashedWheelTimeout> cancelledTimeouts = new LinkedBlockingQueue<HashedWheelTimeout>();
     private final AtomicLong pendingTimeouts = new AtomicLong(0);
     private final long maxPendingTimeouts;
-
+    private final Executor taskExecutor;
     private volatile long startTime;
 
     /**
@@ -216,19 +218,20 @@ public class HashedWheelTimer implements Timer {
      * @throws IllegalArgumentException if either of {@code tickDuration} and {@code ticksPerWheel} is &lt;= 0
      */
     public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts) {
+        this(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, maxPendingTimeouts, ImmediateExecutor.INSTANCE);
+    }
+    public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor) {
 
-        if (threadFactory == null) {
-            throw new NullPointerException("threadFactory");
-        }
-        if (unit == null) {
-            throw new NullPointerException("unit");
-        }
+        Preconditions.checkNotNull(threadFactory,"threadFactory is null");
+        Preconditions.checkNotNull(unit,"unit is null");
+
         if (tickDuration <= 0) {
             throw new IllegalArgumentException("tickDuration must be greater than 0: " + tickDuration);
         }
         if (ticksPerWheel <= 0) {
             throw new IllegalArgumentException("ticksPerWheel must be greater than 0: " + ticksPerWheel);
         }
+        this.taskExecutor = Preconditions.checkNotNull(taskExecutor,"taskExecutor is null");
 
         // Normalize ticksPerWheel to power of two and initialize the wheel.
         wheel = createWheel(ticksPerWheel);
@@ -566,7 +569,7 @@ public class HashedWheelTimer implements Timer {
         }
     }
 
-    private static final class HashedWheelTimeout implements Timeout {
+    private static final class HashedWheelTimeout implements Timeout, Runnable {
 
         private static final int ST_INIT = 0;
         private static final int ST_CANCELLED = 1;
@@ -654,6 +657,17 @@ public class HashedWheelTimer implements Timer {
                 return;
             }
 
+            try {
+                timer.taskExecutor.execute(this);
+            } catch (Throwable t) {
+                if (logger.isWarnEnabled()) {
+                    logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
+                }
+            }
+        }
+
+        @Override
+        public void run() {
             try {
                 task.run(this);
             } catch (Throwable t) {

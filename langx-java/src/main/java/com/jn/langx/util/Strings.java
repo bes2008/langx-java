@@ -250,6 +250,13 @@ public class Strings {
         return join(separator, PrimitiveArrays.<Long>wrap(array));
     }
 
+    public static String join(@NonNull final String separator, final Object obj) {
+        if (obj == null) {
+            return "";
+        }
+        return join(separator, Collects.asIterable(obj));
+    }
+
     public static String insert(@NonNull final String string, @Nullable final List<Integer> slotIndexes, @NonNull String insertment) {
         Preconditions.checkNotNull(string);
         if (Emptys.isEmpty(slotIndexes)) {
