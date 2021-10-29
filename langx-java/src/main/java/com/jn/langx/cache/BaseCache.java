@@ -4,17 +4,23 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public abstract class BaseCache<K, V> implements Cache<K,V>, Lifecycle {
+public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
     // unit: mills
     protected volatile long evictExpiredInterval;
     // unit: mills
@@ -27,6 +33,15 @@ public abstract class BaseCache<K, V> implements Cache<K,V>, Lifecycle {
     protected Timer timer;
     private boolean shutdownTimerSelf = false;
     protected volatile boolean running = false;
+    /**
+     * 刷新时去重。
+     * 当刷新的任务执行很慢时，很有可能出现数据堆积，就需要保证再添加刷新任务时，发现任务队列（队列在timer 的taskExecutor中）中有重复Key时，不将新的刷新任务添加到队列中
+     */
+    private boolean distinctWhenRefresh = false;
+
+    public void setDistinctWhenRefresh(boolean distinctWhenRefresh) {
+        this.distinctWhenRefresh = distinctWhenRefresh;
+    }
 
     void computeNextEvictExpiredTime() {
         if (evictExpiredInterval < 0) {
@@ -47,6 +62,7 @@ public abstract class BaseCache<K, V> implements Cache<K,V>, Lifecycle {
             nextRefreshAllTime = Dates.nextTime(refreshAllInterval);
         }
     }
+
     class RefreshAllTask implements TimerTask {
         private boolean fixedRate;
         private long delayInMills;
@@ -69,6 +85,48 @@ public abstract class BaseCache<K, V> implements Cache<K,V>, Lifecycle {
             }
         }
     }
+
+    /**
+     * @since 4.0.5
+     */
+    class RefreshKeyTask implements TimerTask {
+        private K key;
+
+        RefreshKeyTask(K key) {
+            this.key = key;
+        }
+
+        @Override
+        public void run(Timeout timeout) throws Exception {
+            if (timeout.isCancelled()) {
+                // noop
+            } else {
+                refresh(key);
+            }
+        }
+
+        public boolean equals(Object obj) {
+            if (!distinctWhenRefresh) {
+                return false;
+            }
+            if (obj == key) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (!Reflects.isSubClassOrEquals(key.getClass(), obj.getClass())) {
+                return false;
+            }
+            return Objs.equals(obj, key);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objs.hash(key);
+        }
+    }
+
 
     Timeout createRefreshAllTask(int delaySeconds, boolean fixedRate) {
         long delayMills = TimeUnit.SECONDS.toMillis(delaySeconds);
@@ -101,7 +159,31 @@ public abstract class BaseCache<K, V> implements Cache<K,V>, Lifecycle {
      * @param timeout
      * @since 4.0.4
      */
-    protected abstract void refreshAllAsync(@Nullable final Timeout timeout);
+    protected void refreshAllAsync(@Nullable final Timeout timeout) {
+        Set<K> keys = keys();
+        Collects.forEach(keys, new Consumer<K>() {
+            @Override
+            public void accept(K key) {
+                /**
+                 * @since 4.0.5
+                 * 利用 timer 可以再次 异步执行
+                 */
+                if (timer != null) {
+                    timer.newTimeout(new AbstractCache.RefreshKeyTask(key), 1, TimeUnit.MILLISECONDS);
+                } else {
+                    refresh(key);
+                }
+            }
+        }, new Predicate<K>() {
+            @Override
+            public boolean test(K key) {
+                if (timeout != null && timeout.isCancelled()) {
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
     /**
      * @since 4.0.4

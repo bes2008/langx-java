@@ -5,6 +5,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
+import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timer;
 
 import java.lang.ref.ReferenceQueue;
@@ -36,6 +37,7 @@ public class CacheBuilder<K, V> {
 
     private float capacityHeightWater = 0.95f;
 
+    private boolean distinctWhenRefresh = false;
     private ReferenceType keyReferenceType = ReferenceType.STRONG;
     private ReferenceType valueReferenceType = ReferenceType.STRONG;
 
@@ -83,7 +85,6 @@ public class CacheBuilder<K, V> {
      *
      * @param evictExpiredIntervalInMills the evict period
      * @return the cache builder
-     *
      * @deprecated
      */
     @Deprecated
@@ -101,8 +102,13 @@ public class CacheBuilder<K, V> {
         return this;
     }
 
-    public CacheBuilder<K,V> refreshAllInterval(long refreshIntervalInMills){
+    public CacheBuilder<K, V> refreshAllInterval(long refreshIntervalInMills) {
         this.refreshAllInterval = refreshIntervalInMills;
+        return this;
+    }
+
+    public CacheBuilder<K, V> distinctWhenRefresh(boolean distinctRefreshEnabled) {
+        this.distinctWhenRefresh = distinctRefreshEnabled;
         return this;
     }
 
@@ -166,6 +172,7 @@ public class CacheBuilder<K, V> {
         cache.setMaxCapacity(maxCapacity < 0 ? Integer.MAX_VALUE : maxCapacity);
         cache.setEvictExpiredInterval(evictExpiredInterval < 0 ? Long.MAX_VALUE : evictExpiredInterval);
         cache.setRefreshAllInterval(refreshAllInterval);
+        cache.setDistinctWhenRefresh(distinctWhenRefresh);
         cache.setCapacityHeightWater(capacityHeightWater <= 0 ? 0.95f : capacityHeightWater);
         // value is ReferenceEntry, so here is STRONG
         ConcurrentReferenceHashMap<K, Entry<K, V>> map = new ConcurrentReferenceHashMap<K, Entry<K, V>>(initialCapacity, 16, concurrencyLevel, keyReferenceType, ReferenceType.STRONG);
@@ -176,7 +183,10 @@ public class CacheBuilder<K, V> {
         }
         cache.setMap(map);
         cache.setRemoveListener(removeListener);
-        if (evictExpiredInterval > 0 && timer != null) {
+        if (evictExpiredInterval > 0 || refreshAllInterval > 0 || timer != null) {
+            if (refreshAllInterval > 0 && distinctWhenRefresh && timer instanceof HashedWheelTimer) {
+                Preconditions.checkArgument(((HashedWheelTimer) timer).isDistinctSupported(), "not a distinct supported timer, use the DistinctHashedWheelTimeoutFactory.class when create the timer");
+            }
             cache.setTimer(timer);
         }
         cache.startup();

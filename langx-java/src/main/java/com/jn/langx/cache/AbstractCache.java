@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public abstract class AbstractCache<K, V> extends BaseCache<K, V>{
+public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
     private ConcurrentReferenceHashMap<K, Entry<K, V>> map;
     private Loader<K, V> globalLoader;
@@ -283,6 +283,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V>{
     }
 
 
+
     /**
      * @param timeout
      * @since 4.0.4
@@ -292,7 +293,15 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V>{
         Collects.forEach(keys, new Consumer<K>() {
             @Override
             public void accept(K key) {
-                refresh(key, true);
+                /**
+                 * @since 4.0.5
+                 * 利用 timer 可以再次 异步执行
+                 */
+                if (timer != null) {
+                    timer.newTimeout(new RefreshKeyTask(key), 1, TimeUnit.MILLISECONDS);
+                } else {
+                    refresh(key);
+                }
             }
         }, new Predicate<K>() {
             @Override
