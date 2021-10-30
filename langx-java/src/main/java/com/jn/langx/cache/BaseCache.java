@@ -42,6 +42,7 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
      * 1） HashedWheelTimer 需要使用 DistinctHashedWheelTimeoutFactory
      * 2） 创建Cache对象时，设置 distinctWhenRefresh = true
      * 3） 放入Cache中的 Key 需要重写 equals(), hashCode()
+     * 4） 如果希望任务能够多线程并发执行，可以在创建HashedWheelTimer时，指定一个线程池
      * </pre>
      */
     private boolean distinctWhenRefresh = false;
