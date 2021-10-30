@@ -220,7 +220,11 @@ public class HashedWheelTimer implements Timer {
      * @throws IllegalArgumentException if either of {@code tickDuration} and {@code ticksPerWheel} is &lt;= 0
      */
     public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts) {
-        this(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, maxPendingTimeouts, ImmediateExecutor.INSTANCE, HashedWheelTimeoutFactory.INSTANCE);
+        this(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, maxPendingTimeouts, ImmediateExecutor.INSTANCE);
+    }
+
+    public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor){
+        this(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, maxPendingTimeouts, taskExecutor, HashedWheelTimeoutFactory.INSTANCE);
     }
 
     public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor, TimeoutFactory<HashedWheelTimer, ? extends HashedWheelTimeout> timeoutFactory) {

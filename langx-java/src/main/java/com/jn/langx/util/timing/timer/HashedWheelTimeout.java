@@ -89,16 +89,20 @@ public class HashedWheelTimeout implements Timeout, Runnable {
         if (!compareAndSetState(ST_INIT, ST_EXPIRED)) {
             return;
         }
-        /**
-         * @since 4.0.5
-         */
         try {
-            timer.getTaskExecutor().execute(this);
+            executeTask();
         } catch (Throwable t) {
             if (HashedWheelTimer.logger.isWarnEnabled()) {
                 HashedWheelTimer.logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
             }
         }
+    }
+
+    /**
+     * @since 4.0.5
+     */
+    protected void executeTask() {
+        timer.getTaskExecutor().execute(this);
     }
 
     /**

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class CacheTest2 {
+public class CacheTests2 {
     //@Test
     public void test() throws Throwable {
         final Timer timer = new HashedWheelTimer(Executors.defaultThreadFactory());
