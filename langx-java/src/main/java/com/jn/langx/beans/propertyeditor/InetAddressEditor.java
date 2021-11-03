@@ -17,8 +17,6 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.NestedRuntimeException;
-import org.jboss.util.StringPropertyReplacer;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -31,7 +29,6 @@ public class InetAddressEditor extends TextPropertyEditorSupport {
      * Returns a InetAddress for the input object converted to a string.
      *
      * @return an InetAddress
-     * @throws NestedRuntimeException An UnknownHostException occured.
      */
     public Object getValue() {
         try {
@@ -44,9 +41,9 @@ public class InetAddressEditor extends TextPropertyEditorSupport {
                 // /127.0.0.1 and the getByNames barfs on the slash - JGH
                 text = text.substring(1);
             }
-            return InetAddress.getByName(StringPropertyReplacer.replaceProperties(text));
+            return InetAddress.getByName(text);
         } catch (UnknownHostException e) {
-            throw new NestedRuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }

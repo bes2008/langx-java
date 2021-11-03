@@ -17,8 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.NestedRuntimeException;
-import org.jboss.util.Strings;
+
+import com.jn.langx.text.i18n.LocaleCode;
 
 import java.beans.PropertyEditorSupport;
 import java.security.AccessController;
@@ -50,13 +50,13 @@ public class DateEditor extends PropertyEditorSupport {
     public static void initialize() {
         PrivilegedAction action = new PrivilegedAction() {
             public Object run() {
-                String defaultFormat = System.getProperty("org.jboss.util.propertyeditor.DateEditor.format", "MMM d, yyyy");
-                String defaultLocale = System.getProperty("org.jboss.util.propertyeditor.DateEditor.locale");
+                String defaultFormat = System.getProperty("com.jn.langx.beans.propertyeditor.DateEditor.format", "MMM d, yyyy");
+                String defaultLocale = System.getProperty("com.jn.langx.beans.propertyeditor.DateEditor.locale");
                 DateFormat defaultDateFormat;
                 if (defaultLocale == null || defaultLocale.length() == 0) {
                     defaultDateFormat = new SimpleDateFormat(defaultFormat);
                 } else {
-                    defaultDateFormat = new SimpleDateFormat(defaultFormat, Strings.parseLocaleString(defaultLocale));
+                    defaultDateFormat = new SimpleDateFormat(defaultFormat, LocaleCode.getByCode(defaultLocale).toLocale());
                 }
 
                 formats = new DateFormat[]
@@ -120,7 +120,7 @@ public class DateEditor extends PropertyEditorSupport {
             }
         }
         // couldn't parse
-        throw new NestedRuntimeException(pe);
+        throw new RuntimeException(pe);
     }
 
     /**

@@ -17,8 +17,6 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.NestedRuntimeException;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -30,13 +28,13 @@ public class FileEditor extends TextPropertyEditorSupport {
      * Returns a URL for the input object converted to a string.
      *
      * @return a URL object
-     * @throws NestedRuntimeException An IOException occured.
+     * @throws RuntimeException An IOException occured.
      */
     public Object getValue() {
         try {
             return new File(getAsText()).getCanonicalFile();
         } catch (IOException e) {
-            throw new NestedRuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }

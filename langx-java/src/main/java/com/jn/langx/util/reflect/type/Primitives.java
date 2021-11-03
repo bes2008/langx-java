@@ -30,7 +30,7 @@ public class Primitives {
     static {
         Map<Class<?>, Class<?>> primToWrap = new HashMap<Class<?>, Class<?>>(16);
         Map<Class<?>, Class<?>> wrapToPrim = new HashMap<Class<?>, Class<?>>(16);
-
+        Map<String, Class> nameToPrim = new HashMap<String, Class>(16);
         add(primToWrap, wrapToPrim, boolean.class, Boolean.class);
         add(primToWrap, wrapToPrim, byte.class, Byte.class);
         add(primToWrap, wrapToPrim, char.class, Character.class);

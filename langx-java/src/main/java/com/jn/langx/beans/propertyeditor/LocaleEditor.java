@@ -17,7 +17,6 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.Strings;
 
 import java.beans.PropertyEditorSupport;
 
@@ -26,7 +25,7 @@ import java.beans.PropertyEditorSupport;
  */
 public class LocaleEditor extends PropertyEditorSupport {
     public void setAsText(String text) {
-        setValue(Strings.parseLocaleString(text));
+        setValue(text);
     }
 
     public String getAsText() {

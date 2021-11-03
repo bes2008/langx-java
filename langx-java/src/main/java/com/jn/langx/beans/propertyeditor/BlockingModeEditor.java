@@ -17,7 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.threadpool.BlockingMode;
+
+import com.jn.langx.util.concurrent.BlockingMode;
 
 /**
  * A property editor for {@link BlockingMode} enum.

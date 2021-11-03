@@ -17,8 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.NestedRuntimeException;
-import org.jboss.util.Strings;
+
+import com.jn.langx.util.net.URLs;
 
 import java.net.MalformedURLException;
 
@@ -30,13 +30,13 @@ public class URLEditor extends TextPropertyEditorSupport {
      * Returns a URL for the input object converted to a string.
      *
      * @return a URL object
-     * @throws NestedRuntimeException An MalformedURLException occured.
+     * @throws RuntimeException An MalformedURLException occured.
      */
     public Object getValue() {
         try {
-            return Strings.toURL(getAsText());
-        } catch (MalformedURLException e) {
-            throw new NestedRuntimeException(e);
+            return URLs.newURL(getAsText());
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -17,9 +17,6 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.NestedRuntimeException;
-import org.jboss.util.StringPropertyReplacer;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
@@ -36,7 +33,7 @@ public class PropertiesEditor extends TextPropertyEditorSupport {
      * references of the form ${x} with the corresponding system property.
      *
      * @return a Properties object
-     * @throws NestedRuntimeException An IOException occured.
+     * @throws RuntimeException An IOException occured.
      */
     public Object getValue() {
         try {
@@ -51,14 +48,14 @@ public class PropertiesEditor extends TextPropertyEditorSupport {
             while (keys.hasNext()) {
                 String key = (String) keys.next();
                 String value = rawProps.getProperty(key);
-                String value2 = StringPropertyReplacer.replaceProperties(value, rawProps);
-                props.setProperty(key, value2);
+                //String value2 = StringPropertyReplacer.replaceProperties(value, rawProps);
+                //props.setProperty(key, value2);
             }
             rawProps.clear();
 
             return props;
         } catch (IOException e) {
-            throw new NestedRuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }

@@ -17,8 +17,9 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.logging.Logger;
-import org.jboss.util.Classes;
+import com.jn.langx.util.reflect.type.Primitives;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.*;
 import java.lang.reflect.Method;
@@ -39,7 +40,7 @@ public class PropertyEditors {
     /**
      * The Logger object
      */
-    private static Logger log = Logger.getLogger(PropertyEditors.class);
+    private static Logger log = LoggerFactory.getLogger(PropertyEditors.class);
 
     /**
      * The null string
@@ -137,7 +138,7 @@ public class PropertyEditors {
     public static PropertyEditor findEditor(final String typeName)
             throws ClassNotFoundException {
         // see if it is a primitive type first
-        Class<?> type = Classes.getPrimitiveTypeForName(typeName);
+        Class<?> type = Primitives.get(typeName);
         if (type == null) {
             // nope try look up
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -224,7 +225,7 @@ public class PropertyEditors {
     public static Object convertValue(String text, String typeName)
             throws ClassNotFoundException, IntrospectionException {
         // see if it is a primitive type first
-        Class<?> typeClass = Classes.getPrimitiveTypeForName(typeName);
+        Class<?> typeClass = Primitives.get(typeName);
         if (typeClass == null) {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             typeClass = loader.loadClass(typeName);
@@ -395,10 +396,10 @@ public class PropertyEditors {
             PropertyEditorManager.registerEditor(Character.TYPE, CharacterEditor.class);
 
             try {
-                if (System.getProperty("org.jboss.util.property.disablenull") != null)
+                if (System.getProperty("com.jn.langx.util.null.disabled") != null)
                     disableIsNull = true;
             } catch (Throwable ignored) {
-                log.trace("Error retrieving system property org.jboss.util.property.diablenull", ignored);
+                log.error("Error retrieving system property com.jn.langx.util.null.disabled", ignored);
             }
             return null;
         }

@@ -17,8 +17,6 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
-import org.jboss.util.NestedRuntimeException;
-
 /**
  * A property editor for {@link Class}.
  */
@@ -27,7 +25,7 @@ public class ClassEditor extends TextPropertyEditorSupport {
      * Returns a Class for the input object converted to a string.
      *
      * @return a Class object
-     * @throws NestedRuntimeException Failed to create Class instance.
+     * @throws RuntimeException Failed to create Class instance.
      */
     public Object getValue() {
         try {
@@ -37,7 +35,7 @@ public class ClassEditor extends TextPropertyEditorSupport {
 
             return type;
         } catch (Exception e) {
-            throw new NestedRuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 }
