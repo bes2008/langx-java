@@ -34,7 +34,7 @@ public class ClassArrayEditor extends PropertyEditorSupport {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         StringTokenizer tokenizer = new StringTokenizer(text, ", \t\r\n");
         ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
-        while (tokenizer.hasMoreTokens() == true) {
+        while (tokenizer.hasMoreTokens()) {
             String name = tokenizer.nextToken();
             try {
                 Class<?> c = loader.loadClass(name);

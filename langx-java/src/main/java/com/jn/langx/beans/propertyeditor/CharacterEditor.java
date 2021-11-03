@@ -28,8 +28,9 @@ public class CharacterEditor extends PropertyEditorSupport {
             setValue(null);
             return;
         }
-        if (text.length() != 1)
+        if (text.length() != 1) {
             throw new IllegalArgumentException("Too many (" + text.length() + ") characters: '" + text + "'");
+        }
         Object newValue = new Character(text.charAt(0));
         setValue(newValue);
     }

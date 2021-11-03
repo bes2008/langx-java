@@ -25,9 +25,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AtomicIntegerEditor extends PropertyEditorSupport {
     public void setAsText(final String text) {
-        if (PropertyEditors.isNull(text))
+        if (PropertyEditors.isNull(text)) {
             setValue(null);
-        else
+        } else {
             setValue(new AtomicInteger(Integer.parseInt(text)));
+        }
     }
 }

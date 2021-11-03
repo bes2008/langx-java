@@ -88,8 +88,7 @@ public class DateEditor extends PropertyEditorSupport {
             this.text = null;
             super.setValue(value);
         } else {
-            throw new IllegalArgumentException("setValue() expected java.util.Date value, got "
-                    + value.getClass().getName());
+            throw new IllegalArgumentException("setValue() expected java.util.Date value, got "+ value.getClass().getName());
         }
     }
 

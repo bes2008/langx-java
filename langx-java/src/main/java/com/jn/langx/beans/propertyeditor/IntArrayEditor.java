@@ -28,11 +28,11 @@ public class IntArrayEditor extends PropertyEditorSupport {
      * Build a int[] from comma or eol seperated elements
      */
     public void setAsText(final String text) {
-        StringTokenizer stok = new StringTokenizer(text, ",\r\n");
-        int[] theValue = new int[stok.countTokens()];
+        StringTokenizer tokenizer = new StringTokenizer(text, ",\r\n");
+        int[] theValue = new int[tokenizer.countTokens()];
         int i = 0;
-        while (stok.hasMoreTokens()) {
-            theValue[i++] = Integer.decode(stok.nextToken()).intValue();
+        while (tokenizer.hasMoreTokens()) {
+            theValue[i++] = Integer.decode(tokenizer.nextToken()).intValue();
         }
         setValue(theValue);
     }
