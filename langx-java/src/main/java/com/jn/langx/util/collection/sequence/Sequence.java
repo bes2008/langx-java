@@ -83,7 +83,7 @@ public interface Sequence<E> extends List<E>, Listable<E> {
     @Override
     ListIterator<E> listIterator(int index);
 
-    <E,S extends Sequence<E>> S subSequence(int fromIndex, int toIndex);
+    <S extends Sequence<E>> S subSequence(int fromIndex, int toIndex);
 
     @Override
     List<E> subList(int fromIndex, int toIndex);
