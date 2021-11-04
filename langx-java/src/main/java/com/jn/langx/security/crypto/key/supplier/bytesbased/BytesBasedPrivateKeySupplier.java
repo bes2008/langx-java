@@ -55,7 +55,7 @@ public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<Priva
                                 keySpecHolder.set(keySpec);
                             }
                         } catch (Throwable ex) {
-                            logger.warn(ex.getMessage(), ex);
+                            logger.debug(ex.getMessage(), ex);
                         }
                     }
                 }, new Predicate<Parser<byte[], ? extends KeySpec>>() {
