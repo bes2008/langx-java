@@ -28,7 +28,7 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
         });
     }
 
-    public CommonMultiValueMap(@NonNull Supplier0<Map> mapSupplier, @NonNull Supplier<K, Collection<V>> valuesSupplier) {
+    public CommonMultiValueMap(@NonNull Supplier0<Map<K, Collection<V>>> mapSupplier, @NonNull Supplier<K, Collection<V>> valuesSupplier) {
         this(mapSupplier.get(), valuesSupplier);
     }
 
