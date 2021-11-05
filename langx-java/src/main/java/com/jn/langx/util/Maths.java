@@ -5,10 +5,15 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.struct.Holder;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Collection;
+import java.util.List;
 
 public class Maths {
 
@@ -324,5 +329,43 @@ public class Maths {
             }
         }
     }
+
+    public static class Masks {
+
+        public static <T> int createMask(Collection<T> operandHolders, Function<T, Integer> mapper) {
+            Collection<Integer> operands = Pipeline.of(operandHolders).map(mapper).clearNulls().asList();
+            return createMask(operands);
+        }
+
+        public static int createMask(int... operands) {
+            return createMask(Collects.<Integer>asList(Collects.<Integer>asIterable(operands)));
+        }
+
+        /**
+         * @param operands 操作数集合
+         * @return 掩码
+         */
+        public static int createMask(Collection<Integer> operands) {
+            Preconditions.checkNotNull(operands, "operand is required");
+            Preconditions.checkArgument(operands.size() >= 1, "operands is required");
+            int mask = 0;
+            for (int operand : operands) {
+                mask |= operand;
+            }
+            return mask;
+        }
+
+        /**
+         * 判断 mask 是否包含 指定的操作数 operand
+         *
+         * @param mask    掩码
+         * @param operand 操作数
+         * @return 包含与否
+         */
+        public static boolean containsOperand(int mask, int operand) {
+            return (mask & operand) == operand;
+        }
+    }
+
 
 }

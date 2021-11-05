@@ -1,7 +1,10 @@
 package com.jn.langx.util.io.file;
 
 
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Radixs;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Function;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -87,16 +90,12 @@ public enum FilePermission {
         this.val = val;
     }
 
-    FilePermission(FilePermission... perms) {
-        int val = 0;
-        for (FilePermission perm : perms) {
-            val |= perm.val;
-        }
-        this.val = val;
+    FilePermission(final FilePermission... perms) {
+        this.val = toMask(Collects.asSet(perms));
     }
 
     public boolean isIn(int mask) {
-        return (mask & val) == val;
+        return Maths.Masks.containsOperand(mask,val);
     }
 
     /**
@@ -122,11 +121,12 @@ public enum FilePermission {
      * @return
      */
     public static int toMask(Set<FilePermission> perms) {
-        int mask = 0;
-        for (FilePermission p : perms) {
-            mask |= p.val;
-        }
-        return mask;
+        return Maths.Masks.createMask(perms, new Function<FilePermission, Integer>() {
+            @Override
+            public Integer apply(FilePermission p) {
+                return p.val;
+            }
+        });
     }
 
     public static String toOctal(int permissions) {
@@ -137,7 +137,7 @@ public enum FilePermission {
         return Radixs.toOtc(toMask(permissions));
     }
 
-    public static String toBinary(int permissions){
+    public static String toBinary(int permissions) {
         return toBinary(fromMask(permissions));
     }
 
@@ -145,7 +145,7 @@ public enum FilePermission {
         return Radixs.toBinary(toMask(permissions));
     }
 
-    public int getVal(){
+    public int getVal() {
         return val;
     }
 }
