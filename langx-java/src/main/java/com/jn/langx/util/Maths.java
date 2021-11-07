@@ -6,14 +6,11 @@ import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Function;
-import com.jn.langx.util.function.Supplier;
-import com.jn.langx.util.struct.Holder;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collection;
-import java.util.List;
 
 public class Maths {
 
@@ -200,6 +197,16 @@ public class Maths {
         return Double.parseDouble(string);
     }
 
+    /**
+     * 判断是否为 2的 power 值
+     *
+     * @param value
+     * @return
+     */
+    public static boolean isPower2(int value) {
+        return value >= 1 && ((value & (value - 1)) == 0);
+    }
+
     public static int pow2Int(int pow) {
         return Numbers.toInt(Math.pow(2, pow));
     }
@@ -350,10 +357,19 @@ public class Maths {
             Preconditions.checkArgument(operands.size() >= 1, "operands is required");
             int mask = 0;
             for (int operand : operands) {
-                mask |= operand;
+                mask = addOperand(mask, operand);
             }
             return mask;
         }
+
+        public static int addOperand(int mask, int operand) {
+            return mask | operand;
+        }
+
+        public static int removeOperand(int mask, int operand) {
+            return mask & ~operand;
+        }
+
 
         /**
          * 判断 mask 是否包含 指定的操作数 operand
@@ -365,6 +381,8 @@ public class Maths {
         public static boolean containsOperand(int mask, int operand) {
             return (mask & operand) == operand;
         }
+
+
     }
 
 
