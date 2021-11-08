@@ -1,8 +1,7 @@
 package com.jn.langx.util.io.file;
 
-
-import com.jn.langx.util.Maths;
 import com.jn.langx.util.Radixs;
+import com.jn.langx.util.bit.Masks;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Function;
 
@@ -95,7 +94,7 @@ public enum FilePermission {
     }
 
     public boolean isIn(int mask) {
-        return Maths.Masks.containsOperand(mask,val);
+        return Masks.containsOperand(mask,val);
     }
 
     /**
@@ -121,7 +120,7 @@ public enum FilePermission {
      * @return
      */
     public static int toMask(Set<FilePermission> perms) {
-        return Maths.Masks.createMask(perms, new Function<FilePermission, Integer>() {
+        return Masks.createMask(perms, new Function<FilePermission, Integer>() {
             @Override
             public Integer apply(FilePermission p) {
                 return p.val;
