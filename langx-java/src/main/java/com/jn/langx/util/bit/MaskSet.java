@@ -3,7 +3,9 @@ package com.jn.langx.util.bit;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-
+/**
+ * @since 4.0.6
+ */
 public class MaskSet extends LinkedHashSet<Integer> {
     private int masks = 0;
 

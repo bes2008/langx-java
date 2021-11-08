@@ -7,6 +7,9 @@ import com.jn.langx.util.function.Function;
 
 import java.util.Collection;
 
+/**
+ * @since 4.0.6
+ */
 public final class Masks {
     private Masks(){}
 
