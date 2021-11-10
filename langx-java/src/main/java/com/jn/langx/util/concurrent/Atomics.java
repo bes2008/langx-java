@@ -2,7 +2,6 @@ package com.jn.langx.util.concurrent;
 
 import com.jn.langx.annotation.Nullable;
 
-import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
