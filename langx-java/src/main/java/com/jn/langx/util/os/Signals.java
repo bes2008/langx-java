@@ -6,6 +6,30 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 
+/**
+ * 操作系统 signal 工具<br/>
+ *
+ * linux 支持的signal，可以用 kill -l 命令查看.
+ * <pre>
+ *  1) SIGHUP	    2) SIGINT	    3) SIGQUIT	    4) SIGILL	    5) SIGTRAP
+ *  6) SIGABRT	    7) SIGBUS	    8) SIGFPE	    9) SIGKILL	    10) SIGUSR1
+ * 11) SIGSEGV	    12) SIGUSR2	    13) SIGPIPE	    14) SIGALRM	    15) SIGTERM
+ * 16) SIGSTKFLT	17) SIGCHLD	    18) SIGCONT	    19) SIGSTOP	    20) SIGTSTP
+ * 21) SIGTTIN	    22) SIGTTOU	    23) SIGURG	    24) SIGXCPU	    25) SIGXFSZ
+ * 26) SIGVTALRM	27) SIGPROF	    28) SIGWINCH	29) SIGIO	    30) SIGPWR
+ * 31) SIGSYS	    34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3
+ * 38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8
+ * 43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13
+ * 48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12
+ * 53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7
+ * 58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2
+ * 63) SIGRTMAX-1	64) SIGRTMAX
+ * </pre>
+ *
+ *
+ * https://blog.csdn.net/abc123lzf/article/details/101245167
+ *
+ */
 public final class Signals {
     private static final Logger logger = LoggerFactory.getLogger(Signals.class);
 
@@ -13,20 +37,20 @@ public final class Signals {
     }
 
     /**
-     * @param name    the signal, CONT, STOP, etc...
-     * @param handler the callback to run
+     * @param signalName    the signal, CONT, STOP, etc...
+     * @param signalHandler the callback to run
      * @return an object that needs to be passed to the {@link #unregister(String, Object)}
      * method to unregister the handler
      */
-    public static Object register(String name, Runnable handler) {
-        Objs.requireNonNull(handler);
-        return register(name, handler, handler.getClass().getClassLoader());
+    public static Object register(String signalName, Runnable signalHandler) {
+        Objs.requireNonNull(signalHandler);
+        return register(signalName, signalHandler, signalHandler.getClass().getClassLoader());
     }
 
-    public static Object register(final String name, final Runnable handler, ClassLoader loader) {
+    public static Object register(final String signalName, final Runnable handler, ClassLoader loader) {
         try {
             final Class<?> signalHandlerClass = Class.forName("sun.misc.SignalHandler");
-            // Implement signal handler
+            // Implement signal handler interface
             Object signalHandler = Proxy.newProxyInstance(loader,
                     new Class<?>[]{signalHandlerClass}, new InvocationHandler() {
                         @Override
@@ -37,16 +61,16 @@ public final class Signals {
                                     return handler.toString();
                                 }
                             } else if (method.getDeclaringClass() == signalHandlerClass) {
-                                logger.debug("Calling handler {} for signal {}", toStringx(handler), name);
+                                logger.debug("Calling handler {} for signal {}", toStringx(handler), signalName);
                                 handler.run();
                             }
                             return null;
                         }
                     });
-            return doRegister(name, signalHandler);
+            return doRegister(signalName, signalHandler);
         } catch (Exception e) {
             // Ignore this one too, if the above failed, the signal API is incompatible with what we're expecting
-            logger.debug("Error registering handler for signal ", name, e);
+            logger.debug("Error registering handler for signal ", signalName, e);
             return null;
         }
     }
