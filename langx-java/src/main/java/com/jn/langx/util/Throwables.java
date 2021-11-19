@@ -49,6 +49,7 @@ public class Throwables {
         PrintWriter printWriter = new PrintWriter(stringWriter);
         try {
             throwable.printStackTrace(printWriter);
+            printWriter.flush();
             return stringWriter.toString();
         } finally {
             IOs.close(printWriter);
