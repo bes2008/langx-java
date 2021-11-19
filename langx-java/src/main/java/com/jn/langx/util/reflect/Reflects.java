@@ -10,13 +10,13 @@ import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Mapper;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
 import com.jn.langx.util.reflect.signature.TypeSignatures;
 import com.jn.langx.util.reflect.type.Types;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -36,7 +36,6 @@ import static java.lang.System.arraycopy;
 public class Reflects {
 
     private static final Pattern lamdbaPattern = Pattern.compile(".*\\$\\$Lambda\\$[0-9]+/.*");
-    private static final Logger logger = LoggerFactory.getLogger(Reflects.class);
 
     private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
     private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");
@@ -600,6 +599,7 @@ public class Reflects {
         try {
             return clazz.getDeclaredConstructor(parameterTypes);
         } catch (NoSuchMethodException ex) {
+            Logger logger = Loggers.getLogger(Reflects.class);
             if (logger.isDebugEnabled()) {
                 logger.debug(ex.getMessage(), ex);
             }
@@ -612,6 +612,7 @@ public class Reflects {
         try {
             return clazz.newInstance();
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(Reflects.class);
             if (logger.isDebugEnabled()) {
                 logger.debug("Create {} instance fail", getFQNClassName(clazz), ex);
             }
@@ -633,6 +634,7 @@ public class Reflects {
         try {
             return constructor.newInstance(parameters);
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(Reflects.class);
             if (logger.isDebugEnabled()) {
                 logger.debug("Create {} instance fail", getFQNClassName(constructor.getDeclaringClass()), ex);
             }

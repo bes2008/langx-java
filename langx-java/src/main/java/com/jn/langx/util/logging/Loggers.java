@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Loggers {
-    private static final Logger logger = LoggerFactory.getLogger(Throwables.class);
 
     public static void log(@NonNull Throwable ex) {
         log(1, null, null, ex, (Supplier<Object[], String>) null );
@@ -41,9 +40,9 @@ public class Loggers {
         Preconditions.checkNotNull(messageSupplier, "the message supplier is null");
         if (logger == null) {
             if (ex == null) {
-                logger = Loggers.logger;
+                logger = getLogger(Loggers.class);
             } else {
-                logger = Throwables.logger;
+                logger = getLogger(Throwables.class);
             }
         }
         if (level == null) {
@@ -170,5 +169,13 @@ public class Loggers {
             }
         }
         return supplier;
+    }
+
+    public static Logger getLogger(String loggerName){
+        return LoggerFactory.getLogger(loggerName);
+    }
+
+    public static Logger getLogger(Class clazz){
+        return LoggerFactory.getLogger(clazz);
     }
 }
