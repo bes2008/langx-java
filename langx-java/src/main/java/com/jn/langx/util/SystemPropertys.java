@@ -5,8 +5,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jn.langx.util.logging.Loggers;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -19,7 +18,6 @@ import java.util.Locale;
  * @author jinuo.fang
  */
 public class SystemPropertys {
-    private static final Logger logger = LoggerFactory.getLogger(SystemPropertys.class);
     public static final String NEWLINE = System.getProperty("line.separator", "\n");
 
     private static final StringMap javaVersionToClassVersion = new StringMap();
@@ -217,7 +215,7 @@ public class SystemPropertys {
                 });
             }
         } catch (SecurityException e) {
-            logger.warn("Unable to retrieve a system property '{}'; default values will be used.", key, e);
+            Loggers.getLogger(SystemPropertys.class).warn("Unable to retrieve a system property '{}'; default values will be used.", key, e);
         }
 
         if (value == null) {

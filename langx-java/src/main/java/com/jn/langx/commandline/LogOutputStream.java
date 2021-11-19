@@ -1,8 +1,8 @@
 package com.jn.langx.commandline;
 
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,7 +15,6 @@ import java.io.OutputStream;
  * the complete line to an user-defined implementation.
  */
 public abstract class LogOutputStream extends OutputStream {
-    private static Logger logger = LoggerFactory.getLogger(LogOutputStream.class);
     /**
      * Initial buffer size.
      */
@@ -153,6 +152,7 @@ public abstract class LogOutputStream extends OutputStream {
             processLine(buffer.toString(Charsets.UTF_8.name()));
             buffer.reset();
         }catch (Throwable ex){
+            Logger logger = Loggers.getLogger(getClass());
             logger.error(ex.getMessage(), ex);
         }
     }

@@ -4,6 +4,7 @@ import com.jn.langx.annotation.Name;
 import com.jn.langx.aspectj.coderepository.Repositorys;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.parameter.AbstractConstructorParameterSupplier;
@@ -16,13 +17,11 @@ import org.aspectj.apache.bcel.classfile.LocalVariableTable;
 import org.aspectj.apache.bcel.classfile.Method;
 import org.aspectj.apache.bcel.util.Repository;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 
 @Name(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME)
 public class AjConstructorParameterSupplier extends AbstractConstructorParameterSupplier {
-    private static final Logger logger = LoggerFactory.getLogger(AjConstructorParameterSupplier.class);
     private ConstructorParameterSupplier delegate;
 
     public AjConstructorParameterSupplier() {
@@ -66,6 +65,7 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
 
     private String findRealParameterName(ParameterMeta meta) {
         String classname = null;
+        Logger logger = Loggers.getLogger(AjConstructorParameterSupplier.class);
         try {
             Constructor constructor = (Constructor) meta.getExecutable();
             Class declaringClass = constructor.getDeclaringClass();

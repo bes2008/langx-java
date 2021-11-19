@@ -1,6 +1,8 @@
 package com.jn.langx.util.timing.timer;
 
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
+import org.slf4j.Logger;
 
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
@@ -92,8 +94,9 @@ public class HashedWheelTimeout implements Timeout, Runnable {
         try {
             executeTask();
         } catch (Throwable t) {
-            if (HashedWheelTimer.logger.isWarnEnabled()) {
-                HashedWheelTimer.logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
+            Logger logger = Loggers.getLogger(HashedWheelTimeout.class);
+            if (logger.isWarnEnabled()) {
+                logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
             }
         }
     }
@@ -113,8 +116,9 @@ public class HashedWheelTimeout implements Timeout, Runnable {
         try {
             task.run(this);
         } catch (Throwable t) {
-            if (HashedWheelTimer.logger.isWarnEnabled()) {
-                HashedWheelTimer.logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
+            Logger logger = Loggers.getLogger(HashedWheelTimeout.class);
+            if (logger.isWarnEnabled()) {
+                logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
             }
         }
     }

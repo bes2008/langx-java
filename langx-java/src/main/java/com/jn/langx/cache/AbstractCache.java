@@ -14,12 +14,12 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.Timer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.ref.ReferenceQueue;
 import java.util.*;
@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractCache.class);
     private ConcurrentReferenceHashMap<K, Entry<K, V>> map;
     private Loader<K, V> globalLoader;
     // unit: seconds, 大于 0 时有效，用于在发生了写操作时，更新过期时间。 < 0 时代表无过期时间，即永不过期
@@ -219,6 +218,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         }
         V value = null;
         if (loadIfAbsent) {
+            Logger logger = Loggers.getLogger(getClass());
             if (loader != null) {
                 try {
                     value = loader.get(key);
@@ -272,6 +272,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         V value = loadByGlobalLoader(key, exceptionHolder);
         if (value == null) {
             if (exceptionHolder.get() != null) {
+                Logger logger = Loggers.getLogger(getClass());
                 logger.warn("Error occur when load resource for key: {}, error message: {}, stack:", key, exceptionHolder.get().getMessage(), exceptionHolder.get());
             } else {
                 remove(key, internalInvoke ? RemoveCause.REPLACED : RemoveCause.EXPLICIT);

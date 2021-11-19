@@ -9,14 +9,13 @@ import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceLocationProvider;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class ResourceConfigurationLoader<T extends Configuration> implements ConfigurationLoader<T> {
-    private static final Logger logger = LoggerFactory.getLogger(ResourceConfigurationLoader.class);
 
     private InputStreamConfigurationParser<T> parser;
     private ResourceLocationProvider<String> resourceLocationProvider;
@@ -45,6 +44,7 @@ public class ResourceConfigurationLoader<T extends Configuration> implements Con
         Preconditions.checkNotNull(location, "Can't find the location for configuration : {}", configurationId);
         T configuration = null;
         Resource resource = Resources.loadResource(location);
+        Logger logger = Loggers.getLogger(getClass());
         if (resource != null && resource.exists()) {
             InputStream inputStream = null;
             try {

@@ -4,17 +4,16 @@ import com.jn.langx.management.BaseService;
 import com.jn.langx.management.MBeanException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.struct.Entry;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.management.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
 public abstract class AbstractSpecifiedOptionService extends BaseService {
-    private static final Logger logger;
 
     protected Map<String, Map<String, Object>> queryMBeanAttrs(final String specifiedOption, final Hashtable<String, String> options, final Collection<String> attributeNames) {
         Preconditions.checkNotNull(specifiedOption, "specialOption is null. ");
@@ -26,6 +25,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
                 onames.add(ins.getObjectName());
             }
         }
+        Logger logger = Loggers.getLogger(getClass());
         Map<String, Map<String, Object>> map = (Map<String, Map<String, Object>>) Collections.EMPTY_MAP;
         if (!onames.isEmpty()) {
             map = new HashMap<String, Map<String, Object>>();
@@ -43,7 +43,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
                     }
                     map.put(oname.getKeyProperty(specifiedOption), mbean);
                 } catch (Exception ex) {
-                    AbstractSpecifiedOptionService.logger.error("Get thread pool infoes error", (Throwable) ex);
+                    logger.error("Get thread pool infoes error", (Throwable) ex);
                 }
             }
         }
@@ -72,8 +72,9 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
             }
         }
         try {
+            Logger logger = Loggers.getLogger(getClass());
             for (final ObjectName oname3 : objectNames) {
-                AbstractSpecifiedOptionService.logger.debug("query attributes : " + attributeNames);
+                logger.debug("query attributes : " + attributeNames);
                 final List<Attribute> attrList = this.conn.getAttributes(oname3, (String[]) attributeNames.toArray(new String[0])).asList();
                 if (attrList == null) {
                     continue;
@@ -126,6 +127,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         }
         final Map<String, List<Entry<String, Object>>> result = new HashMap<String, List<Entry<String, Object>>>();
         try {
+            Logger logger = Loggers.getLogger(getClass());
             for (final ObjectName oname2 : objectNames) {
                 final MBeanInfo mbeanInfo = this.conn.getMBeanInfo(oname2);
                 final MBeanAttributeInfo[] attrInfos = mbeanInfo.getAttributes();
@@ -139,7 +141,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
                 if (attributeNames.isEmpty()) {
                     continue;
                 }
-                AbstractSpecifiedOptionService.logger.debug("query attributes : " + attributeNames);
+                logger.debug("query attributes : " + attributeNames);
                 final List<Attribute> attrList = this.conn.getAttributes(oname2, (String[]) attributeNames.toArray(new String[0])).asList();
                 if (attrList == null) {
                     continue;
@@ -159,7 +161,4 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         return result;
     }
 
-    static {
-        logger = LoggerFactory.getLogger((Class) AbstractSpecifiedOptionService.class);
-    }
 }

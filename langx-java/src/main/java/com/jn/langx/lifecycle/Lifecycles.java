@@ -19,8 +19,8 @@
 package com.jn.langx.lifecycle;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
@@ -33,7 +33,6 @@ import java.util.Collection;
  */
 public abstract class Lifecycles {
 
-    private static final Logger logger = LoggerFactory.getLogger(Lifecycles.class);
 
     public static void init(Object o) throws InitializationException {
         if (o instanceof Initializable) {
@@ -75,6 +74,7 @@ public abstract class Lifecycles {
             try {
                 d.destroy();
             } catch (Throwable t) {
+                Logger logger = Loggers.getLogger(Lifecycles.class);
                 if (logger.isDebugEnabled()) {
                     String msg = "Unable to cleanly destroy instance [" + d + "] of type [" + d.getClass().getName() + "].";
                     logger.debug(msg, t);

@@ -1,6 +1,8 @@
 package com.jn.langx.util.timing.timer;
 
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,8 +48,9 @@ public class DistinctHashedWheelTimeout extends HashedWheelTimeout {
                 currentTimerRunningTasks.remove(this);
             }
         } catch (Throwable t) {
-            if (HashedWheelTimer.logger.isWarnEnabled()) {
-                HashedWheelTimer.logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
+            Logger logger = Loggers.getLogger(HashedWheelTimer.class);
+            if (logger.isWarnEnabled()) {
+                logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
             }
         }
     }

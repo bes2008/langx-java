@@ -4,8 +4,8 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -18,8 +18,6 @@ import java.util.*;
  *
  */
 public class IniPlaceholderHandler {
-
-    private static final Logger logger = LoggerFactory.getLogger(IniPlaceholderHandler.class);
 
     private static final Map<String, String> wellKnownSimplePrefixes = new HashMap<String, String>(4);
 
@@ -151,6 +149,7 @@ public class IniPlaceholderHandler {
                         propVal = originalPlaceholder;
                     }
                     result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
+                    Logger logger = Loggers.getLogger(getClass());
                     if (logger.isTraceEnabled()) {
                         logger.trace("Resolved placeholder '" + placeholder + "'");
                     }

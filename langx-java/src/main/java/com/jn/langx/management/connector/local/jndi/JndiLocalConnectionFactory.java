@@ -4,15 +4,14 @@ import com.jn.langx.management.ConnectorConfiguration;
 import com.jn.langx.management.JMXConnection;
 import com.jn.langx.management.JMXConnectionFactory;
 import com.jn.langx.management.connector.local.JMXLocalConnection;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.management.MBeanServer;
 import javax.naming.InitialContext;
 
 public class JndiLocalConnectionFactory implements JMXConnectionFactory {
     private static final String DEFAULT_CONTEXT_FACTORY = "com.sun.InitialContextFactroy";
-    private static final Logger logger = LoggerFactory.getLogger(JndiLocalConnectionFactory.class);
 
     @Override
     public JMXConnection getConnection(final ConnectorConfiguration config) {
@@ -28,6 +27,7 @@ public class JndiLocalConnectionFactory implements JMXConnectionFactory {
             final InitialContext context = new InitialContext(jndiConfig.getProperties());
             server = (MBeanServer) context.lookup(jndi);
         } catch (Throwable t) {
+            Logger logger = Loggers.getLogger(getClass());
             logger.error(t.getMessage(), t);
         }
         if (server != null) {

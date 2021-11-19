@@ -4,15 +4,14 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
 
 import javax.xml.xpath.*;
 import java.util.Map;
 
 public class XmlAccessor {
-    private static final Logger logger = LoggerFactory.getLogger((Class) XmlAccessor.class);
     private String defaultNamespacePrefix = null;
 
     /**
@@ -41,6 +40,7 @@ public class XmlAccessor {
         if (Emptys.isEmpty(attributeName)) {
             return;
         }
+        Logger logger = Loggers.getLogger(getClass());
         try {
             final Element element = this.getElement(doc, factory, elementXpath);
             if (Emptys.isEmpty(element)) {
@@ -61,6 +61,7 @@ public class XmlAccessor {
         if (Emptys.isEmpty(attrs)) {
             return;
         }
+        final Logger logger = Loggers.getLogger(getClass());
         try {
             final Element element = this.getElement(doc, factory, elementXpath);
             if (Emptys.isEmpty(element)) {
@@ -85,6 +86,7 @@ public class XmlAccessor {
         if (Emptys.isEmpty(attrs)) {
             return;
         }
+        final Logger logger = Loggers.getLogger(getClass());
         try {
             final NodeList elements = this.getNodeList(doc, factory, elementXpath);
             if (Emptys.isEmpty(elements)) {
@@ -121,6 +123,7 @@ public class XmlAccessor {
     }
 
     public String getElementAttribute(final Document doc, final XPathFactory factory, final String elementXpath, final String attributeName) throws Exception {
+        Logger logger = Loggers.getLogger(getClass());
         try {
             if (Emptys.isEmpty(attributeName)) {
                 throw new IllegalArgumentException("attributeName is empty .");

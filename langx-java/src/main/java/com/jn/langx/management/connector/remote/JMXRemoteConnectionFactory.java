@@ -3,8 +3,8 @@ package com.jn.langx.management.connector.remote;
 import com.jn.langx.management.ConnectorConfiguration;
 import com.jn.langx.management.JMXConnection;
 import com.jn.langx.management.JMXConnectionFactory;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXConnector;
@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class JMXRemoteConnectionFactory implements JMXConnectionFactory {
-    private static final Logger logger = LoggerFactory.getLogger(JMXRemoteConnectionFactory.class);
 
     @Override
     public JMXConnection getConnection(final ConnectorConfiguration config) {
@@ -29,6 +28,7 @@ public abstract class JMXRemoteConnectionFactory implements JMXConnectionFactory
             conn = new JMXRemoteConnection(connSub);
             conn.setConnector(connector);
         } catch (Exception ex) {
+            Logger logger = Loggers.getLogger(getClass());
             logger.error(ex.getMessage(), ex);
         }
         return conn;

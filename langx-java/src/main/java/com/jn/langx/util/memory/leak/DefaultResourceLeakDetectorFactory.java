@@ -3,9 +3,9 @@ package com.jn.langx.util.memory.leak;
 import com.jn.langx.annotation.Singleton;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.security.AccessController;
@@ -13,7 +13,6 @@ import java.security.PrivilegedAction;
 
 @Singleton
 public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFactory {
-    private static final Logger logger = LoggerFactory.getLogger(DefaultResourceLeakDetectorFactory.class);
 
     private final Constructor<?> obsoleteCustomClassConstructor;
     private final Constructor<?> customClassConstructor;
@@ -28,7 +27,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
                 }
             });
         } catch (Throwable cause) {
-            logger.error("Could not access System property: langx.customResourceLeakDetector", cause);
+            Loggers.getLogger(getClass()).error("Could not access System property: langx.customResourceLeakDetector", cause);
             customLeakDetector = null;
         }
         if (Strings.isBlank(customLeakDetector)) {
@@ -41,6 +40,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
     }
 
     private static Constructor<?> find3ArgumentsResourceLeakDetectorConstructor(String customLeakDetector) {
+        Logger logger = Loggers.getLogger(DefaultResourceLeakDetectorFactory.class);
         try {
             final Class<?> detectorClass = Class.forName(customLeakDetector, true,
                     ClassLoader.getSystemClassLoader());
@@ -58,6 +58,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
     }
 
     private static Constructor<?> find2ArgumentsResourceLeakDetectorConstructor(String customLeakDetector) {
+        Logger logger = Loggers.getLogger(DefaultResourceLeakDetectorFactory.class);
         try {
             final Class<?> detectorClass = Class.forName(customLeakDetector, true,
                     ClassLoader.getSystemClassLoader());
@@ -77,6 +78,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
 
     @Override
     public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource, int samplingInterval) {
+        Logger logger = Loggers.getLogger(getClass());
         if (customClassConstructor != null) {
             try {
                 @SuppressWarnings("unchecked")

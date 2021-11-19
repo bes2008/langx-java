@@ -2,13 +2,12 @@ package com.jn.langx.util.os.virtualization;
 
 import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.DefaultCommandLineExecutor;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.OS;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RuntimeContainers {
-    private static final Logger logger = LoggerFactory.getLogger(RuntimeContainers.class);
 
     private static Holder<RuntimeContainer> runtimeContainer;
 
@@ -24,6 +23,7 @@ public class RuntimeContainers {
                 commandLine = CommandLine.parse("cat /proc/1/cpuset");
                 handler = new LinuxGetRuntimeContainerHandler();
             }
+            Logger logger = Loggers.getLogger(RuntimeContainers.class);
             if (commandLine != null && handler != null) {
                 try {
                     executor.setStreamHandler(handler);

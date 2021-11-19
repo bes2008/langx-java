@@ -1,8 +1,7 @@
 package com.jn.langx.management;
 
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Entry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.management.Attribute;
 import javax.management.ObjectName;
@@ -12,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class BaseService implements MBeanService {
-    private static final Logger logger;
     protected Hashtable<String, String> defaultOptions;
     protected String domain;
     protected JMXConnection conn;
@@ -35,7 +33,7 @@ public abstract class BaseService implements MBeanService {
             oname = new ObjectName(this.domain, options);
         } catch (Exception ex) {
         }
-        BaseService.logger.debug("create an ObjectName : " + oname);
+        Loggers.getLogger(getClass()).debug("create an ObjectName : " + oname);
         return oname;
     }
 
@@ -47,7 +45,7 @@ public abstract class BaseService implements MBeanService {
             attrList = this.conn.getAttributes(oname, (String[]) attributeNames.toArray(new String[0])).asList();
         }
         if (attrList == null) {
-            BaseService.logger.warn("The attributeNames is not specified");
+            Loggers.getLogger(getClass()).warn("The attributeNames is not specified");
             return null;
         }
         final List<Entry<String, Object>> mbean = new LinkedList<Entry<String, Object>>();
@@ -59,7 +57,4 @@ public abstract class BaseService implements MBeanService {
         return mbean;
     }
 
-    static {
-        logger = LoggerFactory.getLogger(BaseService.class);
-    }
 }

@@ -13,9 +13,9 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.KeyGeneratorSpi;
@@ -35,7 +35,6 @@ import java.util.List;
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#Key
  */
 public class PKIs extends Securitys {
-    private static final Logger logger = LoggerFactory.getLogger(PKIs.class);
 
     public static PublicKey createPublicKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64PublicKey) {
         Preconditions.checkNotEmpty(base64PublicKey, "the public key is null or empty");
@@ -334,6 +333,7 @@ public class PKIs extends Securitys {
                 return new KeyPair(publicKey, privateKey);
             }
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
             logger.warn("can't find a valid key pair, the alias is {}", alias);
         }
         return null;
@@ -353,6 +353,7 @@ public class PKIs extends Securitys {
                 return (SecretKey) key;
             }
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
             logger.warn("can't find a valid key pair, the alias is {}", alias);
         }
         return null;
@@ -365,6 +366,7 @@ public class PKIs extends Securitys {
             }
             return keyStore.getCertificate(alias);
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
             logger.warn("can't find a valid certificate, the alias is {}", alias);
         }
         return null;
@@ -378,6 +380,7 @@ public class PKIs extends Securitys {
             Certificate[] certificates = keyStore.getCertificateChain(alias);
             return Collects.newArrayList(certificates);
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
             logger.warn("can't find a valid certificate, the alias is {}", alias);
         }
         return null;

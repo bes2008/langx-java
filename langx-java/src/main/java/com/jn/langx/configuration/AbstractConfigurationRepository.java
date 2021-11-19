@@ -23,12 +23,12 @@ import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"unchecked"})
 public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> implements ConfigurationRepository<T, Loader, Writer>, Reloadable {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractConfigurationRepository.class);
     @NonNull
     protected String name;
     @NonNull
@@ -118,6 +117,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         }
         Preconditions.checkNotNull(cache);
         running = true;
+        final Logger logger = Loggers.getLogger(getClass());
         logger.info("Startup configuration repository: {}", name);
 
         if (reloadIntervalInSeconds > 0) {
@@ -153,6 +153,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     @Override
     public void shutdown() {
         running = false;
+        Logger logger = Loggers.getLogger(getClass());
         logger.info("Shutdown configuration repository: {}", name);
         cache.clean();
     }
@@ -242,6 +243,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     private void logMutation(ConfigurationEventType eventType, T configuration) {
+        Logger logger = Loggers.getLogger(getClass());
         if (logger.isInfoEnabled()) {
             String template = eventFactory == null ? " a configuration: {}" : (Strings.startsWithVowelLetter(eventFactory.getDomain()) ? " an {} configuration: {}" : " a {} configuration: {}");
             template = Strings.upperCase(eventType.name().toLowerCase(), 0, 1) + template;
@@ -256,6 +258,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     @Override
     public void init() throws InitializationException {
         Preconditions.checkNotNull(name, "Repository has no named");
+        Logger logger = Loggers.getLogger(getClass());
         logger.info("Initial configuration repository: {}", name);
     }
 
@@ -265,6 +268,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
 
     @Override
     public void reload() {
+        Logger logger = Loggers.getLogger(getClass());
         logger.info("Reload repository {}", name);
     }
 }

@@ -5,15 +5,14 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.commandline.streamhandler.OutputLinesExecuteStreamHandler;
 import com.jn.langx.commandline.streamhandler.OutputAsStringExecuteStreamHandler;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 public class CommandLines {
-    private static final Logger logger = LoggerFactory.getLogger(CommandLines.class);
 
     private CommandLines() {
     }
@@ -32,6 +31,7 @@ public class CommandLines {
         try {
             executor.execute(commandLine, environment);
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(CommandLines.class);
             logger.error(ex.getMessage(), ex);
         }
         return h.getOutputContent();
@@ -51,6 +51,7 @@ public class CommandLines {
         try {
             executor.execute(commandLine, environment);
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(CommandLines.class);
             logger.error(ex.getMessage(), ex);
         }
         return h.getOutputContent();

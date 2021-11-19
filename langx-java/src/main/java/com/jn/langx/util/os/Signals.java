@@ -1,8 +1,8 @@
 package com.jn.langx.util.os;
 
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 
@@ -31,7 +31,6 @@ import java.lang.reflect.*;
  *
  */
 public final class Signals {
-    private static final Logger logger = LoggerFactory.getLogger(Signals.class);
 
     private Signals() {
     }
@@ -48,6 +47,7 @@ public final class Signals {
     }
 
     public static Object register(final String signalName, final Runnable handler, ClassLoader loader) {
+        final Logger logger = Loggers.getLogger(Signals.class);
         try {
             final Class<?> signalHandlerClass = Class.forName("sun.misc.SignalHandler");
             // Implement signal handler interface
@@ -80,6 +80,7 @@ public final class Signals {
             Class<?> signalHandlerClass = Class.forName("sun.misc.SignalHandler");
             return doRegister(name, signalHandlerClass.getField("SIG_DFL").get(null));
         } catch (Exception e) {
+            final Logger logger = Loggers.getLogger(Signals.class);
             // Ignore this one too, if the above failed, the signal API is incompatible with what we're expecting
             logger.debug("Error registering default handler for signal ", name, e);
             return null;
@@ -93,12 +94,14 @@ public final class Signals {
                 doRegister(name, previous);
             }
         } catch (Exception e) {
+            final Logger logger = Loggers.getLogger(Signals.class);
             // Ignore
             logger.debug("Error unregistering handler for signal ", name, e);
         }
     }
 
     private static Object doRegister(String name, Object handler) throws Exception {
+        final Logger logger = Loggers.getLogger(Signals.class);
         logger.debug("Registering signal {} with handler ", toStringx(handler));
         Class<?> signalClass = Class.forName("sun.misc.Signal");
         Constructor<?> constructor = signalClass.getConstructor(String.class);

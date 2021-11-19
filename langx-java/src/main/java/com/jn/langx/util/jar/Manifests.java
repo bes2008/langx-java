@@ -4,18 +4,16 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.net.URL;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 public class Manifests {
-    private static final Logger logger = LoggerFactory.getLogger(Manifests.class);
 
     public static Manifest loadManifest() {
         URL url = Reflects.getCodeLocation(Manifests.class);
@@ -52,6 +50,7 @@ public class Manifests {
             jarFile = new JarFile(jarPath);
             return jarFile.getManifest();
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(Manifests.class);
             logger.warn("Can't find the jar : {}", path0);
             return null;
         } finally {
@@ -66,6 +65,7 @@ public class Manifests {
                 return jarFile.getManifest();
             }
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(Manifests.class);
             logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
             IOs.close(jarFile);
         }

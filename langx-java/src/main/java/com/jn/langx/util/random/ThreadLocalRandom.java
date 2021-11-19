@@ -3,8 +3,8 @@ package com.jn.langx.util.random;
 
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.text.properties.PropertiesAccessor;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.security.SecureRandom;
@@ -47,7 +47,6 @@ public final class ThreadLocalRandom extends Random {
         }
     };
 
-    private static final Logger logger = LoggerFactory.getLogger(ThreadLocalRandom.class);
 
     private static final AtomicLong seedUniquifier = new AtomicLong();
 
@@ -90,6 +89,7 @@ public final class ThreadLocalRandom extends Random {
                 seedGeneratorThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
                     @Override
                     public void uncaughtException(Thread t, Throwable e) {
+                        Logger logger = Loggers.getLogger(ThreadLocalRandom.class);
                         logger.debug("An exception has been raised by {}", t.getName(), e);
                     }
                 });
@@ -128,6 +128,7 @@ public final class ThreadLocalRandom extends Random {
             final long timeoutSeconds = 3;
             final long deadLine = seedGeneratorStartTime + TimeUnit.SECONDS.toNanos(timeoutSeconds);
             boolean interrupted = false;
+            Logger logger = Loggers.getLogger(ThreadLocalRandom.class);
             for (; ; ) {
                 final long waitTime = deadLine - System.nanoTime();
                 try {
@@ -182,6 +183,7 @@ public final class ThreadLocalRandom extends Random {
     }
 
     private static long newSeed() {
+        Logger logger = Loggers.getLogger(ThreadLocalRandom.class);
         for (; ; ) {
             final long current = seedUniquifier.get();
             final long actualCurrent = current != 0 ? current : getInitialSeedUniquifier();

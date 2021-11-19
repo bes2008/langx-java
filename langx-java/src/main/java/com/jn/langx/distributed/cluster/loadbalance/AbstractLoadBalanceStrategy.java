@@ -4,13 +4,12 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION> implements LoadBalanceStrategy<NODE, INVOCATION> {
-    private Logger logger = LoggerFactory.getLogger(getClass());
     private String name;
     @Nullable
     private Weighter weighter;
@@ -62,6 +61,7 @@ public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION>
         }).asList();
 
         if (Emptys.isEmpty(reachableNodes) || getLoadBalancer().isEmpty()) {
+            Logger logger = Loggers.getLogger(getClass());
             logger.warn("Can't find any reachable nodes");
             return null;
         }

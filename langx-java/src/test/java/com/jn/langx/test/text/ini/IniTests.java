@@ -9,15 +9,14 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class IniTests {
-    private static final Logger logger = LoggerFactory.getLogger(IniTests.class);
 
 
     public void test() {
@@ -56,6 +55,7 @@ public class IniTests {
             inputStream = resource.getInputStream();
             ini.load(inputStream);
         } catch (IOException ex) {
+            Logger logger = Loggers.getLogger(getClass());
             logger.error(ex.getMessage(), ex);
         } finally {
             IOs.close(inputStream);

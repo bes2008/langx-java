@@ -2,14 +2,10 @@ package com.jn.langx.security;
 
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.security.gm.GmInitializer;
-import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.struct.Holder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -22,7 +18,6 @@ import java.util.ServiceLoader;
 public class Securitys {
     private static volatile boolean providersLoaded = false;
     private static LangxSecurityProvider langxSecurityProvider;
-    private static Logger logger = LoggerFactory.getLogger(Securitys.class);
 
     public static void setup() {
         if (!providersLoaded) {

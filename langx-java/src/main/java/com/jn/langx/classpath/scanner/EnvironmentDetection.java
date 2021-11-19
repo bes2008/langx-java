@@ -1,14 +1,12 @@
 package com.jn.langx.classpath.scanner;
 
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Detects whether certain features are available or not.
  */
 public class EnvironmentDetection {
-
-    private static final Logger logger = LoggerFactory.getLogger(EnvironmentDetection.class);
 
     /**
      * The ClassLoader to use.
@@ -47,6 +45,7 @@ public class EnvironmentDetection {
     public boolean isJBossVFSv2() {
         if (jbossVFSv2 == null) {
             jbossVFSv2 = isPresent("org.jboss.virtual.VFS", classLoader);
+            Logger logger = Loggers.getLogger(getClass());
             logger.trace("... JBoss VFS v2 available: {}", jbossVFSv2);
         }
 
@@ -61,6 +60,7 @@ public class EnvironmentDetection {
     public boolean isJBossVFSv3() {
         if (jbossVFSv3 == null) {
             jbossVFSv3 = isPresent("org.jboss.vfs.VFS", classLoader);
+            Logger logger = Loggers.getLogger(getClass());
             logger.trace("... JBoss VFS v3 available: {}", jbossVFSv3);
         }
 
@@ -75,6 +75,7 @@ public class EnvironmentDetection {
     public boolean isOsgi() {
         if (osgi == null) {
             osgi = isPresent("org.osgi.framework.Bundle", classLoader);
+            Logger logger = Loggers.getLogger(getClass());
             logger.trace("... OSGi framework available: {}", osgi);
         }
 

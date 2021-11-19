@@ -1,9 +1,9 @@
 package com.jn.langx.util.jni;
 
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -14,7 +14,6 @@ import java.util.Arrays;
 
 public final class NativeLibraryLoader {
 
-    private static final Logger logger = LoggerFactory.getLogger(NativeLibraryLoader.class);
 
     private static final String NATIVE_RESOURCE_HOME = "META-INF/native/";
     private static final File WORKDIR;
@@ -23,8 +22,8 @@ public final class NativeLibraryLoader {
     private static final String NATIVE_LIBRARY_WORK_DIR_KEY=NATIVE_LIBRARY_KEY_PREFIX+".workdir";
     private static final String NATIVE_LIBRARY_DELETE_AFTER_LOADING_KEY=NATIVE_LIBRARY_KEY_PREFIX+".deleteLibAfterLoading";
     static {
-
         String workdir = SystemPropertys.get(NATIVE_LIBRARY_WORK_DIR_KEY);
+        Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
         if (workdir != null) {
             File f = new File(workdir);
             f.mkdirs();
@@ -88,7 +87,7 @@ public final class NativeLibraryLoader {
         } else {
             f = new File("/tmp");
         }
-
+        Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
         logger.warn("Failed to get the temporary directory; falling back to: " + f);
         return f;
     }
@@ -122,6 +121,7 @@ public final class NativeLibraryLoader {
      *         if none of the given libraries load successfully.
      */
     public static void loadFirstAvailable(ClassLoader loader, String... names) {
+        Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
         for (String name : names) {
             try {
                 load(name, loader);
@@ -186,6 +186,7 @@ public final class NativeLibraryLoader {
         InputStream in = null;
         OutputStream out = null;
         File tmpFile = null;
+        Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
         try {
             tmpFile = File.createTempFile(prefix, suffix, WORKDIR);
             in = url.openStream();
@@ -240,6 +241,7 @@ public final class NativeLibraryLoader {
      * @param absolute - Whether the native library will be loaded by path or by name
      */
     private static void loadLibrary(final ClassLoader loader, final String name, final boolean absolute) {
+        Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
         try {
             // Make sure the helper is belong to the target ClassLoader.
             final Class<?> newHelper = tryToLoadClass(loader, NativeLibraryUtil.class);

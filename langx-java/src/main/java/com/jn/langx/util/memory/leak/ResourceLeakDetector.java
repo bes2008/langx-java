@@ -4,10 +4,10 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.text.properties.PropertiesAccessor;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.random.ThreadLocalRandom;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -83,7 +83,6 @@ public class ResourceLeakDetector<T> {
 
     private static Level level;
 
-    private static final Logger logger = LoggerFactory.getLogger(ResourceLeakDetector.class);
 
     static {
         final boolean disabled;
@@ -91,6 +90,7 @@ public class ResourceLeakDetector<T> {
         String enabledSwitch = RESOURCE_LEAK_DETECTION_PREFIX + ".enabled";
         if (systemPropertiesAccessor.get(enabledSwitch) != null) {
             disabled = systemPropertiesAccessor.getBoolean(enabledSwitch, false);
+            Logger logger = Loggers.getLogger(ResourceLeakDetector.class);
             logger.debug("-{}: {}", enabledSwitch, disabled);
         } else {
             disabled = false;
@@ -105,6 +105,7 @@ public class ResourceLeakDetector<T> {
         SAMPLING_INTERVAL = systemPropertiesAccessor.getInteger(PROP_SAMPLING_INTERVAL, DEFAULT_SAMPLING_INTERVAL);
 
         ResourceLeakDetector.level = level;
+        Logger logger = Loggers.getLogger(ResourceLeakDetector.class);
         if (logger.isDebugEnabled()) {
             logger.debug("-D{}: {}", PROP_LEVEL, level.name().toLowerCase());
             logger.debug("-D{}: {}", PROP_TARGET_RECORDS, TARGET_RECORDS);
@@ -196,6 +197,7 @@ public class ResourceLeakDetector<T> {
     }
 
     private void reportLeak() {
+        Logger logger = Loggers.getLogger(getClass());
         if (!logger.isErrorEnabled()) {
             clearRefQueue();
             return;
@@ -227,6 +229,7 @@ public class ResourceLeakDetector<T> {
      * have been detected.
      */
     protected void reportTracedLeak(String resourceType, String records) {
+        Logger logger = Loggers.getLogger(getClass());
         logger.error(
                 "LEAK: {} was not (close | stop | release | dispose, or other similar method) before it's garbage-collected. " +
                         "See https://netty.io/wiki/reference-counted-objects.html for more information.{}",
@@ -238,6 +241,7 @@ public class ResourceLeakDetector<T> {
      * have been detected.
      */
     protected void reportUntracedLeak(String resourceType) {
+        Logger logger = Loggers.getLogger(getClass());
         logger.error("LEAK: {} was not (close | stop | release | dispose, or other similar method) before it's garbage-collected. " +
                         "Enable advanced leak reporting to find out where the leak occurred. " +
                         "To enable advanced leak reporting, " +

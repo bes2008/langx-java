@@ -9,10 +9,10 @@ import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.jar.JarFile;
 
 public class ClassLoaders {
-    private static final Logger logger = LoggerFactory.getLogger(ClassLoaders.class);
 
     public static ClassLoader getClassLoader(final Class<?> clazz) {
         if (System.getSecurityManager() == null) {
@@ -201,7 +200,7 @@ public class ClassLoaders {
     public static Class<?> forName(String fqcn) throws ClassNotFoundException {
 
         Class<?> clazz = THREAD_CL_ACCESSOR.loadClass(fqcn);
-
+        Logger logger = Loggers.getLogger(ClassLoaders.class);
         if (clazz == null) {
             if (logger.isTraceEnabled()) {
                 logger.trace("Unable to load class named [{}] from the thread context ClassLoader. Trying the current ClassLoader...", fqcn);
@@ -246,7 +245,7 @@ public class ClassLoaders {
     public static InputStream getResourceAsStream(String name) {
 
         InputStream is = THREAD_CL_ACCESSOR.getResourceStream(name);
-
+        Logger logger = Loggers.getLogger(ClassLoaders.class);
         if (is == null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Resource [{}] was not found via the thread context ClassLoader.  Trying the current ClassLoader...", name);
@@ -349,6 +348,7 @@ public class ClassLoaders {
                 jarFile = new JarFile(new File(location.toURI()));
                 return jarFile;
             } catch (Throwable ex) {
+                Logger logger = Loggers.getLogger(ClassLoaders.class);
                 logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
                 IOs.close(jarFile);
             }

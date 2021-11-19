@@ -1,12 +1,10 @@
 package com.jn.langx.util.concurrent.interceptor;
 
 import com.jn.langx.util.concurrent.TaskInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jn.langx.util.logging.Loggers;
 
 class LoggerInterceptor implements TaskInterceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggerInterceptor.class);
 
     @Override
     public void doBefore() {
@@ -20,6 +18,6 @@ class LoggerInterceptor implements TaskInterceptor {
 
     @Override
     public void doError(Throwable ex) {
-        logger.warn(ex.getMessage(), ex);
+        Loggers.getLogger(getClass()).warn(ex.getMessage(), ex);
     }
 }

@@ -1,16 +1,15 @@
 package com.jn.langx.util.io.file;
 
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 
 public class FileSystems {
-    private static final Logger logger = LoggerFactory.getLogger(FileSystems.class);
 
     /**
      * Checks if the request number of bytes of free disk space are available under the given
@@ -29,6 +28,7 @@ public class FileSystems {
             // There is no straightforward fix for this and it seems a fix is included in Java 9.
             // One alternative is to launch and parse a DIR command and look at the reported free space.
             // This is a temporary fix to get the CI tests going which relies on SUBST'ed drives to manage long paths.
+            Logger logger = Loggers.getLogger(FileSystems.class);
             logger.warn("Cannot retrieve free space on " + path.toString() + ". This is probably a SUBST'ed drive.");
             return true;
         }

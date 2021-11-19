@@ -5,13 +5,12 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.logging.Loggers;
 import org.gmssl.GmSSL;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GmsslGmService implements GmService {
     public static final String NAME = "GmSSL-GmService";
-    private static final Logger logger = LoggerFactory.getLogger(GmsslGmService.class);
     private final GmSSL gmssl = new GmSSL();
 
     @Override
@@ -142,6 +141,7 @@ public class GmsslGmService implements GmService {
     private void logErrors() {
         String[] errors = gmssl.getErrorStrings();
         if (errors != null) {
+            final Logger logger = Loggers.getLogger(getClass());
             Collects.forEach(gmssl.getErrorStrings(), new Consumer<String>() {
                 @Override
                 public void accept(String s) {

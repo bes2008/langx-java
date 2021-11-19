@@ -8,13 +8,10 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class GenericPatternSetExpressionParser<PatternEntry extends Named> implements PatternSetExpressionParser<PatternEntry> {
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     @NonNull
     private Factory<String, PatternEntry> patternFactory;

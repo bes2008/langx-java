@@ -25,8 +25,8 @@ import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.io.file.filter.WriteableFileFilter;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 public class DirectoryBasedFileConfigurationWriter<T extends Configuration> implements ConfigurationWriter<T> {
-    private static final Logger logger = LoggerFactory.getLogger(DirectoryBasedFileConfigurationWriter.class);
 
     private String directory;
 
@@ -68,6 +67,7 @@ public class DirectoryBasedFileConfigurationWriter<T extends Configuration> impl
                 outputStream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
                 IOs.write(configString, outputStream, encoding);
             } else {
+                Logger logger = Loggers.getLogger(getClass());
                 logger.warn("write configuration to file fail, file: {}, configuration: {}", filePath, configuration);
             }
         } catch (IOException ex) {

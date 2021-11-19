@@ -1,13 +1,11 @@
 package com.jn.langx.util.net;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.jar.multiplelevel.MultipleLevelURLStreamHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jn.langx.util.logging.Loggers;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class URLs {
-    private static final Logger logger = LoggerFactory.getLogger(URLs.class);
 
     private static final Map<String,String> URL_PREFIX_MAPPING = new HashMap<String, String>();
 
@@ -31,7 +28,7 @@ public class URLs {
         try {
             return uri.toURL();
         } catch (Throwable ex) {
-            logger.warn("error url: {}", uri);
+            Loggers.getLogger(URLs.class).warn("error url: {}", uri);
             return null;
         }
     }
@@ -41,7 +38,7 @@ public class URLs {
         try {
             return new URL(url);
         } catch (Throwable ex) {
-            logger.warn("error url: {}", url);
+            Loggers.getLogger(URLs.class).warn("error url: {}", url);
             return null;
         }
     }

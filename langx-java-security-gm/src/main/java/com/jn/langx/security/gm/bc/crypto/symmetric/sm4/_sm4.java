@@ -4,8 +4,6 @@ package com.jn.langx.security.gm.bc.crypto.symmetric.sm4;
 import com.jn.langx.codec.base64.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -14,7 +12,6 @@ import java.security.*;
 
 class _sm4 {
 
-    private static Logger logger = LoggerFactory.getLogger(_sm4.class);
 
     private static final String PROVIDER_NAME = "BC";
     public static final String ALGORITHM_NAME = "SM4";

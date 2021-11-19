@@ -23,8 +23,8 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.diff.MapDiffResult;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.io.file.Files;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Map;
@@ -35,7 +35,6 @@ import java.util.Map;
  * @param <T>
  */
 public class DirectoryBasedFileConfigurationRepository<T extends Configuration> extends AbstractConfigurationRepository<T, DirectoryBasedFileConfigurationLoader<T>, DirectoryBasedFileConfigurationWriter<T>> {
-    private static final Logger logger = LoggerFactory.getLogger(DirectoryBasedFileConfigurationRepository.class);
 
     private String directory;
 
@@ -53,6 +52,7 @@ public class DirectoryBasedFileConfigurationRepository<T extends Configuration> 
             super.init();
             Preconditions.checkNotNull(loader, "the configuration load is null");
             Preconditions.checkTrue(Strings.isNotBlank(directory), "directory is null");
+            Logger logger = Loggers.getLogger(getClass());
             if (!Files.exists(new File(directory))) {
                 logger.warn("Can't find a directory : {}, will create it", new File(directory).getAbsoluteFile());
                 Files.makeDirs(directory);

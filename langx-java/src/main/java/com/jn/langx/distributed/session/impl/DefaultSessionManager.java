@@ -8,8 +8,6 @@ import com.jn.langx.lifecycle.AbstractInitializable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class DefaultSessionManager extends AbstractInitializable implements SessionManager, EventPublisherAware {
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultSessionManager.class);
 
     private SessionFactory sessionFactory;
     protected SessionRepository repository;

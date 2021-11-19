@@ -2,9 +2,9 @@ package com.jn.langx.util.os;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,6 @@ import java.util.Locale;
 import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
 public class Platform {
-    private static final Logger logger = LoggerFactory.getLogger(Platform.class);
     private static final String    OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
 
     public static final boolean isWindows = isWindows0();
@@ -54,6 +53,7 @@ public class Platform {
             isAndroid = Strings.getEmptyIfNull(runtime).toLowerCase().contains("android");
         }
         if (isAndroid) {
+            Logger logger = Loggers.getLogger(Platform.class);
             logger.debug("Platform: Android");
         }
         return isAndroid;
@@ -77,7 +77,7 @@ public class Platform {
         } else {
             majorVersion = majorVersionFromJavaSpecificationVersion();
         }
-
+        Logger logger = Loggers.getLogger(Platform.class);
         logger.debug("Java version: {}", majorVersion);
 
         return majorVersion;

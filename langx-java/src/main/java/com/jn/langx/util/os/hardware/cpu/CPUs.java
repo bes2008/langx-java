@@ -2,14 +2,13 @@ package com.jn.langx.util.os.hardware.cpu;
 
 import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.DefaultCommandLineExecutor;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.OS;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class CPUs {
-    private static final Logger logger = LoggerFactory.getLogger(CPUs.class);
     private static Holder<String> cpuId;
 
     private CPUs() {
@@ -27,6 +26,7 @@ public class CPUs {
                 commandLine = CommandLine.parse("sudo dmidecode -t 4 | grep ID");
                 handler = new LinuxGetCpuIdStreamHandler();
             }
+            final Logger logger = Loggers.getLogger(CPUs.class);
             if (commandLine != null) {
                 try {
                     executor.setStreamHandler(handler);

@@ -10,8 +10,8 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
@@ -32,8 +32,6 @@ public class Ini implements Map<String, Ini.Section> {
     private static final String SECTION_PREFIX = "[";
     private static final String SECTION_SUFFIX = "]";
     private static final char ESCAPE_TOKEN = '\\';
-    private static final Logger logger = LoggerFactory.getLogger(Ini.class);
-    private static final transient Logger log = LoggerFactory.getLogger(Ini.class);
     private final Map<String, Ini.Section> sections;
 
     public Ini() {
@@ -181,6 +179,7 @@ public class Ini implements Map<String, Ini.Section> {
         StringBuilder sectionContent = new StringBuilder();
 
         String rawLine;
+        Logger logger = Loggers.getLogger(getClass());
         try {
             while ((rawLine = bufferedReader.readLine()) != null) {
                 String line = Strings.trim(rawLine);
@@ -190,8 +189,8 @@ public class Ini implements Map<String, Ini.Section> {
                         this.addSection(sectionName, sectionContent);
                         sectionContent = new StringBuilder();
                         sectionName = newSectionName;
-                        if (log.isDebugEnabled()) {
-                            log.debug("Parsing [" + newSectionName + "]");
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Parsing [" + newSectionName + "]");
                         }
                     } else {
                         sectionContent.append(rawLine).append("\n");
@@ -398,7 +397,8 @@ public class Ini implements Map<String, Ini.Section> {
                 String key = Strings.trim(keyBuffer.toString());
                 String value = Strings.trim(valueBuffer.toString());
                 if (Strings.isNotEmpty(key) && Strings.isNotEmpty(value)) {
-                    Ini.log.trace("Discovered key/value pair: {} = {}", key, value);
+                    Logger logger = Loggers.getLogger(Ini.class);
+                    logger.trace("Discovered key/value pair: {} = {}", key, value);
                     return new String[]{key, value};
                 } else {
                     String msg = "Line argument must contain a key and a value.  Only one string token was found.";

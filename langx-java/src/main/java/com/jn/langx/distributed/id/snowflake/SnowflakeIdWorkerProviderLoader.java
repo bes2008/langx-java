@@ -2,15 +2,14 @@ package com.jn.langx.distributed.id.snowflake;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 
 public class SnowflakeIdWorkerProviderLoader {
-    private static final Logger logger = LoggerFactory.getLogger(SnowflakeIdWorkerProviderLoader.class);
     private static final SnowflakeIdWorkerProvider DEFAULT_PROVIDER = new SystemEnvironmentSnowflakeIdWorkerProvider();
     private static volatile boolean loaded = false;
 
@@ -30,6 +29,7 @@ public class SnowflakeIdWorkerProviderLoader {
                         }
                     });
                     loaded = true;
+                    Logger logger = Loggers.getLogger(SnowflakeIdWorkerProviderLoader.class);
                     if (LOADED_PROVIDER_MAP.isEmpty()) {
                         logger.warn("Has not any SnowflakeIdWorkerProvider found, will use the SystemEnvironmentSnowflakeIdWorkerProvider: {}", LOADED_PROVIDER_MAP.keySet().toString());
                     } else if (LOADED_PROVIDER_MAP.size() > 1) {

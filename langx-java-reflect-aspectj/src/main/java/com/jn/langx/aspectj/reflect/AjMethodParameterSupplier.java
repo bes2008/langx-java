@@ -6,6 +6,7 @@ import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.jar.JarNotFoundException;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.ParameterServiceRegistry;
@@ -19,13 +20,11 @@ import org.aspectj.apache.bcel.classfile.LocalVariable;
 import org.aspectj.apache.bcel.classfile.LocalVariableTable;
 import org.aspectj.apache.bcel.util.Repository;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
 @Name(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME)
 public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
-    private static final Logger logger = LoggerFactory.getLogger(AjMethodParameterSupplier.class);
     private MethodParameterSupplier delegate;
 
     public AjMethodParameterSupplier() {
@@ -77,6 +76,7 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
 
     private String findRealParameterName(ParameterMeta meta) {
         String classname = null;
+        Logger logger = Loggers.getLogger(getClass());
         try {
             Method method = (Method) meta.getExecutable();
             Class declaringClass = method.getDeclaringClass();

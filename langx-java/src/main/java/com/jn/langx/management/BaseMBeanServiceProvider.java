@@ -1,9 +1,9 @@
 package com.jn.langx.management;
 
 import com.jn.langx.registry.Registry;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -11,7 +11,6 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BaseMBeanServiceProvider implements Registry<Class, MBeanService> {
-    private static final Logger logger = LoggerFactory.getLogger(BaseMBeanServiceProvider.class);
     private static final Map<Class<?>, MBeanService> registry = new ConcurrentHashMap<Class<?>, MBeanService>();
 
     @Override
@@ -44,6 +43,7 @@ public class BaseMBeanServiceProvider implements Registry<Class, MBeanService> {
             }
             final ServiceLoader<S> loader = ServiceLoader.load(serviceClazz);
             final Iterator<S> iter = loader.iterator();
+            Logger logger = Loggers.getLogger(BaseMBeanServiceProvider.class);
             while (iter.hasNext()) {
                 try {
                     final S svc = (S) iter.next();

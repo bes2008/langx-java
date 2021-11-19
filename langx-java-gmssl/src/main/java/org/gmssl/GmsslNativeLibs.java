@@ -3,8 +3,8 @@ package org.gmssl;
 
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.jni.NativeLibraryUtil;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -15,7 +15,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class GmsslNativeLibs {
-    private static final Logger logger = LoggerFactory.getLogger(GmsslNativeLibs.class);
 
     private static void saveLibrary(JarEntry jarEntry) {
         File tmpFile = new File("./.gmssl");
@@ -47,6 +46,7 @@ public class GmsslNativeLibs {
             }
             addLibraryDir(jarFile.getParentFile().getAbsolutePath());
         } catch (IOException e) {
+            Logger logger = Loggers.getLogger(GmsslNativeLibs.class);
             logger.error(e.getMessage(), e);
         } finally {
             IOs.close(in);

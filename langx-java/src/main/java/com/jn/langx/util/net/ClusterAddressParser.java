@@ -9,8 +9,8 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Predicate2;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -27,7 +27,6 @@ import java.util.List;
  * </pre>
  */
 public class ClusterAddressParser implements Parser<String, List<NetworkAddress>> {
-    private static final Logger logger = LoggerFactory.getLogger(ClusterAddressParser.class);
     private int defaultPort = -1;
 
     public ClusterAddressParser() {
@@ -73,6 +72,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
         final List<NetworkAddress> ret = new LinkedList<NetworkAddress>();
 
         String[] segments = Strings.split(s, ",");
+        Logger logger = Loggers.getLogger(getClass());
         for (String segment : segments) {
             segment = Strings.strip(segment);
             String[] ipSegments = segment.split(":");

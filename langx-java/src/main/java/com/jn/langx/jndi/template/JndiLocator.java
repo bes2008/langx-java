@@ -4,8 +4,8 @@ package com.jn.langx.jndi.template;
 import java.util.Properties;
 import javax.naming.NamingException;
 
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Convenient superclass for JNDI accessors, providing "jndiTemplate"
@@ -22,11 +22,6 @@ import org.slf4j.LoggerFactory;
  * @since 2.10.0
  */
 public class JndiLocator {
-
-    /**
-     * Private class log.
-     */
-    private static final Logger log = LoggerFactory.getLogger(JndiLocator.class);
 
     /**
      * JNDI prefix used in a J2EE container
@@ -121,6 +116,7 @@ public class JndiLocator {
         }
         String convertedName = convertJndiName(jndiName);
         Object jndiObject;
+        Logger log = Loggers.getLogger(getClass());
         try {
             jndiObject = getJndiTemplate().lookup(convertedName, requiredType);
         }

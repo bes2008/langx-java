@@ -1,11 +1,11 @@
 package com.jn.langx.util.net.hosts;
 
 
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.net.Nets;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.Inet4Address;
@@ -27,7 +27,6 @@ public final class HostsFileParser {
 
     private static final Pattern WHITESPACES = Pattern.compile("[ \t]+");
 
-    private static final Logger logger = LoggerFactory.getLogger(HostsFileParser.class);
 
     private static File locateHostsFile() {
         File hostsFile;
@@ -63,6 +62,7 @@ public final class HostsFileParser {
         try {
             return parse(hostsFile, charsets);
         } catch (IOException e) {
+            Logger logger = Loggers.getLogger(HostsFileParser.class);
             if (logger.isWarnEnabled()) {
                 logger.warn("Failed to load and parse hosts file at " + hostsFile.getPath(), e);
             }
@@ -188,6 +188,7 @@ public final class HostsFileParser {
             try {
                 buff.close();
             } catch (IOException e) {
+                Logger logger = Loggers.getLogger(HostsFileParser.class);
                 logger.warn("Failed to close a reader", e);
             }
         }

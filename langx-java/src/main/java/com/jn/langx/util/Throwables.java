@@ -11,7 +11,6 @@ import com.jn.langx.util.logging.Level;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +23,6 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
 public class Throwables {
-    public static final Logger logger = LoggerFactory.getLogger(Throwables.class);
 
     private Throwables() {
     }
@@ -297,7 +295,7 @@ public class Throwables {
         try {
             return func.apply(arg);
         } catch (Throwable ex) {
-            logger = logger == null ? Throwables.logger : logger;
+            logger = logger == null ? Loggers.getLogger(Throwables.class) : logger;
             logger.error(ex.getMessage(), ex);
             return valueIfError;
         }
@@ -325,7 +323,7 @@ public class Throwables {
         try {
             return func.apply(arg1, arg2);
         } catch (Throwable ex) {
-            logger = logger == null ? Throwables.logger : logger;
+            logger = logger == null ? Loggers.getLogger(Throwables.class) : logger;
             logger.error(ex.getMessage(), ex);
             return valueIfError;
         }
@@ -358,7 +356,7 @@ public class Throwables {
                     return Reflects.isSubClassOrEquals(exceptionClass, exClass);
                 }
             })) {
-                logger = logger == null ? Throwables.logger : logger;
+                logger = logger == null ? Loggers.getLogger(Throwables.class) : logger;
                 logger.error(ex.getMessage(), ex);
             }
             return valueIfError;
@@ -395,7 +393,7 @@ public class Throwables {
                     return Reflects.isSubClassOrEquals(exceptionClass, exClass);
                 }
             })) {
-                logger = logger == null ? Throwables.logger : logger;
+                logger = logger == null ? Loggers.getLogger(Throwables.class) : logger;
                 logger.error(ex.getMessage(), ex);
             }
             return valueIfError;

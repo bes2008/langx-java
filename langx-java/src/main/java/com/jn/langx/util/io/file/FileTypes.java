@@ -12,8 +12,8 @@ import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Properties;
 
 public class FileTypes {
-    private static final Logger logger = LoggerFactory.getLogger(FileTypes.class);
     private static final MultiValueMap fileTypesMap = new LinkedMultiValueMap<String, String>();
 
     static {
@@ -43,6 +42,7 @@ public class FileTypes {
                 }
             });
         } catch (IOException ex) {
+            Logger logger = Loggers.getLogger(FileTypes.class);
             logger.warn("Error occur when load filetypes.properties");
         }
     }

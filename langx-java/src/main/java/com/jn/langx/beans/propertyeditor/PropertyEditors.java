@@ -17,9 +17,9 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.type.Primitives;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.beans.*;
 import java.lang.reflect.Method;
@@ -37,10 +37,6 @@ import java.util.Properties;
  */
 @SuppressWarnings("unchecked")
 public class PropertyEditors {
-    /**
-     * The Logger object
-     */
-    private static Logger log = LoggerFactory.getLogger(PropertyEditors.class);
 
     /**
      * The null string
@@ -286,7 +282,7 @@ public class PropertyEditors {
             String fieldName = props[p].getName();
             propertyMap.put(fieldName, props[p]);
         }
-
+        Logger log = Loggers.getLogger(PropertyEditors.class);
         boolean trace = log.isTraceEnabled();
         Iterator keys = beanProps.keySet().iterator();
         if (trace)
@@ -399,6 +395,7 @@ public class PropertyEditors {
                 if (System.getProperty("com.jn.langx.util.null.disabled") != null)
                     disableIsNull = true;
             } catch (Throwable ignored) {
+                Logger log = Loggers.getLogger(PropertyEditors.class);
                 log.error("Error retrieving system property com.jn.langx.util.null.disabled", ignored);
             }
             return null;

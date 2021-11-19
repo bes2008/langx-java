@@ -1,14 +1,15 @@
 package com.jn.langx.security.crypto.provider;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.security.Provider;
 import java.util.Map;
@@ -19,7 +20,6 @@ import java.util.TreeMap;
  * langx 没有经过签名，最好是只往里面放 message digest 算法，加密算法都是要求算法所在的Jar包进行过 签名的
  */
 public class LangxSecurityProvider extends Provider implements ConfigurableSecurityProvider {
-    private static final Logger logger = LoggerFactory.getLogger(LangxSecurityProvider.class);
     public static final String NAME = "langx-java-security-provider";
 
 
@@ -46,6 +46,7 @@ public class LangxSecurityProvider extends Provider implements ConfigurableSecur
 
     public void addAlgorithm(String key, String value) {
         if (containsKey(key)) {
+            Logger logger = Loggers.getLogger(PKIs.class);
             logger.warn("duplicate provider key {} found, its value: {}", key, get(key));
             return;
         }

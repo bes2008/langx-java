@@ -29,8 +29,8 @@ import com.jn.langx.util.io.file.Filenames;
 import com.jn.langx.util.io.file.filter.AllFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
 import com.jn.langx.util.io.file.filter.ReadableFileFilter;
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.InputStream;
@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 
 public class DirectoryBasedFileConfigurationLoader<T extends Configuration> implements ConfigurationLoader<T> {
-    private static final Logger logger = LoggerFactory.getLogger(DirectoryBasedFileConfigurationLoader.class);
     private DirectoryBasedFileResourceLoader resourceLoader;
     private InputStreamConfigurationParser<T> configurationParser;
 
@@ -90,6 +89,7 @@ public class DirectoryBasedFileConfigurationLoader<T extends Configuration> impl
             configuration = configurationParser.parse(inputStream);
             configuration.setId(id);
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(getClass());
             logger.info("Error occur when load configuration: {}", id);
         } finally {
             IOs.close(inputStream);

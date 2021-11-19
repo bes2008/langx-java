@@ -14,9 +14,9 @@ import com.jn.langx.util.collection.multivalue.CommonMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.security.PrivateKey;
 import java.security.Provider;
@@ -24,7 +24,6 @@ import java.security.spec.KeySpec;
 import java.util.Collection;
 
 public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<PrivateKey> {
-    private static final Logger logger = LoggerFactory.getLogger(BytesBasedPrivateKeySupplier.class);
 
     private final MultiValueMap<String, Parser<byte[], ? extends KeySpec>> keySpecParsers = new CommonMultiValueMap<String, Parser<byte[], ? extends KeySpec>>();
 
@@ -43,6 +42,7 @@ public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<Priva
         String _algorithm = Asymmetrics.extractCipherAlgorithm(algorithm);
         Collection<Parser<byte[], ? extends KeySpec>> parsers = keySpecParsers.get(_algorithm);
         final Holder<KeySpec> keySpecHolder = new Holder<KeySpec>();
+        final Logger logger = Loggers.getLogger(getClass());
         Pipeline.of(parsers)
                 .add(Pkcs8PrivateKeySpecParser.INSTANCE)
                 .forEach(new Consumer<Parser<byte[], ? extends KeySpec>>() {

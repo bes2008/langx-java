@@ -9,10 +9,10 @@ import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.*;
@@ -26,7 +26,6 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 
 public class Nets {
-    private static final Logger logger = LoggerFactory.getLogger(Nets.class);
     /**
      * The {@link Inet4Address} that represents the IPv4 loopback address '127.0.0.1'
      */
@@ -107,8 +106,8 @@ public class Nets {
     static {
         final PropertiesAccessor systemPropertiesAccessor = SystemPropertys.getAccessor();
         IPV4_PREFERRED = systemPropertiesAccessor.getBoolean("java.net.preferIPv4Stack", false);
-        IPV6_ADDRESSES_PREFERRED =
-                systemPropertiesAccessor.getBoolean("java.net.preferIPv6Addresses", false);
+        IPV6_ADDRESSES_PREFERRED = systemPropertiesAccessor.getBoolean("java.net.preferIPv6Addresses", false);
+        final Logger logger = Loggers.getLogger(Nets.class);
         logger.debug("-Djava.net.preferIPv4Stack: {}", IPV4_PREFERRED);
         logger.debug("-Djava.net.preferIPv6Addresses: {}", IPV6_ADDRESSES_PREFERRED);
 

@@ -5,13 +5,13 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.ImmediateExecutor;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.memory.leak.ResourceLeakDetector;
 import com.jn.langx.util.memory.leak.ResourceLeakDetectorFactory;
 import com.jn.langx.util.memory.leak.ResourceLeakTracker;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -66,8 +66,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * <a href="http://www.cse.wustl.edu/~cdgill/courses/cs6874/TimingWheels.ppt">here</a>.
  */
 public class HashedWheelTimer implements Timer {
-
-    static final Logger logger = LoggerFactory.getLogger(HashedWheelTimer.class);
 
     private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger();
     private static final AtomicBoolean WARNED_TOO_MANY_INSTANCES = new AtomicBoolean();
@@ -255,6 +253,7 @@ public class HashedWheelTimer implements Timer {
         }
 
         if (duration < MILLISECOND_NANOS) {
+            Logger logger = Loggers.getLogger(HashedWheelTimer.class);
             if (logger.isWarnEnabled()) {
                 logger.warn(StringTemplates.formatWithCStyle("Configured tickDuration %d smaller then %d, using 1ms.",
                         tickDuration, MILLISECOND_NANOS));
@@ -434,6 +433,7 @@ public class HashedWheelTimer implements Timer {
     }
 
     private static void reportTooManyInstances() {
+        Logger logger = Loggers.getLogger(HashedWheelTimer.class);
         if (logger.isErrorEnabled()) {
             String resourceType = Reflects.getSimpleClassName(HashedWheelTimer.class);
             logger.error("You are creating too many " + resourceType + " instances. " +
@@ -522,6 +522,7 @@ public class HashedWheelTimer implements Timer {
                 try {
                     timeout.remove();
                 } catch (Throwable t) {
+                    Logger logger = Loggers.getLogger(HashedWheelTimer.class);
                     if (logger.isWarnEnabled()) {
                         logger.warn("An exception was thrown while process a cancellation task", t);
                     }

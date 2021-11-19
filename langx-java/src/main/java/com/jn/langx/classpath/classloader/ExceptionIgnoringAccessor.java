@@ -1,21 +1,20 @@
 package com.jn.langx.classpath.classloader;
 
+import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
 public abstract class ExceptionIgnoringAccessor implements ClassLoaderAccessor {
-    private static final Logger log = LoggerFactory.getLogger(ExceptionIgnoringAccessor.class);
 
     public Class loadClass(String fqcn) {
         Class clazz = null;
         ClassLoader cl = getClassLoader();
         if (cl != null) {
             try {
-                //SHIRO-767: Use Class.forName instead of cl.loadClass(), as byte arrays would fail otherwise.
                 clazz = Class.forName(fqcn, false, cl);
             } catch (ClassNotFoundException e) {
+                Logger log = Loggers.getLogger(ExceptionIgnoringAccessor.class);
                 if (log.isTraceEnabled()) {
                     log.trace("Unable to load clazz named [" + fqcn + "] from class loader [" + cl + "]");
                 }
@@ -37,6 +36,7 @@ public abstract class ExceptionIgnoringAccessor implements ClassLoaderAccessor {
         try {
             return doGetClassLoader();
         } catch (Throwable t) {
+            Logger log = Loggers.getLogger(ExceptionIgnoringAccessor.class);
             if (log.isDebugEnabled()) {
                 log.debug("Unable to acquire ClassLoader.", t);
             }

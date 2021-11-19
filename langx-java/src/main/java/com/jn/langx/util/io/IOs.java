@@ -9,9 +9,9 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.*;
@@ -32,7 +32,6 @@ import java.util.Scanner;
 public class IOs {
     public static final int EOF = -1;
     public static final String LINE_SEPARATOR = LineDelimiter.DEFAULT.getValue();
-    private static final Logger logger = LoggerFactory.getLogger(IOs.class);
     /**
      * The default buffer size ({@value}) to use for
      * {@link #copyLarge(InputStream, OutputStream)}
@@ -89,6 +88,7 @@ public class IOs {
                 Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
             }
         } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(IOs.class);
             logger.warn(ex.getMessage(), ex);
         }
     }
