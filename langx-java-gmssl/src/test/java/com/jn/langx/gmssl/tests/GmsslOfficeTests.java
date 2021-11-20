@@ -77,11 +77,11 @@ public class GmsslOfficeTests {
         //byte[] key = {1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
         byte[] key = {1,2,3,4,5,6,7,1,1,2,3,4,5,6,7,1};
         byte[] iv = {1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8};
-        byte[] ciphertext = gmssl.symmetricEncrypt("SM4-CBC", "01234567".getBytes(), key, iv);
+        byte[] ciphertext = gmssl.symmetricEncrypt("SM4-ECB", "01234567".getBytes(), key, iv);
 
         System.out.print("Ciphertext base64: "+ Base64.encodeBase64String(ciphertext));
         System.out.println("");
-        byte[] plaintext = gmssl.symmetricDecrypt("SM4-CBC", ciphertext, key, iv);
+        byte[] plaintext = gmssl.symmetricDecrypt("SM4-ECB", ciphertext, key, iv);
         System.out.print("Plaintext: "+new String(plaintext));
 
         System.out.println("");

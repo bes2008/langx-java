@@ -122,7 +122,8 @@ public class GmsslGmService extends AbstractGmService {
      * @param iv
      * @return 加密后的值
      * <p>
-     * SMS4 默认采用 PKC#7 padding
+     * SM4 默认采用 PKC#7 padding
+     * 目前ECB模式不可用，会core dump
      */
     @Override
     public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
@@ -138,7 +139,8 @@ public class GmsslGmService extends AbstractGmService {
         }
         if (cipher.contains("-ECB")) {
             // ECB 模式内部执行过程中，存在修正IV的可能
-            iv = Arrs.copy(iv);
+            //iv = Arrs.copy(iv);
+            iv = null;
         }
         // 目前 ECB 模式会返回 null, 这是有Bug的，
         byte[] bytes = gmssl.symmetricEncrypt(cipher, data, secretKey, iv);
@@ -171,7 +173,8 @@ public class GmsslGmService extends AbstractGmService {
         }
         if (cipher.contains("-ECB")) {
             // ECB 模式内部执行过程中，存在修正IV的可能
-            iv = Arrs.copy(iv);
+            // iv = Arrs.copy(iv);
+            iv = null;
         }
         return gmssl.symmetricDecrypt(cipher, encryptedBytes, secretKey, iv);
     }

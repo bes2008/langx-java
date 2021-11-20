@@ -119,6 +119,21 @@ public class GMsTests {
         testSM4_for_mode(Symmetrics.MODE.CBC);
     }
 
+    @Test
+    public void testSM4_CFB() {
+        testSM4_for_mode(Symmetrics.MODE.CFB);
+    }
+
+    @Test
+    public void testSM4_OFB() {
+        testSM4_for_mode(Symmetrics.MODE.OFB);
+    }
+
+    @Test
+    public void testSM4_CTR() {
+        testSM4_for_mode(Symmetrics.MODE.CTR);
+    }
+
     /**
      * 测试后证明，使用BC SM4，GmSSL SM4 结果一致，可以互通，可以互相解密
      */
