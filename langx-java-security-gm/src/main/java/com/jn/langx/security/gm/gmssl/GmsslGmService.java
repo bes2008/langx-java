@@ -133,10 +133,8 @@ public class GmsslGmService extends AbstractGmService {
         if (!supportedCiphers.containsKey(cipher)) {
             throw new AlgorithmUnregisteredException(cipher);
         }
-        if (cipher.contains("-CBC") || cipher.contains("-ECB")) {
-            if (Emptys.isEmpty(iv)) {
-                iv = GmService.SM4_IV_DEFAULT;
-            }
+        if (Emptys.isEmpty(iv)) {
+            iv = GmService.SM4_IV_DEFAULT;
         }
         if (cipher.contains("-ECB")) {
             // ECB 模式内部执行过程中，存在修正IV的可能
@@ -168,10 +166,8 @@ public class GmsslGmService extends AbstractGmService {
         if (!supportedCiphers.containsKey(cipher)) {
             throw new AlgorithmUnregisteredException(cipher);
         }
-        if (cipher.contains("-CBC") || cipher.contains("-ECB")) {
-            if (Emptys.isEmpty(iv)) {
-                iv = GmService.SM4_IV_DEFAULT;
-            }
+        if (Emptys.isEmpty(iv)) {
+            iv = GmService.SM4_IV_DEFAULT;
         }
         if (cipher.contains("-ECB")) {
             // ECB 模式内部执行过程中，存在修正IV的可能
