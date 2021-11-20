@@ -76,10 +76,8 @@ public class BcGmService extends AbstractGmService {
             mode = Symmetrics.MODE.CBC;
         }
         String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
-        if (transformation.contains("CBC")) {
-            if (Emptys.isEmpty(iv)) {
-                iv = GmService.SM4_IV_DEFAULT;
-            }
+        if (Emptys.isEmpty(iv)) {
+            iv = GmService.SM4_IV_DEFAULT;
         }
         return Symmetrics.encrypt(data, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
@@ -100,10 +98,8 @@ public class BcGmService extends AbstractGmService {
             mode = Symmetrics.MODE.CBC;
         }
         String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
-        if (transformation.contains("CBC")) {
-            if (Emptys.isEmpty(iv)) {
-                iv = GmService.SM4_IV_DEFAULT;
-            }
+        if (Emptys.isEmpty(iv)) {
+            iv = GmService.SM4_IV_DEFAULT;
         }
         return Symmetrics.decrypt(encryptedBytes, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
