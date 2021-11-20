@@ -3,6 +3,9 @@ package com.jn.langx.gmssl.tests;
 import com.jn.langx.codec.base64.Base64;
 import org.gmssl.GmSSL;
 
+/**
+ * Gmssl 官方测试用例
+ */
 public class GmsslOfficeTests {
 
     public static void main(String[] args) {
