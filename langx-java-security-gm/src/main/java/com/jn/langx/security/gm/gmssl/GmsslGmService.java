@@ -177,11 +177,7 @@ public class GmsslGmService extends AbstractGmService {
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        if (cipher.contains("-ECB")) {
-            // ECB 模式内部执行过程中，存在修正IV的可能
-            // iv = Arrs.copy(iv);
-            iv = null;
-        }
+        iv = Arrs.copy(iv);
         return gmssl.symmetricDecrypt(cipher, encryptedBytes, secretKey, iv);
     }
 
@@ -193,7 +189,6 @@ public class GmsslGmService extends AbstractGmService {
                 @Override
                 public void accept(String s) {
                     logger.error(s);
-                    System.out.println(s);
                 }
             });
         }
