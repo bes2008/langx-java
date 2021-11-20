@@ -138,30 +138,42 @@ public class GMsTests {
      * 测试后证明，使用BC SM4，GmSSL SM4 结果一致，可以互通，可以互相解密
      */
     private void testSM4_for_mode(Symmetrics.MODE mode) {
-        String str = "hello_234";
+        String str = "hello_234_afjlwefj_234r00e03_234212312&&**jsdfjx";
 
         byte[] sm4Key = new SM4KeyGenerator().genSecretKey();
 
         GmService gmService = gms.getGmService(BcGmService.NAME);
         byte[] encryptedBytes = gmService.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
         showSM4(gmService, "SM4/" + mode.name(), sm4Key, null, encryptedBytes);
-        System.out.println(new String(gmService.sm4Decrypt(encryptedBytes, mode, sm4Key)));
+        byte[] decryptedBytes1 = gmService.sm4Decrypt(encryptedBytes, mode, sm4Key);
+        System.out.println("1："+ new String(decryptedBytes1));
 
         GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
         byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
+        byte[] decryptedBytes2=null;
         if (encryptedBytes2 != null) {
             showSM4(gmService2, "SM4/" + mode.name(), sm4Key, null, encryptedBytes2);
-            System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes2, mode, sm4Key))));
+            decryptedBytes2 = gmService2.sm4Decrypt(encryptedBytes2, mode, sm4Key);
+            System.out.println("2："+new String(decryptedBytes2));
         } else {
-            System.out.println("Error when encrypt use gmssl SM4-" + mode.name());
+            System.out.println("2：Error when encrypt use gmssl SM4-" + mode.name());
+        }
+
+
+        // 接下来 使用  gmssl 来解码 BC 编码后的内容：
+        byte[] validBytes = encryptedBytes;
+        // 使用BC 编码后的内容长度，要比 使用GMSSL 编码后的长度多 16，所以如果要使用 GMSSL 来解码BC编码后的内容时，需要先截掉 最后16位
+        if(mode== Symmetrics.MODE.CFB || mode== Symmetrics.MODE.CBC || mode== Symmetrics.MODE.CTR){
+            validBytes = new byte[encryptedBytes.length-16];
+            System.arraycopy(encryptedBytes,0, validBytes,0, validBytes.length);
         }
 
         // 使用 gmssl sm4 去 解密 bc 的加密内容
-        byte[] decryptedBytes3 = gmService2.sm4Decrypt(encryptedBytes, mode, sm4Key, GmService.SM4_IV_DEFAULT);
+        byte[] decryptedBytes3 = gmService2.sm4Decrypt(validBytes, mode, sm4Key, GmService.SM4_IV_DEFAULT);
         if (decryptedBytes3 != null) {
-            System.out.println("gmssl SM4-" + mode.name() + " 解密 经过bc加密的密文后 的内容: " + new String(decryptedBytes3));
+            System.out.println("3："+new String(decryptedBytes3));
         }else{
-            System.out.println("Error when decrypt use gmssl SM4-" + mode.name());
+            System.out.println("3：Error when decrypt use gmssl SM4-" + mode.name());
         }
     }
 
