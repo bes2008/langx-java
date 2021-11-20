@@ -1,5 +1,6 @@
 package com.jn.langx.security.gm.gmssl;
 
+import com.jn.langx.security.crypto.AlgorithmUnregisteredException;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.gm.AbstractGmService;
 import com.jn.langx.security.gm.GmService;
@@ -7,14 +8,36 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.logging.Loggers;
 import org.gmssl.GmSSL;
 import org.slf4j.Logger;
 
+import java.util.Map;
+
 public class GmsslGmService extends AbstractGmService {
     public static final String NAME = "GmSSL-GmService";
-    private final GmSSL gmssl = new GmSSL();
+    private static final GmSSL gmssl;
+    private static final Map<String, String> supportedCiphers;
+
+    static {
+        gmssl = new GmSSL();
+        supportedCiphers = Pipeline.<String>of(gmssl.getCiphers())
+                .collect(Collects.<String, String, String>toTreeMap(new Function<String, String>() {
+                    @Override
+                    public String apply(String key) {
+                        return key.toUpperCase();
+                    }
+                }, new Function<String, String>() {
+                    @Override
+                    public String apply(String input) {
+                        return input;
+                    }
+                }, Comparators.STRING_COMPARATOR_IGNORE_CASE));
+    }
 
     @Override
     public String getName() {
@@ -106,9 +129,18 @@ public class GmsslGmService extends AbstractGmService {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String cipher = "SMS4-" + mode.name();
-        if (Emptys.isEmpty(iv)) {
-            iv = GmService.SM4_IV_DEFAULT;
+        String cipher = "SM4-" + mode.name();
+        if (!supportedCiphers.containsKey(cipher)) {
+            throw new AlgorithmUnregisteredException(cipher);
+        }
+        if (cipher.contains("-CBC") || cipher.contains("-ECB")) {
+            if (Emptys.isEmpty(iv)) {
+                iv = GmService.SM4_IV_DEFAULT;
+            }
+        }
+        if (cipher.contains("-ECB")) {
+            // ECB 模式内部执行过程中，存在修正IV的可能
+            iv = Arrs.copy(iv);
         }
         // 目前 ECB 模式会返回 null, 这是有Bug的，
         byte[] bytes = gmssl.symmetricEncrypt(cipher, data, secretKey, iv);
@@ -132,7 +164,10 @@ public class GmsslGmService extends AbstractGmService {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String cipher = "SMS4-" + mode.name();
+        String cipher = "SM4-" + mode.name();
+        if (!supportedCiphers.containsKey(cipher)) {
+            throw new AlgorithmUnregisteredException(cipher);
+        }
         if (cipher.contains("-CBC") || cipher.contains("-ECB")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;

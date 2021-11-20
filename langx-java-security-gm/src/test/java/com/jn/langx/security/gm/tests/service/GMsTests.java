@@ -129,24 +129,24 @@ public class GMsTests {
 
         GmService gmService = gms.getGmService(BcGmService.NAME);
         byte[] encryptedBytes = gmService.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
-        showSM4(gmService, "SMS4-" + mode.name(), sm4Key, null, encryptedBytes);
+        showSM4(gmService, "SM4-" + mode.name(), sm4Key, null, encryptedBytes);
         System.out.println(new String(gmService.sm4Decrypt(encryptedBytes, mode, sm4Key)));
 
         GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
         byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
         if (encryptedBytes2 != null) {
-            showSM4(gmService2, "SMS4-" + mode.name(), sm4Key, null, encryptedBytes2);
+            showSM4(gmService2, "SM4-" + mode.name(), sm4Key, null, encryptedBytes2);
             System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes2, mode, sm4Key))));
         } else {
-            System.out.println("Error when encrypt use gmssl SMS4-" + mode.name());
+            System.out.println("Error when encrypt use gmssl SM4-" + mode.name());
         }
 
         // 使用 gmssl sm4 去 解密 bc 的加密内容
         byte[] decryptedBytes3 = gmService2.sm4Decrypt(encryptedBytes, mode, sm4Key);
         if (decryptedBytes3 != null) {
-            System.out.println("gmssl sms4-" + mode.name() + " 解密 经过bc加密的密文后 的内容: " + new String(decryptedBytes3));
+            System.out.println("gmssl SM4-" + mode.name() + " 解密 经过bc加密的密文后 的内容: " + new String(decryptedBytes3));
         }else{
-            System.out.println("Error when decrypt use gmssl SMS4-" + mode.name());
+            System.out.println("Error when decrypt use gmssl SM4-" + mode.name());
         }
     }
 
