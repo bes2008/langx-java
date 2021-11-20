@@ -16,6 +16,11 @@
             <groupId>com.github.fangjinuo.langx</groupId>
             <artifactId>langx-java</artifactId>
         </dependency>
+            <dependency>
+                <groupId>com.github.gitveio</groupId>
+                <artifactId>gmssl-dev</artifactId>
+                <version>1.1.1</version>
+            </dependency>
     </dependencies>
 
 </project>

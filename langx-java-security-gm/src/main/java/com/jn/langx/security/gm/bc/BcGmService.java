@@ -78,14 +78,10 @@ public class BcGmService extends AbstractGmService {
             mode = Symmetrics.MODE.CBC;
         }
         String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
-        if (transformation.contains("CBC") || transformation.contains("ECB")) {
+        if (transformation.contains("CBC")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;
             }
-        }
-        if (transformation.contains("ECB")) {
-            // ECB 模式内部执行过程中，存在修正IV的可能
-            iv = Arrs.copy(iv);
         }
         return Symmetrics.encrypt(data, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
@@ -106,14 +102,10 @@ public class BcGmService extends AbstractGmService {
             mode = Symmetrics.MODE.CBC;
         }
         String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
-        if (transformation.contains("CBC") || transformation.contains("ECB")) {
+        if (transformation.contains("CBC")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;
             }
-        }
-        if (transformation.contains("ECB")) {
-            // ECB 模式内部执行过程中，存在修正IV的可能
-            iv = Arrs.copy(iv);
         }
         return Symmetrics.decrypt(encryptedBytes, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }

@@ -5,6 +5,7 @@ import com.jn.langx.security.gm.AbstractGmService;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.logging.Loggers;
@@ -132,10 +133,14 @@ public class GmsslGmService extends AbstractGmService {
             mode = Symmetrics.MODE.CBC;
         }
         String cipher = "SMS4-" + mode.name();
-        if (cipher.contains("-CBC")) {
+        if (cipher.contains("-CBC") || cipher.contains("-ECB")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;
             }
+        }
+        if (cipher.contains("-ECB")) {
+            // ECB 模式内部执行过程中，存在修正IV的可能
+            iv = Arrs.copy(iv);
         }
         return gmssl.symmetricDecrypt(cipher, encryptedBytes, secretKey, iv);
     }
@@ -148,6 +153,7 @@ public class GmsslGmService extends AbstractGmService {
                 @Override
                 public void accept(String s) {
                     logger.error(s);
+                    System.out.println(s);
                 }
             });
         }

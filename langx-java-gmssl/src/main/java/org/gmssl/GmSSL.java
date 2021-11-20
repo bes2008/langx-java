@@ -65,7 +65,7 @@ public class GmSSL {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("GmSSL static init exp", e);
+            throw new RuntimeException("GmSSL static init error", e);
         }
     }
 }
