@@ -130,18 +130,19 @@ public class GmsslGmService extends AbstractGmService {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String cipher = "SM4-" + mode.name();
-        if (!supportedCiphers.containsKey(cipher)) {
-            throw new AlgorithmUnregisteredException(cipher);
+        String cipher=null;
+        if (supportedCiphers.containsKey("SM4-"+mode.name())) {
+            cipher = "SM4-"+mode.name();
+        }else if(supportedCiphers.containsKey("SMS4-"+mode.name())){
+            cipher = "SMS4-"+mode.name();
+        }
+        if (Emptys.isEmpty(cipher)) {
+            throw new AlgorithmUnregisteredException("SM4-"+mode.name()+"SMS4-"+mode.name());
         }
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        if (cipher.contains("-ECB")) {
-            // ECB 模式内部执行过程中，存在修正IV的可能
-            //iv = Arrs.copy(iv);
-            iv = null;
-        }
+        iv = Arrs.copy(iv);
         // 目前 ECB 模式会返回 null, 这是有Bug的，
         byte[] bytes = gmssl.symmetricEncrypt(cipher, data, secretKey, iv);
         if (bytes == null) {
@@ -164,9 +165,14 @@ public class GmsslGmService extends AbstractGmService {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String cipher = "SM4-" + mode.name();
-        if (!supportedCiphers.containsKey(cipher)) {
-            throw new AlgorithmUnregisteredException(cipher);
+        String cipher=null;
+        if (supportedCiphers.containsKey("SM4-"+mode.name())) {
+            cipher = "SM4-"+mode.name();
+        }else if(supportedCiphers.containsKey("SMS4-"+mode.name())){
+            cipher = "SMS4-"+mode.name();
+        }
+        if (Emptys.isEmpty(cipher)) {
+            throw new AlgorithmUnregisteredException("SM4-"+mode.name()+"SMS4-"+mode.name());
         }
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;

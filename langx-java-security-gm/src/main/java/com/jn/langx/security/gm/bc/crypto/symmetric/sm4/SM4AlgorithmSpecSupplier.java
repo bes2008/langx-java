@@ -4,7 +4,6 @@ import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.AlgorithmParameterSupplier;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
@@ -31,26 +30,29 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
 
     @Override
     public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
-        if (Strings.contains(transform, "CBC")) {
-            if (Emptys.isNotEmpty(iv)) {
-                return new IvParameterSpec(iv);
-            }
-            IvParameterSpec ivParameterSpec = null;
-            if (secureRandom == null) {
-                try {
-                    secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
-                    secureRandom.setSeed(SECURE_RANDOM_SEED_DEFAULT);
-                } catch (Throwable ex) {
-                    throw Throwables.wrapAsRuntimeException(ex);
-                }
-            }
-
-            byte[] iv = PKIs.createSecretKey("SM4", provider == null ? null : provider.getName(), 128, secureRandom).getEncoded();
-            ivParameterSpec = new IvParameterSpec(iv);
-
-            return ivParameterSpec;
+        /*
+        Symmetrics.MODE mode = Ciphers.extractSymmetricMode(transform);
+        if(mode==null){
+            mode=Symmetrics.MODE.CBC;
         }
-        return null;
+         */
+        if (Emptys.isNotEmpty(iv)) {
+            return new IvParameterSpec(iv);
+        }
+        IvParameterSpec ivParameterSpec = null;
+        if (secureRandom == null) {
+            try {
+                secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
+                secureRandom.setSeed(SECURE_RANDOM_SEED_DEFAULT);
+            } catch (Throwable ex) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }
+        }
+
+        byte[] iv = PKIs.createSecretKey("SM4", provider == null ? null : provider.getName(), 128, secureRandom).getEncoded();
+        ivParameterSpec = new IvParameterSpec(iv);
+
+        return ivParameterSpec;
     }
 
 }

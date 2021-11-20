@@ -12,6 +12,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.enums.Enums;
 
 import javax.crypto.Cipher;
 import java.security.*;
@@ -300,6 +301,18 @@ public class Ciphers extends Securitys {
         String[] segments = Strings.split(transformation, "/");
         Preconditions.checkNotEmpty(segments, "invalid transformation: {}", transformation);
         return segments[0];
+    }
+
+    public static Symmetrics.MODE extractSymmetricMode(String algorithmTransformation){
+        String[] segments= Strings.split(algorithmTransformation,"/");
+        Preconditions.checkArgument(segments.length==1 || segments.length==3,"illegal algorithm transformation: {}", algorithmTransformation);
+        if(segments.length==1){
+            return extractSymmetricMode(algorithmToTransformationMapping.get(segments[0].toUpperCase()));
+        }
+        if(segments.length==3){
+            return Enums.ofName(Symmetrics.MODE.class, segments[1].toUpperCase());
+        }
+        return null;
     }
 
     /**
