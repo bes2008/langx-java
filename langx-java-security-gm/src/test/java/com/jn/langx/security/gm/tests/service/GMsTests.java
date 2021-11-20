@@ -1,6 +1,7 @@
 package com.jn.langx.security.gm.tests.service;
 
 import com.jn.langx.codec.hex.Hex;
+import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.gm.GMs;
 import com.jn.langx.security.gm.GmService;
@@ -18,7 +19,7 @@ public class GMsTests {
     private static GMs gms = GMs.getGMs();
 
 
-   // @Test
+    // @Test
     public void testSM2_cipher() {
         String str = "hello_234";
         KeyPair keyPair = new SM2KeyGenerator().genKeyPair();
@@ -49,7 +50,7 @@ public class GMsTests {
 
     }
 
-   // @Test
+    // @Test
     public void testSM2_sign() {
         String str = "hello_234";
         KeyPair keyPair = new SM2KeyGenerator().genKeyPair();
@@ -108,26 +109,45 @@ public class GMsTests {
     }
 
 
+    @Test
+    public void testSM4_ECB() {
+        testSM4_for_mode(Symmetrics.MODE.ECB);
+    }
+
+    @Test
+    public void testSM4_CBC() {
+        testSM4_for_mode(Symmetrics.MODE.CBC);
+    }
+
     /**
      * 测试后证明，使用BC SM4，GmSSL SM4 结果一致，可以互通，可以互相解密
      */
-   // @Test
-    public void testSM4() {
+    private void testSM4_for_mode(Symmetrics.MODE mode) {
         String str = "hello_234";
 
         byte[] sm4Key = new SM4KeyGenerator().genSecretKey();
 
         GmService gmService = gms.getGmService(BcGmService.NAME);
-        byte[] encryptedBytes = gmService.sm4Encrypt(str.getBytes(), "CBC", sm4Key, GmService.SM4_IV_DEFAULT);
-        showSM4(gmService, "SM-CBC", sm4Key, null, encryptedBytes);
-        System.out.println(new String(gmService.sm4Decrypt(encryptedBytes, "CBC", sm4Key)));
+        byte[] encryptedBytes = gmService.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
+        showSM4(gmService, "SMS4-" + mode.name(), sm4Key, null, encryptedBytes);
+        System.out.println(new String(gmService.sm4Decrypt(encryptedBytes, mode, sm4Key)));
 
         GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
-        byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), "CBC", sm4Key, GmService.SM4_IV_DEFAULT);
-        showSM4(gmService2, "SM-CBC", sm4Key, null, encryptedBytes2);
-        System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes2, "CBC", sm4Key))));
+        byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
+        if (encryptedBytes2 != null) {
+            showSM4(gmService2, "SMS4-" + mode.name(), sm4Key, null, encryptedBytes2);
+            System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes2, mode, sm4Key))));
+        } else {
+            System.out.println("Error when encrypt use gmssl SMS4-" + mode.name());
+        }
 
-        System.out.println(new String((gmService2.sm4Decrypt(encryptedBytes, "CBC", sm4Key))));
+        // 使用 gmssl sm4 去 解密 bc 的加密内容
+        byte[] decryptedBytes3 = gmService2.sm4Decrypt(encryptedBytes, mode, sm4Key);
+        if (decryptedBytes3 != null) {
+            System.out.println("gmssl sms4-" + mode.name() + " 解密 经过bc加密的密文后 的内容: " + new String(decryptedBytes3));
+        }else{
+            System.out.println("Error when decrypt use gmssl SMS4-" + mode.name());
+        }
     }
 
     public void showSM4(GmService service, String transformation, byte[] key, byte[] iv, byte[] encrypted) {

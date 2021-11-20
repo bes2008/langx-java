@@ -1,5 +1,7 @@
 package com.jn.langx.security.gm.gmssl;
 
+import com.jn.langx.security.crypto.cipher.Symmetrics;
+import com.jn.langx.security.gm.AbstractGmService;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
@@ -9,7 +11,7 @@ import com.jn.langx.util.logging.Loggers;
 import org.gmssl.GmSSL;
 import org.slf4j.Logger;
 
-public class GmsslGmService implements GmService {
+public class GmsslGmService extends AbstractGmService {
     public static final String NAME = "GmSSL-GmService";
     private final GmSSL gmssl = new GmSSL();
 
@@ -81,11 +83,11 @@ public class GmsslGmService implements GmService {
 
     @Override
     public byte[] sm4Encrypt(byte[] data, byte[] secretKey) {
-        return sm4Encrypt(data, "CBC", secretKey);
+        return sm4Encrypt(data, (Symmetrics.MODE) null, secretKey);
     }
 
     @Override
-    public byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey) {
+    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey) {
         return sm4Encrypt(data, mode, secretKey, SM4_IV_DEFAULT);
     }
 
@@ -99,11 +101,11 @@ public class GmsslGmService implements GmService {
      * SMS4 默认采用 PKC#7 padding
      */
     @Override
-    public byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey, byte[] iv) {
-        if (Emptys.isEmpty(mode)) {
-            mode = "CBC";
+    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
+        if (mode == null) {
+            mode = Symmetrics.MODE.CBC;
         }
-        String cipher = "SMS4-" + mode.toUpperCase();
+        String cipher = "SMS4-" + mode.name();
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
@@ -116,20 +118,20 @@ public class GmsslGmService implements GmService {
     }
 
     public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
-        return sm4Decrypt(encryptedBytes, null, secretKey);
+        return sm4Decrypt(encryptedBytes, (Symmetrics.MODE) null, secretKey);
     }
 
     @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey) {
+    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey) {
         return sm4Decrypt(encryptedBytes, mode, secretKey, SM4_IV_DEFAULT);
     }
 
     @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey, byte[] iv) {
-        if (Emptys.isEmpty(mode)) {
-            mode = "CBC";
+    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
+        if (mode == null) {
+            mode = Symmetrics.MODE.CBC;
         }
-        String cipher = "SMS4-" + mode.toUpperCase();
+        String cipher = "SMS4-" + mode.name();
         if (cipher.contains("-CBC")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;

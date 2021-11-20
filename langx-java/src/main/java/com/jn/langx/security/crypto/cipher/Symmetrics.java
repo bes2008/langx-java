@@ -24,4 +24,12 @@ public class Symmetrics extends Ciphers {
     public static byte[] decrypt(byte[] bytes, byte[] symmetricKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
         return decrypt(bytes, symmetricKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
     }
+
+    public static enum MODE {
+        ECB,
+        CBC,
+        CFB,
+        OFB,
+        CTR
+    }
 }

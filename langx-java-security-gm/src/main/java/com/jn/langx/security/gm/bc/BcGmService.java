@@ -8,13 +8,15 @@ import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySu
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
 import com.jn.langx.security.crypto.signature.Signatures;
+import com.jn.langx.security.gm.AbstractGmService;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2ParameterSpec;
 import com.jn.langx.security.gm.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Arrs;
 
-public class BcGmService implements GmService {
+public class BcGmService extends AbstractGmService {
     public static final String NAME = "BC-GmService";
 
     @Override
@@ -62,21 +64,28 @@ public class BcGmService implements GmService {
 
     @Override
     public byte[] sm4Encrypt(byte[] data, byte[] secretKey) {
-        return sm4Encrypt(data, null, secretKey);
+        return sm4Encrypt(data, (Symmetrics.MODE) null, secretKey);
     }
 
     @Override
-    public byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey) {
+    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey) {
         return sm4Encrypt(data, mode, secretKey, GmService.SM4_IV_DEFAULT);
     }
 
     @Override
-    public byte[] sm4Encrypt(byte[] data, String mode, byte[] secretKey, byte[] iv) {
-        String transformation = Ciphers.createAlgorithmTransformation("SM4", Strings.isBlank(mode) ? "CBC" : mode.toUpperCase(), "PKCS7Padding");
-        if (transformation.contains("CBC")) {
+    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
+        if (mode == null) {
+            mode = Symmetrics.MODE.CBC;
+        }
+        String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
+        if (transformation.contains("CBC") || transformation.contains("ECB")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;
             }
+        }
+        if (transformation.contains("ECB")) {
+            // ECB 模式内部执行过程中，存在修正IV的可能
+            iv = Arrs.copy(iv);
         }
         return Symmetrics.encrypt(data, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
@@ -84,20 +93,27 @@ public class BcGmService implements GmService {
 
     @Override
     public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
-        return sm4Decrypt(encryptedBytes, null, secretKey);
+        return sm4Decrypt(encryptedBytes, (Symmetrics.MODE) null, secretKey);
     }
 
-    public byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey) {
+    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey) {
         return sm4Decrypt(encryptedBytes, mode, secretKey, GmService.SM4_IV_DEFAULT);
     }
 
     @Override
-    public byte[] sm4Decrypt(byte[] encryptedBytes, String mode, byte[] secretKey, byte[] iv) {
-        String transformation = Ciphers.createAlgorithmTransformation("SM4", Strings.isBlank(mode) ? "CBC" : mode.toUpperCase(), "PKCS7Padding");
-        if (transformation.contains("CBC")) {
+    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
+        if (mode == null) {
+            mode = Symmetrics.MODE.CBC;
+        }
+        String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
+        if (transformation.contains("CBC") || transformation.contains("ECB")) {
             if (Emptys.isEmpty(iv)) {
                 iv = GmService.SM4_IV_DEFAULT;
             }
+        }
+        if (transformation.contains("ECB")) {
+            // ECB 模式内部执行过程中，存在修正IV的可能
+            iv = Arrs.copy(iv);
         }
         return Symmetrics.decrypt(encryptedBytes, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
