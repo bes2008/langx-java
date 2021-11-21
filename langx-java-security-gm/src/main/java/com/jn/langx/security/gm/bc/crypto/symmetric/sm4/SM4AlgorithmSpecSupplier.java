@@ -34,10 +34,10 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
     public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
 
         Symmetrics.MODE mode = Ciphers.extractSymmetricMode(transform);
-        if(mode==null){
-            mode=Symmetrics.MODE.CBC;
+        if (mode == null) {
+            mode = Symmetrics.MODE.CBC;
         }
-        if(mode== Symmetrics.MODE.ECB){
+        if (mode == Symmetrics.MODE.ECB) {
             return null;
         }
 

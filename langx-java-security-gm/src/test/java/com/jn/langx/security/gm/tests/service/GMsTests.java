@@ -10,6 +10,8 @@ import com.jn.langx.security.gm.SM4KeyGenerator;
 import com.jn.langx.security.gm.bc.BcGmService;
 import com.jn.langx.security.gm.gmssl.GmsslGmService;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
 import org.junit.Test;
 
 import java.security.KeyPair;
@@ -108,74 +110,113 @@ public class GMsTests {
         System.out.println(text);
     }
 
+    private String[] texts = new String[]{
+            "abc133%4235&34`gerg",
+            "hldf2=45343`   et3t4565gdss36656'fw33'6566yu990[--",
+            "23aeq0uqwefew;ttqepet3ouqwevekp",
+            "你好呀11111"
+    };
+
 
     @Test
     public void testSM4_ECB() {
-        testSM4_for_mode(Symmetrics.MODE.ECB);
+        Collects.forEach(texts, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                testSM4_for_mode(s,Symmetrics.MODE.ECB);
+            }
+        });
     }
 
     @Test
     public void testSM4_CBC() {
-        testSM4_for_mode(Symmetrics.MODE.CBC);
+        Collects.forEach(texts, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                testSM4_for_mode(s,Symmetrics.MODE.CBC);
+            }
+        });
     }
 
     @Test
     public void testSM4_CFB() {
-        testSM4_for_mode(Symmetrics.MODE.CFB);
+        Collects.forEach(texts, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                testSM4_for_mode(s,Symmetrics.MODE.CFB);
+            }
+        });
     }
 
     @Test
     public void testSM4_OFB() {
-        testSM4_for_mode(Symmetrics.MODE.OFB);
+        Collects.forEach(texts, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                testSM4_for_mode(s,Symmetrics.MODE.OFB);
+            }
+        });
     }
 
     @Test
     public void testSM4_CTR() {
-        testSM4_for_mode(Symmetrics.MODE.CTR);
+        Collects.forEach(texts, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                testSM4_for_mode(s,Symmetrics.MODE.CTR);
+            }
+        });
     }
 
     /**
      * 测试后证明，使用BC SM4，GmSSL SM4 结果一致，可以互通，可以互相解密
      */
-    private void testSM4_for_mode(Symmetrics.MODE mode) {
-        String str = "hello_234_afjlwefj_234r00e03_234212312&&**jsdfjx";
-
+    private void testSM4_for_mode(String str, Symmetrics.MODE mode) {
         byte[] sm4Key = new SM4KeyGenerator().genSecretKey();
 
         GmService gmService = gms.getGmService(BcGmService.NAME);
         byte[] encryptedBytes = gmService.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
         showSM4(gmService, "SM4/" + mode.name(), sm4Key, null, encryptedBytes);
         byte[] decryptedBytes1 = gmService.sm4Decrypt(encryptedBytes, mode, sm4Key);
-        System.out.println("1："+ new String(decryptedBytes1));
+        System.out.println("1：" + new String(decryptedBytes1));
 
         GmService gmService2 = gms.getGmService(GmsslGmService.NAME);
         byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
-        byte[] decryptedBytes2=null;
+        byte[] decryptedBytes2 = null;
         if (encryptedBytes2 != null) {
             showSM4(gmService2, "SM4/" + mode.name(), sm4Key, null, encryptedBytes2);
             decryptedBytes2 = gmService2.sm4Decrypt(encryptedBytes2, mode, sm4Key);
-            System.out.println("2："+new String(decryptedBytes2));
+            System.out.println("2：" + new String(decryptedBytes2));
         } else {
             System.out.println("2：Error when encrypt use gmssl SM4-" + mode.name());
         }
 
 
+
         // 接下来 使用  gmssl 来解码 BC 编码后的内容：
         byte[] validBytes = encryptedBytes;
         // 使用BC 编码后的内容长度，要比 使用GMSSL 编码后的长度多 16，所以如果要使用 GMSSL 来解码BC编码后的内容时，需要先截掉 最后16位
-        if(mode == Symmetrics.MODE.CFB || mode== Symmetrics.MODE.OFB || mode== Symmetrics.MODE.CTR){
+        if (mode == Symmetrics.MODE.CFB || mode == Symmetrics.MODE.OFB || mode == Symmetrics.MODE.CTR) {
+            // BC 加密后会进行补位，最终保证长度是 16的整数倍 （所有模式都是这样）
+            // gmssl 加密后的长度与加密之前的长度保持一致     （限于 CFB,OFB,CTR）
+            // gmssl 加密后会进行补位，最终保证长度是 16的整数倍 （限于 CBC）
+            // ECB 模式 gmssl 有问题，尚未测试出
             // 该处理只针对 CFB,OFB,CTR
-            validBytes = new byte[encryptedBytes.length-16];
-            System.arraycopy(encryptedBytes,0, validBytes,0, validBytes.length);
+            if(encryptedBytes.length%16==0) {
+                validBytes = new byte[encryptedBytes.length - 16]; // 这里是有bug的
+                System.arraycopy(encryptedBytes, 0, validBytes, 0, validBytes.length);
+            }
         }
 
         // 使用 gmssl sm4 去 解密 bc 的加密内容
         byte[] decryptedBytes3 = gmService2.sm4Decrypt(validBytes, mode, sm4Key, GmService.SM4_IV_DEFAULT);
         if (decryptedBytes3 != null) {
-            System.out.println("3："+new String(decryptedBytes3));
-        }else{
+            System.out.println("3：" + new String(decryptedBytes3));
+        } else {
             System.out.println("3：Error when decrypt bc's cipher text use gmssl SM4-" + mode.name());
         }
+
+        System.out.println("\n\n=====================================================\n\n");
     }
 
     public void showSM4(GmService service, String transformation, byte[] key, byte[] iv, byte[] encrypted) {
