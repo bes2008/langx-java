@@ -2,6 +2,8 @@ package com.jn.langx.security.gm.bc.crypto.symmetric.sm4;
 
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.AlgorithmParameterSupplier;
+import com.jn.langx.security.crypto.cipher.Ciphers;
+import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Throwables;
@@ -30,12 +32,15 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
 
     @Override
     public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
-        /*
+
         Symmetrics.MODE mode = Ciphers.extractSymmetricMode(transform);
         if(mode==null){
             mode=Symmetrics.MODE.CBC;
         }
-         */
+        if(mode== Symmetrics.MODE.ECB){
+            return null;
+        }
+
         if (Emptys.isNotEmpty(iv)) {
             return new IvParameterSpec(iv);
         }

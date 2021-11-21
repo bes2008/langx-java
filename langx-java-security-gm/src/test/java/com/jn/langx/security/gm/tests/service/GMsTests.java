@@ -163,7 +163,8 @@ public class GMsTests {
         // 接下来 使用  gmssl 来解码 BC 编码后的内容：
         byte[] validBytes = encryptedBytes;
         // 使用BC 编码后的内容长度，要比 使用GMSSL 编码后的长度多 16，所以如果要使用 GMSSL 来解码BC编码后的内容时，需要先截掉 最后16位
-        if(mode== Symmetrics.MODE.CFB || mode== Symmetrics.MODE.CBC || mode== Symmetrics.MODE.CTR){
+        if(mode == Symmetrics.MODE.CFB || mode== Symmetrics.MODE.OFB || mode== Symmetrics.MODE.CTR){
+            // 该处理只针对 CFB,OFB,CTR
             validBytes = new byte[encryptedBytes.length-16];
             System.arraycopy(encryptedBytes,0, validBytes,0, validBytes.length);
         }
@@ -173,7 +174,7 @@ public class GMsTests {
         if (decryptedBytes3 != null) {
             System.out.println("3："+new String(decryptedBytes3));
         }else{
-            System.out.println("3：Error when decrypt use gmssl SM4-" + mode.name());
+            System.out.println("3：Error when decrypt bc's cipher text use gmssl SM4-" + mode.name());
         }
     }
 
