@@ -26,10 +26,21 @@ public class Symmetrics extends Ciphers {
     }
 
     public static enum MODE {
-        ECB,
-        CBC,
-        CFB,
-        OFB,
-        CTR
+        ECB(CipherAlgorithmMode.ECB),
+        CBC(CipherAlgorithmMode.CBC),
+        CFB(CipherAlgorithmMode.CFB),
+        OFB(CipherAlgorithmMode.OFB),
+        CTR(CipherAlgorithmMode.CTR);
+
+        private CipherAlgorithmMode ref;
+
+        MODE(CipherAlgorithmMode ref){
+            this.ref = ref;
+        }
+
+        @Override
+        public String toString() {
+            return name();
+        }
     }
 }
