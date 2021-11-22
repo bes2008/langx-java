@@ -120,50 +120,34 @@ public class GMsTests {
 
     @Test
     public void testSM4_ECB() {
-        Collects.forEach(texts, new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-                testSM4_for_mode(s,Symmetrics.MODE.ECB);
-            }
-        });
+        testSM4_for_mode(Symmetrics.MODE.ECB);
     }
 
     @Test
     public void testSM4_CBC() {
-        Collects.forEach(texts, new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-                testSM4_for_mode(s,Symmetrics.MODE.CBC);
-            }
-        });
+        testSM4_for_mode(Symmetrics.MODE.CBC);
     }
 
     @Test
     public void testSM4_CFB() {
-        Collects.forEach(texts, new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-                testSM4_for_mode(s,Symmetrics.MODE.CFB);
-            }
-        });
+        testSM4_for_mode(Symmetrics.MODE.CFB);
     }
 
     @Test
     public void testSM4_OFB() {
-        Collects.forEach(texts, new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-                testSM4_for_mode(s,Symmetrics.MODE.OFB);
-            }
-        });
+        testSM4_for_mode(Symmetrics.MODE.OFB);
     }
 
     @Test
     public void testSM4_CTR() {
+        testSM4_for_mode(Symmetrics.MODE.CTR);
+    }
+
+    private void testSM4_for_mode(final Symmetrics.MODE mode){
         Collects.forEach(texts, new Consumer<String>() {
             @Override
             public void accept(String s) {
-                testSM4_for_mode(s,Symmetrics.MODE.CTR);
+                testSM4_for_mode(s, mode);
             }
         });
     }
