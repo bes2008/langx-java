@@ -6,6 +6,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate2;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 
 public class Resources {
 
@@ -202,6 +204,17 @@ public class Resources {
         if (resource.exists() && resource.isReadable()) {
             readUsingDelimiter(resource, delimiter, charset, consumer);
         }
+    }
+
+    public static List<String> readLines(@NonNull Resource resource, @NonNull Charset charset) {
+        final List<String> lines = Collects.emptyArrayList();
+        readUsingDelimiter(resource, "\n", charset, new Consumer<String>() {
+            @Override
+            public void accept(String line) {
+                lines.add(line);
+            }
+        });
+        return lines;
     }
 
     public static void readLines(@NonNull String location, @NonNull Charset charset, @NonNull final Consumer<String> consumer) {
