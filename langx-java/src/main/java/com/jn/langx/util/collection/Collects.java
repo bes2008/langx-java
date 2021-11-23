@@ -74,6 +74,17 @@ public class Collects {
         return new TreeMap<K, V>(comparator);
     }
 
+    public static <K, V> Map<K, V> immutableMap() {
+        return immutableMap(null);
+    }
+
+    public static <K, V> Map<K, V> immutableMap(Map<K, V> m) {
+        if (m == null) {
+            return Collections.emptyMap();
+        }
+        return Collections.unmodifiableMap(m);
+    }
+
     /**
      * Get a empty, mutable java.util.HashMap
      *
@@ -105,6 +116,17 @@ public class Collects {
         Preconditions.checkNotNull(map);
         Preconditions.checkNotNull(supplier);
         return new WrappedNonAbsentMap<K, V>(map, supplier);
+    }
+
+    public static <E> Set<E> immutableSet() {
+        return immutableSet(null);
+    }
+
+    public static <E> Set<E> immutableSet(Set<E> set) {
+        if (set == null) {
+            return Collections.emptySet();
+        }
+        return Collections.unmodifiableSet(set);
     }
 
     /**
@@ -169,6 +191,17 @@ public class Collects {
      */
     public static <E> List<E> emptyArrayList() {
         return new ArrayList<E>();
+    }
+
+    public static <E> List<E> immutableList() {
+        return immutableList(null);
+    }
+
+    public static <E> List<E> immutableList(List<E> list) {
+        if (list == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(list);
     }
 
     /**
@@ -764,11 +797,11 @@ public class Collects {
     public static <E> Collection<E> filter(@Nullable Object anyObject, @Nullable Predicate<E> consumePredicate, @Nullable final Predicate<E> breakPredicate) {
         Iterable<E> iterable = asIterable(anyObject);
         final Collection<E> result = emptyCollection(iterable);
-        consumePredicate = consumePredicate == null? Functions.<E>truePredicate():consumePredicate;
+        consumePredicate = consumePredicate == null ? Functions.<E>truePredicate() : consumePredicate;
         forEach((Collection<E>) asCollection(iterable), consumePredicate, new Consumer<E>() {
             @Override
             public void accept(E e) {
-                    result.add(e);
+                result.add(e);
             }
         }, breakPredicate);
         return result;
@@ -777,10 +810,10 @@ public class Collects {
     /**
      * Filter any object with the specified predicate
      */
-    public static <E> Collection<E> filter(@Nullable Object anyObject, @Nullable Predicate2<Integer,E> consumePredicate, @Nullable final Predicate2<Integer, E> breakPredicate) {
+    public static <E> Collection<E> filter(@Nullable Object anyObject, @Nullable Predicate2<Integer, E> consumePredicate, @Nullable final Predicate2<Integer, E> breakPredicate) {
         Iterable<E> iterable = asIterable(anyObject);
         final Collection<E> result = emptyCollection(iterable);
-        consumePredicate = consumePredicate == null? Functions.<Integer,E>truePredicate2():consumePredicate;
+        consumePredicate = consumePredicate == null ? Functions.<Integer, E>truePredicate2() : consumePredicate;
         forEach((Collection<E>) asCollection(iterable), consumePredicate, new Consumer2<Integer, E>() {
             @Override
             public void accept(Integer index, E e) {
@@ -2507,42 +2540,42 @@ public class Collects {
     }
 
     public static <E> boolean isFirst(@Nullable E obj, @Nullable List<E> list) {
-        if(Objs.isEmpty(list)){
+        if (Objs.isEmpty(list)) {
             return false;
         }
         return Objs.equals(new ListSequence<E>(list).first(), obj);
     }
 
     public static <E> boolean isLast(@Nullable E obj, @Nullable List<E> list) {
-        if(Objs.isEmpty(list)){
+        if (Objs.isEmpty(list)) {
             return false;
         }
         return Objs.equals(new ListSequence<E>(list).last(), obj);
     }
 
     public static <E> boolean isFirst(@Nullable E obj, @Nullable Iterable<E> list) {
-        if(Objs.isEmpty(list)){
+        if (Objs.isEmpty(list)) {
             return false;
         }
         return Objs.equals(new IterableSequence<E>(list).first(), obj);
     }
 
     public static <E> boolean isLast(@Nullable E obj, @Nullable Iterable<E> list) {
-        if(Objs.isEmpty(list)){
+        if (Objs.isEmpty(list)) {
             return false;
         }
         return Objs.equals(new IterableSequence<E>(list).last(), obj);
     }
 
     public static <E> boolean isFirst(@Nullable E obj, @Nullable SortedSet<E> set) {
-        if(Objs.isEmpty(set)){
+        if (Objs.isEmpty(set)) {
             return false;
         }
         return Objs.equals(new SortedSetSequence<E>(set).first(), obj);
     }
 
     public static <E> boolean isLast(@Nullable E obj, @Nullable SortedSet<E> set) {
-        if(Objs.isEmpty(set)){
+        if (Objs.isEmpty(set)) {
             return false;
         }
         return Objs.equals(new SortedSetSequence<E>(set).last(), obj);
