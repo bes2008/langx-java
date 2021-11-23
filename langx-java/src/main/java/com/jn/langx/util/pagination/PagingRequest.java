@@ -18,7 +18,7 @@ public class PagingRequest<E> {
     }
 
     /**
-     * Get all matched records with out paging limit
+     * Get all matched records without paging limit
      */
     public boolean isGetAllRequest() {
         return this.pageSize < 0 && pageNo == 1;
