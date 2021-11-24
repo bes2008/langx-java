@@ -1,15 +1,21 @@
 package com.jn.langx.util.io.file;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.io.stream.NullOutputStream;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 
 import java.io.FileFilter;
 import java.io.*;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.ByteBuffer;
@@ -215,6 +221,14 @@ public class Files {
         final boolean success = file.setLastModified(System.currentTimeMillis());
         if (!success) {
             throw new IOException("Unable to set the last modification time for " + file);
+        }
+    }
+
+    public static File toFile(final URI uri) {
+        try {
+            return toFile(uri.toURL());
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
         }
     }
 
@@ -1783,4 +1797,36 @@ public class Files {
             IOs.close(fileWriter);
         }
     }
+
+    public static List<File> find(File directory, @Nullable com.jn.langx.util.io.file.FileFilter filter) {
+        return find(directory, 1, filter);
+    }
+
+    public static List<File> find(File directory, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter filter) {
+        List<File> out = Collects.emptyArrayList();
+        find(directory, out, maxDepth, filter);
+        return out;
+    }
+
+    /**
+     * @param directory the base dir
+     * @param maxDepth  [1,100]
+     * @param filter    the filter
+     */
+    public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter filter) {
+        if (directory == null || out == null || maxDepth < 1 || maxDepth > 100) {
+            return;
+        }
+        File[] children = filter == null ? directory.listFiles() : directory.listFiles((FileFilter) filter);
+        if (children != null) {
+            for (File child : children) {
+                out.add(child);
+                if (child.isDirectory()) {
+                    find(child, out, maxDepth - 1, filter);
+                }
+            }
+        }
+    }
+
+
 }
