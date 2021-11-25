@@ -1,5 +1,6 @@
 package com.jn.langx.util.io.file;
 
+import com.jn.langx.Filter;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
@@ -7,6 +8,10 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.file.filter.AbstractFileFilter;
+import com.jn.langx.util.io.file.filter.warp.FilePredicateToFilterFilter;
+import com.jn.langx.util.io.file.filter.warp.FilenameFilterToFileFilter;
+import com.jn.langx.util.io.file.filter.warp.FilterToFileFilter;
+import com.jn.langx.util.io.file.filter.warp.JdkFileFilterToFileFilter;
 
 import java.io.File;
 import java.util.List;
@@ -62,5 +67,26 @@ public class FileFilters {
                 return accept(new File(dir, name));
             }
         };
+    }
+
+
+    public static FileFilter wrap(Predicate<File> filePredicate){
+        return new FilePredicateToFilterFilter(filePredicate);
+    }
+
+    public static FileFilter wrap(FilenameFilter filter){
+        return new FilenameFilterToFileFilter(filter);
+    }
+
+    public static FileFilter wrap(java.io.FilenameFilter filter){
+        return new FilenameFilterToFileFilter(filter);
+    }
+
+    public static FileFilter wrap(Filter<File> filter){
+        return new FilterToFileFilter(filter);
+    }
+
+    public static FileFilter wrap(java.io.FileFilter fileFilter){
+        return new JdkFileFilterToFileFilter(fileFilter);
     }
 }

@@ -5,16 +5,19 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.io.stream.NullOutputStream;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.file.filter.BooleanFileFilter;
 
 import java.io.FileFilter;
 import java.io.*;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -1798,35 +1801,52 @@ public class Files {
         }
     }
 
-    public static List<File> find(File directory, @Nullable com.jn.langx.util.io.file.FileFilter filter) {
-        return find(directory, 1, filter);
+    public static List<File> find(File directory, @Nullable com.jn.langx.util.io.file.FileFilter filter, com.jn.langx.util.io.file.FileFilter predicate, Predicate2<List<File>, File> breakPredicate) {
+        return find(directory, 1, filter,predicate, breakPredicate);
     }
 
-    public static List<File> find(File directory, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter filter) {
+
+    public static List<File> find(File directory, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter filter, com.jn.langx.util.io.file.FileFilter predicate, Predicate2<List<File>, File> breakPredicate) {
         List<File> out = Collects.emptyArrayList();
-        find(directory, out, maxDepth, filter);
+        find(directory, out, maxDepth, filter, predicate, breakPredicate);
         return out;
     }
 
     /**
-     * @param directory the base dir
-     * @param maxDepth  [1,100]
-     * @param filter    the filter
+     * @param directory    the base dir
+     * @param maxDepth     [1,100]
+     * @param searchFilter use the filter to when invoke listFiles(filter)
+     * @param predicate    use the predicate to filter all file or directory what found by search filter
      */
-    public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter filter) {
-        if (directory == null || out == null || maxDepth < 1 || maxDepth > 100) {
+    public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter searchFilter, @Nullable com.jn.langx.util.io.file.FileFilter predicate, @NonNull Predicate2<List<File>, File> breakPredicate) {
+        if (directory == null || out == null || maxDepth < 1) {
             return;
         }
-        File[] children = filter == null ? directory.listFiles() : directory.listFiles((FileFilter) filter);
+        maxDepth = Maths.min(maxDepth, 100);
+        File[] children = searchFilter == null ? directory.listFiles() : directory.listFiles((FileFilter) searchFilter);
+
+        if (predicate == null) {
+            predicate = BooleanFileFilter.TRUE_FILTER;
+        }
+
+        if(breakPredicate==null){
+            breakPredicate = Functions.booleanPredicate2(false);
+        }
         if (children != null) {
             for (File child : children) {
-                out.add(child);
+                if (breakPredicate.test(out, child)) {
+                    break;
+                }
+
+                if (predicate.test(child)) {
+                    out.add(child);
+                }
+
                 if (child.isDirectory()) {
-                    find(child, out, maxDepth - 1, filter);
+                    find(child, out, maxDepth - 1, searchFilter, predicate,breakPredicate);
                 }
             }
         }
     }
-
 
 }
