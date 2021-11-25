@@ -46,9 +46,8 @@ public class FilenameSuffixFilter extends AbstractFileFilter {
                     this.suffixes.add(suffix.toLowerCase());
                 }
             }
-            Pipeline.of(suffixes).filter(Functions.<String>nonNullPredicate()).addTo(this.suffixes);
         }
-
+        Pipeline.of(suffixes).filter(Functions.<String>nonNullPredicate()).addTo(this.suffixes);
         this.ignoreCase = ignoreCase;
     }
 
