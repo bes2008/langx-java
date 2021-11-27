@@ -34,11 +34,6 @@
             <artifactId>common-util</artifactId>
             <version>1.20.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-common</artifactId>
-            <version>3.0.3</version>
-        </dependency>
     </dependencies>
     <build>
         <resources>
