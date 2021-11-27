@@ -20,11 +20,6 @@
     </description>
     <dependencies>
         <dependency>
-            <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-common</artifactId>
-            <version>3.0.3</version>
-        </dependency>
-        <dependency>
             <groupId>org.wildfly.common</groupId>
             <artifactId>wildfly-common</artifactId>
             <version>1.5.4.Final</version>
@@ -33,21 +28,6 @@
             <groupId>com.umeng.umsdk</groupId>
             <artifactId>common</artifactId>
             <version>9.4.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.teiid</groupId>
-            <artifactId>teiid-common-core</artifactId>
-            <version>16.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.main.common</groupId>
-            <artifactId>common-util</artifactId>
-            <version>6.2.3</version>
-        </dependency>
-        <dependency>
-            <groupId>io.syndesis.common</groupId>
-            <artifactId>common-util</artifactId>
-            <version>1.12.1</version>
         </dependency>
         <dependency>
             <groupId>org.gatein.common</groupId>
