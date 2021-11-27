@@ -2,6 +2,7 @@ package com.jn.langx.util.net;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.properties.PropertiesAccessor;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
@@ -22,6 +23,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.security.AccessController.doPrivileged;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
 
@@ -31,10 +33,29 @@ public class Nets {
      */
     public static final Inet4Address LOCALHOST4;
 
+
+    /**
+     * The "any" address for IPv4.
+     * @since 4.1.0
+     */
+    public static final Inet4Address INET4_ANY = getInet4Address(0, 0, 0, 0);
+
     /**
      * The {@link Inet6Address} that represents the IPv6 loopback address '::1'
      */
     public static final Inet6Address LOCALHOST6;
+
+
+    /**
+     * The broadcast-all address for IPv4.
+     * @since 4.1.0
+     */
+    public static final Inet4Address INET4_BROADCAST = getInet4Address(255, 255, 255, 255);
+    /**
+     * The "any" address for IPv6.
+     * @since 4.1.0
+     */
+    public static final Inet6Address INET6_ANY = getInet6Address(0, 0, 0, 0, 0, 0, 0, 0);
 
     /**
      * The {@link InetAddress} that represents the loopback address. If IPv6 stack is available, it will refer to
@@ -277,6 +298,97 @@ public class Nets {
                 return somaxconn;
             }
         });
+    }
+
+
+    /**
+     * Get an IPv4 address from four integer segments.  Each segment must be between 0 and 255.
+     *
+     * @param s1 the first segment
+     * @param s2 the second segment
+     * @param s3 the third segment
+     * @param s4 the fourth segment
+     * @return the address (not {@code null})
+     *
+     * @since 4.1.0
+     */
+    public static Inet4Address getInet4Address(int s1, int s2, int s3, int s4) {
+        byte[] bytes = new byte[4];
+        Preconditions.checkArgument(s1 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s1 <= 255, "the value value of argument s1 is 255");
+        Preconditions.checkArgument(s2 >= 0, "the min value of argument s2 is 0");
+        Preconditions.checkArgument(s2 <= 255, "the value value of argument s2 is 255");
+        Preconditions.checkArgument(s3 >= 0, "the min value of argument s3 is 0");
+        Preconditions.checkArgument(s3 <= 255, "the value value of argument s3 is 255");
+        Preconditions.checkArgument(s4 >= 0, "the min value of argument s4 is 0");
+        Preconditions.checkArgument(s4 <= 255, "the value value of argument s4 is 255");
+        bytes[0] = (byte) s1;
+        bytes[1] = (byte) s2;
+        bytes[2] = (byte) s3;
+        bytes[3] = (byte) s4;
+        try {
+            return (Inet4Address) InetAddress.getByAddress(s1 + "." + s2 + "." + s3 + "." + s4, bytes);
+        } catch (UnknownHostException e) {
+            // not possible
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /**
+     * Get an IPv6 address from eight integer segments.  Each segment must be between 0 and 65535 ({@code 0xffff}).
+     *
+     * @param s1 the first segment
+     * @param s2 the second segment
+     * @param s3 the third segment
+     * @param s4 the fourth segment
+     * @param s5 the fifth segment
+     * @param s6 the sixth segment
+     * @param s7 the seventh segment
+     * @param s8 the eighth segment
+     * @return the address (not {@code null})
+     *
+     * @since 4.1.0
+     */
+    public static Inet6Address getInet6Address(int s1, int s2, int s3, int s4, int s5, int s6, int s7, int s8) {
+        byte[] bytes = new byte[16];
+        Preconditions.checkArgument(s1 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s1 <= 0xffff, "the value value of argument s1 is {}", 0xffff);
+        Preconditions.checkArgument(s2 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s2 <= 0xffff, "the value value of argument s2 is {}", 0xffff);
+        Preconditions.checkArgument(s3 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s3 <= 0xffff, "the value value of argument s3 is {}", 0xffff);
+        Preconditions.checkArgument(s4 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s4 <= 0xffff, "the value value of argument s4 is {}", 0xffff);
+        Preconditions.checkArgument(s5 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s5 <= 0xffff, "the value value of argument s5 is {}", 0xffff);
+        Preconditions.checkArgument(s6 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s6 <= 0xffff, "the value value of argument s6 is {}", 0xffff);
+        Preconditions.checkArgument(s7 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s7 <= 0xffff, "the value value of argument s7 is {}", 0xffff);
+        Preconditions.checkArgument(s8 >= 0, "the min value of argument s1 is 0");
+        Preconditions.checkArgument(s8 <= 0xffff, "the value value of argument s8 is {}", 0xffff);
+        bytes[0] = (byte) (s1 >> 8);
+        bytes[1] = (byte) s1;
+        bytes[2] = (byte) (s2 >> 8);
+        bytes[3] = (byte) s2;
+        bytes[4] = (byte) (s3 >> 8);
+        bytes[5] = (byte) s3;
+        bytes[6] = (byte) (s4 >> 8);
+        bytes[7] = (byte) s4;
+        bytes[8] = (byte) (s5 >> 8);
+        bytes[9] = (byte) s5;
+        bytes[10] = (byte) (s6 >> 8);
+        bytes[11] = (byte) s6;
+        bytes[12] = (byte) (s7 >> 8);
+        bytes[13] = (byte) s7;
+        bytes[14] = (byte) (s8 >> 8);
+        bytes[15] = (byte) s8;
+        try {
+            return Inet6Address.getByAddress(toOptimalStringV6(bytes), bytes, 0);
+        } catch (UnknownHostException e) {
+            // not possible
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -966,12 +1078,12 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                   <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
-     *                                                                                                                                                                   defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
-     *                                                                                                                                                                   following the updated guidelines in
-     *                                                                                                                                                                   <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
-     *                                                                                                                                                                   <li>{@code false} to strictly follow rfc 5952</li>
-     *                                                                                                                                                                   </ul>
+     *                                                                                                                                                                                                       <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
+     *                                                                                                                                                                                                       defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
+     *                                                                                                                                                                                                       following the updated guidelines in
+     *                                                                                                                                                                                                       <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
+     *                                                                                                                                                                                                       <li>{@code false} to strictly follow rfc 5952</li>
+     *                                                                                                                                                                                                       </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
@@ -1284,14 +1396,14 @@ public class Nets {
         });
     }
 
-    public static String getFirstValidMac(){
+    public static String getFirstValidMac() {
         NetworkInterface networkInterface = getFirstValidNetworkInterface();
         return getMac(networkInterface);
     }
 
     @Nullable
     public static String getMac(@NonNull NetworkInterface networkInterface) {
-        if(networkInterface==null){
+        if (networkInterface == null) {
             return null;
         }
         byte[] macBytes = null;
@@ -1342,10 +1454,10 @@ public class Nets {
     /**
      * 获取本机IP
      */
-    public static InetAddress getCurrentAddress(){
+    public static InetAddress getCurrentAddress() {
         try {
             return chooseAddress();
-        }catch (UnknownHostException ex){
+        } catch (UnknownHostException ex) {
             return null;
         }
     }
@@ -1382,4 +1494,215 @@ public class Nets {
         return chooseAddress().getHostAddress();
     }
 
+
+    /**
+     * Get the scope ID of the given address (if it is an IPv6 address).
+     *
+     * @return the scope ID, or 0 if there is none or the address is an IPv4 address
+     *
+     * @since 4.1.0
+     */
+    public static int getScopeId(InetAddress address) {
+        return address instanceof Inet6Address ? ((Inet6Address) address).getScopeId() : 0;
+    }
+
+    private static final Pattern NUMERIC = Pattern.compile("\\d+");
+
+    /**
+     * Attempt to get the scope ID of the given string.  If the string is numeric then the number is parsed
+     * and returned as-is.  If the scope is a string, then a search for the matching network interface will occur.
+     *
+     * @param scopeName the scope number or name as a string (must not be {@code null})
+     * @return the scope ID, or 0 if no matching scope could be found
+     *
+     * @since 4.1.0
+     */
+    public static int getScopeId(String scopeName) {
+        return getScopeId(scopeName, null);
+    }
+
+    /**
+     * Attempt to get the scope ID of the given string.  If the string is numeric then the number is parsed
+     * and returned as-is.  If the scope is a string, then a search for the matching network interface will occur.
+     *
+     * @param scopeName   the scope number or name as a string (must not be {@code null})
+     * @param compareWith the address to compare with, to ensure that the wrong local scope is not selected (may be {@code null})
+     * @return the scope ID, or 0 if no matching scope could be found
+     *
+     * @since 4.1.0
+     */
+    public static int getScopeId(String scopeName, InetAddress compareWith) {
+        Preconditions.checkNotNullArgument(scopeName, "scopeName");
+        if (NUMERIC.matcher(scopeName).matches()) try {
+            return Integer.parseInt(scopeName);
+        } catch (NumberFormatException ignored) {
+            return 0;
+        }
+        final NetworkInterface ni = findInterfaceWithScopeId(scopeName);
+        if (ni == null) return 0;
+        return getScopeId(ni, compareWith);
+    }
+
+    /**
+     * @since 4.1.0
+     * @param scopeName
+     * @return
+     */
+    public static NetworkInterface findInterfaceWithScopeId(String scopeName) {
+        final Enumeration<NetworkInterface> enumeration;
+        try {
+            enumeration = NetworkInterface.getNetworkInterfaces();
+        } catch (SocketException ignored) {
+            return null;
+        }
+        while (enumeration.hasMoreElements()) {
+            final NetworkInterface net = enumeration.nextElement();
+            if (net.getName().equals(scopeName)) {
+                return net;
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param networkInterface
+     * @return
+     *
+     * @since 4.1.0
+     */
+    public static int getScopeId(NetworkInterface networkInterface) {
+        return getScopeId(networkInterface, null);
+    }
+
+    /**
+     *
+     * @param networkInterface
+     * @param compareWith
+     * @return
+     *
+     * @since 4.1.0
+     */
+    public static int getScopeId(final NetworkInterface networkInterface, InetAddress compareWith) {
+        Preconditions.checkNotNullArgument(networkInterface, "networkInterface");
+        final Inet6Address cw6 = compareWith instanceof Inet6Address ? (Inet6Address) compareWith : null;
+        Inet6Address address = doPrivileged(new PrivilegedAction<Inet6Address>() {
+            @Override
+            public Inet6Address run() {
+                final Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    final InetAddress a = addresses.nextElement();
+                    if (a instanceof Inet6Address) {
+                        final Inet6Address a6 = (Inet6Address) a;
+                        if (cw6 == null ||
+                                a6.isLinkLocalAddress() == cw6.isLinkLocalAddress() &&
+                                        a6.isSiteLocalAddress() == cw6.isSiteLocalAddress()
+                        ) {
+                            return a6;
+                        }
+                    }
+                }
+                return null;
+            }
+        });
+        return address == null ? 0 : address.getScopeId();
+    }
+
+
+    /**
+     * Get the optimal string representation of an IP address.  For IPv6 addresses, this representation will be
+     * more compact that the default.
+     *
+     * @param inetAddress the address (must not be {@code null})
+     * @return the string representation (not {@code null})
+     *
+     * @since 4.1.0
+     */
+    public static String toOptimalString(InetAddress inetAddress) {
+        Preconditions.checkNotNullArgument(inetAddress, "inetAddress");
+        return inetAddress instanceof Inet6Address ? toOptimalStringV6(inetAddress.getAddress()) : inetAddress.getHostAddress();
+    }
+
+    /**
+     * Get the optimal string representation of the bytes of an IP address.
+     *
+     * @param addressBytes the address bytes (must not be {@code null})
+     * @return the string representation (not {@code null})
+     *
+     * @since 4.1.0
+     */
+    public static String toOptimalString(byte[] addressBytes) {
+        Preconditions.checkNotNullArgument(addressBytes, "addressBytes");
+        if (addressBytes.length == 4) {
+            return (addressBytes[0] & 0xff) + "." + (addressBytes[1] & 0xff) + "." + (addressBytes[2] & 0xff) + "." + (addressBytes[3] & 0xff);
+        } else if (addressBytes.length == 16) {
+            return toOptimalStringV6(addressBytes);
+        } else {
+            throw new RuntimeException(StringTemplates.formatWithPlaceholder("illegal network address length: {}", addressBytes.length));
+        }
+    }
+
+
+    /**
+     *
+     * @param bytes
+     * @return
+     *
+     * @since 4.1.0
+     */
+    private static String toOptimalStringV6(final byte[] bytes) {
+        final int[] segments = new int[8];
+        for (int i = 0; i < 8; i++) {
+            segments[i] = (bytes[i << 1] & 0xff) << 8 | bytes[(i << 1) + 1] & 0xff;
+        }
+        // now loop through the segments and add them as optimally as possible
+        final StringBuilder b = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            if (segments[i] == 0) {
+                if (i == 7) {
+                    b.append('0');
+                } else {
+                    // possible to collapse it
+                    i++;
+                    if (segments[i] == 0) {
+                        // yup
+                        b.append(':').append(':');
+                        for (i++; i < 8; i++) {
+                            if (segments[i] == 0xffff && b.length() == 2) {
+                                b.append("ffff");
+                                if (i == 5) {
+                                    // it's an IPv4 compat address.
+                                    b.append(':').append(bytes[12] & 0xff).append('.').append(bytes[13] & 0xff).append('.').append(bytes[14] & 0xff).append('.').append(bytes[15] & 0xff);
+                                    i = 8;
+                                } else if (i == 4 && segments[5] == 0) {
+                                    // it's a SIIT address.
+                                    b.append(":0:").append(bytes[12] & 0xff).append('.').append(bytes[13] & 0xff).append('.').append(bytes[14] & 0xff).append('.').append(bytes[15] & 0xff);
+                                    i = 8;
+                                } else {
+                                    // finally break and do the rest normally
+                                    for (i++; i < 8; i++) {
+                                        b.append(':').append(Integer.toHexString(segments[i]));
+                                    }
+                                }
+                            } else if (segments[i] != 0) {
+                                // finally break and do the rest normally
+                                b.append(Integer.toHexString(segments[i]));
+                                for (i++; i < 8; i++) {
+                                    b.append(':').append(Integer.toHexString(segments[i]));
+                                }
+                            }
+                        }
+                    } else {
+                        // no, just a single 0 in isolation doesn't get collapsed
+                        if (i > 1) b.append(':');
+                        b.append('0').append(':').append(Integer.toHexString(segments[i]));
+                    }
+                }
+            } else {
+                if (i > 0) b.append(':');
+                b.append(Integer.toHexString(segments[i]));
+            }
+        }
+        return b.toString();
+    }
 }

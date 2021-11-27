@@ -16,9 +16,9 @@
 
 package com.jn.langx.util.net.http.jaxrs;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
-import org.glassfish.jersey.internal.LocalizationMessages;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Utility class for validating, encoding and decoding components
  * of a URI.
- *
+ * @since 4.1.0
  */
 public class UriComponent {
 
@@ -131,7 +131,8 @@ public class UriComponent {
     public static void validate(final String s, final Type t, final boolean template) {
         final int i = _valid(s, t, template);
         if (i > -1) {
-            throw new IllegalArgumentException(LocalizationMessages.URI_COMPONENT_INVALID_CHARACTER(s, t, s.charAt(i), i));
+            String error = StringTemplates.formatWithIndex("The string {0} for the URI component {1} contains an invalid character, {2}, at index {3}.",s, t, s.charAt(i), i);
+            throw new IllegalArgumentException(error);
         }
     }
 
@@ -464,12 +465,14 @@ public class UriComponent {
         } else {
             // Malformed percent-escaped octet at the end
             if (n < 2) {
-                throw new IllegalArgumentException(LocalizationMessages.URI_COMPONENT_ENCODED_OCTET_MALFORMED(1));
+                String error = StringTemplates.formatWithIndex("Malformed percent-encoded octet at index {0}.",1);
+                throw new IllegalArgumentException(error);
             }
 
             // Malformed percent-escaped octet at the end
             if (s.charAt(n - 2) == '%') {
-                throw new IllegalArgumentException(LocalizationMessages.URI_COMPONENT_ENCODED_OCTET_MALFORMED(n - 2));
+                String error = StringTemplates.formatWithIndex("Malformed percent-encoded octet at index {0}.",n-2);
+                throw new IllegalArgumentException(error);
             }
         }
 
@@ -854,7 +857,8 @@ public class UriComponent {
     private static int decodeHex(final String s, final int i) {
         final int v = decodeHex(s.charAt(i));
         if (v == -1) {
-            throw new IllegalArgumentException(LocalizationMessages.URI_COMPONENT_ENCODED_OCTET_INVALID_DIGIT(i, s.charAt(i)));
+            String error = StringTemplates.formatWithIndex("Malformed percent-encoded octet at index {0}, invalid hexadecimal digit {1}.", i, s.charAt(i));
+            throw new IllegalArgumentException(error);
         }
         return v;
     }

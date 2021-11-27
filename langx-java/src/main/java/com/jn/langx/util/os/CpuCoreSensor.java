@@ -7,6 +7,7 @@ import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Channels;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.struct.Holder;
 
 import java.io.*;
@@ -21,13 +22,17 @@ import java.security.PrivilegedAction;
  * licensed under the Apache Software License 2.0.
  *
  * @author <a href="http://escoffier.me">Clement Escoffier</a>
+ * @since 4.1.0
  */
 class CpuCoreSensor {
 
 
     private static final String CPUS_ALLOWED = "Cpus_allowed:";
     private static final byte[] BITS = new byte[]{0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4};
-    private CpuCoreSensor(){}
+
+    private CpuCoreSensor() {
+    }
+
     /**
      * Returns the number of processors available to this process.
      * <p>
@@ -78,35 +83,41 @@ class CpuCoreSensor {
         if (file == null || !file.exists()) {
             return -1;
         }
-        final FileInputStream stream = new FileInputStream(file);
-        final Holder<Integer> countHolder = new Holder<Integer>(-1);
-        Channels.readLines(stream, Charsets.US_ASCII,
-                Functions.<Integer, String>booleanPredicate2(true),
-                new Consumer2<Integer, String>() {
-                    @Override
-                    public void accept(Integer index, String line) {
-                        if (line.startsWith(CPUS_ALLOWED)) {
-                            int count = 0;
-                            int start = CPUS_ALLOWED.length();
-                            for (int i = start; i < line.length(); i++) {
-                                char ch = line.charAt(i);
-                                if (ch >= '0' && ch <= '9') {
-                                    count += BITS[ch - '0'];
-                                } else if (ch >= 'a' && ch <= 'f') {
-                                    count += BITS[ch - 'a' + 10];
-                                } else if (ch >= 'A' && ch <= 'F') {
-                                    count += BITS[ch - 'A' + 10];
+        FileInputStream stream = null;
+        try {
+            stream = new FileInputStream(file);
+
+            final Holder<Integer> countHolder = new Holder<Integer>(-1);
+            Channels.readLines(stream, Charsets.US_ASCII,
+                    Functions.<Integer, String>booleanPredicate2(true),
+                    new Consumer2<Integer, String>() {
+                        @Override
+                        public void accept(Integer index, String line) {
+                            if (line.startsWith(CPUS_ALLOWED)) {
+                                int count = 0;
+                                int start = CPUS_ALLOWED.length();
+                                for (int i = start; i < line.length(); i++) {
+                                    char ch = line.charAt(i);
+                                    if (ch >= '0' && ch <= '9') {
+                                        count += BITS[ch - '0'];
+                                    } else if (ch >= 'a' && ch <= 'f') {
+                                        count += BITS[ch - 'a' + 10];
+                                    } else if (ch >= 'A' && ch <= 'F') {
+                                        count += BITS[ch - 'A' + 10];
+                                    }
                                 }
+                                countHolder.set(count);
                             }
-                            countHolder.set(count);
                         }
-                    }
-                }, new Predicate2<Integer, String>() {
-                    @Override
-                    public boolean test(Integer key, String value) {
-                        return countHolder.get() >= 0;
-                    }
-                });
-        return countHolder.get();
+                    }, new Predicate2<Integer, String>() {
+                        @Override
+                        public boolean test(Integer key, String value) {
+                            return countHolder.get() >= 0;
+                        }
+                    });
+            return countHolder.get();
+        } finally {
+            IOs.close(stream);
+        }
     }
 }

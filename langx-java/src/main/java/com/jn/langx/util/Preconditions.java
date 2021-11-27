@@ -15,6 +15,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
@@ -62,6 +63,24 @@ public class Preconditions {
         }
         return obj;
     }
+
+    /**
+     *
+     * @param obj
+     * @param parameter
+     * @param <T>
+     * @return
+     *
+     * @since 4.1.0
+     */
+    public static <T> T checkNotNullArgument(@NonNull T obj, @NotEmpty String parameter){
+        String errorMessage = parameter;
+        if(errorMessage!=null){
+            errorMessage="argument "+errorMessage+ " is required";
+        }
+        return checkNotNull(obj, errorMessage);
+    }
+
 
     public static <T> T checkNotNull(@NonNull T obj, @Nullable String errorMessage) {
         if (obj == null) {
@@ -533,9 +552,9 @@ public class Preconditions {
     /**
      * @since 2.8.7
      */
-    public static long positive(final long n, final String name) {
+    public static long positive(final long n, final String argumentName) {
         if (n <= 0) {
-            throw new IllegalArgumentException(name + " may not be negative or zero");
+            throw new IllegalArgumentException(argumentName + " may not be negative or zero");
         }
         return n;
     }
@@ -543,9 +562,9 @@ public class Preconditions {
     /**
      * @since 2.8.7
      */
-    public static int notNegative(final int n, final String name) {
+    public static int notNegative(final int n, final String argumentName) {
         if (n < 0) {
-            throw new IllegalArgumentException(name + " may not be negative");
+            throw new IllegalArgumentException(argumentName + " may not be negative");
         }
         return n;
     }
@@ -553,9 +572,9 @@ public class Preconditions {
     /**
      * @since 2.8.7
      */
-    public static long notNegative(final long n, final String name) {
+    public static long notNegative(final long n, final String argumentName) {
         if (n < 0) {
-            throw new IllegalArgumentException(name + " may not be negative");
+            throw new IllegalArgumentException(argumentName + " may not be negative");
         }
         return n;
     }
