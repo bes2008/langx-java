@@ -277,7 +277,7 @@ public class Platform {
     }
 
     public static int cpuCore(){
-        return Runtime.getRuntime().availableProcessors();
+        return CpuCoreSensor.availableProcessors();
     }
 
 }

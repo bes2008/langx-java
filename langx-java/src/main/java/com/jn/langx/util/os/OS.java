@@ -24,8 +24,6 @@ import java.util.Locale;
 
 /**
  * Condition that tests the OS type.
- *
- * @version $Id: OS.java 1556869 2014-01-09 16:51:11Z britter $
  */
 public final class OS {
     private static final String FAMILY_OS_400 = "os/400";
@@ -50,14 +48,13 @@ public final class OS {
 
     private static final String FAMILY_WINDOWS = "windows";
 
-    private static final String OS_NAME = System.getProperty("os.name")
-            .toLowerCase(Locale.US);
+    private static final String FAMILY_LINUX = "linux";
 
-    private static final String OS_ARCH = System.getProperty("os.arch")
-            .toLowerCase(Locale.US);
+    private static final String OS_NAME = System.getProperty("os.name").toLowerCase(Locale.US);
 
-    private static final String OS_VERSION = System.getProperty("os.version")
-            .toLowerCase(Locale.US);
+    private static final String OS_ARCH = System.getProperty("os.arch").toLowerCase(Locale.US);
+
+    private static final String OS_VERSION = System.getProperty("os.version").toLowerCase(Locale.US);
 
     private static final String PATH_SEP = System.getProperty("path.separator");
 
@@ -191,6 +188,14 @@ public final class OS {
         return isFamily(FAMILY_OPENVMS);
     }
 
+    public static boolean isFamilyLinux() {
+        return isFamily(FAMILY_LINUX);
+    }
+
+    public static boolean isLinux(){
+        return isFamilyLinux();
+    }
+
     /**
      * Determines if the OS on which Ant is executing matches the given OS name.
      *
@@ -266,6 +271,8 @@ public final class OS {
                     isFamily = OS_NAME.contains(FAMILY_OS_400);
                 } else if (familyFlag.equals(FAMILY_OPENVMS)) {
                     isFamily = OS_NAME.contains(FAMILY_OPENVMS);
+                } else if (familyFlag.equals(FAMILY_LINUX)) {
+                    isFamily = OS_NAME.contains("nux");
                 } else {
                     isFamily = OS_NAME.contains(familyFlag);
                 }
