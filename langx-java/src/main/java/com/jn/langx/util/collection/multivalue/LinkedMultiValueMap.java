@@ -64,6 +64,10 @@ public class LinkedMultiValueMap<K, V> extends CommonMultiValueMap<K, V> impleme
         putAll(otherMap);
     }
 
+    public LinkedMultiValueMap(MultiValueMap<K,V> otherMap){
+        this(otherMap == null ? 16 : otherMap.size());
+        putAll(otherMap);
+    }
 
     @Override
     public boolean containsValue(final Object value) {
