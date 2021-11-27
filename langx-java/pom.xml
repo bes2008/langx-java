@@ -35,11 +35,6 @@
             <version>2.2.2.Final</version>
         </dependency>
         <dependency>
-            <groupId>io.helidon.common</groupId>
-            <artifactId>helidon-common</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>common</artifactId>
             <version>0.0.8</version>
@@ -53,11 +48,6 @@
             <groupId>uk.gov.gchq.gaffer</groupId>
             <artifactId>common-util</artifactId>
             <version>1.20.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.liftweb</groupId>
-            <artifactId>lift-common_2.13</artifactId>
-            <version>3.5.0</version>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
