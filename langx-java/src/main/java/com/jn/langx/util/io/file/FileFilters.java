@@ -69,23 +69,33 @@ public class FileFilters {
         };
     }
 
-
+    /**
+     * @since 4.1.0
+     */
     public static FileFilter wrap(Predicate<File> filePredicate){
         return new FilePredicateToFilterFilter(filePredicate);
     }
-
+    /**
+     * @since 4.1.0
+     */
     public static FileFilter wrap(FilenameFilter filter){
         return new FilenameFilterToFileFilter(filter);
     }
-
+    /**
+     * @since 4.1.0
+     */
     public static FileFilter wrap(java.io.FilenameFilter filter){
         return new FilenameFilterToFileFilter(filter);
     }
-
+    /**
+     * @since 4.1.0
+     */
     public static FileFilter wrap(Filter<File> filter){
         return new FilterToFileFilter(filter);
     }
-
+    /**
+     * @since 4.1.0
+     */
     public static FileFilter wrap(java.io.FileFilter fileFilter){
         return new JdkFileFilterToFileFilter(fileFilter);
     }

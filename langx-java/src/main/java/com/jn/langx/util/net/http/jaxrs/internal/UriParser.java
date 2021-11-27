@@ -23,8 +23,7 @@ import com.jn.langx.text.StringTemplates;
  * Example of parsed uri: {@code "http://user@{host}:{port}/a/{path}?query=1#fragment"}.
  * The parser is not thread safe.
  *
- * @author Paul Sandoz
- * @author Marek Potociar
+ * @since 4.1.0
  */
 class UriParser {
     private static final String ERROR_STATE = "The parser was not executed yet. Call the parse() method first.";

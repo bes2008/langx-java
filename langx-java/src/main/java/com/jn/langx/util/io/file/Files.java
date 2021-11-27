@@ -1801,11 +1801,16 @@ public class Files {
         }
     }
 
+    /**
+     * @since 4.1.0
+     */
     public static List<File> find(File directory, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, com.jn.langx.util.io.file.FileFilter filter, Predicate2<List<File>, File> breakPredicate) {
         return find(directory, 1, childrenFilter, filter, breakPredicate);
     }
 
-
+    /**
+     * @since 4.1.0
+     */
     public static List<File> find(File directory, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, com.jn.langx.util.io.file.FileFilter filter, Predicate2<List<File>, File> breakPredicate) {
         List<File> out = Collects.emptyArrayList();
         find(directory, out, maxDepth, childrenFilter, filter, breakPredicate);
@@ -1816,6 +1821,8 @@ public class Files {
      * @param directory the base dir
      * @param maxDepth  [1,100]
      * @param filter    use the predicate to filter all file or directory what found by search filter
+     *
+     * @since 4.1.0
      */
     public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, @Nullable com.jn.langx.util.io.file.FileFilter filter, @NonNull Predicate2<List<File>, File> breakPredicate) {
         if (directory == null || out == null || maxDepth < 1) {

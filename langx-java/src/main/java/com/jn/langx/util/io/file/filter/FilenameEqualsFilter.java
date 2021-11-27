@@ -5,6 +5,9 @@ import com.jn.langx.util.Strings;
 
 import java.io.File;
 
+/**
+ * @since 4.1.0
+ */
 public class FilenameEqualsFilter extends AbstractFileFilter {
     // 是否忽略大小写
     private boolean ignoreCase = false;

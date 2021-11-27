@@ -28,8 +28,7 @@ import java.util.regex.PatternSyntaxException;
  * and returning capturing group values for any capturing groups present in
  * the expression.
  *
- * @author Paul Sandoz
- * @author Gerard Davison (gerard.davison at oracle.com)
+ * @since 4.1.0
  */
 public class PatternWithGroups {
 

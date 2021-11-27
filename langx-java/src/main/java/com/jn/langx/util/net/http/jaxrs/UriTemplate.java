@@ -29,6 +29,8 @@ import java.util.regex.PatternSyntaxException;
  * A URI template.
  *
  * Migrate from jersey-common
+ *
+ * @since 4.1.0
  */
 public class UriTemplate {
     private static final String[] EMPTY_VALUES = new String[0];

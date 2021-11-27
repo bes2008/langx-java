@@ -18,8 +18,10 @@ package com.jn.langx.util.net.http.jaxrs;
 /**
  * JerseyQueryParamStyle is used to specify the desired format of query param
  * when multiple values are sent for the same parameter.
+ *
+ * @since 4.1.0
  */
-public enum JerseyQueryParamStyle {
+public enum HttpQueryParamStyle {
 
     /**
      * Multiple parameter instances, e.g.:

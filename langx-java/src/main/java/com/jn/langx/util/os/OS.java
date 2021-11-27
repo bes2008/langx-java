@@ -188,10 +188,16 @@ public final class OS {
         return isFamily(FAMILY_OPENVMS);
     }
 
+    /**
+     * @since 4.1.0
+     */
     public static boolean isFamilyLinux() {
         return isFamily(FAMILY_LINUX);
     }
 
+    /**
+     * @since 4.1.0
+     */
     public static boolean isLinux(){
         return isFamilyLinux();
     }

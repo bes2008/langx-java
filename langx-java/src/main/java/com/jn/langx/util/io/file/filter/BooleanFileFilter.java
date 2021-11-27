@@ -2,6 +2,9 @@ package com.jn.langx.util.io.file.filter;
 
 import java.io.File;
 
+/**
+ * @since 4.1.0
+ */
 public class BooleanFileFilter extends AbstractFileFilter {
     private boolean truth;
 

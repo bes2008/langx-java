@@ -27,8 +27,7 @@ import java.util.regex.PatternSyntaxException;
 /**
  * A URI template parser that parses JAX-RS specific URI templates.
  *
- * @author Paul Sandoz
- * @author Gerard Davison (gerard.davison at oracle.com)
+ * @since 4.1.0
  */
 public class UriTemplateParser {
 

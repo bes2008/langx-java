@@ -4,7 +4,9 @@ import com.jn.langx.util.io.file.filter.AbstractFileFilter;
 
 import java.io.File;
 import java.io.FileFilter;
-
+/**
+ * @since 4.1.0
+ */
 public class JdkFileFilterToFileFilter extends AbstractFileFilter {
     private FileFilter delegate;
 

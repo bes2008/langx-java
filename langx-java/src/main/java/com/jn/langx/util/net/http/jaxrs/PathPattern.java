@@ -29,7 +29,7 @@ import java.util.Comparator;
  * see {@link RightHandPath#capturingZeroOrMoreSegments}, or zero path
  * segments, see {@link RightHandPath#capturingZeroSegments}.
  *
- * @author Paul Sandoz
+ * @since 4.1.0
  */
 public final class PathPattern extends PatternWithGroups {
 

@@ -21,8 +21,7 @@ import com.jn.langx.util.net.http.jaxrs.internal.UriTemplateParser;
 /**
  * A URI template for a URI path.
  *
- * @author Paul Sandoz
- * @author Yegor Bugayenko (yegor256 at java.net)
+ * @since 4.1.0
  */
 public final class PathTemplate extends UriTemplate {
 
