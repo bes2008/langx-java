@@ -197,6 +197,10 @@ public class Collects {
         return immutableList(null);
     }
 
+    public static <E> List<E> immutableArrayList(E... array){
+        return immutableList(Collects.newArrayList(array));
+    }
+
     public static <E> List<E> immutableList(List<E> list) {
         if (list == null) {
             return Collections.emptyList();

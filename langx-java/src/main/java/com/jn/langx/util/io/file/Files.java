@@ -6,6 +6,7 @@ import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.io.stream.NullOutputStream;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
@@ -14,6 +15,8 @@ import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.filter.BooleanFileFilter;
+import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
+import com.jn.langx.util.io.file.filter.IsFileFilter;
 
 import java.io.FileFilter;
 import java.io.*;
@@ -721,7 +724,7 @@ public class Files {
         List<String> exclusionList = null;
         if (destDir.getCanonicalPath().startsWith(srcDir.getCanonicalPath())) {
             final File[] srcFiles = filter == null ? srcDir.listFiles() : srcDir.listFiles(filter);
-            if (srcFiles != null && srcFiles.length > 0) {
+            if (Objs.isNotEmpty(srcFiles)) {
                 exclusionList = new ArrayList<String>(srcFiles.length);
                 for (final File srcFile : srcFiles) {
                     final File copiedFile = new File(destDir, srcFile.getName());
@@ -982,12 +985,10 @@ public class Files {
 
         if (FileSystems.isNotSymlink(directory)) {
             cleanDirectory(directory);
+            directory.delete();
         }
-
-        if (!directory.delete()) {
-            final String message =
-                    "Unable to delete directory " + directory + ".";
-            throw new IOException(message);
+        if (directory.exists() && directory.isDirectory()) {
+            deleteDirectory(directory);
         }
     }
 
@@ -1032,19 +1033,22 @@ public class Files {
      * @throws IllegalArgumentException if {@code directory} does not exist or is not a directory
      */
     public static void cleanDirectory(final File directory) throws IOException {
-        final File[] files = verifiedListFiles(directory);
+        if (directory.exists() && directory.isDirectory()) {
 
-        IOException exception = null;
-        for (final File file : files) {
-            try {
-                forceDelete(file);
-            } catch (final IOException ioe) {
-                exception = ioe;
+            // 删除目录下的文件
+            File[] children = directory.listFiles((FileFilter) new IsFileFilter());
+            if(children!=null) {
+                for (int i = 0; i < children.length; i++) {
+                    children[i].delete();
+                }
             }
-        }
-
-        if (null != exception) {
-            throw exception;
+            children = directory.listFiles((FileFilter) new IsDirectoryFileFilter());
+            if(children!=null) {
+                for (int i = 0; i < children.length; i++) {
+                    cleanDirectory(children[i]);
+                    children[i].delete();
+                }
+            }
         }
     }
 
@@ -1057,8 +1061,7 @@ public class Files {
      */
     private static File[] verifiedListFiles(final File directory) throws IOException {
         if (!directory.exists()) {
-            final String message = directory + " does not exist";
-            throw new IllegalArgumentException(message);
+            return new File[0];
         }
 
         if (!directory.isDirectory()) {
@@ -1066,9 +1069,9 @@ public class Files {
             throw new IllegalArgumentException(message);
         }
 
-        final File[] files = directory.listFiles();
+        final File[] files = directory.listFiles((FileFilter) new IsFileFilter());
         if (files == null) {
-            throw new IOException("Failed to list contents of " + directory);
+            return new File[0];
         }
         return files;
     }
@@ -1821,7 +1824,6 @@ public class Files {
      * @param directory the base dir
      * @param maxDepth  [1,100]
      * @param filter    use the predicate to filter all file or directory what found by search filter
-     *
      * @since 4.1.0
      */
     public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, @Nullable com.jn.langx.util.io.file.FileFilter filter, @NonNull Predicate2<List<File>, File> breakPredicate) {
