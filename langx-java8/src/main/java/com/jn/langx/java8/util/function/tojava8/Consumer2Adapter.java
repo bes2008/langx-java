@@ -1,13 +1,13 @@
-package com.jn.langx.java8.function.fromjava8;
+package com.jn.langx.java8.util.function.tojava8;
 
 import com.jn.langx.util.function.Consumer2;
 
 import java.util.function.BiConsumer;
 
-public class Consumer2Adapter<I1, I2> implements Consumer2<I1, I2> {
-    private BiConsumer<I1, I2> delegate;
+public class Consumer2Adapter<I1, I2> implements BiConsumer<I1, I2> {
+    private Consumer2<I1, I2> delegate;
 
-    public Consumer2Adapter(BiConsumer<I1, I2> delegate) {
+    public Consumer2Adapter(Consumer2<I1, I2> delegate) {
         this.delegate = delegate;
     }
 

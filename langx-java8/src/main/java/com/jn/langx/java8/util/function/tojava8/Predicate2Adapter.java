@@ -1,4 +1,4 @@
-package com.jn.langx.java8.function.tojava8;
+package com.jn.langx.java8.util.function.tojava8;
 
 import com.jn.langx.util.function.Predicate2;
 
