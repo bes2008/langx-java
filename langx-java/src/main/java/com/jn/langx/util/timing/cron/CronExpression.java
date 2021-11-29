@@ -168,28 +168,26 @@ import java.util.*;
  * </ul>
  * </p>
  *
- * @author Sharada Jambula, James House
- * @author Contributions from Mads Henderson
- * @author Refactoring from CronTrigger to CronExpression by Aaron Craven
  */
+@SuppressWarnings({"unused"})
 public final class CronExpression implements Serializable, Cloneable {
 
     private static final long serialVersionUID = 12423409423L;
 
-    protected static final int SECOND = 0;
-    protected static final int MINUTE = 1;
-    protected static final int HOUR = 2;
-    protected static final int DAY_OF_MONTH = 3;
-    protected static final int MONTH = 4;
-    protected static final int DAY_OF_WEEK = 5;
-    protected static final int YEAR = 6;
-    protected static final int ALL_SPEC_INT = 99; // '*'
-    protected static final int NO_SPEC_INT = 98; // '?'
-    protected static final Integer ALL_SPEC = ALL_SPEC_INT;
-    protected static final Integer NO_SPEC = NO_SPEC_INT;
+    private static final int SECOND = 0;
+    private static final int MINUTE = 1;
+    private static final int HOUR = 2;
+    private static final int DAY_OF_MONTH = 3;
+    private static final int MONTH = 4;
+    private static final int DAY_OF_WEEK = 5;
+    private static final int YEAR = 6;
+    private static final int ALL_SPEC_INT = 99; // '*'
+    private static final int NO_SPEC_INT = 98; // '?'
+    private static final Integer ALL_SPEC = ALL_SPEC_INT;
+    private static final Integer NO_SPEC = NO_SPEC_INT;
 
-    protected static final Map<String, Integer> monthMap;
-    protected static final Map<String, Integer> dayMap;
+    private static final Map<String, Integer> monthMap;
+    private static final Map<String, Integer> dayMap;
 
     static {
         Map<String, Integer> monthmap = new HashMap<String, Integer>(12);
@@ -220,20 +218,20 @@ public final class CronExpression implements Serializable, Cloneable {
 
     private final String cronExpression;
     private TimeZone timeZone = null;
-    protected transient TreeSet<Integer> seconds;
-    protected transient TreeSet<Integer> minutes;
-    protected transient TreeSet<Integer> hours;
-    protected transient TreeSet<Integer> daysOfMonth;
-    protected transient TreeSet<Integer> months;
-    protected transient TreeSet<Integer> daysOfWeek;
-    protected transient TreeSet<Integer> years;
+    private transient TreeSet<Integer> seconds;
+    private transient TreeSet<Integer> minutes;
+    private transient TreeSet<Integer> hours;
+    private transient TreeSet<Integer> daysOfMonth;
+    private transient TreeSet<Integer> months;
+    private transient TreeSet<Integer> daysOfWeek;
+    private transient TreeSet<Integer> years;
 
-    protected transient boolean lastdayOfWeek = false;
-    protected transient int nthdayOfWeek = 0;
-    protected transient boolean lastdayOfMonth = false;
-    protected transient boolean nearestWeekday = false;
-    protected transient int lastdayOffset = 0;
-    protected transient boolean expressionParsed = false;
+    private transient boolean lastdayOfWeek = false;
+    private transient int nthdayOfWeek = 0;
+    private transient boolean lastdayOfMonth = false;
+    private transient boolean nearestWeekday = false;
+    private transient int lastdayOffset = 0;
+    private transient boolean expressionParsed = false;
 
     public static final int MAX_YEAR = Calendar.getInstance().get(Calendar.YEAR) + 100;
 
