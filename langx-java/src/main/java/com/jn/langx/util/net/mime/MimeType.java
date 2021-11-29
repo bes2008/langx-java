@@ -3,7 +3,7 @@ package com.jn.langx.util.net.mime;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
@@ -441,10 +441,10 @@ public class MimeType implements Comparable<MimeType>, Serializable {
                 return false;
             }
             if (PARAM_CHARSET.equals(key)) {
-                if (!Objects.equals(getCharset(), other.getCharset())) {
+                if (!Objs.equals(getCharset(), other.getCharset())) {
                     return false;
                 }
-            } else if (!Objects.equals(entry.getValue(), other.parameters.get(key))) {
+            } else if (!Objs.equals(entry.getValue(), other.parameters.get(key))) {
                 return false;
             }
         }

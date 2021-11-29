@@ -2,7 +2,7 @@ package com.jn.langx.util.collection.diff;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
     }
 
     public void setAdds(@Nullable Map<K, V> adds) {
-        if (Objects.nonNull(adds)) {
+        if (Objs.nonNull(adds)) {
             this.adds = adds;
         }
     }
@@ -30,7 +30,7 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
     }
 
     public void setRemoves(@Nullable Map<K, V> removes) {
-        if (Objects.nonNull(removes)) {
+        if (Objs.nonNull(removes)) {
             this.removes = removes;
         }
     }
@@ -41,7 +41,7 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
     }
 
     public void setUpdates(@Nullable Map<K, V> updates) {
-        if (Objects.nonNull(updates)) {
+        if (Objs.nonNull(updates)) {
             this.updates = updates;
         }
     }
@@ -52,7 +52,7 @@ public class MapDiffResult<K, V> implements CollectionDifferResult<Map<K, V>> {
     }
 
     public void setEquals(@Nullable Map<K, V> equals) {
-        if (Objects.nonNull(equals)) {
+        if (Objs.nonNull(equals)) {
             this.equals = equals;
         }
     }

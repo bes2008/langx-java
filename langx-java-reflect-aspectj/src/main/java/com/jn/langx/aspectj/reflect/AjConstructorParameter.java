@@ -1,6 +1,6 @@
 package com.jn.langx.aspectj.reflect;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.parameter.ConstructorParameter;
@@ -128,7 +128,7 @@ public class AjConstructorParameter implements ConstructorParameter {
 
         AjConstructorParameter that = (AjConstructorParameter) o;
 
-        return Objects.equals(delegate, that.delegate);
+        return Objs.equals(delegate, that.delegate);
     }
 
     @Override

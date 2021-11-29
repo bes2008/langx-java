@@ -1,6 +1,6 @@
 package com.jn.langx.text.stringtemplate;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -17,7 +17,7 @@ public class StringTemplateFormatterChain implements StringTemplateFormatter {
     private List<Pair<StringTemplateFormatter, Object[]>> chain = Collects.emptyArrayList();
 
     public StringTemplateFormatterChain addFormatterAndParameters(StringTemplateFormatter formatter, Object... args) {
-        if (Objects.nonNull(formatter)) {
+        if (Objs.nonNull(formatter)) {
             chain.add(new Entry<StringTemplateFormatter, Object[]>(formatter, args));
         }
         return this;

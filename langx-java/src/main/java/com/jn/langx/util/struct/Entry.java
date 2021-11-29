@@ -2,7 +2,7 @@ package com.jn.langx.util.struct;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
@@ -33,10 +33,10 @@ public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
         }
         @SuppressWarnings("rawtypes")
         Entry that = (Entry) obj;
-        if (!Objects.equals(getKey(), that.getKey())) {
+        if (!Objs.equals(getKey(), that.getKey())) {
             return false;
         }
-        if (!Objects.equals(getValue(), that.getValue())) {
+        if (!Objs.equals(getValue(), that.getValue())) {
             return false;
         }
         return true;

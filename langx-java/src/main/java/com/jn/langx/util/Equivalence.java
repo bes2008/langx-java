@@ -252,14 +252,14 @@ public abstract class Equivalence<T> {
             if (obj instanceof EquivalentToPredicate) {
                 EquivalentToPredicate<?> that = (EquivalentToPredicate<?>) obj;
                 return equivalence.equals(that.equivalence)
-                        && Objects.equals(target, that.target);
+                        && Objs.equals(target, that.target);
             }
             return false;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(equivalence, target);
+            return Objs.hash(equivalence, target);
         }
 
         @Override
@@ -379,7 +379,7 @@ public abstract class Equivalence<T> {
 
         @Override
         public int hashCode() {
-            return Objects.hash(function, resultEquivalence);
+            return Objs.hash(function, resultEquivalence);
         }
 
         @Override

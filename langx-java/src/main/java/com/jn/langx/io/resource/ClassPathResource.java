@@ -4,7 +4,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.classpath.Classpaths;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.ClassLoaders;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.file.Filenames;
 import com.jn.langx.util.net.URLs;
@@ -265,7 +265,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         }
         ClassPathResource o2 = (ClassPathResource) obj;
 
-        if (!Objects.equals(this.getLocation(), o2.getLocation())) {
+        if (!Objs.equals(this.getLocation(), o2.getLocation())) {
             return false;
         }
         return true;

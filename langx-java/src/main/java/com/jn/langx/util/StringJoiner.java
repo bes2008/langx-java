@@ -96,9 +96,9 @@ public final class StringJoiner implements Appendable {
     public StringJoiner(CharSequence delimiter,
                         CharSequence prefix,
                         CharSequence suffix) {
-        Objects.requireNonNull(prefix, "The prefix must not be null");
-        Objects.requireNonNull(delimiter, "The delimiter must not be null");
-        Objects.requireNonNull(suffix, "The suffix must not be null");
+        Objs.requireNonNull(prefix, "The prefix must not be null");
+        Objs.requireNonNull(delimiter, "The delimiter must not be null");
+        Objs.requireNonNull(suffix, "The suffix must not be null");
         // make defensive copies of arguments
         this.prefix = prefix.toString();
         this.delimiter = delimiter.toString();
@@ -121,7 +121,7 @@ public final class StringJoiner implements Appendable {
      *                              {@code null}
      */
     public StringJoiner setEmptyValue(CharSequence emptyValue) {
-        this.emptyValue = Objects.requireNonNull(emptyValue,
+        this.emptyValue = Objs.requireNonNull(emptyValue,
                 "The empty value must not be null").toString();
         return this;
     }
@@ -221,7 +221,7 @@ public final class StringJoiner implements Appendable {
      * @throws NullPointerException if the other {@code StringJoiner} is null
      */
     public StringJoiner merge(StringJoiner other) {
-        Objects.requireNonNull(other);
+        Objs.requireNonNull(other);
         if (other.value != null) {
             final int length = other.value.length();
             // lock the length so that we can seize the data to be appended

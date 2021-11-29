@@ -249,8 +249,7 @@ public abstract class HttpRange {
                 return false;
             }
             ByteRange otherRange = (ByteRange) other;
-            return (this.firstPos == otherRange.firstPos &&
-                    Objects.equals(this.lastPos, otherRange.lastPos));
+            return (this.firstPos == otherRange.firstPos && Objs.equals(this.lastPos, otherRange.lastPos));
         }
 
         @Override

@@ -150,7 +150,7 @@ public class Preconditions {
 
     public static <T> T checkNotEmpty(@NonNull T obj, @Nullable Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (Emptys.isEmpty(obj)) {
-            if (Objects.isNull(errorMessageSupplier)) {
+            if (Objs.isNull(errorMessageSupplier)) {
                 throw new NullPointerException();
             }
             throw new NullPointerException(errorMessageSupplier.get(params));
@@ -204,7 +204,7 @@ public class Preconditions {
 
     public static void checkArgument(boolean expression, Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (!expression) {
-            if (Objects.isNull(errorMessageSupplier)) {
+            if (Objs.isNull(errorMessageSupplier)) {
                 throw new IllegalArgumentException();
             } else {
                 throw new IllegalArgumentException(errorMessageSupplier.get(params));
@@ -244,7 +244,7 @@ public class Preconditions {
 
     public static void checkTrue(boolean expression, Supplier<Object[], String> errorMessageSupplier, Object... params) {
         if (!expression) {
-            if (Objects.isNull(errorMessageSupplier)) {
+            if (Objs.isNull(errorMessageSupplier)) {
                 throw new IllegalArgumentException();
             } else {
                 throw new IllegalArgumentException(errorMessageSupplier.get(params));

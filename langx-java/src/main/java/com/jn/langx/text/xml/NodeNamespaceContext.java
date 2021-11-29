@@ -1,6 +1,6 @@
 package com.jn.langx.text.xml;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.iter.Iterables;
@@ -81,7 +81,7 @@ public class NodeNamespaceContext implements NamespaceContext {
     @Override
     public String getPrefix(String namespaceURI) {
         List<Namespace> namespaces = this.uriToNamespacesMap.get(namespaceURI);
-        if (!Objects.isEmpty(namespaces)) {
+        if (!Objs.isEmpty(namespaces)) {
             return namespaces.get(0).getPrefix();
         }
         return XMLConstants.DEFAULT_NS_PREFIX;

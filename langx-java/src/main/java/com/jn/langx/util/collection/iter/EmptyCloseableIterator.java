@@ -16,7 +16,6 @@
 
 package com.jn.langx.util.collection.iter;
 
-import uk.gov.gchq.gaffer.commonutil.iterable.CloseableIterator;
 
 import java.util.NoSuchElementException;
 

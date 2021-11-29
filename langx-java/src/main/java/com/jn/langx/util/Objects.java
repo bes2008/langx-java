@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * 推荐使用 Objs
  */
+@Deprecated
 public class Objects {
     protected Objects() {
     }
@@ -52,7 +53,7 @@ public class Objects {
      * @return {@code true} if the arguments are deeply equal to each other
      * and {@code false} otherwise
      * @see Arrays#deepEquals(Object[], Object[])
-     * @see Objects#equals(Object, Object)
+     * @see Objs#equals(Object, Object)
      */
     public static boolean deepEquals(Object a, Object b) {
         if (a == b) {
@@ -132,7 +133,7 @@ public class Objects {
      * @return the result of calling {@code toString} on the first
      * argument if it is not {@code null} and the second argument
      * otherwise.
-     * @see Objects#toString(Object)
+     * @see Objs#toString(Object)
      */
     public static String toString(Object o, String nullDefault) {
         return (o != null) ? o.toString() : nullDefault;

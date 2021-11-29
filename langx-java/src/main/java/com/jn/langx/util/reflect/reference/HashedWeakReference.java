@@ -1,6 +1,6 @@
 package com.jn.langx.util.reflect.reference;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.struct.Reference;
 
 import java.lang.ref.ReferenceQueue;
@@ -43,7 +43,7 @@ public class HashedWeakReference<V> extends WeakReference<V> implements Referenc
         if( hash != that.hash){
             return false;
         }
-        return Objects.equals(get(), that.get());
+        return Objs.equals(get(), that.get());
     }
 
     @Override

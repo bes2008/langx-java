@@ -3,7 +3,7 @@ package com.jn.langx.util.enums;
 import com.jn.langx.Named;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.enums.base.CommonEnum;
@@ -192,7 +192,7 @@ public class Enums {
                     public boolean test(T e) {
                         Object fieldValue = Reflects.getAnyFieldValue(e, field, true, false);
                         Object expectedValue = valueSupplier == null ? null : valueSupplier.get();
-                        return Objects.deepEquals(fieldValue, expectedValue);
+                        return Objs.deepEquals(fieldValue, expectedValue);
                     }
                 });
             }

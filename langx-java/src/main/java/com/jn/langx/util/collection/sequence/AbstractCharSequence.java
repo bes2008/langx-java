@@ -1,6 +1,6 @@
 package com.jn.langx.util.collection.sequence;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -162,7 +162,7 @@ public abstract class AbstractCharSequence<S extends CharSequence> implements Se
             }
         }).asList());
 
-        if (Objects.length(c) != Objects.length(comparedCharsHolder.get())) {
+        if (Objs.length(c) != Objs.length(comparedCharsHolder.get())) {
             return false;
         }
         if (comparedCharsHolder.get().isEmpty()) {
@@ -205,7 +205,7 @@ public abstract class AbstractCharSequence<S extends CharSequence> implements Se
         while (iter.hasNext()) {
             Character c = iter.next();
             i++;
-            if (Objects.equals(c, o)) {
+            if (Objs.equals(c, o)) {
                 return i;
             }
         }

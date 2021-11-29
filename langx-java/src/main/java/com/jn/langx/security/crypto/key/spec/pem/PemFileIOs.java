@@ -44,7 +44,7 @@ public class PemFileIOs extends Securitys {
             if (Emptys.isEmpty(content)) {
                 throw new NullPointerException();
             }
-            encoding = Objects.useValueIfNull(encoding, KeyEncoding.BASE64);
+            encoding = Objs.useValueIfNull(encoding, KeyEncoding.BASE64);
             byte[] bytes = null;
             switch (encoding) {
                 case HEX:
@@ -184,7 +184,7 @@ public class PemFileIOs extends Securitys {
     public static void writeKey(byte[] keyBytes, Writer writer, KeyEncoding encoding, String headLine, String footerLine) throws IOException {
         Preconditions.checkNotNull(keyBytes);
         Preconditions.checkNotNull(writer);
-        encoding = Objects.useValueIfNull(encoding, KeyEncoding.BASE64);
+        encoding = Objs.useValueIfNull(encoding, KeyEncoding.BASE64);
 
         writer.write(LineDelimiter.DEFAULT.getValue());
         if (Strings.isNotBlank(headLine)) {

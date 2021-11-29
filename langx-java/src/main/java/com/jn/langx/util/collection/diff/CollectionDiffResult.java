@@ -2,7 +2,7 @@ package com.jn.langx.util.collection.diff;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setAdds(@Nullable Collection<E> adds) {
-        if (Objects.nonNull(adds)) {
+        if (Objs.nonNull(adds)) {
             this.adds = adds;
         }
     }
@@ -35,7 +35,7 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setRemoves(@Nullable Collection<E> removes) {
-        if (Objects.nonNull(removes)) {
+        if (Objs.nonNull(removes)) {
             this.removes = removes;
         }
     }
@@ -46,7 +46,7 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setUpdates(@Nullable Collection<E> updates) {
-        if (Objects.nonNull(updates)) {
+        if (Objs.nonNull(updates)) {
             this.updates = updates;
         }
     }
@@ -57,7 +57,7 @@ public class CollectionDiffResult<E> implements CollectionDifferResult<Collectio
     }
 
     public void setEquals(@Nullable Collection<E> equals) {
-        if (Objects.nonNull(equals)) {
+        if (Objs.nonNull(equals)) {
             this.equals = equals;
         }
     }

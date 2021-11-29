@@ -1,7 +1,7 @@
 package com.jn.langx.util.collection.tree;
 
 import com.jn.langx.util.BasedStringAccessor;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 
 import java.io.Serializable;
 import java.util.*;
@@ -194,7 +194,7 @@ public class TreeNode<T extends TreeNode> extends BasedStringAccessor<String, Ma
     @Override
     public String getString(String key, String defaultValue) {
         Object obj = get(key);
-        if (Objects.isNull(obj)) {
+        if (Objs.isNull(obj)) {
             return defaultValue;
         }
         return obj.toString();

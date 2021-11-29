@@ -1,6 +1,6 @@
 package com.jn.langx.util.collection.iter;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Arrs;
 
 import java.util.Enumeration;
@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Iterables {
     public static boolean isIterable(Object obj) {
-        if (Objects.isNull(obj)) {
+        if (Objs.isNull(obj)) {
             return false;
         }
         if (Arrs.isArray(obj)) {

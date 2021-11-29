@@ -73,7 +73,7 @@ public class StringTemplate {
                     return valueGetter.apply(matched, args);
                 }
             }, args);
-            value = Objects.isNull(value) ? matched : value;
+            value = Objs.isNull(value) ? matched : value;
             matcher.appendReplacement(b, quoteReplacement(value));
         }
         matcher.appendTail(b);

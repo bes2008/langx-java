@@ -1,7 +1,6 @@
 package com.jn.langx.util.function;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.Objects;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -334,7 +333,7 @@ public class Functions {
         return new Predicate2<E1, E2>() {
             @Override
             public boolean test(E1 v1, E2 v2) {
-                return Objects.deepEquals(v1, v2);
+                return Objs.deepEquals(v1, v2);
             }
         };
     }
@@ -352,7 +351,7 @@ public class Functions {
         return new Predicate2<E1, E2>() {
             @Override
             public boolean test(E1 v1, E2 v2) {
-                return Objects.equals(v1, v2);
+                return Objs.equals(v1, v2);
             }
         };
     }

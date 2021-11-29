@@ -1,9 +1,6 @@
 package com.jn.langx.util.io.file;
 
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Objects;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Radixs;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.hash.HashCodeBuilder;
@@ -128,7 +125,7 @@ public class UnixFileAccessMode {
 
         UnixFileAccessMode that = (UnixFileAccessMode) o;
 
-        return Objects.equals(binaryMode, that.binaryMode);
+        return Objs.equals(binaryMode, that.binaryMode);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.jn.langx.util.struct;
 
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
 /**
@@ -38,10 +38,10 @@ public abstract class Pair<K, V> {
             return false;
         }
         Pair that = (Pair) object;
-        if (!Objects.equals(key, that.key)) {
+        if (!Objs.equals(key, that.key)) {
             return false;
         }
-        if (!Objects.equals(value, that.value)) {
+        if (!Objs.equals(value, that.value)) {
             return false;
         }
         return true;

@@ -1,12 +1,11 @@
 package com.jn.langx.test.util.time;
 
 import com.jn.langx.util.Dates;
-import com.jn.langx.util.Objects;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.timing.cron.CronExpression;
 import com.jn.langx.util.timing.cron.CronExpressionBuilder;
 import com.jn.langx.util.timing.cron.CronExpressionType;
 import com.jn.langx.util.timing.cron.CronExpressions;
-import org.junit.Test;
 
 import java.util.Date;
 
@@ -29,7 +28,7 @@ public class CronExpressionTests {
 
             String nextDate1String = Dates.format(nextDate, Dates.yyyy_MM_dd_HH_mm_ss);
             String nextDate2String = Dates.format(nextDate2, Dates.yyyy_MM_dd_HH_mm_ss);
-            boolean equals = Objects.equals(nextDate1String, nextDate2String);
+            boolean equals = Objs.equals(nextDate1String, nextDate2String);
             if(equals){
                 System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + nextDate1String);
             }else {
@@ -57,7 +56,7 @@ public class CronExpressionTests {
 
             String nextDate1String = Dates.format(nextDate, Dates.yyyy_MM_dd_HH_mm_ss);
             String nextDate2String = Dates.format(nextDate2, Dates.yyyy_MM_dd_HH_mm_ss);
-            boolean equals = Objects.equals(nextDate1String, nextDate2String);
+            boolean equals = Objs.equals(nextDate1String, nextDate2String);
             if(equals){
                 System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss) + "\t" + "next: " + nextDate1String);
             }else {
