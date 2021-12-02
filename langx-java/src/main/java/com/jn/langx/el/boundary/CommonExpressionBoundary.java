@@ -1,4 +1,4 @@
-package com.jn.langx.util.boundary;
+package com.jn.langx.el.boundary;
 
 public class CommonExpressionBoundary extends CommonBoundary implements ExpressionAware{
     private String expression;

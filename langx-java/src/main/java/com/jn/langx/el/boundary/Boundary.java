@@ -1,4 +1,4 @@
-package com.jn.langx.util.boundary;
+package com.jn.langx.el.boundary;
 
 import com.jn.langx.util.function.Predicate;
 

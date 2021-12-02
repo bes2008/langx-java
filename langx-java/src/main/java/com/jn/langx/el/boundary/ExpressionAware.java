@@ -1,4 +1,4 @@
-package com.jn.langx.util.boundary;
+package com.jn.langx.el.boundary;
 
 public interface ExpressionAware {
     void setExpression(String expression);
