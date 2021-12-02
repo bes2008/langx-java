@@ -14,7 +14,7 @@ public class ComparisonExpectValuedPredicate<V> extends ExpectValuedPredicate<V>
      */
     private boolean lessThan = false;
 
-    private Comparator delegate;
+    private Comparator<V> delegate;
 
     public boolean isInclusive() {
         return inclusive;
@@ -43,12 +43,12 @@ public class ComparisonExpectValuedPredicate<V> extends ExpectValuedPredicate<V>
     }
 
     @Override
-    public Comparator getDelegate() {
+    public Comparator<V> getDelegate() {
         return delegate;
     }
 
     @Override
-    public void setDelegate(Comparator delegate) {
+    public void setDelegate(Comparator<V> delegate) {
         this.delegate = delegate;
     }
 
