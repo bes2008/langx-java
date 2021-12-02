@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CommonBoundary implements Boundary {
     private List<Predicate<String>> predicates = Collects.emptyArrayList();
-
+    private boolean any = false;
     @Override
     public boolean test(final String value) {
         Preconditions.checkNotEmpty(predicates);

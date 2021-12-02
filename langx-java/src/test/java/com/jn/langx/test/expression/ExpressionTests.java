@@ -1,12 +1,12 @@
 package com.jn.langx.test.expression;
 
-import com.jn.langx.expression.operator.arithmetic.Add;
-import com.jn.langx.expression.operator.compare.GE;
-import com.jn.langx.expression.operator.compare.NI;
-import com.jn.langx.expression.operator.logic.And;
-import com.jn.langx.expression.value.NumberExpression;
-import com.jn.langx.expression.value.StringExpression;
-import com.jn.langx.expression.value.ValueExpression;
+import com.jn.langx.el.expression.operator.arithmetic.Add;
+import com.jn.langx.el.expression.operator.compare.GE;
+import com.jn.langx.el.expression.operator.compare.NI;
+import com.jn.langx.el.expression.operator.logic.And;
+import com.jn.langx.el.expression.value.NumberExpression;
+import com.jn.langx.el.expression.value.StringExpression;
+import com.jn.langx.el.expression.value.ValueExpression;
 import com.jn.langx.util.collection.Collects;
 import org.junit.Assert;
 import org.junit.Test;
