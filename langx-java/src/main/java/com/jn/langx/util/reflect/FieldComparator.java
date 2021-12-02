@@ -11,12 +11,11 @@ import java.lang.reflect.Field;
 import java.util.Comparator;
 
 @SuppressWarnings({"unchecked"})
-public class FieldComparator implements DelegatableComparator {
+public class FieldComparator<V> implements DelegatableComparator<V> {
     private Field field;
-    private Comparator delegate;
+    private Comparator<V> delegate;
 
-    public FieldComparator(@NonNull Field field,
-                           @Nullable Comparator fieldComparator) {
+    public FieldComparator(@NonNull Field field, @Nullable Comparator<V> fieldComparator) {
         Preconditions.checkNotNull(field);
         this.field = field;
         if (fieldComparator == null) {
@@ -33,19 +32,19 @@ public class FieldComparator implements DelegatableComparator {
     }
 
     @Override
-    public int compare(Object o1, Object o2) {
-        Object v1 = Reflects.getFieldValue(field, o1, true, false);
-        Object v2 = Reflects.getFieldValue(field, o2, true, false);
+    public int compare(V o1, V o2) {
+        V v1 = Reflects.getFieldValue(field, o1, true, false);
+        V v2 = Reflects.getFieldValue(field, o2, true, false);
         return delegate.compare(v1, v2);
     }
 
     @Override
-    public Comparator getDelegate() {
+    public Comparator<V> getDelegate() {
         return delegate;
     }
 
     @Override
-    public void setDelegate(@NonNull Comparator delegate) {
+    public void setDelegate(@NonNull Comparator<V> delegate) {
         this.delegate = delegate;
     }
 }

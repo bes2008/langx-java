@@ -4,14 +4,14 @@ import com.jn.langx.Delegatable;
 
 import java.util.Comparator;
 
-public interface DelegatableComparator extends Comparator, Delegatable<Comparator> {
+public interface DelegatableComparator<V> extends Comparator<V>, Delegatable<Comparator<V>> {
 
     @Override
-    Comparator getDelegate();
+    Comparator<V> getDelegate();
 
     @Override
-    void setDelegate(final Comparator delegate);
+    void setDelegate(final Comparator<V> delegate);
 
     @Override
-    int compare(Object o1, Object o2);
+    int compare(V o1, V o2);
 }
