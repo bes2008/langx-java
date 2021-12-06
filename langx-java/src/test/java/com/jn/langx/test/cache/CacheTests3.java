@@ -46,6 +46,7 @@ public class CacheTests3 {
                         System.out.println(StringTemplates.formatWithPlaceholder("{} deleted: key:{}, value:{}, cause:{}", Dates.nowReadableString(), key, value, cause));
                     }
                 })
+                .evictExpiredInterval(1000)
                 .refreshAllInterval(2000)
                 .distinctWhenRefresh(true)
                 .loader(new AbstractCacheLoader<String, String>() {

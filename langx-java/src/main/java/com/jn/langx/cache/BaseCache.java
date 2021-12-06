@@ -10,6 +10,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
@@ -211,7 +212,11 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
             if (timeout.isCancelled()) {
                 // NOOP
             } else {
-                evictExpired();
+                try {
+                    evictExpired();
+                }catch (Throwable ex){
+                    Loggers.getLogger(getClass()).warn(ex.getMessage(),ex);
+                }
                 timer.newTimeout(this, nextEvictExpiredTime - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
             }
         }
