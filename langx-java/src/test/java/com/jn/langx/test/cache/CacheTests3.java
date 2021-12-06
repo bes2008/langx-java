@@ -67,7 +67,7 @@ public class CacheTests3 {
 
         cache.set("hello", "cache", 60, TimeUnit.SECONDS);
 
-        Thread.sleep(120*1000);
+        Thread.sleep(12000*1000);
 
     }
 }
