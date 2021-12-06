@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
 public class WheelTimers {
 
     public static HashedWheelTimer newHashedWheelTimer() {
-        return newHashedWheelTimer(new CommonThreadFactory());
+        return newHashedWheelTimer(null);
     }
 
     public static HashedWheelTimer newHashedWheelTimer(ThreadFactory threadFactory) {
-        return new HashedWheelTimer(new CommonThreadFactory());
+        return new HashedWheelTimer(threadFactory);
     }
 
     public static HashedWheelTimer newHashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit) {
@@ -24,6 +24,6 @@ public class WheelTimers {
     }
 
     public static HashedWheelTimer newHashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection) {
-        return new HashedWheelTimer(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, -1);
+        return new HashedWheelTimer(threadFactory == null ? new CommonThreadFactory() : threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, -1);
     }
 }
