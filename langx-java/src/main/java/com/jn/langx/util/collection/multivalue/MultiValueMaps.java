@@ -165,7 +165,7 @@ public class MultiValueMaps {
         });
     }
 
-    public static <K, E> void copy(MultiValueMap<K, E> src, final Map<K, Collection<E>> dest) {
+    public static <K, E> void copyTo(MultiValueMap<K, E> src, final Map<K, Collection<E>> dest) {
         Collects.forEach(src, new Consumer2<K, Collection<E>>() {
             @Override
             public void accept(K key, Collection<E> value) {
