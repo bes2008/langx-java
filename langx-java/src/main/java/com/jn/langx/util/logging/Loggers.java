@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class Loggers {
 
     public static void log(@NonNull Throwable ex) {
-        log(1, null, null, ex, (Supplier<Object[], String>) null );
+        log(1, null, null, ex, (Supplier<Object[], String>) null);
     }
 
     public static void log(@Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, String message, Object... args) {
@@ -171,11 +171,38 @@ public class Loggers {
         return supplier;
     }
 
-    public static Logger getLogger(String loggerName){
+    public static Logger getLogger(String loggerName) {
         return LoggerFactory.getLogger(loggerName);
     }
 
-    public static Logger getLogger(Class clazz){
+    public static Logger getLogger(Class clazz) {
         return LoggerFactory.getLogger(clazz);
+    }
+
+
+    public static boolean isEnabled(@NonNull Logger logger, @NonNull Level level) {
+        Preconditions.checkNotNull(level);
+        Preconditions.checkNotNull(logger);
+
+        boolean enabled = false;
+        switch (level) {
+            case TRACE:
+                enabled = logger.isTraceEnabled();
+                break;
+            case DEBUG:
+                enabled = logger.isDebugEnabled();
+                break;
+            case INFO:
+                enabled = logger.isInfoEnabled();
+                break;
+            case WARN:
+                enabled = logger.isWarnEnabled();
+                break;
+            case ERROR:
+            default:
+                enabled = logger.isErrorEnabled();
+                break;
+        }
+        return enabled;
     }
 }
