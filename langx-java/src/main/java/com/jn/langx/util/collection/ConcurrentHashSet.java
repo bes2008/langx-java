@@ -3,9 +3,10 @@ package com.jn.langx.util.collection;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ConcurrentHashSet<E> extends AbstractSet<E> {
-    private ConcurrentHashMap<E, Integer> map;
+    private ConcurrentMap<E, Integer> map;
 
     public ConcurrentHashSet() {
         this.map = new ConcurrentHashMap<E, Integer>();
@@ -38,7 +39,8 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> {
         if (o == null) {
             return false;
         }
-        return map.get(o) == 1;
+        Integer v = map.get(o);
+        return v != null && v == 1;
     }
 
     @Override
