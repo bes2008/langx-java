@@ -12,15 +12,15 @@ public class WheelTimers {
     }
 
     public static HashedWheelTimer newHashedWheelTimer(ThreadFactory threadFactory) {
-        return new HashedWheelTimer(threadFactory);
+        return newHashedWheelTimer(threadFactory, 100, TimeUnit.MILLISECONDS);
     }
 
     public static HashedWheelTimer newHashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit) {
-        return new HashedWheelTimer(threadFactory, tickDuration, unit, 512);
+        return newHashedWheelTimer(threadFactory, tickDuration, unit, 512);
     }
 
     public static HashedWheelTimer newHashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel) {
-        return new HashedWheelTimer(threadFactory, tickDuration, unit, ticksPerWheel, false);
+        return newHashedWheelTimer(threadFactory, tickDuration, unit, ticksPerWheel, false);
     }
 
     public static HashedWheelTimer newHashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection) {
