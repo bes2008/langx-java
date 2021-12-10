@@ -103,7 +103,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
      * Current number of elements
      */
     private final AtomicInteger count = new AtomicInteger();
-    private ConcurrentHashMap<E,Integer> elementsHolder = new ConcurrentHashMap<E, Integer>();
+    private ConcurrentHashSet<E> elementsHolder = new ConcurrentHashSet<E>();
     /**
      * Head of linked list.
      * Invariant: head.item == null
@@ -255,9 +255,9 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
                 if (n == capacity) {
                     throw new IllegalStateException("Queue full");
                 }
-                if(!elementsHolder.containsKey(e)) {
+                if(!elementsHolder.contains(e)) {
                     enqueue(new Node<E>(e));
-                    elementsHolder.put(e,1);
+                    elementsHolder.add(e);
                     ++n;
                 }
             }
@@ -325,10 +325,10 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
             while (count.get() == capacity) {
                 notFull.await();
             }
-            if(elementsHolder.containsKey(e)) {
+            if(elementsHolder.contains(e)) {
                 return;
             }
-            elementsHolder.put(e,1);
+            elementsHolder.add(e);
             enqueue(node);
             c = count.getAndIncrement();
             if (c + 1 < capacity) {
@@ -351,10 +351,11 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
      * @throws InterruptedException {@inheritDoc}
      * @throws NullPointerException {@inheritDoc}
      */
-    public boolean offer(E e, long timeout, TimeUnit unit)
-            throws InterruptedException {
+    public boolean offer(E e, long timeout, TimeUnit unit) throws InterruptedException {
 
-        if (e == null) throw new NullPointerException();
+        if (e == null) {
+            throw new NullPointerException();
+        }
         long nanos = unit.toNanos(timeout);
         int c = -1;
         final ReentrantLock putLock = this.putLock;
@@ -367,10 +368,10 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
                 }
                 nanos = notFull.awaitNanos(nanos);
             }
-            if(elementsHolder.containsKey(e)){
-                return false;
+            if(elementsHolder.contains(e)){
+                return true;
             }
-            elementsHolder.put(e,1);
+            elementsHolder.add(e);
             enqueue(new Node<E>(e));
             c = count.getAndIncrement();
             if (c + 1 < capacity) {
@@ -409,12 +410,16 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
         final ReentrantLock putLock = this.putLock;
         putLock.lock();
         try {
-            if (count.get() < capacity && !elementsHolder.containsKey(e)) {
-                elementsHolder.put(e,1);
-                enqueue(node);
-                c = count.getAndIncrement();
-                if (c + 1 < capacity) {
-                    notFull.signal();
+            if (count.get() < capacity) {
+                if(!elementsHolder.contains(e)) {
+                    elementsHolder.add(e);
+                    enqueue(node);
+                    c = count.getAndIncrement();
+                    if (c + 1 < capacity) {
+                        notFull.signal();
+                    }
+                }else{
+                    return true;
                 }
             }
         } finally {
@@ -587,7 +592,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
         }
         fullyLock();
         try {
-            return elementsHolder.containsKey(o);
+            return elementsHolder.contains(o);
         } finally {
             fullyUnlock();
         }
