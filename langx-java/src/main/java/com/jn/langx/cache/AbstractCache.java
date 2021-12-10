@@ -199,7 +199,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
                         if (key0 != null) {
                             expireTimeIndex.get(entry.getExpireTime()).remove(key0);
                             beforeRecomputeExpireTimeOnRead(entry);
-                            entry.setExpireTime(Dates.nextTime(expireAfterRead));
+                            entry.setExpireTime(Dates.nextTime(TimeUnit.SECONDS.toMillis(expireAfterRead)));
                             expireTimeIndex.get(entry.getExpireTime()).add(key0);
                             afterRecomputeExpireTimeOnRead(entry);
                         }
