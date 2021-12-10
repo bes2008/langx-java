@@ -29,6 +29,9 @@ public class ReferenceEntry<K, V> {
     }
 
     public K getKey() {
+        if (keyReferenceType == ReferenceType.STRONG) {
+            return (K) keyRef;
+        }
         if (keyRef instanceof Reference) {
             return ((Reference<K>) keyRef).get();
         }
@@ -41,6 +44,9 @@ public class ReferenceEntry<K, V> {
     }
 
     public V getValue() {
+        if (valueReferenceType == ReferenceType.STRONG) {
+            return (V) valueRef;
+        }
         if (valueRef instanceof Reference) {
             return ((Reference<V>) valueRef).get();
         }

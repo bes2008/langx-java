@@ -70,4 +70,9 @@ public class StringsTests {
         System.out.println(newString);
     }
 
+    @Test
+    public void testContains(){
+        System.out.println(Strings.containsAny("%(tls)","%,()"));
+    }
+
 }

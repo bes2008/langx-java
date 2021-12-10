@@ -12,4 +12,10 @@ public class NumbersTests {
         System.out.println(Numbers.toLong(a));
         System.out.println(Numbers.toInt(a));
     }
+
+    @Test
+    public void createIntegerTest(){
+        System.out.println(Numbers.createInteger("08"));
+    }
+
 }

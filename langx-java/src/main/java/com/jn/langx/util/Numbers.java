@@ -29,7 +29,7 @@ public class Numbers {
         if (str == null) {
             return null;
         }
-        return Float.valueOf(str);
+        return Float.parseFloat(str);
     }
 
     /**
@@ -45,7 +45,7 @@ public class Numbers {
         if (str == null) {
             return null;
         }
-        return Double.valueOf(str);
+        return Double.parseDouble(str);
     }
 
 
@@ -54,7 +54,7 @@ public class Numbers {
             return null;
         }
         // decode() handles 0xAABD and 0777 (hex and octal) as well.
-        return Integer.decode(str);
+        return Integer.parseInt(str);
     }
 
     /**
@@ -70,7 +70,7 @@ public class Numbers {
         if (str == null) {
             return null;
         }
-        return Long.valueOf(str);
+        return Long.parseLong(str);
     }
 
     /**
