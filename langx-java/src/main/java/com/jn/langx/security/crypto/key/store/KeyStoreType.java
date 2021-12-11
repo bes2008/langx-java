@@ -6,7 +6,7 @@ public class KeyStoreType {
     private String type;
     private String provider;
 
-    public KeyStoreType(String type, String provider){
+    public KeyStoreType(String type, String provider) {
         setType(type);
         setProvider(provider);
     }
@@ -39,10 +39,10 @@ public class KeyStoreType {
 
         KeyStoreType that = (KeyStoreType) o;
 
-        if(!Objs.equals(this.type, that.type)){
+        if (!Objs.equals(this.type, that.type)) {
             return false;
         }
-        if(!Objs.equals(this.provider, that.provider)){
+        if (!Objs.equals(this.provider, that.provider)) {
             return false;
         }
         return true;
