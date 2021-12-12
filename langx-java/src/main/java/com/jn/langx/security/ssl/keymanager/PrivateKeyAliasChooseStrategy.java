@@ -1,5 +1,7 @@
-package com.jn.langx.security.ssl;
+package com.jn.langx.security.ssl.keymanager;
 
+
+import com.jn.langx.security.ssl.PrivateKeyDetails;
 
 import java.net.Socket;
 import java.util.Map;

@@ -182,7 +182,7 @@ public class KeyStores extends Securitys {
             Key key = keyStore.getKey(alias, password);
             if (key instanceof PrivateKey) {
                 PrivateKey privateKey = (PrivateKey) key;
-                java.security.cert.Certificate certificate = keyStore.getCertificate(alias);
+                Certificate certificate = keyStore.getCertificate(alias);
                 PublicKey publicKey = certificate.getPublicKey();
                 return new KeyPair(publicKey, privateKey);
             }
@@ -213,7 +213,7 @@ public class KeyStores extends Securitys {
         return null;
     }
 
-    public static java.security.cert.Certificate findCertificate(@NonNull KeyStore keyStore, @NonNull String alias) {
+    public static Certificate findCertificate(@NonNull KeyStore keyStore, @NonNull String alias) {
         try {
             if (!keyStore.containsAlias(alias)) {
                 return null;
@@ -226,12 +226,12 @@ public class KeyStores extends Securitys {
         return null;
     }
 
-    public static List<java.security.cert.Certificate> findCertificateChain(@NonNull KeyStore keyStore, @NonNull String alias) {
+    public static List<Certificate> findCertificateChain(@NonNull KeyStore keyStore, @NonNull String alias) {
         try {
             if (!keyStore.containsAlias(alias)) {
                 return null;
             }
-            java.security.cert.Certificate[] certificates = keyStore.getCertificateChain(alias);
+            Certificate[] certificates = keyStore.getCertificateChain(alias);
             return Collects.newArrayList(certificates);
         } catch (Throwable ex) {
             Logger logger = Loggers.getLogger(PKIs.class);
@@ -241,7 +241,7 @@ public class KeyStores extends Securitys {
     }
 
     public static PublicKey findPublicKey(@NonNull KeyStore keyStore, @NonNull String alias) {
-        java.security.cert.Certificate certificate = findCertificate(keyStore, alias);
+        Certificate certificate = findCertificate(keyStore, alias);
         PublicKey publicKey = null;
         if (certificate != null) {
             publicKey = certificate.getPublicKey();
@@ -257,9 +257,9 @@ public class KeyStores extends Securitys {
         }
     }
 
-    public static void setPrivateKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull PrivateKey privateKey, @NonNull char[] password, @NonNull List<java.security.cert.Certificate> certificateChain) {
+    public static void setPrivateKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull PrivateKey privateKey, @NonNull char[] password, @NonNull List<Certificate> certificateChain) {
         try {
-            keyStore.setKeyEntry(alias, privateKey, password, Collects.toArray(certificateChain, java.security.cert.Certificate[].class));
+            keyStore.setKeyEntry(alias, privateKey, password, Collects.toArray(certificateChain, Certificate[].class));
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }

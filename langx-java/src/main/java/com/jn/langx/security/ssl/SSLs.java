@@ -1,5 +1,7 @@
 package com.jn.langx.security.ssl;
 
+import com.jn.langx.security.ssl.trustmanager.NoopTrustManager;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import java.security.KeyManagementException;

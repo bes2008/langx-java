@@ -1,4 +1,4 @@
-package com.jn.langx.security.ssl;
+package com.jn.langx.security.ssl.trustmanager;
 
 
 import java.security.cert.CertificateException;

@@ -1,4 +1,4 @@
-package com.jn.langx.security.ssl;
+package com.jn.langx.security.ssl.trustmanager;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
