@@ -7,6 +7,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.CryptoException;
+import com.jn.langx.security.crypto.key.store.KeyStores;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -34,6 +35,7 @@ import java.util.List;
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#Key
  */
+@SuppressWarnings({"unchecked"})
 public class PKIs extends Securitys {
 
     public static PublicKey createPublicKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64PublicKey) {
@@ -252,37 +254,15 @@ public class PKIs extends Securitys {
     }
 
     public static KeyStore getEmptyKeyStore(@NonNull String type, @Nullable String provider) {
-        try {
-            return Strings.isEmpty(provider) ? KeyStore.getInstance(type) : KeyStore.getInstance(type, provider);
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
+      return   KeyStores.getEmptyKeyStore(type, provider);
     }
 
     public static KeyStore getKeyStore(@NonNull String type, @Nullable String provider, InputStream inputStream, char[] password) {
-        try {
-            KeyStore keyStore = getEmptyKeyStore(type, provider);
-            keyStore.load(inputStream, password);
-            return keyStore;
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
+        return KeyStores.getKeyStore(type, provider, inputStream, password);
     }
 
     public static KeyStore getKeyStore(@NonNull String type, @Nullable String provider, File file, char[] password) {
-        try {
-            FileInputStream inputStream = null;
-            KeyStore keyStore = null;
-            try {
-                inputStream = new FileInputStream(file);
-                keyStore = getKeyStore(type, provider, inputStream, password);
-            } finally {
-                IOs.close(inputStream);
-            }
-            return keyStore;
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
+        return KeyStores.getKeyStore(type, provider, file, password);
     }
 
 

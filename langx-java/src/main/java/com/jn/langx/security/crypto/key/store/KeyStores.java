@@ -1,12 +1,18 @@
 package com.jn.langx.security.crypto.key.store;
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.io.IOs;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.Provider;
 import java.security.Security;
@@ -94,6 +100,40 @@ public class KeyStores extends Securitys {
             return "PKCS12";
         } else {
             return "jks";
+        }
+    }
+
+    public static KeyStore getEmptyKeyStore(@NonNull String type, @Nullable String provider) {
+        try {
+            return Strings.isEmpty(provider) ? KeyStore.getInstance(type) : KeyStore.getInstance(type, provider);
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static KeyStore getKeyStore(@NonNull String type, @Nullable String provider, InputStream inputStream, char[] password) {
+        try {
+            KeyStore keyStore = getEmptyKeyStore(type, provider);
+            keyStore.load(inputStream, password);
+            return keyStore;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static KeyStore getKeyStore(@NonNull String type, @Nullable String provider, File file, char[] password) {
+        try {
+            FileInputStream inputStream = null;
+            KeyStore keyStore = null;
+            try {
+                inputStream = new FileInputStream(file);
+                keyStore = getKeyStore(type, provider, inputStream, password);
+            } finally {
+                IOs.close(inputStream);
+            }
+            return keyStore;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
         }
     }
 
