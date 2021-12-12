@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.jce.digest.sm3;
+package com.jn.langx.security.gm.crypto.digest.sm3;
 
 import com.jn.langx.security.crypto.key.spi.BaseKeyGeneratorSpi;
 

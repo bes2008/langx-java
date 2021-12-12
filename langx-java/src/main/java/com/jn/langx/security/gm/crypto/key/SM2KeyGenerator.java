@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.jce.key;
+package com.jn.langx.security.gm.crypto.key;
 
 import com.jn.langx.security.crypto.key.PKIs;
 

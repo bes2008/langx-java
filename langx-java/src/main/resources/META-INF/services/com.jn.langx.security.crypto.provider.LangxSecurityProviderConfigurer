@@ -1,4 +1,4 @@
-com.jn.langx.security.gm.jce.digest.sm3.SM3DigestProviderConfigurer
+com.jn.langx.security.gm.crypto.digest.sm3.SM3DigestProviderConfigurer
 com.jn.langx.security.crypto.digest.spi.md2.MD2DigestProviderConfigurer
 com.jn.langx.security.crypto.digest.spi.md4.MD4DigestProviderConfigurer
 com.jn.langx.security.crypto.digest.spi.md5.MD5DigestProviderConfigurer
