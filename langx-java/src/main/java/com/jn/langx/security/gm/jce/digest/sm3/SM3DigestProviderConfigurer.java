@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.spi.sm3;
+package com.jn.langx.security.gm.jce.digest.sm3;
 
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.security.crypto.provider.LangxSecurityProviderConfigurer;

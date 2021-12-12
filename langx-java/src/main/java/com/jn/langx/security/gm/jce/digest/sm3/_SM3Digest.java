@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.digest.internal.impl;
+package com.jn.langx.security.gm.jce.digest.sm3;
 
 import com.jn.langx.security.crypto.digest.internal.GeneralDigest;
 import com.jn.langx.util.Bytes;

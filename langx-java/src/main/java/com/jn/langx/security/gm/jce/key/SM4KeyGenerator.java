@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.jce;
+package com.jn.langx.security.gm.jce.key;
 
 import com.jn.langx.security.crypto.key.SecureRandoms;
 import com.jn.langx.security.crypto.key.spi.CipherKeyGeneratorEngine;

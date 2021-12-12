@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.cert;
+package com.jn.langx.security.crypto.key.store.cert;
 
 /**
  * distinguished name
