@@ -1,7 +1,6 @@
 package com.jn.langx.security.ssl.keymanager;
 
 import com.jn.langx.security.ssl.PrivateKeyDetails;
-import com.jn.langx.security.ssl.keymanager.PrivateKeyAliasChooseStrategy;
 
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedKeyManager;
