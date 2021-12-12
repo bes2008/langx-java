@@ -4,18 +4,20 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.Provider;
-import java.security.Security;
+import javax.crypto.SecretKey;
+import java.io.*;
+import java.security.*;
+import java.security.cert.Certificate;
 import java.util.List;
 import java.util.Locale;
 
@@ -132,6 +134,140 @@ public class KeyStores extends Securitys {
                 IOs.close(inputStream);
             }
             return keyStore;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+
+    public static void persist(KeyStore keyStore, File file, @NonNull String password) throws IOException {
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(file);
+            persist(keyStore, outputStream, password);
+        } finally {
+            IOs.close(outputStream);
+        }
+    }
+
+    public static void persist(@NonNull KeyStore keyStore, @NonNull OutputStream outputStream, @NonNull String password) {
+        try {
+            persist(keyStore, outputStream, password.toCharArray());
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static void persist(@NonNull KeyStore keyStore, @NonNull OutputStream outputStream, @NonNull char[] password) {
+        try {
+            keyStore.store(outputStream, password);
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static KeyPair findKeyPair(@NonNull KeyStore keyStore, String alias, String password) {
+        try {
+            return findKeyPair(keyStore, alias, password.toCharArray());
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static KeyPair findKeyPair(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull char[] password) {
+        try {
+            if (!keyStore.containsAlias(alias) && keyStore.isKeyEntry(alias)) {
+                return null;
+            }
+            Key key = keyStore.getKey(alias, password);
+            if (key instanceof PrivateKey) {
+                PrivateKey privateKey = (PrivateKey) key;
+                java.security.cert.Certificate certificate = keyStore.getCertificate(alias);
+                PublicKey publicKey = certificate.getPublicKey();
+                return new KeyPair(publicKey, privateKey);
+            }
+        } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
+            logger.warn("can't find a valid key pair, the alias is {}", alias);
+        }
+        return null;
+    }
+
+    public static SecretKey findSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull String password) {
+        return findSecretKey(keyStore, alias, password.toCharArray());
+    }
+
+    public static SecretKey findSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull char[] password) {
+        try {
+            if (!keyStore.containsAlias(alias) && keyStore.isKeyEntry(alias)) {
+                return null;
+            }
+            Key key = keyStore.getKey(alias, password);
+            if (key instanceof SecretKey) {
+                return (SecretKey) key;
+            }
+        } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
+            logger.warn("can't find a valid key pair, the alias is {}", alias);
+        }
+        return null;
+    }
+
+    public static java.security.cert.Certificate findCertificate(@NonNull KeyStore keyStore, @NonNull String alias) {
+        try {
+            if (!keyStore.containsAlias(alias)) {
+                return null;
+            }
+            return keyStore.getCertificate(alias);
+        } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
+            logger.warn("can't find a valid certificate, the alias is {}", alias);
+        }
+        return null;
+    }
+
+    public static List<java.security.cert.Certificate> findCertificateChain(@NonNull KeyStore keyStore, @NonNull String alias) {
+        try {
+            if (!keyStore.containsAlias(alias)) {
+                return null;
+            }
+            java.security.cert.Certificate[] certificates = keyStore.getCertificateChain(alias);
+            return Collects.newArrayList(certificates);
+        } catch (Throwable ex) {
+            Logger logger = Loggers.getLogger(PKIs.class);
+            logger.warn("can't find a valid certificate, the alias is {}", alias);
+        }
+        return null;
+    }
+
+    public static PublicKey findPublicKey(@NonNull KeyStore keyStore, @NonNull String alias) {
+        java.security.cert.Certificate certificate = findCertificate(keyStore, alias);
+        PublicKey publicKey = null;
+        if (certificate != null) {
+            publicKey = certificate.getPublicKey();
+        }
+        return publicKey;
+    }
+
+    public static void setSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull SecretKey secretKey, @NonNull char[] password) {
+        try {
+            keyStore.setKeyEntry(alias, secretKey, password, null);
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static void setPrivateKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull PrivateKey privateKey, @NonNull char[] password, @NonNull List<java.security.cert.Certificate> certificateChain) {
+        try {
+            keyStore.setKeyEntry(alias, privateKey, password, Collects.toArray(certificateChain, java.security.cert.Certificate[].class));
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static void setCertificate(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull Certificate certificate) {
+        try {
+            keyStore.setCertificateEntry(alias, certificate);
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }

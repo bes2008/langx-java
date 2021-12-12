@@ -11,32 +11,25 @@ import com.jn.langx.security.crypto.key.store.KeyStores;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.io.IOs;
-import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
-import org.slf4j.Logger;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.KeyGeneratorSpi;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
 import java.security.*;
-import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.List;
 
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/crypto/CryptoSpec.html#Key
  */
 @SuppressWarnings({"unchecked"})
-public class PKIs extends Securitys {
+public class PKIs extends KeyStores {
 
     public static PublicKey createPublicKey(@NotEmpty String algorithm, @Nullable String provider, @NotEmpty String base64PublicKey) {
         Preconditions.checkNotEmpty(base64PublicKey, "the public key is null or empty");
@@ -253,149 +246,4 @@ public class PKIs extends Securitys {
         }
     }
 
-    public static KeyStore getEmptyKeyStore(@NonNull String type, @Nullable String provider) {
-      return   KeyStores.getEmptyKeyStore(type, provider);
-    }
-
-    public static KeyStore getKeyStore(@NonNull String type, @Nullable String provider, InputStream inputStream, char[] password) {
-        return KeyStores.getKeyStore(type, provider, inputStream, password);
-    }
-
-    public static KeyStore getKeyStore(@NonNull String type, @Nullable String provider, File file, char[] password) {
-        return KeyStores.getKeyStore(type, provider, file, password);
-    }
-
-
-    public static void persist(KeyStore keyStore, File file, @NonNull String password) throws IOException {
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(file);
-            persist(keyStore, outputStream, password);
-        } finally {
-            IOs.close(outputStream);
-        }
-    }
-
-    public static void persist(@NonNull KeyStore keyStore, @NonNull OutputStream outputStream, @NonNull String password) {
-        try {
-            persist(keyStore, outputStream, password.toCharArray());
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
-    }
-
-    public static void persist(@NonNull KeyStore keyStore, @NonNull OutputStream outputStream, @NonNull char[] password) {
-        try {
-            keyStore.store(outputStream, password);
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
-    }
-
-    public static KeyPair findKeyPair(@NonNull KeyStore keyStore, String alias, String password) {
-        try {
-            return findKeyPair(keyStore, alias, password.toCharArray());
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
-    }
-
-    public static KeyPair findKeyPair(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull char[] password) {
-        try {
-            if (!keyStore.containsAlias(alias) && keyStore.isKeyEntry(alias)) {
-                return null;
-            }
-            Key key = keyStore.getKey(alias, password);
-            if (key instanceof PrivateKey) {
-                PrivateKey privateKey = (PrivateKey) key;
-                Certificate certificate = keyStore.getCertificate(alias);
-                PublicKey publicKey = certificate.getPublicKey();
-                return new KeyPair(publicKey, privateKey);
-            }
-        } catch (Throwable ex) {
-            Logger logger = Loggers.getLogger(PKIs.class);
-            logger.warn("can't find a valid key pair, the alias is {}", alias);
-        }
-        return null;
-    }
-
-    public static SecretKey findSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull String password) {
-        return findSecretKey(keyStore, alias, password.toCharArray());
-    }
-
-    public static SecretKey findSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull char[] password) {
-        try {
-            if (!keyStore.containsAlias(alias) && keyStore.isKeyEntry(alias)) {
-                return null;
-            }
-            Key key = keyStore.getKey(alias, password);
-            if (key instanceof SecretKey) {
-                return (SecretKey) key;
-            }
-        } catch (Throwable ex) {
-            Logger logger = Loggers.getLogger(PKIs.class);
-            logger.warn("can't find a valid key pair, the alias is {}", alias);
-        }
-        return null;
-    }
-
-    public static Certificate findCertificate(@NonNull KeyStore keyStore, @NonNull String alias) {
-        try {
-            if (!keyStore.containsAlias(alias)) {
-                return null;
-            }
-            return keyStore.getCertificate(alias);
-        } catch (Throwable ex) {
-            Logger logger = Loggers.getLogger(PKIs.class);
-            logger.warn("can't find a valid certificate, the alias is {}", alias);
-        }
-        return null;
-    }
-
-    public static List<Certificate> findCertificateChain(@NonNull KeyStore keyStore, @NonNull String alias) {
-        try {
-            if (!keyStore.containsAlias(alias)) {
-                return null;
-            }
-            Certificate[] certificates = keyStore.getCertificateChain(alias);
-            return Collects.newArrayList(certificates);
-        } catch (Throwable ex) {
-            Logger logger = Loggers.getLogger(PKIs.class);
-            logger.warn("can't find a valid certificate, the alias is {}", alias);
-        }
-        return null;
-    }
-
-    public static PublicKey findPublicKey(@NonNull KeyStore keyStore, @NonNull String alias) {
-        Certificate certificate = findCertificate(keyStore, alias);
-        PublicKey publicKey = null;
-        if (certificate != null) {
-            publicKey = certificate.getPublicKey();
-        }
-        return publicKey;
-    }
-
-    public static void setSecretKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull SecretKey secretKey, @NonNull char[] password) {
-        try {
-            keyStore.setKeyEntry(alias, secretKey, password, null);
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
-    }
-
-    public static void setPrivateKey(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull PrivateKey privateKey, @NonNull char[] password, @NonNull List<Certificate> certificateChain) {
-        try {
-            keyStore.setKeyEntry(alias, privateKey, password, Collects.toArray(certificateChain, Certificate[].class));
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
-    }
-
-    public static void setCertificate(@NonNull KeyStore keyStore, @NonNull String alias, @NonNull Certificate certificate) {
-        try {
-            keyStore.setCertificateEntry(alias, certificate);
-        } catch (Throwable ex) {
-            throw new SecurityException(ex.getMessage(), ex);
-        }
-    }
 }
