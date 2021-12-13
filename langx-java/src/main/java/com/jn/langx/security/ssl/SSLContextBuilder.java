@@ -38,9 +38,7 @@ import java.util.Set;
  */
 public class SSLContextBuilder implements Builder<SSLContext> {
 
-    static final String TLS = "TLS";
-
-    private String protocol = TLS;
+    private String protocol = SSLs.TLS;
     private final Set<KeyManager> keyManagers;
     private final Set<TrustManager> trustManagers;
     private SecureRandom secureRandom;
@@ -56,7 +54,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
     }
 
     public SSLContextBuilder setProtocol(String protocol) {
-        protocol = Strings.useValueIfEmpty(protocol, TLS);
+        protocol = Strings.useValueIfEmpty(protocol, SSLs.TLS);
         SSLProtocolVersion protocolVersion = null;
         if ("SSL".equals(protocol)) {
             protocolVersion = SSLProtocolVersion.SSLv30;
@@ -67,7 +65,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
     }
 
     public SSLContextBuilder setProtocol(final SSLProtocolVersion protocol) {
-        this.protocol = protocol == null ? TLS : protocol.getName();
+        this.protocol = protocol == null ? SSLs.TLS : protocol.getName();
         return this;
     }
 
@@ -185,8 +183,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
 
     public SSLContext build() {
         try {
-            final SSLContext sslcontext = SSLContext.getInstance(
-                    this.protocol != null ? this.protocol : TLS);
+            final SSLContext sslcontext = SSLContext.getInstance(this.protocol);
             initSSLContext(sslcontext, keyManagers, trustManagers, secureRandom);
             return sslcontext;
         } catch (Throwable ex) {
