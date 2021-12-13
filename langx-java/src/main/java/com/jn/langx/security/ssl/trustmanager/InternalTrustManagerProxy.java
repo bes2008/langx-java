@@ -8,7 +8,7 @@ public final class InternalTrustManagerProxy implements X509TrustManager{
     private final X509TrustManager trustManager;
     private final TrustStrategy trustStrategy;
 
-    InternalTrustManagerProxy(final X509TrustManager trustManager, final TrustStrategy trustStrategy) {
+    public InternalTrustManagerProxy(final X509TrustManager trustManager, final TrustStrategy trustStrategy) {
         super();
         this.trustManager = trustManager;
         this.trustStrategy = trustStrategy;
