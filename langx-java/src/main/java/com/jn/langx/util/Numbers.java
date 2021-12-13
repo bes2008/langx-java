@@ -57,6 +57,20 @@ public class Numbers {
         return Integer.parseInt(str);
     }
 
+    public static Short createShort(String str){
+        Integer integer = createInteger(str);
+        if(integer==null){
+            return null;
+        }
+        return new Short(integer.shortValue());
+    }
+    public static Byte createByte(String str){
+        Integer integer = createInteger(str);
+        if(integer==null){
+            return null;
+        }
+        return new Byte(integer.byteValue());
+    }
     /**
      * <p>Convert a <code>String</code> to a <code>Long</code>.</p>
      * <p>
@@ -471,8 +485,8 @@ public class Numbers {
      * @see Integer#decode
      * @see Long#decode
      * @see #decodeBigInteger(String)
-     * @see Float#valueOf
-     * @see Double#valueOf
+     * @see #createFloat(String)
+     * @see #createDouble(String)
      * @see java.math.BigDecimal#BigDecimal(String)
      */
     @SuppressWarnings("unchecked")
@@ -482,21 +496,21 @@ public class Numbers {
         String trimmed = Strings.deleteWhitespace(text);
 
         if (Byte.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Byte.decode(trimmed) : Byte.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Byte.decode(trimmed) : createByte(trimmed));
         } else if (Short.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Short.decode(trimmed) : Short.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Short.decode(trimmed) : (T)createShort(trimmed));
         } else if (Integer.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Integer.decode(trimmed) : Integer.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Integer.decode(trimmed) : createInteger(trimmed));
         } else if (Long.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Long.decode(trimmed) : Long.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Long.decode(trimmed) : createLong(trimmed));
         } else if (BigInteger.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? decodeBigInteger(trimmed) : new BigInteger(trimmed));
+            return (T) (isHexNumber(trimmed) ? decodeBigInteger(trimmed) : createBigInteger(trimmed));
         } else if (Float.class == targetClass) {
-            return (T) Float.valueOf(trimmed);
+            return (T) createFloat(trimmed);
         } else if (Double.class == targetClass) {
-            return (T) Double.valueOf(trimmed);
+            return (T) createDouble(trimmed);
         } else if (BigDecimal.class == targetClass || Number.class == targetClass) {
-            return (T) new BigDecimal(trimmed);
+            return (T) createBigDecimal(trimmed);
         } else {
             throw new IllegalArgumentException(
                     "Cannot convert String [" + text + "] to target class [" + targetClass.getName() + "]");

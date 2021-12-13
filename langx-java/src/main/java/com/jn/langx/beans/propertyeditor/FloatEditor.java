@@ -17,6 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.Numbers;
+
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -27,7 +29,7 @@ public class FloatEditor extends PropertyEditorSupport {
      * Map the argument text into and Integer using Integer.valueOf.
      */
     public void setAsText(final String text) {
-        Object newValue = Float.valueOf(text);
+        Object newValue = Numbers.createFloat(text);
         setValue(newValue);
     }
 }
