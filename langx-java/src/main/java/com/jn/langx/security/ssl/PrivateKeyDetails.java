@@ -1,7 +1,5 @@
 package com.jn.langx.security.ssl;
 
-
-
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Arrs;
 
