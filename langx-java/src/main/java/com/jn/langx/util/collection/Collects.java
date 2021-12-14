@@ -34,6 +34,16 @@ import static com.jn.langx.util.function.Functions.emptyTreeSetSupplier0;
  */
 @SuppressWarnings({"all"})
 public class Collects {
+    public static <T> Enumeration<T> immutableEmptyEnumeration() {
+        return (Enumeration<T>) ImmutableEmptyEnumeration.EMPTY_ENUMERATION;
+    }
+    private static class ImmutableEmptyEnumeration<E> implements Enumeration<E> {
+        static final ImmutableEmptyEnumeration<Object> EMPTY_ENUMERATION
+                = new ImmutableEmptyEnumeration<Object>();
+
+        public boolean hasMoreElements() { return false; }
+        public E nextElement() { throw new NoSuchElementException(); }
+    }
     /**
      * Get a empty, mutable java.util.Hashtable
      *

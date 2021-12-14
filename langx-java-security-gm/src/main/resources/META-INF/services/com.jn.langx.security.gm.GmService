@@ -1,2 +1,2 @@
-com.jn.langx.security.gm.bc.BcGmService
-com.jn.langx.security.gm.gmssl.GmsslGmService
+com.jn.langx.security.gm.crypto.bc.BcGmService
+com.jn.langx.security.gm.crypto.gmssl.GmsslGmService

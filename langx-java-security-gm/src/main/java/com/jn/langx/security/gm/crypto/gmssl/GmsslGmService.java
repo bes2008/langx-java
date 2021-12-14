@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.gmssl;
+package com.jn.langx.security.gm.crypto.gmssl;
 
 import com.jn.langx.security.crypto.AlgorithmUnregisteredException;
 import com.jn.langx.security.crypto.cipher.Symmetrics;

@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.bc.crypto.asymmetric.sm2;
+package com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.PrimitiveArrays;

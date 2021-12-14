@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.bc;
+package com.jn.langx.security.gm.crypto.bc;
 
 import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.cipher.Ciphers;
@@ -10,8 +10,8 @@ import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeyS
 import com.jn.langx.security.crypto.signature.Signatures;
 import com.jn.langx.security.gm.AbstractGmService;
 import com.jn.langx.security.gm.GmService;
-import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2ParameterSpec;
-import com.jn.langx.security.gm.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
+import com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2.SM2ParameterSpec;
+import com.jn.langx.security.gm.crypto.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.util.Emptys;
 
 public class BcGmService extends AbstractGmService {

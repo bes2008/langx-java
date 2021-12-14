@@ -5,7 +5,7 @@ import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
 import com.jn.langx.security.crypto.signature.Signatures;
-import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2ParameterSpec;
+import com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2.SM2ParameterSpec;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 

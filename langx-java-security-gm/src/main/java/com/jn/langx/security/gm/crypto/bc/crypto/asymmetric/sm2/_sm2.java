@@ -1,4 +1,4 @@
-package com.jn.langx.security.gm.bc.crypto.asymmetric.sm2;
+package com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2;
 
 import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;

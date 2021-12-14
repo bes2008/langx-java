@@ -3,7 +3,7 @@ package com.jn.langx.security.gm.tests.bc;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
-import com.jn.langx.security.gm.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
+import com.jn.langx.security.gm.crypto.bc.crypto.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 

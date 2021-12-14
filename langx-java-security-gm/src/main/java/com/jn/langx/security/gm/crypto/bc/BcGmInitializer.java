@@ -1,13 +1,13 @@
-package com.jn.langx.security.gm.bc;
+package com.jn.langx.security.gm.crypto.bc;
 
 import com.jn.langx.lifecycle.AbstractInitializable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.gm.GmInitializer;
-import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2AlgorithmParametersSpi;
-import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2CipherSpi;
-import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2KeyFactorySpi;
-import com.jn.langx.security.gm.bc.crypto.asymmetric.sm2.SM2SignatureSpi;
+import com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2.SM2AlgorithmParametersSpi;
+import com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2.SM2CipherSpi;
+import com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2.SM2KeyFactorySpi;
+import com.jn.langx.security.gm.crypto.bc.crypto.asymmetric.sm2.SM2SignatureSpi;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;
