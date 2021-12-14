@@ -57,7 +57,7 @@ import java.security.*;
 public final class GmSunJsseProvider extends Provider {
 
     private static final long serialVersionUID = 3231825739635378733L;
-
+    private static final String PROVIDER_NAME = "LangxGmSunJsseProvider";
     private static String info = "Langx GM JSSE provider" +
             "(PKCS12, SunX509 key/trust factories, SSLv3, TLSv1)";
 
@@ -102,11 +102,10 @@ public final class GmSunJsseProvider extends Provider {
 
     // standard constructor
     protected GmSunJsseProvider() {
-        super("LangxGmSunJsseProvider", 1.6d, info);
+        super(PROVIDER_NAME, 1.6d, info);
         subclassCheck();
         if (Boolean.TRUE.equals(fips)) {
-            throw new ProviderException
-                    ("SunJSSE is already initialized in FIPS mode");
+            throw new ProviderException("SunJSSE is already initialized in FIPS mode");
         }
         registerAlgorithms(false);
     }
