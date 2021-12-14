@@ -37,11 +37,11 @@ import javax.net.ssl.SSLException;
 
 /**
  * SSL 3.0 records, as written to a TCP stream.
- *
+ * <p>
  * Each record has a message area that starts out with data supplied by the
  * application.  It may grow/shrink due to compression and will be modified
  * in place for mac-ing and encryption.
- *
+ * <p>
  * Handshake records have additional needs, notably accumulation of a set
  * of hashes which are used to establish that handshaking was done right.
  * Handshake records usually have several handshake messages each, and we
@@ -51,18 +51,18 @@ import javax.net.ssl.SSLException;
  */
 class OutputRecord extends ByteArrayOutputStream implements Record {
 
-    private HandshakeHash       handshakeHash;
-    private int                 lastHashed;
-    private boolean             firstMessage;
-    final private byte          contentType;
+    private HandshakeHash handshakeHash;
+    private int lastHashed;
+    private boolean firstMessage;
+    final private byte contentType;
 
     // current protocol version, sent as record version
-    ProtocolVersion     protocolVersion;
+    ProtocolVersion protocolVersion;
 
     // version for the ClientHello message. Only relevant if this is a
     // client handshake record. If set to ProtocolVersion.SSL20Hello,
     // the V3 client hello is converted to V2 format.
-    private ProtocolVersion     helloVersion;
+    private ProtocolVersion helloVersion;
 
     /* Class and subclass dynamic debugging support */
     static final Debug debug = Debug.getInstance("ssl");
@@ -129,7 +129,7 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
      * bytes, so this is where we can hash them.
      */
     void setHandshakeHash(HandshakeHash handshakeHash) {
-        assert(contentType == ct_handshake);
+        assert (contentType == ct_handshake);
         this.handshakeHash = handshakeHash;
     }
 
@@ -152,16 +152,17 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
     /*
      * Need a helper function so we can hash the V2 hello correctly
      */
-    private void hashInternal(byte buf [], int offset, int len) {
+    private void hashInternal(byte buf[], int offset, int len) {
         if (debug != null && Debug.isOn("data")) {
             try {
                 HexDumpEncoder hd = new HexDumpEncoder();
 
                 System.out.println("[write] MD5 and SHA1 hashes:  len = "
-                    + len);
+                        + len);
                 hd.encodeBuffer(new ByteArrayInputStream(buf,
-                    lastHashed, len), System.out);
-            } catch (IOException e) { }
+                        lastHashed, len), System.out);
+            } catch (IOException e) {
+            }
         }
 
         handshakeHash.update(buf, lastHashed, len);
@@ -263,8 +264,8 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
      * that synchronization be done elsewhere.  Also, this does its work
      * in a single low level write, for efficiency.
      */
-    void write(OutputStream s, boolean holdRecord, 
-            ByteArrayOutputStream heldRecordBuffer) throws IOException {
+    void write(OutputStream s, boolean holdRecord,
+               ByteArrayOutputStream heldRecordBuffer) throws IOException {
         /*
          * Don't emit content-free records.  (Even change cipher spec
          * messages have a byte of data!)
@@ -277,7 +278,7 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
         // "should" really never write more than about 14 Kb...
         if (length < 0) {
             throw new SSLException("output record size too small: "
-                + length);
+                    + length);
         }
 
         if (debug != null
@@ -285,10 +286,10 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
             if ((debug != null && Debug.isOn("record"))
                     || contentType() == ct_change_cipher_spec)
                 System.out.println(Thread.currentThread().getName()
-                    // v3.0/v3.1 ...
-                    + ", WRITE: " + protocolVersion
-                    + " " + InputRecord.contentName(contentType())
-                    + ", length = " + length);
+                        // v3.0/v3.1 ...
+                        + ", WRITE: " + protocolVersion
+                        + " " + InputRecord.contentName(contentType())
+                        + ", length = " + length);
         }
 
         /*
@@ -296,18 +297,18 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
          * we're not trying to resume a (V3) session then send a V2
          * ClientHello instead so we can detect V2 servers cleanly.
          */
-         if (firstMessage && useV2Hello()) {
+        if (firstMessage && useV2Hello()) {
             byte[] v3Msg = new byte[length - 4];
             System.arraycopy(buf, headerSize + 4, v3Msg, 0, v3Msg.length);
             V3toV2ClientHello(v3Msg);
             handshakeHash.reset();
             lastHashed = 2;
             doHashes();
-            if (debug != null && Debug.isOn("record"))  {
+            if (debug != null && Debug.isOn("record")) {
                 System.out.println(
-                    Thread.currentThread().getName()
-                    + ", WRITE: SSLv2 client hello message"
-                    + ", length = " + (count - 2)); // 2 byte SSLv2 header
+                        Thread.currentThread().getName()
+                                + ", WRITE: SSLv2 client hello message"
+                                + ", length = " + (count - 2)); // 2 byte SSLv2 header
             }
         } else {
             /*
@@ -316,52 +317,52 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
             buf[0] = contentType;
             buf[1] = protocolVersion.major;
             buf[2] = protocolVersion.minor;
-            buf[3] = (byte)(length >> 8);
-            buf[4] = (byte)(length);
+            buf[3] = (byte) (length >> 8);
+            buf[4] = (byte) (length);
         }
         firstMessage = false;
 
-        /* 
-         * The upper levels may want us to delay sending this packet so 
-         * multiple TLS Records can be sent in one (or more) TCP packets. 
-         * If so, add this packet to the heldRecordBuffer. 
-         * 
-         * NOTE:  all writes have been synchronized by upper levels. 
-         */ 
-        int debugOffset = 0; 
-        if (holdRecord) { 
-            /* 
-             * If holdRecord is true, we must have a heldRecordBuffer. 
-             * 
-             * Don't worry about the override of writeBuffer(), because 
-             * when holdRecord is true, the implementation in this class 
-             * will be used. 
-             */ 
-            writeBuffer(heldRecordBuffer, buf, 0, count, debugOffset); 
-        } else { 
+        /*
+         * The upper levels may want us to delay sending this packet so
+         * multiple TLS Records can be sent in one (or more) TCP packets.
+         * If so, add this packet to the heldRecordBuffer.
+         *
+         * NOTE:  all writes have been synchronized by upper levels.
+         */
+        int debugOffset = 0;
+        if (holdRecord) {
+            /*
+             * If holdRecord is true, we must have a heldRecordBuffer.
+             *
+             * Don't worry about the override of writeBuffer(), because
+             * when holdRecord is true, the implementation in this class
+             * will be used.
+             */
+            writeBuffer(heldRecordBuffer, buf, 0, count, debugOffset);
+        } else {
             // It's time to send, do we have buffered data? 
             // May or may not have a heldRecordBuffer. 
-            if (heldRecordBuffer != null && heldRecordBuffer.size() > 0) { 
-                int heldLen = heldRecordBuffer.size(); 
- 
+            if (heldRecordBuffer != null && heldRecordBuffer.size() > 0) {
+                int heldLen = heldRecordBuffer.size();
+
                 // Ensure the capacity of this buffer. 
-                ensureCapacity(count + heldLen); 
- 
+                ensureCapacity(count + heldLen);
+
                 // Slide everything in the buffer to the right. 
-                System.arraycopy(buf, 0, buf, heldLen, count); 
- 
+                System.arraycopy(buf, 0, buf, heldLen, count);
+
                 // Prepend the held record to the buffer. 
-                System.arraycopy( 
-                    heldRecordBuffer.toByteArray(), 0, buf, 0, heldLen); 
-                count += heldLen; 
- 
+                System.arraycopy(
+                        heldRecordBuffer.toByteArray(), 0, buf, 0, heldLen);
+                count += heldLen;
+
                 // Clear the held buffer. 
-                heldRecordBuffer.reset(); 
- 
+                heldRecordBuffer.reset();
+
                 // The held buffer has been dumped, set the debug dump offset. 
-                debugOffset = heldLen; 
-            } 
-            writeBuffer(s, buf, 0, count, debugOffset); 
+                debugOffset = heldLen;
+            }
+            writeBuffer(s, buf, 0, count, debugOffset);
         }
         reset();
     }
@@ -371,8 +372,8 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
      * we'll override this method and let it take the appropriate
      * action.
      */
-    void writeBuffer(OutputStream s, byte [] buf, int off, int len, 
-            int debugOffset) throws IOException {
+    void writeBuffer(OutputStream s, byte[] buf, int off, int len,
+                     int debugOffset) throws IOException {
         s.write(buf, off, len);
         s.flush();
 
@@ -380,13 +381,14 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
         if (debug != null && Debug.isOn("packet")) {
             try {
                 HexDumpEncoder hd = new HexDumpEncoder();
-                ByteBuffer bb = ByteBuffer.wrap( 
+                ByteBuffer bb = ByteBuffer.wrap(
                         buf, off + debugOffset, len - debugOffset);
 
                 System.out.println("[Raw write]: length = " +
-                    bb.remaining());
+                        bb.remaining());
                 hd.encodeBuffer(bb, System.out);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
     }
 
@@ -396,10 +398,10 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
      */
     private boolean useV2Hello() {
         return firstMessage
-            && (helloVersion == ProtocolVersion.SSL20Hello)
-            && (contentType == ct_handshake)
-            && (buf[5] == HandshakeMessage.ht_client_hello)
-            && (buf[headerSize + 4+2+32] == 0); // V3 session ID is empty
+                && (helloVersion == ProtocolVersion.SSL20Hello)
+                && (contentType == ct_handshake)
+                && (buf[5] == HandshakeMessage.ht_client_hello)
+                && (buf[headerSize + 4 + 2 + 32] == 0); // V3 session ID is empty
     }
 
     /*
@@ -411,12 +413,12 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
      * Note that the translation will strip off all hello extensions as
      * SSL V2.0 does not support hello extension.
      */
-    private void V3toV2ClientHello(byte v3Msg []) throws SSLException {
+    private void V3toV2ClientHello(byte v3Msg[]) throws SSLException {
         int v3SessionIdLenOffset = 2 + 32; // version + nonce
         int v3SessionIdLen = v3Msg[v3SessionIdLenOffset];
         int v3CipherSpecLenOffset = v3SessionIdLenOffset + 1 + v3SessionIdLen;
         int v3CipherSpecLen = ((v3Msg[v3CipherSpecLenOffset] & 0xff) << 8) +
-          (v3Msg[v3CipherSpecLenOffset + 1] & 0xff);
+                (v3Msg[v3CipherSpecLenOffset + 1] & 0xff);
         int cipherSpecs = v3CipherSpecLen / 2; // 2 bytes each in V3
 
         /*
@@ -436,13 +438,13 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
             byte2 = v3Msg[v3CipherSpecOffset++];
             v2CipherSpecLen += V3toV2CipherSuite(byte1, byte2);
             if (!containsRenegoInfoSCSV &&
-                        byte1 == (byte)0x00 && byte2 == (byte)0xFF) {
+                    byte1 == (byte) 0x00 && byte2 == (byte) 0xFF) {
                 containsRenegoInfoSCSV = true;
             }
         }
 
         if (!containsRenegoInfoSCSV) {
-            v2CipherSpecLen += V3toV2CipherSuite((byte)0x00, (byte)0xFF);
+            v2CipherSpecLen += V3toV2CipherSuite((byte) 0x00, (byte) 0xFF);
         }
 
         /*
@@ -452,8 +454,8 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
         buf[2] = HandshakeMessage.ht_client_hello;
         buf[3] = v3Msg[0];      // major version
         buf[4] = v3Msg[1];      // minor version
-        buf[5] = (byte)(v2CipherSpecLen >>> 8);
-        buf[6] = (byte)v2CipherSpecLen;
+        buf[5] = (byte) (v2CipherSpecLen >>> 8);
+        buf[6] = (byte) v2CipherSpecLen;
         buf[7] = 0;
         buf[8] = 0;             // always no session
         buf[9] = 0;
@@ -469,9 +471,9 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
          * Set the length of the message.
          */
         count -= 2; // don't include length field itself
-        buf[0] = (byte)(count >>> 8);
+        buf[0] = (byte) (count >>> 8);
         buf[0] |= 0x80;
-        buf[1] = (byte)(count);
+        buf[1] = (byte) (count);
         count += 2;
     }
 
@@ -480,9 +482,9 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
      * This is taken from the SSL V3 specification, Appendix E.
      */
     private static int[] V3toV2CipherMap1 =
-        {-1, -1, -1, 0x02, 0x01, -1, 0x04, 0x05, -1, 0x06, 0x07};
+            {-1, -1, -1, 0x02, 0x01, -1, 0x04, 0x05, -1, 0x06, 0x07};
     private static int[] V3toV2CipherMap3 =
-        {-1, -1, -1, 0x80, 0x80, -1, 0x80, 0x80, -1, 0x40, 0xC0};
+            {-1, -1, -1, 0x80, 0x80, -1, 0x80, 0x80, -1, 0x40, 0xC0};
 
     /*
      * See which matching pure-V2 cipher specs we need to include.
@@ -505,9 +507,9 @@ class OutputRecord extends ByteArrayOutputStream implements Record {
             return 3;
         }
 
-        buf[count++] = (byte)V3toV2CipherMap1[byte2];
+        buf[count++] = (byte) V3toV2CipherMap1[byte2];
         buf[count++] = 0;
-        buf[count++] = (byte)V3toV2CipherMap3[byte2];
+        buf[count++] = (byte) V3toV2CipherMap3[byte2];
 
         return 6;
     }

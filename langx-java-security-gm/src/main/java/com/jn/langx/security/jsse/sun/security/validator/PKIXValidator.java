@@ -31,6 +31,7 @@ import java.security.*;
 import java.security.cert.*;
 
 import javax.security.auth.x500.X500Principal;
+
 import sun.security.action.GetBooleanAction;
 import com.jn.langx.security.jsse.sun.security.provider.certpath.AlgorithmChecker;
 import com.jn.langx.security.jsse.sun.security.util.AlgorithmConstraints;
@@ -59,8 +60,8 @@ public final class PKIXValidator extends Validator {
      * supports CRL distribution points as we do not manually setup CertStores.
      */
     private final static boolean checkTLSRevocation =
-        AccessController.doPrivileged
-            (new GetBooleanAction("com.sun.net.ssl.checkRevocation"));
+            AccessController.doPrivileged
+                    (new GetBooleanAction("com.sun.net.ssl.checkRevocation"));
 
     // enable use of the validator if possible
     private final static boolean TRY_VALIDATOR = true;
@@ -78,7 +79,7 @@ public final class PKIXValidator extends Validator {
     PKIXValidator(String variant, Collection<X509Certificate> trustedCerts) {
         super(TYPE_PKIX, variant);
         if (trustedCerts instanceof Set) {
-            this.trustedCerts = (Set<X509Certificate>)trustedCerts;
+            this.trustedCerts = (Set<X509Certificate>) trustedCerts;
         } else {
             this.trustedCerts = new HashSet<X509Certificate>(trustedCerts);
         }
@@ -172,7 +173,7 @@ public final class PKIXValidator extends Validator {
      * may modify the length of the path.
      *
      * @return the length of the last certification path passed to
-     *   CertPathValidator.validate, or -1 if it has not been invoked yet
+     * CertPathValidator.validate, or -1 if it has not been invoked yet
      */
     public int getCertPathLength() { // mutable, should be private
         return certPathLength;
@@ -202,12 +203,12 @@ public final class PKIXValidator extends Validator {
 
     @Override
     X509Certificate[] engineValidate(X509Certificate[] chain,
-            Collection<X509Certificate> otherCerts,
-            AlgorithmConstraints constraints,
-            Object parameter) throws CertificateException {
+                                     Collection<X509Certificate> otherCerts,
+                                     AlgorithmConstraints constraints,
+                                     Object parameter) throws CertificateException {
         if ((chain == null) || (chain.length == 0)) {
             throw new CertificateException
-                ("null or zero-length certificate chain");
+                    ("null or zero-length certificate chain");
         }
 
         // Use PKIXExtendedParameters for timestamp and variant additions
@@ -249,10 +250,10 @@ public final class PKIXValidator extends Validator {
                 }
                 if (trustedCerts.contains(cert) ||          // trusted cert
                         (trustedSubjects.containsKey(dn) &&     // replacing ...
-                         trustedSubjects.get(dn).contains(      // ... weak cert
-                                chain[i].getPublicKey()))) {
+                                trustedSubjects.get(dn).contains(      // ... weak cert
+                                        chain[i].getPublicKey()))) {
                     if (i == 0) {
-                        return new X509Certificate[] {chain[0]};
+                        return new X509Certificate[]{chain[0]};
                     }
                     // Remove and call validator on partial chain [0 .. i-1]
                     X509Certificate[] newChain = new X509Certificate[i];
@@ -278,14 +279,14 @@ public final class PKIXValidator extends Validator {
                 // otherwise valid
                 if (chain.length > 1) {
                     X509Certificate[] newChain =
-                        new X509Certificate[chain.length-1];
+                            new X509Certificate[chain.length - 1];
                     System.arraycopy(chain, 0, newChain, 0, newChain.length);
 
                     // temporarily set last cert as sole trust anchor
                     try {
                         pkixParameters.setTrustAnchors
-                            (Collections.singleton(new TrustAnchor
-                                (chain[chain.length-1], null)));
+                                (Collections.singleton(new TrustAnchor
+                                        (chain[chain.length - 1], null)));
                     } catch (InvalidAlgorithmParameterException iape) {
                         // should never occur, but ...
                         throw new CertificateException(iape);
@@ -295,7 +296,7 @@ public final class PKIXValidator extends Validator {
                 // if the rest of the chain is valid, throw exception
                 // indicating no trust anchor was found
                 throw new ValidatorException
-                    (ValidatorException.T_NO_TRUST_ANCHOR);
+                        (ValidatorException.T_NO_TRUST_ANCHOR);
             }
             // otherwise, fall back to builder
         }
@@ -304,9 +305,9 @@ public final class PKIXValidator extends Validator {
     }
 
     private boolean isSignatureValid(List<PublicKey> keys,
-            X509Certificate sub) {
+                                     X509Certificate sub) {
         if (plugin) {
-            for (PublicKey key: keys) {
+            for (PublicKey key : keys) {
                 try {
                     sub.verify(key);
                     return true;
@@ -322,13 +323,13 @@ public final class PKIXValidator extends Validator {
     private static X509Certificate[] toArray(CertPath path, TrustAnchor anchor)
             throws CertificateException {
         List<? extends java.security.cert.Certificate> list =
-                                                path.getCertificates();
+                path.getCertificates();
         X509Certificate[] chain = new X509Certificate[list.size() + 1];
         list.toArray(chain);
         X509Certificate trustedCert = anchor.getTrustedCert();
         if (trustedCert == null) {
             throw new ValidatorException
-                ("TrustAnchor must be specified as certificate");
+                    ("TrustAnchor must be specified as certificate");
         }
         chain[chain.length - 1] = trustedCert;
         return chain;
@@ -345,7 +346,7 @@ public final class PKIXValidator extends Validator {
     }
 
     private X509Certificate[] doValidate(X509Certificate[] chain,
-            PKIXBuilderParameters params) throws CertificateException {
+                                         PKIXBuilderParameters params) throws CertificateException {
         try {
             setDate(params);
 
@@ -354,18 +355,18 @@ public final class PKIXValidator extends Validator {
             CertPath path = factory.generateCertPath(Arrays.asList(chain));
             certPathLength = chain.length;
             PKIXCertPathValidatorResult result =
-                (PKIXCertPathValidatorResult)validator.validate(path, params);
+                    (PKIXCertPathValidatorResult) validator.validate(path, params);
 
             return toArray(path, result.getTrustAnchor());
         } catch (GeneralSecurityException e) {
             throw new ValidatorException
-                ("PKIX path validation failed: " + e.toString(), e);
+                    ("PKIX path validation failed: " + e.toString(), e);
         }
     }
 
     private X509Certificate[] doBuild(X509Certificate[] chain,
-        Collection<X509Certificate> otherCerts,
-        PKIXBuilderParameters params) throws CertificateException {
+                                      Collection<X509Certificate> otherCerts,
+                                      PKIXBuilderParameters params) throws CertificateException {
 
         try {
             setDate(params);
@@ -377,24 +378,24 @@ public final class PKIXValidator extends Validator {
 
             // setup CertStores
             Collection<X509Certificate> certs =
-                                        new ArrayList<X509Certificate>();
+                    new ArrayList<X509Certificate>();
             certs.addAll(Arrays.asList(chain));
             if (otherCerts != null) {
                 certs.addAll(otherCerts);
             }
             CertStore store = CertStore.getInstance("Collection",
-                                new CollectionCertStoreParameters(certs));
+                    new CollectionCertStoreParameters(certs));
             params.addCertStore(store);
 
             // do the build
             CertPathBuilder builder = CertPathBuilder.getInstance("PKIX");
             PKIXCertPathBuilderResult result =
-                (PKIXCertPathBuilderResult)builder.build(params);
+                    (PKIXCertPathBuilderResult) builder.build(params);
 
             return toArray(result.getCertPath(), result.getTrustAnchor());
         } catch (GeneralSecurityException e) {
             throw new ValidatorException
-                ("PKIX path building failed: " + e.toString(), e);
+                    ("PKIX path building failed: " + e.toString(), e);
         }
     }
 }

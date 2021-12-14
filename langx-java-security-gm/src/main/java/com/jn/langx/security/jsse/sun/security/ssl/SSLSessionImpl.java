@@ -73,36 +73,36 @@ final class SSLSessionImpl implements SSLSession {
     /*
      * we only really need a single null session
      */
-    static final SSLSessionImpl         nullSession = new SSLSessionImpl();
+    static final SSLSessionImpl nullSession = new SSLSessionImpl();
 
     // compression methods
-    private static final byte           compression_null = 0;
+    private static final byte compression_null = 0;
 
     /*
      * The state of a single session, as described in section 7.1
      * of the SSLv3 spec.
      */
-    private final ProtocolVersion       protocolVersion;
-    private final SessionId             sessionId;
-    private X509Certificate[]   peerCerts;
-    private byte                compressionMethod;
-    private final CipherSuite   cipherSuite;
-    private SecretKey           masterSecret;
-    private final boolean       useExtendedMasterSecret;
+    private final ProtocolVersion protocolVersion;
+    private final SessionId sessionId;
+    private X509Certificate[] peerCerts;
+    private byte compressionMethod;
+    private final CipherSuite cipherSuite;
+    private SecretKey masterSecret;
+    private final boolean useExtendedMasterSecret;
 
     /*
      * Information not part of the SSLv3 protocol spec, but used
      * to support session management policies.
      */
-    private final long          creationTime = System.currentTimeMillis();
-    private long                lastUsedTime = 0;
-    private final String        host;
-    private final int           port;
-    private SSLSessionContextImpl       context;
-    private int                 sessionCount;
-    private boolean             invalidated;
-    private X509Certificate[]   localCerts;
-    private PrivateKey          localPrivateKey;
+    private final long creationTime = System.currentTimeMillis();
+    private long lastUsedTime = 0;
+    private final String host;
+    private final int port;
+    private SSLSessionContextImpl context;
+    private int sessionCount;
+    private boolean invalidated;
+    private X509Certificate[] localCerts;
+    private PrivateKey localPrivateKey;
 
     // Principals for non-certificate based cipher suites
     private Principal peerPrincipal;
@@ -110,7 +110,7 @@ final class SSLSessionImpl implements SSLSession {
 
     // The endpoint identification algorithm used to check certificates
     // in this session.
-    private final String              endpointIdentificationAlgorithm;
+    private final String endpointIdentificationAlgorithm;
 
     /*
      * Is the session currently re-established with a session-resumption
@@ -130,7 +130,7 @@ final class SSLSessionImpl implements SSLSession {
     /*
      * Use of session caches is globally enabled/disabled.
      */
-    private static boolean      defaultRejoinable = true;
+    private static boolean defaultRejoinable = true;
 
     /* Class and subclass dynamic debugging support */
     private static final Debug debug = Debug.getInstance("ssl");
@@ -143,7 +143,7 @@ final class SSLSessionImpl implements SSLSession {
      */
     private SSLSessionImpl() {
         this(ProtocolVersion.NONE, CipherSuite.C_NULL,
-             new SessionId(false, null), null, -1, false, null);
+                new SessionId(false, null), null, -1, false, null);
     }
 
     /*
@@ -152,20 +152,20 @@ final class SSLSessionImpl implements SSLSession {
      * is intended mostly for use by serves.
      */
     SSLSessionImpl(ProtocolVersion protocolVersion, CipherSuite cipherSuite,
-            SecureRandom generator, String host, int port,
-            boolean useExtendedMasterSecret, String endpointIdAlgorithm) {
+                   SecureRandom generator, String host, int port,
+                   boolean useExtendedMasterSecret, String endpointIdAlgorithm) {
         this(protocolVersion, cipherSuite,
-             new SessionId(defaultRejoinable, generator), host, port,
-            useExtendedMasterSecret, endpointIdAlgorithm);
+                new SessionId(defaultRejoinable, generator), host, port,
+                useExtendedMasterSecret, endpointIdAlgorithm);
     }
 
     /*
      * Record a new session, using a given cipher spec and session ID.
      */
     SSLSessionImpl(ProtocolVersion protocolVersion, CipherSuite cipherSuite,
-            SessionId id, String host, int port,
-            boolean useExtendedMasterSecret,
-            String endpointIdAlgorithm){
+                   SessionId id, String host, int port,
+                   boolean useExtendedMasterSecret,
+                   String endpointIdAlgorithm) {
         this.protocolVersion = protocolVersion;
         sessionId = id;
         peerCerts = null;
@@ -245,7 +245,7 @@ final class SSLSessionImpl implements SSLSession {
      */
     boolean isRejoinable() {
         return sessionId != null && sessionId.length() != 0 &&
-            !invalidated && isLocalAuthenticationValid();
+                !invalidated && isLocalAuthenticationValid();
     }
 
     public synchronized boolean isValid() {
@@ -377,7 +377,7 @@ final class SSLSessionImpl implements SSLSession {
         if (obj instanceof SSLSessionImpl) {
             SSLSessionImpl sess = (SSLSessionImpl) obj;
             return (sessionId != null) && (sessionId.equals(
-                        sess.getSessionId()));
+                    sess.getSessionId()));
         }
 
         return false;
@@ -392,7 +392,7 @@ final class SSLSessionImpl implements SSLSession {
      * such as Kerberos, will throw an SSLPeerUnverifiedException.
      *
      * @return array of peer X.509 certs, with the peer's own cert
-     *  first in the chain, and with the "root" CA last.
+     * first in the chain, and with the "root" CA last.
      */
     public java.security.cert.Certificate[] getPeerCertificates()
             throws SSLPeerUnverifiedException {
@@ -402,9 +402,9 @@ final class SSLSessionImpl implements SSLSession {
         // less do it intentionally.
         //
         if ((cipherSuite.keyExchange == K_KRB5) ||
-            (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
+                (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
             throw new SSLPeerUnverifiedException("no certificates expected"
-                        + " for Kerberos cipher suites");
+                    + " for Kerberos cipher suites");
         }
         if (peerCerts == null) {
             throw new SSLPeerUnverifiedException("peer not authenticated");
@@ -412,7 +412,7 @@ final class SSLSessionImpl implements SSLSession {
         // Certs are immutable objects, therefore we don't clone them.
         // But do need to clone the array, so that nothing is inserted
         // into peerCerts.
-        return (java.security.cert.Certificate[])peerCerts.clone();
+        return (java.security.cert.Certificate[]) peerCerts.clone();
     }
 
     /**
@@ -422,7 +422,7 @@ final class SSLSessionImpl implements SSLSession {
      * cipher suites.
      *
      * @return array of peer X.509 certs, with the peer's own cert
-     *  first in the chain, and with the "root" CA last.
+     * first in the chain, and with the "root" CA last.
      */
     public java.security.cert.Certificate[] getLocalCertificates() {
         //
@@ -430,7 +430,7 @@ final class SSLSessionImpl implements SSLSession {
         // change record of peer identity even by accident, much
         // less do it intentionally.
         return (localCerts == null ? null :
-            (java.security.cert.Certificate[])localCerts.clone());
+                (java.security.cert.Certificate[]) localCerts.clone());
     }
 
     /**
@@ -441,7 +441,7 @@ final class SSLSessionImpl implements SSLSession {
      * such as Kerberos, will throw an SSLPeerUnverifiedException.
      *
      * @return array of peer X.509 certs, with the peer's own cert
-     *  first in the chain, and with the "root" CA last.
+     * first in the chain, and with the "root" CA last.
      */
     public javax.security.cert.X509Certificate[] getPeerCertificateChain()
             throws SSLPeerUnverifiedException {
@@ -451,9 +451,9 @@ final class SSLSessionImpl implements SSLSession {
         // less do it intentionally.
         //
         if ((cipherSuite.keyExchange == K_KRB5) ||
-            (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
+                (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
             throw new SSLPeerUnverifiedException("no certificates expected"
-                        + " for Kerberos cipher suites");
+                    + " for Kerberos cipher suites");
         }
         if (peerCerts == null) {
             throw new SSLPeerUnverifiedException("peer not authenticated");
@@ -482,7 +482,7 @@ final class SSLSessionImpl implements SSLSession {
      * such as Kerberos, will throw an SSLPeerUnverifiedException.
      *
      * @return array of peer X.509 certs, with the peer's own cert
-     *  first in the chain, and with the "root" CA last.
+     * first in the chain, and with the "root" CA last.
      */
     public X509Certificate[] getCertificateChain()
             throws SSLPeerUnverifiedException {
@@ -492,9 +492,9 @@ final class SSLSessionImpl implements SSLSession {
          * less do it intentionally.
          */
         if ((cipherSuite.keyExchange == K_KRB5) ||
-            (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
+                (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
             throw new SSLPeerUnverifiedException("no certificates expected"
-                        + " for Kerberos cipher suites");
+                    + " for Kerberos cipher suites");
         }
         if (peerCerts != null) {
             return peerCerts.clone();
@@ -510,19 +510,17 @@ final class SSLSessionImpl implements SSLSession {
      * @return the peer's principal. Returns an X500Principal of the
      * end-entity certiticate for X509-based cipher suites, and
      * KerberosPrincipal for Kerberos cipher suites.
-     *
      * @throws SSLPeerUnverifiedException if the peer's identity has not
-     *          been verified
+     *                                    been verified
      */
     public Principal getPeerPrincipal()
-                throws SSLPeerUnverifiedException
-    {
+            throws SSLPeerUnverifiedException {
         if ((cipherSuite.keyExchange == K_KRB5) ||
-            (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
+                (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
             if (peerPrincipal == null) {
                 throw new SSLPeerUnverifiedException("peer not authenticated");
             } else {
-                return (KerberosPrincipal)peerPrincipal;
+                return (KerberosPrincipal) peerPrincipal;
             }
         }
         if (peerCerts == null) {
@@ -542,9 +540,9 @@ final class SSLSessionImpl implements SSLSession {
     public Principal getLocalPrincipal() {
 
         if ((cipherSuite.keyExchange == K_KRB5) ||
-            (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
-                return (localPrincipal == null ? null :
-                        (KerberosPrincipal)localPrincipal);
+                (cipherSuite.keyExchange == K_KRB5_EXPORT)) {
+            return (localPrincipal == null ? null :
+                    (KerberosPrincipal) localPrincipal);
         }
         return (localCerts == null ? null :
                 localCerts[0].getSubjectX500Principal());
@@ -631,7 +629,7 @@ final class SSLSessionImpl implements SSLSession {
      * sessions can be shared across different protection domains.
      */
     private Hashtable<SecureKey, Object> table =
-                                new Hashtable<SecureKey, Object>();
+            new Hashtable<SecureKey, Object>();
 
     /**
      * Assigns a session value.  Session change events are given if
@@ -649,13 +647,13 @@ final class SSLSessionImpl implements SSLSession {
             SSLSessionBindingEvent e;
 
             e = new SSLSessionBindingEvent(this, key);
-            ((SSLSessionBindingListener)oldValue).valueUnbound(e);
+            ((SSLSessionBindingListener) oldValue).valueUnbound(e);
         }
         if (value instanceof SSLSessionBindingListener) {
             SSLSessionBindingEvent e;
 
             e = new SSLSessionBindingEvent(this, key);
-            ((SSLSessionBindingListener)value).valueBound(e);
+            ((SSLSessionBindingListener) value).valueBound(e);
         }
     }
 
@@ -689,7 +687,7 @@ final class SSLSessionImpl implements SSLSession {
             SSLSessionBindingEvent e;
 
             e = new SSLSessionBindingEvent(this, key);
-            ((SSLSessionBindingListener)value).valueUnbound(e);
+            ((SSLSessionBindingListener) value).valueUnbound(e);
         }
     }
 
@@ -719,18 +717,18 @@ final class SSLSessionImpl implements SSLSession {
     /**
      * Use large packet sizes now or follow RFC 2246 packet sizes (2^14)
      * until changed.
-     *
+     * <p>
      * In the TLS specification (section 6.2.1, RFC2246), it is not
      * recommended that the plaintext has more than 2^14 bytes.
      * However, some TLS implementations violate the specification.
      * This is a workaround for interoperability with these stacks.
-     *
+     * <p>
      * Application could accept large fragments up to 2^15 bytes by
      * setting the system property jsse.SSLEngine.acceptLargeFragments
      * to "true".
      */
     private boolean acceptLargeFragments =
-        Debug.getBooleanProperty("jsse.SSLEngine.acceptLargeFragments", false);
+            Debug.getBooleanProperty("jsse.SSLEngine.acceptLargeFragments", false);
 
     /**
      * Expand the buffer size of both SSL/TLS network packet and
@@ -757,11 +755,13 @@ final class SSLSessionImpl implements SSLSession {
         return getPacketBufferSize() - Record.headerSize;
     }
 
-    /** Returns a string representation of this SSL session */
+    /**
+     * Returns a string representation of this SSL session
+     */
     public String toString() {
         return "[Session-" + sessionCount
-            + ", " + getCipherSuite()
-            + "]";
+                + ", " + getCipherSuite()
+                + "]";
     }
 
     /**
@@ -782,9 +782,9 @@ final class SSLSessionImpl implements SSLSession {
  * application-specific key and a security context.
  */
 class SecureKey {
-    private static Object       nullObject = new Object();
-    private Object        appKey;
-    private Object      securityCtx;
+    private static Object nullObject = new Object();
+    private Object appKey;
+    private Object securityCtx;
 
     static Object getCurrentSecurityContext() {
         SecurityManager sm = System.getSecurityManager();
@@ -815,7 +815,7 @@ class SecureKey {
     }
 
     public boolean equals(Object o) {
-        return o instanceof SecureKey && ((SecureKey)o).appKey.equals(appKey)
-                        && ((SecureKey)o).securityCtx.equals(securityCtx);
+        return o instanceof SecureKey && ((SecureKey) o).appKey.equals(appKey)
+                && ((SecureKey) o).securityCtx.equals(securityCtx);
     }
 }

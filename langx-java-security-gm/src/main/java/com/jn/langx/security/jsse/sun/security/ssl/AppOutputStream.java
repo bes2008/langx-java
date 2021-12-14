@@ -71,7 +71,7 @@ class AppOutputStream extends OutputStream {
          * It is not necessary to split the very first application record of
          * a freshly negotiated TLS session, as there is no previous
          * application data to guess.  To improve compatibility, we will not
-         * split such records. 
+         * split such records.
          *
          * This avoids issues in the outbound direction.  For a full fix,
          * the peer must have similar protections.
@@ -92,7 +92,7 @@ class AppOutputStream extends OutputStream {
                 int howmuch;
                 if (isFirstRecordOfThePayload && c.needToSplitPayload()) {
                     howmuch = (len == 0) ? 0 : Math.min(
-                        0x01, r.availableDataBytes());
+                            0x01, r.availableDataBytes());
                     /*
                      * Nagle's algorithm (TCP_NODELAY) was coming into
                      * play here when writing short (split) packets.
@@ -102,7 +102,7 @@ class AppOutputStream extends OutputStream {
                      */
                     if ((len != 1) && (howmuch == 1)) {
                         holdRecord = true;
-                    } 
+                    }
                 } else {
                     howmuch = Math.min(len, r.availableDataBytes());
                 }
@@ -116,7 +116,7 @@ class AppOutputStream extends OutputStream {
                     off += howmuch;
                     len -= howmuch;
                 }
-                c.writeRecord(r, holdRecord); 
+                c.writeRecord(r, holdRecord);
                 c.checkWrite();
             } while (len > 0);
         } catch (Exception e) {
@@ -129,7 +129,7 @@ class AppOutputStream extends OutputStream {
      * Write one byte now.
      */
     synchronized public void write(int i) throws IOException {
-        oneByte[0] = (byte)i;
+        oneByte[0] = (byte) i;
         write(oneByte, 0, 1);
     }
 

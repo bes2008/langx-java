@@ -69,10 +69,10 @@ final class EngineWriter {
     private HandshakeStatus getOutboundData(ByteBuffer dstBB) {
 
         Object msg = outboundList.removeFirst();
-        assert(msg instanceof ByteBuffer);
+        assert (msg instanceof ByteBuffer);
 
         ByteBuffer bbIn = (ByteBuffer) msg;
-        assert(dstBB.remaining() >= bbIn.remaining());
+        assert (dstBB.remaining() >= bbIn.remaining());
 
         dstBB.put(bbIn);
 
@@ -100,7 +100,7 @@ final class EngineWriter {
      * other writeRecord.
      */
     synchronized void writeRecord(EngineOutputRecord outputRecord,
-            MAC writeMAC, CipherBox writeCipher) throws IOException {
+                                  MAC writeMAC, CipherBox writeCipher) throws IOException {
 
         /*
          * Only output if we're still open.
@@ -136,10 +136,11 @@ final class EngineWriter {
             bb.limit(pos);
 
             System.out.println("[Raw write" +
-                (hsData ? "" : " (bb)") + "]: length = " +
-                bb.remaining());
+                    (hsData ? "" : " (bb)") + "]: length = " +
+                    bb.remaining());
             hd.encodeBuffer(bb, System.out);
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
     }
 
     /*

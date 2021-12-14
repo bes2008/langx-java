@@ -33,9 +33,8 @@ import java.security.*;
  * maintained to verify the integrity of the negotiation. Internally,
  * it consists of an MD5 and an SHA1 digest. They are used in the client
  * and server finished messages and in certificate verify messages (if sent).
- *
+ * <p>
  * This class transparently deals with cloneable and non-cloneable digests.
- *
  */
 final class HandshakeHash {
 
@@ -74,7 +73,7 @@ final class HandshakeHash {
             sha = CloneableDigest.getDigest("SHA", n);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException
-                        ("Algorithm MD5 or SHA not available", e);
+                    ("Algorithm MD5 or SHA not available", e);
 
         }
     }
@@ -115,7 +114,7 @@ final class HandshakeHash {
 
     private static MessageDigest cloneDigest(MessageDigest digest) {
         try {
-            return (MessageDigest)digest.clone();
+            return (MessageDigest) digest.clone();
         } catch (CloneNotSupportedException e) {
             // cannot occur for digests generated via CloneableDigest
             throw new RuntimeException("Could not clone digest", e);
@@ -128,28 +127,27 @@ final class HandshakeHash {
  * A wrapper for MessageDigests that simulates cloning of non-cloneable
  * digests. It uses the standard MessageDigest API and therefore can be used
  * transparently in place of a regular digest.
- *
+ * <p>
  * Note that we extend the MessageDigest class directly rather than
  * MessageDigestSpi. This works because MessageDigest was originally designed
  * this way in the JDK 1.1 days which allows us to avoid creating an internal
  * provider.
- *
+ * <p>
  * It can be "cloned" a limited number of times, which is specified at
  * construction time. This is achieved by internally maintaining n digests
  * in parallel. Consequently, it is only 1/n-th times as fast as the original
  * digest.
- *
+ * <p>
  * Example:
- *   MessageDigest md = CloneableDigest.getDigest("SHA", 2);
- *   md.update(data1);
- *   MessageDigest md2 = (MessageDigest)md.clone();
- *   md2.update(data2);
- *   byte[] d1 = md2.digest(); // digest of data1 || data2
- *   md.update(data3);
- *   byte[] d2 = md.digest();  // digest of data1 || data3
- *
+ * MessageDigest md = CloneableDigest.getDigest("SHA", 2);
+ * md.update(data1);
+ * MessageDigest md2 = (MessageDigest)md.clone();
+ * md2.update(data2);
+ * byte[] d1 = md2.digest(); // digest of data1 || data2
+ * md.update(data3);
+ * byte[] d2 = md.digest();  // digest of data1 || data3
+ * <p>
  * This class is not thread safe.
- *
  */
 final class CloneableDigest extends MessageDigest implements Cloneable {
 
@@ -157,7 +155,7 @@ final class CloneableDigest extends MessageDigest implements Cloneable {
      * The individual MessageDigests. Initially, all elements are non-null.
      * When clone() is called, the non-null element with the maximum index is
      * returned and the array element set to null.
-     *
+     * <p>
      * All non-null element are always in the same state.
      */
     private final MessageDigest[] digests;

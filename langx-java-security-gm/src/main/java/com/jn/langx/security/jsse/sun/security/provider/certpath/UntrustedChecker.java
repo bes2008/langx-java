@@ -30,6 +30,7 @@ import java.security.cert.CertPathValidatorException;
 import java.security.cert.PKIXCertPathChecker;
 import java.util.Set;
 import java.util.Collection;
+
 import com.jn.langx.security.jsse.sun.security.util.Debug;
 import com.jn.langx.security.jsse.sun.security.util.UntrustedCertificates;
 
@@ -68,10 +69,10 @@ final public class UntrustedChecker extends PKIXCertPathChecker {
 
     @Override
     public void check(Certificate cert,
-            Collection<String> unresolvedCritExts)
+                      Collection<String> unresolvedCritExts)
             throws CertPathValidatorException {
 
-        X509Certificate currCert = (X509Certificate)cert;
+        X509Certificate currCert = (X509Certificate) cert;
 
         if (UntrustedCertificates.isUntrusted(currCert)) {
             if (debug != null) {
@@ -80,7 +81,7 @@ final public class UntrustedChecker extends PKIXCertPathChecker {
             }
 
             throw new CertPathValidatorException(
-                "Untrusted certificate: " + currCert.getSubjectX500Principal());
+                    "Untrusted certificate: " + currCert.getSubjectX500Principal());
         }
     }
 }

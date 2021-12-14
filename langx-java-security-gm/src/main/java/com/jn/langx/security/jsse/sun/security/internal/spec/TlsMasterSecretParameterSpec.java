@@ -37,9 +37,9 @@ import javax.crypto.SecretKey;
  *
  * <p>Instances of this class are immutable.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
  * Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @since 1.6
  */
 public class TlsMasterSecretParameterSpec implements AlgorithmParameterSpec {
 
@@ -56,19 +56,18 @@ public class TlsMasterSecretParameterSpec implements AlgorithmParameterSpec {
      * algorithm was RSA and <code>"TlsPremasterSecret"</code> otherwise.
      *
      * @param premasterSecret the premaster secret
-     * @param majorVersion the major number of the protocol version
-     * @param minorVersion the minor number of the protocol version
-     * @param clientRandom the client's random value
-     * @param serverRandom the server's random value
-     *
-     * @throws NullPointerException if premasterSecret, clientRandom,
-     *   or serverRandom are null
+     * @param majorVersion    the major number of the protocol version
+     * @param minorVersion    the minor number of the protocol version
+     * @param clientRandom    the client's random value
+     * @param serverRandom    the server's random value
+     * @throws NullPointerException     if premasterSecret, clientRandom,
+     *                                  or serverRandom are null
      * @throws IllegalArgumentException if minorVersion or majorVersion are
-     *   negative or larger than 255
+     *                                  negative or larger than 255
      */
     public TlsMasterSecretParameterSpec(SecretKey premasterSecret,
-            int majorVersion, int minorVersion,
-            byte[] clientRandom, byte[] serverRandom) {
+                                        int majorVersion, int minorVersion,
+                                        byte[] clientRandom, byte[] serverRandom) {
         if (premasterSecret == null) {
             throw new NullPointerException("premasterSecret must not be null");
         }
@@ -87,19 +86,18 @@ public class TlsMasterSecretParameterSpec implements AlgorithmParameterSpec {
      * should return <code>"TlsRsaPremasterSecret"</code> if the key exchange
      * algorithm was RSA and <code>"TlsPremasterSecret"</code> otherwise.
      *
-     * @param premasterSecret the premaster secret
-     * @param majorVersion the major number of the protocol version
-     * @param minorVersion the minor number of the protocol version
+     * @param premasterSecret                 the premaster secret
+     * @param majorVersion                    the major number of the protocol version
+     * @param minorVersion                    the minor number of the protocol version
      * @param extendedMasterSecretSessionHash the session hash for
-     *        Extended Master Secret
-     *
-     * @throws NullPointerException if premasterSecret is null
+     *                                        Extended Master Secret
+     * @throws NullPointerException     if premasterSecret is null
      * @throws IllegalArgumentException if minorVersion or majorVersion are
-     *   negative or larger than 255
+     *                                  negative or larger than 255
      */
     public TlsMasterSecretParameterSpec(SecretKey premasterSecret,
-            int majorVersion, int minorVersion,
-            byte[] extendedMasterSecretSessionHash) {
+                                        int majorVersion, int minorVersion,
+                                        byte[] extendedMasterSecretSessionHash) {
         if (premasterSecret == null) {
             throw new NullPointerException("premasterSecret must not be null");
         }
@@ -116,7 +114,7 @@ public class TlsMasterSecretParameterSpec implements AlgorithmParameterSpec {
     static int checkVersion(int version) {
         if ((version < 0) || (version > 255)) {
             throw new IllegalArgumentException(
-                        "Version must be between 0 and 255");
+                    "Version must be between 0 and 255");
         }
         return version;
     }
@@ -167,12 +165,13 @@ public class TlsMasterSecretParameterSpec implements AlgorithmParameterSpec {
     }
 
     /**
-     +     * Returns a copy of the Extended Master Secret session hash.
-     +     *
-     +     * @return a copy of the Extended Master Secret session hash, or an empty
-     +     *         array if no extended master secret session hash was provided
-     +     *         at instantiation time
-     +     */
+     * +     * Returns a copy of the Extended Master Secret session hash.
+     * +     *
+     * +     * @return a copy of the Extended Master Secret session hash, or an empty
+     * +     *         array if no extended master secret session hash was provided
+     * +     *         at instantiation time
+     * +
+     */
     public byte[] getExtendedMasterSecretSessionHash() {
         return extendedMasterSecretSessionHash.clone();
     }

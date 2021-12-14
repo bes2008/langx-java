@@ -37,9 +37,9 @@ import javax.crypto.SecretKey;
  *
  * <p>Instances of this class are immutable.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
- *  Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @author Andreas Sterbenz
+ * Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @since 1.6
  */
 public class TlsKeyMaterialParameterSpec implements AlgorithmParameterSpec {
 
@@ -53,36 +53,35 @@ public class TlsKeyMaterialParameterSpec implements AlgorithmParameterSpec {
     /**
      * Constructs a new TlsKeyMaterialParameterSpec.
      *
-     * @param masterSecret the master secret
-     * @param majorVersion the major number of the protocol version
-     * @param minorVersion the minor number of the protocol version
-     * @param clientRandom the client's random value
-     * @param serverRandom the server's random value
-     * @param cipherAlgorithm the algorithm name of the cipher keys to
-     *    be generated
-     * @param cipherKeyLength if 0, no cipher keys will be generated;
-     *    otherwise, the length in bytes of cipher keys to be
-     *    generated for domestic cipher suites; for cipher suites defined as
-     *    exportable, the number of key material bytes to be generated;
+     * @param masterSecret            the master secret
+     * @param majorVersion            the major number of the protocol version
+     * @param minorVersion            the minor number of the protocol version
+     * @param clientRandom            the client's random value
+     * @param serverRandom            the server's random value
+     * @param cipherAlgorithm         the algorithm name of the cipher keys to
+     *                                be generated
+     * @param cipherKeyLength         if 0, no cipher keys will be generated;
+     *                                otherwise, the length in bytes of cipher keys to be
+     *                                generated for domestic cipher suites; for cipher suites defined as
+     *                                exportable, the number of key material bytes to be generated;
      * @param expandedCipherKeyLength 0 for domestic cipher suites; for
-     *    exportable cipher suites the length in bytes of the key to be
-     *    generated.
-     * @param ivLength the length in bytes of the initialization vector
-     *    to be generated, or 0 if no initialization vector is required
-     * @param macKeyLength the length in bytes of the MAC key to be generated
-     *
-     * @throws NullPointerException if masterSecret, clientRandom,
-     *   serverRandom, or cipherAlgorithm are null
+     *                                exportable cipher suites the length in bytes of the key to be
+     *                                generated.
+     * @param ivLength                the length in bytes of the initialization vector
+     *                                to be generated, or 0 if no initialization vector is required
+     * @param macKeyLength            the length in bytes of the MAC key to be generated
+     * @throws NullPointerException     if masterSecret, clientRandom,
+     *                                  serverRandom, or cipherAlgorithm are null
      * @throws IllegalArgumentException if the algorithm of masterSecret is
-     *   not TlsMasterSecret, or if majorVersion or minorVersion are
-     *   negative or larger than 255; or if cipherKeyLength, expandedKeyLength,
-     *   ivLength, or macKeyLength are negative
+     *                                  not TlsMasterSecret, or if majorVersion or minorVersion are
+     *                                  negative or larger than 255; or if cipherKeyLength, expandedKeyLength,
+     *                                  ivLength, or macKeyLength are negative
      */
     public TlsKeyMaterialParameterSpec(SecretKey masterSecret,
-            int majorVersion, int minorVersion, byte[] clientRandom,
-            byte[] serverRandom, String cipherAlgorithm, int cipherKeyLength,
-            int expandedCipherKeyLength, int ivLength, int macKeyLength) {
-        if (masterSecret.getAlgorithm().equals("TlsMasterSecret") == false) {
+                                       int majorVersion, int minorVersion, byte[] clientRandom,
+                                       byte[] serverRandom, String cipherAlgorithm, int cipherKeyLength,
+                                       int expandedCipherKeyLength, int ivLength, int macKeyLength) {
+        if (!masterSecret.getAlgorithm().equals("TlsMasterSecret")) {
             throw new IllegalArgumentException("Not a TLS master secret");
         }
         if (cipherAlgorithm == null) {
@@ -90,9 +89,9 @@ public class TlsKeyMaterialParameterSpec implements AlgorithmParameterSpec {
         }
         this.masterSecret = masterSecret;
         this.majorVersion =
-            TlsMasterSecretParameterSpec.checkVersion(majorVersion);
+                TlsMasterSecretParameterSpec.checkVersion(majorVersion);
         this.minorVersion =
-            TlsMasterSecretParameterSpec.checkVersion(minorVersion);
+                TlsMasterSecretParameterSpec.checkVersion(minorVersion);
         this.clientRandom = clientRandom.clone();
         this.serverRandom = serverRandom.clone();
         this.cipherAlgorithm = cipherAlgorithm;
@@ -178,7 +177,7 @@ public class TlsKeyMaterialParameterSpec implements AlgorithmParameterSpec {
      * supposed to be generated.
      *
      * @return the length in bytes of the expanded encryption key to be
-     *     generated.
+     * generated.
      */
     public int getExpandedCipherKeyLength() {
         // TLS v1.1 disables the exportable weak cipher suites.
@@ -194,7 +193,7 @@ public class TlsKeyMaterialParameterSpec implements AlgorithmParameterSpec {
      * supposed to be generated.
      *
      * @return the length in bytes of the initialization vector to be
-     *     generated.
+     * generated.
      */
     public int getIvLength() {
         // TLS v1.1 or later uses an explicit IV to protect against

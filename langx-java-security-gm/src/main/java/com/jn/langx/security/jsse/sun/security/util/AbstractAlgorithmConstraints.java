@@ -45,11 +45,11 @@ public abstract class AbstractAlgorithmConstraints
     // Get algorithm constraints from the specified security property.
     static String[] getAlgorithms(final String propertyName) {
         String property = AccessController.doPrivileged(
-            new PrivilegedAction<String>() {
-                public String run() {
-                    return Security.getProperty(propertyName);
-                }
-            });
+                new PrivilegedAction<String>() {
+                    public String run() {
+                        return Security.getProperty(propertyName);
+                    }
+                });
         String[] algorithmsInProperty = null;
         if (property != null && !property.isEmpty()) {
             // remove double quote marks from beginning/end of the property
@@ -71,7 +71,7 @@ public abstract class AbstractAlgorithmConstraints
     }
 
     static boolean checkAlgorithm(String[] algorithms, String algorithm,
-            AlgorithmDecomposer decomposer) {
+                                  AlgorithmDecomposer decomposer) {
         if (algorithm == null || algorithm.length() == 0) {
             throw new IllegalArgumentException("No algorithm name specified");
         }

@@ -38,7 +38,7 @@ public class AlgorithmDecomposer {
 
     private static final Pattern transPattern = Pattern.compile("/");
     private static final Pattern pattern =
-                    Pattern.compile("with|and", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("with|and", Pattern.CASE_INSENSITIVE);
 
     private static Set<String> decomposeImpl(String algorithm) {
 
@@ -137,16 +137,16 @@ public class AlgorithmDecomposer {
 
     /**
      * Get aliases of the specified algorithm.
-     *
+     * <p>
      * May support more algorithms in the future.
      */
     public static Collection<String> getAliases(String algorithm) {
         String[] aliases;
         if (algorithm.equalsIgnoreCase("DH") ||
                 algorithm.equalsIgnoreCase("DiffieHellman")) {
-            aliases = new String[] {"DH", "DiffieHellman"};
+            aliases = new String[]{"DH", "DiffieHellman"};
         } else {
-            aliases = new String[] {algorithm};
+            aliases = new String[]{algorithm};
         }
 
         return Arrays.asList(aliases);
@@ -156,7 +156,7 @@ public class AlgorithmDecomposer {
         if (elements.contains(find)) {
             if (!elements.contains(replace)) {
                 elements.add(replace);
-}
+            }
             elements.remove(find);
         }
     }

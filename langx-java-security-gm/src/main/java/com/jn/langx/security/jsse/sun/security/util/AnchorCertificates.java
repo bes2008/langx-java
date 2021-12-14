@@ -49,7 +49,7 @@ public class AnchorCertificates {
     private static final String HASH = "SHA-256";
     private static Set<String> certs = Collections.emptySet();
 
-    static  {
+    static {
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             @Override
             public Void run() {
@@ -105,5 +105,6 @@ public class AnchorCertificates {
         return result;
     }
 
-    private AnchorCertificates() {}
+    private AnchorCertificates() {
+    }
 }

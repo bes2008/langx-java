@@ -29,7 +29,9 @@ import com.jn.langx.security.jsse.sun.security.validator.Validator;
 
 import java.lang.ref.*;
 import java.util.*;
+
 import static java.util.Locale.ENGLISH;
+
 import java.util.concurrent.atomic.AtomicLong;
 import java.net.Socket;
 
@@ -43,19 +45,19 @@ import javax.net.ssl.*;
 /**
  * The new X509 key manager implementation. The main differences to the
  * old SunX509 key manager are:
- *  . it is based around the KeyStore.Builder API. This allows it to use
- *    other forms of KeyStore protection or password input (e.g. a
- *    CallbackHandler) or to have keys within one KeyStore protected by
- *    different keys.
- *  . it can use multiple KeyStores at the same time.
- *  . it is explicitly designed to accomodate KeyStores that change over
- *    the lifetime of the process.
- *  . it makes an effort to choose the key that matches best, i.e. one that
- *    is not expired and has the appropriate certificate extensions.
- *
+ * . it is based around the KeyStore.Builder API. This allows it to use
+ * other forms of KeyStore protection or password input (e.g. a
+ * CallbackHandler) or to have keys within one KeyStore protected by
+ * different keys.
+ * . it can use multiple KeyStores at the same time.
+ * . it is explicitly designed to accomodate KeyStores that change over
+ * the lifetime of the process.
+ * . it makes an effort to choose the key that matches best, i.e. one that
+ * is not expired and has the appropriate certificate extensions.
+ * <p>
  * Note that this code is not explicitly performance optimzied yet.
  *
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
  */
 final class X509KeyManagerImpl extends X509ExtendedKeyManager
         implements X509KeyManager {
@@ -63,7 +65,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
     private static final Debug debug = Debug.getInstance("ssl");
 
     private static final boolean useDebug =
-                            (debug != null) && Debug.isOn("keymanager");
+            (debug != null) && Debug.isOn("keymanager");
 
     // for unit testing only, set via privileged reflection
     private static Date verificationDate;
@@ -75,7 +77,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
     private final AtomicLong uidCounter;
 
     // cached entries
-    private final Map<String,Reference<PrivateKeyEntry>> entryCacheMap;
+    private final Map<String, Reference<PrivateKeyEntry>> entryCacheMap;
 
     X509KeyManagerImpl(Builder builder) {
         this(Collections.singletonList(builder));
@@ -85,15 +87,16 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
         this.builders = builders;
         uidCounter = new AtomicLong();
         entryCacheMap = Collections.synchronizedMap
-                        (new SizedMap<String,Reference<PrivateKeyEntry>>());
+                (new SizedMap<String, Reference<PrivateKeyEntry>>());
     }
 
     // LinkedHashMap with a max size of 10
     // see LinkedHashMap JavaDocs
-    private static class SizedMap<K,V> extends LinkedHashMap<K,V> {
+    private static class SizedMap<K, V> extends LinkedHashMap<K, V> {
         private static final long serialVersionUID = -8211222668790986062L;
 
-        @Override protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
             return size() > 10;
         }
     }
@@ -105,7 +108,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
     public X509Certificate[] getCertificateChain(String alias) {
         PrivateKeyEntry entry = getEntry(alias);
         return entry == null ? null :
-                (X509Certificate[])entry.getCertificateChain();
+                (X509Certificate[]) entry.getCertificateChain();
     }
 
     public PrivateKey getPrivateKey(String alias) {
@@ -114,22 +117,22 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
     }
 
     public String chooseClientAlias(String[] keyTypes, Principal[] issuers,
-            Socket socket) {
+                                    Socket socket) {
         return chooseAlias(getKeyTypes(keyTypes), issuers, CheckType.CLIENT);
     }
 
     public String chooseEngineClientAlias(String[] keyTypes,
-            Principal[] issuers, SSLEngine engine) {
+                                          Principal[] issuers, SSLEngine engine) {
         return chooseAlias(getKeyTypes(keyTypes), issuers, CheckType.CLIENT);
     }
 
     public String chooseServerAlias(String keyType,
-            Principal[] issuers, Socket socket) {
+                                    Principal[] issuers, Socket socket) {
         return chooseAlias(getKeyTypes(keyType), issuers, CheckType.SERVER);
     }
 
     public String chooseEngineServerAlias(String keyType,
-            Principal[] issuers, SSLEngine engine) {
+                                          Principal[] issuers, SSLEngine engine) {
         return chooseAlias(getKeyTypes(keyType), issuers, CheckType.SERVER);
     }
 
@@ -176,7 +179,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
         }
         try {
             int builderIndex = Integer.parseInt
-                                (alias.substring(firstDot + 1, secondDot));
+                    (alias.substring(firstDot + 1, secondDot));
             String keyStoreAlias = alias.substring(secondDot + 1);
             Builder builder = builders.get(builderIndex);
             KeyStore ks = builder.getKeyStore();
@@ -186,7 +189,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
                 // unexpected type of entry
                 return null;
             }
-            entry = (PrivateKeyEntry)newEntry;
+            entry = (PrivateKeyEntry) newEntry;
             entryCacheMap.put(alias, new SoftReference<PrivateKeyEntry>(entry));
             return entry;
         } catch (Exception e) {
@@ -226,7 +229,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
             } else {
                 // Check the signature algorithm of the certificate itself.
                 // Look for the "withRSA" in "SHA1withRSA", etc.
-                X509Certificate issuer = (X509Certificate)chain[0];
+                X509Certificate issuer = (X509Certificate) chain[0];
                 String sigAlgName = issuer.getSigAlgName().toUpperCase(ENGLISH);
                 String pattern = "WITH" + sigKeyAlgorithm.toUpperCase(ENGLISH);
                 return sigAlgName.contains(pattern);
@@ -234,7 +237,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
         }
     }
 
-    private static List<KeyType> getKeyTypes(String ... keyTypes) {
+    private static List<KeyType> getKeyTypes(String... keyTypes) {
         if ((keyTypes == null) || (keyTypes.length == 0) || (keyTypes[0] == null)) {
             return null;
         }
@@ -259,7 +262,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
      *     return the first one of them.
      */
     private String chooseAlias(List<KeyType> keyTypeList,
-            Principal[] issuers, CheckType checkType) {
+                               Principal[] issuers, CheckType checkType) {
         if (keyTypeList == null || keyTypeList.isEmpty()) {
             return null;
         }
@@ -269,7 +272,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
         for (int i = 0, n = builders.size(); i < n; i++) {
             try {
                 List<EntryStatus> results =
-                    getAliases(i, keyTypeList, issuerSet, false, checkType);
+                        getAliases(i, keyTypeList, issuerSet, false, checkType);
                 if (results != null) {
                     // the results will either be a single perfect match
                     // or 1 or more imperfect matches
@@ -299,7 +302,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
         Collections.sort(allResults);
         if (useDebug) {
             debug.println("KeyMgr: no good matching key found, "
-                        + "returning best match out of:");
+                    + "returning best match out of:");
             debug.println(allResults.toString());
         }
         return makeAlias(allResults.get(0));
@@ -312,7 +315,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
      * The perfect matches will be first in the array.
      */
     public String[] getAliases(String keyType, Principal[] issuers,
-            CheckType checkType) {
+                               CheckType checkType) {
         if (keyType == null) {
             return null;
         }
@@ -377,7 +380,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
         final CheckResult checkResult;
 
         EntryStatus(int builderIndex, int keyIndex, String alias,
-                Certificate[] chain, CheckResult checkResult) {
+                    Certificate[] chain, CheckResult checkResult) {
             this.builderIndex = builderIndex;
             this.keyIndex = keyIndex;
             this.alias = alias;
@@ -409,14 +412,14 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
 
         // enum constant for "tls client" check
         // valid EKU for TLS client: any, tls_client
-        CLIENT(new HashSet<String>(Arrays.asList(new String[] {
-            "2.5.29.37.0", "1.3.6.1.5.5.7.3.2" }))),
+        CLIENT(new HashSet<String>(Arrays.asList(new String[]{
+                "2.5.29.37.0", "1.3.6.1.5.5.7.3.2"}))),
 
         // enum constant for "tls server" check
         // valid EKU for TLS server: any, tls_server, ns_sgc, ms_sgc
-        SERVER(new HashSet<String>(Arrays.asList(new String[] {
-            "2.5.29.37.0", "1.3.6.1.5.5.7.3.1", "2.16.840.1.113730.4.1",
-            "1.3.6.1.4.1.311.10.3.3" })));
+        SERVER(new HashSet<String>(Arrays.asList(new String[]{
+                "2.5.29.37.0", "1.3.6.1.5.5.7.3.1", "2.16.840.1.113730.4.1",
+                "1.3.6.1.4.1.311.10.3.3"})));
 
         // set of valid EKU values for this type
         final Set<String> validEku;
@@ -546,8 +549,8 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
      *     matches
      */
     private List<EntryStatus> getAliases(int builderIndex,
-            List<KeyType> keyTypes, Set<Principal> issuerSet,
-            boolean findAll, CheckType checkType) throws Exception {
+                                         List<KeyType> keyTypes, Set<Principal> issuerSet,
+                                         boolean findAll, CheckType checkType) throws Exception {
         Builder builder = builders.get(builderIndex);
         KeyStore ks = builder.getKeyStore();
         List<EntryStatus> results = null;
@@ -578,7 +581,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
             if (keyIndex == -1) {
                 if (useDebug) {
                     debug.println("Ignoring alias " + alias
-                                + ": key algorithm does not match");
+                            + ": key algorithm does not match");
                 }
                 continue;
             }
@@ -590,7 +593,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
                         // not an X509Certificate, ignore this entry
                         break;
                     }
-                    X509Certificate xcert = (X509Certificate)cert;
+                    X509Certificate xcert = (X509Certificate) cert;
                     if (issuerSet.contains(xcert.getIssuerX500Principal())) {
                         found = true;
                         break;
@@ -599,7 +602,7 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
                 if (found == false) {
                     if (useDebug) {
                         debug.println("Ignoring alias " + alias
-                                    + ": issuers do not match");
+                                + ": issuers do not match");
                     }
                     continue;
                 }
@@ -608,10 +611,10 @@ final class X509KeyManagerImpl extends X509ExtendedKeyManager
                 date = new Date();
             }
             CheckResult checkResult =
-                    checkType.check((X509Certificate)chain[0], date);
+                    checkType.check((X509Certificate) chain[0], date);
             EntryStatus status =
                     new EntryStatus(builderIndex, keyIndex,
-                                        alias, chain, checkResult);
+                            alias, chain, checkResult);
             if (!preferred && checkResult == CheckResult.OK && keyIndex == 0) {
                 preferred = true;
             }

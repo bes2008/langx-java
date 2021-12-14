@@ -36,8 +36,8 @@ import java.security.spec.*;
  * ClientKeyExchange message for all ECDH based key exchange methods. It
  * contains the client's ephemeral public value.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
+ * @since 1.6
  */
 final class ECDHClientKeyExchange extends HandshakeMessage {
 
@@ -53,7 +53,7 @@ final class ECDHClientKeyExchange extends HandshakeMessage {
 
     // Called by the client with its ephemeral public key.
     ECDHClientKeyExchange(PublicKey publicKey) {
-        ECPublicKey ecKey = (ECPublicKey)publicKey;
+        ECPublicKey ecKey = (ECPublicKey) publicKey;
         ECPoint point = ecKey.getW();
         ECParameterSpec params = ecKey.getParams();
         encodedPoint = JsseJce.encodePoint(point, params.getCurve());

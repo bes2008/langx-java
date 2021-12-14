@@ -31,32 +31,32 @@ import java.lang.ref.*;
 /**
  * Abstract base class and factory for caches. A cache is a key-value mapping.
  * It has properties that make it more suitable for caching than a Map.
- *
+ * <p>
  * The factory methods can be used to obtain two different implementations.
  * They have the following properties:
- *
- *  . keys and values reside in memory
- *
- *  . keys and values must be non-null
- *
- *  . maximum size. Replacements are made in LRU order.
- *
- *  . optional lifetime, specified in seconds.
- *
- *  . save for concurrent use by multiple threads
- *
- *  . values are held by either standard references or via SoftReferences.
- *    SoftReferences have the advantage that they are automatically cleared
- *    by the garbage collector in response to memory demand. This makes it
- *    possible to simple set the maximum size to a very large value and let
- *    the GC automatically size the cache dynamically depending on the
- *    amount of available memory.
- *
+ * <p>
+ * . keys and values reside in memory
+ * <p>
+ * . keys and values must be non-null
+ * <p>
+ * . maximum size. Replacements are made in LRU order.
+ * <p>
+ * . optional lifetime, specified in seconds.
+ * <p>
+ * . save for concurrent use by multiple threads
+ * <p>
+ * . values are held by either standard references or via SoftReferences.
+ * SoftReferences have the advantage that they are automatically cleared
+ * by the garbage collector in response to memory demand. This makes it
+ * possible to simple set the maximum size to a very large value and let
+ * the GC automatically size the cache dynamically depending on the
+ * amount of available memory.
+ * <p>
  * However, note that because of the way SoftReferences are implemented in
  * HotSpot at the moment, this may not work perfectly as it clears them fairly
  * eagerly. Performance may be improved if the Java heap size is set to larger
  * value using e.g. java -ms64M -mx128M foo.Test
- *
+ * <p>
  * Cache sizing: the memory cache is implemented on top of a LinkedHashMap.
  * In its current implementation, the number of buckets (NOT entries) in
  * (Linked)HashMaps is always a power of two. It is recommended to set the
@@ -173,7 +173,7 @@ public abstract class Cache {
             if (obj instanceof EqualByteArray == false) {
                 return false;
             }
-            EqualByteArray other = (EqualByteArray)obj;
+            EqualByteArray other = (EqualByteArray) obj;
             return Arrays.equals(this.b, other.b);
         }
     }
@@ -230,15 +230,15 @@ class MemoryCache extends Cache {
         this.maxSize = maxSize;
         this.lifetime = lifetime * 1000;
         this.queue = soft ? new ReferenceQueue<Object>() : null;
-        int buckets = (int)(maxSize / LOAD_FACTOR) + 1;
+        int buckets = (int) (maxSize / LOAD_FACTOR) + 1;
         cacheMap = new LinkedHashMap<Object, CacheEntry>(buckets,
-                                                        LOAD_FACTOR, true);
+                LOAD_FACTOR, true);
     }
 
     /**
      * Empty the reference queue and remove all corresponding entries
      * from the cache.
-     *
+     * <p>
      * This method should be called at the beginning of each public
      * method.
      */
@@ -248,7 +248,7 @@ class MemoryCache extends Cache {
         }
         int startSize = cacheMap.size();
         while (true) {
-            CacheEntry entry = (CacheEntry)queue.poll();
+            CacheEntry entry = (CacheEntry) queue.poll();
             if (entry == null) {
                 break;
             }
@@ -284,7 +284,7 @@ class MemoryCache extends Cache {
         int cnt = 0;
         long time = System.currentTimeMillis();
         for (Iterator<CacheEntry> t = cacheMap.values().iterator();
-                t.hasNext(); ) {
+             t.hasNext(); ) {
             CacheEntry entry = t.next();
             if (entry.isValid(time) == false) {
                 t.remove();
@@ -321,7 +321,7 @@ class MemoryCache extends Cache {
     public synchronized void put(Object key, Object value) {
         emptyQueue();
         long expirationTime = (lifetime == 0) ? 0 :
-                                        System.currentTimeMillis() + lifetime;
+                System.currentTimeMillis() + lifetime;
         CacheEntry newEntry = newEntry(key, value, expirationTime, queue);
         CacheEntry oldEntry = cacheMap.put(key, newEntry);
         if (oldEntry != null) {
@@ -335,7 +335,7 @@ class MemoryCache extends Cache {
                 CacheEntry lruEntry = t.next();
                 if (DEBUG) {
                     System.out.println("** Overflow removal "
-                        + lruEntry.getKey() + " | " + lruEntry.getValue());
+                            + lruEntry.getKey() + " | " + lruEntry.getValue());
                 }
                 t.remove();
                 lruEntry.invalidate();
@@ -369,7 +369,7 @@ class MemoryCache extends Cache {
     }
 
     protected CacheEntry newEntry(Object key, Object value,
-            long expirationTime, ReferenceQueue<Object> queue) {
+                                  long expirationTime, ReferenceQueue<Object> queue) {
         if (queue != null) {
             return new SoftCacheEntry(key, value, expirationTime, queue);
         } else {
@@ -430,7 +430,7 @@ class MemoryCache extends Cache {
         private long expirationTime;
 
         SoftCacheEntry(Object key, Object value, long expirationTime,
-                ReferenceQueue<Object> queue) {
+                       ReferenceQueue<Object> queue) {
             super(value, queue);
             this.key = key;
             this.expirationTime = expirationTime;

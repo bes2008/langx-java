@@ -32,8 +32,8 @@ import java.util.*;
  * Instances of this class are immutable. Some member variables are final
  * and can be accessed directly without method accessors.
  *
- * @author  Andreas Sterbenz
- * @since   1.4.1
+ * @author Andreas Sterbenz
+ * @since 1.4.1
  */
 final class ProtocolList {
 
@@ -58,8 +58,8 @@ final class ProtocolList {
         if ((protocols.size() == 1) &&
                 protocols.contains(ProtocolVersion.SSL20Hello)) {
             throw new IllegalArgumentException("SSLv2Hello cannot be " +
-                "enabled unless at least one other supported version " +
-                "is also enabled.");
+                    "enabled unless at least one other supported version " +
+                    "is also enabled.");
         }
 
         if (protocols.size() != 0) {
@@ -80,7 +80,7 @@ final class ProtocolList {
         }
 
         ArrayList<ProtocolVersion> versions = new ArrayList<ProtocolVersion>(3);
-        for (int i = 0; i < names.length; i++ ) {
+        for (int i = 0; i < names.length; i++) {
             ProtocolVersion version = ProtocolVersion.valueOf(names[i]);
             if (versions.contains(version) == false) {
                 versions.add(version);
@@ -112,11 +112,11 @@ final class ProtocolList {
 
     /**
      * Select a protocol version from the list.
-     *
+     * <p>
      * Return the lower of the protocol version of that suggested by
      * the <code>protocolVersion</code> and the highest version of this
      * protocol list, or null if no protocol version is available.
-     *
+     * <p>
      * The method is used by TLS server to negotiated the protocol
      * version between client suggested protocol version in the
      * client hello and protocol versions supported by the server.

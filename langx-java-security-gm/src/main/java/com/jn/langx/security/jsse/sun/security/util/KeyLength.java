@@ -44,14 +44,14 @@ public final class KeyLength {
      *
      * @param key the key object, cannot be null
      * @return the key size of the given key object in bits, or -1 if the
-     *       key size is not accessible
+     * key size is not accessible
      */
     final public static int getKeySize(Key key) {
         int size = -1;
 
         if (key instanceof Length) {
             try {
-                Length ruler = (Length)key;
+                Length ruler = (Length) key;
                 size = ruler.length();
             } catch (UnsupportedOperationException usoe) {
                 // ignore the exception
@@ -64,26 +64,26 @@ public final class KeyLength {
 
         // try to parse the length from key specification
         if (key instanceof SecretKey) {
-            SecretKey sk = (SecretKey)key;
+            SecretKey sk = (SecretKey) key;
             String format = sk.getFormat();
             if ("RAW".equals(format) && sk.getEncoded() != null) {
                 size = (sk.getEncoded().length * 8);
             }   // Otherwise, it may be a unextractable key of PKCS#11, or
-                // a key we are not able to handle.
+            // a key we are not able to handle.
         } else if (key instanceof RSAKey) {
-            RSAKey pubk = (RSAKey)key;
+            RSAKey pubk = (RSAKey) key;
             size = pubk.getModulus().bitLength();
         } else if (key instanceof ECKey) {
-            ECKey pubk = (ECKey)key;
+            ECKey pubk = (ECKey) key;
             size = pubk.getParams().getOrder().bitLength();
         } else if (key instanceof DSAKey) {
-            DSAKey pubk = (DSAKey)key;
+            DSAKey pubk = (DSAKey) key;
             size = pubk.getParams().getP().bitLength();
         } else if (key instanceof DHKey) {
-            DHKey pubk = (DHKey)key;
+            DHKey pubk = (DHKey) key;
             size = pubk.getParams().getP().bitLength();
         }   // Otherwise, it may be a unextractable key of PKCS#11, or
-            // a key we are not able to handle.
+        // a key we are not able to handle.
 
         return size;
     }

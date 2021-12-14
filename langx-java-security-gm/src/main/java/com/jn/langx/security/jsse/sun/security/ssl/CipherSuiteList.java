@@ -34,9 +34,8 @@ import javax.net.ssl.SSLException;
 /**
  * A list of CipherSuites. Also maintains the lists of supported and
  * default ciphersuites and supports I/O from handshake streams.
- *
+ * <p>
  * Instances of this class are immutable.
- *
  */
 final class CipherSuiteList {
 
@@ -65,9 +64,9 @@ final class CipherSuiteList {
      * Construct a CipherSuiteList from a array of names. We don't bother
      * to eliminate duplicates.
      *
-     * @exception IllegalArgumentException if the array or any of its elements
-     * is null or if the ciphersuite name is unrecognized or unsupported
-     * using currently installed providers.
+     * @throws IllegalArgumentException if the array or any of its elements
+     *                                  is null or if the ciphersuite name is unrecognized or unsupported
+     *                                  using currently installed providers.
      */
     CipherSuiteList(String[] names) {
         if (names == null) {
@@ -90,7 +89,7 @@ final class CipherSuiteList {
                 // still missing?
                 if (suite.isAvailable() == false) {
                     throw new IllegalArgumentException("Cannot support "
-                        + suiteName + " with currently installed providers");
+                            + suiteName + " with currently installed providers");
                 }
             }
             cipherSuites.add(suite);
@@ -109,7 +108,7 @@ final class CipherSuiteList {
         }
         cipherSuites = new ArrayList<CipherSuite>(bytes.length >> 1);
         for (int i = 0; i < bytes.length; i += 2) {
-            cipherSuites.add(CipherSuite.valueOf(bytes[i], bytes[i+1]));
+            cipherSuites.add(CipherSuite.valueOf(bytes[i], bytes[i + 1]));
         }
     }
 
@@ -183,8 +182,8 @@ final class CipherSuiteList {
         byte[] suiteBytes = new byte[cipherSuites.size() * 2];
         int i = 0;
         for (CipherSuite c : cipherSuites) {
-            suiteBytes[i] = (byte)(c.id >> 8);
-            suiteBytes[i+1] = (byte)c.id;
+            suiteBytes[i] = (byte) (c.id >> 8);
+            suiteBytes[i + 1] = (byte) c.id;
             i += 2;
         }
         s.putBytes16(suiteBytes);

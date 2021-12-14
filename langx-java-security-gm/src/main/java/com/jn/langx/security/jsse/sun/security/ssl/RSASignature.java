@@ -33,19 +33,18 @@ import java.security.*;
  * MD5 and SHA-1 MessageDigests. Used for explicit RSA server authentication
  * (RSA signed server key exchange for RSA_EXPORT and DHE_RSA) and RSA client
  * authentication (RSA signed certificate verify message).
- *
+ * <p>
  * It conforms to the standard JCA Signature API. It is registered in the
  * SunJSSE provider to avoid more complicated getInstance() code and
  * negative interaction with the JCA mechanisms for hardware providers.
- *
+ * <p>
  * The class should be instantiated via the getInstance() method in this class,
  * which returns the implementation from the prefered provider. The internal
  * implementation allows the hashes to be explicitly set, which is required
  * for RSA client authentication. It can be obtained via the
  * getInternalInstance() method.
- *
+ * <p>
  * This class is not thread safe.
- *
  */
 public final class RSASignature extends SignatureSpi {
 
@@ -84,7 +83,7 @@ public final class RSASignature extends SignatureSpi {
      * Set the MD5 and SHA hashes to the provided objects.
      */
     static void setHashes(Signature sig, MessageDigest md5, MessageDigest sha) {
-        sig.setParameter("hashes", new MessageDigest[] {md5, sha});
+        sig.setParameter("hashes", new MessageDigest[]{md5, sha});
     }
 
     /**
@@ -178,13 +177,13 @@ public final class RSASignature extends SignatureSpi {
             throws InvalidParameterException {
         if (param.equals("hashes") == false) {
             throw new InvalidParameterException
-                ("Parameter not supported: " + param);
+                    ("Parameter not supported: " + param);
         }
         if (value instanceof MessageDigest[] == false) {
             throw new InvalidParameterException
-                ("value must be MessageDigest[]");
+                    ("value must be MessageDigest[]");
         }
-        MessageDigest[] digests = (MessageDigest[])value;
+        MessageDigest[] digests = (MessageDigest[]) value;
         md5 = digests[0];
         sha = digests[1];
     }

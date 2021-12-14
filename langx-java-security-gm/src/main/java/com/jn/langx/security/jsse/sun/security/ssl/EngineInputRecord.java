@@ -36,7 +36,7 @@ import javax.crypto.BadPaddingException;
 
 /**
  * Wrapper class around InputRecord.
- *
+ * <p>
  * Application data is kept external to the InputRecord,
  * but handshake data (alert/change_cipher_spec/handshake) will
  * be kept internally in the ByteArrayInputStream.
@@ -107,7 +107,7 @@ final class EngineInputRecord extends InputRecord {
              * Last sanity check that it's not a wild record
              */
             ProtocolVersion recordVersion =
-                ProtocolVersion.valueOf(buf.get(pos + 1), buf.get(pos + 2));
+                    ProtocolVersion.valueOf(buf.get(pos + 1), buf.get(pos + 2));
 
             // Check if too old (currently not possible)
             // or if the major version does not match.
@@ -115,7 +115,7 @@ final class EngineInputRecord extends InputRecord {
             if ((recordVersion.v < ProtocolVersion.MIN.v)
                     || (recordVersion.major > ProtocolVersion.MAX.major)) {
                 throw new SSLException(
-                    "Unsupported record version " + recordVersion);
+                        "Unsupported record version " + recordVersion);
             }
 
             /*
@@ -129,7 +129,7 @@ final class EngineInputRecord extends InputRecord {
              * One of the SSLv3/TLS message types.
              */
             len = ((buf.get(pos + 3) & 0xff) << 8) +
-                (buf.get(pos + 4) & 0xff) + headerSize;
+                    (buf.get(pos + 4) & 0xff) + headerSize;
 
         } else {
             /*
@@ -145,7 +145,7 @@ final class EngineInputRecord extends InputRecord {
                     ((buf.get(pos + 2) == 1) || buf.get(pos + 2) == 4)) {
 
                 ProtocolVersion recordVersion =
-                    ProtocolVersion.valueOf(buf.get(pos + 3), buf.get(pos + 4));
+                        ProtocolVersion.valueOf(buf.get(pos + 3), buf.get(pos + 4));
 
                 // Check if too old (currently not possible)
                 // or if the major version does not match.
@@ -156,7 +156,7 @@ final class EngineInputRecord extends InputRecord {
                     // if it's not SSLv2, we're out of here.
                     if (recordVersion.v != ProtocolVersion.SSL20Hello.v) {
                         throw new SSLException(
-                            "Unsupported record version " + recordVersion);
+                                "Unsupported record version " + recordVersion);
                     }
                 }
 
@@ -165,12 +165,12 @@ final class EngineInputRecord extends InputRecord {
                  */
                 int mask = (isShort ? 0x7f : 0x3f);
                 len = ((byteZero & mask) << 8) + (buf.get(pos + 1) & 0xff) +
-                    (isShort ? 2 : 3);
+                        (isShort ? 2 : 3);
 
             } else {
                 // Gobblygook!
                 throw new SSLException(
-                    "Unrecognized SSL message, plaintext connection?");
+                        "Unrecognized SSL message, plaintext connection?");
             }
         }
 
@@ -187,7 +187,7 @@ final class EngineInputRecord extends InputRecord {
      * process.
      */
     ByteBuffer decrypt(MAC signer,
-            CipherBox box, ByteBuffer bb) throws BadPaddingException {
+                       CipherBox box, ByteBuffer bb) throws BadPaddingException {
 
         if (internalData) {
             decrypt(signer, box);   // MAC is checked during decryption
@@ -202,7 +202,7 @@ final class EngineInputRecord extends InputRecord {
             // sanity check length of the ciphertext
             if (!box.sanityCheck(tagLen, cipheredLength)) {
                 throw new BadPaddingException(
-                    "ciphertext sanity check failed");
+                        "ciphertext sanity check failed");
             }
 
             try {
@@ -254,7 +254,7 @@ final class EngineInputRecord extends InputRecord {
             // constant time of MAC computation and comparison on each record.
             if (box.isCBCMode()) {
                 int remainingLen = calculateRemainingLen(
-                                        signer, cipheredLength, macOffset);
+                        signer, cipheredLength, macOffset);
 
                 // NOTE: here we use the InputRecord.buf because I did not find
                 // an effective way to work on ByteBuffer when its capacity is 
@@ -268,7 +268,7 @@ final class EngineInputRecord extends InputRecord {
                 if (remainingLen > buf.length) {
                     // unlikely to happen, just a placehold
                     throw new RuntimeException(
-                        "Internal buffer capacity error");
+                            "Internal buffer capacity error");
                 }
 
                 // Won't need to worry about the result on the remainder. And
@@ -295,7 +295,7 @@ final class EngineInputRecord extends InputRecord {
      * Please DON'T change the content of the ByteBuffer parameter!
      */
     private static boolean checkMacTags(byte contentType, ByteBuffer bb,
-            MAC signer, boolean isSimulated) {
+                                        MAC signer, boolean isSimulated) {
 
         int tagLen = signer.MAClen();
         int lim = bb.limit();
@@ -350,13 +350,13 @@ final class EngineInputRecord extends InputRecord {
      * data to be generated/output before the exception is ever
      * generated.
      */
-    void writeBuffer(OutputStream s, byte [] buf, int off, int len)
+    void writeBuffer(OutputStream s, byte[] buf, int off, int len)
             throws IOException {
         /*
          * Copy data out of buffer, it's ready to go.
          */
         ByteBuffer netBB = (ByteBuffer)
-            (ByteBuffer.allocate(len).put(buf, 0, len).flip());
+                (ByteBuffer.allocate(len).put(buf, 0, len).flip());
         engine.writer.putOutboundDataSync(netBB);
     }
 
@@ -402,7 +402,7 @@ final class EngineInputRecord extends InputRecord {
         if ((recordVersion.v < ProtocolVersion.MIN.v)
                 || (recordVersion.major > ProtocolVersion.MAX.major)) {
             throw new SSLException(
-                "Unsupported record version " + recordVersion);
+                    "Unsupported record version " + recordVersion);
         }
 
         /*
@@ -410,7 +410,7 @@ final class EngineInputRecord extends InputRecord {
          * Jump over the header.
          */
         int len = bytesInCompletePacket(srcBB);
-        assert(len > 0);
+        assert (len > 0);
 
         if (debug != null && Debug.isOn("packet")) {
             try {
@@ -420,7 +420,8 @@ final class EngineInputRecord extends InputRecord {
 
                 System.out.println("[Raw read (bb)]: length = " + len);
                 hd.encodeBuffer(bb, System.out);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
 
         // Demarcate past header to end of packet.

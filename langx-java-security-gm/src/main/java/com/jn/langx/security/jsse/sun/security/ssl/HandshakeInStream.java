@@ -34,7 +34,7 @@ import javax.net.ssl.SSLException;
 /**
  * InputStream for handshake data, used internally only. Contains the
  * handshake message buffer and methods to parse them.
- *
+ * <p>
  * Once a new handshake record arrives, it is buffered in this class until
  * processed by the Handshaker. The buffer may also contain incomplete
  * handshake messages in case the message is split across multiple records.
@@ -42,7 +42,7 @@ import javax.net.ssl.SSLException;
  * handshake messages larger than the default buffer size (e.g. large
  * certificate messages). The buffer is grown dynamically to handle that
  * (see InputRecord.queueHandshake()).
- *
+ * <p>
  * Note that the InputRecord used as a buffer here is separate from the
  * AppInStream.r, which is where data from the socket is initially read
  * into. This is because once the initial handshake has been completed,
@@ -91,7 +91,7 @@ class HandshakeInStream extends InputStream {
     /*
      * Get a bunch of bytes of handshake data.
      */
-    public int read(byte b [], int off, int len) throws IOException {
+    public int read(byte b[], int off, int len) throws IOException {
         // we read from a ByteArrayInputStream, it always returns the
         // data in a single read if enough is available
         int n = r.read(b, off, len);
@@ -180,7 +180,7 @@ class HandshakeInStream extends InputStream {
 
     int getInt32() throws IOException {
         return (getInt8() << 24) | (getInt8() << 16)
-             | (getInt8() << 8) | getInt8();
+                | (getInt8() << 8) | getInt8();
     }
 
     /*
@@ -218,7 +218,7 @@ class HandshakeInStream extends InputStream {
     private void verifyLength(int len) throws SSLException {
         if (len > available()) {
             throw new SSLException(
-                        "Not enough data to fill declared vector size");
+                    "Not enough data to fill declared vector size");
         }
     }
 

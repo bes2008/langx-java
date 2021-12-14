@@ -48,7 +48,7 @@ import static com.jn.langx.security.jsse.sun.security.ssl.SunJSSE.cryptoProvider
  * This class contains a few static methods for interaction with the JCA/JCE
  * to obtain implementations, etc.
  *
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
  */
 final class JsseJce {
 
@@ -64,18 +64,19 @@ final class JsseJce {
     // Flag indicating whether Kerberos crypto is available.
     // If true, then all the Kerberos-based crypto we need is available.
     private final static boolean kerberosAvailable;
+
     static {
         boolean temp;
         try {
             AccessController.doPrivileged(
-                new PrivilegedExceptionAction<Void>() {
-                    public Void run() throws Exception {
-                        // Test for Kerberos using the bootstrap class loader
-                        Class.forName("sun.security.krb5.PrincipalName", true,
-                                null);
-                        return null;
-                    }
-                });
+                    new PrivilegedExceptionAction<Void>() {
+                        public Void run() throws Exception {
+                            // Test for Kerberos using the bootstrap class loader
+                            Class.forName("sun.security.krb5.PrincipalName", true,
+                                    null);
+                            return null;
+                        }
+                    });
             temp = true;
 
         } catch (Exception e) {
@@ -99,7 +100,7 @@ final class JsseJce {
             Provider sun = Security.getProvider("SUN");
             if (sun == null) {
                 throw new RuntimeException
-                    ("FIPS mode: SUN provider must be installed");
+                        ("FIPS mode: SUN provider must be installed");
             }
             Provider sunCerts = new SunCertificates(sun);
             fipsProviderList = ProviderList.newList(cryptoProvider, sunCerts);
@@ -114,8 +115,8 @@ final class JsseJce {
             AccessController.doPrivileged(new PrivilegedAction<Object>() {
                 public Object run() {
                     // copy certificate related services from the Sun provider
-                    for (Map.Entry<Object,Object> entry : p.entrySet()) {
-                        String key = (String)entry.getKey();
+                    for (Map.Entry<Object, Object> entry : p.entrySet()) {
+                        String key = (String) entry.getKey();
                         if (key.startsWith("CertPathValidator.")
                                 || key.startsWith("CertPathBuilder.")
                                 || key.startsWith("CertStore.")
@@ -336,7 +337,7 @@ final class JsseJce {
             }
         }
         throw new KeyManagementException("FIPS mode: no SecureRandom "
-            + " implementation found in provider " + cryptoProvider.getName());
+                + " implementation found in provider " + cryptoProvider.getName());
     }
 
     static MessageDigest getMD5() {
@@ -356,14 +357,14 @@ final class JsseJce {
             }
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException
-                        ("Algorithm " + algorithm + " not available", e);
+                    ("Algorithm " + algorithm + " not available", e);
         }
     }
 
     static int getRSAKeyLength(PublicKey key) {
         BigInteger modulus;
         if (key instanceof RSAPublicKey) {
-            modulus = ((RSAPublicKey)key).getModulus();
+            modulus = ((RSAPublicKey) key).getModulus();
         } else {
             RSAPublicKeySpec spec = getRSAPublicKeySpec(key);
             modulus = spec.getModulus();
@@ -373,9 +374,9 @@ final class JsseJce {
 
     static RSAPublicKeySpec getRSAPublicKeySpec(PublicKey key) {
         if (key instanceof RSAPublicKey) {
-            RSAPublicKey rsaKey = (RSAPublicKey)key;
+            RSAPublicKey rsaKey = (RSAPublicKey) key;
             return new RSAPublicKeySpec(rsaKey.getModulus(),
-                                        rsaKey.getPublicExponent());
+                    rsaKey.getPublicExponent());
         }
         try {
             KeyFactory factory = JsseJce.getKeyFactory("RSA");
@@ -414,7 +415,7 @@ final class JsseJce {
 
     static void endFipsProvider(Object o) {
         if (fipsProviderList != null) {
-            Providers.endThreadProviderList((ProviderList)o);
+            Providers.endThreadProviderList((ProviderList) o);
         }
     }
 

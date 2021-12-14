@@ -38,6 +38,7 @@ class CacheEntry extends Ref {
     int hash;
     Object key;
     CacheEntry next;
+
     public Object reconstitute() {
         return null;
     }
@@ -51,11 +52,11 @@ class CacheEntry extends Ref {
  * The Cache will automatically remove entries if memory is
  * getting tight and if the entry is not referenced from outside
  * the Cache.<p>
- *
+ * <p>
  * To sucessfully store and retrieve objects from a hash table the
  * object used as the key must implement the hashCode() and equals()
  * methods.<p>
- *
+ * <p>
  * This example creates a Cache of numbers. It uses the names of
  * the numbers as keys:
  * <pre>
@@ -110,25 +111,27 @@ class Cache extends Dictionary {
     /**
      * Constructs a new, empty Cache with the specified initial
      * capacity and the specified load factor.
+     *
      * @param initialCapacity the initial number of buckets
-     * @param loadFactor a number between 0.0 and 1.0, it defines
-     *          the threshold for rehashing the Cache into
-     *          a bigger one.
-     * @exception IllegalArgumentException If the initial capacity
-     * is less than or equal to zero.
-     * @exception IllegalArgumentException If the load factor is
-     * less than or equal to zero.
+     * @param loadFactor      a number between 0.0 and 1.0, it defines
+     *                        the threshold for rehashing the Cache into
+     *                        a bigger one.
+     * @throws IllegalArgumentException If the initial capacity
+     *                                  is less than or equal to zero.
+     * @throws IllegalArgumentException If the load factor is
+     *                                  less than or equal to zero.
      */
-    public Cache (int initialCapacity, float loadFactor) {
+    public Cache(int initialCapacity, float loadFactor) {
         init(initialCapacity, loadFactor);
     }
 
     /**
      * Constructs a new, empty Cache with the specified initial
      * capacity.
+     *
      * @param initialCapacity the initial number of buckets
      */
-    public Cache (int initialCapacity) {
+    public Cache(int initialCapacity) {
         init(initialCapacity, 0.75f);
     }
 
@@ -137,7 +140,7 @@ class Cache extends Dictionary {
      * is used. Note that the Cache will automatically grow when it gets
      * full.
      */
-    public Cache () {
+    public Cache() {
         try {
             init(101, 0.75f);
         } catch (IllegalArgumentException ex) {
@@ -162,6 +165,7 @@ class Cache extends Dictionary {
 
     /**
      * Returns an enumeration of the Cache's keys.
+     *
      * @see Cache#elements
      * @see Enumeration
      */
@@ -172,6 +176,7 @@ class Cache extends Dictionary {
     /**
      * Returns an enumeration of the elements. Use the Enumeration methods
      * on the returned object to fetch the elements sequentially.
+     *
      * @see Cache#keys
      * @see Enumeration
      */
@@ -181,9 +186,10 @@ class Cache extends Dictionary {
 
     /**
      * Gets the object associated with the specified key in the Cache.
+     *
      * @param key the key in the hash table
      * @returns the element for the key or null if the key
-     *          is not defined in the hash table.
+     * is not defined in the hash table.
      * @see Cache#put
      */
     public synchronized Object get(Object key) {
@@ -216,8 +222,8 @@ class Cache extends Dictionary {
         // System.out.println("rehash old=" + oldCapacity + ", new=" +
         // newCapacity + ", thresh=" + threshold + ", count=" + count);
 
-        for (int i = oldCapacity; i-- > 0;) {
-            for (CacheEntry old = oldTable[i]; old != null;) {
+        for (int i = oldCapacity; i-- > 0; ) {
+            for (CacheEntry old = oldTable[i]; old != null; ) {
                 CacheEntry e = old;
                 old = old.next;
                 if (e.check() != null) {
@@ -234,11 +240,12 @@ class Cache extends Dictionary {
      * Puts the specified element into the Cache, using the specified
      * key.  The element may be retrieved by doing a get() with the same
      * key.  The key and the element cannot be null.
-     * @param key the specified hashtable key
+     *
+     * @param key   the specified hashtable key
      * @param value the specified element
      * @return the old value of the key, or null if it did not have one.
-     * @exception NullPointerException If the value of the specified
-     * element is null.
+     * @throws NullPointerException If the value of the specified
+     *                              element is null.
      * @see Cache#get
      */
     public synchronized Object put(Object key, Object value) {
@@ -267,7 +274,7 @@ class Cache extends Dictionary {
         }
         // Creates the new entry.
         if (ne == null) {
-            ne = new CacheEntry ();
+            ne = new CacheEntry();
             ne.next = tab[index];
             tab[index] = ne;
             count++;
@@ -281,6 +288,7 @@ class Cache extends Dictionary {
     /**
      * Removes the element corresponding to the key. Does nothing if the
      * key is not present.
+     *
      * @param key the key that needs to be removed
      * @return the value of key, or null if the key was not found.
      */
@@ -313,7 +321,7 @@ class CacheEnumerator implements Enumeration {
     CacheEntry table[];
     CacheEntry entry;
 
-    CacheEnumerator (CacheEntry table[], boolean keys) {
+    CacheEnumerator(CacheEntry table[], boolean keys) {
         this.table = table;
         this.keys = keys;
         this.index = table.length;

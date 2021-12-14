@@ -42,15 +42,13 @@ public class ByteArrayLexOrder implements Comparator<byte[]> {
      * is "smaller". If array entries are
      * equal till one array ends, then the longer array is "bigger".
      *
-     * @param  bytes1 first byte array to compare.
-     * @param  bytes2 second byte array to compare.
+     * @param bytes1 first byte array to compare.
+     * @param bytes2 second byte array to compare.
      * @return negative number if bytes1 < bytes2, 0 if bytes1 == bytes2,
      * positive number if bytes1 > bytes2.
-     *
-     * @exception <code>ClassCastException</code>
-     * if either argument is not a byte array.
+     * @throws <code>ClassCastException</code> if either argument is not a byte array.
      */
-    public final int compare( byte[] bytes1, byte[] bytes2) {
+    public final int compare(byte[] bytes1, byte[] bytes2) {
         int diff;
         for (int i = 0; i < bytes1.length && i < bytes2.length; i++) {
             diff = (bytes1[i] & 0xFF) - (bytes2[i] & 0xFF);

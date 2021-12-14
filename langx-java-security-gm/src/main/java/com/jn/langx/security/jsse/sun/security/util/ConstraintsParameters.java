@@ -36,7 +36,7 @@ import java.util.Date;
 /**
  * This class contains parameters for checking against constraints that extend
  * past the publicly available parameters in java.security.AlgorithmConstraints.
-
+ * <p>
  * This is currently on passed between  between PKIX, AlgorithmChecker,
  * and DisabledAlgorithmConstraints.
  */
@@ -68,7 +68,7 @@ public class ConstraintsParameters {
     private final String variant;
 
     public ConstraintsParameters(X509Certificate c, boolean match,
-            Date pkixdate, Timestamp jarTime, String variant) {
+                                 Date pkixdate, Timestamp jarTime, String variant) {
         cert = c;
         trustedMatch = match;
         pkixDate = pkixdate;
@@ -80,7 +80,7 @@ public class ConstraintsParameters {
     }
 
     public ConstraintsParameters(String algorithm, AlgorithmParameters params,
-            Key key, String variant) {
+                                 Key key, String variant) {
         this.algorithm = algorithm;
         algParams = params;
         this.publicKey = key;
@@ -112,6 +112,7 @@ public class ConstraintsParameters {
     public Key getPublicKey() {
         return publicKey;
     }
+
     // Returns if the trust anchor has a match if anchor checking is enabled.
     public boolean isTrustedMatch() {
         return trustedMatch;

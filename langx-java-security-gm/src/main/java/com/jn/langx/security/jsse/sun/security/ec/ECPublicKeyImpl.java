@@ -38,8 +38,8 @@ import java.security.spec.*;
 /**
  * Key implementation for EC public keys.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
+ * @since 1.6
  */
 public final class ECPublicKeyImpl extends X509Key implements ECPublicKey {
 
@@ -107,15 +107,15 @@ public final class ECPublicKeyImpl extends X509Key implements ECPublicKey {
     // return a string representation of this key for debugging
     public String toString() {
         return "Sun EC public key, " + params.getCurve().getField().getFieldSize()
-            + " bits\n  public x coord: " + w.getAffineX()
-            + "\n  public y coord: " + w.getAffineY()
-            + "\n  parameters: " + params;
+                + " bits\n  public x coord: " + w.getAffineX()
+                + "\n  public y coord: " + w.getAffineY()
+                + "\n  parameters: " + params;
     }
 
     protected Object writeReplace() throws java.io.ObjectStreamException {
         return new KeyRep(KeyRep.Type.PUBLIC,
-                        getAlgorithm(),
-                        getFormat(),
-                        getEncoded());
+                getAlgorithm(),
+                getFormat(),
+                getEncoded());
     }
 }

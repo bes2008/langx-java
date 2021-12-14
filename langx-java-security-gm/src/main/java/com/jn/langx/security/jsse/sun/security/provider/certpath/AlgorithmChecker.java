@@ -67,17 +67,17 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
     private final String variant;
 
     private static final Set<CryptoPrimitive> SIGNATURE_PRIMITIVE_SET =
-                                    EnumSet.of(CryptoPrimitive.SIGNATURE);
+            EnumSet.of(CryptoPrimitive.SIGNATURE);
 
     private static final Set<CryptoPrimitive> KU_PRIMITIVE_SET =
-        Collections.unmodifiableSet(EnumSet.of(
-            CryptoPrimitive.SIGNATURE,
-            CryptoPrimitive.KEY_ENCAPSULATION,
-            CryptoPrimitive.PUBLIC_KEY_ENCRYPTION,
-            CryptoPrimitive.KEY_AGREEMENT));
+            Collections.unmodifiableSet(EnumSet.of(
+                    CryptoPrimitive.SIGNATURE,
+                    CryptoPrimitive.KEY_ENCAPSULATION,
+                    CryptoPrimitive.PUBLIC_KEY_ENCRYPTION,
+                    CryptoPrimitive.KEY_AGREEMENT));
 
     private static final DisabledAlgorithmConstraints
-        certPathDefaultConstraints = new DisabledAlgorithmConstraints(
+            certPathDefaultConstraints = new DisabledAlgorithmConstraints(
             DisabledAlgorithmConstraints.PROPERTY_CERTPATH_DISABLED_ALGS);
 
     // If there is no "cacerts" keyword, then disable anchor checking
@@ -92,8 +92,8 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
      * Create a new {@code AlgorithmChecker} with the given algorithm
      * given {@code TrustAnchor} and {@code String} variant.
      *
-     * @param anchor the trust anchor selected to validate the target
-     *     certificate
+     * @param anchor  the trust anchor selected to validate the target
+     *                certificate
      * @param variant is the Validator variants of the operation. A null value
      *                passed will set it to Validator.GENERIC.
      */
@@ -105,18 +105,18 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
      * Create a new {@code AlgorithmChecker} with the given
      * {@code AlgorithmConstraints}, {@code Timestamp}, and {@code String}
      * variant.
-     *
+     * <p>
      * Note that this constructor can initialize a variation of situations where
      * the AlgorithmConstraints, Timestamp, or Variant maybe known.
      *
-     * @param constraints the algorithm constraints (or null)
+     * @param constraints  the algorithm constraints (or null)
      * @param jarTimestamp Timestamp passed for JAR timestamp constraint
      *                     checking. Set to null if not applicable.
-     * @param variant is the Validator variants of the operation. A null value
-     *                passed will set it to Validator.GENERIC.
+     * @param variant      is the Validator variants of the operation. A null value
+     *                     passed will set it to Validator.GENERIC.
      */
     public AlgorithmChecker(AlgorithmConstraints constraints,
-            Timestamp jarTimestamp, String variant) {
+                            Timestamp jarTimestamp, String variant) {
         this(null, constraints, null, jarTimestamp, variant);
     }
 
@@ -125,20 +125,20 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
      * given {@code TrustAnchor}, {@code AlgorithmConstraints},
      * {@code Timestamp}, and {@code String} variant.
      *
-     * @param anchor the trust anchor selected to validate the target
-     *     certificate
-     * @param constraints the algorithm constraints (or null)
-     * @param pkixdate The date specified by the PKIXParameters date.  If the
-     *                 PKIXParameters is null, the current date is used.  This
-     *                 should be null when jar files are being checked.
+     * @param anchor       the trust anchor selected to validate the target
+     *                     certificate
+     * @param constraints  the algorithm constraints (or null)
+     * @param pkixdate     The date specified by the PKIXParameters date.  If the
+     *                     PKIXParameters is null, the current date is used.  This
+     *                     should be null when jar files are being checked.
      * @param jarTimestamp Timestamp passed for JAR timestamp constraint
      *                     checking. Set to null if not applicable.
-     * @param variant is the Validator variants of the operation. A null value
-     *                passed will set it to Validator.GENERIC.
+     * @param variant      is the Validator variants of the operation. A null value
+     *                     passed will set it to Validator.GENERIC.
      */
     public AlgorithmChecker(TrustAnchor anchor,
-            AlgorithmConstraints constraints, Date pkixdate,
-            Timestamp jarTimestamp, String variant) {
+                            AlgorithmConstraints constraints, Date pkixdate,
+                            Timestamp jarTimestamp, String variant) {
 
         if (anchor != null) {
             if (anchor.getTrustedCert() != null) {
@@ -173,12 +173,12 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
      * Create a new {@code AlgorithmChecker} with the given {@code TrustAnchor},
      * {@code PKIXParameter} date, and {@code varient}
      *
-     * @param anchor the trust anchor selected to validate the target
-     *     certificate
+     * @param anchor   the trust anchor selected to validate the target
+     *                 certificate
      * @param pkixdate Date the constraints are checked against. The value is
-     *             either the PKIXParameters date or null for the current date.
-     * @param variant is the Validator variants of the operation. A null value
-     *                passed will set it to Validator.GENERIC.
+     *                 either the PKIXParameters date or null for the current date.
+     * @param variant  is the Validator variants of the operation. A null value
+     *                 passed will set it to Validator.GENERIC.
      */
     public AlgorithmChecker(TrustAnchor anchor, Date pkixdate, String variant) {
         this(anchor, certPathDefaultConstraints, pkixdate, null, variant);
@@ -208,7 +208,7 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
             }
         } else {
             throw new
-                CertPathValidatorException("forward checking not supported");
+                    CertPathValidatorException("forward checking not supported");
         }
     }
 
@@ -226,7 +226,7 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
 
     @Override
     public void check(Certificate cert,
-            Collection<String> unresolvedCritExts)
+                      Collection<String> unresolvedCritExts)
             throws CertPathValidatorException {
 
         if (!(cert instanceof X509Certificate) || constraints == null) {
@@ -239,21 +239,21 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
         boolean[] keyUsage = ((X509Certificate) cert).getKeyUsage();
         if (keyUsage != null && keyUsage.length < 9) {
             throw new CertPathValidatorException(
-                        "incorrect KeyUsage extension");
+                    "incorrect KeyUsage extension");
         }
 
         X509CertImpl x509Cert;
         AlgorithmId algorithmId;
         try {
-            x509Cert = X509CertImpl.toImpl((X509Certificate)cert);
-            algorithmId = (AlgorithmId)x509Cert.get(X509CertImpl.SIG_ALG);
+            x509Cert = X509CertImpl.toImpl((X509Certificate) cert);
+            algorithmId = (AlgorithmId) x509Cert.get(X509CertImpl.SIG_ALG);
         } catch (CertificateException ce) {
             throw new CertPathValidatorException(ce);
         }
 
         AlgorithmParameters currSigAlgParams = algorithmId.getParameters();
         PublicKey currPubKey = cert.getPublicKey();
-        String currSigAlg = ((X509Certificate)cert).getSigAlgName();
+        String currSigAlg = ((X509Certificate) cert).getSigAlgName();
 
         // Check the signature algorithm and parameters against constraints.
         if (!constraints.permits(SIGNATURE_PRIMITIVE_SET, currSigAlg,
@@ -267,7 +267,7 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
         Set<CryptoPrimitive> primitives = KU_PRIMITIVE_SET;
 
         if (keyUsage != null) {
-                primitives = EnumSet.noneOf(CryptoPrimitive.class);
+            primitives = EnumSet.noneOf(CryptoPrimitive.class);
 
             if (keyUsage[0] || keyUsage[1] || keyUsage[5] || keyUsage[6]) {
                 // keyUsage[0]: KeyUsage.digitalSignature
@@ -294,12 +294,12 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
 
             if (primitives.isEmpty()) {
                 throw new CertPathValidatorException(
-                   "incorrect KeyUsage extension bits");
+                        "incorrect KeyUsage extension bits");
             }
         }
 
         ConstraintsParameters cp =
-                new ConstraintsParameters((X509Certificate)cert,
+                new ConstraintsParameters((X509Certificate) cert,
                         trustedMatch, pkixdate, jarTimestamp, variant);
 
         // Check against local constraints if it is DisabledAlgorithmConstrain
@@ -339,21 +339,21 @@ public final class AlgorithmChecker extends PKIXCertPathChecker {
 
         // Inherit key parameters from previous key
         if (currPubKey instanceof DSAPublicKey &&
-                ((DSAPublicKey)currPubKey).getParams() == null) {
+                ((DSAPublicKey) currPubKey).getParams() == null) {
             // Inherit DSA parameters from previous key
             if (!(prevPubKey instanceof DSAPublicKey)) {
                 throw new CertPathValidatorException("Input key is not " +
                         "of a appropriate type for inheriting parameters");
             }
 
-            DSAParams params = ((DSAPublicKey)prevPubKey).getParams();
+            DSAParams params = ((DSAPublicKey) prevPubKey).getParams();
             if (params == null) {
                 throw new CertPathValidatorException(
                         "Key parameters missing from public key.");
             }
 
             try {
-                BigInteger y = ((DSAPublicKey)currPubKey).getY();
+                BigInteger y = ((DSAPublicKey) currPubKey).getY();
                 KeyFactory kf = KeyFactory.getInstance("DSA");
                 DSAPublicKeySpec ks = new DSAPublicKeySpec(y, params.getP(),
                         params.getQ(), params.getG());

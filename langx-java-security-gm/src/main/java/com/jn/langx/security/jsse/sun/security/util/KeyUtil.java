@@ -36,14 +36,14 @@ public final class KeyUtil {
      *
      * @param key the key object, cannot be null
      * @return the key size of the given key object in bits, or -1 if the
-     *       key size is not accessible
+     * key size is not accessible
      */
     public static int getKeySize(Key key) {
         int size = -1;
 
         if (key instanceof Length) {
             try {
-                Length ruler = (Length)key;
+                Length ruler = (Length) key;
                 size = ruler.length();
             } catch (UnsupportedOperationException usoe) {
                 // ignore the exception
@@ -56,27 +56,27 @@ public final class KeyUtil {
 
         // try to parse the length from key specification
         if (key instanceof SecretKey) {
-            SecretKey sk = (SecretKey)key;
+            SecretKey sk = (SecretKey) key;
             String format = sk.getFormat();
             if ("RAW".equals(format) && sk.getEncoded() != null) {
                 size = (sk.getEncoded().length * 8);
             }   // Otherwise, it may be a unextractable key of PKCS#11, or
-                // a key we are not able to handle.
+            // a key we are not able to handle.
         } else if (key instanceof RSAKey) {
-            RSAKey pubk = (RSAKey)key;
+            RSAKey pubk = (RSAKey) key;
             size = pubk.getModulus().bitLength();
         } else if (key instanceof ECKey) {
-            ECKey pubk = (ECKey)key;
+            ECKey pubk = (ECKey) key;
             size = pubk.getParams().getOrder().bitLength();
         } else if (key instanceof DSAKey) {
-            DSAKey pubk = (DSAKey)key;
+            DSAKey pubk = (DSAKey) key;
             DSAParams params = pubk.getParams();    // params can be null
             size = (params != null) ? params.getP().bitLength() : -1;
         } else if (key instanceof DHKey) {
-            DHKey pubk = (DHKey)key;
+            DHKey pubk = (DHKey) key;
             size = pubk.getParams().getP().bitLength();
         }   // Otherwise, it may be a unextractable key of PKCS#11, or
-            // a key we are not able to handle.
+        // a key we are not able to handle.
 
         return size;
     }
@@ -86,7 +86,7 @@ public final class KeyUtil {
      *
      * @param parameters the cryptographic parameters, cannot be null
      * @return the key size of the given cryptographic parameters in bits,
-     *       or -1 if the key size is not accessible
+     * or -1 if the key size is not accessible
      */
     public static int getKeySize(AlgorithmParameters parameters) {
 
@@ -127,102 +127,97 @@ public final class KeyUtil {
 
     /**
      * Returns whether the key is valid or not.
-     * <P>
+     * <p>
      * Note that this method is only apply to DHPublicKey at present.
      *
-     * @param  key
-     *         the key object, cannot be null
-     *
+     * @param key the key object, cannot be null
      * @throws NullPointerException if {@code publicKey} is null
-     * @throws InvalidKeyException if {@code publicKey} is invalid
+     * @throws InvalidKeyException  if {@code publicKey} is invalid
      */
-    public static  void validate(Key key)
+    public static void validate(Key key)
             throws InvalidKeyException {
         if (key == null) {
             throw new NullPointerException(
-                "The key to be validated cannot be null");
+                    "The key to be validated cannot be null");
         }
 
         if (key instanceof DHPublicKey) {
-            validateDHPublicKey((DHPublicKey)key);
+            validateDHPublicKey((DHPublicKey) key);
         }
     }
 
 
     /**
      * Returns whether the key spec is valid or not.
-     * <P>
+     * <p>
      * Note that this method is only apply to DHPublicKeySpec at present.
      *
-     * @param  keySpec
-     *         the key spec object, cannot be null
-     *
+     * @param keySpec the key spec object, cannot be null
      * @throws NullPointerException if {@code keySpec} is null
-     * @throws InvalidKeyException if {@code keySpec} is invalid
+     * @throws InvalidKeyException  if {@code keySpec} is invalid
      */
-    public static  void validate(KeySpec keySpec)
+    public static void validate(KeySpec keySpec)
             throws InvalidKeyException {
         if (keySpec == null) {
             throw new NullPointerException(
-                "The key spec to be validated cannot be null");
+                    "The key spec to be validated cannot be null");
         }
 
         if (keySpec instanceof DHPublicKeySpec) {
-            validateDHPublicKey((DHPublicKeySpec)keySpec);
+            validateDHPublicKey((DHPublicKeySpec) keySpec);
         }
     }
 
     /**
      * Returns whether the specified provider is Oracle provider or not.
      *
-     * @param  providerName
-     *         the provider name
+     * @param providerName the provider name
      * @return true if, and only if, the provider of the specified
-     *         {@code providerName} is Oracle provider
+     * {@code providerName} is Oracle provider
      */
-    public static  boolean isOracleJCEProvider(String providerName) {
+    public static boolean isOracleJCEProvider(String providerName) {
         return providerName != null &&
                 (providerName.equals("SunJCE") ||
-                    providerName.equals("SunMSCAPI") ||
-                    providerName.equals("OracleUcrypto") ||
-                    providerName.startsWith("SunPKCS11"));
+                        providerName.equals("SunMSCAPI") ||
+                        providerName.equals("OracleUcrypto") ||
+                        providerName.startsWith("SunPKCS11"));
     }
 
     /**
      * Check the format of TLS PreMasterSecret.
-     * <P>
+     * <p>
      * To avoid vulnerabilities described by section 7.4.7.1, RFC 5246,
      * treating incorrectly formatted message blocks and/or mismatched
      * version numbers in a manner indistinguishable from correctly
      * formatted RSA blocks.
-     *
+     * <p>
      * RFC 5246 describes the approach as :
-     *
-     *  1. Generate a string R of 48 random bytes
-     *
-     *  2. Decrypt the message to recover the plaintext M
-     *
-     *  3. If the PKCS#1 padding is not correct, or the length of message
-     *     M is not exactly 48 bytes:
-     *        pre_master_secret = R
-     *     else If ClientHello.client_version <= TLS 1.0, and version
-     *     number check is explicitly disabled:
-     *        premaster secret = M
-     *     else If M[0..1] != ClientHello.client_version:
-     *        premaster secret = R
-     *     else:
-     *        premaster secret = M
-     *
+     * <p>
+     * 1. Generate a string R of 48 random bytes
+     * <p>
+     * 2. Decrypt the message to recover the plaintext M
+     * <p>
+     * 3. If the PKCS#1 padding is not correct, or the length of message
+     * M is not exactly 48 bytes:
+     * pre_master_secret = R
+     * else If ClientHello.client_version <= TLS 1.0, and version
+     * number check is explicitly disabled:
+     * premaster secret = M
+     * else If M[0..1] != ClientHello.client_version:
+     * premaster secret = R
+     * else:
+     * premaster secret = M
+     * <p>
      * Note that #2 should have completed before the call to this method.
      *
-     * @param  clientVersion the version of the TLS protocol by which the
-     *         client wishes to communicate during this session
-     * @param  serverVersion the negotiated version of the TLS protocol which
-     *         contains the lower of that suggested by the client in the client
-     *         hello and the highest supported by the server.
-     * @param  encoded the encoded key in its "RAW" encoding format
-     * @param  isFailOver whether or not the previous decryption of the
-     *         encrypted PreMasterSecret message run into problem
+     * @param clientVersion the version of the TLS protocol by which the
+     *                      client wishes to communicate during this session
+     * @param serverVersion the negotiated version of the TLS protocol which
+     *                      contains the lower of that suggested by the client in the client
+     *                      hello and the highest supported by the server.
+     * @param encoded       the encoded key in its "RAW" encoding format
+     * @param isFailOver    whether or not the previous decryption of the
+     *                      encrypted PreMasterSecret message run into problem
      * @return the polished PreMasterSecret key in its "RAW" encoding format
      */
     public static byte[] checkTlsPreMasterSecretKey(
@@ -246,11 +241,11 @@ public final class KeyUtil {
                     ((encoded[0] & 0xFF) << 8) | (encoded[1] & 0xFF);
             if (clientVersion != encodedVersion) {
                 if (clientVersion > 0x0301 ||               // 0x0301: TLSv1
-                       serverVersion != encodedVersion) {
+                        serverVersion != encodedVersion) {
                     encoded = replacer;
                 }   // Otherwise, For compatibility, we maintain the behavior
-                    // that the version in pre_master_secret can be the
-                    // negotiated version for TLS v1.0 and SSL v3.0.
+                // that the version in pre_master_secret can be the
+                // negotiated version for TLS v1.0 and SSL v3.0.
             }
 
             // private, don't need to clone the byte array.
@@ -263,13 +258,13 @@ public final class KeyUtil {
 
     /**
      * Returns whether the Diffie-Hellman public key is valid or not.
-     *
+     * <p>
      * Per RFC 2631 and NIST SP800-56A, the following algorithm is used to
      * validate Diffie-Hellman public keys:
      * 1. Verify that y lies within the interval [2,p-1]. If it does not,
-     *    the key is invalid.
+     * the key is invalid.
      * 2. Compute y^q mod p. If the result == 1, the key is valid.
-     *    Otherwise the key is invalid.
+     * Otherwise the key is invalid.
      */
     private static void validateDHPublicKey(DHPublicKey publicKey)
             throws InvalidKeyException {
@@ -288,7 +283,7 @@ public final class KeyUtil {
     }
 
     private static void validateDHPublicKey(BigInteger p,
-            BigInteger g, BigInteger y) throws InvalidKeyException {
+                                            BigInteger g, BigInteger y) throws InvalidKeyException {
 
         // For better interoperability, the interval is limited to [2, p-2].
         BigInteger leftOpen = BigInteger.ONE;

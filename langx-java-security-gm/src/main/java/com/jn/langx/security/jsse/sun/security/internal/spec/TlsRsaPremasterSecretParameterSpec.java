@@ -34,9 +34,9 @@ import java.security.PrivilegedAction;
  *
  * <p>Instances of this class are immutable.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
- *  Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @author Andreas Sterbenz
+ * Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @since 1.6
  */
 public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpec {
 
@@ -50,7 +50,7 @@ public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpe
      * system property below allows to toggle the behavior.
      */
     private final static String PROP_NAME =
-                                "com.sun.net.ssl.rsaPreMasterSecretFix";
+            "com.sun.net.ssl.rsaPreMasterSecretFix";
 
     /*
      * Default is "false" (old behavior) for compatibility reasons in
@@ -75,13 +75,12 @@ public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpe
      * Constructs a new TlsRsaPremasterSecretParameterSpec.
      *
      * @param clientVersion the version of the TLS protocol by which the
-     *        client wishes to communicate during this session
+     *                      client wishes to communicate during this session
      * @param serverVersion the negotiated version of the TLS protocol which
-     *        contains the lower of that suggested by the client in the client
-     *        hello and the highest supported by the server.
-     *
+     *                      contains the lower of that suggested by the client in the client
+     *                      hello and the highest supported by the server.
      * @throws IllegalArgumentException if clientVersion or serverVersion are
-     *   negative or larger than (2^16 - 1)
+     *                                  negative or larger than (2^16 - 1)
      */
     public TlsRsaPremasterSecretParameterSpec(
             int clientVersion, int serverVersion) {
@@ -95,15 +94,14 @@ public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpe
      * Constructs a new TlsRsaPremasterSecretParameterSpec.
      *
      * @param clientVersion the version of the TLS protocol by which the
-     *        client wishes to communicate during this session
+     *                      client wishes to communicate during this session
      * @param serverVersion the negotiated version of the TLS protocol which
-     *        contains the lower of that suggested by the client in the client
-     *        hello and the highest supported by the server.
+     *                      contains the lower of that suggested by the client in the client
+     *                      hello and the highest supported by the server.
      * @param encodedSecret the encoded secret key
-     *
      * @throws IllegalArgumentException if clientVersion or serverVersion are
-     *   negative or larger than (2^16 - 1) or if encodedSecret is not
-     *   exactly 48 bytes
+     *                                  negative or larger than (2^16 - 1) or if encodedSecret is not
+     *                                  exactly 48 bytes
      */
     public TlsRsaPremasterSecretParameterSpec(
             int clientVersion, int serverVersion, byte[] encodedSecret) {
@@ -112,7 +110,7 @@ public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpe
         this.serverVersion = checkVersion(serverVersion);
         if (encodedSecret == null || encodedSecret.length != 48) {
             throw new IllegalArgumentException(
-                        "Encoded secret is not exactly 48 bytes");
+                    "Encoded secret is not exactly 48 bytes");
         }
         this.encodedSecret = encodedSecret.clone();
     }
@@ -145,7 +143,7 @@ public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpe
      */
     public int getMajorVersion() {
         if (rsaPreMasterSecretFix || clientVersion >= 0x0302) {
-                                                        // 0x0302: TLSv1.1
+            // 0x0302: TLSv1.1
             return (clientVersion >>> 8) & 0xFF;
         }
 
@@ -159,7 +157,7 @@ public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpe
      */
     public int getMinorVersion() {
         if (rsaPreMasterSecretFix || clientVersion >= 0x0302) {
-                                                        // 0x0302: TLSv1.1
+            // 0x0302: TLSv1.1
             return clientVersion & 0xFF;
         }
 
@@ -169,7 +167,7 @@ public class TlsRsaPremasterSecretParameterSpec implements AlgorithmParameterSpe
     private int checkVersion(int version) {
         if ((version < 0) || (version > 0xFFFF)) {
             throw new IllegalArgumentException(
-                        "Version must be between 0 and 65,535");
+                    "Version must be between 0 and 65,535");
         }
         return version;
     }

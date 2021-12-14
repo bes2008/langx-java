@@ -41,13 +41,13 @@ public class LegacyAlgorithmConstraints extends AbstractAlgorithmConstraints {
     private final String[] legacyAlgorithms;
 
     public LegacyAlgorithmConstraints(String propertyName,
-            AlgorithmDecomposer decomposer) {
+                                      AlgorithmDecomposer decomposer) {
         super(decomposer);
         legacyAlgorithms = getAlgorithms(propertyName);
     }
 
     final public boolean permits(Set<CryptoPrimitive> primitives,
-            String algorithm, AlgorithmParameters parameters) {
+                                 String algorithm, AlgorithmParameters parameters) {
         return checkAlgorithm(legacyAlgorithms, algorithm, decomposer);
     }
 
@@ -56,7 +56,7 @@ public class LegacyAlgorithmConstraints extends AbstractAlgorithmConstraints {
     }
 
     final public boolean permits(Set<CryptoPrimitive> primitives,
-            String algorithm, Key key, AlgorithmParameters parameters) {
+                                 String algorithm, Key key, AlgorithmParameters parameters) {
         return checkAlgorithm(legacyAlgorithms, algorithm, decomposer);
     }
 

@@ -40,7 +40,7 @@ class EngineArgs {
      * Keep track of the input parameters.
      */
     ByteBuffer netData;
-    ByteBuffer [] appData;
+    ByteBuffer[] appData;
 
     private int offset;         // offset/len for the appData array.
     private int len;
@@ -54,8 +54,8 @@ class EngineArgs {
     private int netPos;
     private int netLim;
 
-    private int [] appPoss;
-    private int [] appLims;
+    private int[] appPoss;
+    private int[] appLims;
 
     /*
      * Sum total of the space remaining in all of the appData buffers
@@ -67,8 +67,8 @@ class EngineArgs {
     /*
      * Called by the SSLEngine.wrap() method.
      */
-    EngineArgs(ByteBuffer [] appData, int offset, int len,
-            ByteBuffer netData) {
+    EngineArgs(ByteBuffer[] appData, int offset, int len,
+               ByteBuffer netData) {
         this.wrapMethod = true;
         init(netData, appData, offset, len);
     }
@@ -76,8 +76,8 @@ class EngineArgs {
     /*
      * Called by the SSLEngine.unwrap() method.
      */
-    EngineArgs(ByteBuffer netData, ByteBuffer [] appData, int offset,
-            int len) {
+    EngineArgs(ByteBuffer netData, ByteBuffer[] appData, int offset,
+               int len) {
         this.wrapMethod = false;
         init(netData, appData, offset, len);
     }
@@ -93,8 +93,8 @@ class EngineArgs {
      * determine how much more we can copy into the outgoing data
      * buffer.
      */
-    private void init(ByteBuffer netData, ByteBuffer [] appData,
-            int offset, int len) {
+    private void init(ByteBuffer netData, ByteBuffer[] appData,
+                      int offset, int len) {
 
         if ((netData == null) || (appData == null)) {
             throw new IllegalArgumentException("src/dst is null");
@@ -111,13 +111,13 @@ class EngineArgs {
         netPos = netData.position();
         netLim = netData.limit();
 
-        appPoss = new int [appData.length];
-        appLims = new int [appData.length];
+        appPoss = new int[appData.length];
+        appLims = new int[appData.length];
 
         for (int i = offset; i < offset + len; i++) {
             if (appData[i] == null) {
                 throw new IllegalArgumentException(
-                    "appData[" + i + "] == null");
+                        "appData[" + i + "] == null");
             }
 
             /*
@@ -171,13 +171,13 @@ class EngineArgs {
         int amountLeft = readyData.remaining();
 
         for (int i = offset; (i < (offset + len)) && (amountLeft > 0);
-                i++) {
+             i++) {
             int amount = Math.min(appData[i].remaining(), amountLeft);
             readyData.limit(readyData.position() + amount);
             appData[i].put(readyData);
             amountLeft -= amount;
         }
-        assert(readyData.remaining() == 0);
+        assert (readyData.remaining() == 0);
     }
 
     int getAppRemaining() {

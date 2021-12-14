@@ -31,7 +31,7 @@ import javax.net.ssl.SSLProtocolException;
  * Extended Master Secret TLS extension (TLS 1.0+). This extension
  * defines how to calculate the TLS connection master secret and
  * mitigates some types of man-in-the-middle attacks.
- *
+ * <p>
  * See further information in
  * <a href="https://tools.ietf.org/html/rfc7627">RFC 7627</a>.
  *
@@ -43,7 +43,7 @@ final class ExtendedMasterSecretExtension extends HelloExtension {
     }
 
     ExtendedMasterSecretExtension(HandshakeInStream s,
-            int len) throws IOException {
+                                  int len) throws IOException {
         super(ExtensionType.EXT_EXTENDED_MASTER_SECRET);
 
         if (len != 0) {

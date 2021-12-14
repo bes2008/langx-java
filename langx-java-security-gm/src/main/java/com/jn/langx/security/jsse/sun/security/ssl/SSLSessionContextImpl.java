@@ -36,18 +36,15 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSessionContext;
 
 
-
-final class SSLSessionContextImpl implements SSLSessionContext
-{
+final class SSLSessionContextImpl implements SSLSessionContext {
     private Cache sessionCache = new Cache();
-    private Cache       sessionHostPortCache = new Cache();
-    private int         cacheLimit;
-    private long        timeoutMillis;
+    private Cache sessionHostPortCache = new Cache();
+    private int cacheLimit;
+    private long timeoutMillis;
     private static final Debug debug = Debug.getInstance("ssl");
 
     // file private
-    SSLSessionContextImpl()
-    {
+    SSLSessionContextImpl() {
         cacheLimit = getCacheLimit();
         timeoutMillis = 86400000; // default, 24 hours
     }
@@ -56,10 +53,9 @@ final class SSLSessionContextImpl implements SSLSessionContext
      * Returns the SSL session object associated with the
      * specific session ID passed.
      */
-    public SSLSession   getSession(byte[] id)
-    {
+    public SSLSession getSession(byte[] id) {
         SSLSession sess = (SSLSession) sessionCache.get(
-                                new SessionId(id));
+                new SessionId(id));
         return checkTimeValidity(sess);
     }
 
@@ -72,14 +68,14 @@ final class SSLSessionContextImpl implements SSLSessionContext
 
         for (Enumeration e = sessionCache.keys(); e.hasMoreElements(); ) {
             sessId = (SessionId) e.nextElement();
-            if (!isTimedout((SSLSession)sessionCache.get(sessId)))
+            if (!isTimedout((SSLSession) sessionCache.get(sessId)))
                 v.addElement(sessId.getId());
         }
         return v.elements();
     }
 
     public void setSessionTimeout(int seconds)
-                 throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (seconds < 0)
             throw new IllegalArgumentException();
         timeoutMillis = seconds * 1000L;
@@ -90,7 +86,7 @@ final class SSLSessionContextImpl implements SSLSessionContext
     }
 
     public void setSessionCacheSize(int size)
-                 throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (size < 0)
             throw new IllegalArgumentException();
         cacheLimit = size;
@@ -124,14 +120,14 @@ final class SSLSessionContextImpl implements SSLSessionContext
         if (hostname == null && port == -1) {
             return null;
         }
-        SSLSession sess =  (SSLSessionImpl) sessionHostPortCache
-                                .get(getKey(hostname, port));
+        SSLSession sess = (SSLSessionImpl) sessionHostPortCache
+                .get(getKey(hostname, port));
         return (SSLSessionImpl) checkTimeValidity(sess);
     }
 
     private String getKey(String hostname, int port) {
         return (hostname + ":" + String.valueOf(port))
-                        .toLowerCase();
+                .toLowerCase();
     }
 
     void put(SSLSessionImpl s) {
@@ -149,7 +145,7 @@ final class SSLSessionContextImpl implements SSLSessionContext
          */
         if ((s.getPeerHost() != null) && (s.getPeerPort() != -1)) {
             sessionHostPortCache.put(
-                getKey(s.getPeerHost(), s.getPeerPort()), s);
+                    getKey(s.getPeerHost(), s.getPeerPort()), s);
         }
         s.setContext(this);
     }
@@ -159,7 +155,7 @@ final class SSLSessionContextImpl implements SSLSessionContext
         int cacheSize = sessionCache.size();
 
         if (targetSize < 0)
-           return;
+            return;
 
         while (cacheSize > targetSize) {
             SSLSessionImpl lru = null;
@@ -179,9 +175,9 @@ final class SSLSessionContextImpl implements SSLSessionContext
              */
             int count;
             for (count = 0, e = sessionCache.elements();
-                         e.hasMoreElements(); count++) {
+                 e.hasMoreElements(); count++) {
                 try {
-                    s = (SSLSessionImpl)e.nextElement();
+                    s = (SSLSessionImpl) e.nextElement();
                 } catch (NoSuchElementException nsee) {
                     break;
                 }
@@ -189,7 +185,7 @@ final class SSLSessionContextImpl implements SSLSessionContext
                     lru = s;
                     break;
                 } else if ((lru == null) || (s.getLastAccessedTime()
-                         < lru.getLastAccessedTime())) {
+                        < lru.getLastAccessedTime())) {
                     lru = s;
                 }
             }
@@ -205,24 +201,23 @@ final class SSLSessionContextImpl implements SSLSessionContext
     }
 
     // file private
-    void remove(SessionId key)
-    {
+    void remove(SessionId key) {
         SSLSessionImpl s = (SSLSessionImpl) sessionCache.get(key);
         sessionCache.remove(key);
         sessionHostPortCache.remove(getKey(s.getPeerHost(),
-                                         s.getPeerPort()));
+                s.getPeerPort()));
     }
 
     private int getCacheLimit() {
         int cacheLimit = 0;
         try {
-        String s = java.security.AccessController.doPrivileged(
-                new java.security.PrivilegedAction<String>() {
-                public String run() {
-                    return System.getProperty(
-                        "javax.net.ssl.sessionCacheSize");
-                }
-            });
+            String s = java.security.AccessController.doPrivileged(
+                    new java.security.PrivilegedAction<String>() {
+                        public String run() {
+                            return System.getProperty(
+                                    "javax.net.ssl.sessionCacheSize");
+                        }
+                    });
             cacheLimit = (s != null) ? Integer.valueOf(s).intValue() : 0;
         } catch (Exception e) {
         }
@@ -242,8 +237,8 @@ final class SSLSessionContextImpl implements SSLSessionContext
         if (timeoutMillis == 0)
             return false;
         if ((sess != null) &&
-            ((sess.getCreationTime() + timeoutMillis)
-                <= (System.currentTimeMillis())))
+                ((sess.getCreationTime() + timeoutMillis)
+                        <= (System.currentTimeMillis())))
             return true;
         return false;
     }

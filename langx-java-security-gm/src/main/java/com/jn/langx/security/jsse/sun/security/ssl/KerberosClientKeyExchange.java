@@ -38,6 +38,7 @@ import javax.security.auth.kerberos.KerberosTicket;
 import javax.security.auth.kerberos.KerberosKey;
 import javax.security.auth.kerberos.KerberosPrincipal;
 import javax.security.auth.kerberos.ServicePermission;
+
 import sun.security.jgss.GSSCaller;
 
 import sun.security.krb5.EncryptionKey;
@@ -55,22 +56,21 @@ import sun.security.jgss.krb5.Krb5Util;
  * (CLIENT -> SERVER). It holds the Kerberos ticket and the encrypted
  * premaster secret encrypted with the session key sealed in the ticket.
  * From RFC 2712:
- *  struct
- *  {
- *    opaque Ticket;
- *    opaque authenticator;            // optional
- *    opaque EncryptedPreMasterSecret; // encrypted with the session key
- *                                     // which is sealed in the ticket
- *  } KerberosWrapper;
- *
- *
+ * struct
+ * {
+ * opaque Ticket;
+ * opaque authenticator;            // optional
+ * opaque EncryptedPreMasterSecret; // encrypted with the session key
+ * // which is sealed in the ticket
+ * } KerberosWrapper;
+ * <p>
+ * <p>
  * Ticket and authenticator are encrypted as per RFC 1510 (in ASN.1)
  * Encrypted pre-master secret has the same structure as it does for RSA
  * except for Kerberos, the encryption key is the session key instead of
  * the RSA public key.
- *
+ * <p>
  * XXX authenticator currently ignored
- *
  */
 final class KerberosClientKeyExchange extends HandshakeMessage {
 
@@ -84,35 +84,35 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
      * Kerberos service ticket, authenticator and encrypted premaster secret.
      * Called by client handshaker.
      *
-     * @param serverName name of server with which to do handshake;
-     *             this is used to get the Kerberos service ticket
+     * @param serverName      name of server with which to do handshake;
+     *                        this is used to get the Kerberos service ticket
      * @param protocolVersion Maximum version supported by client (i.e,
-     *          version it requested in client hello)
-     * @param rand random number generator to use for generating pre-master
-     *          secret
+     *                        version it requested in client hello)
+     * @param rand            random number generator to use for generating pre-master
+     *                        secret
      */
     KerberosClientKeyExchange(String serverName, boolean isLoopback,
-        AccessControlContext acc, ProtocolVersion protocolVersion,
-        SecureRandom rand) throws IOException {
+                              AccessControlContext acc, ProtocolVersion protocolVersion,
+                              SecureRandom rand) throws IOException {
 
-         // Get service ticket
-         KerberosTicket ticket = getServiceTicket(serverName, isLoopback, acc);
-         encodedTicket = ticket.getEncoded();
+        // Get service ticket
+        KerberosTicket ticket = getServiceTicket(serverName, isLoopback, acc);
+        encodedTicket = ticket.getEncoded();
 
-         // Record the Kerberos principals
-         peerPrincipal = ticket.getServer();
-         localPrincipal = ticket.getClient();
+        // Record the Kerberos principals
+        peerPrincipal = ticket.getServer();
+        localPrincipal = ticket.getClient();
 
-         // Optional authenticator, encrypted using session key,
-         // currently ignored
+        // Optional authenticator, encrypted using session key,
+        // currently ignored
 
-         // Generate premaster secret and encrypt it using session key
-         EncryptionKey sessionKey = new EncryptionKey(
-                                        ticket.getSessionKeyType(),
-                                        ticket.getSessionKey().getEncoded());
+        // Generate premaster secret and encrypt it using session key
+        EncryptionKey sessionKey = new EncryptionKey(
+                ticket.getSessionKeyType(),
+                ticket.getSessionKey().getEncoded());
 
-         preMaster = new KerberosPreMasterSecret(protocolVersion,
-             rand, sessionKey);
+        preMaster = new KerberosPreMasterSecret(protocolVersion,
+                rand, sessionKey);
     }
 
     /**
@@ -120,24 +120,24 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
      * Used by ServerHandshaker to verify and obtain premaster secret.
      *
      * @param protocolVersion current protocol version
-     * @param clientVersion version requested by client in its ClientHello;
-     *          used by premaster secret version check
-     * @param rand random number generator used for generating random
-     *          premaster secret if ticket and/or premaster verification fails
-     * @param input inputstream from which to get ASN.1-encoded KerberosWrapper
-     * @param serverKeys server's master secret key
+     * @param clientVersion   version requested by client in its ClientHello;
+     *                        used by premaster secret version check
+     * @param rand            random number generator used for generating random
+     *                        premaster secret if ticket and/or premaster verification fails
+     * @param input           inputstream from which to get ASN.1-encoded KerberosWrapper
+     * @param serverKeys      server's master secret key
      */
     KerberosClientKeyExchange(ProtocolVersion protocolVersion,
-        ProtocolVersion clientVersion,
-        SecureRandom rand, HandshakeInStream input, KerberosKey[] serverKeys)
-        throws IOException {
+                              ProtocolVersion clientVersion,
+                              SecureRandom rand, HandshakeInStream input, KerberosKey[] serverKeys)
+            throws IOException {
 
         // Read ticket
         encodedTicket = input.getBytes16();
 
         if (debug != null && Debug.isOn("verbose")) {
             Debug.println(System.out,
-                "encoded Kerberos service ticket", encodedTicket);
+                    "encoded Kerberos service ticket", encodedTicket);
         }
 
         EncryptionKey sessionKey = null;
@@ -162,11 +162,11 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
             String ticketPrinc = ticketSname.toString();
             if (!ticketPrinc.equals(serverPrincipal)) {
                 if (debug != null && Debug.isOn("handshake"))
-                   System.out.println("Service principal in Ticket does not"
-                        + " match associated principal in KerberosKey");
+                    System.out.println("Service principal in Ticket does not"
+                            + " match associated principal in KerberosKey");
                 throw new IOException("Server principal is " +
-                    serverPrincipal + " but ticket is for " +
-                    ticketPrinc);
+                        serverPrincipal + " but ticket is for " +
+                        ticketPrinc);
             }
 
             // See if we have the right key to decrypt the ticket to get
@@ -176,13 +176,13 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
             if (dkey == null) {
                 // %%% Should print string repr of etype
                 throw new IOException(
-        "Cannot find key of appropriate type to decrypt ticket - need etype " +
-                                   encPartKeyType);
+                        "Cannot find key of appropriate type to decrypt ticket - need etype " +
+                                encPartKeyType);
             }
 
             EncryptionKey secretKey = new EncryptionKey(
-                encPartKeyType,
-                dkey.getEncoded());
+                    encPartKeyType,
+                    dkey.getEncoded());
 
             // Decrypt encPart using server's secret key
             byte[] bytes = encPart.decrypt(secretKey, KeyUsage.KU_TICKET);
@@ -193,7 +193,7 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
 
             // Record the Kerberos Principals
             peerPrincipal =
-                new KerberosPrincipal(encTicketPart.cname.getName());
+                    new KerberosPrincipal(encTicketPart.cname.getName());
             localPrincipal = new KerberosPrincipal(ticketSname.getName());
 
             sessionKey = encTicketPart.key;
@@ -216,7 +216,7 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
 
         if (sessionKey != null) {
             preMaster = new KerberosPreMasterSecret(protocolVersion,
-                clientVersion, rand, input, sessionKey);
+                    clientVersion, rand, input, sessionKey);
         } else {
             // Generate bogus premaster secret
             preMaster = new KerberosPreMasterSecret(clientVersion, rand);
@@ -244,30 +244,30 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
             Debug.println(s, "Kerberos service ticket", encodedTicket);
             Debug.println(s, "Random Secret", preMaster.getUnencrypted());
             Debug.println(s, "Encrypted random Secret",
-                preMaster.getEncrypted());
+                    preMaster.getEncrypted());
         }
     }
 
     // Similar to sun.security.jgss.krb5.Krb5InitCredenetial/Krb5Context
     private static KerberosTicket getServiceTicket(String srvName,
-        boolean isLoopback, final AccessControlContext acc) throws IOException {
+                                                   boolean isLoopback, final AccessControlContext acc) throws IOException {
 
         // get the local hostname if srvName is loopback address
         String serverName = srvName;
         if (isLoopback) {
             String localHost = java.security.AccessController.doPrivileged(
-                new java.security.PrivilegedAction<String>() {
-                public String run() {
-                    String hostname;
-                    try {
-                        hostname = InetAddress.getLocalHost().getHostName();
-                    } catch (java.net.UnknownHostException e) {
-                        hostname = "localhost";
-                    }
-                    return hostname;
-                }
-            });
-          serverName = localHost;
+                    new java.security.PrivilegedAction<String>() {
+                        public String run() {
+                            String hostname;
+                            try {
+                                hostname = InetAddress.getLocalHost().getHostName();
+                            } catch (java.net.UnknownHostException e) {
+                                hostname = "localhost";
+                            }
+                            return hostname;
+                        }
+                    });
+            serverName = localHost;
         }
 
         // Resolve serverName (possibly in IP addr form) to Kerberos principal
@@ -276,12 +276,12 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
         PrincipalName principal;
         try {
             principal = new PrincipalName(serviceName,
-                                PrincipalName.KRB_NT_SRV_HST);
+                    PrincipalName.KRB_NT_SRV_HST);
         } catch (SecurityException se) {
             throw se;
         } catch (Exception e) {
             IOException ioe = new IOException("Invalid service principal" +
-                                " name: " + serviceName);
+                    " name: " + serviceName);
             ioe.initCause(e);
             throw ioe;
         }
@@ -296,19 +296,20 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
         // context with the "host" service
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-           sm.checkPermission(new ServicePermission(serverPrincipal,
-                                "initiate"), acc);
+            sm.checkPermission(new ServicePermission(serverPrincipal,
+                    "initiate"), acc);
         }
 
         try {
             KerberosTicket ticket = AccessController.doPrivileged(
-                new PrivilegedExceptionAction<KerberosTicket>() {
-                public KerberosTicket run() throws Exception {
-                    return Krb5Util.getTicketFromSubjectAndTgs(
-                        GSSCaller.CALLER_SSL_CLIENT,
-                        clientPrincipal, serverPrincipal,
-                        tgsPrincipal, acc);
-                        }});
+                    new PrivilegedExceptionAction<KerberosTicket>() {
+                        public KerberosTicket run() throws Exception {
+                            return Krb5Util.getTicketFromSubjectAndTgs(
+                                    GSSCaller.CALLER_SSL_CLIENT,
+                                    clientPrincipal, serverPrincipal,
+                                    tgsPrincipal, acc);
+                        }
+                    });
 
             if (ticket == null) {
                 throw new IOException("Failed to find any kerberos service" +
@@ -317,8 +318,8 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
             return ticket;
         } catch (PrivilegedActionException e) {
             IOException ioe = new IOException(
-                "Attempt to obtain kerberos service ticket for " +
-                        serverPrincipal + " failed!");
+                    "Attempt to obtain kerberos service ticket for " +
+                            serverPrincipal + " failed!");
             ioe.initCause(e);
             throw ioe;
         }
@@ -347,15 +348,15 @@ final class KerberosClientKeyExchange extends HandshakeMessage {
         // Key not found.
         // %%% kludge to allow DES keys to be used for diff etypes
         if ((etype == EncryptedData.ETYPE_DES_CBC_CRC ||
-            etype == EncryptedData.ETYPE_DES_CBC_MD5)) {
+                etype == EncryptedData.ETYPE_DES_CBC_MD5)) {
             for (int i = 0; i < keys.length; i++) {
                 ktype = keys[i].getKeyType();
                 if (ktype == EncryptedData.ETYPE_DES_CBC_CRC ||
-                    ktype == EncryptedData.ETYPE_DES_CBC_MD5) {
+                        ktype == EncryptedData.ETYPE_DES_CBC_MD5) {
                     return new KerberosKey(keys[i].getPrincipal(),
-                        keys[i].getEncoded(),
-                        etype,
-                        keys[i].getVersionNumber());
+                            keys[i].getEncoded(),
+                            etype,
+                            keys[i].getVersionNumber());
                 }
             }
         }

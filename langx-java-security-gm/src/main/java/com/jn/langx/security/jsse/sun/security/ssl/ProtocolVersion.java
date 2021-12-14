@@ -34,20 +34,20 @@ import java.util.*;
  * using the static factory methods or by referencing the static members
  * in this class. Member variables are final and can be accessed without
  * accessor methods.
- *
+ * <p>
  * There is only ever one instance per supported protocol version, this
  * means == can be used for comparision instead of equals() if desired.
- *
+ * <p>
  * Checks for a particular version number should generally take this form:
- *
+ * <p>
  * if (protocolVersion.v >= ProtocolVersion.TLS10) {
- *   // TLS 1.0 code goes here
+ * // TLS 1.0 code goes here
  * } else {
- *   // SSL 3.0 code here
+ * // SSL 3.0 code here
  * }
  *
- * @author  Andreas Sterbenz
- * @since   1.4.1
+ * @author Andreas Sterbenz
+ * @since 1.4.1
  */
 final class ProtocolVersion implements Comparable<ProtocolVersion> {
 
@@ -62,7 +62,7 @@ final class ProtocolVersion implements Comparable<ProtocolVersion> {
 
     // If enabled, send/ accept SSLv2 hello messages
     final static ProtocolVersion SSL20Hello = new ProtocolVersion(0x0002,
-                                                                "SSLv2Hello");
+            "SSLv2Hello");
 
     // SSL 3.0
     final static ProtocolVersion SSL30 = new ProtocolVersion(0x0300, "SSLv3");
@@ -109,10 +109,10 @@ final class ProtocolVersion implements Comparable<ProtocolVersion> {
     static {
         Set<ProtocolVersion> protocols = new HashSet<ProtocolVersion>(5);
 
-        ProtocolVersion[] pvs = new ProtocolVersion[] {
-                SSL20Hello, SSL30, TLS10, TLS11 };
+        ProtocolVersion[] pvs = new ProtocolVersion[]{
+                SSL20Hello, SSL30, TLS10, TLS11};
         EnumSet<CryptoPrimitive> cryptoPrimitives =
-            EnumSet.<CryptoPrimitive>of(CryptoPrimitive.KEY_AGREEMENT);
+                EnumSet.<CryptoPrimitive>of(CryptoPrimitive.KEY_AGREEMENT);
         for (ProtocolVersion p : pvs) {
             if (SSLAlgorithmConstraints.DEFAULT_SSL_ONLY.permits(
                     cryptoPrimitives, p.name, null)) {
@@ -128,8 +128,8 @@ final class ProtocolVersion implements Comparable<ProtocolVersion> {
     private ProtocolVersion(int v, String name) {
         this.v = v;
         this.name = name;
-        major = (byte)(v >>> 8);
-        minor = (byte)(v & 0xff);
+        major = (byte) (v >>> 8);
+        minor = (byte) (v & 0xff);
     }
 
     // private
@@ -165,8 +165,8 @@ final class ProtocolVersion implements Comparable<ProtocolVersion> {
     /**
      * Return a ProtocolVersion for the given name.
      *
-     * @exception IllegalArgumentException if name is null or does not
-     * identify a supported protocol
+     * @throws IllegalArgumentException if name is null or does not
+     *                                  identify a supported protocol
      */
     static ProtocolVersion valueOf(String name) {
         if (name == null) {
@@ -175,7 +175,7 @@ final class ProtocolVersion implements Comparable<ProtocolVersion> {
 
         if (FIPS && (name.equals(SSL30.name) || name.equals(SSL20Hello.name))) {
             throw new IllegalArgumentException
-                ("Only TLS 1.0 or later allowed in FIPS mode");
+                    ("Only TLS 1.0 or later allowed in FIPS mode");
         }
 
         if (name.equals(SSL30.name)) {

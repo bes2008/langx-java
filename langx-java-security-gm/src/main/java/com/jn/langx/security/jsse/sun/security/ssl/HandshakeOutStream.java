@@ -32,13 +32,13 @@ import java.io.IOException;
 /**
  * Output stream for handshake data.  This is used only internally
  * to the SSL classes.
- *
+ * <p>
  * MT note:  one thread at a time is presumed be writing handshake
  * messages, but (after initial connection setup) it's possible to
  * have other threads reading/writing application data.  It's the
  * SSLSocketImpl class that synchronizes record writes.
  *
- * @author  David Brownell
+ * @author David Brownell
  */
 class HandshakeOutStream extends OutputStream {
 
@@ -48,23 +48,23 @@ class HandshakeOutStream extends OutputStream {
     OutputRecord r;
 
     HandshakeOutStream(ProtocolVersion protocolVersion,
-            ProtocolVersion helloVersion, HandshakeHash handshakeHash,
-            SSLSocketImpl socket) {
+                       ProtocolVersion helloVersion, HandshakeHash handshakeHash,
+                       SSLSocketImpl socket) {
         this.socket = socket;
         r = new OutputRecord(Record.ct_handshake);
         init(protocolVersion, helloVersion, handshakeHash);
     }
 
     HandshakeOutStream(ProtocolVersion protocolVersion,
-            ProtocolVersion helloVersion, HandshakeHash handshakeHash,
-            SSLEngineImpl engine) {
+                       ProtocolVersion helloVersion, HandshakeHash handshakeHash,
+                       SSLEngineImpl engine) {
         this.engine = engine;
         r = new EngineOutputRecord(Record.ct_handshake, engine);
         init(protocolVersion, helloVersion, handshakeHash);
     }
 
     private void init(ProtocolVersion protocolVersion,
-            ProtocolVersion helloVersion, HandshakeHash handshakeHash) {
+                      ProtocolVersion helloVersion, HandshakeHash handshakeHash) {
         r.setVersion(protocolVersion);
         r.setHelloVersion(helloVersion);
         r.setHandshakeHash(handshakeHash);
@@ -129,7 +129,7 @@ class HandshakeOutStream extends OutputStream {
              * there is a finished handshake message that we need
              * to queue.
              */
-            engine.writeRecord((EngineOutputRecord)r);
+            engine.writeRecord((EngineOutputRecord) r);
         }
     }
 
@@ -140,9 +140,9 @@ class HandshakeOutStream extends OutputStream {
      * that a finish message occured.
      */
     void setFinishedMsg() {
-        assert(socket == null);
+        assert (socket == null);
 
-        ((EngineOutputRecord)r).setFinishedMsg();
+        ((EngineOutputRecord) r).setFinishedMsg();
     }
 
     /*

@@ -32,10 +32,11 @@ import java.util.Arrays;
 
 /**
  * A utility class for reading passwords
- *
  */
 public class Password {
-    /** Reads user password from given input stream. */
+    /**
+     * Reads user password from given input stream.
+     */
     @SuppressWarnings("fallthrough")
     public static char[] readPassword(InputStream in) throws IOException {
 
@@ -72,33 +73,33 @@ public class Password {
             boolean done = false;
             while (!done) {
                 switch (c = in.read()) {
-                  case -1:
-                  case '\n':
-                      done = true;
-                      break;
-
-                  case '\r':
-                    int c2 = in.read();
-                    if ((c2 != '\n') && (c2 != -1)) {
-                        if (!(in instanceof PushbackInputStream)) {
-                            in = new PushbackInputStream(in);
-                        }
-                        ((PushbackInputStream)in).unread(c2);
-                    } else {
+                    case -1:
+                    case '\n':
                         done = true;
                         break;
-                    }
-                    /* fall through */
-                  default:
-                    if (--room < 0) {
-                        buf = new char[offset + 128];
-                        room = buf.length - offset - 1;
-                        System.arraycopy(lineBuffer, 0, buf, 0, offset);
-                        Arrays.fill(lineBuffer, ' ');
-                        lineBuffer = buf;
-                    }
-                    buf[offset++] = (char) c;
-                    break;
+
+                    case '\r':
+                        int c2 = in.read();
+                        if ((c2 != '\n') && (c2 != -1)) {
+                            if (!(in instanceof PushbackInputStream)) {
+                                in = new PushbackInputStream(in);
+                            }
+                            ((PushbackInputStream) in).unread(c2);
+                        } else {
+                            done = true;
+                            break;
+                        }
+                        /* fall through */
+                    default:
+                        if (--room < 0) {
+                            buf = new char[offset + 128];
+                            room = buf.length - offset - 1;
+                            System.arraycopy(lineBuffer, 0, buf, 0, offset);
+                            Arrays.fill(lineBuffer, ' ');
+                            lineBuffer = buf;
+                        }
+                        buf[offset++] = (char) c;
+                        break;
                 }
             }
 
@@ -116,7 +117,7 @@ public class Password {
                 Arrays.fill(consoleEntered, ' ');
             }
             if (consoleBytes != null) {
-                Arrays.fill(consoleBytes, (byte)0);
+                Arrays.fill(consoleBytes, (byte) 0);
             }
         }
     }
@@ -138,7 +139,7 @@ public class Password {
                         .onUnmappableCharacter(CodingErrorAction.REPLACE);
             }
         }
-        byte[] ba = new byte[(int)(enc.maxBytesPerChar() * pass.length)];
+        byte[] ba = new byte[(int) (enc.maxBytesPerChar() * pass.length)];
         ByteBuffer bb = ByteBuffer.wrap(ba);
         synchronized (enc) {
             enc.reset().encode(CharBuffer.wrap(pass), bb, true);
@@ -148,5 +149,6 @@ public class Password {
         }
         return ba;
     }
+
     private static volatile CharsetEncoder enc;
 }

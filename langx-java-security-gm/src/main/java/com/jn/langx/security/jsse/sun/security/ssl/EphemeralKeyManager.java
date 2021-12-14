@@ -31,7 +31,7 @@ import java.security.*;
  * The "KeyManager" for ephemeral RSA keys. Ephemeral DH and ECDH keys
  * are handled by the DHCrypt and ECDHCrypt classes, respectively.
  *
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
  */
 final class EphemeralKeyManager {
 
@@ -43,9 +43,9 @@ final class EphemeralKeyManager {
      * Current cached RSA KeyPairs. Elements are never null.
      * Indexed via the the constants above.
      */
-    private final EphemeralKeyPair[] keys = new EphemeralKeyPair[] {
-        new EphemeralKeyPair(null),
-        new EphemeralKeyPair(null),
+    private final EphemeralKeyPair[] keys = new EphemeralKeyPair[]{
+            new EphemeralKeyPair(null),
+            new EphemeralKeyPair(null),
     };
 
     EphemeralKeyManager() {
@@ -90,7 +90,7 @@ final class EphemeralKeyManager {
         private final static int MAX_USE = 200;
 
         // maximum time interval in which the keypair is used (1 hour in ms)
-        private final static long USE_INTERVAL = 3600*1000;
+        private final static long USE_INTERVAL = 3600 * 1000;
 
         private KeyPair keyPair;
         private int uses;
@@ -106,7 +106,7 @@ final class EphemeralKeyManager {
          */
         private boolean isValid() {
             return (keyPair != null) && (uses < MAX_USE)
-                   && (System.currentTimeMillis() < expirationTime);
+                    && (System.currentTimeMillis() < expirationTime);
         }
 
         /*

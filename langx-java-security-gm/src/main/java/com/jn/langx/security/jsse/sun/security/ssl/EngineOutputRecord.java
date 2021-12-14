@@ -30,11 +30,10 @@ import java.io.*;
 import java.nio.*;
 
 
-
 /**
  * A OutputRecord class extension which uses external ByteBuffers
  * or the internal ByteArrayOutputStream for data manipulations.
- * <P>
+ * <p>
  * Instead of rewriting this entire class
  * to use ByteBuffers, we leave things intact, so handshake, CCS,
  * and alerts will continue to use the internal buffers, but application
@@ -68,22 +67,22 @@ final class EngineOutputRecord extends OutputRecord {
     /**
      * Get the size of the buffer we need for records of the specified
      * type.
-     * <P>
+     * <p>
      * Application data buffers will provide their own byte buffers,
      * and will not use the internal byte caching.
      */
     private static int recordSize(byte type) {
         switch (type) {
 
-        case ct_change_cipher_spec:
-        case ct_alert:
-            return maxAlertRecordSize;
+            case ct_change_cipher_spec:
+            case ct_alert:
+                return maxAlertRecordSize;
 
-        case ct_handshake:
-            return maxRecordSize;
+            case ct_handshake:
+                return maxRecordSize;
 
-        case ct_application_data:
-            return 0;
+            case ct_application_data:
+                return 0;
         }
 
         throw new RuntimeException("Unknown record type: " + type);
@@ -106,11 +105,11 @@ final class EngineOutputRecord extends OutputRecord {
      * Calculate the MAC value, storing the result either in
      * the internal buffer, or at the end of the destination
      * ByteBuffer.
-     * <P>
+     * <p>
      * We assume that the higher levels have assured us enough
      * room, otherwise we'll indirectly throw a
      * BufferOverFlowException runtime exception.
-     *
+     * <p>
      * position should equal limit, and points to the next
      * free spot.
      */
@@ -153,14 +152,14 @@ final class EngineOutputRecord extends OutputRecord {
      * data to be generated/output before the exception is ever
      * generated.
      */
-    @Override 
-    void writeBuffer(OutputStream s, byte [] buf, int off, int len, 
-            int debugOffset) throws IOException {
+    @Override
+    void writeBuffer(OutputStream s, byte[] buf, int off, int len,
+                     int debugOffset) throws IOException {
         /*
          * Copy data out of buffer, it's ready to go.
          */
         ByteBuffer netBB = (ByteBuffer)
-            ByteBuffer.allocate(len).put(buf, 0, len).flip();
+                ByteBuffer.allocate(len).put(buf, 0, len).flip();
         writer.putOutboundData(netBB);
     }
 
@@ -173,12 +172,12 @@ final class EngineOutputRecord extends OutputRecord {
          * Sanity check.
          */
         switch (contentType()) {
-        case ct_change_cipher_spec:
-        case ct_alert:
-        case ct_handshake:
-            break;
-        default:
-            throw new RuntimeException("unexpected byte buffers");
+            case ct_change_cipher_spec:
+            case ct_alert:
+            case ct_handshake:
+                break;
+            default:
+                throw new RuntimeException("unexpected byte buffers");
         }
 
         /*
@@ -195,8 +194,8 @@ final class EngineOutputRecord extends OutputRecord {
             // compress();              // eventually
             addMAC(writeMAC);
             encrypt(writeCipher);
-            write((OutputStream)null, false,   // send down for processing 
-                (ByteArrayOutputStream)null);  
+            write((OutputStream) null, false,   // send down for processing
+                    (ByteArrayOutputStream) null);
         }
         return;
     }
@@ -211,7 +210,7 @@ final class EngineOutputRecord extends OutputRecord {
          * send us an impossible combination we don't know how
          * to process.
          */
-        assert(contentType() == ct_application_data);
+        assert (contentType() == ct_application_data);
 
         /*
          * Have we set the MAC's yet?  If not, we're not ready
@@ -258,7 +257,7 @@ final class EngineOutputRecord extends OutputRecord {
             write(ea, writeMAC, writeCipher, 0x01);
             ea.resetLim();      // reset application data buffer limit
             length = Math.min(ea.getAppRemaining(),
-                        maxDataSizeMinusOneByteRecord);
+                    maxDataSizeMinusOneByteRecord);
         } else {
             length = Math.min(ea.getAppRemaining(), maxDataSize);
         }
@@ -272,7 +271,7 @@ final class EngineOutputRecord extends OutputRecord {
     }
 
     void write(EngineArgs ea, MAC writeMAC, CipherBox writeCipher,
-            int length) throws IOException {
+               int length) throws IOException {
         /*
          * Copy out existing buffer values.
          */
@@ -312,10 +311,10 @@ final class EngineOutputRecord extends OutputRecord {
             if ((debug != null && Debug.isOn("record"))
                     || contentType() == ct_change_cipher_spec)
                 System.out.println(Thread.currentThread().getName()
-                    // v3.0/v3.1 ...
-                    + ", WRITE: " + protocolVersion
-                    + " " + InputRecord.contentName(contentType())
-                    + ", length = " + length);
+                        // v3.0/v3.1 ...
+                        + ", WRITE: " + protocolVersion
+                        + " " + InputRecord.contentName(contentType())
+                        + ", length = " + length);
         }
 
         int packetLength = dstBB.limit() - dstData;
@@ -326,8 +325,8 @@ final class EngineOutputRecord extends OutputRecord {
         dstBB.put(dstPos, contentType());
         dstBB.put(dstPos + 1, protocolVersion.major);
         dstBB.put(dstPos + 2, protocolVersion.minor);
-        dstBB.put(dstPos + 3, (byte)(packetLength >> 8));
-        dstBB.put(dstPos + 4, (byte)packetLength);
+        dstBB.put(dstPos + 3, (byte) (packetLength >> 8));
+        dstBB.put(dstPos + 4, (byte) packetLength);
 
         /*
          * Position was already set by encrypt() above.

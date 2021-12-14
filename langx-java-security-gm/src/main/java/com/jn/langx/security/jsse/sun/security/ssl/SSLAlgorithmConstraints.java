@@ -41,7 +41,7 @@ import static com.jn.langx.security.jsse.sun.security.util.DisabledAlgorithmCons
 
 /**
  * Algorithm constraints for disabled algorithms property
- *
+ * <p>
  * See the "jdk.certpath.disabledAlgorithms" specification in java.security
  * for the syntax of the disabled algorithm string.
  */
@@ -62,35 +62,35 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
 
     // the default algorithm constraints
     final static AlgorithmConstraints DEFAULT =
-                        new SSLAlgorithmConstraints(null);
+            new SSLAlgorithmConstraints(null);
 
     // the default SSL only algorithm constraints
     final static AlgorithmConstraints DEFAULT_SSL_ONLY =
-                        new SSLAlgorithmConstraints((SSLSocket)null, false);
+            new SSLAlgorithmConstraints((SSLSocket) null, false);
 
     SSLAlgorithmConstraints(AlgorithmConstraints algorithmConstraints) {
         userAlgConstraints = algorithmConstraints;
     }
 
     SSLAlgorithmConstraints(SSLSocket socket,
-            boolean withDefaultCertPathConstraints) {
+                            boolean withDefaultCertPathConstraints) {
         if (!withDefaultCertPathConstraints) {
             enabledX509DisabledAlgConstraints = false;
         }
     }
 
     SSLAlgorithmConstraints(SSLEngine engine,
-            boolean withDefaultCertPathConstraints) {
+                            boolean withDefaultCertPathConstraints) {
         if (!withDefaultCertPathConstraints) {
             enabledX509DisabledAlgConstraints = false;
         }
     }
 
     SSLAlgorithmConstraints(SSLSocket socket, String[] supportedAlgorithms,
-            boolean withDefaultCertPathConstraints) {
+                            boolean withDefaultCertPathConstraints) {
         if (socket != null) {
             peerAlgConstraints =
-                new SupportedSignatureAlgorithmConstraints(supportedAlgorithms);
+                    new SupportedSignatureAlgorithmConstraints(supportedAlgorithms);
         }
 
         if (!withDefaultCertPathConstraints) {
@@ -99,10 +99,10 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
     }
 
     SSLAlgorithmConstraints(SSLEngine engine, String[] supportedAlgorithms,
-            boolean withDefaultCertPathConstraints) {
+                            boolean withDefaultCertPathConstraints) {
         if (engine != null) {
             peerAlgConstraints =
-                new SupportedSignatureAlgorithmConstraints(supportedAlgorithms);
+                    new SupportedSignatureAlgorithmConstraints(supportedAlgorithms);
         }
 
         if (!withDefaultCertPathConstraints) {
@@ -117,22 +117,22 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
 
         if (peerAlgConstraints != null) {
             permitted = peerAlgConstraints.permits(
-                                    primitives, algorithm, parameters);
+                    primitives, algorithm, parameters);
         }
 
         if (permitted && userAlgConstraints != null) {
             permitted = userAlgConstraints.permits(
-                                    primitives, algorithm, parameters);
+                    primitives, algorithm, parameters);
         }
 
         if (permitted) {
             permitted = tlsDisabledAlgConstraints.permits(
-                                    primitives, algorithm, parameters);
+                    primitives, algorithm, parameters);
         }
 
         if (permitted && enabledX509DisabledAlgConstraints) {
             permitted = x509DisabledAlgConstraints.permits(
-                                    primitives, algorithm, parameters);
+                    primitives, algorithm, parameters);
         }
 
         return permitted;
@@ -162,28 +162,28 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
     }
 
     public boolean permits(Set<CryptoPrimitive> primitives,
-            String algorithm, Key key, AlgorithmParameters parameters) {
+                           String algorithm, Key key, AlgorithmParameters parameters) {
 
         boolean permitted = true;
 
         if (peerAlgConstraints != null) {
             permitted = peerAlgConstraints.permits(
-                                    primitives, algorithm, key, parameters);
+                    primitives, algorithm, key, parameters);
         }
 
         if (permitted && userAlgConstraints != null) {
             permitted = userAlgConstraints.permits(
-                                    primitives, algorithm, key, parameters);
+                    primitives, algorithm, key, parameters);
         }
 
         if (permitted) {
             permitted = tlsDisabledAlgConstraints.permits(
-                                    primitives, algorithm, key, parameters);
+                    primitives, algorithm, key, parameters);
         }
 
         if (permitted && enabledX509DisabledAlgConstraints) {
             permitted = x509DisabledAlgConstraints.permits(
-                                    primitives, algorithm, key, parameters);
+                    primitives, algorithm, key, parameters);
         }
 
         return permitted;
@@ -191,7 +191,7 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
 
 
     static private class SupportedSignatureAlgorithmConstraints
-                                    implements AlgorithmConstraints {
+            implements AlgorithmConstraints {
         // supported signature algorithms
         private String[] supportedAlgorithms;
 
@@ -204,7 +204,7 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
         }
 
         public boolean permits(Set<CryptoPrimitive> primitives,
-                String algorithm, AlgorithmParameters parameters) {
+                               String algorithm, AlgorithmParameters parameters) {
 
             if (algorithm == null || algorithm.length() == 0) {
                 throw new IllegalArgumentException(
@@ -217,7 +217,7 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
             }
 
             if (supportedAlgorithms == null ||
-                        supportedAlgorithms.length == 0) {
+                    supportedAlgorithms.length == 0) {
                 return false;
             }
 
@@ -241,7 +241,7 @@ final class SSLAlgorithmConstraints implements AlgorithmConstraints {
         }
 
         final public boolean permits(Set<CryptoPrimitive> primitives,
-                String algorithm, Key key, AlgorithmParameters parameters) {
+                                     String algorithm, Key key, AlgorithmParameters parameters) {
 
             if (algorithm == null || algorithm.length() == 0) {
                 throw new IllegalArgumentException(

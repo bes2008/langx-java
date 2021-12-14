@@ -52,10 +52,10 @@ final class RandomCookie {
         random_bytes = new byte[32];
         generator.nextBytes(random_bytes);
 
-        random_bytes[0] = (byte)(gmt_unix_time >> 24);
-        random_bytes[1] = (byte)(gmt_unix_time >> 16);
-        random_bytes[2] = (byte)(gmt_unix_time >>  8);
-        random_bytes[3] = (byte)gmt_unix_time;
+        random_bytes[0] = (byte) (gmt_unix_time >> 24);
+        random_bytes[1] = (byte) (gmt_unix_time >> 16);
+        random_bytes[2] = (byte) (gmt_unix_time >> 8);
+        random_bytes[3] = (byte) gmt_unix_time;
     }
 
     RandomCookie(HandshakeInStream m) throws IOException {

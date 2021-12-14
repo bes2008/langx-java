@@ -37,9 +37,9 @@ import javax.crypto.spec.IvParameterSpec;
  * method of KeyGenerators of the type "TlsKeyMaterial".
  * Instances of this class are immutable.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
  * Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @since 1.6
  */
 public class TlsKeyMaterialSpec implements KeySpec, SecretKey {
 
@@ -71,14 +71,14 @@ public class TlsKeyMaterialSpec implements KeySpec, SecretKey {
      * <code>new TlsKeymaterialSpec(clientMacKey, serverMacKey,
      * clientCipherKey, serverCipherKey, null, null)</code>.
      *
-     * @param clientMacKey the client MAC key
-     * @param serverMacKey the server MAC key
+     * @param clientMacKey    the client MAC key
+     * @param serverMacKey    the server MAC key
      * @param clientCipherKey the client cipher key (or null)
      * @param serverCipherKey the server cipher key (or null)
      * @throws NullPointerException if clientMacKey or serverMacKey is null
      */
     public TlsKeyMaterialSpec(SecretKey clientMacKey, SecretKey serverMacKey,
-            SecretKey clientCipherKey, SecretKey serverCipherKey) {
+                              SecretKey clientCipherKey, SecretKey serverCipherKey) {
         this(clientMacKey, serverMacKey, clientCipherKey, null, serverCipherKey, null);
     }
 
@@ -87,18 +87,17 @@ public class TlsKeyMaterialSpec implements KeySpec, SecretKey {
      * keys, client and server cipher keys, and client and server
      * initialization vectors.
      *
-     * @param clientMacKey the client MAC key
-     * @param serverMacKey the server MAC key
+     * @param clientMacKey    the client MAC key
+     * @param serverMacKey    the server MAC key
      * @param clientCipherKey the client cipher key (or null)
-     * @param clientIv the client initialization vector (or null)
+     * @param clientIv        the client initialization vector (or null)
      * @param serverCipherKey the server cipher key (or null)
-     * @param serverIv the server initialization vector (or null)
-     *
+     * @param serverIv        the server initialization vector (or null)
      * @throws NullPointerException if clientMacKey or serverMacKey is null
      */
     public TlsKeyMaterialSpec(SecretKey clientMacKey, SecretKey serverMacKey,
-            SecretKey clientCipherKey, IvParameterSpec clientIv,
-            SecretKey serverCipherKey, IvParameterSpec serverIv) {
+                              SecretKey clientCipherKey, IvParameterSpec clientIv,
+                              SecretKey serverCipherKey, IvParameterSpec serverIv) {
         if ((clientMacKey == null) || (serverMacKey == null)) {
             throw new NullPointerException("MAC keys must not be null");
         }

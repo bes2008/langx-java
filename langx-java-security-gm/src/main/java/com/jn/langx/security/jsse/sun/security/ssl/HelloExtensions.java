@@ -33,8 +33,10 @@ import java.security.spec.ECParameterSpec;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.InvalidParameterSpecException;
 import java.security.AlgorithmParameters;
+
 import com.jn.langx.security.jsse.sun.security.util.AlgorithmConstraints;
 import com.jn.langx.security.jsse.sun.security.util.CryptoPrimitive;
+
 import java.security.AccessController;
 import java.util.EnumSet;
 import java.util.ArrayList;
@@ -47,25 +49,25 @@ import sun.security.action.GetPropertyAction;
  * ClientHello and ServerHello messages. The extension mechanism and
  * several extensions are defined in RFC 3546. Additional extensions are
  * defined in the ECC RFC 4492.
- *
+ * <p>
  * Currently, only the two ECC extensions are fully supported.
- *
+ * <p>
  * The classes contained in this file are:
- *  . HelloExtensions: a List of extensions as used in the client hello
- *      and server hello messages.
- *  . ExtensionType: an enum style class for the extension type
- *  . HelloExtension: abstract base class for all extensions. All subclasses
- *      must be immutable.
+ * . HelloExtensions: a List of extensions as used in the client hello
+ * and server hello messages.
+ * . ExtensionType: an enum style class for the extension type
+ * . HelloExtension: abstract base class for all extensions. All subclasses
+ * must be immutable.
+ * <p>
+ * . UnknownExtension: used to represent all parsed extensions that we do not
+ * explicitly support.
+ * . ServerNameExtension: partially implemented server_name extension.
+ * . SupportedEllipticCurvesExtension: the ECC supported curves extension.
+ * . SupportedEllipticPointFormatsExtension: the ECC supported point formats
+ * (compressed/uncompressed) extension.
  *
- *  . UnknownExtension: used to represent all parsed extensions that we do not
- *      explicitly support.
- *  . ServerNameExtension: partially implemented server_name extension.
- *  . SupportedEllipticCurvesExtension: the ECC supported curves extension.
- *  . SupportedEllipticPointFormatsExtension: the ECC supported point formats
- *      (compressed/uncompressed) extension.
- *
- * @since   1.6
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
+ * @since 1.6
  */
 final class HelloExtensions {
 
@@ -104,7 +106,7 @@ final class HelloExtensions {
         }
         if (len != 0) {
             throw new SSLProtocolException(
-                        "Error parsing extensions: extra data");
+                    "Error parsing extensions: extra data");
         }
     }
 
@@ -178,7 +180,7 @@ final class ExtensionType {
     }
 
     static List<ExtensionType> knownExtensions =
-                                            new ArrayList<ExtensionType>(14);
+            new ArrayList<ExtensionType>(14);
 
     static ExtensionType get(int id) {
         for (ExtensionType ext : knownExtensions) {
@@ -363,7 +365,7 @@ final class SupportedEllipticCurvesExtension extends HelloExtension {
 
     // speed up the parameters construction
     private static final Map<Integer, AlgorithmParameters> idToParams =
-        new HashMap<Integer, AlgorithmParameters>();
+            new HashMap<Integer, AlgorithmParameters>();
 
     // the supported elliptic curves
     private static final int[] supportedCurveIds;
@@ -373,37 +375,37 @@ final class SupportedEllipticCurvesExtension extends HelloExtension {
 
     // See com.jn.langx.security.jsse.sun.security.util.CurveDB for the OIDs
     private static enum NamedEllipticCurve {
-        T163_K1(1,  "sect163k1",    "1.3.132.0.1",      true),  // NIST K-163
-        T163_R1(2,  "sect163r1",    "1.3.132.0.2",      false),
-        T163_R2(3,  "sect163r2",    "1.3.132.0.15",     true),  // NIST B-163
-        T193_R1(4,  "sect193r1",    "1.3.132.0.24",     false),
-        T193_R2(5,  "sect193r2",    "1.3.132.0.25",     false),
-        T233_K1(6,  "sect233k1",    "1.3.132.0.26",     true),  // NIST K-233
-        T233_R1(7,  "sect233r1",    "1.3.132.0.27",     true),  // NIST B-233
-        T239_K1(8,  "sect239k1",    "1.3.132.0.3",      false),
-        T283_K1(9,  "sect283k1",    "1.3.132.0.16",     true),  // NIST K-283
-        T283_R1(10, "sect283r1",    "1.3.132.0.17",     true),  // NIST B-283
-        T409_K1(11, "sect409k1",    "1.3.132.0.36",     true),  // NIST K-409
-        T409_R1(12, "sect409r1",    "1.3.132.0.37",     true),  // NIST B-409
-        T571_K1(13, "sect571k1",    "1.3.132.0.38",     true),  // NIST K-571
-        T571_R1(14, "sect571r1",    "1.3.132.0.39",     true),  // NIST B-571
+        T163_K1(1, "sect163k1", "1.3.132.0.1", true),  // NIST K-163
+        T163_R1(2, "sect163r1", "1.3.132.0.2", false),
+        T163_R2(3, "sect163r2", "1.3.132.0.15", true),  // NIST B-163
+        T193_R1(4, "sect193r1", "1.3.132.0.24", false),
+        T193_R2(5, "sect193r2", "1.3.132.0.25", false),
+        T233_K1(6, "sect233k1", "1.3.132.0.26", true),  // NIST K-233
+        T233_R1(7, "sect233r1", "1.3.132.0.27", true),  // NIST B-233
+        T239_K1(8, "sect239k1", "1.3.132.0.3", false),
+        T283_K1(9, "sect283k1", "1.3.132.0.16", true),  // NIST K-283
+        T283_R1(10, "sect283r1", "1.3.132.0.17", true),  // NIST B-283
+        T409_K1(11, "sect409k1", "1.3.132.0.36", true),  // NIST K-409
+        T409_R1(12, "sect409r1", "1.3.132.0.37", true),  // NIST B-409
+        T571_K1(13, "sect571k1", "1.3.132.0.38", true),  // NIST K-571
+        T571_R1(14, "sect571r1", "1.3.132.0.39", true),  // NIST B-571
 
-        P160_K1(15, "secp160k1",    "1.3.132.0.9",      false),
-        P160_R1(16, "secp160r1",    "1.3.132.0.8",      false),
-        P160_R2(17, "secp160r2",    "1.3.132.0.30",     false),
-        P192_K1(18, "secp192k1",    "1.3.132.0.31",     false),
-        P192_R1(19, "secp192r1",    "1.2.840.10045.3.1.1", true), // NIST P-192
-        P224_K1(20, "secp224k1",    "1.3.132.0.32",     false),
-        P224_R1(21, "secp224r1",    "1.3.132.0.33",     true),  // NIST P-224
-        P256_K1(22, "secp256k1",    "1.3.132.0.10",     false),
-        P256_R1(23, "secp256r1",    "1.2.840.10045.3.1.7", true), // NIST P-256
-        P384_R1(24, "secp384r1",    "1.3.132.0.34",     true),  // NIST P-384
-        P521_R1(25, "secp521r1",    "1.3.132.0.35",     true);  // NIST P-521
+        P160_K1(15, "secp160k1", "1.3.132.0.9", false),
+        P160_R1(16, "secp160r1", "1.3.132.0.8", false),
+        P160_R2(17, "secp160r2", "1.3.132.0.30", false),
+        P192_K1(18, "secp192k1", "1.3.132.0.31", false),
+        P192_R1(19, "secp192r1", "1.2.840.10045.3.1.1", true), // NIST P-192
+        P224_K1(20, "secp224k1", "1.3.132.0.32", false),
+        P224_R1(21, "secp224r1", "1.3.132.0.33", true),  // NIST P-224
+        P256_K1(22, "secp256k1", "1.3.132.0.10", false),
+        P256_R1(23, "secp256r1", "1.2.840.10045.3.1.7", true), // NIST P-256
+        P384_R1(24, "secp384r1", "1.3.132.0.34", true),  // NIST P-384
+        P521_R1(25, "secp521r1", "1.3.132.0.35", true);  // NIST P-521
 
-        int          id;
-        String       name;
-        String       oid;
-        boolean      isFips;
+        int id;
+        String name;
+        String oid;
+        boolean isFips;
 
         NamedEllipticCurve(int id, String name, String oid, boolean isFips) {
             this.id = id;
@@ -412,7 +414,7 @@ final class SupportedEllipticCurvesExtension extends HelloExtension {
             this.isFips = isFips;
 
             if (oidToIdMap.put(oid, id) != null ||
-                idToOidMap.put(id, oid) != null) {
+                    idToOidMap.put(id, oid) != null) {
 
                 throw new RuntimeException(
                         "Duplicate named elliptic curve definition: " + name);
@@ -478,16 +480,16 @@ final class SupportedEllipticCurvesExtension extends HelloExtension {
         } else {        // default curves
             int[] ids;
             if (requireFips) {
-                ids = new int[] {
-                    // only NIST curves in FIPS mode
-                    23, 24, 25, 9, 10, 11, 12, 13, 14,
+                ids = new int[]{
+                        // only NIST curves in FIPS mode
+                        23, 24, 25, 9, 10, 11, 12, 13, 14,
                 };
             } else {
-                ids = new int[] {
-                    // NIST curves first
-                    23, 24, 25, 9, 10, 11, 12, 13, 14,
-                    // non-NIST curves
-                    22,
+                ids = new int[]{
+                        // NIST curves first
+                        23, 24, 25, 9, 10, 11, 12, 13, 14,
+                        // non-NIST curves
+                        22,
                 };
             }
 
@@ -560,7 +562,7 @@ final class SupportedEllipticCurvesExtension extends HelloExtension {
     }
 
     static boolean hasActiveCurves(AlgorithmConstraints constraints) {
-               return getActiveCurves(constraints) >= 0;
+        return getActiveCurves(constraints) >= 0;
     }
 
     static SupportedEllipticCurvesExtension createExtension(
@@ -599,7 +601,7 @@ final class SupportedEllipticCurvesExtension extends HelloExtension {
         for (int curveId : curves) {
             if (isSupported(curveId) && constraints.permits(
                     EnumSet.of(CryptoPrimitive.KEY_AGREEMENT),
-                                "EC", idToParams.get(curveId))) {
+                    "EC", idToParams.get(curveId))) {
                 return curveId;
             }
         }
@@ -708,7 +710,7 @@ final class SupportedEllipticPointFormatsExtension extends HelloExtension {
     final static int FMT_ANSIX962_COMPRESSED_CHAR2 = 2;
 
     static final HelloExtension DEFAULT =
-        new SupportedEllipticPointFormatsExtension(new byte[] {FMT_UNCOMPRESSED});
+            new SupportedEllipticPointFormatsExtension(new byte[]{FMT_UNCOMPRESSED});
 
     private final byte[] formats;
 
@@ -732,7 +734,7 @@ final class SupportedEllipticPointFormatsExtension extends HelloExtension {
         }
         if (uncompressed == false) {
             throw new SSLProtocolException
-                ("Peer does not support uncompressed points");
+                    ("Peer does not support uncompressed points");
         }
     }
 
@@ -749,14 +751,14 @@ final class SupportedEllipticPointFormatsExtension extends HelloExtension {
     private static String toString(byte format) {
         int f = format & 0xff;
         switch (f) {
-        case FMT_UNCOMPRESSED:
-            return "uncompressed";
-        case FMT_ANSIX962_COMPRESSED_PRIME:
-            return "ansiX962_compressed_prime";
-        case FMT_ANSIX962_COMPRESSED_CHAR2:
-            return "ansiX962_compressed_char2";
-        default:
-            return "unknown-" + f;
+            case FMT_UNCOMPRESSED:
+                return "uncompressed";
+            case FMT_ANSIX962_COMPRESSED_PRIME:
+                return "ansiX962_compressed_prime";
+            case FMT_ANSIX962_COMPRESSED_CHAR2:
+                return "ansiX962_compressed_char2";
+            default:
+                return "unknown-" + f;
         }
     }
 
@@ -784,7 +786,7 @@ final class RenegotiationInfoExtension extends HelloExtension {
     private final byte[] renegotiated_connection;
 
     RenegotiationInfoExtension(byte[] clientVerifyData,
-                byte[] serverVerifyData) {
+                               byte[] serverVerifyData) {
         super(ExtensionType.EXT_RENEGOTIATION_INFO);
 
         if (clientVerifyData.length != 0) {
@@ -804,7 +806,7 @@ final class RenegotiationInfoExtension extends HelloExtension {
     }
 
     RenegotiationInfoExtension(HandshakeInStream s, int len)
-                throws IOException {
+            throws IOException {
         super(ExtensionType.EXT_RENEGOTIATION_INFO);
 
         // check the extension length
@@ -845,8 +847,8 @@ final class RenegotiationInfoExtension extends HelloExtension {
 
     public String toString() {
         return "Extension " + type + ", renegotiated_connection: " +
-                    (renegotiated_connection.length == 0 ? "<empty>" :
-                    Debug.toString(renegotiated_connection));
+                (renegotiated_connection.length == 0 ? "<empty>" :
+                        Debug.toString(renegotiated_connection));
     }
 
 }

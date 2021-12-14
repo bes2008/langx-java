@@ -38,28 +38,28 @@ public class ValidatorException extends CertificateException {
     private static final long serialVersionUID = -2836879718282292155L;
 
     public final static Object T_NO_TRUST_ANCHOR =
-        "No trusted certificate found";
+            "No trusted certificate found";
 
     public final static Object T_EE_EXTENSIONS =
-        "End entity certificate extension check failed";
+            "End entity certificate extension check failed";
 
     public final static Object T_CA_EXTENSIONS =
-        "CA certificate extension check failed";
+            "CA certificate extension check failed";
 
     public final static Object T_CERT_EXPIRED =
-        "Certificate expired";
+            "Certificate expired";
 
     public final static Object T_SIGNATURE_ERROR =
-        "Certificate signature validation failed";
+            "Certificate signature validation failed";
 
     public final static Object T_NAME_CHAINING =
-        "Certificate chaining error";
+            "Certificate chaining error";
 
     public final static Object T_ALGORITHM_DISABLED =
-        "Certificate signature algorithm disabled";
+            "Certificate signature algorithm disabled";
 
     public final static Object T_UNTRUSTED_CERT =
-        "Untrusted certificate";
+            "Untrusted certificate";
 
     private Object type;
     private X509Certificate cert;
@@ -78,13 +78,13 @@ public class ValidatorException extends CertificateException {
     }
 
     public ValidatorException(Object type, X509Certificate cert) {
-        super((String)type);
+        super((String) type);
         this.type = type;
         this.cert = cert;
     }
 
     public ValidatorException(Object type, X509Certificate cert,
-            Throwable cause) {
+                              Throwable cause) {
         this(type, cert);
         initCause(cause);
     }
@@ -96,7 +96,7 @@ public class ValidatorException extends CertificateException {
     }
 
     public ValidatorException(String msg, Object type, X509Certificate cert,
-            Throwable cause) {
+                              Throwable cause) {
         this(msg, type, cert);
         initCause(cause);
     }

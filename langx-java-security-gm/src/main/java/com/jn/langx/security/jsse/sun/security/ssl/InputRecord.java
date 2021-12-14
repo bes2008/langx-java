@@ -41,12 +41,12 @@ import javax.net.ssl.*;
  * basically buffers tied to a particular input stream ... a layer
  * above this must map these records into the model of a continuous
  * stream of data.
- *
+ * <p>
  * Since this returns SSL 3.0 records, it's the layer that needs to
  * map SSL 2.0 style handshake records into SSL 3.0 ones for those
  * "old" clients that interop with both V2 and V3 servers.  Not as
  * pretty as might be desired.
- *
+ * <p>
  * NOTE:  During handshaking, each message must be hashed to support
  * verification that the handshake process wasn't compromised.
  *
@@ -54,16 +54,16 @@ import javax.net.ssl.*;
  */
 class InputRecord extends ByteArrayInputStream implements Record {
 
-    private HandshakeHash       handshakeHash;
-    private int                 lastHashed;
-    boolean                     formatVerified = true;  // SSLv2 ruled out?
-    private boolean             isClosed;
-    private boolean             appDataValid;
+    private HandshakeHash handshakeHash;
+    private int lastHashed;
+    boolean formatVerified = true;  // SSLv2 ruled out?
+    private boolean isClosed;
+    private boolean appDataValid;
 
     // The ClientHello version to accept. If set to ProtocolVersion.SSL20Hello
     // and the first message we read is a ClientHello in V2 format, we convert
     // it to V3. Otherwise we throw an exception when encountering a V2 hello.
-    private ProtocolVersion     helloVersion;
+    private ProtocolVersion helloVersion;
 
     /* Class and subclass dynamic debugging support */
     static final Debug debug = Debug.getInstance("ssl");
@@ -143,7 +143,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
             // sanity check length of the ciphertext
             if (!box.sanityCheck(tagLen, cipheredLength)) {
                 throw new BadPaddingException(
-                    "ciphertext sanity check failed");
+                        "ciphertext sanity check failed");
             }
 
             try {
@@ -183,10 +183,10 @@ class InputRecord extends ByteArrayInputStream implements Record {
             }
 
             count -= tagLen;  // Set the count before any MAC checking
-                              // exception occurs, so that the following
-                              // process can read the actual decrypted
-                              // content (minus the MAC) in the fragment
-                              // if necessary.
+            // exception occurs, so that the following
+            // process can read the actual decrypted
+            // content (minus the MAC) in the fragment
+            // if necessary.
 
             // Run MAC computation and comparison on the payload.
             if (checkMacTags(contentType(),
@@ -202,7 +202,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
             // constant time of MAC computation and comparison on each record.
             if (box.isCBCMode()) {
                 int remainingLen = calculateRemainingLen(
-                                        signer, cipheredLength, contentLen);
+                        signer, cipheredLength, contentLen);
 
                 // NOTE: remainingLen may be bigger (less than 1 block of the
                 // hash algorithm of the MAC) than the cipheredLength. However,
@@ -212,7 +212,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
                 if (remainingLen > buf.length) {
                     // unlikely to happen, just a placehold
                     throw new RuntimeException(
-                        "Internal buffer capacity error");
+                            "Internal buffer capacity error");
                 }
 
                 // Won't need to worry about the result on the remainder. And
@@ -235,7 +235,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
      * Please DON'T change the content of the byte buffer parameter!
      */
     static boolean checkMacTags(byte contentType, byte[] buffer,
-            int offset, int contentLen, MAC signer, boolean isSimulated) {
+                                int offset, int contentLen, MAC signer, boolean isSimulated) {
 
         int tagLen = signer.MAClen();
         byte[] hash = signer.compute(
@@ -297,8 +297,8 @@ class InputRecord extends ByteArrayInputStream implements Record {
         // about negative values. 0x01 is added to the result to ensure
         // that the return value is positive.  The extra one byte does
         // not impact the overall MAC compression function evaluations.
-        return 0x01 + (int)(Math.ceil(fullLen/(1.0d * blockLen)) -
-                Math.ceil(usedLen/(1.0d * blockLen))) * signer.hashBlockLen();
+        return 0x01 + (int) (Math.ceil(fullLen / (1.0d * blockLen)) -
+                Math.ceil(usedLen / (1.0d * blockLen))) * signer.hashBlockLen();
     }
 
     /*
@@ -332,16 +332,17 @@ class InputRecord extends ByteArrayInputStream implements Record {
     /*
      * Need a helper function so we can hash the V2 hello correctly
      */
-    private void hashInternal(byte databuf [], int offset, int len) {
+    private void hashInternal(byte databuf[], int offset, int len) {
         if (debug != null && Debug.isOn("data")) {
             try {
                 HexDumpEncoder hd = new HexDumpEncoder();
 
                 System.out.println("[read] MD5 and SHA1 hashes:  len = "
-                    + len);
+                        + len);
                 hd.encodeBuffer(new ByteArrayInputStream(databuf, offset, len),
-                    System.out);
-            } catch (IOException e) { }
+                        System.out);
+            } catch (IOException e) {
+            }
         }
         handshakeHash.update(databuf, offset, len);
     }
@@ -380,9 +381,9 @@ class InputRecord extends ByteArrayInputStream implements Record {
          */
         len = r.available() + count;
         if (buf.length < len) {
-            byte        newbuf [];
+            byte newbuf[];
 
-            newbuf = new byte [len];
+            newbuf = new byte[len];
             System.arraycopy(buf, 0, newbuf, 0, count);
             buf = newbuf;
         }
@@ -428,9 +429,9 @@ class InputRecord extends ByteArrayInputStream implements Record {
      * It's the only one documented in the V2 spec as a fatal error.
      */
     private static final byte[] v2NoCipher = {
-        (byte)0x80, (byte)0x03, // unpadded 3 byte record
-        (byte)0x00,             // ... error message
-        (byte)0x00, (byte)0x01  // ... NO_CIPHER error
+            (byte) 0x80, (byte) 0x03, // unpadded 3 byte record
+            (byte) 0x00,             // ... error message
+            (byte) 0x00, (byte) 0x01  // ... NO_CIPHER error
     };
 
     private int readFully(InputStream s, byte b[], int off, int len)
@@ -448,9 +449,10 @@ class InputRecord extends ByteArrayInputStream implements Record {
                     ByteBuffer bb = ByteBuffer.wrap(b, off + n, readLen);
 
                     System.out.println("[Raw read]: length = " +
-                        bb.remaining());
+                            bb.remaining());
                     hd.encodeBuffer(bb, System.out);
-                } catch (IOException e) { }
+                } catch (IOException e) {
+                }
             }
 
             n += readLen;
@@ -474,7 +476,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
          * For SSL it really _is_ an error if the other end went away
          * so ungracefully as to not shut down cleanly.
          */
-        if(exlen < headerSize) {
+        if (exlen < headerSize) {
             int really = readFully(s, buf, exlen, headerSize - exlen);
             if (really < 0) {
                 throw new EOFException("SSL peer shut down incorrectly");
@@ -520,7 +522,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
         if ((recordVersion.v < ProtocolVersion.MIN.v)
                 || (recordVersion.major > ProtocolVersion.MAX.major)) {
             throw new SSLException(
-                "Unsupported record version " + recordVersion);
+                    "Unsupported record version " + recordVersion);
         }
 
         /*
@@ -533,8 +535,8 @@ class InputRecord extends ByteArrayInputStream implements Record {
          */
         if (contentLen < 0 || contentLen > maxLargeRecordSize - headerSize) {
             throw new SSLProtocolException("Bad InputRecord size"
-                + ", count = " + contentLen
-                + ", buf.length = " + buf.length);
+                    + ", count = " + contentLen
+                    + ", buf.length = " + buf.length);
         }
 
         /*
@@ -550,7 +552,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
 
         if (exlen < contentLen + headerSize) {
             int really = readFully(
-                s, buf, exlen, contentLen + headerSize - exlen);
+                    s, buf, exlen, contentLen + headerSize - exlen);
             if (really < 0) {
                 throw new SSLException("SSL peer shut down incorrectly");
             }
@@ -565,11 +567,11 @@ class InputRecord extends ByteArrayInputStream implements Record {
         if (debug != null && Debug.isOn("record")) {
             if (count < 0 || count > (maxRecordSize - headerSize)) {
                 System.out.println(Thread.currentThread().getName()
-                    + ", Bad InputRecord size" + ", count = " + count);
+                        + ", Bad InputRecord size" + ", count = " + count);
             }
             System.out.println(Thread.currentThread().getName()
-                + ", READ: " + recordVersion + " "
-                + contentName(contentType()) + ", length = " + available());
+                    + ", READ: " + recordVersion + " "
+                    + contentName(contentType()) + ", length = " + available());
         }
         /*
          * then caller decrypts, verifies, and uncompresses
@@ -599,7 +601,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
             }
 
             ProtocolVersion recordVersion =
-                                ProtocolVersion.valueOf(buf[3], buf[4]);
+                    ProtocolVersion.valueOf(buf[3], buf[4]);
 
             if (recordVersion == ProtocolVersion.SSL20Hello) {
                 /*
@@ -622,7 +624,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
              * V3 ClientHello message, and pass it up.
              */
             int len = ((buf[0] & 0x7f) << 8) +
-                (buf[1] & 0xff) - 3;
+                    (buf[1] & 0xff) - 3;
             if (v2Buf == null) {
                 v2Buf = new byte[len];
             }
@@ -642,12 +644,12 @@ class InputRecord extends ByteArrayInputStream implements Record {
             v2Buf = null;
             lastHashed = count;
 
-            if (debug != null && Debug.isOn("record"))  {
+            if (debug != null && Debug.isOn("record")) {
                 System.out.println(
-                    Thread.currentThread().getName()
-                    + ", READ:  SSL v2, contentType = "
-                    + contentName(contentType())
-                    + ", translated length = " + available());
+                        Thread.currentThread().getName()
+                                + ", READ:  SSL v2, contentType = "
+                                + contentName(contentType())
+                                + ", translated length = " + available());
             }
             return;
 
@@ -655,9 +657,9 @@ class InputRecord extends ByteArrayInputStream implements Record {
             /*
              * Does it look like a V2 "ServerHello"?
              */
-            if (((buf [0] & 0x080) != 0) && buf [2] == 4) {
+            if (((buf[0] & 0x080) != 0) && buf[2] == 4) {
                 throw new SSLException(
-                    "SSL V2.0 servers are not supported.");
+                        "SSL V2.0 servers are not supported.");
             }
 
             /*
@@ -668,7 +670,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
             for (int i = 0; i < v2NoCipher.length; i++) {
                 if (buf[i] != v2NoCipher[i]) {
                     throw new SSLException(
-                        "Unrecognized SSL message, plaintext connection?");
+                            "Unrecognized SSL message, plaintext connection?");
                 }
             }
 
@@ -681,7 +683,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
      * we'll override this method and let it take the appropriate
      * action.
      */
-    void writeBuffer(OutputStream s, byte [] buf, int off, int len)
+    void writeBuffer(OutputStream s, byte[] buf, int off, int len)
             throws IOException {
         s.write(buf, 0, len);
         s.flush();
@@ -693,16 +695,15 @@ class InputRecord extends ByteArrayInputStream implements Record {
      * the bytes passed as parameter.  This routine translates the V2 message
      * into an equivalent V3 one.
      */
-    private void V2toV3ClientHello(byte v2Msg []) throws SSLException
-    {
+    private void V2toV3ClientHello(byte v2Msg[]) throws SSLException {
         int i;
 
         /*
          * Build the first part of the V3 record header from the V2 one
          * that's now buffered up.  (Lengths are fixed up later).
          */
-        buf [0] = ct_handshake;
-        buf [1] = buf [3];      // V3.x
+        buf[0] = ct_handshake;
+        buf[1] = buf[3];      // V3.x
         buf[2] = buf[4];
         // header [3..4] for handshake message length
         // count = 5;
@@ -710,37 +711,37 @@ class InputRecord extends ByteArrayInputStream implements Record {
         /*
          * Store the generic V3 handshake header:  4 bytes
          */
-        buf [5] = 1;    // HandshakeMessage.ht_client_hello
+        buf[5] = 1;    // HandshakeMessage.ht_client_hello
         // buf [6..8] for length of ClientHello (int24)
         // count += 4;
 
         /*
          * ClientHello header starts with SSL version
          */
-        buf [9] = buf [1];
-        buf [10] = buf [2];
+        buf[9] = buf[1];
+        buf[10] = buf[2];
         // count += 2;
         count = 11;
 
         /*
          * Start parsing the V2 message ...
          */
-        int      cipherSpecLen, sessionIdLen, nonceLen;
+        int cipherSpecLen, sessionIdLen, nonceLen;
 
-        cipherSpecLen = ((v2Msg [0] & 0xff) << 8) + (v2Msg [1] & 0xff);
-        sessionIdLen  = ((v2Msg [2] & 0xff) << 8) + (v2Msg [3] & 0xff);
-        nonceLen   = ((v2Msg [4] & 0xff) << 8) + (v2Msg [5] & 0xff);
+        cipherSpecLen = ((v2Msg[0] & 0xff) << 8) + (v2Msg[1] & 0xff);
+        sessionIdLen = ((v2Msg[2] & 0xff) << 8) + (v2Msg[3] & 0xff);
+        nonceLen = ((v2Msg[4] & 0xff) << 8) + (v2Msg[5] & 0xff);
 
         /*
          * Copy Random value/nonce ... if less than the 32 bytes of
          * a V3 "Random", right justify and zero pad to the left.  Else
          * just take the last 32 bytes.
          */
-        int      offset = 6 + cipherSpecLen + sessionIdLen;
+        int offset = 6 + cipherSpecLen + sessionIdLen;
 
         if (nonceLen < 32) {
             for (i = 0; i < (32 - nonceLen); i++)
-                buf [count++] = 0;
+                buf[count++] = 0;
             System.arraycopy(v2Msg, offset, buf, count, nonceLen);
             count += nonceLen;
         } else {
@@ -753,7 +754,7 @@ class InputRecord extends ByteArrayInputStream implements Record {
          * Copy Session ID (only one byte length!)
          */
         offset -= sessionIdLen;
-        buf [count++] = (byte) sessionIdLen;
+        buf[count++] = (byte) sessionIdLen;
 
         System.arraycopy(v2Msg, offset, buf, count, sessionIdLen);
         count += sessionIdLen;
@@ -778,33 +779,33 @@ class InputRecord extends ByteArrayInputStream implements Record {
         j = count + 2;
 
         for (i = 0; i < cipherSpecLen; i += 3) {
-            if (v2Msg [offset + i] != 0)
+            if (v2Msg[offset + i] != 0)
                 continue;
-            buf [j++] = v2Msg [offset + i + 1];
-            buf [j++] = v2Msg [offset + i + 2];
+            buf[j++] = v2Msg[offset + i + 1];
+            buf[j++] = v2Msg[offset + i + 2];
         }
 
         j -= count + 2;
-        buf [count++] = (byte) (j >>> 8);
-        buf [count++] = (byte) j;
+        buf[count++] = (byte) (j >>> 8);
+        buf[count++] = (byte) j;
         count += j;
 
         /*
          * Append compression methods (default/null only)
          */
-        buf [count++] = 1;
-        buf [count++] = 0;      // Session.compression_null
+        buf[count++] = 1;
+        buf[count++] = 0;      // Session.compression_null
 
         /*
          * Fill in lengths of the messages we synthesized (nested:
          * V3 handshake message within V3 record) and then return
          */
-        buf [3] = (byte) (count - headerSize);
-        buf [4] = (byte) ((count - headerSize) >>> 8);
+        buf[3] = (byte) (count - headerSize);
+        buf[4] = (byte) ((count - headerSize) >>> 8);
 
-        buf [headerSize + 1] = 0;
-        buf [headerSize + 2] = (byte) (((count - headerSize) - 4) >>> 8);
-        buf [headerSize + 3] = (byte) ((count - headerSize) - 4);
+        buf[headerSize + 1] = 0;
+        buf[headerSize + 2] = (byte) (((count - headerSize) - 4) >>> 8);
+        buf[headerSize + 3] = (byte) ((count - headerSize) - 4);
 
         pos = headerSize;
     }
@@ -816,16 +817,16 @@ class InputRecord extends ByteArrayInputStream implements Record {
      */
     static String contentName(int contentType) {
         switch (contentType) {
-        case ct_change_cipher_spec:
-            return "Change Cipher Spec";
-        case ct_alert:
-            return "Alert";
-        case ct_handshake:
-            return "Handshake";
-        case ct_application_data:
-            return "Application Data";
-        default:
-            return "contentType = " + contentType;
+            case ct_change_cipher_spec:
+                return "Change Cipher Spec";
+            case ct_alert:
+                return "Alert";
+            case ct_handshake:
+                return "Handshake";
+            case ct_application_data:
+                return "Application Data";
+            default:
+                return "contentType = " + contentType;
         }
     }
 

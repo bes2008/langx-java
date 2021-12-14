@@ -30,12 +30,12 @@ import java.nio.*;
 
 /**
  * A simple InputStream which uses ByteBuffers as it's backing store.
- * <P>
+ * <p>
  * The only IOException should come if the InputStream has been closed.
  * All other IOException should not occur because all the data is local.
  * Data reads on an exhausted ByteBuffer returns a -1.
  *
- * @author  Brad Wetmore
+ * @author Brad Wetmore
  */
 class ByteBufferInputStream extends InputStream {
 
@@ -47,7 +47,7 @@ class ByteBufferInputStream extends InputStream {
 
     /**
      * Returns a byte from the ByteBuffer.
-     *
+     * <p>
      * Increments position().
      */
     public int read() throws IOException {
@@ -64,7 +64,7 @@ class ByteBufferInputStream extends InputStream {
 
     /**
      * Returns a byte array from the ByteBuffer.
-     *
+     * <p>
      * Increments position().
      */
     public int read(byte b[]) throws IOException {
@@ -78,7 +78,7 @@ class ByteBufferInputStream extends InputStream {
 
     /**
      * Returns a byte array from the ByteBuffer.
-     *
+     * <p>
      * Increments position().
      */
     public int read(byte b[], int off, int len) throws IOException {
@@ -90,7 +90,7 @@ class ByteBufferInputStream extends InputStream {
         if (b == null) {
             throw new NullPointerException();
         } else if ((off < 0) || (off > b.length) || (len < 0) ||
-                   ((off + len) > b.length) || ((off + len) < 0)) {
+                ((off + len) > b.length) || ((off + len) < 0)) {
             throw new IndexOutOfBoundsException();
         } else if (len == 0) {
             return 0;
@@ -149,7 +149,7 @@ class ByteBufferInputStream extends InputStream {
      * Closes this input stream and releases any system resources associated
      * with the stream.
      *
-     * @exception  IOException  if an I/O error occurs.
+     * @throws IOException if an I/O error occurs.
      */
     public void close() throws IOException {
         bb = null;
@@ -158,7 +158,8 @@ class ByteBufferInputStream extends InputStream {
     /**
      * Marks the current position in this input stream.
      */
-    public synchronized void mark(int readlimit) {}
+    public synchronized void mark(int readlimit) {
+    }
 
     /**
      * Repositions this stream to the position at the time the

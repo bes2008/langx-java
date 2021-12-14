@@ -37,13 +37,12 @@ import javax.net.ssl.*;
  * no SSL related logic (or no logic at all). This makes SSLSocketImpl shorter
  * and easier to read. It contains a few constants and static methods plus
  * overridden java.net.Socket methods.
- *
+ * <p>
  * Methods are defined final to ensure that they are not accidentally
  * overridden in SSLSocketImpl.
  *
  * @see javax.net.ssl.SSLSocket
  * @see SSLSocketImpl
- *
  */
 abstract class BaseSSLSocketImpl extends SSLSocket {
 
@@ -76,14 +75,14 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
      * connection is closed in order to avoid truncation attacks. Some
      * implementations (MS IIS and others) don't do that. The property
      * below controls whether we accept that or treat it as an error.
-     *
+     * <p>
      * The default is "false", i.e. tolerate the broken behavior.
      */
     private final static String PROP_NAME =
-                                "com.sun.net.ssl.requireCloseNotify";
+            "com.sun.net.ssl.requireCloseNotify";
 
     final static boolean requireCloseNotify =
-                                Debug.getBooleanProperty(PROP_NAME, false);
+            Debug.getBooleanProperty(PROP_NAME, false);
 
     //
     // MISC SOCKET METHODS
@@ -92,6 +91,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
     /**
      * Returns the unique {@link java.nio.SocketChannel SocketChannel} object
      * associated with this socket, if any.
+     *
      * @see java.net.Socket#getChannel
      */
     public final SocketChannel getChannel() {
@@ -104,6 +104,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Binds the address to the socket.
+     *
      * @see java.net.Socket#bind
      */
     public void bind(SocketAddress bindpoint) throws IOException {
@@ -115,12 +116,13 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
         } else {
             // If we're binding on a layered socket...
             throw new IOException(
-                "Underlying socket should already be connected");
+                    "Underlying socket should already be connected");
         }
     }
 
     /**
      * Returns the address of the endpoint this socket is connected to
+     *
      * @see java.net.Socket#getLocalSocketAddress
      */
     public SocketAddress getLocalSocketAddress() {
@@ -133,6 +135,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Returns the address of the endpoint this socket is connected to
+     *
      * @see java.net.Socket#getRemoteSocketAddress
      */
     public SocketAddress getRemoteSocketAddress() {
@@ -145,7 +148,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Connects this socket to the server.
-     *
+     * <p>
      * This method is either called on an unconnected SSLSocketImpl by the
      * application, or it is called in the constructor of a regular
      * SSLSocketImpl. If we are layering on top on another socket, then
@@ -153,8 +156,8 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
      * underlying socket is already connected by the time it is passed to
      * us.
      *
-     * @param   endpoint the <code>SocketAddress</code>
-     * @throws  IOException if an error occurs during the connection
+     * @param endpoint the <code>SocketAddress</code>
+     * @throws IOException if an error occurs during the connection
      */
     public final void connect(SocketAddress endpoint) throws IOException {
         connect(endpoint, 0);
@@ -162,6 +165,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Returns the connection state of the socket.
+     *
      * @see java.net.Socket#isConnected
      */
     public final boolean isConnected() {
@@ -174,6 +178,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Returns the binding state of the socket.
+     *
      * @see java.net.Socket#isBound
      */
     public final boolean isBound() {
@@ -197,7 +202,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
      */
     public final void shutdownInput() throws IOException {
         throw new UnsupportedOperationException("The method shutdownInput()" +
-                   " is not supported in SSLSocket");
+                " is not supported in SSLSocket");
     }
 
     /**
@@ -209,12 +214,13 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
      */
     public final void shutdownOutput() throws IOException {
         throw new UnsupportedOperationException("The method shutdownOutput()" +
-                   " is not supported in SSLSocket");
+                " is not supported in SSLSocket");
 
     }
 
     /**
      * Returns the input state of the socket
+     *
      * @see java.net.Socket#isInputShutdown
      */
     public final boolean isInputShutdown() {
@@ -227,6 +233,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Returns the output state of the socket
+     *
      * @see java.net.Socket#isOutputShutdown
      */
     public final boolean isOutputShutdown() {
@@ -284,7 +291,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
      * Gets the local address to which the socket is bound.
      *
      * @return the local address to which the socket is bound.
-     * @since   JDK1.1
+     * @since JDK1.1
      */
     public final InetAddress getLocalAddress() {
         if (self == this) {
@@ -322,6 +329,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Enables or disables the Nagle optimization.
+     *
      * @see java.net.Socket#setTcpNoDelay
      */
     public final void setTcpNoDelay(boolean value) throws SocketException {
@@ -349,6 +357,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Assigns the socket's linger timeout.
+     *
      * @see java.net.Socket#setSoLinger
      */
     public final void setSoLinger(boolean flag, int linger)
@@ -362,6 +371,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Returns the socket's linger timeout.
+     *
      * @see java.net.Socket#getSoLinger
      */
     public final int getSoLinger() throws SocketException {
@@ -374,6 +384,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Send one byte of urgent data on the socket.
+     *
      * @see java.net.Socket#sendUrgentData
      * At this point, there seems to be no specific requirement to support
      * this for an SSLSocket. An implementation can be provided if a need
@@ -381,13 +392,14 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
      */
     public final void sendUrgentData(int data) throws SocketException {
         throw new SocketException("This method is not supported "
-                        + "by SSLSockets");
+                + "by SSLSockets");
     }
 
     /**
      * Enable/disable OOBINLINE (receipt of TCP urgent data) By default, this
      * option is disabled and TCP urgent data received on a socket is silently
      * discarded.
+     *
      * @see java.net.Socket#setOOBInline
      * Setting OOBInline does not have any effect on SSLSocket,
      * since currently we don't support sending urgent data.
@@ -399,6 +411,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Tests if OOBINLINE is enabled.
+     *
      * @see java.net.Socket#getOOBInline
      */
     public final boolean getOOBInline() throws SocketException {
@@ -408,6 +421,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Returns the socket timeout.
+     *
      * @see java.net.Socket#getSoTimeout
      */
     public final int getSoTimeout() throws SocketException {
@@ -452,6 +466,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Enable/disable SO_KEEPALIVE.
+     *
      * @see java.net.Socket#setKeepAlive
      */
     public final void setKeepAlive(boolean on) throws SocketException {
@@ -464,6 +479,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Tests if SO_KEEPALIVE is enabled.
+     *
      * @see java.net.Socket#getKeepAlive
      */
     public final boolean getKeepAlive() throws SocketException {
@@ -477,6 +493,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
     /**
      * Sets traffic class or type-of-service octet in the IP header for
      * packets sent from this Socket.
+     *
      * @see java.net.Socket#setTrafficClass
      */
     public final void setTrafficClass(int tc) throws SocketException {
@@ -490,6 +507,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
     /**
      * Gets traffic class or type-of-service in the IP header for packets
      * sent from this Socket.
+     *
      * @see java.net.Socket#getTrafficClass
      */
     public final int getTrafficClass() throws SocketException {
@@ -502,6 +520,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Enable/disable SO_REUSEADDR.
+     *
      * @see java.net.Socket#setReuseAddress
      */
     public final void setReuseAddress(boolean on) throws SocketException {
@@ -514,6 +533,7 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
 
     /**
      * Tests if SO_REUSEADDR is enabled.
+     *
      * @see java.net.Socket#getReuseAddress
      */
     public final boolean getReuseAddress() throws SocketException {
@@ -530,13 +550,13 @@ abstract class BaseSSLSocketImpl extends SSLSocket {
      * @see java.net.Socket#setPerformancePreferences(int, int, int)
      */
     public void setPerformancePreferences(int connectionTime,
-            int latency, int bandwidth) {
+                                          int latency, int bandwidth) {
         if (self == this) {
             super.setPerformancePreferences(
-                connectionTime, latency, bandwidth);
+                    connectionTime, latency, bandwidth);
         } else {
             self.setPerformancePreferences(
-                connectionTime, latency, bandwidth);
+                    connectionTime, latency, bandwidth);
         }
     }
 

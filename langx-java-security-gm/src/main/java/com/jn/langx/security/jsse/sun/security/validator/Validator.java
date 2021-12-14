@@ -29,6 +29,7 @@ import java.util.*;
 
 import java.security.KeyStore;
 import java.security.cert.*;
+
 import com.jn.langx.security.crypto.key.store.KeyStores;
 import com.jn.langx.security.jsse.sun.security.util.AlgorithmConstraints;
 
@@ -36,7 +37,7 @@ import com.jn.langx.security.jsse.sun.security.util.AlgorithmConstraints;
  * Validator abstract base class. Concrete classes are instantiated by calling
  * one of the getInstance() methods. All methods defined in this class
  * must be safe for concurrent use by multiple threads.<p>
- *
+ * <p>
  * The model is that a Validator instance is created specifying validation
  * settings, such as trust anchors or PKIX parameters. Then one or more
  * paths are validated using those parameters. In some cases, additional
@@ -79,11 +80,10 @@ import com.jn.langx.security.jsse.sun.security.util.AlgorithmConstraints;
  *   validator.validate(chain); // throws CertificateException if failed
  * </pre>
  *
+ * @author Andreas Sterbenz
  * @see SimpleValidator
  * @see PKIXValidator
  * @see EndEntityChecker
- *
- * @author Andreas Sterbenz
  */
 public abstract class Validator {
 
@@ -91,48 +91,56 @@ public abstract class Validator {
 
     /**
      * Constant for a validator of type Simple.
+     *
      * @see #getInstance
      */
     public final static String TYPE_SIMPLE = "Simple";
 
     /**
      * Constant for a validator of type PKIX.
+     *
      * @see #getInstance
      */
     public final static String TYPE_PKIX = "PKIX";
 
     /**
      * Constant for a Generic variant of a validator.
+     *
      * @see #getInstance
      */
     public final static String VAR_GENERIC = "generic";
 
     /**
      * Constant for a Code Signing variant of a validator.
+     *
      * @see #getInstance
      */
     public final static String VAR_CODE_SIGNING = "code signing";
 
     /**
      * Constant for a JCE Code Signing variant of a validator.
+     *
      * @see #getInstance
      */
     public final static String VAR_JCE_SIGNING = "jce signing";
 
     /**
      * Constant for a TLS Client variant of a validator.
+     *
      * @see #getInstance
      */
     public final static String VAR_TLS_CLIENT = "tls client";
 
     /**
      * Constant for a TLS Server variant of a validator.
+     *
      * @see #getInstance
      */
     public final static String VAR_TLS_SERVER = "tls server";
 
     /**
      * Constant for a TSA Server variant of a validator.
+     *
      * @see #getInstance
      */
     public final static String VAR_TSA_SERVER = "tsa server";
@@ -140,6 +148,7 @@ public abstract class Validator {
     /**
      * Constant for a Code Signing variant of a validator for use by
      * the J2SE Plugin/WebStart code.
+     *
      * @see #getInstance
      */
     public final static String VAR_PLUGIN_CODE_SIGNING = "plugin code signing";
@@ -148,8 +157,8 @@ public abstract class Validator {
     final String variant;
 
     /**
-     * @deprecated
      * @see #setValidationDate
+     * @deprecated
      */
     @Deprecated
     volatile Date validationDate;
@@ -164,7 +173,7 @@ public abstract class Validator {
      * specified KeyStore as trust anchors.
      */
     public static Validator getInstance(String type, String variant,
-            KeyStore ks) {
+                                        KeyStore ks) {
         return getInstance(type, variant, KeyStores.getTrustedCerts(ks));
     }
 
@@ -173,14 +182,14 @@ public abstract class Validator {
      * anchors.
      */
     public static Validator getInstance(String type, String variant,
-            Collection<X509Certificate> trustedCerts) {
+                                        Collection<X509Certificate> trustedCerts) {
         if (type.equals(TYPE_SIMPLE)) {
             return new SimpleValidator(variant, trustedCerts);
         } else if (type.equals(TYPE_PKIX)) {
             return new PKIXValidator(variant, trustedCerts);
         } else {
             throw new IllegalArgumentException
-                ("Unknown validator type: " + type);
+                    ("Unknown validator type: " + type);
         }
     }
 
@@ -189,11 +198,11 @@ public abstract class Validator {
      * This method can only be used with the PKIX validator.
      */
     public static Validator getInstance(String type, String variant,
-            PKIXBuilderParameters params) {
+                                        PKIXBuilderParameters params) {
         if (type.equals(TYPE_PKIX) == false) {
             throw new IllegalArgumentException
-                ("getInstance(PKIXBuilderParameters) can only be used "
-                + "with PKIX validator");
+                    ("getInstance(PKIXBuilderParameters) can only be used "
+                            + "with PKIX validator");
         }
         return new PKIXValidator(variant, params);
     }
@@ -212,7 +221,7 @@ public abstract class Validator {
      * path building.
      */
     public final X509Certificate[] validate(X509Certificate[] chain,
-        Collection<X509Certificate> otherCerts) throws CertificateException {
+                                            Collection<X509Certificate> otherCerts) throws CertificateException {
         return validate(chain, otherCerts, null);
     }
 
@@ -228,11 +237,12 @@ public abstract class Validator {
      * could be used to pass in a PKCS#7 object for code signing to check time
      * stamps.
      * <p>
+     *
      * @return a non-empty chain that was used to validate the path. The
      * end entity cert is at index 0, the trust anchor at index n-1.
      */
     public final X509Certificate[] validate(X509Certificate[] chain,
-            Collection<X509Certificate> otherCerts, Object parameter)
+                                            Collection<X509Certificate> otherCerts, Object parameter)
             throws CertificateException {
         return validate(chain, otherCerts, null, parameter);
     }
@@ -240,24 +250,24 @@ public abstract class Validator {
     /**
      * Validate the given certificate chain.
      *
-     * @param chain the target certificate chain
-     * @param otherCerts a Collection of additional X509Certificates that
-     *        could be helpful for path building (or null)
+     * @param chain       the target certificate chain
+     * @param otherCerts  a Collection of additional X509Certificates that
+     *                    could be helpful for path building (or null)
      * @param constraints algorithm constraints for certification path
-     *        processing
-     * @param parameter an additional parameter with variant specific meaning.
-     *        Currently, it is only defined for TLS_SERVER variant validators,
-     *        where it must be non null and the name of the TLS key exchange
-     *        algorithm being used (see JSSE X509TrustManager specification).
-     *        In the future, it could be used to pass in a PKCS#7 object for
-     *        code signing to check time stamps.
+     *                    processing
+     * @param parameter   an additional parameter with variant specific meaning.
+     *                    Currently, it is only defined for TLS_SERVER variant validators,
+     *                    where it must be non null and the name of the TLS key exchange
+     *                    algorithm being used (see JSSE X509TrustManager specification).
+     *                    In the future, it could be used to pass in a PKCS#7 object for
+     *                    code signing to check time stamps.
      * @return a non-empty chain that was used to validate the path. The
-     *        end entity cert is at index 0, the trust anchor at index n-1.
+     * end entity cert is at index 0, the trust anchor at index n-1.
      */
     public final X509Certificate[] validate(X509Certificate[] chain,
-                Collection<X509Certificate> otherCerts,
-                AlgorithmConstraints constraints,
-                Object parameter) throws CertificateException {
+                                            Collection<X509Certificate> otherCerts,
+                                            AlgorithmConstraints constraints,
+                                            Object parameter) throws CertificateException {
         chain = engineValidate(chain, otherCerts, constraints, parameter);
 
         // omit EE extension check if EE cert is also trust anchor
@@ -269,9 +279,9 @@ public abstract class Validator {
     }
 
     abstract X509Certificate[] engineValidate(X509Certificate[] chain,
-                Collection<X509Certificate> otherCerts,
-                AlgorithmConstraints constraints,
-                Object parameter) throws CertificateException;
+                                              Collection<X509Certificate> otherCerts,
+                                              AlgorithmConstraints constraints,
+                                              Object parameter) throws CertificateException;
 
     /**
      * Returns an immutable Collection of the X509Certificates this instance

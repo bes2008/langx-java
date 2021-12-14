@@ -27,7 +27,6 @@ package com.jn.langx.security.jsse.sun.security.util;
 
 /**
  * An enumeration of cryptographic primitives.
- *
  */
 public enum CryptoPrimitive {
     /**

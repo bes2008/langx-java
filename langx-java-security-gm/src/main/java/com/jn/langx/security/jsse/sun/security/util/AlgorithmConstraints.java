@@ -47,7 +47,6 @@ import java.util.Set;
  *
  * @see javax.net.ssl.SSLParameters#getAlgorithmConstraints
  * //@see javax.net.ssl.SSLParameters#setAlgorithmConstraints(AlgorithmConstraints)
- *
  */
 
 public interface AlgorithmConstraints {
@@ -57,18 +56,16 @@ public interface AlgorithmConstraints {
      * specified cryptographic primitives.
      *
      * @param primitives a set of cryptographic primitives
-     * @param algorithm the algorithm name
+     * @param algorithm  the algorithm name
      * @param parameters the algorithm parameters, or null if no additional
-     *     parameters
-     *
+     *                   parameters
      * @return true if the algorithm is permitted and can be used for all
-     *     of the specified cryptographic primitives
-     *
+     * of the specified cryptographic primitives
      * @throws IllegalArgumentException if primitives or algorithm is null
-     *     or empty
+     *                                  or empty
      */
     public boolean permits(Set<CryptoPrimitive> primitives,
-            String algorithm, AlgorithmParameters parameters);
+                           String algorithm, AlgorithmParameters parameters);
 
     /**
      * Determines whether a key is granted permission for the specified
@@ -77,13 +74,11 @@ public interface AlgorithmConstraints {
      * This method is usually used to check key size and key usage.
      *
      * @param primitives a set of cryptographic primitives
-     * @param key the key
-     *
+     * @param key        the key
      * @return true if the key can be used for all of the specified
-     *     cryptographic primitives
-     *
+     * cryptographic primitives
      * @throws IllegalArgumentException if primitives is null or empty,
-     *     or the key is null
+     *                                  or the key is null
      */
     public boolean permits(Set<CryptoPrimitive> primitives, Key key);
 
@@ -92,18 +87,16 @@ public interface AlgorithmConstraints {
      * permission for the specified cryptographic primitives.
      *
      * @param primitives a set of cryptographic primitives
-     * @param algorithm the algorithm name
-     * @param key the key
+     * @param algorithm  the algorithm name
+     * @param key        the key
      * @param parameters the algorithm parameters, or null if no additional
-     *     parameters
-     *
+     *                   parameters
      * @return true if the key and the algorithm can be used for all of the
-     *     specified cryptographic primitives
-     *
+     * specified cryptographic primitives
      * @throws IllegalArgumentException if primitives or algorithm is null
-     *     or empty, or the key is null
+     *                                  or empty, or the key is null
      */
     public boolean permits(Set<CryptoPrimitive> primitives,
-                String algorithm, Key key, AlgorithmParameters parameters);
+                           String algorithm, Key key, AlgorithmParameters parameters);
 
 }

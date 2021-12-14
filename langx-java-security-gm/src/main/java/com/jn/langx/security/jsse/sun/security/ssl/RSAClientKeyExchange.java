@@ -39,12 +39,11 @@ import sun.security.internal.spec.TlsRsaPremasterSecretParameterSpec;
 /**
  * This is the client key exchange message (CLIENT --> SERVER) used with
  * all RSA key exchanges; it holds the RSA-encrypted pre-master secret.
- *
+ * <p>
  * The message is encrypted using PKCS #1 block type 02 encryption with the
  * server's public key.  The padding and resulting message size is a function
  * of this server's public key modulus size, but the pre-master secret is
  * always exactly 48 bytes.
- *
  */
 final class RSAClientKeyExchange extends HandshakeMessage {
 
@@ -64,8 +63,8 @@ final class RSAClientKeyExchange extends HandshakeMessage {
      * server's public key, and uses PKCS #1 block format 02.
      */
     RSAClientKeyExchange(ProtocolVersion protocolVersion,
-            ProtocolVersion maxVersion,
-            SecureRandom generator, PublicKey publicKey) throws IOException {
+                         ProtocolVersion maxVersion,
+                         SecureRandom generator, PublicKey publicKey) throws IOException {
         if (publicKey.getAlgorithm().equals("RSA") == false) {
             throw new SSLKeyException("Public key not of type RSA");
         }
@@ -81,8 +80,8 @@ final class RSAClientKeyExchange extends HandshakeMessage {
             cipher.init(Cipher.WRAP_MODE, publicKey, generator);
             encrypted = cipher.wrap(preMaster);
         } catch (GeneralSecurityException e) {
-            throw (SSLKeyException)new SSLKeyException
-                                ("RSA premaster secret error").initCause(e);
+            throw (SSLKeyException) new SSLKeyException
+                    ("RSA premaster secret error").initCause(e);
         }
     }
 
@@ -91,9 +90,9 @@ final class RSAClientKeyExchange extends HandshakeMessage {
      * it with its private key.
      */
     RSAClientKeyExchange(ProtocolVersion currentVersion,
-            ProtocolVersion maxVersion,
-            SecureRandom generator, HandshakeInStream input,
-            int messageSize, PrivateKey privateKey) throws IOException {
+                         ProtocolVersion maxVersion,
+                         SecureRandom generator, HandshakeInStream input,
+                         int messageSize, PrivateKey privateKey) throws IOException {
 
         if (!privateKey.getAlgorithm().equals("RSA")) {
             throw new SSLKeyException("Private key not of type RSA");
@@ -102,7 +101,7 @@ final class RSAClientKeyExchange extends HandshakeMessage {
         if (currentVersion.v >= ProtocolVersion.TLS10.v) {
             encrypted = input.getBytes16();
         } else {
-            encrypted = new byte [messageSize];
+            encrypted = new byte[messageSize];
             if (input.read(encrypted) != messageSize) {
                 throw new SSLProtocolException
                         ("SSL: read PreMasterSecret: short read");
@@ -124,23 +123,23 @@ final class RSAClientKeyExchange extends HandshakeMessage {
                     failed = true;
                 }
                 encoded = KeyUtil.checkTlsPreMasterSecretKey(
-                                maxVersion.v, currentVersion.v,
-                                generator, encoded, failed);
+                        maxVersion.v, currentVersion.v,
+                        generator, encoded, failed);
                 preMaster = generatePreMasterSecret(
-                                maxVersion.v, currentVersion.v,
-                                encoded, generator);
+                        maxVersion.v, currentVersion.v,
+                        encoded, generator);
             } else {
                 cipher.init(Cipher.UNWRAP_MODE, privateKey,
                         new TlsRsaPremasterSecretParameterSpec(
                                 maxVersion.v, currentVersion.v),
                         generator);
-                preMaster = (SecretKey)cipher.unwrap(encrypted,
+                preMaster = (SecretKey) cipher.unwrap(encrypted,
                         "TlsRsaPremasterSecret", Cipher.SECRET_KEY);
             }
         } catch (InvalidKeyException ibk) {
             // the message is too big to process with RSA
             throw new SSLProtocolException(
-                "Unable to process PreMasterSecret, may be too big");
+                    "Unable to process PreMasterSecret, may be too big");
         } catch (Exception e) {
             // unlikely to happen, otherwise, must be a provider exception
             if (debug != null && Debug.isOn("handshake")) {
@@ -163,10 +162,10 @@ final class RSAClientKeyExchange extends HandshakeMessage {
 
         try {
             String s = ((clientVersion >= ProtocolVersion.TLS12.v) ?
-                "SunTls12RsaPremasterSecret" : "SunTlsRsaPremasterSecret");
+                    "SunTls12RsaPremasterSecret" : "SunTlsRsaPremasterSecret");
             KeyGenerator kg = JsseJce.getKeyGenerator(s);
             kg.init(new TlsRsaPremasterSecretParameterSpec(
-                    clientVersion, serverVersion, encodedSecret),
+                            clientVersion, serverVersion, encodedSecret),
                     generator);
             return kg.generateKey();
         } catch (InvalidAlgorithmParameterException iae) {
@@ -212,6 +211,6 @@ final class RSAClientKeyExchange extends HandshakeMessage {
     @Override
     void print(PrintStream s) throws IOException {
         s.println("*** ClientKeyExchange, RSA PreMasterSecret, " +
-                                                        protocolVersion);
+                protocolVersion);
     }
 }

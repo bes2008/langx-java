@@ -36,9 +36,9 @@ import javax.crypto.SecretKey;
  * <code>generateKey()</code> method of KeyGenerators of the type
  * "TlsMasterSecret".
  *
- * @since   1.6
- * @author  Andreas Sterbenz
- *  Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @author Andreas Sterbenz
+ * Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @since 1.6
  */
 public interface TlsMasterSecret extends SecretKey {
 

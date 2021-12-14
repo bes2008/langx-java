@@ -36,9 +36,9 @@ import javax.crypto.SecretKey;
  *
  * <p>Instances of this class are immutable.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
- *  Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @author Andreas Sterbenz
+ * Sun JDK internal use only --- WILL BE REMOVED in Dolphin (JDK 7)
+ * @since 1.6
  */
 public class TlsPrfParameterSpec implements AlgorithmParameterSpec {
 
@@ -50,12 +50,11 @@ public class TlsPrfParameterSpec implements AlgorithmParameterSpec {
     /**
      * Constructs a new TlsPrfParameterSpec.
      *
-     * @param secret the secret to use in the calculation (or null)
-     * @param label the label to use in the calculation
-     * @param seed the random seed to use in the calculation
+     * @param secret       the secret to use in the calculation (or null)
+     * @param label        the label to use in the calculation
+     * @param seed         the random seed to use in the calculation
      * @param outputLength the length in bytes of the output key to be produced
-     *
-     * @throws NullPointerException if label or seed is null
+     * @throws NullPointerException     if label or seed is null
      * @throws IllegalArgumentException if outputLength is negative
      */
     public TlsPrfParameterSpec(SecretKey secret, String label, byte[] seed, int outputLength) {

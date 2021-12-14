@@ -50,46 +50,43 @@ import javax.net.ssl.SSLServerSocket;
  * of your application support "anonymous" cipher suites, you may be
  * able to configure a server socket to accept those suites.
  *
+ * @author David Brownell
  * @see SSLSocketImpl
  * @see SSLServerSocketFactoryImpl
- *
- * @author David Brownell
  */
 final
-class SSLServerSocketImpl extends SSLServerSocket
-{
-    private SSLContextImpl      sslContext;
+class SSLServerSocketImpl extends SSLServerSocket {
+    private SSLContextImpl sslContext;
 
     /* Do newly accepted connections require clients to authenticate? */
-    private byte                doClientAuth = SSLEngineImpl.clauth_none;
+    private byte doClientAuth = SSLEngineImpl.clauth_none;
 
     /* Do new connections created here use the "server" mode of SSL? */
-    private boolean             useServerMode = true;
+    private boolean useServerMode = true;
 
     /* Can new connections created establish new sessions? */
-    private boolean             enableSessionCreation = true;
+    private boolean enableSessionCreation = true;
 
     /* what cipher suites to use by default */
-    private CipherSuiteList     enabledCipherSuites = null;
+    private CipherSuiteList enabledCipherSuites = null;
 
     /* which protocol to use by default */
-    private ProtocolList        enabledProtocols = null;
+    private ProtocolList enabledProtocols = null;
 
     /* could enabledCipherSuites ever complete handshaking? */
-    private boolean             checkedEnabled = false;
+    private boolean checkedEnabled = false;
 
     /**
      * Create an SSL server socket on a port, using a non-default
      * authentication context and a specified connection backlog.
      *
-     * @param port the port on which to listen
+     * @param port    the port on which to listen
      * @param backlog how many connections may be pending before
-     *          the system should start rejecting new requests
+     *                the system should start rejecting new requests
      * @param context authentication context for this server
      */
     SSLServerSocketImpl(int port, int backlog, SSLContextImpl context)
-    throws IOException, SSLException
-    {
+            throws IOException, SSLException {
         super(port, backlog);
         initServer(context);
     }
@@ -103,20 +100,19 @@ class SSLServerSocketImpl extends SSLServerSocket
      * for firewalls or as routers, to control through which interface
      * a network service is provided.
      *
-     * @param port the port on which to listen
+     * @param port    the port on which to listen
      * @param backlog how many connections may be pending before
-     *          the system should start rejecting new requests
+     *                the system should start rejecting new requests
      * @param address the address of the network interface through
-     *          which connections will be accepted
+     *                which connections will be accepted
      * @param context authentication context for this server
      */
     SSLServerSocketImpl(
-        int             port,
-        int             backlog,
-        InetAddress     address,
-        SSLContextImpl  context)
-        throws IOException
-    {
+            int port,
+            int backlog,
+            InetAddress address,
+            SSLContextImpl context)
+            throws IOException {
         super(port, backlog, address);
         initServer(context);
     }
@@ -171,7 +167,7 @@ class SSLServerSocketImpl extends SSLServerSocket
      * by accepted connections.
      *
      * @param suites Names of all the cipher suites to enable; null
-     *  means to accept system defaults.
+     *               means to accept system defaults.
      */
     synchronized public void setEnabledCipherSuites(String[] suites) {
         enabledCipherSuites = new CipherSuiteList(suites);
@@ -188,8 +184,8 @@ class SSLServerSocketImpl extends SSLServerSocket
      * getSupportedProtocols() as being supported.
      *
      * @param protocols protocols to enable.
-     * @exception IllegalArgumentException when one of the protocols
-     *  named by the parameter is not supported.
+     * @throws IllegalArgumentException when one of the protocols
+     *                                  named by the parameter is not supported.
      */
     synchronized public void setEnabledProtocols(String[] protocols) {
         enabledProtocols = new ProtocolList(protocols);
@@ -205,7 +201,7 @@ class SSLServerSocketImpl extends SSLServerSocket
      */
     public void setNeedClientAuth(boolean flag) {
         doClientAuth = (flag ?
-            SSLEngineImpl.clauth_required : SSLEngineImpl.clauth_none);
+                SSLEngineImpl.clauth_required : SSLEngineImpl.clauth_none);
     }
 
     public boolean getNeedClientAuth() {
@@ -218,7 +214,7 @@ class SSLServerSocketImpl extends SSLServerSocket
      */
     public void setWantClientAuth(boolean flag) {
         doClientAuth = (flag ?
-            SSLEngineImpl.clauth_requested : SSLEngineImpl.clauth_none);
+                SSLEngineImpl.clauth_requested : SSLEngineImpl.clauth_none);
     }
 
     public boolean getWantClientAuth() {
@@ -273,8 +269,8 @@ class SSLServerSocketImpl extends SSLServerSocket
      */
     public Socket accept() throws IOException {
         SSLSocketImpl s = new SSLSocketImpl(sslContext, useServerMode,
-            enabledCipherSuites, doClientAuth, enableSessionCreation,
-            enabledProtocols);
+                enabledCipherSuites, doClientAuth, enableSessionCreation,
+                enabledProtocols);
 
         implAccept(s);
         s.doneConnect();
@@ -285,6 +281,6 @@ class SSLServerSocketImpl extends SSLServerSocket
      * Provides a brief description of this SSL socket.
      */
     public String toString() {
-        return "[SSL: "+ super.toString() + "]";
+        return "[SSL: " + super.toString() + "]";
     }
 }

@@ -82,8 +82,7 @@ final public class SSLSocketFactoryImpl extends SSLSocketFactory {
      * @param port number of the server's port
      */
     public Socket createSocket(String host, int port)
-    throws IOException, UnknownHostException
-    {
+            throws IOException, UnknownHostException {
         return new SSLSocketImpl(context, host, port);
     }
 
@@ -95,16 +94,15 @@ final public class SSLSocketFactoryImpl extends SSLSocketFactory {
      * socket is configured using the socket options established for
      * this factory.
      *
-     * @param s the existing socket
-     * @param host the server host
-     * @param port the server port
+     * @param s         the existing socket
+     * @param host      the server host
+     * @param port      the server port
      * @param autoClose close the underlying socket when this socket is closed
-     *
-     * @exception IOException if the connection can't be established
-     * @exception UnknownHostException if the host is not known
+     * @throws IOException          if the connection can't be established
+     * @throws UnknownHostException if the host is not known
      */
     public Socket createSocket(Socket s, String host, int port,
-            boolean autoClose) throws IOException {
+                               boolean autoClose) throws IOException {
         return new SSLSocketImpl(context, s, host, port, autoClose);
     }
 
@@ -116,11 +114,10 @@ final public class SSLSocketFactoryImpl extends SSLSocketFactory {
      * context which has been configured.
      *
      * @param address the server's host
-     * @param port its port
+     * @param port    its port
      */
     public Socket createSocket(InetAddress address, int port)
-    throws IOException
-    {
+            throws IOException {
         return new SSLSocketImpl(context, address, port);
     }
 
@@ -133,9 +130,8 @@ final public class SSLSocketFactoryImpl extends SSLSocketFactory {
      * address and port supplied.
      */
     public Socket createSocket(String host, int port,
-        InetAddress clientAddress, int clientPort)
-    throws IOException
-    {
+                               InetAddress clientAddress, int clientPort)
+            throws IOException {
         return new SSLSocketImpl(context, host, port,
                 clientAddress, clientPort);
     }
@@ -148,9 +144,8 @@ final public class SSLSocketFactoryImpl extends SSLSocketFactory {
      * the local address and port supplied.
      */
     public Socket createSocket(InetAddress address, int port,
-        InetAddress clientAddress, int clientPort)
-    throws IOException
-    {
+                               InetAddress clientAddress, int clientPort)
+            throws IOException {
         return new SSLSocketImpl(context, address, port,
                 clientAddress, clientPort);
     }

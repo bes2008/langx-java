@@ -37,9 +37,9 @@ import sun.security.util.ObjectIdentifier;
 /**
  * This class implements encoding and decoding of Elliptic Curve parameters
  * as specified in RFC 3279.
- *
+ * <p>
  * However, only named curves are currently supported.
- *
+ * <p>
  * ASN.1 from RFC 3279 follows. Note that X9.62 (2005) has added some additional
  * options.
  *
@@ -73,8 +73,8 @@ import sun.security.util.ObjectIdentifier;
  *    ECPoint ::= OCTET STRING
  * </pre>
  *
- * @since   1.6
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
+ * @since 1.6
  */
 public final class ECParameters extends AlgorithmParametersSpi {
 
@@ -88,7 +88,7 @@ public final class ECParameters extends AlgorithmParametersSpi {
         if ((data.length == 0) || (data[0] != 4)) {
             throw new IOException("Only uncompressed point format supported");
         }
-        int n = (curve.getField().getFieldSize() + 7 ) >> 3;
+        int n = (curve.getField().getFieldSize() + 7) >> 3;
         if (data.length != (n * 2) + 1) {
             throw new IOException("Point does not match field size");
         }
@@ -107,7 +107,7 @@ public final class ECParameters extends AlgorithmParametersSpi {
         byte[] yb = trimZeroes(point.getAffineY().toByteArray());
         if ((xb.length > n) || (yb.length > n)) {
             throw new RuntimeException
-                ("Point coordinates do not match field size");
+                    ("Point coordinates do not match field size");
         }
         byte[] b = new byte[1 + (n << 1)];
         b[0] = 4; // uncompressed
@@ -136,7 +136,7 @@ public final class ECParameters extends AlgorithmParametersSpi {
     // Used by SunPKCS11.
     public static NamedCurve getNamedCurve(ECParameterSpec params) {
         if ((params instanceof NamedCurve) || (params == null)) {
-            return (NamedCurve)params;
+            return (NamedCurve) params;
         }
         // This is a hack to allow SunJSSE to work with 3rd party crypto
         // providers for ECC and not just SunPKCS11.
@@ -167,7 +167,7 @@ public final class ECParameters extends AlgorithmParametersSpi {
                 continue;
             }
             // everything matches our named curve, return it
-            return (NamedCurve)namedCurve;
+            return (NamedCurve) namedCurve;
         }
         // no match found
         return null;
@@ -278,7 +278,7 @@ public final class ECParameters extends AlgorithmParametersSpi {
             throws InvalidKeyException {
         try {
             AlgorithmParameters params = AlgorithmParameters.getInstance
-                                        ("EC", ECKeyFactory.ecInternalProvider);
+                    ("EC", ECKeyFactory.ecInternalProvider);
             params.init(spec);
             return params;
         } catch (GeneralSecurityException e) {
@@ -295,13 +295,13 @@ public final class ECParameters extends AlgorithmParametersSpi {
     protected void engineInit(AlgorithmParameterSpec paramSpec)
             throws InvalidParameterSpecException {
         if (paramSpec instanceof ECParameterSpec) {
-            this.paramSpec = getNamedCurve((ECParameterSpec)paramSpec);
+            this.paramSpec = getNamedCurve((ECParameterSpec) paramSpec);
             if (this.paramSpec == null) {
                 throw new InvalidParameterSpecException
-                    ("Not a supported named curve: " + paramSpec);
+                        ("Not a supported named curve: " + paramSpec);
             }
         } else if (paramSpec instanceof ECGenParameterSpec) {
-            String name = ((ECGenParameterSpec)paramSpec).getName();
+            String name = ((ECGenParameterSpec) paramSpec).getName();
             ECParameterSpec spec = NamedCurve.getECParameterSpec(name);
             if (spec == null) {
                 throw new InvalidParameterSpecException("Unknown curve: " + name);
@@ -309,10 +309,10 @@ public final class ECParameters extends AlgorithmParametersSpi {
             this.paramSpec = spec;
         } else if (paramSpec == null) {
             throw new InvalidParameterSpecException
-                ("paramSpec must not be null");
+                    ("paramSpec must not be null");
         } else {
             throw new InvalidParameterSpecException
-                ("Only ECParameterSpec and ECGenParameterSpec supported");
+                    ("Only ECParameterSpec and ECGenParameterSpec supported");
         }
     }
 
@@ -332,7 +332,7 @@ public final class ECParameters extends AlgorithmParametersSpi {
             return spec.cast(new ECGenParameterSpec(getCurveName(paramSpec)));
         } else {
             throw new InvalidParameterSpecException
-                ("Only ECParameterSpec and ECGenParameterSpec supported");
+                    ("Only ECParameterSpec and ECGenParameterSpec supported");
         }
     }
 

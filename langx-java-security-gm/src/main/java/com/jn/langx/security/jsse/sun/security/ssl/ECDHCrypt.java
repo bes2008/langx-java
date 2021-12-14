@@ -34,6 +34,7 @@ import java.util.EnumSet;
 import javax.crypto.SecretKey;
 import javax.crypto.KeyAgreement;
 import javax.net.ssl.SSLHandshakeException;
+
 import com.jn.langx.security.jsse.sun.security.util.AlgorithmConstraints;
 import com.jn.langx.security.jsse.sun.security.util.CryptoPrimitive;
 
@@ -41,8 +42,8 @@ import com.jn.langx.security.jsse.sun.security.util.CryptoPrimitive;
  * Helper class for the ECDH key exchange. It generates the appropriate
  * ephemeral keys as necessary and performs the actual shared secret derivation.
  *
- * @since   1.6
- * @author  Andreas Sterbenz
+ * @author Andreas Sterbenz
+ * @since 1.6
  */
 final class ECDHCrypt {
 
@@ -55,7 +56,7 @@ final class ECDHCrypt {
     // Called by ServerHandshaker for static ECDH
     ECDHCrypt(PrivateKey privateKey, PublicKey publicKey) {
         this.privateKey = privateKey;
-        this.publicKey = (ECPublicKey)publicKey;
+        this.publicKey = (ECPublicKey) publicKey;
     }
 
     // Called by ServerHandshaker for ephemeral ECDH
@@ -67,7 +68,7 @@ final class ECDHCrypt {
             kpg.initialize(params, random);
             KeyPair kp = kpg.generateKeyPair();
             privateKey = kp.getPrivate();
-            publicKey = (ECPublicKey)kp.getPublic();
+            publicKey = (ECPublicKey) kp.getPublic();
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Could not generate DH keypair", e);
         }
@@ -80,7 +81,7 @@ final class ECDHCrypt {
             kpg.initialize(params, random);
             KeyPair kp = kpg.generateKeyPair();
             privateKey = kp.getPrivate();
-            publicKey = (ECPublicKey)kp.getPublic();
+            publicKey = (ECPublicKey) kp.getPublic();
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Could not generate DH keypair", e);
         }
@@ -105,7 +106,7 @@ final class ECDHCrypt {
             return ka.generateSecret("TlsPremasterSecret");
         } catch (GeneralSecurityException e) {
             throw (SSLHandshakeException) new SSLHandshakeException(
-                "Could not generate secret").initCause(e);
+                    "Could not generate secret").initCause(e);
         }
     }
 
@@ -123,16 +124,16 @@ final class ECDHCrypt {
             return getAgreedSecret(peerPublicKey);
         } catch (GeneralSecurityException e) {
             throw (SSLHandshakeException) new SSLHandshakeException(
-                "Could not generate secret").initCause(e);
+                    "Could not generate secret").initCause(e);
         } catch (java.io.IOException e) {
             throw (SSLHandshakeException) new SSLHandshakeException(
-                "Could not generate secret").initCause(e);
+                    "Could not generate secret").initCause(e);
         }
     }
 
     // Check constraints of the specified EC public key.
     void checkConstraints(AlgorithmConstraints constraints,
-            byte[] encodedPoint) throws SSLHandshakeException {
+                          byte[] encodedPoint) throws SSLHandshakeException {
 
         try {
 
@@ -142,13 +143,13 @@ final class ECDHCrypt {
             ECPublicKeySpec spec = new ECPublicKeySpec(point, params);
 
             KeyFactory kf = JsseJce.getKeyFactory("EC");
-            ECPublicKey publicKey = (ECPublicKey)kf.generatePublic(spec);
+            ECPublicKey publicKey = (ECPublicKey) kf.generatePublic(spec);
 
             // check constraints of ECPublicKey
             if (!constraints.permits(
                     EnumSet.of(CryptoPrimitive.KEY_AGREEMENT), publicKey)) {
                 throw new SSLHandshakeException(
-                    "ECPublicKey does not comply to algorithm constraints");
+                        "ECPublicKey does not comply to algorithm constraints");
             }
         } catch (GeneralSecurityException e) {
             throw (SSLHandshakeException) new SSLHandshakeException(

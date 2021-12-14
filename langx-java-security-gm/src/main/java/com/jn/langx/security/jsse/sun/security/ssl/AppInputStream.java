@@ -119,7 +119,7 @@ class AppInputStream extends InputStream {
     public synchronized long skip(long n) throws IOException {
         long skipped = 0;
         while (n > 0) {
-            int len = (int)Math.min(n, SKIP_ARRAY.length);
+            int len = (int) Math.min(n, SKIP_ARRAY.length);
             int r = read(SKIP_ARRAY, 0, len);
             if (r <= 0) {
                 break;

@@ -35,6 +35,7 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 
 import com.jn.langx.security.jsse.sun.security.ssl.CipherSuite.MacAlg;
+
 import static com.jn.langx.security.jsse.sun.security.ssl.CipherSuite.*;
 
 /**
@@ -44,7 +45,7 @@ import static com.jn.langx.security.jsse.sun.security.ssl.CipherSuite.*;
  * one of several keyed hashes, as associated with the cipher suite and
  * protocol version.  (SSL v3.0 uses one construct, TLS uses another.)
  *
- * <P>
+ * <p>
  * NOTE: MAC computation is the only place in the SSL protocol that the
  * sequence number is used.  It's also reset to zero with each change of
  * a cipher spec, so this is the only place this state is needed.
@@ -60,10 +61,10 @@ final class MAC {
     private static final byte nullMAC[] = new byte[0];
 
     // internal identifier for the MAC algorithm
-    private final MacAlg        macAlg;
+    private final MacAlg macAlg;
 
     // stuff defined by the kind of MAC algorithm
-    private final int           macSize;
+    private final int macSize;
 
     // JCE Mac object
     private final Mac mac;
@@ -79,7 +80,7 @@ final class MAC {
     private static final int BLOCK_SIZE_TLS = 8 + 1 + 2 + 2;
 
     // offset of record type in block
-    private static final int BLOCK_OFFSET_TYPE    = 8;
+    private static final int BLOCK_OFFSET_TYPE = 8;
 
     // offset of protocol version number in block (TLS only)
     private static final int BLOCK_OFFSET_VERSION = 8 + 1;
@@ -115,8 +116,8 @@ final class MAC {
 
         if (tls) {
             block = new byte[BLOCK_SIZE_TLS];
-            block[BLOCK_OFFSET_VERSION]   = protocolVersion.major;
-            block[BLOCK_OFFSET_VERSION+1] = protocolVersion.minor;
+            block[BLOCK_OFFSET_VERSION] = protocolVersion.major;
+            block[BLOCK_OFFSET_VERSION + 1] = protocolVersion.minor;
         } else {
             block = new byte[BLOCK_SIZE_SSL];
         }
@@ -146,27 +147,27 @@ final class MAC {
     /**
      * Computes and returns the MAC for the data in this byte array.
      *
-     * @param type record type
-     * @param buf compressed record on which the MAC is computed
-     * @param offset start of compressed record data
-     * @param len the size of the compressed record
+     * @param type        record type
+     * @param buf         compressed record on which the MAC is computed
+     * @param offset      start of compressed record data
+     * @param len         the size of the compressed record
      * @param isSimulated if true, simulate the the MAC computation
      */
     final byte[] compute(byte type, byte buf[],
-            int offset, int len, boolean isSimulated) {
+                         int offset, int len, boolean isSimulated) {
         return compute(type, null, buf, offset, len, isSimulated);
     }
 
     /**
      * Compute and returns the MAC for the remaining data
      * in this ByteBuffer.
-     *
+     * <p>
      * On return, the bb position == limit, and limit will
      * have not changed.
      *
-     * @param type record type
-     * @param bb a ByteBuffer in which the position and limit
-     *          demarcate the data to be MAC'd.
+     * @param type        record type
+     * @param bb          a ByteBuffer in which the position and limit
+     *                    demarcate the data to be MAC'd.
      * @param isSimulated if true, simulate the the MAC computation
      */
     final byte[] compute(byte type, ByteBuffer bb, boolean isSimulated) {
@@ -175,7 +176,7 @@ final class MAC {
 
     /**
      * Check whether the sequence number is close to wrap
-     *
+     * <p>
      * Sequence numbers are of type uint64 and may not exceed 2^64-1.
      * Sequence numbers do not wrap. When the sequence number is near
      * to wrap, we need to close the connection immediately.
@@ -223,7 +224,7 @@ final class MAC {
      * or buf/offset/len.
      */
     private byte[] compute(byte type, ByteBuffer bb, byte[] buf,
-            int offset, int len, boolean isSimulated) {
+                           int offset, int len, boolean isSimulated) {
 
         if (macSize == 0) {
             return nullMAC;
@@ -232,8 +233,8 @@ final class MAC {
         // MUST NOT increase the sequence number for a simulated computation.
         if (!isSimulated) {
             block[BLOCK_OFFSET_TYPE] = type;
-            block[block.length - 2]  = (byte)(len >> 8);
-            block[block.length - 1]  = (byte)(len     );
+            block[block.length - 2] = (byte) (len >> 8);
+            block[block.length - 1] = (byte) (len);
 
             mac.update(block);
             incrementSequenceNumber();
