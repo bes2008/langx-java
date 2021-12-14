@@ -129,7 +129,7 @@ final public class SSLSocketImpl extends BaseSSLSocketImpl {
      * cipher spec and "Finished" handshake messages are processed and
      * make the "new" session become the current one.
      *
-     * NOTE: details of the SMs always need to be nailed down better.
+     * NOTE: details of the state machines always need to be nailed down better.
      * The text above illustrates the core ideas.
      *
      *                +---->-------+------>--------->-------+
@@ -1324,7 +1324,7 @@ final public class SSLSocketImpl extends BaseSSLSocketImpl {
      * Starts an SSL handshake on this connection.
      */
     public void startHandshake() throws IOException {
-        // start an ssl handshake that could be resumed from timeout exception
+        // start a ssl handshake that could be resumed from timeout exception
         startHandshake(true);
     }
 
@@ -1376,14 +1376,12 @@ final public class SSLSocketImpl extends BaseSSLSocketImpl {
 
             case cs_DATA:
                 if (!secureRenegotiation && !Handshaker.allowUnsafeRenegotiation) {
-                    throw new SSLHandshakeException(
-                            "Insecure renegotiation is not allowed");
+                    throw new SSLHandshakeException("Insecure renegotiation is not allowed");
                 }
 
                 if (!secureRenegotiation) {
                     if (debug != null && Debug.isOn("handshake")) {
-                        System.out.println(
-                                "Warning: Using insecure renegotiation");
+                        System.out.println("Warning: Using insecure renegotiation");
                     }
                 }
 

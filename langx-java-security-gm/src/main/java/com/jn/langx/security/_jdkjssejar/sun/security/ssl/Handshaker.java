@@ -49,8 +49,6 @@ import javax.net.ssl.*;
 import com.jn.langx.security._jdkjssejar.sun.security.util.CryptoPrimitive;
 import sun.misc.HexDumpEncoder;
 
-import com.jn.langx.security.jsse.sun.security.internal.spec.*;
-
 import com.jn.langx.security._jdkjssejar.sun.security.ssl.HandshakeMessage.*;
 import com.jn.langx.security._jdkjssejar.sun.security.ssl.CipherSuite.*;
 

@@ -58,11 +58,9 @@ public final class GmSunJsseProvider extends Provider {
 
     private static final long serialVersionUID = 3231825739635378733L;
     private static final String PROVIDER_NAME = "LangxGmSunJsseProvider";
-    private static String info = "Langx GM JSSE provider" +
-            "(PKCS12, SunX509 key/trust factories, SSLv3, TLSv1)";
+    private static String info = PROVIDER_NAME + " (PKCS12, SunX509 key/trust factories, SSLv3, TLSv1)";
 
-    private static String fipsInfo =
-            "Langx GM JSSE provider (FIPS mode, crypto provider ";
+    private static String fipsInfo = PROVIDER_NAME + " (FIPS mode, crypto provider ";
 
     // tri-valued flag:
     // null  := no final decision made
@@ -101,7 +99,7 @@ public final class GmSunJsseProvider extends Provider {
     }
 
     // standard constructor
-    protected GmSunJsseProvider() {
+    public GmSunJsseProvider() {
         super(PROVIDER_NAME, 1.6d, info);
         subclassCheck();
         if (Boolean.TRUE.equals(fips)) {
@@ -111,12 +109,12 @@ public final class GmSunJsseProvider extends Provider {
     }
 
     // prefered constructor to enable FIPS mode at runtime
-    protected GmSunJsseProvider(java.security.Provider cryptoProvider) {
+    public GmSunJsseProvider(java.security.Provider cryptoProvider) {
         this(checkNull(cryptoProvider), cryptoProvider.getName());
     }
 
     // constructor to enable FIPS mode from java.security file
-    protected GmSunJsseProvider(String cryptoProvider) {
+    public GmSunJsseProvider(String cryptoProvider) {
         this(null, checkNull(cryptoProvider));
     }
 
@@ -128,7 +126,7 @@ public final class GmSunJsseProvider extends Provider {
     }
 
     private GmSunJsseProvider(java.security.Provider cryptoProvider, String providerName) {
-        super("SunJSSE", 1.6d, fipsInfo + providerName + ")");
+        super(PROVIDER_NAME, 1.6d, fipsInfo + providerName + ")");
         subclassCheck();
         if (cryptoProvider == null) {
             // Calling Security.getProvider() will cause other providers to be
@@ -153,7 +151,7 @@ public final class GmSunJsseProvider extends Provider {
     }
 
     private void doRegister(boolean isfips) {
-        if (isfips == false) {
+        if (!isfips) {
             put("KeyFactory.RSA",
                     "sun.security.rsa.RSAKeyFactory");
             put("Alg.Alias.KeyFactory.1.2.840.113549.1.1", "RSA");
