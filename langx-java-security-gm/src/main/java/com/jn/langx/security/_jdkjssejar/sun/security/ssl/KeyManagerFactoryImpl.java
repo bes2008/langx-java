@@ -59,10 +59,10 @@ abstract class KeyManagerFactoryImpl extends KeyManagerFactorySpi {
         protected void engineInit(KeyStore ks, char[] password) throws
                 KeyStoreException, NoSuchAlgorithmException,
                 UnrecoverableKeyException {
-            if ((ks != null) && SunJSSE.isFIPS()) {
-                if (ks.getProvider() != SunJSSE.cryptoProvider) {
+            if ((ks != null) && GmSunJsseProvider.isFIPS()) {
+                if (ks.getProvider() != GmSunJsseProvider.cryptoProvider) {
                     throw new KeyStoreException("FIPS mode: KeyStore must be "
-                            + "from provider " + SunJSSE.cryptoProvider.getName());
+                            + "from provider " + GmSunJsseProvider.cryptoProvider.getName());
                 }
             }
             keyManager = new SunX509KeyManagerImpl(ks, password);
@@ -87,9 +87,9 @@ abstract class KeyManagerFactoryImpl extends KeyManagerFactorySpi {
                 keyManager = new X509KeyManagerImpl(
                         Collections.<Builder>emptyList());
             } else {
-                if (SunJSSE.isFIPS() && (ks.getProvider() != SunJSSE.cryptoProvider)) {
+                if (GmSunJsseProvider.isFIPS() && (ks.getProvider() != GmSunJsseProvider.cryptoProvider)) {
                     throw new KeyStoreException("FIPS mode: KeyStore must be "
-                            + "from provider " + SunJSSE.cryptoProvider.getName());
+                            + "from provider " + GmSunJsseProvider.cryptoProvider.getName());
                 }
                 try {
                     Builder builder = Builder.newInstance(ks,
@@ -108,7 +108,7 @@ abstract class KeyManagerFactoryImpl extends KeyManagerFactorySpi {
                 throw new InvalidAlgorithmParameterException(
                         "Parameters must be instance of KeyStoreBuilderParameters");
             }
-            if (SunJSSE.isFIPS()) {
+            if (GmSunJsseProvider.isFIPS()) {
                 // XXX should be fixed
                 throw new InvalidAlgorithmParameterException
                         ("FIPS mode: KeyStoreBuilderParameters not supported");

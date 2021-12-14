@@ -54,15 +54,15 @@ import java.security.*;
  * data structures need to be initialized or until SunJSSE is initialized in
  * FIPS mode.
  */
-public abstract class SunJSSE extends java.security.Provider {
+public final class GmSunJsseProvider extends Provider {
 
     private static final long serialVersionUID = 3231825739635378733L;
 
-    private static String info = "Sun JSSE provider" +
+    private static String info = "Langx GM JSSE provider" +
             "(PKCS12, SunX509 key/trust factories, SSLv3, TLSv1)";
 
     private static String fipsInfo =
-            "Sun JSSE provider (FIPS mode, crypto provider ";
+            "Langx GM JSSE provider (FIPS mode, crypto provider ";
 
     // tri-valued flag:
     // null  := no final decision made
@@ -72,9 +72,9 @@ public abstract class SunJSSE extends java.security.Provider {
 
     // the FIPS certificate crypto provider that we use to perform all crypto
     // operations. null in non-FIPS mode
-    static java.security.Provider cryptoProvider;
+    static Provider cryptoProvider;
 
-    protected static synchronized boolean isFIPS() {
+    static synchronized boolean isFIPS() {
         if (fips == null) {
             fips = false;
         }
@@ -88,7 +88,7 @@ public abstract class SunJSSE extends java.security.Provider {
             fips = true;
             cryptoProvider = p;
         } else {
-            if (fips == false) {
+            if (!fips) {
                 throw new ProviderException
                         ("SunJSSE already initialized in non-FIPS mode");
             }
@@ -101,8 +101,8 @@ public abstract class SunJSSE extends java.security.Provider {
     }
 
     // standard constructor
-    protected SunJSSE() {
-        super("SunJSSE", 1.6d, info);
+    protected GmSunJsseProvider() {
+        super("LangxGmSunJsseProvider", 1.6d, info);
         subclassCheck();
         if (Boolean.TRUE.equals(fips)) {
             throw new ProviderException
@@ -112,12 +112,12 @@ public abstract class SunJSSE extends java.security.Provider {
     }
 
     // prefered constructor to enable FIPS mode at runtime
-    protected SunJSSE(java.security.Provider cryptoProvider) {
+    protected GmSunJsseProvider(java.security.Provider cryptoProvider) {
         this(checkNull(cryptoProvider), cryptoProvider.getName());
     }
 
     // constructor to enable FIPS mode from java.security file
-    protected SunJSSE(String cryptoProvider) {
+    protected GmSunJsseProvider(String cryptoProvider) {
         this(null, checkNull(cryptoProvider));
     }
 
@@ -128,7 +128,7 @@ public abstract class SunJSSE extends java.security.Provider {
         return t;
     }
 
-    private SunJSSE(java.security.Provider cryptoProvider, String providerName) {
+    private GmSunJsseProvider(java.security.Provider cryptoProvider, String providerName) {
         super("SunJSSE", 1.6d, fipsInfo + providerName + ")");
         subclassCheck();
         if (cryptoProvider == null) {

@@ -433,7 +433,7 @@ final class SupportedEllipticCurvesExtension extends HelloExtension {
     }
 
     static {
-        boolean requireFips = SunJSSE.isFIPS();
+        boolean requireFips = GmSunJsseProvider.isFIPS();
 
         // hack code to initialize NamedEllipticCurve
         NamedEllipticCurve nec =

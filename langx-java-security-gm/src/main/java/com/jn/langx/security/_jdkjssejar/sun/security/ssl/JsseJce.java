@@ -87,7 +87,7 @@ final class JsseJce {
         // Because isFIPS() is synchronized and cryptoProvider is not modified
         // after it completes, this also eliminates the need for any further
         // synchronization when accessing cryptoProvider
-        if (SunJSSE.isFIPS() == false) {
+        if (!GmSunJsseProvider.isFIPS()) {
             fipsProviderList = null;
         } else {
             // Setup a ProviderList that can be used by the trust manager
@@ -100,7 +100,7 @@ final class JsseJce {
                         ("FIPS mode: SUN provider must be installed");
             }
             Provider sunCerts = new SunCertificates(sun);
-            fipsProviderList = ProviderList.newList(SunJSSE.cryptoProvider, sunCerts);
+            fipsProviderList = ProviderList.newList(GmSunJsseProvider.cryptoProvider, sunCerts);
         }
     }
 
@@ -218,10 +218,10 @@ final class JsseJce {
     static Cipher getCipher(String transformation)
             throws NoSuchAlgorithmException {
         try {
-            if (SunJSSE.cryptoProvider == null) {
+            if (GmSunJsseProvider.cryptoProvider == null) {
                 return Cipher.getInstance(transformation);
             } else {
-                return Cipher.getInstance(transformation, SunJSSE.cryptoProvider);
+                return Cipher.getInstance(transformation, GmSunJsseProvider.cryptoProvider);
             }
         } catch (NoSuchPaddingException e) {
             throw new NoSuchAlgorithmException(e);
@@ -235,7 +235,7 @@ final class JsseJce {
      */
     static Signature getSignature(String algorithm)
             throws NoSuchAlgorithmException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return Signature.getInstance(algorithm);
         } else {
             // reference equality
@@ -244,7 +244,7 @@ final class JsseJce {
                 // special algorithm. We allow a fallback in this case because
                 // the SunJSSE implementation does the actual crypto using
                 // a NONEwithRSA signature obtained from the cryptoProvider.
-                if (SunJSSE.cryptoProvider.getService("Signature", algorithm) == null) {
+                if (GmSunJsseProvider.cryptoProvider.getService("Signature", algorithm) == null) {
                     // Calling Signature.getInstance() and catching the
                     // exception would be cleaner, but exceptions are a little
                     // expensive. So we check directly via getService().
@@ -255,86 +255,86 @@ final class JsseJce {
                     }
                 }
             }
-            return Signature.getInstance(algorithm, SunJSSE.cryptoProvider);
+            return Signature.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
         }
     }
 
     static KeyGenerator getKeyGenerator(String algorithm)
             throws NoSuchAlgorithmException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return KeyGenerator.getInstance(algorithm);
         } else {
-            return KeyGenerator.getInstance(algorithm, SunJSSE.cryptoProvider);
+            return KeyGenerator.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
         }
     }
 
     static KeyPairGenerator getKeyPairGenerator(String algorithm)
             throws NoSuchAlgorithmException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return KeyPairGenerator.getInstance(algorithm);
         } else {
-            return KeyPairGenerator.getInstance(algorithm, SunJSSE.cryptoProvider);
+            return KeyPairGenerator.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
         }
     }
 
     static KeyAgreement getKeyAgreement(String algorithm)
             throws NoSuchAlgorithmException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return KeyAgreement.getInstance(algorithm);
         } else {
-            return KeyAgreement.getInstance(algorithm, SunJSSE.cryptoProvider);
+            return KeyAgreement.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
         }
     }
 
     static Mac getMac(String algorithm)
             throws NoSuchAlgorithmException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return Mac.getInstance(algorithm);
         } else {
-            return Mac.getInstance(algorithm, SunJSSE.cryptoProvider);
+            return Mac.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
         }
     }
 
     static KeyFactory getKeyFactory(String algorithm)
             throws NoSuchAlgorithmException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return KeyFactory.getInstance(algorithm);
         } else {
-            return KeyFactory.getInstance(algorithm, SunJSSE.cryptoProvider);
+            return KeyFactory.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
         }
     }
 
     static AlgorithmParameters getAlgorithmParameters(String algorithm)
             throws NoSuchAlgorithmException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return AlgorithmParameters.getInstance(algorithm);
         } else {
-            return AlgorithmParameters.getInstance(algorithm, SunJSSE.cryptoProvider);
+            return AlgorithmParameters.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
         }
     }
 
     static SecureRandom getSecureRandom() throws KeyManagementException {
-        if (SunJSSE.cryptoProvider == null) {
+        if (GmSunJsseProvider.cryptoProvider == null) {
             return new SecureRandom();
         }
         // Try "PKCS11" first. If that is not supported, iterate through
         // the provider and return the first working implementation.
         try {
-            return SecureRandom.getInstance("PKCS11", SunJSSE.cryptoProvider);
+            return SecureRandom.getInstance("PKCS11", GmSunJsseProvider.cryptoProvider);
         } catch (NoSuchAlgorithmException e) {
             // ignore
         }
-        for (Provider.Service s : SunJSSE.cryptoProvider.getServices()) {
+        for (Provider.Service s : GmSunJsseProvider.cryptoProvider.getServices()) {
             if (s.getType().equals("SecureRandom")) {
                 try {
-                    return SecureRandom.getInstance(s.getAlgorithm(), SunJSSE.cryptoProvider);
+                    return SecureRandom.getInstance(s.getAlgorithm(), GmSunJsseProvider.cryptoProvider);
                 } catch (NoSuchAlgorithmException ee) {
                     // ignore
                 }
             }
         }
         throw new KeyManagementException("FIPS mode: no SecureRandom "
-                + " implementation found in provider " + SunJSSE.cryptoProvider.getName());
+                + " implementation found in provider " + GmSunJsseProvider.cryptoProvider.getName());
     }
 
     static MessageDigest getMD5() {
@@ -347,10 +347,10 @@ final class JsseJce {
 
     static MessageDigest getMessageDigest(String algorithm) {
         try {
-            if (SunJSSE.cryptoProvider == null) {
+            if (GmSunJsseProvider.cryptoProvider == null) {
                 return MessageDigest.getInstance(algorithm);
             } else {
-                return MessageDigest.getInstance(algorithm, SunJSSE.cryptoProvider);
+                return MessageDigest.getInstance(algorithm, GmSunJsseProvider.cryptoProvider);
             }
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException

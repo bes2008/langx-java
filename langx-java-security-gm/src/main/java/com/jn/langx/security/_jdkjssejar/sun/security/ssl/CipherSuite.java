@@ -583,7 +583,7 @@ final class CipherSuite implements Comparable<CipherSuite> {
         final boolean F = false;
         final boolean T = true;
         // N: ciphersuites only allowed if we are not in FIPS mode
-        final boolean N = (SunJSSE.isFIPS() == false);
+        final boolean N = (GmSunJsseProvider.isFIPS() == false);
 
         /*
          * TLS Cipher Suite Registry, as of August 2010.

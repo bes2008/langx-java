@@ -93,10 +93,10 @@ public abstract class SSLContextImpl extends SSLContextSpi {
         if (sr == null) {
             secureRandom = JsseJce.getSecureRandom();
         } else {
-            if (SunJSSE.isFIPS() && (sr.getProvider() != SunJSSE.cryptoProvider)) {
+            if (GmSunJsseProvider.isFIPS() && (sr.getProvider() != GmSunJsseProvider.cryptoProvider)) {
                 throw new KeyManagementException
                         ("FIPS mode: SecureRandom must be from provider "
-                                + SunJSSE.cryptoProvider.getName());
+                                + GmSunJsseProvider.cryptoProvider.getName());
             }
             secureRandom = sr;
         }
@@ -122,7 +122,7 @@ public abstract class SSLContextImpl extends SSLContextSpi {
         // We only use the first instance of X509TrustManager passed to us.
         for (int i = 0; tm != null && i < tm.length; i++) {
             if (tm[i] instanceof X509TrustManager) {
-                if (SunJSSE.isFIPS() && !(tm[i] instanceof X509TrustManagerImpl)) {
+                if (GmSunJsseProvider.isFIPS() && !(tm[i] instanceof X509TrustManagerImpl)) {
                     throw new KeyManagementException
                             ("FIPS mode: only SunJSSE TrustManagers may be used");
                 }
@@ -141,7 +141,7 @@ public abstract class SSLContextImpl extends SSLContextSpi {
             if (!(km instanceof X509KeyManager)) {
                 continue;
             }
-            if (SunJSSE.isFIPS()) {
+            if (GmSunJsseProvider.isFIPS()) {
                 // In FIPS mode, require that one of SunJSSE's own keymanagers
                 // is used. Otherwise, we cannot be sure that only keys from
                 // the FIPS token are used.
@@ -447,7 +447,7 @@ public abstract class SSLContextImpl extends SSLContextSpi {
             ProtocolVersion[] serverCandidates;
             ProtocolVersion[] clientCandidates;
 
-            if (SunJSSE.isFIPS()) {
+            if (GmSunJsseProvider.isFIPS()) {
                 supportedSSLParams.setProtocols(new String[]{
                         ProtocolVersion.TLS10.name,
                         ProtocolVersion.TLS11.name,
@@ -691,7 +691,7 @@ public abstract class SSLContextImpl extends SSLContextSpi {
             ProtocolVersion[] serverCandidates;
             ProtocolVersion[] clientCandidates;
 
-            if (SunJSSE.isFIPS()) {
+            if (GmSunJsseProvider.isFIPS()) {
                 supportedSSLParams.setProtocols(new String[]{
                         ProtocolVersion.TLS10.name,
                         ProtocolVersion.TLS11.name,

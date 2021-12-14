@@ -76,7 +76,7 @@ final class ProtocolVersion implements Comparable<ProtocolVersion> {
     // TLS 1.2
     final static ProtocolVersion TLS12 = new ProtocolVersion(0x0303, "TLSv1.2");
 
-    private static final boolean FIPS = SunJSSE.isFIPS();
+    private static final boolean FIPS = GmSunJsseProvider.isFIPS();
 
     // minimum version we implement (SSL 3.0)
     final static ProtocolVersion MIN = FIPS ? TLS10 : SSL30;
