@@ -12,11 +12,6 @@
     <artifactId>langx-java-security-gm-jsse-jdk6</artifactId>
     <name>${groupId}:${artifactId}:${version}</name>
     <dependencies>
-        <dependency>
-            <groupId>org.openeuler</groupId>
-            <artifactId>jsse</artifactId>
-            <version>1.0.2</version>
-        </dependency>
     </dependencies>
     <!--
        <build>
