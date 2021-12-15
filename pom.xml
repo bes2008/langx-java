@@ -55,10 +55,9 @@
     <modules>
         <module>langx-java</module>
         <module>langx-java8</module>
-        <module>langx-java-security-gm</module>
         <module>langx-java-reflect-aspectj</module>
         <module>langx-java-reflect-asm</module>
-        <module>langx-java-security</module>
+        <module>langx-java-security-gm</module>
     </modules>
     <dependencyManagement>
         <dependencies>
