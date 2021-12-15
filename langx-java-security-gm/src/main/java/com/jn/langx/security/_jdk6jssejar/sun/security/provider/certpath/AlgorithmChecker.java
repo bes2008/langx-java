@@ -43,9 +43,6 @@ import java.security.spec.*;
 
 import com.jn.langx.security._jdk6jssejar.sun.security.util.*;
 import com.jn.langx.security._jdk6jssejar.sun.security.validator.Validator;
-import com.jn.langx.security._jdkjssejar.sun.security.util.*;
-import com.jn.langx.security.jdkjssejar.sun.security.util.*;
-import com.jn.langx.security.jsse.sun.security.util.*;
 import sun.security.x509.AlgorithmId;
 import sun.security.x509.X509CertImpl;
 
