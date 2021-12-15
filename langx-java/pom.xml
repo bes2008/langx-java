@@ -19,11 +19,6 @@
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
     <dependencies>
-        <dependency>
-            <groupId>org.openeuler</groupId>
-            <artifactId>jsse</artifactId>
-            <version>1.0.2</version>
-        </dependency>
         <!--
         <dependency>
             <groupId>org.openjsse</groupId>
