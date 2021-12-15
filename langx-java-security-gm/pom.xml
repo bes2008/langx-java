@@ -27,7 +27,7 @@
         <module>langx-java-security-gm-jca-tests</module>
 
         <module>langx-java-security-gm-jsse-jdk6</module>
-        <module>langx-java-security.gm-jsse-jdk8</module>
+        <module>langx-java-security-gm-jsse-jdk8</module>
     </modules>
 
     <dependencies>
