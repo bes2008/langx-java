@@ -263,8 +263,8 @@
                             <nexusUrl>https://oss.sonatype.org</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                             <sslAllowAll>true</sslAllowAll>
-                            <stagingProgressPauseDurationSeconds>20</stagingProgressPauseDurationSeconds>
-                            <stagingProgressTimeoutMinutes>30</stagingProgressTimeoutMinutes>
+                            <stagingProgressPauseDurationSeconds>5</stagingProgressPauseDurationSeconds>
+                            <stagingProgressTimeoutMinutes>5</stagingProgressTimeoutMinutes>
                             <detectBuildFailures>false</detectBuildFailures>
                         </configuration>
                     </plugin>
