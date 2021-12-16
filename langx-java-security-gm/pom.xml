@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.fangjinuo.langx</groupId>
         <artifactId>langx</artifactId>
-        <version>4.2.0</version>
+        <version>4.2.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,28 +13,50 @@
     <artifactId>langx-java-security-gm</artifactId>
 
     <name>${groupId}:${artifactId}:${version}</name>
-    <version>4.2.0</version>
+    <version>4.2.1</version>
 
     <packaging>pom</packaging>
     <properties>
         <maven.compiler.source>6</maven.compiler.source>
         <maven.compiler.target>6</maven.compiler.target>
+
+        <bouncycastle.version>1.70</bouncycastle.version>
+
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcutil-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bctls-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <modules>
         <module>langx-java-security-gm-jca-gmsslorg</module>
         <module>langx-java-security-gm-jca-bouncycastle</module>
         <module>langx-java-security-gm-jca-tests</module>
 
-        <module>langx-java-security-gm-jsse-jdk6</module>
-        <module>langx-java-security-gm-jsse-jdk8</module>
+        <module>langx-java-security-gm-jsse</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
             <artifactId>langx-java</artifactId>
-            <version>4.2.0</version>
+            <version>4.2.1</version>
         </dependency>
     </dependencies>
 </project>
