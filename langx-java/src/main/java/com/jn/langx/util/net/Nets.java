@@ -409,7 +409,7 @@ public class Nets {
                 if (line.startsWith(sysctlKey)) {
                     for (int i = line.length() - 1; i > sysctlKey.length(); --i) {
                         if (!Character.isDigit(line.charAt(i))) {
-                            return Integer.valueOf(line.substring(i + 1));
+                            return Numbers.createInteger(line.substring(i + 1));
                         }
                     }
                 }

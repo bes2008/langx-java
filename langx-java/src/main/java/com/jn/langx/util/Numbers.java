@@ -17,6 +17,59 @@ public class Numbers {
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
 
     /**
+     * Parses the string argument as an unsigned decimal integer. The
+     * characters in the string must all be decimal digits, except
+     * that the first character may be an an ASCII plus sign {@code
+     * '+'} ({@code '\u005Cu002B'}). The resulting integer value
+     * is returned, exactly as if the argument and the radix 10 were
+     * given as arguments to the {@link
+     * #parseUnsignedInt(java.lang.String, int)} method.
+     *
+     * @param s   a {@code String} containing the unsigned {@code int}
+     *            representation to be parsed
+     * @return    the unsigned integer value represented by the argument in decimal.
+     * @throws    NumberFormatException  if the string does not contain a
+     *            parsable unsigned integer.
+     * @since 4.2.0
+     */
+    public static int parseUnsignedInt(String s) throws NumberFormatException {
+        return parseUnsignedInt(s, 10);
+    }
+
+    public static int parseUnsignedInt(String s, int radix)
+            throws NumberFormatException {
+        if (s == null)  {
+            throw new NumberFormatException("null");
+        }
+
+        int len = s.length();
+        if (len > 0) {
+            char firstChar = s.charAt(0);
+            if (firstChar == '-') {
+                throw new
+                        NumberFormatException(String.format("Illegal leading minus sign " +
+                        "on unsigned string %s.", s));
+            } else {
+                if (len <= 5 || // Integer.MAX_VALUE in Character.MAX_RADIX is 6 digits
+                        (radix == 10 && len <= 9) ) { // Integer.MAX_VALUE in base 10 is 10 digits
+                    return Integer.parseInt(s, radix);
+                } else {
+                    long ell = Long.parseLong(s, radix);
+                    if ((ell & 0xffffffff00000000L) == 0) {
+                        return (int) ell;
+                    } else {
+                        throw new
+                                NumberFormatException(String.format("String value %s exceeds " +
+                                "range of unsigned int.", s));
+                    }
+                }
+            }
+        } else {
+            throw new NumberFormatException(s);
+        }
+    }
+
+    /**
      * <p>Convert a <code>String</code> to a <code>Float</code>.</p>
      * <p>
      * <p>Returns <code>null</code> if the string is <code>null</code>.</p>
@@ -57,6 +110,20 @@ public class Numbers {
         return Integer.parseInt(str);
     }
 
+    public static Short createShort(String str){
+        Integer integer = createInteger(str);
+        if(integer==null){
+            return null;
+        }
+        return new Short(integer.shortValue());
+    }
+    public static Byte createByte(String str){
+        Integer integer = createInteger(str);
+        if(integer==null){
+            return null;
+        }
+        return new Byte(integer.byteValue());
+    }
     /**
      * <p>Convert a <code>String</code> to a <code>Long</code>.</p>
      * <p>
@@ -471,8 +538,8 @@ public class Numbers {
      * @see Integer#decode
      * @see Long#decode
      * @see #decodeBigInteger(String)
-     * @see Float#valueOf
-     * @see Double#valueOf
+     * @see #createFloat(String)
+     * @see #createDouble(String)
      * @see java.math.BigDecimal#BigDecimal(String)
      */
     @SuppressWarnings("unchecked")
@@ -482,21 +549,21 @@ public class Numbers {
         String trimmed = Strings.deleteWhitespace(text);
 
         if (Byte.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Byte.decode(trimmed) : Byte.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Byte.decode(trimmed) : createByte(trimmed));
         } else if (Short.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Short.decode(trimmed) : Short.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Short.decode(trimmed) : (T)createShort(trimmed));
         } else if (Integer.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Integer.decode(trimmed) : Integer.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Integer.decode(trimmed) : createInteger(trimmed));
         } else if (Long.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Long.decode(trimmed) : Long.valueOf(trimmed));
+            return (T) (isHexNumber(trimmed) ? Long.decode(trimmed) : createLong(trimmed));
         } else if (BigInteger.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? decodeBigInteger(trimmed) : new BigInteger(trimmed));
+            return (T) (isHexNumber(trimmed) ? decodeBigInteger(trimmed) : createBigInteger(trimmed));
         } else if (Float.class == targetClass) {
-            return (T) Float.valueOf(trimmed);
+            return (T) createFloat(trimmed);
         } else if (Double.class == targetClass) {
-            return (T) Double.valueOf(trimmed);
+            return (T) createDouble(trimmed);
         } else if (BigDecimal.class == targetClass || Number.class == targetClass) {
-            return (T) new BigDecimal(trimmed);
+            return (T) createBigDecimal(trimmed);
         } else {
             throw new IllegalArgumentException(
                     "Cannot convert String [" + text + "] to target class [" + targetClass.getName() + "]");

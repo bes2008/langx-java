@@ -18,8 +18,8 @@ import javax.crypto.SecretKey;
 import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
-import java.util.List;
-import java.util.Locale;
+import java.security.cert.X509Certificate;
+import java.util.*;
 
 public class KeyStores extends Securitys {
 
@@ -271,6 +271,34 @@ public class KeyStores extends Securitys {
         } catch (Throwable ex) {
             throw new SecurityException(ex.getMessage(), ex);
         }
+    }
+
+    /**
+     * Return a Set with all trusted X509Certificates contained in
+     * this KeyStore.
+     */
+    public static Set<X509Certificate> getTrustedCerts(KeyStore ks) {
+        Set<X509Certificate> set = new HashSet<X509Certificate>();
+        try {
+            for (Enumeration<String> e = ks.aliases(); e.hasMoreElements(); ) {
+                String alias = e.nextElement();
+                if (ks.isCertificateEntry(alias)) {
+                    Certificate cert = ks.getCertificate(alias);
+                    if (cert instanceof X509Certificate) {
+                        set.add((X509Certificate)cert);
+                    }
+                } else if (ks.isKeyEntry(alias)) {
+                    Certificate[] certs = ks.getCertificateChain(alias);
+                    if ((certs != null) && (certs.length > 0) &&
+                            (certs[0] instanceof X509Certificate)) {
+                        set.add((X509Certificate)certs[0]);
+                    }
+                }
+            }
+        } catch (KeyStoreException e) {
+            // ignore
+        }
+        return set;
     }
 
 }

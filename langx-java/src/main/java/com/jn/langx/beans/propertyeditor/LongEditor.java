@@ -17,6 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.Numbers;
+
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -31,7 +33,7 @@ public class LongEditor extends PropertyEditorSupport {
             setValue(null);
             return;
         }
-        Object newValue = Long.valueOf(text);
+        Object newValue = Numbers.createLong(text);
         setValue(newValue);
     }
 }

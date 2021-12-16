@@ -8,9 +8,12 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
 public class SSLs {
-    private SSLs(){}
+    private SSLs() {
+    }
 
-    public static X509TrustManager noopX509TrustManager(){
+    public static final String TLS = "TLS";
+
+    public static X509TrustManager noopX509TrustManager() {
         return new NoopTrustManager();
     }
 
@@ -23,7 +26,7 @@ public class SSLs {
      */
     public static SSLContext defaultSSLContext() throws SSLInitializationException {
         try {
-            final SSLContext sslcontext = SSLContext.getInstance(SSLContextBuilder.TLS);
+            final SSLContext sslcontext = SSLContext.getInstance(TLS);
             sslcontext.init(null, null, null);
             return sslcontext;
         } catch (final NoSuchAlgorithmException ex) {

@@ -3,60 +3,60 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>langx</artifactId>
         <groupId>com.github.fangjinuo.langx</groupId>
-        <version>4.1.1</version>
+        <artifactId>langx</artifactId>
+        <version>4.2.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.github.fangjinuo.langx.security</groupId>
     <artifactId>langx-java-security-gm</artifactId>
+
     <name>${groupId}:${artifactId}:${version}</name>
+    <version>4.2.1</version>
+
+    <packaging>pom</packaging>
+    <properties>
+        <maven.compiler.source>6</maven.compiler.source>
+        <maven.compiler.target>6</maven.compiler.target>
+
+        <bouncycastle.version>1.70</bouncycastle.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcutil-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bctls-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>langx-java-security-gm-jca-gmsslorg</module>
+        <module>langx-java-security-gm-jca-bouncycastle</module>
+        <module>langx-java-security-gm-jca-tests</module>
+
+        <module>langx-java-security-gm-jsse</module>
+    </modules>
+
     <dependencies>
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
             <artifactId>langx-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>1.60</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.github.fangjinuo.langx</groupId>
-            <artifactId>langx-java-gmssl</artifactId>
-            <optional>true</optional>
+            <version>4.2.1</version>
         </dependency>
     </dependencies>
-
-    <!--
-       <build>
-           <plugins>
-
-               <plugin>
-                   <groupId>org.apache.maven.plugins</groupId>
-                   <artifactId>maven-jarsigner-plugin</artifactId>
-                   <version>3.0.0</version>
-                   <executions>
-                       <execution>
-                           <id>jar-signature</id>
-                           <goals>
-                               <goal>sign</goal>
-                           </goals>
-                           <configuration>
-                               <keystore>${basedir}/src/main/assembly/keystore/langx_keystore</keystore>
-                               <alias>langx</alias>
-                               <storepass>123456</storepass>
-                               <keypass>123456</keypass>
-                               <arguments>
-                                   -J-Dfile.encoding=UTF-8
-                               </arguments>
-                           </configuration>
-                       </execution>
-                   </executions>
-               </plugin>
-
-        </plugins>
-    </build>
-     -->
 </project>

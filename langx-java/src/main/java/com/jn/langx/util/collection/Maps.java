@@ -2,6 +2,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.function.Supplier0;
 
@@ -79,5 +80,25 @@ public class Maps {
                 return valueSupplier.get(key);
             }
         });
+    }
+
+    public static <K,V> V replace(final @NonNull Map<K, V> map, @NonNull K key, @NonNull V value){
+        return replace(map,key,value, null);
+    }
+
+    public static <K,V> V replace(final @NonNull Map<K, V> map, @NonNull K key, @NonNull V value, Predicate2<K,V> predicate){
+        V currentValue = map.get(key);
+        if(predicate==null){
+            predicate = new Predicate2<K, V>() {
+                @Override
+                public boolean test(K key, V value) {
+                    return map.containsKey(key) || value!=null;
+                }
+            };
+        }
+        if(predicate.test(key, currentValue)){
+            map.put(key, value);
+        }
+        return currentValue;
     }
 }

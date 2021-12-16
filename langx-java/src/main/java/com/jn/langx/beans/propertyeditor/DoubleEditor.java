@@ -17,6 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.Numbers;
+
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -31,7 +33,7 @@ public class DoubleEditor extends PropertyEditorSupport {
             setValue(null);
             return;
         }
-        Object newValue = Double.valueOf(text);
+        Object newValue = Numbers.createDouble(text);
         setValue(newValue);
     }
 }

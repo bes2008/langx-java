@@ -1,5 +1,6 @@
 package com.jn.langx.util.net.http;
 
+import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Objs;
 
 import java.util.*;
@@ -21,7 +22,7 @@ public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
                 element = element.substring(0, index);
                 if ((index = q.indexOf(61)) != -1) {
                     try {
-                        acceptLang.quality = Float.valueOf(q.substring(index + 1));
+                        acceptLang.quality = Numbers.createFloat(q.substring(index + 1));
                     } catch (NumberFormatException var8) {
                         // NOOP
                     }

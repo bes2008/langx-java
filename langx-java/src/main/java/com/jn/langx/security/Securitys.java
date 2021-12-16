@@ -10,6 +10,7 @@ import com.jn.langx.util.struct.Holder;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.Provider;
+import java.security.SecureRandom;
 import java.security.Security;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class Securitys {
             }
         }
     }
-
+    private final static SecureRandom SECURE_RANDOM ;
 
     public static Provider getProvider(String name) {
         if (Strings.isNotBlank(name)) {
@@ -120,5 +121,10 @@ public class Securitys {
 
     static {
         setup();
+        SECURE_RANDOM= new SecureRandom();
+    }
+
+    public static  SecureRandom getSecureRandom(){
+        return SECURE_RANDOM;
     }
 }

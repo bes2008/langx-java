@@ -16,7 +16,7 @@ public final class InternalKeyManagerProxy extends X509ExtendedKeyManager {
     private final X509ExtendedKeyManager delegate;
     private final PrivateKeyAliasChooseStrategy aliasStrategy;
 
-    InternalKeyManagerProxy(final X509ExtendedKeyManager delegate, final PrivateKeyAliasChooseStrategy aliasStrategy) {
+    public InternalKeyManagerProxy(final X509ExtendedKeyManager delegate, final PrivateKeyAliasChooseStrategy aliasStrategy) {
         super();
         this.delegate = delegate;
         this.aliasStrategy = aliasStrategy;
