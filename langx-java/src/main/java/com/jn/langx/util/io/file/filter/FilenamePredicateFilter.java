@@ -18,6 +18,10 @@ public class FilenamePredicateFilter extends AbstractFileFilter{
 
     @Override
     public boolean accept(File dir, String name) {
+        return doTest(name);
+    }
+
+    protected boolean doTest(String name){
         return predicate.test(name);
     }
 }

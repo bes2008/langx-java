@@ -2,6 +2,7 @@ package com.jn.langx.util.io.file.filter;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.predicate.StringEndsWithPredicate;
+import com.jn.langx.util.io.file.Filenames;
 
 import java.util.List;
 
@@ -31,5 +32,9 @@ public class FilenameSuffixFilter extends FilenamePredicateFilter {
         super(new StringEndsWithPredicate(ignoreCase, suffixes));
     }
 
-
+    @Override
+    protected boolean doTest(String name) {
+        String suffix =Filenames.getSuffix(name);
+        return super.doTest(suffix);
+    }
 }

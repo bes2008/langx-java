@@ -156,6 +156,9 @@ public class Filenames {
     public static String getSuffix(String filePath) {
         String filename = extractFilename(filePath);
         int index = filename.lastIndexOf(".");
+        if(index==-1){
+            return "";
+        }
         return filename.substring(index + 1);
     }
 
