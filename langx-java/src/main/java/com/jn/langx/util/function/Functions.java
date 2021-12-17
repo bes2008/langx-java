@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.predicate.EmptyPredicate;
 
 import java.util.*;
 
@@ -207,21 +208,11 @@ public class Functions {
         };
     }
     public static <E> Predicate<E> emptyPredicate() {
-        return new Predicate<E>() {
-            @Override
-            public boolean test(E value) {
-                return Emptys.isEmpty(value);
-            }
-        };
+        return EmptyPredicate.IS_EMPTY_PREDICATE;
     }
 
     public static <E> Predicate<E> notEmptyPredicate() {
-        return new Predicate<E>() {
-            @Override
-            public boolean test(E value) {
-                return Emptys.isNotEmpty(value);
-            }
-        };
+        return EmptyPredicate.IS_NOT_EMPTY_PREDICATE;
     }
 
     public static <E> Predicate<E> truePredicate() {
