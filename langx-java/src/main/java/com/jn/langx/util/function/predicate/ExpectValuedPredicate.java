@@ -4,7 +4,7 @@ public abstract class ExpectValuedPredicate<V> extends SupplierPredicate<V> {
     private V expectedValue;
 
     @Override
-    public abstract boolean doTest(V actualValue);
+    protected abstract boolean doTest(V actualValue);
 
     public V getExpectedValue() {
         return expectedValue;

@@ -33,7 +33,7 @@ public class ComparisonExpectValuedPredicate<V> extends ExpectValuedPredicate<V>
     }
 
     @Override
-    public boolean doTest(V actualValue) {
+    protected boolean doTest(V actualValue) {
         int compareResult = compare(actualValue, getExpectedValue());
         if (lessThan) {
             return inclusive ? compareResult <= 0 : compareResult < 0;

@@ -6,6 +6,10 @@ import java.util.List;
 public class ParentFilenameSuffixFilter extends AbstractFileFilter {
     private FilenameSuffixFilter filenameSuffixFilter;
 
+    public ParentFilenameSuffixFilter(boolean ignoreCase, String... suffixes) {
+        this.filenameSuffixFilter = new FilenameSuffixFilter(suffixes, ignoreCase);
+    }
+
     public ParentFilenameSuffixFilter(List<String> suffixes, boolean ignoreCase) {
         this.filenameSuffixFilter = new FilenameSuffixFilter(suffixes, ignoreCase);
     }

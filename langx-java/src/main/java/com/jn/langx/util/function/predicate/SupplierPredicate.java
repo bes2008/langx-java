@@ -10,5 +10,5 @@ public abstract class SupplierPredicate<V> implements Predicate<Supplier0<V>> {
         return doTest(valueSupplier.get());
     }
 
-    public abstract boolean doTest(V value);
+    protected abstract boolean doTest(V value);
 }
