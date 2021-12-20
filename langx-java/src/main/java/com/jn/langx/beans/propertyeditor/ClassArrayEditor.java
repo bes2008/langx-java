@@ -30,6 +30,7 @@ public class ClassArrayEditor extends PropertyEditorSupport {
      *
      * @param text - the class name list
      */
+    @Override
     public void setAsText(final String text) throws IllegalArgumentException {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         StringTokenizer tokenizer = new StringTokenizer(text, ", \t\r\n");
@@ -52,9 +53,10 @@ public class ClassArrayEditor extends PropertyEditorSupport {
     /**
      * @return a comma seperated string of the class array
      */
+    @Override
     public String getAsText() {
         Class<?>[] theValue = (Class[]) getValue();
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
         int length = theValue == null ? 0 : theValue.length;
         for (int n = 0; n < length; n++) {
             text.append(theValue[n].getName());

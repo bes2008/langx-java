@@ -12,6 +12,9 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Emptys {
+    private Emptys(){
+
+    }
     public static final int[] EMPTY_INTS = {};
     public static final byte[] EMPTY_BYTES = {};
     public static final char[] EMPTY_CHARS = {};

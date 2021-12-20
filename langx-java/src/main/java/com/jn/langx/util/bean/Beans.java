@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class Beans {
+    private Beans() {
+    }
+
     public static <BEAN, CI extends Iterable<BEAN>, O> List<O> getFieldList(CI beans, Function<BEAN, O> fieldExtractor) {
         return Pipeline.of(beans).map(fieldExtractor).asList();
     }

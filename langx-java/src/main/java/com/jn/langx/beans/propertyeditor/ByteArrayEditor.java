@@ -26,6 +26,7 @@ public class ByteArrayEditor extends PropertyEditorSupport {
     /**
      * Map the argument text into and Byte using Byte.decode.
      */
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text, false, false)) {
             setValue(null);

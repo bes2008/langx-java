@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.jar.JarFile;
 
 public class ClassLoaders {
+    private ClassLoaders(){
+
+    }
 
     public static ClassLoader getClassLoader(final Class<?> clazz) {
         if (System.getSecurityManager() == null) {

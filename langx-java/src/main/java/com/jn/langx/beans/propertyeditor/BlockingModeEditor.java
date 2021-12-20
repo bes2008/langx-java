@@ -29,6 +29,7 @@ public class BlockingModeEditor extends TextPropertyEditorSupport {
      *
      * @return a BlockingMode enum instance
      */
+    @Override
     public Object getValue() {
         String text = getAsText();
         BlockingMode mode = BlockingMode.toBlockingMode(text);

@@ -15,6 +15,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 
 public class Channels {
+    private Channels(){
+
+    }
     public static void readUsingDelimiter(@NonNull InputStream inputStream, @NonNull String delimiter, @NonNull final Consumer2<Integer, byte[]> consumer) {
         readUsingDelimiter(inputStream, delimiter, null, consumer, null);
     }

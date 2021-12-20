@@ -1,6 +1,7 @@
 package com.jn.langx.util.io;
 
 public class Asciis {
+    private Asciis(){}
     /**
      * prefix of ascii string of native character
      */

@@ -7,6 +7,9 @@ import java.nio.CharBuffer;
 import java.util.Arrays;
 
 public class Chars {
+    private Chars(){
+
+    }
     /**
      * \r 回车
      */
@@ -125,10 +128,6 @@ public class Chars {
 
     public static byte c2b(char c) {
         return (byte) ((c > MAX_CHAR_VALUE) ? '?' : c);
-    }
-
-    private static byte c2b0(char c) {
-        return (byte) c;
     }
 
     public static char b2c(byte b) {

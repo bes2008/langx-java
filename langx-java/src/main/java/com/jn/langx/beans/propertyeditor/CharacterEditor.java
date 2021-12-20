@@ -23,6 +23,7 @@ import java.beans.PropertyEditorSupport;
  * A property editor for {@link Character}.
  */
 public class CharacterEditor extends PropertyEditorSupport {
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text)) {
             setValue(null);

@@ -1,5 +1,6 @@
 package com.jn.langx.management;
 
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Entry;
 
@@ -32,6 +33,7 @@ public abstract class BaseService implements MBeanService {
         try {
             oname = new ObjectName(this.domain, options);
         } catch (Exception ex) {
+            Loggers.getLogger(getClass()).warn(ex.getMessage(),ex);
         }
         Loggers.getLogger(getClass()).debug("create an ObjectName : " + oname);
         return oname;
@@ -42,11 +44,11 @@ public abstract class BaseService implements MBeanService {
         final ObjectName oname = this.createObjectName(null);
         List<Attribute> attrList = null;
         if (attributeNames != null && !attributeNames.isEmpty()) {
-            attrList = this.conn.getAttributes(oname, (String[]) attributeNames.toArray(new String[0])).asList();
+            attrList = this.conn.getAttributes(oname, attributeNames.toArray(new String[0])).asList();
         }
         if (attrList == null) {
             Loggers.getLogger(getClass()).warn("The attributeNames is not specified");
-            return null;
+            return Collects.immutableList();
         }
         final List<Entry<String, Object>> mbean = new LinkedList<Entry<String, Object>>();
         for (final Attribute attr : attrList) {

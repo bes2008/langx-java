@@ -309,8 +309,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @return A fully buffered stream.
      * @throws IOException if an I/O error occurs
      */
-    public static InputStream toBufferedInputStream(final InputStream input, final int size)
-            throws IOException {
+    public static InputStream toBufferedInputStream(final InputStream input, final int size) throws IOException {
         // It does not matter if a ByteArrayOutputStream is not closed as close() is a no-op
         final ByteArrayOutputStream output = new ByteArrayOutputStream(size);
         output.write(input);
@@ -378,6 +377,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * @return the contents of the byte array as a String
      * @see java.io.ByteArrayOutputStream#toString()
      *  use {@link #toString(String)} instead
+     * @deprecated
      */
     @Override
     @Deprecated

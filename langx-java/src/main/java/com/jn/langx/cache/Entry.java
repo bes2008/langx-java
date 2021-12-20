@@ -46,6 +46,7 @@ public class Entry<K, V> extends ReferenceEntry<K, V> {
         return super.getValue();
     }
 
+    @Override
     public void setValue(V value) {
         Preconditions.checkNotNull(value);
         lastWriteTime = System.currentTimeMillis();

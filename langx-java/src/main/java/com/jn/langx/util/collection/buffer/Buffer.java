@@ -20,7 +20,7 @@ public abstract class Buffer<BF extends Buffer> implements Rewindable {
     // Creates a new buffer with the given mark, position, limit, and capacity,
     // after checking invariants.
     //
-    public Buffer(long mark, long pos, long lim, long cap) {    // package-private
+    protected Buffer(long mark, long pos, long lim, long cap) {    // package-private
         if (cap < 0) {
             throw new IllegalArgumentException();
         }

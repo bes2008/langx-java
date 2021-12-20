@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Calendars {
+    private Calendars(){}
     private static int[] arr = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static String[] week_cn = {"日", "一", "二", "三", "四", "五", "六"};
     private static int[] DAY_OF_WEEK = {

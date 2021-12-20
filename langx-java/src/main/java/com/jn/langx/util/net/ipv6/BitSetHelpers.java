@@ -25,6 +25,7 @@ import java.util.BitSet;
  * @author Jan Van Besien
  */
 class BitSetHelpers {
+    private BitSetHelpers(){}
     static BitSet bitSetOf(long lowerBits, long upperBits) {
         final BitSet bitSet = new BitSet();
         convert(lowerBits, 0, bitSet);

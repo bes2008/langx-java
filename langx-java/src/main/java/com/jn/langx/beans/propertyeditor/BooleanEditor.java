@@ -29,6 +29,7 @@ public class BooleanEditor extends PropertyEditorSupport {
      * Map the argument text into Boolean.TRUE or Boolean.FALSE
      * using Boolean.valueOf.
      */
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text)) {
             setValue(null);
@@ -41,6 +42,7 @@ public class BooleanEditor extends PropertyEditorSupport {
     /**
      * @return the values {"true", "false"}
      */
+    @Override
     public String[] getTags() {
         return BOOLEAN_TAGS;
     }

@@ -28,6 +28,7 @@ public class BigDecimalEditor extends TextPropertyEditorSupport {
      *
      * @return a BigDecimal object
      */
+    @Override
     public Object getValue() {
         return new BigDecimal(getAsText());
     }

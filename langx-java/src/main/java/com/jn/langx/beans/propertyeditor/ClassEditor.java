@@ -27,6 +27,7 @@ public class ClassEditor extends TextPropertyEditorSupport {
      * @return a Class object
      * @throws RuntimeException Failed to create Class instance.
      */
+    @Override
     public Object getValue() {
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();

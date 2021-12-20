@@ -6,6 +6,7 @@ import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 
 import java.util.Set;
 
@@ -35,6 +36,6 @@ public class ClassClasspath extends AbstractClasspath {
 
     @Override
     public Set<Location> allResources() {
-        return null;
+        return Collects.immutableSet();
     }
 }

@@ -6,12 +6,13 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 public class Atomics {
+    private Atomics(){}
     public static <R> AtomicReference<R> newReference(){
         return new AtomicReference<R>();
     }
 
     public static <R> AtomicReference<R> newReference(@Nullable R initialValue){
-        return new AtomicReference<R>();
+        return new AtomicReference<R>(initialValue);
     }
 
     public static <R> AtomicReferenceArray<R> newReferenceArray(int length){

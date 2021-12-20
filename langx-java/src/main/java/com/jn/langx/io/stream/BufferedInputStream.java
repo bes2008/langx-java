@@ -97,6 +97,7 @@ public class BufferedInputStream extends FilterInputStream {
      *                     or an I/O error occurs.
      * @see java.io.FilterInputStream#in
      */
+    @Override
     public synchronized int read() throws IOException {
         return readByte();
     }
@@ -178,6 +179,7 @@ public class BufferedInputStream extends FilterInputStream {
      *                     invoking its {@link #close()} method,
      *                     or an I/O error occurs.
      */
+    @Override
     public synchronized int read(byte[] b, int off, int len)
             throws IOException {
         return read1(b, off, len);
@@ -192,6 +194,7 @@ public class BufferedInputStream extends FilterInputStream {
      *                     invoking its {@link #close()} method, or an
      *                     I/O error occurs.
      */
+    @Override
     public synchronized long skip(long n) throws IOException {
         throw new IOException("Unsupported skip");
     }
@@ -213,6 +216,7 @@ public class BufferedInputStream extends FilterInputStream {
      *                     invoking its {@link #close()} method,
      *                     or an I/O error occurs.
      */
+    @Override
     public synchronized int available() throws IOException {
         return getInIfOpen().available() + (buf.limit() - buf.position());
     }
@@ -225,6 +229,7 @@ public class BufferedInputStream extends FilterInputStream {
      *                  the mark position becomes invalid.
      * @see java.io.BufferedInputStream#reset()
      */
+    @Override
     public synchronized void mark(int readlimit) {
         buf.mark();
     }
@@ -245,6 +250,7 @@ public class BufferedInputStream extends FilterInputStream {
      *                     method, or an I/O error occurs.
      * @see java.io.BufferedInputStream#mark(int)
      */
+    @Override
     public synchronized void reset() throws IOException {
         buf.reset();
     }
@@ -260,6 +266,7 @@ public class BufferedInputStream extends FilterInputStream {
      * @see java.io.InputStream#mark(int)
      * @see java.io.InputStream#reset()
      */
+    @Override
     public boolean markSupported() {
         return true;
     }
@@ -273,6 +280,7 @@ public class BufferedInputStream extends FilterInputStream {
      *
      * @throws IOException if an I/O error occurs.
      */
+    @Override
     public void close() throws IOException {
         in.close();
     }

@@ -56,7 +56,6 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
     });
 
     private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(true);
-    private ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
     private ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
     protected AbstractCache(int maxCapacity, long evictExpiredInterval) {
@@ -156,15 +155,15 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
 
     @Override
     public Map<K, V> getAllIfPresent(Iterable<K> keys) {
-        final Map<K, V> map = new HashMap<K, V>();
+        final Map<K, V> amap = new HashMap<K, V>();
         Collects.forEach(keys, new Consumer<K>() {
             @Override
             public void accept(K key) {
                 V v = getIfPresent(key);
-                map.put(key, v);
+                amap.put(key, v);
             }
         });
-        return map;
+        return amap;
     }
 
     @Override
@@ -219,18 +218,19 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         V value = null;
         if (loadIfAbsent) {
             Logger logger = Loggers.getLogger(getClass());
+            String errorMessage = "Error occur when load resource for key: {}, error message: {}, stack:";
             if (loader != null) {
                 try {
                     value = loader.get(key);
                 } catch (Throwable ex) {
-                    logger.warn("Error occur when load resource for key: {}, error message: {}, stack:", key, ex.getMessage(), ex);
+                    logger.warn(errorMessage, key, ex.getMessage(), ex);
                 }
             } else {
                 Holder<Throwable> exceptionHolder = new Holder<Throwable>();
                 value = loadByGlobalLoader(key, exceptionHolder);
                 if (value == null) {
                     if (exceptionHolder.get() != null) {
-                        logger.warn("Error occur when load resource for key: {}, error message: {}, stack:", key, exceptionHolder.get().getMessage(), exceptionHolder.get());
+                        logger.warn(errorMessage, key, exceptionHolder.get().getMessage(), exceptionHolder.get());
                     } else {
                         remove(key, RemoveCause.REPLACED);
                     }
@@ -284,11 +284,11 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
     }
 
 
-
     /**
      * @param timeout
      * @since 4.0.4
      */
+    @Override
     protected void refreshAllAsync(@Nullable final Timeout timeout) {
         Set<K> keys = keys();
         Collects.forEach(keys, new Consumer<K>() {
