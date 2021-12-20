@@ -1,5 +1,6 @@
 package com.jn.langx.util.function;
 
+import com.jn.langx.Filter;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
@@ -9,6 +10,7 @@ import com.jn.langx.util.function.predicate.EmptyPredicate;
 import java.util.*;
 
 public class Functions {
+    private Functions(){}
     /*******************************************
      *   Function, Mapper
      *******************************************/
@@ -149,7 +151,7 @@ public class Functions {
     }
 
 
-    public static Function<String, String> toLowerCase(){
+    public static Function<String, String> toLowerCase() {
         return new Function<String, String>() {
             @Override
             public String apply(String input) {
@@ -158,7 +160,7 @@ public class Functions {
         };
     }
 
-    public static Function<String, String> toUpperCase(){
+    public static Function<String, String> toUpperCase() {
         return new Function<String, String>() {
             @Override
             public String apply(String input) {
@@ -189,8 +191,9 @@ public class Functions {
             }
         };
     }
-    public static <E1,E2> Predicate2<E1,E2> nonNullPredicate2() {
-        return new Predicate2<E1,E2>() {
+
+    public static <E1, E2> Predicate2<E1, E2> nonNullPredicate2() {
+        return new Predicate2<E1, E2>() {
             @Override
             public boolean test(E1 e1, E2 value) {
                 return value != null;
@@ -199,20 +202,39 @@ public class Functions {
     }
 
 
-    public static <E1,E2> Predicate2<E1,E2> nullPredicate2() {
-        return new Predicate2<E1,E2>() {
+    public static <E1, E2> Predicate2<E1, E2> nullPredicate2() {
+        return new Predicate2<E1, E2>() {
             @Override
             public boolean test(E1 e1, E2 value) {
                 return value == null;
             }
         };
     }
+
     public static <E> Predicate<E> emptyPredicate() {
         return EmptyPredicate.IS_EMPTY_PREDICATE;
     }
 
     public static <E> Predicate<E> notEmptyPredicate() {
         return EmptyPredicate.IS_NOT_EMPTY_PREDICATE;
+    }
+
+    public static <E> Filter<E> trueFilter() {
+        return new Filter<E>() {
+            @Override
+            public boolean accept(E e) {
+                return true;
+            }
+        };
+    }
+
+    public static <E> Filter<E> falseFilter() {
+        return new Filter<E>() {
+            @Override
+            public boolean accept(E e) {
+                return false;
+            }
+        };
     }
 
     public static <E> Predicate<E> truePredicate() {
@@ -329,7 +351,7 @@ public class Functions {
         };
     }
 
-    public static <E> Predicate<E> equalsPredicate(final E obj){
+    public static <E> Predicate<E> equalsPredicate(final E obj) {
         return new Predicate<E>() {
             @Override
             public boolean test(E value) {
@@ -440,11 +462,11 @@ public class Functions {
     /******************************************
      *  noop consumer
      ******************************************/
-    public static <T> Consumer<T> noopConsumer(){
+    public static <T> Consumer<T> noopConsumer() {
         return new Consumer<T>() {
             @Override
             public void accept(T t) {
-
+                // NOOP
             }
         };
     }
