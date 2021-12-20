@@ -6,11 +6,11 @@ import java.util.Map;
 public abstract class AbstractAttributable implements Attributable {
     protected Map<String, Object> attributes;
 
-    public AbstractAttributable(){
+    protected AbstractAttributable(){
         this(new HashMap<String, Object>());
     }
 
-    public AbstractAttributable(Map<String, Object> attributes){
+    protected AbstractAttributable(Map<String, Object> attributes){
         this.attributes = attributes;
     }
 

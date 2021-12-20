@@ -32,6 +32,7 @@ public class StringEditor extends PropertyEditorSupport {
     /**
      * Keep the provided String as is.
      */
+    @Override
     public void setAsText(String text) {
         setValue(text);
     }

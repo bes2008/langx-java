@@ -134,6 +134,8 @@ public class XmlEscapers {
         builder.addEscape('\t', "&#x9;");
         builder.addEscape('\n', "&#xA;");
         builder.addEscape('\r', "&#xD;");
+
+
         XML_ATTRIBUTE_ESCAPER = builder.build();
     }
 }
