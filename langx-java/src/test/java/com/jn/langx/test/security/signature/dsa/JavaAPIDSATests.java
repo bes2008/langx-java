@@ -36,7 +36,7 @@ public class JavaAPIDSATests {
             PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
             Signature signature = Signature.getInstance("SHA1withDSA");
             signature.initSign(privateKey);
-            signature.update(src.getBytes());
+            signature.update(src.getBytes(Charsets.UTF_8));
             byte[] arr = signature.sign();
             System.out.println("jdk dsa sign:" + Hex.encodeHex(arr));
 // 验证签名
@@ -72,7 +72,7 @@ public class JavaAPIDSATests {
             PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
             Signature signature = Signature.getInstance("SHA1withDSA");
             signature.initSign(privateKey);
-            signature.update(src.getBytes());
+            signature.update(src.getBytes(Charsets.UTF_8));
             byte[] arr = signature.sign();
             System.out.println("jdk dsa sign:" + Hex.encodeHex(arr));
 // 验证签名

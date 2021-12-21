@@ -17,6 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.io.Charsets;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
@@ -40,7 +42,7 @@ public class PropertiesEditor extends TextPropertyEditorSupport {
             // Load the current key=value properties into a Properties object
             String propsText = getAsText();
             Properties rawProps = new Properties(System.getProperties());
-            ByteArrayInputStream bais = new ByteArrayInputStream(propsText.getBytes());
+            ByteArrayInputStream bais = new ByteArrayInputStream(propsText.getBytes(Charsets.UTF_8));
             rawProps.load(bais);
             // Now go through the rawProps and replace any ${x} refs
             Properties props = new Properties();

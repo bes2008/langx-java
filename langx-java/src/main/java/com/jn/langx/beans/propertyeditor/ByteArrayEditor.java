@@ -17,6 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.io.Charsets;
+
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -32,7 +34,7 @@ public class ByteArrayEditor extends PropertyEditorSupport {
             setValue(null);
             return;
         }
-        Object newValue = text.getBytes();
+        Object newValue = text.getBytes(Charsets.UTF_8);
         setValue(newValue);
     }
 }

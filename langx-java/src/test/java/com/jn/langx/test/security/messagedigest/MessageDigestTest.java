@@ -1,6 +1,7 @@
 package com.jn.langx.test.security.messagedigest;
 
 import com.jn.langx.security.crypto.digest.MessageDigests;
+import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
 import java.io.*;
@@ -24,7 +25,7 @@ public class MessageDigestTest {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             String data = "This have I thought good to deliver thee, that thou mightst not lose the dues of rejoicing " +
                     "by being ignorant of what greatness is promised thee.";
-            byte buf[] = data.getBytes();
+            byte[] buf = data.getBytes(Charsets.UTF_8);
             md.update(buf);
             oos.writeObject(data);
             oos.writeObject(md.digest());
@@ -52,9 +53,9 @@ public class MessageDigestTest {
                 System.out.println("Unexpected data in file");
                 System.exit(-1);
             }
-            byte origDigest[] = (byte []) o;
+            byte[] origDigest = (byte []) o;
             MessageDigest md = MessageDigest.getInstance("SHA");
-            md.update(data.getBytes());
+            md.update(data.getBytes(Charsets.UTF_8));
             if (MessageDigest.isEqual(md.digest(), origDigest))
                 System.out.println("Message is valid");
             else System.out.println("Message was corrupted");
@@ -76,7 +77,7 @@ public class MessageDigestTest {
         String data = "This have I thought good to deliver thee, that thou mightst not lose the dues of rejoicing " +
                 "by being ignorant of what greatness is promised thee.";
         String passphrase = "Sleep no more";
-        byte dataBytes[] = data.getBytes();
+        byte[] dataBytes = data.getBytes(Charsets.UTF_8);
         byte passBytes[] = passphrase.getBytes();
         md.update(passBytes);
         md.update(dataBytes);

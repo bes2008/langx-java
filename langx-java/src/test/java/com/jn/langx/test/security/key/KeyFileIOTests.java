@@ -72,7 +72,7 @@ public class KeyFileIOTests {
 
         byte[] diff = new byte[26];
         System.arraycopy(pkcs8_bytes, 0, diff, 0, 26);
-        System.out.println(new String(diff));
+        System.out.println(new String(diff, Charsets.UTF_8));
         System.out.println(pkcs8_base64ed.length()-pkcs1_base64ed.length());
     }
 

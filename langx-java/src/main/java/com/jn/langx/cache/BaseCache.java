@@ -124,6 +124,9 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
             if (obj == null) {
                 return false;
             }
+            if(obj.getClass() != RefreshKeyTask.class){
+                return false;
+            }
             RefreshKeyTask that = (RefreshKeyTask) obj;
             if (!Reflects.isSubClassOrEquals(key.getClass(), that.key.getClass())) {
                 return false;

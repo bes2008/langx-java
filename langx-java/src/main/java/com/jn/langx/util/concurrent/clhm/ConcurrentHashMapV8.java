@@ -2719,8 +2719,9 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
                         waiter = Thread.currentThread();
                     }
                 }
-                else if (waiting)
+                else if (waiting) {
                     LockSupport.park(this);
+                }
             }
         }
 

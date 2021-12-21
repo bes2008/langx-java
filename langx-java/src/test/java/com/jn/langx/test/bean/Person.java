@@ -1,6 +1,7 @@
 package com.jn.langx.test.bean;
 
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Objs;
 
 public class Person {
     private String id;
@@ -52,7 +53,7 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return id.hashCode() << 8 + name.hashCode() << 4 + age << 2;
+        return Objs.hash(id, name, age);
     }
 
     @Override

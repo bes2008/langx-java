@@ -15,7 +15,7 @@ public enum Period implements Delegatable<EnumDelegate>, CommonEnum {
     private EnumDelegate delegate;
 
     Period(int code, String name, String displayText) {
-        setDelegate(new EnumDelegate(code, name, displayText));
+        this.delegate = new EnumDelegate(code, name, displayText);
     }
 
     public int getCode() {
@@ -36,6 +36,5 @@ public enum Period implements Delegatable<EnumDelegate>, CommonEnum {
     }
 
     public void setDelegate(EnumDelegate delegate) {
-        this.delegate = delegate;
     }
 }

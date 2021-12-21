@@ -6,6 +6,7 @@ import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.io.stream.BufferedInputStream;
 import com.jn.langx.io.stream.DelimiterBasedReadableByteChannel;
+import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.reflect.Reflects;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class BufferedInputStreamTests {
             int length = bytes.length;
             while ((length = bin.read(bytes, 0, bytes.length)) != -1) {
                 if(length>0) {
-                    System.out.print(new String(bytes, 0, length));
+                    System.out.print(new String(bytes, 0, length, Charsets.UTF_8.name()));
                 }
             }
         } catch (IOException ex) {
@@ -55,7 +56,7 @@ public class BufferedInputStreamTests {
                         int length = endPosition - positionBeforeRead;
                         positionBeforeRead = endPosition;
                         if(length>0) {
-                            System.out.print(new String(bytes, 0, length));
+                            System.out.print(new String(bytes, 0, length, Charsets.UTF_8.name()));
                         }
                     }
                 } else {
@@ -81,7 +82,7 @@ public class BufferedInputStreamTests {
             Iterator<byte[]> iter = channel.iterator();
             while (iter.hasNext()) {
                 byte[] bytes = iter.next();
-                System.out.println(new String(bytes,0,bytes.length));
+                System.out.println(new String(bytes,0,bytes.length, Charsets.UTF_8.name()));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -106,7 +107,7 @@ public class BufferedInputStreamTests {
                 }
 
                 byte[] bytes = iter.next();
-                System.out.print(new String(bytes,0,bytes.length));
+                System.out.print(new String(bytes,0,bytes.length, Charsets.UTF_8.name()));
                 i++;
             }
         } catch (IOException ex) {
@@ -132,7 +133,7 @@ public class BufferedInputStreamTests {
                 }
 
                 byte[] bytes = iter.next();
-                System.out.print(new String(bytes,0,bytes.length));
+                System.out.print(new String(bytes,0,bytes.length, Charsets.UTF_8.name()));
                 i++;
             }
         } catch (IOException ex) {

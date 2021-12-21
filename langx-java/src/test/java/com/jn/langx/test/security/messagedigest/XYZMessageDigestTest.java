@@ -1,5 +1,8 @@
 package com.jn.langx.test.security.messagedigest;
 
+import com.jn.langx.util.Chars;
+import com.jn.langx.util.io.Charsets;
+
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.Security;
@@ -27,7 +30,7 @@ public class XYZMessageDigestTest {
         String data = "This have I thought good to deliver thee, "+
                 "that thou mightst not lose the dues of rejoicing " +
                 "by being ignorant of what greatness is promised thee.";
-        byte buf[] = data.getBytes();
+        byte[] buf = data.getBytes(Charsets.UTF_8);
         md.update(buf);
         oos.writeObject(data);  // original message
         oos.writeObject(md.digest()); // digest
@@ -53,9 +56,9 @@ public class XYZMessageDigestTest {
             System.out.println("Unexpected data in file");
             System.exit(-1);
         }
-        byte origDigest[] = (byte []) o;
+        byte[] origDigest = (byte []) o;
         MessageDigest md = MessageDigest.getInstance("XYZ");
-        md.update(data.getBytes());
+        md.update(data.getBytes(Charsets.UTF_8));
         if (MessageDigest.isEqual(md.digest(), origDigest))
             System.out.println("Message is valid");
         else

@@ -1,6 +1,8 @@
 package com.jn.langx.security.gm.crypto.bc.symmetric.sm4;
 
 import com.jn.langx.codec.base64.Base64;
+import com.jn.langx.util.Strings;
+import com.jn.langx.util.io.Charsets;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
 
@@ -36,8 +38,8 @@ class _sm4 {
     public static byte[] generateKey(String seed, int keySize) throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyGenerator kg = KeyGenerator.getInstance(ALGORITHM_NAME, PROVIDER_NAME);
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-        if (null != seed && !"".equals(seed)) {
-            random.setSeed(seed.getBytes());
+        if (Strings.isNotEmpty(seed)) {
+            random.setSeed(seed.getBytes(Charsets.UTF_8));
         }
         kg.init(keySize, random);
         return kg.generateKey().getEncoded();
@@ -140,7 +142,7 @@ class _sm4 {
     public static String encryptEcbDataTimes(String data, String salt, int times) throws GeneralSecurityException {
         try {
             byte[] key = Hex.decode(salt);
-            byte[] bytes = data.getBytes();
+            byte[] bytes = data.getBytes(Charsets.UTF_8);
 
             for (int i = 0; i < times; ++i) {
                 bytes = encryptEcbPadding(key, bytes);
@@ -171,7 +173,7 @@ class _sm4 {
                 bytes = decryptEcbPadding(key, bytes);
             }
 
-            data = new String(bytes);
+            data = new String(bytes, Charsets.UTF_8);
             return data;
         } catch (Throwable ex) {
             throw new GeneralSecurityException("SM4解密失败");
@@ -190,7 +192,7 @@ class _sm4 {
         try {
             byte[] iv = generateKey();
             byte[] key = generateKey(salt);
-            byte[] bytes = data.getBytes();
+            byte[] bytes = data.getBytes(Charsets.UTF_8);
 
             Cipher cipher = generateCbcCipher(ENCRYPT_MODE, key, iv);
             for (int i = 0; i < times; ++i) {
@@ -225,7 +227,7 @@ class _sm4 {
                 bytes = cipher.doFinal(bytes);
             }
 
-            data = new String(bytes);
+            data = new String(bytes, Charsets.UTF_8);
             return data;
         } catch (Throwable var5) {
             throw new GeneralSecurityException("SM4解密失败, error: {}", var5);

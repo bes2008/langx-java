@@ -1,5 +1,6 @@
 package com.jn.langx.io.resource;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.net.URLs;
 
@@ -84,11 +85,11 @@ public class UrlResource extends AbstractLocatableResource<URL> {
             return false;
         }
         UrlResource o2 = (UrlResource) obj;
-        return this.url.equals(o2.url);
+        return Objs.equals(this.url, o2.url);
     }
 
     @Override
     public int hashCode() {
-        return this.url.hashCode();
+        return Objs.hash(this.url);
     }
 }

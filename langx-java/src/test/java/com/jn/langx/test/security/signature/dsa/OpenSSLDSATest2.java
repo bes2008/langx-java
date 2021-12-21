@@ -3,9 +3,11 @@ package com.jn.langx.test.security.signature.dsa;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.util.io.Charsets;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -80,7 +82,7 @@ public class OpenSSLDSATest2 {
      */
     private static void initPrivateKey() {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_private_key_pkcs8.pem").getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_private_key_pkcs8.pem").getInputStream(), Charsets.UTF_8));
             String s = br.readLine();
             StringBuilder privatekey = new StringBuilder();
             s = br.readLine();
@@ -107,7 +109,8 @@ public class OpenSSLDSATest2 {
      */
     private static void initPublicKey() {
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_public_key.pem").getInputStream()));
+            InputStream inputStream = Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_public_key.pem").getInputStream();
+            BufferedReader br = new BufferedReader( new InputStreamReader(inputStream, Charsets.UTF_8));
             String s = br.readLine();
             StringBuilder publickey = new StringBuilder();
             s = br.readLine();
@@ -140,7 +143,7 @@ public class OpenSSLDSATest2 {
         try {
             Signature signalg = Signature.getInstance("DSA");
             signalg.initSign(privateKey);
-            signalg.update(content.getBytes());
+            signalg.update(content.getBytes(Charsets.UTF_8.name()));
 
             byte[] signature = signalg.sign();
 
@@ -164,7 +167,7 @@ public class OpenSSLDSATest2 {
             Signature verifyalg = Signature.getInstance("DSA");
             verifyalg.initVerify(publicKey);
 
-            verifyalg.update(contecnt.getBytes());
+            verifyalg.update(contecnt.getBytes(Charsets.UTF_8.name()));
             byte[] signbyte = Base64.decodeBase64(signature);
             return verifyalg.verify(signbyte);
         } catch (Exception e) {
