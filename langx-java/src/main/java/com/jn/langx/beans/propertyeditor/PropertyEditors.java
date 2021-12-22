@@ -328,16 +328,20 @@ public class PropertyEditors {
                 Class<?> ptype = pd.getPropertyType();
                 PropertyEditor editor = PropertyEditorManager.findEditor(ptype);
                 if (editor == null) {
-                    if (trace)
+                    if (trace) {
                         log.trace("Failed to find property editor for: " + name);
+                    }
                 }
-                try {
-                    editor.setAsText(text);
-                    Object args[] = {editor.getValue()};
-                    setter.invoke(bean, args);
-                } catch (Exception e) {
-                    if (trace)
-                        log.trace("Failed to write property", e);
+                if (editor != null) {
+                    try {
+                        editor.setAsText(text);
+                        Object args[] = {editor.getValue()};
+                        setter.invoke(bean, args);
+                    } catch (Exception e) {
+                        if (trace) {
+                            log.trace("Failed to write property", e);
+                        }
+                    }
                 }
             }
         }
