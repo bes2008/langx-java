@@ -17,6 +17,8 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.collection.Arrs;
+
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -44,6 +46,6 @@ public class BooleanEditor extends PropertyEditorSupport {
      */
     @Override
     public String[] getTags() {
-        return BOOLEAN_TAGS;
+        return Arrs.copy(BOOLEAN_TAGS);
     }
 }

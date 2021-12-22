@@ -19,7 +19,7 @@ import java.security.SecureRandom;
  * SM4 在 CBC 模式下，必须要用到的。
  */
 public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
-    public static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(SM4AlgorithmSpecSupplier.class).getBytes(Charsets.UTF_8);
+    private static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(SM4AlgorithmSpecSupplier.class).getBytes(Charsets.UTF_8);
 
     public SM4AlgorithmSpecSupplier() {
     }
