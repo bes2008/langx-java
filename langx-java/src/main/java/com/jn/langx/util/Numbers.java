@@ -115,14 +115,14 @@ public class Numbers {
         if(integer==null){
             return null;
         }
-        return new Short(integer.shortValue());
+        return integer.shortValue();
     }
     public static Byte createByte(String str){
         Integer integer = createInteger(str);
         if(integer==null){
             return null;
         }
-        return new Byte(integer.byteValue());
+        return integer.byteValue();
     }
     /**
      * <p>Convert a <code>String</code> to a <code>Long</code>.</p>

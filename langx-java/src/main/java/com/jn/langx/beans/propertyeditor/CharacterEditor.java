@@ -32,7 +32,7 @@ public class CharacterEditor extends PropertyEditorSupport {
         if (text.length() != 1) {
             throw new IllegalArgumentException("Too many (" + text.length() + ") characters: '" + text + "'");
         }
-        Character newValue = new Character(text.charAt(0));
+        Character newValue = text.charAt(0);
         setValue(newValue);
     }
 }
