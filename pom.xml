@@ -73,7 +73,27 @@
             </dependency>
             <dependency>
                 <groupId>com.github.fangjinuo.langx</groupId>
-                <artifactId>langx-java-gmssl</artifactId>
+                <artifactId>langx-java-reflect-aspectj</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx</groupId>
+                <artifactId>langx-java-reflect-asm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx.security</groupId>
+                <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx.security</groupId>
+                <artifactId>langx-java-security-gm-jca-gmsslorg</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.fangjinuo.langx.security</groupId>
+                <artifactId>langx-java-security-gm-jca-jsse</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
