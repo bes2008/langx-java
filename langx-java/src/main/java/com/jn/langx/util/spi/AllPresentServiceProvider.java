@@ -8,6 +8,16 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 public class AllPresentServiceProvider<T> implements ServiceProvider<T> {
+    private boolean defaultValueIfMissOnClassesAnnotation = true;
+
+    public AllPresentServiceProvider() {
+
+    }
+
+    public AllPresentServiceProvider(boolean defaultValueIfMissOnClassesAnnotation) {
+        this.defaultValueIfMissOnClassesAnnotation = defaultValueIfMissOnClassesAnnotation;
+    }
+
     @Override
     public Iterator<T> get(Class<T> serviceClass) {
         ServiceLoader<T> loader = ServiceLoader.load(serviceClass);
@@ -15,7 +25,7 @@ public class AllPresentServiceProvider<T> implements ServiceProvider<T> {
         List<T> ret = Collects.emptyArrayList();
         while (iter.hasNext()) {
             T t = iter.next();
-            if (OnClassesConditions.allPresent(t.getClass(), true)) {
+            if (OnClassesConditions.allPresent(t.getClass(), defaultValueIfMissOnClassesAnnotation)) {
                 ret.add(t);
             }
         }
