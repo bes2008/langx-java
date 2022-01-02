@@ -263,6 +263,12 @@ public class Pipeline<E> {
         return new Pipeline<E>(list);
     }
 
+    public Pipeline<E> remove(E e){
+        List<E> list = asList();
+        list.remove(e);
+        return new Pipeline<E>(list);
+    }
+
     public Pipeline<E> shuffle() {
         return shuffle(GlobalThreadLocalMap.getRandom());
     }
