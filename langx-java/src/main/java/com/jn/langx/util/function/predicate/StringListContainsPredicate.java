@@ -23,7 +23,7 @@ public class StringListContainsPredicate extends ContainsPredicate<String> {
         super(collection, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                return Strings.equals(o1, o2, ignoreCase) ? o1.compareTo(o2) : 0;
+                return Strings.equals(o1, o2, ignoreCase) ? 0 : o1.compareTo(o2);
             }
         });
     }
