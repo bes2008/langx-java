@@ -8,7 +8,7 @@ public class StringEqualsPredicate implements Predicate<String> {
     private String expected;
 
     public StringEqualsPredicate(String expected) {
-        this(expected, false);
+        this(expected, true);
     }
 
     public StringEqualsPredicate(String expected, boolean ignoreCase) {
