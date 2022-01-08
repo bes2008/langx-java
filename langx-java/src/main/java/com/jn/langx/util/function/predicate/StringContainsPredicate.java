@@ -9,7 +9,9 @@ public class StringContainsPredicate implements Predicate<String> {
 
     public StringContainsPredicate() {
     }
-
+    public StringContainsPredicate(String expected){
+        this(expected,true);
+    }
     public StringContainsPredicate(String expected, boolean ignoreCase){
         setExpectedValue(expected);
         setIgnoreCase(ignoreCase);
