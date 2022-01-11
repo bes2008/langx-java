@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.fangjinuo.langx.security</groupId>
         <artifactId>langx-java-security-gm</artifactId>
-        <version>4.2.3</version>
+        <version>4.2.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,12 +20,12 @@
         <dependency>
             <groupId>com.github.fangjinuo.langx.security</groupId>
             <artifactId>langx-java-security-gm-jca-gmsslorg</artifactId>
-            <version>4.2.3</version>
+            <version>4.2.4</version>
         </dependency>
         <dependency>
             <groupId>com.github.fangjinuo.langx.security</groupId>
             <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
-            <version>4.2.3</version>
+            <version>4.2.4</version>
         </dependency>
     </dependencies>
 
