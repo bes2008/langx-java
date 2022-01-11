@@ -205,4 +205,57 @@ public class Loggers {
         }
         return enabled;
     }
+
+    private static Logger doGetLogger(Object logger) {
+        Logger lg = null;
+        if (logger != null) {
+            if (logger instanceof Logger) {
+                lg = (Logger) logger;
+            } else if (logger instanceof String) {
+                lg = Loggers.getLogger((String) logger);
+            } else if (logger instanceof Class) {
+                lg = Loggers.getLogger((Class) logger);
+            }
+
+        }
+        if (lg == null) {
+            lg = Loggers.getLogger(Loggers.class);
+        }
+        return lg;
+    }
+
+
+    public static void debug(Object logger, String message, Object... parameters) {
+        Logger lg = doGetLogger(logger);
+
+        if (lg.isDebugEnabled()) {
+            lg.debug(message, parameters);
+        }
+    }
+
+
+    public static void info(Object logger, String message, Object... parameters) {
+        Logger lg = doGetLogger(logger);
+
+        if (lg.isInfoEnabled()) {
+            lg.info(message, parameters);
+        }
+    }
+
+    public static void warn(Object logger, String message, Object... parameters) {
+        Logger lg = doGetLogger(logger);
+
+        if (lg.isWarnEnabled()) {
+            lg.warn(message, parameters);
+        }
+    }
+
+    public static void error(Object logger, String message, Object... parameters) {
+        Logger lg = doGetLogger(logger);
+
+        if (lg.isErrorEnabled()) {
+            lg.error(message, parameters);
+        }
+    }
+
 }
