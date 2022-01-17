@@ -6,6 +6,7 @@ import com.jn.langx.util.timing.cron.CronExpression;
 import com.jn.langx.util.timing.cron.CronExpressionBuilder;
 import com.jn.langx.util.timing.cron.CronExpressionType;
 import com.jn.langx.util.timing.cron.CronExpressions;
+import org.junit.Test;
 
 import java.util.Date;
 
@@ -66,5 +67,26 @@ public class CronExpressionTests {
         }
         System.out.println("======test02 end=========");
     }
+
+    @Test
+    public void testUseCronReplaceSimpleTrigger(){
+        CronExpression cronExpression = new CronExpressionBuilder()
+                .type(CronExpressionType.QUARTZ)
+                .expression("0 */45 * * * ?")
+                .build();
+        int i = 20;
+        Date previous = new Date();
+        Date next = null;
+
+        while (i>0){
+            next = CronExpressions.nextTime(cronExpression, previous);
+            System.out.println(Dates.format(next, Dates.yyyy_MM_dd_HH_mm_ss));
+            previous=next;
+            next=null;
+            i--;
+        }
+
+    }
+
 
 }
