@@ -9,12 +9,20 @@ public class Symmetrics extends Ciphers {
     protected Symmetrics() {
     }
 
+    public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithm) {
+        return encrypt(bytes, symmetricKey, algorithm, null, null);
+    }
+
     public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithm, Provider provider, SecureRandom secureRandom) {
         return encrypt(bytes, symmetricKey, algorithm, null, provider, secureRandom);
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
         return encrypt(bytes, symmetricKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
+    }
+
+    public static byte[] decrypt(byte[] bytes, byte[] symmetricKey, String algorithm) {
+        return decrypt(bytes, symmetricKey, algorithm, null, null);
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] symmetricKey, String algorithm, Provider provider, SecureRandom secureRandom) {
@@ -34,7 +42,7 @@ public class Symmetrics extends Ciphers {
 
         private CipherAlgorithmMode ref;
 
-        MODE(CipherAlgorithmMode ref){
+        MODE(CipherAlgorithmMode ref) {
             this.ref = ref;
         }
 

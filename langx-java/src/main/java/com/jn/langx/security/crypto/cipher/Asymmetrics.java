@@ -10,6 +10,10 @@ public class Asymmetrics extends Ciphers {
     protected Asymmetrics() {
     }
 
+    public static byte[] encrypt(byte[] bytes, byte[] pubKey, String algorithm, String algorithmTransformation){
+        return encrypt(bytes, pubKey, algorithm, algorithmTransformation, null, null);
+    }
+
     public static byte[] encrypt(byte[] bytes, byte[] pubKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
         return encrypt(bytes, pubKey, algorithm, algorithmTransformation, provider, secureRandom, new BytesBasedPublicKeySupplier());
     }
@@ -22,6 +26,9 @@ public class Asymmetrics extends Ciphers {
         return encrypt(bytes, priKey, algorithm, algorithmTransformation, provider, secureRandom, new BytesBasedPrivateKeySupplier());
     }
 
+    public static byte[] decrypt(byte[] bytes, byte[] priKey, String algorithm, String algorithmTransformation){
+        return decrypt(bytes, priKey, algorithm, algorithmTransformation, null, null);
+    }
 
     public static byte[] decrypt(byte[] bytes, byte[] priKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
         return decrypt(bytes, priKey, algorithm, algorithmTransformation, provider, secureRandom, new BytesBasedPrivateKeySupplier());

@@ -41,4 +41,25 @@ public class SM4Tests {
         );
         System.out.println(new String(decryptedBytes));
     }
+
+    @Test
+    public void test2(){
+        String string = "abcde_12345";
+
+        SecretKey sm4key = PKIs.createSecretKey("SM4", (String) null, 128, null);
+
+        byte[] encryptedBytes = Symmetrics.encrypt(string.getBytes(Charsets.UTF_8),
+                sm4key.getEncoded(),
+                "SM4",
+                (Provider) null,
+                (SecureRandom) null
+        );
+
+        byte[] decryptedBytes = Symmetrics.decrypt(encryptedBytes,
+                sm4key.getEncoded(),
+                "SM4",
+                null, null
+        );
+        System.out.println(new String(decryptedBytes));
+    }
 }
