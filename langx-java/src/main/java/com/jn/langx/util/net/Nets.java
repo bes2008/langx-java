@@ -1546,7 +1546,6 @@ public class Nets {
     /**
      * @since 4.1.0
      * @param scopeName
-     * @return
      */
     public static NetworkInterface findInterfaceWithScopeId(String scopeName) {
         final Enumeration<NetworkInterface> enumeration;
@@ -1567,7 +1566,6 @@ public class Nets {
     /**
      *
      * @param networkInterface
-     * @return
      *
      * @since 4.1.0
      */
@@ -1579,7 +1577,6 @@ public class Nets {
      *
      * @param networkInterface
      * @param compareWith
-     * @return
      *
      * @since 4.1.0
      */

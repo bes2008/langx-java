@@ -16,9 +16,6 @@ public class CycleDetectedException extends RuntimeException {
         return cycle;
     }
 
-    /**
-     * @return
-     */
     public String cycleToString() {
         return Strings.join("-->", cycle);
     }

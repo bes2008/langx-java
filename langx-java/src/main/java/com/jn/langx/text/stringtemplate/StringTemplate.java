@@ -45,7 +45,6 @@ public class StringTemplate {
      * set a value getter
      *
      * @param valueGetter apply(String matched, Object[] args)
-     * @return
      */
     public StringTemplate with(Function2<String, Object[], String> valueGetter) {
         if (valueGetter != null) {

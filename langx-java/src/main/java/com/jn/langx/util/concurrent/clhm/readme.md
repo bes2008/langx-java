@@ -1,1 +1,0 @@
-refactor from google code ConcurrentLinkedHashMap

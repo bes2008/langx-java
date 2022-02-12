@@ -24,7 +24,6 @@ public class Enums {
      * @param value
      * @param targetClass
      * @param <T>
-     * @return
      */
     public static <T extends Enum<T>> T ofValue(final int value, Class<T> targetClass) {
         Preconditions.checkTrue(targetClass.isEnum(), targetClass.getName() + " not an enum class");
@@ -42,7 +41,6 @@ public class Enums {
      * @param tClass
      * @param code
      * @param <T>
-     * @return
      */
     public static <T extends Enum<T>> T ofCode(@NonNull final Class<T> tClass, final int code) {
         Preconditions.checkNotNull(tClass);
@@ -73,7 +71,6 @@ public class Enums {
      * @param tClass
      * @param name
      * @param <T>
-     * @return
      */
     public static <T extends Enum<T>> T ofName(@NonNull final Class<T> tClass, final String name) {
         Preconditions.checkNotNull(tClass);

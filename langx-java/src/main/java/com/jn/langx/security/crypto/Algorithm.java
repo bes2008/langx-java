@@ -14,21 +14,22 @@ public @interface Algorithm {
     /**
      * 算法名称
      *
-     * @return
+     * @return the algorithm name
      */
     public String name();
 
-    @SuppressWarnings("rawtypes")
+
     /**
      * 算法类型，可取值有：{Signature, MessageDigest, KeyPairGenerator, or ParameterGenerator}
-     * @return
+     * @return the used scene
      */
+    @SuppressWarnings("rawtypes")
     public Class[] apply();
 
     /**
      * 算法描述
      *
-     * @return
+     * @return the description
      */
     public String desc() default "";
 }

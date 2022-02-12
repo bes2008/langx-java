@@ -3,12 +3,11 @@ package com.jn.langx.security.crypto.key.store.cert;
 /**
  * distinguished name
  *
- * @see sun.security.x509.X500Name
  * @see java.security.cert.X509Certificate
  *
- * @see {@link "http://www.voidcn.com/article/p-nmndmjyz-bwh.html"}
+ * @see <a href="http://www.voidcn.com/article/p-nmndmjyz-bwh.html"/>
  *
- * @see  {@link "https://www.ietf.org/rfc/rfc3280.txt"}
+ * @see <a href="https://www.ietf.org/rfc/rfc3280.txt">RFC3280</a>
  */
 public class DN {
 

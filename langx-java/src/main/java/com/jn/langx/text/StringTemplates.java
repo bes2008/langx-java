@@ -20,7 +20,7 @@ public class StringTemplates {
      * @param template the template
      * @param args     the arguments
      * @return formatted string
-     * @see {@link String#format(String, Object...)}
+     * @see String#format(String, Object...)
      */
     public static String formatWithCStyle(String template, Object... args) {
         return new CStyleStringFormatter().format(template, args);

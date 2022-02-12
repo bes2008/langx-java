@@ -405,8 +405,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
     /**
      * 用于找到将被强制清除的
      *
-     * @param count
-     * @return
+     * @param count the count will be evicted
      */
     protected abstract List<K> forceEvict(int count);
 

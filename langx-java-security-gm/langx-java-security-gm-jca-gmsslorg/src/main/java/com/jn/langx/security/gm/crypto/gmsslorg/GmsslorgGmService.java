@@ -55,7 +55,6 @@ public class GmsslorgGmService extends AbstractGmService {
      *
      * @param data
      * @param publicKey
-     * @return
      */
     @Override
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {

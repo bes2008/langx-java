@@ -9,15 +9,15 @@ public interface ValueGetter2<K> extends ValueGetter<K, Object>{
 
     /**
      * 指定key不存在，或者存在key但值为null，这两种情况都返回true
-     * @param key
-     * @return
+     * @param key the key
+     * @return whether the value is null for the specified key
      */
     boolean isNull(K key);
 
     /**
      * key对应的值，可以被Objs.isEmpty 判断为true
-     * @param key
-     * @return
+     * @param key the key
+     * @return whether the value is empty for the specified key
      */
     boolean isEmpty(K key);
 

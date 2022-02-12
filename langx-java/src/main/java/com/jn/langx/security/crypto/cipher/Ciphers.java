@@ -53,7 +53,7 @@ public class Ciphers extends Securitys {
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
      *
-     * @return
+     * @return a cipher
      */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, SecureRandom secureRandom) {
         try {
@@ -73,7 +73,7 @@ public class Ciphers extends Securitys {
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
      *
-     * @return
+     * @return a cipher
      */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
@@ -93,7 +93,7 @@ public class Ciphers extends Securitys {
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
      *
-     * @return
+     * @return a cipher
      */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {

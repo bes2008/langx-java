@@ -21,7 +21,6 @@ public class ObjectIOs {
      * 在序列化时，不会对 static 字段， transient 字段序列化
      *
      * @param obj 必须实现 Serializable 接口
-     * @return
      * @throws IOException
      */
     public static <T> byte[] serialize(T obj) throws IOException {

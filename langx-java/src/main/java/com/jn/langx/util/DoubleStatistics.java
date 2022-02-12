@@ -89,7 +89,7 @@ public class DoubleStatistics implements Consumer<Double> {
      * numerical sum compared to a simple summation of {@code double}
      * values.
      *
-     * @apiNote Values sorted by increasing absolute magnitude tend to yield
+     * Note: Values sorted by increasing absolute magnitude tend to yield
      * more accurate results.
      *
      * @return the sum of values, or zero if none
@@ -149,7 +149,7 @@ public class DoubleStatistics implements Consumer<Double> {
      * other technique to reduce the error bound in the {@link #getSum
      * numerical sum} used to compute the average.
      *
-     * @apiNote Values sorted by increasing absolute magnitude tend to yield
+     * Note: Values sorted by increasing absolute magnitude tend to yield
      * more accurate results.
      *
      * @return the arithmetic mean of values, or zero if none

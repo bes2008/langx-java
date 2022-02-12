@@ -199,7 +199,6 @@ public class Maths {
      * 判断是否为 2的 power 值
      *
      * @param value
-     * @return
      */
     public static boolean isPower2(int value) {
         return value >= 1 && ((value & (value - 1)) == 0);

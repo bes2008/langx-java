@@ -2417,7 +2417,6 @@ public class IOs {
      * @param byteBuffer the bytes source
      * @param position   the position in the bytes source
      * @param maxLength  the max length will read
-     * @return
      */
     public static byte[] read(@NonNull ByteBuffer byteBuffer, int position, int maxLength) {
         if (byteBuffer == null) {
@@ -2759,7 +2758,6 @@ public class IOs {
      * 解决该问题的办法，就是两者范围统一。
      *
      * @param theByte
-     * @return
      */
     public static final int filterInputStreamRead(byte theByte) {
         return theByte < 0 ? (theByte + 256) : theByte;

@@ -206,7 +206,7 @@ public final class Objs{
      * @param obj a reference to be checked against {@code null}
      * @return {@code true} if the provided reference is {@code null} otherwise
      * {@code false}
-     * @apiNote This method exists to be used as a
+     * Note: This method exists to be used as a
      * {@link com.jn.langx.util.function.Predicate}, {@code filter(Objects::isNull)}
      * @see com.jn.langx.util.function.Predicate
      */

@@ -1017,7 +1017,6 @@ public class Reflects {
      *
      * @param clazz
      * @param field
-     * @return
      */
     public static Method getGetter(Class clazz, String field) {
         String simple = "get" + field;

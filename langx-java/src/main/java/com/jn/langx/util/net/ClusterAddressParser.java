@@ -39,7 +39,6 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
     /**
      * 转换为 host1:port1,host2:port2,host3:port3结构
      *
-     * @return
      */
     public static String normalize(List<NetworkAddress> addresses, final ClusterAddressStyle style) {
         Preconditions.checkNotEmpty(addresses);

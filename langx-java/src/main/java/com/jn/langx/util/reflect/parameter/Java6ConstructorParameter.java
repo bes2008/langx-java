@@ -209,7 +209,6 @@ public class Java6ConstructorParameter implements ConstructorParameter {
      * @return true if and only if this parameter is a synthetic
      * construct as defined by
      * <cite>The Java&trade; Language Specification</cite>.
-     * @jls 13.1 The Form of a Binary
      */
     public boolean isSynthetic() {
         return Modifiers.isSynthetic(getModifiers());

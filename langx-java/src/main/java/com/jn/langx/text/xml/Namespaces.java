@@ -73,7 +73,6 @@ public class Namespaces {
     /**
      * 当只有标准的命名空间时，才返回 false
      *
-     * @return
      */
     public static boolean hasCustomNamespace(Document document) {
         Map<String, Namespace> namespaceMap = getDocumentNamespaces(document.getDocumentElement());

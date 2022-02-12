@@ -23,7 +23,6 @@ public interface PatternMatcher {
      * 测试是否匹配
      *
      * @param string
-     * @return
      */
     boolean match(String string);
 }

@@ -1594,11 +1594,6 @@ public class Collects {
 
     /**
      * 第二个参数为分区总数，不是单个分区中的数据量
-     *
-     * @param c
-     * @param partitionSize
-     * @param <E>
-     * @return
      */
     public static <E> List<List<E>> partitionByCount(Iterable<E> c, final int partitionCount) {
         Preconditions.checkArgument(partitionCount > 0);
@@ -1616,7 +1611,6 @@ public class Collects {
      * @param c
      * @param partitionSize
      * @param <E>
-     * @return
      */
     public static <E> List<List<E>> partitionBySize(Iterable<E> c, final int partitionSize) {
         Preconditions.checkArgument(partitionSize > 0);
@@ -2446,7 +2440,6 @@ public class Collects {
      * @param startIndex 包含
      * @param endIndex   不包含
      * @param <E>
-     * @return
      */
     public static <E> int indexOf(List<E> list, E e, int startIndex, int endIndex) {
         if (list == null || list.isEmpty()) {
@@ -2492,7 +2485,6 @@ public class Collects {
      * @param startIndex
      * @param endIndex
      * @param <E>
-     * @return
      */
     public static <E> int lastIndexOf(List<E> list, E e, int startIndex, int endIndex) {
         if (list == null || list.isEmpty()) {

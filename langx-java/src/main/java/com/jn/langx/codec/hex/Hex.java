@@ -202,9 +202,9 @@ public class Hex {
     }
 
     /**
-     * @param data
-     * @param lowerCase
-     * @return
+     * @param data the data will be encoded
+     * @param lowerCase use lower case or upper case
+     * @return the hex string
      * @since 2.10.3
      */
     public static String encodeHexString(final byte[] data, boolean lowerCase) {

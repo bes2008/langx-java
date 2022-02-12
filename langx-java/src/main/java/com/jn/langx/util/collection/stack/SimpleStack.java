@@ -48,7 +48,6 @@ public class SimpleStack<E> implements Stack<E> {
 
     /**
      * @param   o   the desired object.
-     * @return
      */
     @Override
     public int search(Object o) {
