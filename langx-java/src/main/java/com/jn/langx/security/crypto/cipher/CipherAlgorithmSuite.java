@@ -18,18 +18,35 @@ public class CipherAlgorithmSuite implements Named {
     private String transformation;
 
     @Nullable
+    private Integer keySize;
+
+    @Nullable
     private AlgorithmParameterSupplier parameterSupplier;
 
-    public CipherAlgorithmSuite(){
+    public CipherAlgorithmSuite() {
 
     }
-    public CipherAlgorithmSuite(String algorithm, String transformation){
-        this(algorithm,transformation,null);
+
+    public CipherAlgorithmSuite(String algorithm, String transformation) {
+        this(algorithm, transformation, null);
     }
-    public CipherAlgorithmSuite(String algorithm, String transformation,AlgorithmParameterSupplier parameterSupplier){
+
+    public CipherAlgorithmSuite(String algorithm, String transformation, AlgorithmParameterSupplier parameterSupplier){
+        this(algorithm, transformation, parameterSupplier, null);
+    }
+    public CipherAlgorithmSuite(String algorithm, String transformation, AlgorithmParameterSupplier parameterSupplier, Integer keySize) {
         setName(algorithm);
         setTransformation(transformation);
         setParameterSupplier(parameterSupplier);
+        setKeySize(keySize);
+    }
+
+    public void setKeySize(Integer keySize) {
+        this.keySize = keySize;
+    }
+
+    public Integer getKeySize() {
+        return keySize;
     }
 
     public String getName() {

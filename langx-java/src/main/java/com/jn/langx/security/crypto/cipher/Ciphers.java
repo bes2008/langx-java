@@ -26,18 +26,18 @@ public class Ciphers extends Securitys {
     protected Ciphers() {
     }
 
-    protected static final CipherAlgorithmSuiteRegistry registry = new CipherAlgorithmSuiteRegistry();
+    private static final CipherAlgorithmSuiteRegistry ALGORITHM_SUITE_REGISTRY = new CipherAlgorithmSuiteRegistry();
 
     static {
-        registry.init();
+        ALGORITHM_SUITE_REGISTRY.init();
     }
 
     public static String getDefaultTransformation(String algorithm) {
-        return registry.getTransformation(algorithm);
+        return ALGORITHM_SUITE_REGISTRY.getTransformation(algorithm);
     }
 
     public static void addDefaultTransformation(String algorithm, String transformation) {
-        registry.add(algorithm, transformation);
+        ALGORITHM_SUITE_REGISTRY.add(algorithm, transformation);
     }
 
     public static Cipher createEmptyCipher(@NonNull String algorithmTransformation, @Nullable Provider provider) {
@@ -212,12 +212,15 @@ public class Ciphers extends Securitys {
         if (Emptys.isEmpty(algorithm)) {
             algorithm = Ciphers.extractAlgorithm(algorithmTransformation);
         }
-        CipherAlgorithmSuite suite = registry.get(algorithm);
+        CipherAlgorithmSuite suite = ALGORITHM_SUITE_REGISTRY.get(algorithm);
         if (Emptys.isEmpty(algorithmTransformation)) {
             if (suite != null) {
                 algorithmTransformation = suite.getTransformation();
             }
             if (Emptys.isEmpty(algorithmTransformation)) {
+                /**
+                 * 绝大部分算法，都是支持 ECB 模式的，所以就将 ECB模式作为默认
+                 */
                 algorithmTransformation = Ciphers.createAlgorithmTransformation(algorithm, "ECB", "PKCS5Padding");
             }
         }
@@ -233,19 +236,21 @@ public class Ciphers extends Securitys {
             parameterSupplier = suite.getParameterSupplier();
         }
         // 基于 Provider 中的
-        if (parameterSupplier == null) {
+        if (parameterSupplier == null && provider != null) {
             parameterSupplier = DefaultAlgorithmParameterSupplier.INSTANCE;
         }
 
-        parameter = parameterSupplier.get(key, algorithm, algorithmTransformation, provider, secureRandom);
-        if (parameter != null) {
-            if (parameter instanceof AlgorithmParameterSpec) {
-                parameterSpec = (AlgorithmParameterSpec) parameter;
-            } else if (parameter instanceof AlgorithmParameters) {
-                parameters = (AlgorithmParameters) parameter;
-            } else if (parameter instanceof AlgorithmParameterGenerator) {
-                AlgorithmParameterGenerator parameterGenerator = (AlgorithmParameterGenerator) parameter;
-                parameters = parameterGenerator.generateParameters();
+        if (parameterSupplier != null) {
+            parameter = parameterSupplier.get(key, algorithm, algorithmTransformation, provider, secureRandom);
+            if (parameter != null) {
+                if (parameter instanceof AlgorithmParameterSpec) {
+                    parameterSpec = (AlgorithmParameterSpec) parameter;
+                } else if (parameter instanceof AlgorithmParameters) {
+                    parameters = (AlgorithmParameters) parameter;
+                } else if (parameter instanceof AlgorithmParameterGenerator) {
+                    AlgorithmParameterGenerator parameterGenerator = (AlgorithmParameterGenerator) parameter;
+                    parameters = parameterGenerator.generateParameters();
+                }
             }
         }
         try {
@@ -341,4 +346,7 @@ public class Ciphers extends Securitys {
         return algorithm;
     }
 
+    public static CipherAlgorithmSuiteRegistry getAlgorithmSuiteRegistry() {
+        return ALGORITHM_SUITE_REGISTRY;
+    }
 }

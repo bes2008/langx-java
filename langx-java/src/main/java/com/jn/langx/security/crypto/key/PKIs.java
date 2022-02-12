@@ -7,7 +7,11 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.CryptoException;
+import com.jn.langx.security.crypto.cipher.CipherAlgorithmSuite;
+import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.key.store.KeyStores;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.stringtemplate.StringTemplate;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -116,17 +120,20 @@ public class PKIs extends KeyStores {
         }
     }
 
-    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull int keyLength, @Nullable SecureRandom secureRandom) {
+    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull int keySize, @Nullable SecureRandom secureRandom) {
         try {
-            Preconditions.checkTrue(keyLength > 0);
             KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
-            if ("SM2".equals(algorithm)) {
-                keyLength = 256;
+            if (keySize <= 0) {
+                CipherAlgorithmSuite suite = Ciphers.getAlgorithmSuiteRegistry().get(algorithm);
+                if (suite != null) {
+                    keySize = suite.getKeySize();
+                }
             }
+            Preconditions.checkTrue(keySize > 0);
             if (secureRandom == null) {
-                keyPairGenerator.initialize(keyLength);
+                keyPairGenerator.initialize(keySize);
             } else {
-                keyPairGenerator.initialize(keyLength, secureRandom);
+                keyPairGenerator.initialize(keySize, secureRandom);
             }
             return keyPairGenerator.generateKeyPair();
         } catch (Throwable ex) {
@@ -173,7 +180,7 @@ public class PKIs extends KeyStores {
                     }
                 }
             }
-            throw new CryptoException(ex.getMessage(), ex);
+            throw new CryptoException(StringTemplates.formatWithPlaceholder("{}: {}", ex.getClass(), ex.getMessage()), ex);
         }
 
     }
@@ -212,14 +219,19 @@ public class PKIs extends KeyStores {
     }
 
     public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @Nullable Integer keySize, @Nullable SecureRandom secureRandom) {
-        Preconditions.checkTrue(keySize != null || secureRandom != null);
+        if (secureRandom == null) {
+            secureRandom = Securitys.getSecureRandom();
+        }
+        if (keySize == null || keySize <= 0) {
+            CipherAlgorithmSuite suite = Ciphers.getAlgorithmSuiteRegistry().get(algorithm);
+            if (suite != null) {
+                keySize = suite.getKeySize();
+            }
+        }
         try {
-
             KeyGenerator secretKeyGenerator = getSecretKeyGenerator(algorithm, provider);
-            if (keySize == null) {
+            if (keySize == null || keySize <= 0) {
                 secretKeyGenerator.init(secureRandom);
-            } else if (secureRandom == null) {
-                secretKeyGenerator.init(keySize);
             } else {
                 secretKeyGenerator.init(keySize, secureRandom);
             }
