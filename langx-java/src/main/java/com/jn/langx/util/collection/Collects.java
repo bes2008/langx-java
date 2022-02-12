@@ -1651,7 +1651,7 @@ public class Collects {
     public static <E, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator, boolean reverse) {
         Preconditions.checkNotNull(comparator);
         if (Emptys.isEmpty(collection)) {
-            return new TreeSet<E>(comparator);
+            return new NonDistinctTreeSet<E>(comparator);
         } else {
             TreeSet<E> set = new NonDistinctTreeSet<E>(reverse ? Collections.reverseOrder(comparator) : comparator);
             set.addAll(filter(collection, Functions.<E>nonNullPredicate()));
