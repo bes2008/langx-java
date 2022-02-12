@@ -10,6 +10,11 @@ import java.util.List;
 public class Sm4AlgorithmSuiteSupplier implements CipherAlgorithmSuiteSupplier {
     @Override
     public List<CipherAlgorithmSuite> get() {
-        return Collects.asList(new CipherAlgorithmSuite("SM4","SM4/CBC/PKCS7Padding", new SM4AlgorithmSpecSupplier(GmService.SM4_IV_DEFAULT)));
+        return Collects.asList(new CipherAlgorithmSuite("SM4", "SM4/CBC/PKCS7Padding", new SM4AlgorithmSpecSupplier(GmService.SM4_IV_DEFAULT)));
+    }
+
+    @Override
+    public int getOrder() {
+        return 0;
     }
 }
