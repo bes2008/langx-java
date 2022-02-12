@@ -56,7 +56,7 @@
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
             <artifactId>langx-java</artifactId>
-            <version>4.2.4</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
