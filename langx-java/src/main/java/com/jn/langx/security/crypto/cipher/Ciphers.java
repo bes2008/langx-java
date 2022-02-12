@@ -18,8 +18,6 @@ import javax.crypto.Cipher;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Cipher
@@ -28,21 +26,15 @@ public class Ciphers extends Securitys {
     protected Ciphers() {
     }
 
-    protected static final Map<String, String> algorithmToTransformationMapping = new ConcurrentHashMap<String, String>();
+    protected static final CipherAlgorithmSuiteRegistry registry = new CipherAlgorithmSuiteRegistry();
 
-    static {
-        algorithmToTransformationMapping.put("AES", "AES/ECB/PKCS5Padding");
-        algorithmToTransformationMapping.put("SM2", "SM2");
-        algorithmToTransformationMapping.put("SM4", "SM4/CBC/PKCS7Padding");
-        algorithmToTransformationMapping.put("RSA", "RSA/ECB/PKCS1Padding");
-    }
 
     public static String getDefaultTransformation(String algorithm) {
-        return algorithmToTransformationMapping.get(algorithm);
+        return registry.getTransformation(algorithm);
     }
 
     public static void addDefaultTransformation(String algorithm, String transformation) {
-        algorithmToTransformationMapping.put(algorithm, transformation);
+        registry.add(algorithm, transformation);
     }
 
     public static Cipher createEmptyCipher(@NonNull String algorithmTransformation, @Nullable Provider provider) {
@@ -303,13 +295,13 @@ public class Ciphers extends Securitys {
         return segments[0];
     }
 
-    public static Symmetrics.MODE extractSymmetricMode(String algorithmTransformation){
-        String[] segments= Strings.split(algorithmTransformation,"/");
-        Preconditions.checkArgument(segments.length==1 || segments.length==3,"illegal algorithm transformation: {}", algorithmTransformation);
-        if(segments.length==1){
-            return extractSymmetricMode(algorithmToTransformationMapping.get(segments[0].toUpperCase()));
+    public static Symmetrics.MODE extractSymmetricMode(String algorithmTransformation) {
+        String[] segments = Strings.split(algorithmTransformation, "/");
+        Preconditions.checkArgument(segments.length == 1 || segments.length == 3, "illegal algorithm transformation: {}", algorithmTransformation);
+        if (segments.length == 1) {
+            return extractSymmetricMode(getDefaultTransformation(segments[0].toUpperCase()));
         }
-        if(segments.length==3){
+        if (segments.length == 3) {
             return Enums.ofName(Symmetrics.MODE.class, segments[1].toUpperCase());
         }
         return null;
