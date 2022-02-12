@@ -28,6 +28,9 @@ public class Ciphers extends Securitys {
 
     protected static final CipherAlgorithmSuiteRegistry registry = new CipherAlgorithmSuiteRegistry();
 
+    static {
+        registry.init();
+    }
 
     public static String getDefaultTransformation(String algorithm) {
         return registry.getTransformation(algorithm);
@@ -175,7 +178,7 @@ public class Ciphers extends Securitys {
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
-        return decrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+        return decrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameters == null ? null : new AlgorithmParameterSupplier() {
             @Override
             public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameters;
@@ -194,7 +197,7 @@ public class Ciphers extends Securitys {
     }
 
     public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameterSpec parameterSpec, boolean encrypt) {
-        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec == null ? null : new AlgorithmParameterSupplier() {
             @Override
             public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameterSpec;
@@ -209,8 +212,11 @@ public class Ciphers extends Securitys {
         if (Emptys.isEmpty(algorithm)) {
             algorithm = Ciphers.extractAlgorithm(algorithmTransformation);
         }
+        CipherAlgorithmSuite suite = registry.get(algorithm);
         if (Emptys.isEmpty(algorithmTransformation)) {
-            algorithmTransformation = getDefaultTransformation(algorithm);
+            if (suite != null) {
+                algorithmTransformation = suite.getTransformation();
+            }
             if (Emptys.isEmpty(algorithmTransformation)) {
                 algorithmTransformation = Ciphers.createAlgorithmTransformation(algorithm, "ECB", "PKCS5Padding");
             }
@@ -221,24 +227,25 @@ public class Ciphers extends Securitys {
         AlgorithmParameterSpec parameterSpec = null;
         AlgorithmParameters parameters = null;
         Object parameter = null;
-        if (parameterSupplier != null) {
-            parameter = parameterSupplier.get(key, algorithm, algorithmTransformation, provider, secureRandom);
-            if (parameter != null) {
-                if (parameter instanceof AlgorithmParameterSpec) {
-                    parameterSpec = (AlgorithmParameterSpec) parameter;
-                } else if (parameter instanceof AlgorithmParameters) {
-                    parameters = (AlgorithmParameters) parameter;
-                } else if (parameter instanceof AlgorithmParameterGenerator) {
-                    AlgorithmParameterGenerator parameterGenerator = (AlgorithmParameterGenerator) parameter;
-                    parameters = parameterGenerator.generateParameters();
-                }
-            }
+
+        // 获取全局默认的 parameter supplier, 这部分也是人为定义的，但又没有加入到 Provider中的
+        if (parameterSupplier == null && suite != null) {
+            parameterSupplier = suite.getParameterSupplier();
         }
-        if (parameterSpec == null && parameters == null && provider != null) {
-            try {
-                parameters = AlgorithmParameters.getInstance(algorithm, provider);
-            } catch (NoSuchAlgorithmException ex) {
-                // ignore it
+        // 基于 Provider 中的
+        if (parameterSupplier == null) {
+            parameterSupplier = DefaultAlgorithmParameterSupplier.INSTANCE;
+        }
+
+        parameter = parameterSupplier.get(key, algorithm, algorithmTransformation, provider, secureRandom);
+        if (parameter != null) {
+            if (parameter instanceof AlgorithmParameterSpec) {
+                parameterSpec = (AlgorithmParameterSpec) parameter;
+            } else if (parameter instanceof AlgorithmParameters) {
+                parameters = (AlgorithmParameters) parameter;
+            } else if (parameter instanceof AlgorithmParameterGenerator) {
+                AlgorithmParameterGenerator parameterGenerator = (AlgorithmParameterGenerator) parameter;
+                parameters = parameterGenerator.generateParameters();
             }
         }
         try {
