@@ -156,7 +156,7 @@ public class Ciphers extends Securitys {
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
-        return encrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+        return encrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameters == null ? null : new AlgorithmParameterSupplier() {
             @Override
             public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameters;
