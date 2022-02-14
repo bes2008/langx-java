@@ -10,6 +10,9 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.xpath.XPathFactory;
 import java.io.InputStream;
@@ -18,10 +21,13 @@ import java.util.List;
 public class XmlParserTests {
     public static void main(String[] args) throws Throwable {
         List<String> poms = Collects.newArrayList(
+                /**
                 "/xmls/asm-parent-3.3.1.pom",
                 "/xmls/antlr-2.7.7.pom",
                 "/xmls/servlet-api-2.5.pom",
-                "/xmls/beanshell-2.0b4.pom");
+                "/xmls/beanshell-2.0b4.pom",
+                 */
+                "/xmls/bsh-2.0b4.pom");
         Collects.forEach(poms, new Consumer<String>() {
             @Override
             public void accept(String s) {
@@ -29,13 +35,14 @@ public class XmlParserTests {
                 try {
                     Resource resource = Resources.loadClassPathResource(s);
                     inputStream = resource.getInputStream();
-                    Document document = Xmls.getXmlDoc(null, inputStream);
+                    Document document = Xmls.getXmlDoc(null, new IgnoreErrorHandler(),inputStream);
 
                     String xpathExpressionString = null;
                     Element element;
-                    if (Namespaces.hasCustomNamespace(document)) {
-                        xpathExpressionString = "/x:project/x:groupId";
-                        element = new XmlAccessor("x").getElement(document, XPathFactory.newInstance(), xpathExpressionString);
+
+                    if (Namespaces.hasCustomNamespace(document, true)) {
+                        xpathExpressionString = "/xsi:project/xsi:groupId";
+                        element = new XmlAccessor().getElement(document, XPathFactory.newInstance(), xpathExpressionString);
                     } else {
                         xpathExpressionString = "/project/groupId";
                         element = new XmlAccessor().getElement(document, XPathFactory.newInstance(), xpathExpressionString);
@@ -49,5 +56,22 @@ public class XmlParserTests {
             }
         });
 
+    }
+
+    private static class IgnoreErrorHandler implements ErrorHandler {
+        @Override
+        public void warning(SAXParseException exception) throws SAXException {
+            System.out.println(exception);
+        }
+
+        @Override
+        public void error(SAXParseException exception) throws SAXException {
+            System.out.println(exception);
+        }
+
+        @Override
+        public void fatalError(SAXParseException exception) throws SAXException {
+            System.out.println(exception);
+        }
     }
 }
