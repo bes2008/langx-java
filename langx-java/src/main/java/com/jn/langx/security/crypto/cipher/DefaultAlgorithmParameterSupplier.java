@@ -6,6 +6,8 @@ import java.security.*;
 
 /**
  * 基于 Provider 中注册的 Spec, Generator 来生成 参数
+ *
+ * @since 4.2.7
  */
 @Singleton
 public class DefaultAlgorithmParameterSupplier implements AlgorithmParameterSupplier {

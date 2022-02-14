@@ -4,7 +4,6 @@ import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.registry.GenericRegistry;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.OrderedComparator;
 import com.jn.langx.util.comparator.ReverseComparator;
@@ -15,6 +14,9 @@ import com.jn.langx.util.spi.CommonServiceProvider;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @since 4.2.7
+ */
 public class CipherAlgorithmSuiteRegistry extends GenericRegistry<CipherAlgorithmSuite> {
 
     @Override

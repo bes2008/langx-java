@@ -5,6 +5,9 @@ import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 
+/**
+ * @since 4.2.7
+ */
 public class CipherAlgorithmSuite implements Named {
     /**
      * 算法名称
