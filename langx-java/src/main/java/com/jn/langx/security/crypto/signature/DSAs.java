@@ -2,6 +2,7 @@ package com.jn.langx.security.crypto.signature;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Strings;
 
@@ -13,20 +14,21 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 public class DSAs extends Signatures {
+    public static final String DSA = JCAEStandardName.DSA.getName();
     public static final String DSA_INSTANCE_ALGORITHM = "SHA1withDSA";
 
     public static byte[] sign(byte[] privateKey, @NonNull byte[] data) {
-        PrivateKey privKey = PKIs.createPrivateKey("DSA", null, new PKCS8EncodedKeySpec(privateKey));
+        PrivateKey privKey = PKIs.createPrivateKey(DSA, null, new PKCS8EncodedKeySpec(privateKey));
         return sign(null, (String) null, privKey, null, data);
     }
 
     public static byte[] sign(@Nullable String signatureInstanceAlgorithm, byte[] privateKey, @NonNull byte[] data) {
-        PrivateKey privKey = PKIs.createPrivateKey("DSA", null, new PKCS8EncodedKeySpec(privateKey));
+        PrivateKey privKey = PKIs.createPrivateKey(DSA, null, new PKCS8EncodedKeySpec(privateKey));
         return sign(signatureInstanceAlgorithm, (String) null, privKey, null, data);
     }
 
     public static byte[] sign(@Nullable String signatureInstanceAlgorithm, @Nullable String provider, byte[] privateKey, @Nullable SecureRandom secureRandom, @NonNull byte[] data) {
-        PrivateKey privKey = PKIs.createPrivateKey("DSA", provider, new PKCS8EncodedKeySpec(privateKey));
+        PrivateKey privKey = PKIs.createPrivateKey(DSA, provider, new PKCS8EncodedKeySpec(privateKey));
         return sign(signatureInstanceAlgorithm, provider, privKey, secureRandom, data);
     }
 
@@ -45,12 +47,12 @@ public class DSAs extends Signatures {
     }
 
     public static boolean verify(@Nullable String signatureInstanceAlgorithm, @NonNull byte[] publicKey, byte[] data, byte[] signature) {
-        PublicKey pubKey = PKIs.createPublicKey("DSA", null, new X509EncodedKeySpec(publicKey));
+        PublicKey pubKey = PKIs.createPublicKey(DSA, null, new X509EncodedKeySpec(publicKey));
         return verify(signatureInstanceAlgorithm, (String) null, pubKey, data, signature);
     }
 
     public static boolean verify(@Nullable String signatureInstanceAlgorithm, @Nullable String provider, @NonNull byte[] publicKey, byte[] data, byte[] signature) {
-        PublicKey pubKey = PKIs.createPublicKey("DSA", null, new X509EncodedKeySpec(publicKey));
+        PublicKey pubKey = PKIs.createPublicKey(DSA, null, new X509EncodedKeySpec(publicKey));
         return verify(signatureInstanceAlgorithm, (String) null, pubKey, data, signature);
     }
 
