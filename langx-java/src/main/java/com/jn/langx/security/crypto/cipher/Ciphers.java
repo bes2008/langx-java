@@ -13,6 +13,7 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.enums.Enums;
+import com.jn.langx.util.logging.Loggers;
 
 import javax.crypto.Cipher;
 import java.security.*;
@@ -234,6 +235,9 @@ public class Ciphers extends Securitys {
         // 获取全局默认的 parameter supplier, 这部分也是人为定义的，但又没有加入到 Provider中的
         if (parameterSupplier == null && suite != null) {
             parameterSupplier = suite.getParameterSupplier();
+            if(parameterSupplier==null && Strings.equalsIgnoreCase("SM4",algorithm)){
+                Loggers.getLogger(Ciphers.class).warn("check whether the langx-java-security-gm-jca-bouncycastle.jar in the classpath or not");
+            }
         }
         // 基于 Provider 中的
         if (parameterSupplier == null && provider != null) {
