@@ -236,7 +236,7 @@ public class Ciphers extends Securitys {
         if (parameterSupplier == null && suite != null) {
             parameterSupplier = suite.getParameterSupplier();
             if(parameterSupplier==null && Strings.equalsIgnoreCase("SM4",algorithm)){
-                Loggers.getLogger(Ciphers.class).warn("check whether the langx-java-security-gm-jca-bouncycastle.jar in the classpath or not");
+                Loggers.getLogger(Ciphers.class).warn("check whether the langx-java-security-gm-jca-bouncycastle.jar (version >= 4.2.7) in the classpath or not");
             }
         }
         // 基于 Provider 中的
