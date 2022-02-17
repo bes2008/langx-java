@@ -18,6 +18,15 @@
         Java lang extensions for java6+, a supplement to , replacement of a Guava, commons-lang.
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <resources>
             <resource>
