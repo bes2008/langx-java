@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.github.fangjinuo.langx.security</groupId>
         <artifactId>langx-java-security-gm</artifactId>
-        <version>4.2.9</version>
+        <version>4.3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
