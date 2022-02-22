@@ -218,7 +218,6 @@ public class Functions {
     public static <E> Predicate<E> notEmptyPredicate() {
         return EmptyPredicate.IS_NOT_EMPTY_PREDICATE;
     }
-
     public static <E> Filter<E> trueFilter() {
         return new Filter<E>() {
             @Override

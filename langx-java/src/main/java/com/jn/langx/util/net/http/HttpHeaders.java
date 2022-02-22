@@ -3,6 +3,8 @@ package com.jn.langx.util.net.http;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
+import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.net.mime.MediaType;
 import com.jn.langx.util.StringJoiner;
 import com.jn.langx.util.*;
@@ -1264,6 +1266,25 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     @Nullable
     public String getFirst(String headerName) {
         return this.headers.getFirst(headerName);
+    }
+
+    public String getFirstHeader(String... headerNames) {
+        return getFirstHeader(new Predicate2<String, String>() {
+            @Override
+            public boolean test(String key, String value) {
+                return Strings.isNotEmpty(value);
+            }
+        }, headerNames);
+    }
+
+    public String getFirstHeader(Predicate2<String, String> predicate, String... headerNames) {
+        return Pipeline.of(headerNames)
+                .firstMap(new Function2<Integer, String, String>() {
+                    @Override
+                    public String apply(Integer headerNameIndex, String headerName) {
+                        return getFirst(headerName);
+                    }
+                }, predicate);
     }
 
     /**
