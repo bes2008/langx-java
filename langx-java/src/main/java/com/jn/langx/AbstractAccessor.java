@@ -3,7 +3,9 @@ package com.jn.langx;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.function.Function;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.*;
 
 public abstract class AbstractAccessor<K, T> implements Accessor<K, T> {
     private T t;
@@ -21,7 +23,7 @@ public abstract class AbstractAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public boolean isNull(K key) {
-        return !has(key) || get(key)==null;
+        return !has(key) || get(key) == null;
     }
 
     @Override
@@ -79,5 +81,20 @@ public abstract class AbstractAccessor<K, T> implements Accessor<K, T> {
         return mapper.apply(get(key));
     }
 
+    @Override
+    public <E> E getAny(K... keys) {
+        return getAny(Functions.<K, E>nullPredicate2(), keys);
+    }
 
+    @Override
+    public <E> E getAny(Predicate2<K, E> predicate, K... keys) {
+        E v = Pipeline.of(keys)
+                .firstMap(new Function2<Integer, K, E>() {
+                    @Override
+                    public E apply(Integer keyIndex, K key) {
+                        return (E) get(key);
+                    }
+                }, predicate);
+        return v;
+    }
 }

@@ -42,6 +42,10 @@ public class Pipeline<E> {
         return Collects.firstMap(collection, mapper, breakPredicate);
     }
 
+    public <O> O firstMap(@NonNull final Function2<Integer, E, O> mapper, Predicate2<E,O> breakPredicate) {
+        return Collects.firstMap(collection, mapper, breakPredicate);
+    }
+
     public Pipeline<E> filter(Predicate<E> predicate) {
         return this.filter(predicate, null);
     }

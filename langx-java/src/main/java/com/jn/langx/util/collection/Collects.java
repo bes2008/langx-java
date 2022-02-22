@@ -1184,11 +1184,14 @@ public class Collects {
      * find the first matched element, null if not found
      */
     public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper) {
-        return firstMap(collection, mapper, null);
+        return firstMap(collection, mapper, (Predicate<O>) null);
     }
 
     /**
-     * find the first matched element, null if not found
+     * map every element in the collection with the mapper,
+     * break the traverse if the mapped result match the breakPredicate
+     *
+     * return the mapped result
      */
     public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate<O> breakPredicate) {
         final Holder<O> holder = new Holder<O>();
@@ -1199,8 +1202,30 @@ public class Collects {
             }
         }, new Predicate2<Integer, E>() {
             @Override
-            public boolean test(Integer key, E value) {
+            public boolean test(Integer index, E value) {
                 return breakPredicate == null ? !holder.isNull() : breakPredicate.test(holder.get());
+            }
+        });
+        return holder.get();
+    }
+
+    /**
+     * map every element in the collection with the mapper,
+     * break the traverse if the mapped result match the breakPredicate
+     *
+     * return the mapped result
+     */
+    public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate2<E,O> breakPredicate) {
+        final Holder<O> holder = new Holder<O>();
+        Collects.forEach(collection, new Consumer2<Integer, E>() {
+            @Override
+            public void accept(Integer index, E element) {
+                holder.set(mapper.apply(index, element));
+            }
+        }, new Predicate2<Integer, E>() {
+            @Override
+            public boolean test(Integer index, E element) {
+                return breakPredicate == null ? !holder.isNull() : breakPredicate.test(element,holder.get());
             }
         });
         return holder.get();

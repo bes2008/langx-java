@@ -2,6 +2,7 @@ package com.jn.langx.util.valuegetter;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Predicate2;
 
 public interface ValueGetter2<K> extends ValueGetter<K, Object>{
     @Override
@@ -78,5 +79,8 @@ public interface ValueGetter2<K> extends ValueGetter<K, Object>{
     Boolean getBoolean(K key, Boolean defaultValue);
 
     Boolean getBoolean(K key, @NonNull Function<Object, Boolean> mapper);
+
+    <E> E getAny(K... keys);
+    <E> E getAny(Predicate2<K,E> predicate, K... keys);
 
 }
