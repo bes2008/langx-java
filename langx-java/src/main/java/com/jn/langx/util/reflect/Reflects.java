@@ -1211,10 +1211,25 @@ public class Reflects {
         return parent.isAssignableFrom(child);
     }
 
+    /**
+     *
+     * @param parent
+     * @param child
+     *
+     * @since 4.3.2
+     */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child) {
         return isSubClassOrEquals(parent, child, true, true);
     }
 
+
+    /**
+     *
+     * @param parent
+     * @param child
+     *
+     * @since 4.3.2
+     */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child, final boolean checkSuperClass, final boolean checkInterfaces) {
         Preconditions.checkNotNull(parent);
         Preconditions.checkNotNull(child);
