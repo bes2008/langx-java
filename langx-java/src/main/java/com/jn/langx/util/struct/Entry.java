@@ -13,14 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Entry<K, V> extends Pair<K, V> implements Map.Entry<K, V> {
+public class Entry<K, V> extends Pair<K, V> {
     public Entry(K key) {
-        setKey(key);
+        super(key,null);
     }
 
     public Entry(K key, V value) {
-        setKey(key);
-        setValue(value);
+        super(key,value);
     }
 
     @Override

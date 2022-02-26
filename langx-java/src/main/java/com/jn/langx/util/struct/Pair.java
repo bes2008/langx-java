@@ -3,12 +3,19 @@ package com.jn.langx.util.struct;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
+import java.util.Map;
+
 /**
  * Key value pair
  */
-public abstract class Pair<K, V> {
+public class Pair<K, V> implements Map.Entry<K, V>  {
     private K key;
     private V value;
+
+    public Pair(K k,V v){
+        this.setKey(k);
+        this.setValue(v);
+    }
 
     public K getKey() {
         return key;
