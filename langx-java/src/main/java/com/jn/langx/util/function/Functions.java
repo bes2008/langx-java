@@ -257,6 +257,24 @@ public class Functions {
         return booleanPredicate2(true);
     }
 
+    public static <E> Predicate<E> reversePredicate(final Predicate<E> predicate){
+        return new Predicate<E>() {
+            @Override
+            public boolean test(E e) {
+                return !predicate.test(e);
+            }
+        };
+    }
+
+    public static <E1,E2> Predicate2<E1,E2> reversePredicate(final Predicate2<E1,E2> predicate){
+        return new Predicate2<E1, E2>() {
+            @Override
+            public boolean test(E1 key, E2 value) {
+                return !predicate.test(key, value);
+            }
+        };
+    }
+
     public static <E1, E2> Predicate2<E1, E2> falsePredicate2() {
         return booleanPredicate2(false);
     }
