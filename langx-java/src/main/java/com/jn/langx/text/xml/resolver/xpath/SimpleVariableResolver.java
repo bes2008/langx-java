@@ -22,7 +22,6 @@ public class SimpleVariableResolver implements XPathVariableResolver {
      * {@inheritDoc}
      *
      * @param variableName
-     * @return
      */
     @Override
     public Object resolveVariable(QName variableName) {

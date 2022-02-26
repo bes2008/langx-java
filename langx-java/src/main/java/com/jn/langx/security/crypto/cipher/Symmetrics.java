@@ -9,20 +9,28 @@ public class Symmetrics extends Ciphers {
     protected Symmetrics() {
     }
 
-    public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithm, Provider provider, SecureRandom secureRandom) {
-        return encrypt(bytes, symmetricKey, algorithm, null, provider, secureRandom);
+    public static byte[] encrypt(byte[] bytes, byte[] secretKey, String algorithm) {
+        return encrypt(bytes, secretKey, algorithm, null, null);
     }
 
-    public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return encrypt(bytes, symmetricKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
+    public static byte[] encrypt(byte[] bytes, byte[] secretKey, String algorithm, Provider provider, SecureRandom secureRandom) {
+        return encrypt(bytes, secretKey, algorithm, null, provider, secureRandom);
     }
 
-    public static byte[] decrypt(byte[] bytes, byte[] symmetricKey, String algorithm, Provider provider, SecureRandom secureRandom) {
-        return decrypt(bytes, symmetricKey, algorithm, null, provider, secureRandom);
+    public static byte[] encrypt(byte[] bytes, byte[] secretKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
+        return encrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
     }
 
-    public static byte[] decrypt(byte[] bytes, byte[] symmetricKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return decrypt(bytes, symmetricKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
+    public static byte[] decrypt(byte[] bytes, byte[] secretKey, String algorithm) {
+        return decrypt(bytes, secretKey, algorithm, null, null);
+    }
+
+    public static byte[] decrypt(byte[] bytes, byte[] secretKey, String algorithm, Provider provider, SecureRandom secureRandom) {
+        return decrypt(bytes, secretKey, algorithm, null, provider, secureRandom);
+    }
+
+    public static byte[] decrypt(byte[] bytes, byte[] secretKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
+        return decrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
     }
 
     public static enum MODE {
@@ -34,7 +42,7 @@ public class Symmetrics extends Ciphers {
 
         private CipherAlgorithmMode ref;
 
-        MODE(CipherAlgorithmMode ref){
+        MODE(CipherAlgorithmMode ref) {
             this.ref = ref;
         }
 

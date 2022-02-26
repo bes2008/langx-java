@@ -197,7 +197,6 @@ public class Types {
      * convert any type to Class
      *
      * @param o
-     * @return
      */
     public static Class<?> toClass(Type o) {
         if (o instanceof GenericArrayType) {
@@ -305,7 +304,6 @@ public class Types {
      * @param context
      * @param contextRawType
      * @param toResolve 将要被解析的类型
-     * @return
      */
     public static Type resolve(Type context, Class<?> contextRawType, Type toResolve) {
         // This implementation is made a little more complicated in an attempt to avoid object-creation.

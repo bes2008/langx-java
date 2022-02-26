@@ -69,7 +69,6 @@ public abstract class ParameterizedTypeGetter<T> {
     /**
      * 外层类型
      *
-     * @return
      */
     public final Type getRawType() {
         return rawType;

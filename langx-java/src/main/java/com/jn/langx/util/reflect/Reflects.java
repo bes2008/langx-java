@@ -1017,7 +1017,6 @@ public class Reflects {
      *
      * @param clazz
      * @param field
-     * @return
      */
     public static Method getGetter(Class clazz, String field) {
         String simple = "get" + field;
@@ -1210,6 +1209,64 @@ public class Reflects {
         Preconditions.checkNotNull(parent);
         Preconditions.checkNotNull(child);
         return parent.isAssignableFrom(child);
+    }
+
+    /**
+     *
+     * @param parent
+     * @param child
+     *
+     * @since 4.3.2
+     */
+    public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child) {
+        return isSubClassOrEquals(parent, child, true, true);
+    }
+
+
+    /**
+     *
+     * @param parent
+     * @param child
+     *
+     * @since 4.3.2
+     */
+    public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child, final boolean checkSuperClass, final boolean checkInterfaces) {
+        Preconditions.checkNotNull(parent);
+        Preconditions.checkNotNull(child);
+
+        if(checkInterfaces || checkSuperClass){
+            if (checkInterfaces) {
+                Class[] interfaces = child.getInterfaces();
+                if (Pipeline.of(interfaces)
+                        .anyMatch(new Predicate<Class>() {
+                            @Override
+                            public boolean test(Class itfc) {
+                                if(Objs.equals(parent, Reflects.getFQNClassName(itfc))){
+                                    return true;
+                                }
+                                return isSubClassOrEquals(parent, itfc, checkSuperClass, checkInterfaces);
+                            }
+                        })) {
+                    return true;
+                }
+            }
+
+            if (checkSuperClass) {
+                Class parentClass = child.getSuperclass();
+                if (parentClass != null) {
+                    String parentClassName = Reflects.getFQNClassName(parentClass);
+                    if (Objs.equals(parentClassName, parent)) {
+                        return true;
+                    }
+                    if (isSubClassOrEquals(parent, parentClass, checkSuperClass, checkInterfaces)) {
+                        return true;
+                    }
+                }
+            }
+
+        }
+
+        return false;
     }
 
     public static boolean isSubClass(@NonNull Class parent, @NonNull Class child) {

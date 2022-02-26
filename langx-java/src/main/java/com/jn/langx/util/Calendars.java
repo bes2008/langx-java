@@ -55,7 +55,6 @@ public class Calendars {
     /**
      * 获取某个月份的天数
      *
-     * @return
      */
     public static int getMaxDay(int year, int month) {
         return month == 2 && isLeapYear(year) ? 29 : arr[month - 1];

@@ -330,7 +330,6 @@ public class ClassLoaders {
 
     /**
      * @param klass
-     * @return
      * @since 3.6.6
      */
     public static URL getJarUrl(Class<?> klass) {
@@ -340,7 +339,6 @@ public class ClassLoaders {
 
     /**
      * @param klass
-     * @return
      * @since 3.6.6
      */
     public static JarFile getJarFile(Class<?> klass) {

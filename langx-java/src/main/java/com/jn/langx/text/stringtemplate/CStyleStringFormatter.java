@@ -4,7 +4,7 @@ package com.jn.langx.text.stringtemplate;
  * %d
  * %s
  *
- * @see {@link String#format(String, Object...)}
+ * @see String#format(String, Object...)
  */
 public class CStyleStringFormatter implements StringTemplateFormatter {
     @Override

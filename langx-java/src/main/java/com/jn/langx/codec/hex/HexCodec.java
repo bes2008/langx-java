@@ -60,7 +60,7 @@ public class HexCodec implements BinaryCodec {
      * @param array An array of character bytes containing hexadecimal digits
      * @return A byte array containing binary data decoded from the supplied byte array (representing characters).
      * @throws CodecException Thrown if an odd number of characters is supplied to this function
-     * @see {@link Hex#decodeHex(char[])}
+     * @see Hex#decodeHex(char[])
      */
     @Override
     public byte[] decode(final byte[] array) throws CodecException {
@@ -78,7 +78,7 @@ public class HexCodec implements BinaryCodec {
      *
      * @param array a byte[] to convert to Hex characters
      * @return A byte[] containing the bytes of the hexadecimal characters
-     * @see {@link Hex#encodeHex(byte[])}
+     * @see Hex#encodeHex(byte[]) 
      * @since 1.7 No longer throws IllegalStateException if the charsetName is invalid.
      */
     @Override

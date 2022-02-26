@@ -120,7 +120,6 @@ public class Strings {
         return useValueIfBlank(str, null);
     }
 
-    @Deprecated
     /**
      * Trim a string, if the string is null, will return empty string:""
      *
@@ -133,7 +132,6 @@ public class Strings {
         return getEmptyIfNull(str).trim();
     }
 
-    @Deprecated
     /**
      * @deprecated
      * @see #trimToNull(String)

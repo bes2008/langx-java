@@ -1,11 +1,13 @@
 package com.jn.langx.commandline;
 
+import java.util.Map;
+
 /**
  * The callback handlers for the result of asynchronous process execution. When a
  * process is started asynchronously the callback provides you with the result of
  * the executed process, i.e. the exit value or an exception.
  *
- * @see CommandLineExecutor#execute(CommandLine, java.util.Map, ExecuteResultHandler)
+ * @see CommandLineExecutor#execute(CommandLine, Map)
  */
 public interface ExecuteResultHandler {
 

@@ -16,12 +16,18 @@ import java.util.Map;
 import static javax.xml.XMLConstants.*;
 
 public class Namespaces {
+
+    /**
+     * 绝大部分 xml中，都会有 xsi这个命名空间的，
+     */
+    public static String NAMESPACE_XSI_NAME = "xsi";
+
     public static String getNodeNamespaceURI(@NonNull Node node) {
         return node.getNamespaceURI();
     }
 
     public static boolean isNamespaceAttribute(Attr attribute) {
-        if(XMLNS_ATTRIBUTE.equals(attribute.getLocalName()) || (XMLNS_ATTRIBUTE+":"+attribute.getLocalName()).equals(attribute.getName())){
+        if (XMLNS_ATTRIBUTE.equals(attribute.getLocalName()) || (XMLNS_ATTRIBUTE + ":" + attribute.getLocalName()).equals(attribute.getName())) {
             return true;
         }
         return false;
@@ -34,7 +40,7 @@ public class Namespaces {
 
     public static Map<String, Namespace> findNamespaces(@NonNull Node node) {
         Map<String, Namespace> ret = new HashMap<String, Namespace>();
-        if(node.getParentNode()!=null){
+        if (node.getParentNode() != null) {
             ret.putAll(findNamespaces(node.getParentNode()));
         }
         ret.putAll(Pipeline.<Attr>of(new NodeAttributesIterator(node)).filter(new Predicate<Attr>() {
@@ -66,31 +72,47 @@ public class Namespaces {
         return isCustomNamespace(node.getNamespaceURI());
     }
 
-    public static boolean isDefaultNamespace(Namespace namespace){
+    public static boolean isDefaultNamespace(Namespace namespace) {
         return XMLNS_ATTRIBUTE.equals(namespace.getPrefix());
     }
 
     /**
      * 当只有标准的命名空间时，才返回 false
-     *
-     * @return
      */
     public static boolean hasCustomNamespace(Document document) {
+        return hasCustomNamespace(document, false);
+    }
+
+    /**
+     * 当只有标准的命名空间时，才返回 false.
+     *
+     * @param isDefaultIfJustHasXsi
+     *   只有 1个命名空间，且名称 为xsi时，是否认定为默认命名空间
+     * @since 4.2.8
+     */
+    public static boolean hasCustomNamespace(Document document, boolean isDefaultIfJustHasXsi) {
         Map<String, Namespace> namespaceMap = getDocumentNamespaces(document.getDocumentElement());
-        return Pipeline.of(namespaceMap.values()).findFirst(new Predicate<Namespace>() {
+        if (Pipeline.of(namespaceMap.values()).anyMatch(new Predicate<Namespace>() {
             @Override
             public boolean test(Namespace namespace) {
-                return !isW3cXmlNamespace(namespace);
+                return isCustomNamespace(namespace);
             }
-        }) != null;
+        })) {
+            if (isDefaultIfJustHasXsi && namespaceMap.size() == 1 && namespaceMap.containsKey(NAMESPACE_XSI_NAME)) {
+                return false;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     public static boolean isCustomNamespace(Namespace namespace) {
-        return isW3cXmlNamespace(namespace);
+        return !isW3cXmlNamespace(namespace);
     }
 
     public static boolean isCustomNamespace(String namespaceURI) {
-        return isW3cXmlNamespace(namespaceURI);
+        return !isW3cXmlNamespace(namespaceURI);
     }
 
     public static boolean isW3cXmlNamespace(Namespace namespace) {

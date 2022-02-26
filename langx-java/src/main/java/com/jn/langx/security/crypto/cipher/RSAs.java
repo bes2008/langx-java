@@ -1,5 +1,7 @@
 package com.jn.langx.security.crypto.cipher;
 
+import com.jn.langx.security.crypto.JCAEStandardName;
+
 import java.security.Provider;
 import java.security.SecureRandom;
 
@@ -12,13 +14,14 @@ import java.security.SecureRandom;
  * 但两种可以相互转换的。
  */
 public class RSAs extends Asymmetrics {
+    public static final String RSA= JCAEStandardName.RSA.getName();
 
     public static byte[] encrypt(byte[] bytes, byte[] pubKey) {
         return encrypt(bytes, pubKey, null, null, null);
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] pubKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return encrypt(bytes, pubKey, "RSA", algorithmTransformation, provider, secureRandom);
+        return encrypt(bytes, pubKey, RSA, algorithmTransformation, provider, secureRandom);
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] priKey) {
@@ -26,7 +29,7 @@ public class RSAs extends Asymmetrics {
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] priKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return decrypt(bytes, priKey, "RSA", algorithmTransformation, provider, secureRandom);
+        return decrypt(bytes, priKey, RSA, algorithmTransformation, provider, secureRandom);
     }
 
 

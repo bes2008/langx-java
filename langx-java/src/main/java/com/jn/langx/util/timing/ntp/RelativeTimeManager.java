@@ -52,7 +52,6 @@ public class RelativeTimeManager {
      *
      * @param machineId
      * @param specifiedTime specified time at current machine
-     * @return
      */
     public long getMachineRelativeTime(String machineId, long specifiedTime) {
         return specifiedTime - getDelteTime(machineId);

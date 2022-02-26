@@ -11,7 +11,6 @@ public interface Listable<E> extends Iterable<E>, EmptyEvalutible {
     /**
      * 移除第一个
      * @param e
-     * @return
      */
     boolean remove(Object e);
 

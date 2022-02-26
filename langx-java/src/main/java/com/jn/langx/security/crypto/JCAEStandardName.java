@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
 
+import javax.crypto.KeyGenerator;
 import java.security.*;
 import java.util.EnumSet;
 import java.util.List;
@@ -102,8 +103,17 @@ public enum JCAEStandardName {
     /*********************KeyPair, Key Parameter*************/
     @Algorithm(name = "DSA", apply = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
     DSA,
-    @Algorithm(name = "RSA", apply = KeyPairGenerator.class)
+    @Algorithm(name = "RSA", apply = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
     RSA,
+    @Algorithm(name = "SM2", apply = {KeyPairGenerator.class, AlgorithmParameterGenerator.class})
+    SM2,
+
+    @Algorithm(name = "AES", apply = {KeyGenerator.class, AlgorithmParameterGenerator.class})
+    AES,
+    @Algorithm(name = "DES", apply = {KeyGenerator.class, AlgorithmParameterGenerator.class})
+    DES,
+    @Algorithm(name = "SM4", apply = {KeyGenerator.class, AlgorithmParameterGenerator.class})
+    SM4,
 
     /********************Digital Signature***************************/
     @Algorithm(name = "NONEwithRSA", apply = Signature.class)

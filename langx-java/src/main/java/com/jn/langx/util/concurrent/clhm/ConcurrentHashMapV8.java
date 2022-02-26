@@ -10,11 +10,16 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Function2;
+import sun.misc.Unsafe;
 
 import java.io.ObjectStreamField;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
@@ -225,8 +230,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @param <V> the type of mapped values
  */
 @SuppressWarnings("all")
-class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
-        implements ConcurrentMap<K,V>, Serializable {
+class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V> implements ConcurrentMap<K,V>, Serializable {
     private static final long serialVersionUID = 7249069246763182397L;
 
     /**
@@ -883,8 +887,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
      * negative or the load factor or concurrencyLevel are
      * nonpositive
      */
-    public ConcurrentHashMapV8(int initialCapacity,
-                               float loadFactor, int concurrencyLevel) {
+    public ConcurrentHashMapV8(int initialCapacity,  float loadFactor, int concurrencyLevel) {
         if (!(loadFactor > 0.0f) || initialCapacity < 0 || concurrencyLevel <= 0)
             throw new IllegalArgumentException();
         if (initialCapacity < concurrencyLevel)   // Use at least as many bins
@@ -4131,27 +4134,28 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V>
      *
      * @return a sun.misc.Unsafe
      */
-    private static sun.misc.Unsafe getUnsafe() {
+    private static Unsafe getUnsafe() {
         try {
-            return sun.misc.Unsafe.getUnsafe();
-        } catch (SecurityException tryReflectionInstead) {}
+            return Unsafe.getUnsafe();
+        } catch (SecurityException tryReflectionInstead) {
+
+        }
         try {
-            return java.security.AccessController.doPrivileged
-                    (new java.security.PrivilegedExceptionAction<sun.misc.Unsafe>() {
+            return AccessController.doPrivileged(new PrivilegedExceptionAction<Unsafe>() {
                         @Override
-                        public sun.misc.Unsafe run() throws Exception {
-                            Class<sun.misc.Unsafe> k = sun.misc.Unsafe.class;
-                            for (java.lang.reflect.Field f : k.getDeclaredFields()) {
+                        public Unsafe run() throws Exception {
+                            Class<Unsafe> k = Unsafe.class;
+                            for (Field f : k.getDeclaredFields()) {
                                 f.setAccessible(true);
                                 Object x = f.get(null);
-                                if (k.isInstance(x))
+                                if (k.isInstance(x)) {
                                     return k.cast(x);
+                                }
                             }
                             throw new NoSuchFieldError("the Unsafe");
                         }});
-        } catch (java.security.PrivilegedActionException e) {
-            throw new RuntimeException("Could not initialize intrinsics",
-                    e.getCause());
+        } catch (PrivilegedActionException e) {
+            throw new RuntimeException("Could not initialize intrinsics", e.getCause());
         }
     }
 }

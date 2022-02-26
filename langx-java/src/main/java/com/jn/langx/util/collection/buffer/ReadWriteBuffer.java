@@ -13,7 +13,6 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
 
     /**
      * @param e
-     * @return
      * @since 3.3.1
      */
     public abstract BF put(@Nullable E e);
@@ -31,19 +30,16 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
     /**
      * @param index
      * @param e
-     * @return
      * @since 3.3.1
      */
     public abstract BF put(long index, @Nullable E e);
 
     /**
-     * @return
      * @since 3.3.1
      */
     public abstract E get();
 
     /**
-     * @return
      * @since 3.3.2
      */
     public abstract E get(long index);
@@ -51,7 +47,6 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
     /**
      * @param index     起始位置
      * @param maxLength 最多获取数量，如果小于0 ，则从指定位置到limit
-     * @return
      * @since 3.3.1
      */
     public abstract List<E> get(long index, long maxLength);

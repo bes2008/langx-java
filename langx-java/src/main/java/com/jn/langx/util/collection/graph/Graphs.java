@@ -70,7 +70,6 @@ public class Graphs {
      *
      * @param vertex
      * @param vertexStateMap
-     * @return
      */
     public static List<String> detectCycle(final Vertex vertex, final Map<String, VisitStatus> vertexStateMap) {
         final LinkedList<String> cycleStack = new LinkedList<String>();

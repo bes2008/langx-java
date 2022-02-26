@@ -1,5 +1,6 @@
 package com.jn.langx.codec;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 
 import java.util.Arrays;
@@ -81,7 +82,7 @@ public abstract class BaseNCodec implements BinaryCodec {
                     currentLinePos, eof, ibitWorkArea, lbitWorkArea, modulus, pos, readPos);
         }
     }
-
+    protected static final CodecPolicy DECODING_POLICY_DEFAULT = CodecPolicy.LENIENT;
     /**
      * EOF
      */
@@ -125,9 +126,15 @@ public abstract class BaseNCodec implements BinaryCodec {
     protected static final int MASK_8BITS = 0xff;
 
     /**
+     * Chunk separator per RFC 2045 section 2.1.
+     *
+     * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 2.1</a>
+     */
+    public static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
+    /**
      * Byte used to pad output.
      */
-    protected static final byte PAD_DEFAULT = '='; // Allow static access to default
+    public static final byte PAD_DEFAULT = '='; // Allow static access to default
 
     /**
      * @deprecated Use {@link #pad}. Will be removed in 2.0.
@@ -184,13 +191,28 @@ public abstract class BaseNCodec implements BinaryCodec {
      */
     protected BaseNCodec(final int unencodedBlockSize, final int encodedBlockSize,
                          final int lineLength, final int chunkSeparatorLength, final byte pad) {
+        this(unencodedBlockSize, encodedBlockSize, lineLength, chunkSeparatorLength, pad, DECODING_POLICY_DEFAULT);
+    }
+
+    /**
+     * Note <code>lineLength</code> is rounded down to the nearest multiple of {@link #encodedBlockSize}
+     * If <code>chunkSeparatorLength</code> is zero, then chunking is disabled.
+     *
+     * @param unencodedBlockSize   the size of an unencoded block (e.g. Base64 = 3)
+     * @param encodedBlockSize     the size of an encoded block (e.g. Base64 = 4)
+     * @param lineLength           if &gt; 0, use chunking with a length <code>lineLength</code>
+     * @param chunkSeparatorLength the chunk separator length, if relevant
+     * @param pad                  byte used as padding byte.
+     */
+    protected BaseNCodec(final int unencodedBlockSize, final int encodedBlockSize,
+                         final int lineLength, final int chunkSeparatorLength, final byte pad, final CodecPolicy decodingPolicy) {
         this.unencodedBlockSize = unencodedBlockSize;
         this.encodedBlockSize = encodedBlockSize;
         final boolean useChunking = lineLength > 0 && chunkSeparatorLength > 0;
         this.lineLength = useChunking ? (lineLength / encodedBlockSize) * encodedBlockSize : 0;
         this.chunkSeparatorLength = chunkSeparatorLength;
-
         this.pad = pad;
+        this.decodingPolicy = Objs.requireNonNull(decodingPolicy, "codecPolicy");
     }
 
     /**
@@ -504,4 +526,44 @@ public abstract class BaseNCodec implements BinaryCodec {
         }
         return len;
     }
+
+
+    /**
+     * Returns true if decoding behavior is strict. Decoding will raise an {@link IllegalArgumentException} if trailing
+     * bits are not part of a valid encoding.
+     *
+     * <p>
+     * The default is false for lenient decoding. Decoding will compose trailing bits into 8-bit bytes and discard the
+     * remainder.
+     * </p>
+     *
+     * @return true if using strict decoding
+     * @since 4.3.0
+     */
+
+
+    /**
+     * Defines the decoding behavior when the input bytes contain leftover trailing bits that
+     * cannot be created by a valid encoding. These can be bits that are unused from the final
+     * character or entire characters. The default mode is lenient decoding. Set this to
+     * {@code true} to enable strict decoding.
+     * <ul>
+     * <li>Lenient: Any trailing bits are composed into 8-bit bytes where possible.
+     *     The remainder are discarded.
+     * <li>Strict: The decoding will raise an {@link IllegalArgumentException} if trailing bits
+     *     are not part of a valid encoding. Any unused bits from the final character must
+     *     be zero. Impossible counts of entire final characters are not allowed.
+     * </ul>
+     *
+     * <p>When strict decoding is enabled it is expected that the decoded bytes will be re-encoded
+     * to a byte array that matches the original, i.e. no changes occur on the final
+     * character. This requires that the input bytes use the same padding and alphabet
+     * as the encoder.
+     */
+    private final CodecPolicy decodingPolicy;
+
+    public boolean isStrictDecoding() {
+        return decodingPolicy == CodecPolicy.STRICT;
+    }
+
 }

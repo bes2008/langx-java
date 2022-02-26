@@ -210,7 +210,7 @@ public abstract class Equivalence<T> {
      * elements, and each pair of corresponding elements is equivalent according to
      * {@code this}.  Null iterables are equivalent to one another.
      * <p>
-     * <p>Note that this method performs a similar function for equivalences as {@link
+     * <p>Note that this method performs a similar function for equivalences
      *
      * @since 10.0
      */

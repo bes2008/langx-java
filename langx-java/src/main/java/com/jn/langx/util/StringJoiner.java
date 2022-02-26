@@ -22,7 +22,7 @@ import java.util.Collection;
  * {@code suffix} is <code>"}"</code> and nothing has been added to the
  * {@code StringJoiner}.
  *
- * @apiNote <p>The String {@code "[George:Sally:Fred]"} may be constructed as follows:
+ * Note: <p>The String {@code "[George:Sally:Fred]"} may be constructed as follows:
  *
  * <pre> {@code
  * StringJoiner sj = new StringJoiner(":", "[", "]");

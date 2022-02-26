@@ -42,7 +42,6 @@ public class RegExp {
      *
      * @param pattern
      * @param src
-     * @return
      */
     public static Matcher getMatcher(String pattern, String src) {
         return Pattern.compile(pattern).matcher(src);
@@ -94,7 +93,6 @@ public class RegExp {
      * 这个方法可以多次调用Js中Reg的test方法
      *
      * @param str
-     * @return
      */
     public Object test(String str, MutilTest mutilTest) {
         if (isIgnoreCase) {

@@ -101,7 +101,6 @@ public enum FilePermission {
      * 根据 unix 权限码转换成响应的权限，参数是 10进制的
      *
      * @param mask
-     * @return
      */
     public static Set<FilePermission> fromMask(int mask) {
         final List<FilePermission> perms = new LinkedList<FilePermission>();
@@ -117,7 +116,6 @@ public enum FilePermission {
      * 转换为 unix 权限码，返回数据是 10进制的
      *
      * @param perms
-     * @return
      */
     public static int toMask(Set<FilePermission> perms) {
         return Masks.createMask(perms, new Function<FilePermission, Integer>() {

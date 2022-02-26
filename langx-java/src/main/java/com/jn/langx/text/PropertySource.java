@@ -9,7 +9,7 @@ public interface PropertySource extends Nameable {
      * whether contains the specified property or not
      *
      * @param name
-     * @return
+     * @return a boolean
      */
     boolean containsProperty(String name);
 

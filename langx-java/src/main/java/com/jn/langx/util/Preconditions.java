@@ -69,7 +69,6 @@ public class Preconditions {
      * @param obj
      * @param parameter
      * @param <T>
-     * @return
      *
      * @since 4.1.0
      */

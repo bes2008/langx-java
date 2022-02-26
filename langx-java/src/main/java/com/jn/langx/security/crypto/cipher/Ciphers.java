@@ -13,13 +13,12 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.enums.Enums;
+import com.jn.langx.util.logging.Loggers;
 
 import javax.crypto.Cipher;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#Cipher
@@ -28,21 +27,18 @@ public class Ciphers extends Securitys {
     protected Ciphers() {
     }
 
-    protected static final Map<String, String> algorithmToTransformationMapping = new ConcurrentHashMap<String, String>();
+    private static final CipherAlgorithmSuiteRegistry ALGORITHM_SUITE_REGISTRY = new CipherAlgorithmSuiteRegistry();
 
     static {
-        algorithmToTransformationMapping.put("AES", "AES/ECB/PKCS5Padding");
-        algorithmToTransformationMapping.put("SM2", "SM2");
-        algorithmToTransformationMapping.put("SM4", "SM4/CBC/PKCS7Padding");
-        algorithmToTransformationMapping.put("RSA", "RSA/ECB/PKCS1Padding");
+        ALGORITHM_SUITE_REGISTRY.init();
     }
 
     public static String getDefaultTransformation(String algorithm) {
-        return algorithmToTransformationMapping.get(algorithm);
+        return ALGORITHM_SUITE_REGISTRY.getTransformation(algorithm);
     }
 
     public static void addDefaultTransformation(String algorithm, String transformation) {
-        algorithmToTransformationMapping.put(algorithm, transformation);
+        ALGORITHM_SUITE_REGISTRY.add(algorithm, transformation);
     }
 
     public static Cipher createEmptyCipher(@NonNull String algorithmTransformation, @Nullable Provider provider) {
@@ -58,7 +54,7 @@ public class Ciphers extends Securitys {
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
      *
-     * @return
+     * @return a cipher
      */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, SecureRandom secureRandom) {
         try {
@@ -78,7 +74,7 @@ public class Ciphers extends Securitys {
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
      *
-     * @return
+     * @return a cipher
      */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
@@ -98,7 +94,7 @@ public class Ciphers extends Securitys {
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
      *
-     * @return
+     * @return a cipher
      */
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {
@@ -161,7 +157,7 @@ public class Ciphers extends Securitys {
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
-        return encrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+        return encrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameters == null ? null : new AlgorithmParameterSupplier() {
             @Override
             public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameters;
@@ -183,7 +179,7 @@ public class Ciphers extends Securitys {
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameters parameters) {
-        return decrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+        return decrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameters == null ? null : new AlgorithmParameterSupplier() {
             @Override
             public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameters;
@@ -202,7 +198,7 @@ public class Ciphers extends Securitys {
     }
 
     public static byte[] doEncryptOrDecrypt(byte[] bytes, byte[] keyBytes, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom, @NonNull BytesBasedKeySupplier keySupplier, @Nullable final AlgorithmParameterSpec parameterSpec, boolean encrypt) {
-        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, new AlgorithmParameterSupplier() {
+        return doEncryptOrDecrypt(bytes, keyBytes, algorithm, algorithmTransformation, provider, secureRandom, keySupplier, parameterSpec == null ? null : new AlgorithmParameterSupplier() {
             @Override
             public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
                 return parameterSpec;
@@ -217,9 +213,15 @@ public class Ciphers extends Securitys {
         if (Emptys.isEmpty(algorithm)) {
             algorithm = Ciphers.extractAlgorithm(algorithmTransformation);
         }
+        CipherAlgorithmSuite suite = ALGORITHM_SUITE_REGISTRY.get(algorithm);
         if (Emptys.isEmpty(algorithmTransformation)) {
-            algorithmTransformation = getDefaultTransformation(algorithm);
+            if (suite != null) {
+                algorithmTransformation = suite.getTransformation();
+            }
             if (Emptys.isEmpty(algorithmTransformation)) {
+                /**
+                 * 绝大部分算法，都是支持 ECB 模式的，所以就将 ECB模式作为默认
+                 */
                 algorithmTransformation = Ciphers.createAlgorithmTransformation(algorithm, "ECB", "PKCS5Padding");
             }
         }
@@ -229,6 +231,19 @@ public class Ciphers extends Securitys {
         AlgorithmParameterSpec parameterSpec = null;
         AlgorithmParameters parameters = null;
         Object parameter = null;
+
+        // 获取全局默认的 parameter supplier, 这部分也是人为定义的，但又没有加入到 Provider中的
+        if (parameterSupplier == null && suite != null) {
+            parameterSupplier = suite.getParameterSupplier();
+            if(parameterSupplier==null && Strings.equalsIgnoreCase("SM4",algorithm)){
+                Loggers.getLogger(Ciphers.class).warn("check whether the langx-java-security-gm-jca-bouncycastle.jar (version >= 4.2.7) in the classpath or not");
+            }
+        }
+        // 基于 Provider 中的
+        if (parameterSupplier == null && provider != null) {
+            parameterSupplier = DefaultAlgorithmParameterSupplier.INSTANCE;
+        }
+
         if (parameterSupplier != null) {
             parameter = parameterSupplier.get(key, algorithm, algorithmTransformation, provider, secureRandom);
             if (parameter != null) {
@@ -240,13 +255,6 @@ public class Ciphers extends Securitys {
                     AlgorithmParameterGenerator parameterGenerator = (AlgorithmParameterGenerator) parameter;
                     parameters = parameterGenerator.generateParameters();
                 }
-            }
-        }
-        if (parameterSpec == null && parameters == null && provider != null) {
-            try {
-                parameters = AlgorithmParameters.getInstance(algorithm, provider);
-            } catch (NoSuchAlgorithmException ex) {
-                // ignore it
             }
         }
         try {
@@ -303,13 +311,13 @@ public class Ciphers extends Securitys {
         return segments[0];
     }
 
-    public static Symmetrics.MODE extractSymmetricMode(String algorithmTransformation){
-        String[] segments= Strings.split(algorithmTransformation,"/");
-        Preconditions.checkArgument(segments.length==1 || segments.length==3,"illegal algorithm transformation: {}", algorithmTransformation);
-        if(segments.length==1){
-            return extractSymmetricMode(algorithmToTransformationMapping.get(segments[0].toUpperCase()));
+    public static Symmetrics.MODE extractSymmetricMode(String algorithmTransformation) {
+        String[] segments = Strings.split(algorithmTransformation, "/");
+        Preconditions.checkArgument(segments.length == 1 || segments.length == 3, "illegal algorithm transformation: {}", algorithmTransformation);
+        if (segments.length == 1) {
+            return extractSymmetricMode(getDefaultTransformation(segments[0].toUpperCase()));
         }
-        if(segments.length==3){
+        if (segments.length == 3) {
             return Enums.ofName(Symmetrics.MODE.class, segments[1].toUpperCase());
         }
         return null;
@@ -342,4 +350,7 @@ public class Ciphers extends Securitys {
         return algorithm;
     }
 
+    public static CipherAlgorithmSuiteRegistry getAlgorithmSuiteRegistry() {
+        return ALGORITHM_SUITE_REGISTRY;
+    }
 }

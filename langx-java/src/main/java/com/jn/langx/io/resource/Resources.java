@@ -118,8 +118,8 @@ public class Resources {
 
     /**
      *
-     * @param resource
-     * @return
+     * @param resource the resource
+     * @return the input stream
      * @throws IOException
      * @since 3.4.2
      */

@@ -11,7 +11,6 @@ public enum CipherAlgorithmMode {
     GCM,
     KW,
     KWP,
-    OFB,
-    OFBx,
+    OFB, OFBx,
     PCBC
 }

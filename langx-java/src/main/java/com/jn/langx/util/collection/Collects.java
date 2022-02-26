@@ -1184,11 +1184,14 @@ public class Collects {
      * find the first matched element, null if not found
      */
     public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper) {
-        return firstMap(collection, mapper, null);
+        return firstMap(collection, mapper, (Predicate<O>) null);
     }
 
     /**
-     * find the first matched element, null if not found
+     * map every element in the collection with the mapper,
+     * break the traverse if the mapped result match the breakPredicate
+     *
+     * return the mapped result
      */
     public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate<O> breakPredicate) {
         final Holder<O> holder = new Holder<O>();
@@ -1199,8 +1202,30 @@ public class Collects {
             }
         }, new Predicate2<Integer, E>() {
             @Override
-            public boolean test(Integer key, E value) {
+            public boolean test(Integer index, E value) {
                 return breakPredicate == null ? !holder.isNull() : breakPredicate.test(holder.get());
+            }
+        });
+        return holder.get();
+    }
+
+    /**
+     * map every element in the collection with the mapper,
+     * break the traverse if the mapped result match the breakPredicate
+     *
+     * return the mapped result
+     */
+    public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate2<E,O> breakPredicate) {
+        final Holder<O> holder = new Holder<O>();
+        Collects.forEach(collection, new Consumer2<Integer, E>() {
+            @Override
+            public void accept(Integer index, E element) {
+                holder.set(mapper.apply(index, element));
+            }
+        }, new Predicate2<Integer, E>() {
+            @Override
+            public boolean test(Integer index, E element) {
+                return breakPredicate == null ? !holder.isNull() : breakPredicate.test(element,holder.get());
             }
         });
         return holder.get();
@@ -1594,11 +1619,6 @@ public class Collects {
 
     /**
      * 第二个参数为分区总数，不是单个分区中的数据量
-     *
-     * @param c
-     * @param partitionSize
-     * @param <E>
-     * @return
      */
     public static <E> List<List<E>> partitionByCount(Iterable<E> c, final int partitionCount) {
         Preconditions.checkArgument(partitionCount > 0);
@@ -1616,7 +1636,6 @@ public class Collects {
      * @param c
      * @param partitionSize
      * @param <E>
-     * @return
      */
     public static <E> List<List<E>> partitionBySize(Iterable<E> c, final int partitionSize) {
         Preconditions.checkArgument(partitionSize > 0);
@@ -1651,7 +1670,7 @@ public class Collects {
     public static <E, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator, boolean reverse) {
         Preconditions.checkNotNull(comparator);
         if (Emptys.isEmpty(collection)) {
-            return new TreeSet<E>(comparator);
+            return new NonDistinctTreeSet<E>(comparator);
         } else {
             TreeSet<E> set = new NonDistinctTreeSet<E>(reverse ? Collections.reverseOrder(comparator) : comparator);
             set.addAll(filter(collection, Functions.<E>nonNullPredicate()));
@@ -2446,7 +2465,6 @@ public class Collects {
      * @param startIndex 包含
      * @param endIndex   不包含
      * @param <E>
-     * @return
      */
     public static <E> int indexOf(List<E> list, E e, int startIndex, int endIndex) {
         if (list == null || list.isEmpty()) {
@@ -2492,7 +2510,6 @@ public class Collects {
      * @param startIndex
      * @param endIndex
      * @param <E>
-     * @return
      */
     public static <E> int lastIndexOf(List<E> list, E e, int startIndex, int endIndex) {
         if (list == null || list.isEmpty()) {
