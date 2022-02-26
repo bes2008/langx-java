@@ -1,11 +1,15 @@
 package com.jn.langx.http.rest;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Functions;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.net.http.HttpMethod;
 import com.jn.langx.util.net.http.HttpStatus;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMaps;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +28,7 @@ public class RestRespBody<T> {
     private Map<String, List<String>> responseHeaders;
     @Nullable
     private Map<String, List<String>> requestHeaders;
+
 
     public RestRespBody() {
 
@@ -103,10 +108,10 @@ public class RestRespBody<T> {
      * @since 4.0.3
      */
     public void setResponseHeaders(Map<String, List<String>> responseHeaders) {
-        if(responseHeaders instanceof MultiValueMap){
+        if (responseHeaders instanceof MultiValueMap) {
             MultiValueMap map = (MultiValueMap) responseHeaders;
             setResponseHeaders(map.toMap());
-        }else {
+        } else {
             this.responseHeaders = responseHeaders;
         }
     }
@@ -360,4 +365,25 @@ public class RestRespBody<T> {
         return new RestRespBody<T>(false, statusCode, null, errorCode, errorMessage);
     }
 
+    public Map<String, Object> toMap(@Nullable Predicate2<String, Object> ignored) {
+        Map<String, Object> tmp = new HashMap<String, Object>();
+        tmp.put("success", success);
+        tmp.put("statusCode", statusCode);
+        tmp.put("data", data);
+        tmp.put("timestamp", timestamp);
+        tmp.put("errorCode", errorCode);
+        tmp.put("errorMessage", errorMessage);
+        tmp.put("url", url);
+        tmp.put("method", method);
+        tmp.put("requestHeaders", requestHeaders);
+        tmp.put("responseHeaders", responseHeaders);
+
+        Map<String, Object> result;
+        if (ignored == null) {
+            result = tmp;
+        } else {
+            result = Collects.filter(tmp, Functions.reversePredicate(ignored));
+        }
+        return result;
+    }
 }
