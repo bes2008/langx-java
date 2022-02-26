@@ -9,11 +9,23 @@ import com.jn.langx.util.net.http.HttpStatus;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMaps;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RestRespBody<T> {
+
+    public static final String GLOBAL_REST_FIELD_SUCCESS = "success";
+    public static final String GLOBAL_REST_FIELD_STATUS_CODE = "statusCode";
+    public static final String GLOBAL_REST_FIELD_DATA = "data";
+    public static final String GLOBAL_REST_FIELD_ERROR_CODE = "errorCode";
+    public static final String GLOBAL_REST_FIELD_ERROR_MESSAGE = "errorMessage";
+    public static final String GLOBAL_REST_FIELD_METHOD = "method";
+    public static final String GLOBAL_REST_FIELD_URL = "url";
+    public static final String GLOBAL_REST_FIELD_TIMESTAMP = "timestamp";
+    public static final String GLOBAL_REST_FIELD_RESPONSE_HEADERS = "responseHeaders";
+    public static final String GLOBAL_REST_FIELD_REQUEST_HEADERS = "requestHeaders";
+
     private boolean success;
     @Nullable
     private T data;
@@ -366,17 +378,17 @@ public class RestRespBody<T> {
     }
 
     public Map<String, Object> toMap(@Nullable Predicate2<String, Object> ignored) {
-        Map<String, Object> tmp = new HashMap<String, Object>();
-        tmp.put("success", success);
-        tmp.put("statusCode", statusCode);
-        tmp.put("data", data);
-        tmp.put("timestamp", timestamp);
-        tmp.put("errorCode", errorCode);
-        tmp.put("errorMessage", errorMessage);
-        tmp.put("url", url);
-        tmp.put("method", method);
-        tmp.put("requestHeaders", requestHeaders);
-        tmp.put("responseHeaders", responseHeaders);
+        Map<String, Object> tmp = new LinkedHashMap<String, Object>();
+        tmp.put(GLOBAL_REST_FIELD_DATA, data);
+        tmp.put(GLOBAL_REST_FIELD_ERROR_CODE, errorCode);
+        tmp.put(GLOBAL_REST_FIELD_ERROR_MESSAGE, errorMessage);
+        tmp.put(GLOBAL_REST_FIELD_SUCCESS, success);
+        tmp.put(GLOBAL_REST_FIELD_TIMESTAMP, timestamp);
+        tmp.put(GLOBAL_REST_FIELD_STATUS_CODE, statusCode);
+        tmp.put(GLOBAL_REST_FIELD_URL, url);
+        tmp.put(GLOBAL_REST_FIELD_METHOD, method);
+        tmp.put(GLOBAL_REST_FIELD_REQUEST_HEADERS, requestHeaders);
+        tmp.put(GLOBAL_REST_FIELD_RESPONSE_HEADERS, responseHeaders);
 
         Map<String, Object> result;
         if (ignored == null) {
