@@ -8,11 +8,14 @@ import java.util.Map;
 /**
  * Key value pair
  */
-public class Pair<K, V> implements Map.Entry<K, V>  {
+public class Pair<K, V> implements Map.Entry<K, V> {
     private K key;
     private V value;
 
-    public Pair(K k,V v){
+    public Pair() {
+    }
+
+    public Pair(K k, V v) {
         this.setKey(k);
         this.setValue(v);
     }

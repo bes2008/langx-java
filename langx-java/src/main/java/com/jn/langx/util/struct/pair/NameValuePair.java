@@ -10,8 +10,7 @@ public class NameValuePair<V> extends Pair<String, V> {
     }
 
     public NameValuePair(String name, V value) {
-        setKey(name);
-        setValue(value);
+        super(name,value);
     }
 
     public String getName() {
