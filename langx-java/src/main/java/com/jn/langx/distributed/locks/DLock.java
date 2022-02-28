@@ -39,6 +39,8 @@ public interface DLock extends Lock {
      */
     boolean tryLock(long tryTime, @Nullable TimeUnit tryTimeUnit, long ttl, @Nullable TimeUnit ttlUnit);
 
+    boolean tryLock(long tryTime, @Nullable TimeUnit tryTimeUnit, long ttl, @Nullable TimeUnit ttlUnit, boolean interruptibly) throws InterruptedException;
+
     @Override
     boolean tryLock(long tryTime, TimeUnit tryTimeUnit);
 

@@ -21,6 +21,15 @@ public abstract class AbstractDLock implements DLock {
 
     @Override
     public boolean tryLock(long tryTime, TimeUnit tryTimeUnit, long ttl, TimeUnit ttlUnit) {
+        try {
+            return tryLock(tryTime, tryTimeUnit, ttl, ttlUnit, false);
+        } catch (InterruptedException ex) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean tryLock(long tryTime, TimeUnit tryUnit, long ttl, TimeUnit ttlUnit, boolean interruptibly) throws InterruptedException {
         return false;
     }
 
