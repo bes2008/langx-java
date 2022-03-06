@@ -1,6 +1,8 @@
 package com.jn.langx.util.bean;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.beans.BeansException;
+import com.jn.langx.beans.CachedIntrospectionResults;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;

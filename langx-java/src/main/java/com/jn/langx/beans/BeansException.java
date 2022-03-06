@@ -1,4 +1,4 @@
-package com.jn.langx.util.bean;
+package com.jn.langx.beans;
 
 public class BeansException extends RuntimeException {
 

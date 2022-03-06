@@ -1,4 +1,4 @@
-package com.jn.langx.util.bean;
+package com.jn.langx.beans;
 
 import com.jn.langx.beans.propertyeditor.PropertyDescriptors;
 import com.jn.langx.util.Objs;

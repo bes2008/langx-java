@@ -1,4 +1,4 @@
-package com.jn.langx.util.bean;
+package com.jn.langx.beans;
 
 
 import java.beans.BeanInfo;
@@ -153,7 +153,7 @@ public class CachedIntrospectionResults {
      * @throws BeansException in case of introspection failure
      */
     @SuppressWarnings("unchecked")
-    static CachedIntrospectionResults forClass(Class<?> beanClass) throws BeansException {
+    public static CachedIntrospectionResults forClass(Class<?> beanClass) throws BeansException {
         CachedIntrospectionResults results = strongClassCache.get(beanClass);
         if (results != null) {
             return results;
@@ -313,7 +313,7 @@ public class CachedIntrospectionResults {
         return this.beanInfo.getBeanDescriptor().getBeanClass();
     }
 
-    PropertyDescriptor getPropertyDescriptor(String name) {
+    public PropertyDescriptor getPropertyDescriptor(String name) {
         PropertyDescriptor pd = this.propertyDescriptorCache.get(name);
         if (pd == null && Strings.isNotEmpty(name)) {
             // Same lenient fallback checking as in Property...
@@ -326,7 +326,7 @@ public class CachedIntrospectionResults {
                 buildGenericTypeAwarePropertyDescriptor(getBeanClass(), pd));
     }
 
-    PropertyDescriptor[] getPropertyDescriptors() {
+    public PropertyDescriptor[] getPropertyDescriptors() {
         PropertyDescriptor[] pds = new PropertyDescriptor[this.propertyDescriptorCache.size()];
         int i = 0;
         for (PropertyDescriptor pd : this.propertyDescriptorCache.values()) {
