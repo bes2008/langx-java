@@ -16,7 +16,6 @@ import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.ParameterNameDiscoverer;
-import com.jn.langx.util.reflect.parameter.MethodParameter;
 
 /**
  * Helper class that encapsulates the specification of a method parameter, i.e. a {@link Method}
@@ -41,7 +40,7 @@ public class SimpleParameter {
     static {
         Class<?> clazz;
         try {
-            clazz = ClassLoaders.loadClass("java.util.Optional", MethodParameter.class.getClassLoader());
+            clazz = ClassLoaders.loadClass("java.util.Optional", SimpleParameter.class.getClassLoader());
         }
         catch (ClassNotFoundException ex) {
             // Java 8 not available - Optional references simply not supported then.
