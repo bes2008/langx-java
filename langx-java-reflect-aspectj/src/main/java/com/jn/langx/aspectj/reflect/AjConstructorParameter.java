@@ -21,6 +21,11 @@ public class AjConstructorParameter implements ConstructorParameter {
     }
 
     @Override
+    public int getIndex() {
+        return this.delegate.getIndex();
+    }
+
+    @Override
     public boolean isNamePresent() {
         return delegate.isNamePresent();
     }

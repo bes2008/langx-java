@@ -38,6 +38,11 @@ public class Java6MethodParameter implements MethodParameter {
         this.index = index;
     }
 
+    @Override
+    public int getIndex() {
+        return index;
+    }
+
     /**
      * Compares based on the executable and the index.
      *

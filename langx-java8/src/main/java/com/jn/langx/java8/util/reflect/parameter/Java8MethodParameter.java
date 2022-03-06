@@ -2,6 +2,7 @@ package com.jn.langx.java8.util.reflect.parameter;
 
 
 import com.jn.langx.util.reflect.parameter.MethodParameter;
+import com.jn.langx.util.reflect.parameter.ParameterMeta;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -10,13 +11,20 @@ import java.lang.reflect.Type;
 
 public class Java8MethodParameter implements MethodParameter {
 
+    private ParameterMeta meta;
     private Parameter parameter;
-
     /**
      * package private
      */
-    Java8MethodParameter(Parameter parameter) {
-        this.parameter = parameter;
+    Java8MethodParameter(ParameterMeta meta) {
+        Method method = (Method) meta.getExecutable();
+        this.meta= meta;
+        this.parameter = method.getParameters()[meta.getIndex()];
+    }
+
+    @Override
+    public int getIndex() {
+        return this.meta.getIndex();
     }
 
     @Override

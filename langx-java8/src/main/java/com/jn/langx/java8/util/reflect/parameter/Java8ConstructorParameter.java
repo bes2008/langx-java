@@ -1,6 +1,7 @@
 package com.jn.langx.java8.util.reflect.parameter;
 
 import com.jn.langx.util.reflect.parameter.ConstructorParameter;
+import com.jn.langx.util.reflect.parameter.ParameterMeta;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -9,12 +10,19 @@ import java.lang.reflect.Type;
 
 public class Java8ConstructorParameter implements ConstructorParameter {
     private Parameter parameter;
-
+    private ParameterMeta meta;
     /**
      * package private
      */
-    Java8ConstructorParameter(Parameter parameter) {
-        this.parameter = parameter;
+    Java8ConstructorParameter(ParameterMeta meta) {
+        this.meta = meta;
+        Constructor constructor = (Constructor) meta.getExecutable();
+        this.parameter = constructor.getParameters()[meta.getIndex()];
+    }
+
+    @Override
+    public int getIndex() {
+        return this.meta.getIndex();
     }
 
     @Override

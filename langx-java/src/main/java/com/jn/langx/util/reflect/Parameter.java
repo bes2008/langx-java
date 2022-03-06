@@ -26,4 +26,6 @@ public interface Parameter<T> extends AnnotatedElement {
     <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass);
 
     <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass);
+
+    int getIndex();
 }

@@ -38,6 +38,11 @@ public class Java6ConstructorParameter implements ConstructorParameter {
         this.index = index;
     }
 
+    @Override
+    public int getIndex() {
+        return this.index;
+    }
+
     /**
      * Compares based on the executable and the index.
      *

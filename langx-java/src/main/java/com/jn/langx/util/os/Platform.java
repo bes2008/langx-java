@@ -24,6 +24,16 @@ public class Platform {
     public static final boolean isMaxOS = OS.isMaxOSX();
     public static final boolean isOSX=isOSX();
     public static final String processId = getProcessId0();
+    // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
+    private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
+
+
+    /**
+     * Return whether this runtime environment lives within a native image.
+     */
+    public static boolean inImageCode() {
+        return imageCode;
+    }
 
 
     private static boolean isOSX() {

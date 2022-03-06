@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.ExceptionMessage;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.function.Consumer2;
@@ -40,6 +41,14 @@ public class Reflects {
     private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
     private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");
     private static final ParameterServiceRegistry PARAMETER_SERVICE_REGISTRY = ParameterServiceRegistry.getInstance();
+
+    private static final Map<Class<?>, Method[]> declaredMethodsCache = new ConcurrentReferenceHashMap<Class<?>, Method[]>(256);
+
+    private static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
+
+    private static final Method[] EMPTY_METHOD_ARRAY = new Method[0];
+
+    private static final Field[] EMPTY_FIELD_ARRAY = new Field[0];
 
     public static String getTypeName(@NonNull Class type) {
         return Types.typeToString(type);
@@ -271,6 +280,69 @@ public class Reflects {
         };
     }
 
+
+    /**
+     * Check whether the given class is cache-safe in the given context,
+     * i.e. whether it is loaded by the given ClassLoader or a parent of it.
+     * @param clazz the class to analyze
+     * @param classLoader the ClassLoader to potentially cache metadata in
+     * (may be {@code null} which indicates the system class loader)
+     */
+    public static boolean isCacheSafe(Class<?> clazz, ClassLoader classLoader) {
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        try {
+            ClassLoader target = clazz.getClassLoader();
+            // Common cases
+            if (target == classLoader || target == null) {
+                return true;
+            }
+            if (classLoader == null) {
+                return false;
+            }
+            // Check for match in ancestors -> positive
+            ClassLoader current = classLoader;
+            while (current != null) {
+                current = current.getParent();
+                if (current == target) {
+                    return true;
+                }
+            }
+            // Check for match in children -> negative
+            while (target != null) {
+                target = target.getParent();
+                if (target == classLoader) {
+                    return false;
+                }
+            }
+        }
+        catch (SecurityException ex) {
+            // Fall through to Class reference comparison below
+        }
+
+        // Fallback for ClassLoaders without parent/child relationship:
+        // safe if same Class can be loaded from given ClassLoader
+        return (classLoader != null && isVisible(clazz, classLoader));
+    }
+
+    /**
+     * Check whether the given class is visible in the given ClassLoader.
+     * @param clazz the class to check (typically an interface)
+     * @param classLoader the ClassLoader to check against
+     * (may be {@code null} in which case this method will always return {@code true})
+     */
+    public static boolean isVisible(Class<?> clazz, ClassLoader classLoader) {
+        if (classLoader == null) {
+            return true;
+        }
+        try {
+            return (clazz == classLoader.loadClass(clazz.getName()));
+            // Else: different class with same name found
+        }
+        catch (ClassNotFoundException ex) {
+            // No corresponding class found at all
+            return false;
+        }
+    }
 
     /**
      * Returns true if an annotation for the specified type
@@ -688,6 +760,70 @@ public class Reflects {
             return null;
         }
         return method;
+    }
+
+    public static Method findMethod(Class<?> clazz, String name, @Nullable Class<?>... paramTypes) {
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        Preconditions.checkNotNull(name, "Method name must not be null");
+        Class<?> searchType = clazz;
+        while (searchType != null) {
+            Method[] methods = (searchType.isInterface() ? searchType.getMethods() : getDeclaredMethods(searchType, false));
+            for (Method method : methods) {
+                if (name.equals(method.getName()) && (paramTypes == null || hasSameParams(method, paramTypes))) {
+                    return method;
+                }
+            }
+            searchType = searchType.getSuperclass();
+        }
+        return null;
+    }
+    private static boolean hasSameParams(Method method, Class<?>[] paramTypes) {
+        return (paramTypes.length == method.getParameterTypes().length &&
+                Arrays.equals(paramTypes, method.getParameterTypes()));
+    }
+    private static Method[] getDeclaredMethods(Class<?> clazz, boolean defensive) {
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        Method[] result = declaredMethodsCache.get(clazz);
+        if (result == null) {
+            try {
+                Method[] declaredMethods = clazz.getDeclaredMethods();
+                List<Method> defaultMethods = findConcreteMethodsOnInterfaces(clazz);
+                if (defaultMethods != null) {
+                    result = new Method[declaredMethods.length + defaultMethods.size()];
+                    System.arraycopy(declaredMethods, 0, result, 0, declaredMethods.length);
+                    int index = declaredMethods.length;
+                    for (Method defaultMethod : defaultMethods) {
+                        result[index] = defaultMethod;
+                        index++;
+                    }
+                }
+                else {
+                    result = declaredMethods;
+                }
+                declaredMethodsCache.put(clazz, (result.length == 0 ? EMPTY_METHOD_ARRAY : result));
+            }
+            catch (Throwable ex) {
+                throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
+                        "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
+            }
+        }
+        return (result.length == 0 || !defensive) ? result : result.clone();
+    }
+
+    @Nullable
+    private static List<Method> findConcreteMethodsOnInterfaces(Class<?> clazz) {
+        List<Method> result = null;
+        for (Class<?> ifc : clazz.getInterfaces()) {
+            for (Method ifcMethod : ifc.getMethods()) {
+                if (!Modifier.isAbstract(ifcMethod.getModifiers())) {
+                    if (result == null) {
+                        result = new ArrayList<Method>();
+                    }
+                    result.add(ifcMethod);
+                }
+            }
+        }
+        return result;
     }
 
     public static <V> V invokePublicMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
