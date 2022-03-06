@@ -54,9 +54,14 @@ public final class Objs{
             return true;
         } else if (a == null || b == null) {
             return false;
-        } else {
-            return Arrs.deepEquals(a, b);
         }
+        if (a.equals(b)) {
+            return true;
+        }
+        if (a.getClass().isArray() && b.getClass().isArray()) {
+            return Arrs.deepEquals(a,b);
+        }
+        return false;
     }
 
     /**

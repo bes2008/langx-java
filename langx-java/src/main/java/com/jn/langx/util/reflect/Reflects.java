@@ -43,6 +43,10 @@ public class Reflects {
     private static final ParameterServiceRegistry PARAMETER_SERVICE_REGISTRY = ParameterServiceRegistry.getInstance();
 
     private static final Map<Class<?>, Method[]> declaredMethodsCache = new ConcurrentReferenceHashMap<Class<?>, Method[]>(256);
+    /**
+     * Cache for {@link Class#getDeclaredFields()}, allowing for fast iteration.
+     */
+    private static final Map<Class<?>, Field[]> declaredFieldsCache = new ConcurrentReferenceHashMap<Class<?>, Field[]>(256);
 
     private static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
 
@@ -104,7 +108,22 @@ public class Reflects {
     }
 
     public static String getFQNClassName(@NonNull Class clazz) {
-        return clazz.getName();
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        if (clazz.isArray()) {
+            return getQualifiedNameForArray(clazz);
+        } else {
+            return clazz.getName();
+        }
+    }
+
+    private static String getQualifiedNameForArray(Class<?> clazz) {
+        StringBuilder result = new StringBuilder();
+        while (clazz.isArray()) {
+            clazz = clazz.getComponentType();
+            result.append("[]");
+        }
+        result.insert(0, clazz.getName());
+        return result.toString();
     }
 
     public static String getPackageName(@NonNull String classFullName) {
@@ -284,9 +303,10 @@ public class Reflects {
     /**
      * Check whether the given class is cache-safe in the given context,
      * i.e. whether it is loaded by the given ClassLoader or a parent of it.
-     * @param clazz the class to analyze
+     *
+     * @param clazz       the class to analyze
      * @param classLoader the ClassLoader to potentially cache metadata in
-     * (may be {@code null} which indicates the system class loader)
+     *                    (may be {@code null} which indicates the system class loader)
      */
     public static boolean isCacheSafe(Class<?> clazz, ClassLoader classLoader) {
         Preconditions.checkNotNull(clazz, "Class must not be null");
@@ -314,8 +334,7 @@ public class Reflects {
                     return false;
                 }
             }
-        }
-        catch (SecurityException ex) {
+        } catch (SecurityException ex) {
             // Fall through to Class reference comparison below
         }
 
@@ -326,9 +345,10 @@ public class Reflects {
 
     /**
      * Check whether the given class is visible in the given ClassLoader.
-     * @param clazz the class to check (typically an interface)
+     *
+     * @param clazz       the class to check (typically an interface)
      * @param classLoader the ClassLoader to check against
-     * (may be {@code null} in which case this method will always return {@code true})
+     *                    (may be {@code null} in which case this method will always return {@code true})
      */
     public static boolean isVisible(Class<?> clazz, ClassLoader classLoader) {
         if (classLoader == null) {
@@ -337,8 +357,7 @@ public class Reflects {
         try {
             return (clazz == classLoader.loadClass(clazz.getName()));
             // Else: different class with same name found
-        }
-        catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             // No corresponding class found at all
             return false;
         }
@@ -422,6 +441,72 @@ public class Reflects {
         return field;
     }
 
+    /**
+     * Attempt to find a {@link Field field} on the supplied {@link Class} with the
+     * supplied {@code name}. Searches all superclasses up to {@link Object}.
+     *
+     * @param clazz the class to introspect
+     * @param name  the name of the field
+     * @return the corresponding Field object, or {@code null} if not found
+     */
+    @Nullable
+    public static Field findField(Class<?> clazz, String name) {
+        return findField(clazz, name, null);
+    }
+
+    /**
+     * Attempt to find a {@link Field field} on the supplied {@link Class} with the
+     * supplied {@code name} and/or {@link Class type}. Searches all superclasses
+     * up to {@link Object}.
+     *
+     * @param clazz the class to introspect
+     * @param name  the name of the field (may be {@code null} if type is specified)
+     * @param type  the type of the field (may be {@code null} if name is specified)
+     * @return the corresponding Field object, or {@code null} if not found
+     */
+    @Nullable
+    public static Field findField(Class<?> clazz, @Nullable String name, @Nullable Class<?> type) {
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        Preconditions.checkTrue(name != null || type != null, "Either name or type of the field must be specified");
+        Class<?> searchType = clazz;
+        while (Object.class != searchType && searchType != null) {
+            Field[] fields = getDeclaredFields(searchType);
+            for (Field field : fields) {
+                if ((name == null || name.equals(field.getName())) &&
+                        (type == null || type.equals(field.getType()))) {
+                    return field;
+                }
+            }
+            searchType = searchType.getSuperclass();
+        }
+        return null;
+    }
+
+    /**
+     * This variant retrieves {@link Class#getDeclaredFields()} from a local cache
+     * in order to avoid the JVM's SecurityManager check and defensive array copying.
+     *
+     * @param clazz the class to introspect
+     * @return the cached array of fields
+     * @throws IllegalStateException if introspection fails
+     * @see Class#getDeclaredFields()
+     */
+    private static Field[] getDeclaredFields(Class<?> clazz) {
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        Field[] result = declaredFieldsCache.get(clazz);
+        if (result == null) {
+            try {
+                result = clazz.getDeclaredFields();
+                declaredFieldsCache.put(clazz, (result.length == 0 ? EMPTY_FIELD_ARRAY : result));
+            } catch (Throwable ex) {
+                throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
+                        "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
+            }
+        }
+        return result;
+    }
+
+
     public static Field getAnyField(@NonNull Class clazz, @NonNull String fieldName) {
         Field field = getDeclaredField(clazz, fieldName);
         if (field == null) {
@@ -432,6 +517,33 @@ public class Reflects {
             return null;
         }
         return field;
+    }
+
+    public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz) {
+        return getAllDeclaredMethods(clazz, false);
+    }
+
+    public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz, boolean containsStatic) {
+        Method[] methods = clazz.getDeclaredMethods();
+        return !containsStatic ? filterMethods(methods, Modifier.STATIC) : filterMethods(methods);
+    }
+
+    public static Collection<Method> filterMethods(@NonNull Method[] methods, final int... excludedModifiers) {
+        final List<Integer> excludedModifierList = Collects.asList(PrimitiveArrays.wrap(excludedModifiers, false));
+        if (excludedModifierList.isEmpty()) {
+            return Collects.asList(methods);
+        }
+        return Collects.filter(methods, new Predicate<Method>() {
+            @Override
+            public boolean test(final Method method) {
+                return Collects.noneMatch(excludedModifierList, new Predicate<Integer>() {
+                    @Override
+                    public boolean test(Integer modifier) {
+                        return Modifiers.hasModifier(method, modifier);
+                    }
+                });
+            }
+        });
     }
 
     public static Collection<Field> getAllDeclaredFields(@NonNull Class clazz) {
@@ -454,6 +566,9 @@ public class Reflects {
 
     public static Collection<Field> filterFields(@NonNull Field[] fields, final int... excludedModifiers) {
         final List<Integer> excludedModifierList = Collects.asList(PrimitiveArrays.wrap(excludedModifiers, false));
+        if (excludedModifierList.isEmpty()) {
+            return Collects.asList(fields);
+        }
         return Collects.filter(fields, new Predicate<Field>() {
             @Override
             public boolean test(final Field field) {
@@ -750,6 +865,46 @@ public class Reflects {
         return method;
     }
 
+
+    /**
+     * Determine whether the given class has a public method with the given signature,
+     * and return it if available (else return {@code null}).
+     * <p>In case of any signature specified, only returns the method if there is a
+     * unique candidate, i.e. a single public method with the specified name.
+     * <p>Essentially translates {@code NoSuchMethodException} to {@code null}.
+     * @param clazz the clazz to analyze
+     * @param methodName the name of the method
+     * @param paramTypes the parameter types of the method
+     * (may be {@code null} to indicate any signature)
+     * @return the method, or {@code null} if not found
+     * @see Class#getMethod
+     */
+    public static Method getMethodIfAvailable(Class clazz, String methodName, Class<?>... paramTypes) {
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        Preconditions.checkNotNull(methodName, "Method name must not be null");
+        if (paramTypes != null) {
+            try {
+                return clazz.getMethod(methodName, paramTypes);
+            }
+            catch (NoSuchMethodException ex) {
+                return null;
+            }
+        }
+        else {
+            Set<Method> candidates = new HashSet<Method>(1);
+            Method[] methods = clazz.getMethods();
+            for (Method method : methods) {
+                if (methodName.equals(method.getName())) {
+                    candidates.add(method);
+                }
+            }
+            if (candidates.size() == 1) {
+                return candidates.iterator().next();
+            }
+            return null;
+        }
+    }
+
     public static Method getAnyMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
         Method method = getDeclaredMethod(clazz, methodName, parameterTypes);
         if (method == null) {
@@ -777,10 +932,12 @@ public class Reflects {
         }
         return null;
     }
+
     private static boolean hasSameParams(Method method, Class<?>[] paramTypes) {
         return (paramTypes.length == method.getParameterTypes().length &&
                 Arrays.equals(paramTypes, method.getParameterTypes()));
     }
+
     private static Method[] getDeclaredMethods(Class<?> clazz, boolean defensive) {
         Preconditions.checkNotNull(clazz, "Class must not be null");
         Method[] result = declaredMethodsCache.get(clazz);
@@ -796,13 +953,11 @@ public class Reflects {
                         result[index] = defaultMethod;
                         index++;
                     }
-                }
-                else {
+                } else {
                     result = declaredMethods;
                 }
                 declaredMethodsCache.put(clazz, (result.length == 0 ? EMPTY_METHOD_ARRAY : result));
-            }
-            catch (Throwable ex) {
+            } catch (Throwable ex) {
                 throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
                         "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
             }
@@ -1348,10 +1503,8 @@ public class Reflects {
     }
 
     /**
-     *
      * @param parent
      * @param child
-     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child) {
@@ -1360,24 +1513,22 @@ public class Reflects {
 
 
     /**
-     *
      * @param parent
      * @param child
-     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child, final boolean checkSuperClass, final boolean checkInterfaces) {
         Preconditions.checkNotNull(parent);
         Preconditions.checkNotNull(child);
 
-        if(checkInterfaces || checkSuperClass){
+        if (checkInterfaces || checkSuperClass) {
             if (checkInterfaces) {
                 Class[] interfaces = child.getInterfaces();
                 if (Pipeline.of(interfaces)
                         .anyMatch(new Predicate<Class>() {
                             @Override
                             public boolean test(Class itfc) {
-                                if(Objs.equals(parent, Reflects.getFQNClassName(itfc))){
+                                if (Objs.equals(parent, Reflects.getFQNClassName(itfc))) {
                                     return true;
                                 }
                                 return isSubClassOrEquals(parent, itfc, checkSuperClass, checkInterfaces);
