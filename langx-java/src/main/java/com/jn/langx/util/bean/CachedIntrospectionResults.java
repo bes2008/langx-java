@@ -17,9 +17,6 @@ import com.jn.langx.util.reflect.Reflects;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.springframework.core.SpringProperties;
-import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.core.io.support.SpringFactoriesLoader;
 
 /**
  * Internal class that caches JavaBeans {@link java.beans.PropertyDescriptor}
