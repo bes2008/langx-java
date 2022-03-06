@@ -12,8 +12,8 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.reflect.parameter2.GenericTypeResolver;
-import com.jn.langx.util.reflect.parameter2.SimpleParameter;
+import com.jn.langx.util.reflect.type.GenericTypeResolver;
+import com.jn.langx.util.reflect.type.SimpleParameter;
 
 /**
  * A description of a JavaBeans Property that allows us to avoid a dependency on

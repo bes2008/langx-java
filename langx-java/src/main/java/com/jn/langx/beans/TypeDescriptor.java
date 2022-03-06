@@ -5,8 +5,8 @@ import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.reflect.parameter2.ResolvableType;
-import com.jn.langx.util.reflect.parameter2.SimpleParameter;
+import com.jn.langx.util.reflect.type.ResolvableType;
+import com.jn.langx.util.reflect.type.SimpleParameter;
 import com.jn.langx.util.reflect.type.Types;
 
 import java.io.Serializable;

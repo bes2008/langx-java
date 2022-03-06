@@ -3,7 +3,7 @@ package com.jn.langx.beans;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.reflect.parameter2.ResolvableType;
+import com.jn.langx.util.reflect.type.ResolvableType;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;

@@ -1,4 +1,4 @@
-package com.jn.langx.util.reflect.parameter2;
+package com.jn.langx.util.reflect.type;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;

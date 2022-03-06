@@ -1,4 +1,4 @@
-package com.jn.langx.util.reflect.parameter2;
+package com.jn.langx.util.reflect.type;
 
 
 import java.io.Serializable;
@@ -21,7 +21,6 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.reflect.type.SerializableTypeWrapper;
 import com.jn.langx.util.reflect.type.SerializableTypeWrapper.FieldTypeProvider;
 import com.jn.langx.util.reflect.type.SerializableTypeWrapper.MethodParameterTypeProvider;
 import com.jn.langx.util.reflect.type.SerializableTypeWrapper.TypeProvider;
@@ -51,10 +50,6 @@ import com.jn.langx.util.reflect.type.SerializableTypeWrapper.TypeProvider;
  * }
  * </pre>
  *
- * @author Phillip Webb
- * @author Juergen Hoeller
- * @author Stephane Nicoll
- * @since 4.0
  * @see #forField(Field)
  * @see #forMethodParameter(Method, int)
  * @see #forMethodReturnType(Method)

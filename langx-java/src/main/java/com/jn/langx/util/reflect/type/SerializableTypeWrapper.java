@@ -19,7 +19,6 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
-import com.jn.langx.util.reflect.parameter2.SimpleParameter;
 
 
 /**

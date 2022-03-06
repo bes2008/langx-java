@@ -1,4 +1,4 @@
-package com.jn.langx.util.reflect.parameter2;
+package com.jn.langx.util.reflect.type;
 /**
  * Any object can implement this interface to provide its actual {@link ResolvableType}.
  *
