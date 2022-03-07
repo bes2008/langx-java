@@ -362,6 +362,26 @@ public class Reflects {
         return field;
     }
 
+    public static Collection<Field> findAllFields(@NonNull Class clazz, boolean containsStatic) {
+        Collection<Field> fields = new ArrayList<Field>();
+        findAllFields(fields, clazz, containsStatic);
+        return fields;
+    }
+
+    private static void findAllFields(Collection<Field> result, @NonNull Class clazz, boolean containsStatic) {
+        if (clazz.isInterface()) {
+            return;
+        }
+        Collection<Field> declaredFields = getAllDeclaredFields(clazz, containsStatic);
+        result.addAll(declaredFields);
+        Class superClass = clazz.getSuperclass();
+        if (superClass == null || Object.class == superClass) {
+            return;
+        } else {
+            findAllFields(result, superClass, containsStatic);
+        }
+    }
+
     public static Collection<Field> getAllDeclaredFields(@NonNull Class clazz) {
         return getAllDeclaredFields(clazz, false);
     }
@@ -1212,10 +1232,8 @@ public class Reflects {
     }
 
     /**
-     *
      * @param parent
      * @param child
-     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child) {
@@ -1224,24 +1242,22 @@ public class Reflects {
 
 
     /**
-     *
      * @param parent
      * @param child
-     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child, final boolean checkSuperClass, final boolean checkInterfaces) {
         Preconditions.checkNotNull(parent);
         Preconditions.checkNotNull(child);
 
-        if(checkInterfaces || checkSuperClass){
+        if (checkInterfaces || checkSuperClass) {
             if (checkInterfaces) {
                 Class[] interfaces = child.getInterfaces();
                 if (Pipeline.of(interfaces)
                         .anyMatch(new Predicate<Class>() {
                             @Override
                             public boolean test(Class itfc) {
-                                if(Objs.equals(parent, Reflects.getFQNClassName(itfc))){
+                                if (Objs.equals(parent, Reflects.getFQNClassName(itfc))) {
                                     return true;
                                 }
                                 return isSubClassOrEquals(parent, itfc, checkSuperClass, checkInterfaces);
