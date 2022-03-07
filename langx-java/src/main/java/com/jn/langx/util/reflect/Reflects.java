@@ -546,6 +546,26 @@ public class Reflects {
         });
     }
 
+    public static Collection<Field> findAllFields(@NonNull Class clazz, boolean containsStatic) {
+        Collection<Field> fields = new ArrayList<Field>();
+        findAllFields(fields, clazz, containsStatic);
+        return fields;
+    }
+
+    private static void findAllFields(Collection<Field> result, @NonNull Class clazz, boolean containsStatic) {
+        if (clazz.isInterface()) {
+            return;
+        }
+        Collection<Field> declaredFields = getAllDeclaredFields(clazz, containsStatic);
+        result.addAll(declaredFields);
+        Class superClass = clazz.getSuperclass();
+        if (superClass == null || Object.class == superClass) {
+            return;
+        } else {
+            findAllFields(result, superClass, containsStatic);
+        }
+    }
+
     public static Collection<Field> getAllDeclaredFields(@NonNull Class clazz) {
         return getAllDeclaredFields(clazz, false);
     }
@@ -843,6 +863,40 @@ public class Reflects {
             clazz = clazz.getSuperclass();
         }
         return methods;
+    }
+
+    public static Collection<Method> findGetterOrSetter(Class clazz) {
+        return findGetterOrSetter(clazz, true);
+    }
+
+    public static Collection<Method> findGetterOrSetter(Class clazz, final boolean checkFieldExists) {
+        Collection<Method> methods = findMethods(clazz);
+        return Pipeline.of(methods)
+                .filter(new Predicate<Method>() {
+                    @Override
+                    public boolean test(Method value) {
+                        return isGetterOrSetter(value, checkFieldExists);
+                    }
+                }).asList();
+    }
+
+    public static Collection<Method> findMethods(Class clazz) {
+        return findMethods(clazz, false);
+    }
+
+    public static Collection<Method> findMethods(Class clazz, boolean containsStatic) {
+        Collection<Method> result = new ArrayList<Method>();
+        findMethods(result, clazz, containsStatic);
+        return result;
+    }
+
+    public static void findMethods(Collection<Method> result, Class clazz, boolean containsStatic) {
+        if (clazz == null || clazz == Object.class) {
+            return;
+        }
+        Method[] methods = clazz.getDeclaredMethods();
+        result.addAll(Collects.asList(methods));
+        findMethods(result, clazz.getSuperclass(), containsStatic);
     }
 
     public static Method getPublicMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
@@ -1380,6 +1434,10 @@ public class Reflects {
     }
 
     public static boolean isGetterOrSetter(@NonNull Method method) {
+        return isGetterOrSetter(method, true);
+    }
+
+    public static boolean isGetterOrSetter(@NonNull Method method, boolean filterNonFields) {
         if (method == null) {
             return false;
         }
@@ -1409,9 +1467,16 @@ public class Reflects {
             return false;
         }
         fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
-        Class beanClass = method.getDeclaringClass();
-        Field field = getAnyField(beanClass, fieldName);
-        return field != null;
+
+        if (Strings.isEmpty(fieldName)) {
+            return false;
+        }
+        if (filterNonFields) {
+            Class beanClass = method.getDeclaringClass();
+            Field field = getAnyField(beanClass, fieldName);
+            return field != null;
+        }
+        return true;
     }
 
     public static boolean makeAccessible(@NonNull Field field) {
@@ -1503,8 +1568,10 @@ public class Reflects {
     }
 
     /**
+     *
      * @param parent
      * @param child
+     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child) {
@@ -1513,8 +1580,10 @@ public class Reflects {
 
 
     /**
+     *
      * @param parent
      * @param child
+     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child, final boolean checkSuperClass, final boolean checkInterfaces) {

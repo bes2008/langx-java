@@ -18,7 +18,6 @@ import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
-import com.jn.langx.util.struct.Entry;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 
@@ -1336,7 +1335,7 @@ public class Collects {
         forEach(collection, predicate, new Consumer2<Integer, E>() {
             @Override
             public void accept(Integer index, E e) {
-                ret.add(new Entry<Integer, E>(index, e));
+                ret.add(new Pair<Integer, E>(index, e));
             }
         }, new Predicate2<Integer, E>() {
             @Override
