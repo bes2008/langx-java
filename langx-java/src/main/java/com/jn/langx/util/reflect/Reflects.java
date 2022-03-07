@@ -678,6 +678,36 @@ public class Reflects {
         return methods;
     }
 
+    public static Collection<Method> findGetterOrSetter(Class clazz) {
+        Collection<Method> methods = findMethods(clazz);
+        return Pipeline.of(methods)
+                .filter(new Predicate<Method>() {
+                    @Override
+                    public boolean test(Method value) {
+                        return isGetterOrSetter(value);
+                    }
+                }).asList();
+    }
+
+    public static Collection<Method> findMethods(Class clazz) {
+        return findMethods(clazz, false);
+    }
+
+    public static Collection<Method> findMethods(Class clazz, boolean containsStatic) {
+        Collection<Method> result = new ArrayList<Method>();
+        findMethods(result, clazz, containsStatic);
+        return result;
+    }
+
+    public static void findMethods(Collection<Method> result, Class clazz, boolean containsStatic) {
+        if (clazz == null || clazz == Object.class) {
+            return;
+        }
+        Method[] methods = clazz.getDeclaredMethods();
+        result.addAll(Collects.asList(methods));
+        findMethods(result, clazz.getSuperclass(), containsStatic);
+    }
+
     public static Method getPublicMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
         Method method;
         try {
