@@ -441,6 +441,10 @@ public class Reflects {
         return field;
     }
 
+    public static Field getAnyField(@NonNull Class clazz, @NonNull String fieldName) {
+        return findField(clazz, fieldName);
+    }
+
     /**
      * Attempt to find a {@link Field field} on the supplied {@link Class} with the
      * supplied {@code name}. Searches all superclasses up to {@link Object}.
@@ -461,89 +465,24 @@ public class Reflects {
      *
      * @param clazz the class to introspect
      * @param name  the name of the field (may be {@code null} if type is specified)
-     * @param type  the type of the field (may be {@code null} if name is specified)
+     * @param fieldType  the type of the field (may be {@code null} if name is specified)
      * @return the corresponding Field object, or {@code null} if not found
      */
     @Nullable
-    public static Field findField(Class<?> clazz, @Nullable String name, @Nullable Class<?> type) {
+    public static Field findField(Class<?> clazz, @Nullable String name, @Nullable Class<?> fieldType) {
         Preconditions.checkNotNull(clazz, "Class must not be null");
-        Preconditions.checkTrue(name != null || type != null, "Either name or type of the field must be specified");
+        Preconditions.checkTrue(name != null || fieldType != null, "Either name or type of the field must be specified");
         Class<?> searchType = clazz;
         while (Object.class != searchType && searchType != null) {
             Field[] fields = getDeclaredFields(searchType);
             for (Field field : fields) {
-                if ((name == null || name.equals(field.getName())) &&
-                        (type == null || type.equals(field.getType()))) {
+                if ((name == null || name.equals(field.getName())) && (fieldType == null || fieldType.equals(field.getType()))) {
                     return field;
                 }
             }
             searchType = searchType.getSuperclass();
         }
         return null;
-    }
-
-    /**
-     * This variant retrieves {@link Class#getDeclaredFields()} from a local cache
-     * in order to avoid the JVM's SecurityManager check and defensive array copying.
-     *
-     * @param clazz the class to introspect
-     * @return the cached array of fields
-     * @throws IllegalStateException if introspection fails
-     * @see Class#getDeclaredFields()
-     */
-    private static Field[] getDeclaredFields(Class<?> clazz) {
-        Preconditions.checkNotNull(clazz, "Class must not be null");
-        Field[] result = declaredFieldsCache.get(clazz);
-        if (result == null) {
-            try {
-                result = clazz.getDeclaredFields();
-                declaredFieldsCache.put(clazz, (result.length == 0 ? EMPTY_FIELD_ARRAY : result));
-            } catch (Throwable ex) {
-                throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
-                        "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
-            }
-        }
-        return result;
-    }
-
-
-    public static Field getAnyField(@NonNull Class clazz, @NonNull String fieldName) {
-        Field field = getDeclaredField(clazz, fieldName);
-        if (field == null) {
-            Class parent = clazz.getSuperclass();
-            if (parent != null) {
-                return getAnyField(parent, fieldName);
-            }
-            return null;
-        }
-        return field;
-    }
-
-    public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz) {
-        return getAllDeclaredMethods(clazz, false);
-    }
-
-    public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz, boolean containsStatic) {
-        Method[] methods = clazz.getDeclaredMethods();
-        return !containsStatic ? filterMethods(methods, Modifier.STATIC) : filterMethods(methods);
-    }
-
-    public static Collection<Method> filterMethods(@NonNull Method[] methods, final int... excludedModifiers) {
-        final List<Integer> excludedModifierList = Collects.asList(PrimitiveArrays.wrap(excludedModifiers, false));
-        if (excludedModifierList.isEmpty()) {
-            return Collects.asList(methods);
-        }
-        return Collects.filter(methods, new Predicate<Method>() {
-            @Override
-            public boolean test(final Method method) {
-                return Collects.noneMatch(excludedModifierList, new Predicate<Integer>() {
-                    @Override
-                    public boolean test(Integer modifier) {
-                        return Modifiers.hasModifier(method, modifier);
-                    }
-                });
-            }
-        });
     }
 
     public static Collection<Field> findAllFields(@NonNull Class clazz, boolean containsStatic) {
@@ -571,8 +510,32 @@ public class Reflects {
     }
 
     public static Collection<Field> getAllDeclaredFields(@NonNull Class clazz, boolean containsStatic) {
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = getDeclaredFields(clazz);
         return !containsStatic ? filterFields(fields, Modifier.STATIC) : filterFields(fields);
+    }
+
+    /**
+     * This variant retrieves {@link Class#getDeclaredFields()} from a local cache
+     * in order to avoid the JVM's SecurityManager check and defensive array copying.
+     *
+     * @param clazz the class to introspect
+     * @return the cached array of fields
+     * @throws IllegalStateException if introspection fails
+     * @see Class#getDeclaredFields()
+     */
+    private static Field[] getDeclaredFields(Class<?> clazz) {
+        Preconditions.checkNotNull(clazz, "Class must not be null");
+        Field[] result = declaredFieldsCache.get(clazz);
+        if (result == null) {
+            try {
+                result = clazz.getDeclaredFields();
+                declaredFieldsCache.put(clazz, (result.length == 0 ? EMPTY_FIELD_ARRAY : result));
+            } catch (Throwable ex) {
+                throw new IllegalStateException("Failed to introspect Class [" + clazz.getName() +
+                        "] from ClassLoader [" + clazz.getClassLoader() + "]", ex);
+            }
+        }
+        return result;
     }
 
     public static Collection<Field> getAllPublicInstanceFields(@NonNull Class clazz) {
@@ -880,6 +843,7 @@ public class Reflects {
                 }).asList();
     }
 
+
     public static Collection<Method> findMethods(Class clazz) {
         return findMethods(clazz, false);
     }
@@ -894,10 +858,41 @@ public class Reflects {
         if (clazz == null || clazz == Object.class) {
             return;
         }
-        Method[] methods = clazz.getDeclaredMethods();
-        result.addAll(Collects.asList(methods));
+        Collection<Method> methods = getAllDeclaredMethods(clazz, containsStatic);
+        result.addAll(methods);
         findMethods(result, clazz.getSuperclass(), containsStatic);
     }
+
+
+
+
+    public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz) {
+        return getAllDeclaredMethods(clazz, false);
+    }
+
+    public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz, boolean containsStatic) {
+        Method[] methods = clazz.getDeclaredMethods();
+        return !containsStatic ? filterMethods(methods, Modifier.STATIC) : filterMethods(methods);
+    }
+
+    public static Collection<Method> filterMethods(@NonNull Method[] methods, final int... excludedModifiers) {
+        final List<Integer> excludedModifierList = Collects.asList(PrimitiveArrays.wrap(excludedModifiers, false));
+        if (excludedModifierList.isEmpty()) {
+            return Collects.asList(methods);
+        }
+        return Collects.filter(methods, new Predicate<Method>() {
+            @Override
+            public boolean test(final Method method) {
+                return Collects.noneMatch(excludedModifierList, new Predicate<Integer>() {
+                    @Override
+                    public boolean test(Integer modifier) {
+                        return Modifiers.hasModifier(method, modifier);
+                    }
+                });
+            }
+        });
+    }
+
 
     public static Method getPublicMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
         Method method;
