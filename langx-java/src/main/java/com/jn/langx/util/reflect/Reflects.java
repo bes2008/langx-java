@@ -679,12 +679,16 @@ public class Reflects {
     }
 
     public static Collection<Method> findGetterOrSetter(Class clazz) {
+        return findGetterOrSetter(clazz, true);
+    }
+
+    public static Collection<Method> findGetterOrSetter(Class clazz, final boolean checkFieldExists) {
         Collection<Method> methods = findMethods(clazz);
         return Pipeline.of(methods)
                 .filter(new Predicate<Method>() {
                     @Override
                     public boolean test(Method value) {
-                        return isGetterOrSetter(value);
+                        return isGetterOrSetter(value, checkFieldExists);
                     }
                 }).asList();
     }
@@ -1139,6 +1143,10 @@ public class Reflects {
     }
 
     public static boolean isGetterOrSetter(@NonNull Method method) {
+        return isGetterOrSetter(method, true);
+    }
+
+    public static boolean isGetterOrSetter(@NonNull Method method, boolean filterNonFields) {
         if (method == null) {
             return false;
         }
@@ -1168,9 +1176,16 @@ public class Reflects {
             return false;
         }
         fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
-        Class beanClass = method.getDeclaringClass();
-        Field field = getAnyField(beanClass, fieldName);
-        return field != null;
+
+        if (Strings.isEmpty(fieldName)) {
+            return false;
+        }
+        if (filterNonFields) {
+            Class beanClass = method.getDeclaringClass();
+            Field field = getAnyField(beanClass, fieldName);
+            return field != null;
+        }
+        return true;
     }
 
     public static boolean makeAccessible(@NonNull Field field) {
