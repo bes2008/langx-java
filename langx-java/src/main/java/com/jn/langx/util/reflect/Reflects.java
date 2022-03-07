@@ -463,9 +463,9 @@ public class Reflects {
      * supplied {@code name} and/or {@link Class type}. Searches all superclasses
      * up to {@link Object}.
      *
-     * @param clazz the class to introspect
-     * @param name  the name of the field (may be {@code null} if type is specified)
-     * @param fieldType  the type of the field (may be {@code null} if name is specified)
+     * @param clazz     the class to introspect
+     * @param name      the name of the field (may be {@code null} if type is specified)
+     * @param fieldType the type of the field (may be {@code null} if name is specified)
      * @return the corresponding Field object, or {@code null} if not found
      */
     @Nullable
@@ -864,8 +864,6 @@ public class Reflects {
     }
 
 
-
-
     public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz) {
         return getAllDeclaredMethods(clazz, false);
     }
@@ -921,10 +919,11 @@ public class Reflects {
      * <p>In case of any signature specified, only returns the method if there is a
      * unique candidate, i.e. a single public method with the specified name.
      * <p>Essentially translates {@code NoSuchMethodException} to {@code null}.
-     * @param clazz the clazz to analyze
+     *
+     * @param clazz      the clazz to analyze
      * @param methodName the name of the method
      * @param paramTypes the parameter types of the method
-     * (may be {@code null} to indicate any signature)
+     *                   (may be {@code null} to indicate any signature)
      * @return the method, or {@code null} if not found
      * @see Class#getMethod
      */
@@ -934,12 +933,10 @@ public class Reflects {
         if (paramTypes != null) {
             try {
                 return clazz.getMethod(methodName, paramTypes);
-            }
-            catch (NoSuchMethodException ex) {
+            } catch (NoSuchMethodException ex) {
                 return null;
             }
-        }
-        else {
+        } else {
             Set<Method> candidates = new HashSet<Method>(1);
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
@@ -955,15 +952,7 @@ public class Reflects {
     }
 
     public static Method getAnyMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
-        Method method = getDeclaredMethod(clazz, methodName, parameterTypes);
-        if (method == null) {
-            Class parent = clazz.getSuperclass();
-            if (parent != null) {
-                return getAnyMethod(parent, methodName, parameterTypes);
-            }
-            return null;
-        }
-        return method;
+        return findMethod(clazz, methodName, parameterTypes);
     }
 
     public static Method findMethod(Class<?> clazz, String name, @Nullable Class<?>... paramTypes) {
@@ -1563,10 +1552,8 @@ public class Reflects {
     }
 
     /**
-     *
      * @param parent
      * @param child
-     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child) {
@@ -1575,10 +1562,8 @@ public class Reflects {
 
 
     /**
-     *
      * @param parent
      * @param child
-     *
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child, final boolean checkSuperClass, final boolean checkInterfaces) {
