@@ -33,7 +33,7 @@ import static java.lang.System.arraycopy;
 /**
  * @author jinuo.fang
  */
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unused", "unchecked", "rawtypes"})
 public class Reflects {
 
     private static final Pattern lamdbaPattern = Pattern.compile(".*\\$\\$Lambda\\$[0-9]+/.*");
