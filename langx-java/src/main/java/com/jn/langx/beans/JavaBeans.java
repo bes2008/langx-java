@@ -125,11 +125,11 @@ public class JavaBeans {
                     if (readMethod != null && Reflects.isSubClassOrEquals(writeMethod.getParameterTypes()[0], readMethod.getReturnType())) {
                         try {
                             if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
-                                readMethod.setAccessible(true);
+                                Reflects.makeAccessible(readMethod);
                             }
                             Object value = readMethod.invoke(source);
                             if (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers())) {
-                                writeMethod.setAccessible(true);
+                                Reflects.makeAccessible(writeMethod);
                             }
                             writeMethod.invoke(target, value);
                         } catch (Throwable ex) {
