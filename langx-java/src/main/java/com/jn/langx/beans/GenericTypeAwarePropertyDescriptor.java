@@ -3,10 +3,10 @@ package com.jn.langx.beans;
 import com.jn.langx.beans.propertyeditor.PropertyDescriptors;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.GenericTypeResolver;
 import com.jn.langx.util.reflect.type.SimpleParameter;
-import org.apache.commons.logging.LogFactory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -107,7 +107,7 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
         Set<Method> ambiguousCandidates = this.ambiguousWriteMethods;
         if (ambiguousCandidates != null) {
             this.ambiguousWriteMethods = null;
-            LogFactory.getLog(GenericTypeAwarePropertyDescriptor.class).warn("Invalid JavaBean property '" +
+            Loggers.getLogger(GenericTypeAwarePropertyDescriptor.class).warn("Invalid JavaBean property '" +
                     getName() + "' being accessed! Ambiguous write methods found next to actually used [" +
                     this.writeMethod + "]: " + ambiguousCandidates);
         }

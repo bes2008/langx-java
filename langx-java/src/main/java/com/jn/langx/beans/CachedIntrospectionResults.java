@@ -13,9 +13,9 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
 
 
 /**
@@ -77,7 +77,7 @@ public class CachedIntrospectionResults {
      */
     private static List<BeanInfoFactory> beanInfoFactories = Collects.asList(ServiceLoader.load(BeanInfoFactory.class, CachedIntrospectionResults.class.getClassLoader()));
 
-    private static final Log logger = LogFactory.getLog(CachedIntrospectionResults.class);
+    private static final Logger logger = Loggers.getLogger(CachedIntrospectionResults.class);
 
     /**
      * Set of ClassLoaders that this CachedIntrospectionResults class will always
