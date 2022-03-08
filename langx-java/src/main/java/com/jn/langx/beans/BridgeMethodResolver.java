@@ -24,10 +24,6 @@ import java.util.*;
  * <p>See <a href="https://java.sun.com/docs/books/jls/third_edition/html/expressions.html#15.12.4.5">
  * The Java Language Specification</a> for more details on the use of bridge methods.
  *
- * @author Rob Harrop
- * @author Juergen Hoeller
- * @author Phillip Webb
- * @since 2.0
  */
 public abstract class BridgeMethodResolver {
 

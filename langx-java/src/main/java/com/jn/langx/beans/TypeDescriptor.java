@@ -22,13 +22,6 @@ import java.util.Map;
 /**
  * Context about a type to convert from or to.
  *
- * @author Keith Donald
- * @author Andy Clement
- * @author Juergen Hoeller
- * @author Phillip Webb
- * @author Sam Brannen
- * @author Stephane Nicoll
- * @since 3.0
  */
 @SuppressWarnings("serial")
 public class TypeDescriptor implements Serializable {
@@ -86,13 +79,13 @@ public class TypeDescriptor implements Serializable {
     }
 
     /**
-     * Create a new type descriptor from a {@link Property}.
+     * Create a new type descriptor from a {@link BeanProperty}.
      * <p>Use this constructor when a source or target conversion point is a
      * property on a Java class.
      *
      * @param property the property
      */
-    public TypeDescriptor(Property property) {
+    public TypeDescriptor(BeanProperty property) {
         Preconditions.checkNotNull(property, "Property must not be null");
         this.resolvableType = ResolvableType.forMethodParameter(property.getMethodParameter());
         this.type = this.resolvableType.resolve(property.getType());
@@ -689,7 +682,7 @@ public class TypeDescriptor implements Serializable {
      * @throws IllegalArgumentException if the types up to the specified nesting
      *                                  level are not of collection, array, or map types
      */
-    public static TypeDescriptor nested(Property property, int nestingLevel) {
+    public static TypeDescriptor nested(BeanProperty property, int nestingLevel) {
         return nested(new TypeDescriptor(property), nestingLevel);
     }
 

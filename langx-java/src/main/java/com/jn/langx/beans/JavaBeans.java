@@ -10,7 +10,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class JavaBeans {
+public class JavaBeans {
     protected JavaBeans(){}
 
     /**

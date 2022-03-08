@@ -24,16 +24,13 @@ import com.jn.langx.util.reflect.type.SimpleParameter;
  * <p>Used to build a {@link TypeDescriptor} from a property location. The built
  * {@code TypeDescriptor} can then be used to convert from/to the property type.
  *
- * @author Keith Donald
- * @author Phillip Webb
- * @since 3.1
- * @see TypeDescriptor#TypeDescriptor(Property)
- * @see TypeDescriptor#nested(Property, int)
+ * @see TypeDescriptor#TypeDescriptor(BeanProperty)
+ * @see TypeDescriptor#nested(BeanProperty, int)
+ * @see java.beans.PropertyDescriptor
  */
-public final class Property {
+public final class BeanProperty {
 
-    private static Map<Property, Annotation[]> annotationCache =
-            new ConcurrentReferenceHashMap<Property, Annotation[]>();
+    private static Map<BeanProperty, Annotation[]> annotationCache = new ConcurrentReferenceHashMap<BeanProperty, Annotation[]>();
 
     private final Class<?> objectType;
 
@@ -48,11 +45,11 @@ public final class Property {
     private Annotation[] annotations;
 
 
-    public Property(Class<?> objectType, Method readMethod, Method writeMethod) {
+    public BeanProperty(Class<?> objectType, Method readMethod, Method writeMethod) {
         this(objectType, readMethod, writeMethod, null);
     }
 
-    public Property(Class<?> objectType, Method readMethod, Method writeMethod, String name) {
+    public BeanProperty(Class<?> objectType, Method readMethod, Method writeMethod, String name) {
         this.objectType = objectType;
         this.readMethod = readMethod;
         this.writeMethod = writeMethod;
@@ -118,8 +115,7 @@ public final class Property {
             int index = this.readMethod.getName().indexOf("get");
             if (index != -1) {
                 index += 3;
-            }
-            else {
+            } else {
                 index = this.readMethod.getName().indexOf("is");
                 if (index == -1) {
                     throw new IllegalArgumentException("Not a getter method");
@@ -127,8 +123,7 @@ public final class Property {
                 index += 2;
             }
             return Strings.uncapitalize(this.readMethod.getName().substring(index));
-        }
-        else {
+        } else {
             int index = this.writeMethod.getName().indexOf("set");
             if (index == -1) {
                 throw new IllegalArgumentException("Not a setter method");
@@ -180,8 +175,7 @@ public final class Property {
     private Annotation[] resolveAnnotations() {
         Annotation[] annotations = annotationCache.get(this);
         if (annotations == null) {
-            Map<Class<? extends Annotation>, Annotation> annotationMap =
-                    new LinkedHashMap<Class<? extends Annotation>, Annotation>();
+            Map<Class<? extends Annotation>, Annotation> annotationMap = new LinkedHashMap<Class<? extends Annotation>, Annotation>();
             addAnnotationsToMap(annotationMap, getReadMethod());
             addAnnotationsToMap(annotationMap, getWriteMethod());
             addAnnotationsToMap(annotationMap, getField());
@@ -221,8 +215,7 @@ public final class Property {
     private Class<?> declaringClass() {
         if (getReadMethod() != null) {
             return getReadMethod().getDeclaringClass();
-        }
-        else {
+        } else {
             return getWriteMethod().getDeclaringClass();
         }
     }
@@ -233,10 +226,10 @@ public final class Property {
         if (this == other) {
             return true;
         }
-        if (!(other instanceof Property)) {
+        if (!(other instanceof BeanProperty)) {
             return false;
         }
-        Property otherProperty = (Property) other;
+        BeanProperty otherProperty = (BeanProperty) other;
         return (Objs.deepEquals(this.objectType, otherProperty.objectType) &&
                 Objs.deepEquals(this.name, otherProperty.name) &&
                 Objs.deepEquals(this.readMethod, otherProperty.readMethod) &&
@@ -245,7 +238,7 @@ public final class Property {
 
     @Override
     public int hashCode() {
-        return (Objs.hashCode(this.objectType) * 31 + Objs.hashCode(this.name));
+        return Objs.hash(this.objectType,this.name);
     }
 
 }
