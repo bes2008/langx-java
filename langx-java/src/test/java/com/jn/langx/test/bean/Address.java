@@ -11,4 +11,12 @@ public class Address {
     public void setB(String b) {
         this.b = b;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "a='" + a + '\'' +
+                ", b='" + b + '\'' +
+                '}';
+    }
 }

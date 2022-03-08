@@ -49,4 +49,15 @@ public class PersonDto {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    @Override
+    public String toString() {
+        return "PersonDto{" +
+                "id='" + id + '\'' +
+                ", age=" + age +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", addresses=" + addresses +
+                '}';
+    }
 }
