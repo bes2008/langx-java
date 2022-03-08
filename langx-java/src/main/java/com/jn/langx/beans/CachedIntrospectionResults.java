@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
@@ -279,11 +280,8 @@ public class CachedIntrospectionResults {
                 if (Class.class == beanClass && ("classLoader".equals(pd.getName()) || "protectionDomain".equals(pd.getName()))) {
                     continue;
                 }
-                if (logger.isTraceEnabled()) {
-                    logger.trace("Found bean property '" + pd.getName() + "'" +
-                            (pd.getPropertyType() != null ? " of type [" + pd.getPropertyType().getName() + "]" : "") +
-                            (pd.getPropertyEditorClass() != null ?
-                                    "; editor [" + pd.getPropertyEditorClass().getName() + "]" : ""));
+                if (logger.isErrorEnabled()) {
+                    logger.debug("Found bean property '{}' of type [{}]; editor [{}]", pd.getName(),  pd.getPropertyType(), pd.getPropertyEditorClass());
                 }
                 pd = buildGenericTypeAwarePropertyDescriptor(beanClass, pd);
                 this.propertyDescriptorCache.put(pd.getName(), pd);
@@ -347,8 +345,7 @@ public class CachedIntrospectionResults {
 
     private PropertyDescriptor buildGenericTypeAwarePropertyDescriptor(Class<?> beanClass, PropertyDescriptor pd) {
         try {
-            return new GenericTypeAwarePropertyDescriptor(beanClass, pd.getName(), pd.getReadMethod(),
-                    pd.getWriteMethod(), pd.getPropertyEditorClass());
+            return new GenericTypeAwarePropertyDescriptor(beanClass, pd.getName(), pd.getReadMethod(), pd.getWriteMethod(), pd.getPropertyEditorClass());
         } catch (IntrospectionException ex) {
             throw new BeansException("Failed to re-introspect class [" + beanClass.getName() + "]", ex);
         }
