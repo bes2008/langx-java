@@ -14,6 +14,9 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @since 4.3.7
+ */
 final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
 
     private final Class<?> beanClass;
@@ -103,7 +106,7 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
         return this.writeMethod;
     }
 
-    public Method getWriteMethodForActualAccess() {
+    Method getWriteMethodForActualAccess() {
         Set<Method> ambiguousCandidates = this.ambiguousWriteMethods;
         if (ambiguousCandidates != null) {
             this.ambiguousWriteMethods = null;
@@ -114,7 +117,7 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
         return this.writeMethod;
     }
 
-    public SimpleParameter getWriteMethodParameter() {
+    SimpleParameter getWriteMethodParameter() {
         return this.writeMethodParameter;
     }
 

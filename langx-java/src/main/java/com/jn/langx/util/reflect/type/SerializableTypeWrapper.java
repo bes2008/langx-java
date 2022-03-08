@@ -37,9 +37,7 @@ import com.jn.langx.util.reflect.parameter.MethodParameter;
  * to methods that return further {@link Type}s (for example
  * {@link GenericArrayType#getGenericComponentType()}) will be automatically wrapped.
  *
- * @author Phillip Webb
- * @author Juergen Hoeller
- * @since 4.0
+ * @since 4.3.7
  */
 public abstract class SerializableTypeWrapper {
 

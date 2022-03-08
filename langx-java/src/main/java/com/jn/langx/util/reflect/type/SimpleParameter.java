@@ -25,11 +25,7 @@ import com.jn.langx.util.reflect.ParameterNameDiscoverer;
  * subclass available which synthesizes annotations with attribute aliases. That subclass is used
  * for web and message endpoint processing, in particular.
  *
- * @author Juergen Hoeller
- * @author Rob Harrop
- * @author Andy Clement
- * @author Sam Brannen
- * @since 2.0
+ * @since 4.3.7
  */
 public class SimpleParameter {
 

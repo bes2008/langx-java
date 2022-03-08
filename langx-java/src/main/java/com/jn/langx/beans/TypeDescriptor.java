@@ -21,10 +21,9 @@ import java.util.Map;
 
 /**
  * Context about a type to convert from or to.
- *
+ * @since 4.3.7
  */
-@SuppressWarnings("serial")
-public class TypeDescriptor implements Serializable {
+class TypeDescriptor implements Serializable {
 
     static final Annotation[] EMPTY_ANNOTATION_ARRAY = new Annotation[0];
 
@@ -59,7 +58,7 @@ public class TypeDescriptor implements Serializable {
      *
      * @param methodParameter the method parameter
      */
-    public TypeDescriptor(SimpleParameter methodParameter) {
+    TypeDescriptor(SimpleParameter methodParameter) {
         this.resolvableType = ResolvableType.forMethodParameter(methodParameter);
         this.type = this.resolvableType.resolve(methodParameter.getNestedParameterType());
         this.annotatedElement = new AnnotatedElementAdapter(methodParameter.getParameterIndex() == -1 ?
@@ -72,7 +71,7 @@ public class TypeDescriptor implements Serializable {
      *
      * @param field the field
      */
-    public TypeDescriptor(Field field) {
+    TypeDescriptor(Field field) {
         this.resolvableType = ResolvableType.forField(field);
         this.type = this.resolvableType.resolve(field.getType());
         this.annotatedElement = new AnnotatedElementAdapter(field.getAnnotations());
@@ -85,7 +84,7 @@ public class TypeDescriptor implements Serializable {
      *
      * @param property the property
      */
-    public TypeDescriptor(BeanProperty property) {
+    TypeDescriptor(BeanProperty property) {
         Preconditions.checkNotNull(property, "Property must not be null");
         this.resolvableType = ResolvableType.forMethodParameter(property.getMethodParameter());
         this.type = this.resolvableType.resolve(property.getType());
@@ -626,7 +625,7 @@ public class TypeDescriptor implements Serializable {
      *                                  {@link SimpleParameter} argument is not 1, or if the types up to the
      *                                  specified nesting level are not of collection, array, or map types
      */
-    public static TypeDescriptor nested(SimpleParameter methodParameter, int nestingLevel) {
+    static TypeDescriptor nested(SimpleParameter methodParameter, int nestingLevel) {
         if (methodParameter.getNestingLevel() != 1) {
             throw new IllegalArgumentException("MethodParameter nesting level must be 1: " +
                     "use the nestingLevel parameter to specify the desired nestingLevel for nested type traversal");
@@ -656,7 +655,7 @@ public class TypeDescriptor implements Serializable {
      * @throws IllegalArgumentException if the types up to the specified nesting
      *                                  level are not of collection, array, or map types
      */
-    public static TypeDescriptor nested(Field field, int nestingLevel) {
+    static TypeDescriptor nested(Field field, int nestingLevel) {
         return nested(new TypeDescriptor(field), nestingLevel);
     }
 
@@ -682,7 +681,7 @@ public class TypeDescriptor implements Serializable {
      * @throws IllegalArgumentException if the types up to the specified nesting
      *                                  level are not of collection, array, or map types
      */
-    public static TypeDescriptor nested(BeanProperty property, int nestingLevel) {
+    static TypeDescriptor nested(BeanProperty property, int nestingLevel) {
         return nested(new TypeDescriptor(property), nestingLevel);
     }
 

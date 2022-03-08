@@ -9,7 +9,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
@@ -47,8 +46,10 @@ import org.slf4j.Logger;
  * @see #acceptClassLoader(ClassLoader)
  * @see #clearClassLoader(ClassLoader)
  * @see #forClass(Class)
+ *
+ * @since 4.3.7
  */
-public class CachedIntrospectionResults {
+final class CachedIntrospectionResults {
 
     /**
      * System property that instructs Spring to use the {@link Introspector#IGNORE_ALL_BEANINFO}
@@ -319,7 +320,7 @@ public class CachedIntrospectionResults {
         return this.beanInfo.getBeanDescriptor().getBeanClass();
     }
 
-    public PropertyDescriptor getPropertyDescriptor(String name) {
+    PropertyDescriptor getPropertyDescriptor(String name) {
         PropertyDescriptor pd = this.propertyDescriptorCache.get(name);
         if (pd == null && Strings.isNotEmpty(name)) {
             // Same lenient fallback checking as in Property...
@@ -332,7 +333,7 @@ public class CachedIntrospectionResults {
                 buildGenericTypeAwarePropertyDescriptor(getBeanClass(), pd));
     }
 
-    public PropertyDescriptor[] getPropertyDescriptors() {
+    PropertyDescriptor[] getPropertyDescriptors() {
         PropertyDescriptor[] pds = new PropertyDescriptor[this.propertyDescriptorCache.size()];
         int i = 0;
         for (PropertyDescriptor pd : this.propertyDescriptorCache.values()) {

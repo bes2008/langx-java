@@ -25,10 +25,11 @@ import com.jn.langx.util.reflect.type.SimpleParameter;
  * {@code TypeDescriptor} can then be used to convert from/to the property type.
  *
  * @see TypeDescriptor#TypeDescriptor(BeanProperty)
- * @see TypeDescriptor#nested(BeanProperty, int)
  * @see java.beans.PropertyDescriptor
+ *
+ * @since 4.3.7
  */
-public final class BeanProperty {
+final class BeanProperty {
 
     private static Map<BeanProperty, Annotation[]> annotationCache = new ConcurrentReferenceHashMap<BeanProperty, Annotation[]>();
 

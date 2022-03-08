@@ -1,6 +1,5 @@
 package com.jn.langx.util.reflect.type;
 
-
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -58,8 +57,9 @@ import com.jn.langx.util.reflect.type.SerializableTypeWrapper.TypeProvider;
  * @see #forType(Type)
  * @see #forInstance(Object)
  * @see ResolvableTypeProvider
+ *
+ * @since 4.3.7
  */
-@SuppressWarnings("serial")
 public class ResolvableType implements Serializable {
 
     /**

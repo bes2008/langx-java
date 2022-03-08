@@ -9,8 +9,7 @@ package com.jn.langx.util.reflect.type;
  * when the generic type signature of the class changes in sub-classes. It is always
  * possible to return {@code null} to fallback on a default behavior.
  *
- * @author Stephane Nicoll
- * @since 4.2
+ * @since 4.3.7
  */
 public interface ResolvableTypeProvider {
 

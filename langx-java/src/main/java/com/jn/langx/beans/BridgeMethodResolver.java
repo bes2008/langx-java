@@ -24,8 +24,9 @@ import java.util.*;
  * <p>See <a href="https://java.sun.com/docs/books/jls/third_edition/html/expressions.html#15.12.4.5">
  * The Java Language Specification</a> for more details on the use of bridge methods.
  *
+ * @since 4.3.7
  */
-public abstract class BridgeMethodResolver {
+abstract class BridgeMethodResolver {
 
     /**
      * Find the original method for the supplied {@link Method bridge Method}.
@@ -36,7 +37,7 @@ public abstract class BridgeMethodResolver {
      * @return the original method (either the bridged method or the passed-in method
      * if no more specific one could be found)
      */
-    public static Method findBridgedMethod(Method bridgeMethod) {
+    static Method findBridgedMethod(Method bridgeMethod) {
         if (bridgeMethod == null || !bridgeMethod.isBridge()) {
             return bridgeMethod;
         }
@@ -204,7 +205,7 @@ public abstract class BridgeMethodResolver {
      * See also https://stas-blogspot.blogspot.com/2010/03/java-bridge-methods-explained.html
      * @return whether signatures match as described
      */
-    public static boolean isVisibilityBridgeMethodPair(Method bridgeMethod, Method bridgedMethod) {
+    static boolean isVisibilityBridgeMethodPair(Method bridgeMethod, Method bridgedMethod) {
         if (bridgeMethod == bridgedMethod) {
             return true;
         }

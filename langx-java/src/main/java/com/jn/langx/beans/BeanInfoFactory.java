@@ -3,6 +3,9 @@ package com.jn.langx.beans;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 
+/**
+ * @since 4.3.7
+ */
 public interface BeanInfoFactory {
 
     /**
