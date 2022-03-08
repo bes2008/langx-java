@@ -1,5 +1,5 @@
 package com.jn.langx.util.bean;
 
-public interface ModelMapper<A, B> {
-    B map(A a);
+public interface ModelMapper<Source, Target> {
+    Target map(Source a);
 }
