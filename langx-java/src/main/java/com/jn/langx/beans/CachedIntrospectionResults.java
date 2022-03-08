@@ -70,7 +70,7 @@ public class CachedIntrospectionResults {
     public static final String IGNORE_BEANINFO_PROPERTY_NAME = "langx.beans.beaninfo.ignore";
 
 
-    private static final boolean shouldIntrospectorIgnoreBeaninfoClasses = SystemPropertys.getAccessor().getBoolean(IGNORE_BEANINFO_PROPERTY_NAME);
+    private static final boolean shouldIntrospectorIgnoreBeaninfoClasses = SystemPropertys.getAccessor().getBoolean(IGNORE_BEANINFO_PROPERTY_NAME, true);
 
     /**
      * Stores the BeanInfoFactory instances
@@ -249,8 +249,8 @@ public class CachedIntrospectionResults {
      */
     private CachedIntrospectionResults(Class<?> beanClass) throws BeansException {
         try {
-            if (logger.isTraceEnabled()) {
-                logger.trace("Getting BeanInfo for class [" + beanClass.getName() + "]");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Getting BeanInfo for class [{}]", Reflects.getFQNClassName(beanClass));
             }
 
             BeanInfo beanInfo = null;
@@ -268,17 +268,15 @@ public class CachedIntrospectionResults {
             }
             this.beanInfo = beanInfo;
 
-            if (logger.isTraceEnabled()) {
-                logger.trace("Caching PropertyDescriptors for class [" + beanClass.getName() + "]");
+            if (logger.isDebugEnabled()) {
+                logger.debug("Caching PropertyDescriptors for class [{}]", Reflects.getFQNClassName(beanClass));
             }
             this.propertyDescriptorCache = new LinkedHashMap<String, PropertyDescriptor>();
 
             // This call is slow so we do it once.
             PropertyDescriptor[] pds = this.beanInfo.getPropertyDescriptors();
             for (PropertyDescriptor pd : pds) {
-                if (Class.class == beanClass &&
-                        ("classLoader".equals(pd.getName()) || "protectionDomain".equals(pd.getName()))) {
-                    // Ignore Class.getClassLoader() and getProtectionDomain() methods - nobody needs to bind to those
+                if (Class.class == beanClass && ("classLoader".equals(pd.getName()) || "protectionDomain".equals(pd.getName()))) {
                     continue;
                 }
                 if (logger.isTraceEnabled()) {
