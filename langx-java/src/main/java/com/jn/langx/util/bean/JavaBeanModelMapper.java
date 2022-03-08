@@ -7,6 +7,10 @@ import com.jn.langx.util.reflect.Reflects;
 
 import java.util.List;
 
+/**
+ * @since 4.3.7
+ * @param <Target>
+ */
 @SuppressWarnings("rawtypes")
 public class JavaBeanModelMapper<Target> implements ModelMapper<Object, Target> {
     protected Class<Target> targetClass;
