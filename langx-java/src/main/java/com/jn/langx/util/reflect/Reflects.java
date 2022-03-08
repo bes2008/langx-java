@@ -976,6 +976,11 @@ public class Reflects {
                 Arrays.equals(paramTypes, method.getParameterTypes()));
     }
 
+    /**
+     * @param clazz
+     * @param defensive 是否返回可保护的值，因为是从 cache 中获取的，为了保护缓存值不被改变，通常 传值为 true
+     * @return
+     */
     private static Method[] getDeclaredMethods(Class<?> clazz, boolean defensive) {
         Preconditions.checkNotNull(clazz, "Class must not be null");
         Method[] result = declaredMethodsCache.get(clazz);
@@ -1036,7 +1041,7 @@ public class Reflects {
                 }
                 return null;
             }
-            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+            return invokeMethodOrNull(method, object, parameters, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
@@ -1044,7 +1049,7 @@ public class Reflects {
 
     public static <V> V invokeDeclaredMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
         try {
-            return (V) invokeDeclaredMethod(object, methodName, parameterTypes, parameters, true, false);
+            return invokeDeclaredMethod(object, methodName, parameterTypes, parameters, true, false);
         } catch (Throwable ex) {
             return null;
         }
@@ -1059,7 +1064,7 @@ public class Reflects {
                 }
                 return null;
             }
-            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+            return invokeMethodOrNull(method, object, parameters, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
@@ -1067,7 +1072,7 @@ public class Reflects {
 
     public static <V> V invokeAnyMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
         try {
-            return (V) invokeAnyMethod(object, methodName, parameterTypes, parameters, true, false);
+            return invokeAnyMethod(object, methodName, parameterTypes, parameters, true, false);
         } catch (Throwable ex) {
             return null;
         }
@@ -1082,7 +1087,7 @@ public class Reflects {
                 }
                 return null;
             }
-            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+            return invokeMethodOrNull(method, object, parameters, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
@@ -1098,12 +1103,12 @@ public class Reflects {
             }
 
             if (method.isAccessible()) {
-                return (V) invokeMethodOrNull(method, object, parameters, throwException);
+                return invokeMethodOrNull(method, object, parameters, throwException);
             }
 
             // force && unaccessible
             method.setAccessible(true);
-            return (V) invokeMethodOrNull(method, object, parameters, throwException);
+            return invokeMethodOrNull(method, object, parameters, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
@@ -1466,6 +1471,30 @@ public class Reflects {
     public static boolean makeAccessible(@NonNull Field field) {
         try {
             field.setAccessible(true);
+            return true;
+        } catch (SecurityException ex) {
+            return false;
+        }
+    }
+
+    /**
+     * @since 4.3.7
+     */
+    public static boolean makeAccessible(@NonNull Method m) {
+        try {
+            m.setAccessible(true);
+            return true;
+        } catch (SecurityException ex) {
+            return false;
+        }
+    }
+
+    /**
+     * @since 4.3.7
+     */
+    public static boolean makeAccessible(@NonNull Constructor c) {
+        try {
+            c.setAccessible(true);
             return true;
         } catch (SecurityException ex) {
             return false;
