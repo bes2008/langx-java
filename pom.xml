@@ -16,7 +16,7 @@
     </description>
 
     <properties>
-        <slf4j.version>1.7.0</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
     </properties>
 
     <url>https://github.com/fangjinuo/langx-java</url>
