@@ -1,6 +1,10 @@
 package com.jn.langx.util.hash;
 
-import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
+
+import java.util.zip.Adler32;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 /**
  * 有2种用法：
@@ -8,53 +12,47 @@ import com.jn.langx.util.Preconditions;
  * 2）调用setSeed() , 多次调用 update(byte[]), 调用 get()； 该方式通常用于流式执行
  */
 public abstract class Hasher {
-    /**
-     * Constant to denote invalid hash type.
-     */
-    public static final int INVALID_HASH = -1;
-    /**
-     * Constant to denote {@link JenkinsHasher}.
-     */
-    public static final int JENKINS_HASH = 0;
-    /**
-     * Constant to denote {@link Murmur2Hasher}.
-     */
-    public static final int MURMUR_HASH = 1;
-
-    /**
-     * This utility method converts String representation of hash function name
-     * to a symbolic constant. Currently two function types are supported,
-     * "jenkins" and "murmur".
-     *
-     * @param name hash function name
-     * @return one of the predefined constants
-     */
-    public static int parseHashType(String name) {
-        if ("jenkins".equalsIgnoreCase(name)) {
-            return JENKINS_HASH;
-        } else if ("murmur".equalsIgnoreCase(name)) {
-            return MURMUR_HASH;
-        } else {
-            return INVALID_HASH;
-        }
-    }
 
 
     /**
      * Get a singleton instance of hash function of a given type.
      *
-     * @param type predefined hash type
+     * @param hasherName predefined hash type
      * @return hash function instance, or null if type is invalid
      */
-    public static Hasher getInstance(int type) {
-        switch (type) {
-            case JENKINS_HASH:
-                return JenkinsHasher.getInstance();
-            case MURMUR_HASH:
-                return Murmur2Hasher.getInstance();
-            default:
-                return null;
+    public static Hasher getInstance(String hasherName) {
+        if ("jenkins".equals(hasherName)) {
+            return new JenkinsHasher();
         }
+        if ("murmur".equals(hasherName) || "murmur2".equals(hasherName)) {
+            return new Murmur2Hasher();
+        }
+        if ("murmur3_32".equals(hasherName)) {
+            return new Murmur3_32Hasher();
+        }
+        if ("murmur3_128".equals(hasherName)) {
+            return new Murmur3_128Hasher();
+        }
+        if ("crc32c".equals(hasherName)) {
+            return new Crc32cHasher();
+        }
+        if (hasherName.startsWith(HMacHasher.HASHER_NAME_PREFIX)) {
+            String hmac = Strings.substring(hasherName, HMacHasher.HASHER_NAME_PREFIX.length());
+            return new HMacHasher(hmac);
+        }
+        if (hasherName.startsWith(MessageDigestHasher.HASHER_NAME_PREFIX)) {
+            String digestAlgorithm = Strings.substring(hasherName, MessageDigestHasher.HASHER_NAME_PREFIX.length());
+            return new MessageDigestHasher(digestAlgorithm);
+        }
+        if ("adler32".equals(hasherName)) {
+            Checksum checksum = new Adler32();
+            return new ChecksumHasher(checksum);
+        }
+        if ("crc32".equals(hasherName)) {
+            Checksum checksum = new CRC32();
+            return new ChecksumHasher(checksum);
+        }
+        throw new UnsupportedHashAlgorithmException(hasherName);
     }
 
     /**
@@ -114,7 +112,10 @@ public abstract class Hasher {
         }
     }
 
-    protected void update(byte b){};
+    protected void update(byte b) {
+    }
+
+    ;
 
     protected void reset() {
         setSeed(0);

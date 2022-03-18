@@ -1,6 +1,7 @@
-package com.jn.langx.util.bloom;
+package com.jn.langx.util.hash;
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.bloom.Filter;
+import com.jn.langx.util.bloom.Key;
 
 /**
  * Implements a hash object that returns a certain number of hashed values.
@@ -31,9 +32,9 @@ public final class HashFunction {
      *
      * @param maxValue The maximum highest returned value.
      * @param nbHash   The number of resulting hashed values.
-     * @param hashType type of the hashing function (see {@link Hasher}).
+     * @param hasherName type of the hashing function (see {@link Hasher}).
      */
-    public HashFunction(int maxValue, int nbHash, int hashType) {
+    public HashFunction(int maxValue, int nbHash, String hasherName) {
         if (maxValue <= 0) {
             throw new IllegalArgumentException("maxValue must be > 0");
         }
@@ -44,7 +45,7 @@ public final class HashFunction {
 
         this.maxValue = maxValue;
         this.nbHash = nbHash;
-        this.hashFunction = Hasher.getInstance(hashType);
+        this.hashFunction = Hasher.getInstance(hasherName);
         if (this.hashFunction == null)
             throw new IllegalArgumentException("hashType must be known");
     }

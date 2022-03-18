@@ -5,6 +5,7 @@ import com.jn.langx.security.crypto.mac.HMacs;
 import javax.crypto.Mac;
 
 public class HMacHasher extends AbstractBytesHasher {
+    public static final String HASHER_NAME_PREFIX = "hmac:";
     private Mac mac;
 
     public HMacHasher(String hmac) {

@@ -55,11 +55,11 @@ public final class RetouchedBloomFilter extends BloomFilter
      *
      * @param vectorSize The vector size of <i>this</i> filter.
      * @param nbHash     The number of hash function to consider.
-     * @param hashType   type of the hashing function (see
+     * @param hasherName   type of the hashing function (see
      *                   {@link Hasher}).
      */
-    public RetouchedBloomFilter(int vectorSize, int nbHash, int hashType) {
-        super(vectorSize, nbHash, hashType);
+    public RetouchedBloomFilter(int vectorSize, int nbHash, String hasherName) {
+        super(vectorSize, nbHash, hasherName);
 
         this.rand = null;
         createVector();

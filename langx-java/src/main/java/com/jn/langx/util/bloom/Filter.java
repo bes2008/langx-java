@@ -1,6 +1,7 @@
 package com.jn.langx.util.bloom;
 
 
+import com.jn.langx.util.hash.HashFunction;
 import com.jn.langx.util.hash.Hasher;
 import com.jn.langx.util.io.Writable;
 
@@ -45,7 +46,7 @@ public abstract class Filter implements Writable {
     /**
      * Type of hashing function to use.
      */
-    protected int hashType;
+    protected String hasherName;
 
     protected Filter() {
     }
@@ -55,13 +56,13 @@ public abstract class Filter implements Writable {
      *
      * @param vectorSize The vector size of <i>this</i> filter.
      * @param nbHash     The number of hash functions to consider.
-     * @param hashType   type of the hashing function (see {@link Hasher}).
+     * @param hasherName type of the hashing function (see {@link Hasher}).
      */
-    protected Filter(int vectorSize, int nbHash, int hashType) {
+    protected Filter(int vectorSize, int nbHash, String hasherName) {
         this.vectorSize = vectorSize;
         this.nbHash = nbHash;
-        this.hashType = hashType;
-        this.hash = new HashFunction(this.vectorSize, this.nbHash, this.hashType);
+        this.hasherName = hasherName;
+        this.hash = new HashFunction(this.vectorSize, this.nbHash, this.hasherName);
     }
 
     /**
@@ -163,23 +164,16 @@ public abstract class Filter implements Writable {
     public void write(DataOutput out) throws IOException {
         out.writeInt(VERSION);
         out.writeInt(this.nbHash);
-        out.writeByte(this.hashType);
+        out.writeUTF(this.hasherName);
         out.writeInt(this.vectorSize);
     }
 
     @Override
     public void readFields(DataInput in) throws IOException {
         int ver = in.readInt();
-        if (ver > 0) { // old unversioned format
-            this.nbHash = ver;
-            this.hashType = Hasher.JENKINS_HASH;
-        } else if (ver == VERSION) {
-            this.nbHash = in.readInt();
-            this.hashType = in.readByte();
-        } else {
-            throw new IOException("Unsupported version: " + ver);
-        }
+        this.nbHash = in.readInt();
+        this.hasherName = in.readUTF();
         this.vectorSize = in.readInt();
-        this.hash = new HashFunction(this.vectorSize, this.nbHash, this.hashType);
+        this.hash = new HashFunction(this.vectorSize, this.nbHash, this.hasherName);
     }
 }//end class

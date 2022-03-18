@@ -70,19 +70,19 @@ public class DynamicBloomFilter extends Filter {
      *
      * @param vectorSize The number of bits in the vector.
      * @param nbHash     The number of hash function to consider.
-     * @param hashType   type of the hashing function (see
+     * @param hasherName   type of the hashing function (see
      *                   {@link Hasher}).
      * @param nr         The threshold for the maximum number of keys to record in a
      *                   dynamic Bloom filter row.
      */
-    public DynamicBloomFilter(int vectorSize, int nbHash, int hashType, int nr) {
-        super(vectorSize, nbHash, hashType);
+    public DynamicBloomFilter(int vectorSize, int nbHash, String hasherName, int nr) {
+        super(vectorSize, nbHash, hasherName);
 
         this.nr = nr;
         this.currentNbRecord = 0;
 
         matrix = new BloomFilter[1];
-        matrix[0] = new BloomFilter(this.vectorSize, this.nbHash, this.hashType);
+        matrix[0] = new BloomFilter(this.vectorSize, this.nbHash, this.hasherName);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class DynamicBloomFilter extends Filter {
             tmp[i] = matrix[i];
         }
 
-        tmp[tmp.length - 1] = new BloomFilter(vectorSize, nbHash, hashType);
+        tmp[tmp.length - 1] = new BloomFilter(vectorSize, nbHash, hasherName);
 
         matrix = tmp;
     }

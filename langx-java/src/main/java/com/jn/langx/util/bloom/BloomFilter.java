@@ -58,11 +58,11 @@ public class BloomFilter extends Filter {
      *
      * @param vectorSize The vector size of <i>this</i> filter.
      * @param nbHash     The number of hash function to consider.
-     * @param hashType   type of the hashing function (see
+     * @param hasher   type of the hashing function (see
      *                   {@link Hasher}).
      */
-    public BloomFilter(int vectorSize, int nbHash, int hashType) {
-        super(vectorSize, nbHash, hashType);
+    public BloomFilter(int vectorSize, int nbHash, String hasher) {
+        super(vectorSize, nbHash, hasher);
 
         bits = new BitSet(this.vectorSize);
     }

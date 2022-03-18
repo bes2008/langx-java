@@ -44,11 +44,11 @@ public final class CountingBloomFilter extends Filter {
      *
      * @param vectorSize The vector size of <i>this</i> filter.
      * @param nbHash     The number of hash function to consider.
-     * @param hashType   type of the hashing function (see
+     * @param hasherName   type of the hashing function (see
      *                   {@link Hasher}).
      */
-    public CountingBloomFilter(int vectorSize, int nbHash, int hashType) {
-        super(vectorSize, nbHash, hashType);
+    public CountingBloomFilter(int vectorSize, int nbHash, String hasherName) {
+        super(vectorSize, nbHash, hasherName);
         buckets = new long[buckets2words(vectorSize)];
     }
 
