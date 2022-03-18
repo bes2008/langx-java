@@ -1,5 +1,10 @@
 package com.jn.langx.util.hash;
 
+/**
+ * 有两种用法：
+ * 1）直接调用hash(byte[],,,,) 方法
+ * 2）调用setSeed() , 调用 update(byte[]), 调用 get()
+ */
 public abstract class Hasher {
     /**
      * Constant to denote invalid hash type.
@@ -50,7 +55,6 @@ public abstract class Hasher {
         }
     }
 
-
     /**
      * Calculate a hash using all bytes from the input argument, and
      * a seed of -1.
@@ -66,22 +70,44 @@ public abstract class Hasher {
      * Calculate a hash using all bytes from the input argument,
      * and a provided seed value.
      *
-     * @param bytes   input bytes
-     * @param initValue seed value
+     * @param bytes input bytes
+     * @param seed  seed value
      * @return hash value
      */
-    public int hash(byte[] bytes, int initValue) {
-        return hash(bytes, bytes.length, initValue);
+    public int hash(byte[] bytes, int seed) {
+        return hash(bytes, bytes.length, seed);
     }
 
     /**
      * Calculate a hash using bytes from 0 to <code>length</code>, and
      * the provided seed value
      *
-     * @param bytes   input bytes
-     * @param length  length of the valid bytes to consider
-     * @param initValue seed value
+     * @param bytes  input bytes
+     * @param length length of the valid bytes to consider
+     * @param seed   seed value
      * @return hash value
      */
-    public abstract int hash(byte[] bytes, int length, int initValue);
+    public int hash(byte[] bytes, int length, int seed) {
+        this.setSeed(seed);
+        this.update(bytes, 0, length);
+        return this.get();
+    }
+
+    protected int seed;
+
+    public void setSeed(int seed) {
+        this.seed = seed;
+    }
+
+    public void update(byte[] bytes, int off, int len) {
+        for (int i = off; i < off + len; i++) {
+            update(bytes[i]);
+        }
+    }
+
+    protected abstract void update(byte b);
+
+    protected abstract void reset();
+
+    public abstract int get();
 }

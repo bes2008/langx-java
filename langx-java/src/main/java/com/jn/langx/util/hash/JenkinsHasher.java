@@ -19,7 +19,7 @@ import java.io.IOException;
  * @see <a href="http://burtleburtle.net/bob/hash/doobs.html">Has update on the
  * Dr. Dobbs Article</a>
  */
-public class JenkinsHasher extends Hasher {
+public class JenkinsHasher extends OnceCalculateHasher {
     private static long INT_MASK = 0x00000000ffffffffL;
     private static long BYTE_MASK = 0x00000000000000ffL;
 
