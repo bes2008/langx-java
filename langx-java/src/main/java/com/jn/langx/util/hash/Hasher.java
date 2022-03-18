@@ -1,9 +1,10 @@
 package com.jn.langx.util.hash;
 
 /**
- * 有两种用法：
- * 1）直接调用hash(byte[],,,,) 方法
- * 2）调用setSeed() , 调用 update(byte[]), 调用 get()
+ * 有3种用法：
+ * 1）一次性调用hash(byte[],,,,) 方法
+ * 2）调用setSeed() , 多次调用 update(byte[]), 调用 get()
+ * 3）多次调用 hash(byte[], length, seed)
  */
 public abstract class Hasher {
     /**
@@ -62,7 +63,7 @@ public abstract class Hasher {
      * @param bytes input bytes
      * @return hash value
      */
-    public int hash(byte[] bytes) {
+    public long hash(byte[] bytes) {
         return hash(bytes, bytes.length, -1);
     }
 
@@ -74,7 +75,7 @@ public abstract class Hasher {
      * @param seed  seed value
      * @return hash value
      */
-    public int hash(byte[] bytes, int seed) {
+    public long hash(byte[] bytes, long seed) {
         return hash(bytes, bytes.length, seed);
     }
 
@@ -87,15 +88,15 @@ public abstract class Hasher {
      * @param seed   seed value
      * @return hash value
      */
-    public int hash(byte[] bytes, int length, int seed) {
+    public long hash(byte[] bytes, int length, long seed) {
         this.setSeed(seed);
         this.update(bytes, 0, length);
         return this.get();
     }
 
-    protected int seed;
+    protected long seed;
 
-    public void setSeed(int seed) {
+    public void setSeed(long seed) {
         this.seed = seed;
     }
 
@@ -107,7 +108,9 @@ public abstract class Hasher {
 
     protected abstract void update(byte b);
 
-    protected abstract void reset();
+    protected void reset() {
+        this.seed = -1;
+    }
 
-    public abstract int get();
+    public abstract long get();
 }

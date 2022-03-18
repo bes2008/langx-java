@@ -1,6 +1,5 @@
 package com.jn.langx.util.bloom;
 
-
 import com.jn.langx.util.hash.Hasher;
 
 /**
@@ -71,9 +70,10 @@ public final class HashFunction {
             throw new IllegalArgumentException("key length must be > 0");
         }
         int[] result = new int[nbHash];
-        for (int i = 0, initval = 0; i < nbHash; i++) {
-            initval = hashFunction.hash(b, initval);
-            result[i] = Math.abs(initval % maxValue);
+        long h = 0;
+        for (int i = 0; i < nbHash; i++) {
+            h = hashFunction.hash(b, h);
+            result[i] = Math.abs(Long.valueOf(h).intValue() % maxValue);
         }
         return result;
     }

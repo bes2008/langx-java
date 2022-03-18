@@ -9,7 +9,7 @@ package com.jn.langx.util.hash;
  * <p>
  * migrate from hadoop
  */
-public class Murmur2Hasher extends OnceCalculateHasher {
+public class Murmur2Hasher extends Hasher {
     private static Murmur2Hasher _instance = new Murmur2Hasher();
 
     public static Hasher getInstance() {
@@ -17,11 +17,11 @@ public class Murmur2Hasher extends OnceCalculateHasher {
     }
 
     @Override
-    public int hash(byte[] data, int length, int initValue) {
+    public long hash(byte[] data, int length, long initValue) {
         int m = 0x5bd1e995;
         int r = 24;
 
-        int h = initValue ^ length;
+        long h = initValue ^ length;
 
         int len4 = length >> 2;
 
@@ -64,5 +64,39 @@ public class Murmur2Hasher extends OnceCalculateHasher {
         h ^= h >>> 15;
 
         return h;
+    }
+
+    private long h;
+
+    @Override
+    public void setSeed(long seed) {
+        super.setSeed(seed);
+        this.h = seed;
+    }
+
+    @Override
+    public void update(byte[] bytes, int off, int len) {
+        byte[] bts = new byte[len];
+        System.arraycopy(bytes, off, bts, 0, len);
+        this.h = hash(bts, bts.length, this.h);
+    }
+
+
+    @Override
+    protected void reset() {
+        this.seed = -1;
+        this.h = -1;
+    }
+
+    @Override
+    public long get() {
+        long r = this.h;
+        reset();
+        return r;
+    }
+
+    @Override
+    protected void update(byte b) {
+
     }
 }

@@ -10,7 +10,7 @@ public class Crc32cHasher extends Hasher {
     }
 
     @Override
-    public int get() {
+    public long get() {
         reset();
         return crc;
     }

@@ -1,9 +1,6 @@
 package com.jn.langx.util.hash;
 
 
-import java.io.FileInputStream;
-import java.io.IOException;
-
 /**
  * Produces 32-bit hash for hash table lookup.
  * <p>
@@ -19,7 +16,7 @@ import java.io.IOException;
  * @see <a href="http://burtleburtle.net/bob/hash/doobs.html">Has update on the
  * Dr. Dobbs Article</a>
  */
-public class JenkinsHasher extends OnceCalculateHasher {
+public class JenkinsHasher extends Hasher {
     private static long INT_MASK = 0x00000000ffffffffL;
     private static long BYTE_MASK = 0x00000000000000ffL;
 
@@ -37,8 +34,8 @@ public class JenkinsHasher extends OnceCalculateHasher {
     /**
      * taken from  hashlittle() -- hash a variable-length key into a 32-bit value
      *
-     * @param key     the key (the unaligned variable-length array of bytes)
-     * @param nbytes  number of bytes to include in hash
+     * @param key       the key (the unaligned variable-length array of bytes)
+     * @param nbytes    number of bytes to include in hash
      * @param initValue can be any integer value
      * @return a 32-bit value.  Every bit of the key affects every bit of the
      * return value.  Two keys differing by one or two bits will have totally
@@ -61,7 +58,7 @@ public class JenkinsHasher extends OnceCalculateHasher {
      */
     @Override
     @SuppressWarnings("fallthrough")
-    public int hash(byte[] key, int nbytes, int initValue) {
+    public long hash(byte[] key, int nbytes, long initValue) {
         int length = nbytes;
         long a, b, c;       // We use longs because we don't have unsigned ints
         a = b = c = (0x00000000deadbeefL + length + initValue) & INT_MASK;
@@ -239,24 +236,37 @@ public class JenkinsHasher extends OnceCalculateHasher {
         return (int) (c & INT_MASK);
     }
 
-    /**
-     * Compute the hash of the specified file
-     *
-     * @param args name of file to compute hash of.
-     * @throws IOException
-     */
-    public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            System.err.println("Usage: JenkinsHash filename");
-            System.exit(-1);
-        }
-        FileInputStream in = new FileInputStream(args[0]);
-        byte[] bytes = new byte[512];
-        int value = 0;
-        JenkinsHasher hash = new JenkinsHasher();
-        for (int length = in.read(bytes); length > 0; length = in.read(bytes)) {
-            value = hash.hash(bytes, length, value);
-        }
-        System.out.println(Math.abs(value));
+    private long h;
+
+    @Override
+    public void setSeed(long seed) {
+        super.setSeed(seed);
+        this.h = seed;
+    }
+
+    @Override
+    public void update(byte[] bytes, int off, int len) {
+        byte[] bts = new byte[len];
+        System.arraycopy(bytes, off, bts, 0, len);
+        this.h = hash(bts, bts.length, this.h);
+    }
+
+
+    @Override
+    protected void reset() {
+        this.seed = -1;
+        this.h = -1;
+    }
+
+    @Override
+    public long get() {
+        long r = this.h;
+        reset();
+        return r;
+    }
+
+    @Override
+    protected void update(byte b) {
+
     }
 }
