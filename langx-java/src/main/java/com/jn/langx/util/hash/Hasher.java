@@ -67,6 +67,8 @@ public abstract class Hasher {
     }
 
     /**
+     * 一次性计算 hash
+     * <p>
      * Calculate a hash using all bytes from the input argument,
      * and a provided seed value.
      *
@@ -79,6 +81,8 @@ public abstract class Hasher {
     }
 
     /**
+     * 一次性计算 hash
+     * <p>
      * Calculate a hash using bytes from 0 to <code>length</code>, and
      * the provided seed value
      *
@@ -99,13 +103,20 @@ public abstract class Hasher {
         this.seed = seed;
     }
 
+    /**
+     * 用于流式计算
+     *
+     * @param bytes
+     * @param off
+     * @param len
+     */
     public void update(byte[] bytes, int off, int len) {
         for (int i = off; i < off + len; i++) {
             update(bytes[i]);
         }
     }
 
-    protected abstract void update(byte b);
+    protected void update(byte b){};
 
     protected void reset() {
         this.seed = -1;

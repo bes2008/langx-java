@@ -16,8 +16,24 @@ public class Murmur2Hasher extends Hasher {
         return _instance;
     }
 
+    private long h;
+
     @Override
-    public long hash(byte[] data, int length, long initValue) {
+    public void setSeed(long seed) {
+        super.setSeed(seed);
+        this.h = seed;
+    }
+
+    @Override
+    public void update(byte[] bytes, int off, int len) {
+        byte[] bs = new byte[len];
+        System.arraycopy(bytes, off, bs, 0, len);
+        this.h = updateInternal(bs, bs.length, this.h);
+    }
+
+
+
+    private long updateInternal(byte[] data, int length, long initValue) {
         int m = 0x5bd1e995;
         int r = 24;
 
@@ -66,21 +82,6 @@ public class Murmur2Hasher extends Hasher {
         return h;
     }
 
-    private long h;
-
-    @Override
-    public void setSeed(long seed) {
-        super.setSeed(seed);
-        this.h = seed;
-    }
-
-    @Override
-    public void update(byte[] bytes, int off, int len) {
-        byte[] bts = new byte[len];
-        System.arraycopy(bytes, off, bts, 0, len);
-        this.h = hash(bts, bts.length, this.h);
-    }
-
 
     @Override
     protected void reset() {
@@ -93,10 +94,5 @@ public class Murmur2Hasher extends Hasher {
         long r = this.h;
         reset();
         return r;
-    }
-
-    @Override
-    protected void update(byte b) {
-
     }
 }

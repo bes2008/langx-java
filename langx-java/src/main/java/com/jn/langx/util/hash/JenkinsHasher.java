@@ -56,9 +56,8 @@ public class JenkinsHasher extends Hasher {
      * <p>Use for hash table lookup, or anything where one collision in 2^^32 is
      * acceptable.  Do NOT use for cryptographic purposes.
      */
-    @Override
     @SuppressWarnings("fallthrough")
-    public long hash(byte[] key, int nbytes, long initValue) {
+    private long updateInternal(byte[] key, int nbytes, long initValue) {
         int length = nbytes;
         long a, b, c;       // We use longs because we don't have unsigned ints
         a = b = c = (0x00000000deadbeefL + length + initValue) & INT_MASK;
@@ -246,9 +245,9 @@ public class JenkinsHasher extends Hasher {
 
     @Override
     public void update(byte[] bytes, int off, int len) {
-        byte[] bts = new byte[len];
-        System.arraycopy(bytes, off, bts, 0, len);
-        this.h = hash(bts, bts.length, this.h);
+        byte[] bs = new byte[len];
+        System.arraycopy(bytes, off, bs, 0, len);
+        this.h = updateInternal(bs, bs.length, this.h);
     }
 
 
@@ -263,10 +262,5 @@ public class JenkinsHasher extends Hasher {
         long r = this.h;
         reset();
         return r;
-    }
-
-    @Override
-    protected void update(byte b) {
-
     }
 }
