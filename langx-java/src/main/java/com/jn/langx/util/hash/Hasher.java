@@ -64,7 +64,7 @@ public abstract class Hasher {
      * @return hash value
      */
     public long hash(byte[] bytes) {
-        return hash(bytes, bytes.length, -1);
+        return hash(bytes, bytes.length, 0);
     }
 
     /**

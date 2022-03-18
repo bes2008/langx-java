@@ -95,15 +95,17 @@ public class Murmur3_32Hasher extends Hasher {
     @Override
     protected void reset() {
         super.reset();
-        this.h = -1;
+        this.h = 0;
         this.buffer = 0;
         this.shift = 0;
+        this.length = 0;
     }
 
     @Override
     public long get() {
         this.h ^= mixK1((int) buffer);
         this.h = fmix(this.h, length);
+        reset();
         return this.h;
     }
 }
