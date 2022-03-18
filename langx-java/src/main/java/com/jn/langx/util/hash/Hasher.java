@@ -1,16 +1,16 @@
 package com.jn.langx.util.hash;
 
-public abstract class Hash {
+public abstract class Hasher {
     /**
      * Constant to denote invalid hash type.
      */
     public static final int INVALID_HASH = -1;
     /**
-     * Constant to denote {@link JenkinsHash}.
+     * Constant to denote {@link JenkinsHasher}.
      */
     public static final int JENKINS_HASH = 0;
     /**
-     * Constant to denote {@link MurmurHash}.
+     * Constant to denote {@link Murmur2Hasher}.
      */
     public static final int MURMUR_HASH = 1;
 
@@ -39,12 +39,12 @@ public abstract class Hash {
      * @param type predefined hash type
      * @return hash function instance, or null if type is invalid
      */
-    public static Hash getInstance(int type) {
+    public static Hasher getInstance(int type) {
         switch (type) {
             case JENKINS_HASH:
-                return JenkinsHash.getInstance();
+                return JenkinsHasher.getInstance();
             case MURMUR_HASH:
-                return MurmurHash.getInstance();
+                return Murmur2Hasher.getInstance();
             default:
                 return null;
         }
@@ -67,11 +67,11 @@ public abstract class Hash {
      * and a provided seed value.
      *
      * @param bytes   input bytes
-     * @param initval seed value
+     * @param initValue seed value
      * @return hash value
      */
-    public int hash(byte[] bytes, int initval) {
-        return hash(bytes, bytes.length, initval);
+    public int hash(byte[] bytes, int initValue) {
+        return hash(bytes, bytes.length, initValue);
     }
 
     /**
@@ -80,8 +80,8 @@ public abstract class Hash {
      *
      * @param bytes   input bytes
      * @param length  length of the valid bytes to consider
-     * @param initval seed value
+     * @param initValue seed value
      * @return hash value
      */
-    public abstract int hash(byte[] bytes, int length, int initval);
+    public abstract int hash(byte[] bytes, int length, int initValue);
 }

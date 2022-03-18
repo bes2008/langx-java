@@ -1,7 +1,7 @@
 package com.jn.langx.util.bloom;
 
 
-import com.jn.langx.util.hash.Hash;
+import com.jn.langx.util.hash.Hasher;
 
 /**
  * Implements a hash object that returns a certain number of hashed values.
@@ -23,7 +23,7 @@ public final class HashFunction {
     /**
      * Hashing algorithm to use.
      */
-    private Hash hashFunction;
+    private Hasher hashFunction;
 
     /**
      * Constructor.
@@ -32,7 +32,7 @@ public final class HashFunction {
      *
      * @param maxValue The maximum highest returned value.
      * @param nbHash   The number of resulting hashed values.
-     * @param hashType type of the hashing function (see {@link Hash}).
+     * @param hashType type of the hashing function (see {@link Hasher}).
      */
     public HashFunction(int maxValue, int nbHash, int hashType) {
         if (maxValue <= 0) {
@@ -45,7 +45,7 @@ public final class HashFunction {
 
         this.maxValue = maxValue;
         this.nbHash = nbHash;
-        this.hashFunction = Hash.getInstance(hashType);
+        this.hashFunction = Hasher.getInstance(hashType);
         if (this.hashFunction == null)
             throw new IllegalArgumentException("hashType must be known");
     }

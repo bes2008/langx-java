@@ -19,13 +19,13 @@ import java.io.IOException;
  * @see <a href="http://burtleburtle.net/bob/hash/doobs.html">Has update on the
  * Dr. Dobbs Article</a>
  */
-public class JenkinsHash extends Hash {
+public class JenkinsHasher extends Hasher {
     private static long INT_MASK = 0x00000000ffffffffL;
     private static long BYTE_MASK = 0x00000000000000ffL;
 
-    private static JenkinsHash _instance = new JenkinsHash();
+    private static JenkinsHasher _instance = new JenkinsHasher();
 
-    public static Hash getInstance() {
+    public static Hasher getInstance() {
         return _instance;
     }
 
@@ -39,7 +39,7 @@ public class JenkinsHash extends Hash {
      *
      * @param key     the key (the unaligned variable-length array of bytes)
      * @param nbytes  number of bytes to include in hash
-     * @param initval can be any integer value
+     * @param initValue can be any integer value
      * @return a 32-bit value.  Every bit of the key affects every bit of the
      * return value.  Two keys differing by one or two bits will have totally
      * different hash values.
@@ -61,10 +61,10 @@ public class JenkinsHash extends Hash {
      */
     @Override
     @SuppressWarnings("fallthrough")
-    public int hash(byte[] key, int nbytes, int initval) {
+    public int hash(byte[] key, int nbytes, int initValue) {
         int length = nbytes;
         long a, b, c;       // We use longs because we don't have unsigned ints
-        a = b = c = (0x00000000deadbeefL + length + initval) & INT_MASK;
+        a = b = c = (0x00000000deadbeefL + length + initValue) & INT_MASK;
         int offset = 0;
         for (; length > 12; offset += 12, length -= 12) {
             a = (a + (key[offset + 0] & BYTE_MASK)) & INT_MASK;
@@ -253,7 +253,7 @@ public class JenkinsHash extends Hash {
         FileInputStream in = new FileInputStream(args[0]);
         byte[] bytes = new byte[512];
         int value = 0;
-        JenkinsHash hash = new JenkinsHash();
+        JenkinsHasher hash = new JenkinsHasher();
         for (int length = in.read(bytes); length > 0; length = in.read(bytes)) {
             value = hash.hash(bytes, length, value);
         }

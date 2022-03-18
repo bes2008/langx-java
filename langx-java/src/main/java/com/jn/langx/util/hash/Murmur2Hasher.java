@@ -7,20 +7,22 @@ package com.jn.langx.util.hash;
  * <p>
  * <p>The C version of MurmurHash 2.0 found at that site was ported
  * to Java by Andrzej Bialecki (ab at getopt org).</p>
+ *
+ * migrate from hadoop
  */
-public class MurmurHash extends Hash {
-    private static MurmurHash _instance = new MurmurHash();
+public class Murmur2Hasher extends Hasher {
+    private static Murmur2Hasher _instance = new Murmur2Hasher();
 
-    public static Hash getInstance() {
+    public static Hasher getInstance() {
         return _instance;
     }
 
     @Override
-    public int hash(byte[] data, int length, int seed) {
+    public int hash(byte[] data, int length, int initValue) {
         int m = 0x5bd1e995;
         int r = 24;
 
-        int h = seed ^ length;
+        int h = initValue ^ length;
 
         int len_4 = length >> 2;
 

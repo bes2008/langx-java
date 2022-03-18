@@ -2,6 +2,7 @@ package com.jn.langx.util.bloom;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.hash.Hasher;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -58,7 +59,7 @@ public class BloomFilter extends Filter {
      * @param vectorSize The vector size of <i>this</i> filter.
      * @param nbHash     The number of hash function to consider.
      * @param hashType   type of the hashing function (see
-     *                   {@link com.jn.langx.util.hash.Hash}).
+     *                   {@link Hasher}).
      */
     public BloomFilter(int vectorSize, int nbHash, int hashType) {
         super(vectorSize, nbHash, hashType);

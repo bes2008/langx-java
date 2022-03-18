@@ -1,6 +1,8 @@
 package com.jn.langx.util.bloom;
 
 
+import com.jn.langx.util.hash.Hasher;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -43,7 +45,7 @@ public final class CountingBloomFilter extends Filter {
      * @param vectorSize The vector size of <i>this</i> filter.
      * @param nbHash     The number of hash function to consider.
      * @param hashType   type of the hashing function (see
-     *                   {@link com.jn.langx.util.hash.Hash}).
+     *                   {@link Hasher}).
      */
     public CountingBloomFilter(int vectorSize, int nbHash, int hashType) {
         super(vectorSize, nbHash, hashType);

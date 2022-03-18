@@ -3,6 +3,7 @@ package com.jn.langx.util.bloom;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.hash.Hasher;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -70,7 +71,7 @@ public class DynamicBloomFilter extends Filter {
      * @param vectorSize The number of bits in the vector.
      * @param nbHash     The number of hash function to consider.
      * @param hashType   type of the hashing function (see
-     *                   {@link com.jn.langx.util.hash.Hash}).
+     *                   {@link Hasher}).
      * @param nr         The threshold for the maximum number of keys to record in a
      *                   dynamic Bloom filter row.
      */
