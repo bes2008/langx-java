@@ -1,6 +1,10 @@
 package com.jn.langx.util.hash;
 
+
+import com.jn.langx.util.Preconditions;
+
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 
 public class Murmur3_128Hasher extends AbstractStreamingHasher {
@@ -9,16 +13,11 @@ public class Murmur3_128Hasher extends AbstractStreamingHasher {
     private static final long C2 = 0x4cf5ad432745937fL;
     private long h1;
     private long h2;
-    private int length = 0;
+    private int length;
 
     public Murmur3_128Hasher() {
         super(CHUNK_SIZE);
         setSeed(0);
-    }
-
-    @Override
-    protected long makeHash() {
-        return 0;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class Murmur3_128Hasher extends AbstractStreamingHasher {
 
     @Override
     public void update(byte[] bytes, int off, int len) {
-        putBytes(bytes,off,len);
+        putBytes(bytes, off, len);
     }
 
     protected void process(ByteBuffer bb) {
@@ -128,8 +127,62 @@ public class Murmur3_128Hasher extends AbstractStreamingHasher {
         return k2;
     }
 
+    protected long makeHash() {
+        h1 ^= length;
+        h2 ^= length;
+
+        h1 += h2;
+        h2 += h1;
+
+        h1 = fmix64(h1);
+        h2 = fmix64(h2);
+
+        h1 += h2;
+        h2 += h1;
+
+        byte[] bytes = ByteBuffer.wrap(new byte[CHUNK_SIZE])
+                .order(ByteOrder.LITTLE_ENDIAN)
+                .putLong(h1)
+                .putLong(h2)
+                .array();
+        try {
+            return asLong(bytes);
+        } catch (IllegalStateException ex) {
+            return asInt(bytes);
+        }
+    }
+
+    private int asInt(byte[] bytes) {
+        Preconditions.checkState(
+                bytes.length >= 4,
+                "HashCode#asInt() requires >= 4 bytes (it only has {} bytes).",
+                bytes.length);
+        return (bytes[0] & 0xFF)
+                | ((bytes[1] & 0xFF) << 8)
+                | ((bytes[2] & 0xFF) << 16)
+                | ((bytes[3] & 0xFF) << 24);
+    }
+
+    private long asLong(byte[] bytes) {
+        Preconditions.checkState(
+                bytes.length >= 8,
+                "HashCode#asLong() requires >= 8 bytes (it only has {} bytes).",
+                bytes.length);
+        return padToLong(bytes);
+    }
+
+    private long padToLong(byte[] bytes) {
+        long retVal = (bytes[0] & 0xFF);
+        for (int i = 1; i < Math.min(bytes.length, 8); i++) {
+            retVal |= (bytes[i] & 0xFFL) << (i * 8);
+        }
+        return retVal;
+    }
+
     @Override
     public long get() {
-        return 0;
+        long h = doFinal();
+        reset();
+        return h;
     }
 }

@@ -107,7 +107,7 @@ abstract class AbstractStreamingHasher extends Hasher {
         return this;
     }
 
-    protected final long compute() {
+    protected final long doFinal() {
         munch();
         buffer.flip();
         if (buffer.remaining() > 0) {

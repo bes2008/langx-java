@@ -172,6 +172,12 @@ public class Preconditions {
         }
     }
 
+    public static void checkState(boolean expression, String errorMessage, Object... args) {
+        if (!expression) {
+            throw new IllegalStateException(StringTemplates.formatWithPlaceholder(errorMessage, args));
+        }
+    }
+
     public static void checkArgument(boolean expression) {
         if (!expression) {
             throw new IllegalArgumentException();
