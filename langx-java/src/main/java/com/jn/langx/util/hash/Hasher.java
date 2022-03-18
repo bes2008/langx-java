@@ -119,7 +119,7 @@ public abstract class Hasher {
     protected void update(byte b){};
 
     protected void reset() {
-        this.seed = -1;
+        setSeed(0);
     }
 
     public abstract long get();

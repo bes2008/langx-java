@@ -26,6 +26,32 @@ public class JenkinsHasher extends Hasher {
         return _instance;
     }
 
+    private long h;
+
+    public JenkinsHasher() {
+        reset();
+    }
+
+    @Override
+    public void setSeed(long seed) {
+        super.setSeed(seed);
+        this.h = seed;
+    }
+
+    @Override
+    public void update(byte[] bytes, int off, int len) {
+        byte[] bs = new byte[len];
+        System.arraycopy(bytes, off, bs, 0, len);
+        this.h = updateInternal(bs, bs.length, this.h);
+    }
+
+    @Override
+    public long get() {
+        long r = this.h;
+        reset();
+        return r;
+    }
+
     private static long rot(long val, int pos) {
         return ((Integer.rotateLeft(
                 (int) (val & INT_MASK), pos)) & INT_MASK);
@@ -235,32 +261,5 @@ public class JenkinsHasher extends Hasher {
         return (int) (c & INT_MASK);
     }
 
-    private long h;
 
-    @Override
-    public void setSeed(long seed) {
-        super.setSeed(seed);
-        this.h = seed;
-    }
-
-    @Override
-    public void update(byte[] bytes, int off, int len) {
-        byte[] bs = new byte[len];
-        System.arraycopy(bytes, off, bs, 0, len);
-        this.h = updateInternal(bs, bs.length, this.h);
-    }
-
-
-    @Override
-    protected void reset() {
-        this.seed = -1;
-        this.h = -1;
-    }
-
-    @Override
-    public long get() {
-        long r = this.h;
-        reset();
-        return r;
-    }
 }

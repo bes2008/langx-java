@@ -26,6 +26,8 @@ public class ChecksumHasher extends Hasher {
 
     @Override
     public long get() {
-        return this.checksum.getValue();
+        long r = this.checksum.getValue();
+        reset();
+        return r;
     }
 }

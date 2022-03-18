@@ -6,13 +6,15 @@ public class Crc32cHasher extends Hasher {
 
     @Override
     protected void reset() {
+        super.reset();
         this.crc = 0;
     }
 
     @Override
     public long get() {
+        long r = this.crc;
         reset();
-        return crc;
+        return r;
     }
 
 
