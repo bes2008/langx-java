@@ -1,10 +1,9 @@
 package com.jn.langx.util.hash;
 
 /**
- * 有3种用法：
- * 1）一次性调用hash(byte[],,,,) 方法
- * 2）调用setSeed() , 多次调用 update(byte[]), 调用 get()
- * 3）多次调用 hash(byte[], length, seed)
+ * 有2种用法：
+ * 1）一次性调用hash(byte[],,,,) 方法； 该方式用于 一次性 计算 hash值
+ * 2）调用setSeed() , 多次调用 update(byte[]), 调用 get()； 该方式通常用于流式执行
  */
 public abstract class Hasher {
     /**
