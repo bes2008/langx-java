@@ -11,7 +11,7 @@ import java.nio.ByteOrder;
  * A convenience base class for implementors of {@code Hasher}; handles accumulating data until an
  * entire "chunk" (of implementation-dependent length) is ready to be hashed.
  */
-abstract class AbstractStreamingHasher extends Hasher {
+abstract class AbstractStreamingHasher extends AbstractBytesHasher {
     /**
      * Buffer via which we pass data to the hash algorithm (the implementor)
      */

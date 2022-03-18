@@ -145,38 +145,7 @@ public class Murmur3_128Hasher extends AbstractStreamingHasher {
                 .putLong(h1)
                 .putLong(h2)
                 .array();
-        try {
-            return asLong(bytes);
-        } catch (IllegalStateException ex) {
-            return asInt(bytes);
-        }
-    }
-
-    private int asInt(byte[] bytes) {
-        Preconditions.checkState(
-                bytes.length >= 4,
-                "HashCode#asInt() requires >= 4 bytes (it only has {} bytes).",
-                bytes.length);
-        return (bytes[0] & 0xFF)
-                | ((bytes[1] & 0xFF) << 8)
-                | ((bytes[2] & 0xFF) << 16)
-                | ((bytes[3] & 0xFF) << 24);
-    }
-
-    private long asLong(byte[] bytes) {
-        Preconditions.checkState(
-                bytes.length >= 8,
-                "HashCode#asLong() requires >= 8 bytes (it only has {} bytes).",
-                bytes.length);
-        return padToLong(bytes);
-    }
-
-    private long padToLong(byte[] bytes) {
-        long retVal = (bytes[0] & 0xFF);
-        for (int i = 1; i < Math.min(bytes.length, 8); i++) {
-            retVal |= (bytes[i] & 0xFFL) << (i * 8);
-        }
-        return retVal;
+        return toLong(bytes);
     }
 
     @Override

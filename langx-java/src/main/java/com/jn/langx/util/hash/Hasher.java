@@ -1,5 +1,7 @@
 package com.jn.langx.util.hash;
 
+import com.jn.langx.util.Preconditions;
+
 /**
  * 有2种用法：
  * 1）一次性调用hash(byte[],,,,) 方法； 该方式用于 一次性 计算 hash值
@@ -105,10 +107,6 @@ public abstract class Hasher {
 
     /**
      * 用于流式计算
-     *
-     * @param bytes
-     * @param off
-     * @param len
      */
     public void update(byte[] bytes, int off, int len) {
         for (int i = off; i < off + len; i++) {
@@ -123,4 +121,5 @@ public abstract class Hasher {
     }
 
     public abstract long get();
+
 }

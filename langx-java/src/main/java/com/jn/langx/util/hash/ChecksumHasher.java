@@ -21,6 +21,7 @@ public class ChecksumHasher extends Hasher {
 
     @Override
     protected void reset() {
+        super.reset();
         this.checksum.reset();
     }
 
