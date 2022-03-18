@@ -3,7 +3,7 @@ package com.jn.langx.util.hash;
 public class Hashs {
     /**
      * Calculate a hash using all bytes from the input argument, and
-     * a seed of -1.
+     * a seed of 0.
      *
      * @param bytes input bytes
      * @return hash value
