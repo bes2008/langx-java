@@ -1,30 +1,14 @@
 package com.jn.langx.util.hash;
 
-
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkPositionIndexes;
 
 public class Murmur3_32Hasher extends Hasher {
     private static final int CHUNK_SIZE = 4;
 
-    @Override
-    public void update(byte[] input, int off, int len) {
-        Preconditions.checkPositionIndexes(off, off + len, input.length);
-        int h1 = Long.valueOf(seed).intValue();
-        int i;
-        for (i = 0; i + CHUNK_SIZE <= len; i += CHUNK_SIZE) {
-            int k1 = mixK1(getIntLittleEndian(input, off + i));
-            h1 = mixH1(h1, k1);
-        }
-
-        int k1 = 0;
-        for (int shift = 0; i < len; i++, shift += 8) {
-            k1 ^= toInt(input[off + i]) << shift;
-        }
-        h1 ^= mixK1(k1);
-        this.h = fmix(h1, len);
-    }
-
     private int h;
+    private long buffer;
+    private int shift;
+    private int length;
 
     // Finalization mix - force all bits of a hash block to avalanche
     private static int fmix(int h1, int length) {
@@ -73,12 +57,53 @@ public class Murmur3_32Hasher extends Hasher {
     }
 
     @Override
-    protected void update(byte b) {
+    public void update(byte[] bytes, int off, int len) {
+        checkPositionIndexes(off, off + len, bytes.length);
+        int i;
+        for (i = 0; i + 4 <= len; i += 4) {
+            update(4, getIntLittleEndian(bytes, off + i));
+        }
+        for (; i < len; i++) {
+            update(bytes[off + i]);
+        }
+    }
 
+    @Override
+    protected void update(byte b) {
+        update(1, b & 0xFF);
+    }
+
+    private void update(int nBytes, long update) {
+        // 1 <= nBytes <= 4
+        buffer |= (update & 0xFFFFFFFFL) << shift;
+        shift += nBytes * 8;
+        length += nBytes;
+
+        if (shift >= 32) {
+            this.h = mixH1(this.h, mixK1((int) buffer));
+            buffer >>>= 32;
+            shift -= 32;
+        }
+    }
+
+    @Override
+    public void setSeed(long seed) {
+        super.setSeed(seed);
+        this.h = (int) seed;
+    }
+
+    @Override
+    protected void reset() {
+        super.reset();
+        this.h = -1;
+        this.buffer = 0;
+        this.shift = 0;
     }
 
     @Override
     public long get() {
+        this.h ^= mixK1((int) buffer);
+        this.h = fmix(this.h, length);
         return this.h;
     }
 }
