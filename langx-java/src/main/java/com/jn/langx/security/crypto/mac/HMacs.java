@@ -7,6 +7,7 @@ import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.Reflects;
 
+import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.MacSpi;
 import javax.crypto.SecretKey;
@@ -77,15 +78,35 @@ public class HMacs extends Securitys {
         }
     }
 
+    public static Mac createMac(String algorithm, byte[] secretKey) {
+        SecretKey key = null;
+        if (secretKey == null) {
+            KeyGenerator keyGenerator = PKIs.getKeyGenerator(algorithm, null);
+            key = keyGenerator.generateKey();
+        } else {
+            key = new SecretKeySpec(secretKey, algorithm);
+        }
+        return createMac(algorithm, key);
+    }
+
+    public static Mac createMac(String algorithm, SecretKey key) {
+        Mac mac = createMac(algorithm);
+        try {
+            mac.init(key);
+        } catch (Throwable ex) {
+            throw new CryptoException(ex);
+        }
+        return mac;
+    }
+
     public static byte[] hmac(String algorithm, byte[] secretKey, byte[] data) {
         SecretKey key = new SecretKeySpec(secretKey, algorithm);
         return hmac(algorithm, key, data);
     }
 
     public static byte[] hmac(String algorithm, SecretKey key, byte[] data) {
-        Mac mac = createMac(algorithm);
+        Mac mac = createMac(algorithm, key);
         try {
-            mac.init(key);
             return mac.doFinal(data);
         } catch (Throwable ex) {
             throw new CryptoException(ex);

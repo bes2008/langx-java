@@ -13,7 +13,7 @@ public class Crc32Hasher extends ChecksumHasher {
     }
 
     @Override
-    protected AbstractHasher createInstance() {
+    protected AbstractHasher createInstance(Object initParam) {
         return new Crc32Hasher();
     }
 }

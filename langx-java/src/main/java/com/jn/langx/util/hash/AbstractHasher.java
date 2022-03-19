@@ -67,16 +67,13 @@ public abstract class AbstractHasher implements Hasher {
     }
 
     @Override
-    public final Hasher get(Long seed) {
-        if (seed == null) {
-            seed = 0L;
-        }
-        AbstractHasher hasher = createInstance();
-        hasher.setSeed(seed);
+    public final Hasher get(Object initParams) {
+        AbstractHasher hasher = createInstance(initParams);
+        hasher.setSeed(0);
         return hasher;
     }
 
-    protected AbstractHasher createInstance() {
+    protected AbstractHasher createInstance(Object initParams) {
         throw new UnsupportedOperationException();
     }
 }

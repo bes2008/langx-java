@@ -48,12 +48,13 @@ public class Murmur3_32Hasher extends AbstractStreamingHasher {
     public long getHash() {
         this.h ^= mixK1((int) buffer);
         this.h = fmix(this.h, length);
+        long r = this.h;
         reset();
-        return this.h;
+        return r;
     }
 
     @Override
-    protected AbstractHasher createInstance() {
+    protected AbstractHasher createInstance(Object initParam) {
         return new Murmur3_32Hasher();
     }
 

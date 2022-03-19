@@ -6,7 +6,7 @@ import com.jn.langx.Named;
 /**
  * @since 4.4.0
  */
-public interface Hasher extends Factory<Long, Hasher>, Named {
+public interface Hasher extends Factory<Object, Hasher>, Named {
     /**
      * Calculate a hash using all bytes from the input argument, and
      * a seed of 0.
@@ -42,7 +42,7 @@ public interface Hasher extends Factory<Long, Hasher>, Named {
     public long hash(byte[] bytes, int length, long seed);
 
     @Override
-    Hasher get(Long input);
+    Hasher get(Object initParams);
 
     @Override
     String getName();

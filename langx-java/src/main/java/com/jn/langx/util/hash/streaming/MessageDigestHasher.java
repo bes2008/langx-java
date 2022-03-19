@@ -1,6 +1,7 @@
 package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.security.crypto.digest.MessageDigests;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.hash.AbstractHasher;
 
 import java.security.MessageDigest;
@@ -35,7 +36,9 @@ public class MessageDigestHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected AbstractHasher createInstance() {
-        throw new UnsupportedOperationException();
+    protected AbstractHasher createInstance(Object initParam) {
+        Preconditions.checkNotNullArgument(initParam,"initParam");
+        String algorithm = (String) initParam;
+        return new MessageDigestHasher(algorithm);
     }
 }

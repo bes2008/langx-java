@@ -29,7 +29,7 @@ public class Fnv1_32Hasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected AbstractHasher createInstance() {
+    protected AbstractHasher createInstance(Object initParam) {
         return new Fnv1_32Hasher();
     }
 }

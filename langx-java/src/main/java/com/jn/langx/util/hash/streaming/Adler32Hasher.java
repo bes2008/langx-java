@@ -13,7 +13,7 @@ public class Adler32Hasher extends ChecksumHasher {
     }
 
     @Override
-    protected AbstractHasher createInstance() {
+    protected AbstractHasher createInstance(Object initParam) {
         return new Adler32Hasher();
     }
 }

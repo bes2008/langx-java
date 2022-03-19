@@ -1,7 +1,6 @@
 package com.jn.langx.util.bloom;
 
 import com.jn.langx.util.hash.Hasher;
-import com.jn.langx.util.hash.StreamingHasher;
 import com.jn.langx.util.hash.Hashs;
 
 /**
@@ -31,11 +30,15 @@ public final class HashFunction {
      * <p>
      * Builds a hash function that must obey to a given maximum number of returned values and a highest value.
      *
-     * @param maxValue The maximum highest returned value.
-     * @param nbHash   The number of resulting hashed values.
+     * @param maxValue   The maximum highest returned value.
+     * @param nbHash     The number of resulting hashed values.
      * @param hasherName type of the hashing function (see {@link Hasher}).
      */
     public HashFunction(int maxValue, int nbHash, String hasherName) {
+        this(maxValue, nbHash, hasherName, null);
+    }
+
+    public HashFunction(int maxValue, int nbHash, String hasherName, Object hasherInitParams) {
         if (maxValue <= 0) {
             throw new IllegalArgumentException("maxValue must be > 0");
         }
@@ -46,7 +49,7 @@ public final class HashFunction {
 
         this.maxValue = maxValue;
         this.nbHash = nbHash;
-        this.hasher = Hashs.getInstance(hasherName);
+        this.hasher = Hashs.getHasher(hasherName, hasherInitParams);
     }
 
     /**
@@ -72,7 +75,7 @@ public final class HashFunction {
         int[] result = new int[nbHash];
         long h = 0;
         for (int i = 0; i < nbHash; i++) {
-            h = Hashs.hash(this.hasher,b, h);
+            h = Hashs.hash(this.hasher, b, h);
             result[i] = Math.abs(Long.valueOf(h).intValue() % maxValue);
         }
         return result;

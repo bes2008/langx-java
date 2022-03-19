@@ -32,7 +32,7 @@ public class Murmur3_128Hasher extends AdvancedStreamingHasher {
 
 
     @Override
-    protected AbstractHasher createInstance() {
+    protected AbstractHasher createInstance(Object initParam) {
         return new Murmur3_128Hasher();
     }
 

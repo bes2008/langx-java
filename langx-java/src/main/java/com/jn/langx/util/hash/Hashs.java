@@ -2,19 +2,24 @@ package com.jn.langx.util.hash;
 
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.registry.Registry;
+import com.jn.langx.security.SecurityException;
+import com.jn.langx.security.crypto.CryptoException;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.hash.streaming.HMacHasher;
 import com.jn.langx.util.hash.streaming.MessageDigestHasher;
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ServiceLoader;
 
 /**
  * @since 4.4.0
  */
 public class Hashs {
-
+    private static final Logger logger = Loggers.getLogger(Hashs.class);
     private final static Registry<String, Hasher> hasherFactoryRegistry;
 
     static {
@@ -68,6 +73,9 @@ public class Hashs {
         return hasher.hash(bytes, length, seed);
     }
 
+    public static long hash(String hasher, Object initParams, byte[] bytes, int length, long seed) {
+        return getHasher(hasher, initParams).hash(bytes, length, seed);
+    }
 
     /**
      * Get a singleton instance of hash function of a given type.
@@ -75,17 +83,18 @@ public class Hashs {
      * @param hasherName predefined hash type
      * @return hash function instance, or null if type is invalid
      */
-    public static Hasher getInstance(String hasherName) {
+    public static Hasher getHasher(String hasherName, Object initParams) {
         if ("murmur".equals(hasherName)) {
             hasherName = "murmur2";
         }
         Hasher factory = hasherFactoryRegistry.get(hasherName);
         if (factory != null) {
-            return factory.get(0L);
+            return factory.get(initParams);
         }
         if (hasherName.startsWith(HMacHasher.HASHER_NAME_PREFIX)) {
             String hmac = Strings.substring(hasherName, HMacHasher.HASHER_NAME_PREFIX.length());
-            return new HMacHasher(hmac);
+            Object params = new Object[]{hmac, initParams};
+            return new HMacHasher().get(params);
         }
         if (hasherName.startsWith(MessageDigestHasher.HASHER_NAME_PREFIX)) {
             String digestAlgorithm = Strings.substring(hasherName, MessageDigestHasher.HASHER_NAME_PREFIX.length());
@@ -93,14 +102,26 @@ public class Hashs {
         }
         Hasher hasher = null;
         try {
-            hasher = new HMacHasher(hasherName);
+            hasher = new HMacHasher(hasherName, (byte[]) initParams);
             return hasher;
-        } catch (Throwable ex) {
+        } catch (SecurityException ex) {
+            Throwable cause = ex.getCause();
+            if (cause instanceof NoSuchAlgorithmException) {
+                // ignore it
+            } else {
+                logger.error(ex.getMessage(), ex);
+            }
         }
         try {
             hasher = new MessageDigestHasher(hasherName);
             return hasher;
-        } catch (Throwable ex) {
+        } catch (SecurityException ex) {
+            Throwable cause = ex.getCause();
+            if (cause instanceof NoSuchAlgorithmException) {
+                // ignore it
+            } else {
+                logger.error(ex.getMessage(), ex);
+            }
         }
         throw new UnsupportedHashAlgorithmException(hasherName);
     }
