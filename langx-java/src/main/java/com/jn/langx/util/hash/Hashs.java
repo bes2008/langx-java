@@ -10,6 +10,9 @@ import com.jn.langx.util.hash.streaming.MessageDigestHasher;
 
 import java.util.ServiceLoader;
 
+/**
+ * @since 4.4.0
+ */
 public class Hashs {
 
     private final static Registry<String, Hasher> hasherFactoryRegistry;

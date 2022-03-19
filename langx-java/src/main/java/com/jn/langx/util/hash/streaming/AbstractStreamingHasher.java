@@ -4,6 +4,9 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.hash.StreamingHasher;
 
+/**
+ * @since 4.4.0
+ */
 public abstract class AbstractStreamingHasher extends AbstractHasher implements StreamingHasher {
 
 
@@ -48,7 +51,7 @@ public abstract class AbstractStreamingHasher extends AbstractHasher implements 
     /********************************************************************************
      * 当 hash 计算后，结果如果是 byte[] 时，需要使用下面的几个方法进行转换
      ********************************************************************************/
-    protected long toLong(byte[] bytes){
+    protected long toLong(byte[] bytes) {
         try {
             return asLong(bytes);
         } catch (IllegalStateException ex) {

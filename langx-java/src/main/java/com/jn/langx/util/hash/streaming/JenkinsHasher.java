@@ -18,6 +18,7 @@ import com.jn.langx.util.hash.StreamingHasher;
  * function compares to others such as CRC, MD?, etc</a>
  * @see <a href="http://burtleburtle.net/bob/hash/doobs.html">Has update on the
  * Dr. Dobbs Article</a>
+ * @since 4.4.0
  */
 public class JenkinsHasher extends AbstractStreamingHasher {
     private static long INT_MASK = 0x00000000ffffffffL;

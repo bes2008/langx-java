@@ -6,7 +6,9 @@ import com.jn.langx.util.hash.AbstractHasher;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-
+/**
+ * @since 4.4.0
+ */
 public class Murmur3_128Hasher extends AdvancedStreamingHasher {
     private static final int CHUNK_SIZE = 16;
     private static final long C1 = 0x87c37b91114253d5L;

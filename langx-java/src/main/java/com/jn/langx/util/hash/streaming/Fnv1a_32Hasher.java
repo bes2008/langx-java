@@ -21,6 +21,8 @@ import com.jn.langx.util.hash.AbstractHasher;
 
 /**
  * Hash function FNV-1a (http://www.isthe.com/chongo/tech/comp/fnv).
+ *
+ * @since 4.4.0
  */
 public class Fnv1a_32Hasher extends AbstractStreamingHasher {
     private final static int INITIAL_VALUE = 0x811C9DC5;

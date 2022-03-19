@@ -3,12 +3,14 @@ package com.jn.langx.util.hash;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.Reflects;
 
-public abstract class AbstractHasher implements Hasher{
+/**
+ * @since 4.4.0
+ */
+public abstract class AbstractHasher implements Hasher {
 
     protected long seed;
 
     /**
-     *
      * @param seed 也是初始值
      */
     public void setSeed(long seed) {
@@ -21,11 +23,12 @@ public abstract class AbstractHasher implements Hasher{
 
     /**
      * 计算hash
+     *
      * @param bytes input bytes
      * @return hash值
      */
     public long hash(byte[] bytes) {
-        return hash( bytes, bytes.length, 0);
+        return hash(bytes, bytes.length, 0);
     }
 
     public long hash(byte[] bytes, long seed) {
@@ -51,7 +54,6 @@ public abstract class AbstractHasher implements Hasher{
      ********************************************************************************/
 
     /**
-     *
      * @return the hasher name
      */
     @Override
@@ -74,7 +76,7 @@ public abstract class AbstractHasher implements Hasher{
         return hasher;
     }
 
-    protected AbstractHasher createInstance(){
+    protected AbstractHasher createInstance() {
         throw new UnsupportedOperationException();
     }
 }

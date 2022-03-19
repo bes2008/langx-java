@@ -7,7 +7,9 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-
+/**
+ * @since 4.4.0
+ */
 public final class HashingInputStream extends FilterInputStream {
     private final StreamingHasher hasher;
 
@@ -31,7 +33,7 @@ public final class HashingInputStream extends FilterInputStream {
         int b = in.read();
         if (b != -1) {
             byte[] bytes = new byte[]{(byte) b};
-            hasher.update(bytes,0,1);
+            hasher.update(bytes, 0, 1);
         }
         return b;
     }
@@ -63,7 +65,8 @@ public final class HashingInputStream extends FilterInputStream {
      * mark() is not supported for HashingInputStream
      */
     @Override
-    public void mark(int readlimit) {}
+    public void mark(int readlimit) {
+    }
 
     /**
      * reset() is not supported for HashingInputStream.

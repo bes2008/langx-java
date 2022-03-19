@@ -1,10 +1,14 @@
 package com.jn.langx.util.hash;
 
-public class UnsupportedHashAlgorithmException extends RuntimeException{
+/**
+ * @since 4.4.0
+ */
+public class UnsupportedHashAlgorithmException extends RuntimeException {
 
     public UnsupportedHashAlgorithmException() {
         super();
     }
+
     public UnsupportedHashAlgorithmException(String message) {
         super(message);
     }

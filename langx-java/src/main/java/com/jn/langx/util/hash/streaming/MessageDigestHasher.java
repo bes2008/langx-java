@@ -5,8 +5,11 @@ import com.jn.langx.util.hash.AbstractHasher;
 
 import java.security.MessageDigest;
 
+/**
+ * @since 4.4.0
+ */
 public class MessageDigestHasher extends AbstractStreamingHasher {
-    public static final String HASHER_NAME_PREFIX="messagedigest-";
+    public static final String HASHER_NAME_PREFIX = "messagedigest-";
     private MessageDigest messageDigester;
 
     public MessageDigestHasher(String algorithm) {

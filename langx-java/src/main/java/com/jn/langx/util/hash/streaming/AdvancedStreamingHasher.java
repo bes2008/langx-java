@@ -10,6 +10,8 @@ import java.nio.ByteOrder;
 /**
  * A convenience base class for implementors of {@code Hasher}; handles accumulating data until an
  * entire "chunk" (of implementation-dependent length) is ready to be hashed.
+ *
+ * @since 4.4.0
  */
 public abstract class AdvancedStreamingHasher extends AbstractStreamingHasher {
     /**
@@ -82,12 +84,14 @@ public abstract class AdvancedStreamingHasher extends AbstractStreamingHasher {
     public void update(byte[] bytes, int off, int len) {
         putBytes(bytes, off, len);
     }
+
     @Override
     public long getHash() {
         long h = doFinal();
         reset();
         return h;
     }
+
     protected final AdvancedStreamingHasher putBytes(byte[] bytes, int off, int len) {
         return putBytesInternal(ByteBuffer.wrap(bytes, off, len).order(ByteOrder.LITTLE_ENDIAN));
     }

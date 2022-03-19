@@ -3,6 +3,9 @@ package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.util.hash.AbstractHasher;
 
+/**
+ * @since 4.4.0
+ */
 public class Crc32cHasher extends AbstractStreamingHasher {
 
     private int crc = 0;
@@ -13,12 +16,14 @@ public class Crc32cHasher extends AbstractStreamingHasher {
         // See Hacker's Delight 2nd Edition, Figure 14-7.
         crc = ~((crc >>> 8) ^ CRC_TABLE[(crc ^ b) & 0xFF]);
     }
+
     @Override
     public long getHash() {
         long r = this.crc;
         reset();
         return r;
     }
+
     @Override
     protected void reset() {
         super.reset();

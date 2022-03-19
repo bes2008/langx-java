@@ -3,6 +3,9 @@ package com.jn.langx.util.hash;
 import com.jn.langx.Factory;
 import com.jn.langx.Named;
 
+/**
+ * @since 4.4.0
+ */
 public interface Hasher extends Factory<Long, Hasher>, Named {
     /**
      * Calculate a hash using all bytes from the input argument, and
@@ -12,6 +15,7 @@ public interface Hasher extends Factory<Long, Hasher>, Named {
      * @return hash value
      */
     public long hash(byte[] bytes);
+
     /**
      * 一次性计算 hash
      * <p>

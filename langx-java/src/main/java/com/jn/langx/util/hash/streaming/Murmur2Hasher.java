@@ -11,6 +11,8 @@ import com.jn.langx.util.hash.StreamingHasher;
  * to Java by Andrzej Bialecki (ab at getopt org).</p>
  * <p>
  * migrate from hadoop
+ *
+ * @since 4.4.0
  */
 public class Murmur2Hasher extends AbstractStreamingHasher {
     private static Murmur2Hasher _instance = new Murmur2Hasher();
@@ -21,7 +23,7 @@ public class Murmur2Hasher extends AbstractStreamingHasher {
 
     private long h;
 
-    public Murmur2Hasher(){
+    public Murmur2Hasher() {
         reset();
     }
 

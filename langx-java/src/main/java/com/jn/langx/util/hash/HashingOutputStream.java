@@ -10,6 +10,8 @@ import java.io.OutputStream;
 
 /**
  * An {@link OutputStream} that maintains a hash of the data written to it.
+ *
+ * @since 4.4.0
  */
 public final class HashingOutputStream extends FilterOutputStream {
     private final StreamingHasher hasher;
@@ -21,11 +23,12 @@ public final class HashingOutputStream extends FilterOutputStream {
      * <p>The {@link OutputStream} should not be written to before or after the hand-off.
      */
     public HashingOutputStream(StreamingHasher hasher, OutputStream out) {
-        this(hasher,null,out);
+        this(hasher, null, out);
     }
+
     public HashingOutputStream(StreamingHasher hasher, Integer seed, OutputStream out) {
         super(Preconditions.checkNotNull(out));
-        this.hasher =Preconditions. checkNotNull(hasher);
+        this.hasher = Preconditions.checkNotNull(hasher);
         if (seed == null) {
             seed = 0;
         }

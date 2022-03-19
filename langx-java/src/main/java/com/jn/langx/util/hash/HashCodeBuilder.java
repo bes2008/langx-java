@@ -50,7 +50,7 @@ public class HashCodeBuilder implements Builder<Integer> {
     }
 
     public static int generate(long value) {
-        return (int)(value ^ value >> 32);
+        return (int) (value ^ value >> 32);
     }
 
     public static int generate(double value) {
@@ -64,7 +64,7 @@ public class HashCodeBuilder implements Builder<Integer> {
     public static int generate(byte[] bytes) {
         int hashcode = 0;
 
-        for(int i = 0; i < bytes.length; ++i) {
+        for (int i = 0; i < bytes.length; ++i) {
             hashcode <<= 1;
             hashcode ^= bytes[i];
         }
@@ -75,9 +75,9 @@ public class HashCodeBuilder implements Builder<Integer> {
     public static int generate(Object[] array, boolean deep) {
         int hashcode = 0;
 
-        for(int i = 0; i < array.length; ++i) {
+        for (int i = 0; i < array.length; ++i) {
             if (deep && array[i] instanceof Object[]) {
-                hashcode ^= generate((Object[])((Object[])array[i]), true);
+                hashcode ^= generate((Object[]) ((Object[]) array[i]), true);
             } else {
                 hashcode ^= array[i].hashCode();
             }

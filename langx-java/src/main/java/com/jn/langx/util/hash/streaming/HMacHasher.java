@@ -5,6 +5,9 @@ import com.jn.langx.util.hash.AbstractHasher;
 
 import javax.crypto.Mac;
 
+/**
+ * @since 4.4.0
+ */
 public class HMacHasher extends AbstractStreamingHasher {
     public static final String HASHER_NAME_PREFIX = "hmac-";
     private Mac mac;
