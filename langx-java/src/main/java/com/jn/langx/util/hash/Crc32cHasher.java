@@ -4,6 +4,18 @@ public class Crc32cHasher extends AbstractHasher {
 
     private int crc = 0;
 
+
+    protected void update(byte b) {
+        crc ^= 0xFFFFFFFF;
+        // See Hacker's Delight 2nd Edition, Figure 14-7.
+        crc = ~((crc >>> 8) ^ CRC_TABLE[(crc ^ b) & 0xFF]);
+    }
+    @Override
+    public long getHash() {
+        long r = this.crc;
+        reset();
+        return r;
+    }
     @Override
     protected void reset() {
         super.reset();
@@ -11,17 +23,8 @@ public class Crc32cHasher extends AbstractHasher {
     }
 
     @Override
-    public long get() {
-        long r = this.crc;
-        reset();
-        return r;
-    }
-
-
-    protected void update(byte b) {
-        crc ^= 0xFFFFFFFF;
-        // See Hacker's Delight 2nd Edition, Figure 14-7.
-        crc = ~((crc >>> 8) ^ CRC_TABLE[(crc ^ b) & 0xFF]);
+    protected Hasher createInstance(long seed) {
+        return new Crc32cHasher();
     }
 
     // The CRC table, generated from the polynomial 0x11EDC6F41.

@@ -2,7 +2,7 @@ package com.jn.langx.util.hash;
 
 import java.util.zip.Checksum;
 
-public class ChecksumHasher extends AbstractHasher {
+public abstract class ChecksumHasher extends AbstractHasher {
     private Checksum checksum;
 
     public ChecksumHasher(Checksum checksum) {
@@ -26,9 +26,14 @@ public class ChecksumHasher extends AbstractHasher {
     }
 
     @Override
-    public long get() {
+    public long getHash() {
         long r = this.checksum.getValue();
         reset();
         return r;
+    }
+
+    @Override
+    protected Hasher createInstance(long seed) {
+        throw new UnsupportedOperationException();
     }
 }

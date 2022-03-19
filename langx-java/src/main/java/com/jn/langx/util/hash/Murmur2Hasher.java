@@ -36,7 +36,7 @@ public class Murmur2Hasher extends AbstractHasher {
     }
 
     @Override
-    public long get() {
+    public long getHash() {
         long r = this.h;
         reset();
         return r;
@@ -91,4 +91,8 @@ public class Murmur2Hasher extends AbstractHasher {
         return h;
     }
 
+    @Override
+    protected Hasher createInstance(long seed) {
+        return new Murmur2Hasher();
+    }
 }

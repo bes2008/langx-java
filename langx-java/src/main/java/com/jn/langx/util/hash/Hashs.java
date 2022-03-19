@@ -1,12 +1,31 @@
 package com.jn.langx.util.hash;
 
+import com.jn.langx.registry.GenericRegistry;
+import com.jn.langx.registry.Registry;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
 
+import java.util.ServiceLoader;
 import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 public class Hashs {
+
+    private final static Registry<String, Hasher> hasherFactoryRegistry;
+
+    static {
+        final GenericRegistry<Hasher> registry = new GenericRegistry<Hasher>();
+        Collects.forEach(ServiceLoader.<Hasher>load(Hasher.class), new Consumer<Hasher>() {
+            @Override
+            public void accept(Hasher factory) {
+                registry.register(factory);
+            }
+        });
+        hasherFactoryRegistry = registry;
+    }
+
     /**
      * Calculate a hash using all bytes from the input argument, and
      * a seed of 0.
@@ -46,9 +65,8 @@ public class Hashs {
     public static long hash(Hasher hasher, byte[] bytes, int length, long seed) {
         hasher.setSeed(seed);
         hasher.update(bytes, 0, length);
-        return hasher.get();
+        return hasher.getHash();
     }
-
 
 
     /**
@@ -58,20 +76,12 @@ public class Hashs {
      * @return hash function instance, or null if type is invalid
      */
     public static Hasher getInstance(String hasherName) {
-        if ("jenkins".equals(hasherName)) {
-            return new JenkinsHasher();
+        if ("murmur".equals(hasherName)) {
+            hasherName = "murmur2";
         }
-        if ("murmur".equals(hasherName) || "murmur2".equals(hasherName)) {
-            return new Murmur2Hasher();
-        }
-        if ("murmur3_32".equals(hasherName)) {
-            return new Murmur3_32Hasher();
-        }
-        if ("murmur3_128".equals(hasherName)) {
-            return new Murmur3_128Hasher();
-        }
-        if ("crc32c".equals(hasherName)) {
-            return new Crc32cHasher();
+        Hasher factory = hasherFactoryRegistry.get(hasherName);
+        if (factory != null) {
+            return factory.get(0L);
         }
         if (hasherName.startsWith(HMacHasher.HASHER_NAME_PREFIX)) {
             String hmac = Strings.substring(hasherName, HMacHasher.HASHER_NAME_PREFIX.length());
@@ -81,13 +91,16 @@ public class Hashs {
             String digestAlgorithm = Strings.substring(hasherName, MessageDigestHasher.HASHER_NAME_PREFIX.length());
             return new MessageDigestHasher(digestAlgorithm);
         }
-        if ("adler32".equals(hasherName)) {
-            Checksum checksum = new Adler32();
-            return new ChecksumHasher(checksum);
+        Hasher hasher = null;
+        try {
+            hasher = new HMacHasher(hasherName);
+            return hasher;
+        } catch (Throwable ex) {
         }
-        if ("crc32".equals(hasherName)) {
-            Checksum checksum = new CRC32();
-            return new ChecksumHasher(checksum);
+        try {
+            hasher = new MessageDigestHasher(hasherName);
+            return hasher;
+        } catch (Throwable ex) {
         }
         throw new UnsupportedHashAlgorithmException(hasherName);
     }

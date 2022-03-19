@@ -41,7 +41,7 @@ public class Murmur3_32Tests {
         hasher.setSeed(-1);
         byte[] bytes2 = text.getBytes(Charsets.UTF_8);
         hasher.update(bytes2, 0, bytes2.length);
-        long hash = hasher.get();
+        long hash = hasher.getHash();
         System.out.println(hash);
     }
 

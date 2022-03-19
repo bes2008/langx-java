@@ -46,10 +46,15 @@ public class JenkinsHasher extends AbstractHasher {
     }
 
     @Override
-    public long get() {
+    public long getHash() {
         long r = this.h;
         reset();
         return r;
+    }
+
+    @Override
+    protected Hasher createInstance(long seed) {
+        return new JenkinsHasher();
     }
 
     private static long rot(long val, int pos) {

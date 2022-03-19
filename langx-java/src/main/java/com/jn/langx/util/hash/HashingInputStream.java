@@ -80,6 +80,6 @@ public final class HashingInputStream extends FilterInputStream {
      * if this method is called more than once on the same instance.
      */
     public long getHash() {
-        return hasher.get();
+        return hasher.getHash();
     }
 }

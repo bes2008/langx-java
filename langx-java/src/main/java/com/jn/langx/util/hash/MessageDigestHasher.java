@@ -5,7 +5,7 @@ import com.jn.langx.security.crypto.digest.MessageDigests;
 import java.security.MessageDigest;
 
 public class MessageDigestHasher extends AbstractBytesResultHasher {
-    public static final String HASHER_NAME_PREFIX="messagedigest:";
+    public static final String HASHER_NAME_PREFIX="messagedigest-";
     private MessageDigest messageDigester;
 
     public MessageDigestHasher(String algorithm) {
@@ -24,9 +24,14 @@ public class MessageDigestHasher extends AbstractBytesResultHasher {
     }
 
     @Override
-    public long get() {
+    public long getHash() {
         byte[] bytes = this.messageDigester.digest();
         reset();
         return toLong(bytes);
+    }
+
+    @Override
+    protected Hasher createInstance(long seed) {
+        throw new UnsupportedOperationException();
     }
 }

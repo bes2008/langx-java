@@ -31,6 +31,11 @@ public class Murmur3_128Hasher extends AbstractStreamingHasher {
         putBytes(bytes, off, len);
     }
 
+    @Override
+    protected Hasher createInstance(long seed) {
+        return new Murmur3_128Hasher();
+    }
+
     protected void process(ByteBuffer bb) {
         long k1 = bb.getLong();
         long k2 = bb.getLong();
@@ -147,7 +152,7 @@ public class Murmur3_128Hasher extends AbstractStreamingHasher {
     }
 
     @Override
-    public long get() {
+    public long getHash() {
         long h = doFinal();
         reset();
         return h;

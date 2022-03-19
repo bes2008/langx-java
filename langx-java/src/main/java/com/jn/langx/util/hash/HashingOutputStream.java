@@ -49,7 +49,7 @@ public final class HashingOutputStream extends FilterOutputStream {
      * unspecified if this method is called more than once on the same instance.
      */
     public long getHash() {
-        return hasher.get();
+        return hasher.getHash();
     }
 
     // Overriding close() because FilterOutputStream's close() method pre-JDK8 has bad behavior:

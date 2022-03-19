@@ -40,11 +40,16 @@ public class Murmur3_32Hasher extends AbstractHasher {
     }
 
     @Override
-    public long get() {
+    public long getHash() {
         this.h ^= mixK1((int) buffer);
         this.h = fmix(this.h, length);
         reset();
         return this.h;
+    }
+
+    @Override
+    protected Hasher createInstance(long seed) {
+        return new Murmur3_32Hasher();
     }
 
     private void update(int nBytes, long update) {

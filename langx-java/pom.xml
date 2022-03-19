@@ -20,11 +20,6 @@
     </description>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jdon</groupId>
-            <artifactId>jdonframework</artifactId>
-            <version>6.9</version>
-        </dependency>
     </dependencies>
 
     <build>
