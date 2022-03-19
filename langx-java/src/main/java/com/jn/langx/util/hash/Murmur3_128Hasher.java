@@ -1,8 +1,6 @@
 package com.jn.langx.util.hash;
 
 
-import com.jn.langx.util.Preconditions;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 

@@ -4,7 +4,7 @@ import com.jn.langx.security.crypto.digest.MessageDigests;
 
 import java.security.MessageDigest;
 
-public class MessageDigestHasher extends AbstractBytesHasher {
+public class MessageDigestHasher extends AbstractBytesResultHasher {
     public static final String HASHER_NAME_PREFIX="messagedigest:";
     private MessageDigest messageDigester;
 

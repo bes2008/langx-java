@@ -1,7 +1,9 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.bloom;
 
 import com.jn.langx.util.bloom.Filter;
 import com.jn.langx.util.bloom.Key;
+import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.Hashs;
 
 /**
  * Implements a hash object that returns a certain number of hashed values.
@@ -23,7 +25,7 @@ public final class HashFunction {
     /**
      * Hashing algorithm to use.
      */
-    private Hasher hashFunction;
+    private Hasher hasher;
 
     /**
      * Constructor.
@@ -45,9 +47,7 @@ public final class HashFunction {
 
         this.maxValue = maxValue;
         this.nbHash = nbHash;
-        this.hashFunction = Hasher.getInstance(hasherName);
-        if (this.hashFunction == null)
-            throw new IllegalArgumentException("hashType must be known");
+        this.hasher = Hashs.getInstance(hasherName);
     }
 
     /**
@@ -73,7 +73,7 @@ public final class HashFunction {
         int[] result = new int[nbHash];
         long h = 0;
         for (int i = 0; i < nbHash; i++) {
-            h = hashFunction.hash(b, h);
+            h = Hashs.hash(this.hasher,b, h);
             result[i] = Math.abs(Long.valueOf(h).intValue() % maxValue);
         }
         return result;

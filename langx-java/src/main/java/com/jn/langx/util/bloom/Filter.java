@@ -1,7 +1,6 @@
 package com.jn.langx.util.bloom;
 
 
-import com.jn.langx.util.hash.HashFunction;
 import com.jn.langx.util.hash.Hasher;
 import com.jn.langx.util.io.Writable;
 

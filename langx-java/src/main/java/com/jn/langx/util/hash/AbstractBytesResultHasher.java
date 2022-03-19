@@ -2,7 +2,7 @@ package com.jn.langx.util.hash;
 
 import com.jn.langx.util.Preconditions;
 
-public abstract class AbstractBytesHasher extends Hasher{
+public abstract class AbstractBytesResultHasher extends AbstractHasher{
 
     protected long toLong(byte[] bytes){
         try {

@@ -9,7 +9,7 @@ package com.jn.langx.util.hash;
  * <p>
  * migrate from hadoop
  */
-public class Murmur2Hasher extends Hasher {
+public class Murmur2Hasher extends AbstractHasher {
     private static Murmur2Hasher _instance = new Murmur2Hasher();
 
     public static Hasher getInstance() {

@@ -2,7 +2,7 @@ package com.jn.langx.util.hash;
 
 import java.util.zip.Checksum;
 
-public class ChecksumHasher extends Hasher {
+public class ChecksumHasher extends AbstractHasher {
     private Checksum checksum;
 
     public ChecksumHasher(Checksum checksum) {

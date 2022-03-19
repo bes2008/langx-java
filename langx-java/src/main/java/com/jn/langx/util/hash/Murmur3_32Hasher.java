@@ -2,7 +2,7 @@ package com.jn.langx.util.hash;
 
 import static com.google.common.base.Preconditions.checkPositionIndexes;
 
-public class Murmur3_32Hasher extends Hasher {
+public class Murmur3_32Hasher extends AbstractHasher {
     private static final int CHUNK_SIZE = 4;
     private static final int C1 = 0xcc9e2d51;
     private static final int C2 = 0x1b873593;
