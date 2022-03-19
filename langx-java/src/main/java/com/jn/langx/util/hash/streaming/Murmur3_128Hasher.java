@@ -1,7 +1,6 @@
 package com.jn.langx.util.hash.streaming;
 
 
-import com.jn.langx.util.hash.AdvancedStreamingHasher;
 import com.jn.langx.util.hash.Hasher;
 
 import java.nio.ByteBuffer;

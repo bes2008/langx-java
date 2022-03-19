@@ -1,7 +1,9 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.StreamingHasher;
 import com.jn.langx.util.reflect.Reflects;
 
 public abstract class AbstractStreamingHasher implements StreamingHasher {

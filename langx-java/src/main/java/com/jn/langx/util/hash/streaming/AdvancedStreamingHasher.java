@@ -1,4 +1,4 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.hash.streaming;
 
 
 import com.jn.langx.util.Preconditions;

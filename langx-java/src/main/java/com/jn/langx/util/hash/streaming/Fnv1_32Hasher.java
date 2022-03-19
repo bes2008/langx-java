@@ -1,6 +1,5 @@
 package com.jn.langx.util.hash.streaming;
 
-import com.jn.langx.util.hash.AbstractStreamingHasher;
 import com.jn.langx.util.hash.Hasher;
 
 public class Fnv1_32Hasher extends AbstractStreamingHasher {

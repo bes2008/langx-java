@@ -2,7 +2,6 @@ package com.jn.langx.util.hash.streaming;
 
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.hash.AbstractStreamingHasher;
 import com.jn.langx.util.hash.Hasher;
 
 public class Murmur3_32Hasher extends AbstractStreamingHasher {

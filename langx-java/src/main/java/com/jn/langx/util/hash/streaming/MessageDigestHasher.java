@@ -1,7 +1,6 @@
 package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.security.crypto.digest.MessageDigests;
-import com.jn.langx.util.hash.AbstractStreamingHasher;
 import com.jn.langx.util.hash.Hasher;
 
 import java.security.MessageDigest;
