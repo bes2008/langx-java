@@ -3,7 +3,6 @@ package com.jn.langx.util.hash;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.registry.Registry;
 import com.jn.langx.security.SecurityException;
-import com.jn.langx.security.crypto.CryptoException;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
