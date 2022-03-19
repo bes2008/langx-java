@@ -150,10 +150,4 @@ public class Murmur3_128Hasher extends AdvancedStreamingHasher {
         return toLong(bytes);
     }
 
-    @Override
-    public long getHash() {
-        long h = doFinal();
-        reset();
-        return h;
-    }
 }
