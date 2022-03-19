@@ -1,6 +1,6 @@
 package com.jn.langx.util.hash;
 
-public class Fnv1_32Hasher extends AbstractHasher {
+public class Fnv1_32Hasher extends AbstractStreamingHasher {
     private final static int INITIAL_VALUE = 0x811C9DC5;
     private final static int MULTIPLIER = 16777619;
 

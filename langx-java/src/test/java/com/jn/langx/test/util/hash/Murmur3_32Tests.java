@@ -1,6 +1,6 @@
 package com.jn.langx.test.util.hash;
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.StreamingHasher;
 import com.jn.langx.util.hash.Hashs;
 import com.jn.langx.util.hash.Murmur3_32Hasher;
 import com.jn.langx.util.io.Charsets;
@@ -18,12 +18,12 @@ public class Murmur3_32Tests {
     @Test
     public void test1() {
         String text = "hello,langx hasher";
-        Hasher hasher1 = new Murmur3_32Hasher();
+        StreamingHasher hasher1 = new Murmur3_32Hasher();
         testWithLangx(text, hasher1);
 
     }
 
-    private void testWithLangx(String text, Hasher hasher) {
+    private void testWithLangx(String text, StreamingHasher hasher) {
         hasher.setSeed(-1);
         byte[] bytes2 = text.getBytes(Charsets.UTF_8);
         hasher.update(bytes2, 0, bytes2.length);

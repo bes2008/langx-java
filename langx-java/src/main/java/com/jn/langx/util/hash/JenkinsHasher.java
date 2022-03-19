@@ -16,13 +16,13 @@ package com.jn.langx.util.hash;
  * @see <a href="http://burtleburtle.net/bob/hash/doobs.html">Has update on the
  * Dr. Dobbs Article</a>
  */
-public class JenkinsHasher extends AbstractHasher {
+public class JenkinsHasher extends AbstractStreamingHasher {
     private static long INT_MASK = 0x00000000ffffffffL;
     private static long BYTE_MASK = 0x00000000000000ffL;
 
     private static JenkinsHasher _instance = new JenkinsHasher();
 
-    public static Hasher getInstance() {
+    public static StreamingHasher getInstance() {
         return _instance;
     }
 

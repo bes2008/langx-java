@@ -9,15 +9,15 @@ import java.io.InputStream;
 
 
 public final class HashingInputStream extends FilterInputStream {
-    private final Hasher hasher;
+    private final StreamingHasher hasher;
 
     /**
-     * Creates an input stream that hashes using the given {@link Hasher} and delegates all data
+     * Creates an input stream that hashes using the given {@link StreamingHasher} and delegates all data
      * read from it to the underlying {@link InputStream}.
      *
      * <p>The {@link InputStream} should not be read from before or after the hand-off.
      */
-    public HashingInputStream(Hasher hasher, InputStream in) {
+    public HashingInputStream(StreamingHasher hasher, InputStream in) {
         super(Preconditions.checkNotNull(in));
         this.hasher = Preconditions.checkNotNull(hasher);
     }

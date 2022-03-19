@@ -1,144 +1,141 @@
 package com.jn.langx.util.hash;
 
-
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
+import com.jn.langx.util.reflect.Reflects;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+public abstract class AbstractStreamingHasher implements StreamingHasher {
+    protected long seed;
 
+    /*********************************************************************************
+     * 一次性计算
+     *********************************************************************************/
 
-/**
- * A convenience base class for implementors of {@code Hasher}; handles accumulating data until an
- * entire "chunk" (of implementation-dependent length) is ready to be hashed.
- */
-public abstract class AbstractStreamingHasher extends AbstractBytesResultHasher {
     /**
-     * Buffer via which we pass data to the hash algorithm (the implementor)
+     * 计算hash
+     * @param bytes input bytes
+     * @return hash值
      */
-    private final ByteBuffer buffer;
+    public long hash(byte[] bytes) {
+        return hash( bytes, bytes.length, 0);
+    }
+
+    public long hash(byte[] bytes, long seed) {
+        return hash( bytes, bytes.length, seed);
+    }
 
     /**
-     * Number of bytes to be filled before process() invocation(s).
-     */
-    private final int bufferSize;
-
-    /**
-     * Number of bytes processed per process() invocation.
-     */
-    private final int chunkSize;
-
-    /**
-     * Constructor for use by subclasses. This hasher instance will process chunks of the specified
-     * size.
+     * 一次性计算 hash
+     * <p>
+     * Calculate a hash using bytes from 0 to <code>length</code>, and
+     * the provided seed value
      *
-     * @param chunkSize the number of bytes available per {@link #process(ByteBuffer)} invocation;
-     *                  must be at least 4
+     * @param bytes  input bytes
+     * @param length length of the valid bytes to consider
+     * @param seed   seed value
+     * @return hash value
      */
-    protected AbstractStreamingHasher(int chunkSize) {
-        this(chunkSize, chunkSize);
+    public long hash(byte[] bytes, int length, long seed) {
+        this.setSeed(seed);
+        this.update(bytes, 0, length);
+        return this.getHash();
     }
 
+    /****************************************************************************
+     *  下面的几个方式，用于 流式计算
+     ****************************************************************************/
+
     /**
-     * Constructor for use by subclasses. This hasher instance will process chunks of the specified
-     * size, using an internal buffer of {@code bufferSize} size, which must be a multiple of
-     * {@code chunkSize}.
      *
-     * @param chunkSize  the number of bytes available per {@link #process(ByteBuffer)} invocation;
-     *                   must be at least 4
-     * @param bufferSize the size of the internal buffer. Must be a multiple of chunkSize
+     * @param seed 也是初始值
      */
-    protected AbstractStreamingHasher(int chunkSize, int bufferSize) {
-        Preconditions.checkArgument(bufferSize % chunkSize == 0);
-
-        // always space for a single primitive
-        this.buffer = ByteBuffer.allocate(bufferSize + 7).order(ByteOrder.LITTLE_ENDIAN);
-        this.bufferSize = bufferSize;
-        this.chunkSize = chunkSize;
+    public void setSeed(long seed) {
+        this.seed = seed;
     }
 
     /**
-     * Processes the available bytes of the buffer (at most {@code chunk} bytes).
+     * 用于流式计算
      */
-    protected abstract void process(ByteBuffer bb);
+    public void update(byte[] bytes, int off, int len) {
+        for (int i = off; i < off + len; i++) {
+            update(bytes[i]);
+        }
+    }
+
+    protected void update(byte b) {
+    }
+
+    protected void reset() {
+        setSeed(0);
+    }
+
+
+    /********************************************************************************
+     * 当 hash 计算后，结果如果是 byte[] 时，需要使用下面的几个方法进行转换
+     ********************************************************************************/
+    protected long toLong(byte[] bytes){
+        try {
+            return asLong(bytes);
+        } catch (IllegalStateException ex) {
+            return asInt(bytes);
+        }
+    }
+
+
+    protected int asInt(byte[] bytes) {
+        Preconditions.checkState(
+                bytes.length >= 4,
+                "AbstractBytesHasher#asInt() requires >= 4 bytes (it only has {} bytes).",
+                bytes.length);
+        return (bytes[0] & 0xFF)
+                | ((bytes[1] & 0xFF) << 8)
+                | ((bytes[2] & 0xFF) << 16)
+                | ((bytes[3] & 0xFF) << 24);
+    }
+
+    protected long asLong(byte[] bytes) {
+        Preconditions.checkState(
+                bytes.length >= 8,
+                "AbstractBytesHasher#asLong() requires >= 8 bytes (it only has {} bytes).",
+                bytes.length);
+        return padToLong(bytes);
+    }
+
+    protected long padToLong(byte[] bytes) {
+        long retVal = (bytes[0] & 0xFF);
+        for (int i = 1; i < Math.min(bytes.length, 8); i++) {
+            retVal |= (bytes[i] & 0xFFL) << (i * 8);
+        }
+        return retVal;
+    }
+
+
+
+    /********************************************************************************
+     *  其他方法
+     ********************************************************************************/
 
     /**
-     * This is invoked for the last bytes of the input, which are not enough to fill a whole chunk.
-     * The passed {@code ByteBuffer} is guaranteed to be non-empty.
      *
-     * <p>This implementation simply pads with zeros and delegates to {@link #process(ByteBuffer)}.
+     * @return the hasher name
      */
-    protected void processRemaining(ByteBuffer bb) {
-        bb.position(bb.limit()); // move at the end
-        bb.limit(chunkSize + 7); // get ready to pad with longs
-        while (bb.position() < chunkSize) {
-            bb.putLong(0);
+    @Override
+    public String getName() {
+        String name = Reflects.getSimpleClassName(this);
+        if (name.endsWith("Hasher")) {
+            name = name.substring(0, name.length() - "Hasher".length());
         }
-        bb.limit(chunkSize);
-        bb.flip();
-        process(bb);
+        name = Strings.lowerCase(name);
+        return name;
     }
 
-    protected final AbstractStreamingHasher putBytes(byte[] bytes, int off, int len) {
-        return putBytesInternal(ByteBuffer.wrap(bytes, off, len).order(ByteOrder.LITTLE_ENDIAN));
+    @Override
+    public final Hasher get(Long seed) {
+        if (seed == null) {
+            seed = 0L;
+        }
+        return createInstance(seed);
     }
 
-    private AbstractStreamingHasher putBytesInternal(ByteBuffer readBuffer) {
-        // If we have room for all of it, this is easy
-        if (readBuffer.remaining() <= buffer.remaining()) {
-            buffer.put(readBuffer);
-            munchIfFull();
-            return this;
-        }
-
-        // First add just enough to fill buffer size, and munch that
-        int bytesToCopy = bufferSize - buffer.position();
-        for (int i = 0; i < bytesToCopy; i++) {
-            buffer.put(readBuffer.get());
-        }
-        munch(); // buffer becomes empty here, since chunkSize divides bufferSize
-
-        // Now process directly from the rest of the input buffer
-        while (readBuffer.remaining() >= chunkSize) {
-            process(readBuffer);
-        }
-
-        // Finally stick the remainder back in our usual buffer
-        buffer.put(readBuffer);
-        return this;
-    }
-
-    protected final long doFinal() {
-        munch();
-        buffer.flip();
-        if (buffer.remaining() > 0) {
-            processRemaining(buffer);
-            buffer.position(buffer.limit());
-        }
-        return makeHash();
-    }
-
-    /**
-     * Computes a hash code based on the data that have been provided to this hasher.  This is called
-     * after all chunks are handled with {@link #process} and any leftover bytes that did not make
-     * a complete chunk are handled with {@link #processRemaining}.
-     */
-    protected abstract long makeHash();
-
-    // Process pent-up data in chunks
-    private void munchIfFull() {
-        if (buffer.remaining() < 8) {
-            // buffer is full; not enough room for a primitive. We have at least one full chunk.
-            munch();
-        }
-    }
-
-    private void munch() {
-        buffer.flip();
-        while (buffer.remaining() >= chunkSize) {
-            // we could limit the buffer to ensure process() does not read more than
-            // chunkSize number of bytes, but we trust the implementations
-            process(buffer);
-        }
-        buffer.compact(); // preserve any remaining data that do not make a full chunk
-    }
+    protected abstract Hasher createInstance(long seed);
 }

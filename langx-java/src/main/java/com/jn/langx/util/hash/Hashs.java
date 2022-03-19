@@ -7,9 +7,6 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 
 import java.util.ServiceLoader;
-import java.util.zip.Adler32;
-import java.util.zip.CRC32;
-import java.util.zip.Checksum;
 
 public class Hashs {
 
@@ -63,9 +60,7 @@ public class Hashs {
      * @return hash value
      */
     public static long hash(Hasher hasher, byte[] bytes, int length, long seed) {
-        hasher.setSeed(seed);
-        hasher.update(bytes, 0, length);
-        return hasher.getHash();
+        return hasher.hash(bytes, length, seed);
     }
 
 

@@ -1,6 +1,6 @@
 package com.jn.langx.util.hash;
 
-public class Crc32cHasher extends AbstractHasher {
+public class Crc32cHasher extends AbstractStreamingHasher {
 
     private int crc = 0;
 

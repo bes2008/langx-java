@@ -1,8 +1,7 @@
 package com.jn.langx.util.bloom;
 
-import com.jn.langx.util.bloom.Filter;
-import com.jn.langx.util.bloom.Key;
 import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.StreamingHasher;
 import com.jn.langx.util.hash.Hashs;
 
 /**

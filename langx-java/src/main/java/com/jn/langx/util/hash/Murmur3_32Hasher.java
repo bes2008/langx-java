@@ -1,8 +1,9 @@
 package com.jn.langx.util.hash;
 
-import static com.google.common.base.Preconditions.checkPositionIndexes;
 
-public class Murmur3_32Hasher extends AbstractHasher {
+import com.jn.langx.util.Preconditions;
+
+public class Murmur3_32Hasher extends AbstractStreamingHasher {
     private static final int CHUNK_SIZE = 4;
     private static final int C1 = 0xcc9e2d51;
     private static final int C2 = 0x1b873593;
@@ -14,7 +15,7 @@ public class Murmur3_32Hasher extends AbstractHasher {
 
     @Override
     public void update(byte[] bytes, int off, int len) {
-        checkPositionIndexes(off, off + len, bytes.length);
+        Preconditions.checkPositionIndexes(off, off + len, bytes.length);
         int i;
         for (i = 0; i + 4 <= len; i += 4) {
             update(4, getIntLittleEndian(bytes, off + i));

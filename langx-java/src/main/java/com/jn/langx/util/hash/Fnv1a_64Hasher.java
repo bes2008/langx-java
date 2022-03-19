@@ -20,7 +20,7 @@ package com.jn.langx.util.hash;
 /**
  * Hash function FNV-1a (http://www.isthe.com/chongo/tech/comp/fnv).
  */
-public class Fnv1a_64Hasher extends AbstractHasher {
+public class Fnv1a_64Hasher extends AbstractStreamingHasher {
     private final static long INITIAL_VALUE = 0xcbf29ce484222325L;
     private final static long MULTIPLIER = 0x100000001b3L;
 

@@ -1,30 +1,44 @@
 package com.jn.langx.util.hash;
 
-
 import com.jn.langx.Factory;
 import com.jn.langx.Named;
 
-/**
- * 使用方法：
- * <pre>
- * 1） hasher.setSeed()
- * 2）多次调用 hasher.update(byte[]) 动态更新数据
- * 3） 调用 getHash() 获取计算后的Hash值
- * </pre>
- */
-public interface Hasher extends Factory<Long,Hasher>, Named {
-
-    void setSeed(long seed);
+public interface Hasher extends Factory<Long, Hasher>, Named {
+    /**
+     * Calculate a hash using all bytes from the input argument, and
+     * a seed of 0.
+     *
+     * @param bytes input bytes
+     * @return hash value
+     */
+    public long hash(byte[] bytes);
+    /**
+     * 一次性计算 hash
+     * <p>
+     * Calculate a hash using all bytes from the input argument,
+     * and a provided seed value.
+     *
+     * @param bytes input bytes
+     * @param seed  seed value
+     * @return hash value
+     */
+    public long hash(byte[] bytes, long seed);
 
     /**
-     * 用于流式计算
+     * 一次性计算 hash
+     * <p>
+     * Calculate a hash using bytes from 0 to <code>length</code>, and
+     * the provided seed value
+     *
+     * @param bytes  input bytes
+     * @param length length of the valid bytes to consider
+     * @param seed   seed value
+     * @return hash value
      */
-    void update(byte[] bytes, int off, int len);
-
-    long getHash();
+    public long hash(byte[] bytes, int length, long seed);
 
     @Override
-    Hasher get(Long seed);
+    Hasher get(Long input);
 
     @Override
     String getName();

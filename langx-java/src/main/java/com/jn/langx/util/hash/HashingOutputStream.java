@@ -12,18 +12,18 @@ import java.io.OutputStream;
  * An {@link OutputStream} that maintains a hash of the data written to it.
  */
 public final class HashingOutputStream extends FilterOutputStream {
-    private final Hasher hasher;
+    private final StreamingHasher hasher;
 
     /**
-     * Creates an output stream that hashes using the given {@link Hasher}, and forwards all
+     * Creates an output stream that hashes using the given {@link StreamingHasher}, and forwards all
      * data written to it to the underlying {@link OutputStream}.
      *
      * <p>The {@link OutputStream} should not be written to before or after the hand-off.
      */
-    public HashingOutputStream(Hasher hasher,OutputStream out) {
+    public HashingOutputStream(StreamingHasher hasher, OutputStream out) {
         this(hasher,null,out);
     }
-    public HashingOutputStream(Hasher hasher, Integer seed, OutputStream out) {
+    public HashingOutputStream(StreamingHasher hasher, Integer seed, OutputStream out) {
         super(Preconditions.checkNotNull(out));
         this.hasher =Preconditions. checkNotNull(hasher);
         if (seed == null) {

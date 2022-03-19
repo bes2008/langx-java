@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 
-public class Murmur3_128Hasher extends AbstractStreamingHasher {
+public class Murmur3_128Hasher extends AdvancedStreamingHasher {
     private static final int CHUNK_SIZE = 16;
     private static final long C1 = 0x87c37b91114253d5L;
     private static final long C2 = 0x4cf5ad432745937fL;
@@ -26,10 +26,6 @@ public class Murmur3_128Hasher extends AbstractStreamingHasher {
         this.length = 0;
     }
 
-    @Override
-    public void update(byte[] bytes, int off, int len) {
-        putBytes(bytes, off, len);
-    }
 
     @Override
     protected Hasher createInstance(long seed) {

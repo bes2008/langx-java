@@ -1,7 +1,7 @@
 package com.jn.langx.util.bloom;
 
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.StreamingHasher;
 import com.jn.langx.util.io.Writable;
 
 import java.io.DataInput;
@@ -55,7 +55,7 @@ public abstract class Filter implements Writable {
      *
      * @param vectorSize The vector size of <i>this</i> filter.
      * @param nbHash     The number of hash functions to consider.
-     * @param hasherName type of the hashing function (see {@link Hasher}).
+     * @param hasherName type of the hashing function (see {@link StreamingHasher}).
      */
     protected Filter(int vectorSize, int nbHash, String hasherName) {
         this.vectorSize = vectorSize;
