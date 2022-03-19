@@ -5,8 +5,8 @@ import com.jn.langx.registry.Registry;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.hash.impl.HMacHasher;
-import com.jn.langx.util.hash.impl.MessageDigestHasher;
+import com.jn.langx.util.hash.streaming.HMacHasher;
+import com.jn.langx.util.hash.streaming.MessageDigestHasher;
 
 import java.util.ServiceLoader;
 

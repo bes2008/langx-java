@@ -1,25 +1,22 @@
-package com.jn.langx.util.hash.impl;
+package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.util.hash.AbstractStreamingHasher;
 import com.jn.langx.util.hash.Hasher;
 
-public class Fnv1_64Hasher extends AbstractStreamingHasher {
-    private final static long INITIAL_VALUE = 0xcbf29ce484222325L;
-    private final static long MULTIPLIER = 0x100000001b3L;
+public class Fnv1_32Hasher extends AbstractStreamingHasher {
+    private final static int INITIAL_VALUE = 0x811C9DC5;
+    private final static int MULTIPLIER = 16777619;
 
-    private long hash = INITIAL_VALUE;
+    private int hash = INITIAL_VALUE;
 
-
-    @Override
     public void update(byte b) {
         hash *= MULTIPLIER;
-        hash ^= 0xffL & b;
+        hash ^= 0xff & b;
     }
-
 
     @Override
     public long getHash() {
-        long h = hash;
+        long h = hash & 0xffffffffL;
         reset();
         return h;
     }
@@ -31,6 +28,6 @@ public class Fnv1_64Hasher extends AbstractStreamingHasher {
 
     @Override
     protected Hasher createInstance(long seed) {
-        return new Fnv1_64Hasher();
+        return new Fnv1_32Hasher();
     }
 }

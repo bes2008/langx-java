@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.jn.langx.util.hash.impl;
+package com.jn.langx.util.hash.streaming;
 
 
 import com.jn.langx.util.hash.AbstractStreamingHasher;
