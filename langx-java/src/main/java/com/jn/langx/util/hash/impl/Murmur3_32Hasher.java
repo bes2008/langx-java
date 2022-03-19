@@ -1,7 +1,9 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.hash.impl;
 
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.hash.AbstractStreamingHasher;
+import com.jn.langx.util.hash.Hasher;
 
 public class Murmur3_32Hasher extends AbstractStreamingHasher {
     private static final int CHUNK_SIZE = 4;

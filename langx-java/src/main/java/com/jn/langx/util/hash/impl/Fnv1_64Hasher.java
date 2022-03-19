@@ -1,4 +1,7 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.hash.impl;
+
+import com.jn.langx.util.hash.AbstractStreamingHasher;
+import com.jn.langx.util.hash.Hasher;
 
 public class Fnv1_64Hasher extends AbstractStreamingHasher {
     private final static long INITIAL_VALUE = 0xcbf29ce484222325L;

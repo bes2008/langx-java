@@ -1,5 +1,9 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.hash.impl;
 
+
+import com.jn.langx.util.hash.AbstractStreamingHasher;
+import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.StreamingHasher;
 
 /**
  * Produces 32-bit hash for hash table lookup.

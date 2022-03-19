@@ -2,7 +2,7 @@ package com.jn.langx.test.util.hash;
 
 import com.jn.langx.util.hash.StreamingHasher;
 import com.jn.langx.util.hash.Hashs;
-import com.jn.langx.util.hash.Murmur3_32Hasher;
+import com.jn.langx.util.hash.impl.Murmur3_32Hasher;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 

@@ -1,8 +1,10 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.hash.impl;
+
+import com.jn.langx.util.hash.Hasher;
 
 import java.util.zip.Adler32;
 
-public class Adler32Hasher extends ChecksumHasher{
+public class Adler32Hasher extends ChecksumHasher {
     public Adler32Hasher() {
         super(new Adler32());
     }

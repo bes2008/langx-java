@@ -1,4 +1,7 @@
-package com.jn.langx.util.hash;
+package com.jn.langx.util.hash.impl;
+
+import com.jn.langx.util.hash.AbstractStreamingHasher;
+import com.jn.langx.util.hash.Hasher;
 
 import java.util.zip.Checksum;
 
