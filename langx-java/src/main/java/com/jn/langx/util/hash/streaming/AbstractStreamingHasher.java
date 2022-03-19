@@ -1,30 +1,11 @@
 package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.hash.StreamingHasher;
-import com.jn.langx.util.reflect.Reflects;
 
-public abstract class AbstractStreamingHasher implements StreamingHasher {
-    protected long seed;
+public abstract class AbstractStreamingHasher extends AbstractHasher implements StreamingHasher {
 
-    /*********************************************************************************
-     * 一次性计算
-     *********************************************************************************/
-
-    /**
-     * 计算hash
-     * @param bytes input bytes
-     * @return hash值
-     */
-    public long hash(byte[] bytes) {
-        return hash( bytes, bytes.length, 0);
-    }
-
-    public long hash(byte[] bytes, long seed) {
-        return hash( bytes, bytes.length, seed);
-    }
 
     /**
      * 一次性计算 hash
@@ -46,14 +27,6 @@ public abstract class AbstractStreamingHasher implements StreamingHasher {
     /****************************************************************************
      *  下面的几个方式，用于 流式计算
      ****************************************************************************/
-
-    /**
-     *
-     * @param seed 也是初始值
-     */
-    public void setSeed(long seed) {
-        this.seed = seed;
-    }
 
     /**
      * 用于流式计算
@@ -111,33 +84,4 @@ public abstract class AbstractStreamingHasher implements StreamingHasher {
         return retVal;
     }
 
-
-
-    /********************************************************************************
-     *  其他方法
-     ********************************************************************************/
-
-    /**
-     *
-     * @return the hasher name
-     */
-    @Override
-    public String getName() {
-        String name = Reflects.getSimpleClassName(this);
-        if (name.endsWith("Hasher")) {
-            name = name.substring(0, name.length() - "Hasher".length());
-        }
-        name = Strings.lowerCase(name);
-        return name;
-    }
-
-    @Override
-    public final Hasher get(Long seed) {
-        if (seed == null) {
-            seed = 0L;
-        }
-        return createInstance(seed);
-    }
-
-    protected abstract Hasher createInstance(long seed);
 }

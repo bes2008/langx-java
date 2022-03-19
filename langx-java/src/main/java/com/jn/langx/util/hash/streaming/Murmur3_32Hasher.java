@@ -2,7 +2,7 @@ package com.jn.langx.util.hash.streaming;
 
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 
 public class Murmur3_32Hasher extends AbstractStreamingHasher {
     private static final int CHUNK_SIZE = 4;
@@ -50,7 +50,7 @@ public class Murmur3_32Hasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         return new Murmur3_32Hasher();
     }
 

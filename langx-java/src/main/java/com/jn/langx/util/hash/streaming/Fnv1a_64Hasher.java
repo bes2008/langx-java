@@ -17,7 +17,7 @@
 package com.jn.langx.util.hash.streaming;
 
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 
 /**
  * Hash function FNV-1a (http://www.isthe.com/chongo/tech/comp/fnv).
@@ -47,7 +47,7 @@ public class Fnv1a_64Hasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         return new Fnv1a_64Hasher();
     }
 }

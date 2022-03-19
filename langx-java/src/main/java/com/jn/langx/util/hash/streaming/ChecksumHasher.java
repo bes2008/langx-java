@@ -1,7 +1,5 @@
 package com.jn.langx.util.hash.streaming;
 
-import com.jn.langx.util.hash.Hasher;
-
 import java.util.zip.Checksum;
 
 public abstract class ChecksumHasher extends AbstractStreamingHasher {
@@ -34,8 +32,4 @@ public abstract class ChecksumHasher extends AbstractStreamingHasher {
         return r;
     }
 
-    @Override
-    protected Hasher createInstance(long seed) {
-        throw new UnsupportedOperationException();
-    }
 }

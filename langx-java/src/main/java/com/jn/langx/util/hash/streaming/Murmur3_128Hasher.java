@@ -1,7 +1,7 @@
 package com.jn.langx.util.hash.streaming;
 
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -30,7 +30,7 @@ public class Murmur3_128Hasher extends AdvancedStreamingHasher {
 
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         return new Murmur3_128Hasher();
     }
 

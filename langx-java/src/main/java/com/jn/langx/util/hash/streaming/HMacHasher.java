@@ -1,7 +1,7 @@
 package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.security.crypto.mac.HMacs;
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 
 import javax.crypto.Mac;
 
@@ -32,7 +32,7 @@ public class HMacHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         throw new UnsupportedOperationException();
     }
 }

@@ -1,7 +1,7 @@
 package com.jn.langx.util.hash.streaming;
 
 import com.jn.langx.security.crypto.digest.MessageDigests;
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 
 import java.security.MessageDigest;
 
@@ -32,7 +32,7 @@ public class MessageDigestHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         throw new UnsupportedOperationException();
     }
 }

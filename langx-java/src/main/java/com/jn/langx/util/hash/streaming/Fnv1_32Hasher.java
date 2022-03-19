@@ -1,6 +1,6 @@
 package com.jn.langx.util.hash.streaming;
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 
 public class Fnv1_32Hasher extends AbstractStreamingHasher {
     private final static int INITIAL_VALUE = 0x811C9DC5;
@@ -26,7 +26,7 @@ public class Fnv1_32Hasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         return new Fnv1_32Hasher();
     }
 }

@@ -1,7 +1,7 @@
 package com.jn.langx.util.hash.streaming;
 
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.hash.StreamingHasher;
 
 /**
@@ -95,7 +95,7 @@ public class Murmur2Hasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         return new Murmur2Hasher();
     }
 }

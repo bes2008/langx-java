@@ -1,6 +1,7 @@
 package com.jn.langx.util.hash.streaming;
 
-import com.jn.langx.util.hash.Hasher;
+
+import com.jn.langx.util.hash.AbstractHasher;
 
 public class Crc32cHasher extends AbstractStreamingHasher {
 
@@ -25,7 +26,7 @@ public class Crc32cHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         return new Crc32cHasher();
     }
 

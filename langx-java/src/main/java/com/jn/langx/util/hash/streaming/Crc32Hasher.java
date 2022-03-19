@@ -1,6 +1,6 @@
 package com.jn.langx.util.hash.streaming;
 
-import com.jn.langx.util.hash.Hasher;
+import com.jn.langx.util.hash.AbstractHasher;
 
 import java.util.zip.CRC32;
 
@@ -10,7 +10,7 @@ public class Crc32Hasher extends ChecksumHasher {
     }
 
     @Override
-    protected Hasher createInstance(long seed) {
+    protected AbstractHasher createInstance() {
         return new Crc32Hasher();
     }
 }
