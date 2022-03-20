@@ -82,27 +82,27 @@ public class Hashs {
      * @param hasherName predefined hash type
      * @return hash function instance, or null if type is invalid
      */
-    public static Hasher getHasher(String hasherName, Object initParams) {
+    public static <H extends Hasher> H getHasher(String hasherName, Object initParams) {
         if ("murmur".equals(hasherName)) {
             hasherName = "murmur2";
         }
         Hasher factory = hasherFactoryRegistry.get(hasherName);
         if (factory != null) {
-            return factory.get(initParams);
+            return (H)factory.get(initParams);
         }
         if (hasherName.startsWith(HMacHasher.HASHER_NAME_PREFIX)) {
             String hmac = Strings.substring(hasherName, HMacHasher.HASHER_NAME_PREFIX.length());
             Object params = new Object[]{hmac, initParams};
-            return new HMacHasher().get(params);
+            return  (H)new HMacHasher().get(params);
         }
         if (hasherName.startsWith(MessageDigestHasher.HASHER_NAME_PREFIX)) {
             String digestAlgorithm = Strings.substring(hasherName, MessageDigestHasher.HASHER_NAME_PREFIX.length());
-            return new MessageDigestHasher(digestAlgorithm);
+            return (H) new MessageDigestHasher(digestAlgorithm);
         }
         Hasher hasher = null;
         try {
             hasher = new HMacHasher(hasherName, (byte[]) initParams);
-            return hasher;
+            return (H) hasher;
         } catch (SecurityException ex) {
             Throwable cause = ex.getCause();
             if (cause instanceof NoSuchAlgorithmException) {
@@ -113,7 +113,7 @@ public class Hashs {
         }
         try {
             hasher = new MessageDigestHasher(hasherName);
-            return hasher;
+            return (H) hasher;
         } catch (SecurityException ex) {
             Throwable cause = ex.getCause();
             if (cause instanceof NoSuchAlgorithmException) {
