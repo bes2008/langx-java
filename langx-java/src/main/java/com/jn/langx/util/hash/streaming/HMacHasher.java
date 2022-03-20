@@ -39,7 +39,7 @@ public class HMacHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected void reset() {
+    public void reset() {
         super.reset();
         this.mac.reset();
     }

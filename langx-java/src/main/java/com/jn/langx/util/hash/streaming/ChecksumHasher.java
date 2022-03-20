@@ -23,7 +23,7 @@ public abstract class ChecksumHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected void reset() {
+    public void reset() {
         super.reset();
         this.checksum.reset();
     }

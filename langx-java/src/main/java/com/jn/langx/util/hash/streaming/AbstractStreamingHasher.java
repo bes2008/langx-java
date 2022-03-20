@@ -43,7 +43,7 @@ public abstract class AbstractStreamingHasher extends AbstractHasher implements 
     protected void update(byte b) {
     }
 
-    protected void reset() {
+    public void reset() {
         setSeed(0);
     }
 

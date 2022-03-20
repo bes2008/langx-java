@@ -23,7 +23,7 @@ public class MessageDigestHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected void reset() {
+    public void reset() {
         super.reset();
         this.messageDigester.reset();
     }

@@ -25,7 +25,7 @@ public class Crc32cHasher extends AbstractStreamingHasher {
     }
 
     @Override
-    protected void reset() {
+    public void reset() {
         super.reset();
         this.crc = 0;
     }

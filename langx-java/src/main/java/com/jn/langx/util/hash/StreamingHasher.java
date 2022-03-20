@@ -26,4 +26,6 @@ public interface StreamingHasher extends Hasher {
     void update(byte[] bytes, int off, int len);
 
     long getHash();
+
+    void reset();
 }
