@@ -1,6 +1,7 @@
-package com.jn.langx.util.hash.streaming;
+package com.jn.langx.util.hash.streaming.fnv;
 
 import com.jn.langx.util.hash.AbstractHasher;
+import com.jn.langx.util.hash.streaming.AbstractStreamingHasher;
 
 /**
  * @since 4.4.0

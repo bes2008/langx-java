@@ -1,6 +1,7 @@
-package com.jn.langx.util.hash.streaming;
+package com.jn.langx.util.hash.streaming.crc32;
 
 import com.jn.langx.util.hash.AbstractHasher;
+import com.jn.langx.util.hash.streaming.ChecksumHasher;
 
 import java.util.zip.CRC32;
 

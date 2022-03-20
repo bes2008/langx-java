@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.jn.langx.util.hash.streaming;
+package com.jn.langx.util.hash.streaming.fnv;
 
 
 import com.jn.langx.util.hash.AbstractHasher;
+import com.jn.langx.util.hash.streaming.AbstractStreamingHasher;
 
 /**
  * Hash function FNV-1a (http://www.isthe.com/chongo/tech/comp/fnv).

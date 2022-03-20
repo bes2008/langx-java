@@ -1,7 +1,8 @@
-package com.jn.langx.util.hash.streaming;
+package com.jn.langx.util.hash.streaming.murmur;
 
 
 import com.jn.langx.util.hash.AbstractHasher;
+import com.jn.langx.util.hash.streaming.AdvancedStreamingHasher;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

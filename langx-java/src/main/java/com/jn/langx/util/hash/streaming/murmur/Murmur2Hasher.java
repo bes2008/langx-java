@@ -1,8 +1,9 @@
-package com.jn.langx.util.hash.streaming;
+package com.jn.langx.util.hash.streaming.murmur;
 
 
 import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.hash.StreamingHasher;
+import com.jn.langx.util.hash.streaming.AbstractStreamingHasher;
 
 /**
  * This is a very fast, non-cryptographic hash suitable for general hash-based
