@@ -9,7 +9,9 @@ import com.jn.langx.util.hash.StreamingHasher;
  */
 public abstract class AbstractStreamingHasher extends AbstractHasher implements StreamingHasher {
 
-
+    public AbstractStreamingHasher(){
+        reset();
+    }
     /**
      * 一次性计算 hash
      * <p>

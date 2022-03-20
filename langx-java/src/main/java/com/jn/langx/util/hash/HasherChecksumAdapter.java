@@ -2,6 +2,9 @@ package com.jn.langx.util.hash;
 
 import java.util.zip.Checksum;
 
+/**
+ * @since 4.4.1
+ */
 public class HasherChecksumAdapter implements Checksum {
     private StreamingHasher hasher;
 

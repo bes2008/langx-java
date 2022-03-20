@@ -27,5 +27,8 @@ public interface StreamingHasher extends Hasher {
 
     long getHash();
 
+    /**
+     * @since 4.4.1
+     */
     void reset();
 }

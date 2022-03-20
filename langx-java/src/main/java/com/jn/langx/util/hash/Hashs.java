@@ -86,7 +86,7 @@ public class Hashs {
         if ("murmur".equals(hasherName)) {
             hasherName = "murmur2";
         }
-        Hasher factory = hasherFactoryRegistry.get(hasherName);
+        Hasher factory = hasherFactoryRegistry.get(Strings.lowerCase(hasherName));
         if (factory != null) {
             return (H)factory.get(initParams);
         }

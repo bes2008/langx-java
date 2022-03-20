@@ -9,3 +9,13 @@ com.jn.langx.util.hash.streaming.Fnv1_32Hasher
 com.jn.langx.util.hash.streaming.Fnv1_64Hasher
 com.jn.langx.util.hash.streaming.Fnv1a_32Hasher
 com.jn.langx.util.hash.streaming.Fnv1a_64Hasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_ansiHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_ccitt_falseHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_ccittHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_dnpHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_ibmHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_maximHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_modbusHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_modemHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_usbHasher
+com.jn.langx.util.hash.streaming.crc16.Crc16_x25Hasher
