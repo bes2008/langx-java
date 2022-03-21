@@ -9,7 +9,7 @@ public class CrcHasher extends AbstractStreamingHasher {
     private long h;
 
     public CrcHasher(String name) {
-        CrcAlgoMetadata metadata = CRCs.ALGO_METADATA_REGISTRY.get(name);
+        CrcAlgoMetadata metadata = CRCs.getCrcAlgoMetadata(name);
         if (metadata == null) {
             throw new UnsupportedHashAlgorithmException(name);
         }
@@ -37,8 +37,7 @@ public class CrcHasher extends AbstractStreamingHasher {
 
     @Override
     protected AbstractHasher createInstance(Object initParams) {
-        String name = (String) initParams;
-        return new CrcHasher(name);
+        return new CrcHasher(this.calculator.getMetadata().getName());
     }
 
     @Override

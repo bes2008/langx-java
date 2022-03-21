@@ -6,8 +6,8 @@ import com.jn.langx.util.function.Consumer;
 
 import java.util.List;
 
-class CRCs {
-    static final GenericRegistry<CrcAlgoMetadata> ALGO_METADATA_REGISTRY;
+public class CRCs {
+    private static final GenericRegistry<CrcAlgoMetadata> ALGO_METADATA_REGISTRY;
 
     static {
         ALGO_METADATA_REGISTRY = new GenericRegistry<CrcAlgoMetadata>();
@@ -67,5 +67,13 @@ class CRCs {
             }
         });
 
+    }
+
+    public static CrcAlgoMetadata getCrcAlgoMetadata(String name){
+        return ALGO_METADATA_REGISTRY.get(name);
+    }
+
+    public static List<String> getCrcNames(){
+        return ALGO_METADATA_REGISTRY.names();
     }
 }

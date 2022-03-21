@@ -8,10 +8,13 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.hash.streaming.HMacHasher;
 import com.jn.langx.util.hash.streaming.MessageDigestHasher;
+import com.jn.langx.util.hash.streaming.crc.CRCs;
+import com.jn.langx.util.hash.streaming.crc.CrcHasher;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.ServiceLoader;
 
 /**
@@ -23,6 +26,7 @@ public class Hashs {
 
     static {
         final GenericRegistry<Hasher> registry = new GenericRegistry<Hasher>();
+        registry.init();
         Collects.forEach(ServiceLoader.<Hasher>load(Hasher.class), new Consumer<Hasher>() {
             @Override
             public void accept(Hasher factory) {
@@ -30,6 +34,16 @@ public class Hashs {
             }
         });
         hasherFactoryRegistry = registry;
+
+        // CRC
+        List<String> crcNames = CRCs.getCrcNames();
+        Collects.forEach(crcNames, new Consumer<String>() {
+            @Override
+            public void accept(String name) {
+                hasherFactoryRegistry.register(Strings.lowerCase(name), new CrcHasher(name));
+            }
+        });
+
     }
 
     /**
@@ -88,13 +102,13 @@ public class Hashs {
         }
         Hasher factory = hasherFactoryRegistry.get(Strings.lowerCase(hasherName));
         if (factory != null) {
-            return (H)factory.get(initParams);
+            return (H) factory.get(initParams);
         }
 
         if (hasherName.startsWith(HMacHasher.HASHER_NAME_PREFIX)) {
             String hmac = Strings.substring(hasherName, HMacHasher.HASHER_NAME_PREFIX.length());
             Object params = new Object[]{hmac, initParams};
-            return  (H)new HMacHasher().get(params);
+            return (H) new HMacHasher().get(params);
         }
         if (hasherName.startsWith(MessageDigestHasher.HASHER_NAME_PREFIX)) {
             String digestAlgorithm = Strings.substring(hasherName, MessageDigestHasher.HASHER_NAME_PREFIX.length());

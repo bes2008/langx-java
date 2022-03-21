@@ -7,4 +7,3 @@ com.jn.langx.util.hash.streaming.fnv.Fnv1_32Hasher
 com.jn.langx.util.hash.streaming.fnv.Fnv1_64Hasher
 com.jn.langx.util.hash.streaming.fnv.Fnv1a_32Hasher
 com.jn.langx.util.hash.streaming.fnv.Fnv1a_64Hasher
-com.jn.langx.util.hash.streaming.crc.CrcHasher

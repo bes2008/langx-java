@@ -25,7 +25,9 @@ public abstract class ChecksumHasher extends AbstractStreamingHasher {
     @Override
     public void reset() {
         super.reset();
-        this.checksum.reset();
+        if(this.checksum!=null) {
+            this.checksum.reset();
+        }
     }
 
     @Override
