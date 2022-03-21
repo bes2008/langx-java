@@ -1,5 +1,6 @@
 package com.jn.langx.util.hash.streaming.crc;
 
+import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.hash.streaming.AbstractStreamingHasher;
 
 public class CrcHasher extends AbstractStreamingHasher {
@@ -28,5 +29,16 @@ public class CrcHasher extends AbstractStreamingHasher {
         long r = this.calculator.getHashResult(this.h);
         reset();
         return r;
+    }
+
+    @Override
+    protected AbstractHasher createInstance(Object initParams) {
+        String name = (String)initParams;
+        return new CrcHasher(name);
+    }
+
+    @Override
+    public String getName() {
+        return this.calculator.getMetadata().getName();
     }
 }
