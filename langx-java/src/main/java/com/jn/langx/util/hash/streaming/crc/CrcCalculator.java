@@ -17,17 +17,26 @@ class CrcCalculator {
         createTable();
     }
 
-    public long calc(byte[] data) {
-        return calc(data, 0, data.length);
+    long hash(byte[] data) {
+        return hash(data, 0, data.length);
     }
 
-    public long calc(byte[] data, int offset, int length) {
+    long hash(byte[] data, int offset, int length) {
+        long init = getInit();
+        long hash = update(init, data, offset, length);
+        return getHashResult(hash);
+    }
+
+    long getInit(){
         long init = metadata.isRefOut() ? CrcCalculator.reverseBits(metadata.getInit(), hashSize) : metadata.getInit();
-        long hash = computeCrc(init, data, offset, length);
+        return init;
+    }
+
+    long getHashResult(long hash){
         return (hash ^ metadata.getXorOut()) & mask;
     }
 
-    private long computeCrc(long init, byte[] data, int offset, int length) {
+    long update(long init, byte[] data, int offset, int length) {
         long crc = init;
 
         if (metadata.isRefOut()) {
