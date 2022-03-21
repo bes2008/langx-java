@@ -1,4 +1,4 @@
-package com.jn.langx.util.hash.streaming.crc32;
+package com.jn.langx.util.hash.streaming.crc;
 
 import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.hash.streaming.ChecksumHasher;

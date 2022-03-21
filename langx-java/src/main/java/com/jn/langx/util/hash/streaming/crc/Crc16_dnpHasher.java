@@ -1,14 +1,13 @@
-package com.jn.langx.util.hash.streaming.crc16;
+package com.jn.langx.util.hash.streaming.crc;
 
 /**
- * CRC16_MAXIM：多项式x16+x15+x2+1（0x8005），初始值0x0000，低位在前，高位在后，结果与0xFFFF异或
- * 0xA001是0x8005按位颠倒后的结果
+ * CRC16_DNP：多项式x16+x13+x12+x11+x10+x8+x6+x5+x2+1（0x3D65），初始值0x0000，低位在前，高位在后，结果与0xFFFF异或
+ * 0xA6BC是0x3D65按位颠倒后的结果
  *
  * @since 4.4.1
  */
-public class Crc16_maximHasher extends AbstractCrc16Hasher {
-
-    private static final int WC_POLY = 0xa001;
+public class Crc16_dnpHasher extends AbstractCrc16Hasher {
+    private static final int WC_POLY = 0xA6BC;
 
     @Override
     public void update(byte[] b, int off, int len) {

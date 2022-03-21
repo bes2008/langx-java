@@ -1,14 +1,19 @@
-package com.jn.langx.util.hash.streaming.crc16;
+package com.jn.langx.util.hash.streaming.crc;
+
 
 /**
- * CRC-CCITT (XModem)
- * CRC16_XMODEM：多项式x16+x12+x5+1（0x1021），初始值0x0000，低位在后，高位在前，结果与0x0000异或
+ * CRC16_ANSI
  *
  * @since 4.4.1
  */
-public class Crc16_modemHasher extends AbstractCrc16Hasher {
-    // 0001 0000 0010 0001 (0, 5, 12)
+public class Crc16_ccitt_falseHasher extends AbstractCrc16Hasher {
     private static final int WC_POLY = 0x1021;
+
+    @Override
+    public void reset() {
+        super.reset();
+        this.wCRCin = 0xffff;
+    }
 
     @Override
     public void update(byte[] b, int off, int len) {
@@ -17,9 +22,9 @@ public class Crc16_modemHasher extends AbstractCrc16Hasher {
 
     @Override
     public long getHash() {
-        int r = (int) super.getHash();
-        r ^= 0xffff;
-        return r;
+        int v = (int) super.getHash();
+        v ^= 0xffff;
+        return v;
     }
 
     @Override

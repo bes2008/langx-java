@@ -1,4 +1,4 @@
-package com.jn.langx.util.hash.streaming.crc16;
+package com.jn.langx.util.hash.streaming.crc;
 
 import com.jn.langx.util.hash.streaming.AbstractStreamingHasher;
 

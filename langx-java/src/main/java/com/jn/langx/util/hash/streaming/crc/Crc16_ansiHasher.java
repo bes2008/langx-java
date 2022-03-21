@@ -1,4 +1,4 @@
-package com.jn.langx.util.hash.streaming.crc16;
+package com.jn.langx.util.hash.streaming.crc;
 
 public class Crc16_ansiHasher extends AbstractCrc16Hasher {
     private static final int WC_POLY = 0xa001;
