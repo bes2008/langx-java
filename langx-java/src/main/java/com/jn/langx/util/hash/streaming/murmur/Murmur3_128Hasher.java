@@ -20,7 +20,7 @@ public class Murmur3_128Hasher extends AdvancedStreamingHasher {
 
     public Murmur3_128Hasher() {
         super(CHUNK_SIZE);
-        setSeed(0);
+        reset();
     }
 
     @Override

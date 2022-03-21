@@ -18,6 +18,10 @@ public class Murmur3_32Hasher extends AbstractStreamingHasher {
     private int shift;
     private int length;
 
+    public Murmur3_32Hasher(){
+        reset();
+    }
+
     @Override
     public void update(byte[] bytes, int off, int len) {
         Preconditions.checkPositionIndexes(off, off + len, bytes.length);
