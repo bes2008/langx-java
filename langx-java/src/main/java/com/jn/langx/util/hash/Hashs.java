@@ -25,7 +25,7 @@ public class Hashs {
     private final static Registry<String, Hasher> hasherFactoryRegistry;
 
     static {
-        final GenericRegistry<Hasher> registry = new GenericRegistry<Hasher>();
+        final GenericRegistry<Hasher> registry = new GenericRegistry<Hasher>(Collects.<String, Hasher>emptyHashMap(true));
         registry.init();
         Collects.forEach(ServiceLoader.<Hasher>load(Hasher.class), new Consumer<Hasher>() {
             @Override

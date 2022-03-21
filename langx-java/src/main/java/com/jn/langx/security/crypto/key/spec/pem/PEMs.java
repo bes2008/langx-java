@@ -13,6 +13,7 @@ import com.jn.langx.security.crypto.key.spec.der.EcPrivateKeySpecParser;
 import com.jn.langx.security.crypto.key.spec.der.RsaPkcs1PrivateKeySpecParser;
 import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
@@ -52,7 +53,7 @@ public class PEMs extends Securitys {
     private static final GenericRegistry<PemKeyFormat> DEFAULT_PEM_STYLE_REGISTRY;
 
     static {
-        DEFAULT_PEM_STYLE_REGISTRY = new GenericRegistry<PemKeyFormat>();
+        DEFAULT_PEM_STYLE_REGISTRY = new GenericRegistry<PemKeyFormat>(Collects.<String, PemKeyFormat>emptyHashMap(true));
         // PKCS#1 是 专门的 RSA 规范格式
         DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(PKCS1, "-----BEGIN RSA PRIVATE KEY-----", "-----END RSA PRIVATE KEY-----"));
         // PKCS#8 是公共的 非对称加密算法的格式，RSA、DSA、EC都可以用
@@ -64,7 +65,7 @@ public class PEMs extends Securitys {
         // Linux系统里，OPEN SSL 这个工具，生成的DSA的头，也可以是 这样的：
         DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(OPENSSL_EC, "-----BEGIN EC PRIVATE KEY-----", "-----END EC PRIVATE KEY-----"));
         DEFAULT_PEM_STYLE_REGISTRY.register(new PemKeyFormat(OPENSSL_EC_PARAMS, "-----BEGIN EC PARAMETERS-----", "-----END EC PARAMETERS-----"));
-
+        DEFAULT_PEM_STYLE_REGISTRY.init();
     }
 
     public static GenericRegistry<PemKeyFormat> getDefaultPemStyleRegistry() {
