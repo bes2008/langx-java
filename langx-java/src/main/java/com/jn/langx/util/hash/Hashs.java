@@ -90,6 +90,7 @@ public class Hashs {
         if (factory != null) {
             return (H)factory.get(initParams);
         }
+
         if (hasherName.startsWith(HMacHasher.HASHER_NAME_PREFIX)) {
             String hmac = Strings.substring(hasherName, HMacHasher.HASHER_NAME_PREFIX.length());
             Object params = new Object[]{hmac, initParams};
