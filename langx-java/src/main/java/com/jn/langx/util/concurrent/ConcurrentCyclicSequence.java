@@ -9,7 +9,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
  */
 
-package com.jn.langx.util.collection;
+package com.jn.langx.util.concurrent;
 
 import com.jn.langx.util.Objs;
 

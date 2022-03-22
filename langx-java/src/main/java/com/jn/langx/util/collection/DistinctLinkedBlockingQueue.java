@@ -1,5 +1,7 @@
 package com.jn.langx.util.collection;
 
+import com.jn.langx.util.concurrent.ConcurrentHashSet;
+
 import java.util.Collection;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
