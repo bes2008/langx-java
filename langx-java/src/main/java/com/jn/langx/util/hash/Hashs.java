@@ -3,6 +3,7 @@ package com.jn.langx.util.hash;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.registry.Registry;
 import com.jn.langx.security.SecurityException;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -17,7 +18,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import static com.hazelcast.internal.util.Preconditions.checkPositive;
 import static java.lang.Math.abs;
 
 /**
@@ -153,9 +153,11 @@ public class Hashs {
      * @param length the length of the array/list
      * @return the mod of the hash
      * @throws IllegalArgumentException if length is smaller than 1.
+     *
+     * @since 4.4.1
      */
     public static int hashToIndex(int hash, int length) {
-        checkPositive("length", length);
+        Preconditions.positive(length,"length");
 
         if (hash == Integer.MIN_VALUE) {
             return 0;

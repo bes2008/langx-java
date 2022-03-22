@@ -15,8 +15,8 @@
  */
 package com.jn.langx.util.io.file;
 
-import com.hazelcast.core.HazelcastException;
-import com.hazelcast.internal.util.EmptyStatement;
+import com.jn.langx.exception.RuntimeIOException;
+import com.jn.langx.util.io.IOs;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -27,7 +27,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 
-import static com.hazelcast.internal.nio.IOUtil.closeResource;
 
 /**
  * A DirectoryLock represents a lock on a specific directory.
@@ -74,7 +73,7 @@ public final class DirectoryLock {
         try {
             lock.release();
         } catch (ClosedChannelException e) {
-            EmptyStatement.ignore(e);
+            // ignore it
         } catch (IOException e) {
             logger.error("Problem while releasing the lock on " + lockFile(), e);
         }
@@ -95,7 +94,7 @@ public final class DirectoryLock {
      *
      * @param dir    the directory
      * @param logger logger
-     * @throws HazelcastException If lock file cannot be created or it's already locked
+     * @throws RuntimeIOException If lock file cannot be created or it's already locked
      */
     public static DirectoryLock lockForDirectory(File dir, Logger logger) {
         File lockFile = new File(dir, FILE_NAME);
@@ -111,7 +110,7 @@ public final class DirectoryLock {
         try {
             return new RandomAccessFile(lockFile, "rw").getChannel();
         } catch (IOException e) {
-            throw new HazelcastException("Cannot create lock file " + lockFile.getAbsolutePath(), e);
+            throw new RuntimeIOException("Cannot create lock file " + lockFile.getAbsolutePath(), e);
         }
     }
 
@@ -120,18 +119,18 @@ public final class DirectoryLock {
         try {
             fileLock = channel.tryLock();
             if (fileLock == null) {
-                throw new HazelcastException("Cannot acquire lock on " + lockFile.getAbsolutePath()
+                throw new RuntimeIOException("Cannot acquire lock on " + lockFile.getAbsolutePath()
                         + ". Directory is already being used by another member.");
             }
             return fileLock;
         } catch (OverlappingFileLockException e) {
-            throw new HazelcastException("Cannot acquire lock on " + lockFile.getAbsolutePath()
+            throw new RuntimeException("Cannot acquire lock on " + lockFile.getAbsolutePath()
                     + ". Directory is already being used by another member.", e);
         } catch (IOException e) {
-            throw new HazelcastException("Unknown failure while acquiring lock on " + lockFile.getAbsolutePath(), e);
+            throw new RuntimeIOException("Unknown failure while acquiring lock on " + lockFile.getAbsolutePath(), e);
         } finally {
             if (fileLock == null) {
-                closeResource(channel);
+                IOs.close(channel);
             }
         }
     }
