@@ -17,6 +17,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.ServiceLoader;
 
+import static com.hazelcast.internal.util.Preconditions.checkPositive;
+import static java.lang.Math.abs;
+
 /**
  * @since 4.4.0
  */
@@ -138,5 +141,26 @@ public class Hashs {
             }
         }
         throw new UnsupportedHashAlgorithmException(hasherName);
+    }
+
+    /**
+     * A function that calculates the index (e.g. to be used in an array/list) for a given hash. The returned value will always
+     * be equal or larger than 0 and will always be smaller than 'length'.
+     *
+     * The reason this function exists is to deal correctly with negative and especially the Integer.MIN_VALUE; since that can't
+     * be used safely with a Math.abs function.
+     *
+     * @param length the length of the array/list
+     * @return the mod of the hash
+     * @throws IllegalArgumentException if length is smaller than 1.
+     */
+    public static int hashToIndex(int hash, int length) {
+        checkPositive("length", length);
+
+        if (hash == Integer.MIN_VALUE) {
+            return 0;
+        }
+
+        return abs(hash) % length;
     }
 }
