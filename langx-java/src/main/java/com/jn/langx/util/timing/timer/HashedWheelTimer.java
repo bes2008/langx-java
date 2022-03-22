@@ -4,7 +4,7 @@ package com.jn.langx.util.timing.timer;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.concurrent.ImmediateExecutor;
+import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.memory.leak.ResourceLeakDetector;

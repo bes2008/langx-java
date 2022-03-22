@@ -1,4 +1,4 @@
-package com.jn.langx.util.concurrent;
+package com.jn.langx.util.concurrent.executor;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
