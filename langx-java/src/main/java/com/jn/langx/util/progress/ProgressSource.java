@@ -4,8 +4,11 @@ import com.jn.langx.AbstractNameable;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 
 /**
  * 这个类可以单独使用，也可以与 ProgressTracer, ProgressListener, ProgressEvent 一起配合使用
@@ -13,6 +16,7 @@ import com.jn.langx.util.Preconditions;
  * @since 4.4.2
  */
 public class ProgressSource extends AbstractNameable {
+    private static final Logger logger = Loggers.getLogger(ProgressSource.class);
     private static final String SEP = "__PROGRESS__";
     @NotEmpty
     private String eventDomain;
@@ -69,6 +73,9 @@ public class ProgressSource extends AbstractNameable {
             this.tracer.begin(this);
         }
         this.state = State.UPDATING;
+        if (logger.isDebugEnabled()) {
+            logger.debug(this.toString());
+        }
     }
 
     public void forward(long increment) {
@@ -93,6 +100,9 @@ public class ProgressSource extends AbstractNameable {
             Preconditions.checkArgument(expected >= this.progress);
             this.expected = expected;
         }
+        if (logger.isDebugEnabled()) {
+            logger.debug(this.toString());
+        }
         if (this.tracer != null) {
             this.tracer.updateProcess(this);
         }
@@ -101,9 +111,16 @@ public class ProgressSource extends AbstractNameable {
     public void finish() {
         this.state = State.FINISHED;
         this.progress = this.expected;
+        if (logger.isDebugEnabled()) {
+            logger.debug(this.toString());
+        }
         if (this.tracer != null) {
             this.tracer.finish(this);
         }
+    }
+
+    public State getState() {
+        return this.state;
     }
 
     public Object getRef() {
@@ -138,12 +155,7 @@ public class ProgressSource extends AbstractNameable {
 
     @Override
     public String toString() {
-        return "ProgressSource{" +
-                "name='" + name + '\'' +
-                ", progress=" + progress +
-                ", expected=" + expected +
-                ", state=" + state.name() +
-                '}';
+        return StringTemplates.formatWithPlaceholder("progress trace: {}, current: {}, expected: {}, percent: {}, state: {}", getName(), getProgress(), getExpected(), percent(), getState());
     }
 
     private enum State {
