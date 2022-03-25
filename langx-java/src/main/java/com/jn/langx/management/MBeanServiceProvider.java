@@ -1,38 +1,37 @@
 package com.jn.langx.management;
 
-import com.jn.langx.registry.Registry;
+import com.jn.langx.annotation.Singleton;
+import com.jn.langx.registry.AbstractRegistry;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MBeanServiceProvider implements Registry<Class, MBeanService> {
-    private static final Map<Class<?>, MBeanService> registry = new ConcurrentHashMap<Class<?>, MBeanService>();
+@Singleton
+public class MBeanServiceProvider extends AbstractRegistry<Class, MBeanService> {
+    private static final MBeanServiceProvider INSTANCE = new MBeanServiceProvider();
+
+    private MBeanServiceProvider() {
+        super(new ConcurrentHashMap<Class, MBeanService>());
+    }
 
     @Override
     public void register(MBeanService mBeanService) {
         // ignore it
     }
 
-    @Override
-    public void register(Class key, MBeanService mBeanService) {
-        registry.put(key, mBeanService);
-    }
-
-    @Override
-    public MBeanService get(Class input) {
-        return registry.get(input);
+    public static MBeanServiceProvider getInstance() {
+        return INSTANCE;
     }
 
     public static <S extends MBeanService> S getService(final Class<S> serviceClazz, final ClassLoader classLoader) {
         if (serviceClazz == null) {
             return null;
         }
-        final MBeanService service = registry.get(serviceClazz);
+        final MBeanService service = INSTANCE.get(serviceClazz);
         if (service != null && Reflects.isSubClassOrEquals(serviceClazz, service.getClass())) {
             return (S) service;
         }
@@ -48,7 +47,7 @@ public class MBeanServiceProvider implements Registry<Class, MBeanService> {
                 try {
                     final S svc = (S) iter.next();
                     if (svc.isServiceMatch()) {
-                        registry.put((Class<?>) serviceClazz, svc);
+                        INSTANCE.register((Class<?>) serviceClazz, svc);
                         return svc;
                     }
                     continue;

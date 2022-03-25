@@ -248,6 +248,17 @@ public class ParameterServiceRegistry implements Registry<String, ParameterSuppl
     }
 
     @Override
+    public void unregister(String key) {
+        methodParameterSupplierRegistry.remove(key);
+        constructorParameterSupplierRegistry.remove(key);
+    }
+
+    @Override
+    public boolean contains(String key) {
+        return methodParameterSupplierRegistry.containsKey(key) || constructorParameterSupplierRegistry.containsKey(key);
+    }
+
+    @Override
     public ParameterSupplier get(String input) {
         return null;
     }
