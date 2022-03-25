@@ -984,9 +984,8 @@ public class Collects {
      * Consume every element what matched the consumePredicate
      */
     public static <E, C extends Iterable<E>> void forEach(@Nullable C collection, @Nullable Predicate<E> consumePredicate, @NonNull final Consumer<E> consumer, @Nullable Predicate<E> breakPredicate) {
-        consumePredicate = consumePredicate == null ? Functions.<E>truePredicate() : consumePredicate;
-
         if (Emptys.isNotEmpty(collection)) {
+            consumePredicate = consumePredicate == null ? Functions.<E>truePredicate() : consumePredicate;
             Iterator<E> iterator = collection.iterator();
             while (iterator.hasNext()) {
                 E element = iterator.next();
