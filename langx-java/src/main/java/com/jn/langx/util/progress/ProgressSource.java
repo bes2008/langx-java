@@ -71,10 +71,18 @@ public class ProgressSource extends AbstractNameable {
         this.state = State.UPDATING;
     }
 
+    public void forward(long increment) {
+        update(getProgress() + increment);
+    }
+
     public void update(long progress) {
         this.update(progress, -1);
     }
 
+    /**
+     * @param progress 设置当前进度； 若值小于 0，则不设置
+     * @param expected 设置期望值，若值 小于0，则不设置
+     */
     public void update(long progress, long expected) {
         Preconditions.checkState(state != State.UPDATING, "not in updating: " + getName());
 
