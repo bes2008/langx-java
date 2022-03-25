@@ -56,6 +56,11 @@ public class WrappedInputStream extends FilterInputStream {
     }
 
     @Override
+    public synchronized void mark(int readlimit) {
+
+    }
+
+    @Override
     public synchronized void reset() throws IOException {
         throw new UnsupportedOperationException();
     }
