@@ -7,6 +7,9 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 
+/**
+ * 这个类可以单独使用，也可以与 ProgressTracer, ProgressListener, ProgressEvent 一起配合使用
+ */
 public class ProgressSource extends AbstractNameable {
     private static final String SEP = "__PROGRESS__";
     @NotEmpty
