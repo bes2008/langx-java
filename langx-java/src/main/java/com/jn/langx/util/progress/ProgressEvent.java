@@ -2,6 +2,9 @@ package com.jn.langx.util.progress;
 
 import com.jn.langx.event.DomainEvent;
 
+/**
+ * @since 4.4.2
+ */
 public class ProgressEvent extends DomainEvent<ProgressSource> {
     private ProgressEventType eventType;
 

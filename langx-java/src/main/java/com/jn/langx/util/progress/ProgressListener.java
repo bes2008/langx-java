@@ -2,6 +2,9 @@ package com.jn.langx.util.progress;
 
 import com.jn.langx.event.EventListener;
 
+/**
+ * @since 4.4.2
+ */
 public class ProgressListener implements EventListener<ProgressEvent> {
     @Override
     public void on(ProgressEvent event) {
@@ -15,15 +18,15 @@ public class ProgressListener implements EventListener<ProgressEvent> {
         }
     }
 
-    protected void onProgressStart(ProgressEvent event){
+    protected void onProgressStart(ProgressEvent event) {
 
     }
 
-    protected void onProgressUpdate(ProgressEvent event){
+    protected void onProgressUpdate(ProgressEvent event) {
 
     }
 
-    protected void onProgressFinish(ProgressEvent event){
+    protected void onProgressFinish(ProgressEvent event) {
 
     }
 }

@@ -8,6 +8,9 @@ import com.jn.langx.lifecycle.AbstractInitializable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.registry.GenericRegistry;
 
+/**
+ * @since 4.4.2
+ */
 public class ProgressTracer extends AbstractInitializable implements EventPublisherAware {
     @NonNull
     private EventPublisher eventPublisher;

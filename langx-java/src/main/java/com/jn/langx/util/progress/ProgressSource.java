@@ -9,6 +9,8 @@ import com.jn.langx.util.Preconditions;
 
 /**
  * 这个类可以单独使用，也可以与 ProgressTracer, ProgressListener, ProgressEvent 一起配合使用
+ *
+ * @since 4.4.2
  */
 public class ProgressSource extends AbstractNameable {
     private static final String SEP = "__PROGRESS__";
