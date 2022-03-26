@@ -339,10 +339,10 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         try {
             Entry<K, V> entry = map.remove(key);
             if (entry != null) {
+                expireTimeIndex.get(entry.getExpireTime()).remove(entry.getKey());
                 ret = entry.getValue(false);
             }
             if (ret != null) {
-                expireTimeIndex.get(entry.getExpireTime()).remove(entry.getKey());
                 removeFromCache(entry, cause);
             }
         } finally {
