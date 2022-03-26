@@ -11,6 +11,9 @@ public class ProgressTracedOutputStream extends WrappedOutputStream {
         super(in, Collects.<Consumer2<OutputStream, byte[]>>asList(new Consumer2<OutputStream, byte[]>() {
             @Override
             public void accept(OutputStream in, byte[] bytes) {
+                if (!progressSource.started()) {
+                    progressSource.start();
+                }
                 progressSource.forward(bytes.length);
             }
         }));

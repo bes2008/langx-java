@@ -7,6 +7,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.id.UuidGenerator;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
@@ -41,8 +42,12 @@ public class ProgressSource extends AbstractNameable {
     @Nullable
     private Object ref;
 
-    public ProgressSource(String id) {
-        this("common", id);
+    public ProgressSource(long expected) {
+        this(UuidGenerator.INSTANCE.get(), expected);
+    }
+
+    public ProgressSource(String id, long expected) {
+        this("common", id, expected);
     }
 
     public ProgressSource(String eventDomain, String id) {
@@ -67,14 +72,15 @@ public class ProgressSource extends AbstractNameable {
         this.tracer = tracer;
     }
 
-    public void begin() {
-        Preconditions.checkState(state == State.INITIALED, "state is : " + state.name());
-        if (this.tracer != null) {
-            this.tracer.begin(this);
-        }
-        this.state = State.UPDATING;
-        if (logger.isDebugEnabled()) {
-            logger.debug(this.toString());
+    public void start() {
+        if(state == State.INITIALED) {
+            if (this.tracer != null) {
+                this.tracer.begin(this);
+            }
+            this.state = State.UPDATING;
+            if (logger.isDebugEnabled()) {
+                logger.debug(this.toString());
+            }
         }
     }
 
@@ -91,7 +97,7 @@ public class ProgressSource extends AbstractNameable {
      * @param expected 设置期望值，若值 小于0，则不设置
      */
     public void update(long progress, long expected) {
-        Preconditions.checkState(state != State.UPDATING, "not in updating: " + getName());
+        Preconditions.checkState(state == State.UPDATING, "not in updating: " + getName());
 
         if (progress > 0L) {
             this.progress = progress;
@@ -109,18 +115,27 @@ public class ProgressSource extends AbstractNameable {
     }
 
     public void finish() {
-        this.state = State.FINISHED;
-        this.progress = this.expected;
-        if (logger.isDebugEnabled()) {
-            logger.debug(this.toString());
+        if (this.state != State.FINISHED) {
+            this.state = State.FINISHED;
+            if (logger.isDebugEnabled()) {
+                logger.debug(this.toString());
+            }
+            if (this.tracer != null) {
+                this.tracer.finish(this);
+            }
         }
-        if (this.tracer != null) {
-            this.tracer.finish(this);
-        }
+    }
+
+    public boolean isSuccess(){
+        return finished() && (getExpected() < 0 || getProgress() == getExpected());
     }
 
     public State getState() {
         return this.state;
+    }
+
+    public boolean started() {
+        return this.state != State.INITIALED;
     }
 
     public Object getRef() {
@@ -147,15 +162,25 @@ public class ProgressSource extends AbstractNameable {
         return percent(0);
     }
 
+    public String percentAsString(){
+        return percentAsString(0);
+    }
+
     public double percent(int precision) {
-        double p = (1.0d * this.progress) / this.expected * 100d;
+        double p = (1d * this.progress) / this.expected * 100d;
         p = Maths.formatPrecision(p, precision);
         return p;
     }
 
+    public String percentAsString(int precision){
+        double p = (1d * this.progress) / this.expected * 100d;
+        String string = Maths.formatPrecisionAsString(p, precision);
+        return string + "%";
+    }
+
     @Override
     public String toString() {
-        return StringTemplates.formatWithPlaceholder("progress trace: {}, current: {}, expected: {}, percent: {}, state: {}", getName(), getProgress(), getExpected(), percent(), getState());
+        return StringTemplates.formatWithPlaceholder("progress trace: {}, current: {}, expected: {}, percent: {}, state: {}", getName(), getProgress(), getExpected(), percentAsString(), getState());
     }
 
     private enum State {

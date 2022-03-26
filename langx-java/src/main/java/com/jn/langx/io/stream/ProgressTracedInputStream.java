@@ -13,6 +13,9 @@ public class ProgressTracedInputStream extends WrappedInputStream {
 
             @Override
             public void accept(InputStream in, byte[] bytes) {
+                if (!progressSource.started()) {
+                    progressSource.start();
+                }
                 progressSource.forward(bytes.length);
                 if (progressSource.getExpected() < 0 && lengthGot == null) {
                     lengthGot = true;
