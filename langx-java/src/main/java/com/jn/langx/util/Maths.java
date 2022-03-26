@@ -171,6 +171,10 @@ public class Maths {
         return formatPrecision(value, precision, RoundingMode.HALF_UP);
     }
 
+    public static String formatPrecisionAsString(double value, int precision) {
+        return formatPrecisionAsString(value, precision, RoundingMode.HALF_UP);
+    }
+
     /**
      * 格式化小数点后多少位
      *
@@ -179,8 +183,13 @@ public class Maths {
      * @return 格式化后的值
      */
     public static Double formatPrecision(double value, int precision, RoundingMode roundingMode) {
+        String result = formatPrecisionAsString(value, precision, roundingMode);
+        return Double.parseDouble(result);
+    }
+
+    public static String formatPrecisionAsString(double value, int precision, RoundingMode roundingMode) {
         Preconditions.checkArgument(precision >= 0);
-        final StringBuilder pattern = precision > 0 ? new StringBuilder("#.") : new StringBuilder("#");
+        final StringBuilder pattern = precision > 0 ? new StringBuilder("#.") : new StringBuilder();
         Collects.forEach(Arrs.range(precision), new Consumer<Integer>() {
             @Override
             public void accept(Integer integer) {
@@ -192,8 +201,9 @@ public class Maths {
         nf.setMaximumFractionDigits(precision);
         nf.setRoundingMode(roundingMode == null ? RoundingMode.HALF_UP : roundingMode);
         String string = nf.format(value);
-        return Double.parseDouble(string);
+        return string;
     }
+
 
     /**
      * 判断是否为 2的 power 值
@@ -337,8 +347,9 @@ public class Maths {
     /**
      * @since 4.1.0
      */
-    public static final class HashMaths{
+    public static final class HashMaths {
         private static final int PRESELECTED_PRIME = 1299827;
+
         private HashMaths() {
         }
 
@@ -349,8 +360,8 @@ public class Maths {
          * @return the rounded power of two value
          */
         public static int roundToPowerOfTwo(int value) {
-            Preconditions.checkArgument(value>=0,"min value is 0");
-            Preconditions.checkArgument(value<=0x40000000,"min value is {}",0x40000000);
+            Preconditions.checkArgument(value >= 0, "min value is 0");
+            Preconditions.checkArgument(value <= 0x40000000, "min value is {}", 0x40000000);
             return value <= 1 ? value : Integer.highestOneBit(value - 1) << 1;
         }
 
@@ -362,8 +373,8 @@ public class Maths {
          * codes that persist outside of the JVM process.
          *
          * @param accumulatedHash the accumulated hash code of the previous stage
-         * @param prime a prime multiplier
-         * @param nextHash the hash code of the next single item
+         * @param prime           a prime multiplier
+         * @param nextHash        the hash code of the next single item
          * @return the new accumulated hash code
          */
         public static int multiHashOrdered(int accumulatedHash, int prime, int nextHash) {
@@ -378,8 +389,8 @@ public class Maths {
          * codes that persist outside of the JVM process.
          *
          * @param accumulatedHash the accumulated hash code of the previous stage
-         * @param prime a prime multiplier
-         * @param nextHash the hash code of the next single item
+         * @param prime           a prime multiplier
+         * @param nextHash        the hash code of the next single item
          * @return the new accumulated hash code
          */
         public static int multiHashUnordered(int accumulatedHash, int prime, int nextHash) {
@@ -394,7 +405,7 @@ public class Maths {
          * codes that persist outside of the JVM process.
          *
          * @param accumulatedHash the accumulated hash code of the previous stage
-         * @param nextHash the hash code of the next single item
+         * @param nextHash        the hash code of the next single item
          * @return the new accumulated hash code
          */
         public static int multiHashOrdered(int accumulatedHash, int nextHash) {
@@ -409,7 +420,7 @@ public class Maths {
          * codes that persist outside of the JVM process.
          *
          * @param accumulatedHash the accumulated hash code of the previous stage
-         * @param nextHash the hash code of the next single item
+         * @param nextHash        the hash code of the next single item
          * @return the new accumulated hash code
          */
         public static int multiHashUnordered(int accumulatedHash, int nextHash) {
