@@ -22,7 +22,7 @@ public class WrappedInputStream extends FilterInputStream {
     public int read() throws IOException {
         int b = super.read();
 
-        if (Objs.isEmpty(this.consumers) && b != -1) {
+        if (Objs.isNotEmpty(this.consumers) && b != -1) {
             final byte[] bs = new byte[]{(byte) b};
             consume(bs);
         }
@@ -33,7 +33,7 @@ public class WrappedInputStream extends FilterInputStream {
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
         int length = super.read(b, off, len);
-        if (Objs.isEmpty(this.consumers) && length > 0) {
+        if (Objs.isNotEmpty(this.consumers) && length > 0) {
             final byte[] bs = new byte[length];
             System.arraycopy(b, off, bs, 0, length);
             consume(bs);

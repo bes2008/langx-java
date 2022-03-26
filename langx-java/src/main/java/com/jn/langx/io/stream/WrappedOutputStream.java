@@ -1,5 +1,6 @@
 package com.jn.langx.io.stream;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
@@ -27,14 +28,16 @@ public class WrappedOutputStream extends FilterOutputStream {
     public void write(byte[] b, int off, int len) throws IOException {
         if (len > 0) {
             out.write(b, off, len);
-            final byte[] bytes = new byte[len];
-            System.arraycopy(b, off, bytes, 0, len);
-            Collects.forEach(this.consumers, new Consumer<Consumer2<OutputStream, byte[]>>() {
-                @Override
-                public void accept(Consumer2<OutputStream, byte[]> consumer) {
-                    consumer.accept(WrappedOutputStream.this, bytes);
-                }
-            });
+            if(Objs.isNotEmpty(this.consumers)) {
+                final byte[] bytes = new byte[len];
+                System.arraycopy(b, off, bytes, 0, len);
+                Collects.forEach(this.consumers, new Consumer<Consumer2<OutputStream, byte[]>>() {
+                    @Override
+                    public void accept(Consumer2<OutputStream, byte[]> consumer) {
+                        consumer.accept(WrappedOutputStream.this, bytes);
+                    }
+                });
+            }
         }
     }
 }
