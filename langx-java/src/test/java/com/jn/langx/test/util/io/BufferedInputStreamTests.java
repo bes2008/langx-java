@@ -2,16 +2,18 @@ package com.jn.langx.test.util.io;
 
 import com.jn.langx.io.resource.FileResource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.io.stream.*;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.io.stream.BufferedInputStream;
-import com.jn.langx.io.stream.DelimiterBasedReadableByteChannel;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.progress.ProgressSource;
 import com.jn.langx.util.reflect.Reflects;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.util.Iterator;
@@ -144,6 +146,28 @@ public class BufferedInputStreamTests {
 
     }
 
+
+    @Test
+    public void test6() throws IOException{
+        FileResource file = getCurrentFileResource();
+        InputStream fileInputStream = file.getInputStream();
+        ProgressSource progressSource = new ProgressSource(file.getPath(), file.getRealResource().length());
+        ProgressTracedInputStream inputStream = new ProgressTracedInputStream(fileInputStream, progressSource);
+        progressSource.start();
+        String str = IOs.readAsString(inputStream);
+        progressSource.finish();
+
+        System.out.println(progressSource);
+        System.out.println("===========================================");
+
+        byte[] bytes = str.getBytes(Charsets.UTF_8);
+        ProgressSource ps2 = new ProgressSource(file.getPath(), bytes.length);
+        OutputStream out = new ProgressTracedOutputStream(System.out, ps2);
+        IOs.write(bytes,out);
+        ps2.finished();
+
+        System.out.println(progressSource);
+    }
 
     public FileResource getCurrentFileResource() {
         String workDir = SystemPropertys.getUserWorkDir();
