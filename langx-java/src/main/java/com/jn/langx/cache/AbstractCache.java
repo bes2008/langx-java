@@ -418,6 +418,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
                 if (expireTime > now) {
                     break;
                 }
+                expireTimeIndex.remove(expireTime);
                 List<K> keys = new ArrayList<K>(expireTimeIndex.get(expireTime));
                 Collects.forEach(keys, new Consumer2<Integer, K>() {
                     @Override
