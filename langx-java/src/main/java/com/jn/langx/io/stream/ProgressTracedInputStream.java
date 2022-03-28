@@ -6,6 +6,9 @@ import com.jn.langx.util.progress.ProgressSource;
 
 import java.io.InputStream;
 
+/**
+ * @since 4.4.2
+ */
 public class ProgressTracedInputStream extends WrappedInputStream {
     public ProgressTracedInputStream(InputStream in, final ProgressSource progressSource) {
         super(in, Collects.<Consumer2<InputStream, byte[]>>asList(new Consumer2<InputStream, byte[]>() {

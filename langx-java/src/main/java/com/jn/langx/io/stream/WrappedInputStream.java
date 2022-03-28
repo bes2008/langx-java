@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * @since 4.4.2
+ */
 public class WrappedInputStream extends FilterInputStream {
     private List<Consumer2<InputStream, byte[]>> consumers;
 
