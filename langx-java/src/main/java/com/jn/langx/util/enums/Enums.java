@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Set;
 
 public class Enums {
-    private Enums(){}
+    private Enums() {
+    }
 
     /**
      * 基于 ordinal
@@ -102,6 +103,9 @@ public class Enums {
             });
         }
 
+        if (t == null) {
+            t = ofField(tClass, "name", name);
+        }
         return t;
     }
 
