@@ -3,7 +3,7 @@ package com.jn.langx.io.stream;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Consumer4;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -14,9 +14,9 @@ import java.util.List;
  * @since 4.4.2
  */
 public class WrappedInputStream extends FilterInputStream {
-    private List<Consumer2<InputStream, byte[]>> consumers;
+    private List<Consumer4<InputStream, byte[], Integer, Integer>> consumers;
 
-    public WrappedInputStream(InputStream in, List<Consumer2<InputStream, byte[]>> consumers) {
+    public WrappedInputStream(InputStream in, List<Consumer4<InputStream, byte[], Integer, Integer>> consumers) {
         super(in);
         this.consumers = consumers;
     }
@@ -27,28 +27,25 @@ public class WrappedInputStream extends FilterInputStream {
 
         if (Objs.isNotEmpty(this.consumers) && b != -1) {
             final byte[] bs = new byte[]{(byte) b};
-            consume(bs);
+            consume(bs, 0, 1);
         }
         return b;
     }
 
-
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public int read(final byte[] b, final int off, final int len) throws IOException {
         int length = super.read(b, off, len);
         if (Objs.isNotEmpty(this.consumers) && length > 0) {
-            final byte[] bs = new byte[length];
-            System.arraycopy(b, off, bs, 0, length);
-            consume(bs);
+            consume(b, off, len);
         }
         return length;
     }
 
-    private void consume(final byte[] bytes) {
-        Collects.forEach(this.consumers, new Consumer<Consumer2<InputStream, byte[]>>() {
+    private void consume(final byte[] b, final int off, final int len) {
+        Collects.forEach(this.consumers, new Consumer<Consumer4<InputStream, byte[], Integer, Integer>>() {
             @Override
-            public void accept(Consumer2<InputStream, byte[]> consumer) {
-                consumer.accept(WrappedInputStream.this, bytes);
+            public void accept(Consumer4<InputStream, byte[], Integer, Integer> consumer) {
+                consumer.accept(WrappedInputStream.this, b, off, len);
             }
         });
     }

@@ -1,7 +1,7 @@
 package com.jn.langx.io.stream;
 
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Consumer4;
 import com.jn.langx.util.progress.ProgressSource;
 
 import java.io.InputStream;
@@ -11,15 +11,15 @@ import java.io.InputStream;
  */
 public class ProgressTracedInputStream extends WrappedInputStream {
     public ProgressTracedInputStream(InputStream in, final ProgressSource progressSource) {
-        super(in, Collects.<Consumer2<InputStream, byte[]>>asList(new Consumer2<InputStream, byte[]>() {
+        super(in, Collects.<Consumer4<InputStream, byte[],Integer, Integer>>asList(new Consumer4<InputStream, byte[],Integer, Integer>() {
             Boolean lengthGot = null;
 
             @Override
-            public void accept(InputStream in, byte[] bytes) {
+            public void accept(InputStream in, byte[] bytes, Integer off, Integer len) {
                 if (!progressSource.started()) {
                     progressSource.start();
                 }
-                progressSource.forward(bytes.length);
+                progressSource.forward(len);
                 if (progressSource.getExpected() < 0 && lengthGot == null) {
                     lengthGot = true;
                     try {

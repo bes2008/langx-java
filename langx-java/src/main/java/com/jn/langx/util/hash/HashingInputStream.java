@@ -3,7 +3,7 @@ package com.jn.langx.util.hash;
 
 import com.jn.langx.io.stream.WrappedInputStream;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Consumer4;
 
 import java.io.InputStream;
 
@@ -19,11 +19,11 @@ public final class HashingInputStream extends WrappedInputStream {
      * <p>The {@link InputStream} should not be read from before or after the hand-off.
      */
     public HashingInputStream(final StreamingHasher hasher, InputStream in) {
-        super(in, Collects.<Consumer2<InputStream, byte[]>>asList(new Consumer2<InputStream, byte[]>() {
+        super(in, Collects.<Consumer4<InputStream, byte[], Integer, Integer>>asList(new Consumer4<InputStream, byte[], Integer, Integer>() {
             @Override
-            public void accept(InputStream key, byte[] bytes) {
+            public void accept(InputStream key, byte[] bytes, Integer off, Integer len) {
                 if (hasher != null) {
-                    hasher.update(bytes, 0, bytes.length);
+                    hasher.update(bytes, off, len);
                 }
             }
         }));
