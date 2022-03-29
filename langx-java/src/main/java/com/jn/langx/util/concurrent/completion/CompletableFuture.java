@@ -8,6 +8,7 @@
 
 package com.jn.langx.util.concurrent.completion;
 
+import com.jn.langx.util.concurrent.forkjoin.ForkJoinPool;
 import com.jn.langx.util.function.*;
 
 import java.util.concurrent.*;
@@ -395,11 +396,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * commonPool to asyncPool in case parallelism disabled.
      */
     static Executor screenExecutor(Executor e) {
-        if (!useCommonPool) {
-            return asyncPool;
-        }
         if (e == null) {
-            throw new NullPointerException();
+            return ForkJoinPool.commonPool();
         }
         return e;
     }
@@ -2058,7 +2056,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
      * @return the new CompletableFuture
      */
     public static CompletableFuture<Void> runAsync(Runnable runnable) {
-        return asyncRunStage(asyncPool, runnable);
+        return asyncRunStage(screenExecutor(null), runnable);
     }
 
     /**
