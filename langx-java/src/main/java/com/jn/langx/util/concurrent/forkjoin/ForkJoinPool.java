@@ -2180,7 +2180,7 @@ public ForkJoinPool(int parallelism,
                 new DefaultForkJoinWorkerThreadFactory();
         int s;
         try {
-            UNSAFE = sun.misc.Unsafe.getUnsafe();
+            UNSAFE = Unsafes.reflectGetUnsafe();
             Class k = ForkJoinPool.class;
             ctlOffset = UNSAFE.objectFieldOffset
                     (k.getDeclaredField("ctl"));

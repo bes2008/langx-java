@@ -982,7 +982,7 @@ public class ForkJoinWorkerThread extends Thread {
     static {
         int s;
         try {
-            UNSAFE = sun.misc.Unsafe.getUnsafe();
+            UNSAFE = Unsafes.reflectGetUnsafe();
             Class a = ForkJoinTask[].class;
             ABASE = UNSAFE.arrayBaseOffset(a);
             s = UNSAFE.arrayIndexScale(a);

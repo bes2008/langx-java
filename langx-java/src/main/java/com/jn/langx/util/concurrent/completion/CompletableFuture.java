@@ -376,11 +376,6 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
 
     private static final boolean useCommonPool = false;
 
-    /**
-     * Default executor -- ForkJoinPool.commonPool() unless it cannot
-     * support parallelism.
-     */
-    private static final Executor asyncPool = new ThreadPerTaskExecutor();
 
     /**
      * Fallback if ForkJoinPool.commonPool() cannot support parallelism
@@ -391,6 +386,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
         }
     }
 
+    static Executor asyncPool = screenExecutor(null);
     /**
      * Null-checks user executor argument, and translates uses of
      * commonPool to asyncPool in case parallelism disabled.

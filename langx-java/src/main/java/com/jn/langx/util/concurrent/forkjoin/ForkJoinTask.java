@@ -1333,7 +1333,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
         exceptionTableRefQueue = new ReferenceQueue<Object>();
         exceptionTable = new ExceptionNode[EXCEPTION_MAP_CAPACITY];
         try {
-            UNSAFE = sun.misc.Unsafe.getUnsafe();
+            UNSAFE = Unsafes.reflectGetUnsafe();
             statusOffset = UNSAFE.objectFieldOffset
                     (ForkJoinTask.class.getDeclaredField("status"));
         } catch (Exception e) {
