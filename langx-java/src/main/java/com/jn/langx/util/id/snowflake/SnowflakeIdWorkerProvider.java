@@ -1,4 +1,4 @@
-package com.jn.langx.distributed.id.snowflake;
+package com.jn.langx.util.id.snowflake;
 
 public interface SnowflakeIdWorkerProvider {
     SnowflakeIdWorker get();

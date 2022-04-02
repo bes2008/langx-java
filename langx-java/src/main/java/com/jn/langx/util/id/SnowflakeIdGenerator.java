@@ -1,7 +1,7 @@
-package com.jn.langx.distributed.id.snowflake;
+package com.jn.langx.util.id;
 
 import com.jn.langx.IdGenerator;
-import com.jn.langx.distributed.id.snowflake.SnowflakeIdWorkerProviderLoader;
+import com.jn.langx.util.id.snowflake.SnowflakeIdWorkerProviderLoader;
 
 public class SnowflakeIdGenerator implements IdGenerator {
     @Override

@@ -1,4 +1,4 @@
-package com.jn.langx.distributed.id.snowflake;
+package com.jn.langx.util.id.snowflake;
 
 import com.jn.langx.environment.Environment;
 import com.jn.langx.environment.EnvironmentAccessor;
