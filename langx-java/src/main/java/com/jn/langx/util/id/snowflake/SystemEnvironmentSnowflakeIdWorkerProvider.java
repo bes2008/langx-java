@@ -3,6 +3,7 @@ package com.jn.langx.util.id.snowflake;
 import com.jn.langx.environment.Environment;
 import com.jn.langx.environment.EnvironmentAccessor;
 import com.jn.langx.environment.SystemEnvironment;
+import com.jn.langx.util.id.CnblogsSnowflakeIdWorker;
 
 public final class SystemEnvironmentSnowflakeIdWorkerProvider implements SnowflakeIdWorkerProvider {
     private Environment env = new SystemEnvironment();

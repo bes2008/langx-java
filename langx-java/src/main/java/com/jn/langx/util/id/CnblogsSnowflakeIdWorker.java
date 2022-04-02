@@ -1,13 +1,14 @@
-package com.jn.langx.util.id.snowflake;
+package com.jn.langx.util.id;
 
 import com.jn.langx.cache.Cache;
 import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.cache.FIFOCache;
+import com.jn.langx.util.id.snowflake.SnowflakeIdWorker;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class CnblogsSnowflakeIdWorker extends SnowflakeIdWorker {
+class CnblogsSnowflakeIdWorker extends SnowflakeIdWorker {
     // ==============================Fields===========================================
     /**
      * 开始时间截 (2015-01-01)
