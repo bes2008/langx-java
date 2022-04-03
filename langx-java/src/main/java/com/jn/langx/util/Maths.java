@@ -443,4 +443,28 @@ public class Maths {
         }
     }
 
+    public static int clz32(int a){
+        return clzN(a, 32);
+    }
+
+    public static int clzN(int a, int n){
+        String binaryText =Radixs.toBinary(a);
+        int clz = 0;
+        if(binaryText.length()<n){
+            clz = n - binaryText.length();
+            clz = Maths.max(0, clz);
+        }
+        char[] cs=binaryText.toCharArray();
+        int delta = 0;
+        for (int i = 0; i < cs.length; i++){
+            char c = cs[i];
+            if(c != '0'){
+                break;
+            }else{
+                delta = i+1;
+            }
+        }
+        return clz+delta;
+    }
+
 }
