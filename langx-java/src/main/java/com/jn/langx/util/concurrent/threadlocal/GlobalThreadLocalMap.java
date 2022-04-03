@@ -8,6 +8,7 @@ import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.random.PooledBytesRandom;
 import com.jn.langx.util.random.ThreadLocalRandom;
 
 import java.nio.charset.Charset;
@@ -171,5 +172,10 @@ public final class GlobalThreadLocalMap {
 
     public static Random getRandom(){
         return ThreadLocalRandom.current();
+    }
+
+    private static final PooledBytesRandom pooledBytesRandom = new PooledBytesRandom();
+    public static PooledBytesRandom pooledBytesRandom(){
+        return pooledBytesRandom;
     }
 }
