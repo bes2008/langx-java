@@ -52,7 +52,7 @@ public class PooledBytesRandom implements BytesRandom {
         if (pool == null || pool.capacity() < bytesLength) {
             pool = ByteBuffer.allocate(bytesLength * this.multiplier);
             reGenBytes = true;
-        } else if (pool.position() + bytesLength > pool.capacity()) {
+        } else if (pool.position() + bytesLength > pool.limit()) {
             reGenBytes = true;
         }
         if (reGenBytes) {
