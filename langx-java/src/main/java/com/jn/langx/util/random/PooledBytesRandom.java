@@ -8,12 +8,13 @@ import java.nio.ByteBuffer;
 
 public class PooledBytesRandom implements BytesRandom {
 
-
-    // It is best to make fewer, larger requests to the crypto module to
-// avoid system call overhead. So, random numbers are generated in a
-// pool. The pool is a Buffer that is larger than the initial random
-// request size by this multiplier. The pool is enlarged if subsequent
-// requests exceed the maximum buffer size.
+    /**
+     * It is best to make fewer, larger requests to the crypto module to
+     * avoid system call overhead. So, random numbers are generated in a
+     * pool. The pool is a Buffer that is larger than the initial random
+     * request size by this multiplier. The pool is enlarged if subsequent
+     * requests exceed the maximum buffer size.
+     */
     public static final int POOL_SIZE_MULTIPLIER = 128;
 
     @IntLimit(min = 1, value = POOL_SIZE_MULTIPLIER)
