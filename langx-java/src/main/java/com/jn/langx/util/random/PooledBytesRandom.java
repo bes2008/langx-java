@@ -21,21 +21,22 @@ public class PooledBytesRandom implements BytesRandom {
 
     private ByteBuffer pool;
 
-    public PooledBytesRandom(){
+    public PooledBytesRandom() {
         this(POOL_SIZE_MULTIPLIER);
     }
 
-    public PooledBytesRandom(int multiplier){
+    public PooledBytesRandom(int multiplier) {
         setMultiplier(multiplier);
     }
 
     public void setMultiplier(int multiplier) {
-        Preconditions.checkArgument(multiplier>=1,"multiplier >= 1, actual: {}", multiplier);
+        Preconditions.checkArgument(multiplier >= 1, "multiplier >= 1, actual: {}", multiplier);
         this.multiplier = multiplier;
     }
 
     @Override
     public void get(byte[] dest) {
+        Preconditions.checkNotNullArgument(dest, "dest");
         Securitys.getSecureRandom().nextBytes(dest);
     }
 
@@ -47,15 +48,14 @@ public class PooledBytesRandom implements BytesRandom {
 
     private final byte[] getRandomBytes(int bytesLength) {
         // 检查是否需要重新生成随机数
-        boolean reGenRandom = false;
+        boolean reGenBytes = false;
         if (pool == null || pool.capacity() < bytesLength) {
             pool = ByteBuffer.allocate(bytesLength * this.multiplier);
-            //crypto.randomFillSync(pool)
-            reGenRandom = true;
+            reGenBytes = true;
         } else if (pool.position() + bytesLength > pool.capacity()) {
-            reGenRandom = true;
+            reGenBytes = true;
         }
-        if (reGenRandom) {
+        if (reGenBytes) {
             get(pool.array());
             pool = ByteBuffer.wrap(pool.array());
         }
