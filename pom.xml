@@ -17,6 +17,7 @@
 
     <properties>
         <slf4j.version>1.7.0</slf4j.version>
+        <jmh.version>1.23</jmh.version>
     </properties>
 
     <url>https://github.com/fangjinuo/langx-java</url>
@@ -95,6 +96,19 @@
                 <groupId>com.github.fangjinuo.langx.security</groupId>
                 <artifactId>langx-java-security-gm-jca-jsse</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-core</artifactId>
+                <version>${jmh.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jmh</groupId>
+                <artifactId>jmh-generator-annprocess</artifactId>
+                <version>${jmh.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
