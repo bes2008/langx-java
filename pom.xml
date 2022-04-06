@@ -7,7 +7,7 @@
     <groupId>com.github.fangjinuo.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>4.4.5</version>
+    <version>4.4.6</version>
 
     <name>${groupId}:${artifactId}:${version}</name>
 
