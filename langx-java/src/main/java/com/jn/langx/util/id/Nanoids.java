@@ -7,20 +7,21 @@ import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.Function3;
-import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.random.BytesRandom;
 
 /**
  * @since 4.4.7
  */
 public class Nanoids {
-    private Nanoids(){}
+    private Nanoids() {
+    }
 
     /**
      * 基于步长 的ID生成器
      */
-    public static final Function3<String, Integer, Supplier<Integer, byte[]>, String> STEP_ID_FUN = new Function3<String, Integer, Supplier<Integer, byte[]>, String>() {
+    public static final Function3<String, Integer, BytesRandom, String> STEP_ID_FUN = new Function3<String, Integer, BytesRandom, String>() {
         @Override
-        public String apply(String alphabet, Integer expectedIdLength, Supplier<Integer, byte[]> randomBytesSupplier) {
+        public String apply(String alphabet, Integer expectedIdLength, BytesRandom randomBytesSupplier) {
             if (randomBytesSupplier == null) {
                 randomBytesSupplier = GlobalThreadLocalMap.pooledBytesRandom();
             }
@@ -64,9 +65,9 @@ public class Nanoids {
         }
     };
 
-    public static final Function3<String, Integer, Supplier<Integer, byte[]>, String> SIMPLE_ID_FUN = new Function3<String, Integer, Supplier<Integer, byte[]>, String>() {
+    public static final Function3<String, Integer, BytesRandom, String> SIMPLE_ID_FUN = new Function3<String, Integer, BytesRandom, String>() {
         @Override
-        public String apply(String alphabet, Integer expectedIdLength, Supplier<Integer, byte[]> randomBytesSupplier) {
+        public String apply(String alphabet, Integer expectedIdLength, BytesRandom randomBytesSupplier) {
             if (randomBytesSupplier == null) {
                 randomBytesSupplier = GlobalThreadLocalMap.pooledBytesRandom();
             }
@@ -105,21 +106,21 @@ public class Nanoids {
 
 
     public static String nanoid(@NotEmpty String alphabet,
-                         @IntLimit(value = 21, min = 1) int expectedIdLength){
+                                @IntLimit(value = 21, min = 1) int expectedIdLength) {
         return nanoid(alphabet, expectedIdLength, GlobalThreadLocalMap.pooledBytesRandom(), SIMPLE_ID_FUN);
     }
 
     public static String nanoid(@NotEmpty String alphabet,
-                         @IntLimit(value = 21, min = 1) int expectedIdLength,
-                         @NonNull Function3<String, Integer, Supplier<Integer, byte[]>, String> idGenFun){
+                                @IntLimit(value = 21, min = 1) int expectedIdLength,
+                                @NonNull Function3<String, Integer, BytesRandom, String> idGenFun) {
         return nanoid(alphabet, expectedIdLength, GlobalThreadLocalMap.pooledBytesRandom(), idGenFun);
     }
 
 
     public static String nanoid(@NotEmpty String alphabet,
-                         @IntLimit(value = 21, min = 1) int expectedIdLength,
-                         @NonNull Supplier<Integer, byte[]> randomBytesSupplier,
-                         @NonNull Function3<String, Integer, Supplier<Integer, byte[]>, String> idGenFun) {
+                                @IntLimit(value = 21, min = 1) int expectedIdLength,
+                                @NonNull BytesRandom randomBytesSupplier,
+                                @NonNull Function3<String, Integer, BytesRandom, String> idGenFun) {
         if (expectedIdLength < 1) {
             expectedIdLength = 21;
         }
