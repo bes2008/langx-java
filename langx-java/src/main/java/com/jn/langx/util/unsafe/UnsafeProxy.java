@@ -1,12 +1,9 @@
 package com.jn.langx.util.unsafe;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.security.ProtectionDomain;
 
-public abstract class UnsafeProxy {
-
-    private static UnsafeProxy theUnsafe;
+public interface UnsafeProxy {
 
     /// peek and poke operations
     /// (compilers should optimize these to memory ops)
@@ -188,166 +185,130 @@ public abstract class UnsafeProxy {
      * the offset to a long value.  It provides backward compatibility
      * with bytecodes compiled against 1.4.
      *
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public int getInt(Object o, int offset) {
-        return getInt(o, (long) offset);
-    }
+    
+    public int getInt(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putInt(Object o, int offset, int x) {
-        putInt(o, (long) offset, x);
-    }
+    
+    public void putInt(Object o, int offset, int x);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public Object getObject(Object o, int offset) {
-        return getObject(o, (long) offset);
-    }
+    
+    public Object getObject(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putObject(Object o, int offset, Object x) {
-        putObject(o, (long) offset, x);
-    }
+    
+    public void putObject(Object o, int offset, Object x);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public boolean getBoolean(Object o, int offset) {
-        return getBoolean(o, (long) offset);
-    }
+    
+    public boolean getBoolean(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putBoolean(Object o, int offset, boolean x) {
-        putBoolean(o, (long) offset, x);
-    }
+    
+    public void putBoolean(Object o, int offset, boolean x);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public byte getByte(Object o, int offset) {
-        return getByte(o, (long) offset);
-    }
+    
+    public byte getByte(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putByte(Object o, int offset, byte x) {
-        putByte(o, (long) offset, x);
-    }
+    
+    public void putByte(Object o, int offset, byte x);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public short getShort(Object o, int offset) {
-        return getShort(o, (long) offset);
-    }
+    
+    public short getShort(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putShort(Object o, int offset, short x) {
-        putShort(o, (long) offset, x);
-    }
+    
+    public void putShort(Object o, int offset, short x);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public char getChar(Object o, int offset) {
-        return getChar(o, (long) offset);
-    }
+    
+    public char getChar(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putChar(Object o, int offset, char x) {
-        putChar(o, (long) offset, x);
-    }
+    
+    public void putChar(Object o, int offset, char x) ;
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public long getLong(Object o, int offset) {
-        return getLong(o, (long) offset);
-    }
+    
+    public long getLong(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putLong(Object o, int offset, long x) {
-        putLong(o, (long) offset, x);
-    }
+    
+    public void putLong(Object o, int offset, long x);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public float getFloat(Object o, int offset) {
-        return getFloat(o, (long) offset);
-    }
+    
+    public float getFloat(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putFloat(Object o, int offset, float x) {
-        putFloat(o, (long) offset, x);
-    }
+    
+    public void putFloat(Object o, int offset, float x);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public double getDouble(Object o, int offset) {
-        return getDouble(o, (long) offset);
-    }
+    
+    public double getDouble(Object o, int offset);
 
     /**
-     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
+     *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    @Deprecated
-    public void putDouble(Object o, int offset, double x) {
-        putDouble(o, (long) offset, x);
-    }
+    
+    public void putDouble(Object o, int offset, double x);
 
     // These work on values in the C heap.
 
@@ -517,9 +478,7 @@ public abstract class UnsafeProxy {
      *
      * <p>Equivalent to <code>setMemory(null, address, bytes, value)</code>.
      */
-    public void setMemory(long address, long bytes, byte value) {
-        setMemory(null, address, bytes, value);
-    }
+    public void setMemory(long address, long bytes, byte value);
 
     /**
      * Sets all bytes in a given block of memory to a copy of another
@@ -549,9 +508,7 @@ public abstract class UnsafeProxy {
      * <p>
      * Equivalent to <code>copyMemory(null, srcAddress, null, destAddress, bytes)</code>.
      */
-    public void copyMemory(long srcAddress, long destAddress, long bytes) {
-        copyMemory(null, srcAddress, null, destAddress, bytes);
-    }
+    public void copyMemory(long srcAddress, long destAddress, long bytes);
 
     /**
      * Disposes of a block of  memory, as obtained from {@link
@@ -583,16 +540,11 @@ public abstract class UnsafeProxy {
      * }
      * </pre></blockquote>
      *
-     * @deprecated As of jdk 1.4.1, use {@link #staticFieldOffset} for static
+     *  As of jdk 1.4.1, use {@link #staticFieldOffset} for static
      * fields and {@link #objectFieldOffset} for non-static fields.
      */
-    @Deprecated
-    public int fieldOffset(Field f) {
-        if (Modifier.isStatic(f.getModifiers()))
-            return (int) staticFieldOffset(f);
-        else
-            return (int) objectFieldOffset(f);
-    }
+    
+    public int fieldOffset(Field f);
 
     /**
      * Returns the base address for accessing some static field
@@ -609,21 +561,13 @@ public abstract class UnsafeProxy {
      * }
      * </pre></blockquote>
      *
-     * @deprecated As of jdk 1.4.1, use {@link #staticFieldBase(Field)}
+     *  As of jdk 1.4.1, use {@link #staticFieldBase(Field)}
      * to obtain the base pertaining to a specific {@link Field}.
      * This method works only for JVMs which store all statics
      * for a given class in one place.
      */
-    @Deprecated
-    public Object staticFieldBase(Class<?> c) {
-        Field[] fields = c.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            if (Modifier.isStatic(fields[i].getModifiers())) {
-                return staticFieldBase(fields[i]);
-            }
-        }
-        return null;
-    }
+    
+    public Object staticFieldBase(Class<?> c);
 
     /**
      * Report the location of a given field in the storage allocation of its
@@ -706,59 +650,6 @@ public abstract class UnsafeProxy {
      */
     public abstract int arrayBaseOffset(Class<?> arrayClass);
 
-    /**
-     * The value of {@code arrayBaseOffset(boolean[].class)}
-     */
-    public static int ARRAY_BOOLEAN_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(boolean[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(byte[].class)}
-     */
-    public static int ARRAY_BYTE_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(byte[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(short[].class)}
-     */
-    public static int ARRAY_SHORT_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(short[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(char[].class)}
-     */
-    public static int ARRAY_CHAR_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(char[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(int[].class)}
-     */
-    public static int ARRAY_INT_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(int[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(long[].class)}
-     */
-    public static int ARRAY_LONG_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(long[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(float[].class)}
-     */
-    public static int ARRAY_FLOAT_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(float[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(double[].class)}
-     */
-    public static int ARRAY_DOUBLE_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(double[].class);
-
-    /**
-     * The value of {@code arrayBaseOffset(Object[].class)}
-     */
-    public static int ARRAY_OBJECT_BASE_OFFSET
-            = theUnsafe.arrayBaseOffset(Object[].class);
 
     /**
      * Report the scale factor for addressing elements in the storage
@@ -773,58 +664,6 @@ public abstract class UnsafeProxy {
      */
     public abstract int arrayIndexScale(Class<?> arrayClass);
 
-    /**
-     * The value of {@code arrayIndexScale(boolean[].class)}
-     */
-    public static int ARRAY_BOOLEAN_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(boolean[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(byte[].class)}
-     */
-    public static int ARRAY_BYTE_INDEX_SCALE  = theUnsafe.arrayIndexScale(byte[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(short[].class)}
-     */
-    public static int ARRAY_SHORT_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(short[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(char[].class)}
-     */
-    public static int ARRAY_CHAR_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(char[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(int[].class)}
-     */
-    public static int ARRAY_INT_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(int[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(long[].class)}
-     */
-    public static int ARRAY_LONG_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(long[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(float[].class)}
-     */
-    public static int ARRAY_FLOAT_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(float[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(double[].class)}
-     */
-    public static int ARRAY_DOUBLE_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(double[].class);
-
-    /**
-     * The value of {@code arrayIndexScale(Object[].class)}
-     */
-    public static int ARRAY_OBJECT_INDEX_SCALE
-            = theUnsafe.arrayIndexScale(Object[].class);
 
     /**
      * Report the size in bytes of a  pointer, as stored via {@link
@@ -833,11 +672,6 @@ public abstract class UnsafeProxy {
      * fully by their information content.
      */
     public abstract int addressSize();
-
-    /**
-     * The value of {@code addressSize()}
-     */
-    public static int ADDRESS_SIZE = theUnsafe.addressSize();
 
     /**
      * Report the size in bytes of a  memory page (whatever that is).
@@ -1105,13 +939,7 @@ public abstract class UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public int getAndAddInt(Object o, long offset, int delta) {
-        int v;
-        do {
-            v = getIntVolatile(o, offset);
-        } while (!compareAndSwapInt(o, offset, v, v + delta));
-        return v;
-    }
+    public int getAndAddInt(Object o, long offset, int delta);
 
     /**
      * Atomically adds the given value to the current value of a field
@@ -1124,13 +952,7 @@ public abstract class UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public long getAndAddLong(Object o, long offset, long delta) {
-        long v;
-        do {
-            v = getLongVolatile(o, offset);
-        } while (!compareAndSwapLong(o, offset, v, v + delta));
-        return v;
-    }
+    public long getAndAddLong(Object o, long offset, long delta);
 
     /**
      * Atomically exchanges the given value with the current value of
@@ -1143,13 +965,7 @@ public abstract class UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public int getAndSetInt(Object o, long offset, int newValue) {
-        int v;
-        do {
-            v = getIntVolatile(o, offset);
-        } while (!compareAndSwapInt(o, offset, v, newValue));
-        return v;
-    }
+    public int getAndSetInt(Object o, long offset, int newValue);
 
     /**
      * Atomically exchanges the given value with the current value of
@@ -1162,13 +978,7 @@ public abstract class UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public long getAndSetLong(Object o, long offset, long newValue) {
-        long v;
-        do {
-            v = getLongVolatile(o, offset);
-        } while (!compareAndSwapLong(o, offset, v, newValue));
-        return v;
-    }
+    public long getAndSetLong(Object o, long offset, long newValue);
 
     /**
      * Atomically exchanges the given reference value with the current
@@ -1181,14 +991,7 @@ public abstract class UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public Object getAndSetObject(Object o, long offset, Object newValue) {
-        Object v;
-        do {
-            v = getObjectVolatile(o, offset);
-        } while (!compareAndSwapObject(o, offset, v, newValue));
-        return v;
-    }
-
+    public Object getAndSetObject(Object o, long offset, Object newValue);
 
     /**
      * Ensures lack of reordering of loads before the fence
