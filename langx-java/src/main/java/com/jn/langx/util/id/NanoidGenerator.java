@@ -5,6 +5,9 @@ import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.Function3;
 import com.jn.langx.util.function.Supplier;
 
+/**
+ * @since 4.4.7
+ */
 public class NanoidGenerator implements IdGenerator {
     private String alphabet = Nanoids.URL_ALPHABET;
     private int idLength = 21;

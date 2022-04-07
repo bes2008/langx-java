@@ -5,6 +5,9 @@ import com.jn.langx.annotation.NonNull;
 
 import java.util.Date;
 
+/**
+ * @since 4.4.6
+ */
 public class XidGenerator implements IdGenerator<Object> {
     @Override
     public String get(Object o) {

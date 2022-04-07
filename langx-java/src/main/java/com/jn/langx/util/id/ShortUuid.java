@@ -6,7 +6,7 @@ import java.util.UUID;
 
 /**
  * A short, unambiguous and URL-safe UUID
- *
+ * @since 4.4.6
  */
 public final class ShortUuid {
 

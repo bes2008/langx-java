@@ -21,6 +21,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * </table>
  *
  * <p>Instances of this class are immutable.</p>
+ *
+ *
+ * @since 4.4.6
  */
 public final class Xid implements Comparable<Xid> {
     private static final int ID_LENGTH = 12;
