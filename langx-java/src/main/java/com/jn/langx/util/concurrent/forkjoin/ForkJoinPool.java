@@ -35,6 +35,9 @@
 
 package com.jn.langx.util.concurrent.forkjoin;
 
+import com.jn.langx.util.unsafe.UnsafeProxy;
+import com.jn.langx.util.unsafe.Unsafes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -2158,7 +2161,7 @@ public ForkJoinPool(int parallelism,
     }
 
     // Unsafe mechanics
-    private static final sun.misc.Unsafe UNSAFE;
+    private static final UnsafeProxy UNSAFE;
     private static final long ctlOffset;
     private static final long stealCountOffset;
     private static final long blockedCountOffset;
@@ -2180,7 +2183,7 @@ public ForkJoinPool(int parallelism,
                 new DefaultForkJoinWorkerThreadFactory();
         int s;
         try {
-            UNSAFE = Unsafes.reflectGetUnsafe();
+            UNSAFE = Unsafes.getUnsafe();
             Class k = ForkJoinPool.class;
             ctlOffset = UNSAFE.objectFieldOffset
                     (k.getDeclaredField("ctl"));

@@ -1,15 +1,34 @@
 package com.jn.langx.util.unsafe;
 
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
 
 /**
- * jdk 1.5 ~ jdk 1.8
+ * jdk 5 ~ jdk 10
  */
 public class SunUnsafe extends AbstractUnsafeProxy {
-    private Unsafe unsafe;
+    private static final Logger logger = Loggers.getLogger(SunUnsafe.class);
+
+    private static Unsafe reflectGetUnsafe() {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            return (Unsafe) field.get(null);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    private static final Unsafe unsafe;
+
+    static {
+        unsafe = reflectGetUnsafe();
+    }
 
     @Override
     public int getInt(Object o, long offset) {

@@ -3,8 +3,6 @@ package com.jn.langx.util.unsafe;
 
 public abstract class AbstractUnsafeProxy implements UnsafeProxy {
 
-    private static UnsafeProxy theUnsafe;
-
     public int getInt(Object o, int offset) {
         return getInt(o, (long) offset);
     }

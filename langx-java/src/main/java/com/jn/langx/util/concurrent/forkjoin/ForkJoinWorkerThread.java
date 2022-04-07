@@ -35,6 +35,9 @@ package com.jn.langx.util.concurrent.forkjoin;
  */
 
 
+import com.jn.langx.util.unsafe.UnsafeProxy;
+import com.jn.langx.util.unsafe.Unsafes;
+
 import java.util.Collection;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -975,14 +978,14 @@ public class ForkJoinWorkerThread extends Thread {
     }
 
     // Unsafe mechanics
-    private static final sun.misc.Unsafe UNSAFE;
+    private static final UnsafeProxy UNSAFE;
     private static final long ABASE;
     private static final int ASHIFT;
 
     static {
         int s;
         try {
-            UNSAFE = Unsafes.reflectGetUnsafe();
+            UNSAFE = Unsafes.getUnsafe();
             Class a = ForkJoinTask[].class;
             ABASE = UNSAFE.arrayBaseOffset(a);
             s = UNSAFE.arrayIndexScale(a);
