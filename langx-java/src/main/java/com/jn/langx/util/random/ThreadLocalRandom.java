@@ -35,7 +35,6 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>This class also provides additional commonly used bounded random
  * generation methods.
  * <p>
- * //author Doug Lea
  */
 @SuppressWarnings("all")
 public final class ThreadLocalRandom extends Random {

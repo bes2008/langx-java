@@ -1,12 +1,15 @@
 package com.jn.langx.util.random;
 
-import com.jn.langx.annotation.IntLimit;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 
 import java.nio.ByteBuffer;
 
-public class PooledBytesRandom implements BytesRandom {
+/**
+ * @since 4.4.7
+ */
+public class PooledBytesRandom extends CommonBytesRandom {
 
     /**
      * It is best to make fewer, larger requests to the crypto module to
@@ -17,8 +20,6 @@ public class PooledBytesRandom implements BytesRandom {
      */
     public static final int POOL_SIZE_MULTIPLIER = 128;
 
-    @IntLimit(min = 1, value = POOL_SIZE_MULTIPLIER)
-    private int multiplier;
 
     private ByteBuffer pool;
 
@@ -28,17 +29,7 @@ public class PooledBytesRandom implements BytesRandom {
 
     public PooledBytesRandom(int multiplier) {
         setMultiplier(multiplier);
-    }
-
-    public void setMultiplier(int multiplier) {
-        Preconditions.checkArgument(multiplier >= 1, "multiplier >= 1, actual: {}", multiplier);
-        this.multiplier = multiplier;
-    }
-
-    @Override
-    public void get(byte[] dest) {
-        Preconditions.checkNotNullArgument(dest, "dest");
-        Securitys.getSecureRandom().nextBytes(dest);
+        setDelegate(GlobalThreadLocalMap.getRandom());
     }
 
     @Override
@@ -51,7 +42,7 @@ public class PooledBytesRandom implements BytesRandom {
         // 检查是否需要重新生成随机数
         boolean reGenBytes = false;
         if (pool == null || pool.capacity() < bytesLength) {
-            pool = ByteBuffer.allocate(bytesLength * this.multiplier);
+            pool = ByteBuffer.allocate(bytesLength * this.getMultiplier());
             reGenBytes = true;
         } else if (pool.position() + bytesLength > pool.limit()) {
             reGenBytes = true;
