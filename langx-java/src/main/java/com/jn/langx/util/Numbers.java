@@ -845,4 +845,146 @@ public class Numbers {
         return !isDouble(number) && !isInteger(number);
     }
 
+
+
+    /**
+     * Compares two {@code long} values numerically.
+     * The value returned is identical to what would be returned by:
+     * <pre>
+     *    Long.valueOf(x).compareTo(Long.valueOf(y))
+     * </pre>
+     *
+     * @param  x the first {@code long} to compare
+     * @param  y the second {@code long} to compare
+     * @return the value {@code 0} if {@code x == y};
+     *         a value less than {@code 0} if {@code x < y}; and
+     *         a value greater than {@code 0} if {@code x > y}
+     * @since 4.4.7
+     */
+    public static int compare(long x, long y) {
+        return (x < y) ? -1 : ((x == y) ? 0 : 1);
+    }
+
+
+
+
+    /**
+     * Compares two {@code int} values numerically.
+     * The value returned is identical to what would be returned by:
+     * <pre>
+     *    Integer.valueOf(x).compareTo(Integer.valueOf(y))
+     * </pre>
+     *
+     * @param  x the first {@code int} to compare
+     * @param  y the second {@code int} to compare
+     * @return the value {@code 0} if {@code x == y};
+     *         a value less than {@code 0} if {@code x < y}; and
+     *         a value greater than {@code 0} if {@code x > y}
+     * @since 4.4.7
+     */
+    public static int compare(int x, int y) {
+        return (x < y) ? -1 : ((x == y) ? 0 : 1);
+    }
+
+
+    /**
+     * Compares two {@code byte} values numerically.
+     * The value returned is identical to what would be returned by:
+     * <pre>
+     *    Byte.valueOf(x).compareTo(Byte.valueOf(y))
+     * </pre>
+     *
+     * @param  x the first {@code byte} to compare
+     * @param  y the second {@code byte} to compare
+     * @return the value {@code 0} if {@code x == y};
+     *         a value less than {@code 0} if {@code x < y}; and
+     *         a value greater than {@code 0} if {@code x > y}
+     * @since 4.4.7
+     */
+    public static int compare(byte x, byte y) {
+        return x - y;
+    }
+
+
+    /**
+     * Compares two {@code char} values numerically.
+     * The value returned is identical to what would be returned by:
+     * <pre>
+     *    Character.valueOf(x).compareTo(Character.valueOf(y))
+     * </pre>
+     *
+     * @param  x the first {@code char} to compare
+     * @param  y the second {@code char} to compare
+     * @return the value {@code 0} if {@code x == y};
+     *         a value less than {@code 0} if {@code x < y}; and
+     *         a value greater than {@code 0} if {@code x > y}
+     * @since 4.4.7
+     */
+    public static int compare(char x, char y) {
+        return x - y;
+    }
+
+
+    /**
+     * Compares two {@code short} values numerically.
+     * The value returned is identical to what would be returned by:
+     * <pre>
+     *    Short.valueOf(x).compareTo(Short.valueOf(y))
+     * </pre>
+     *
+     * @param  x the first {@code short} to compare
+     * @param  y the second {@code short} to compare
+     * @return the value {@code 0} if {@code x == y};
+     *         a value less than {@code 0} if {@code x < y}; and
+     *         a value greater than {@code 0} if {@code x > y}
+     * @since 4.4.7
+     */
+    public static int compare(short x, short y) {
+        return x - y;
+    }
+
+    /**
+     * Compares the two specified {@code float} values. The sign
+     * of the integer value returned is the same as that of the
+     * integer that would be returned by the call:
+     * <pre>
+     *    new Float(f1).compareTo(new Float(f2))
+     * </pre>
+     *
+     * @param   f1        the first {@code float} to compare.
+     * @param   f2        the second {@code float} to compare.
+     * @return  the value {@code 0} if {@code f1} is
+     *          numerically equal to {@code f2}; a value less than
+     *          {@code 0} if {@code f1} is numerically less than
+     *          {@code f2}; and a value greater than {@code 0}
+     *          if {@code f1} is numerically greater than
+     *          {@code f2}.
+     * @since 4.4.7
+     */
+    public static int compare(float f1, float f2) {
+        return Float.compare(f1,f2);
+    }
+
+    /**
+     * Compares the two specified {@code double} values. The sign
+     * of the integer value returned is the same as that of the
+     * integer that would be returned by the call:
+     * <pre>
+     *    new Double(d1).compareTo(new Double(d2))
+     * </pre>
+     *
+     * @param   d1        the first {@code double} to compare
+     * @param   d2        the second {@code double} to compare
+     * @return  the value {@code 0} if {@code d1} is
+     *          numerically equal to {@code d2}; a value less than
+     *          {@code 0} if {@code d1} is numerically less than
+     *          {@code d2}; and a value greater than {@code 0}
+     *          if {@code d1} is numerically greater than
+     *          {@code d2}.
+     * @since 4.4.7
+     */
+    public static int compare(double d1, double d2) {
+        return Double.compare(d1,d2);
+    }
+
 }
