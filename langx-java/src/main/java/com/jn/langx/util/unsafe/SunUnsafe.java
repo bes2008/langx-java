@@ -1,5 +1,6 @@
 package com.jn.langx.util.unsafe;
 
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 import sun.misc.Unsafe;
@@ -27,7 +28,13 @@ public class SunUnsafe extends AbstractUnsafeProxy {
     private static final Unsafe unsafe;
 
     static {
-        unsafe = reflectGetUnsafe();
+        Unsafe u = reflectGetUnsafe();
+        Preconditions.checkNotNull(u);
+        unsafe = u;
+    }
+
+    public SunUnsafe(){
+        Preconditions.checkNotNull(unsafe);
     }
 
     @Override
