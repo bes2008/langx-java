@@ -1,4 +1,4 @@
-package com.jn.langx.util.concurrent.unsafe;
+package com.jn.langx.util.unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -188,7 +188,7 @@ public abstract class UnsafeProxy {
      * the offset to a long value.  It provides backward compatibility
      * with bytecodes compiled against 1.4.
      *
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -197,7 +197,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -206,7 +206,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -215,7 +215,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -224,7 +224,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -233,7 +233,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -242,7 +242,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -251,7 +251,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -260,7 +260,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -269,7 +269,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -278,7 +278,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -287,7 +287,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -296,7 +296,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -305,7 +305,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -314,7 +314,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -323,7 +323,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -332,7 +332,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -341,7 +341,7 @@ public abstract class UnsafeProxy {
     }
 
     /**
-     * @deprecated As of 1.4.1, cast the 32-bit offset argument to a long.
+     * @deprecated As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
     @Deprecated
@@ -583,7 +583,7 @@ public abstract class UnsafeProxy {
      * }
      * </pre></blockquote>
      *
-     * @deprecated As of 1.4.1, use {@link #staticFieldOffset} for static
+     * @deprecated As of jdk 1.4.1, use {@link #staticFieldOffset} for static
      * fields and {@link #objectFieldOffset} for non-static fields.
      */
     @Deprecated
@@ -609,7 +609,7 @@ public abstract class UnsafeProxy {
      * }
      * </pre></blockquote>
      *
-     * @deprecated As of 1.4.1, use {@link #staticFieldBase(Field)}
+     * @deprecated As of jdk 1.4.1, use {@link #staticFieldBase(Field)}
      * to obtain the base pertaining to a specific {@link Field}.
      * This method works only for JVMs which store all statics
      * for a given class in one place.
@@ -634,7 +634,7 @@ public abstract class UnsafeProxy {
      * two distinct fields of the same class will ever have the same offset
      * and base.
      *
-     * <p>As of 1.4.1, offsets for fields are represented as long values,
+     * <p>As of jdk 1.4.1, offsets for fields are represented as long values,
      * although the Sun JVM does not use the most significant 32 bits.
      * However, JVM implementations which store static fields at absolute
      * addresses can use long offsets and null base pointers to express
@@ -655,7 +655,7 @@ public abstract class UnsafeProxy {
      * <p>Any given field will always have the same offset, and no two distinct
      * fields of the same class will ever have the same offset.
      *
-     * <p>As of 1.4.1, offsets for fields are represented as long values,
+     * <p>As of jdk 1.4.1, offsets for fields are represented as long values,
      * although the Sun JVM does not use the most significant 32 bits.
      * It is hard to imagine a JVM technology which needs more than
      * a few bits to encode an offset within a non-array object,
@@ -1103,7 +1103,7 @@ public abstract class UnsafeProxy {
      * @param offset field/element offset
      * @param delta  the value to add
      * @return the previous value
-     * @since 1.8
+     * @since jdk 1.8
      */
     public int getAndAddInt(Object o, long offset, int delta) {
         int v;
@@ -1122,7 +1122,7 @@ public abstract class UnsafeProxy {
      * @param offset field/element offset
      * @param delta  the value to add
      * @return the previous value
-     * @since 1.8
+     * @since jdk 1.8
      */
     public long getAndAddLong(Object o, long offset, long delta) {
         long v;
@@ -1141,7 +1141,7 @@ public abstract class UnsafeProxy {
      * @param offset   field/element offset
      * @param newValue new value
      * @return the previous value
-     * @since 1.8
+     * @since jdk 1.8
      */
     public int getAndSetInt(Object o, long offset, int newValue) {
         int v;
@@ -1160,7 +1160,7 @@ public abstract class UnsafeProxy {
      * @param offset   field/element offset
      * @param newValue new value
      * @return the previous value
-     * @since 1.8
+     * @since jdk 1.8
      */
     public long getAndSetLong(Object o, long offset, long newValue) {
         long v;
@@ -1179,7 +1179,7 @@ public abstract class UnsafeProxy {
      * @param offset   field/element offset
      * @param newValue new value
      * @return the previous value
-     * @since 1.8
+     * @since jdk 1.8
      */
     public Object getAndSetObject(Object o, long offset, Object newValue) {
         Object v;
@@ -1194,7 +1194,7 @@ public abstract class UnsafeProxy {
      * Ensures lack of reordering of loads before the fence
      * with loads or stores after the fence.
      *
-     * @since 1.8
+     * @since jdk 1.8
      */
     public abstract void loadFence();
 
@@ -1202,7 +1202,7 @@ public abstract class UnsafeProxy {
      * Ensures lack of reordering of stores before the fence
      * with loads or stores after the fence.
      *
-     * @since 1.8
+     * @since jdk 1.8
      */
     public abstract void storeFence();
 
@@ -1210,7 +1210,7 @@ public abstract class UnsafeProxy {
      * Ensures lack of reordering of loads or stores before the fence
      * with loads or stores after the fence.
      *
-     * @since 1.8
+     * @since jdk 1.8
      */
     public abstract void fullFence();
 }
