@@ -7,4 +7,5 @@ public interface Regexp {
     String getPattern();
     RegexpMatcher matcher(CharSequence input);
     String[] split(CharSequence input);
+    Option getOption();
 }

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class IndexStringFormatter extends CustomPatternStringFormatter {
 
     public IndexStringFormatter() {
-        setVariablePattern(null);
+        this.setVariablePattern((Pattern) null);
         setValueGetter(null);
     }
 

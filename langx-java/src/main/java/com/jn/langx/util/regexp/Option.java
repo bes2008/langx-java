@@ -74,4 +74,19 @@ public class Option {
     }
 
     public static final Option DEFAULT = new Option();
+
+    public static final Option buildOption(int flags) {
+        Option option = new Option();
+        option.setMultiple(has(flags, REGEXP_FLAG_MULTILINE));
+        option.setIgnoreCase(!has(flags, REGEXP_FLAG_CASE_INSENSITIVE));
+        return option;
+    }
+
+
+    /**
+     * Indicates whether a particular flag is set or not.
+     */
+    public static boolean has(int flags, int f) {
+        return (flags & f) != 0;
+    }
 }

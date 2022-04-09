@@ -3,6 +3,9 @@ package com.jn.langx.text.stringtemplate;
 import com.jn.langx.util.*;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 import org.slf4j.Logger;
 
 import java.util.regex.Matcher;
@@ -14,10 +17,10 @@ public class StringTemplate {
     /**
      * index pattern
      */
-    public final static Pattern defaultPattern = Pattern.compile("\\{\\d+}");
+    public final static Regexp defaultPattern = Regexps.createRegexp("\\{\\d+}");
     private final static Function2<String, Object[], String> defaultValueGetter = new IndexBasedValueGetter();
 
-    private Pattern variablePattern = defaultPattern;
+    private Regexp variableRegexp = defaultPattern;
     private String template;
     private Function2<String, Object[], String> valueGetter = defaultValueGetter;
 
@@ -30,7 +33,7 @@ public class StringTemplate {
 
     public StringTemplate variablePattern(Pattern pattern) {
         if (Emptys.isNotNull(pattern)) {
-            this.variablePattern = pattern;
+            this.variableRegexp = defaultPattern;
         }
         return this;
     }
@@ -50,7 +53,7 @@ public class StringTemplate {
         if (valueGetter != null) {
             this.valueGetter = valueGetter;
         }
-        if (variablePattern == defaultPattern) {
+        if (variableRegexp == defaultPattern) {
             this.valueGetter = defaultValueGetter;
         }
         return this;
@@ -61,7 +64,7 @@ public class StringTemplate {
             args = new Object[0];
         }
 
-        Matcher matcher = variablePattern.matcher(this.template);
+        RegexpMatcher matcher = variableRegexp.matcher(this.template);
         StringBuffer b = new StringBuffer();
         Logger logger = Loggers.getLogger(getClass());
         while (matcher.find()) {

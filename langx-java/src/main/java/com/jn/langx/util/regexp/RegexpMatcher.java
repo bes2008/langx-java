@@ -5,4 +5,7 @@ package com.jn.langx.util.regexp;
  */
 public interface RegexpMatcher extends RegexpMatchResult{
     boolean matches();
+    boolean find();
+    RegexpMatcher appendReplacement(StringBuffer b, String replacement);
+    void appendTail(StringBuffer b);
 }

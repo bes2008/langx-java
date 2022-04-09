@@ -1,6 +1,8 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.regexp.RegexpMatcher;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -187,7 +189,7 @@ class NamedMatcher implements MResult {
      * @param replacement The replacement string
      * @return The target string buffer
      */
-    public NamedMatcher appendReplacement(StringBuffer sb, String replacement) {
+    public RegexpMatcher appendReplacement(StringBuffer sb, String replacement) {
         matcher.appendReplacement(sb, parentPattern.replaceProperties(replacement));
         return this;
     }
@@ -196,10 +198,9 @@ class NamedMatcher implements MResult {
      * Implements a terminal append-and-replace step.
      *
      * @param sb The target string buffer
-     * @return The target string buffer
      */
-    public StringBuffer appendTail(StringBuffer sb) {
-        return matcher.appendTail(sb);
+    public void appendTail(StringBuffer sb) {
+        matcher.appendTail(sb);
     }
 
     /**

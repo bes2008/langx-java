@@ -56,6 +56,22 @@ class JdkMatcher implements RegexpMatcher {
     }
 
     @Override
+    public boolean find() {
+        return matcher.find();
+    }
+
+    @Override
+    public RegexpMatcher appendReplacement(StringBuffer b, String replacement) {
+        matcher.appendReplacement(b, replacement);
+        return this;
+    }
+
+    @Override
+    public void appendTail(StringBuffer b) {
+        matcher.appendTail(b);
+    }
+
+    @Override
     public int groupCount() {
         return matcher.groupCount();
     }
