@@ -1,8 +1,8 @@
 package com.jn.langx.configuration.resource;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.configuration.AbstractConfigurationLoader;
 import com.jn.langx.configuration.Configuration;
-import com.jn.langx.configuration.ConfigurationLoader;
 import com.jn.langx.configuration.InputStreamConfigurationParser;
 import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ResourceConfigurationLoader<T extends Configuration> implements ConfigurationLoader<T> {
+public class ResourceConfigurationLoader<T extends Configuration> extends AbstractConfigurationLoader<T> {
 
     private InputStreamConfigurationParser<T> parser;
     private ResourceLocationProvider<String> resourceLocationProvider;

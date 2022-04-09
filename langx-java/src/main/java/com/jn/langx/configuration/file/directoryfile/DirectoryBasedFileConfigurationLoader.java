@@ -14,8 +14,8 @@
 
 package com.jn.langx.configuration.file.directoryfile;
 
+import com.jn.langx.configuration.AbstractConfigurationLoader;
 import com.jn.langx.configuration.Configuration;
-import com.jn.langx.configuration.ConfigurationLoader;
 import com.jn.langx.configuration.InputStreamConfigurationParser;
 import com.jn.langx.io.resource.DirectoryBasedFileResourceLoader;
 import com.jn.langx.io.resource.FileResource;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DirectoryBasedFileConfigurationLoader<T extends Configuration> implements ConfigurationLoader<T> {
+public class DirectoryBasedFileConfigurationLoader<T extends Configuration> extends AbstractConfigurationLoader<T> {
     private DirectoryBasedFileResourceLoader resourceLoader;
     private InputStreamConfigurationParser<T> configurationParser;
 

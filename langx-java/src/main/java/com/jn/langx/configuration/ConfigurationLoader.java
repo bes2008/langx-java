@@ -14,6 +14,9 @@
 
 package com.jn.langx.configuration;
 
+import java.util.Map;
+
 public interface ConfigurationLoader<T extends Configuration> {
     T load(String id);
+    Map<String, T> loadAll();
 }

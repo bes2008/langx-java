@@ -5,14 +5,13 @@ import com.jn.langx.configuration.Configuration;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.diff.CollectionDiffResult;
-import com.jn.langx.util.collection.diff.KeyBuilder;
+import com.jn.langx.util.collection.diff.MapDiffResult;
+import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Map;
 
 public class DatabaseBasedConfigurationRepository<T extends Configuration> extends AbstractConfigurationRepository<T, DatabaseBasedConfigurationLoader<T>, DatabaseBasedConfigurationWriter<T>> {
 
@@ -35,14 +34,9 @@ public class DatabaseBasedConfigurationRepository<T extends Configuration> exten
 
     @Override
     public void reload() {
-        List<T> newConfigs = Collects.asList(loader.loadAll());
-        Collection<T> oldConfigs = getAll().values();
-        CollectionDiffResult<T> differResult = Collects.diff(oldConfigs, newConfigs, getComparator(), new KeyBuilder<String, T>() {
-            @Override
-            public String getKey(T configuration) {
-                return configuration.getId();
-            }
-        });
+        Map<String, T> newConfigs = loader.loadAll();
+        Map<String, T> oldConfigs = getAll();
+        MapDiffResult<String, T> differResult = Collects.<String, T, Map<String, T>>diff(oldConfigs, newConfigs, getComparator(), Comparators.STRING_COMPARATOR);
         if (differResult.hasDifference()) {
             Collects.forEach(differResult.getAdds(), new Consumer<T>() {
                 @Override
