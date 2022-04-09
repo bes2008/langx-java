@@ -14,7 +14,7 @@ import java.util.Map;
  * a match against a regular expression. The match boundaries, groups and
  * group boundaries can be seen but not modified through a MatchResult.</p>
  *
- * @since 4.4.7
+ * @since 4.5.0
  */
 interface MResult extends RegexpMatcher {
 

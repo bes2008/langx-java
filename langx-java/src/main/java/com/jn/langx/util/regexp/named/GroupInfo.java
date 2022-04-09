@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Contains the position and group index of capture groups
  * from a named pattern
  *
- * @since 4.4.7
+ * @since 4.5.0
  */
 class GroupInfo implements Serializable {
 

@@ -5,6 +5,9 @@ import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpFactory;
 
+/**
+ * @since 4.5.0
+ */
 public class Jdk6NamedRegexpFactory implements RegexpFactory {
     @Override
     public String getName() {

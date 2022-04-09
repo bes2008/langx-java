@@ -38,7 +38,8 @@ public class PythonVersionSpecifiers {
 
     public static final MapAccessor extractVersionSegments(String version) {
         final RegexpMatcher matcher = VERSION_PATTERN_NAMED.matcher(version);
-        if (matcher.matches()) {
+        matcher.matches();
+      //  if (matcher.matches()) {
             final Map<String, Object> map = new HashMap<String, Object>();
             Pipeline.of("epoch", "release", "pre", "preLabel", "preN", "post", "postLabel", "postN", "dev", "devN", "local")
                     .forEach(new Consumer<String>() {
@@ -48,7 +49,7 @@ public class PythonVersionSpecifiers {
                         }
                     });
             return new MapAccessor(map);
-        }
-        return null;
+      //  }
+      //  return null;
     }
 }

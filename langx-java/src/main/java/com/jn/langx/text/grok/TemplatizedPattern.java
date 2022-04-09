@@ -4,6 +4,7 @@ import com.jn.langx.Converter;
 import com.jn.langx.util.regexp.Regexp;
 
 import java.util.Map;
+import java.util.Set;
 
 public class TemplatizedPattern {
     /**
@@ -15,7 +16,7 @@ public class TemplatizedPattern {
      * 合并后的pattern
      */
     private Regexp regexp;
-
+    private Set<String> fields;
     private Map<String, Converter> expectedConverters;
 
 
@@ -43,4 +44,21 @@ public class TemplatizedPattern {
         this.expectedConverters = expectedConverters;
     }
 
+    public Set<String> getFields() {
+        return fields;
+    }
+
+    public void setFields(Set<String> fields) {
+        this.fields = fields;
+    }
+
+    public Object convert(String field, String originalValue){
+        if(expectedConverters!=null){
+            Converter converter = expectedConverters.get(field);
+            if(converter!=null){
+                return converter.apply(originalValue);
+            }
+        }
+        return originalValue;
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
  * An engine that performs match operations on a character sequence by
  * interpreting a {@link NamedRegexp}. This is a wrapper for {@link java.util.regex.Matcher}.
  *
- * @since 4.4.7
+ * @since 4.5.0
  */
 class NamedMatcher implements MResult {
 

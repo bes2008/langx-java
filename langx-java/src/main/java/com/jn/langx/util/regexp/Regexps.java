@@ -39,7 +39,7 @@ public class Regexps {
     }
 
     public static Regexp createRegexp(String pattern) {
-        return createRegexp(null, pattern, null);
+        return createRegexp( pattern, null);
     }
 
     public static Regexp createRegexp(String pattern, Option option) {

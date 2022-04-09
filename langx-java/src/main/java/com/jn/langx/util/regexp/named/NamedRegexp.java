@@ -20,7 +20,7 @@ import java.util.regex.PatternSyntaxException;
  * groups. The named groups are specified with "(?&lt;name&gt;exp)", which
  * is identical to Java 7 named groups.
  *
- * @since 4.4.7
+ * @since 4.5.0
  */
 public class NamedRegexp implements Regexp, Serializable {
 
