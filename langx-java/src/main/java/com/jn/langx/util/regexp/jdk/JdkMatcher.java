@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 
 /**
  * 该类只能在 JDK7 以及更高版本使用
+ * @since 4.5.0
  */
 class JdkMatcher implements RegexpMatcher {
     private Matcher matcher;

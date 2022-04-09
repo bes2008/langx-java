@@ -14,6 +14,9 @@ import com.jn.langx.util.regexp.named.LangxForJdk6NamedRegexpFactory;
 
 import java.util.ServiceLoader;
 
+/**
+ * @since 4.5.0
+ */
 public class Regexps {
 
 

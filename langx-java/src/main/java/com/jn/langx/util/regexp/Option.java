@@ -2,6 +2,9 @@ package com.jn.langx.util.regexp;
 
 import java.util.regex.Pattern;
 
+/**
+ * @since 4.5.0
+ */
 public class Option {
     /**
      * Enables case-insensitive matching.

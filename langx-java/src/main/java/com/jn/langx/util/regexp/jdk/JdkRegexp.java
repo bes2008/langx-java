@@ -5,6 +5,9 @@ import com.jn.langx.util.regexp.RegexpMatcher;
 
 import java.util.regex.Pattern;
 
+/**
+ * @since 4.5.0
+ */
 public class JdkRegexp implements Regexp {
     private Pattern pattern;
 

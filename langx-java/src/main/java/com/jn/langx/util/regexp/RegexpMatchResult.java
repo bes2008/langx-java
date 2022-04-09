@@ -2,6 +2,9 @@ package com.jn.langx.util.regexp;
 
 import java.util.regex.MatchResult;
 
+/**
+ * @since 4.5.0
+ */
 public interface RegexpMatchResult extends MatchResult {
     /**
      * Returns the input subsequence captured by the given group during the
