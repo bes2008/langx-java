@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  *
  * @author fjn
  */
-public class RegExp {
+public class JavaScriptRegExps {
 
     // URL
     public static final String URL = "";
@@ -50,11 +50,11 @@ public class RegExp {
     private String pattern = "";
     private boolean isIgnoreCase = false;// 忽略大小写
 
-    public RegExp(String pattern) {
+    public JavaScriptRegExps(String pattern) {
         this.pattern = pattern;
     }
 
-    public RegExp(String pattern, boolean ignore) {
+    public JavaScriptRegExps(String pattern, boolean ignore) {
         this.pattern = pattern;
         this.isIgnoreCase = ignore;
     }
@@ -138,7 +138,7 @@ public class RegExp {
 
         // 找出下面文本中有多少个"Java"，忽略大小写
         String src = "Java,javawoefsflewjoavejavaejsjavajavajavajavajavajavaeajavja";
-        RegExp regexp = new RegExp("java", true);
+        JavaScriptRegExps regexp = new JavaScriptRegExps("java", true);
         int count = (Integer) regexp.test(src, new MutilTest() {
 
             @Override
