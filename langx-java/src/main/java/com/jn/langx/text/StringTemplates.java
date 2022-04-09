@@ -7,6 +7,7 @@ import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.valuegetter.ValueGetter2;
 
 import java.util.Map;
@@ -221,6 +222,15 @@ public class StringTemplates {
         });
     }
 
+    public static String format(String template, Regexp variablePattern, final PlaceholderParser variableValueProvider) {
+        return format(template, variablePattern, new Function2<String, Object[], String>() {
+            @Override
+            public String apply(String variable, Object[] arguments) {
+                // 需要自己剔除变量的前后标记
+                return variableValueProvider.parse(variable);
+            }
+        });
+    }
     /**
      * 模板替换
      * @return 2.10.1

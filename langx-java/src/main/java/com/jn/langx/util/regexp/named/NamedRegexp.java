@@ -1,6 +1,7 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 
@@ -80,6 +81,7 @@ public class NamedRegexp implements Regexp, Serializable {
     private String namedPattern;
     private List<String> groupNames;
     private Map<String,List<GroupInfo> > groupInfo;
+    private Option option;
 
     /**
      * Constructs a named pattern with the given regular expression and flags
@@ -105,6 +107,11 @@ public class NamedRegexp implements Regexp, Serializable {
         // of named back-references
         groupInfo = extractGroupInfo(regex);
         pattern = buildStandardPattern(regex, flags);
+        this.option = Option.buildOption(flags);
+    }
+
+    public Option getOption(){
+        return this.option;
     }
 
     /**
@@ -118,11 +125,11 @@ public class NamedRegexp implements Regexp, Serializable {
     }
 
     public NamedRegexp(Pattern pattern){
-        this.pattern = pattern;
+        this(pattern.pattern(), pattern.flags());
     }
 
     public NamedRegexp(String pattern) {
-        this.pattern = Pattern.compile(pattern, 0);
+        this(pattern, 0);
     }
 
     /**
