@@ -12,6 +12,11 @@ import java.util.Map;
  * @since 4.5.0
  */
 public class PatternDefinitionRepository<Loader extends ConfigurationLoader<PatternDefinition>, Writer extends ConfigurationWriter<PatternDefinition>> extends AbstractConfigurationRepository<PatternDefinition, Loader, Writer> {
+
+    public PatternDefinitionRepository(){
+        setName("Grok-Pattern-Definition-Repository");
+    }
+
     @Override
     public PatternDefinition getById(String id) {
         return super.getById(id);

@@ -1,7 +1,7 @@
 package com.jn.langx.text.grok;
 
 
-import com.jn.langx.io.resource.Resources;
+import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
@@ -68,11 +68,15 @@ public class PatternDefinitions {
         }
     }
 
-    public static Map<String, PatternDefinition> readDefinitions(String filepath) {
+    public static Map<String, PatternDefinition> readDefinitions(Resource resource) {
+        InputStream in = null;
         try {
-            return readDefinitions(Resources.loadFileResource(filepath).getInputStream());
+            in = resource.getInputStream();
+            return readDefinitions(in);
         } catch (IOException ex) {
             throw Throwables.wrapAsRuntimeIOException(ex);
+        } finally {
+            IOs.close(in);
         }
     }
 
