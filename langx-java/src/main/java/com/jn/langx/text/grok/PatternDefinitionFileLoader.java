@@ -8,6 +8,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @since 4.5.0
+ */
 public class PatternDefinitionFileLoader implements FullLoadConfigurationLoader<PatternDefinition> {
     private String filepath;
     private final Map<String, PatternDefinition> cache = Collects.emptyHashMap(true);

@@ -4,9 +4,7 @@ package com.jn.langx.text.grok;
 import com.jn.langx.configuration.Configuration;
 
 /**
- * name: 代表 pattern 定义的名称
- * value: 代表了原始的 pattern ，也就是具有嵌套其他模板能力的 pattern
- * pattern: 代表了 处理后的最真实的pattern，能够直接作为 正则表达式的pattern
+ * @since 4.5.0
  */
 public class PatternDefinition implements Configuration {
     /**

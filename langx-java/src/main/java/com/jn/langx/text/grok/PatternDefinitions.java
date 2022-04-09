@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * @since 4.5.0
+ */
 public class PatternDefinitions {
     private static final Logger logger = Loggers.getLogger(PatternDefinitions.class);
 

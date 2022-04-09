@@ -6,6 +6,9 @@ import com.jn.langx.util.regexp.Regexp;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @since 4.5.0
+ */
 public class TemplatizedPattern {
     /**
      * 原始表达式
