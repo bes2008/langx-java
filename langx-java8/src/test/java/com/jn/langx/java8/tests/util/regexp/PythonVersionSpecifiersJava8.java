@@ -1,21 +1,16 @@
-package com.jn.langx.test.util.regexp;
+package com.jn.langx.java8.tests.util.regexp;
 
 import com.jn.langx.util.collection.MapAccessor;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.regexp.named.NamedMatcher;
 import com.jn.langx.util.regexp.named.NamedPattern;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * 参考官方规范：
- * https://www.python.org/dev/peps/pep-0345/#version-specifiers
- * https://www.python.org/dev/peps/pep-0440/
- */
-public class PythonVersionSpecifiers {
+public class PythonVersionSpecifiersJava8 {
 
     // https://www.python.org/dev/peps/pep-0440/#version-scheme
     // https://www.pythonheidong.com/blog/article/187997/31fe90bd992afcd027a1/
@@ -36,7 +31,7 @@ public class PythonVersionSpecifiers {
 
 
     public static final MapAccessor extractVersionSegments(String version) {
-        final NamedMatcher matcher = VERSION_PATTERN_NAMED.matcher(version);
+        final Matcher matcher = VERSION_PATTERN.matcher(version);
         if (matcher.matches()) {
             final Map<String, Object> map = new HashMap<String, Object>();
             Pipeline.of("epoch", "release", "pre", "preLabel", "preN", "post", "postLabel", "postN", "dev", "devN", "local")
