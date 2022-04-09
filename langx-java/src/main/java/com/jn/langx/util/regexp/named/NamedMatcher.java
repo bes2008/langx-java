@@ -8,22 +8,22 @@ import java.util.Map;
 
 /**
  * An engine that performs match operations on a character sequence by
- * interpreting a {@link NamedPattern}. This is a wrapper for {@link java.util.regex.Matcher}.
+ * interpreting a {@link NamedRegexp}. This is a wrapper for {@link java.util.regex.Matcher}.
  *
  * @since 4.4.7
  */
-public class NamedMatcher implements MatchResult {
+public class NamedMatcher implements MResult {
 
     private java.util.regex.Matcher matcher;
-    private NamedPattern parentPattern;
+    private NamedRegexp parentPattern;
 
-    NamedMatcher(NamedPattern parentPattern, java.util.regex.Matcher matcher) {
+    NamedMatcher(NamedRegexp parentPattern, java.util.regex.Matcher matcher) {
         this.parentPattern = parentPattern;
         this.matcher = matcher;
     }
 
     /**
-     * @deprecated Use {@link #NamedMatcher(NamedPattern parentPattern, java.util.regex.Matcher matcher)}
+     * @deprecated Use {@link #NamedMatcher(NamedRegexp parentPattern, java.util.regex.Matcher matcher)}
      *
      * JDK9 removes the ability to cast a MatchResult to a Matcher,
      * resulting in a runtime error. There appears to be no feasible
@@ -31,12 +31,12 @@ public class NamedMatcher implements MatchResult {
      * parameters, so this constructor is now deprecated in favor
      * of the new constructor that passes in the original matcher.
      */
-    NamedMatcher(NamedPattern parentPattern, java.util.regex.MatchResult matcher) {
+    NamedMatcher(NamedRegexp parentPattern, java.util.regex.MatchResult matcher) {
         this.parentPattern = parentPattern;
         this.matcher = (java.util.regex.Matcher) matcher; // runtime error here in JDK9
     }
 
-    NamedMatcher(NamedPattern parentPattern, CharSequence input) {
+    NamedMatcher(NamedRegexp parentPattern, CharSequence input) {
         this.parentPattern = parentPattern;
         this.matcher = parentPattern.pattern().matcher(input);
     }
@@ -55,7 +55,7 @@ public class NamedMatcher implements MatchResult {
      *
      * @return the pattern
      */
-    public NamedPattern namedPattern() {
+    public NamedRegexp namedPattern() {
         return parentPattern;
     }
 
@@ -65,7 +65,7 @@ public class NamedMatcher implements MatchResult {
      * @param newPattern the new pattern
      * @return this Matcher
      */
-    public NamedMatcher usePattern(NamedPattern newPattern) {
+    public NamedMatcher usePattern(NamedRegexp newPattern) {
         if (newPattern == null) {
             throw new IllegalArgumentException("newPattern cannot be null");
         }
@@ -120,7 +120,7 @@ public class NamedMatcher implements MatchResult {
      *
      * @return a MatchResult with the state of this matcher
      */
-    public MatchResult toMatchResult() {
+    public MResult toMatchResult() {
         return new NamedMatcher(this.parentPattern, matcher);
     }
 

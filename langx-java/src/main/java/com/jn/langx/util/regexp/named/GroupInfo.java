@@ -9,7 +9,7 @@ import java.io.Serializable;
  *
  * @since 4.4.7
  */
-public class GroupInfo implements Serializable {
+class GroupInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

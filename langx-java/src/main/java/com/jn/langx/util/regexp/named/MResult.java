@@ -1,6 +1,9 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.regexp.RegexpMatchResult;
+import com.jn.langx.util.regexp.RegexpMatcher;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +16,7 @@ import java.util.Map;
  *
  * @since 4.4.7
  */
-public interface MatchResult extends java.util.regex.MatchResult {
+public interface MResult extends RegexpMatcher {
 
     /**
      * Returns the named capture groups in order
@@ -29,14 +32,7 @@ public interface MatchResult extends java.util.regex.MatchResult {
      */
     public List<Map<String, String>> namedGroups();
 
-    /**
-     * Returns the input subsequence captured by the given group during the
-     * previous match operation.
-     *
-     * @param groupName name of capture group
-     * @return the subsequence
-     */
-    public String group(String groupName);
+
 
     /**
      * Returns the start index of the subsequence captured by the given group

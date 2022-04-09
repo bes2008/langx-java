@@ -1,6 +1,8 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.regexp.Regexp;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +20,7 @@ import java.util.regex.PatternSyntaxException;
  *
  * @since 4.4.7
  */
-public class NamedPattern implements Serializable {
+public class NamedRegexp implements Regexp, Serializable {
 
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -93,7 +95,7 @@ public class NamedPattern implements Serializable {
      *   <li>{@link java.util.regex.Pattern#COMMENTS}</li>
      * </ul>
      */
-    protected NamedPattern(String regex, int flags) {
+    protected NamedRegexp(String regex, int flags) {
         namedPattern = regex;
 
         // group info must be parsed before building the standard pattern
@@ -109,8 +111,8 @@ public class NamedPattern implements Serializable {
      * @param regex the expression to be compiled
      * @return the pattern
      */
-    public static NamedPattern compile(String regex) {
-        return new NamedPattern(regex, 0);
+    public static NamedRegexp compile(String regex) {
+        return new NamedRegexp(regex, 0);
     }
 
     /**
@@ -130,8 +132,8 @@ public class NamedPattern implements Serializable {
      * </ul>
      * @return the pattern
      */
-    public static NamedPattern compile(String regex, int flags) {
-        return new NamedPattern(regex, flags);
+    public static NamedRegexp compile(String regex, int flags) {
+        return new NamedRegexp(regex, flags);
     }
 
     /**
@@ -183,6 +185,11 @@ public class NamedPattern implements Serializable {
         return new NamedMatcher(this, input);
     }
 
+    @Override
+    public String getPattern() {
+        return this.namedPattern;
+    }
+
     /**
      * Returns the wrapped {@link java.util.regex.Pattern}
      * @return the pattern
@@ -195,23 +202,6 @@ public class NamedPattern implements Serializable {
         return java.util.regex.Pattern.quote(s);
     }
 
-    /**
-     * Returns the regular expression from which this pattern was compiled.
-     *
-     * @return The source of this pattern
-     */
-    String standardPattern() {
-        return delegatePattern.pattern();
-    }
-
-    /**
-     * Returns the original regular expression (including named groups)
-     *
-     * @return The regular expression
-     */
-    String namedPattern() {
-        return namedPattern;
-    }
 
     /**
      * Gets the names of all capture groups
@@ -646,10 +636,10 @@ public class NamedPattern implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof NamedPattern)) {
+        if (!(obj instanceof NamedRegexp)) {
             return false;
         }
-        NamedPattern other = (NamedPattern)obj;
+        NamedRegexp other = (NamedRegexp)obj;
 
         boolean groupNamesMatch = (groupNames == null && other.groupNames == null) ||
                 (groupNames != null && !Collections.disjoint(groupNames, other.groupNames));
