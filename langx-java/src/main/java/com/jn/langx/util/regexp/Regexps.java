@@ -10,7 +10,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.regexp.jdk.JdkRegexpFactory;
-import com.jn.langx.util.regexp.named.LangxForJdk6NamedRegexpFactory;
+import com.jn.langx.util.regexp.named.Jdk6NamedRegexpFactory;
 
 import java.util.ServiceLoader;
 
@@ -24,7 +24,7 @@ public class Regexps {
 
     static {
         if (Platform.JAVA_VERSION_INT < 7) {
-            registry.register(new LangxForJdk6NamedRegexpFactory());
+            registry.register(new Jdk6NamedRegexpFactory());
         } else {
             registry.register(new JdkRegexpFactory());
         }

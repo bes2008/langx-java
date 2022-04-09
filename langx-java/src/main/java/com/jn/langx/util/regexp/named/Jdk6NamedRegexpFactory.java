@@ -5,7 +5,7 @@ import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpFactory;
 
-public class LangxForJdk6NamedRegexpFactory implements RegexpFactory {
+public class Jdk6NamedRegexpFactory implements RegexpFactory {
     @Override
     public String getName() {
         return "jdk";
