@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -96,7 +97,7 @@ public class NamedRegexp implements Regexp, Serializable {
      *   <li>{@link java.util.regex.Pattern#COMMENTS}</li>
      * </ul>
      */
-    protected NamedRegexp(String regex, int flags) {
+    public NamedRegexp(String regex, int flags) {
         namedPattern = regex;
 
         // group info must be parsed before building the standard pattern
@@ -114,6 +115,14 @@ public class NamedRegexp implements Regexp, Serializable {
      */
     public static NamedRegexp compile(String regex) {
         return new NamedRegexp(regex, 0);
+    }
+
+    public NamedRegexp(Pattern pattern){
+        this.pattern = pattern;
+    }
+
+    public NamedRegexp(String pattern) {
+        this.pattern = Pattern.compile(pattern, 0);
     }
 
     /**

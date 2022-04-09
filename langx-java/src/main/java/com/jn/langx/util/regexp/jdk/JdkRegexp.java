@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 public class JdkRegexp implements Regexp {
     private Pattern pattern;
 
+    public JdkRegexp(Pattern pattern){
+        this.pattern = pattern;
+    }
+
     public JdkRegexp(String pattern) {
         this.pattern = Pattern.compile(pattern, 0);
     }
