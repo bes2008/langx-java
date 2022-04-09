@@ -4,7 +4,7 @@ import com.jn.langx.util.collection.MapAccessor;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.regexp.named.NamedMatcher;
-import com.jn.langx.util.regexp.named.NamedPattern;
+import com.jn.langx.util.regexp.named.NamedRegexp;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class PythonVersionSpecifiers {
             + PUBLIC_VERSION_SEG_DEV
             + LOCAL_VERSION_SEG;
     public static final Pattern VERSION_PATTERN = Pattern.compile(VERSION_PATTERN_STR);
-    public static final NamedPattern VERSION_PATTERN_NAMED = NamedPattern.compile(VERSION_PATTERN_STR);
+    public static final NamedRegexp VERSION_PATTERN_NAMED = NamedRegexp.compile(VERSION_PATTERN_STR);
 
 
     public static final MapAccessor extractVersionSegments(String version) {
