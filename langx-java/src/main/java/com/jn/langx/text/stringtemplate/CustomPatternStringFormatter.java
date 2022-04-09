@@ -39,7 +39,7 @@ public class CustomPatternStringFormatter implements StringTemplateFormatter {
     }
 
     public void setVariablePattern(Pattern variablePattern) {
-       setVariablePattern(Regexps.createRegexp(variablePattern.pattern()));
+       setVariablePattern(Regexps.createRegexp(variablePattern));
     }
 
     public void setVariablePattern(Regexp variablePattern) {

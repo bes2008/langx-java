@@ -13,6 +13,7 @@ import com.jn.langx.util.regexp.jdk.JdkRegexpFactory;
 import com.jn.langx.util.regexp.named.Jdk6NamedRegexpFactory;
 
 import java.util.ServiceLoader;
+import java.util.regex.Pattern;
 
 /**
  * @since 4.5.0
@@ -40,6 +41,10 @@ public class Regexps {
 
     public static Regexp createRegexp(String pattern) {
         return createRegexp( pattern, null);
+    }
+
+    public static Regexp createRegexp(Pattern pattern){
+        return createRegexp(null, pattern.pattern(), Option.buildOption(pattern.flags()));
     }
 
     public static Regexp createRegexp(String pattern, Option option) {

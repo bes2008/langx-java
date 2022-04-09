@@ -102,8 +102,12 @@ public class PropertyPlaceholderHandler {
      * @return the supplied value with placeholders replaced inline
      */
     public String replacePlaceholders(String template, PlaceholderParser placeholderResolver) {
+        return replacePlaceholders(template, placeholderResolver, null);
+    }
+
+    public String replacePlaceholders(String template, PlaceholderParser placeholderResolver, Consumer2<String, String> callback) {
         Preconditions.checkNotNull(template, "'value' must not be null");
-        return parseStringValue(template, placeholderResolver, null, null);
+        return parseStringValue(template, placeholderResolver, null, callback);
     }
 
     protected String parseStringValue(String template, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders, Consumer2<String, String> callback) {
