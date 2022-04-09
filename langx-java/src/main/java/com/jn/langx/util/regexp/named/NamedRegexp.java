@@ -74,7 +74,7 @@ public class NamedRegexp implements Regexp, Serializable {
     /** {@link java.util.regex.Pattern#CANON_EQ} */
     public static final int CANON_EQ = java.util.regex.Pattern.CANON_EQ;
 
-    private java.util.regex.Pattern delegatePattern;
+    private java.util.regex.Pattern pattern;
     private String namedPattern;
     private List<String> groupNames;
     private Map<String,List<GroupInfo> > groupInfo;
@@ -102,7 +102,7 @@ public class NamedRegexp implements Regexp, Serializable {
         // because the pattern relies on group info to determine the indexes
         // of named back-references
         groupInfo = extractGroupInfo(regex);
-        delegatePattern = buildStandardPattern(regex, flags);
+        pattern = buildStandardPattern(regex, flags);
     }
 
     /**
@@ -172,7 +172,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * @return The match flags specified when this pattern was compiled
      */
     public int flags() {
-        return delegatePattern.flags();
+        return pattern.flags();
     }
 
     /**
@@ -195,7 +195,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * @return the pattern
      */
     public java.util.regex.Pattern pattern() {
-        return delegatePattern;
+        return pattern;
     }
 
     public static String quote(String s){
@@ -278,7 +278,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * matches of this pattern
      */
     public String[] split(CharSequence input, int limit) {
-        return delegatePattern.split(input, limit);
+        return pattern.split(input, limit);
     }
 
     /**
@@ -289,7 +289,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * matches of this pattern
      */
     public String[] split(CharSequence input) {
-        return delegatePattern.split(input);
+        return pattern.split(input);
     }
 
     /**
@@ -648,7 +648,7 @@ public class NamedRegexp implements Regexp, Serializable {
         return groupNamesMatch
                 && groupInfoMatch
                 && namedPattern.equals(other.namedPattern)
-                && delegatePattern.flags() == other.delegatePattern.flags()
+                && pattern.flags() == other.pattern.flags()
                 ;
     }
 
@@ -658,7 +658,7 @@ public class NamedRegexp implements Regexp, Serializable {
      */
     @Override
     public int hashCode() {
-        int hash = namedPattern.hashCode() ^ delegatePattern.hashCode();
+        int hash = namedPattern.hashCode() ^ pattern.hashCode();
         if (groupInfo != null) {
             hash ^= groupInfo.hashCode();
         }

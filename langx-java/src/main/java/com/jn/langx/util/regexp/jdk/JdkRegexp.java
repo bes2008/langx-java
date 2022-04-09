@@ -18,16 +18,16 @@ public class JdkRegexp implements Regexp {
 
     @Override
     public String getPattern() {
-        return pattern.pattern();
+        return this.pattern.pattern();
     }
 
     @Override
     public RegexpMatcher matcher(CharSequence input) {
-        return null;
+        return new JdkMatcher(this.pattern.matcher(input));
     }
 
     @Override
     public String[] split(CharSequence input) {
-        return new String[0];
+        return this.pattern.split(input);
     }
 }
