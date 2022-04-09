@@ -2,6 +2,7 @@ package com.jn.langx.util.regexp.named;
 
 
 import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -181,7 +182,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * @param input The character sequence to be matched
      * @return A new matcher for this pattern
      */
-    public NamedMatcher matcher(CharSequence input) {
+    public RegexpMatcher matcher(CharSequence input) {
         return new NamedMatcher(this, input);
     }
 

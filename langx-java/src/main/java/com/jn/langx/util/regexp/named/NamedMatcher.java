@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * @since 4.4.7
  */
-public class NamedMatcher implements MResult {
+class NamedMatcher implements MResult {
 
     private java.util.regex.Matcher matcher;
     private NamedRegexp parentPattern;
