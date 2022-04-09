@@ -4,6 +4,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.properties.PropertiesPlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
@@ -36,6 +37,7 @@ public class PropertyPlaceholderHandler {
     private final String valueSeparator;
 
     private final boolean ignoreUnresolvablePlaceholders;
+    private Logger logger = Loggers.getLogger(getClass());
 
 
     /**
@@ -100,11 +102,10 @@ public class PropertyPlaceholderHandler {
      */
     public String replacePlaceholders(String template, PlaceholderParser placeholderResolver) {
         Preconditions.checkNotNull(template, "'value' must not be null");
-        return parseStringValue(template, placeholderResolver, null);
+        return parseStringValue(template, placeholderResolver, null, null);
     }
 
-    protected String parseStringValue(
-            String template, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders) {
+    protected String parseStringValue(String template, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders, Consumer2<String, String> callback) {
 
         int startIndex = template.indexOf(this.placeholderPrefix);
         if (startIndex == -1) {
@@ -125,7 +126,7 @@ public class PropertyPlaceholderHandler {
                             "Circular placeholder reference '" + originalPlaceholder + "' in property definitions");
                 }
                 // Recursive invocation, parsing placeholders contained in the placeholder key.
-                placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders);
+                placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders, callback);
                 // Now obtain the value for the fully resolved key...
                 String propVal = placeholderResolver.parse(placeholder);
                 if (propVal == null && this.valueSeparator != null) {
@@ -142,9 +143,9 @@ public class PropertyPlaceholderHandler {
                 if (propVal != null) {
                     // Recursive invocation, parsing placeholders contained in the
                     // previously resolved placeholder value.
-                    propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders);
+                    propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders, callback);
                     result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
-                    Logger logger = Loggers.getLogger(getClass());
+
                     if (logger.isTraceEnabled()) {
                         logger.trace("Resolved placeholder '" + placeholder + "'");
                     }
