@@ -8,22 +8,22 @@ import java.util.Map;
 
 /**
  * An engine that performs match operations on a character sequence by
- * interpreting a {@link Pattern}. This is a wrapper for {@link java.util.regex.Matcher}.
+ * interpreting a {@link NamedPattern}. This is a wrapper for {@link java.util.regex.Matcher}.
  *
  * @since 4.4.7
  */
-public class Matcher implements MatchResult {
+public class NamedMatcher implements MatchResult {
 
     private java.util.regex.Matcher matcher;
-    private Pattern parentPattern;
+    private NamedPattern parentPattern;
 
-    Matcher(Pattern parentPattern, java.util.regex.Matcher matcher) {
+    NamedMatcher(NamedPattern parentPattern, java.util.regex.Matcher matcher) {
         this.parentPattern = parentPattern;
         this.matcher = matcher;
     }
 
     /**
-     * @deprecated Use {@link #Matcher(Pattern parentPattern, java.util.regex.Matcher matcher)}
+     * @deprecated Use {@link #NamedMatcher(NamedPattern parentPattern, java.util.regex.Matcher matcher)}
      *
      * JDK9 removes the ability to cast a MatchResult to a Matcher,
      * resulting in a runtime error. There appears to be no feasible
@@ -31,12 +31,12 @@ public class Matcher implements MatchResult {
      * parameters, so this constructor is now deprecated in favor
      * of the new constructor that passes in the original matcher.
      */
-    Matcher(Pattern parentPattern, java.util.regex.MatchResult matcher) {
+    NamedMatcher(NamedPattern parentPattern, java.util.regex.MatchResult matcher) {
         this.parentPattern = parentPattern;
         this.matcher = (java.util.regex.Matcher) matcher; // runtime error here in JDK9
     }
 
-    Matcher(Pattern parentPattern, CharSequence input) {
+    NamedMatcher(NamedPattern parentPattern, CharSequence input) {
         this.parentPattern = parentPattern;
         this.matcher = parentPattern.pattern().matcher(input);
     }
@@ -55,7 +55,7 @@ public class Matcher implements MatchResult {
      *
      * @return the pattern
      */
-    public Pattern namedPattern() {
+    public NamedPattern namedPattern() {
         return parentPattern;
     }
 
@@ -65,7 +65,7 @@ public class Matcher implements MatchResult {
      * @param newPattern the new pattern
      * @return this Matcher
      */
-    public Matcher usePattern(Pattern newPattern) {
+    public NamedMatcher usePattern(NamedPattern newPattern) {
         if (newPattern == null) {
             throw new IllegalArgumentException("newPattern cannot be null");
         }
@@ -79,7 +79,7 @@ public class Matcher implements MatchResult {
      *
      * @return this Matcher
      */
-    public Matcher reset() {
+    public NamedMatcher reset() {
         matcher.reset();
         return this;
     }
@@ -96,7 +96,7 @@ public class Matcher implements MatchResult {
      * @param input The new input character sequence
      * @return this Matcher
      */
-    public Matcher reset(CharSequence input) {
+    public NamedMatcher reset(CharSequence input) {
         matcher.reset(input);
         return this;
     }
@@ -121,7 +121,7 @@ public class Matcher implements MatchResult {
      * @return a MatchResult with the state of this matcher
      */
     public MatchResult toMatchResult() {
-        return new Matcher(this.parentPattern, matcher);
+        return new NamedMatcher(this.parentPattern, matcher);
     }
 
     /**
@@ -187,7 +187,7 @@ public class Matcher implements MatchResult {
      * @param replacement The replacement string
      * @return The target string buffer
      */
-    public Matcher appendReplacement(StringBuffer sb, String replacement) {
+    public NamedMatcher appendReplacement(StringBuffer sb, String replacement) {
         matcher.appendReplacement(sb, parentPattern.replaceProperties(replacement));
         return this;
     }
@@ -384,7 +384,7 @@ public class Matcher implements MatchResult {
      * @param end The index to end searching at (exclusive)
      * @return this Matcher
      */
-    public Matcher region(int start, int end) {
+    public NamedMatcher region(int start, int end) {
         matcher.region(start, end);
         return this;
     }
@@ -479,7 +479,7 @@ public class Matcher implements MatchResult {
      * @param b a boolean indicating whether or not to use anchoring bounds.
      * @return this Matcher
      */
-    public Matcher useAnchoringBounds(boolean b) {
+    public NamedMatcher useAnchoringBounds(boolean b) {
         matcher.useAnchoringBounds(b);
         return this;
     }
@@ -490,7 +490,7 @@ public class Matcher implements MatchResult {
      * @param b a boolean indicating whether to use opaque or transparent regions
      * @return this Matcher
      */
-    public Matcher useTransparentBounds(boolean b) {
+    public NamedMatcher useTransparentBounds(boolean b) {
         matcher.useTransparentBounds(b);
         return this;
     }
@@ -507,10 +507,10 @@ public class Matcher implements MatchResult {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Matcher)) {
+        if (!(obj instanceof NamedMatcher)) {
             return false;
         }
-        Matcher other = (Matcher)obj;
+        NamedMatcher other = (NamedMatcher)obj;
         if (!parentPattern.equals(other.parentPattern)) {
             return false;
         }

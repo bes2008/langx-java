@@ -18,7 +18,7 @@ import java.util.regex.PatternSyntaxException;
  *
  * @since 4.4.7
  */
-public class Pattern implements Serializable {
+public class NamedPattern implements Serializable {
 
     /**
      * Determines if a de-serialized file is compatible with this class.
@@ -72,7 +72,7 @@ public class Pattern implements Serializable {
     /** {@link java.util.regex.Pattern#CANON_EQ} */
     public static final int CANON_EQ = java.util.regex.Pattern.CANON_EQ;
 
-    private java.util.regex.Pattern pattern;
+    private java.util.regex.Pattern delegatePattern;
     private String namedPattern;
     private List<String> groupNames;
     private Map<String,List<GroupInfo> > groupInfo;
@@ -93,14 +93,14 @@ public class Pattern implements Serializable {
      *   <li>{@link java.util.regex.Pattern#COMMENTS}</li>
      * </ul>
      */
-    protected Pattern(String regex, int flags) {
+    protected NamedPattern(String regex, int flags) {
         namedPattern = regex;
 
         // group info must be parsed before building the standard pattern
         // because the pattern relies on group info to determine the indexes
         // of named back-references
         groupInfo = extractGroupInfo(regex);
-        pattern = buildStandardPattern(regex, flags);
+        delegatePattern = buildStandardPattern(regex, flags);
     }
 
     /**
@@ -109,8 +109,8 @@ public class Pattern implements Serializable {
      * @param regex the expression to be compiled
      * @return the pattern
      */
-    public static Pattern compile(String regex) {
-        return new Pattern(regex, 0);
+    public static NamedPattern compile(String regex) {
+        return new NamedPattern(regex, 0);
     }
 
     /**
@@ -130,8 +130,8 @@ public class Pattern implements Serializable {
      * </ul>
      * @return the pattern
      */
-    public static Pattern compile(String regex, int flags) {
-        return new Pattern(regex, flags);
+    public static NamedPattern compile(String regex, int flags) {
+        return new NamedPattern(regex, flags);
     }
 
     /**
@@ -170,7 +170,7 @@ public class Pattern implements Serializable {
      * @return The match flags specified when this pattern was compiled
      */
     public int flags() {
-        return pattern.flags();
+        return delegatePattern.flags();
     }
 
     /**
@@ -179,8 +179,8 @@ public class Pattern implements Serializable {
      * @param input The character sequence to be matched
      * @return A new matcher for this pattern
      */
-    public Matcher matcher(CharSequence input) {
-        return new Matcher(this, input);
+    public NamedMatcher matcher(CharSequence input) {
+        return new NamedMatcher(this, input);
     }
 
     /**
@@ -188,7 +188,11 @@ public class Pattern implements Serializable {
      * @return the pattern
      */
     public java.util.regex.Pattern pattern() {
-        return pattern;
+        return delegatePattern;
+    }
+
+    public static String quote(String s){
+        return java.util.regex.Pattern.quote(s);
     }
 
     /**
@@ -196,8 +200,8 @@ public class Pattern implements Serializable {
      *
      * @return The source of this pattern
      */
-    public String standardPattern() {
-        return pattern.pattern();
+    String standardPattern() {
+        return delegatePattern.pattern();
     }
 
     /**
@@ -205,7 +209,7 @@ public class Pattern implements Serializable {
      *
      * @return The regular expression
      */
-    public String namedPattern() {
+    String namedPattern() {
         return namedPattern;
     }
 
@@ -214,7 +218,7 @@ public class Pattern implements Serializable {
      *
      * @return the list of names
      */
-    public List<String> groupNames() {
+    List<String> groupNames() {
         if (groupNames == null) {
             groupNames = new ArrayList<String>(groupInfo.keySet());
         }
@@ -227,7 +231,7 @@ public class Pattern implements Serializable {
      *
      * @return a map of group names and their info
      */
-    public Map<String, List<GroupInfo> > groupInfo() {
+    Map<String, List<GroupInfo> > groupInfo() {
         return Collections.unmodifiableMap(groupInfo);
     }
 
@@ -240,15 +244,15 @@ public class Pattern implements Serializable {
      *
      * This is meant to be used to transform the parameter for:
      *  <ul>
-     *  <li>{@link Matcher#replaceAll(String)}</li>
-     *  <li>{@link Matcher#replaceFirst(String)}</li>
-     *  <li>{@link Matcher#appendReplacement(StringBuffer, String)}</li>
+     *  <li>{@link NamedMatcher#replaceAll(String)}</li>
+     *  <li>{@link NamedMatcher#replaceFirst(String)}</li>
+     *  <li>{@link NamedMatcher#appendReplacement(StringBuffer, String)}</li>
      *  </ul>
      * @param replacementPattern the input string to be evaluated
      * @return the modified string
      * @throws PatternSyntaxException group name was not found
      */
-    public String replaceProperties(String replacementPattern) {
+    String replaceProperties(String replacementPattern) {
         return replaceGroupNameWithIndex(
                 new StringBuilder(replacementPattern),
                 PROPERTY_PATTERN,
@@ -284,7 +288,7 @@ public class Pattern implements Serializable {
      * matches of this pattern
      */
     public String[] split(CharSequence input, int limit) {
-        return pattern.split(input, limit);
+        return delegatePattern.split(input, limit);
     }
 
     /**
@@ -295,7 +299,7 @@ public class Pattern implements Serializable {
      * matches of this pattern
      */
     public String[] split(CharSequence input) {
-        return pattern.split(input);
+        return delegatePattern.split(input);
     }
 
     /**
@@ -483,7 +487,7 @@ public class Pattern implements Serializable {
      * @param namedPattern regex the regular expression pattern to parse
      * @return list of group info for all named groups
      */
-    static public Map<String,List<GroupInfo> > extractGroupInfo(String namedPattern) {
+    public static Map<String,List<GroupInfo> > extractGroupInfo(String namedPattern) {
         Map<String,List<GroupInfo> > groupInfo = new LinkedHashMap<String,List<GroupInfo> >();
         java.util.regex.Matcher matcher = NAMED_GROUP_PATTERN.matcher(namedPattern);
         while(matcher.find()) {
@@ -642,10 +646,10 @@ public class Pattern implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Pattern)) {
+        if (!(obj instanceof NamedPattern)) {
             return false;
         }
-        Pattern other = (Pattern)obj;
+        NamedPattern other = (NamedPattern)obj;
 
         boolean groupNamesMatch = (groupNames == null && other.groupNames == null) ||
                 (groupNames != null && !Collections.disjoint(groupNames, other.groupNames));
@@ -654,7 +658,7 @@ public class Pattern implements Serializable {
         return groupNamesMatch
                 && groupInfoMatch
                 && namedPattern.equals(other.namedPattern)
-                && pattern.flags() == other.pattern.flags()
+                && delegatePattern.flags() == other.delegatePattern.flags()
                 ;
     }
 
@@ -664,7 +668,7 @@ public class Pattern implements Serializable {
      */
     @Override
     public int hashCode() {
-        int hash = namedPattern.hashCode() ^ pattern.hashCode();
+        int hash = namedPattern.hashCode() ^ delegatePattern.hashCode();
         if (groupInfo != null) {
             hash ^= groupInfo.hashCode();
         }
