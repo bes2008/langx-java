@@ -2,6 +2,9 @@ package com.jn.langx.text.grok;
 
 import com.jn.langx.text.PropertySource;
 
+/**
+ * @since 4.5.0
+ */
 public class PatternDefinitionSource implements PropertySource {
     private PatternDefinitionRepository repository;
 

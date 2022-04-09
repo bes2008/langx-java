@@ -1,6 +1,7 @@
 package com.jn.langx.text.placeholder;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.properties.PropertiesPlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -122,8 +123,7 @@ public class PropertyPlaceholderHandler {
                     visitedPlaceholders = new HashSet<String>(4);
                 }
                 if (!visitedPlaceholders.add(originalPlaceholder)) {
-                    throw new IllegalArgumentException(
-                            "Circular placeholder reference '" + originalPlaceholder + "' in property definitions");
+                    throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Circular placeholder reference '{}' in property definitions", originalPlaceholder));
                 }
                 // Recursive invocation, parsing placeholders contained in the placeholder key.
                 placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders, callback);
@@ -146,16 +146,15 @@ public class PropertyPlaceholderHandler {
                     propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders, callback);
                     result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
 
-                    if (logger.isTraceEnabled()) {
-                        logger.trace("Resolved placeholder '" + placeholder + "'");
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Resolved placeholder '{}'",placeholder);
                     }
                     startIndex = result.indexOf(this.placeholderPrefix, startIndex + propVal.length());
                 } else if (this.ignoreUnresolvablePlaceholders) {
                     // Proceed with unprocessed value.
                     startIndex = result.indexOf(this.placeholderPrefix, endIndex + this.placeholderSuffix.length());
                 } else {
-                    throw new IllegalArgumentException("Could not resolve placeholder '" +
-                            placeholder + "'" + " in value \"" + template + "\"");
+                    throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Could not resolve placeholder '{}' in template: {}",placeholder , template));
                 }
                 visitedPlaceholders.remove(originalPlaceholder);
             } else {
