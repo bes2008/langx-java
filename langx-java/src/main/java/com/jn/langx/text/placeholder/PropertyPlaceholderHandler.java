@@ -5,8 +5,9 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.properties.PropertiesPlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Consumer3;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
 
 import java.util.*;
@@ -17,7 +18,11 @@ import java.util.*;
  * {@code ${name}}. Using {@code PropertyPlaceholderHelper} these placeholders can be substituted for
  * user-supplied values. <p> Values for substitution can be supplied using a {@link Properties} instance or
  * using a {@link PlaceholderParser}.
- *
+ * <p>
+ * 假定 : 是 表达式分隔符 expressionSeparator
+ * {variable:expression}, {variable}
+ * ${variable:expression}, ${variable}
+ * %{variable:expression}, %{variable}
  */
 public class PropertyPlaceholderHandler {
 
@@ -35,11 +40,24 @@ public class PropertyPlaceholderHandler {
     private final String simplePrefix;
 
     @Nullable
-    private final String valueSeparator;
+    private final String expressionSeparator;
+    private PlaceholderExpressionConsumer expressionConsumer = new DefaultValueExpressionHandler();
 
     private final boolean ignoreUnresolvablePlaceholders;
     private Logger logger = Loggers.getLogger(getClass());
 
+    private static class DefaultValueExpressionHandler implements PlaceholderExpressionConsumer{
+        @Override
+        public void accept(String variable, String expression, Holder<String> variableValueHolder) {
+            if(Strings.isEmpty(variableValueHolder.get())){
+                variableValueHolder.set(expression);
+            }
+        }
+    }
+
+    public void setExpressionConsumer(PlaceholderExpressionConsumer expressionConsumer) {
+        this.expressionConsumer = expressionConsumer;
+    }
 
     /**
      * Creates a new {@code PropertyPlaceholderHelper} that uses the supplied prefix and suffix.
@@ -57,13 +75,13 @@ public class PropertyPlaceholderHandler {
      *
      * @param placeholderPrefix              the prefix that denotes the start of a placeholder
      * @param placeholderSuffix              the suffix that denotes the end of a placeholder
-     * @param valueSeparator                 the separating character between the placeholder variable
+     * @param expressionSeparator            the separating character between the placeholder variable
      *                                       and the associated default value, if any
      * @param ignoreUnresolvablePlaceholders indicates whether unresolvable placeholders should
      *                                       be ignored ({@code true}) or cause an exception ({@code false})
      */
     public PropertyPlaceholderHandler(String placeholderPrefix, String placeholderSuffix,
-                                      @Nullable String valueSeparator, boolean ignoreUnresolvablePlaceholders) {
+                                      @Nullable String expressionSeparator, boolean ignoreUnresolvablePlaceholders) {
 
         Preconditions.checkNotNull(placeholderPrefix, "'placeholderPrefix' must not be null");
         Preconditions.checkNotNull(placeholderSuffix, "'placeholderSuffix' must not be null");
@@ -75,7 +93,7 @@ public class PropertyPlaceholderHandler {
         } else {
             this.simplePrefix = this.placeholderPrefix;
         }
-        this.valueSeparator = valueSeparator;
+        this.expressionSeparator = expressionSeparator;
         this.ignoreUnresolvablePlaceholders = ignoreUnresolvablePlaceholders;
     }
 
@@ -84,7 +102,7 @@ public class PropertyPlaceholderHandler {
      * Replaces all placeholders of format {@code ${name}} with the corresponding
      * property from the supplied {@link Properties}.
      *
-     * @param template      the value containing the placeholders to be replaced
+     * @param template   the value containing the placeholders to be replaced
      * @param properties the {@code Properties} to use for replacement
      * @return the supplied value with placeholders replaced inline
      */
@@ -97,20 +115,16 @@ public class PropertyPlaceholderHandler {
      * Replaces all placeholders of format {@code ${name}} with the value returned
      * from the supplied {@link PlaceholderParser}.
      *
-     * @param template               the value containing the placeholders to be replaced
+     * @param template            the value containing the placeholders to be replaced
      * @param placeholderResolver the {@code PlaceholderResolver} to use for replacement
      * @return the supplied value with placeholders replaced inline
      */
     public String replacePlaceholders(String template, PlaceholderParser placeholderResolver) {
-        return replacePlaceholders(template, placeholderResolver, null);
-    }
-
-    public String replacePlaceholders(String template, PlaceholderParser placeholderResolver, Consumer2<String, String> callback) {
         Preconditions.checkNotNull(template, "'value' must not be null");
-        return parseStringValue(template, placeholderResolver, null, callback);
+        return parseStringValue(template, placeholderResolver, null);
     }
 
-    protected String parseStringValue(String template, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders, Consumer2<String, String> callback) {
+    protected String parseStringValue(String template, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders) {
 
         int startIndex = template.indexOf(this.placeholderPrefix);
         if (startIndex == -1) {
@@ -129,36 +143,81 @@ public class PropertyPlaceholderHandler {
                 if (!visitedPlaceholders.add(originalPlaceholder)) {
                     throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Circular placeholder reference '{}' in property definitions", originalPlaceholder));
                 }
-                // Recursive invocation, parsing placeholders contained in the placeholder key.
-                placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders, callback);
+                // 此时的 placeholder 格式可能为： variable, variable:defaultValue, variable:a_b_${xxx}, variable_${xx}:a_b_${xyz}， 也就是可能存在表达式，且可能表达式套表达式
+                // 找出variable, expression
+
+                String variable = null;
+                String expression = null;
+                if (this.expressionSeparator != null) {
+
+                    if (placeholder.contains(expressionSeparator)) {
+                        StringTokenizer tokenizer = new StringTokenizer(placeholder, this.expressionSeparator, true);
+                        StringBuilder variableBuilder = new StringBuilder();
+                        StringBuilder expressionBuilder = new StringBuilder();
+
+                        int placeholderPrefixSuffixSum = 0;
+                        while (tokenizer.hasMoreTokens()) {
+                            String token = tokenizer.nextToken();
+                            if (Strings.equals(this.expressionSeparator, token) && placeholderPrefixSuffixSum % 2 == 0) {
+                                while (tokenizer.hasMoreTokens()) {
+                                    expressionBuilder.append(tokenizer.nextToken());
+                                }
+                            } else {
+                                variableBuilder.append(token);
+                            }
+                            placeholderPrefixSuffixSum += Strings.countOccurrencesOf(token, this.placeholderPrefix);
+                            placeholderPrefixSuffixSum += Strings.countOccurrencesOf(token, this.placeholderSuffix);
+
+                        }
+                        variable = variableBuilder.toString();
+                        expression = expressionBuilder.toString();
+                    } else {
+                        variable = placeholder;
+                    }
+                }
+                // 对 variable, expression 都进行 递归式变量解析
+                variable = parseStringValue(variable, placeholderResolver, visitedPlaceholders);
+                if (expression != null) {
+                    expression = parseStringValue(expression, placeholderResolver, visitedPlaceholders);
+                }
+                String propVal = placeholderResolver.parse(variable);
                 // Now obtain the value for the fully resolved key...
-                String propVal = placeholderResolver.parse(placeholder);
-                if (propVal == null && this.valueSeparator != null) {
-                    int separatorIndex = placeholder.indexOf(this.valueSeparator);
+                /*
+
+                if (propVal == null && this.expressionSeparator != null) {
+                    int separatorIndex = placeholder.indexOf(this.expressionSeparator);
                     if (separatorIndex != -1) {
                         String actualPlaceholder = placeholder.substring(0, separatorIndex);
-                        String defaultValue = placeholder.substring(separatorIndex + this.valueSeparator.length());
+                        String defaultValue = placeholder.substring(separatorIndex + this.expressionSeparator.length());
                         propVal = placeholderResolver.parse(actualPlaceholder);
                         if (propVal == null) {
                             propVal = defaultValue;
                         }
                     }
                 }
+                */
+                // 对变量以及变量值进行处理
+                if (expression != null && this.expressionConsumer != null) {
+                    Holder<String> propValueHolder = new Holder<String>(propVal);
+                    this.expressionConsumer.accept(variable, expression, propValueHolder);
+                    propVal = propValueHolder.get();
+                }
+
                 if (propVal != null) {
                     // Recursive invocation, parsing placeholders contained in the
                     // previously resolved placeholder value.
-                    propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders, callback);
+                    propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders);
                     result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
 
                     if (logger.isDebugEnabled()) {
-                        logger.debug("Resolved placeholder '{}'",placeholder);
+                        logger.debug("Resolved placeholder '{}'", placeholder);
                     }
                     startIndex = result.indexOf(this.placeholderPrefix, startIndex + propVal.length());
                 } else if (this.ignoreUnresolvablePlaceholders) {
                     // Proceed with unprocessed value.
                     startIndex = result.indexOf(this.placeholderPrefix, endIndex + this.placeholderSuffix.length());
                 } else {
-                    throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Could not resolve placeholder '{}' in template: {}",placeholder , template));
+                    throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("Could not resolve placeholder '{}' in template: {}", placeholder, template));
                 }
                 visitedPlaceholders.remove(originalPlaceholder);
             } else {

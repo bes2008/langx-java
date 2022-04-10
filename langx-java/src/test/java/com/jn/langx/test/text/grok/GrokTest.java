@@ -8,8 +8,6 @@ import com.jn.langx.text.grok.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
-import com.jn.langx.util.regexp.Regexp;
-import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.WheelTimers;
 import org.junit.Before;
@@ -27,21 +25,35 @@ public class GrokTest {
     @Before
     public void init() {
         repository = new PatternDefinitionRepository();
+
         HashedWheelTimer timer = WheelTimers.newHashedWheelTimer();
+
+
+        // single file repository:
+        PatternDefinitionSingleFileRepository singleFileRepository = new PatternDefinitionSingleFileRepository();
+
+        Cache<String, PatternDefinition> singleFileRepositoryCache = CacheBuilder.<String, PatternDefinition>newBuilder()
+                .timer(timer)
+                .build();
+        singleFileRepository.setCache(singleFileRepositoryCache);
+        singleFileRepository.setTimer(timer);
+        PatternDefinitionSingleFileLoader loader = new PatternDefinitionSingleFileLoader(Resources.loadClassPathResource("grok_pattern_tomcat.txt", GrokTest.class));
+        singleFileRepository.setConfigurationLoader(loader);
+
+
+        // multi level directory repository:
         Cache<String, PatternDefinition> cache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();
         repository.setCache(cache);
         repository.setTimer(timer);
-        PatternDefinitionFileLoader loader = new PatternDefinitionFileLoader(Resources.loadClassPathResource("grok_pattern_tomcat.txt", GrokTest.class));
-        repository.setConfigurationLoader(loader);
 
 
         DefaultGrokTemplatizedPatternParser grokTemplatizedPatternParser = new DefaultGrokTemplatizedPatternParser();
         grokTemplatizedPatternParser.setPatternDefinitionRepository(repository);
         patternParser = grokTemplatizedPatternParser;
 
-        this.template  =new DefaultGrokTemplate( patternParser.parse("%{TOMCATLOG}"));
+        this.template = new DefaultGrokTemplate(patternParser.parse("%{TOMCATLOG}"));
     }
 
     @Test
@@ -57,7 +69,7 @@ public class GrokTest {
                     IOs.close(in);
                     Map<String, Object> result = GrokTest.this.template.extract(message);
                     System.out.println(result);
-                }catch (IOException ex){
+                } catch (IOException ex) {
                     ex.fillInStackTrace();
                 }
             }
