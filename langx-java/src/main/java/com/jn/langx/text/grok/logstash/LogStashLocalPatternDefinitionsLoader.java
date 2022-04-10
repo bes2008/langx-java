@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LogStashLocalPatternDefinitionsLoader extends AbstractConfigurationLoader<PatternDefinition> {
-    private Resource basedir;
+    private List<Resource> basedirs = Collects.emptyArrayList();
     private EcsCompatibility ecsCompatibility = EcsCompatibility.disabled;
     private Map<File, Long> lastModifiedMap = new HashMap<File, Long>();
     private Map<String, PatternDefinition> cache = new HashMap<String, PatternDefinition>();
@@ -39,23 +39,8 @@ public class LogStashLocalPatternDefinitionsLoader extends AbstractConfiguration
         }
     }
 
-    private void initBaseDir() {
-        if (basedir == null) {
-            synchronized (this) {
-                if (basedir == null) {
-                    boolean ecsv1Enabled = false;
-                    if (ecsCompatibility == EcsCompatibility.v1) {
-                        ecsv1Enabled = true;
-                    }
-                    basedir = Resources.loadClassPathResource("patterns/" + (ecsv1Enabled ? "ecs-v1" : "legacy"), LogStashLocalPatternDefinitionsLoader.class);
-                }
-            }
-        }
-    }
-
     @Override
     public Map<String, PatternDefinition> loadAll() {
-        initBaseDir();
         List<File> definitionFiles = findDefinitionFiles();
         final Map<String, PatternDefinition> map = new LinkedHashMap<String, PatternDefinition>();
         Pipeline.of(definitionFiles)
@@ -86,19 +71,37 @@ public class LogStashLocalPatternDefinitionsLoader extends AbstractConfiguration
     }
 
     private List<File> findDefinitionFiles() {
-        File basedir = null;
-        if (this.basedir instanceof FileResource) {
-            FileResource fileResource = (FileResource) this.basedir;
-            basedir = fileResource.getRealResource();
-        } else if (this.basedir instanceof ClassPathResource) {
-            ClassPathResource classPathResource = (ClassPathResource) this.basedir;
-            URL baseUrl = classPathResource.getRealResource();
-            basedir = URLs.getFile(baseUrl);
+        if (basedirs.isEmpty()) {
+            synchronized (basedirs) {
+                if (basedirs.isEmpty()) {
+                    basedirs.add(Resources.loadClassPathResource("patterns/legacy", LogStashLocalPatternDefinitionsLoader.class));
+                    boolean ecsEnabled = ecsCompatibility == EcsCompatibility.v1;
+                    if (ecsEnabled) {
+                        basedirs.add(Resources.loadClassPathResource("patterns/ecs-v1", LogStashLocalPatternDefinitionsLoader.class));
+                    }
+                }
+            }
         }
-        if (basedir != null) {
-            return Collects.asList(basedir.listFiles((FileFilter) new IsFileFilter()));
-        }
-        return Collects.emptyArrayList();
+        final List<File> files = Collects.emptyArrayList();
+        Collects.forEach(this.basedirs, new Consumer<Resource>() {
+            @Override
+            public void accept(Resource resource) {
+                File basedir = null;
+                if (resource instanceof FileResource) {
+                    FileResource fileResource = (FileResource) resource;
+                    basedir = fileResource.getRealResource();
+                } else if (resource instanceof ClassPathResource) {
+                    ClassPathResource classPathResource = (ClassPathResource) resource;
+                    URL baseUrl = classPathResource.getRealResource();
+                    basedir = URLs.getFile(baseUrl);
+                }
+                if (basedir != null) {
+                    files.addAll(Collects.asList(basedir.listFiles((FileFilter) new IsFileFilter())));
+                }
+            }
+        });
+
+        return files;
     }
 
     @Override
