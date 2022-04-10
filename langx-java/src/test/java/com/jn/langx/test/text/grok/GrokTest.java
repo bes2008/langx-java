@@ -5,6 +5,7 @@ import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.grok.*;
+import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
@@ -18,19 +19,19 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class GrokTest {
-    PatternDefinitionRepository repository;
+    MultipleLevelPatternDefinitionRepository repository;
     GrokTemplatizedPatternParser patternParser;
     GrokTemplate template;
 
     @Before
     public void init() {
-        repository = new PatternDefinitionRepository();
+        repository = new MultipleLevelPatternDefinitionRepository();
 
         HashedWheelTimer timer = WheelTimers.newHashedWheelTimer();
 
 
         // single file repository:
-        PatternDefinitionSingleFileRepository singleFileRepository = new PatternDefinitionSingleFileRepository();
+        PatternDefinitionRepository singleFileRepository = new PatternDefinitionRepository();
 
         Cache<String, PatternDefinition> singleFileRepositoryCache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
@@ -39,12 +40,16 @@ public class GrokTest {
         singleFileRepository.setTimer(timer);
         PatternDefinitionSingleFileLoader loader = new PatternDefinitionSingleFileLoader(Resources.loadClassPathResource("grok_pattern_tomcat.txt", GrokTest.class));
         singleFileRepository.setConfigurationLoader(loader);
+        repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
 
-
-        // multi level directory repository:
+        // log stash directory repository:
+        PatternDefinitionRepository logstashFileRepository = new PatternDefinitionRepository();
         Cache<String, PatternDefinition> cache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();
+        LogStashLocalPatternDefinitionsLoader logStashLocalPatternDefinitionsLoader = new LogStashLocalPatternDefinitionsLoader();
+        logstashFileRepository.setConfigurationLoader(logStashLocalPatternDefinitionsLoader);
+
         repository.setCache(cache);
         repository.setTimer(timer);
 

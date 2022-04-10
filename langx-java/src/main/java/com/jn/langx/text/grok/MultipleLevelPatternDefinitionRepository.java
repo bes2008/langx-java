@@ -1,15 +1,20 @@
 package com.jn.langx.text.grok;
 
 import com.jn.langx.cache.Cache;
-import com.jn.langx.configuration.*;
+import com.jn.langx.configuration.ConfigurationLoader;
+import com.jn.langx.configuration.ConfigurationWriter;
+import com.jn.langx.configuration.MultipleLevelConfigurationRepository;
 
 import java.util.Comparator;
 import java.util.Map;
 
-public class PatternDefinitionSingleFileRepository <Loader extends ConfigurationLoader<PatternDefinition>, Writer extends ConfigurationWriter<PatternDefinition>> extends AbstractConfigurationRepository<PatternDefinition, Loader, Writer> {
+/**
+ * @since 4.5.0
+ */
+public class MultipleLevelPatternDefinitionRepository<Loader extends ConfigurationLoader<PatternDefinition>, Writer extends ConfigurationWriter<PatternDefinition>> extends MultipleLevelConfigurationRepository<PatternDefinition, Loader, Writer> {
 
-    public PatternDefinitionSingleFileRepository(){
-        setName("Grok-Pattern-Definition-Single-File-Repository");
+    public MultipleLevelPatternDefinitionRepository(){
+        setName("Grok-Pattern-Definition-Repository");
     }
 
     @Override

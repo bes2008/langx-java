@@ -23,7 +23,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
 
     private PropertySourcePlaceholderParser patternDefinitionSource;
 
-    public void setPatternDefinitionRepository(PatternDefinitionRepository repository) {
+    public void setPatternDefinitionRepository(MultipleLevelPatternDefinitionRepository repository) {
         PatternDefinitionSource source = new PatternDefinitionSource();
         source.setRepository(repository);
         repository.startup();
