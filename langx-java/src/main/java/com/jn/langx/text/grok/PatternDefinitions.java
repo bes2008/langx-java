@@ -2,6 +2,7 @@ package com.jn.langx.text.grok;
 
 
 import com.jn.langx.io.resource.Resource;
+import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
@@ -10,6 +11,7 @@ import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -66,6 +68,10 @@ public class PatternDefinitions {
         } catch (IOException ex) {
             throw Throwables.wrapAsRuntimeIOException(ex);
         }
+    }
+
+    public static Map<String, PatternDefinition> readDefinitions(File file){
+        return readDefinitions(Resources.loadFileResource(file));
     }
 
     public static Map<String, PatternDefinition> readDefinitions(Resource resource) {
