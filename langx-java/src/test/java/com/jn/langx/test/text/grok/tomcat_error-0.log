@@ -1,7 +1,4 @@
-Nov 01, 2020 5:37:49 PM org.apache.coyote.http11.AbstractHttp11Processor process
-INFO: Error parsing HTTP request header
- Note: further occurrences of HTTP header parsing errors will be logged at DEBUG level.
-java.lang.IllegalArgumentException: Invalid character (CR or LF) found in method name
+Nov 01, 2020 5:37:49 PM org.apache.coyote.http11.AbstractHttp11Processor process INFO: Error parsing HTTP request header  Note: further occurrences of HTTP header parsing errors will be logged at DEBUG level. java.lang.IllegalArgumentException: Invalid character (CR or LF) found in method name
         at org.apache.coyote.http11.InternalInputBuffer.parseRequestLine(InternalInputBuffer.java:131)
         at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:993)
         at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:625)

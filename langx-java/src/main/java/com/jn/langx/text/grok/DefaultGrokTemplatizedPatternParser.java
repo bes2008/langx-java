@@ -7,6 +7,7 @@ import com.jn.langx.text.placeholder.PropertySourcePlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.converter.IntegerConverter;
+import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
 
@@ -40,9 +41,10 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
             @Override
             public void accept(String variable, String expression, Holder<String> variableValueHolder) {
                 if (Strings.isNotEmpty(expression) && !variableValueHolder.isEmpty()) {
-                    expression = Strings.replace(expression,"][","_");
-                    expression = Strings.replace(expression,"[","");
-                    expression = Strings.replace(expression,"]","");
+                    //expression = Strings.replace(expression, "][", "_");
+                    expression = Strings.replace(expression, "][", "");
+                    expression = Strings.replace(expression, "[", "");
+                    expression = Strings.replace(expression, "]", "");
                     Converter converter = null;
                     String field = null;
                     String variableValue = variableValueHolder.get();
@@ -57,15 +59,19 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
                                 }
                             }
                         }
-                    }else{
+                    } else {
                         field = expression;
                     }
 
-                    if(field!=null){
-                        variableValue = "(?<" + field + ">" + variableValue + ")";
+                    if (field != null) {
+                        if (fields.contains(field)) {
+                            variableValue = "\\k<" + field + ">";
+                        } else {
+                            variableValue = "(?<" + field + ">" + variableValue + ")";
+                        }
                         variableValueHolder.set(variableValue);
                         fields.add(field);
-                        if(converter!=null){
+                        if (converter != null) {
                             converterMap.put(field, converter);
                         }
                     }
@@ -79,7 +85,9 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
 
         TemplatizedPattern pattern = new TemplatizedPattern();
         pattern.setExpression(patternTemplate);
-        pattern.setRegexp(Regexps.createRegexp(parsedPattern));
+        Option option = new Option();
+        option.setMultiple(true);
+        pattern.setRegexp(Regexps.createRegexp(parsedPattern, option));
         pattern.setFields(fields);
         pattern.setExpectedConverters(converterMap);
 

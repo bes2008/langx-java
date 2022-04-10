@@ -121,7 +121,11 @@ public class PropertyPlaceholderHandler {
      */
     public String replacePlaceholders(String template, PlaceholderParser placeholderResolver) {
         Preconditions.checkNotNull(template, "'value' must not be null");
-        return parseStringValue(template, placeholderResolver, null);
+        String ret = parseStringValue(template, placeholderResolver, null);
+        if(logger.isDebugEnabled()){
+            logger.debug(ret);
+        }
+        return ret;
     }
 
     protected String parseStringValue(String template, PlaceholderParser placeholderResolver, @Nullable Set<String> visitedPlaceholders) {
@@ -177,7 +181,7 @@ public class PropertyPlaceholderHandler {
                 }
                 // 对 variable, expression 都进行 递归式变量解析
                 variable = parseStringValue(variable, placeholderResolver, visitedPlaceholders);
-                if (expression != null) {
+                if (Strings.isNotEmpty(expression)) {
                     expression = parseStringValue(expression, placeholderResolver, visitedPlaceholders);
                 }
                 String propVal = placeholderResolver.parse(variable);
@@ -197,7 +201,7 @@ public class PropertyPlaceholderHandler {
                 }
                 */
                 // 对变量以及变量值进行处理
-                if (expression != null && this.expressionConsumer != null) {
+                if (Strings.isNotEmpty(expression) && this.expressionConsumer != null) {
                     Holder<String> propValueHolder = new Holder<String>(propVal);
                     this.expressionConsumer.accept(variable, expression, propValueHolder);
                     propVal = propValueHolder.get();

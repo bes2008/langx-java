@@ -270,7 +270,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
 
     @Override
     public void reload() {
-        Logger logger = Loggers.getLogger(getClass());
+        final Logger logger = Loggers.getLogger(getClass());
         logger.info("Reload repository {}", name);
         if (loader != null) {
             Map<String, T> all = loader.loadAll();
@@ -279,6 +279,10 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
                         .forEach(new Consumer<T>() {
                             @Override
                             public void accept(T t) {
+                                T old = getById(t.getId());
+                                if (old != null) {
+                                    logger.info("reload {}", t.getId());
+                                }
                                 add(t, false);
                             }
                         });

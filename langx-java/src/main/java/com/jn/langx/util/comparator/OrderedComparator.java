@@ -1,5 +1,9 @@
 package com.jn.langx.util.comparator;
 
+
+import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.function.Supplier;
+
 import java.util.Comparator;
 
 /**
@@ -8,6 +12,24 @@ import java.util.Comparator;
  * @param <T>
  */
 public class OrderedComparator<T> implements Comparator<T> {
+    @Nullable
+    private Supplier<T,Integer> defaultOrderSupplier;
+
+    public OrderedComparator(){
+
+    }
+
+    public OrderedComparator(Supplier<T,Integer> defaultOrderSupplier){
+        this.defaultOrderSupplier = defaultOrderSupplier;
+    }
+    public Supplier<T, Integer> getDefaultOrderSupplier() {
+        return defaultOrderSupplier;
+    }
+
+    public void setDefaultOrderSupplier(Supplier<T, Integer> defaultOrderSupplier) {
+        this.defaultOrderSupplier = defaultOrderSupplier;
+    }
+
     @Override
     public int compare(T o1, T o2) {
         if(o1==o2){

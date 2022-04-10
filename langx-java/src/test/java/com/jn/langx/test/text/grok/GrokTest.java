@@ -5,6 +5,7 @@ import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.grok.*;
+import com.jn.langx.text.grok.logstash.EcsCompatibility;
 import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -30,6 +31,7 @@ public class GrokTest {
         HashedWheelTimer timer = WheelTimers.newHashedWheelTimer();
 
 
+        /*
         // single file repository:
         PatternDefinitionRepository singleFileRepository = new PatternDefinitionRepository();
         singleFileRepository.setName("custom-repository");
@@ -40,7 +42,7 @@ public class GrokTest {
         singleFileRepository.setTimer(timer);
         PatternDefinitionSingleFileLoader loader = new PatternDefinitionSingleFileLoader(Resources.loadClassPathResource("grok_pattern_tomcat.txt", GrokTest.class));
         singleFileRepository.setConfigurationLoader(loader);
-
+        */
 
         // log stash directory repository:
         PatternDefinitionRepository logstashFileRepository = new PatternDefinitionRepository();
@@ -48,6 +50,7 @@ public class GrokTest {
                 .timer(timer)
                 .build();
         LogStashLocalPatternDefinitionsLoader logStashLocalPatternDefinitionsLoader = new LogStashLocalPatternDefinitionsLoader();
+        logStashLocalPatternDefinitionsLoader.setEcsCompatibility(EcsCompatibility.v1);
         logstashFileRepository.setConfigurationLoader(logStashLocalPatternDefinitionsLoader);
         logstashFileRepository.setCache(cache);
         logstashFileRepository.setTimer(timer);
@@ -55,7 +58,7 @@ public class GrokTest {
 
         //
         repository = new MultipleLevelPatternDefinitionRepository();
-        repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
+        //repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
         repository.addRepository(logstashFileRepository, Integer.MAX_VALUE);
         Cache<String, PatternDefinition> cache3 = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
