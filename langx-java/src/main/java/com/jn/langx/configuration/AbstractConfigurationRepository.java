@@ -22,7 +22,9 @@ import com.jn.langx.event.EventPublisher;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timeout;
@@ -270,5 +272,15 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     public void reload() {
         Logger logger = Loggers.getLogger(getClass());
         logger.info("Reload repository {}", name);
+        Map<String,T> all = loader.loadAll();
+        if(all!=null) {
+            Pipeline.of(all.values())
+                    .forEach(new Consumer<T>() {
+                        @Override
+                        public void accept(T t) {
+                            add(t, false);
+                        }
+                    });
+        }
     }
 }

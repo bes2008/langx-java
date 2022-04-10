@@ -61,4 +61,10 @@ public class PatternDefinitionRepository<Loader extends ConfigurationLoader<Patt
     public Map<String, PatternDefinition> getAll() {
         return super.getAll();
     }
+
+    @Override
+    public void reload() {
+        super.reload();
+
+    }
 }

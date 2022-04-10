@@ -4,10 +4,8 @@ import com.jn.langx.configuration.FullLoadConfigurationLoader;
 import com.jn.langx.io.resource.FileResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.Pipeline;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,9 +21,9 @@ public class PatternDefinitionFileLoader implements FullLoadConfigurationLoader<
     }
 
     @Override
-    public List<PatternDefinition> loadAll() {
+    public Map<String, PatternDefinition> loadAll() {
         read();
-        return Pipeline.of(this.cache.values()).asList();
+        return this.cache;
     }
 
     private void read() {
