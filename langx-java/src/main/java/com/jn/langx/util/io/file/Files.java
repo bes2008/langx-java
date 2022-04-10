@@ -1823,6 +1823,7 @@ public class Files {
     /**
      * @param directory the base dir
      * @param maxDepth  [1,100]
+     * @param childrenFilter 执行dir.listFiles(childrenFilter)时用到，为了过滤出每一个目录的子文件或目录过滤器
      * @param filter    use the predicate to filter all file or directory what found by search filter
      * @since 4.1.0
      */

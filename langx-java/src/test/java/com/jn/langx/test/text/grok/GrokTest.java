@@ -49,9 +49,9 @@ public class GrokTest {
                 .build();
         LogStashLocalPatternDefinitionsLoader logStashLocalPatternDefinitionsLoader = new LogStashLocalPatternDefinitionsLoader();
         logstashFileRepository.setConfigurationLoader(logStashLocalPatternDefinitionsLoader);
-
-        repository.setCache(cache);
-        repository.setTimer(timer);
+        logstashFileRepository.setCache(cache);
+        logstashFileRepository.setTimer(timer);
+        repository.addRepository(logstashFileRepository, Integer.MIN_VALUE);
 
 
         DefaultGrokTemplatizedPatternParser grokTemplatizedPatternParser = new DefaultGrokTemplatizedPatternParser();
