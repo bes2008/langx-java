@@ -25,7 +25,7 @@ public class GrokTest {
 
     @Before
     public void init() {
-        repository = new MultipleLevelPatternDefinitionRepository();
+
 
         HashedWheelTimer timer = WheelTimers.newHashedWheelTimer();
 
@@ -40,7 +40,7 @@ public class GrokTest {
         singleFileRepository.setTimer(timer);
         PatternDefinitionSingleFileLoader loader = new PatternDefinitionSingleFileLoader(Resources.loadClassPathResource("grok_pattern_tomcat.txt", GrokTest.class));
         singleFileRepository.setConfigurationLoader(loader);
-        repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
+
 
         // log stash directory repository:
         PatternDefinitionRepository logstashFileRepository = new PatternDefinitionRepository();
@@ -51,8 +51,15 @@ public class GrokTest {
         logstashFileRepository.setConfigurationLoader(logStashLocalPatternDefinitionsLoader);
         logstashFileRepository.setCache(cache);
         logstashFileRepository.setTimer(timer);
-        repository.addRepository(logstashFileRepository, Integer.MIN_VALUE);
 
+        //
+        repository = new MultipleLevelPatternDefinitionRepository();
+        repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
+        repository.addRepository(logstashFileRepository, Integer.MIN_VALUE);
+        Cache<String, PatternDefinition> cache3 = CacheBuilder.<String, PatternDefinition>newBuilder()
+                .timer(timer)
+                .build();
+        repository.setCache(cache3);
 
         DefaultGrokTemplatizedPatternParser grokTemplatizedPatternParser = new DefaultGrokTemplatizedPatternParser();
         grokTemplatizedPatternParser.setPatternDefinitionRepository(repository);
@@ -63,7 +70,7 @@ public class GrokTest {
 
     @Test
     public void test() {
-        String[] messagePaths = new String[]{"tomcat-error-0.log", "tomcat-error-1.log"};
+        String[] messagePaths = new String[]{"tomcat_error-0.log", "tomcat_error-1.log"};
         Collects.forEach(messagePaths, new Consumer<String>() {
             @Override
             public void accept(String messagePath) {

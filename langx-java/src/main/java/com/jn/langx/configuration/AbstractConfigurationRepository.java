@@ -84,7 +84,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
@@ -272,15 +272,17 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     public void reload() {
         Logger logger = Loggers.getLogger(getClass());
         logger.info("Reload repository {}", name);
-        Map<String,T> all = loader.loadAll();
-        if(all!=null) {
-            Pipeline.of(all.values())
-                    .forEach(new Consumer<T>() {
-                        @Override
-                        public void accept(T t) {
-                            add(t, false);
-                        }
-                    });
+        if (loader != null) {
+            Map<String, T> all = loader.loadAll();
+            if (all != null) {
+                Pipeline.of(all.values())
+                        .forEach(new Consumer<T>() {
+                            @Override
+                            public void accept(T t) {
+                                add(t, false);
+                            }
+                        });
+            }
         }
     }
 }

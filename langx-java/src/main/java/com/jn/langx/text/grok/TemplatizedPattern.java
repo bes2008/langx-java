@@ -64,4 +64,9 @@ public class TemplatizedPattern {
         }
         return originalValue;
     }
+
+    @Override
+    public String toString() {
+        return expression;
+    }
 }
