@@ -32,7 +32,7 @@ public class GrokTest {
 
         // single file repository:
         PatternDefinitionRepository singleFileRepository = new PatternDefinitionRepository();
-
+        singleFileRepository.setName("custom-repository");
         Cache<String, PatternDefinition> singleFileRepositoryCache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();
@@ -51,11 +51,12 @@ public class GrokTest {
         logstashFileRepository.setConfigurationLoader(logStashLocalPatternDefinitionsLoader);
         logstashFileRepository.setCache(cache);
         logstashFileRepository.setTimer(timer);
+        logstashFileRepository.setName("logstash-repository");
 
         //
         repository = new MultipleLevelPatternDefinitionRepository();
         repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
-        repository.addRepository(logstashFileRepository, Integer.MIN_VALUE);
+        repository.addRepository(logstashFileRepository, Integer.MAX_VALUE);
         Cache<String, PatternDefinition> cache3 = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();

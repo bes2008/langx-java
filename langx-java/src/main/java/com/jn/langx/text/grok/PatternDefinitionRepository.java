@@ -9,7 +9,7 @@ import java.util.Map;
 public class PatternDefinitionRepository<Loader extends ConfigurationLoader<PatternDefinition>, Writer extends ConfigurationWriter<PatternDefinition>> extends AbstractConfigurationRepository<PatternDefinition, Loader, Writer> {
 
     public PatternDefinitionRepository(){
-        setName("Grok-Pattern-Definition-Single-File-Repository");
+        setName("Grok-Pattern-Definition-Custom-Repository");
     }
 
     @Override
