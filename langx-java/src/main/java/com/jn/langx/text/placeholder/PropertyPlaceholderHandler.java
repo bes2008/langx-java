@@ -40,12 +40,12 @@ public class PropertyPlaceholderHandler {
 
     @Nullable
     private final String expressionSeparator;
-    private PlaceholderSubExpressionConsumer expressionConsumer = new DefaultValueExpressionHandler();
+    private PlaceholderSubExpressionHandler subExpressionHandler = new DefaultValueSubExpressionHandler();
 
     private final boolean ignoreUnresolvablePlaceholders;
     private Logger logger = Loggers.getLogger(getClass());
 
-    private static class DefaultValueExpressionHandler implements PlaceholderSubExpressionConsumer {
+    private static class DefaultValueSubExpressionHandler implements PlaceholderSubExpressionHandler {
         @Override
         public void accept(String variable, String expression, Holder<String> variableValueHolder) {
             if (Strings.isEmpty(variableValueHolder.get())) {
@@ -54,8 +54,8 @@ public class PropertyPlaceholderHandler {
         }
     }
 
-    public void setExpressionConsumer(PlaceholderSubExpressionConsumer expressionConsumer) {
-        this.expressionConsumer = expressionConsumer;
+    public void setSubExpressionHandler(PlaceholderSubExpressionHandler subExpressionHandler) {
+        this.subExpressionHandler = subExpressionHandler;
     }
 
     /**
@@ -189,24 +189,10 @@ public class PropertyPlaceholderHandler {
                     // previously resolved placeholder value.
                     variableValue = parseStringValue(variableValue, placeholderResolver, visitedPlaceholders);
                 }
-                // Now obtain the value for the fully resolved key...
-                /*
-                    if (variableValue == null && this.expressionSeparator != null) {
-                        int separatorIndex = placeholder.indexOf(this.expressionSeparator);
-                        if (separatorIndex != -1) {
-                            String actualPlaceholder = placeholder.substring(0, separatorIndex);
-                            String defaultValue = placeholder.substring(separatorIndex + this.expressionSeparator.length());
-                            variableValue = placeholderResolver.parse(actualPlaceholder);
-                            if (variableValue == null) {
-                                variableValue = defaultValue;
-                            }
-                        }
-                    }
-                */
                 // 对变量以及变量值进行处理
-                if (Strings.isNotEmpty(expression) && this.expressionConsumer != null) {
+                if (Strings.isNotEmpty(expression) && this.subExpressionHandler != null) {
                     Holder<String> propValueHolder = new Holder<String>(variableValue);
-                    this.expressionConsumer.accept(variable, expression, propValueHolder);
+                    this.subExpressionHandler.accept(variable, expression, propValueHolder);
                     variableValue = propValueHolder.get();
                 }
 

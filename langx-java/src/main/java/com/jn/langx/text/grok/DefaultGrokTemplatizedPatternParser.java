@@ -2,7 +2,7 @@ package com.jn.langx.text.grok;
 
 import com.jn.langx.Converter;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.text.placeholder.PlaceholderSubExpressionConsumer;
+import com.jn.langx.text.placeholder.PlaceholderSubExpressionHandler;
 import com.jn.langx.text.placeholder.PropertyPlaceholderHandler;
 import com.jn.langx.text.placeholder.PropertySourcePlaceholderParser;
 import com.jn.langx.util.Objs;
@@ -38,7 +38,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
 
         final Map<String, String> fieldToOriginPatternMap = Collects.emptyHashMap(true);
         final Map<String, Converter> converterMap = new HashMap<String, Converter>();
-        PlaceholderSubExpressionConsumer consumer = new PlaceholderSubExpressionConsumer() {
+        PlaceholderSubExpressionHandler subExpressionHandler = new PlaceholderSubExpressionHandler() {
             @Override
             public void accept(String variable, String expression, Holder<String> variableValueHolder) {
                 if (Strings.isNotEmpty(expression) && !variableValueHolder.isEmpty()) {
@@ -95,7 +95,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
         };
 
         PropertyPlaceholderHandler handler = new PropertyPlaceholderHandler("%{", "}", ":", false);
-        handler.setExpressionConsumer(consumer);
+        handler.setSubExpressionHandler(subExpressionHandler);
         String parsedPattern = handler.replacePlaceholders(patternTemplate, this.patternDefinitionSource);
 
         TemplatizedPattern pattern = new TemplatizedPattern();
