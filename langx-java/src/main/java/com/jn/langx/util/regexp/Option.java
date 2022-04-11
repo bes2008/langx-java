@@ -24,11 +24,13 @@ public class Option {
     public static final int REGEXP_FLAG_MULTILINE = Pattern.MULTILINE;
 
     /**
-     * 是否忽略大小写
+     * 是否忽略大小写，默认不忽略
      */
     private boolean ignoreCase = false;
     /**
-     * 是否支持多行匹配
+     * 在要匹配的text是多行是，是否一行一行的匹配。如果要一行一行的匹配，设置为true；
+     *
+     * 默认值为 false，即将多行文本作为一个整体
      */
     private boolean multiple = false;
 
@@ -67,7 +69,7 @@ public class Option {
         if (option.multiple) {
             flags |= REGEXP_FLAG_MULTILINE;
         }
-        if (!option.isIgnoreCase()) {
+        if (option.isIgnoreCase()) {
             flags |= REGEXP_FLAG_CASE_INSENSITIVE;
         }
         return flags;
@@ -78,7 +80,7 @@ public class Option {
     public static final Option buildOption(int flags) {
         Option option = new Option();
         option.setMultiple(has(flags, REGEXP_FLAG_MULTILINE));
-        option.setIgnoreCase(!has(flags, REGEXP_FLAG_CASE_INSENSITIVE));
+        option.setIgnoreCase(has(flags, REGEXP_FLAG_CASE_INSENSITIVE));
         return option;
     }
 
