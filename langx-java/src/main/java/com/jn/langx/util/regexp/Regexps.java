@@ -5,7 +5,6 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
@@ -39,6 +38,10 @@ public class Regexps {
         registry.init();
     }
 
+    private Regexps() {
+
+    }
+
     public static Regexp createRegexp(String pattern) {
         return createRegexp(pattern, null);
     }
@@ -51,8 +54,12 @@ public class Regexps {
         return createRegexp((String) null, pattern, option);
     }
 
-    public static Regexp createRegexp(@Nullable String engine, @NonNull String pattern, @Nullable Option option) {
-        return createRegexp(engine==null?null:registry.get(engine), pattern, option);
+    public static Regexp createRegexp(@Nullable String engineName, @NonNull String pattern, @Nullable Option option) {
+        RegexpEngine engine = engineName == null ? null : registry.get(engineName);
+        if (engine == null && engineName != null) {
+            throw new RuntimeException(StringTemplates.formatWithPlaceholder("not found regexp engine {}", engineName));
+        }
+        return createRegexp(engine, pattern, option);
     }
 
     public static Regexp createRegexp(@Nullable RegexpEngine engine, @NonNull String pattern, @Nullable Option option) {
@@ -62,9 +69,6 @@ public class Regexps {
         }
         if (engine == null) {
             engine = registry.get("jdk");
-        }
-        if (engine == null) {
-            throw new RuntimeException(StringTemplates.formatWithPlaceholder("not found regexp engine {}", engine.getName()));
         }
         return engine.get(pattern, option);
     }
