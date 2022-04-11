@@ -70,8 +70,8 @@ public class GrokTest {
         grokTemplatizedPatternParser.setPatternDefinitionRepository(repository);
         patternParser = grokTemplatizedPatternParser;
 
-        this.tomcatLogTemplate = new DefaultGrokTemplate(patternParser.parse("%{TOMCAT7_LOG}(\n%{JAVASTACK})?"));
-        this.javastackTemplate = new DefaultGrokTemplate(patternParser.parse("(\n?%{JAVASTACK:stack})?"));
+        this.tomcatLogTemplate = new DefaultGrokTemplate(patternParser.parse("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?"));
+        this.javastackTemplate = new DefaultGrokTemplate(patternParser.parse("(?:%{CRLF}?%{JAVASTACK:stack})?"));
     }
 
     private void test(final GrokTemplate template, String[] messagePaths) {
@@ -106,8 +106,14 @@ public class GrokTest {
 
 
     @Test
-    public void testTocatErrorLog() {
-        String[] messagePaths = new String[]{"tomcat_error-0.log", "tomcat_error-1.log"};
+    public void testTomcatErrorLogWithStack() {
+        String[] messagePaths = new String[]{"tomcat_error-0.log"};
+        test(this.tomcatLogTemplate, messagePaths);
+    }
+
+    @Test
+    public void testTomcatErrorLogWithoutStack() {
+        String[] messagePaths = new String[]{"tomcat_error-1.log"};
         test(this.tomcatLogTemplate, messagePaths);
     }
 }

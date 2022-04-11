@@ -4,7 +4,7 @@ JAVAFILE (?:[a-zA-Z$_0-9. -]+)
 #Allow special <init>, <clinit> methods
 JAVAMETHOD (?:(<(?:cl)?init>)|[a-zA-Z$_][a-zA-Z$_0-9]*)
 #Line number is optional in special cases 'Native method' or 'Unknown source'
-JAVASTACKTRACEPART %{SPACE}at %{JAVACLASS:[java][log][origin][class][name]}\.%{JAVAMETHOD:[log][origin][function]}\(%{JAVAFILE:[log][origin][file][name]}(?::%{INT:[log][origin][file][line]:int})?\)
+JAVASTACKTRACEPART %{SPACE}at %{JAVACLASS}\.%{JAVAMETHOD}\(%{JAVAFILE}(?::%{INT})?\)
 # Java Logs
 JAVATHREAD (?:[A-Z]{2}-Processor[\d]+)
 JAVALOGMESSAGE (?:.*)
@@ -32,3 +32,4 @@ TOMCATLEGACY_LOG %{TOMCATLEGACY_DATESTAMP:timestamp} \| %{LOGLEVEL:[log][level]}
 TOMCAT_DATESTAMP (?:%{CATALINA8_DATESTAMP})|(?:%{CATALINA7_DATESTAMP})|(?:%{TOMCATLEGACY_DATESTAMP})
 
 TOMCATLOG (?:%{TOMCAT8_LOG})|(?:%{TOMCAT7_LOG})|(?:%{TOMCATLEGACY_LOG})
+TOMCAT7_ERROR_LOG %{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?

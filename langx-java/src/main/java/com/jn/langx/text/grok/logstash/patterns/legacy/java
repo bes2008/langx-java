@@ -4,12 +4,16 @@ JAVAFILE (?:[a-zA-Z$_0-9. -]+)
 #Allow special <init>, <clinit> methods
 JAVAMETHOD (?:(<(?:cl)?init>)|[a-zA-Z$_][a-zA-Z$_0-9]*)
 #Line number is optional in special cases 'Native method' or 'Unknown source'
-JAVASTACKTRACEPART %{SPACE}at %{JAVACLASS:class}\.%{JAVAMETHOD:method}\(%{JAVAFILE:file}(?::%{NUMBER:line})?\)
-JAVASTACKTRACE (\r\n%{JAVASTACKTRACEPART})+
-JAVASTACK %{JAVACLASS} %{JAVAMETHOD}%{JAVASTACKTRACE}
+JAVASTACKTRACEPART %{SPACE}at %{JAVACLASS}\.%{JAVAMETHOD}\(%{JAVAFILE}(?::%{NUMBER})?\)
+
 # Java Logs
 JAVATHREAD (?:[A-Z]{2}-Processor[\d]+)
 JAVALOGMESSAGE (.*)
+
+# java stack
+JAVASTACKTRACE (%{CRLF}?%{JAVASTACKTRACEPART})+
+JAVASTACK %{JAVACLASS}(?::%{SPACE}(?:%{JAVALOGMESSAGE})?%{JAVASTACKTRACE})?
+
 # MMM dd, yyyy HH:mm:ss eg: Jan 9, 2014 7:13:13 AM
 CATALINA_DATESTAMP %{MONTH} %{MONTHDAY}, 20%{YEAR} %{HOUR}:?%{MINUTE}(?::?%{SECOND}) (?:AM|PM)
 # yyyy-MM-dd HH:mm:ss,SSS ZZZ eg: 2014-01-09 17:32:25,527 -0800

@@ -56,10 +56,10 @@ public class TemplatizedPattern {
         this.fields = fields;
     }
 
-    public Object convert(String field, String originalValue){
-        if(expectedConverters!=null){
+    public Object convert(String field, String originalValue) {
+        if (expectedConverters != null) {
             Converter converter = expectedConverters.get(field);
-            if(converter!=null){
+            if (converter != null) {
                 return converter.apply(originalValue);
             }
         }
@@ -68,6 +68,6 @@ public class TemplatizedPattern {
 
     @Override
     public String toString() {
-        return Strings.replaceChars(expression,"\\","\\\\");
+        return Strings.replaceChars(expression, "\\", "\\\\");
     }
 }
