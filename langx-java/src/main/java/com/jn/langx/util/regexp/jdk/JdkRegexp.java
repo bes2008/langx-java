@@ -13,13 +13,17 @@ public class JdkRegexp implements Regexp {
     private Pattern pattern;
     private Option option;
 
-    public JdkRegexp(Pattern pattern){
+    public JdkRegexp(Pattern pattern) {
         this.pattern = pattern;
         this.option = Option.buildOption(pattern.flags());
     }
 
     public JdkRegexp(String pattern) {
         this.pattern = Pattern.compile(pattern, 0);
+    }
+
+    public JdkRegexp(String pattern, Option option) {
+        this(pattern, option.toFlags());
     }
 
     public JdkRegexp(String pattern, int flags) {

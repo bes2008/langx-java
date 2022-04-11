@@ -82,6 +82,9 @@ public class Option {
         return option;
     }
 
+    public final int toFlags(){
+        return toFlags(this);
+    }
 
     /**
      * Indicates whether a particular flag is set or not.

@@ -36,6 +36,7 @@ public class Nets {
 
     /**
      * The "any" address for IPv4.
+     *
      * @since 4.1.0
      */
     public static final Inet4Address INET4_ANY = getInet4Address(0, 0, 0, 0);
@@ -48,11 +49,13 @@ public class Nets {
 
     /**
      * The broadcast-all address for IPv4.
+     *
      * @since 4.1.0
      */
     public static final Inet4Address INET4_BROADCAST = getInet4Address(255, 255, 255, 255);
     /**
      * The "any" address for IPv6.
+     *
      * @since 4.1.0
      */
     public static final Inet6Address INET6_ANY = getInet6Address(0, 0, 0, 0, 0, 0, 0, 0);
@@ -309,7 +312,6 @@ public class Nets {
      * @param s3 the third segment
      * @param s4 the fourth segment
      * @return the address (not {@code null})
-     *
      * @since 4.1.0
      */
     public static Inet4Address getInet4Address(int s1, int s2, int s3, int s4) {
@@ -346,7 +348,6 @@ public class Nets {
      * @param s7 the seventh segment
      * @param s8 the eighth segment
      * @return the address (not {@code null})
-     *
      * @since 4.1.0
      */
     public static Inet6Address getInet6Address(int s1, int s2, int s3, int s4, int s5, int s6, int s7, int s8) {
@@ -1078,12 +1079,12 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                       <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
-     *                                                                                                                                                                                                       defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
-     *                                                                                                                                                                                                       following the updated guidelines in
-     *                                                                                                                                                                                                       <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
-     *                                                                                                                                                                                                       <li>{@code false} to strictly follow rfc 5952</li>
-     *                                                                                                                                                                                                       </ul>
+     *                                                                                                                                                                                                                                           <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
+     *                                                                                                                                                                                                                                           defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
+     *                                                                                                                                                                                                                                           following the updated guidelines in
+     *                                                                                                                                                                                                                                           <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
+     *                                                                                                                                                                                                                                           <li>{@code false} to strictly follow rfc 5952</li>
+     *                                                                                                                                                                                                                                           </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
@@ -1358,42 +1359,60 @@ public class Nets {
     }
 
     private static final List<String> virtualInterfaces = Collects.newArrayList(
-            "virtualbox", " kernel debug ", "ppp0", "6to4", "loopback", "miniport", "virbr"
+            "virtualbox", " kernel debug ", "ppp0", "6to4", "loopback", "miniport", "virbr", "docker","veth"
     );
+
+    /**
+     * 获取有效的网卡接口
+     */
+    public static List<NetworkInterface> getValidNetworkInterfaces() {
+        return getValidNetworkInterfaces(virtualInterfaces);
+    }
+
+    public static List<NetworkInterface> getValidNetworkInterfaces(final List<String> virtualInterfaces) {
+        Preconditions.checkNotEmpty(virtualInterfaces);
+        List<NetworkInterface> interfaces = getNetworkInterfaces();
+        return Pipeline.of(interfaces)
+                .filter(new Predicate<NetworkInterface>() {
+                    @Override
+                    public boolean test(NetworkInterface networkInterface) {
+                        return !networkInterface.isVirtual();
+                    }
+                }).filter(new Predicate<NetworkInterface>() {
+                    @Override
+                    public boolean test(NetworkInterface networkInterface) {
+                        final String displayName = networkInterface.getDisplayName();
+                        if (Collects.anyMatch(virtualInterfaces, new Predicate<String>() {
+                            @Override
+                            public boolean test(String value) {
+                                return Strings.contains(displayName, value, true);
+                            }
+                        })) {
+                            return false;
+                        }
+                        final String name = networkInterface.getName();
+                        if (Collects.anyMatch(virtualInterfaces, new Predicate<String>() {
+                            @Override
+                            public boolean test(String value) {
+                                return Strings.contains(name, value, true);
+                            }
+                        })) {
+                            return false;
+                        }
+                        try {
+                            return Emptys.isNotEmpty(networkInterface.getHardwareAddress());
+                        } catch (Throwable ex) {
+                            return false;
+                        }
+                    }
+                }).asList();
+    }
 
     /**
      * 获取第一个有效的网卡接口
      */
     public static NetworkInterface getFirstValidNetworkInterface() {
-        List<NetworkInterface> interfaces = getNetworkInterfaces();
-        return Pipeline.of(interfaces).findFirst(new Predicate<NetworkInterface>() {
-            @Override
-            public boolean test(NetworkInterface networkInterface) {
-                final String displayName = networkInterface.getDisplayName();
-                if (Collects.anyMatch(virtualInterfaces, new Predicate<String>() {
-                    @Override
-                    public boolean test(String value) {
-                        return Strings.contains(displayName, value, true);
-                    }
-                })) {
-                    return false;
-                }
-                final String name = networkInterface.getName();
-                if (Collects.anyMatch(virtualInterfaces, new Predicate<String>() {
-                    @Override
-                    public boolean test(String value) {
-                        return Strings.contains(name, value, true);
-                    }
-                })) {
-                    return false;
-                }
-                try {
-                    return Emptys.isNotEmpty(networkInterface.getHardwareAddress());
-                } catch (Throwable ex) {
-                    return false;
-                }
-            }
-        });
+        return Pipeline.of(getValidNetworkInterfaces()).findFirst();
     }
 
     public static String getFirstValidMac() {
@@ -1499,7 +1518,6 @@ public class Nets {
      * Get the scope ID of the given address (if it is an IPv6 address).
      *
      * @return the scope ID, or 0 if there is none or the address is an IPv4 address
-     *
      * @since 4.1.0
      */
     public static int getScopeId(InetAddress address) {
@@ -1514,7 +1532,6 @@ public class Nets {
      *
      * @param scopeName the scope number or name as a string (must not be {@code null})
      * @return the scope ID, or 0 if no matching scope could be found
-     *
      * @since 4.1.0
      */
     public static int getScopeId(String scopeName) {
@@ -1528,7 +1545,6 @@ public class Nets {
      * @param scopeName   the scope number or name as a string (must not be {@code null})
      * @param compareWith the address to compare with, to ensure that the wrong local scope is not selected (may be {@code null})
      * @return the scope ID, or 0 if no matching scope could be found
-     *
      * @since 4.1.0
      */
     public static int getScopeId(String scopeName, InetAddress compareWith) {
@@ -1544,8 +1560,8 @@ public class Nets {
     }
 
     /**
-     * @since 4.1.0
      * @param scopeName
+     * @since 4.1.0
      */
     public static NetworkInterface findInterfaceWithScopeId(String scopeName) {
         final Enumeration<NetworkInterface> enumeration;
@@ -1564,9 +1580,7 @@ public class Nets {
     }
 
     /**
-     *
      * @param networkInterface
-     *
      * @since 4.1.0
      */
     public static int getScopeId(NetworkInterface networkInterface) {
@@ -1574,10 +1588,8 @@ public class Nets {
     }
 
     /**
-     *
      * @param networkInterface
      * @param compareWith
-     *
      * @since 4.1.0
      */
     public static int getScopeId(final NetworkInterface networkInterface, InetAddress compareWith) {
@@ -1612,7 +1624,6 @@ public class Nets {
      *
      * @param inetAddress the address (must not be {@code null})
      * @return the string representation (not {@code null})
-     *
      * @since 4.1.0
      */
     public static String toOptimalString(InetAddress inetAddress) {
@@ -1625,7 +1636,6 @@ public class Nets {
      *
      * @param addressBytes the address bytes (must not be {@code null})
      * @return the string representation (not {@code null})
-     *
      * @since 4.1.0
      */
     public static String toOptimalString(byte[] addressBytes) {
@@ -1641,10 +1651,8 @@ public class Nets {
 
 
     /**
-     *
      * @param bytes
      * @return
-     *
      * @since 4.1.0
      */
     private static String toOptimalStringV6(final byte[] bytes) {
