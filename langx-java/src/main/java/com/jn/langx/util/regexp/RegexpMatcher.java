@@ -3,14 +3,32 @@ package com.jn.langx.util.regexp;
 /**
  * @since 4.5.0
  */
-public interface RegexpMatcher extends RegexpMatchResult{
+public interface RegexpMatcher extends RegexpMatchResult {
+    /**
+     * @return 是否匹配
+     */
     boolean matches();
 
     /**
      * 找到下一个匹配的子串
-     * @return 是否找到
+     *
+     * @return 是否找到要匹配的内容
      */
     boolean find();
+
+    /**
+     * 对匹配到的部分，进行文本替换
+     *
+     * @param b           替换后存入的buffer
+     * @param replacement 替换物
+     * @return 匹配器
+     */
     RegexpMatcher appendReplacement(StringBuffer b, String replacement);
+
+    /**
+     * 把原始文本中 剩余部分添加的 StringBuffer中
+     *
+     * @param b
+     */
     void appendTail(StringBuffer b);
 }
