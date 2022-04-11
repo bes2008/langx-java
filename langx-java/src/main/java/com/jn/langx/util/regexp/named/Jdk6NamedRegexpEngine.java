@@ -1,14 +1,14 @@
-package com.jn.langx.util.regexp.jdk;
+package com.jn.langx.util.regexp.named;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
-import com.jn.langx.util.regexp.RegexpFactory;
+import com.jn.langx.util.regexp.RegexpEngine;
 
 /**
  * @since 4.5.0
  */
-public class JdkRegexpFactory implements RegexpFactory {
+public class Jdk6NamedRegexpEngine implements RegexpEngine {
     @Override
     public String getName() {
         return "jdk";
@@ -25,6 +25,6 @@ public class JdkRegexpFactory implements RegexpFactory {
                 regexp = regexp + "$";
             }
         }
-        return new JdkRegexp(regexp, flags);
+        return NamedRegexp.compile(regexp, flags);
     }
 }

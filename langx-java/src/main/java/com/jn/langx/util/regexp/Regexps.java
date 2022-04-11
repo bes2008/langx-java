@@ -9,8 +9,8 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
-import com.jn.langx.util.regexp.jdk.JdkRegexpFactory;
-import com.jn.langx.util.regexp.named.Jdk6NamedRegexpFactory;
+import com.jn.langx.util.regexp.jdk.JdkRegexpEngine;
+import com.jn.langx.util.regexp.named.Jdk6NamedRegexpEngine;
 
 import java.util.ServiceLoader;
 import java.util.regex.Pattern;
@@ -21,18 +21,18 @@ import java.util.regex.Pattern;
 public class Regexps {
 
 
-    private static final GenericRegistry<RegexpFactory> registry = new GenericRegistry<RegexpFactory>();
+    private static final GenericRegistry<RegexpEngine> registry = new GenericRegistry<RegexpEngine>();
 
     static {
         if (Platform.JAVA_VERSION_INT < 7) {
-            registry.register(new Jdk6NamedRegexpFactory());
+            registry.register(new Jdk6NamedRegexpEngine());
         } else {
-            registry.register(new JdkRegexpFactory());
+            registry.register(new JdkRegexpEngine());
         }
         // SPI for joni or others
-        Collects.forEach(ServiceLoader.load(RegexpFactory.class), new Consumer<RegexpFactory>() {
+        Collects.forEach(ServiceLoader.load(RegexpEngine.class), new Consumer<RegexpEngine>() {
             @Override
-            public void accept(RegexpFactory regexpFactory) {
+            public void accept(RegexpEngine regexpFactory) {
                 registry.register(regexpFactory);
             }
         });
@@ -40,29 +40,32 @@ public class Regexps {
     }
 
     public static Regexp createRegexp(String pattern) {
-        return createRegexp( pattern, null);
+        return createRegexp(pattern, null);
     }
 
-    public static Regexp createRegexp(Pattern pattern){
-        return createRegexp(null, pattern.pattern(), Option.buildOption(pattern.flags()));
+    public static Regexp createRegexp(Pattern pattern) {
+        return createRegexp("jdk", pattern.pattern(), Option.buildOption(pattern.flags()));
     }
 
     public static Regexp createRegexp(String pattern, Option option) {
-        return createRegexp(null, pattern, option);
+        return createRegexp((String) null, pattern, option);
     }
 
     public static Regexp createRegexp(@Nullable String engine, @NonNull String pattern, @Nullable Option option) {
+        return createRegexp(engine==null?null:registry.get(engine), pattern, option);
+    }
+
+    public static Regexp createRegexp(@Nullable RegexpEngine engine, @NonNull String pattern, @Nullable Option option) {
         Preconditions.checkNotNull(pattern);
-        if (Strings.isBlank(engine)) {
-            engine = "jdk";
-        }
         if (option == null) {
             option = Option.DEFAULT;
         }
-        RegexpFactory factory = registry.get(engine);
-        if (factory == null) {
-            throw new RuntimeException(StringTemplates.formatWithPlaceholder("not found regexp engine {}", engine));
+        if (engine == null) {
+            engine = registry.get("jdk");
         }
-        return factory.get(pattern, option);
+        if (engine == null) {
+            throw new RuntimeException(StringTemplates.formatWithPlaceholder("not found regexp engine {}", engine.getName()));
+        }
+        return engine.get(pattern, option);
     }
 }

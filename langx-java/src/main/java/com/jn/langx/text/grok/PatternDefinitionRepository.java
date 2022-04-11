@@ -6,6 +6,9 @@ import com.jn.langx.configuration.*;
 import java.util.Comparator;
 import java.util.Map;
 
+/**
+ * @since 4.5.0
+ */
 public class PatternDefinitionRepository<Loader extends ConfigurationLoader<PatternDefinition>, Writer extends ConfigurationWriter<PatternDefinition>> extends AbstractConfigurationRepository<PatternDefinition, Loader, Writer> {
 
     public PatternDefinitionRepository(){
