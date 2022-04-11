@@ -1,4 +1,5 @@
-CRLF (?:\r\n)
+# macOS: \r, unix: \n, windows: \r\n
+CRLF (?:(?:\n)|(?:\r\n)|(?:\r))
 
 USERNAME [a-zA-Z0-9._-]+
 USER %{USERNAME}
