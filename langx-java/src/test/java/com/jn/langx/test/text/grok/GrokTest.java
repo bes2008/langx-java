@@ -69,7 +69,7 @@ public class GrokTest {
         grokTemplatizedPatternParser.setPatternDefinitionRepository(repository);
         patternParser = grokTemplatizedPatternParser;
 
-        this.template = new DefaultGrokTemplate(patternParser.parse("%{TOMCATLOG}"));
+        this.template = new DefaultGrokTemplate(patternParser.parse("%{TOMCAT7_LOG}"));
     }
 
     @Test

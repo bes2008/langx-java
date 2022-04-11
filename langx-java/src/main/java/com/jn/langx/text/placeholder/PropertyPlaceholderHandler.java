@@ -5,7 +5,6 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.properties.PropertiesPlaceholderParser;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.function.Consumer3;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
@@ -41,21 +40,21 @@ public class PropertyPlaceholderHandler {
 
     @Nullable
     private final String expressionSeparator;
-    private PlaceholderExpressionConsumer expressionConsumer = new DefaultValueExpressionHandler();
+    private PlaceholderSubExpressionConsumer expressionConsumer = new DefaultValueExpressionHandler();
 
     private final boolean ignoreUnresolvablePlaceholders;
     private Logger logger = Loggers.getLogger(getClass());
 
-    private static class DefaultValueExpressionHandler implements PlaceholderExpressionConsumer{
+    private static class DefaultValueExpressionHandler implements PlaceholderSubExpressionConsumer {
         @Override
         public void accept(String variable, String expression, Holder<String> variableValueHolder) {
-            if(Strings.isEmpty(variableValueHolder.get())){
+            if (Strings.isEmpty(variableValueHolder.get())) {
                 variableValueHolder.set(expression);
             }
         }
     }
 
-    public void setExpressionConsumer(PlaceholderExpressionConsumer expressionConsumer) {
+    public void setExpressionConsumer(PlaceholderSubExpressionConsumer expressionConsumer) {
         this.expressionConsumer = expressionConsumer;
     }
 
@@ -122,7 +121,7 @@ public class PropertyPlaceholderHandler {
     public String replacePlaceholders(String template, PlaceholderParser placeholderResolver) {
         Preconditions.checkNotNull(template, "'value' must not be null");
         String ret = parseStringValue(template, placeholderResolver, null);
-        if(logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug(ret);
         }
         return ret;
@@ -184,39 +183,39 @@ public class PropertyPlaceholderHandler {
                 if (Strings.isNotEmpty(expression)) {
                     expression = parseStringValue(expression, placeholderResolver, visitedPlaceholders);
                 }
-                String propVal = placeholderResolver.parse(variable);
+                String variableValue = placeholderResolver.parse(variable);
+                if (variableValue != null) {
+                    // Recursive invocation, parsing placeholders contained in the
+                    // previously resolved placeholder value.
+                    variableValue = parseStringValue(variableValue, placeholderResolver, visitedPlaceholders);
+                }
                 // Now obtain the value for the fully resolved key...
                 /*
-
-                if (propVal == null && this.expressionSeparator != null) {
-                    int separatorIndex = placeholder.indexOf(this.expressionSeparator);
-                    if (separatorIndex != -1) {
-                        String actualPlaceholder = placeholder.substring(0, separatorIndex);
-                        String defaultValue = placeholder.substring(separatorIndex + this.expressionSeparator.length());
-                        propVal = placeholderResolver.parse(actualPlaceholder);
-                        if (propVal == null) {
-                            propVal = defaultValue;
+                    if (variableValue == null && this.expressionSeparator != null) {
+                        int separatorIndex = placeholder.indexOf(this.expressionSeparator);
+                        if (separatorIndex != -1) {
+                            String actualPlaceholder = placeholder.substring(0, separatorIndex);
+                            String defaultValue = placeholder.substring(separatorIndex + this.expressionSeparator.length());
+                            variableValue = placeholderResolver.parse(actualPlaceholder);
+                            if (variableValue == null) {
+                                variableValue = defaultValue;
+                            }
                         }
                     }
-                }
                 */
                 // 对变量以及变量值进行处理
                 if (Strings.isNotEmpty(expression) && this.expressionConsumer != null) {
-                    Holder<String> propValueHolder = new Holder<String>(propVal);
+                    Holder<String> propValueHolder = new Holder<String>(variableValue);
                     this.expressionConsumer.accept(variable, expression, propValueHolder);
-                    propVal = propValueHolder.get();
+                    variableValue = propValueHolder.get();
                 }
 
-                if (propVal != null) {
-                    // Recursive invocation, parsing placeholders contained in the
-                    // previously resolved placeholder value.
-                    propVal = parseStringValue(propVal, placeholderResolver, visitedPlaceholders);
-                    result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
-
+                if (variableValue != null) {
+                    result.replace(startIndex, endIndex + this.placeholderSuffix.length(), variableValue);
                     if (logger.isDebugEnabled()) {
                         logger.debug("Resolved placeholder '{}'", placeholder);
                     }
-                    startIndex = result.indexOf(this.placeholderPrefix, startIndex + propVal.length());
+                    startIndex = result.indexOf(this.placeholderPrefix, startIndex + variableValue.length());
                 } else if (this.ignoreUnresolvablePlaceholders) {
                     // Proceed with unprocessed value.
                     startIndex = result.indexOf(this.placeholderPrefix, endIndex + this.placeholderSuffix.length());

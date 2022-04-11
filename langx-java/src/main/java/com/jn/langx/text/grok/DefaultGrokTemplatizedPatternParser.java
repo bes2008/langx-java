@@ -2,7 +2,7 @@ package com.jn.langx.text.grok;
 
 import com.jn.langx.Converter;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.text.placeholder.PlaceholderExpressionConsumer;
+import com.jn.langx.text.placeholder.PlaceholderSubExpressionConsumer;
 import com.jn.langx.text.placeholder.PropertyPlaceholderHandler;
 import com.jn.langx.text.placeholder.PropertySourcePlaceholderParser;
 import com.jn.langx.util.Objs;
@@ -38,7 +38,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
 
         final Map<String, String> fieldToOriginPatternMap = Collects.emptyHashMap(true);
         final Map<String, Converter> converterMap = new HashMap<String, Converter>();
-        PlaceholderExpressionConsumer consumer = new PlaceholderExpressionConsumer() {
+        PlaceholderSubExpressionConsumer consumer = new PlaceholderSubExpressionConsumer() {
             @Override
             public void accept(String variable, String expression, Holder<String> variableValueHolder) {
                 if (Strings.isNotEmpty(expression) && !variableValueHolder.isEmpty()) {
@@ -67,10 +67,12 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
                     if (field != null) {
                         if (fieldToOriginPatternMap.containsKey(field)) {
                             String originPattern = fieldToOriginPatternMap.get(field);
-                            if(Objs.equals(originPattern, variable)) {
+                            // 因为一个正在表达式中，每一个 group的name必须 唯一，如果有存在重复的，可以用 \k<name>方式替代
+                            // 所以这里要检查两个是否一致
+                            if (Objs.equals(originPattern, variableValue)) {
                                 variableValue = "\\k<" + field + ">";
-                            }else{
-                                throw new NamedGroupConflictedException(StringTemplates.formatWithPlaceholder("named group '{}' conflicted in grok regexp: {}", field, patternTemplate));
+                            } else {
+                                throw new NamedGroupConflictedException(StringTemplates.formatWithPlaceholder("named group '{}' conflicted in grok regexp '{}':\n\t1: {}\n\t2: {}", field, patternTemplate, originPattern, variableValue));
                             }
                         } else {
                             fieldToOriginPatternMap.put(field, variableValue);
