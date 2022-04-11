@@ -38,7 +38,7 @@ public class StringTemplate {
     }
     public StringTemplate variablePattern(Regexp regexp){
         if (Emptys.isNotNull(regexp)) {
-            this.variableRegexp = defaultPattern;
+            this.variableRegexp = regexp;
         }
         return this;
     }

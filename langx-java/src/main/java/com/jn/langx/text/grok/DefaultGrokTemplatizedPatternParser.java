@@ -1,20 +1,21 @@
 package com.jn.langx.text.grok;
 
 import com.jn.langx.Converter;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderExpressionConsumer;
 import com.jn.langx.text.placeholder.PropertyPlaceholderHandler;
 import com.jn.langx.text.placeholder.PropertySourcePlaceholderParser;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.converter.IntegerConverter;
+import com.jn.langx.util.regexp.NamedGroupConflictedException;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
 
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -32,10 +33,10 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
     }
 
     @Override
-    public TemplatizedPattern parse(String patternTemplate) {
+    public TemplatizedPattern parse(final String patternTemplate) {
         Preconditions.checkNotNull(patternTemplate, "template");
 
-        final Set<String> fields = new LinkedHashSet<String>();
+        final Map<String, String> fieldToOriginPatternMap = Collects.emptyHashMap(true);
         final Map<String, Converter> converterMap = new HashMap<String, Converter>();
         PlaceholderExpressionConsumer consumer = new PlaceholderExpressionConsumer() {
             @Override
@@ -64,13 +65,18 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
                     }
 
                     if (field != null) {
-                        if (fields.contains(field)) {
-                            variableValue = "\\k<" + field + ">";
+                        if (fieldToOriginPatternMap.containsKey(field)) {
+                            String originPattern = fieldToOriginPatternMap.get(field);
+                            if(Objs.equals(originPattern, variable)) {
+                                variableValue = "\\k<" + field + ">";
+                            }else{
+                                throw new NamedGroupConflictedException(StringTemplates.formatWithPlaceholder("named group '{}' conflicted in grok regexp: {}", field, patternTemplate));
+                            }
                         } else {
+                            fieldToOriginPatternMap.put(field, variableValue);
                             variableValue = "(?<" + field + ">" + variableValue + ")";
                         }
                         variableValueHolder.set(variableValue);
-                        fields.add(field);
                         if (converter != null) {
                             converterMap.put(field, converter);
                         }
@@ -88,7 +94,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
         Option option = new Option();
         option.setMultiple(true);
         pattern.setRegexp(Regexps.createRegexp(parsedPattern, option));
-        pattern.setFields(fields);
+        pattern.setFields(fieldToOriginPatternMap.keySet());
         pattern.setExpectedConverters(converterMap);
 
         return pattern;
