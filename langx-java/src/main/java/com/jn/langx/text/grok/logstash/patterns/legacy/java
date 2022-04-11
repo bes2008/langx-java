@@ -5,6 +5,8 @@ JAVAFILE (?:[a-zA-Z$_0-9. -]+)
 JAVAMETHOD (?:(<(?:cl)?init>)|[a-zA-Z$_][a-zA-Z$_0-9]*)
 #Line number is optional in special cases 'Native method' or 'Unknown source'
 JAVASTACKTRACEPART %{SPACE}at %{JAVACLASS:class}\.%{JAVAMETHOD:method}\(%{JAVAFILE:file}(?::%{NUMBER:line})?\)
+JAVASTACKTRACE (\r\n%{JAVASTACKTRACEPART})+
+JAVASTACK %{JAVACLASS} %{JAVAMETHOD}%{JAVASTACKTRACE}
 # Java Logs
 JAVATHREAD (?:[A-Z]{2}-Processor[\d]+)
 JAVALOGMESSAGE (.*)

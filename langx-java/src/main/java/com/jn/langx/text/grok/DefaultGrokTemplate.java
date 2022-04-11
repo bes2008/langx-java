@@ -26,34 +26,36 @@ public class DefaultGrokTemplate implements GrokTemplate {
     public Map<String, Object> extract(String text) {
         final RegexpMatcher matcher = pattern.getRegexp().matcher(text);
         boolean matched = matcher.matches();
-        if(!matched) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("not matched, pattern: {}, text: {}", pattern, text);
+        if (!matched) {
+            if (logger.isWarnEnabled()) {
+                logger.warn("not matched, pattern: {}, text: {}", pattern, text);
             }
-        }
-        Map<String, Object> map = Pipeline.of(pattern.getFields())
-                .collect(Collects.toMap(
-                        new Supplier0<Map<String, Object>>() {
-                            @Override
-                            public Map<String, Object> get() {
-                                return Collects.emptyHashMap(true);
-                            }
-                        },
-                        Functions.<String>noopFunction(),
-                        new Function<String, Object>() {
-                            @Override
-                            public Object apply(String field) {
-                                try {
-                                    String textValue = matcher.group(field);
-                                    return pattern.convert(field, textValue);
-                                } catch (Throwable ex) {
-                                    logger.error(ex.getMessage(), ex);
+        } else {
+            Map<String, Object> map = Pipeline.of(pattern.getFields())
+                    .collect(Collects.toMap(
+                            new Supplier0<Map<String, Object>>() {
+                                @Override
+                                public Map<String, Object> get() {
+                                    return Collects.emptyHashMap(true);
                                 }
-                                return null;
-                            }
-                        })
-                );
-        return map;
+                            },
+                            Functions.<String>noopFunction(),
+                            new Function<String, Object>() {
+                                @Override
+                                public Object apply(String field) {
+                                    try {
+                                        String textValue = matcher.group(field);
+                                        return pattern.convert(field, textValue);
+                                    } catch (Throwable ex) {
+                                        logger.error(ex.getMessage(), ex);
+                                    }
+                                    return null;
+                                }
+                            })
+                    );
+            return map;
+        }
+        return null;
     }
 
 

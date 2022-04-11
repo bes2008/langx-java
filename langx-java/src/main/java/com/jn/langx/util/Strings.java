@@ -3606,4 +3606,26 @@ public class Strings {
         return Pipeline.of(strings).toArray(String[].class);
     }
 
+    public static String underlineToCamel(String string, boolean firstLetterToLower){
+        return separatorToCamel(string, "_", firstLetterToLower);
+    }
+
+    public static String separatorToCamel(String string, String separator, boolean firstLetterToLower){
+        final StringBuilder builder = new StringBuilder();
+        Pipeline.<String>of(Strings.split(string, separator)).map(new Function<String, String>() {
+            @Override
+            public String apply(String input) {
+                return input.toLowerCase();
+            }
+        }).forEach(new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                builder.append(Strings.upperCase(s, 0, 1));
+            }
+        });
+        if(firstLetterToLower) {
+            return Strings.lowerCase(builder.toString(), 0, 1);
+        }
+        return builder.toString();
+    }
 }

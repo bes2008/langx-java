@@ -1,6 +1,7 @@
 package com.jn.langx.text.grok;
 
 import com.jn.langx.Converter;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.regexp.Regexp;
 
 import java.util.Map;
@@ -67,6 +68,6 @@ public class TemplatizedPattern {
 
     @Override
     public String toString() {
-        return expression;
+        return Strings.replaceChars(expression,"\\","\\\\");
     }
 }

@@ -22,7 +22,8 @@ import java.util.Map;
 public class GrokTest {
     MultipleLevelPatternDefinitionRepository repository;
     GrokTemplatizedPatternParser patternParser;
-    GrokTemplate template;
+    GrokTemplate tomcatLogTemplate;
+    GrokTemplate javastackTemplate;
 
     @Before
     public void init() {
@@ -69,12 +70,11 @@ public class GrokTest {
         grokTemplatizedPatternParser.setPatternDefinitionRepository(repository);
         patternParser = grokTemplatizedPatternParser;
 
-        this.template = new DefaultGrokTemplate(patternParser.parse("%{TOMCAT7_LOG}"));
+        this.tomcatLogTemplate = new DefaultGrokTemplate(patternParser.parse("%{TOMCAT7_LOG}(\n%{JAVASTACK})?"));
+        this.javastackTemplate = new DefaultGrokTemplate(patternParser.parse("(\n?%{JAVASTACK:stack})?"));
     }
 
-    @Test
-    public void test() {
-        String[] messagePaths = new String[]{"tomcat_error-0.log", "tomcat_error-1.log"};
+    private void test(final GrokTemplate template, String[] messagePaths) {
         Collects.forEach(messagePaths, new Consumer<String>() {
             @Override
             public void accept(String messagePath) {
@@ -83,14 +83,31 @@ public class GrokTest {
                     InputStream in = resource.getInputStream();
                     String message = IOs.readAsString(in);
                     IOs.close(in);
-                    Map<String, Object> result = GrokTest.this.template.extract(message);
+                    Map<String, Object> result = template.extract(message);
                     System.out.println(result);
                 } catch (IOException ex) {
                     ex.fillInStackTrace();
                 }
             }
         });
+    }
+
+    @Test
+    public void testTomcatInfoLog() {
+        String[] messagePaths = new String[]{"tomcat_0.log"};
+        test(this.tomcatLogTemplate, messagePaths);
+    }
+
+    @Test
+    public void testJavaStack() {
+        String[] messagePaths = new String[]{"java_stack.log"};
+        test(this.javastackTemplate, messagePaths);
+    }
 
 
+    @Test
+    public void testTocatErrorLog() {
+        String[] messagePaths = new String[]{"tomcat_error-0.log", "tomcat_error-1.log"};
+        test(this.tomcatLogTemplate, messagePaths);
     }
 }

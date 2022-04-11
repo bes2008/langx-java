@@ -42,13 +42,15 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
             @Override
             public void accept(String variable, String expression, Holder<String> variableValueHolder) {
                 if (Strings.isNotEmpty(expression) && !variableValueHolder.isEmpty()) {
-                    //expression = Strings.replace(expression, "][", "_");
-                    expression = Strings.replace(expression, "][", "");
+                    expression = Strings.replace(expression, "][", "_");
+                    //expression = Strings.replace(expression, "][", "");
                     expression = Strings.replace(expression, "[", "");
                     expression = Strings.replace(expression, "]", "");
+                    expression = Strings.underlineToCamel(expression, true);
                     Converter converter = null;
                     String field = null;
                     String variableValue = variableValueHolder.get();
+
                     if (expression.contains(":")) {
                         String[] segments = Strings.split(expression, ":");
                         if (segments.length > 0) {
@@ -63,7 +65,12 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
                     } else {
                         field = expression;
                     }
-
+                    /*
+                        if (variableValue != null) {
+                            // 有的正则表达式中 有 \b，会导致匹配出错
+                            variableValue = Strings.replace(variableValue, "\\b", "");
+                        }
+                    */
                     if (field != null) {
                         if (fieldToOriginPatternMap.containsKey(field)) {
                             String originPattern = fieldToOriginPatternMap.get(field);
