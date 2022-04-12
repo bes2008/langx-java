@@ -68,6 +68,11 @@ class JdkMatcher implements RegexpMatcher {
     }
 
     @Override
+    public boolean find(int start) {
+        return matcher.find(start);
+    }
+
+    @Override
     public RegexpMatcher appendReplacement(StringBuffer b, String replacement) {
         matcher.appendReplacement(b, replacement);
         return this;

@@ -28,6 +28,8 @@ public interface RegexpMatcher extends RegexpMatchResult {
      */
     boolean find();
 
+    boolean find(int start);
+
     /**
      * 对匹配到的部分，进行文本替换
      *

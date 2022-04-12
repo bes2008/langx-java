@@ -118,6 +118,11 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return false;
     }
 
+    public boolean find(int start) {
+        return search(start);
+    }
+
+
     private boolean search(int start) {
         if (start >= 0 && start < this.input.length) {
             boolean found = this.joniMatcher.search(start, this.input.length, Option.NONE) > -1;
