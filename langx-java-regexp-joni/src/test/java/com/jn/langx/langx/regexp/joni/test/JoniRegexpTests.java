@@ -1,9 +1,6 @@
 package com.jn.langx.langx.regexp.joni.test;
 
 import com.jn.langx.regexp.joni.JoniRegexp;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.ThrowableFunction;
-import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.Charsets;
@@ -102,11 +99,17 @@ public class JoniRegexpTests {
 
     @Test
     public void test3() {
-        String str = "a1b2c3d4e5f6g";
-        String pattern = "\\d";
-        Regexp regexp = new JdkRegexp(pattern);
+        String str = "a134b2c3d4e5f6g";
+        String pattern = "\\d+";
+        Regexp regexp = new JoniRegexp(pattern);
         showMatched(regexp, str);
-        regexp = new JoniRegexp(pattern);
+    }
+
+    @Test
+    public void test4() {
+        String str = "a134b2c3d4e5f6g";
+        String pattern = "\\d+";
+        Regexp regexp = new JdkRegexp(pattern);
         showMatched(regexp, str);
     }
 

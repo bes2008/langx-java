@@ -19,17 +19,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     private Map<String, List<Groups.GroupInfo>> groupInfo;
     private BitVector groupsInNegativeLookahead;
 
-    /**
-     * The range of string that last matched the pattern. If the last
-     * match failed then first is -1; last initially holds 0 then it
-     * holds the index of the end of the last match (which is where the
-     * next search starts).
-     */
-    private int first = 0, last = 0;
+    int nextReadIndex = 0;
 
     JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<Groups.GroupInfo>> groupInfo) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
-        this.last = this.input.length;
         this.joniMatcher = regex.matcher(this.input);
         this.groupInfo = groupInfo;
         this.groupsInNegativeLookahead = groupsInNegativeLookahead;
@@ -83,16 +76,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     public String group(String groupName) {
         this.groupInfo.get(groupName);
         int idx = Groups.groupIndex(this.groupInfo, groupName);
-
-        return null;
-    }
-
-
-    private List<String> groupNames() {
-        if (groupNames == null) {
-            groupNames = new ArrayList<String>(groupInfo.keySet());
-        }
-        return Collections.unmodifiableList(groupNames);
+        return group(idx);
     }
 
     @Override
@@ -103,15 +87,14 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     @Override
     public boolean find() {
-        if (first >= 0 && last != 0) {
-            boolean found = this.joniMatcher.search(first, last, Option.NONE) > -1;
+        if (nextReadIndex >= 0) {
+            boolean found = this.joniMatcher.search(nextReadIndex, this.input.length, Option.NONE) > -1;
             if (!found) {
-                this.first = -1;
-                this.last = 0;
+                this.nextReadIndex = -1;
             } else {
-                this.first = this.start();
-                this.last = this.end();
+                this.nextReadIndex = this.end();
             }
+            return found;
         }
         return false;
     }
