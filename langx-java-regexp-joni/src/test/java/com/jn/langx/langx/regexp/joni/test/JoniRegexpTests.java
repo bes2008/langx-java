@@ -1,16 +1,22 @@
 package com.jn.langx.langx.regexp.joni.test;
 
 import com.jn.langx.regexp.joni.JoniRegexp;
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.ThrowableFunction;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.jdk.JdkRegexp;
 import org.jcodings.specific.UTF8Encoding;
 import org.joni.*;
 import org.junit.Test;
 
 import java.util.Iterator;
+
+import static java.util.regex.Matcher.quoteReplacement;
 
 public class JoniRegexpTests {
 
@@ -94,16 +100,21 @@ public class JoniRegexpTests {
         System.out.println();
     }
 
-
     @Test
     public void test3() {
         String str = "a1b2c3d4e5f6g";
         String pattern = "\\d";
-        Regexp regexp = new JoniRegexp(pattern);
+        Regexp regexp = new JdkRegexp(pattern);
+        showMatched(regexp, str);
+        regexp = new JoniRegexp(pattern);
+        showMatched(regexp, str);
+    }
 
+    private void showMatched(Regexp regexp, String str) {
         RegexpMatcher matcher = regexp.matcher(str);
-        if(matcher.matches()){
-            matcher.group(3);
+        while (matcher.find()) {
+            final String matched = matcher.group();
+            System.out.println(matched);
         }
     }
 }

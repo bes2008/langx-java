@@ -1,5 +1,6 @@
 package com.jn.langx.regexp.joni;
 
+import com.jn.langx.util.Bytes;
 import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Groups;
@@ -9,31 +10,29 @@ import org.joni.Option;
 import org.joni.Regex;
 import org.joni.Region;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 final class JoniRegexpMatcher implements RegexpMatcher {
-    final String input;
+    final byte[] input;
     final Matcher joniMatcher;
     private List<String> groupNames;
     private Map<String, List<Groups.GroupInfo>> groupInfo;
     private BitVector groupsInNegativeLookahead;
 
+    /**
+     * The range of string that last matched the pattern. If the last
+     * match failed then first is -1; last initially holds 0 then it
+     * holds the index of the end of the last match (which is where the
+     * next search starts).
+     */
+    private int first = 0, last = 0;
+
     JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<Groups.GroupInfo>> groupInfo) {
-        this.input = input.toString();
-        this.joniMatcher = regex.matcher(input.toString().getBytes(Charsets.UTF_8));
+        this.input = input.toString().getBytes(Charsets.UTF_8);
+        this.last = this.input.length;
+        this.joniMatcher = regex.matcher(this.input);
         this.groupInfo = groupInfo;
         this.groupsInNegativeLookahead = groupsInNegativeLookahead;
-    }
-
-    public boolean search(int start) {
-        return this.joniMatcher.search(start, this.input.length(), 0, Option.NONE) > -1;
-    }
-
-    public String getInput() {
-        return this.input;
     }
 
     public int start() {
@@ -53,7 +52,14 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     }
 
     public String group() {
-        return this.input.substring(start(), end());
+        return subBytesAsString(start(), end());
+    }
+
+    private String subBytesAsString(int start, int end) {
+        int length = end - start;
+        byte[] bytes = new byte[length];
+        System.arraycopy(this.input, start, bytes, 0, length);
+        return new String(bytes, Charsets.UTF_8);
     }
 
     public String group(int group) {
@@ -64,7 +70,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             return this.group();
         } else {
             Region region = this.joniMatcher.getRegion();
-            return this.input.substring(region.beg[group], region.end[group]);
+            return subBytesAsString(region.beg[group], region.end[group]);
         }
     }
 
@@ -76,7 +82,8 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     @Override
     public String group(String groupName) {
         this.groupInfo.get(groupName);
-        int idx = Groups.groupIndex(this.groupInfo,groupName);
+        int idx = Groups.groupIndex(this.groupInfo, groupName);
+
         return null;
     }
 
@@ -96,7 +103,17 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     @Override
     public boolean find() {
-        return this.joniMatcher.getEagerRegion() != null;
+        if (first >= 0 && last != 0) {
+            boolean found = this.joniMatcher.search(first, last, Option.NONE) > -1;
+            if (!found) {
+                this.first = -1;
+                this.last = 0;
+            } else {
+                this.first = this.start();
+                this.last = this.end();
+            }
+        }
+        return false;
     }
 
     @Override
