@@ -94,8 +94,8 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     // tested ok
     @Override
     public boolean matches() {
-        search(0);
-        return this.end() >= this.input.length;
+        boolean found = search(0);
+        return found && this.end() >= this.input.length;
     }
 
     @Override
@@ -123,9 +123,27 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     }
 
 
+    /**
+     * 基于指定位置开始搜索
+     *
+     * @param start 开始位置
+     * @return 返回找到时的开始索引，若未找到返回 -1
+     */
     private boolean search(int start) {
         if (start >= 0 && start < this.input.length) {
-            boolean found = this.joniMatcher.search(start, this.input.length, Option.NONE) > -1;
+            /**
+             * joniMatcher.search 返回值是匹配到时的开始索引
+             */
+            int stIdx = this.joniMatcher.search(start, this.input.length, Option.NONE);
+            boolean found = stIdx > -1;
+            // 搜索完毕后跟上次的位置一样
+            if (stIdx == this.lastBeg && this.lastEnd == this.end()) {
+                found = false;
+            }
+            // 啥也没搜到
+            if (stIdx == this.end()) {
+                found = false;
+            }
             this.lastBeg = start;
             this.lastEnd = this.end();
             return found;
