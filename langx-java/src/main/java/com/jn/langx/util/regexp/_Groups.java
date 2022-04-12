@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Groups {
+public class _Groups {
 
     /**
      * index of group within patterns above where group name is captured
@@ -130,7 +130,7 @@ public class Groups {
     public static int indexOf(Map<String, List<GroupInfo>> groupInfo, String groupName, int index) {
         int idx = -1;
         if (groupInfo.containsKey(groupName)) {
-            List<Groups.GroupInfo> list = groupInfo.get(groupName);
+            List<_Groups.GroupInfo> list = groupInfo.get(groupName);
             idx = list.get(index).groupIndex();
         }
         return idx;
@@ -146,7 +146,7 @@ public class Groups {
         // idx+1 because capture groups start 1 in the matcher
         // while the pattern returns a 0-based index of the
         // group name within the list of names
-        int idx = Groups.indexOf(groupInfo, groupName);
+        int idx = _Groups.indexOf(groupInfo, groupName);
         return idx > -1 ? idx + 1 : -1;
     }
 
@@ -158,7 +158,7 @@ public class Groups {
      * @return list of group info for all named groups
      */
     public static Map<String, List<GroupInfo>> extractGroupInfo(String namedPattern) {
-        Map<String, List<Groups.GroupInfo>> groupInfo = new LinkedHashMap<String, List<GroupInfo>>();
+        Map<String, List<_Groups.GroupInfo>> groupInfo = new LinkedHashMap<String, List<GroupInfo>>();
         java.util.regex.Matcher matcher = NAMED_GROUP_PATTERN.matcher(namedPattern);
         while (matcher.find()) {
 
@@ -170,7 +170,7 @@ public class Groups {
             String name = matcher.group(INDEX_GROUP_NAME);
             int groupIndex = countOpenParens(namedPattern, pos);
 
-            List<Groups.GroupInfo> list;
+            List<_Groups.GroupInfo> list;
             if (groupInfo.containsKey(name)) {
                 list = groupInfo.get(name);
             } else {

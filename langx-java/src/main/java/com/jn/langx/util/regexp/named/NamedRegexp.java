@@ -1,11 +1,11 @@
 package com.jn.langx.util.regexp.named;
 
 
-import com.jn.langx.util.regexp.Groups;
+import com.jn.langx.util.regexp._Groups;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
-import static com.jn.langx.util.regexp.Groups.*;
+import static com.jn.langx.util.regexp._Groups.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class NamedRegexp implements Regexp, Serializable {
     private java.util.regex.Pattern pattern;
     private String namedPattern;
     private List<String> groupNames;
-    private Map<String,List<Groups.GroupInfo> > groupInfo;
+    private Map<String,List<_Groups.GroupInfo> > groupInfo;
     private Option option;
 
     /**
@@ -95,7 +95,7 @@ public class NamedRegexp implements Regexp, Serializable {
         // group info must be parsed before building the standard pattern
         // because the pattern relies on group info to determine the indexes
         // of named back-references
-        groupInfo = Groups.extractGroupInfo(regex);
+        groupInfo = _Groups.extractGroupInfo(regex);
         pattern = buildStandardPattern(regex, flags);
         this.option = Option.buildOption(flags);
     }
@@ -314,11 +314,11 @@ public class NamedRegexp implements Regexp, Serializable {
     private StringBuilder replaceGroupNameWithIndex(StringBuilder input, java.util.regex.Pattern pattern, String prefix) {
         java.util.regex.Matcher m = pattern.matcher(input);
         while (m.find()) {
-            if (Groups.isEscapedChar(input.toString(), m.start())) {
+            if (_Groups.isEscapedChar(input.toString(), m.start())) {
                 continue;
             }
 
-            int index = Groups.indexOf(groupInfo,m.group(INDEX_GROUP_NAME));
+            int index = _Groups.indexOf(groupInfo,m.group(INDEX_GROUP_NAME));
             if (index >= 0) {
                 index++;
             } else {
@@ -368,7 +368,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * @param b the other map to compare
      * @return {@code true} if the first map contains all of the other map's keys and values; {@code false} otherwise
      */
-    private boolean groupInfoMatches(Map<String, List<GroupInfo>> a, Map<String, List<Groups.GroupInfo>> b) {
+    private boolean groupInfoMatches(Map<String, List<GroupInfo>> a, Map<String, List<_Groups.GroupInfo>> b) {
         if (a == null && b == null) {
             return true;
         }
@@ -379,13 +379,13 @@ public class NamedRegexp implements Regexp, Serializable {
                 isMatch = true;
             } else if (a.size() == b.size()) {
                 for (Map.Entry<String, List<GroupInfo>> entry : a.entrySet()) {
-                    List<Groups.GroupInfo> otherList = b.get(entry.getKey());
+                    List<_Groups.GroupInfo> otherList = b.get(entry.getKey());
                     isMatch = (otherList != null);
                     if (!isMatch) {
                         break;
                     }
 
-                    List<Groups.GroupInfo> thisList = entry.getValue();
+                    List<_Groups.GroupInfo> thisList = entry.getValue();
                     isMatch = otherList.containsAll(thisList) && thisList.containsAll(otherList);
                     if (!isMatch) {
                         break;

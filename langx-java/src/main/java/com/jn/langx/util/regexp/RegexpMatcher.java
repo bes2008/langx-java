@@ -10,6 +10,18 @@ public interface RegexpMatcher extends RegexpMatchResult {
     boolean matches();
 
     /**
+     * Resets this matcher.
+     *
+     * <p> Resetting a matcher discards all of its explicit state information
+     * and sets its append position to zero. The matcher's region is set to the
+     * default region, which is its entire character sequence. The anchoring
+     * and transparency of this matcher's region boundaries are unaffected.
+     *
+     * @return  this matcher
+     */
+    RegexpMatcher reset();
+
+    /**
      * 找到下一个匹配的子串
      *
      * @return 是否找到要匹配的内容

@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @since 4.5.0
  */
-interface MResult extends RegexpMatcher {
+interface _MResult extends RegexpMatcher {
 
     /**
      * Returns the named capture groups in order
