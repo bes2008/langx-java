@@ -122,4 +122,41 @@ public class JoniRegexpTests {
             }
         }
     }
+
+
+    @Test
+    public void test5() {
+        String str = "a134b2c3d4e5f6g";
+        String pattern = "(?:[a-z]\\d{1,})*";
+        Regexp regexp = new JoniRegexp(pattern);
+        showMatched2(regexp, str);
+    }
+
+    @Test
+    public void test6() {
+        String str = "a134b2c3d4e5f6g";
+        String pattern = "(?:[a-z]\\d{1,})+";
+        Regexp regexp = new JdkRegexp(pattern);
+        showMatched2(regexp, str);
+    }
+
+
+    private void showMatched2(Regexp regexp, String str) {
+        RegexpMatcher matcher = regexp.matcher(str);
+        System.out.println("before matches(): groupCount(): " + matcher.groupCount());
+        System.out.println("matches(): " + matcher.matches());
+        System.out.println("after matches(): groupCount(): " + matcher.groupCount());
+        System.out.println("while find: ");
+        while (matcher.find()) {
+            final String matched = matcher.group();
+            System.out.println(matched);
+        }
+        matcher.reset();
+        System.out.println("after reset(): groupCount(): " + matcher.groupCount());
+        System.out.println("while find: ");
+        while (matcher.find()) {
+            final String matched = matcher.group();
+            System.out.println(matched);
+        }
+    }
 }

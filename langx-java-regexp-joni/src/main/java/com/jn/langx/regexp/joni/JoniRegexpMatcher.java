@@ -2,14 +2,15 @@ package com.jn.langx.regexp.joni;
 
 import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.regexp._Groups;
 import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp._Groups;
 import org.joni.Matcher;
 import org.joni.Option;
 import org.joni.Regex;
 import org.joni.Region;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 final class JoniRegexpMatcher implements RegexpMatcher {
     final byte[] input;
@@ -18,10 +19,12 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     private Map<String, List<_Groups.GroupInfo>> groupInfo;
     private BitVector groupsInNegativeLookahead;
 
+
     /**
      * 最后一次匹配到时的索引
      */
-    int nextSearchIdx = 0;
+    int lastBeg = -1;
+    int lastEnd = 0;
 
     JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<_Groups.GroupInfo>> groupInfo) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
@@ -91,26 +94,35 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     // tested ok
     @Override
     public boolean matches() {
-        return find(false);
+        search(0);
+        return this.end() >= this.input.length;
+    }
+
+    @Override
+    public RegexpMatcher reset() {
+        this.lastBeg = -1;
+        this.lastEnd = 0;
+        return this;
     }
 
     // tested ok
     @Override
     public boolean find() {
-        return find(true);
+        if (this.lastBeg >= -1 && this.lastEnd >= this.lastBeg && this.lastEnd < this.input.length) {
+            int nextSearchIndex = this.lastEnd;
+            if (nextSearchIndex == this.lastBeg) {
+                nextSearchIndex++;
+            }
+            return search(nextSearchIndex);
+        }
+        return false;
     }
 
-    // tested ok
-    private boolean find(boolean updateIndexAfterFound) {
-        if (this.nextSearchIdx >= 0 && this.nextSearchIdx < this.input.length) {
-            boolean found = this.joniMatcher.search(this.nextSearchIdx, this.input.length, Option.NONE) > -1;
-            if (!found) {
-                this.nextSearchIdx = -1;
-            } else {
-                if (updateIndexAfterFound) {
-                    this.nextSearchIdx = this.end();
-                }
-            }
+    private boolean search(int start) {
+        if (start >= 0 && start < this.input.length) {
+            boolean found = this.joniMatcher.search(start, this.input.length, Option.NONE) > -1;
+            this.lastBeg = start;
+            this.lastEnd = this.end();
             return found;
         }
         return false;
