@@ -59,6 +59,7 @@
         <module>langx-java-reflect-aspectj</module>
         <module>langx-java-reflect-asm</module>
         <module>langx-java-security-gm</module>
+        <module>langx-java-regexp-joni</module>
     </modules>
     <dependencyManagement>
         <dependencies>
