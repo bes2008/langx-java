@@ -1,6 +1,6 @@
 package com.jn.langx.exception;
 
-public class SyntaxException extends RuntimeException {
+public class SyntaxException extends ParseException {
 
     public SyntaxException() {
         super();

@@ -1,6 +1,11 @@
 package com.jn.langx.util.regexp;
 
-public class NamedGroupConflictedException extends RuntimeException{
+import com.jn.langx.exception.SyntaxException;
+
+/**
+ * @since 4.5.0
+ */
+public class NamedGroupConflictedException extends SyntaxException {
 
     public NamedGroupConflictedException() {
         super();
