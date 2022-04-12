@@ -1,6 +1,5 @@
 package com.jn.langx.regexp.joni;
 
-import com.jn.langx.util.Bytes;
 import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Groups;
@@ -19,7 +18,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     private Map<String, List<Groups.GroupInfo>> groupInfo;
     private BitVector groupsInNegativeLookahead;
 
-    int nextReadIndex = 0;
+    /**
+     * 最后一次匹配到时的索引
+     */
+    int nextSearchIdx = 0;
 
     JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<Groups.GroupInfo>> groupInfo) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
@@ -28,32 +30,39 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         this.groupsInNegativeLookahead = groupsInNegativeLookahead;
     }
 
+    // tested ok
     public int start() {
         return this.joniMatcher.getBegin();
     }
 
+    // tested ok
     public int start(int group) {
         return group == 0 ? this.start() : this.joniMatcher.getRegion().beg[group];
     }
 
+    // tested ok
     public int end() {
         return this.joniMatcher.getEnd();
     }
 
+    // tested ok
     public int end(int group) {
         return group == 0 ? this.end() : this.joniMatcher.getRegion().end[group];
     }
 
+    // tested ok
     public String group() {
         return subBytesAsString(start(), end());
     }
 
+    // tested ok
     private String subBytesAsString(int start, int end) {
         int length = end - start;
         byte[] bytes = new byte[length];
         System.arraycopy(this.input, start, bytes, 0, length);
         return new String(bytes, Charsets.UTF_8);
     }
+
 
     public String group(int group) {
         if (group < 0 || group > groupCount()) {
@@ -79,20 +88,28 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return group(idx);
     }
 
+    // tested ok
     @Override
     public boolean matches() {
-        Region region = this.joniMatcher.getEagerRegion();
-        return region != null;
+        return find(false);
     }
 
+    // tested ok
     @Override
     public boolean find() {
-        if (nextReadIndex >= 0) {
-            boolean found = this.joniMatcher.search(nextReadIndex, this.input.length, Option.NONE) > -1;
+        return find(true);
+    }
+
+    // tested ok
+    private boolean find(boolean updateIndexAfterFound) {
+        if (this.nextSearchIdx >= 0 && this.nextSearchIdx < this.input.length) {
+            boolean found = this.joniMatcher.search(this.nextSearchIdx, this.input.length, Option.NONE) > -1;
             if (!found) {
-                this.nextReadIndex = -1;
+                this.nextSearchIdx = -1;
             } else {
-                this.nextReadIndex = this.end();
+                if (updateIndexAfterFound) {
+                    this.nextSearchIdx = this.end();
+                }
             }
             return found;
         }

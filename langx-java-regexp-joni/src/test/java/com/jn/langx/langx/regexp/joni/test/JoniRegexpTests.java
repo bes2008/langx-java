@@ -13,8 +13,6 @@ import org.junit.Test;
 
 import java.util.Iterator;
 
-import static java.util.regex.Matcher.quoteReplacement;
-
 public class JoniRegexpTests {
 
     // https://www.python.org/dev/peps/pep-0440/#version-scheme
@@ -100,7 +98,7 @@ public class JoniRegexpTests {
     @Test
     public void test3() {
         String str = "a134b2c3d4e5f6g";
-        String pattern = "\\d+";
+        String pattern = "[a-z]\\d{1,}";
         Regexp regexp = new JoniRegexp(pattern);
         showMatched(regexp, str);
     }
@@ -108,16 +106,20 @@ public class JoniRegexpTests {
     @Test
     public void test4() {
         String str = "a134b2c3d4e5f6g";
-        String pattern = "\\d+";
+        String pattern = "[a-z]\\d{1,}";
         Regexp regexp = new JdkRegexp(pattern);
         showMatched(regexp, str);
     }
 
     private void showMatched(Regexp regexp, String str) {
         RegexpMatcher matcher = regexp.matcher(str);
-        while (matcher.find()) {
-            final String matched = matcher.group();
-            System.out.println(matched);
+        System.out.println("groupCount(): " + matcher.groupCount());
+        if (matcher.matches()) {
+            System.out.println("groupCount(): " + matcher.groupCount());
+            while (matcher.find()) {
+                final String matched = matcher.group();
+                System.out.println(matched);
+            }
         }
     }
 }
