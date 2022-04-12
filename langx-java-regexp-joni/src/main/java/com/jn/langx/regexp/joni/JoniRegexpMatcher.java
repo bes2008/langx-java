@@ -2,7 +2,7 @@ package com.jn.langx.regexp.joni;
 
 import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.regexp.Groups;
+import com.jn.langx.util.regexp._Groups;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import org.joni.Matcher;
 import org.joni.Option;
@@ -15,7 +15,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     final byte[] input;
     final Matcher joniMatcher;
     private List<String> groupNames;
-    private Map<String, List<Groups.GroupInfo>> groupInfo;
+    private Map<String, List<_Groups.GroupInfo>> groupInfo;
     private BitVector groupsInNegativeLookahead;
 
     /**
@@ -23,7 +23,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
      */
     int nextSearchIdx = 0;
 
-    JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<Groups.GroupInfo>> groupInfo) {
+    JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<_Groups.GroupInfo>> groupInfo) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
         this.joniMatcher = regex.matcher(this.input);
         this.groupInfo = groupInfo;
@@ -84,7 +84,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     @Override
     public String group(String groupName) {
         this.groupInfo.get(groupName);
-        int idx = Groups.groupIndex(this.groupInfo, groupName);
+        int idx = _Groups.groupIndex(this.groupInfo, groupName);
         return group(idx);
     }
 

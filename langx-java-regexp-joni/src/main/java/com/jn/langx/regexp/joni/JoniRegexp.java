@@ -10,7 +10,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.regexp.Groups;
+import com.jn.langx.util.regexp._Groups;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -78,7 +78,7 @@ public class JoniRegexp implements Regexp {
 
     public RegexpMatcher matcher(CharSequence input) {
         Preconditions.checkNotNull(regex);
-        Map<String, List<Groups.GroupInfo>> groupInfo = Groups.extractGroupInfo(this.pattern);
+        Map<String, List<_Groups.GroupInfo>> groupInfo = _Groups.extractGroupInfo(this.pattern);
         return new JoniRegexpMatcher(this.regex, input, this.groupsInNegativeLookahead, groupInfo);
     }
 
