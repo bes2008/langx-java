@@ -36,7 +36,7 @@ public class RegexpTest {
         System.out.println("message: "+ match(message_pattern, message));
 
         Option option = new Option();
-        option.setMultiple(true);
+        option.setMultiline(true);
         Regexp regexp = Regexps.createRegexp(message_pattern, option);
         System.out.println("message2: "+ regexp.matcher(message).matches());
 

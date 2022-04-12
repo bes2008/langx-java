@@ -111,7 +111,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
         TemplatizedPattern pattern = new TemplatizedPattern();
         pattern.setExpression(patternTemplate);
         Option option = new Option();
-        option.setMultiple(false);
+        option.setMultiline(false);
         pattern.setRegexp(Regexps.createRegexp(parsedPattern, option));
         pattern.setFields(fieldToOriginPatternMap.keySet());
         pattern.setExpectedConverters(converterMap);
