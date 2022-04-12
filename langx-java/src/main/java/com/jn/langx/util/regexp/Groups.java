@@ -9,19 +9,30 @@ import java.util.Map;
 
 public class Groups {
 
-    /** index of group within patterns above where group name is captured */
+    /**
+     * index of group within patterns above where group name is captured
+     */
     public static final int INDEX_GROUP_NAME = 1;
 
-    /** Pattern to match group names */
+    /**
+     * Pattern to match group names
+     */
     private static final String NAME_PATTERN = "[^!=].*?";
-    /** Pattern to match named capture groups in a pattern string */
+    /**
+     * Pattern to match named capture groups in a pattern string
+     */
     public static final java.util.regex.Pattern NAMED_GROUP_PATTERN = java.util.regex.Pattern.compile("\\(\\?<(" + NAME_PATTERN + ")>", java.util.regex.Pattern.DOTALL);
 
-    /** Pattern to match back references for named capture groups */
+    /**
+     * Pattern to match back references for named capture groups
+     */
     public static final java.util.regex.Pattern BACKREF_NAMED_GROUP_PATTERN = java.util.regex.Pattern.compile("\\\\k<(" + NAME_PATTERN + ")>", java.util.regex.Pattern.DOTALL);
 
-    /** Pattern to match properties for named capture groups in a replacement string */
+    /**
+     * Pattern to match properties for named capture groups in a replacement string
+     */
     public static final java.util.regex.Pattern PROPERTY_PATTERN = java.util.regex.Pattern.compile("\\$\\{(" + NAME_PATTERN + ")\\}", java.util.regex.Pattern.DOTALL);
+
     /**
      * Contains the position and group index of capture groups
      * from a named pattern
@@ -94,6 +105,52 @@ public class Groups {
         }
     }
 
+
+    /**
+     * Gets the group index of a named capture group
+     *
+     * @param groupName name of capture group
+     * @return group index or -1 if not found
+     */
+    public static int indexOf(Map<String, List<GroupInfo>> groupInfo, String groupName) {
+        return indexOf(groupInfo, groupName, 0);
+    }
+
+    /**
+     * Gets the group index of a named capture group at the
+     * specified index. If only one instance of the named
+     * group exists, use index 0.
+     *
+     * @param groupName name of capture group
+     * @param index     the instance index of the named capture group within
+     *                  the pattern; e.g., index is 2 for the third instance
+     * @return group index or -1 if not found
+     * @throws IndexOutOfBoundsException if instance index is out of bounds
+     */
+    public static int indexOf(Map<String, List<GroupInfo>> groupInfo, String groupName, int index) {
+        int idx = -1;
+        if (groupInfo.containsKey(groupName)) {
+            List<Groups.GroupInfo> list = groupInfo.get(groupName);
+            idx = list.get(index).groupIndex();
+        }
+        return idx;
+    }
+
+    /**
+     * Gets the index of a named capture group
+     *
+     * @param groupName name of capture group
+     * @return the group index
+     */
+    public static int groupIndex(Map<String, List<GroupInfo>> groupInfo, String groupName) {
+        // idx+1 because capture groups start 1 in the matcher
+        // while the pattern returns a 0-based index of the
+        // group name within the list of names
+        int idx = Groups.indexOf(groupInfo, groupName);
+        return idx > -1 ? idx + 1 : -1;
+    }
+
+
     /**
      * Parses info on named capture groups from a pattern
      *
@@ -101,9 +158,9 @@ public class Groups {
      * @return list of group info for all named groups
      */
     public static Map<String, List<GroupInfo>> extractGroupInfo(String namedPattern) {
-        Map<String,List<Groups.GroupInfo> > groupInfo = new LinkedHashMap<String,List<GroupInfo> >();
+        Map<String, List<Groups.GroupInfo>> groupInfo = new LinkedHashMap<String, List<GroupInfo>>();
         java.util.regex.Matcher matcher = NAMED_GROUP_PATTERN.matcher(namedPattern);
-        while(matcher.find()) {
+        while (matcher.find()) {
 
             int pos = matcher.start();
 
@@ -124,11 +181,13 @@ public class Groups {
         }
         return groupInfo;
     }
+
+
     /**
      * Determines if the character at the specified position
      * of a string is escaped
      *
-     * @param s string to evaluate
+     * @param s   string to evaluate
      * @param pos the position of the character to evaluate
      * @return true if the character is escaped; otherwise false
      */
@@ -140,7 +199,7 @@ public class Groups {
      * Determines if the character at the specified position
      * of a string is escaped with a backslash
      *
-     * @param s string to evaluate
+     * @param s   string to evaluate
      * @param pos the position of the character to evaluate
      * @return true if the character is escaped; otherwise false
      */
@@ -162,7 +221,7 @@ public class Groups {
      * Determines if the character at the specified position
      * of a string is quote-escaped (between \\Q and \\E)
      *
-     * @param s string to evaluate
+     * @param s   string to evaluate
      * @param pos the position of the character to evaluate
      * @return true if the character is quote-escaped; otherwise false
      */
@@ -196,7 +255,7 @@ public class Groups {
     /**
      * Determines if a string's character is within a regex character class
      *
-     * @param s string to evaluate
+     * @param s   string to evaluate
      * @param pos the position of the character to evaluate
      * @return true if the character is inside a character class; otherwise false
      */
@@ -239,7 +298,7 @@ public class Groups {
      * with "?<"). Make sure not to confuse it with the lookbehind
      * construct ("?<=" or "?<!").
      *
-     * @param s string to evaluate
+     * @param s   string to evaluate
      * @param pos the position of the parenthesis to evaluate
      * @return true if the parenthesis is non-capturing; otherwise false
      */
@@ -253,8 +312,9 @@ public class Groups {
         // to not test for it, which resolves uncovered branches
         // in Cobertura
 
-        /*if (pos >= 0 && pos + 4 < len)*/ {
-            String pre = s.substring(pos, pos+4);
+        /*if (pos >= 0 && pos + 4 < len)*/
+        {
+            String pre = s.substring(pos, pos + 4);
             isLookbehind = pre.equals("(?<=") || pre.equals("(?<!");
         }
         return /*(pos >= 0 && pos + 2 < len) &&*/
@@ -266,9 +326,9 @@ public class Groups {
      * Counts the open-parentheses to the left of a string position,
      * excluding escaped parentheses
      *
-     * @param s string to evaluate
+     * @param s   string to evaluate
      * @param pos ending position of string; characters to the left
-     * of this position are evaluated
+     *            of this position are evaluated
      * @return number of open parentheses
      */
     static private int countOpenParens(String s, int pos) {

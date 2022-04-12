@@ -1,6 +1,7 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.regexp.Groups;
 import com.jn.langx.util.regexp.RegexpMatcher;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ class NamedMatcher implements MResult {
 
     /**
      * @deprecated Use {@link #NamedMatcher(NamedRegexp parentPattern, java.util.regex.Matcher matcher)}
-     *
+     * <p>
      * JDK9 removes the ability to cast a MatchResult to a Matcher,
      * resulting in a runtime error. There appears to be no feasible
      * way to perform this conversion ourselves with only the given
@@ -36,6 +37,7 @@ class NamedMatcher implements MResult {
     NamedMatcher(NamedRegexp parentPattern, java.util.regex.MatchResult matcher) {
         this.parentPattern = parentPattern;
         this.matcher = (java.util.regex.Matcher) matcher; // runtime error here in JDK9
+
     }
 
     NamedMatcher(NamedRegexp parentPattern, CharSequence input) {
@@ -139,7 +141,7 @@ class NamedMatcher implements MResult {
      * start, end, and group methods.</p>
      *
      * @return <tt>true</tt> if, and only if, a subsequence of the input
-     *         sequence matches this matcher's pattern
+     * sequence matches this matcher's pattern
      */
     public boolean find() {
         return matcher.find();
@@ -153,12 +155,12 @@ class NamedMatcher implements MResult {
      * <p>If the match succeeds then more information can be obtained via the
      * start, end, and group methods, and subsequent invocations of the find()
      * method will start at the first character not matched by this match.</p>
-
+     *
      * @param start the starting index
      * @return <code>true</code> if, and only if, a subsequence of the input
      * sequence starting at the given index matches this matcher's pattern
      * @throws IndexOutOfBoundsException If start is less than zero or if start
-     * is greater than the length of the input sequence.
+     *                                   is greater than the length of the input sequence.
      */
     public boolean find(int start) {
         return matcher.find(start);
@@ -185,7 +187,7 @@ class NamedMatcher implements MResult {
     /**
      * Implements a non-terminal append-and-replace step.
      *
-     * @param sb The target string buffer
+     * @param sb          The target string buffer
      * @param replacement The replacement string
      * @return The target string buffer
      */
@@ -220,7 +222,7 @@ class NamedMatcher implements MResult {
      * @param group The index of a capturing group in this matcher's pattern
      * @return the subsequence
      * @throws IllegalStateException If no match has yet been attempted, or
-     * if the previous match operation failed
+     *                               if the previous match operation failed
      */
     public String group(int group) {
         return matcher.group(group);
@@ -259,12 +261,13 @@ class NamedMatcher implements MResult {
      * @throws IndexOutOfBoundsException if group name not found
      */
     public String group(String groupName) {
-        int idx = groupIndex(groupName);
+        int idx = Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName);
         if (idx < 0) {
             throw new IndexOutOfBoundsException("No group \"" + groupName + "\"");
         }
         return group(idx);
     }
+
 
     /**
      * Finds all named groups that exist in the input string. This resets the
@@ -273,11 +276,11 @@ class NamedMatcher implements MResult {
      *
      * @return a list of maps, each containing name-value matches
      * (empty if no match found).
-     *
+     * <p>
      * Example:
-     *   pattern:  (?&lt;dote&gt;\d+).(?&lt;day&gt;\w+)
-     *   input:    1 Sun foo bar 2 Mon foo
-     *   output:   [{"date":"1", "day":"Sun"}, {"date":"2", "day":"Mon"}]
+     * pattern:  (?&lt;dote&gt;\d+).(?&lt;day&gt;\w+)
+     * input:    1 Sun foo bar 2 Mon foo
+     * output:   [{"date":"1", "day":"Sun"}, {"date":"2", "day":"Mon"}]
      */
     public List<Map<String, String>> namedGroups() {
         List<Map<String, String>> result = new ArrayList<Map<String, String>>();
@@ -292,7 +295,7 @@ class NamedMatcher implements MResult {
             Map<String, String> matches = new LinkedHashMap<String, String>();
 
             for (String groupName : groupNames) {
-                String groupValue = matcher.group(groupIndex(groupName));
+                String groupValue = matcher.group(Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
                 matches.put(groupName, groupValue);
                 nextIndex = matcher.end();
             }
@@ -302,19 +305,6 @@ class NamedMatcher implements MResult {
         return result;
     }
 
-    /**
-     * Gets the index of a named capture group
-     *
-     * @param groupName name of capture group
-     * @return the group index
-     */
-    private int groupIndex(String groupName) {
-        // idx+1 because capture groups start 1 in the matcher
-        // while the pattern returns a 0-based index of the
-        // group name within the list of names
-        int idx = parentPattern.indexOf(groupName);
-        return idx > -1 ? idx + 1 : -1;
-    }
 
     /**
      * Returns the start index of the previous match.
@@ -344,7 +334,7 @@ class NamedMatcher implements MResult {
      * @return the index
      */
     public int start(String groupName) {
-        return start(groupIndex(groupName));
+        return start(Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
     }
 
     /**
@@ -375,14 +365,14 @@ class NamedMatcher implements MResult {
      * @return the offset
      */
     public int end(String groupName) {
-        return end(groupIndex(groupName));
+        return end(Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
     }
 
     /**
      * Sets the limits of this matcher's region.
      *
      * @param start The index to start searching at (inclusive)
-     * @param end The index to end searching at (exclusive)
+     * @param end   The index to end searching at (exclusive)
      * @return this Matcher
      */
     public NamedMatcher region(int start, int end) {
@@ -511,7 +501,7 @@ class NamedMatcher implements MResult {
         if (!(obj instanceof NamedMatcher)) {
             return false;
         }
-        NamedMatcher other = (NamedMatcher)obj;
+        NamedMatcher other = (NamedMatcher) obj;
         if (!parentPattern.equals(other.parentPattern)) {
             return false;
         }

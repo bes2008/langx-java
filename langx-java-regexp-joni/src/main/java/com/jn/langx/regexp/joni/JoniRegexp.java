@@ -76,15 +76,10 @@ public class JoniRegexp implements Regexp {
     }
 
 
-    protected static void throwParseException(String key, String str) throws ParseException {
-        throw new ParseException(StringTemplates.formatWithPlaceholder("joni regexp parse error: key: {}, error: {}", key, str));
-    }
-
-
     public RegexpMatcher matcher(CharSequence input) {
         Preconditions.checkNotNull(regex);
         Map<String, List<Groups.GroupInfo>> groupInfo = Groups.extractGroupInfo(this.pattern);
-        return new JoniRegexpMatcher(this.regex, input, groupInfo);
+        return new JoniRegexpMatcher(this.regex, input, this.groupsInNegativeLookahead, groupInfo);
     }
 
     @Override
@@ -109,6 +104,10 @@ public class JoniRegexp implements Regexp {
             option |= 64;
         }
         return option;
+    }
+
+    private static void throwParseException(String key, String str) throws ParseException {
+        throw new ParseException(StringTemplates.formatWithPlaceholder("joni regexp parse error: key: {}, error: {}", key, str));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.jn.langx.regexp.joni;
 
+import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Groups;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -17,12 +18,14 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     final String input;
     final Matcher joniMatcher;
     private List<String> groupNames;
-    private Map<String,List<Groups.GroupInfo> > groupInfo;
+    private Map<String, List<Groups.GroupInfo>> groupInfo;
+    private BitVector groupsInNegativeLookahead;
 
-    JoniRegexpMatcher(Regex regex, CharSequence input, Map<String,List<Groups.GroupInfo> > groupInfo) {
+    JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<Groups.GroupInfo>> groupInfo) {
         this.input = input.toString();
         this.joniMatcher = regex.matcher(input.toString().getBytes(Charsets.UTF_8));
         this.groupInfo = groupInfo;
+        this.groupsInNegativeLookahead = groupsInNegativeLookahead;
     }
 
     public boolean search(int start) {
@@ -54,6 +57,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     }
 
     public String group(int group) {
+        if (group < 0 || group > groupCount()) {
+            throw new IndexOutOfBoundsException("No group " + group);
+        }
         if (group == 0) {
             return this.group();
         } else {
@@ -69,14 +75,19 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     @Override
     public String group(String groupName) {
+        this.groupInfo.get(groupName);
+        int idx = Groups.groupIndex(this.groupInfo,groupName);
         return null;
     }
+
+
     private List<String> groupNames() {
         if (groupNames == null) {
             groupNames = new ArrayList<String>(groupInfo.keySet());
         }
         return Collections.unmodifiableList(groupNames);
     }
+
     @Override
     public boolean matches() {
         Region region = this.joniMatcher.getEagerRegion();

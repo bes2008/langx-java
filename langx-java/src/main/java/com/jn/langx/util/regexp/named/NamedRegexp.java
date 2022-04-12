@@ -143,35 +143,6 @@ public class NamedRegexp implements Regexp, Serializable {
         return new NamedRegexp(regex, flags);
     }
 
-    /**
-     * Gets the group index of a named capture group
-     *
-     * @param groupName name of capture group
-     * @return group index or -1 if not found
-     */
-    public int indexOf(String groupName) {
-        return indexOf(groupName, 0);
-    }
-
-    /**
-     * Gets the group index of a named capture group at the
-     * specified index. If only one instance of the named
-     * group exists, use index 0.
-     *
-     * @param groupName name of capture group
-     * @param index the instance index of the named capture group within
-     * the pattern; e.g., index is 2 for the third instance
-     * @return group index or -1 if not found
-     * @throws IndexOutOfBoundsException if instance index is out of bounds
-     */
-    public int indexOf(String groupName, int index) {
-        int idx = -1;
-        if (groupInfo.containsKey(groupName)) {
-            List<Groups.GroupInfo> list = groupInfo.get(groupName);
-            idx = list.get(index).groupIndex();
-        }
-        return idx;
-    }
 
     /**
      * Returns this pattern's match flags
@@ -220,6 +191,10 @@ public class NamedRegexp implements Regexp, Serializable {
             groupNames = new ArrayList<String>(groupInfo.keySet());
         }
         return Collections.unmodifiableList(groupNames);
+    }
+
+    Map<String, List<GroupInfo>> getGroupInfo() {
+        return groupInfo;
     }
 
     /**
@@ -343,7 +318,7 @@ public class NamedRegexp implements Regexp, Serializable {
                 continue;
             }
 
-            int index = indexOf(m.group(INDEX_GROUP_NAME));
+            int index = Groups.indexOf(groupInfo,m.group(INDEX_GROUP_NAME));
             if (index >= 0) {
                 index++;
             } else {
