@@ -14,7 +14,7 @@ import java.util.Map;
 
 final class JoniRegexpMatcher implements RegexpMatcher {
     final byte[] input;
-    final Matcher joniMatcher;
+    final Matcher matcher;
     private List<String> groupNames;
     private Map<String, List<_Groups.GroupInfo>> groupInfo;
     private BitVector groupsInNegativeLookahead;
@@ -28,7 +28,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<_Groups.GroupInfo>> groupInfo) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
-        this.joniMatcher = regex.matcher(this.input);
+        this.matcher = regex.matcher(this.input);
         this.groupInfo = groupInfo;
         this.groupsInNegativeLookahead = groupsInNegativeLookahead;
     }
@@ -39,12 +39,12 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         if (this.lastBeg == -1 && this.lastEnd == 0) {
             throw new IllegalStateException("No match available");
         }
-        return this.joniMatcher.getBegin();
+        return this.matcher.getBegin();
     }
 
     // tested ok
     public int start(int group) {
-        return group == 0 ? this.start() : this.joniMatcher.getRegion().beg[group];
+        return group == 0 ? this.start() : this.matcher.getRegion().beg[group];
     }
 
     // tested ok
@@ -53,12 +53,12 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         if (this.lastBeg == -1 && this.lastEnd == 0) {
             throw new IllegalStateException("No match available");
         }
-        return this.joniMatcher.getEnd();
+        return this.matcher.getEnd();
     }
 
     // tested ok
     public int end(int group) {
-        return group == 0 ? this.end() : this.joniMatcher.getRegion().end[group];
+        return group == 0 ? this.end() : this.matcher.getRegion().end[group];
     }
 
     // tested ok
@@ -82,14 +82,14 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         if (group == 0) {
             return this.group();
         } else {
-            Region region = this.joniMatcher.getRegion();
+            Region region = this.matcher.getRegion();
             return subBytesAsString(region.beg[group], region.end[group]);
         }
     }
 
     // tested ok
     public int groupCount() {
-        Region region = this.joniMatcher.getRegion();
+        Region region = this.matcher.getRegion();
         return region == null ? 0 : region.numRegs - 1;
     }
 
@@ -154,7 +154,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             /**
              * joniMatcher.search 返回值是匹配到时的开始索引
              */
-            int stIdx = this.joniMatcher.search(start, this.input.length, Option.NONE);
+            int stIdx = this.matcher.search(start, this.input.length, Option.NONE);
             boolean found = stIdx > -1;
             // 搜索完毕后跟上次的位置一样
             if (stIdx == this.lastBeg && this.lastEnd == this.end()) {
