@@ -39,7 +39,7 @@ public class _Groups {
      *
      * @since 4.5.0
      */
-    public static class GroupInfo implements Serializable {
+    public static class GroupCoordinate implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
@@ -53,7 +53,7 @@ public class _Groups {
          * @param groupIndex the group index
          * @param pos        the position
          */
-        public GroupInfo(int groupIndex, int pos) {
+        public GroupCoordinate(int groupIndex, int pos) {
             this.groupIndex = groupIndex;
             this.pos = pos;
         }
@@ -88,10 +88,10 @@ public class _Groups {
             if (obj == null) {
                 return false;
             }
-            if (!(obj instanceof GroupInfo)) {
+            if (!(obj instanceof GroupCoordinate)) {
                 return false;
             }
-            GroupInfo other = (GroupInfo) obj;
+            GroupCoordinate other = (GroupCoordinate) obj;
             return (pos == other.pos) && (groupIndex == other.groupIndex);
         }
 
@@ -112,7 +112,7 @@ public class _Groups {
      * @param groupName name of capture group
      * @return group index or -1 if not found
      */
-    public static int indexOf(Map<String, List<GroupInfo>> groupInfo, String groupName) {
+    public static int indexOf(Map<String, List<GroupCoordinate>> groupInfo, String groupName) {
         return indexOf(groupInfo, groupName, 0);
     }
 
@@ -127,10 +127,10 @@ public class _Groups {
      * @return group index or -1 if not found
      * @throws IndexOutOfBoundsException if instance index is out of bounds
      */
-    public static int indexOf(Map<String, List<GroupInfo>> groupInfo, String groupName, int index) {
+    public static int indexOf(Map<String, List<GroupCoordinate>> groupInfo, String groupName, int index) {
         int idx = -1;
         if (groupInfo.containsKey(groupName)) {
-            List<_Groups.GroupInfo> list = groupInfo.get(groupName);
+            List<GroupCoordinate> list = groupInfo.get(groupName);
             idx = list.get(index).groupIndex();
         }
         return idx;
@@ -142,7 +142,7 @@ public class _Groups {
      * @param groupName name of capture group
      * @return the group index
      */
-    public static int groupIndex(Map<String, List<GroupInfo>> groupInfo, String groupName) {
+    public static int groupIndex(Map<String, List<GroupCoordinate>> groupInfo, String groupName) {
         // idx+1 because capture groups start 1 in the matcher
         // while the pattern returns a 0-based index of the
         // group name within the list of names
@@ -157,8 +157,8 @@ public class _Groups {
      * @param namedPattern regex the regular expression pattern to parse
      * @return list of group info for all named groups
      */
-    public static Map<String, List<GroupInfo>> extractGroupInfo(String namedPattern) {
-        Map<String, List<_Groups.GroupInfo>> groupInfo = new LinkedHashMap<String, List<GroupInfo>>();
+    public static Map<String, List<GroupCoordinate>> extractGroupInfo(String namedPattern) {
+        Map<String, List<GroupCoordinate>> groupInfo = new LinkedHashMap<String, List<GroupCoordinate>>();
         java.util.regex.Matcher matcher = NAMED_GROUP_PATTERN.matcher(namedPattern);
         while (matcher.find()) {
 
@@ -170,13 +170,13 @@ public class _Groups {
             String name = matcher.group(INDEX_GROUP_NAME);
             int groupIndex = countOpenParens(namedPattern, pos);
 
-            List<_Groups.GroupInfo> list;
+            List<GroupCoordinate> list;
             if (groupInfo.containsKey(name)) {
                 list = groupInfo.get(name);
             } else {
-                list = new ArrayList<GroupInfo>();
+                list = new ArrayList<GroupCoordinate>();
             }
-            list.add(new GroupInfo(groupIndex, pos));
+            list.add(new GroupCoordinate(groupIndex, pos));
             groupInfo.put(name, list);
         }
         return groupInfo;

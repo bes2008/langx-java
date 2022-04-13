@@ -1,6 +1,5 @@
 package com.jn.langx.regexp.joni;
 
-import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp._Groups;
@@ -15,9 +14,7 @@ import java.util.Map;
 final class JoniRegexpMatcher implements RegexpMatcher {
     final byte[] input;
     final Matcher matcher;
-    private List<String> groupNames;
-    private Map<String, List<_Groups.GroupInfo>> groupInfo;
-    private BitVector groupsInNegativeLookahead;
+    private Map<String, List<_Groups.GroupCoordinate>> groupInfo;
 
 
     /**
@@ -26,11 +23,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     int lastBeg = -1;
     int lastEnd = 0;
 
-    JoniRegexpMatcher(Regex regex, CharSequence input, BitVector groupsInNegativeLookahead, Map<String, List<_Groups.GroupInfo>> groupInfo) {
+    JoniRegexpMatcher(Regex regex, CharSequence input, Map<String, List<_Groups.GroupCoordinate>> groupInfo) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
         this.matcher = regex.matcher(this.input);
         this.groupInfo = groupInfo;
-        this.groupsInNegativeLookahead = groupsInNegativeLookahead;
     }
 
     // tested ok
@@ -151,9 +147,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
      */
     private boolean search(int start) {
         if (start >= 0 && start <= this.input.length) {
-            /**
-             * joniMatcher.search 返回值是匹配到时的开始索引
-             */
+            // joniMatcher.search 返回值是匹配到时的开始索引
             int stIdx = this.matcher.search(start, this.input.length, Option.NONE);
             boolean found = stIdx > -1;
             // 搜索完毕后跟上次的位置一样

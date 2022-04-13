@@ -70,7 +70,7 @@ public class NamedRegexp implements Regexp, Serializable {
     private java.util.regex.Pattern pattern;
     private String namedPattern;
     private List<String> groupNames;
-    private Map<String,List<_Groups.GroupInfo> > groupInfo;
+    private Map<String,List<GroupCoordinate> > groupInfo;
     private Option option;
 
     /**
@@ -193,7 +193,7 @@ public class NamedRegexp implements Regexp, Serializable {
         return Collections.unmodifiableList(groupNames);
     }
 
-    Map<String, List<GroupInfo>> getGroupInfo() {
+    Map<String, List<GroupCoordinate>> getGroupInfo() {
         return groupInfo;
     }
 
@@ -368,7 +368,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * @param b the other map to compare
      * @return {@code true} if the first map contains all of the other map's keys and values; {@code false} otherwise
      */
-    private boolean groupInfoMatches(Map<String, List<GroupInfo>> a, Map<String, List<_Groups.GroupInfo>> b) {
+    private boolean groupInfoMatches(Map<String, List<GroupCoordinate>> a, Map<String, List<GroupCoordinate>> b) {
         if (a == null && b == null) {
             return true;
         }
@@ -378,14 +378,14 @@ public class NamedRegexp implements Regexp, Serializable {
             if (a.isEmpty() && b.isEmpty()) {
                 isMatch = true;
             } else if (a.size() == b.size()) {
-                for (Map.Entry<String, List<GroupInfo>> entry : a.entrySet()) {
-                    List<_Groups.GroupInfo> otherList = b.get(entry.getKey());
+                for (Map.Entry<String, List<GroupCoordinate>> entry : a.entrySet()) {
+                    List<GroupCoordinate> otherList = b.get(entry.getKey());
                     isMatch = (otherList != null);
                     if (!isMatch) {
                         break;
                     }
 
-                    List<_Groups.GroupInfo> thisList = entry.getValue();
+                    List<GroupCoordinate> thisList = entry.getValue();
                     isMatch = otherList.containsAll(thisList) && thisList.containsAll(otherList);
                     if (!isMatch) {
                         break;

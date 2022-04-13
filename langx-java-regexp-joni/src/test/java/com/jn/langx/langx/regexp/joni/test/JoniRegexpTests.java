@@ -2,6 +2,8 @@ package com.jn.langx.langx.regexp.joni.test;
 
 import com.jn.langx.regexp.joni.JoniRegexp;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.MapAccessor;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Regexp;
@@ -11,7 +13,9 @@ import org.jcodings.specific.UTF8Encoding;
 import org.joni.*;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class JoniRegexpTests {
 
@@ -30,39 +34,29 @@ public class JoniRegexpTests {
             + PUBLIC_VERSION_SEG_DEV
             + LOCAL_VERSION_SEG;
 
-    @Test
-    public void test1() {
-        String[] strings = new String[]{
-                "1.dev0",
-                "1.0.dev456",
-                "1.0a1",
-                "1.0a2.dev456",
-                "1.0a12.dev456",
-                "1.0a12",
-                "1.0b1.dev456",
-                "1.0b2",
-                "1.0b2.post345.dev456",
-                "1.0b2.post345",
-                "1.0rc1.dev456",
-                "1.0rc1",
-                "1.0",
-                "1.0+abc.5",
-                "1.0+abc.7",
-                "1.0+5",
-                "1.0.post456.dev34",
-                "1.0.post456",
-                "1.0.15",
-                "1.1.dev1"
-        };
+    private String[] pythonVersions = new String[]{
+            "1.dev0",
+            "1.0.dev456",
+            "1.0a1",
+            "1.0a2.dev456",
+            "1.0a12.dev456",
+            "1.0a12",
+            "1.0b1.dev456",
+            "1.0b2",
+            "1.0b2.post345.dev456",
+            "1.0b2.post345",
+            "1.0rc1.dev456",
+            "1.0rc1",
+            "1.0",
+            "1.0+abc.5",
+            "1.0+abc.7",
+            "1.0+5",
+            "1.0.post456.dev34",
+            "1.0.post456",
+            "1.0.15",
+            "1.1.dev1"
+    };
 
-        Collects.forEach(strings, new Consumer<String>() {
-            @Override
-            public void accept(String s) {
-
-
-            }
-        });
-    }
 
     @Test
     public void test2() {
@@ -98,50 +92,21 @@ public class JoniRegexpTests {
     @Test
     public void test3() {
         String str = "a134b2c3d4e5f6g";
-        String pattern = "[a-z]\\d{1,}";
+        String pattern = "(?:[a-z]\\d{1,})*";
         Regexp regexp = new JoniRegexp(pattern);
-        showMatched(regexp, str);
+        showMatched34(regexp, str);
     }
 
     @Test
     public void test4() {
         String str = "a134b2c3d4e5f6g";
-        String pattern = "[a-z]\\d{1,}";
-        Regexp regexp = new JdkRegexp(pattern);
-        showMatched(regexp, str);
-    }
-
-    private void showMatched(Regexp regexp, String str) {
-        RegexpMatcher matcher = regexp.matcher(str);
-        System.out.println("groupCount(): " + matcher.groupCount());
-        if (matcher.matches()) {
-            System.out.println("groupCount(): " + matcher.groupCount());
-            while (matcher.find()) {
-                final String matched = matcher.group();
-                System.out.println(matched);
-            }
-        }
-    }
-
-
-    @Test
-    public void test5() {
-        String str = "a134b2c3d4e5f6g";
-        String pattern = "(?:[a-z]\\d{1,})*";
-        Regexp regexp = new JoniRegexp(pattern);
-        showMatched2(regexp, str);
-    }
-
-    @Test
-    public void test6() {
-        String str = "a134b2c3d4e5f6g";
         String pattern = "(?:[a-z]\\d{1,})*";
         Regexp regexp = new JdkRegexp(pattern);
-        showMatched2(regexp, str);
+        showMatched34(regexp, str);
     }
 
 
-    private void showMatched2(Regexp regexp, String str) {
+    private void showMatched34(Regexp regexp, String str) {
         RegexpMatcher matcher = regexp.matcher(str);
         System.out.println("before matches(): groupCount(): " + matcher.groupCount());
         System.out.println("matches(): " + matcher.matches());
@@ -162,5 +127,93 @@ public class JoniRegexpTests {
             int end = matcher.end();
             System.out.println("[" + start + "," + end + "]: " + matched);
         }
+    }
+
+
+
+    private void groupNameTest(Regexp regexp, String text) {
+        final RegexpMatcher matcher = regexp.matcher(text);
+        if (matcher.matches()) {
+            final Map<String, Object> map = new HashMap<String, Object>();
+            Pipeline.of("epoch", "release", "pre", "preLabel", "preN", "post", "postLabel", "postN", "dev", "devN", "local")
+                    .forEach(new Consumer<String>() {
+                        @Override
+                        public void accept(String groupName) {
+                            map.put(groupName, matcher.group(groupName));
+                        }
+                    });
+            System.out.println(map);
+        }
+
+    }
+
+    @Test
+    public void test5() {
+        String str = "a134b2c3d4e5f6g";
+        String pattern = "(?:[a-z]\\d{1,})*";
+        Regexp regexp = new JoniRegexp(pattern);
+        showMatched(regexp, str);
+    }
+
+    @Test
+    public void test6() {
+        String str = "a134b2c3d4e5f6g";
+        String pattern = "(?:[a-z]\\d{1,})*";
+        Regexp regexp = new JdkRegexp(pattern);
+        showMatched(regexp, str);
+    }
+
+    private void showMatched(Regexp regexp, String str) {
+        RegexpMatcher matcher = regexp.matcher(str);
+        System.out.println("before matches(): groupCount(): " + matcher.groupCount());
+        System.out.println("matches(): " + matcher.matches());
+        System.out.println("after matches(): groupCount(): " + matcher.groupCount());
+        System.out.println("while find: ");
+        while (matcher.find()) {
+            final String matched = matcher.group();
+            int start = matcher.start();
+            int end = matcher.end();
+            System.out.println("[" + start + "," + end + "]: " + matched);
+        }
+        matcher.reset();
+        System.out.println("after reset(): groupCount(): " + matcher.groupCount());
+        System.out.println("while find: ");
+        while (matcher.find()) {
+            final String matched = matcher.group();
+            int start = matcher.start();
+            int end = matcher.end();
+            System.out.println("[" + start + "," + end + "]: " + matched);
+        }
+    }
+
+    @Test
+    public void test1() {
+        final Regexp regexp = new JdkRegexp(VERSION_PATTERN_STR);
+        groupNameTest(regexp, pythonVersions[8]);
+        final Regexp regexp2 = new JoniRegexp(VERSION_PATTERN_STR);
+        groupNameTest(regexp2, pythonVersions[8]);
+    }
+
+    @Test
+    public void test9() {
+        final Regexp regexp = new JdkRegexp(VERSION_PATTERN_STR);
+        Collects.forEach(pythonVersions, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                groupNameTest(regexp, s);
+            }
+        });
+    }
+
+
+    @Test
+    public void test10() {
+        final Regexp regexp = new JdkRegexp(VERSION_PATTERN_STR);
+        Collects.forEach(pythonVersions, new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                groupNameTest(regexp, s);
+            }
+        });
     }
 }

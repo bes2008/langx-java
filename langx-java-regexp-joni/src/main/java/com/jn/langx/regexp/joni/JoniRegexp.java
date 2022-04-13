@@ -8,7 +8,6 @@ import java.util.regex.PatternSyntaxException;
 import com.jn.langx.exception.ParseException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.bit.BitVector;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp._Groups;
 import com.jn.langx.util.regexp.Option;
@@ -21,7 +20,6 @@ import org.joni.exception.JOniException;
 public class JoniRegexp implements Regexp {
     private final String pattern;
     private Option option;
-    private BitVector groupsInNegativeLookahead;
 
 
     private Regex regex;
@@ -35,17 +33,8 @@ public class JoniRegexp implements Regexp {
         this.option = option;
 
         try {
-            JoniRegexpScanner parsed;
-            try {
-                parsed = JoniRegexpScanner.scan(pattern);
-            } catch (PatternSyntaxException ex) {
-                throw ex;
-            }
-
-            String javaPattern = parsed.getJavaPattern();
-            byte[] patternBytes = javaPattern.getBytes(Charsets.UTF_8);
+            byte[] patternBytes = pattern.getBytes(Charsets.UTF_8);
             this.regex = new Regex(patternBytes, 0, patternBytes.length, toJoniFlags(option), UTF8Encoding.INSTANCE, Syntax.Java);
-            this.groupsInNegativeLookahead = parsed.getGroupsInNegativeLookahead();
         } catch (JOniException ex1) {
             throwParseException("syntax", ex1.getMessage());
         } catch (PatternSyntaxException ex2) {
@@ -71,15 +60,12 @@ public class JoniRegexp implements Regexp {
     }
 
 
-    public BitVector getGroupsInNegativeLookahead() {
-        return this.groupsInNegativeLookahead;
-    }
 
 
     public RegexpMatcher matcher(CharSequence input) {
         Preconditions.checkNotNull(regex);
-        Map<String, List<_Groups.GroupInfo>> groupInfo = _Groups.extractGroupInfo(this.pattern);
-        return new JoniRegexpMatcher(this.regex, input, this.groupsInNegativeLookahead, groupInfo);
+        Map<String, List<_Groups.GroupCoordinate>> groupInfo = _Groups.extractGroupInfo(this.pattern);
+        return new JoniRegexpMatcher(this.regex, input, groupInfo);
     }
 
     @Override
