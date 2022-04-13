@@ -64,8 +64,7 @@ public class JoniRegexp implements Regexp {
 
     public RegexpMatcher matcher(CharSequence input) {
         Preconditions.checkNotNull(regex);
-        Map<String, List<_Groups.GroupCoordinate>> groupInfo = _Groups.extractGroupInfo(this.pattern);
-        return new JoniRegexpMatcher(this.regex, input, groupInfo);
+        return new JoniRegexpMatcher(this.regex, input);
     }
 
     @Override

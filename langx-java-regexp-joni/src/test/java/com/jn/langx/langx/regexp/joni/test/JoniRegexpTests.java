@@ -191,6 +191,7 @@ public class JoniRegexpTests {
         final Regexp regexp = new JdkRegexp(VERSION_PATTERN_STR);
         groupNameTest(regexp, pythonVersions[8]);
         final Regexp regexp2 = new JoniRegexp(VERSION_PATTERN_STR);
+        System.out.println(VERSION_PATTERN_STR);
         groupNameTest(regexp2, pythonVersions[8]);
     }
 

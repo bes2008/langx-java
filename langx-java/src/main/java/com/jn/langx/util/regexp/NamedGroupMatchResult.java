@@ -11,7 +11,7 @@ public interface NamedGroupMatchResult extends MatchResult {
      * previous match operation.
      *
      * @param groupName name of capture group
-     * @return the subsequence
+     * @return the subsequence, null if groupName is not exists
      */
     String group(String groupName);
 

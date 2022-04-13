@@ -1,21 +1,23 @@
 package com.jn.langx.regexp.joni;
 
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.NonAbsentHashMap;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.RegexpMatcher;
-import com.jn.langx.util.regexp._Groups;
-import org.joni.Matcher;
-import org.joni.Option;
-import org.joni.Regex;
-import org.joni.Region;
+import com.jn.langx.util.struct.Holder;
+import org.joni.*;
 
-import java.util.List;
 import java.util.Map;
 
 final class JoniRegexpMatcher implements RegexpMatcher {
     final byte[] input;
     final Matcher matcher;
-    private Map<String, List<_Groups.GroupCoordinate>> groupInfo;
-
+    private Regex regex;
+    private Map<String, Holder<NameEntry>> namedGroupMap;
 
     /**
      * 最后一次匹配到时的索引
@@ -23,10 +25,28 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     int lastBeg = -1;
     int lastEnd = 0;
 
-    JoniRegexpMatcher(Regex regex, CharSequence input, Map<String, List<_Groups.GroupCoordinate>> groupInfo) {
+    JoniRegexpMatcher(Regex regex, CharSequence input) {
+        this.regex = regex;
         this.input = input.toString().getBytes(Charsets.UTF_8);
         this.matcher = regex.matcher(this.input);
-        this.groupInfo = groupInfo;
+        init();
+    }
+
+    private void init() {
+        namedGroupMap = new NonAbsentHashMap<String, Holder<NameEntry>>(new Supplier<String, Holder<NameEntry>>() {
+            @Override
+            public Holder<NameEntry> get(final String groupName) {
+                NameEntry nameEntry = Pipeline.<NameEntry>of(regex.namedBackrefIterator())
+                        .findFirst(new Predicate<NameEntry>() {
+                            @Override
+                            public boolean test(NameEntry entry) {
+                                String name = new String(entry.name, entry.nameP, entry.nameEnd - entry.nameP, Charsets.UTF_8);
+                                return Objs.equals(name, groupName);
+                            }
+                        });
+                return new Holder<NameEntry>(nameEntry);
+            }
+        });
     }
 
     // tested ok
@@ -64,14 +84,28 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     // tested ok
     private String subBytesAsString(int start, int end) {
+        Preconditions.checkState(end >= 0 && end <= this.input.length && start >= 0 && start <= this.input.length);
         int length = end - start;
         byte[] bytes = new byte[length];
         System.arraycopy(this.input, start, bytes, 0, length);
         return new String(bytes, Charsets.UTF_8);
     }
 
+    /**
+     * @return 返回是否是初始状态， 所谓的初始状态，即还没有开始 匹配，或者被 reset()
+     */
+    private boolean isInitialStatus() {
+        return this.lastBeg == -1;
+    }
 
+    /**
+     * @param group the group index, based-1
+     * @return group value
+     */
     public String group(int group) {
+        if (isInitialStatus()) {
+            throw new IllegalStateException("No match found");
+        }
         if (group < 0 || group > groupCount()) {
             throw new IndexOutOfBoundsException("No group " + group);
         }
@@ -79,31 +113,82 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             return this.group();
         } else {
             Region region = this.matcher.getRegion();
-            return subBytesAsString(region.beg[group], region.end[group]);
+            int beg = region.beg[group];
+            int end = region.end[group];
+            if (beg < 0 || end < 0) {
+                return null;
+            }
+            String groupValue = subBytesAsString(beg, end);
+            return groupValue;
         }
     }
 
     // tested ok
     public int groupCount() {
         Region region = this.matcher.getRegion();
-        return region == null ? 0 : region.numRegs - 1;
+        int count = region == null ? 0 : region.numRegs - 1;
+        if (count < 0) {
+            count = 0;
+        }
+        return count;
     }
 
     @Override
-    public String group(String groupName) {
-        this.groupInfo.get(groupName);
-        int idx = _Groups.groupIndex(this.groupInfo, groupName);
-        return group(idx);
+    public String group(final String groupName) {
+        int[] begEnd = getGroupBeginEnd(groupName, true);
+        if (begEnd == null || begEnd[0]<0 || begEnd[1]<0) {
+            return null;
+        }
+        return subBytesAsString(begEnd[0], begEnd[1]);
     }
+
 
     @Override
     public int start(String groupName) {
-        return 0;
+        return getGroupBeginEnd(groupName, false)[0];
     }
+
 
     @Override
     public int end(String groupName) {
-        return 0;
+        return getGroupBeginEnd(groupName, false)[1];
+    }
+
+    private int[] getGroupBeginEnd(String groupName, boolean forGetGroupValue) {
+        if (isInitialStatus()) {
+            throw new IllegalStateException("No match found");
+        }
+        int groupIndex = getGroupIndex(groupName);
+        if (groupIndex < 0 || groupIndex > groupCount()) {
+            // 不存在该 group
+            if (forGetGroupValue) {
+                return null;
+            } else {
+                throw new IllegalArgumentException("No group with name <" + groupName + ">");
+            }
+        }
+        int beg;
+        int end;
+        if (groupIndex == 0) {
+            beg = this.start();
+            end = this.end();
+        } else {
+            Region region = this.matcher.getRegion();
+            beg = region.beg[groupIndex];
+            end = region.end[groupIndex];
+        }
+        return new int[]{beg, end};
+    }
+
+    private int getGroupIndex(final String groupName) {
+        Holder<NameEntry> nameEntryHolder = this.namedGroupMap.get(groupName);
+        NameEntry nameEntry = nameEntryHolder.get();
+        if (nameEntry == null) {
+            return -1;
+        }
+        int[] backRefs = nameEntry.getBackRefs();
+        int groupIndex = backRefs[0];
+        return groupIndex;
     }
 
     // tested ok
@@ -148,7 +233,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     private boolean search(int start) {
         if (start >= 0 && start <= this.input.length) {
             // joniMatcher.search 返回值是匹配到时的开始索引
-            int stIdx = this.matcher.search(start, this.input.length, Option.NONE);
+            int stIdx = this.matcher.search(start, this.input.length, Option.DEFAULT);
             boolean found = stIdx > -1;
             // 搜索完毕后跟上次的位置一样
             if (stIdx == this.lastBeg && this.lastEnd == this.end()) {
