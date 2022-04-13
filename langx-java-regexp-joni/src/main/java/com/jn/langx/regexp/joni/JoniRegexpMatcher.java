@@ -133,22 +133,23 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return count;
     }
 
+    // tested ok
     @Override
     public String group(final String groupName) {
         int[] begEnd = getGroupBeginEnd(groupName, true);
-        if (begEnd == null || begEnd[0]<0 || begEnd[1]<0) {
+        if (begEnd == null || begEnd[0] < 0 || begEnd[1] < 0) {
             return null;
         }
         return subBytesAsString(begEnd[0], begEnd[1]);
     }
 
-
+    // tested ok
     @Override
     public int start(String groupName) {
         return getGroupBeginEnd(groupName, false)[0];
     }
 
-
+    // tested ok
     @Override
     public int end(String groupName) {
         return getGroupBeginEnd(groupName, false)[1];
@@ -187,8 +188,11 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             return -1;
         }
         int[] backRefs = nameEntry.getBackRefs();
-        int groupIndex = backRefs[0];
-        return groupIndex;
+        if (backRefs.length > 0) {
+            int groupIndex = backRefs[0];
+            return groupIndex;
+        }
+        return -1;
     }
 
     // tested ok
@@ -198,7 +202,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return found && this.end() >= this.input.length;
     }
 
-    //
+    // tested ok
     @Override
     public RegexpMatcher reset() {
         this.lastBeg = -1;
@@ -219,6 +223,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return false;
     }
 
+    // tested ok
     public boolean find(int start) {
         return search(start);
     }
