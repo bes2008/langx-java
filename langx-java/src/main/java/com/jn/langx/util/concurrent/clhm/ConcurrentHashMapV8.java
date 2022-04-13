@@ -10,16 +10,13 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Function2;
-import sun.misc.Unsafe;
+import com.jn.langx.util.unsafe.UnsafeProxy;
+import com.jn.langx.util.unsafe.Unsafes;
 
 import java.io.ObjectStreamField;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collection;
@@ -3143,11 +3140,11 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V> implements ConcurrentMap
             return true;
         }
 
-        private static final sun.misc.Unsafe U;
+        private static final UnsafeProxy U;
         private static final long LOCKSTATE;
         static {
             try {
-                U = getUnsafe();
+                U = Unsafes.getUnsafe();
                 Class<?> k = TreeBin.class;
                 LOCKSTATE = U.objectFieldOffset
                         (k.getDeclaredField("lockState"));
@@ -4089,7 +4086,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V> implements ConcurrentMap
     }
 
     // Unsafe mechanics
-    private static final sun.misc.Unsafe U;
+    private static final UnsafeProxy U;
     private static final long SIZECTL;
     private static final long TRANSFERINDEX;
     private static final long TRANSFERORIGIN;
@@ -4101,7 +4098,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V> implements ConcurrentMap
 
     static {
         try {
-            U = getUnsafe();
+            U = Unsafes.getUnsafe();
             Class<?> k = ConcurrentHashMapV8.class;
             SIZECTL = U.objectFieldOffset
                     (k.getDeclaredField("sizeCtl"));
@@ -4127,35 +4124,4 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V> implements ConcurrentMap
         }
     }
 
-    /**
-     * Returns a sun.misc.Unsafe.  Suitable for use in a 3rd party package.
-     * Replace with a simple call to Unsafe.getUnsafe when integrating
-     * into a jdk.
-     *
-     * @return a sun.misc.Unsafe
-     */
-    private static Unsafe getUnsafe() {
-        try {
-            return Unsafe.getUnsafe();
-        } catch (SecurityException tryReflectionInstead) {
-
-        }
-        try {
-            return AccessController.doPrivileged(new PrivilegedExceptionAction<Unsafe>() {
-                        @Override
-                        public Unsafe run() throws Exception {
-                            Class<Unsafe> k = Unsafe.class;
-                            for (Field f : k.getDeclaredFields()) {
-                                f.setAccessible(true);
-                                Object x = f.get(null);
-                                if (k.isInstance(x)) {
-                                    return k.cast(x);
-                                }
-                            }
-                            throw new NoSuchFieldError("the Unsafe");
-                        }});
-        } catch (PrivilegedActionException e) {
-            throw new RuntimeException("Could not initialize intrinsics", e.getCause());
-        }
-    }
 }
