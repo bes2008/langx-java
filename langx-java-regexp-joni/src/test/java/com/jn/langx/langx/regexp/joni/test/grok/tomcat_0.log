@@ -1,0 +1,2 @@
+Nov 01, 2020 5:37:49 PM org.apache.coyote.http11.AbstractHttp11Processor process
+INFO: Error parsing HTTP request header  Note: further occurrences of HTTP header parsing errors will be logged at DEBUG level.
