@@ -82,7 +82,7 @@ public class StringTemplate {
                 }
             }, args);
             value = Objs.isNull(value) ? matched : value;
-            matcher.appendReplacement(b, quoteReplacement(value));
+            matcher.appendReplacement(b,  quoteReplacement(value));
         }
         matcher.appendTail(b);
         return b.toString();

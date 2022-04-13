@@ -47,7 +47,7 @@ public class Regexps {
     }
 
     public static Regexp createRegexp(Pattern pattern) {
-        return createRegexp("jdk", pattern.pattern(), Option.buildOption(pattern.flags()));
+        return createRegexp((String) null, pattern.pattern(), Option.buildOption(pattern.flags()));
     }
 
     public static Regexp createRegexp(String pattern, Option option) {
@@ -66,6 +66,9 @@ public class Regexps {
         Preconditions.checkNotNull(pattern);
         if (option == null) {
             option = Option.DEFAULT;
+        }
+        if (engine == null) {
+            engine = registry.get("joni");
         }
         if (engine == null) {
             engine = registry.get("jdk");

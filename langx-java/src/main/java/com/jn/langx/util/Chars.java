@@ -115,7 +115,9 @@ public class Chars {
     public static boolean isUpperCase(char value) {
         return value >= 'A' && value <= 'Z';
     }
-
+    public static boolean isDigit(int ch) {
+        return ((ch-'0')|('9'-ch)) >= 0;
+    }
     public static boolean isLowOrUpperCase(char value) {
         return isUpperCase(value) || isLowerCase(value);
     }

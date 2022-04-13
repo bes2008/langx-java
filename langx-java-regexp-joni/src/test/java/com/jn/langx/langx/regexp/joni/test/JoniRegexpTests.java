@@ -1,6 +1,7 @@
 package com.jn.langx.langx.regexp.joni.test;
 
 import com.jn.langx.regexp.joni.JoniRegexp;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
@@ -190,12 +191,11 @@ public class JoniRegexpTests {
         final Regexp regexp = new JdkRegexp(VERSION_PATTERN_STR);
         groupNameTest(regexp, pythonVersions[8]);
         final Regexp regexp2 = new JoniRegexp(VERSION_PATTERN_STR);
-        System.out.println(VERSION_PATTERN_STR);
         groupNameTest(regexp2, pythonVersions[8]);
     }
 
     @Test
-    public void test9() {
+    public void test7() {
         final Regexp regexp = new JdkRegexp(VERSION_PATTERN_STR);
         Collects.forEach(pythonVersions, new Consumer<String>() {
             @Override
@@ -207,7 +207,7 @@ public class JoniRegexpTests {
 
 
     @Test
-    public void test10() {
+    public void test8() {
         final Regexp regexp = new JdkRegexp(VERSION_PATTERN_STR);
         Collects.forEach(pythonVersions, new Consumer<String>() {
             @Override
@@ -216,4 +216,11 @@ public class JoniRegexpTests {
             }
         });
     }
+
+    @Test
+    public void test9(){
+        System.out.println(StringTemplates.formatWithPlaceholder("a {}, b: {}, e: {}", 123, 234,545));
+    }
+
+
 }

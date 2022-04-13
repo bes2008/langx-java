@@ -1,5 +1,6 @@
 package com.jn.langx.regexp.joni;
 
+import com.jn.langx.util.Chars;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.NonAbsentHashMap;
@@ -14,16 +15,31 @@ import org.joni.*;
 import java.util.Map;
 
 final class JoniRegexpMatcher implements RegexpMatcher {
+    /**
+     * 原始字符串， 此处记录了两种形态：
+     */
     final byte[] input;
+
+
     final Matcher matcher;
     private Regex regex;
+
     private Map<String, Holder<NameEntry>> namedGroupMap;
 
     /**
      * 最后一次匹配到时的索引
+     * 这个是 byte[] input 中的 index，不是 text中的索引
      */
     int lastBeg = -1;
     int lastEnd = 0;
+
+    /**
+     * The index of the last position appended in a substitution.
+     * 这个是 byte[] input 中的 index，不是 text中的索引
+     * <p>
+     * 为了 appendReplacement方法提供
+     */
+    int lastAppendPosition = 0;
 
     JoniRegexpMatcher(Regex regex, CharSequence input) {
         this.regex = regex;
@@ -49,37 +65,25 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         });
     }
 
-    // tested ok
+    private int toTextIndex(int bytesIndex) {
+        if(bytesIndex<0){
+            return -1;
+        }
+        if(bytesIndex==0){
+            return 0;
+        }
+        return new String(input, 0, bytesIndex).length();
+    }
+
+
     public int start() {
-        // 若被重置后, 不能直接执行 start(), end()，这个要跟JDK保持一致
-        if (this.lastBeg == -1 && this.lastEnd == 0) {
-            throw new IllegalStateException("No match available");
-        }
-        return this.matcher.getBegin();
+        return toTextIndex(bytesStart());
     }
 
-    // tested ok
-    public int start(int group) {
-        return group == 0 ? this.start() : this.matcher.getRegion().beg[group];
-    }
-
-    // tested ok
-    public int end() {
-        // 若被重置后, 不能直接执行 start(), end()，这个要跟JDK保持一致
-        if (this.lastBeg == -1 && this.lastEnd == 0) {
-            throw new IllegalStateException("No match available");
-        }
-        return this.matcher.getEnd();
-    }
-
-    // tested ok
-    public int end(int group) {
-        return group == 0 ? this.end() : this.matcher.getRegion().end[group];
-    }
 
     // tested ok
     public String group() {
-        return subBytesAsString(start(), end());
+        return subBytesAsString(this.bytesStart(), this.bytesEnd());
     }
 
     // tested ok
@@ -142,16 +146,79 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         }
         return subBytesAsString(begEnd[0], begEnd[1]);
     }
+    /**
+     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
+     */
+    private int bytesStart() {
+        // 若被重置后, 不能直接执行 start(), end()，这个要跟JDK保持一致
+        if (this.lastBeg == -1 && this.lastEnd == 0) {
+            throw new IllegalStateException("No match available");
+        }
+        return this.matcher.getBegin();
+    }
 
-    // tested ok
+
+    public int start(int group) {
+        return toTextIndex(bytesStart(group));
+    }
+
+    /**
+     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
+     */
+    private int bytesStart(int group) {
+        return group == 0 ? this.bytesStart() : this.matcher.getRegion().beg[group];
+    }
+
+
+    public int end() {
+        return toTextIndex(bytesEnd());
+    }
+
+    /**
+     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
+     */
+    private int bytesEnd() {
+        // 若被重置后, 不能直接执行 start(), end()，这个要跟JDK保持一致
+        if (this.lastBeg == -1 && this.lastEnd == 0) {
+            throw new IllegalStateException("No match available");
+        }
+        return this.matcher.getEnd();
+    }
+
+
+    public int end(int group) {
+        return toTextIndex(bytesEnd(group));
+    }
+
+    /**
+     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
+     */
+    private int bytesEnd(int group) {
+        return group == 0 ? this.bytesEnd() : this.matcher.getRegion().end[group];
+    }
+
+
     @Override
     public int start(String groupName) {
+        return toTextIndex(bytesStart(groupName));
+    }
+
+    /**
+     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
+     */
+    private int bytesStart(String groupName) {
         return getGroupBeginEnd(groupName, false)[0];
     }
 
-    // tested ok
     @Override
     public int end(String groupName) {
+        return toTextIndex(bytesEnd(groupName));
+    }
+
+    /**
+     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
+     */
+    private int bytesEnd(String groupName) {
         return getGroupBeginEnd(groupName, false)[1];
     }
 
@@ -171,14 +238,20 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         int beg;
         int end;
         if (groupIndex == 0) {
-            beg = this.start();
-            end = this.end();
+            beg = this.bytesStart();
+            end = this.bytesEnd();
         } else {
             Region region = this.matcher.getRegion();
             beg = region.beg[groupIndex];
             end = region.end[groupIndex];
         }
         return new int[]{beg, end};
+    }
+
+    private boolean hasGroup(String groupName) {
+        Holder<NameEntry> nameEntryHolder = this.namedGroupMap.get(groupName);
+        NameEntry nameEntry = nameEntryHolder.get();
+        return nameEntry != null;
     }
 
     private int getGroupIndex(final String groupName) {
@@ -199,7 +272,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     @Override
     public boolean matches() {
         boolean found = search(0);
-        return found && this.end() >= this.input.length;
+        return found && this.bytesEnd() >= this.input.length;
     }
 
     // tested ok
@@ -241,23 +314,123 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             int stIdx = this.matcher.search(start, this.input.length, Option.DEFAULT);
             boolean found = stIdx > -1;
             // 搜索完毕后跟上次的位置一样
-            if (stIdx == this.lastBeg && this.lastEnd == this.end()) {
+            if (stIdx == this.lastBeg && this.lastEnd == this.bytesEnd()) {
                 found = false;
             }
             this.lastBeg = start;
-            this.lastEnd = this.end();
+            this.lastEnd = this.bytesEnd();
             return found;
         }
         return false;
     }
 
     @Override
-    public RegexpMatcher appendReplacement(StringBuffer b, String replacement) {
-        return null;
+    public RegexpMatcher appendReplacement(StringBuffer sb, String replacement) {
+        this.appendReplacement(sb, this.group(), replacement);
+        return this;
+    }
+
+    private void appendReplacement(StringBuffer sb, String matched, String replacement) {
+        // If no match, return error
+        if (isInitialStatus()) {
+            throw new IllegalStateException("No match available");
+        }
+        // Process substitution string to replace group references with groups
+        int cursor = 0;
+        StringBuilder result = new StringBuilder();
+
+        while (cursor < replacement.length()) {
+            char nextChar = replacement.charAt(cursor);
+            if (nextChar == '\\') {
+                cursor++;
+                if (cursor == replacement.length()) {
+                    throw new IllegalArgumentException("character to be escaped is missing");
+                }
+                nextChar = replacement.charAt(cursor);
+                result.append(nextChar);
+                cursor++;
+            } else if (nextChar == '$') {
+                // Skip past $
+                cursor++;
+                // Throw IAE if this "$" is the last character in replacement
+                if (cursor == replacement.length()) {
+                    throw new IllegalArgumentException("Illegal group reference: group index is missing");
+                }
+                nextChar = replacement.charAt(cursor);
+                int refNum = -1;
+                if (nextChar == '{') {
+                    cursor++;
+                    StringBuilder gsb = new StringBuilder();
+                    while (cursor < replacement.length()) {
+                        nextChar = replacement.charAt(cursor);
+                        if (Chars.isLowerCase(nextChar) || Chars.isUpperCase(nextChar) || Chars.isDigit(nextChar)) {
+                            gsb.append(nextChar);
+                            cursor++;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (gsb.length() == 0)
+                        throw new IllegalArgumentException("named capturing group has 0 length name");
+                    if (nextChar != '}')
+                        throw new IllegalArgumentException("named capturing group is missing trailing '}'");
+                    String gname = gsb.toString();
+                    if (Chars.isDigit(gname.charAt(0)))
+                        throw new IllegalArgumentException("capturing group name {" + gname + "} starts with digit character");
+                    if (!hasGroup(gname))
+                        throw new IllegalArgumentException("No group with name {" + gname + "}");
+                    refNum = getGroupIndex(gname);
+
+                    cursor++;
+                } else {
+                    // The first number is always a group
+                    refNum = (int) nextChar - '0';
+                    if ((refNum < 0) || (refNum > 9)) {
+                        throw new IllegalArgumentException("Illegal group reference");
+                    }
+                    cursor++;
+                    // Capture the largest legal group string
+                    boolean done = false;
+                    while (!done) {
+                        if (cursor >= replacement.length()) {
+                            break;
+                        }
+                        int nextDigit = replacement.charAt(cursor) - '0';
+                        if ((nextDigit < 0) || (nextDigit > 9)) { // not a number
+                            break;
+                        }
+                        int newRefNum = (refNum * 10) + nextDigit;
+                        if (groupCount() < newRefNum) {
+                            done = true;
+                        } else {
+                            refNum = newRefNum;
+                            cursor++;
+                        }
+                    }
+                }
+                // Append group
+                if (this.bytesStart(refNum) != -1 && this.bytesEnd(refNum) != -1) {
+                    result.append(subBytesAsString(this.bytesStart(refNum), this.bytesEnd(refNum)));
+                }
+            } else {
+                result.append(nextChar);
+                cursor++;
+            }
+        }
+        // Append the intervening text
+        String a = subBytesAsString(lastAppendPosition, this.lastEnd);
+        if (a.endsWith(matched)) {
+            a = a.substring(0, a.length() - matched.length());
+        }
+        sb.append(a);
+        // Append the match substitution
+        sb.append(result);
+
+        lastAppendPosition = this.lastEnd;
     }
 
     @Override
-    public void appendTail(StringBuffer b) {
-
+    public void appendTail(StringBuffer sb) {
+        sb.append(subBytesAsString(lastAppendPosition, input.length));
     }
 }

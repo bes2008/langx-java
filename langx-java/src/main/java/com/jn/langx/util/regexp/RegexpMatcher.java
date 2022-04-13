@@ -38,7 +38,6 @@ public interface RegexpMatcher extends NamedGroupMatchResult {
      * @return 匹配器
      */
     RegexpMatcher appendReplacement(StringBuffer b, String replacement);
-
     /**
      * 把原始文本中 剩余部分添加的 StringBuffer中
      *
