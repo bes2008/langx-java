@@ -14,6 +14,9 @@ import org.joni.*;
 
 import java.util.Map;
 
+/**
+ * @since 4.5.0
+ */
 final class JoniRegexpMatcher implements RegexpMatcher {
     /**
      * 原始字符串， 此处记录了两种形态：

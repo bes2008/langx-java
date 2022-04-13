@@ -14,6 +14,9 @@ import org.jcodings.specific.UTF8Encoding;
 import org.joni.*;
 import org.joni.exception.JOniException;
 
+/**
+ * @since 4.5.0
+ */
 public class JoniRegexp implements Regexp {
     private final String pattern;
     private Option option;
