@@ -1,4 +1,4 @@
-package com.jn.langx.util.regexp;
+package com.jn.langx.util.regexp.named;
 
 
 import java.io.Serializable;
@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class _Groups {
+class Groups {
 
     /**
      * index of group within patterns above where group name is captured
@@ -146,7 +146,7 @@ public class _Groups {
         // idx+1 because capture groups start 1 in the matcher
         // while the pattern returns a 0-based index of the
         // group name within the list of names
-        int idx = _Groups.indexOf(groupInfo, groupName);
+        int idx = Groups.indexOf(groupInfo, groupName);
         return idx > -1 ? idx + 1 : -1;
     }
 

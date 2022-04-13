@@ -1,7 +1,6 @@
 package com.jn.langx.util.regexp.named;
 
 
-import com.jn.langx.util.regexp._Groups;
 import com.jn.langx.util.regexp.RegexpMatcher;
 
 import java.util.ArrayList;
@@ -261,7 +260,7 @@ class NamedMatcher implements RegexpMatcher {
      * @throws IndexOutOfBoundsException if group name not found
      */
     public String group(String groupName) {
-        int idx = _Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName);
+        int idx = Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName);
         if (idx < 0) {
             throw new IndexOutOfBoundsException("No group \"" + groupName + "\"");
         }
@@ -295,7 +294,7 @@ class NamedMatcher implements RegexpMatcher {
             Map<String, String> matches = new LinkedHashMap<String, String>();
 
             for (String groupName : groupNames) {
-                String groupValue = matcher.group(_Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
+                String groupValue = matcher.group(Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
                 matches.put(groupName, groupValue);
                 nextIndex = matcher.end();
             }
@@ -334,7 +333,7 @@ class NamedMatcher implements RegexpMatcher {
      * @return the index
      */
     public int start(String groupName) {
-        return start(_Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
+        return start(Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
     }
 
     /**
@@ -365,7 +364,7 @@ class NamedMatcher implements RegexpMatcher {
      * @return the offset
      */
     public int end(String groupName) {
-        return end(_Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
+        return end(Groups.groupIndex(this.parentPattern.getGroupInfo(), groupName));
     }
 
     /**
