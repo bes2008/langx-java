@@ -35,6 +35,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     // tested ok
     public int start() {
+        // 若被重置后, 不能直接执行 start(), end()，这个要跟JDK保持一致
+        if (this.lastBeg == -1 && this.lastEnd == 0) {
+            throw new IllegalStateException("No match available");
+        }
         return this.joniMatcher.getBegin();
     }
 
@@ -45,6 +49,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     // tested ok
     public int end() {
+        // 若被重置后, 不能直接执行 start(), end()，这个要跟JDK保持一致
+        if (this.lastBeg == -1 && this.lastEnd == 0) {
+            throw new IllegalStateException("No match available");
+        }
         return this.joniMatcher.getEnd();
     }
 
@@ -79,6 +87,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         }
     }
 
+    // tested ok
     public int groupCount() {
         Region region = this.joniMatcher.getRegion();
         return region == null ? 0 : region.numRegs - 1;
@@ -108,6 +117,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return found && this.end() >= this.input.length;
     }
 
+    //
     @Override
     public RegexpMatcher reset() {
         this.lastBeg = -1;
