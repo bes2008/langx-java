@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @since 4.5.0
  */
-class NamedMatcher implements _MResult {
+class NamedMatcher implements RegexpMatcher {
 
     private java.util.regex.Matcher matcher;
     private NamedRegexp parentPattern;
@@ -124,7 +124,7 @@ class NamedMatcher implements _MResult {
      *
      * @return a MatchResult with the state of this matcher
      */
-    public _MResult toMatchResult() {
+    public RegexpMatcher toMatchResult() {
         return new NamedMatcher(this.parentPattern, matcher);
     }
 

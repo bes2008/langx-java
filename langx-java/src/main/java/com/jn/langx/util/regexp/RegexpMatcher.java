@@ -3,7 +3,7 @@ package com.jn.langx.util.regexp;
 /**
  * @since 4.5.0
  */
-public interface RegexpMatcher extends RegexpMatchResult {
+public interface RegexpMatcher extends NamedGroupMatchResult {
     /**
      * @return 是否匹配
      */
