@@ -57,6 +57,16 @@ class JdkMatcher implements RegexpMatcher {
     }
 
     @Override
+    public int start(String groupName) {
+        return matcher.start(groupName);
+    }
+
+    @Override
+    public int end(String groupName) {
+        return matcher.end(groupName);
+    }
+
+    @Override
     public RegexpMatcher reset() {
         matcher.reset();
         return this;

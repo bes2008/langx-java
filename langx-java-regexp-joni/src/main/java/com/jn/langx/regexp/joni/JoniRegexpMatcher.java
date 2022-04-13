@@ -91,6 +91,16 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return group(idx);
     }
 
+    @Override
+    public int start(String groupName) {
+        return 0;
+    }
+
+    @Override
+    public int end(String groupName) {
+        return 0;
+    }
+
     // tested ok
     @Override
     public boolean matches() {
@@ -140,12 +150,6 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             if (stIdx == this.lastBeg && this.lastEnd == this.end()) {
                 found = false;
             }
-            /*
-                // 啥也没搜到
-                if (stIdx == this.end()) {
-                    found = false;
-                }
-             */
             this.lastBeg = start;
             this.lastEnd = this.end();
             return found;

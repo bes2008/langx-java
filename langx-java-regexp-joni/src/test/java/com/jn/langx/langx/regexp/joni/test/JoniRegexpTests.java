@@ -127,7 +127,7 @@ public class JoniRegexpTests {
     @Test
     public void test5() {
         String str = "a134b2c3d4e5f6g";
-        String pattern = "(?:[a-z]\\d{1,})*";
+        String pattern = "(?:[a-z]\\d{1,})+";
         Regexp regexp = new JoniRegexp(pattern);
         showMatched2(regexp, str);
     }
@@ -135,7 +135,7 @@ public class JoniRegexpTests {
     @Test
     public void test6() {
         String str = "a134b2c3d4e5f6g";
-        String pattern = "(?:[a-z]\\d{1,})*";
+        String pattern = "(?:[a-z]\\d{1,})+";
         Regexp regexp = new JdkRegexp(pattern);
         showMatched2(regexp, str);
     }
