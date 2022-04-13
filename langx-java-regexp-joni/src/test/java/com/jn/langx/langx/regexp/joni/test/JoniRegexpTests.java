@@ -91,7 +91,7 @@ public class JoniRegexpTests {
 
     @Test
     public void test3() {
-        String str = "a134b2c3d4e5f6g";
+        String str = "a134b2c3d4e5f6g你好，23,b233fs";
         String pattern = "(?:[a-z]\\d{1,})*";
         Regexp regexp = new JoniRegexp(pattern);
         showMatched34(regexp, str);
@@ -99,7 +99,7 @@ public class JoniRegexpTests {
 
     @Test
     public void test4() {
-        String str = "a134b2c3d4e5f6g";
+        String str = "a134b2c3d4e5f6g你好，23,b233fs";
         String pattern = "(?:[a-z]\\d{1,})*";
         Regexp regexp = new JdkRegexp(pattern);
         showMatched34(regexp, str);
