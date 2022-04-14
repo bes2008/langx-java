@@ -10,6 +10,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
 import org.slf4j.Logger;
 
@@ -25,7 +26,7 @@ import java.util.Map;
 public class PatternDefinitions {
     private static final Logger logger = Loggers.getLogger(PatternDefinitions.class);
 
-    private static final Regexp DEFINITION_NAME_PATTERN = Regexps.createRegexp("^\\w+$");
+    private static final Regexp DEFINITION_PATTERN = Regexps.createRegexp("^(?<name>\\w+)\\s+(?<expression>.+)$");
 
     public static Map<String, PatternDefinition> readDefinitions(InputStream inputStream) {
         try {
@@ -45,21 +46,16 @@ public class PatternDefinitions {
                         }
                         return;
                     }
-                    int sepIdx = Strings.indexOf(line, " ");
-                    if (sepIdx < 1) {
+                    RegexpMatcher matcher =  DEFINITION_PATTERN.matcher(line);
+                    boolean match = matcher.matches();
+                    if(!match){
                         if (logger.isWarnEnabled()) {
                             logger.warn("illegal grok pattern definition line: {}", line);
                         }
                         return;
                     }
-                    String name = Strings.substring(line, 0, sepIdx);
-                    String expression = Strings.substring(line, sepIdx + 1);
-
-                    if (!DEFINITION_NAME_PATTERN.matcher(name).matches() || Strings.isBlank(expression)) {
-                        if (logger.isWarnEnabled()) {
-                            logger.warn("illegal grok pattern definition line: {}", line);
-                        }
-                    }
+                    String name = matcher.group("name");
+                    String expression = matcher.group("expression");
 
                     PatternDefinition definition = new PatternDefinition(name, expression);
                     map.put(name, definition);
