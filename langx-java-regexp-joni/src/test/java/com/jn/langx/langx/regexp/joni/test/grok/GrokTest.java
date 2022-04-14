@@ -46,7 +46,7 @@ public class GrokTest {
         */
 
         // log stash directory repository:
-        PatternDefinitionRepository logstashFileRepository = new PatternDefinitionRepository();
+        SimplePatternDefinitionRepository logstashFileRepository = new SimplePatternDefinitionRepository();
         Cache<String, PatternDefinition> cache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();
