@@ -421,15 +421,12 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             }
         }
         // Append the intervening text
-        String a = subBytesAsString(lastAppendPosition, this.lastEnd);
-        if (a.endsWith(matched)) {
-            a = a.substring(0, a.length() - matched.length());
-        }
+        String a = subBytesAsString(lastAppendPosition, this.bytesStart());
         sb.append(a);
         // Append the match substitution
         sb.append(result);
 
-        lastAppendPosition = this.lastEnd;
+        lastAppendPosition = this.bytesEnd();
     }
 
     @Override
