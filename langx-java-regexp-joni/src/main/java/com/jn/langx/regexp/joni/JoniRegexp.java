@@ -147,4 +147,9 @@ public class JoniRegexp implements Regexp {
         String[] result = new String[resultSize];
         return matchList.subList(0, resultSize).toArray(result);
     }
+
+    @Override
+    public String toString() {
+        return getPattern();
+    }
 }

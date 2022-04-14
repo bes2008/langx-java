@@ -13,6 +13,9 @@ import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -20,11 +23,9 @@ import java.net.*;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.security.AccessController.doPrivileged;
-import static java.util.regex.Pattern.CASE_INSENSITIVE;
+import static com.jn.langx.util.regexp.Option.CASE_INSENSITIVE;
 
 
 public class Nets {
@@ -445,14 +446,14 @@ public class Nets {
      * A host string must be a domain string, an IPv4 address string, or "[", followed by an IPv6 address string,
      * followed by "]".
      */
-    private static final Pattern DOMAIN_PATTERN = Pattern.compile(
+    private static final Regexp DOMAIN_PATTERN = Regexps.createRegexp(
             DOMAIN + "|\\[" + IP_V6_DOMAIN + "\\]", CASE_INSENSITIVE
     );
 
     /**
      * Regular expression for the domain part of an email address (everything after '@')
      */
-    private static final Pattern EMAIL_DOMAIN_PATTERN = Pattern.compile(
+    private static final Regexp EMAIL_DOMAIN_PATTERN = Regexps.createRegexp(
             DOMAIN + "|\\[" + IP_DOMAIN + "\\]|" + "\\[IPv6:" + IP_V6_DOMAIN + "\\]", CASE_INSENSITIVE
     );
 
@@ -477,14 +478,14 @@ public class Nets {
         return isValidDomainAddress(domain, DOMAIN_PATTERN);
     }
 
-    private static boolean isValidDomainAddress(String domain, Pattern pattern) {
+    private static boolean isValidDomainAddress(String domain, Regexp pattern) {
         // if we have a trailing dot the domain part we have an invalid email address.
         // the regular expression match would take care of this, but IDN.toASCII drops the trailing '.'
         if (domain.endsWith(".")) {
             return false;
         }
 
-        Matcher matcher = pattern.matcher(domain);
+        RegexpMatcher matcher = pattern.matcher(domain);
         if (!matcher.matches()) {
             return false;
         }
@@ -1524,7 +1525,7 @@ public class Nets {
         return address instanceof Inet6Address ? ((Inet6Address) address).getScopeId() : 0;
     }
 
-    private static final Pattern NUMERIC = Pattern.compile("\\d+");
+    private static final Regexp NUMERIC = Regexps.createRegexp("\\d+");
 
     /**
      * Attempt to get the scope ID of the given string.  If the string is numeric then the number is parsed

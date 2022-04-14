@@ -70,4 +70,9 @@ public class JdkRegexp implements Regexp {
     public String[] split(CharSequence input, int limit) {
         return this.pattern.split(input, limit);
     }
+
+    @Override
+    public String toString() {
+        return getPattern();
+    }
 }

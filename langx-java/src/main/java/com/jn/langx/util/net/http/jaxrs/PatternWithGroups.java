@@ -16,11 +16,13 @@
 
 package com.jn.langx.util.net.http.jaxrs;
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.util.List;
 import java.util.Map;
 import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -44,7 +46,7 @@ public class PatternWithGroups {
     /**
      * The compiled regular expression of {@link #regex}.
      */
-    private final Pattern regexPattern;
+    private final Regexp regexPattern;
     /**
      * The array of group indexes to capturing groups.
      */
@@ -84,8 +86,8 @@ public class PatternWithGroups {
         this(compile(regex), groupIndexes);
     }
 
-    private static Pattern compile(final String regex) throws PatternSyntaxException {
-        return (regex == null || regex.isEmpty()) ? null : Pattern.compile(regex);
+    private static Regexp compile(final String regex)  {
+        return (regex == null || regex.isEmpty()) ? null : Regexps.createRegexp(regex);
     }
 
     /**
@@ -94,7 +96,7 @@ public class PatternWithGroups {
      * @param regexPattern the regular expression pattern.
      * @throws IllegalArgumentException if the regexPattern is {@code null}.
      */
-    public PatternWithGroups(final Pattern regexPattern) throws IllegalArgumentException {
+    public PatternWithGroups(final Regexp regexPattern) throws IllegalArgumentException {
         this(regexPattern, EMPTY_INT_ARRAY);
     }
 
@@ -105,12 +107,12 @@ public class PatternWithGroups {
      * @param groupIndexes the array of group indexes to capturing groups.
      * @throws IllegalArgumentException if the regexPattern is {@code null}.
      */
-    public PatternWithGroups(final Pattern regexPattern, final int[] groupIndexes) throws IllegalArgumentException {
+    public PatternWithGroups(final Regexp regexPattern, final int[] groupIndexes) throws IllegalArgumentException {
         if (regexPattern == null) {
             throw new IllegalArgumentException();
         }
 
-        this.regex = regexPattern.toString();
+        this.regex = regexPattern.getPattern();
         this.regexPattern = regexPattern;
         this.groupIndexes = groupIndexes.clone();
     }
@@ -257,7 +259,7 @@ public class PatternWithGroups {
         }
 
         // Match regular expression
-        Matcher m = regexPattern.matcher(cs);
+        RegexpMatcher m = regexPattern.matcher(cs);
         if (!m.matches()) {
             return null;
         }
@@ -294,7 +296,7 @@ public class PatternWithGroups {
         }
 
         // Match the regular expression
-        Matcher m = regexPattern.matcher(cs);
+        RegexpMatcher m = regexPattern.matcher(cs);
         if (!m.matches()) {
             return false;
         }
@@ -345,7 +347,7 @@ public class PatternWithGroups {
         }
 
         // Match the regular expression
-        Matcher m = regexPattern.matcher(cs);
+        RegexpMatcher m = regexPattern.matcher(cs);
         if (!m.matches()) {
             return false;
         }

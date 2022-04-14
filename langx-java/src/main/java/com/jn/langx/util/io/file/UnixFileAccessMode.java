@@ -4,6 +4,8 @@ import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.hash.HashCodeBuilder;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.util.regex.Pattern;
 
@@ -12,7 +14,7 @@ import java.util.regex.Pattern;
  */
 @Deprecated
 public class UnixFileAccessMode {
-    private static final Pattern PATTERN = Pattern.compile("^[01]+$");
+    private static final Regexp PATTERN = Regexps.createRegexp("^[01]+$");
     private static final char TRUE = '1';
     private String binaryMode;
 

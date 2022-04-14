@@ -118,4 +118,5 @@ public interface Regexp {
      * @return 正则表达式的option
      */
     Option getOption();
+
 }

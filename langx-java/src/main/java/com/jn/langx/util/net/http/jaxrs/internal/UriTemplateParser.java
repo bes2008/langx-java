@@ -18,10 +18,11 @@ package com.jn.langx.util.net.http.jaxrs.internal;
 
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.net.http.jaxrs.UriComponent;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -53,16 +54,16 @@ public class UriTemplateParser {
     /**
      * Default URI template value regexp pattern.
      */
-    public static final Pattern TEMPLATE_VALUE_PATTERN = Pattern.compile("[^/]+");
+    public static final Regexp TEMPLATE_VALUE_PATTERN = Regexps.createRegexp("[^/]+");
 
     private final String template;
     private final StringBuffer regex = new StringBuffer();
     private final StringBuffer normalizedTemplate = new StringBuffer();
     private final StringBuffer literalCharactersBuffer = new StringBuffer();
-    private final Pattern pattern;
+    private final Regexp pattern;
     private final List<String> names = new ArrayList<String>();
     private final List<Integer> groupCounts = new ArrayList<Integer>();
-    private final Map<String, Pattern> nameToPattern = new HashMap<String, Pattern>();
+    private final Map<String, Regexp> nameToPattern = new HashMap<String, Regexp>();
     private int numOfExplicitRegexes;
     private int skipGroup;
 
@@ -83,7 +84,7 @@ public class UriTemplateParser {
         this.template = template;
         parse(new CharacterIterator(template));
         try {
-            pattern = Pattern.compile(regex.toString());
+            pattern = Regexps.createRegexp(regex.toString());
         } catch (PatternSyntaxException ex) {
             throw new IllegalArgumentException("Invalid syntax for the template expression '"
                     + regex + "'",
@@ -106,7 +107,7 @@ public class UriTemplateParser {
      *
      * @return the pattern.
      */
-    public final Pattern getPattern() {
+    public final Regexp getPattern() {
         return pattern;
     }
 
@@ -127,7 +128,7 @@ public class UriTemplateParser {
      *
      * @return the map of template names to patterns.
      */
-    public final Map<String, Pattern> getNameToPattern() {
+    public final Map<String, Regexp> getNameToPattern() {
         return nameToPattern;
     }
 
@@ -336,7 +337,7 @@ public class UriTemplateParser {
         }
 
         String name = nameBuffer.toString();
-        Pattern namePattern;
+        Regexp namePattern;
         try {
             if (paramType == '?' || paramType == ';') {
                 String[] subNames = name.split(",\\s?");
@@ -373,7 +374,7 @@ public class UriTemplateParser {
                 // Knock of last bar
                 regexBuilder.append(")*");
 
-                namePattern = Pattern.compile(regexBuilder.toString());
+                namePattern = Regexps.createRegexp(regexBuilder.toString());
 
                 // Make sure we display something useful
                 name = paramType + name;
@@ -383,7 +384,7 @@ public class UriTemplateParser {
                     numOfExplicitRegexes++;
                 }
                 namePattern = (nameRegexString.isEmpty())
-                        ? TEMPLATE_VALUE_PATTERN : Pattern.compile(nameRegexString);
+                        ? TEMPLATE_VALUE_PATTERN : Regexps.createRegexp(nameRegexString);
                 if (nameToPattern.containsKey(name)) {
                     if (!nameToPattern.get(name).equals(namePattern)) {
                         String error = StringTemplates.formatWithIndex("The name {0} is declared more than once with different regular expressions in a path template {1}",name, template);
@@ -394,7 +395,7 @@ public class UriTemplateParser {
                 }
 
                 // Determine group count of pattern
-                Matcher m = namePattern.matcher("");
+                RegexpMatcher m = namePattern.matcher("");
                 int g = m.groupCount();
                 groupCounts.add(1 + skipGroup);
                 skipGroup = g;

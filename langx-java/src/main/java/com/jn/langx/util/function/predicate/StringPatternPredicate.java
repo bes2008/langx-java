@@ -2,15 +2,17 @@ package com.jn.langx.util.function.predicate;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.util.regex.Pattern;
 
 public class StringPatternPredicate implements Predicate<String> {
-    private Pattern pattern;
+    private Regexp regexp;
 
     public StringPatternPredicate(Pattern pattern) {
         Preconditions.checkNotNull(pattern);
-        this.pattern = pattern;
+        this.regexp = Regexps.createRegexp(pattern);
     }
 
     public StringPatternPredicate(String regexp, int flags) {
@@ -24,6 +26,6 @@ public class StringPatternPredicate implements Predicate<String> {
 
     @Override
     public boolean test(String value) {
-        return pattern.matcher(value).matches();
+        return regexp.matcher(value).matches();
     }
 }
