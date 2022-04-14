@@ -16,6 +16,8 @@ import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
 import com.jn.langx.util.reflect.signature.TypeSignatures;
 import com.jn.langx.util.reflect.type.Types;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
 
@@ -36,7 +38,7 @@ import static java.lang.System.arraycopy;
 @SuppressWarnings({"unused", "unchecked", "rawtypes"})
 public class Reflects {
 
-    private static final Pattern lamdbaPattern = Pattern.compile(".*\\$\\$Lambda\\$[0-9]+/.*");
+    private static final Regexp lamdbaPattern = Regexps.createRegexp(".*\\$\\$Lambda\\$[0-9]+/.*");
 
     private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
     private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");

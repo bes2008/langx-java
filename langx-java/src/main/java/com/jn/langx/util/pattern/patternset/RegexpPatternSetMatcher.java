@@ -2,8 +2,8 @@ package com.jn.langx.util.pattern.patternset;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.regexp.Regexps;
 
-import java.util.regex.Pattern;
 
 public class RegexpPatternSetMatcher extends AbstractPatternSetMatcher<StringPatternEntry> {
     public RegexpPatternSetMatcher(@Nullable PatternSetExpressionParser<StringPatternEntry> expressionParser, @Nullable String defaultPatternExpression) {
@@ -25,6 +25,6 @@ public class RegexpPatternSetMatcher extends AbstractPatternSetMatcher<StringPat
 
     @Override
     protected boolean doMatch(String pattern, String string, boolean fullMatch) {
-        return Pattern.compile(pattern).matcher(string).matches();
+        return Regexps.createRegexp(pattern).matcher(string).matches();
     }
 }

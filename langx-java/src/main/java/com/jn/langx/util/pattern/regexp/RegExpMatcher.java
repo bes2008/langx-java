@@ -3,13 +3,15 @@ package com.jn.langx.util.pattern.regexp;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.pattern.AbstractPatternMatcher;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.util.regex.Pattern;
 
 public class RegExpMatcher extends AbstractPatternMatcher {
 
     private String regexp;
-    private Pattern pattern;
+    private Regexp pattern;
 
     public RegExpMatcher() {
     }
@@ -57,7 +59,7 @@ public class RegExpMatcher extends AbstractPatternMatcher {
                     regexp = regexp + "$";
                 }
             }
-            pattern = Pattern.compile(regexp, flag);
+            pattern = Regexps.createRegexp(regexp, flag);
         }
 
         if (trimPattern) {
