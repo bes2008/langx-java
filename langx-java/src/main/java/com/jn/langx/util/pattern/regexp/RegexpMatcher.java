@@ -6,27 +6,26 @@ import com.jn.langx.util.pattern.AbstractPatternMatcher;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
-import java.util.regex.Pattern;
 
-public class RegExpMatcher extends AbstractPatternMatcher {
+public class RegexpMatcher extends AbstractPatternMatcher {
 
     private String regexp;
     private Regexp pattern;
 
-    public RegExpMatcher() {
+    public RegexpMatcher() {
     }
 
-    public RegExpMatcher(String regexp) {
+    public RegexpMatcher(String regexp) {
         this(regexp, false);
     }
 
-    public RegExpMatcher(String regexp, boolean caseSensitive) {
-        this(regexp, caseSensitive, true);
+    public RegexpMatcher(String regexp, boolean ignoreCase) {
+        this(regexp, ignoreCase, true);
     }
 
-    public RegExpMatcher(String regexp, boolean caseSensitive, boolean trimPattern) {
+    public RegexpMatcher(String regexp, boolean ignoreCase, boolean trimPattern) {
         setPatternExpression(regexp);
-        setCaseSensitive(caseSensitive);
+        setIgnoreCase(ignoreCase);
         setTrimPattern(trimPattern);
     }
 
@@ -41,25 +40,14 @@ public class RegExpMatcher extends AbstractPatternMatcher {
         Preconditions.checkNotEmpty(regexp, "the regexp is null or empty");
 
         if (pattern == null) {
-            int flag = 0;
-            if (caseSensitive) {
-                flag = flag | Pattern.CASE_INSENSITIVE;
-            }
             if (trimPattern) {
                 regexp = Strings.trim(regexp);
                 if (Strings.isEmpty(regexp)) {
                     throw new IllegalArgumentException("illegal regexp pattern");
                 }
             }
-            if (global) {
-                if (!Strings.startsWith(regexp, "^")) {
-                    regexp = "^" + regexp;
-                }
-                if (!Strings.endsWith(regexp, "&")) {
-                    regexp = regexp + "$";
-                }
-            }
-            pattern = Regexps.createRegexp(regexp, flag);
+
+            pattern = Regexps.createRegexp(regexp, this.option);
         }
 
         if (trimPattern) {

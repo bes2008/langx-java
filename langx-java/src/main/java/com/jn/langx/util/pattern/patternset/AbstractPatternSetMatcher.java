@@ -88,7 +88,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
         boolean matched = Collects.anyMatch(this.patternSet.getIncludes(), new Predicate<PatternEntry>() {
             @Override
             public boolean test(PatternEntry patternEntry) {
-                return doMatch(patternEntry.getName(), string, global);
+                return doMatch(patternEntry.getName(), string, option.isGlobal());
             }
         });
 
@@ -96,7 +96,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
             matched = Collects.noneMatch(this.patternSet.getExcludes(), new Predicate<PatternEntry>() {
                 @Override
                 public boolean test(PatternEntry patternEntry) {
-                    return doMatch(patternEntry.getName(), string, global);
+                    return doMatch(patternEntry.getName(), string, option.isGlobal());
                 }
             });
         }

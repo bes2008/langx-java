@@ -1,20 +1,18 @@
 package com.jn.langx.util.pattern;
 
+import com.jn.langx.util.regexp.Option;
+
 public abstract class AbstractPatternMatcher implements PatternMatcher{
 
-    /**
-     * 是否大小写敏感
-     */
-    protected boolean caseSensitive = false;
+    protected Option option = new Option();
     /**
      * 匹配之前，是否对 pattern 进行 trim 操作
      */
     protected boolean trimPattern = true;
-    protected boolean global = false;
 
     @Override
-    public void setCaseSensitive(boolean caseSensitive) {
-        this.caseSensitive =caseSensitive;
+    public void setIgnoreCase(boolean ignoreCase) {
+        this.option.setIgnoreCase(ignoreCase);
     }
 
     @Override
@@ -24,6 +22,7 @@ public abstract class AbstractPatternMatcher implements PatternMatcher{
 
     @Override
     public void setGlobal(boolean global) {
-        this.global = global;
+        this.option.setGlobal(global);
     }
+
 }

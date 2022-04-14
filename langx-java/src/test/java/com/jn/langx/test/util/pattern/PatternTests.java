@@ -1,14 +1,14 @@
 package com.jn.langx.test.util.pattern;
 
 import com.jn.langx.util.pattern.patternset.AntPathMatcher;
-import com.jn.langx.util.pattern.regexp.RegExpMatcher;
+import com.jn.langx.util.pattern.regexp.RegexpMatcher;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class PatternTests {
     @Test
     public void testRegexpMatcher() {
-        RegExpMatcher regExpMatcher = new RegExpMatcher("^a.x$");
+        RegexpMatcher regExpMatcher = new RegexpMatcher("^a.x$");
 
         Assert.assertEquals(false, regExpMatcher.match("11111"));
         Assert.assertEquals(false, regExpMatcher.match("a01"));

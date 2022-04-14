@@ -2,9 +2,9 @@ package com.jn.langx.util.pattern;
 
 public interface PatternMatcher {
     /**
-     * @param caseSensitive 大小写敏感
+     * @param ignoreCase 忽略大小写
      */
-    void setCaseSensitive(boolean caseSensitive);
+    void setIgnoreCase(boolean ignoreCase);
 
     /**
      * 在匹配时，是否对 pattern先进行 trim 操作
