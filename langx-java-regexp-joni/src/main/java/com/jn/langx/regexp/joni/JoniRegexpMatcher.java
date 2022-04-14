@@ -89,13 +89,17 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return new String(input, 0, bytesIndex).length();
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public int start() {
         return toCharIndex(bytesStart());
     }
 
 
-    // tested ok
+    /**
+     * {@inheritDoc}
+     */
     public String group() {
         return subBytesAsString(this.bytesStart(), this.bytesEnd());
     }
@@ -117,8 +121,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     }
 
     /**
-     * @param group the group index, based-1
-     * @return group value
+     * {@inheritDoc}
      */
     public String group(int group) {
         if (isInitialStatus()) {
@@ -141,7 +144,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         }
     }
 
-    // tested ok
+    /**
+     * {@inheritDoc}
+     */
     public int groupCount() {
         Region region = this.matcher.getRegion();
         int count = region == null ? 0 : region.numRegs - 1;
@@ -151,7 +156,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return count;
     }
 
-    // tested ok
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String group(final String groupName) {
         int[] begEnd = getGroupBeginEnd(groupName, true);
@@ -160,6 +167,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         }
         return subBytesAsString(begEnd[0], begEnd[1]);
     }
+
     /**
      * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
      */
@@ -171,7 +179,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return this.matcher.getBegin();
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public int start(int group) {
         return toCharIndex(bytesStart(group));
     }
@@ -183,7 +193,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return group == 0 ? this.bytesStart() : this.matcher.getRegion().beg[group];
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public int end() {
         return toCharIndex(bytesEnd());
     }
@@ -199,7 +211,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return this.matcher.getEnd();
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public int end(int group) {
         return toCharIndex(bytesEnd(group));
     }
@@ -211,7 +225,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return group == 0 ? this.bytesEnd() : this.matcher.getRegion().end[group];
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int start(String groupName) {
         return toCharIndex(bytesStart(groupName));
@@ -224,6 +240,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return getGroupBeginEnd(groupName, false)[0];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int end(String groupName) {
         return toCharIndex(bytesEnd(groupName));
@@ -282,14 +301,18 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return -1;
     }
 
-    // tested ok
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean matches() {
         boolean found = search(0);
         return found && this.bytesEnd() >= this.input.length;
     }
 
-    // tested ok
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegexpMatcher reset() {
         this.lastBeg = -1;
@@ -298,7 +321,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return this;
     }
 
-    // tested ok
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean find() {
         if (this.lastBeg >= -1 && this.lastEnd >= this.lastBeg && this.lastEnd < this.input.length) {
@@ -311,7 +336,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return false;
     }
 
-    // tested ok
+    /**
+     * {@inheritDoc}
+     */
     public boolean find(int start) {
         int bytesStart = toBytesIndex(start);
         if(bytesStart<0 || bytesStart>this.input.length){
@@ -343,6 +370,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegexpMatcher appendReplacement(StringBuffer sb, String replacement) {
         this.appendReplacement(sb, this.group(), replacement);
@@ -445,6 +475,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         lastAppendPosition = this.bytesEnd();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void appendTail(StringBuffer sb) {
         sb.append(subBytesAsString(lastAppendPosition, input.length));

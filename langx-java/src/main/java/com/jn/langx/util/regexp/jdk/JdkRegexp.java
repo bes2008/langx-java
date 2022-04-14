@@ -31,23 +31,43 @@ public class JdkRegexp implements Regexp {
         this.option = Option.buildOption(flags);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Option getOption() {
         return option;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getPattern() {
         return this.pattern.pattern();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegexpMatcher matcher(CharSequence input) {
         return new JdkMatcher(this.pattern.matcher(input));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String[] split(CharSequence input) {
-        return this.pattern.split(input);
+        return this.split(input, 0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String[] split(CharSequence input, int limit) {
+        return this.pattern.split(input, limit);
     }
 }

@@ -1,6 +1,8 @@
 package com.jn.langx.regexp.joni;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
 import com.jn.langx.exception.ParseException;
@@ -54,20 +56,20 @@ public class JoniRegexp implements Regexp {
         this(pattern, Option.fromJavaScriptFlags(flags));
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public String getPattern() {
         return this.pattern;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     public RegexpMatcher matcher(CharSequence input) {
         Preconditions.checkNotNull(regex);
         return new JoniRegexpMatcher(this.regex, input);
     }
 
-    @Override
-    public String[] split(CharSequence text) {
-        return new String[0];
-    }
 
     @Override
     public com.jn.langx.util.regexp.Option getOption() {
@@ -92,4 +94,57 @@ public class JoniRegexp implements Regexp {
         throw new ParseException(StringTemplates.formatWithPlaceholder("joni regexp parse error: key: {}, error: {}", key, str));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String[] split(CharSequence text) {
+        return split(text, 0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String[] split(CharSequence input, int limit) {
+        int index = 0;
+        boolean matchLimited = limit > 0;
+        List<String> matchList = new ArrayList<String>();
+        RegexpMatcher m = matcher(input);
+
+        // Add segments before each match found
+        while (m.find()) {
+            if (!matchLimited || matchList.size() < limit - 1) {
+                if (index == 0 && index == m.start() && m.start() == m.end()) {
+                    // no empty leading substring included for zero-width match
+                    // at the beginning of the input char sequence.
+                    continue;
+                }
+                String match = input.subSequence(index, m.start()).toString();
+                matchList.add(match);
+                index = m.end();
+            } else if (matchList.size() == limit - 1) { // last one
+                String match = input.subSequence(index,
+                        input.length()).toString();
+                matchList.add(match);
+                index = m.end();
+            }
+        }
+
+        // If no match was found, return this
+        if (index == 0)
+            return new String[]{input.toString()};
+
+        // Add remaining segment
+        if (!matchLimited || matchList.size() < limit)
+            matchList.add(input.subSequence(index, input.length()).toString());
+
+        // Construct result
+        int resultSize = matchList.size();
+        if (limit == 0)
+            while (resultSize > 0 && matchList.get(resultSize - 1).equals(""))
+                resultSize--;
+        String[] result = new String[resultSize];
+        return matchList.subList(0, resultSize).toArray(result);
+    }
 }
