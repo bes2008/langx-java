@@ -11,10 +11,21 @@ import java.security.*;
  */
 @Singleton
 public class DefaultAlgorithmParameterSupplier implements AlgorithmParameterSupplier {
-    public static final DefaultAlgorithmParameterSupplier INSTANCE = new DefaultAlgorithmParameterSupplier();
+    private static DefaultAlgorithmParameterSupplier INSTANCE;
 
     private DefaultAlgorithmParameterSupplier() {
 
+    }
+
+    public static DefaultAlgorithmParameterSupplier getInstance() {
+        if (INSTANCE == null) {
+            synchronized (DefaultAlgorithmParameterSupplier.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new DefaultAlgorithmParameterSupplier();
+                }
+            }
+        }
+        return INSTANCE;
     }
 
     @Override

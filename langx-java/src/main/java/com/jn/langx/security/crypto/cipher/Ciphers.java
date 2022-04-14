@@ -241,7 +241,7 @@ public class Ciphers extends Securitys {
         }
         // 基于 Provider 中的
         if (parameterSupplier == null && provider != null) {
-            parameterSupplier = DefaultAlgorithmParameterSupplier.INSTANCE;
+            parameterSupplier = DefaultAlgorithmParameterSupplier.getInstance();
         }
 
         if (parameterSupplier != null) {

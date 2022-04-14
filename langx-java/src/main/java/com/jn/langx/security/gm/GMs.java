@@ -15,13 +15,20 @@ import java.util.ServiceLoader;
 public class GMs extends AbstractInitializable {
     private GenericRegistry<GmService> registry = new GenericRegistry<GmService>(new LinkedHashMap<String, GmService>());
 
-    private static final GMs INSTANCE = new GMs();
+    private static GMs INSTANCE;
 
     private GMs() {
         init();
     }
 
     public static GMs getGMs() {
+        if (INSTANCE == null) {
+            synchronized (GMs.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new GMs();
+                }
+            }
+        }
         return INSTANCE;
     }
 

@@ -75,7 +75,6 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
         return null;
     }
 
-
     @Override
     public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource, int samplingInterval) {
         Logger logger = Loggers.getLogger(getClass());
@@ -98,4 +97,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
         logger.debug("Loaded default ResourceLeakDetector: {}", resourceLeakDetector);
         return resourceLeakDetector;
     }
+
+
+
 }

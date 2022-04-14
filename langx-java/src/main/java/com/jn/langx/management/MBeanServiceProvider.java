@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
 public class MBeanServiceProvider extends AbstractRegistry<Class, MBeanService> {
-    private static final MBeanServiceProvider INSTANCE = new MBeanServiceProvider();
+    private static MBeanServiceProvider INSTANCE;
 
     private MBeanServiceProvider() {
         super(new ConcurrentHashMap<Class, MBeanService>());
@@ -24,6 +24,13 @@ public class MBeanServiceProvider extends AbstractRegistry<Class, MBeanService> 
     }
 
     public static MBeanServiceProvider getInstance() {
+        if (INSTANCE == null) {
+            synchronized (MBeanServiceProvider.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new MBeanServiceProvider();
+                }
+            }
+        }
         return INSTANCE;
     }
 

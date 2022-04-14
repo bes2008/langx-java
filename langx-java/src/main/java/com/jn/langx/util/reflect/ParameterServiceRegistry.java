@@ -18,7 +18,7 @@ import java.util.ServiceLoader;
 
 @Singleton
 public class ParameterServiceRegistry implements Registry<String, ParameterSupplier> {
-    private static final ParameterServiceRegistry INSTANCE = new ParameterServiceRegistry();
+    private static ParameterServiceRegistry INSTANCE;
     private static final MethodParameterSupplier methodParameterSupplier;
     private static final ConstructorParameterSupplier constructorParameterSupplier;
     private static final Map<String, MethodParameterSupplier> methodParameterSupplierRegistry = new HashMap<String, MethodParameterSupplier>();
@@ -56,6 +56,17 @@ public class ParameterServiceRegistry implements Registry<String, ParameterSuppl
 
     }
 
+    public static ParameterServiceRegistry getInstance() {
+        if (INSTANCE == null) {
+            synchronized (ParameterServiceRegistry.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ParameterServiceRegistry();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
     private static void loadMethodParameterSuppliers() {
         ServiceLoader<MethodParameterSupplier> loader = ServiceLoader.load(MethodParameterSupplier.class);
         Collects.forEach(loader, new Consumer<MethodParameterSupplier>() {
@@ -79,10 +90,6 @@ public class ParameterServiceRegistry implements Registry<String, ParameterSuppl
                 }
             }
         });
-    }
-
-    public static ParameterServiceRegistry getInstance() {
-        return INSTANCE;
     }
 
 
@@ -228,10 +235,9 @@ public class ParameterServiceRegistry implements Registry<String, ParameterSuppl
     public void register(ParameterSupplier parameterSupplier) {
         if (parameterSupplier != null) {
             if (parameterSupplier instanceof MethodParameterSupplier) {
-                registerInternal((MethodParameterSupplier)parameterSupplier);
-            }
-            else if(parameterSupplier instanceof ConstructorParameterSupplier){
-                registerInternal((ConstructorParameterSupplier)parameterSupplier);
+                registerInternal((MethodParameterSupplier) parameterSupplier);
+            } else if (parameterSupplier instanceof ConstructorParameterSupplier) {
+                registerInternal((ConstructorParameterSupplier) parameterSupplier);
             }
         }
     }

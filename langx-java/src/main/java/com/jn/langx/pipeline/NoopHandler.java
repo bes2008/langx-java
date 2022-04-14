@@ -5,12 +5,19 @@ import com.jn.langx.annotation.Singleton;
 @Singleton
 public class NoopHandler extends AbstractHandler {
 
-    private static final NoopHandler instance = new NoopHandler();
+    private static NoopHandler instance;
 
     private NoopHandler() {
     }
 
     public static NoopHandler getInstance() {
+        if (instance == null) {
+            synchronized (NoopHandler.class) {
+                if (instance == null) {
+                    instance = new NoopHandler();
+                }
+            }
+        }
         return instance;
     }
 
