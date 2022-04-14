@@ -43,11 +43,19 @@ public class Regexps {
     }
 
     public static Regexp createRegexp(@NonNull String pattern) {
-        return createRegexp(pattern, null);
+        return createRegexp(pattern, (Option) null);
     }
 
     public static Regexp createRegexp(@NonNull Pattern pattern) {
         return createRegexp((String) null, pattern.pattern(), Option.buildOption(pattern.flags()));
+    }
+
+    public static Regexp createRegexp(@NonNull String pattern, String flags) {
+        return createRegexp(pattern, Option.fromJavaScriptFlags(flags));
+    }
+
+    public static Regexp createRegexp(@NonNull String pattern, int flags) {
+        return createRegexp(pattern, Option.buildOption(flags));
     }
 
     public static Regexp createRegexp(@NonNull String pattern, @Nullable Option option) {

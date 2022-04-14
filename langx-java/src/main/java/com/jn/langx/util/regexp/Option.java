@@ -19,9 +19,9 @@ public class Option {
      *
      * <p> Specifying this flag may impose a slight performance penalty.  </p>
      */
-    public static final int REGEXP_FLAG_CASE_INSENSITIVE = Pattern.CASE_INSENSITIVE;
+    public static final int CASE_INSENSITIVE = Pattern.CASE_INSENSITIVE;
 
-    public static final int REGEXP_FLAG_MULTILINE = Pattern.MULTILINE;
+    public static final int MULTILINE = Pattern.MULTILINE;
 
     /**
      * 是否忽略大小写，默认不忽略
@@ -67,10 +67,10 @@ public class Option {
         int flags = 0;
 
         if (option.multiline) {
-            flags |= REGEXP_FLAG_MULTILINE;
+            flags |= MULTILINE;
         }
         if (option.isIgnoreCase()) {
-            flags |= REGEXP_FLAG_CASE_INSENSITIVE;
+            flags |= CASE_INSENSITIVE;
         }
         return flags;
     }
@@ -79,8 +79,8 @@ public class Option {
 
     public static final Option buildOption(int flags) {
         Option option = new Option();
-        option.setMultiline(has(flags, REGEXP_FLAG_MULTILINE));
-        option.setIgnoreCase(has(flags, REGEXP_FLAG_CASE_INSENSITIVE));
+        option.setMultiline(has(flags, MULTILINE));
+        option.setIgnoreCase(has(flags, CASE_INSENSITIVE));
         return option;
     }
 

@@ -1,7 +1,9 @@
 package com.jn.langx.util;
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.math.BigInteger;
-import java.util.regex.Pattern;
 
 /**
  * 进制转换工具
@@ -53,7 +55,7 @@ public class Radixs {
         return b >= 0 && b <= 7;
     }
 
-    private static Pattern OCTAL_STRING_PATTERN = Pattern.compile("^[0-7]+$");
+    private static Regexp OCTAL_STRING_PATTERN = Regexps.createRegexp("^[0-7]+$");
 
     public static boolean isOctal(String str) {
         if (Emptys.isEmpty(str)) {

@@ -4,8 +4,9 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
-
-import java.util.regex.Pattern;
+import com.jn.langx.util.regexp.Option;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 import static com.jn.langx.util.DataUnit.*;
 
@@ -109,7 +110,7 @@ public final class DataSize {
     }
 
 
-    private static final Pattern MEM_SIZE_PATTERN = Pattern.compile("\\s*\\d+(\\.\\d+)?\\s*[gmktp]?b\\s*", Pattern.CASE_INSENSITIVE);
+    private static final Regexp MEM_SIZE_PATTERN = Regexps.createRegexp("\\s*\\d+(\\.\\d+)?\\s*[gmktp]?b\\s*", Option.CASE_INSENSITIVE);
 
 
     public static DataSize parseMemSize(String memSizeString) {

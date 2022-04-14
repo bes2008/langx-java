@@ -16,6 +16,9 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1275,6 +1278,42 @@ public enum ScriptCode {
      * 
      */
     public static List<ScriptCode> findByName(Pattern pattern) {
+        if (pattern == null) {
+            throw new IllegalArgumentException("pattern is null.");
+        }
+
+        return findByName(Regexps.createRegexp(pattern));
+    }
+
+
+    /**
+     * Get a list of {@code ScriptCode} by a name pattern.
+     * <p>
+     * <p>
+     * For example, the list obtained by the code snippet below:
+     * </p>
+     * <p>
+     * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
+     * Pattern pattern = Pattern.compile(<span style="color: darkred;">"Egyptian.*"</span>);
+     * List&lt;ScriptCode&gt; list = ScriptCode.findByName(pattern);</pre>
+     * <p>
+     * <p>
+     * contains 3 {@code ScriptCode}s as listed below.
+     * </p>
+     * <p>
+     * <ol>
+     * <li>{@link #Egyd} : Egyptian demotic
+     * <li>{@link #Egyh} : Egyptian hieratic
+     * <li>{@link #Egyp} : Egyptian hieroglyps
+     * </ol>
+     *
+     * @param pattern Pattern to match names.
+     * @return List of {@code ScriptCode}. If nothing has matched,
+     * an empty list is returned.
+     * @throws IllegalArgumentException {@code pattern} is {@code null}.
+     *
+     */
+    public static List<ScriptCode> findByName(Regexp pattern) {
         if (pattern == null) {
             throw new IllegalArgumentException("pattern is null.");
         }
