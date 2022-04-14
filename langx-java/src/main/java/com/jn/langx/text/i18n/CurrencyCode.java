@@ -16,6 +16,9 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -2692,6 +2695,13 @@ public enum CurrencyCode {
      * 
      */
     public static List<CurrencyCode> findByName(Pattern pattern) {
+        if (pattern == null) {
+            throw new IllegalArgumentException("pattern is null.");
+        }
+        return findByName(Regexps.createRegexp(pattern));
+    }
+
+    public static List<CurrencyCode> findByName(Regexp pattern) {
         if (pattern == null) {
             throw new IllegalArgumentException("pattern is null.");
         }

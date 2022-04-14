@@ -9,6 +9,8 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -16,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * @since 4.5.0
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
 public class PatternDefinitions {
     private static final Logger logger = Loggers.getLogger(PatternDefinitions.class);
 
-    private static final Pattern DEFINITION_NAME_PATTERN = Pattern.compile("^\\w+$");
+    private static final Regexp DEFINITION_NAME_PATTERN = Regexps.createRegexp("^\\w+$");
 
     public static Map<String, PatternDefinition> readDefinitions(InputStream inputStream) {
         try {

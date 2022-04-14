@@ -16,6 +16,9 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -2604,6 +2607,43 @@ public enum LanguageCode {
      * @throws IllegalArgumentException {@code pattern} is {@code null}.
      */
     public static List<LanguageCode> findByName(Pattern pattern) {
+        if (pattern == null) {
+            throw new IllegalArgumentException("pattern is null.");
+        }
+
+        return findByName(Regexps.createRegexp(pattern));
+    }
+
+
+    /**
+     * Get a list of {@code LanguageCode} by a name pattern.
+     * <p>
+     * <p>
+     * For example, the list obtained by the code snippet below:
+     * </p>
+     * <p>
+     * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
+     * Pattern pattern = Pattern.compile(<span style="color: darkred;">".*nese"</span>);
+     * List&lt;LanguageCode&gt; list = LanguageCode.findByName(pattern);</pre>
+     * <p>
+     * <p>
+     * contains 5 {@code LanguageCode}s as listed below.
+     * </p>
+     * <p>
+     * <ol>
+     * <li>{@link #an} : Aragonese
+     * <li>{@link #ja} : Japanese
+     * <li>{@link #jv} : Javanese
+     * <li>{@link #su} : Sundanese
+     * <li>{@link #zh} : Chinese
+     * </ol>
+     *
+     * @param pattern Pattern to match names.
+     * @return List of {@code LanguageCode}. If nothing has matched,
+     * an empty list is returned.
+     * @throws IllegalArgumentException {@code pattern} is {@code null}.
+     */
+    public static List<LanguageCode> findByName(Regexp pattern) {
         if (pattern == null) {
             throw new IllegalArgumentException("pattern is null.");
         }

@@ -16,6 +16,9 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -2139,7 +2142,8 @@ public enum CountryCode {
      * [<a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#ZW">ZW</a>, ZWE, 716,
      * Officially assigned]
      */
-    ZW("Zimbabwe", "ZWE", 716, Assignment.OFFICIALLY_ASSIGNED),;
+    ZW("Zimbabwe", "ZWE", 716, Assignment.OFFICIALLY_ASSIGNED),
+    ;
 
 
     /**
@@ -2816,12 +2820,49 @@ public enum CountryCode {
         if (pattern == null) {
             throw new IllegalArgumentException("pattern is null.");
         }
+        return findByName(Regexps.createRegexp(pattern));
+    }
+
+    /**
+     * Get a list of {@code CountryCode} by a name pattern.
+     * <p>
+     * <p>
+     * For example, the list obtained by the code snippet below:
+     * </p>
+     * <p>
+     * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
+     * Pattern pattern = Pattern.compile(<span style="color: darkred;">".*United.*"</span>);
+     * List&lt;CountryCode&gt; list = CountryCode.findByName(pattern);</pre>
+     * <p>
+     * <p>
+     * contains 6 {@code CountryCode}s as listed below.
+     * </p>
+     * <p>
+     * <ol>
+     * <li>{@link #AE} : United Arab Emirates
+     * <li>{@link #GB} : United Kingdom
+     * <li>{@link #TZ} : Tanzania, United Republic of
+     * <li>{@link #UK} : United Kingdom
+     * <li>{@link #UM} : United States Minor Outlying Islands
+     * <li>{@link #US} : United States
+     * </ol>
+     *
+     * @param regexp Pattern to match names.
+     * @return List of {@code CountryCode}. If nothing has matched,
+     * an empty list is returned.
+     * @throws IllegalArgumentException {@code pattern} is {@code null}.
+     * @since 4.5.1
+     */
+    public static List<CountryCode> findByName(Regexp regexp) {
+        if (regexp == null) {
+            throw new IllegalArgumentException("pattern is null.");
+        }
 
         List<CountryCode> list = new ArrayList<CountryCode>();
 
         for (CountryCode entry : values()) {
             // If the name matches the given pattern.
-            if (pattern.matcher(entry.getName()).matches()) {
+            if (regexp.matcher(entry.getName()).matches()) {
                 list.add(entry);
             }
         }

@@ -42,15 +42,15 @@ public class Regexps {
 
     }
 
-    public static Regexp createRegexp(String pattern) {
+    public static Regexp createRegexp(@NonNull String pattern) {
         return createRegexp(pattern, null);
     }
 
-    public static Regexp createRegexp(Pattern pattern) {
+    public static Regexp createRegexp(@NonNull Pattern pattern) {
         return createRegexp((String) null, pattern.pattern(), Option.buildOption(pattern.flags()));
     }
 
-    public static Regexp createRegexp(String pattern, Option option) {
+    public static Regexp createRegexp(@NonNull String pattern, @Nullable Option option) {
         return createRegexp((String) null, pattern, option);
     }
 
