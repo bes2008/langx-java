@@ -1,6 +1,5 @@
-package com.jn.langx.text.grok;
+package com.jn.langx.text.grok.pattern;
 
-import com.jn.langx.configuration.AbstractConfigurationLoader;
 import com.jn.langx.io.resource.FileResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.collection.Collects;
@@ -11,7 +10,7 @@ import java.util.Map;
 /**
  * @since 4.5.0
  */
-public class PatternDefinitionSingleFileLoader extends AbstractConfigurationLoader<PatternDefinition> {
+public class PatternDefinitionSingleFileLoader implements PatternDefinitionLoader {
     private Resource resource;
     private final Map<String, PatternDefinition> cache = Collects.emptyHashMap(true);
     private long lastModified = 0;

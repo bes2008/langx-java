@@ -5,8 +5,9 @@ import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.FileResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
-import com.jn.langx.text.grok.PatternDefinition;
-import com.jn.langx.text.grok.PatternDefinitions;
+import com.jn.langx.text.grok.pattern.PatternDefinition;
+import com.jn.langx.text.grok.pattern.PatternDefinitionLoader;
+import com.jn.langx.text.grok.pattern.PatternDefinitions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
@@ -23,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LogStashLocalPatternDefinitionsLoader extends AbstractConfigurationLoader<PatternDefinition> {
+public class LogStashLocalPatternDefinitionsLoader extends AbstractConfigurationLoader<PatternDefinition> implements PatternDefinitionLoader {
     private List<Resource> basedirs = Collects.emptyArrayList();
     private EcsCompatibility ecsCompatibility = EcsCompatibility.disabled;
     private Map<File, Long> lastModifiedMap = new HashMap<File, Long>();

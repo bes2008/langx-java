@@ -2,8 +2,9 @@ package com.jn.langx.text.grok;
 
 import com.jn.langx.Converter;
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.grok.pattern.PatternDefinitionRepository;
+import com.jn.langx.text.grok.pattern.PatternDefinitionSource;
 import com.jn.langx.text.placeholder.PlaceholderSubExpressionHandler;
 import com.jn.langx.text.placeholder.PropertyPlaceholderHandler;
 import com.jn.langx.text.placeholder.PropertySourcePlaceholderParser;
@@ -14,7 +15,6 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.converter.IntegerConverter;
 import com.jn.langx.util.regexp.NamedGroupConflictedException;
 import com.jn.langx.util.regexp.Option;
-import com.jn.langx.util.regexp.RegexpEngine;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
 
@@ -28,14 +28,9 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
 
     @NonNull
     private PropertySourcePlaceholderParser patternDefinitionSource;
-    @Nullable
-    private RegexpEngine regexpFactory;
 
-    public void setRegexpFactory(RegexpEngine regexpFactory) {
-        this.regexpFactory = regexpFactory;
-    }
 
-    public void setPatternDefinitionRepository(MultipleLevelPatternDefinitionRepository repository) {
+    public void setPatternDefinitionRepository(PatternDefinitionRepository repository) {
         PatternDefinitionSource source = new PatternDefinitionSource();
         source.setRepository(repository);
         repository.startup();

@@ -1,13 +1,12 @@
-package com.jn.langx.text.grok;
+package com.jn.langx.text.grok.pattern;
 
-import com.jn.langx.configuration.ConfigurationRepository;
 import com.jn.langx.text.PropertySource;
 
 /**
  * @since 4.5.0
  */
 public class PatternDefinitionSource implements PropertySource {
-    private ConfigurationRepository<PatternDefinition,?,?> repository;
+    private PatternDefinitionRepository repository;
 
     @Override
     public void setName(String name) {
@@ -19,11 +18,11 @@ public class PatternDefinitionSource implements PropertySource {
         return this.repository.getName();
     }
 
-    public ConfigurationRepository<PatternDefinition,?,?>  getRepository() {
+    public PatternDefinitionRepository getRepository() {
         return repository;
     }
 
-    public void setRepository(ConfigurationRepository<PatternDefinition,?,?>  repository) {
+    public void setRepository(PatternDefinitionRepository repository) {
         this.repository = repository;
     }
 

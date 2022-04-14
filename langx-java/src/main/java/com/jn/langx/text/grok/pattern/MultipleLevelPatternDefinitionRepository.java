@@ -1,7 +1,7 @@
-package com.jn.langx.text.grok;
+package com.jn.langx.text.grok.pattern;
 
 import com.jn.langx.cache.Cache;
-import com.jn.langx.configuration.*;
+import com.jn.langx.configuration.MultipleLevelConfigurationRepository;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -9,10 +9,10 @@ import java.util.Map;
 /**
  * @since 4.5.0
  */
-public class SimplePatternDefinitionRepository<Loader extends ConfigurationLoader<PatternDefinition>, Writer extends ConfigurationWriter<PatternDefinition>> extends AbstractConfigurationRepository<PatternDefinition, Loader, Writer> implements PatternDefinitionRepository<Loader, Writer> {
+public class MultipleLevelPatternDefinitionRepository extends MultipleLevelConfigurationRepository<PatternDefinition, PatternDefinitionLoader, PatternDefinitionWriter> implements PatternDefinitionRepository {
 
-    public SimplePatternDefinitionRepository() {
-        setName("Grok-Pattern-Definition-Simple-Repository");
+    public MultipleLevelPatternDefinitionRepository() {
+        setName("Grok-Pattern-Definition-MultipleLevel-Repository");
     }
 
     @Override

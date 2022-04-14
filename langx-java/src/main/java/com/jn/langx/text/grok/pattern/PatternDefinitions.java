@@ -1,4 +1,4 @@
-package com.jn.langx.text.grok;
+package com.jn.langx.text.grok.pattern;
 
 
 import com.jn.langx.io.resource.Resource;
