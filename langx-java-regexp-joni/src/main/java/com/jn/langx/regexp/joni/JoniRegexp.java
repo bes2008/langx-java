@@ -59,9 +59,6 @@ public class JoniRegexp implements Regexp {
         return this.pattern;
     }
 
-
-
-
     public RegexpMatcher matcher(CharSequence input) {
         Preconditions.checkNotNull(regex);
         return new JoniRegexpMatcher(this.regex, input);

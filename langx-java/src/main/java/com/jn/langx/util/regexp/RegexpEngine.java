@@ -8,6 +8,12 @@ import com.jn.langx.util.function.Supplier2;
  * A factory to create a regexp
  */
 public interface RegexpEngine extends Named, Supplier2<String, Option, Regexp> {
+    /**
+     * 创建 Regexp实例
+     * @param pattern 正则表达式
+     * @param option 选项
+     * @return 创建的正则表达式
+     */
     @Override
     Regexp get(String pattern, Option option);
 }

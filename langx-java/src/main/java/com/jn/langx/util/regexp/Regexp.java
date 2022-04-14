@@ -5,7 +5,9 @@ package com.jn.langx.util.regexp;
  */
 public interface Regexp {
     /**
-     * @return 获取原始的 pattern 字符串
+     * Returns the pattern that is interpreted by this matcher.
+     *
+     * @return  The pattern for which this matcher was created
      */
     String getPattern();
 

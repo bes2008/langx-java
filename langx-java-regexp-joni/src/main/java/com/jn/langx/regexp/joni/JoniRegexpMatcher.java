@@ -68,7 +68,18 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         });
     }
 
-    private int toTextIndex(int bytesIndex) {
+    private int toBytesIndex(int charIndex){
+        if(charIndex<0){
+            return -1;
+        }
+        if(charIndex==0){
+            return 0;
+        }
+        String substring=new String(this.input, Charsets.UTF_8).substring(0, charIndex);
+        return substring.getBytes(Charsets.UTF_8).length;
+    }
+
+    private int toCharIndex(int bytesIndex) {
         if(bytesIndex<0){
             return -1;
         }
@@ -80,7 +91,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
 
     public int start() {
-        return toTextIndex(bytesStart());
+        return toCharIndex(bytesStart());
     }
 
 
@@ -162,7 +173,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
 
     public int start(int group) {
-        return toTextIndex(bytesStart(group));
+        return toCharIndex(bytesStart(group));
     }
 
     /**
@@ -174,7 +185,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
 
     public int end() {
-        return toTextIndex(bytesEnd());
+        return toCharIndex(bytesEnd());
     }
 
     /**
@@ -190,7 +201,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
 
     public int end(int group) {
-        return toTextIndex(bytesEnd(group));
+        return toCharIndex(bytesEnd(group));
     }
 
     /**
@@ -203,7 +214,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     @Override
     public int start(String groupName) {
-        return toTextIndex(bytesStart(groupName));
+        return toCharIndex(bytesStart(groupName));
     }
 
     /**
@@ -215,7 +226,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     @Override
     public int end(String groupName) {
-        return toTextIndex(bytesEnd(groupName));
+        return toCharIndex(bytesEnd(groupName));
     }
 
     /**
@@ -283,6 +294,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     public RegexpMatcher reset() {
         this.lastBeg = -1;
         this.lastEnd = 0;
+        this.lastAppendPosition = 0;
         return this;
     }
 
@@ -301,6 +313,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     // tested ok
     public boolean find(int start) {
+        int bytesStart = toBytesIndex(start);
+        if(bytesStart<0 || bytesStart>this.input.length){
+            throw new IndexOutOfBoundsException("Illegal start index");
+        }
         return search(start);
     }
 
@@ -308,7 +324,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     /**
      * 基于指定位置开始搜索
      *
-     * @param start 开始位置
+     * @param start 开始位置, bytesIndex
      * @return 返回是否找到
      */
     private boolean search(int start) {
