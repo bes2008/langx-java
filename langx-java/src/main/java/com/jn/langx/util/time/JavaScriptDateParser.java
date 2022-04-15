@@ -1,11 +1,11 @@
-package com.jn.langx.util.timing.date;
+package com.jn.langx.util.time;
 import java.util.HashMap;
 import java.util.Locale;
 
 /**
  * JavaScript Date parse
  */
-public class DateParser {
+class JavaScriptDateParser {
     public static final int YEAR = 0;
     public static final int MONTH = 1;
     public static final int DAY = 2;
@@ -18,16 +18,16 @@ public class DateParser {
     private final int length;
     private final Integer[] fields;
     private int pos = 0;
-    private DateParser.Token token;
+    private JavaScriptDateParser.Token token;
     private int tokenLength;
-    private DateParser.Name nameValue;
+    private JavaScriptDateParser.Name nameValue;
     private int numValue;
     private int currentField = 0;
     private int yearSign = 0;
     private boolean namedMonth = false;
-    private static final HashMap<String, DateParser.Name> names = new HashMap();
+    private static final HashMap<String, JavaScriptDateParser.Name> names = new HashMap();
 
-    public DateParser(String string) {
+    public JavaScriptDateParser(String string) {
         this.string = string;
         this.length = string.length();
         this.fields = new Integer[8];
@@ -42,7 +42,7 @@ public class DateParser {
             this.token = this.next();
         }
 
-        for(; this.token != DateParser.Token.END; this.token = this.next()) {
+        for(; this.token != JavaScriptDateParser.Token.END; this.token = this.next()) {
             switch(this.token) {
                 case NUMBER:
                     if (this.currentField == 0 && this.yearSign != 0) {
@@ -111,7 +111,7 @@ public class DateParser {
             }
 
             label91:
-            for(; this.token != DateParser.Token.END; this.token = this.next()) {
+            for(; this.token != JavaScriptDateParser.Token.END; this.token = this.next()) {
                 switch(this.token) {
                     case NUMBER:
                         if (!this.skipDelimiter(':')) {
@@ -128,7 +128,7 @@ public class DateParser {
 
                             while(true) {
                                 this.token = this.next();
-                                if (this.token != DateParser.Token.NUMBER || !this.setTimeField(this.numValue)) {
+                                if (this.token != JavaScriptDateParser.Token.NUMBER || !this.setTimeField(this.numValue)) {
                                     return false;
                                 }
 
@@ -232,43 +232,43 @@ public class DateParser {
         }
     }
 
-    private DateParser.Token next() {
+    private JavaScriptDateParser.Token next() {
         if (this.pos >= this.length) {
             this.tokenLength = 0;
-            return DateParser.Token.END;
+            return JavaScriptDateParser.Token.END;
         } else {
             char c = this.string.charAt(this.pos);
             if (c > 128) {
                 this.tokenLength = 1;
                 ++this.pos;
-                return DateParser.Token.UNKNOWN;
+                return JavaScriptDateParser.Token.UNKNOWN;
             } else {
                 int type = Character.getType(c);
                 switch(type) {
                     case 1:
                     case 2:
                         this.nameValue = this.readName();
-                        return DateParser.Token.NAME;
+                        return JavaScriptDateParser.Token.NAME;
                     case 9:
                         this.numValue = this.readNumber(6);
-                        return DateParser.Token.NUMBER;
+                        return JavaScriptDateParser.Token.NUMBER;
                     case 12:
                     case 24:
                         this.tokenLength = 1;
                         ++this.pos;
-                        return DateParser.Token.SEPARATOR;
+                        return JavaScriptDateParser.Token.SEPARATOR;
                     default:
                         this.tokenLength = 1;
                         ++this.pos;
                         switch(c) {
                             case '(':
-                                return DateParser.Token.PARENTHESIS;
+                                return JavaScriptDateParser.Token.PARENTHESIS;
                             case '+':
                             case '-':
                                 this.numValue = c == '-' ? -1 : 1;
-                                return DateParser.Token.SIGN;
+                                return JavaScriptDateParser.Token.SIGN;
                             default:
-                                return DateParser.Token.UNKNOWN;
+                                return JavaScriptDateParser.Token.UNKNOWN;
                         }
                 }
             }
@@ -350,7 +350,7 @@ public class DateParser {
         return n;
     }
 
-    private DateParser.Name readName() {
+    private JavaScriptDateParser.Name readName() {
         int start = this.pos;
 
         for(int limit = Math.min(this.pos + 3, this.length); this.pos < limit && isAsciiLetter(this.string.charAt(this.pos)); ++this.pos) {
@@ -358,8 +358,8 @@ public class DateParser {
 
         String key = this.string.substring(start, this.pos).toLowerCase(Locale.ENGLISH);
 
-        DateParser.Name name;
-        for(name = (DateParser.Name)names.get(key); this.pos < this.length && isAsciiLetter(this.string.charAt(this.pos)); ++this.pos) {
+        JavaScriptDateParser.Name name;
+        for(name = (JavaScriptDateParser.Name)names.get(key); this.pos < this.length && isAsciiLetter(this.string.charAt(this.pos)); ++this.pos) {
         }
 
         this.tokenLength = this.pos - start;
@@ -523,7 +523,7 @@ public class DateParser {
     }
 
     private static void addName(String str, int type, int value) {
-        DateParser.Name name = new DateParser.Name(str, type, value);
+        JavaScriptDateParser.Name name = new JavaScriptDateParser.Name(str, type, value);
         names.put(name.key, name);
     }
 
