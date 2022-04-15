@@ -1,20 +1,29 @@
 package com.jn.langx.regexp.joni;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.PatternSyntaxException;
-
 import com.jn.langx.exception.ParseException;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.NonAbsentHashMap;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Consumer2;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.struct.Holder;
 import org.jcodings.specific.UTF8Encoding;
-import org.joni.*;
+import org.joni.NameEntry;
+import org.joni.Regex;
+import org.joni.Syntax;
 import org.joni.exception.JOniException;
+
+import java.util.*;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * @since 4.5.0
@@ -22,9 +31,9 @@ import org.joni.exception.JOniException;
 public class JoniRegexp implements Regexp {
     private final String pattern;
     private Option option;
+    Regex regex;
 
-
-    private Regex regex;
+    private Holder<Map<String, NameEntry>> namedGroupMapHolder = null;
 
     public JoniRegexp(String pattern) {
         this(pattern, Option.DEFAULT);
@@ -62,12 +71,13 @@ public class JoniRegexp implements Regexp {
     public String getPattern() {
         return this.pattern;
     }
+
     /**
      * {@inheritDoc}
      */
     public RegexpMatcher matcher(CharSequence input) {
         Preconditions.checkNotNull(regex);
-        return new JoniRegexpMatcher(this.regex, input);
+        return new JoniRegexpMatcher(this, input);
     }
 
 
@@ -151,5 +161,26 @@ public class JoniRegexp implements Regexp {
     @Override
     public String toString() {
         return getPattern();
+    }
+
+    Map<String,NameEntry> getNamedGroupMap() {
+        if (namedGroupMapHolder == null) {
+            final Map<String, NameEntry> map = new LinkedHashMap<String, NameEntry>();
+            Iterator<NameEntry> iter = regex.namedBackrefIterator();
+            Collects.forEach(iter, new Consumer2<Integer, NameEntry>() {
+                @Override
+                public void accept(Integer key, NameEntry entry) {
+                    String name = new String(entry.name, entry.nameP, entry.nameEnd - entry.nameP, Charsets.UTF_8);
+                    map.put(name, entry);
+                }
+            });
+            this.namedGroupMapHolder = new Holder<Map<String, NameEntry>>(map);
+        }
+        return this.namedGroupMapHolder.get();
+    }
+
+    @Override
+    public List<String> getNamedGroups() {
+        return Collects.newArrayList(getNamedGroupMap().keySet());
     }
 }

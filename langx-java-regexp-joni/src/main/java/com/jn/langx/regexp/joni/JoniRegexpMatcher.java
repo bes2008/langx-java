@@ -1,18 +1,14 @@
 package com.jn.langx.regexp.joni;
 
 import com.jn.langx.util.Chars;
-import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collection.NonAbsentHashMap;
-import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.RegexpMatcher;
-import com.jn.langx.util.struct.Holder;
-import org.joni.*;
+import org.joni.Matcher;
+import org.joni.NameEntry;
+import org.joni.Option;
+import org.joni.Region;
 
-import java.util.Map;
 
 /**
  * @since 4.5.0
@@ -25,9 +21,8 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
 
     final Matcher matcher;
-    private Regex regex;
+    private JoniRegexp regexp;
 
-    private Map<String, Holder<NameEntry>> namedGroupMap;
 
     /**
      * 最后一次匹配到时的索引
@@ -44,46 +39,29 @@ final class JoniRegexpMatcher implements RegexpMatcher {
      */
     int lastAppendPosition = 0;
 
-    JoniRegexpMatcher(Regex regex, CharSequence input) {
-        this.regex = regex;
+    JoniRegexpMatcher(JoniRegexp regexp, CharSequence input) {
+        this.regexp = regexp;
         this.input = input.toString().getBytes(Charsets.UTF_8);
-        this.matcher = regex.matcher(this.input);
-        init();
+        this.matcher = regexp.regex.matcher(this.input);
     }
 
-    private void init() {
-        namedGroupMap = new NonAbsentHashMap<String, Holder<NameEntry>>(new Supplier<String, Holder<NameEntry>>() {
-            @Override
-            public Holder<NameEntry> get(final String groupName) {
-                NameEntry nameEntry = Pipeline.<NameEntry>of(regex.namedBackrefIterator())
-                        .findFirst(new Predicate<NameEntry>() {
-                            @Override
-                            public boolean test(NameEntry entry) {
-                                String name = new String(entry.name, entry.nameP, entry.nameEnd - entry.nameP, Charsets.UTF_8);
-                                return Objs.equals(name, groupName);
-                            }
-                        });
-                return new Holder<NameEntry>(nameEntry);
-            }
-        });
-    }
 
-    private int toBytesIndex(int charIndex){
-        if(charIndex<0){
+    private int toBytesIndex(int charIndex) {
+        if (charIndex < 0) {
             return -1;
         }
-        if(charIndex==0){
+        if (charIndex == 0) {
             return 0;
         }
-        String substring=new String(this.input, Charsets.UTF_8).substring(0, charIndex);
+        String substring = new String(this.input, Charsets.UTF_8).substring(0, charIndex);
         return substring.getBytes(Charsets.UTF_8).length;
     }
 
     private int toCharIndex(int bytesIndex) {
-        if(bytesIndex<0){
+        if (bytesIndex < 0) {
             return -1;
         }
-        if(bytesIndex==0){
+        if (bytesIndex == 0) {
             return 0;
         }
         return new String(input, 0, bytesIndex).length();
@@ -282,14 +260,12 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     }
 
     private boolean hasGroup(String groupName) {
-        Holder<NameEntry> nameEntryHolder = this.namedGroupMap.get(groupName);
-        NameEntry nameEntry = nameEntryHolder.get();
+        NameEntry nameEntry = this.regexp.getNamedGroupMap().get(groupName);
         return nameEntry != null;
     }
 
     private int getGroupIndex(final String groupName) {
-        Holder<NameEntry> nameEntryHolder = this.namedGroupMap.get(groupName);
-        NameEntry nameEntry = nameEntryHolder.get();
+        NameEntry nameEntry = this.regexp.getNamedGroupMap().get(groupName);
         if (nameEntry == null) {
             return -1;
         }
@@ -341,7 +317,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
      */
     public boolean find(int start) {
         int bytesStart = toBytesIndex(start);
-        if(bytesStart<0 || bytesStart>this.input.length){
+        if (bytesStart < 0 || bytesStart > this.input.length) {
             throw new IndexOutOfBoundsException("Illegal start index");
         }
         return search(start);

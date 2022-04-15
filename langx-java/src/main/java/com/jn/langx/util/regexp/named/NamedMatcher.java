@@ -283,7 +283,7 @@ class NamedMatcher implements RegexpMatcher {
      */
     public List<Map<String, String>> namedGroups() {
         List<Map<String, String>> result = new ArrayList<Map<String, String>>();
-        List<String> groupNames = parentPattern.groupNames();
+        List<String> groupNames = parentPattern.getNamedGroups();
 
         if (groupNames.isEmpty()) {
             return result;

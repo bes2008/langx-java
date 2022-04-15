@@ -9,12 +9,14 @@ import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.jdk.JdkRegexp;
+import com.jn.langx.util.regexp.named.NamedRegexp;
 import org.jcodings.specific.UTF8Encoding;
 import org.joni.*;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class JoniRegexpTests {
@@ -222,5 +224,16 @@ public class JoniRegexpTests {
         System.out.println(StringTemplates.formatWithPlaceholder("a {}, b: {}, e: {}", 123, 234,545));
     }
 
+    @Test
+    public void test10(){
+        String pattern = "(?:(?<year>\\d{4})\\-(?<month>\\d{2})-(?<dayOfMonth>\\d{2}))";
+        List<String> names = null;
+        names = new NamedRegexp(pattern).getNamedGroups();
+        System.out.println(names);
+        names = new JdkRegexp(pattern).getNamedGroups();
+        System.out.println(names);
+        names = new JoniRegexp(pattern).getNamedGroups();
+        System.out.println(names);
+    }
 
 }

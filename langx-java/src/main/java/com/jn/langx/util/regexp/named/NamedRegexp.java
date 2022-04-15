@@ -185,7 +185,7 @@ public class NamedRegexp implements Regexp, Serializable {
      *
      * @return the list of names
      */
-    List<String> groupNames() {
+    public List<String> getNamedGroups() {
         if (groupNames == null) {
             groupNames = new ArrayList<String>(groupInfo.keySet());
         }

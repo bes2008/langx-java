@@ -1,5 +1,7 @@
 package com.jn.langx.util.regexp;
 
+import java.util.List;
+
 /**
  * @since 4.5.0
  */
@@ -118,5 +120,11 @@ public interface Regexp {
      * @return 正则表达式的option
      */
     Option getOption();
+
+
+    /**
+     * @return 获取所有 named group's name
+     */
+    List<String> getNamedGroups();
 
 }
