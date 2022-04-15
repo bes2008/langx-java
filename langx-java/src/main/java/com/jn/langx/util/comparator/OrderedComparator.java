@@ -13,15 +13,16 @@ import java.util.Comparator;
  */
 public class OrderedComparator<T> implements Comparator<T> {
     @Nullable
-    private Supplier<T,Integer> defaultOrderSupplier;
+    private Supplier<T, Integer> defaultOrderSupplier;
 
-    public OrderedComparator(){
+    public OrderedComparator() {
 
     }
 
-    public OrderedComparator(Supplier<T,Integer> defaultOrderSupplier){
+    public OrderedComparator(Supplier<T, Integer> defaultOrderSupplier) {
         this.defaultOrderSupplier = defaultOrderSupplier;
     }
+
     public Supplier<T, Integer> getDefaultOrderSupplier() {
         return defaultOrderSupplier;
     }
@@ -32,11 +33,12 @@ public class OrderedComparator<T> implements Comparator<T> {
 
     @Override
     public int compare(T o1, T o2) {
-        if(o1==o2){
+        if (o1 == o2) {
             return 0;
         }
-        int order1 = Orders.getOrder(o1);
-        int order2 = Orders.getOrder(o2);
+        Supplier defaultOrderSupplier = this.defaultOrderSupplier;
+        int order1 = Orders.getOrder(o1, defaultOrderSupplier);
+        int order2 = Orders.getOrder(o2, defaultOrderSupplier);
         // 优先级 高 -> 低，对应的值是：从小到大， 也就是需要的是升序排序
         return order1 - order2;
     }

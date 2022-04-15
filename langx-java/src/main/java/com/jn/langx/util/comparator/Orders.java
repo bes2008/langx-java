@@ -6,9 +6,17 @@ import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.Reflects;
 
 public class Orders {
+    public static final Supplier<Object, Integer> DEFAULT_ORDER_SUPPLIER = new Supplier<Object, Integer>() {
+        @Override
+        public Integer get(Object input) {
+            return Ordered.LOWEST_PRECEDENCE;
+        }
+    };
+
     public static int getOrder(Object o) {
-        return getOrder(o, Ordered.LOWEST_PRECEDENCE);
+        return getOrder(o, DEFAULT_ORDER_SUPPLIER);
     }
+
     public static int getOrder(Object o, final int defaultValue) {
         return getOrder(o, new Supplier<Object, Integer>() {
             @Override
@@ -17,7 +25,8 @@ public class Orders {
             }
         });
     }
-    public static int getOrder(Object o, Supplier<Object,Integer> defaultOrderSupplier) {
+
+    public static int getOrder(Object o, Supplier<Object, Integer> defaultOrderSupplier) {
         if (o != null) {
             if (o instanceof Integer) {
                 return (Integer) o;
@@ -29,6 +38,9 @@ public class Orders {
             if (order != null) {
                 return order.value();
             }
+        }
+        if (defaultOrderSupplier == null) {
+            defaultOrderSupplier = DEFAULT_ORDER_SUPPLIER;
         }
         return defaultOrderSupplier.get(o);
     }
