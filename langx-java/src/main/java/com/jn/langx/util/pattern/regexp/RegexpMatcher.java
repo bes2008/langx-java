@@ -9,50 +9,50 @@ import com.jn.langx.util.regexp.Regexps;
 
 public class RegexpMatcher extends AbstractPatternMatcher {
 
-    private String regexp;
-    private Regexp pattern;
+    private String pattern;
+    private Regexp regexp;
 
     public RegexpMatcher() {
     }
 
-    public RegexpMatcher(String regexp) {
-        this(regexp, false);
+    public RegexpMatcher(String pattern) {
+        this(pattern, false);
     }
 
-    public RegexpMatcher(String regexp, boolean ignoreCase) {
-        this(regexp, ignoreCase, true);
+    public RegexpMatcher(String pattern, boolean ignoreCase) {
+        this(pattern, ignoreCase, true);
     }
 
-    public RegexpMatcher(String regexp, boolean ignoreCase, boolean trimPattern) {
-        setPatternExpression(regexp);
+    public RegexpMatcher(String pattern, boolean ignoreCase, boolean trimPattern) {
+        setPatternExpression(pattern);
         setIgnoreCase(ignoreCase);
         setTrimPattern(trimPattern);
     }
 
     @Override
     public void setPatternExpression(String patternExpression) {
-        this.regexp = patternExpression;
+        this.pattern = patternExpression;
     }
 
     @Override
     public boolean match(String string) {
         Preconditions.checkNotEmpty(string, "the string is null or empty");
-        Preconditions.checkNotEmpty(regexp, "the regexp is null or empty");
+        Preconditions.checkNotEmpty(pattern, "the regexp is null or empty");
 
-        if (pattern == null) {
+        if (regexp == null) {
             if (trimPattern) {
-                regexp = Strings.trim(regexp);
-                if (Strings.isEmpty(regexp)) {
+                pattern = Strings.trim(pattern);
+                if (Strings.isEmpty(pattern)) {
                     throw new IllegalArgumentException("illegal regexp pattern");
                 }
             }
 
-            pattern = Regexps.createRegexp(regexp, this.option);
+            regexp = Regexps.createRegexp(pattern, this.option);
         }
 
         if (trimPattern) {
             string = Strings.trim(string);
         }
-        return pattern.matcher(string).matches();
+        return regexp.matcher(string).matches();
     }
 }
