@@ -1,9 +1,14 @@
 package com.jn.langx.util.time;
 
-import java.util.TimeZone;
 
-public interface DateTimeFormatter {
-    TimeZone getTimeZone();
+import java.util.List;
 
-    void setTimeZone();
+public interface DateTimeFormatter<DATE_TIME> {
+    String getFormat();
+
+    void setFormat(String pattern);
+
+    String format(DATE_TIME dateTime);
+
+    List<Class> supported();
 }

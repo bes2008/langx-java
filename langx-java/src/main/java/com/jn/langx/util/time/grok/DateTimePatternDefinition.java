@@ -1,13 +1,12 @@
 package com.jn.langx.util.time.grok;
 
-import com.jn.langx.text.grok.pattern.AnonymousPatternDefinition;
+import com.jn.langx.text.grok.pattern.PatternDefinition;
 
-
-public class DateTimePatternDefinition extends AnonymousPatternDefinition {
+public class DateTimePatternDefinition extends PatternDefinition {
     private String format;
 
     public DateTimePatternDefinition(String expression, String format) {
-        super(expression);
+        super(format, expression);
         setFormat(format);
     }
 

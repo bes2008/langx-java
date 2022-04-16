@@ -105,7 +105,6 @@ public class DateTimePatterns {
     private static final PatternDefinition PD_DATE = new PatternDefinition("YYYY_MM_DD2", "%{YEAR:year}/%{MONTH:month}/%{DAY_OF_MONTH:dayOfMonth}");
     private static final PatternDefinition PD_WEEK_MONTH_DAY = new PatternDefinition("WEEK_MONTH_DAY", "%{WEEK:week} %{MONTH:month} %{DAY_OF_MONTH:dayOfMonth}");
 
-    private static final PatternDefinition PD_DATE_TIME = new PatternDefinition();
-
+    private static final DateTimePatternDefinition PD_DATE_TIME = new DateTimePatternDefinition("yyy","");
 
 }
