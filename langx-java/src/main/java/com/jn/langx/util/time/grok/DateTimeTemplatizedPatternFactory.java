@@ -1,4 +1,4 @@
-package com.jn.langx.util.time;
+package com.jn.langx.util.time.grok;
 
 import com.jn.langx.text.grok.TemplatizedPattern;
 import com.jn.langx.text.grok.TemplatizedPatternFactory;
