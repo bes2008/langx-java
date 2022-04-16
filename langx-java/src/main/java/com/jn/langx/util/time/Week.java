@@ -27,6 +27,10 @@ public enum Week implements CommonEnum {
         return this.code;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
     @Override
     public String getDisplayText() {
         return this.fullname;
