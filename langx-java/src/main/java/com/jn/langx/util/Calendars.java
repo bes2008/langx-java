@@ -2,27 +2,17 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.enums.base.CommonEnum;
-import com.jn.langx.util.enums.base.EnumDelegate;
+import com.jn.langx.util.time.DateField;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import static com.jn.langx.util.time.DateField.*;
+
 public class Calendars {
     private Calendars(){}
     private static int[] arr = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    private static String[] week_cn = {"日", "一", "二", "三", "四", "五", "六"};
-    private static int[] DAY_OF_WEEK = {
-            Calendar.SUNDAY,
-            Calendar.MONDAY,
-            Calendar.TUESDAY,
-            Calendar.WEDNESDAY,
-            Calendar.THURSDAY,
-            Calendar.FRIDAY,
-            Calendar.SATURDAY
-    };
-
 
     /**
      * 求每个月的第一天是星期几
@@ -170,54 +160,6 @@ public class Calendars {
         calendar.getTimeInMillis(); // just make sure recompute
     }
 
-    public static enum DateField implements CommonEnum {
-        ERA(Calendar.ERA, "era", "世纪"),
-        YEAR(Calendar.YEAR, "year", "年"),
-        MONTH(Calendar.MONTH, "month", "月"),
-        WEEK_OF_YEAR(Calendar.WEEK_OF_YEAR, "week_of_year", "周"),
-        WEEK_OF_MONTH(Calendar.WEEK_OF_MONTH, "week_of_month", "周"),
-        DAY(Calendar.DAY_OF_MONTH, "day","日"),
-        DAY_OF_YEAR(Calendar.DAY_OF_YEAR,"day_of_year", "天"),
-        DAY_OF_WEEK(Calendar.DAY_OF_WEEK,"day_of_week", "星期"),
-        HOUR(Calendar.HOUR_OF_DAY, "hour", "时"),
-        MINUTE(Calendar.MINUTE, "minute","分"),
-        SECOND(Calendar.SECOND,"second","秒"),
-        MILLIS(Calendar.MILLISECOND,"millisecond","毫秒");
-
-        private EnumDelegate enumDelegate;
-
-        DateField(int code, String name, String displayText) {
-            this.enumDelegate = new EnumDelegate(code, name, displayText);
-        }
-
-        public int getField() {
-            return getCode();
-        }
-
-        @Override
-        public int getCode() {
-            return this.enumDelegate.getCode();
-        }
-
-        @Override
-        public String getName() {
-            return  this.enumDelegate.getName();
-        }
-
-        @Override
-        public String getDisplayText() {
-            return this.enumDelegate.getDisplayText();
-        }
-    }
-
-    public static final DateField ERA = DateField.ERA;
-    public static final DateField YEAR = DateField.YEAR;
-    public static final DateField MONTH = DateField.MONTH;
-    public static final DateField DAY = DateField.DAY;
-    public static final DateField HOUR = DateField.HOUR;
-    public static final DateField MINUTE = DateField.MINUTE;
-    public static final DateField SECOND = DateField.SECOND;
-    public static final DateField MILLIS = DateField.MILLIS;
 
     public static enum RecentIntervalType {
         NATURE_INTERVAL,

@@ -8,10 +8,13 @@ import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Holder;
+import com.jn.langx.util.time.DateField;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.jn.langx.util.time.DateField.*;
 
 /**
  * https://www.iso.org/obp/ui#iso:std:iso:8601:-1:ed-1:v1:en
@@ -155,7 +158,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addYears(final Date date, final int amount) {
-        return add(date, Calendars.YEAR, amount);
+        return add(date, YEAR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -170,7 +173,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addMonths(final Date date, final int amount) {
-        return add(date, Calendars.MONTH, amount);
+        return add(date, MONTH, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -200,7 +203,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addDays(final Date date, final int amount) {
-        return add(date, Calendars.DAY, amount);
+        return add(date, DAY, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -215,7 +218,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addHours(final Date date, final int amount) {
-        return add(date, Calendars.HOUR, amount);
+        return add(date, HOUR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -230,7 +233,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addMinutes(final Date date, final int amount) {
-        return add(date, Calendars.MINUTE, amount);
+        return add(date, MINUTE, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -245,7 +248,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addSeconds(final Date date, final int amount) {
-        return add(date, Calendars.SECOND, amount);
+        return add(date, SECOND, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -260,7 +263,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date addMilliseconds(final Date date, final int amount) {
-        return add(date, Calendars.MILLIS, amount);
+        return add(date, MILLIS, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -283,7 +286,7 @@ public class Dates {
         return c.getTime();
     }
 
-    public static Date add(final Date date, final Calendars.DateField calendarField, final int amount) {
+    public static Date add(final Date date, final DateField calendarField, final int amount) {
         Preconditions.checkNotNull(date);
         final Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -303,7 +306,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setYears(final Date date, final int amount) {
-        return set(date, Calendars.YEAR, amount);
+        return set(date, YEAR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -322,7 +325,7 @@ public class Dates {
     }
 
     public static Date setMonths(final Date date, final int amount, boolean valueIsActual) {
-        return set(date, Calendars.MONTH, valueIsActual ? (amount - 1) : amount);
+        return set(date, MONTH, valueIsActual ? (amount - 1) : amount);
     }
 
     //-----------------------------------------------------------------------
@@ -337,7 +340,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setDays(final Date date, final int amount) {
-        return set(date, Calendars.DAY, amount);
+        return set(date, DAY, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -353,7 +356,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setHours(final Date date, final int amount) {
-        return set(date, Calendars.HOUR, amount);
+        return set(date, HOUR, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -368,7 +371,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMinutes(final Date date, final int amount) {
-        return set(date, Calendars.MINUTE, amount);
+        return set(date, MINUTE, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -383,7 +386,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setSeconds(final Date date, final int amount) {
-        return set(date, Calendars.SECOND, amount);
+        return set(date, SECOND, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -398,7 +401,7 @@ public class Dates {
      * @throws IllegalArgumentException if the date is null
      */
     public static Date setMilliseconds(final Date date, final int amount) {
-        return set(date, Calendars.DateField.MILLIS, amount);
+        return set(date, DateField.MILLIS, amount);
     }
 
     //-----------------------------------------------------------------------
@@ -409,12 +412,12 @@ public class Dates {
      * The original {@code Date} is unchanged.
      *
      * @param date   the date, not null
-     * @param field  the {@code Calendars.DateField} field to set the amount to
+     * @param field  the {@code DateField} field to set the amount to
      * @param amount the amount to set
      * @return a new {@code Date} set with the specified value
      * @throws IllegalArgumentException if the date is null
      */
-    public static Date set(final Date date, final Calendars.DateField field, final int amount) {
+    public static Date set(final Date date, final DateField field, final int amount) {
         Preconditions.checkNotNull(date);
         // getInstance() returns a new object, so this method is thread safe.
         final Calendar c = Calendar.getInstance();
@@ -424,7 +427,7 @@ public class Dates {
         return c.getTime();
     }
 
-    public static int get(@NonNull Date date, final Calendars.DateField field) {
+    public static int get(@NonNull Date date, final DateField field) {
         return Calendars.getField(toCalendar(date), field);
     }
 

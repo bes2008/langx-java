@@ -10,6 +10,8 @@ import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.jn.langx.util.time.DateField.*;
+
 /**
  * 标准时间：GMT时间，也叫格林威治平时，也叫 UTC时间。
  * Java 6 ：
@@ -108,10 +110,10 @@ public class CalendersTests {
         Calendar calendar = Calendar.getInstance();
         showCalendar(calendar);
         System.out.println("======================");
-        Calendars.addField(calendar, Calendars.MONTH, 1);
+        Calendars.addField(calendar, MONTH, 1);
         showCalendar(calendar);
         System.out.println("======================");
-        Calendars.setField(calendar, Calendars.MONTH, 10);
+        Calendars.setField(calendar, MONTH, 10);
         showCalendar(calendar);
         System.out.println("======================");
         Calendars.setMonths(calendar, 15);
@@ -119,14 +121,14 @@ public class CalendersTests {
     }
 
     private void showCalendar(Calendar calendar) {
-        System.out.println("ERA:   " + calendar.get(Calendars.ERA.getField()));
-        System.out.println("YEAR:  " + calendar.get(Calendars.YEAR.getField()));
-        System.out.println("MONTH: " + calendar.get(Calendars.MONTH.getField()));
-        System.out.println("DAY:   " + calendar.get(Calendars.DAY.getField()));
-        System.out.println("HOUR:  " + calendar.get(Calendars.HOUR.getField()));
-        System.out.println("MINUTE:" + calendar.get(Calendars.MINUTE.getField()));
-        System.out.println("SECOND:" + calendar.get(Calendars.SECOND.getField()));
-        System.out.println("MILLIS:" + calendar.get(Calendars.MILLIS.getField()));
+        System.out.println("ERA:   " + calendar.get(ERA.getField()));
+        System.out.println("YEAR:  " + calendar.get(YEAR.getField()));
+        System.out.println("MONTH: " + calendar.get(MONTH.getField()));
+        System.out.println("DAY:   " + calendar.get(DAY.getField()));
+        System.out.println("HOUR:  " + calendar.get(HOUR.getField()));
+        System.out.println("MINUTE:" + calendar.get(MINUTE.getField()));
+        System.out.println("SECOND:" + calendar.get(SECOND.getField()));
+        System.out.println("MILLIS:" + calendar.get(MILLIS.getField()));
 
         System.out.println(Dates.format(calendar.getTime(), "yyyy-MM-dd HH:mm:ss.SSS"));
     }
