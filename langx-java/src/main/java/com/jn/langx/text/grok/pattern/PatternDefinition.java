@@ -8,7 +8,7 @@ import com.jn.langx.util.hash.HashCodeBuilder;
 /**
  * @since 4.5.0
  */
-public final class PatternDefinition implements Configuration {
+public class PatternDefinition implements Configuration {
     /**
      * 名称
      */

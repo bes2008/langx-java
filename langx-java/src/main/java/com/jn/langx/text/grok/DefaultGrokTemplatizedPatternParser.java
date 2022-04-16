@@ -3,6 +3,8 @@ package com.jn.langx.text.grok;
 import com.jn.langx.Converter;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.grok.pattern.AnonymousPatternDefinition;
+import com.jn.langx.text.grok.pattern.PatternDefinition;
 import com.jn.langx.text.grok.pattern.PatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.PatternDefinitionSource;
 import com.jn.langx.text.placeholder.PlaceholderSubExpressionHandler;
@@ -18,7 +20,8 @@ import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -28,7 +31,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
 
     @NonNull
     private PropertySourcePlaceholderParser patternDefinitionSource;
-
+    private TemplatizedPatternFactory templatizedPatternFactory = new DefaultTemplatizedPatternFactory();
 
     public void setPatternDefinitionRepository(PatternDefinitionRepository repository) {
         PatternDefinitionSource source = new PatternDefinitionSource();
@@ -37,8 +40,17 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
         this.patternDefinitionSource = new PropertySourcePlaceholderParser(source);
     }
 
+    public void setTemplatizedPatternFactory(TemplatizedPatternFactory templatizedPatternFactory) {
+        this.templatizedPatternFactory = templatizedPatternFactory;
+    }
+
+    public final TemplatizedPattern parse(String patternTemplate) {
+        return parse(new AnonymousPatternDefinition(patternTemplate));
+    }
+
     @Override
-    public TemplatizedPattern parse(final String patternTemplate) {
+    public TemplatizedPattern parse(final PatternDefinition definition) {
+        final String patternTemplate = definition.getExpr();
         Preconditions.checkNotNull(patternTemplate, "template");
 
         final Map<String, String> fieldToOriginPatternMap = Collects.emptyHashMap(true);
@@ -103,7 +115,7 @@ public class DefaultGrokTemplatizedPatternParser implements GrokTemplatizedPatte
         handler.setSubExpressionHandler(subExpressionHandler);
         String parsedPattern = handler.replacePlaceholders(patternTemplate, this.patternDefinitionSource);
 
-        TemplatizedPattern pattern = new TemplatizedPattern();
+        TemplatizedPattern pattern = this.templatizedPatternFactory.get(definition);
         pattern.setExpression(patternTemplate);
         Option option = new Option();
         option.setMultiline(false);
