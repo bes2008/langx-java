@@ -70,7 +70,7 @@ public class DateTimePatterns {
                     }
                 });
 
-        WEEK_PATTERN = "(?" + weekRegexpBuilder.toString() + ")";
+        WEEK_PATTERN = "(?:" + weekRegexpBuilder.toString() + ")";
         PD_WEEK = new PatternDefinition("WEEK", WEEK_PATTERN);
     }
 
@@ -96,7 +96,14 @@ public class DateTimePatterns {
     private static final PatternDefinition PD_TIMEZONE = new PatternDefinition("TIMEZONE", "(?:[a-zA-Z_-]+(?:(?:/[a-zA-Z_-]+))|(?:[+-]\\d{2}:?\\d{2}))");
 
     // 上午下午
-    private static final PatternDefinition PD_AMPM = new PatternDefinition("AMPM", "[AP]M");
+    private static final PatternDefinition PD_AMPM = new PatternDefinition("AMPM", "(?:(?:[aApP][mM]?)|(?:[上下]午))");
+
+
+    private static final PatternDefinition PD_TIME = new PatternDefinition("YYYY_MM_DD", "%{YEAR:year}:%{MONTH:month}:%{DAY_OF_MONTH:dayOfMonth}");
+    private static final PatternDefinition PD_DATE = new PatternDefinition("YYYY_MM_DD2", "%{YEAR:year}/%{MONTH:month}/%{DAY_OF_MONTH:dayOfMonth}");
+    private static final PatternDefinition PD_WEEK_MONTH_DAY = new PatternDefinition("WEEK_MONTH_DAY", "%{WEEK:week} %{MONTH:month} %{DAY_OF_MONTH:dayOfMonth}");
+
+    private static final PatternDefinition PD_DATE_TIME = new PatternDefinition();
 
 
 }
