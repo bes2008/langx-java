@@ -1,4 +1,4 @@
-package com.jn.langx.util.time.formatter;
+package com.jn.langx.util.datetime.formatter;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;

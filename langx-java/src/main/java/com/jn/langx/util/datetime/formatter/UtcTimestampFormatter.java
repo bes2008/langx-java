@@ -1,6 +1,6 @@
-package com.jn.langx.util.time.formatter;
+package com.jn.langx.util.datetime.formatter;
 
-import com.jn.langx.util.time.DateTimeFormatter;
+import com.jn.langx.util.datetime.DateTimeFormatter;
 
 import java.util.Locale;
 import java.util.TimeZone;

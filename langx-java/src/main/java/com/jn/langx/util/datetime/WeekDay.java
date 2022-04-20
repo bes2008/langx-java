@@ -1,4 +1,4 @@
-package com.jn.langx.util.time;
+package com.jn.langx.util.datetime;
 
 import com.jn.langx.util.enums.base.CommonEnum;
 

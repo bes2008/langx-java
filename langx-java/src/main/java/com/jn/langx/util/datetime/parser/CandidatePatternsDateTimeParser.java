@@ -1,12 +1,12 @@
-package com.jn.langx.util.time.parser;
+package com.jn.langx.util.datetime.parser;
 
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.struct.Holder;
-import com.jn.langx.util.time.DateTimeParsedResult;
-import com.jn.langx.util.time.DateTimeParser;
+import com.jn.langx.util.datetime.DateTimeParsedResult;
+import com.jn.langx.util.datetime.DateTimeParser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class LoopTestDateTimeParser implements DateTimeParser {
+public class CandidatePatternsDateTimeParser implements DateTimeParser {
     private List<String> patterns;
     private TimeZone timeZone = TimeZone.getDefault();
     private Locale locale = Locale.getDefault();
 
-    public LoopTestDateTimeParser(List<String> patterns) {
+    public CandidatePatternsDateTimeParser(List<String> patterns) {
         this.patterns = patterns;
     }
 

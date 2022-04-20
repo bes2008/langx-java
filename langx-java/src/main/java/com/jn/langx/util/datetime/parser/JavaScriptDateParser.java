@@ -1,4 +1,4 @@
-package com.jn.langx.util.time.parser;
+package com.jn.langx.util.datetime.parser;
 import java.util.HashMap;
 import java.util.Locale;
 

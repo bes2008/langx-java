@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.jn.langx.util.time.DateField.*;
+import static com.jn.langx.util.datetime.DateField.*;
 
 /**
  * 标准时间：GMT时间，也叫格林威治平时，也叫 UTC时间。

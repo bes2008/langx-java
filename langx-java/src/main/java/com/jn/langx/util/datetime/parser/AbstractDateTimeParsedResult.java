@@ -1,6 +1,6 @@
-package com.jn.langx.util.time.parser;
+package com.jn.langx.util.datetime.parser;
 
-import com.jn.langx.util.time.DateTimeParsedResult;
+import com.jn.langx.util.datetime.DateTimeParsedResult;
 
 public abstract class AbstractDateTimeParsedResult implements DateTimeParsedResult {
     private String originText;
