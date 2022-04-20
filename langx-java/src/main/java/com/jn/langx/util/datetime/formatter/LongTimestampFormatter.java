@@ -2,9 +2,7 @@ package com.jn.langx.util.datetime.formatter;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +20,8 @@ public class LongTimestampFormatter extends AbstractUtcTimestampFormatter<Long> 
             d = d * 1000;
         }
         Date date = new Date(d);
-        SimpleDateFormat simpleDateFormat = GlobalThreadLocalMap.getSimpleDateFormat(this.getFormat(), this.getTimeZone(), this.getLocale());
-        return simpleDateFormat.format(date);
+        DateFormatter dateFormatter = new DateFormatter(getPattern(), getTimeZone(), getLocale());
+        return dateFormatter.format(date);
     }
 
     private static final List<Class> SUPPORTED = Collects.<Class>unmodifiableArrayList(long.class, Long.class);

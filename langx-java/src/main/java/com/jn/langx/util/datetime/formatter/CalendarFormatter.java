@@ -1,28 +1,15 @@
 package com.jn.langx.util.datetime.formatter;
 
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.datetime.DateTimeFormatter;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class CalendarFormatter implements DateTimeFormatter<Calendar> {
-    private String pattern;
-    @Override
-    public String getFormat() {
-        return pattern;
-    }
-
-    @Override
-    public void setFormat(String pattern) {
-        this.pattern = pattern;
-    }
+public class CalendarFormatter extends AbstractDateTimeFormatter<Calendar> {
 
     @Override
     public String format(Calendar calendar) {
-        JavaUtilDateFormatter delegate = new JavaUtilDateFormatter();
-        delegate.setFormat(this.getFormat());
-        delegate.setTimeZone(calendar.getTimeZone());
+        DateFormatter delegate = new DateFormatter(this.getPattern(), calendar.getTimeZone(), this.getLocale());
         return delegate.format(calendar.getTime());
     }
 

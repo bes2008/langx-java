@@ -7,12 +7,24 @@ import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
-public class JavaUtilDateFormatter extends AbstractUtcTimestampFormatter<Date> {
+public class DateFormatter extends AbstractUtcTimestampFormatter<Date> {
+    public DateFormatter(){
+
+    }
+
+    public DateFormatter(String pattern, TimeZone timeZone, Locale locale){
+        setPattern(pattern);
+        setLocal(locale);
+        setTimeZone(timeZone);
+    }
+
     @Override
     public String format(Date date) {
         Preconditions.checkNotNullArgument(date, "date");
-        SimpleDateFormat simpleDateFormat = GlobalThreadLocalMap.getSimpleDateFormat(this.getFormat(), this.getTimeZone(), this.getLocale());
+        SimpleDateFormat simpleDateFormat = GlobalThreadLocalMap.getSimpleDateFormat(this.getPattern(), this.getTimeZone(), this.getLocale());
         return simpleDateFormat.format(date);
     }
 
