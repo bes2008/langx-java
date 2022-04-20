@@ -11,7 +11,7 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DateTimePatterns {
+public class DateTimeGrokPatterns {
 
     public static final String MONTH_PATTERN;
     public static final PatternDefinition PD_MONTH;
@@ -105,6 +105,6 @@ public class DateTimePatterns {
     private static final PatternDefinition PD_DATE = new PatternDefinition("YYYY_MM_DD2", "%{YEAR:year}/%{MONTH:month}/%{DAY_OF_MONTH:dayOfMonth}");
     private static final PatternDefinition PD_WEEK_MONTH_DAY = new PatternDefinition("WEEK_MONTH_DAY", "%{WEEK:week} %{MONTH:month} %{DAY_OF_MONTH:dayOfMonth}");
 
-    private static final DateTimePatternDefinition PD_DATE_TIME = new DateTimePatternDefinition("yyy","");
+    private static final DateTimeGrokPatternDefinition PD_DATE_TIME = new DateTimeGrokPatternDefinition("yyy","");
 
 }

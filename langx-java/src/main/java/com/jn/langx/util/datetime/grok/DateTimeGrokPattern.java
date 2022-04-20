@@ -2,10 +2,10 @@ package com.jn.langx.util.datetime.grok;
 
 import com.jn.langx.text.grok.TemplatizedPattern;
 
-public class DateTimePattern extends TemplatizedPattern {
+public class DateTimeGrokPattern extends TemplatizedPattern {
     private String format;
 
-    public DateTimePattern(String format, String grokExp){
+    public DateTimeGrokPattern(String format, String grokExp){
 
     }
 

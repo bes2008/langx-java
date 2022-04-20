@@ -7,9 +7,9 @@ import com.jn.langx.text.grok.pattern.PatternDefinition;
 public class DateTimeTemplatizedPatternFactory implements TemplatizedPatternFactory {
     @Override
     public TemplatizedPattern get(PatternDefinition definition) {
-        if (definition instanceof DateTimePatternDefinition) {
-            DateTimePatternDefinition def = (DateTimePatternDefinition) definition;
-            DateTimePattern templatizedPattern = new DateTimePattern(def.getFormat(), def.getExpr());
+        if (definition instanceof DateTimeGrokPatternDefinition) {
+            DateTimeGrokPatternDefinition def = (DateTimeGrokPatternDefinition) definition;
+            DateTimeGrokPattern templatizedPattern = new DateTimeGrokPattern(def.getFormat(), def.getExpr());
             return templatizedPattern;
         }
         return new TemplatizedPattern();
