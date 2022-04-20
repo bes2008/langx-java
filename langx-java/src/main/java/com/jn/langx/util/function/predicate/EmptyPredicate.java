@@ -7,9 +7,7 @@ public class EmptyPredicate<V> implements Predicate<V> {
     public static final EmptyPredicate IS_EMPTY_PREDICATE = new EmptyPredicate();
     public static final EmptyPredicate IS_NOT_EMPTY_PREDICATE = new EmptyPredicate(false);
 
-    private boolean judgeEmpty = true;
-
-
+    private boolean judgeEmpty;
 
     public EmptyPredicate() {
         this(true);
@@ -21,6 +19,6 @@ public class EmptyPredicate<V> implements Predicate<V> {
 
     @Override
     public boolean test(V value) {
-        return Objs.isEmpty(value) == judgeEmpty;
+        return judgeEmpty ? Objs.isEmpty(value) : Objs.isNotEmpty(value);
     }
 }
