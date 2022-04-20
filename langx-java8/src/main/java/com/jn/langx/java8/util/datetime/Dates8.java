@@ -1,4 +1,4 @@
-package com.jn.langx.java8.util.time;
+package com.jn.langx.java8.util.datetime;
 
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Strings;

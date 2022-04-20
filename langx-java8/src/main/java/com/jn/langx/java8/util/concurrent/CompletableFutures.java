@@ -1,4 +1,4 @@
-package com.jn.langx.java8.concurrent;
+package com.jn.langx.java8.util.concurrent;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;

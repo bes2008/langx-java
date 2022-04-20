@@ -1,6 +1,6 @@
 package com.jn.langx.java8.tests.util.time;
 
-import com.jn.langx.java8.util.time.Dates8;
+import com.jn.langx.java8.util.datetime.Dates8;
 import com.jn.langx.util.Dates;
 import org.junit.Test;
 
