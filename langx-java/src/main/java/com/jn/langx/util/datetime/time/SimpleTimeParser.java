@@ -7,15 +7,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class DefaultTimeParser implements TimeParser {
+public class SimpleTimeParser implements TimeParser {
     private String pattern;
     private Locale locale;
 
-    public DefaultTimeParser(String pattern) {
+    public SimpleTimeParser(String pattern) {
         this(pattern, Locale.getDefault());
     }
 
-    public DefaultTimeParser(String pattern, Locale locale) {
+    public SimpleTimeParser(String pattern, Locale locale) {
         this.pattern = pattern;
         this.locale = locale;
     }

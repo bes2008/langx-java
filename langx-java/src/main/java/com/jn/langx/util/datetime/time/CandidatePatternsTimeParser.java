@@ -1,8 +1,9 @@
 package com.jn.langx.util.datetime.time;
 
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.predicate.EmptyPredicate;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Holder;
 
 import java.util.List;
@@ -24,21 +25,29 @@ public class CandidatePatternsTimeParser implements TimeParser {
 
     @Override
     public TimeParsedResult parse(final String time) {
+        Preconditions.checkNotEmpty(time);
         final Holder<TimeParsedResult> resultHolder = new Holder<TimeParsedResult>();
+
+        final Predicate breakPredicate = new Predicate() {
+            @Override
+            public boolean test(Object value) {
+                return !resultHolder.isNull();
+            }
+        };
         Collects.forEach(patterns, new Consumer<String>() {
             @Override
             public void accept(final String pattern) {
                 Collects.forEach(locales, new Consumer<Locale>() {
                     @Override
                     public void accept(Locale locale) {
-                        TimeParsedResult r = new DefaultTimeParser(pattern, locale).parse(time);
+                        TimeParsedResult r = new SimpleTimeParser(pattern, locale).parse(time);
                         if (r != null) {
                             resultHolder.set(r);
                         }
                     }
-                }, EmptyPredicate.IS_NOT_EMPTY_PREDICATE);
+                }, breakPredicate);
             }
-        }, EmptyPredicate.IS_NOT_EMPTY_PREDICATE);
+        }, breakPredicate);
         return resultHolder.get();
     }
 }

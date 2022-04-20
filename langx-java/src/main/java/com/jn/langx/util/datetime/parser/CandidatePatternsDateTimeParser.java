@@ -1,55 +1,60 @@
 package com.jn.langx.util.datetime.parser;
 
-import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
-import com.jn.langx.util.function.Consumer2;
-import com.jn.langx.util.function.Predicate2;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.datetime.DateTimeParsedResult;
 import com.jn.langx.util.datetime.DateTimeParser;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 public class CandidatePatternsDateTimeParser implements DateTimeParser {
-    private List<String> patterns;
-    private TimeZone timeZone = TimeZone.getDefault();
-    private Locale locale = Locale.getDefault();
+    private Set<String> patterns = Collects.newLinkedHashSet();
+    private Set<TimeZone> timeZones = Collects.newLinkedHashSet(TimeZone.getDefault());
+    private Set<Locale> locales = Collects.newLinkedHashSet(Locale.US, Locale.getDefault());
 
-    public CandidatePatternsDateTimeParser(List<String> patterns) {
-        this.patterns = patterns;
+    public CandidatePatternsDateTimeParser(List<String> patterns, List<TimeZone> timeZones, List<Locale> locales) {
+        if (patterns != null) {
+            this.patterns.addAll(patterns);
+        }
+        if (timeZones != null) {
+            this.timeZones.addAll(timeZones);
+        }
+        if (locales != null) {
+            this.locales.addAll(locales);
+        }
     }
 
     @Override
     public DateTimeParsedResult parse(final String datetimeString) {
-        final Holder<Date> dateHolder = new Holder<Date>();
-        Pipeline.of(patterns)
-                .forEach(new Consumer2<Integer, String>() {
+        final Holder<DateTimeParsedResult> resultHolder = new Holder<DateTimeParsedResult>();
+
+        final Predicate breakPredicate = new Predicate() {
+            @Override
+            public boolean test(Object value) {
+                return !resultHolder.isNull();
+            }
+        };
+        Collects.forEach(patterns, new Consumer<String>() {
+            @Override
+            public void accept(final String pattern) {
+                Collects.forEach(timeZones, new Consumer<TimeZone>() {
                     @Override
-                    public void accept(Integer idx, String pattern) {
-                        SimpleDateFormat formatter = GlobalThreadLocalMap.getSimpleDateFormat(pattern, timeZone, locale);
-                        Date date = null;
-                        try {
-                            date = formatter.parse(datetimeString);
-                            dateHolder.set(date);
-                        } catch (ParseException ex) {
-                            // ignore it
-                        }
+                    public void accept(final TimeZone timeZone) {
+                        Collects.forEach(locales, new Consumer<Locale>() {
+                            @Override
+                            public void accept(Locale locale) {
+                                DateTimeParsedResult r = new SimpleDateParser(pattern, timeZone, locale).parse(datetimeString);
+                                if (r != null) {
+                                    resultHolder.set(r);
+                                }
+                            }
+                        }, breakPredicate);
                     }
-                }, new Predicate2<Integer, String>() {
-                    @Override
-                    public boolean test(Integer idx, String pattern) {
-                        return !dateHolder.isEmpty();
-                    }
-                });
-        if (dateHolder.get() != null) {
-            DateTimeParsedResult r = new DateParsedResult(dateHolder.get(), this.timeZone, this.locale);
-            return r;
-        }
-        return null;
+                }, breakPredicate);
+            }
+        }, breakPredicate);
+        return resultHolder.get();
     }
 }
