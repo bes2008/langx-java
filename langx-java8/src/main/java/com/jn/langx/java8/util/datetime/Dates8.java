@@ -1,5 +1,7 @@
 package com.jn.langx.java8.util.datetime;
 
+import com.jn.langx.annotation.NotEmpty;
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.NonAbsentHashMap;
@@ -13,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQuery;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -56,9 +59,7 @@ public class Dates8 {
     }
 
     public static Date toDate(LocalDateTime localDateTime) {
-        Instant instant = localDateTime.toInstant(localZoneOffset());
-        long mills = instant.toEpochMilli();
-        return new Date(mills);
+        return new Date(toOffsetDateTime(localDateTime).toInstant().toEpochMilli());
     }
 
     public static String format(TemporalAccessor temporal, String pattern) {
@@ -66,6 +67,11 @@ public class Dates8 {
     }
 
     public static String format(TemporalAccessor temporal, String pattern, ZoneId zoneId) {
+        return format(temporal, pattern, zoneId, null);
+    }
+
+    public static String format(TemporalAccessor temporal, @NotEmpty String pattern, @Nullable ZoneId zoneId, @Nullable Locale locale) {
+
         if (temporal instanceof LocalDate || temporal instanceof LocalDateTime) {
             boolean formatZone = Strings.containsAny(pattern, 'Z', 'z', 'O', 'X', 'x');
             if (formatZone) {
@@ -77,7 +83,12 @@ public class Dates8 {
                 }
             }
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
         String ret = formatter.format(temporal);
         return ret;
     }
@@ -97,6 +108,9 @@ public class Dates8 {
         return t;
     }
 
+    public static OffsetDateTime toOffsetDateTime(LocalDateTime localDateTime){
+        return OffsetDateTime.of(localDateTime, localZoneOffset());
+    }
 
     public static ZonedDateTime toZonedDateTime(LocalDateTime localDateTime) {
         return toZonedDateTime(localDateTime, null);

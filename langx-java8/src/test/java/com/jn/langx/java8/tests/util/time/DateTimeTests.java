@@ -15,7 +15,7 @@ public class DateTimeTests {
     @Test
     public void testLocalDateTimeByMills() {
         long now = System.currentTimeMillis();
-
+        System.out.println(now);
         Date date = new Date(now);
 
         Instant instant = Instant.ofEpochMilli(now);
@@ -30,6 +30,7 @@ public class DateTimeTests {
         System.out.println(localDateTime.toEpochSecond(ZoneOffset.ofTotalSeconds(TimeZone.getDefault().getRawOffset() / 1000)));
         System.out.println(localDateTime.toEpochSecond(ZoneOffset.systemDefault().getRules().getOffset(localDateTime)));
 
+        System.out.println(Dates8.toDate(localDateTime).getTime());
 
     }
 }
