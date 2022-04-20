@@ -5,7 +5,7 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.time.Month;
-import com.jn.langx.util.time.Week;
+import com.jn.langx.util.time.WeekDay;
 
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -57,10 +57,10 @@ public class DateTimePatterns {
          * 初始化 month 相关的正则
          */
         final StringBuilder weekRegexpBuilder = new StringBuilder(300);
-        Pipeline.of(EnumSet.allOf(Week.class))
-                .forEach(new Consumer2<Integer, Week>() {
+        Pipeline.of(EnumSet.allOf(WeekDay.class))
+                .forEach(new Consumer2<Integer, WeekDay>() {
                     @Override
-                    public void accept(Integer key, Week week) {
+                    public void accept(Integer key, WeekDay week) {
                         WEEK_STR_TO_INTEGER.put(week.name(), week.getCode());
                         WEEK_STR_TO_INTEGER.put(week.name().toUpperCase(), week.getCode());
                         WEEK_STR_TO_INTEGER.put(Strings.upperCaseFirstLetter(week.name()), week.getCode());

@@ -4,7 +4,7 @@ import com.jn.langx.util.enums.base.CommonEnum;
 
 import java.util.Calendar;
 
-public enum Week implements CommonEnum {
+public enum WeekDay implements CommonEnum {
     sun(Calendar.SUNDAY, "sunday", "日"),
     mon(Calendar.MONDAY, "monday", "一"),
     tue(Calendar.TUESDAY, "tuesday", "二"),
@@ -16,7 +16,7 @@ public enum Week implements CommonEnum {
     private String fullname;
     private String chinese;
 
-    Week(int code, String fullname, String chinese) {
+    WeekDay(int code, String fullname, String chinese) {
         this.code = code;
         this.fullname = fullname;
         this.chinese = chinese;
