@@ -10,6 +10,7 @@ public class DatesTests {
     @Test
     public void test() {
         Date date = new Date();
+        System.out.println(Dates.format(date));
         System.out.println(Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss));
         System.out.println(Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss_SSS));
     }

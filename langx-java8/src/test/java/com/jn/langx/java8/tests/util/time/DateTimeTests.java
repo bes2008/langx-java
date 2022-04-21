@@ -4,10 +4,7 @@ import com.jn.langx.java8.util.datetime.Dates8;
 import com.jn.langx.util.Dates;
 import org.junit.Test;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.*;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -32,5 +29,11 @@ public class DateTimeTests {
 
         System.out.println(Dates8.toDate(localDateTime).getTime());
 
+    }
+
+    @Test
+    public void testFormat(){
+        OffsetDateTime dateTime = OffsetDateTime.now();
+        System.out.println(Dates.format(dateTime));
     }
 }

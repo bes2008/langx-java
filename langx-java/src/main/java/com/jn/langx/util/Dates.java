@@ -86,11 +86,15 @@ public class Dates {
     }
 
     public static String format(@NonNull Date date) {
-        return format(date, yyyy_MM_dd_HH_mm_ss);
+        return format((Object) date);
     }
 
     public static String format(@NonNull Date date, @NotEmpty String pattern) {
         return format(date, pattern, null, null);
+    }
+
+    public static <DATE_TIME> String format(DATE_TIME dateTime) {
+        return format(dateTime, yyyy_MM_dd_HH_mm_ss);
     }
 
     public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern) {
