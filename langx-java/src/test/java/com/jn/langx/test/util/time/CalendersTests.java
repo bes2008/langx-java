@@ -1,4 +1,4 @@
-package com.jn.langx.test.util;
+package com.jn.langx.test.util.time;
 
 import com.jn.langx.util.Calendars;
 import com.jn.langx.util.Dates;
