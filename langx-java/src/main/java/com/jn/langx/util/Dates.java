@@ -6,10 +6,8 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.datetime.*;
-import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.datetime.parser.CandidatePatternsDateTimeParser;
 import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.struct.Holder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,35 +78,53 @@ public class Dates {
      */
     public static final char[] DATE_FORMAT_FLAGS = {'G', 'y', 'Y', 'M', 'w', 'W', 'D', 'd', 'F', 'E', 'u', 'a', 'H', 'k', 'K', 'h', 'm', 's', 'S', 'z', 'Z', 'X'};
 
+    @Deprecated
     public static String format(long millis, @NonNull String pattern) {
         Preconditions.checkTrue(millis >= 0);
-        return format(new Date(millis), pattern);
+        return format(millis, pattern, null, null);
     }
 
+    @Deprecated
     public static String format(@NonNull Date date) {
         return format((Object) date);
     }
 
+    @Deprecated
     public static String format(@NonNull Date date, @NotEmpty String pattern) {
         return format(date, pattern, null, null);
     }
 
+    /**
+     * @since 4.5.2
+     */
     public static <DATE_TIME> String format(DATE_TIME dateTime) {
         return format(dateTime, yyyy_MM_dd_HH_mm_ss);
     }
 
+    /**
+     * @since 4.5.2
+     */
     public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern) {
         return format(dateTime, pattern, null, null);
     }
 
+    /**
+     * @since 4.5.2
+     */
     public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern, TimeZone timeZone) {
         return format(dateTime, pattern, timeZone, null);
     }
 
+    /**
+     * @since 4.5.2
+     */
     public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern, Locale locale) {
         return format(dateTime, pattern, null, locale);
     }
 
+    /**
+     * @since 4.5.2
+     */
     public static <DATE_TIME> String format(@NonNull DATE_TIME dateTime, @NotEmpty String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(dateTime);
@@ -158,24 +174,18 @@ public class Dates {
     }
 
     public static Date parse(final String dateString, List<String> patterns) {
-        final Holder<Date> ret = new Holder<Date>();
-        Collects.forEach(patterns, new Consumer<String>() {
-            @Override
-            public void accept(String pattern) {
-                try {
-                    Date date = GlobalThreadLocalMap.getSimpleDateFormat(pattern).parse(dateString);
-                    ret.set(date);
-                } catch (ParseException ex) {
-                    throw Throwables.wrapAsRuntimeException(ex);
-                }
+        if (Objs.length(patterns) == 1) {
+            try {
+                return getSimpleDateFormat(patterns.get(0)).parse(dateString);
+            } catch (ParseException e) {
+                throw new com.jn.langx.exception.ParseException(e);
             }
-        }, new Predicate<String>() {
-            @Override
-            public boolean test(String pattern) {
-                return !ret.isEmpty();
-            }
-        });
-        return ret.get();
+        }
+        DateTimeParsedResult dateTimeParsedResult = new CandidatePatternsDateTimeParser(patterns).parse(dateString);
+        if (dateTimeParsedResult != null) {
+            return new Date(dateTimeParsedResult.getTimestamp());
+        }
+        return null;
     }
 
 

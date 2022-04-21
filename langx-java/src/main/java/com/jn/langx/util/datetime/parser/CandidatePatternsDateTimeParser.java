@@ -14,6 +14,13 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
     private Set<TimeZone> timeZones = Collects.newLinkedHashSet(TimeZone.getDefault());
     private Set<Locale> locales = Collects.newLinkedHashSet(Locale.US, Locale.getDefault());
 
+    public CandidatePatternsDateTimeParser(List<String> patterns){
+        this(patterns, null, null);
+    }
+
+    public CandidatePatternsDateTimeParser(List<String> patterns, List<TimeZone> timeZones){
+        this(patterns, timeZones, null);
+    }
     public CandidatePatternsDateTimeParser(List<String> patterns, List<TimeZone> timeZones, List<Locale> locales) {
         if (patterns != null) {
             this.patterns.addAll(patterns);
