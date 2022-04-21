@@ -5,7 +5,7 @@ import com.jn.langx.util.datetime.DateTimeFormatter;
 import java.util.Locale;
 
 public abstract class AbstractDateTimeFormatter<DATE_TIME> implements DateTimeFormatter<DATE_TIME> {
-    private Locale locale = Locale.getDefault();
+    private Locale locale;
     private String pattern;
 
     @Override

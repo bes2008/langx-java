@@ -90,12 +90,22 @@ public class Dates {
     }
 
     public static String format(@NonNull Date date, @NotEmpty String pattern) {
-        Preconditions.checkNotEmpty(pattern, "pattern is empty");
-        Preconditions.checkNotNull(date);
-        return GlobalThreadLocalMap.getSimpleDateFormat(pattern).format(date);
+        return format(date, pattern, null, null);
     }
 
-    public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern, TimeZone timeZone, Locale locale) {
+    public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern) {
+        return format(dateTime, pattern, null, null);
+    }
+
+    public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern, TimeZone timeZone) {
+        return format(dateTime, pattern, timeZone, null);
+    }
+
+    public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern, Locale locale) {
+        return format(dateTime, pattern, null, locale);
+    }
+
+    public static <DATE_TIME> String format(@NonNull DATE_TIME dateTime, @NotEmpty String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(dateTime);
         DateTimeFormatterFactory<DATE_TIME> factory = DateTimeFormatterFactoryRegistry.getInstance().get(dateTime.getClass());
