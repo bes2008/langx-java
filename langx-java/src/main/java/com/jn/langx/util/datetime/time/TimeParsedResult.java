@@ -2,20 +2,23 @@ package com.jn.langx.util.datetime.time;
 
 import com.jn.langx.text.StringTemplates;
 
+/**
+ * @since 4.5.2
+ */
 public class TimeParsedResult {
     /**
      * 24 小时制
      * 取值范围 0-23
      */
-    private int hours;
+    private int hour;
     /**
      * 取值范围 0-59
      */
-    private int minutes;
+    private int minute;
     /**
      * 取值范围 0-59
      */
-    private int seconds;
+    private int second;
 
     /**
      * 毫秒
@@ -23,28 +26,28 @@ public class TimeParsedResult {
      */
     private int mills;
 
-    public int getHours() {
-        return hours;
+    public int getHour() {
+        return hour;
     }
 
-    public void setHours(int hours) {
-        this.hours = hours;
+    public void setHour(int hour) {
+        this.hour = hour;
     }
 
-    public int getMinutes() {
-        return minutes;
+    public int getMinute() {
+        return minute;
     }
 
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
+    public void setMinute(int minute) {
+        this.minute = minute;
     }
 
-    public int getSeconds() {
-        return seconds;
+    public int getSecond() {
+        return second;
     }
 
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
+    public void setSecond(int second) {
+        this.second = second;
     }
 
     public int getMills() {
@@ -58,9 +61,9 @@ public class TimeParsedResult {
     @Override
     public String toString() {
         if (mills > 0) {
-            return StringTemplates.formatWithPlaceholder("{}:{}:{}.{}", hours, minutes, seconds, mills);
+            return StringTemplates.formatWithPlaceholder("{}:{}:{}.{}", hour, minute, second, mills);
         } else {
-            return StringTemplates.formatWithPlaceholder("{}:{}:{}", hours, minutes, seconds);
+            return StringTemplates.formatWithPlaceholder("{}:{}:{}", hour, minute, second);
         }
     }
 }

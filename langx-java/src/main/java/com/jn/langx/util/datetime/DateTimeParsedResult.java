@@ -18,11 +18,7 @@ public interface DateTimeParsedResult {
 
     Locale getLocale();
 
-    String getFormatPattern();
-
-    void setFormatPattern(String formatPattern);
+    String getPattern();
 
     String getOriginText();
-
-    void setOriginText(String originText);
 }

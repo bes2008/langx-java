@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * @since 4.5.2
+ */
 public class SimpleTimeParser implements TimeParser {
     private String pattern;
     private Locale locale;
@@ -35,9 +38,9 @@ public class SimpleTimeParser implements TimeParser {
         try {
             Date date = format.parse(time);
             TimeParsedResult timeParsedResult = new TimeParsedResult();
-            timeParsedResult.setHours(date.getHours());
-            timeParsedResult.setMinutes(date.getMinutes());
-            timeParsedResult.setSeconds(date.getSeconds());
+            timeParsedResult.setHour(date.getHours());
+            timeParsedResult.setMinute(date.getMinutes());
+            timeParsedResult.setSecond(date.getSeconds());
             String longTime = "" + date.getTime();
             String mills = longTime.substring(longTime.length() - 3);
             timeParsedResult.setMills(Integer.parseInt(mills));

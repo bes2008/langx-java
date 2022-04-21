@@ -11,17 +11,15 @@ public abstract class AbstractDateTimeParsedResult implements DateTimeParsedResu
         return originText;
     }
 
-    @Override
     public void setOriginText(String originText) {
         this.originText = originText;
     }
 
     @Override
-    public String getFormatPattern() {
+    public String getPattern() {
         return formatPattern;
     }
 
-    @Override
     public void setFormatPattern(String formatPattern) {
         this.formatPattern = formatPattern;
     }
