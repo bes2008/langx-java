@@ -11,7 +11,7 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DateTimeGrokPatterns {
+class DateTimeGrokPatterns {
 
     public static final String MONTH_PATTERN;
     public static final PatternDefinition PD_MONTH;

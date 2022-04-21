@@ -2,7 +2,7 @@ package com.jn.langx.util.datetime.grok;
 
 import com.jn.langx.text.grok.pattern.PatternDefinition;
 
-public class DateTimeGrokPatternDefinition extends PatternDefinition {
+class DateTimeGrokPatternDefinition extends PatternDefinition {
     private String format;
 
     public DateTimeGrokPatternDefinition(String expression, String format) {

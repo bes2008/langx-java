@@ -4,7 +4,7 @@ import com.jn.langx.text.grok.TemplatizedPattern;
 import com.jn.langx.text.grok.TemplatizedPatternFactory;
 import com.jn.langx.text.grok.pattern.PatternDefinition;
 
-public class DateTimeTemplatizedPatternFactory implements TemplatizedPatternFactory {
+class DateTimeTemplatizedPatternFactory implements TemplatizedPatternFactory {
     @Override
     public TemplatizedPattern get(PatternDefinition definition) {
         if (definition instanceof DateTimeGrokPatternDefinition) {

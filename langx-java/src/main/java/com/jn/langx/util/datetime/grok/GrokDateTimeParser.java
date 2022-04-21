@@ -9,7 +9,7 @@ import com.jn.langx.util.datetime.DateTimeParser;
 
 import java.util.List;
 
-public class GrokDateTimeParser implements DateTimeParser {
+class GrokDateTimeParser implements DateTimeParser {
     private static final Regexp TIMESTAMP_LONG = Regexps.createRegexp("<?<dtmills>^\\d{10,13}$");
 
     public static final String GROUP_YEAR = "year";
