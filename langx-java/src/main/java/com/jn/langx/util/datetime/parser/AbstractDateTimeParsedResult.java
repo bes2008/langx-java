@@ -4,7 +4,7 @@ import com.jn.langx.util.datetime.DateTimeParsedResult;
 
 public abstract class AbstractDateTimeParsedResult implements DateTimeParsedResult {
     private String originText;
-    private String formatPattern;
+    private String pattern;
 
     @Override
     public String getOriginText() {
@@ -17,10 +17,10 @@ public abstract class AbstractDateTimeParsedResult implements DateTimeParsedResu
 
     @Override
     public String getPattern() {
-        return formatPattern;
+        return pattern;
     }
 
-    public void setFormatPattern(String formatPattern) {
-        this.formatPattern = formatPattern;
+    public void setPattern(String formatPattern) {
+        this.pattern = formatPattern;
     }
 }

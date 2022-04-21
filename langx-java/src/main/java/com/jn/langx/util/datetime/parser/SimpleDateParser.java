@@ -34,8 +34,8 @@ public class SimpleDateParser implements DateTimeParser {
         SimpleDateFormat simpleDateFormat = GlobalThreadLocalMap.getSimpleDateFormat(this.pattern, this.timeZone, this.locale);
         try {
             Date date = simpleDateFormat.parse(datetimeString);
-            DateTimeParsedResult result = new DateParsedResult(date, this.timeZone, this.locale);
-            result.setFormatPattern(pattern);
+            DateParsedResult result = new DateParsedResult(date, this.timeZone, this.locale);
+            result.setPattern(pattern);
             result.setOriginText(datetimeString);
             return result;
         } catch (ParseException ex) {
