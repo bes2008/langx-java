@@ -66,7 +66,9 @@ public class DateTimePatterns {
      * MM/dd/yy  <pre>05/23/20</pre>
      */
     public static final String MM_DD_YY_EN = "MM/dd/yy";
-
+    public static final String dd_MM_yyyy = "dd/MM/yyyy";
+    public static final String MM_dd_yyyy = "MM/dd/yyyy";
+    public static final String M_d_yyyy = "M/d/yyyy";
     /**
      * M/d/yy  <pre>5/23/20</pre>
      */
@@ -357,7 +359,12 @@ public class DateTimePatterns {
 
 
     // ==================================Iso相关Pattern 包含 T==================================
-
+    /**
+     * yyyy-MM-dd'T'HH:mm:ss <pre>
+     * 2020-05-23T17:06:30
+     * 2020-05-23T09:06:30</pre>
+     */
+    public static final String YYYY_MM_DD_T_HH_MM_SS= "yyyy-MM-dd'T'HH:mm:ss";
     /**
      * yyyy-MM-dd'T'HH:mm:ssZ <pre>2020-05-23T17:06:30+0800 2020-05-23T09:06:30+0000</pre>
      */

@@ -5,6 +5,7 @@ import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
+import com.jn.langx.util.datetime.DateTimePatterns;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Holder;
@@ -54,22 +55,22 @@ public class Dates {
     public static final long HOURS_TO_MILLIS = HOURS_TO_SECONDS * SECONDS_TO_MILLIS;
     public static final long DAY_TO_MILLIS = DAY_TO_SECONDS * SECONDS_TO_MILLIS;
 
-    public static final String yyyyMMdd = "yyyyMMdd";
-    public static final String yyyy_MM_dd = "yyyy-MM-dd";
-    public static final String yyyy_MM_dd_1 = "yyyy-M-d";
-    public static final String yyyy_MM_dd_CN = "yyyy年MM月dd日";
-    public static final String yyyy_MM_dd_CN_1 = "yyyy年M月d日";
-    public static final String dd_MM_yyyy = "dd/MM/yyyy";
-    public static final String MM_dd_yyyy = "MM/dd/yyyy";
-    public static final String MM_dd_yyyy_1 = "M/d/yyyy";
+    public static final String yyyyMMdd = DateTimePatterns.YYYYMMDD;
+    public static final String yyyy_MM_dd = DateTimePatterns.YYYY_MM_DD;
+    public static final String yyyy_MM_dd_1 = DateTimePatterns.YYYY_M_D;
+    public static final String yyyy_MM_dd_CN = DateTimePatterns.YYYY_MM_DD_CN;
+    public static final String yyyy_MM_dd_CN_1 = DateTimePatterns.YYYY_M_D_CN;
+    public static final String dd_MM_yyyy = DateTimePatterns.dd_MM_yyyy;
+    public static final String MM_dd_yyyy = DateTimePatterns.MM_dd_yyyy;
+    public static final String MM_dd_yyyy_1 = DateTimePatterns.M_d_yyyy;
 
-    public static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
-    public static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
-    public static final String yyyy_MM_dd_HH_mm_ss_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
+    public static final String yyyyMMddHHmmss = DateTimePatterns.YYYYMMDDHHMMSS;
+    public static final String yyyy_MM_dd_HH_mm_ss = DateTimePatterns.YYYY_MM_DD_HH_MM_SS;
+    public static final String yyyy_MM_dd_HH_mm_ss_SSS = DateTimePatterns.YYYY_MM_DD_HH_MM_SS_SSS;
     // iso-8601
-    public static final String yyyy_MM_dd_T_HH_mm_ss = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String yyyy_MM_dd_T_HH_mm_ss = DateTimePatterns.YYYY_MM_DD_T_HH_MM_SS;
     // iso-8601 with zone
-    public static final String yyyy_MM_dd_T_HH_mm_ssZone = "yyyy-MM-dd'T'HH:mm:ssZ";
+    public static final String yyyy_MM_dd_T_HH_mm_ssZone = DateTimePatterns.YYYY_MM_DD_T_HH_MM_SS_Z;
 
     public static final String HH_mm_ss = "HH:mm:ss";
     public static final String HH_mm_ss_CN = "HH时mm分ss秒";
