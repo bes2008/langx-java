@@ -11,6 +11,8 @@ import java.util.Map;
  * <p>
  * The zid<->metazone mappings are based on CLDR metaZones.xml.
  * The alias mappings are based on Link entries in tzdb data files.
+ *
+ * @since 4.5.2
  */
 class ZoneNames {
 

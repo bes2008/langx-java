@@ -5,6 +5,9 @@ import com.jn.langx.util.enums.base.EnumDelegate;
 
 import java.util.Calendar;
 
+/**
+ * @since 4.5.2
+ */
 public enum DateField implements CommonEnum {
     ERA(Calendar.ERA, "era", "世纪"),
     YEAR(Calendar.YEAR, "year", "年"),

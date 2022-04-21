@@ -1,5 +1,8 @@
 package com.jn.langx.util.datetime;
 
+/**
+ * @since 4.5.2
+ */
 public class NotFoundDateTimeFormatterException extends RuntimeException{
     public NotFoundDateTimeFormatterException() {
         super();

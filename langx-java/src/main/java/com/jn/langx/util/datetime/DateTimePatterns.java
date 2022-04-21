@@ -2,6 +2,8 @@ package com.jn.langx.util.datetime;
 
 /**
  * 常用格式
+ *
+ * @since 4.5.2
  */
 public class DateTimePatterns {
 

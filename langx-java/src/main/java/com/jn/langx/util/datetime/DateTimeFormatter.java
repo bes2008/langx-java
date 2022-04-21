@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * @param <DATE_TIME>
+ * @since 4.5.2
  */
 public interface DateTimeFormatter<DATE_TIME> extends DateTimeFormatterFactory<DATE_TIME>{
     String getPattern();

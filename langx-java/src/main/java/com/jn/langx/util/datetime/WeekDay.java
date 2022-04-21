@@ -4,6 +4,9 @@ import com.jn.langx.util.enums.base.CommonEnum;
 
 import java.util.Calendar;
 
+/**
+ * @since 4.5.2
+ */
 public enum WeekDay implements CommonEnum {
     sun(Calendar.SUNDAY, "sunday", "日"),
     mon(Calendar.MONDAY, "monday", "一"),

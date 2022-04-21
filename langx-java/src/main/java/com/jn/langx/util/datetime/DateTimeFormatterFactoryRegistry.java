@@ -9,6 +9,9 @@ import com.jn.langx.util.reflect.Reflects;
 
 import java.util.*;
 
+/**
+ * @since 4.5.2
+ */
 @Singleton
 public class DateTimeFormatterFactoryRegistry implements Registry<Class, DateTimeFormatterFactory> {
 

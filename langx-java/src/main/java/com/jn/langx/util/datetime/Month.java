@@ -2,6 +2,9 @@ package com.jn.langx.util.datetime;
 
 import com.jn.langx.util.enums.base.CommonEnum;
 
+/**
+ * @since 4.5.2
+ */
 public enum Month implements CommonEnum {
     jan(1, "01", "january", "一月"),
     feb(2, "02", "february", "二月"),
