@@ -9,6 +9,50 @@ import com.jn.langx.util.regexp.Regexps;
 
 /**
  * A class for POSIX glob pattern with brace expansions.
+ *
+ *
+ *<pre>
+ * The following character sequences have special meaning within a glob pattern:
+ *
+ * ? matches any one character
+ *
+ * * matches any number of characters
+ *
+ * {!glob} Matches anything that does not match glob
+ *
+ * {a,b,c} matches any one of a, b or c
+ *
+ * [abc] matches any character in the set a, b or c
+ *
+ * [^abc] matches any character not in the set a, b or c
+ *
+ * [a-z] matches any character in the range a to z, inclusive. A leading or trailing dash will be interpreted literally
+ *
+ * Since we use java.util.regex patterns to implement globs, this means that in addition to the above, a number of “character class metacharacters” may be used. Keep in mind, their usefulness is limited since the regex quantifier metacharacters (asterisk, questionmark, and curly brackets) are redefined to mean something else in filename glob language, and the regex quantifiers are not available in glob language.
+ *
+ * \w matches any alphanumeric character or underscore
+ *
+ * \s matches a space or horizontal tab
+ *
+ * \S matches a printable non-whitespace.
+ *
+ * \d matches a decimal digit
+ *
+ * Here are some examples of glob patterns:
+ *
+ * * - all files.
+ *
+ * *.java - all files whose names end with “.java”.
+ *
+ * *.[ch] - all files whose names end with either “.c” or “.h”.
+ *
+ * *.{c,cpp,h,hpp,cxx,hxx} - all C or C++ files.
+ *
+ * [^#]* - all files whose names do not start with “#”.
+ * </pre>
+ *
+ *
+ * @since 4.5.2
  */
 public class GlobPattern {
     private static final char BACKSLASH = '\\';

@@ -4,6 +4,9 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.pattern.AbstractPatternMatcher;
 
+/**
+ * @since 4.5.2
+ */
 public class GlobMatcher extends AbstractPatternMatcher {
     private String globPattern;
     private GlobPattern glob;
