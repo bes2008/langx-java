@@ -3,6 +3,7 @@ package com.jn.langx.java8.util.datetime.formatter;
 import com.jn.langx.java8.util.datetime.Dates8;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.datetime.DateTimeFormatter;
+import com.jn.langx.util.datetime.TimeZoneAware;
 import com.jn.langx.util.datetime.formatter.AbstractDateTimeFormatter;
 
 import java.time.ZoneId;
@@ -10,7 +11,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.List;
 import java.util.TimeZone;
 
-public class Java8DateTimeFormatter extends AbstractDateTimeFormatter<TemporalAccessor> {
+public class Java8DateTimeFormatter extends AbstractDateTimeFormatter<TemporalAccessor> implements TimeZoneAware {
     private TimeZone timeZone;
 
     @Override

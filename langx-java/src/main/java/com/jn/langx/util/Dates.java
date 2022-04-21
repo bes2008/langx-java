@@ -5,11 +5,11 @@ import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
-import com.jn.langx.util.datetime.DateTimePatterns;
+import com.jn.langx.util.datetime.*;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.struct.Holder;
-import com.jn.langx.util.datetime.DateField;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -93,6 +93,22 @@ public class Dates {
         Preconditions.checkNotEmpty(pattern, "pattern is empty");
         Preconditions.checkNotNull(date);
         return GlobalThreadLocalMap.getSimpleDateFormat(pattern).format(date);
+    }
+
+    public static <DATE_TIME> String format(DATE_TIME dateTime, String pattern, TimeZone timeZone, Locale locale) {
+        Preconditions.checkNotEmpty(pattern, "pattern is empty");
+        Preconditions.checkNotNull(dateTime);
+        DateTimeFormatterFactory<DATE_TIME> factory = DateTimeFormatterFactoryRegistry.getInstance().get(dateTime.getClass());
+        if (factory == null) {
+            throw new NotFoundDateTimeFormatterException(Reflects.getFQNClassName(dateTime.getClass()));
+        }
+        DateTimeFormatter formatter = factory.get();
+        if (timeZone != null && formatter instanceof TimeZoneAware) {
+            ((TimeZoneAware) formatter).setTimeZone(timeZone);
+        }
+        formatter.setPattern(pattern);
+        formatter.setLocal(locale);
+        return formatter.format(dateTime);
     }
 
     public static SimpleDateFormat getSimpleDateFormat(@NotEmpty String pattern) {
