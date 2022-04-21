@@ -4,7 +4,10 @@ package com.jn.langx.util.datetime;
 import java.util.List;
 import java.util.Locale;
 
-public interface DateTimeFormatter<DATE_TIME> {
+/**
+ * @param <DATE_TIME>
+ */
+public interface DateTimeFormatter<DATE_TIME> extends DateTimeFormatterFactory<DATE_TIME>{
     String getPattern();
     void setPattern(String pattern);
 
@@ -14,4 +17,6 @@ public interface DateTimeFormatter<DATE_TIME> {
     String format(DATE_TIME dateTime);
 
     List<Class> supported();
+
+    DateTimeFormatter<DATE_TIME> get();
 }

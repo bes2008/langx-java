@@ -72,14 +72,15 @@ public class Dates8 {
 
     public static String format(TemporalAccessor temporal, @NotEmpty String pattern, @Nullable ZoneId zoneId, @Nullable Locale locale) {
 
-        if (temporal instanceof LocalDate || temporal instanceof LocalDateTime) {
+        if (temporal instanceof LocalDate || temporal instanceof LocalDateTime || temporal instanceof OffsetDateTime) {
             boolean formatZone = Strings.containsAny(pattern, 'Z', 'z', 'O', 'X', 'x');
             if (formatZone) {
                 if (temporal instanceof LocalDate) {
                     temporal = ZonedDateTime.of((LocalDate) temporal, ZERO_TIME, zoneId == null ? localZoneId() : zoneId);
-                }
-                if (temporal instanceof LocalDateTime) {
+                } else if (temporal instanceof LocalDateTime) {
                     temporal = toZonedDateTime((LocalDateTime) temporal, zoneId);
+                } else if (temporal instanceof OffsetDateTime) {
+                    temporal = ((OffsetDateTime) temporal).toZonedDateTime();
                 }
             }
         }
@@ -108,7 +109,7 @@ public class Dates8 {
         return t;
     }
 
-    public static OffsetDateTime toOffsetDateTime(LocalDateTime localDateTime){
+    public static OffsetDateTime toOffsetDateTime(LocalDateTime localDateTime) {
         return OffsetDateTime.of(localDateTime, localZoneOffset());
     }
 

@@ -34,4 +34,9 @@ public class DateFormatter extends AbstractUtcTimestampFormatter<Date> {
     public List<Class> supported() {
         return SUPPORTED;
     }
+
+    @Override
+    public DateFormatter get() {
+        return new DateFormatter();
+    }
 }

@@ -2,6 +2,7 @@ package com.jn.langx.util.datetime.formatter;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.datetime.DateTimeFormatter;
 
 import java.util.Date;
 import java.util.List;
@@ -29,5 +30,10 @@ public class LongTimestampFormatter extends AbstractUtcTimestampFormatter<Long> 
     @Override
     public List<Class> supported() {
         return SUPPORTED;
+    }
+
+    @Override
+    public DateTimeFormatter<Long> get() {
+        return new LongTimestampFormatter();
     }
 }
