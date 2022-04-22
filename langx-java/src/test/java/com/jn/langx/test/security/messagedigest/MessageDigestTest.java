@@ -1,5 +1,7 @@
 package com.jn.langx.test.security.messagedigest;
 
+import com.jn.langx.codec.base64.Base64;
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
@@ -146,5 +148,10 @@ public class MessageDigestTest {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    @Test
+    public void testSha256(){
+        System.out.println(Base64.encodeBase64String(MessageDigests.digest(JCAEStandardName.SHA_256.getName(),"123456")));
     }
 }
