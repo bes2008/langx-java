@@ -12,6 +12,13 @@
     <artifactId>langx-java-regexp-joni</artifactId>
     <description>joni regexp</description>
     <name>${groupId}:${artifactId}:${version}</name>
+
+    <repositories>
+        <repository>
+            <id>EBIPublic</id>
+            <url>https://www.ebi.ac.uk/intact/maven/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
@@ -23,6 +30,22 @@
             <version>2.1.43</version>
         </dependency>
 
+        <!-- 支持 Perl 5 正则, Awk 正则 -->
+        <!--
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+            <version>2.0.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.jregex</groupId>
+            <artifactId>jregex</artifactId>
+            <version>1.2_01</version>
+        </dependency>
+        -->
+
+        <!--下面是 Grok 实现-->
         <!--这3个核心代码完全一样-->
         <!--
         <dependency>
