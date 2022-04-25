@@ -12,13 +12,6 @@
     <artifactId>langx-java-regexp-joni</artifactId>
     <description>joni regexp</description>
     <name>${groupId}:${artifactId}:${version}</name>
-
-    <repositories>
-        <repository>
-            <id>EBIPublic</id>
-            <url>https://www.ebi.ac.uk/intact/maven/nexus/content/repositories/public/</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.github.fangjinuo.langx</groupId>
