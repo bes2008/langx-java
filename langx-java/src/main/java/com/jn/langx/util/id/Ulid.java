@@ -6,8 +6,10 @@ import com.jn.langx.util.Objs;
 import java.io.Serializable;
 import java.util.Random;
 
-/*
+/**
  * https://github.com/ulid/spec
+ *
+ * @since 4.5.3
  */
 public class Ulid {
     private static final char[] ENCODING_CHARS = {
