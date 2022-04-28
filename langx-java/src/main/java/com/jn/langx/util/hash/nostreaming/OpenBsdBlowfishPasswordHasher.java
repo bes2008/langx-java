@@ -5,6 +5,9 @@ import com.jn.langx.util.Numbers;
 import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.io.Charsets;
 
+/**
+ * @since 4.5.3
+ */
 public class OpenBsdBlowfishPasswordHasher extends AbstractNonStreamingHasher {
     private String salt;
 
