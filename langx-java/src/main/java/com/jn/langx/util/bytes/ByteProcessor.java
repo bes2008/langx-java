@@ -1,4 +1,6 @@
-package com.jn.langx.util;
+package com.jn.langx.util.bytes;
+
+import com.jn.langx.util.Bytes;
 
 /**
  * Provides a mechanism to iterate over a collection of bytes.
