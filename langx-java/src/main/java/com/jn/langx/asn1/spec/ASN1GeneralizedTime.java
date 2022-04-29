@@ -1,6 +1,5 @@
 package com.jn.langx.asn1.spec;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
@@ -9,10 +8,6 @@ import java.util.TimeZone;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.io.bytes.Utf8s;
-import com.unboundid.util.NotNull;
-import com.unboundid.util.StaticUtils;
-import com.unboundid.util.UtilityMessages;
-import com.unboundid.util.Validator;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
@@ -257,7 +252,7 @@ public final class ASN1GeneralizedTime
   {
     if (includeMilliseconds)
     {
-      final String timestamp = encodeGeneralizedTime(date);
+      final String timestamp = InternalGeneralizedTimes.encodeGeneralizedTime(date);
       if (! timestamp.endsWith("0Z"))
       {
         return timestamp;
@@ -599,7 +594,7 @@ public final class ASN1GeneralizedTime
          throws ASN1Exception
   {
     return new ASN1GeneralizedTime(element.getType(),
-         StaticUtils.toUTF8String(element.getValue()));
+         Utf8s.toUTF8String(element.getValue()));
   }
 
 
@@ -613,89 +608,4 @@ public final class ASN1GeneralizedTime
     buffer.append(stringRepresentation);
   }
 
-  private static final ThreadLocal<SimpleDateFormat> GENERALIZED_TIME_FORMATTERS = new ThreadLocal<SimpleDateFormat>();
-  @NotNull
-  public static String encodeGeneralizedTime(@NotNull Date d) {
-    SimpleDateFormat dateFormat = (SimpleDateFormat)GENERALIZED_TIME_FORMATTERS.get();
-    if (dateFormat == null) {
-      dateFormat = new SimpleDateFormat("yyyyMMddHHmmss.SSS'Z'");
-      dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-      GENERALIZED_TIME_FORMATTERS.set(dateFormat);
-    }
-
-    return dateFormat.format(d);
-  }
-
-  @NotNull
-  public static Date decodeGeneralizedTime(@NotNull String t) throws ParseException {
-    Validator.ensureNotNull(t);
-    int tzPos;
-    TimeZone tz;
-    if (t.endsWith("Z")) {
-      tz = TimeZone.getTimeZone("UTC");
-      tzPos = t.length() - 1;
-    } else {
-      tzPos = t.lastIndexOf(45);
-      if (tzPos < 0) {
-        tzPos = t.lastIndexOf(43);
-        if (tzPos < 0) {
-          throw new ParseException(UtilityMessages.ERR_GENTIME_DECODE_CANNOT_PARSE_TZ.get(new Object[]{t}), 0);
-        }
-      }
-
-      tz = TimeZone.getTimeZone("GMT" + t.substring(tzPos));
-      if (tz.getRawOffset() == 0 && !t.endsWith("+0000") && !t.endsWith("-0000")) {
-        throw new ParseException(UtilityMessages.ERR_GENTIME_DECODE_CANNOT_PARSE_TZ.get(new Object[]{t}), tzPos);
-      }
-    }
-
-    int periodPos = t.lastIndexOf(46, tzPos);
-    String subSecFormatStr;
-    String trimmedTimestamp;
-    if (periodPos > 0) {
-      int subSecondLength = tzPos - periodPos - 1;
-      switch(subSecondLength) {
-        case 0:
-          subSecFormatStr = "";
-          trimmedTimestamp = t.substring(0, periodPos);
-          break;
-        case 1:
-          subSecFormatStr = ".SSS";
-          trimmedTimestamp = t.substring(0, periodPos + 2) + "00";
-          break;
-        case 2:
-          subSecFormatStr = ".SSS";
-          trimmedTimestamp = t.substring(0, periodPos + 3) + '0';
-          break;
-        default:
-          subSecFormatStr = ".SSS";
-          trimmedTimestamp = t.substring(0, periodPos + 4);
-      }
-    } else {
-      subSecFormatStr = "";
-      periodPos = tzPos;
-      trimmedTimestamp = t.substring(0, tzPos);
-    }
-
-    String formatStr;
-    switch(periodPos) {
-      case 10:
-        formatStr = "yyyyMMddHH" + subSecFormatStr;
-        break;
-      case 11:
-      case 13:
-      default:
-        throw new ParseException(UtilityMessages.ERR_GENTIME_CANNOT_PARSE_INVALID_LENGTH.get(new Object[]{t}), periodPos);
-      case 12:
-        formatStr = "yyyyMMddHHmm" + subSecFormatStr;
-        break;
-      case 14:
-        formatStr = "yyyyMMddHHmmss" + subSecFormatStr;
-    }
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat(formatStr);
-    dateFormat.setTimeZone(tz);
-    dateFormat.setLenient(false);
-    return dateFormat.parse(trimmedTimestamp);
-  }
 }

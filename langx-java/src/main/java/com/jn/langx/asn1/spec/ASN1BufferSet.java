@@ -4,9 +4,6 @@ import com.jn.langx.annotation.NonNull;
 
 import java.io.Serializable;
 
-
-
-
 /**
  * This class provides a data structure which is used in the course of writing
  * an ASN.1 set to an ASN.1 buffer.  It keeps track of the position at which the
