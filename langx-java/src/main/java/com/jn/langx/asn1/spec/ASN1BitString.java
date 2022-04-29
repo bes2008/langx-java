@@ -392,15 +392,11 @@ public final class ASN1BitString
 
         final int paddingBitsNeeded = (elementValue[0] & 0xFF);
         if (paddingBitsNeeded > 7) {
-            throw new ASN1Exception(
-                    ERR_BIT_STRING_DECODE_INVALID_PADDING_BIT_COUNT.get(
-                            paddingBitsNeeded));
+            throw new ASN1Exception(ERR_BIT_STRING_DECODE_INVALID_PADDING_BIT_COUNT.get(paddingBitsNeeded));
         }
 
         if ((paddingBitsNeeded > 0) && (elementValue.length == 1)) {
-            throw new ASN1Exception(
-                    ERR_BIT_STRING_DECODE_NONZERO_PADDING_BIT_COUNT_WITH_NO_MORE_BYTES.
-                            get());
+            throw new ASN1Exception(ERR_BIT_STRING_DECODE_NONZERO_PADDING_BIT_COUNT_WITH_NO_MORE_BYTES.get());
         }
 
         int bitsIndex = 0;
