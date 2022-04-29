@@ -1,7 +1,6 @@
 package com.jn.langx.annotation;
 
 
-import com.unboundid.util.Mutable;
 
 import java.lang.annotation.*;
 
@@ -37,7 +36,6 @@ import java.lang.annotation.*;
  * This annotation type will appear in the generated Javadoc documentation for
  * classes and interfaces that include it.
  *
- * @see  Mutable
  */
 @Documented()
 @Retention(RetentionPolicy.RUNTIME)

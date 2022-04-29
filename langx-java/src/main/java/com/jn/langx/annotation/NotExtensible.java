@@ -1,7 +1,6 @@
 package com.jn.langx.annotation;
 
 
-import com.unboundid.util.Extensible;
 
 import java.lang.annotation.*;
 
@@ -17,7 +16,6 @@ import java.lang.annotation.*;
  * This annotation type will appear in the generated Javadoc documentation for
  * classes and interfaces that include it.
  *
- * @see  Extensible
  */
 @Documented()
 @Retention(RetentionPolicy.RUNTIME)
