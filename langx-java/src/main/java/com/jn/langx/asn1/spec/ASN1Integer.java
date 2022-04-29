@@ -1,49 +1,9 @@
-/*
- * Copyright 2007-2022 Ping Identity Corporation
- * All Rights Reserved.
- */
-/*
- * Copyright 2007-2022 Ping Identity Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/*
- * Copyright (C) 2007-2022 Ping Identity Corporation
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.jn.langx.asn1.spec;
 
 
+import com.jn.langx.annotation.NonNull;
 
-import com.unboundid.util.Debug;
-import com.unboundid.util.NotMutable;
-import com.unboundid.util.NotNull;
-import com.unboundid.util.ThreadSafety;
-import com.unboundid.util.ThreadSafetyLevel;
-
-import static com.unboundid.asn1.ASN1Messages.*;
+import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 
 
@@ -55,8 +15,6 @@ import static com.unboundid.asn1.ASN1Messages.*;
  * If you need support for integer values of arbitrary size, see
  * {@link ASN1BigInteger}.
  */
-@NotMutable()
-@ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ASN1Integer
        extends ASN1Element
 {
@@ -112,7 +70,7 @@ public final class ASN1Integer
    * @param  value     The pre-encoded value to use for this element.
    */
   private ASN1Integer(final byte type, final int intValue,
-                      @NotNull final byte[] value)
+                      @NonNull final byte[] value)
   {
     super(type, value);
 
@@ -129,19 +87,19 @@ public final class ASN1Integer
    *
    * @return  A byte array containing the encoded value.
    */
-  @NotNull()
+  @NonNull()
   static byte[] encodeIntValue(final int intValue)
   {
     if (intValue < 0)
     {
-      if ((intValue & 0xFFFF_FF80) == 0xFFFF_FF80)
+      if ((intValue & 0xFFFFFF80) == 0xFFFFFF80)
       {
         return new byte[]
         {
           (byte) (intValue & 0xFF)
         };
       }
-      else if ((intValue & 0xFFFF_8000) == 0xFFFF_8000)
+      else if ((intValue & 0xFFFF8000) == 0xFFFF8000)
       {
         return new byte[]
         {
@@ -149,7 +107,7 @@ public final class ASN1Integer
           (byte) (intValue & 0xFF)
         };
       }
-      else if ((intValue & 0xFF80_0000) == 0xFF80_0000)
+      else if ((intValue & 0xFF800000) == 0xFF800000)
       {
         return new byte[]
         {
@@ -171,14 +129,14 @@ public final class ASN1Integer
     }
     else
     {
-      if ((intValue & 0x0000_007F) == intValue)
+      if ((intValue & 0x0000007F) == intValue)
       {
         return new byte[]
         {
           (byte) (intValue & 0x7F)
         };
       }
-      else if ((intValue & 0x0000_7FFF) == intValue)
+      else if ((intValue & 0x00007FFF) == intValue)
       {
         return new byte[]
         {
@@ -186,7 +144,7 @@ public final class ASN1Integer
           (byte) (intValue & 0xFF)
         };
       }
-      else if ((intValue & 0x007F_FFFF) == intValue)
+      else if ((intValue & 0x007FFFFF) == intValue)
       {
         return new byte[]
         {
@@ -232,8 +190,8 @@ public final class ASN1Integer
    * @throws  ASN1Exception  If the provided array cannot be decoded as an
    *                         integer element.
    */
-  @NotNull()
-  public static ASN1Integer decodeAsInteger(@NotNull final byte[] elementBytes)
+  @NonNull()
+  public static ASN1Integer decodeAsInteger(@NonNull final byte[] elementBytes)
          throws ASN1Exception
   {
     try
@@ -268,7 +226,7 @@ public final class ASN1Integer
           intValue = (value[0] & 0xFF);
           if ((value[0] & 0x80) != 0x00)
           {
-            intValue |= 0xFFFF_FF00;
+            intValue |= 0xFFFFFF00;
           }
           break;
 
@@ -276,7 +234,7 @@ public final class ASN1Integer
           intValue = ((value[0] & 0xFF) << 8) | (value[1] & 0xFF);
           if ((value[0] & 0x80) != 0x00)
           {
-            intValue |= 0xFFFF_0000;
+            intValue |= 0xFFFF0000;
           }
           break;
 
@@ -285,7 +243,7 @@ public final class ASN1Integer
                      (value[2] & 0xFF);
           if ((value[0] & 0x80) != 0x00)
           {
-            intValue |= 0xFF00_0000;
+            intValue |= 0xFF000000;
           }
           break;
 
@@ -303,12 +261,10 @@ public final class ASN1Integer
     }
     catch (final ASN1Exception ae)
     {
-      Debug.debugException(ae);
       throw ae;
     }
     catch (final Exception e)
     {
-      Debug.debugException(e);
       throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
     }
   }
@@ -325,8 +281,8 @@ public final class ASN1Integer
    * @throws  ASN1Exception  If the provided element cannot be decoded as an
    *                         integer element.
    */
-  @NotNull()
-  public static ASN1Integer decodeAsInteger(@NotNull final ASN1Element element)
+  @NonNull()
+  public static ASN1Integer decodeAsInteger(@NonNull final ASN1Element element)
          throws ASN1Exception
   {
     int intValue;
@@ -337,7 +293,7 @@ public final class ASN1Integer
         intValue = (value[0] & 0xFF);
         if ((value[0] & 0x80) != 0x00)
         {
-          intValue |= 0xFFFF_FF00;
+          intValue |= 0xFFFFFF00;
         }
         break;
 
@@ -345,7 +301,7 @@ public final class ASN1Integer
         intValue = ((value[0] & 0xFF) << 8) | (value[1] & 0xFF);
         if ((value[0] & 0x80) != 0x00)
         {
-          intValue |= 0xFFFF_0000;
+          intValue |= 0xFFFF0000;
         }
         break;
 
@@ -354,7 +310,7 @@ public final class ASN1Integer
                    (value[2] & 0xFF);
         if ((value[0] & 0x80) != 0x00)
         {
-          intValue |= 0xFF00_0000;
+          intValue |= 0xFF000000;
         }
         break;
 
@@ -376,7 +332,7 @@ public final class ASN1Integer
    * {@inheritDoc}
    */
   @Override()
-  public void toString(@NotNull final StringBuilder buffer)
+  public void toString(@NonNull final StringBuilder buffer)
   {
     buffer.append(intValue);
   }

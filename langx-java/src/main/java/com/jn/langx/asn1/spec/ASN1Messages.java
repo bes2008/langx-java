@@ -36,7 +36,6 @@
 package com.jn.langx.asn1.spec;
 
 
-
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;

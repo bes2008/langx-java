@@ -36,16 +36,11 @@
 package com.jn.langx.asn1.spec;
 
 
-
-import com.unboundid.util.Debug;
-import com.unboundid.util.NotMutable;
-import com.unboundid.util.NotNull;
-import com.unboundid.util.Nullable;
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 import com.unboundid.util.StaticUtils;
-import com.unboundid.util.ThreadSafety;
-import com.unboundid.util.ThreadSafetyLevel;
 
-import static com.unboundid.asn1.ASN1Messages.*;
+import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 
 
@@ -54,8 +49,6 @@ import static com.unboundid.asn1.ASN1Messages.*;
  * non-empty string comprised only of the ASCII characters (including ASCII
  * control characters).
  */
-@NotMutable()
-@ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ASN1IA5String
        extends ASN1Element
 {
@@ -67,7 +60,8 @@ public final class ASN1IA5String
 
 
   // The string value for this element.
-  @NotNull private final String stringValue;
+  @NonNull
+  private final String stringValue;
 
 
 
@@ -127,7 +121,7 @@ public final class ASN1IA5String
    *                         IA5 string.
    */
   private ASN1IA5String(final byte type, @Nullable final String stringValue,
-                        @NotNull final byte[] encodedValue)
+                        @NonNull final byte[] encodedValue)
           throws ASN1Exception
   {
     super(type, encodedValue);
@@ -157,7 +151,7 @@ public final class ASN1IA5String
    *
    * @return  The string value for this element.
    */
-  @NotNull()
+  @NonNull()
   public String stringValue()
   {
     return stringValue;
@@ -176,9 +170,9 @@ public final class ASN1IA5String
    * @throws  ASN1Exception  If the provided array cannot be decoded as an
    *                         IA5 string element.
    */
-  @NotNull()
+  @NonNull()
   public static ASN1IA5String decodeAsIA5String(
-                                   @NotNull final byte[] elementBytes)
+                                   @NonNull final byte[] elementBytes)
          throws ASN1Exception
   {
     try
@@ -211,12 +205,10 @@ public final class ASN1IA5String
     }
     catch (final ASN1Exception ae)
     {
-      Debug.debugException(ae);
       throw ae;
     }
     catch (final Exception e)
     {
-      Debug.debugException(e);
       throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
     }
   }
@@ -233,9 +225,9 @@ public final class ASN1IA5String
    * @throws  ASN1Exception  If the provided element cannot be decoded as an
    *                         IA5 string element.
    */
-  @NotNull()
+  @NonNull()
   public static ASN1IA5String decodeAsIA5String(
-                                   @NotNull final ASN1Element element)
+                                   @NonNull final ASN1Element element)
          throws ASN1Exception
   {
     final byte[] elementValue = element.getValue();
@@ -249,7 +241,7 @@ public final class ASN1IA5String
    * {@inheritDoc}
    */
   @Override()
-  public void toString(@NotNull final StringBuilder buffer)
+  public void toString(@NonNull final StringBuilder buffer)
   {
     buffer.append(stringValue);
   }

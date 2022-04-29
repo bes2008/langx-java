@@ -1,59 +1,15 @@
-/*
- * Copyright 2017-2022 Ping Identity Corporation
- * All Rights Reserved.
- */
-/*
- * Copyright 2017-2022 Ping Identity Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/*
- * Copyright (C) 2017-2022 Ping Identity Corporation
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.jn.langx.asn1.spec;
 
 
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.Nullable;
 
-import com.unboundid.util.Debug;
-import com.unboundid.util.NotMutable;
-import com.unboundid.util.NotNull;
-import com.unboundid.util.Nullable;
-import com.unboundid.util.ThreadSafety;
-import com.unboundid.util.ThreadSafetyLevel;
-
-import static com.unboundid.asn1.ASN1Messages.*;
-
-
+import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 /**
  * This class provides an ASN.1 bit string element, whose value represents a
  * series of zero or more bits, where each bit is either one or zero.
  */
-@NotMutable()
-@ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ASN1BitString
        extends ASN1Element
 {
@@ -65,10 +21,12 @@ public final class ASN1BitString
 
 
   // An array of the bits in this bit string, where true is 1 and false is 0.
-  @NotNull private final boolean[] bits;
+  @NonNull
+  private final boolean[] bits;
 
   // The bytes represented by the bits that comprise this bit string.
-  @Nullable private final byte[] bytes;
+  @Nullable
+  private final byte[] bytes;
 
 
 
@@ -81,7 +39,7 @@ public final class ASN1BitString
    *               {@code boolean} value of {@code false} represents a bit of
    *               zero.  It must not be {@code null} but may be empty.
    */
-  public ASN1BitString(@NotNull final boolean... bits)
+  public ASN1BitString(@NonNull final boolean... bits)
   {
     this(ASN1Constants.UNIVERSAL_BIT_STRING_TYPE, bits);
   }
@@ -98,7 +56,7 @@ public final class ASN1BitString
    *               {@code boolean} value of {@code false} represents a bit of
    *               zero.  It must not be {@code null} but may be empty.
    */
-  public ASN1BitString(final byte type, @NotNull final boolean... bits)
+  public ASN1BitString(final byte type, @NonNull final boolean... bits)
   {
     this(type, bits, null, encodeValue(bits));
   }
@@ -120,9 +78,9 @@ public final class ASN1BitString
    *                       an even multiple of eight.
    * @param  encodedValue  The encoded value for this element.
    */
-  private ASN1BitString(final byte type, @NotNull final boolean[] bits,
+  private ASN1BitString(final byte type, @NonNull final boolean[] bits,
                         @Nullable final byte[] bytes,
-                        @NotNull final byte[] encodedValue)
+                        @NonNull final byte[] encodedValue)
   {
     super(type, encodedValue);
 
@@ -176,7 +134,7 @@ public final class ASN1BitString
    * @throws  ASN1Exception  If the provided string does not represent a valid
    *                         bit string value.
    */
-  public ASN1BitString(@NotNull final String stringRepresentation)
+  public ASN1BitString(@NonNull final String stringRepresentation)
          throws ASN1Exception
   {
     this(ASN1Constants.UNIVERSAL_BIT_STRING_TYPE, stringRepresentation);
@@ -198,7 +156,7 @@ public final class ASN1BitString
    *                         bit string value.
    */
   public ASN1BitString(final byte type,
-                       @NotNull final String stringRepresentation)
+                       @NonNull final String stringRepresentation)
          throws ASN1Exception
   {
     this(type, getBits(stringRepresentation));
@@ -220,8 +178,8 @@ public final class ASN1BitString
    * @throws  ASN1Exception  If the provided string does not represent a valid
    *                         bit string value.
    */
-  @NotNull()
-  private static boolean[] getBits(@NotNull final String s)
+  @NonNull()
+  private static boolean[] getBits(@NonNull final String s)
           throws ASN1Exception
   {
     final char[] chars = s.toCharArray();
@@ -259,8 +217,8 @@ public final class ASN1BitString
    *
    * @return  The encoded value.
    */
-  @NotNull()
-  private static byte[] encodeValue(@NotNull final boolean... bits)
+  @NonNull()
+  private static byte[] encodeValue(@NonNull final boolean... bits)
   {
     // A bit string value always has at least one byte, and that byte specifies
     // the number of padding bits needed in the last byte.  The remaining bytes
@@ -323,7 +281,7 @@ public final class ASN1BitString
    * @return  An array of {@code boolean} values that correspond to the bits in
    *          this bit string.
    */
-  @NotNull()
+  @NonNull()
   public boolean[] getBits()
   {
     return bits;
@@ -340,7 +298,7 @@ public final class ASN1BitString
    * @throws  ASN1Exception  If the number of bits in this bit string is not a
    *                         multiple of eight.
    */
-  @NotNull()
+  @NonNull()
   public byte[] getBytes()
          throws ASN1Exception
   {
@@ -367,8 +325,8 @@ public final class ASN1BitString
    *
    * @return  An array of the bits that make up the provided bytes.
    */
-  @NotNull()
-  public static boolean[] getBitsForBytes(@NotNull final byte... bytes)
+  @NonNull()
+  public static boolean[] getBitsForBytes(@NonNull final byte... bytes)
   {
     final boolean[] bits = new boolean[bytes.length * 8];
     for (int i=0; i < bytes.length; i++)
@@ -400,9 +358,9 @@ public final class ASN1BitString
    * @throws  ASN1Exception  If the provided array cannot be decoded as a bit
    *                         string element.
    */
-  @NotNull()
+  @NonNull()
   public static ASN1BitString decodeAsBitString(
-              @NotNull final byte[] elementBytes)
+              @NonNull final byte[] elementBytes)
          throws ASN1Exception
   {
     try
@@ -446,12 +404,12 @@ public final class ASN1BitString
     }
     catch (final ASN1Exception ae)
     {
-      Debug.debugException(ae);
+      //Debug.debugException(ae);
       throw ae;
     }
     catch (final Exception e)
     {
-      Debug.debugException(e);
+      //Debug.debugException(e);
       throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
     }
   }
@@ -468,9 +426,9 @@ public final class ASN1BitString
    * @throws  ASN1Exception  If the provided element cannot be decoded as a bit
    *                         string element.
    */
-  @NotNull()
+  @NonNull()
   public static ASN1BitString decodeAsBitString(
-              @NotNull final ASN1Element element)
+              @NonNull final ASN1Element element)
          throws ASN1Exception
   {
     final byte[] elementValue = element.getValue();
@@ -505,8 +463,8 @@ public final class ASN1BitString
    * @throws  ASN1Exception  If the provided value cannot be decoded as a valid
    *                         bit string.
    */
-  @NotNull()
-  private static boolean[] decodeValue(@NotNull final byte[] elementValue)
+  @NonNull()
+  private static boolean[] decodeValue(@NonNull final byte[] elementValue)
           throws ASN1Exception
   {
     if (elementValue.length == 0)
@@ -565,7 +523,7 @@ public final class ASN1BitString
    * {@inheritDoc}
    */
   @Override()
-  public void toString(@NotNull final StringBuilder buffer)
+  public void toString(@NonNull final StringBuilder buffer)
   {
     buffer.ensureCapacity(buffer.length() + bits.length);
     for (final boolean bit : bits)

@@ -37,12 +37,10 @@ package com.jn.langx.asn1.spec;
 
 
 
+import com.jn.langx.annotation.NonNull;
+
 import java.io.Serializable;
 
-import com.unboundid.util.Mutable;
-import com.unboundid.util.NotNull;
-import com.unboundid.util.ThreadSafety;
-import com.unboundid.util.ThreadSafetyLevel;
 
 
 
@@ -54,8 +52,6 @@ import com.unboundid.util.ThreadSafetyLevel;
  * called after all elements have been added to ensure that the length is
  * properly computed and inserted into the associated buffer.
  */
-@Mutable()
-@ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public final class ASN1BufferSet
        implements Serializable
 {
@@ -67,7 +63,7 @@ public final class ASN1BufferSet
 
 
   // The ASN.1 buffer with which the set is associated.
-  @NotNull
+  @NonNull
   private final ASN1Buffer buffer;
 
   // The position in the ASN.1 buffer at which the first set value begins.
@@ -80,7 +76,7 @@ public final class ASN1BufferSet
    *
    * @param  buffer  The ASN.1 buffer with which this object will be associated.
    */
-  ASN1BufferSet(@NotNull final ASN1Buffer buffer)
+  ASN1BufferSet(@NonNull final ASN1Buffer buffer)
   {
     this.buffer = buffer;
 

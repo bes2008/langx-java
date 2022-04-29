@@ -36,14 +36,9 @@
 package com.jn.langx.asn1.spec;
 
 
+import com.jn.langx.annotation.NonNull;
 
-import com.unboundid.util.Debug;
-import com.unboundid.util.NotMutable;
-import com.unboundid.util.NotNull;
-import com.unboundid.util.ThreadSafety;
-import com.unboundid.util.ThreadSafetyLevel;
-
-import static com.unboundid.asn1.ASN1Messages.*;
+import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 
 
@@ -54,8 +49,6 @@ import static com.unboundid.asn1.ASN1Messages.*;
  * for integer values of arbitrary size, see the {@link ASN1BigInteger} class as
  * an alternative.
  */
-@NotMutable()
-@ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ASN1Long
        extends ASN1Element
 {
@@ -111,7 +104,7 @@ public final class ASN1Long
    * @param  value      The pre-encoded value to use for this element.
    */
   private ASN1Long(final byte type, final long longValue,
-                   @NotNull final byte[] value)
+                   @NonNull final byte[] value)
   {
     super(type, value);
 
@@ -128,19 +121,19 @@ public final class ASN1Long
    *
    * @return  A byte array containing the encoded value.
    */
-  @NotNull()
+  @NonNull()
   static byte[] encodeLongValue(final long longValue)
   {
     if (longValue < 0)
     {
-      if ((longValue & 0xFFFF_FFFF_FFFF_FF80L) == 0xFFFF_FFFF_FFFF_FF80L)
+      if ((longValue & 0xFFFFFFFFFFFFFF80L) == 0xFFFFFFFFFFFFFF80L)
       {
         return new byte[]
         {
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0xFFFF_FFFF_FFFF_8000L) == 0xFFFF_FFFF_FFFF_8000L)
+      else if ((longValue & 0xFFFFFFFFFFFF8000L) == 0xFFFFFFFFFFFF8000L)
       {
         return new byte[]
         {
@@ -148,7 +141,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0xFFFF_FFFF_FF80_0000L) == 0xFFFF_FFFF_FF80_0000L)
+      else if ((longValue & 0xFFFFFFFFFF800000L) == 0xFFFFFFFFFF800000L)
       {
         return new byte[]
         {
@@ -157,7 +150,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0xFFFF_FFFF_8000_0000L) == 0xFFFF_FFFF_8000_0000L)
+      else if ((longValue & 0xFFFFFFFF80000000L) == 0xFFFFFFFF80000000L)
       {
         return new byte[]
         {
@@ -167,7 +160,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0xFFFF_FF80_0000_0000L) == 0xFFFF_FF80_0000_0000L)
+      else if ((longValue & 0xFFFFFF8000000000L) == 0xFFFFFF8000000000L)
       {
         return new byte[]
         {
@@ -178,7 +171,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0xFFFF_8000_0000_0000L) == 0xFFFF_8000_0000_0000L)
+      else if ((longValue & 0xFFFF800000000000L) == 0xFFFF800000000000L)
       {
         return new byte[]
         {
@@ -190,7 +183,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0xFF80_0000_0000_0000L) == 0xFF80_0000_0000_0000L)
+      else if ((longValue & 0xFF80000000000000L) == 0xFF80000000000000L)
       {
         return new byte[]
         {
@@ -220,14 +213,14 @@ public final class ASN1Long
     }
     else
     {
-      if ((longValue & 0x0000_0000_0000_007FL) == longValue)
+      if ((longValue & 0x000000000000007FL) == longValue)
       {
         return new byte[]
         {
           (byte) (longValue & 0x7FL)
         };
       }
-      else if ((longValue & 0x0000_0000_0000_7FFFL) == longValue)
+      else if ((longValue & 0x0000000000007FFFL) == longValue)
       {
         return new byte[]
         {
@@ -235,7 +228,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0x0000_0000_007F_FFFFL) == longValue)
+      else if ((longValue & 0x00000000007FFFFFL) == longValue)
       {
         return new byte[]
         {
@@ -244,7 +237,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0x0000_0000_7FFF_FFFFL) == longValue)
+      else if ((longValue & 0x000000007FFFFFFFL) == longValue)
       {
         return new byte[]
         {
@@ -254,7 +247,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0x0000_007F_FFFF_FFFFL) == longValue)
+      else if ((longValue & 0x0000007FFFFFFFFFL) == longValue)
       {
         return new byte[]
         {
@@ -265,7 +258,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0x0000_7FFF_FFFF_FFFFL) == longValue)
+      else if ((longValue & 0x00007FFFFFFFFFFFL) == longValue)
       {
         return new byte[]
         {
@@ -277,7 +270,7 @@ public final class ASN1Long
           (byte) (longValue & 0xFFL)
         };
       }
-      else if ((longValue & 0x007F_FFFF_FFFF_FFFFL) == longValue)
+      else if ((longValue & 0x007FFFFFFFFFFFFFL) == longValue)
       {
         return new byte[]
         {
@@ -331,8 +324,8 @@ public final class ASN1Long
    * @throws  ASN1Exception  If the provided array cannot be decoded as a long
    *                         element.
    */
-  @NotNull()
-  public static ASN1Long decodeAsLong(@NotNull final byte[] elementBytes)
+  @NonNull()
+  public static ASN1Long decodeAsLong(@NonNull final byte[] elementBytes)
          throws ASN1Exception
   {
     try
@@ -367,7 +360,7 @@ public final class ASN1Long
           longValue = (value[0] & 0xFFL);
           if ((value[0] & 0x80L) != 0x00L)
           {
-            longValue |= 0xFFFF_FFFF_FFFF_FF00L;
+            longValue |= 0xFFFFFFFFFFFFFF00L;
           }
           break;
 
@@ -375,7 +368,7 @@ public final class ASN1Long
           longValue = ((value[0] & 0xFFL) << 8) | (value[1] & 0xFFL);
           if ((value[0] & 0x80L) != 0x00L)
           {
-            longValue |= 0xFFFF_FFFF_FFFF_0000L;
+            longValue |= 0xFFFFFFFFFFFF0000L;
           }
           break;
 
@@ -384,7 +377,7 @@ public final class ASN1Long
                       (value[2] & 0xFFL);
           if ((value[0] & 0x80L) != 0x00L)
           {
-            longValue |= 0xFFFF_FFFF_FF00_0000L;
+            longValue |= 0xFFFFFFFFFF000000L;
           }
           break;
 
@@ -393,7 +386,7 @@ public final class ASN1Long
                       ((value[2] & 0xFFL) << 8) | (value[3] & 0xFFL);
           if ((value[0] & 0x80L) != 0x00L)
           {
-            longValue |= 0xFFFF_FFFF_0000_0000L;
+            longValue |= 0xFFFFFFFF00000000L;
           }
           break;
 
@@ -403,7 +396,7 @@ public final class ASN1Long
                       (value[4] & 0xFFL);
           if ((value[0] & 0x80L) != 0x00L)
           {
-            longValue |= 0xFFFF_FF00_0000_0000L;
+            longValue |= 0xFFFFFF0000000000L;
           }
           break;
 
@@ -413,7 +406,7 @@ public final class ASN1Long
                       ((value[4] & 0xFFL) << 8) | (value[5] & 0xFFL);
           if ((value[0] & 0x80L) != 0x00L)
           {
-            longValue |= 0xFFFF_0000_0000_0000L;
+            longValue |= 0xFFFF000000000000L;
           }
           break;
 
@@ -424,7 +417,7 @@ public final class ASN1Long
                       (value[6] & 0xFFL);
           if ((value[0] & 0x80L) != 0x00L)
           {
-            longValue |= 0xFF00_0000_0000_0000L;
+            longValue |= 0xFF00000000000000L;
           }
           break;
 
@@ -443,12 +436,10 @@ public final class ASN1Long
     }
     catch (final ASN1Exception ae)
     {
-      Debug.debugException(ae);
       throw ae;
     }
     catch (final Exception e)
     {
-      Debug.debugException(e);
       throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
     }
   }
@@ -465,8 +456,8 @@ public final class ASN1Long
    * @throws  ASN1Exception  If the provided element cannot be decoded as a long
    *                         element.
    */
-  @NotNull()
-  public static ASN1Long decodeAsLong(@NotNull final ASN1Element element)
+  @NonNull()
+  public static ASN1Long decodeAsLong(@NonNull final ASN1Element element)
          throws ASN1Exception
   {
     long longValue;
@@ -477,7 +468,7 @@ public final class ASN1Long
         longValue = (value[0] & 0xFFL);
         if ((value[0] & 0x80L) != 0x00L)
         {
-          longValue |= 0xFFFF_FFFF_FFFF_FF00L;
+          longValue |= 0xFFFFFFFFFFFFFF00L;
         }
         break;
 
@@ -485,7 +476,7 @@ public final class ASN1Long
         longValue = ((value[0] & 0xFFL) << 8) | (value[1] & 0xFFL);
         if ((value[0] & 0x80L) != 0x00L)
         {
-          longValue |= 0xFFFF_FFFF_FFFF_0000L;
+          longValue |= 0xFFFFFFFFFFFF0000L;
         }
         break;
 
@@ -494,7 +485,7 @@ public final class ASN1Long
                     (value[2] & 0xFFL);
         if ((value[0] & 0x80L) != 0x00L)
         {
-          longValue |= 0xFFFF_FFFF_FF00_0000L;
+          longValue |= 0xFFFFFFFFFF000000L;
         }
         break;
 
@@ -503,7 +494,7 @@ public final class ASN1Long
                     ((value[2] & 0xFFL) << 8) | (value[3] & 0xFFL);
         if ((value[0] & 0x80L) != 0x00L)
         {
-          longValue |= 0xFFFF_FFFF_0000_0000L;
+          longValue |= 0xFFFFFFFF00000000L;
         }
         break;
 
@@ -513,7 +504,7 @@ public final class ASN1Long
                     (value[4] & 0xFFL);
         if ((value[0] & 0x80L) != 0x00L)
         {
-          longValue |= 0xFFFF_FF00_0000_0000L;
+          longValue |= 0xFFFFFF0000000000L;
         }
         break;
 
@@ -523,7 +514,7 @@ public final class ASN1Long
                     ((value[4] & 0xFFL) << 8) | (value[5] & 0xFFL);
         if ((value[0] & 0x80L) != 0x00L)
         {
-          longValue |= 0xFFFF_0000_0000_0000L;
+          longValue |= 0xFFFF000000000000L;
         }
         break;
 
@@ -534,7 +525,7 @@ public final class ASN1Long
                     (value[6] & 0xFFL);
         if ((value[0] & 0x80L) != 0x00L)
         {
-          longValue |= 0xFF00_0000_0000_0000L;
+          longValue |= 0xFF00000000000000L;
         }
         break;
 
@@ -558,7 +549,7 @@ public final class ASN1Long
    * {@inheritDoc}
    */
   @Override()
-  public void toString(@NotNull final StringBuilder buffer)
+  public void toString(@NonNull final StringBuilder buffer)
   {
     buffer.append(longValue);
   }
