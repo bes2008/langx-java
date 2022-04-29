@@ -1,4 +1,4 @@
-package com.jn.langx.util.bytes;
+package com.jn.langx.util.io.bytes;
 
 import com.jn.langx.util.Bytes;
 

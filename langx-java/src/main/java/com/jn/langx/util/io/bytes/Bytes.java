@@ -1,6 +1,7 @@
-package com.jn.langx.util.bytes;
+package com.jn.langx.util.io.bytes;
 
 import com.jn.langx.util.Chars;
+import com.unboundid.util.NotNull;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -566,5 +567,6 @@ public class Bytes {
         buffer.flip();
         return buffer.array();
     }
+
 
 }
