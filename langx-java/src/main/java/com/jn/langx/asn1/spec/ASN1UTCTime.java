@@ -36,7 +36,6 @@
 package com.jn.langx.asn1.spec;
 
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
@@ -50,7 +49,7 @@ import com.unboundid.util.ThreadSafety;
 import com.unboundid.util.ThreadSafetyLevel;
 import com.unboundid.util.StaticUtils;
 
-import static com.unboundid.asn1.ASN1Messages.*;
+import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 
 

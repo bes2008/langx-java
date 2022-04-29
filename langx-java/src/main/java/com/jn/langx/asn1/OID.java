@@ -10,8 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-
-
 /**
  * This class provides a data structure that may be used for representing object
  * identifiers.  Since some directory servers support using strings that aren't
