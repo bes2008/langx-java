@@ -139,7 +139,7 @@ public final class ASN1IA5String
             System.arraycopy(elementBytes, valueStartPos, elementValue, 0, length);
 
             return new ASN1IA5String(elementBytes[0],
-                    Utf8s.toUTF8String(elementValue), elementValue);
+                    Utf8s.toString(elementValue), elementValue);
         } catch (final ASN1Exception ae) {
             throw ae;
         } catch (final Exception e) {
@@ -161,7 +161,7 @@ public final class ASN1IA5String
             @NonNull final ASN1Element element)
             throws ASN1Exception {
         final byte[] elementValue = element.getValue();
-        return new ASN1IA5String(element.getType(), Utf8s.toUTF8String(elementValue), elementValue);
+        return new ASN1IA5String(element.getType(), Utf8s.toString(elementValue), elementValue);
     }
 
 

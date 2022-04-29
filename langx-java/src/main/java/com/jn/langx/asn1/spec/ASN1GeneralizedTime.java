@@ -473,7 +473,7 @@ public final class ASN1GeneralizedTime
             System.arraycopy(elementBytes, valueStartPos, elementValue, 0, length);
 
             return new ASN1GeneralizedTime(elementBytes[0],
-                    Utf8s.toUTF8String(elementValue));
+                    Utf8s.toString(elementValue));
         } catch (final ASN1Exception ae) {
             throw ae;
         } catch (final Exception e) {
@@ -495,7 +495,7 @@ public final class ASN1GeneralizedTime
             @NonNull final ASN1Element element)
             throws ASN1Exception {
         return new ASN1GeneralizedTime(element.getType(),
-                Utf8s.toUTF8String(element.getValue()));
+                Utf8s.toString(element.getValue()));
     }
 
 

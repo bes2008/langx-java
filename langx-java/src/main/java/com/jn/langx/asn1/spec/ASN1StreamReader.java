@@ -541,7 +541,7 @@ public final class ASN1StreamReader
 
         totalBytesRead += length;
 
-        final String timestamp = Utf8s.toUTF8String(value);
+        final String timestamp = Utf8s.toString(value);
         final Date date =
                 new Date(ASN1GeneralizedTime.decodeTimestamp(timestamp));
         //Debug.debugASN1Read(Level.INFO, "GeneralizedTime", type, length, timestamp);
@@ -851,7 +851,7 @@ public final class ASN1StreamReader
 
         totalBytesRead += length;
 
-        final String s = Utf8s.toUTF8String(value);
+        final String s = Utf8s.toString(value);
         //Debug.debugASN1Read(Level.INFO, "String", type, length, s);
         return s;
     }
@@ -898,7 +898,7 @@ public final class ASN1StreamReader
 
         totalBytesRead += length;
 
-        final String timestamp = Utf8s.toUTF8String(value);
+        final String timestamp = Utf8s.toString(value);
         final Date date = new Date(ASN1UTCTime.decodeTimestamp(timestamp));
         //Debug.debugASN1Read(Level.INFO, "UTCTime", type, length, timestamp);
         return date;

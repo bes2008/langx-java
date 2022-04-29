@@ -155,7 +155,7 @@ public class Utf8s {
      * encoding.
      */
     @NonNull()
-    public static String toUTF8String(@NonNull final byte[] b) {
+    public static String toString(@NonNull final byte[] b) {
         try {
             return new String(b, Charsets.UTF_8);
         } catch (final Exception e) {
@@ -177,8 +177,7 @@ public class Utf8s {
      * byte array using the UTF-8 encoding.
      */
     @NonNull()
-    public static String toUTF8String(@NonNull final byte[] b, final int offset,
-                                      final int length) {
+    public static String toString(@NonNull final byte[] b, final int offset, final int length) {
         try {
             return new String(b, offset, length, Charsets.UTF_8);
         } catch (final Exception e) {

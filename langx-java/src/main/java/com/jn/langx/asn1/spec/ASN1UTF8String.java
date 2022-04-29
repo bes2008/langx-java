@@ -123,7 +123,7 @@ public final class ASN1UTF8String
             }
 
             return new ASN1UTF8String(elementBytes[0],
-                    Utf8s.toUTF8String(elementValue), elementValue);
+                    Utf8s.toString(elementValue), elementValue);
         } catch (final ASN1Exception ae) {
             //Debug.debugException(ae);
             throw ae;
@@ -152,7 +152,7 @@ public final class ASN1UTF8String
         }
 
         return new ASN1UTF8String(element.getType(),
-                Utf8s.toUTF8String(elementValue), elementValue);
+                Utf8s.toString(elementValue), elementValue);
     }
 
 

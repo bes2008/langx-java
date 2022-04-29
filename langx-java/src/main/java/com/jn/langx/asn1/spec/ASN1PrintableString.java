@@ -154,7 +154,7 @@ public final class ASN1PrintableString
             System.arraycopy(elementBytes, valueStartPos, elementValue, 0, length);
 
             return new ASN1PrintableString(elementBytes[0],
-                    Utf8s.toUTF8String(elementValue), elementValue);
+                    Utf8s.toString(elementValue), elementValue);
         } catch (final ASN1Exception ae) {
             //Debug.debugException(ae);
             throw ae;
@@ -179,7 +179,7 @@ public final class ASN1PrintableString
             throws ASN1Exception {
         final byte[] elementValue = element.getValue();
         return new ASN1PrintableString(element.getType(),
-                Utf8s.toUTF8String(elementValue), elementValue);
+                Utf8s.toString(elementValue), elementValue);
     }
 
 

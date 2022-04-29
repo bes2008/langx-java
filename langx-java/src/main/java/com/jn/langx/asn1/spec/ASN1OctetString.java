@@ -349,7 +349,7 @@ public final class ASN1OctetString extends ASN1Element implements ByteString {
             if (length == 0) {
                 stringValue = "";
             } else {
-                stringValue = Utf8s.toUTF8String(valueBytes, offset, length);
+                stringValue = Utf8s.toString(valueBytes, offset, length);
             }
         }
 

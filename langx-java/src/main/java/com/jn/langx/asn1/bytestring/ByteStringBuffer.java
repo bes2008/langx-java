@@ -1735,7 +1735,7 @@ public final class ByteStringBuffer
     @Override()
     @NonNull()
     public String toString() {
-        return Utf8s.toUTF8String(array, 0, endPos);
+        return Utf8s.toString(array, 0, endPos);
     }
 
 
