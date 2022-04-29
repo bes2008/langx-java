@@ -7,12 +7,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import com.unboundid.util.Debug;
-import com.unboundid.util.NotMutable;
-import com.unboundid.util.NotNull;
-import com.unboundid.util.ThreadSafety;
-import com.unboundid.util.ThreadSafetyLevel;
-import com.unboundid.util.StaticUtils;
+import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.io.bytes.Utf8s;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
@@ -53,14 +49,11 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * {@link ASN1OctetString} that is flexible enough to support whatever encoding
  * you want.
  */
-@NotMutable()
-@ThreadSafety(level = ThreadSafetyLevel.COMPLETELY_THREADSAFE)
-public final class ASN1UTCTime
-        extends ASN1Element {
+public final class ASN1UTCTime extends ASN1Element {
     /**
      * The thread-local date formatter used to encode and decode UTC time values.
      */
-    @NotNull
+    @NonNull
     private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTERS =
             new ThreadLocal<SimpleDateFormat>();
 
@@ -75,7 +68,7 @@ public final class ASN1UTCTime
     private final long time;
 
     // The string representation of the UTC time value.
-    @NotNull
+    @NonNull
     private final String stringRepresentation;
 
 
@@ -108,7 +101,7 @@ public final class ASN1UTCTime
      *             actually represented by the element will have its
      *             milliseconds component set to zero.
      */
-    public ASN1UTCTime(@NotNull final Date date) {
+    public ASN1UTCTime(@NonNull final Date date) {
         this(ASN1Constants.UNIVERSAL_UTC_TIME_TYPE, date.getTime());
     }
 
@@ -123,7 +116,7 @@ public final class ASN1UTCTime
      *             actually represented by the element will have its
      *             milliseconds component set to zero.
      */
-    public ASN1UTCTime(final byte type, @NotNull final Date date) {
+    public ASN1UTCTime(final byte type, @NonNull final Date date) {
         this(type, date.getTime());
     }
 
@@ -157,10 +150,9 @@ public final class ASN1UTCTime
      *             component set to zero.
      */
     public ASN1UTCTime(final byte type, final long time) {
-        super(type, StaticUtils.getBytes(encodeTimestamp(time)));
+        super(type, Utf8s.getBytes(encodeTimestamp(time)));
 
-        final GregorianCalendar calendar =
-                new GregorianCalendar(StaticUtils.getUTCTimeZone());
+        final GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
         calendar.setTimeInMillis(time);
         calendar.set(Calendar.MILLISECOND, 0);
 
@@ -178,7 +170,7 @@ public final class ASN1UTCTime
      * @throws ASN1Exception If the provided timestamp does not represent a
      *                       valid ASN.1 UTC time string representation.
      */
-    public ASN1UTCTime(@NotNull final String timestamp)
+    public ASN1UTCTime(@NonNull final String timestamp)
             throws ASN1Exception {
         this(ASN1Constants.UNIVERSAL_UTC_TIME_TYPE, timestamp);
     }
@@ -194,9 +186,9 @@ public final class ASN1UTCTime
      * @throws ASN1Exception If the provided timestamp does not represent a
      *                       valid ASN.1 UTC time string representation.
      */
-    public ASN1UTCTime(final byte type, @NotNull final String timestamp)
+    public ASN1UTCTime(final byte type, @NonNull final String timestamp)
             throws ASN1Exception {
-        super(type, StaticUtils.getBytes(timestamp));
+        super(type, Utf8s.getBytes(timestamp));
 
         time = decodeTimestamp(timestamp);
         stringRepresentation = timestamp;
@@ -211,8 +203,8 @@ public final class ASN1UTCTime
      *             must not be {@code null}.
      * @return The encoded timestamp.
      */
-    @NotNull()
-    public static String encodeTimestamp(@NotNull final Date date) {
+    @NonNull()
+    public static String encodeTimestamp(@NonNull final Date date) {
         return getDateFormatter().format(date);
     }
 
@@ -223,7 +215,7 @@ public final class ASN1UTCTime
      *
      * @return A date formatter instance.
      */
-    @NotNull()
+    @NonNull()
     private static SimpleDateFormat getDateFormatter() {
         final SimpleDateFormat existingFormatter = DATE_FORMATTERS.get();
         if (existingFormatter != null) {
@@ -248,7 +240,7 @@ public final class ASN1UTCTime
      *             {@code Date.getTime()}).
      * @return The encoded timestamp.
      */
-    @NotNull()
+    @NonNull()
     public static String encodeTimestamp(final long time) {
         return encodeTimestamp(new Date(time));
     }
@@ -266,7 +258,7 @@ public final class ASN1UTCTime
      *                       valid string representation of an ASN.1 UTC time
      *                       value.
      */
-    public static long decodeTimestamp(@NotNull final String timestamp)
+    public static long decodeTimestamp(@NonNull final String timestamp)
             throws ASN1Exception {
         if (timestamp.length() != 13) {
             throw new ASN1Exception(ERR_UTC_TIME_STRING_INVALID_LENGTH.get());
@@ -318,11 +310,8 @@ public final class ASN1UTCTime
             // of UTC time values, this should only happen when trying to use a day
             // of the month that is not valid for the desired month (for example,
             // trying to use a date of September 31, when September only has 30 days).
-            Debug.debugException(e);
             throw new ASN1Exception(
-                    ERR_UTC_TIME_STRING_CANNOT_PARSE.get(
-                            StaticUtils.getExceptionMessage(e)),
-                    e);
+                    ERR_UTC_TIME_STRING_CANNOT_PARSE.get(e.getMessage()), e);
         }
     }
 
@@ -346,7 +335,7 @@ public final class ASN1UTCTime
      * @return A {@code Date} object that is set ot the time represented by this
      * UTC time element.
      */
-    @NotNull()
+    @NonNull()
     public Date getDate() {
         return new Date(time);
     }
@@ -359,7 +348,7 @@ public final class ASN1UTCTime
      * @return The string representation of the UTC time value contained in this
      * element.
      */
-    @NotNull()
+    @NonNull()
     public String getStringRepresentation() {
         return stringRepresentation;
     }
@@ -374,9 +363,8 @@ public final class ASN1UTCTime
      * @throws ASN1Exception If the provided array cannot be decoded as a UTC
      *                       time element.
      */
-    @NotNull()
-    public static ASN1UTCTime decodeAsUTCTime(@NotNull final byte[] elementBytes)
-            throws ASN1Exception {
+    @NonNull()
+    public static ASN1UTCTime decodeAsUTCTime(@NonNull final byte[] elementBytes) throws ASN1Exception {
         try {
             int valueStartPos = 2;
             int length = (elementBytes[1] & 0x7F);
@@ -398,13 +386,10 @@ public final class ASN1UTCTime
             final byte[] elementValue = new byte[length];
             System.arraycopy(elementBytes, valueStartPos, elementValue, 0, length);
 
-            return new ASN1UTCTime(elementBytes[0],
-                    StaticUtils.toUTF8String(elementValue));
+            return new ASN1UTCTime(elementBytes[0], Utf8s.toString(elementValue));
         } catch (final ASN1Exception ae) {
-            Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }
@@ -418,11 +403,9 @@ public final class ASN1UTCTime
      * @throws ASN1Exception If the provided element cannot be decoded as a UTC
      *                       time element.
      */
-    @NotNull()
-    public static ASN1UTCTime decodeAsUTCTime(@NotNull final ASN1Element element)
-            throws ASN1Exception {
-        return new ASN1UTCTime(element.getType(),
-                StaticUtils.toUTF8String(element.getValue()));
+    @NonNull()
+    public static ASN1UTCTime decodeAsUTCTime(@NonNull final ASN1Element element) throws ASN1Exception {
+        return new ASN1UTCTime(element.getType(), Utf8s.toString(element.getValue()));
     }
 
 
@@ -430,7 +413,7 @@ public final class ASN1UTCTime
      * {@inheritDoc}
      */
     @Override()
-    public void toString(@NotNull final StringBuilder buffer) {
+    public void toString(@NonNull final StringBuilder buffer) {
         buffer.append(stringRepresentation);
     }
 }

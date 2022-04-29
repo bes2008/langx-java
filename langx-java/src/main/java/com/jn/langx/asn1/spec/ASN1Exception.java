@@ -9,8 +9,7 @@ import com.jn.langx.annotation.Nullable;
  * interacting with ASN.1 BER elements.
  */
 @NotMutable()
-public final class ASN1Exception
-        extends RuntimeException {
+public final class ASN1Exception extends RuntimeException {
     /**
      * The serial version UID for this serializable class.
      */

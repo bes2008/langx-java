@@ -102,9 +102,7 @@ public class Utf8s {
      * @return {@code true} if the provided byte array has the expected number of
      * bytes that start with 0b10, or {@code false} if not.
      */
-    private static boolean hasExpectedSubsequentUTF8Bytes(@NonNull final byte[] b,
-                                                          final int p,
-                                                          final int n) {
+    private static boolean hasExpectedSubsequentUTF8Bytes(@NonNull final byte[] b, final int p, final int n) {
         if (b.length < (p + n)) {
             return false;
         }

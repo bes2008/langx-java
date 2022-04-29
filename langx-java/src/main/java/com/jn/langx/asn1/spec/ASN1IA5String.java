@@ -13,8 +13,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * non-empty string comprised only of the ASCII characters (including ASCII
  * control characters).
  */
-public final class ASN1IA5String
-        extends ASN1Element {
+public final class ASN1IA5String extends ASN1Element {
     /**
      * The serial version UID for this serializable class.
      */

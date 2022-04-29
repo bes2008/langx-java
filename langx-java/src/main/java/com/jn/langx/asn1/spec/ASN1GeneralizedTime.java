@@ -49,8 +49,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * string representation will be retained and will be used in the encoded
  * representation.
  */
-public final class ASN1GeneralizedTime
-        extends ASN1Element {
+public final class ASN1GeneralizedTime extends ASN1Element {
     /**
      * The thread-local date formatters used to encode generalized time values
      * that do not include milliseconds.

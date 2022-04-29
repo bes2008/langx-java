@@ -12,8 +12,7 @@ import java.io.Serializable;
  * called after all elements have been added to ensure that the length is
  * properly computed and inserted into the associated buffer.
  */
-public final class ASN1BufferSet
-        implements Serializable {
+public final class ASN1BufferSet implements Serializable {
     /**
      * The serial version UID for this serializable class.
      */

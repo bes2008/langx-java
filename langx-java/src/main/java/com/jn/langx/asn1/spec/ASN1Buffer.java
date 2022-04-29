@@ -19,8 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * or copied to a byte array.  {@code ASN1Buffer} instances are not threadsafe
  * and should not be accessed concurrently by multiple threads.
  */
-public final class ASN1Buffer
-        implements Serializable {
+public final class ASN1Buffer implements Serializable {
     /**
      * The default maximum buffer size.
      */

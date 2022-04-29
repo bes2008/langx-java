@@ -9,8 +9,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * and represents either "TRUE" or "FALSE".  A value whose only byte is 0x00 is
  * considered "false", while any other single-byte value is considered "true".
  */
-public final class ASN1Boolean
-        extends ASN1Element {
+public final class ASN1Boolean extends ASN1Element {
     /**
      * A pre-allocated ASN.1 Boolean element with the universal Boolean BER type
      * and a value of "FALSE".

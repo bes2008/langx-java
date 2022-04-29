@@ -14,7 +14,6 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.io.bytes.Utf8s;
-import com.unboundid.ldap.sdk.LDAPConnectionOptions;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
@@ -34,8 +33,7 @@ public final class ASN1StreamReader
      * The default maximum element size that will be used for the constructor that
      * does not specify a size.
      */
-    private static final int DEFAULT_MAX_ELEMENT_SIZE_BYTES =
-            new LDAPConnectionOptions().getMaxMessageSize();
+    private static final int DEFAULT_MAX_ELEMENT_SIZE_BYTES = 1024;
 
 
     // Indicates whether socket timeout exceptions should be ignored for the
@@ -70,7 +68,7 @@ public final class ASN1StreamReader
     /**
      * Creates a new ASN.1 stream reader that will read data from the provided
      * input stream.  It will use a maximum element size equal to the default
-     * value returned by the {@link LDAPConnectionOptions#getMaxMessageSize()}
+     * value returned by the
      * method.
      *
      * @param inputStream The input stream from which data should be read.  If

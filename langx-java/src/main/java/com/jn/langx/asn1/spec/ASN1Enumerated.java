@@ -12,8 +12,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * although this does not impact its encoding other than through the use of a
  * different default BER type.
  */
-public final class ASN1Enumerated
-        extends ASN1Element {
+public final class ASN1Enumerated extends ASN1Element {
     /**
      * The serial version UID for this serializable class.
      */

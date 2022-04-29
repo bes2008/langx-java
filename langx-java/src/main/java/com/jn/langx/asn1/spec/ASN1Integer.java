@@ -14,8 +14,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * If you need support for integer values of arbitrary size, see
  * {@link ASN1BigInteger}.
  */
-public final class ASN1Integer
-        extends ASN1Element {
+public final class ASN1Integer extends ASN1Element {
     /**
      * The serial version UID for this serializable class.
      */

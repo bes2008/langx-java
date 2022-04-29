@@ -10,8 +10,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * This class provides an ASN.1 bit string element, whose value represents a
  * series of zero or more bits, where each bit is either one or zero.
  */
-public final class ASN1BitString
-        extends ASN1Element {
+public final class ASN1BitString extends ASN1Element {
     /**
      * The serial version UID for this serializable class.
      */

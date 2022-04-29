@@ -473,9 +473,7 @@ enum ASN1Messages {
                     formattedMessage.contains("{9,number,0}") ||
                     formattedMessage.contains("{10}") ||
                     formattedMessage.contains("{10,number,0}")) {
-                throw new IllegalArgumentException(
-                        "Message " + getClass().getName() + '.' + name() +
-                                " contains an un-replaced token:  " + formattedMessage);
+                throw new IllegalArgumentException("Message " + getClass().getName() + '.' + name() + " contains an un-replaced token:  " + formattedMessage);
             }
         }
 
