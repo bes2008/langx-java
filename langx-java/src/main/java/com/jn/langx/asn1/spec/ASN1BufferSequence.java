@@ -13,44 +13,38 @@ import java.io.Serializable;
  * length is properly computed and inserted into the associated buffer.
  */
 public final class ASN1BufferSequence
-       implements Serializable
-{
-  /**
-   * The serial version UID for this serializable class.
-   */
-  private static final long serialVersionUID = 7219098399193345629L;
+        implements Serializable {
+    /**
+     * The serial version UID for this serializable class.
+     */
+    private static final long serialVersionUID = 7219098399193345629L;
 
 
+    // The ASN.1 buffer with which the sequence is associated.
+    @NonNull
+    private final ASN1Buffer buffer;
 
-  // The ASN.1 buffer with which the sequence is associated.
-  @NonNull
-  private final ASN1Buffer buffer;
-
-  // The position in the ASN.1 buffer at which the first sequence value begins.
-  private final int valueStartPos;
-
+    // The position in the ASN.1 buffer at which the first sequence value begins.
+    private final int valueStartPos;
 
 
-  /**
-   * Creates a new instance of this class for the provided ASN.1 buffer.
-   *
-   * @param  buffer  The ASN.1 buffer with which this object will be associated.
-   */
-  ASN1BufferSequence(@NonNull final ASN1Buffer buffer)
-  {
-    this.buffer = buffer;
+    /**
+     * Creates a new instance of this class for the provided ASN.1 buffer.
+     *
+     * @param buffer The ASN.1 buffer with which this object will be associated.
+     */
+    ASN1BufferSequence(@NonNull final ASN1Buffer buffer) {
+        this.buffer = buffer;
 
-    valueStartPos = buffer.length();
-  }
-
+        valueStartPos = buffer.length();
+    }
 
 
-  /**
-   * Updates the associated ASN.1 buffer to indicate that all sequence elements
-   * have been added and that the appropriate length should be inserted.
-   */
-  public void end()
-  {
-    buffer.endSequenceOrSet(valueStartPos);
-  }
+    /**
+     * Updates the associated ASN.1 buffer to indicate that all sequence elements
+     * have been added and that the appropriate length should be inserted.
+     */
+    public void end() {
+        buffer.endSequenceOrSet(valueStartPos);
+    }
 }
