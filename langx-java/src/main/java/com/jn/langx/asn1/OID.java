@@ -101,7 +101,7 @@ public final class OID implements Serializable, Comparable<OID> {
             throws ParseException {
         if (parentOID.components == null) {
             String err = "Unable to create an OID that is a child of OID {} because the provided is not a valid numeric OID.";
-            err = StringTemplates.format(err, String.valueOf(parentOID));
+            err = StringTemplates.formatWithPlaceholder(err, String.valueOf(parentOID));
 
             throw new ParseException(err, 0);
         }
@@ -233,18 +233,18 @@ public final class OID implements Serializable, Comparable<OID> {
                     if (buffer.length() == 0) {
                         if (i == 0) {
                             String err = "Unable to parse {} as an object identifier because it starts with a period.";
-                            err = StringTemplates.format(err, oidString);
+                            err = StringTemplates.formatWithPlaceholder(err, oidString);
                             throw new ParseException(err, i);
                         } else {
                             String err = "Unable to parse {} as an object identifier because it contains consecutive periods at position {}.";
-                            err = StringTemplates.format(err, oidString, i);
+                            err = StringTemplates.formatWithPlaceholder(err, oidString, i);
                             throw new ParseException(err, i);
                         }
                     }
 
                     if ((buffer.length() > 1) && (buffer.charAt(0) == '0')) {
                         String err = "Unable to parse {} as an object identifier because it contains component {} that starts with a leading zero.";
-                        err = StringTemplates.format(err, oidString, buffer.toString());
+                        err = StringTemplates.formatWithPlaceholder(err, oidString, buffer.toString());
                         throw new ParseException(err, componentStartPos);
                     }
 
@@ -252,7 +252,7 @@ public final class OID implements Serializable, Comparable<OID> {
                         components.add(Integer.parseInt(buffer.toString()));
                     } catch (final Exception e) {
                         String err = "Unable to parse {} as an object identifier because component {} is out of range for a 32-bit integer.";
-                        err = StringTemplates.format(err, oidString, buffer.toString(), componentStartPos);
+                        err = StringTemplates.formatWithPlaceholder(err, oidString, buffer.toString(), componentStartPos);
                         throw new ParseException(err,
                                 componentStartPos);
                     }
@@ -262,20 +262,20 @@ public final class OID implements Serializable, Comparable<OID> {
 
                 default:
                     String err = "Unable to parse {} as an object identifier because it contains illegal character {} at position {}.";
-                    err = StringTemplates.format(err, oidString, c, i);
+                    err = StringTemplates.formatWithPlaceholder(err, oidString, c, i);
                     throw new ParseException(err, i);
             }
         }
 
         if (buffer.length() == 0) {
             String err = "Unable to parse {} as an object identifier because it ends with a period.";
-            err = StringTemplates.format(err, oidString);
+            err = StringTemplates.formatWithPlaceholder(err, oidString);
             throw new ParseException(err, (oidString.length() - 1));
         }
 
         if ((buffer.length() > 1) && (buffer.charAt(0) == '0')) {
             String err = "Unable to parse {} as an object identifier because it contains component {} that starts with a leading zero.";
-            err = StringTemplates.format(err, oidString, buffer.toString());
+            err = StringTemplates.formatWithPlaceholder(err, oidString, buffer.toString());
             throw new ParseException(err,
                     componentStartPos);
         }
@@ -284,7 +284,7 @@ public final class OID implements Serializable, Comparable<OID> {
             components.add(Integer.parseInt(buffer.toString()));
         } catch (final Exception e) {
             String err = "Unable to parse {} as an object identifier because component {} is out of range for a 32-bit integer.";
-            err = StringTemplates.format(err, oidString, buffer.toString(),
+            err = StringTemplates.formatWithPlaceholder(err, oidString, buffer.toString(),
                     componentStartPos);
             throw new ParseException(err,
                     componentStartPos);
@@ -294,7 +294,7 @@ public final class OID implements Serializable, Comparable<OID> {
         if (strict) {
             if (components.size() < 2) {
                 String err = "Unable to parse {} as a valid object identifier because it only contains a single component.  Valid OIDs must have at least two components.";
-                err = StringTemplates.format(err, oidString);
+                err = StringTemplates.formatWithPlaceholder(err, oidString);
                 throw new ParseException(err, 0);
             }
 
@@ -305,7 +305,7 @@ public final class OID implements Serializable, Comparable<OID> {
                 case 1:
                     if (secondComponent > 39) {
                         String err = "Unable to parse {} as a valid object identifier because the second component value of {} is out of range.  If the first component is {}, then the second component must not be greater than 39.";
-                        err = StringTemplates.format(err, oidString,
+                        err = StringTemplates.formatWithPlaceholder(err, oidString,
                                 secondComponent, firstComponent);
                         throw new ParseException(err,
                                 0);
@@ -318,8 +318,8 @@ public final class OID implements Serializable, Comparable<OID> {
 
                 default:
                     // Invalid value for the first component.
-                    String err = "Unable to parse ''{0}'' as a valid object identifier because the first component value of {1,number,0} is not valid.  The first component of a numeric OID can only be zero, one, or two.";
-                    err = StringTemplates.format(err, oidString, firstComponent);
+                    String err = "Unable to parse '{}' as a valid object identifier because the first component value of {} is not valid.  The first component of a numeric OID can only be zero, one, or two.";
+                    err = StringTemplates.formatWithPlaceholder(err, oidString, firstComponent);
                     throw new ParseException(err,
                             0);
             }
@@ -451,7 +451,7 @@ public final class OID implements Serializable, Comparable<OID> {
             throws ParseException {
         if (components == null) {
             String err = "Unable to retrieve the parent for OID {} because it is not a valid numeric OID.";
-            err = StringTemplates.format(err, oidString);
+            err = StringTemplates.formatWithPlaceholder(err, oidString);
             throw new ParseException(err, 0);
         }
 
@@ -482,16 +482,16 @@ public final class OID implements Serializable, Comparable<OID> {
     public boolean isAncestorOf(@NonNull final OID oid)
             throws ParseException {
         if (components == null) {
-            String err = "Unable to determine whether OID ''{0}'' is an ancestor of OID ''{1}'' because the former is not a valid numeric OID.";
-            err = StringTemplates.format(err, oidString,
+            String err = "Unable to determine whether OID '{}' is an ancestor of OID '{}' because the former is not a valid numeric OID.";
+            err = StringTemplates.formatWithPlaceholder(err, oidString,
                     oid.oidString);
             throw new ParseException(err,
                     0);
         }
 
         if (oid.components == null) {
-            String err = "Unable to determine whether OID ''{0}'' is an ancestor of OID ''{1}'' because the latter is not a valid numeric OID.";
-            err = StringTemplates.format(err, oid.oidString,
+            String err = "Unable to determine whether OID '{}' is an ancestor of OID '{}' because the latter is not a valid numeric OID.";
+            err = StringTemplates.formatWithPlaceholder(err, oid.oidString,
                     oid.oidString);
             throw new ParseException(err,
                     0);
@@ -527,16 +527,16 @@ public final class OID implements Serializable, Comparable<OID> {
     public boolean isDescendantOf(@NonNull final OID oid)
             throws ParseException {
         if (components == null) {
-            String err = "Unable to determine whether OID ''{0}'' is a descendant of OID ''{1}'' because the former is not a valid numeric OID.";
-            err = StringTemplates.format(err, oidString,
+            String err = "Unable to determine whether OID '{}' is a descendant of OID '{}' because the former is not a valid numeric OID.";
+            err = StringTemplates.formatWithPlaceholder(err, oidString,
                     oid.oidString);
             throw new ParseException(err,
                     0);
         }
 
         if (oid.components == null) {
-            String err = "Unable to determine whether OID ''{0}'' is a descendant of OID ''{1}'' because the latter is not a valid numeric OID.";
-            err = StringTemplates.format(err, oid.oidString,
+            String err = "Unable to determine whether OID '{}' is a descendant of OID '{}' because the latter is not a valid numeric OID.";
+            err = StringTemplates.formatWithPlaceholder(err, oid.oidString,
                     oid.oidString);
             throw new ParseException(err,
                     0);

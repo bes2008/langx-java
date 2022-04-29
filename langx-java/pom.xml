@@ -28,14 +28,11 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
         </dependency>
-        <!--
         <dependency>
             <groupId>com.unboundid</groupId>
             <artifactId>unboundid-ldapsdk</artifactId>
             <version>6.0.4</version>
         </dependency>
-
-        -->
     </dependencies>
 
     <build>
