@@ -2,6 +2,7 @@ package com.jn.langx.util.io;
 
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.SystemPropertys;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
@@ -16,12 +17,18 @@ public class LineDelimiter {
      * the line delimiter constant of the current O/S.
      */
     public static final LineDelimiter DEFAULT;
+    /**
+     * @since 4.5.3
+     */
+    public static final LineDelimiter EOL;
 
     static {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         PrintWriter out = new PrintWriter(new OutputStreamWriter(bout, Charsets.UTF_8), true);
         out.println();
-        DEFAULT = new LineDelimiter(new String(bout.toByteArray(),Charsets.UTF_8));
+        DEFAULT = new LineDelimiter(new String(bout.toByteArray(), Charsets.UTF_8));
+        String linesep = SystemPropertys.getLineSeparator();
+        EOL = new LineDelimiter(linesep == null ? DEFAULT.getValue() : linesep);
     }
 
     public static final LineDelimiter CRLF = new LineDelimiter(CR_LF);
