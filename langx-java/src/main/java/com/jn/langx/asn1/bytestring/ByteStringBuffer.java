@@ -131,10 +131,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final byte[] b)
             throws NullPointerException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         return append(b, 0, b.length);
@@ -158,10 +155,7 @@ public final class ByteStringBuffer
                                    final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         if ((off < 0) || (len < 0) || (off + len > b.length)) {
@@ -178,10 +172,7 @@ public final class ByteStringBuffer
                         b.length);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         }
 
         if (len > 0) {
@@ -205,10 +196,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final ByteString b)
             throws NullPointerException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided byte string is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided byte string is null.");
         }
 
         b.appendValueTo(this);
@@ -228,10 +216,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final ByteStringBuffer buffer)
             throws NullPointerException {
         if (buffer == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided buffer is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided buffer is null.");
         }
 
         return append(buffer.array, 0, buffer.endPos);
@@ -270,10 +255,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer append(@NonNull final char[] c)
             throws NullPointerException {
         if (c == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         return append(c, 0, c.length);
@@ -298,10 +280,7 @@ public final class ByteStringBuffer
                                    final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         if ((off < 0) || (len < 0) || (off + len > c.length)) {
@@ -317,10 +296,7 @@ public final class ByteStringBuffer
                         c.length);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         }
 
         if (len > 0) {
@@ -378,14 +354,10 @@ public final class ByteStringBuffer
      */
     @Override()
     @NonNull()
-    public ByteStringBuffer append(@NonNull final CharSequence s, final int start,
-                                   final int end)
+    public ByteStringBuffer append(@NonNull final CharSequence s, final int start, final int end)
             throws NullPointerException, IndexOutOfBoundsException {
         if (s == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided character sequence is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided character sequence is null.");
         }
 
         final String string = s.toString();
@@ -511,10 +483,7 @@ public final class ByteStringBuffer
                 message = StringTemplates.formatWithPlaceholder(err, pos, endPos);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         } else if (pos == endPos) {
             return append(b);
         }
@@ -542,10 +511,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final byte[] b)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         return insert(pos, b, 0, b.length);
@@ -575,9 +541,7 @@ public final class ByteStringBuffer
                                    final int off, final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         if ((pos < 0) || (pos > endPos) || (off < 0) || (len < 0) ||
@@ -596,10 +560,7 @@ public final class ByteStringBuffer
                         b.length);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         } else if (len == 0) {
             return this;
         } else if (pos == endPos) {
@@ -629,10 +590,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final ByteString b)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided byte string is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided byte string is null.");
         }
 
         return insert(pos, b.getValue());
@@ -656,10 +614,7 @@ public final class ByteStringBuffer
                                    @NonNull final ByteStringBuffer buffer)
             throws NullPointerException, IndexOutOfBoundsException {
         if (buffer == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided buffer is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided buffer is null.");
         }
 
         return insert(pos, buffer.array, 0, buffer.endPos);
@@ -686,10 +641,7 @@ public final class ByteStringBuffer
                 message = StringTemplates.formatWithPlaceholder("The provided position {} is greater than the length of the buffer ({}).", pos, endPos);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         } else if (pos == endPos) {
             return append(c);
         }
@@ -723,10 +675,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final char[] c)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         return insert(pos, new String(c, 0, c.length));
@@ -754,10 +703,7 @@ public final class ByteStringBuffer
                                    final int off, final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         return insert(pos, new String(c, off, len));
@@ -780,10 +726,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer insert(final int pos, @NonNull final CharSequence s)
             throws NullPointerException, IndexOutOfBoundsException {
         if (s == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided character sequence is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided character sequence is null.");
         }
 
         if ((pos < 0) || (pos > endPos)) {
@@ -794,10 +737,7 @@ public final class ByteStringBuffer
                 message = StringTemplates.formatWithPlaceholder("The provided position {} is greater than the length of the buffer ({}).", pos, endPos);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         } else if (pos == endPos) {
             return append(s);
         } else {
@@ -973,10 +913,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final byte[] b)
             throws NullPointerException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         endPos = 0;
@@ -1002,10 +939,7 @@ public final class ByteStringBuffer
                                 final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         if ((off < 0) || (len < 0) || (off + len > b.length)) {
@@ -1019,10 +953,7 @@ public final class ByteStringBuffer
                         b.length);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         }
 
         endPos = 0;
@@ -1043,10 +974,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final ByteString b)
             throws NullPointerException {
         if (b == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided byte string is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided byte string is null.");
         }
 
         endPos = 0;
@@ -1068,10 +996,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final ByteStringBuffer buffer)
             throws NullPointerException {
         if (buffer == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided buffer is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided buffer is null.");
         }
 
         endPos = 0;
@@ -1105,10 +1030,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final char[] c)
             throws NullPointerException {
         if (c == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         endPos = 0;
@@ -1135,10 +1057,7 @@ public final class ByteStringBuffer
                                 final int len)
             throws NullPointerException, IndexOutOfBoundsException {
         if (c == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided array is null.");
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new NullPointerException("The provided array is null.");
         }
 
         if ((off < 0) || (len < 0) || (off + len > c.length)) {
@@ -1152,10 +1071,7 @@ public final class ByteStringBuffer
                         c.length);
             }
 
-            final IndexOutOfBoundsException e =
-                    new IndexOutOfBoundsException(message);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(message);
         }
 
         endPos = 0;
@@ -1176,9 +1092,7 @@ public final class ByteStringBuffer
     public ByteStringBuffer set(@NonNull final CharSequence s)
             throws NullPointerException {
         if (s == null) {
-            final NullPointerException e =
-                    new NullPointerException("The provided character sequence is null.");
-            throw e;
+            throw new NullPointerException("The provided character sequence is null.");
         }
 
         endPos = 0;
@@ -1291,9 +1205,7 @@ public final class ByteStringBuffer
         if (length < 0) {
             String err = "The provided length {} is negative.";
             err = StringTemplates.formatWithPlaceholder(err, length);
-            final IndexOutOfBoundsException e = new IndexOutOfBoundsException(err);
-            //Debug.debugCodingError(e);
-            throw e;
+            throw new IndexOutOfBoundsException(err);
         }
 
         if (length > endPos) {
@@ -1345,10 +1257,8 @@ public final class ByteStringBuffer
     public void setCapacity(final int capacity)
             throws IndexOutOfBoundsException {
         if (capacity < 0) {
-            final IndexOutOfBoundsException e = new IndexOutOfBoundsException(
+            throw new IndexOutOfBoundsException(
                     StringTemplates.formatWithPlaceholder("The provided capacity {} is negative.", capacity));
-            //Debug.debugCodingError(e);
-            throw e;
         }
 
         if (this.capacity == capacity) {
@@ -1580,7 +1490,6 @@ public final class ByteStringBuffer
                 endPos += bytesRead;
             }
         } catch (final IOException e) {
-            //Debug.debugException(e);
             endPos = initialEndPos;
             throw e;
         }
