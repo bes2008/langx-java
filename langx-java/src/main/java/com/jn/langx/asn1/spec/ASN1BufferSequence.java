@@ -1,7 +1,5 @@
 package com.jn.langx.asn1.spec;
 
-
-
 import com.jn.langx.annotation.NonNull;
 
 import java.io.Serializable;

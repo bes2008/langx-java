@@ -35,8 +35,6 @@
  */
 package com.jn.langx.asn1.spec;
 
-
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -256,35 +254,35 @@ public final class ASN1ObjectIdentifier
   private static void encodeComponent(final int c,
                                       @NonNull final ByteStringBuffer b)
   {
-    final int finalByte = c & 0b1111111;
+    final int finalByte = c & 0x7F;
     if (finalByte == c)
     {
       b.append((byte) finalByte);
     }
-    else if ((c & 0b1111111_1111111) == c)
+    else if ((c & 0x3FFF) == c)
     {
-      b.append((byte) (0b10000000 | ((c >> 7) & 0b1111111)));
+      b.append((byte) (0x80 | ((c >> 7) & 0x7F)));
       b.append((byte) finalByte);
     }
-    else if ((c & 0b1111111_1111111_1111111) == c)
+    else if ((c & 0xFFFFF) == c)
     {
-      b.append((byte) (0b10000000 | ((c >> 14) & 0b1111111)));
-      b.append((byte) (0b10000000 | ((c >> 7) & 0b1111111)));
+      b.append((byte) (0x80 | ((c >> 14) & 0x7F)));
+      b.append((byte) (0x80 | ((c >> 7) & 0x7F)));
       b.append((byte) finalByte);
     }
-    else if ((c & 0b1111111_1111111_1111111_1111111) == c)
+    else if ((c & 0xFFFFFF) == c)
     {
-      b.append((byte) (0b10000000 | ((c >> 21) & 0b1111111)));
-      b.append((byte) (0b10000000 | ((c >> 14) & 0b1111111)));
-      b.append((byte) (0b10000000 | ((c >> 7) & 0b1111111)));
+      b.append((byte) (0x80 | ((c >> 21) & 0x7F)));
+      b.append((byte) (0x80 | ((c >> 14) & 0x7F)));
+      b.append((byte) (0x80 | ((c >> 7) & 0x7F)));
       b.append((byte) finalByte);
     }
     else
     {
-      b.append((byte) (0b10000000 | ((c >> 28) & 0b1111111)));
-      b.append((byte) (0b10000000 | ((c >> 21) & 0b1111111)));
-      b.append((byte) (0b10000000 | ((c >> 14) & 0b1111111)));
-      b.append((byte) (0b10000000 | ((c >> 7) & 0b1111111)));
+      b.append((byte) (0x80 | ((c >> 28) & 0x7F)));
+      b.append((byte) (0x80 | ((c >> 21) & 0x7F)));
+      b.append((byte) (0x80 | ((c >> 14) & 0x7F)));
+      b.append((byte) (0x80 | ((c >> 7) & 0x7F)));
       b.append((byte) finalByte);
     }
   }

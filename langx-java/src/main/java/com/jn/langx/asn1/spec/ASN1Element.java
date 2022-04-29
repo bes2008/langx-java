@@ -1,6 +1,5 @@
 package com.jn.langx.asn1.spec;
 
-
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;

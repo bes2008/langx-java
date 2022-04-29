@@ -1,13 +1,9 @@
 package com.jn.langx.asn1.spec;
 
-
-
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.NotMutable;
 import com.jn.langx.annotation.Nullable;
 import com.unboundid.util.LDAPSDKException;
-
-
 
 /**
  * This class defines an exception that can be thrown if a problem occurs while

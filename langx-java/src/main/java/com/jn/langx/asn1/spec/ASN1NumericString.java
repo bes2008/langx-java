@@ -7,7 +7,6 @@ import com.jn.langx.util.io.bytes.Utf8s;
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 
-
 /**
  * This class provides an ASN.1 numeric string element that can hold any
  * empty or non-empty string comprised only of the ASCII numeric digits '0'

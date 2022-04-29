@@ -1,6 +1,4 @@
 package com.jn.langx.asn1.spec;
-
-
 import com.jn.langx.annotation.NonNull;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;

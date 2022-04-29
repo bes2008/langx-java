@@ -4,8 +4,6 @@ import com.jn.langx.annotation.NonNull;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
-
-
 /**
  * This class provides an ASN.1 enumerated element.  Enumerated elements are
  * very similar to integer elements, and the only real difference between them
