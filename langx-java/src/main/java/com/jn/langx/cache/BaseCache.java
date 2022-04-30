@@ -1,6 +1,7 @@
 package com.jn.langx.cache;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.lifecycle.AbstractLifecycle;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Maths;
@@ -21,7 +22,7 @@ import com.jn.langx.util.timing.timer.TimerTask;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
+public abstract class BaseCache<K, V> extends AbstractLifecycle implements Cache<K, V>, Lifecycle {
     // unit: mills
     protected volatile long evictExpiredInterval;
     // unit: mills
@@ -226,7 +227,7 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
     }
 
     @Override
-    public void startup() {
+    public void doStart() {
         if (!running) {
             running = true;
             computeNextEvictExpiredTime();
@@ -247,7 +248,7 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
     }
 
     @Override
-    public void shutdown() {
+    public void doStop() {
         running = false;
         if (timer != null) {
             if (shutdownTimerSelf) {
