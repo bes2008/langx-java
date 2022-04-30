@@ -96,6 +96,13 @@ public class Manifests {
         if (Emptys.isNotEmpty(version)) {
             return version;
         }
+
+        try {
+            Object module = klass.getClass().getMethod("getModule").invoke(klass);
+            Object descriptor = module.getClass().getMethod("getDescriptor").invoke(module);
+            return (String) descriptor.getClass().getMethod("rawVersion").invoke(descriptor);
+        } catch (Throwable x) {
+        }
         return null;
     }
 }

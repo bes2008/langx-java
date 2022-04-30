@@ -11,8 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public final class Objs{
-    private Objs(){}
+public abstract class Objs{
     /**
      * Returns {@code true} if the arguments are equal to each other
      * and {@code false} otherwise.
