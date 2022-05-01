@@ -1,6 +1,7 @@
 package com.jn.langx.java8.util.io;
 
 
+import com.jn.langx.event.EventPublisher;
 import com.jn.langx.java8.util.exception.MultiException;
 import com.jn.langx.lifecycle.AbstractStatefulLifecycle;
 import com.jn.langx.util.function.predicate.inex.IncludeExcludeSet;
@@ -659,6 +660,8 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
         configs.add(config);
     }
 
+
+
     /**
      * Add a listener for changes the watcher notices.
      *
@@ -693,8 +696,8 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     }
 
     @Override
-    protected void doStart() throws Exception {
-        //create a new watchservice
+    protected void doStart()throws Exception {
+        //create a new watch service
         this.watchService = FileSystems.getDefault().newWatchService();
 
         //ensure setting of quiet time is appropriate now we have a watcher

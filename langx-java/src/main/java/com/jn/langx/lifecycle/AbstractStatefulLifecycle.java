@@ -2,71 +2,68 @@ package com.jn.langx.lifecycle;
 
 
 import com.jn.langx.event.EventListener;
+import com.jn.langx.event.EventPublisher;
+import com.jn.langx.event.EventPublisherAware;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.lock.AutoLock;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Uptime;
 import org.slf4j.Logger;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Basic implementation of the life cycle interface for components.
  */
-public abstract class AbstractStatefulLifecycle implements StatefulLifecycle {
+@SuppressWarnings({"rawtypes"})
+public abstract class AbstractStatefulLifecycle implements StatefulLifecycle, EventPublisherAware {
     private static final Logger logger = Loggers.getLogger(AbstractStatefulLifecycle.class);
 
-    enum State {
-        STOPPED,
-        STARTING,
-        STARTED,
-        STOPPING,
-        FAILED
-    }
-
-    public static final String STOPPED = State.STOPPED.toString();
-    public static final String FAILED = State.FAILED.toString();
-    public static final String STARTING = State.STARTING.toString();
-    public static final String STARTED = State.STARTED.toString();
-    public static final String STOPPING = State.STOPPING.toString();
-
-    private final List<EventListener> _eventListener = new CopyOnWriteArrayList<EventListener>();
-    private final AutoLock _lock = new AutoLock();
-    private volatile State _state = State.STOPPED;
+    private String domain;
+    private EventPublisher publisher;
+    private final AutoLock lock = new AutoLock();
+    private volatile State state = State.STOPPED;
 
     /**
      * Method to override to start the lifecycle
      *
      * @throws StopException If thrown, the lifecycle will immediately be stopped.
-     * @throws Exception     If there was a problem starting. Will cause a transition to FAILED state
      */
     protected void doStart() throws Exception {
     }
 
     /**
      * Method to override to stop the lifecycle
-     *
-     * @throws Exception If there was a problem stopping. Will cause a transition to FAILED state
      */
     protected void doStop() throws Exception {
+    }
+
+
+    @Override
+    public EventPublisher getEventPublisher() {
+        return this.publisher;
+    }
+
+    @Override
+    public void setEventPublisher(EventPublisher publisher) {
+        this.publisher = publisher;
     }
 
     @Override
     public final void startup() {
         AutoLock l = null;
         try {
-            l = _lock.lock();
+            l = lock.lock();
             try {
-                switch (_state) {
+                switch (state) {
                     case STARTED:
                         return;
 
                     case STARTING:
                     case STOPPING:
-                        throw new IllegalStateException(getState());
+                        throw new IllegalStateException(getState().name());
 
                     default:
                         try {
@@ -74,16 +71,18 @@ public abstract class AbstractStatefulLifecycle implements StatefulLifecycle {
                             doStart();
                             setStarted();
                         } catch (StopException e) {
-                            if (logger.isDebugEnabled())
+                            if (logger.isDebugEnabled()) {
                                 logger.debug("Unable to stop", e);
+                            }
                             setStopping();
                             doStop();
                             setStopped();
                         }
+                        break;
                 }
             } catch (Throwable e) {
                 setFailed(e);
-                throw new RuntimeException(e);
+                throw Throwables.wrapAsRuntimeException(e);
             }
         } finally {
             IOs.close(l);
@@ -94,24 +93,25 @@ public abstract class AbstractStatefulLifecycle implements StatefulLifecycle {
     public final void shutdown() {
         AutoLock l = null;
         try {
-            l = _lock.lock();
+            l = lock.lock();
             try {
-                switch (_state) {
+                switch (state) {
                     case STOPPED:
-                        return;
+                        break;
 
                     case STARTING:
                     case STOPPING:
-                        throw new IllegalStateException(getState());
+                        throw new IllegalStateException(getState().name());
 
                     default:
                         setStopping();
                         doStop();
                         setStopped();
+                        break;
                 }
             } catch (Throwable e) {
                 setFailed(e);
-                throw new RuntimeException(e);
+                throw Throwables.wrapAsRuntimeException(e);
             }
         } finally {
             IOs.close(l);
@@ -119,162 +119,137 @@ public abstract class AbstractStatefulLifecycle implements StatefulLifecycle {
     }
 
     public boolean isRunning() {
-        final State state = _state;
-        switch (state) {
-            case STARTED:
-            case STARTING:
-                return true;
-            default:
-                return false;
-        }
+        return this.state == State.STARTED || this.state == State.STARTING;
     }
 
     public boolean isStarted() {
-        return _state == State.STARTED;
+        return state == State.STARTED;
     }
 
     public boolean isStarting() {
-        return _state == State.STARTING;
+        return state == State.STARTING;
     }
 
     public boolean isStopping() {
-        return _state == State.STOPPING;
+        return state == State.STOPPING;
     }
 
     public boolean isStopped() {
-        return _state == State.STOPPED;
+        return state == State.STOPPED;
     }
 
     @Override
     public boolean isFailed() {
-        return _state == State.FAILED;
+        return state == State.FAILED;
     }
 
-    public List<EventListener> getEventListeners() {
-        return _eventListener;
+    public void addEventListener(EventListener listener) {
+        publisher.addEventListener(this.domain, listener);
     }
 
-    public void setEventListeners(Collection<EventListener> eventListeners) {
-        for (EventListener l : _eventListener) {
-            if (!eventListeners.contains(l))
-                removeEventListener(l);
+    public void removeEventListener(EventListener listener) {
+        publisher.removeEventListener(this.domain, listener);
+    }
+
+    public State getState() {
+        return this.state;
+    }
+
+    public static State getState(StatefulLifecycle lc) {
+        if (lc instanceof AbstractStatefulLifecycle) {
+            return ((AbstractStatefulLifecycle) lc).state;
         }
-
-        for (EventListener l : eventListeners) {
-            if (!_eventListener.contains(l))
-                addEventListener(l);
+        if (lc.isStarting()) {
+            return State.STARTING;
         }
-    }
-
-    public boolean addEventListener(EventListener listener) {
-        if (_eventListener.contains(listener))
-            return false;
-        _eventListener.add(listener);
-        return true;
-    }
-
-    public boolean removeEventListener(EventListener listener) {
-        return _eventListener.remove(listener);
-    }
-
-    public String getState() {
-        return _state.toString();
-    }
-
-    public static String getState(StatefulLifecycle lc) {
-        if (lc instanceof AbstractStatefulLifecycle)
-            return ((AbstractStatefulLifecycle) lc)._state.toString();
-        if (lc.isStarting())
-            return State.STARTING.toString();
-        if (lc.isStarted())
-            return State.STARTED.toString();
-        if (lc.isStopping())
-            return State.STOPPING.toString();
-        if (lc.isStopped())
-            return State.STOPPED.toString();
-        return State.FAILED.toString();
+        if (lc.isStarted()) {
+            return State.STARTED;
+        }
+        if (lc.isStopping()) {
+            return State.STOPPING;
+        }
+        if (lc.isStopped()) {
+            return State.STOPPED;
+        }
+        return State.FAILED;
     }
 
     private void setStarted() {
-        if (_state == State.STARTING) {
-            _state = State.STARTED;
-            if (logger.isDebugEnabled())
+        if (state == State.STARTING) {
+            state = State.STARTED;
+            if (logger.isDebugEnabled()) {
                 logger.debug("STARTED @{}ms {}", Uptime.getUptime(), this);
-            for (EventListener listener : _eventListener)
-                if (listener instanceof StatefulEventListener)
+            }
+            List<EventListener> listeners = publisher.getListeners(this.domain);
+            for (EventListener listener : listeners) {
+                if (listener instanceof StatefulEventListener) {
                     ((StatefulEventListener) listener).lifecycleStarted(this);
+                }
+            }
         }
     }
 
     private void setStarting() {
-        if (logger.isDebugEnabled())
+        if (logger.isDebugEnabled()) {
             logger.debug("STARTING {}", this);
-        _state = State.STARTING;
-        for (EventListener listener : _eventListener)
-            if (listener instanceof StatefulEventListener)
+        }
+        state = State.STARTING;
+        List<EventListener> listeners = publisher.getListeners(this.domain);
+        for (EventListener listener : listeners) {
+            if (listener instanceof StatefulEventListener) {
                 ((StatefulEventListener) listener).lifecycleStarting(this);
+            }
+        }
     }
 
     private void setStopping() {
-        if (logger.isDebugEnabled())
+        if (logger.isDebugEnabled()) {
             logger.debug("STOPPING {}", this);
-        _state = State.STOPPING;
-        for (EventListener listener : _eventListener)
-            if (listener instanceof StatefulEventListener)
+        }
+        state = State.STOPPING;
+        List<EventListener> listeners = publisher.getListeners(this.domain);
+        for (EventListener listener : listeners) {
+            if (listener instanceof StatefulEventListener) {
                 ((StatefulEventListener) listener).lifecycleStopping(this);
+            }
+        }
     }
 
     private void setStopped() {
-        if (_state == State.STOPPING) {
-            _state = State.STOPPED;
-            if (logger.isDebugEnabled())
+        if (state == State.STOPPING) {
+            state = State.STOPPED;
+            if (logger.isDebugEnabled()) {
                 logger.debug("STOPPED {}", this);
-            for (EventListener listener : _eventListener)
-                if (listener instanceof StatefulEventListener)
+            }
+            List<EventListener> listeners = publisher.getListeners(this.domain);
+            for (EventListener listener : listeners) {
+                if (listener instanceof StatefulEventListener) {
                     ((StatefulEventListener) listener).lifecycleStopped(this);
+                }
+            }
         }
     }
 
     private void setFailed(Throwable th) {
-        _state = State.FAILED;
-        if (logger.isDebugEnabled())
+        state = State.FAILED;
+        if (logger.isDebugEnabled()) {
             logger.warn("FAILED {}: {}", this, th, th);
-        for (EventListener listener : _eventListener) {
-            if (listener instanceof StatefulEventListener)
+        }
+        List<EventListener> listeners = publisher.getListeners(this.domain);
+        for (EventListener listener : listeners) {
+            if (listener instanceof StatefulEventListener) {
                 ((StatefulEventListener) listener).lifecycleFailure(this, th);
+            }
         }
     }
 
-    /**
-     * @deprecated this class is redundant now that {@link StatefulEventListener} has default methods.
-     */
-    @Deprecated
-    public abstract static class AbstractLifecycleListener implements StatefulEventListener {
-        public void lifecycleFailure(Lifecycle event, Throwable cause) {
-        }
-
-        @Override
-        public void lifecycleStarted(Lifecycle event) {
-        }
-
-        @Override
-        public void lifecycleStarting(Lifecycle event) {
-        }
-
-        @Override
-        public void lifecycleStopped(Lifecycle event) {
-        }
-
-        @Override
-        public void lifecycleStopping(Lifecycle event) {
-        }
-    }
 
     @Override
     public String toString() {
         String name = getClass().getSimpleName();
-        if (Strings.isBlank(name) && getClass().getSuperclass() != null)
+        if (Strings.isBlank(name) && getClass().getSuperclass() != null) {
             name = getClass().getSuperclass().getSimpleName();
+        }
         return String.format("%s@%x{%s}", name, hashCode(), getState());
     }
 

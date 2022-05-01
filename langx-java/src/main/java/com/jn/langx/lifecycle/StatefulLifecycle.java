@@ -37,7 +37,7 @@ public interface StatefulLifecycle extends Lifecycle{
      */
     boolean isFailed();
 
-    boolean addEventListener(EventListener listener);
+    void addEventListener(EventListener listener);
 
-    boolean removeEventListener(EventListener listener);
+    void removeEventListener(EventListener listener);
 }

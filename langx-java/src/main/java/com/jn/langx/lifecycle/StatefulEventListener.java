@@ -7,13 +7,13 @@ import com.jn.langx.event.EventListener;
  * A listener for Lifecycle events.
  */
 interface StatefulEventListener extends EventListener {
-    void lifecycleStarting(Lifecycle event);
+    void lifecycleStarting(StatefulLifecycle lifecycle);
 
-    void lifecycleStarted(Lifecycle event);
+    void lifecycleStarted(StatefulLifecycle lifecycle);
 
-    void lifecycleFailure(Lifecycle event, Throwable cause);
+    void lifecycleFailure(StatefulLifecycle lifecycle, Throwable cause);
 
-    void lifecycleStopping(Lifecycle event);
+    void lifecycleStopping(StatefulLifecycle lifecycle);
 
-    void lifecycleStopped(Lifecycle event);
+    void lifecycleStopped(StatefulLifecycle lifecycle);
 }
