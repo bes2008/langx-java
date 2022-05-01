@@ -8,15 +8,16 @@ import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Supplier;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SimpleEventPublisher implements EventPublisher {
-    private WrappedNonAbsentMap<String, List<EventListener>> listenerMap = Collects.wrapAsNonAbsentMap(new ConcurrentHashMap<String, List<EventListener>>(), new Supplier<String, List<EventListener>>() {
+    private WrappedNonAbsentMap<String, Set<EventListener>> listenerMap = Collects.wrapAsNonAbsentMap(new ConcurrentHashMap<String, Set<EventListener>>(), new Supplier<String, Set<EventListener>>() {
         @Override
-        public List<EventListener> get(String input) {
-            return new ArrayList<EventListener>();
+        public Set<EventListener> get(String input) {
+            return new LinkedHashSet<EventListener>();
         }
     });
 
@@ -37,6 +38,21 @@ public class SimpleEventPublisher implements EventPublisher {
 
     @Override
     public void addFirst(String eventDomain, EventListener listener) {
-        listenerMap.get(eventDomain).add(0, listener);
+        Set<EventListener> listeners = listenerMap.get(eventDomain);
+        List<EventListener> list = Collects.asList(listeners);
+        list.add(listener);
+        list.addAll(listeners);
+        listeners = Collects.asSet(list);
+        listenerMap.put(eventDomain, listeners);
+    }
+
+    @Override
+    public void removeEventListener(String eventDomain, EventListener listener) {
+        listenerMap.get(eventDomain).remove(listener);
+    }
+
+    @Override
+    public List<EventListener> getListeners(String eventDomain) {
+        return Collects.asList(listenerMap.get(eventDomain));
     }
 }
