@@ -2,7 +2,7 @@ package com.jn.langx.java8.util.io;
 
 
 import com.jn.langx.java8.util.exception.MultiException;
-import com.jn.langx.lifecycle.AbstractLifecycle;
+import com.jn.langx.lifecycle.AbstractStatefulLifecycle;
 import com.jn.langx.util.function.predicate.inex.IncludeExcludeSet;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import static java.nio.file.StandardWatchEventKinds.*;
  * <p>
  * Reports activity via registered {@link PathWatcher.Listener}s
  */
-public class PathWatcher extends AbstractLifecycle implements Runnable {
+public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     public static class Config implements Predicate<Path> {
         public static final int UNLIMITED_DEPTH = -9999;
 

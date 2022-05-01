@@ -1,6 +1,7 @@
 package com.jn.langx.lifecycle;
 
 
+import com.jn.langx.event.EventListener;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.concurrent.lock.AutoLock;
 import com.jn.langx.util.io.IOs;
@@ -9,15 +10,14 @@ import com.jn.langx.util.os.Uptime;
 import org.slf4j.Logger;
 
 import java.util.Collection;
-import java.util.EventListener;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Basic implementation of the life cycle interface for components.
  */
-public abstract class AbstractLifecycle implements Lifecycle {
-    private static final Logger logger = Loggers.getLogger(AbstractLifecycle.class);
+public abstract class AbstractStatefulLifecycle implements StatefulLifecycle {
+    private static final Logger logger = Loggers.getLogger(AbstractStatefulLifecycle.class);
 
     enum State {
         STOPPED,
@@ -181,9 +181,9 @@ public abstract class AbstractLifecycle implements Lifecycle {
         return _state.toString();
     }
 
-    public static String getState(Lifecycle lc) {
-        if (lc instanceof AbstractLifecycle)
-            return ((AbstractLifecycle) lc)._state.toString();
+    public static String getState(StatefulLifecycle lc) {
+        if (lc instanceof AbstractStatefulLifecycle)
+            return ((AbstractStatefulLifecycle) lc)._state.toString();
         if (lc.isStarting())
             return State.STARTING.toString();
         if (lc.isStarted())
@@ -201,8 +201,8 @@ public abstract class AbstractLifecycle implements Lifecycle {
             if (logger.isDebugEnabled())
                 logger.debug("STARTED @{}ms {}", Uptime.getUptime(), this);
             for (EventListener listener : _eventListener)
-                if (listener instanceof Listener)
-                    ((Listener) listener).lifeCycleStarted(this);
+                if (listener instanceof StatefulEventListener)
+                    ((StatefulEventListener) listener).lifecycleStarted(this);
         }
     }
 
@@ -211,8 +211,8 @@ public abstract class AbstractLifecycle implements Lifecycle {
             logger.debug("STARTING {}", this);
         _state = State.STARTING;
         for (EventListener listener : _eventListener)
-            if (listener instanceof Listener)
-                ((Listener) listener).lifeCycleStarting(this);
+            if (listener instanceof StatefulEventListener)
+                ((StatefulEventListener) listener).lifecycleStarting(this);
     }
 
     private void setStopping() {
@@ -220,8 +220,8 @@ public abstract class AbstractLifecycle implements Lifecycle {
             logger.debug("STOPPING {}", this);
         _state = State.STOPPING;
         for (EventListener listener : _eventListener)
-            if (listener instanceof Listener)
-                ((Listener) listener).lifeCycleStopping(this);
+            if (listener instanceof StatefulEventListener)
+                ((StatefulEventListener) listener).lifecycleStopping(this);
     }
 
     private void setStopped() {
@@ -230,8 +230,8 @@ public abstract class AbstractLifecycle implements Lifecycle {
             if (logger.isDebugEnabled())
                 logger.debug("STOPPED {}", this);
             for (EventListener listener : _eventListener)
-                if (listener instanceof Listener)
-                    ((Listener) listener).lifeCycleStopped(this);
+                if (listener instanceof StatefulEventListener)
+                    ((StatefulEventListener) listener).lifecycleStopped(this);
         }
     }
 
@@ -240,34 +240,33 @@ public abstract class AbstractLifecycle implements Lifecycle {
         if (logger.isDebugEnabled())
             logger.warn("FAILED {}: {}", this, th, th);
         for (EventListener listener : _eventListener) {
-            if (listener instanceof Listener)
-                ((Listener) listener).lifeCycleFailure(this, th);
+            if (listener instanceof StatefulEventListener)
+                ((StatefulEventListener) listener).lifecycleFailure(this, th);
         }
     }
 
     /**
-     * @deprecated this class is redundant now that {@link Listener} has default methods.
+     * @deprecated this class is redundant now that {@link StatefulEventListener} has default methods.
      */
     @Deprecated
-    public abstract static class AbstractLifecycleListener implements Listener {
-        @Override
-        public void lifeCycleFailure(Lifecycle event, Throwable cause) {
+    public abstract static class AbstractLifecycleListener implements StatefulEventListener {
+        public void lifecycleFailure(Lifecycle event, Throwable cause) {
         }
 
         @Override
-        public void lifeCycleStarted(Lifecycle event) {
+        public void lifecycleStarted(Lifecycle event) {
         }
 
         @Override
-        public void lifeCycleStarting(Lifecycle event) {
+        public void lifecycleStarting(Lifecycle event) {
         }
 
         @Override
-        public void lifeCycleStopped(Lifecycle event) {
+        public void lifecycleStopped(Lifecycle event) {
         }
 
         @Override
-        public void lifeCycleStopping(Lifecycle event) {
+        public void lifecycleStopping(Lifecycle event) {
         }
     }
 

@@ -19,8 +19,8 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.cache.Cache;
 import com.jn.langx.event.EventPublisher;
-import com.jn.langx.lifecycle.AbstractLifecycle;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings({"unchecked"})
-public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends AbstractLifecycle implements ConfigurationRepository<T, Loader, Writer>, Reloadable {
+public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> implements ConfigurationRepository<T, Loader, Writer>, Reloadable, Lifecycle {
     @NonNull
     protected String name;
     @NonNull
@@ -114,7 +114,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public void doStart() {
+    public void startup() {
         if (!inited) {
             init();
         }
@@ -154,7 +154,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public void doStop() {
+    public void shutdown() {
         running = false;
         Logger logger = Loggers.getLogger(getClass());
         logger.info("Shutdown configuration repository: {}", name);
