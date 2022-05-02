@@ -44,6 +44,6 @@ public class Holder<V> implements ValueHolder<V> {
 
     @Override
     public int getHash() {
-        return v.hashCode();
+        return isNull() ? 0 : v.hashCode();
     }
 }

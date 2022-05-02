@@ -1,13 +1,8 @@
 package com.jn.langx.util.struct;
 
-public interface ValueHolder<V> extends Reference<V>{
+public interface ValueHolder<V> extends Ref<V>{
     void set(V v);
     void reset();
-    boolean isEmpty();
-
     @Override
     V get();
-
-    @Override
-    boolean isNull();
 }
