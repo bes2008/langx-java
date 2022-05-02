@@ -21,10 +21,10 @@ import java.util.Set;
  * @param <P> The type of the instance passed to the predicate
  */
 public class IncludeExcludeSet<T, P> implements Predicate<P> {
-    private final Set<T> _includes;
-    private final Predicate<P> _includePredicate;
-    private final Set<T> _excludes;
-    private final Predicate<P> _excludePredicate;
+    private final Set<T> includes;
+    private final Predicate<P> includePredicate;
+    private final Set<T> excludes;
+    private final Predicate<P> excludePredicate;
 
     private static class SetContainsPredicate<T> implements Predicate<T> {
         private final Set<T> set;
@@ -62,19 +62,19 @@ public class IncludeExcludeSet<T, P> implements Predicate<P> {
      */
     public <SET extends Set<T>> IncludeExcludeSet(Class<SET> setClass) {
         try {
-            _includes = setClass.getDeclaredConstructor().newInstance();
-            _excludes = setClass.getDeclaredConstructor().newInstance();
+            includes = setClass.getDeclaredConstructor().newInstance();
+            excludes = setClass.getDeclaredConstructor().newInstance();
 
-            if (_includes instanceof Predicate) {
-                _includePredicate = (Predicate<P>) _includes;
+            if (includes instanceof Predicate) {
+                includePredicate = (Predicate<P>) includes;
             } else {
-                _includePredicate = new IncludeExcludeSet.SetContainsPredicate(_includes);
+                includePredicate = new IncludeExcludeSet.SetContainsPredicate(includes);
             }
 
-            if (_excludes instanceof Predicate) {
-                _excludePredicate = (Predicate<P>) _excludes;
+            if (excludes instanceof Predicate) {
+                excludePredicate = (Predicate<P>) excludes;
             } else {
-                _excludePredicate = new IncludeExcludeSet.SetContainsPredicate(_excludes);
+                excludePredicate = new IncludeExcludeSet.SetContainsPredicate(excludes);
             }
         } catch (RuntimeException e) {
             throw e;
@@ -98,33 +98,33 @@ public class IncludeExcludeSet<T, P> implements Predicate<P> {
         Objs.requireNonNull(excludeSet, "Exclude Set");
         Objs.requireNonNull(excludePredicate, "Exclude Predicate");
 
-        _includes = includeSet;
-        _includePredicate = includePredicate;
-        _excludes = excludeSet;
-        _excludePredicate = excludePredicate;
+        includes = includeSet;
+        this.includePredicate = includePredicate;
+        excludes = excludeSet;
+        this.excludePredicate = excludePredicate;
     }
 
-    public void include(T element) {
-        _includes.add(element);
+    public void addIncluded(T element) {
+        includes.add(element);
     }
 
-    public void include(T... element) {
-        _includes.addAll(Arrays.asList(element));
+    public void addIncluded(T... element) {
+        includes.addAll(Arrays.asList(element));
     }
 
-    public void exclude(T element) {
-        _excludes.add(element);
+    public void addExcluded(T element) {
+        excludes.add(element);
     }
 
-    public void exclude(T... element) {
-        _excludes.addAll(Arrays.asList(element));
+    public void addExcluded(T... element) {
+        excludes.addAll(Arrays.asList(element));
     }
 
     @Override
     public boolean test(P t) {
-        if (!_includes.isEmpty() && !_includePredicate.test(t))
+        if (!includes.isEmpty() && !includePredicate.test(t))
             return false;
-        return !_excludePredicate.test(t);
+        return !excludePredicate.test(t);
     }
 
     /**
@@ -134,49 +134,49 @@ public class IncludeExcludeSet<T, P> implements Predicate<P> {
      * @return Boolean.TRUE if item is included, Boolean.FALSE if item is excluded or null if neither
      */
     public Boolean isIncludedAndNotExcluded(P item) {
-        if (_excludePredicate.test(item))
+        if (excludePredicate.test(item))
             return Boolean.FALSE;
-        if (_includePredicate.test(item))
+        if (includePredicate.test(item))
             return Boolean.TRUE;
 
         return null;
     }
 
-    public boolean hasIncludes() {
-        return !_includes.isEmpty();
+    public boolean hasIncluded() {
+        return !includes.isEmpty();
     }
 
-    public boolean hasExcludes() {
-        return !_excludes.isEmpty();
+    public boolean hasExcluded() {
+        return !excludes.isEmpty();
     }
 
     public int size() {
-        return _includes.size() + _excludes.size();
+        return includes.size() + excludes.size();
     }
 
     public Set<T> getIncluded() {
-        return _includes;
+        return includes;
     }
 
     public Set<T> getExcluded() {
-        return _excludes;
+        return excludes;
     }
 
     public void clear() {
-        _includes.clear();
-        _excludes.clear();
+        includes.clear();
+        excludes.clear();
     }
 
     @Override
     public String toString() {
         return String.format("%s@%x{i=%s,ip=%s,e=%s,ep=%s}", this.getClass().getSimpleName(), hashCode(),
-                _includes,
-                _includePredicate == _includes ? "SELF" : _includePredicate,
-                _excludes,
-                _excludePredicate == _excludes ? "SELF" : _excludePredicate);
+                includes,
+                includePredicate == includes ? "SELF" : includePredicate,
+                excludes,
+                excludePredicate == excludes ? "SELF" : excludePredicate);
     }
 
     public boolean isEmpty() {
-        return _includes.isEmpty() && _excludes.isEmpty();
+        return includes.isEmpty() && excludes.isEmpty();
     }
 }

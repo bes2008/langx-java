@@ -1,7 +1,6 @@
 package com.jn.langx.java8.util.io;
 
 
-import com.jn.langx.event.EventPublisher;
 import com.jn.langx.java8.util.exception.MultiException;
 import com.jn.langx.lifecycle.AbstractStatefulLifecycle;
 import com.jn.langx.util.function.predicate.inex.IncludeExcludeSet;
@@ -64,7 +63,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
 
             if (!Files.isDirectory(path)) {
                 dir = path.getParent();
-                includeExclude.include(new PathWatcher.ExactPathMatcher(path));
+                includeExclude.addIncluded(new PathWatcher.ExactPathMatcher(path));
                 setRecurseDepth(0);
             }
 
@@ -100,7 +99,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
          * @param matcher the path matcher for this exclude
          */
         public void addExclude(PathMatcher matcher) {
-            includeExclude.exclude(matcher);
+            includeExclude.addExcluded(matcher);
         }
 
         /**
@@ -167,7 +166,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
          * @param matcher the path matcher for this include
          */
         public void addInclude(PathMatcher matcher) {
-            includeExclude.include(matcher);
+            includeExclude.addIncluded(matcher);
         }
 
         /**

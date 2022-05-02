@@ -34,13 +34,13 @@ import java.util.Collection;
 public abstract class Lifecycles {
 
 
-    public static void init(Object o) throws InitializationException {
+    public static void init(Object o) {
         if (o instanceof Initializable) {
             init((Initializable) o);
         }
     }
 
-    public static void init(Initializable initializable) throws InitializationException {
+    public static void init(Initializable initializable) {
         initializable.init();
     }
 
@@ -52,7 +52,7 @@ public abstract class Lifecycles {
      * @throws InitializationException if unable to initialize one or more instances.
      * @since 0.9
      */
-    public static void init(Collection c) throws InitializationException {
+    public static void init(Collection c) {
         if (Emptys.isEmpty(c)) {
             return;
         }
