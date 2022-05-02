@@ -3,8 +3,9 @@ package com.jn.langx.java8.util.io;
 
 import com.jn.langx.java8.util.exception.MultiException;
 import com.jn.langx.lifecycle.AbstractStatefulLifecycle;
-import com.jn.langx.util.function.predicate.inex.IncludeExcludeSet;
+import com.jn.langx.util.collection.exclusion.IncludeExcludeSet;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.os.Platform;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -63,7 +64,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
 
             if (!Files.isDirectory(path)) {
                 dir = path.getParent();
-                includeExclude.addIncluded(new PathWatcher.ExactPathMatcher(path));
+                includeExclude.addInclusions(new PathWatcher.ExactPathMatcher(path));
                 setRecurseDepth(0);
             }
 
@@ -99,7 +100,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
          * @param matcher the path matcher for this exclude
          */
         public void addExclude(PathMatcher matcher) {
-            includeExclude.addExcluded(matcher);
+            includeExclude.addExclusions(matcher);
         }
 
         /**
@@ -166,7 +167,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
          * @param matcher the path matcher for this include
          */
         public void addInclude(PathMatcher matcher) {
-            includeExclude.addIncluded(matcher);
+            includeExclude.addInclusion(matcher);
         }
 
         /**
@@ -559,19 +560,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
         ADDED, DELETED, MODIFIED, UNKNOWN;
     }
 
-    private static final boolean IS_WINDOWS;
-
-    static {
-        String os = System.getProperty("os.name");
-        if (os == null) {
-            IS_WINDOWS = false;
-        } else {
-            String osl = os.toLowerCase(Locale.ENGLISH);
-            IS_WINDOWS = osl.contains("windows");
-        }
-    }
-
-    static final Logger logger = Loggers.getLogger(PathWatcher.class);
+    private static final Logger logger = Loggers.getLogger(PathWatcher.class);
 
     @SuppressWarnings("unchecked")
     protected static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -596,7 +585,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     private long updateQuietTimeDuration = 1000;
     private TimeUnit updateQuietTimeUnit = TimeUnit.MILLISECONDS;
     private Thread thread;
-    private boolean _notifyExistingOnStart = true;
+    private boolean notifyExistingOnStart = true;
 
     /**
      * Construct new PathWatcher
@@ -643,9 +632,10 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
             //add the include for the file
             config.addIncludeGlobRelative(file.getFileName().toString());
             watch(config);
-        } else
+        } else {
             //add the include for the file
             config.addIncludeGlobRelative(file.getFileName().toString());
+        }
     }
 
     /**
@@ -658,7 +648,6 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
         //Add a custom config
         configs.add(config);
     }
-
 
 
     /**
@@ -683,7 +672,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
         Collections.sort(dirs);
 
         s.append("[");
-        if (dirs.size() > 0) {
+        if (!dirs.isEmpty()) {
             s.append(dirs.get(0));
             if (dirs.size() > 1) {
                 s.append(" (+").append(dirs.size() - 1).append(")");
@@ -695,7 +684,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     }
 
     @Override
-    protected void doStart()throws Exception {
+    protected void doStart() throws Exception {
         //create a new watch service
         this.watchService = FileSystems.getDefault().newWatchService();
 
@@ -737,9 +726,9 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
      * Remove all current configs and listeners.
      */
     public void reset() {
-        if (!isStopped())
+        if (!isStopped()) {
             throw new IllegalStateException("PathWatcher must be stopped before reset.");
-
+        }
         configs.clear();
         listeners.clear();
     }
@@ -880,7 +869,6 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
         WatchService watch = watchService;
 
         while (isRunning() && thread == Thread.currentThread()) {
-
             WatchKey key;
 
             try {
@@ -898,8 +886,9 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
                     }
                 }
 
-                if (logger.isDebugEnabled())
+                if (logger.isDebugEnabled()) {
                     logger.debug("Waiting for poll({})", waitTime);
+                }
                 key = waitTime < 0 ? watch.take() : waitTime > 0 ? watch.poll(waitTime, updateQuietTimeUnit) : watch.poll();
 
                 // handle all active keys
@@ -1047,30 +1036,34 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     }
 
     private void notifyEvents() {
-        if (logger.isDebugEnabled())
+        if (logger.isDebugEnabled()) {
             logger.debug("notifyEvents {}", events.size());
-
-        if (events.isEmpty())
+        }
+        if (events.isEmpty()) {
             return;
+        }
 
         boolean eventListeners = false;
         for (EventListener listener : listeners) {
             if (listener instanceof PathWatcher.EventListListener) {
                 try {
-                    if (logger.isDebugEnabled())
+                    if (logger.isDebugEnabled()) {
                         logger.debug("notifyEvents {} {}", listener, events);
+                    }
                     ((PathWatcher.EventListListener) listener).onPathWatchEvents(events);
                 } catch (Throwable t) {
                     logger.warn("Unable to notify PathWatch Events", t);
                 }
-            } else
+            } else {
                 eventListeners = true;
+            }
         }
 
         if (eventListeners) {
             for (PathWatcher.PathWatchEvent event : events) {
-                if (logger.isDebugEnabled())
+                if (logger.isDebugEnabled()) {
                     logger.debug("notifyEvent {} {}", event, listeners);
+                }
                 for (EventListener listener : listeners) {
                     if (listener instanceof PathWatcher.Listener) {
                         try {
@@ -1093,11 +1086,11 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
      * @param notify true if existing paths should be notified or not
      */
     public void setNotifyExistingOnStart(boolean notify) {
-        _notifyExistingOnStart = notify;
+        notifyExistingOnStart = notify;
     }
 
     public boolean isNotifyExistingOnStart() {
-        return _notifyExistingOnStart;
+        return notifyExistingOnStart;
     }
 
     /**
@@ -1109,7 +1102,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     public void setUpdateQuietTime(long duration, TimeUnit unit) {
         long desiredMillis = unit.toMillis(duration);
 
-        if (IS_WINDOWS && (desiredMillis < 1000)) {
+        if (Platform.isWindows && (desiredMillis < 1000)) {
             logger.warn("Quiet Time is too low for Microsoft Windows: {} < 1000 ms (defaulting to 1000 ms)", desiredMillis);
             this.updateQuietTimeDuration = 1000;
             this.updateQuietTimeUnit = TimeUnit.MILLISECONDS;
@@ -1142,11 +1135,14 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     }
 
     public static class PathMatcherSet extends HashSet<PathMatcher> implements Predicate<Path> {
+        private static final long serialVersionUID = 1L;
+
         @Override
         public boolean test(Path path) {
             for (PathMatcher pm : this) {
-                if (pm.matches(path))
+                if (pm.matches(path)) {
                     return true;
+                }
             }
             return false;
         }
