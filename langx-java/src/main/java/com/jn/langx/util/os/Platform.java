@@ -1,5 +1,6 @@
 package com.jn.langx.util.os;
 
+import com.jn.langx.util.JvmConstants;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.logging.Loggers;
@@ -8,7 +9,9 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
@@ -173,6 +176,33 @@ public class Platform {
 
     public static boolean is13VMOrGreater() {
         return JAVA_VERSION_INT >= 13;
+    }
+
+    private static final Map<Integer,Integer> classMajorVersionToJdkVersion=new LinkedHashMap<Integer, Integer>();
+    static {
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_1,1);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_2,2);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_3,3);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_4,4);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_5,5);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_6,6);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_7,7);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_8,8);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_9,9);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_10,10);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_11,11);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_12,12);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_13,14);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_14,14);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_15,15);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_16,16);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_17,17);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_18,18);
+        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_19,19);
+    }
+
+    public static int getJavaVersion(int classMajorVersion){
+        return classMajorVersionToJdkVersion.get(classMajorVersion);
     }
 
     /**
