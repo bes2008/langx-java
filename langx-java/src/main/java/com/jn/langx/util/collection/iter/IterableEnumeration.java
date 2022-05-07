@@ -8,7 +8,7 @@ public class IterableEnumeration<E> implements Enumeration<E> {
     private IteratorEnumeration<E> delegate;
 
     public IterableEnumeration(@Nullable Iterable<E> iterable) {
-        this(new IteratorEnumeration<E>(iterable.iterator()));
+        this(iterable == null ? null : new IteratorEnumeration<E>(iterable.iterator()));
     }
 
 
