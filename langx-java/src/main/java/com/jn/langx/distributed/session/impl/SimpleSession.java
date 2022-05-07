@@ -3,14 +3,14 @@ package com.jn.langx.distributed.session.impl;
 import com.jn.langx.distributed.session.Session;
 import com.jn.langx.distributed.session.SessionManager;
 import com.jn.langx.distributed.session.SessionManagerAware;
-import com.jn.langx.util.collection.AbstractAttributable;
+import com.jn.langx.util.collection.AttributableSet;
 
 import java.util.Date;
 
 /**
  * @since 3.7.0
  */
-public class SimpleSession extends AbstractAttributable implements Session, SessionManagerAware {
+public class SimpleSession extends AttributableSet implements Session, SessionManagerAware {
     private String id;
     private Date startTime;
     private Date lastAccessTime;

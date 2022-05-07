@@ -3,14 +3,14 @@ package com.jn.langx.util.collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractAttributable implements Attributable {
+public abstract class AttributableSet implements Attributable {
     protected Map<String, Object> attributes;
 
-    protected AbstractAttributable(){
+    protected AttributableSet(){
         this(new HashMap<String, Object>());
     }
 
-    protected AbstractAttributable(Map<String, Object> attributes){
+    protected AttributableSet(Map<String, Object> attributes){
         this.attributes = attributes;
     }
 
