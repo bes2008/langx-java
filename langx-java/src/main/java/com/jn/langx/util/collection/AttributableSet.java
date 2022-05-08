@@ -3,14 +3,17 @@ package com.jn.langx.util.collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AttributableSet implements Attributable {
+/**
+ * @since 4.6.2
+ */
+public class AttributableSet implements Attributable {
     protected Map<String, Object> attributes;
 
-    protected AttributableSet(){
+    public AttributableSet(){
         this(new HashMap<String, Object>());
     }
 
-    protected AttributableSet(Map<String, Object> attributes){
+    public AttributableSet(Map<String, Object> attributes){
         this.attributes = attributes;
     }
 
