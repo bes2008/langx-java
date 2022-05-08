@@ -6,7 +6,6 @@ import com.jn.langx.util.Objs;
 /**
  * A collection of {@link Ref reference} factory & utility methods.
  *
- * @author Marek Potociar
  */
 public final class Refs {
 
