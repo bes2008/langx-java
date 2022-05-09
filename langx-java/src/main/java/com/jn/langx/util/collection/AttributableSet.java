@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @since 4.6.2
+ * @since 4.6.1
  */
 public class AttributableSet implements Attributable {
     protected Map<String, Object> attributes;

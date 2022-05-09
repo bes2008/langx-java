@@ -360,8 +360,8 @@ public class Base32 extends BaseNCodec {
      * garbage-out philosophy: it will not check the provided data for validity.
      * </p>
      * <p>
-     * Output is written to {@link Context#buffer Context#buffer} as 8-bit
-     * octets, using {@link Context#pos Context#pos} as the buffer position
+     * Output is written to {@link BaseNCodec.Context#buffer BaseNCodec.Context#buffer} as 8-bit
+     * octets, using {@link BaseNCodec.Context#pos BaseNCodec.Context#pos} as the buffer position
      * </p>
      *
      * @param input byte[] array of ascii data to Base32 decode.
