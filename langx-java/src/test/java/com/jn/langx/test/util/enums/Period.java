@@ -1,10 +1,10 @@
 package com.jn.langx.test.util.enums;
 
-import com.jn.langx.Delegatable;
+import com.jn.langx.DelegateHolder;
 import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.enums.base.EnumDelegate;
 
-public enum Period implements Delegatable<EnumDelegate>, CommonEnum {
+public enum Period implements DelegateHolder<EnumDelegate>, CommonEnum {
     MINUTES(0, "minutes", "minutes"),
     HOURS(1, "hours", "hours"),
     DAY(2, "day", "day"),
@@ -33,8 +33,5 @@ public enum Period implements Delegatable<EnumDelegate>, CommonEnum {
 
     public EnumDelegate getDelegate() {
         return delegate;
-    }
-
-    public void setDelegate(EnumDelegate delegate) {
     }
 }
