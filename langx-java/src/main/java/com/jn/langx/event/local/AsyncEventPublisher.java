@@ -1,28 +1,19 @@
 package com.jn.langx.event.local;
 
-import com.jn.langx.event.DomainEvent;
-import com.jn.langx.util.concurrent.WrappedTasks;
+import com.jn.langx.event.CommonEventPublisher;
 
 import java.util.concurrent.ExecutorService;
 
-public class AsyncEventPublisher extends SimpleEventPublisher {
-    private ExecutorService executor;
-
-    @Override
-    public void publish(final DomainEvent event) {
-        executor.execute(WrappedTasks.wrap(new Runnable() {
-            @Override
-            public void run() {
-                AsyncEventPublisher.super.publish(event);
-            }
-        }));
+public class AsyncEventPublisher extends CommonEventPublisher {
+    public AsyncEventPublisher(boolean parallelForListeners) {
+        setDispatcher(new AsyncEventDispatcher(parallelForListeners));
     }
 
     public ExecutorService getExecutor() {
-        return executor;
+        return ((AsyncEventDispatcher) getDispatcher()).getExecutor();
     }
 
     public void setExecutor(ExecutorService executor) {
-        this.executor = executor;
+        ((AsyncEventDispatcher) this.getDispatcher()).setExecutor(executor);
     }
 }
