@@ -15,7 +15,7 @@ public class EventBusStation extends GenericRegistry<EventBus> implements EventB
 
     @Override
     public void publish(final DomainEvent event) {
-        Collects.forEach(selector.select(instances()), new Consumer<EventBus>() {
+        Collects.forEach(selector.apply(instances()), new Consumer<EventBus>() {
             @Override
             public void accept(EventBus eventBus) {
                 eventBus.publish(event);
