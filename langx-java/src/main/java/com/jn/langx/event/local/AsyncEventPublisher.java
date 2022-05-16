@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 public class AsyncEventPublisher extends CommonEventPublisher {
     public AsyncEventPublisher(boolean parallelForListeners) {
         setDispatcher(new AsyncEventDispatcher(parallelForListeners));
+        setName("async-" + counter.getAndIncrement() + (parallelForListeners ? "parallel" : "serial"));
     }
 
     public ExecutorService getExecutor() {

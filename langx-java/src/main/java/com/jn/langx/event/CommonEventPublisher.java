@@ -1,19 +1,36 @@
 package com.jn.langx.event;
 
+import com.jn.langx.NameAware;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.struct.counter.AtomicIntegerCounter;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CommonEventPublisher implements EventPublisher {
+public class CommonEventPublisher implements EventPublisher, NameAware {
     private EventDispatcher dispatcher;
-
+    private String name;
+    protected final static AtomicIntegerCounter counter = new AtomicIntegerCounter(0);
     public EventDispatcher getDispatcher() {
         return dispatcher;
+    }
+
+    public CommonEventPublisher() {
+        setName("common");
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 
     @Override
