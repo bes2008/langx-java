@@ -5,7 +5,9 @@ import com.jn.langx.event.EventDispatcher;
 import com.jn.langx.event.EventListener;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-
+/**
+ * @since 4.6.2
+ */
 public class SimpleEventDispatcher implements EventDispatcher {
     public static final SimpleEventDispatcher INSTANCE = new SimpleEventDispatcher();
 

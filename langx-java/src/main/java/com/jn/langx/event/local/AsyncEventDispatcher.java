@@ -8,7 +8,9 @@ import com.jn.langx.util.concurrent.WrappedTasks;
 import com.jn.langx.util.function.Consumer;
 
 import java.util.concurrent.ExecutorService;
-
+/**
+ * @since 4.6.2
+ */
 public class AsyncEventDispatcher implements EventDispatcher {
     private ExecutorService executor;
     /**

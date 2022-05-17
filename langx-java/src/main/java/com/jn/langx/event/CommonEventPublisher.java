@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @since 4.6.2
+ */
 public class CommonEventPublisher implements EventPublisher, NameAware {
     private EventDispatcher dispatcher;
     private String name;

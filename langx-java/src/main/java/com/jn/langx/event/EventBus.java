@@ -2,6 +2,9 @@ package com.jn.langx.event;
 
 import com.jn.langx.Named;
 
+/**
+ * @since 4.6.2
+ */
 public interface EventBus<EVENT extends DomainEvent> extends Named {
     /**
      * 发布一个 event 消息

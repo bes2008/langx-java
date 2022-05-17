@@ -5,6 +5,9 @@ import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 
+/**
+ * @since 4.6.2
+ */
 public class EventBusStation extends GenericRegistry<EventBus> implements EventBus, NameAware {
     private String name;
     private EventBusSelector selector = EventBusSelector.SELECT_ALL;
