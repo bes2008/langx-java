@@ -4,7 +4,7 @@ import com.jn.langx.event.CommonEventPublisher;
 
 public class SimpleEventPublisher extends CommonEventPublisher {
 
-    SimpleEventPublisher() {
+    public SimpleEventPublisher() {
         setName("simple-" + counter.getAndIncrement());
         setDispatcher(SimpleEventDispatcher.INSTANCE);
     }
