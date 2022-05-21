@@ -1,8 +1,7 @@
-package com.jn.langx.chain.reqreply;
+package com.jn.langx.chain;
 
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.chain.ChainContext;
 
 public interface Chain<REQ, RESP> {
 

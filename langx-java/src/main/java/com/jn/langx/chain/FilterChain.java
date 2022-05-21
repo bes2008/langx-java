@@ -1,35 +1,33 @@
-package com.jn.langx.chain.reqreply;
+package com.jn.langx.chain;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer;
 
 import java.util.List;
 
 /**
- * Pipeline 风格的 Chain，一直往后进行处理
+ * 类似于 Java EE  Servlet 规范中的 FilterChain。 当然了，这个只是简易版本的，每次需要Chain的时候，需要重建。
  *
  * @param <REQ>
  * @param <RESP>
  */
-public class PipelineChain<REQ, RESP> extends AbstractChain<REQ, RESP> {
-
+public class FilterChain<REQ, RESP> extends AbstractChain<REQ, RESP> {
     private List<Handler<REQ, RESP>> handlers = Collects.emptyArrayList();
+    int pos = 0;
 
     @Override
     public void handle(final REQ request, final RESP response) {
-        Collects.forEach(handlers, new Consumer<Handler<REQ, RESP>>() {
-            @Override
-            public void accept(Handler<REQ, RESP> handler) {
-                handler.handle(request, response, PipelineChain.this);
-            }
-        });
+        if (pos < handlers.size()) {
+            Handler<REQ, RESP> handler = handlers.get(this.pos++);
+            handler.handle(request, response, this);
+        }
     }
 
     public void addHandler(@NonNull Handler<REQ, RESP> handler) {
         Preconditions.checkNotNull(handler);
         handlers.add(handler);
     }
+
 
 }

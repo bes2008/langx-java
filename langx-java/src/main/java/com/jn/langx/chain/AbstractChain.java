@@ -1,6 +1,4 @@
-package com.jn.langx.chain.reqreply;
-
-import com.jn.langx.chain.ChainContext;
+package com.jn.langx.chain;
 
 public abstract class AbstractChain<REQ, RESP> implements Chain<REQ, RESP> {
     private ChainContext context;

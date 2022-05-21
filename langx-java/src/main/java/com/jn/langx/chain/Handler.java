@@ -1,4 +1,4 @@
-package com.jn.langx.chain.reqreply;
+package com.jn.langx.chain;
 
 
 import com.jn.langx.lifecycle.Destroyable;
