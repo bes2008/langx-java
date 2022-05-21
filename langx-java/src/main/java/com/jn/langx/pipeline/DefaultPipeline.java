@@ -1,11 +1,12 @@
 package com.jn.langx.pipeline;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.struct.Holder;
 
 public class DefaultPipeline<T> implements Pipeline<T> {
     private HeadHandlerContext head;
     private TailHandlerContext tail;
-    private T target;
+    private Holder<T> targetHolder = new Holder<T>(null);
     private HandlerContext current = null;
 
     public DefaultPipeline() {
@@ -109,30 +110,41 @@ public class DefaultPipeline<T> implements Pipeline<T> {
 
     @Override
     public void inbound() throws Throwable {
-        Preconditions.checkNotNull(target, "target is null");
+        Preconditions.checkNotNull(targetHolder.isNull(), "target is null");
         getHead().inbound();
     }
 
     @Override
+    public void inbound(T message) throws Throwable {
+        bindTarget(message);
+        inbound();
+    }
+
+    @Override
     public void outbound() throws Throwable {
-        Preconditions.checkNotNull(target, "target is null");
+        Preconditions.checkNotNull(this.targetHolder.isNull(), "target is null");
         Preconditions.checkNotNull(current, "current handler context is null");
         current.outbound();
     }
 
     @Override
     public void bindTarget(T target) {
-        this.target = target;
+        this.targetHolder.set(target);
     }
 
     @Override
     public void unbindTarget() {
-        this.target = null;
+        this.targetHolder.reset();
     }
 
     @Override
     public T getTarget() {
-        return target;
+        return this.getTargetHolder().get();
+    }
+
+    @Override
+    public Holder<T> getTargetHolder() {
+        return this.targetHolder;
     }
 
     public void setHeadHandler(Handler headHandler) {

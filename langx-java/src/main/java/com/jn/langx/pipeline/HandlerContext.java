@@ -3,6 +3,7 @@ package com.jn.langx.pipeline;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.struct.Holder;
 
 public class HandlerContext {
     @Nullable
@@ -127,5 +128,9 @@ public class HandlerContext {
 
     public Object getTarget() {
         return this.pipeline.getTarget();
+    }
+
+    public Holder getCurrentValueHolder(){
+        return this.pipeline.getTargetHolder();
     }
 }

@@ -1,6 +1,7 @@
 package com.jn.langx.pipeline;
 
 import com.jn.langx.annotation.Prototype;
+import com.jn.langx.util.struct.Holder;
 
 @Prototype
 public interface Pipeline<T> {
@@ -26,7 +27,11 @@ public interface Pipeline<T> {
 
     T getTarget();
 
+    Holder<T> getTargetHolder();
+
     void inbound() throws Throwable;
+
+    void inbound(T message) throws Throwable;
 
     void outbound() throws Throwable;
 
