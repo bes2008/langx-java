@@ -1,8 +1,10 @@
 package com.jn.langx.util.struct.counter;
 
+import com.jn.langx.util.Preconditions;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AtomicIntegerCounter implements Counter<Integer> {
+public class AtomicIntegerCounter extends IntegerCounter {
     private AtomicInteger vh;
 
     public AtomicIntegerCounter() {
@@ -14,32 +16,14 @@ public class AtomicIntegerCounter implements Counter<Integer> {
     }
 
     @Override
-    public Integer increment() {
-        return increment(1);
-    }
-
-    @Override
     public Integer increment(Integer delta) {
+        Preconditions.checkNotNull(delta);
         return vh.addAndGet(delta);
     }
 
     @Override
-    public Integer decrement() {
-        return decrement(1);
-    }
-
-    @Override
-    public Integer decrement(Integer delta) {
-        return increment(-delta);
-    }
-
-    @Override
-    public Integer getAndIncrement() {
-        return getAndIncrement(1);
-    }
-
-    @Override
     public Integer getAndIncrement(Integer delta) {
+        Preconditions.checkNotNull(delta);
         return vh.getAndAdd(delta);
     }
 
@@ -50,6 +34,7 @@ public class AtomicIntegerCounter implements Counter<Integer> {
 
     @Override
     public void set(Integer value) {
+        Preconditions.checkNotNull(value);
         vh.set(value);
     }
 }

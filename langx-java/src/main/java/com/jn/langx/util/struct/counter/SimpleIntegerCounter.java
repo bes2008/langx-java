@@ -1,6 +1,8 @@
 package com.jn.langx.util.struct.counter;
 
-public class SimpleIntegerCounter implements Counter<Integer> {
+import com.jn.langx.util.Preconditions;
+
+public class SimpleIntegerCounter extends IntegerCounter {
     int value = 0;
 
     public SimpleIntegerCounter() {
@@ -12,35 +14,15 @@ public class SimpleIntegerCounter implements Counter<Integer> {
     }
 
     @Override
-    public Integer increment() {
-        return increment(1);
-    }
-
-    @Override
     public Integer increment(Integer delta) {
         value = value + delta;
         return value;
     }
 
-    @Override
-    public Integer decrement() {
-        return decrement(1);
-    }
-
-    @Override
-    public Integer decrement(Integer delta) {
-        value = value - delta;
-        return value;
-    }
 
     @Override
     public Integer get() {
         return value;
-    }
-
-    @Override
-    public Integer getAndIncrement() {
-        return getAndIncrement(1);
     }
 
     @Override
@@ -52,6 +34,7 @@ public class SimpleIntegerCounter implements Counter<Integer> {
 
     @Override
     public void set(Integer value) {
+        Preconditions.checkNotNull(value);
         this.value = value;
     }
 }

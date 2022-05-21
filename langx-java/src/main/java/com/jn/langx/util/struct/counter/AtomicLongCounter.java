@@ -1,8 +1,10 @@
 package com.jn.langx.util.struct.counter;
 
+import com.jn.langx.util.Preconditions;
+
 import java.util.concurrent.atomic.AtomicLong;
 
-public class AtomicLongCounter implements Counter<Long> {
+public class AtomicLongCounter extends LongCounter {
     private AtomicLong vh;
 
     public AtomicLongCounter() {
@@ -13,34 +15,16 @@ public class AtomicLongCounter implements Counter<Long> {
         this.vh = new AtomicLong(init);
     }
 
-
-    @Override
-    public Long increment() {
-        return increment(1L);
-    }
-
     @Override
     public Long increment(Long delta) {
+        Preconditions.checkNotNull(delta);
         return vh.addAndGet(delta);
     }
 
-    @Override
-    public Long decrement() {
-        return decrement(1L);
-    }
-
-    @Override
-    public Long decrement(Long delta) {
-        return increment(-delta);
-    }
-
-    @Override
-    public Long getAndIncrement() {
-        return getAndIncrement(1L);
-    }
 
     @Override
     public Long getAndIncrement(Long delta) {
+        Preconditions.checkNotNull(delta);
         return vh.getAndAdd(delta);
     }
 
@@ -51,6 +35,7 @@ public class AtomicLongCounter implements Counter<Long> {
 
     @Override
     public void set(Long value) {
+        Preconditions.checkNotNull(value);
         vh.set(value);
     }
 }

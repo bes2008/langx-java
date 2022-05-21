@@ -1,6 +1,8 @@
 package com.jn.langx.util.struct.counter;
 
-public class SimpleLongCounter implements Counter<Long> {
+import com.jn.langx.util.Preconditions;
+
+public class SimpleLongCounter extends LongCounter {
     private long value;
 
     public SimpleLongCounter() {
@@ -11,10 +13,6 @@ public class SimpleLongCounter implements Counter<Long> {
         set(value);
     }
 
-    @Override
-    public Long increment() {
-        return increment(1L);
-    }
 
     @Override
     public Long increment(Long delta) {
@@ -23,25 +21,10 @@ public class SimpleLongCounter implements Counter<Long> {
     }
 
     @Override
-    public Long decrement() {
-        return decrement(1L);
-    }
-
-    @Override
-    public Long decrement(Long delta) {
-        this.value = value - delta;
-        return value;
-    }
-
-    @Override
     public Long get() {
         return value;
     }
 
-    @Override
-    public Long getAndIncrement() {
-        return getAndIncrement(1L);
-    }
 
     @Override
     public Long getAndIncrement(Long delta) {
@@ -52,6 +35,7 @@ public class SimpleLongCounter implements Counter<Long> {
 
     @Override
     public void set(Long value) {
+        Preconditions.checkNotNull(value);
         this.value = value;
     }
 }
