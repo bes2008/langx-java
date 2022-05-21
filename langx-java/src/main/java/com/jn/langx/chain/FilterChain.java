@@ -18,7 +18,7 @@ public class FilterChain<REQ, RESP> extends AbstractChain<REQ, RESP> {
 
     @Override
     public void handle(final REQ request, final RESP response) {
-        if (pos < handlers.size()) {
+        if (pos < handlers.size() && pos >= 0) {
             Handler<REQ, RESP> handler = handlers.get(this.pos++);
             handler.handle(request, response, this);
         }
