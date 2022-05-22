@@ -13,7 +13,7 @@ public class SharedSimplexPipeline implements SimplexPipeline {
 
     @Override
     public void addFirst(SimplexHandler handler) {
-        this.handlers.add(handler);
+        this.handlers.add(0, handler);
     }
 
     @Override
