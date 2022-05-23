@@ -29,6 +29,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class PeriodicTrigger implements Trigger {
 
+    /**
+     * 周期 mills
+     */
     private final long period;
 
     private final TimeUnit timeUnit;
@@ -59,7 +62,6 @@ public class PeriodicTrigger implements Trigger {
 
     /**
      * Return this trigger's period.
-     * @since 5.0.2
      */
     public long getPeriod() {
         return this.period;
@@ -67,7 +69,6 @@ public class PeriodicTrigger implements Trigger {
 
     /**
      * Return this trigger's time unit (milliseconds by default).
-     * @since 5.0.2
      */
     public TimeUnit getTimeUnit() {
         return this.timeUnit;
@@ -84,7 +85,6 @@ public class PeriodicTrigger implements Trigger {
 
     /**
      * Return the initial delay, or 0 if none.
-     * @since 5.0.2
      */
     public long getInitialDelay() {
         return this.initialDelay;
@@ -102,7 +102,6 @@ public class PeriodicTrigger implements Trigger {
     /**
      * Return whether this trigger uses fixed rate ({@code true}) or
      * fixed delay ({@code false}) behavior.
-     * @since 5.0.2
      */
     public boolean isFixedRate() {
         return this.fixedRate;
