@@ -86,9 +86,13 @@ public class HashedWheelTimer implements Timer {
     private volatile int workerState; // 0 - init, 1 - started, 2 - shut down
 
     private final long tickDuration;
+    /**
+     * 分桶轮，轮中每个元素都是一个分桶。一个分桶是一个 timeout 链表
+     */
     private final HashedWheelBucket[] wheel;
     private final int mask;
     private final CountDownLatch startTimeInitialized = new CountDownLatch(1);
+    // 所有的 定时任务
     final Queue<HashedWheelTimeout> timeouts = new LinkedBlockingQueue<HashedWheelTimeout>();
     final Queue<HashedWheelTimeout> cancelledTimeouts = new LinkedBlockingQueue<HashedWheelTimeout>();
     final AtomicLong pendingTimeouts = new AtomicLong(0);
@@ -460,9 +464,11 @@ public class HashedWheelTimer implements Timer {
             startTimeInitialized.countDown();
 
             do {
+                // 根据指定的 tick 去 sleep，直到下次tick
                 final long deadline = waitForNextTick();
                 if (deadline > 0) {
                     int idx = (int) (tick & mask);
+                    // 将已取消的任务 清理掉
                     processCancelledTasks();
                     HashedWheelBucket bucket = wheel[idx];
                     transferTimeoutsToBuckets();

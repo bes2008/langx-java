@@ -29,8 +29,9 @@ public final class HashedWheelBucket {
 
     /**
      * Expire all {@link HashedWheelTimeout}s for the given {@code deadline}.
+     * 执行所有过期的任务，将其提交到 executor中
      */
-    public void expireTimeouts(long deadline) {
+    void expireTimeouts(long deadline) {
         HashedWheelTimeout timeout = head;
 
         // process all timeouts

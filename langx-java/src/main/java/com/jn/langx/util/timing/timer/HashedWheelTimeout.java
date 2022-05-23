@@ -87,7 +87,7 @@ public class HashedWheelTimeout implements Timeout, Runnable {
         return state() == ST_EXPIRED;
     }
 
-    public void expire() {
+    void expire() {
         if (!compareAndSetState(ST_INIT, ST_EXPIRED)) {
             return;
         }
