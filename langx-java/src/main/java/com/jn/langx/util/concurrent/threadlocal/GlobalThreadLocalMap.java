@@ -132,7 +132,7 @@ public final class GlobalThreadLocalMap {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o){
+            if (this == o) {
                 return true;
             }
             if (o == null || getClass() != o.getClass()) {
@@ -141,10 +141,10 @@ public final class GlobalThreadLocalMap {
 
             SimpleDateFormatCacheKey that = (SimpleDateFormatCacheKey) o;
 
-            if (!pattern.equals(that.pattern)){
+            if (!pattern.equals(that.pattern)) {
                 return false;
             }
-            if (!timeZoneId.equals(that.timeZoneId)){
+            if (!timeZoneId.equals(that.timeZoneId)) {
                 return false;
             }
             return locale.equals(that.locale);
@@ -166,16 +166,17 @@ public final class GlobalThreadLocalMap {
     }
 
 
-    public void clear(){
+    public void clear() {
         CACHE.remove();
     }
 
-    public static Random getRandom(){
+    public static Random getRandom() {
         return ThreadLocalRandom.current();
     }
 
     private static final PooledBytesRandom pooledBytesRandom = new PooledBytesRandom();
-    public static PooledBytesRandom pooledBytesRandom(){
+
+    public static PooledBytesRandom pooledBytesRandom() {
         return pooledBytesRandom;
     }
 }
