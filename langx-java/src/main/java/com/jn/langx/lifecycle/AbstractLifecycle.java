@@ -32,6 +32,7 @@ public abstract class AbstractLifecycle extends AbstractInitializable implements
     public final void startup() {
         this.lifecycleLock.lock();
         try {
+            init();
             if (!this.running) {
                 this.doStart();
                 this.running = true;
