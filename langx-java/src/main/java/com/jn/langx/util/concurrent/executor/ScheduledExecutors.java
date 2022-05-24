@@ -1,4 +1,4 @@
-package com.jn.langx.util.concurrent;
+package com.jn.langx.util.concurrent.executor;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
@@ -6,6 +6,7 @@ import com.jn.langx.exception.ErrorHandler;
 import com.jn.langx.exception.ErrorHandlers;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.timing.scheduling.ImmediateTrigger;
 import com.jn.langx.util.timing.scheduling.ReschedulingRunnable;
@@ -15,7 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class Global {
+public class ScheduledExecutors {
     private static int schedulerCoreSize;
     private static String schedulerThreadPrefix;
     private static ScheduledExecutorService scheduledExecutorService;
