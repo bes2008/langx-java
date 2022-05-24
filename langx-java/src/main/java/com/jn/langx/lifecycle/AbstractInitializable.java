@@ -6,8 +6,8 @@ public abstract class AbstractInitializable implements Initializable {
     @Override
     public void init() throws InitializationException {
         if (!inited) {
-            doInit();
             inited = true;
+            doInit();
         }
     }
 
