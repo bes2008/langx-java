@@ -74,12 +74,12 @@ public abstract class AbstractLifecycle extends AbstractInitializable implements
      * Subclasses must implement this method with the start behavior.
      * This method will be invoked while holding the {@link #lifecycleLock}.
      */
-    protected abstract void doStart();
+    protected void doStart(){}
 
     /**
      * Subclasses must implement this method with the stop behavior.
      * This method will be invoked while holding the {@link #lifecycleLock}.
      */
-    protected abstract void doStop();
+    protected void doStop(){}
 
 }

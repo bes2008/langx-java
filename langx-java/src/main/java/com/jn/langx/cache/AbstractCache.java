@@ -105,7 +105,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
     public void set(@NonNull K key, @Nullable V value, long expire) {
         Preconditions.checkNotNull(key);
         Preconditions.checkTrue(expire > 0);
-        if (!running) {
+        if (!isRunning()) {
             return;
         }
         evictExpired();
@@ -177,7 +177,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
     }
 
     private V get(@NonNull K key, @Nullable Supplier<K, V> loader, boolean loadIfAbsent) {
-        if (!running) {
+        if (!isRunning()) {
             return null;
         }
         evictExpired();
@@ -264,7 +264,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
     }
 
     private V refresh(@NonNull K key, boolean internalInvoke) {
-        if (!running) {
+        if (!isRunning()) {
             return null;
         }
         Preconditions.checkNotNull(key);

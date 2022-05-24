@@ -3,6 +3,8 @@ package com.jn.langx.java8.util.io;
 
 import com.jn.langx.java8.util.exception.MultiException;
 import com.jn.langx.lifecycle.AbstractStatefulLifecycle;
+import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.exclusion.IncludeExcludeSet;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
@@ -587,10 +589,20 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     private Thread thread;
     private boolean notifyExistingOnStart = true;
 
+    private String name;
     /**
      * Construct new PathWatcher
      */
     public PathWatcher() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public Collection<PathWatcher.Config> getConfigs() {
@@ -684,42 +696,51 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     }
 
     @Override
-    protected void doStart() throws Exception {
-        //create a new watch service
-        this.watchService = FileSystems.getDefault().newWatchService();
+    protected void doStart() {
+        try {
+            //create a new watch service
+            this.watchService = FileSystems.getDefault().newWatchService();
 
-        //ensure setting of quiet time is appropriate now we have a watcher
-        setUpdateQuietTime(getUpdateQuietTimeMillis(), TimeUnit.MILLISECONDS);
+            //ensure setting of quiet time is appropriate now we have a watcher
+            setUpdateQuietTime(getUpdateQuietTimeMillis(), TimeUnit.MILLISECONDS);
 
-        // Register all watched paths, walking dir hierarchies as needed, possibly generating
-        // fake add events if notifyExistingOnStart is true
-        for (PathWatcher.Config c : configs) {
-            registerTree(c.getPath(), c, isNotifyExistingOnStart());
+            // Register all watched paths, walking dir hierarchies as needed, possibly generating
+            // fake add events if notifyExistingOnStart is true
+            for (PathWatcher.Config c : configs) {
+                registerTree(c.getPath(), c, isNotifyExistingOnStart());
+            }
+
+            // Start Thread for watcher take/pollKeys loop
+            StringBuilder threadId = new StringBuilder();
+            threadId.append("PathWatcher@");
+            threadId.append(Integer.toHexString(hashCode()));
+            if (logger.isDebugEnabled())
+                logger.debug("{} -> {}", this, threadId);
+
+            thread = new Thread(this, threadId.toString());
+            thread.setDaemon(true);
+            thread.start();
+            super.doStart();
+        }catch (Throwable e){
+            throw Throwables.wrapAsRuntimeException(e);
         }
-
-        // Start Thread for watcher take/pollKeys loop
-        StringBuilder threadId = new StringBuilder();
-        threadId.append("PathWatcher@");
-        threadId.append(Integer.toHexString(hashCode()));
-        if (logger.isDebugEnabled())
-            logger.debug("{} -> {}", this, threadId);
-
-        thread = new Thread(this, threadId.toString());
-        thread.setDaemon(true);
-        thread.start();
-        super.doStart();
     }
 
     @Override
-    protected void doStop() throws Exception {
-        if (watchService != null)
-            watchService.close(); //will invalidate registered watch keys, interrupt thread in take or poll
-        watchService = null;
-        thread = null;
-        keys.clear();
-        pending.clear();
-        events.clear();
-        super.doStop();
+    protected void doStop() {
+        try {
+            if (watchService != null) {
+                watchService.close(); //will invalidate registered watch keys, interrupt thread in take or poll
+            }
+            watchService = null;
+            thread = null;
+            keys.clear();
+            pending.clear();
+            events.clear();
+            super.doStop();
+        }catch (Throwable ex){
+            throw Throwables.wrapAsRuntimeException(ex);
+        }
     }
 
     /**

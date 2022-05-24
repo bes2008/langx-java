@@ -1,5 +1,6 @@
 package com.jn.langx.management.connector.server.impl;
 
+import com.jn.langx.lifecycle.AbstractLifecycle;
 import com.jn.langx.management.connector.server.JMXConnectorServerWrapper;
 import com.jn.langx.util.collection.Arrs;
 
@@ -23,7 +24,7 @@ import javax.rmi.ssl.SslRMIClientSocketFactory;
 import javax.rmi.ssl.SslRMIServerSocketFactory;
 
 
-public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
+public class RMIJMXConnectorServerWrapper extends AbstractLifecycle implements JMXConnectorServerWrapper {
     private static final String serverNameDefault = "jmxrmi";
     protected boolean startRmiRegistry = false;
     protected int rmiRegistryPort = -1;
@@ -50,14 +51,14 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
     /**
      * {@inheritDoc}
      */
-    public void shutdown() {
+    public void doStop() {
         destroyServer(connectorServer);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void startup() {
+    public void doStart() {
 
         // Prevent an attacker guessing the RMI object ID
         System.setProperty("java.rmi.server.randomIDs", "true");
@@ -100,7 +101,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
 
     }
 
-    private void init() {
+    public void init() {
         // Get all the other parameters required from the standard system
         // properties. Only need to get the parameters that affect the creation
         // of the server port.
