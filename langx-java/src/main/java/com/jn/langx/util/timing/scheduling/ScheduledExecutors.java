@@ -1,4 +1,4 @@
-package com.jn.langx.util.concurrent.executor;
+package com.jn.langx.util.timing.scheduling;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
@@ -8,9 +8,6 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.os.Platform;
-import com.jn.langx.util.timing.scheduling.ImmediateTrigger;
-import com.jn.langx.util.timing.scheduling.ReschedulingRunnable;
-import com.jn.langx.util.timing.scheduling.Trigger;
 import com.jn.langx.util.timing.timer.*;
 
 import java.util.concurrent.ScheduledExecutorService;
