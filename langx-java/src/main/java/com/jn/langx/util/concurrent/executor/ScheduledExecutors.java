@@ -17,6 +17,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
+/**
+ * @since 4.6.3
+ */
 public class ScheduledExecutors {
     private static int schedulerCoreSize;
     private static String schedulerThreadPrefix;
@@ -44,6 +47,9 @@ public class ScheduledExecutors {
         return scheduleTask(getScheduledExecutor(), task, trigger, errorHandler);
     }
 
+    /**
+     * @since 4.6.4
+     */
     public static ScheduledFuture scheduleTask(ScheduledExecutorService scheduledExecutorService, @NonNull Runnable task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
         Preconditions.checkNotNull(task);
         if (errorHandler == null) {
@@ -57,10 +63,16 @@ public class ScheduledExecutors {
         return taskWrapper;
     }
 
+    /**
+     * @since 4.6.4
+     */
     public static Timeout timeoutTask(@NonNull Timer timer, @NonNull Runnable task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
         return timeoutTask(timer, new RunnableToTimerTaskAdapter(Preconditions.checkNotNull(task, "task is required")), trigger, errorHandler);
     }
 
+    /**
+     * @since 4.6.4
+     */
     public static Timeout timeoutTask(@NonNull Timer timer, @NonNull TimerTask task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
         Preconditions.checkNotNull(task);
         if (errorHandler == null) {
