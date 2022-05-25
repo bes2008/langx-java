@@ -1,10 +1,8 @@
 package com.jn.langx.util.timing.timer.scheduled;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.timing.timer.Timeout;
-import com.jn.langx.util.timing.timer.TimeoutFactory;
-import com.jn.langx.util.timing.timer.Timer;
-import com.jn.langx.util.timing.timer.TimerTask;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.timing.timer.*;
 
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -23,6 +21,13 @@ public class ScheduledExecutorTimer implements Timer {
     public ScheduledExecutorTimer(ScheduledExecutorService scheduledExecutor, Executor taskExecutor) {
         this.scheduledExecutor = scheduledExecutor;
         this.taskExecutor = taskExecutor;
+    }
+
+    @Override
+    public Timeout newTimeout(Runnable task, long delay, TimeUnit unit) {
+        Preconditions.checkNotNull(task, "task is required");
+        TimerTask tt = new RunnableToTimerTaskAdapter(task);
+        return this.newTimeout(tt, delay, unit);
     }
 
     @Override
