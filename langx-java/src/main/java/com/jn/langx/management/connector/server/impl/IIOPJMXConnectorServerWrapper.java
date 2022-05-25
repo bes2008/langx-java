@@ -21,19 +21,8 @@
 
 package com.jn.langx.management.connector.server.impl;
 
-import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.management.connector.server.JMXConnectorServerWrapper;
 public class IIOPJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public void init() throws InitializationException {
-
-    }
 
     /**
      * {@inheritDoc}

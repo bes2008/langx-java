@@ -1,7 +1,6 @@
 package com.jn.langx.cache;
 
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.lifecycle.AbstractLifecycle;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Maths;
@@ -22,7 +21,7 @@ import com.jn.langx.util.timing.timer.TimerTask;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public abstract class BaseCache<K, V> extends AbstractLifecycle implements Cache<K, V>, Lifecycle {
+public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
     // unit: mills
     protected volatile long evictExpiredInterval;
     // unit: mills
@@ -34,6 +33,7 @@ public abstract class BaseCache<K, V> extends AbstractLifecycle implements Cache
     protected Holder<Timeout> refreshAllTimeoutHolder = new Holder<Timeout>();
     protected Timer timer;
     private boolean shutdownTimerSelf = false;
+    protected volatile boolean running = false;
     /**
      * 刷新时去重。
      * 当刷新的任务执行很慢时，很有可能出现数据堆积，就需要保证再添加刷新任务时，发现任务队列（队列在timer 的taskExecutor中）中有重复Key时，不将新的刷新任务添加到队列中.
@@ -226,8 +226,9 @@ public abstract class BaseCache<K, V> extends AbstractLifecycle implements Cache
     }
 
     @Override
-    public void doStart() {
-        if (!isRunning()) {
+    public void startup() {
+        if (!running) {
+            running = true;
             computeNextEvictExpiredTime();
             computeNextRefreshAllTime();
             if (evictExpiredInterval > 0 || refreshAllInterval > 0) {
@@ -246,7 +247,8 @@ public abstract class BaseCache<K, V> extends AbstractLifecycle implements Cache
     }
 
     @Override
-    public void doStop() {
+    public void shutdown() {
+        running = false;
         if (timer != null) {
             if (shutdownTimerSelf) {
                 timer.stop();

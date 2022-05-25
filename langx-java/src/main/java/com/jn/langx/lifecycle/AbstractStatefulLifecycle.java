@@ -18,7 +18,7 @@ import java.util.List;
  * Basic implementation of the life cycle interface for components.
  */
 @SuppressWarnings({"rawtypes"})
-public abstract class AbstractStatefulLifecycle extends AbstractInitializable implements StatefulLifecycle, EventPublisherAware {
+public abstract class AbstractStatefulLifecycle implements StatefulLifecycle, EventPublisherAware {
     private static final Logger logger = Loggers.getLogger(AbstractStatefulLifecycle.class);
 
     private String domain;
@@ -31,13 +31,13 @@ public abstract class AbstractStatefulLifecycle extends AbstractInitializable im
      *
      * @throws StopException If thrown, the lifecycle will immediately be stopped.
      */
-    protected void doStart() {
+    protected void doStart() throws Exception {
     }
 
     /**
      * Method to override to stop the lifecycle
      */
-    protected void doStop() {
+    protected void doStop() throws Exception {
     }
 
 

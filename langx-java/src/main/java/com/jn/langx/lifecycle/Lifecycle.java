@@ -1,9 +1,6 @@
 package com.jn.langx.lifecycle;
 
-
-import com.jn.langx.Named;
-
-public interface Lifecycle extends Initializable, Named {
+public interface Lifecycle{
     void startup();
 
     void shutdown();

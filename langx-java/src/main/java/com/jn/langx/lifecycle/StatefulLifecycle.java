@@ -3,6 +3,10 @@ package com.jn.langx.lifecycle;
 import com.jn.langx.event.EventListener;
 
 public interface StatefulLifecycle extends Lifecycle{
+    /**
+     * @return true if the component is starting or has been started.
+     */
+    boolean isRunning();
 
     /**
      * @return true if the component has been started.
