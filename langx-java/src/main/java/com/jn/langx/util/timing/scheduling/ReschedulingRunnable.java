@@ -41,10 +41,6 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
         }
     }
 
-    public SimpleTriggerContext getTriggerContext() {
-        return triggerContext;
-    }
-
     @Override
     public void run() {
         Date actualExecutionTime = new Date();
