@@ -7,9 +7,8 @@ import java.util.Date;
 import java.util.concurrent.*;
 
 /**
- * @since 4.6.3
- *
  * @see com.jn.langx.util.timing.timer.ReschedulingTask
+ * @since 4.6.3
  */
 public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
 
@@ -24,13 +23,17 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
 
     private final Object triggerContextMonitor = new Object();
 
-    public ReschedulingRunnable(Runnable delegate, Trigger trigger, ScheduledExecutorService executor, ErrorHandler errorHandler) {
+    public ReschedulingRunnable(ScheduledExecutorService executor, Runnable delegate, Trigger trigger, ErrorHandler errorHandler) {
         Preconditions.checkNotNull(delegate, "Delegate must not be null");
         Preconditions.checkNotNull(errorHandler, "ErrorHandler must not be null");
         this.delegateTask = delegate;
         this.errorHandler = errorHandler;
         this.trigger = trigger;
         this.executor = executor;
+    }
+
+    public ReschedulingRunnable(Runnable delegate, Trigger trigger, ScheduledExecutorService executor, ErrorHandler errorHandler) {
+        this(executor, delegate, trigger, errorHandler);
     }
 
 

@@ -11,6 +11,8 @@ import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.timing.scheduling.ImmediateTrigger;
 import com.jn.langx.util.timing.scheduling.ReschedulingRunnable;
 import com.jn.langx.util.timing.scheduling.Trigger;
+import com.jn.langx.util.timing.timer.*;
+import com.sun.istack.internal.NotNull;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -40,6 +42,10 @@ public class ScheduledExecutors {
     }
 
     public static ScheduledFuture scheduleTask(@NonNull Runnable task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
+        return scheduleTask(getScheduledExecutor(), task, trigger, errorHandler);
+    }
+
+    public static ScheduledFuture scheduleTask(ScheduledExecutorService scheduledExecutorService, @NonNull Runnable task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
         Preconditions.checkNotNull(task);
         if (errorHandler == null) {
             errorHandler = ErrorHandlers.getIgnoreErrorHandler();
@@ -47,7 +53,24 @@ public class ScheduledExecutors {
         if (trigger == null) {
             trigger = ImmediateTrigger.INSTANCE;
         }
-        ReschedulingRunnable taskWrapper = new ReschedulingRunnable(task, trigger, getScheduledExecutor(), errorHandler);
+        ReschedulingRunnable taskWrapper = new ReschedulingRunnable(scheduledExecutorService, task, trigger, errorHandler);
+        taskWrapper.schedule();
+        return taskWrapper;
+    }
+
+    public static Timeout timeoutTask(@NotNull Timer timer, @NonNull Runnable task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
+        return timeoutTask(timer, new RunnableToTimerTaskAdapter(Preconditions.checkNotNull(task, "task is required")), trigger, errorHandler);
+    }
+
+    public static Timeout timeoutTask(@NotNull Timer timer, @NonNull TimerTask task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
+        Preconditions.checkNotNull(task);
+        if (errorHandler == null) {
+            errorHandler = ErrorHandlers.getIgnoreErrorHandler();
+        }
+        if (trigger == null) {
+            trigger = ImmediateTrigger.INSTANCE;
+        }
+        ReschedulingTask taskWrapper = new ReschedulingTask(timer, task, trigger, errorHandler);
         taskWrapper.schedule();
         return taskWrapper;
     }

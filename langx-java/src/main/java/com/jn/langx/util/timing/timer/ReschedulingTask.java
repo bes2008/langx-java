@@ -18,6 +18,10 @@ public class ReschedulingTask implements Timeout, TimerTask {
     private final ErrorHandler errorHandler;
     private final Object triggerContextMonitor = new Object();
 
+    public ReschedulingTask(Timer timer, Runnable task, Trigger trigger, ErrorHandler errorHandler) {
+        this(timer, new RunnableToTimerTaskAdapter(Preconditions.checkNotNull(task, "task is required")), trigger, errorHandler);
+    }
+
     public ReschedulingTask(Timer timer, TimerTask task, Trigger trigger, ErrorHandler errorHandler) {
         Preconditions.checkNotNull(task, "task must not be null");
         Preconditions.checkNotNull(errorHandler, "ErrorHandler must not be null");
@@ -30,6 +34,7 @@ public class ReschedulingTask implements Timeout, TimerTask {
 
     /**
      * 对象创建完毕后，调用该方法
+     *
      * @return 返回timeout
      */
     public Timeout schedule() {

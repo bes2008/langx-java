@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
  */
 public interface Timer {
 
+    Timeout newTimeout(Runnable task, long delay, TimeUnit unit);
+
     /**
      * Schedules the specified {@link TimerTask} for one-time execution after
      * the specified delay.

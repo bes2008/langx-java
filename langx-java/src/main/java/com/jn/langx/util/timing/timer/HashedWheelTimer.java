@@ -397,6 +397,11 @@ public class HashedWheelTimer implements Timer {
     }
 
     @Override
+    public Timeout newTimeout(Runnable task, long delay, TimeUnit unit) {
+        return newTimeout(new RunnableToTimerTaskAdapter(task), delay ,unit);
+    }
+
+    @Override
     public Timeout newTimeout(TimerTask task, long delay, TimeUnit unit) {
         if (task == null) {
             throw new NullPointerException("task");
