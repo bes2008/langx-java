@@ -9,13 +9,13 @@ import com.jn.langx.util.timing.timer.TimerTask;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class ReschedulingTask implements Timeout {
+public class ReschedulingTask implements Timeout, TimerTask {
     private Timeout timeout;
     private Timer timer;
     private final Trigger trigger;
     private final SimpleTriggerContext triggerContext = new SimpleTriggerContext();
     private volatile Date scheduledExecutionTime;
-    private final TimerTask task;
+    private final TimerTask delegateTask;
     private final ErrorHandler errorHandler;
     private final Object triggerContextMonitor = new Object();
 
@@ -23,12 +23,16 @@ public class ReschedulingTask implements Timeout {
         Preconditions.checkNotNull(task, "task must not be null");
         Preconditions.checkNotNull(errorHandler, "ErrorHandler must not be null");
         this.timer = timer;
-        this.task = task;
+        this.delegateTask = task;
         this.trigger = trigger;
         this.errorHandler = errorHandler;
     }
 
 
+    /**
+     * 对象创建完毕后，调用该方法
+     * @return 返回timeout
+     */
     public Timeout schedule() {
         synchronized (this.triggerContextMonitor) {
             this.scheduledExecutionTime = this.trigger.nextExecutionTime(this.triggerContext);
@@ -36,7 +40,7 @@ public class ReschedulingTask implements Timeout {
                 return null;
             }
             long initialDelay = this.scheduledExecutionTime.getTime() - System.currentTimeMillis();
-            this.timeout = this.timer.newTimeout(this.task, initialDelay, TimeUnit.MILLISECONDS);
+            this.timeout = this.timer.newTimeout(this, initialDelay, TimeUnit.MILLISECONDS);
             return this;
         }
     }
@@ -44,7 +48,7 @@ public class ReschedulingTask implements Timeout {
     public void run(Timeout timeout) throws Exception {
         Date actualExecutionTime = new Date();
         try {
-            this.task.run(timeout);
+            this.delegateTask.run(timeout);
         } catch (Throwable ex) {
             this.errorHandler.handle(ex);
         }

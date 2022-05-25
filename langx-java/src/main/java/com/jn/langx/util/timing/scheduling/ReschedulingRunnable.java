@@ -14,7 +14,7 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
     private volatile ScheduledFuture currentFuture;
     private ScheduledExecutorService executor;
     private volatile Date scheduledExecutionTime;
-    private final Runnable task;
+    private final Runnable delegateTask;
     private final ErrorHandler errorHandler;
 
     private final Object triggerContextMonitor = new Object();
@@ -22,7 +22,7 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
     public ReschedulingRunnable(Runnable delegate, Trigger trigger, ScheduledExecutorService executor, ErrorHandler errorHandler) {
         Preconditions.checkNotNull(delegate, "Delegate must not be null");
         Preconditions.checkNotNull(errorHandler, "ErrorHandler must not be null");
-        this.task = delegate;
+        this.delegateTask = delegate;
         this.errorHandler = errorHandler;
         this.trigger = trigger;
         this.executor = executor;
@@ -45,7 +45,7 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
     public void run() {
         Date actualExecutionTime = new Date();
         try {
-            this.task.run();
+            this.delegateTask.run();
         } catch (Throwable ex) {
             this.errorHandler.handle(ex);
         }
