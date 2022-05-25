@@ -81,7 +81,7 @@ public final class HashedWheelBucket {
         timeout.prev = null;
         timeout.next = null;
         timeout.bucket = null;
-        timeout.timer.pendingTimeouts.decrementAndGet();
+        ((HashedWheelTimer)timeout.timer).pendingTimeouts.decrementAndGet();
         return next;
     }
 

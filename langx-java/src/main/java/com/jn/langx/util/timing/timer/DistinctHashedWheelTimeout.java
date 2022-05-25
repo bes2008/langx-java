@@ -18,11 +18,12 @@ public class DistinctHashedWheelTimeout extends HashedWheelTimeout {
     }
 
     @Override
-    protected void executeTask() {
-        ConcurrentHashMap<DistinctHashedWheelTimeout, Integer> currentTimerRunningTasks = RUNNING_TASKS.get(timer);
+    public void executeTask() {
+        HashedWheelTimer hashedWheelTimer = (HashedWheelTimer) timer;
+        ConcurrentHashMap<DistinctHashedWheelTimeout, Integer> currentTimerRunningTasks = RUNNING_TASKS.get(hashedWheelTimer);
         if (currentTimerRunningTasks == null) {
-            RUNNING_TASKS.putIfAbsent(timer, new ConcurrentHashMap<DistinctHashedWheelTimeout, Integer>());
-            currentTimerRunningTasks = RUNNING_TASKS.get(timer);
+            RUNNING_TASKS.putIfAbsent(hashedWheelTimer, new ConcurrentHashMap<DistinctHashedWheelTimeout, Integer>());
+            currentTimerRunningTasks = RUNNING_TASKS.get(hashedWheelTimer);
         }
         // 如果 taskExecutor 是ThreadPool时，这个代码可以避免加入到 queue里
         if (!currentTimerRunningTasks.containsKey(this)) {
@@ -37,10 +38,11 @@ public class DistinctHashedWheelTimeout extends HashedWheelTimeout {
     @Override
     public void run() {
         try {
-            ConcurrentHashMap<DistinctHashedWheelTimeout, Integer> currentTimerRunningTasks = RUNNING_TASKS.get(timer);
+            HashedWheelTimer hashedWheelTimer = (HashedWheelTimer) timer;
+            ConcurrentHashMap<DistinctHashedWheelTimeout, Integer> currentTimerRunningTasks = RUNNING_TASKS.get(hashedWheelTimer);
             if (currentTimerRunningTasks == null) {
-                RUNNING_TASKS.putIfAbsent(timer, new ConcurrentHashMap<DistinctHashedWheelTimeout, Integer>());
-                currentTimerRunningTasks = RUNNING_TASKS.get(timer);
+                RUNNING_TASKS.putIfAbsent(hashedWheelTimer, new ConcurrentHashMap<DistinctHashedWheelTimeout, Integer>());
+                currentTimerRunningTasks = RUNNING_TASKS.get(hashedWheelTimer);
             }
             if (!currentTimerRunningTasks.containsKey(this)) {
                 currentTimerRunningTasks.put(this, 1);

@@ -4,20 +4,8 @@ import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
-public class HashedWheelTimeout implements Timeout, Runnable {
-    static final int ST_INIT = 0;
-    static final int ST_CANCELLED = 1;
-    static final int ST_EXPIRED = 2;
-    private static final AtomicIntegerFieldUpdater<HashedWheelTimeout> STATE_UPDATER = AtomicIntegerFieldUpdater.newUpdater(HashedWheelTimeout.class, "state");
-
-    protected final HashedWheelTimer timer;
-    protected final TimerTask task;
-    protected final long deadline;
-
-    @SuppressWarnings({"unused", "FieldMayBeFinal", "RedundantFieldInitialization"})
-    private volatile int state = ST_INIT;
+public class HashedWheelTimeout extends AbstractTimeout implements Runnable {
 
     // remainingRounds will be calculated and set by Worker.transferTimeoutsToBuckets() before the
     // HashedWheelTimeout will be added to the correct HashedWheelBucket.
@@ -32,9 +20,7 @@ public class HashedWheelTimeout implements Timeout, Runnable {
     HashedWheelBucket bucket;
 
     public HashedWheelTimeout(HashedWheelTimer timer, TimerTask task, long deadline) {
-        this.timer = timer;
-        this.task = task;
-        this.deadline = deadline;
+        super(timer, task, deadline);
     }
 
     @Override
@@ -56,7 +42,7 @@ public class HashedWheelTimeout implements Timeout, Runnable {
         // If a task should be canceled we put this to another queue which will be processed on each tick.
         // So this means that we will have a GC latency of max. 1 tick duration which is good enough. This way
         // we can make again use of our MpscLinkedQueue and so minimize the locking / overhead as much as possible.
-        timer.cancelledTimeouts.add(this);
+        ((HashedWheelTimer)timer).cancelledTimeouts.add(this);
         return true;
     }
 
@@ -65,29 +51,13 @@ public class HashedWheelTimeout implements Timeout, Runnable {
         if (bucket != null) {
             bucket.remove(this);
         } else {
-            timer.pendingTimeouts.decrementAndGet();
+            ((HashedWheelTimer)timer).pendingTimeouts.decrementAndGet();
         }
     }
 
-    public boolean compareAndSetState(int expected, int state) {
-        return STATE_UPDATER.compareAndSet(this, expected, state);
-    }
-
-    public int state() {
-        return state;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return state() == ST_CANCELLED;
-    }
-
-    @Override
-    public boolean isExpired() {
-        return state() == ST_EXPIRED;
-    }
 
     void expire() {
+        // wheel timeout 的做法是，在expire时 开始执行任务
         if (!compareAndSetState(ST_INIT, ST_EXPIRED)) {
             return;
         }
@@ -101,32 +71,11 @@ public class HashedWheelTimeout implements Timeout, Runnable {
         }
     }
 
-    /**
-     * @since 4.0.5
-     */
-    protected void executeTask() {
-        timer.getTaskExecutor().execute(this);
-    }
-
-    /**
-     * @since 4.0.5
-     */
-    @Override
-    public void run() {
-        try {
-            task.run(this);
-        } catch (Throwable t) {
-            Logger logger = Loggers.getLogger(HashedWheelTimeout.class);
-            if (logger.isWarnEnabled()) {
-                logger.warn("An exception was thrown by " + TimerTask.class.getSimpleName() + '.', t);
-            }
-        }
-    }
 
     @Override
     public String toString() {
         final long currentTime = System.nanoTime();
-        long remaining = deadline - currentTime + timer.startTime;
+        long remaining = deadline - currentTime + ((HashedWheelTimer)timer).startTime;
 
         StringBuilder buf = new StringBuilder(192)
                 .append(Reflects.getSimpleClassName(this))

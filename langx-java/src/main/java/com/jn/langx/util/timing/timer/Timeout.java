@@ -7,6 +7,19 @@ package com.jn.langx.util.timing.timer;
 public interface Timeout {
 
     /**
+     * @since 4.6.4
+     */
+    public static final int ST_INIT = 0;
+    /**
+     * @since 4.6.4
+     */
+    public static final int ST_CANCELLED = 1;
+    /**
+     * @since 4.6.4
+     */
+    public static final int ST_EXPIRED = 2;
+
+    /**
      * Returns the {@link Timer} that created this handle.
      */
     Timer timer();

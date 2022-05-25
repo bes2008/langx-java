@@ -1,6 +1,7 @@
 package com.jn.langx.util.timing.timer;
 
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -31,4 +32,9 @@ public interface Timer {
     Set<Timeout> stop();
 
     boolean isDistinctSupported();
+
+    /**
+     * @since 4.6.4
+     */
+    Executor getTaskExecutor();
 }
