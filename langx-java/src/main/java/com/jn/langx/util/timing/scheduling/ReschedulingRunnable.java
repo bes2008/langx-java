@@ -6,6 +6,11 @@ import com.jn.langx.util.Preconditions;
 import java.util.Date;
 import java.util.concurrent.*;
 
+/**
+ * @since 4.6.3
+ *
+ * @see com.jn.langx.util.timing.timer.ReschedulingTask
+ */
 public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
 
     private final Trigger trigger;
