@@ -1,5 +1,7 @@
 package com.jn.langx.event;
 
+import com.jn.langx.util.Emptys;
+
 import java.util.EventObject;
 
 /**
@@ -10,6 +12,10 @@ public class DomainEvent<Source> extends EventObject {
     private static final long serialVersionUID = 1L;
     private String domain;
     private Source source;
+
+    public DomainEvent(){
+        super(Emptys.EMPTY_OBJECTS);
+    }
 
     public DomainEvent(String eventDomain, Source source) {
         super(source);
