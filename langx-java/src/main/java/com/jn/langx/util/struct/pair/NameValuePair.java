@@ -1,11 +1,12 @@
 package com.jn.langx.util.struct.pair;
 
+import com.jn.langx.Nameable;
 import com.jn.langx.util.struct.Pair;
 
 /**
  * @param <V> any type
  */
-public class NameValuePair<V> extends Pair<String, V> {
+public class NameValuePair<V> extends Pair<String, V> implements Nameable {
     public NameValuePair() {
     }
 
