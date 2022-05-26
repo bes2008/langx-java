@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 public class ScheduledExecutorTimer implements Timer {
     private ScheduledExecutorService scheduledExecutor;
     private Executor taskExecutor;
-    private TimeoutFactory<ScheduledExecutorTimer, ScheduledTimeout> scheduledTimeoutFactory = new ScheduledTimeoutFactory();
 
     public ScheduledExecutorTimer(ScheduledExecutorService scheduledExecutor, Executor taskExecutor) {
         this.scheduledExecutor = scheduledExecutor;
@@ -41,7 +40,7 @@ public class ScheduledExecutorTimer implements Timer {
 
         long deadlineInMills = System.currentTimeMillis() + unit.toMillis(delay);
 
-        final ScheduledTimeout timeout = scheduledTimeoutFactory.create(this, task, deadlineInMills);
+        final ScheduledTimeout timeout = new ScheduledTimeout(this, task, deadlineInMills);
         ScheduledFuture scheduledFuture = this.scheduledExecutor.schedule(new Runnable() {
             @Override
             public void run() {
