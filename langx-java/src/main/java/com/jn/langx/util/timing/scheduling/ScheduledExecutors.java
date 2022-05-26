@@ -48,6 +48,8 @@ public class ScheduledExecutors {
 
     /**
      * @since 4.6.4
+     * <p>
+     * 基于 ScheduledExecutorService来创建定时任务
      */
     public static ScheduledFuture scheduleTask(ScheduledExecutorService scheduledExecutorService, @NonNull Runnable task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
         Preconditions.checkNotNull(task);
@@ -64,6 +66,8 @@ public class ScheduledExecutors {
 
     /**
      * @since 4.6.4
+     * <p>
+     * 基于 Timer 来创建定时任务
      */
     public static Timeout timeoutTask(@NonNull Timer timer, @NonNull Runnable task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
         return timeoutTask(timer, new RunnableToTimerTaskAdapter(Preconditions.checkNotNull(task, "task is required")), trigger, errorHandler);
@@ -71,6 +75,8 @@ public class ScheduledExecutors {
 
     /**
      * @since 4.6.4
+     * <p>
+     * 基于 Timer 来创建定时任务
      */
     public static Timeout timeoutTask(@NonNull Timer timer, @NonNull TimerTask task, @Nullable Trigger trigger, @Nullable ErrorHandler errorHandler) {
         Preconditions.checkNotNull(task);
@@ -87,15 +93,19 @@ public class ScheduledExecutors {
 
     /**
      * @since 4.6.5
+     * <p>
+     * 基于 java.util.Timer 来创建定时任务
      */
-    public static Timeout javaTimeoutTask(java.util.Timer timer, Executor taskExecutor, Runnable task, Trigger trigger, @Nullable ErrorHandler errorHandler){
+    public static Timeout javaTimeoutTask(java.util.Timer timer, Executor taskExecutor, Runnable task, Trigger trigger, @Nullable ErrorHandler errorHandler) {
         return timeoutTask(new JavaTimer(timer, taskExecutor), task, trigger, errorHandler);
     }
 
     /**
      * @since 4.6.5
+     * <p>
+     * 基于 java.util.Timer 来创建定时任务
      */
-    public static Timeout javaTimeoutTask(java.util.Timer timer, Executor taskExecutor, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler){
+    public static Timeout javaTimeoutTask(java.util.Timer timer, Executor taskExecutor, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler) {
         return timeoutTask(new JavaTimer(timer, taskExecutor), task, trigger, errorHandler);
     }
 }
