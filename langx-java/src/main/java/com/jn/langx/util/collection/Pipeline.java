@@ -262,15 +262,41 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> add(E e) {
-        List<E> list = asList();
-        list.add(e);
-        return new Pipeline<E>(list);
+        if(e!=null) {
+            this.collection.add(e);
+        }
+        return this;
     }
+
+    public <C extends Collection<E>> Pipeline<E> addAll(@Nullable C collection) {
+        if (collection == null) {
+            return this;
+        }
+        this.collection.addAll(collection);
+        return this;
+    }
+
 
     public Pipeline<E> remove(E e){
         List<E> list = asList();
         list.remove(e);
         return new Pipeline<E>(list);
+    }
+
+    /**
+     * @since 4.6.5
+     */
+    public Pipeline<E> removeIf(Predicate<E> predicate){
+        Collects.removeIf(this.collection, predicate);
+        return this;
+    }
+
+    /**
+     * @since 4.6.5
+     */
+    public Pipeline<E> removeAll(Collection<E> removed){
+        Collects.removeAll(this.collection, removed);
+        return this;
     }
 
     public Pipeline<E> shuffle() {
@@ -300,13 +326,6 @@ public class Pipeline<E> {
         return new Pipeline<E>(list);
     }
 
-    public <C extends Collection<E>> Pipeline<E> addAll(@Nullable C collection) {
-        if (collection == null) {
-            return this;
-        }
-        this.collection.addAll(collection);
-        return this;
-    }
 
     public Set<E> asSet(boolean sequential) {
         if (sequential && collection instanceof LinkedHashSet) {

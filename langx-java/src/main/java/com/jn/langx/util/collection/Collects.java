@@ -1382,6 +1382,22 @@ public class Collects {
         return hasRemoved;
     }
 
+    /**
+     * 从 collection 中移除 所有出现在 removed中的
+     * @param collection
+     * @param removed
+     *
+     * @since 4.6.5
+     */
+    public static <E, C extends Collection<E>>  void removeAll(C collection, final C removed){
+        removeIf(collection, new Predicate<E>() {
+            @Override
+            public boolean test(E element) {
+                return removed.contains(element);
+            }
+        });
+    }
+
     public static <E> boolean removeIf(@Nullable Iterator<E> iterator, @NonNull Predicate<E> predicate) {
         Preconditions.checkNotNull(iterator);
         Preconditions.checkNotNull(predicate);
