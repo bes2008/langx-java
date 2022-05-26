@@ -4,6 +4,9 @@ import com.jn.langx.util.timing.timer.AbstractTimeout;
 import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
 
+/**
+ * @since 4.6.5
+ */
 public class JavaTimeout extends AbstractTimeout {
 
     private java.util.TimerTask taskRef;

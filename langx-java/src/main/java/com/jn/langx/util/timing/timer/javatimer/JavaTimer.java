@@ -1,5 +1,6 @@
 package com.jn.langx.util.timing.timer.javatimer;
 
+import com.jn.langx.util.timing.timer.RunnableToTimerTaskAdapter;
 import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
@@ -8,6 +9,9 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @since 4.6.5
+ */
 public class JavaTimer implements Timer {
     /**
      * 由 一个线程 + 一个Queue 结合完成的任务执行器
@@ -23,7 +27,7 @@ public class JavaTimer implements Timer {
 
     @Override
     public Timeout newTimeout(Runnable task, long delay, TimeUnit unit) {
-        return null;
+        return newTimeout(new RunnableToTimerTaskAdapter(task), delay, unit);
     }
 
     @Override

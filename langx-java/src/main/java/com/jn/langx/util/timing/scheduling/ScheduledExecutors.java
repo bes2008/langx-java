@@ -9,7 +9,9 @@ import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.timing.timer.*;
+import com.jn.langx.util.timing.timer.javatimer.JavaTimer;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -81,5 +83,19 @@ public class ScheduledExecutors {
         ReschedulingTask taskWrapper = new ReschedulingTask(timer, task, trigger, errorHandler);
         taskWrapper.schedule();
         return taskWrapper;
+    }
+
+    /**
+     * @since 4.6.5
+     */
+    public static Timeout javaTimeoutTask(java.util.Timer timer, Executor taskExecutor, Runnable task, Trigger trigger, @Nullable ErrorHandler errorHandler){
+        return timeoutTask(new JavaTimer(timer, taskExecutor), task, trigger, errorHandler);
+    }
+
+    /**
+     * @since 4.6.5
+     */
+    public static Timeout javaTimeoutTask(java.util.Timer timer, Executor taskExecutor, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler){
+        return timeoutTask(new JavaTimer(timer, taskExecutor), task, trigger, errorHandler);
     }
 }
