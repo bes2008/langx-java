@@ -25,6 +25,19 @@ public class TriggerBuilder implements Builder<Trigger> {
     @Nullable
     private TriggerFactoryRegistry registry;
 
+    public TriggerBuilder expression(String expression) {
+        if (expression != null) {
+            this.expression = expression;
+        }
+        return this;
+    }
+
+    public TriggerBuilder registry(TriggerFactoryRegistry registry) {
+        this.registry = registry;
+        return this;
+    }
+
+
     @Override
     public Trigger build() {
         if (Strings.isBlank(expression)) {
