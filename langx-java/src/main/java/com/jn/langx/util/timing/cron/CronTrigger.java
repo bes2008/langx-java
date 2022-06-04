@@ -5,6 +5,9 @@ import com.jn.langx.util.timing.scheduling.TriggerContext;
 
 import java.util.Date;
 
+/**
+ * @since 4.6.6
+ */
 public class CronTrigger implements Trigger {
 
     private CronExpression expression;

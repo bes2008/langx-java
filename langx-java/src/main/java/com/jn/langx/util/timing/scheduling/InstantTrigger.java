@@ -4,6 +4,8 @@ import java.util.Date;
 
 /**
  * 指定的时间点调度，只调度一次
+ *
+ * @since 4.6.6
  */
 public class InstantTrigger implements Trigger {
     /**
@@ -11,8 +13,14 @@ public class InstantTrigger implements Trigger {
      */
     private Date deadline;
 
+    /**
+     * @since 4.6.7
+     */
+    public InstantTrigger(Date instant){
+        this.deadline = instant;
+    }
     public InstantTrigger(long instant){
-        this.deadline = new Date(instant);
+        this(new Date(instant));
     }
 
     @Override

@@ -1,0 +1,3 @@
+com.jn.langx.util.timing.cron.CronTriggerFactory
+com.jn.langx.util.timing.scheduling.ImmediateTriggerFactory
+com.jn.langx.util.timing.scheduling.InstantTriggerFactory
