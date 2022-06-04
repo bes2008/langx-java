@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class PeriodicTriggerFactory implements TriggerFactory {
     private static final String NAME = "periodic";
-    private static final Regexp REGEXP = Regexps.createRegexp("(?:(?<initialDelay>\\d+)?\\s)(?:(?<fixedRate>true|false)?\\s)(?:(?<period>\\d+)\\s)(?:(?<timeunit>nanoseconds|microseconds|milliseconds|seconds|minutes|hours|days))");
+    private static final Regexp REGEXP = Regexps.createRegexp("(?:(?:(?<initialDelay>\\d+)?\\s)?(?:(?<fixedRate>true|false)?\\s))?(?:(?<period>\\d+)\\s)(?:(?<timeunit>nanoseconds|microseconds|milliseconds|seconds|minutes|hours|days))");
 
     @Override
     public String getName() {
@@ -44,6 +44,6 @@ public class PeriodicTriggerFactory implements TriggerFactory {
             periodicTrigger.setFixedRate(fixedRate);
             return periodicTrigger;
         }
-        throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("illegal cron trigger expression: {}", expression));
+        throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("illegal periodic trigger expression: {}", expression));
     }
 }
