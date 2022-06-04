@@ -13,8 +13,12 @@ import java.util.ServiceLoader;
  */
 public class TriggerFactoryRegistry extends GenericRegistry<TriggerFactory> {
 
-    public static final TriggerFactoryRegistry GLOBAL_TRIGGER_REGISTRY = new TriggerFactoryRegistry();
-
+    public static final TriggerFactoryRegistry GLOBAL_TRIGGER_REGISTRY;
+    static {
+        TriggerFactoryRegistry r = new TriggerFactoryRegistry();
+        r.init();
+        GLOBAL_TRIGGER_REGISTRY = r;
+    }
     @Override
     protected void doInit() throws InitializationException {
         Pipeline.of(ServiceLoader.load(TriggerFactory.class))
