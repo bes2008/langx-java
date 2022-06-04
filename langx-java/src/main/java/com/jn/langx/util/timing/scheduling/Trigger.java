@@ -9,7 +9,10 @@ import java.util.Date;
  *
  * @since 4.6.3
  *
- * migrate form spring-context
+ * @see ImmediateTrigger
+ * @see InstantTrigger
+ * @see PeriodicTrigger
+ * @see com.jn.langx.util.timing.cron.CronTrigger
  */
 public interface Trigger {
 
