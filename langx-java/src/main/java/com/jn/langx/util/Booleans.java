@@ -7,4 +7,8 @@ public class Booleans {
     public static boolean truth(Boolean b) {
         return b != null && b;
     }
+
+    public static boolean truth(String b){
+        return BooleanEvaluator.simpleStringEvaluator.evalTrue(b);
+    }
 }

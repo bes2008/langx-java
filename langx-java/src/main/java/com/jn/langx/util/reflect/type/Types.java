@@ -1,7 +1,9 @@
 package com.jn.langx.util.reflect.type;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.signature.TypeSignatures;
 
@@ -71,7 +73,14 @@ public class Types {
                     return sb.toString();
                 } catch (Throwable e) { /*FALLTHRU*/ }
             } else {
-                return ctype.getName();
+                if (Primitives.isPrimitiveOrPrimitiveWrapperType(ctype) || Modifiers.isInterface(ctype) || Modifiers.isAbstract(ctype)) {
+                    return Reflects.getFQNClassName(ctype);
+                }
+                TypeVariable<Class<?>>[] typeParameters = ctype.getTypeParameters();
+                if (Objs.isEmpty(typeParameters)) {
+                    return Reflects.getFQNClassName(ctype);
+                }
+                return Reflects.getFQNClassName(ctype);
             }
         }
         return type.toString();
@@ -300,10 +309,9 @@ public class Types {
     }
 
     /**
-     *
      * @param context
      * @param contextRawType
-     * @param toResolve 将要被解析的类型
+     * @param toResolve      将要被解析的类型
      */
     public static Type resolve(Type context, Class<?> contextRawType, Type toResolve) {
         // This implementation is made a little more complicated in an attempt to avoid object-creation.
@@ -493,7 +501,7 @@ public class Types {
     static Type getSupertype(Type context, Class<?> contextRawType, Class<?> supertype) {
         if (context instanceof WildcardType) {
             // wildcards are useless for resolving supertypes. As the upper bound has the same raw type, use it instead
-            context = ((WildcardType)context).getUpperBounds()[0];
+            context = ((WildcardType) context).getUpperBounds()[0];
         }
         Preconditions.checkArgument(supertype.isAssignableFrom(contextRawType));
         return resolve(context, contextRawType, getGenericSupertype(context, contextRawType, supertype));
@@ -501,6 +509,7 @@ public class Types {
 
     /**
      * Returns the component type of this array type.
+     *
      * @throws ClassCastException if this type is not an array.
      */
     public static Type getArrayComponentType(Type array) {
@@ -511,13 +520,14 @@ public class Types {
 
     /**
      * Returns the element type of this collection type.
+     *
      * @throws IllegalArgumentException if this type is not a collection.
      */
     public static Type getCollectionElementType(Type context, Class<?> contextRawType) {
         Type collectionType = getSupertype(context, contextRawType, Collection.class);
 
         if (collectionType instanceof WildcardType) {
-            collectionType = ((WildcardType)collectionType).getUpperBounds()[0];
+            collectionType = ((WildcardType) collectionType).getUpperBounds()[0];
         }
         if (collectionType instanceof ParameterizedType) {
             return ((ParameterizedType) collectionType).getActualTypeArguments()[0];
@@ -536,7 +546,7 @@ public class Types {
          * extend Hashtable<Object, Object>.
          */
         if (context == Properties.class) {
-            return new Type[] { String.class, String.class };
+            return new Type[]{String.class, String.class};
         }
 
         Type mapType = getSupertype(context, contextRawType, Map.class);
@@ -544,7 +554,7 @@ public class Types {
             ParameterizedType mapParameterizedType = (ParameterizedType) mapType;
             return mapParameterizedType.getActualTypeArguments();
         }
-        return new Type[] { Object.class, Object.class };
+        return new Type[]{Object.class, Object.class};
     }
 
 }
