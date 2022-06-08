@@ -1352,7 +1352,22 @@ public class Nets {
         predicate = predicate == null ? Functions.<NetworkInterface>truePredicate() : predicate;
         try {
             Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
-            return Pipeline.<NetworkInterface>of(enumeration).filter(predicate).asList();
+            return Pipeline.<NetworkInterface>of(enumeration).filter(new Predicate<NetworkInterface>() {
+                @Override
+                public boolean test(NetworkInterface itfc) {
+                    return !itfc.isVirtual();
+                }
+            }).filter(new Predicate<NetworkInterface>() {
+                @Override
+                public boolean test(NetworkInterface itfc) {
+                    try {
+                        return itfc.isUp();
+                    }catch (Throwable ex){
+                        // ignore
+                    }
+                    return false;
+                }
+            }).filter(predicate).asList();
         } catch (SocketException ex) {
             // ignore it
         }
