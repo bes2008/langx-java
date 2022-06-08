@@ -27,7 +27,7 @@ public class TriggerBuilder implements Builder<Trigger> {
 
     public TriggerBuilder expression(String expression) {
         if (expression != null) {
-            this.expression = expression;
+            this.expression = Strings.trimToNull(expression);
         }
         return this;
     }
