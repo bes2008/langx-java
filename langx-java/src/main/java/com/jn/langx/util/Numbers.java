@@ -85,6 +85,20 @@ public class Numbers {
         return Float.parseFloat(str);
     }
 
+    public static Float createFloat(Object d){
+        if(d == null){
+            return null;
+        }
+        if(d instanceof Number){
+            return ((Number)d).floatValue();
+        }
+        if(d instanceof String){
+            return createFloat((String) d);
+        }
+        return null;
+    }
+
+
     /**
      * <p>Convert a <code>String</code> to a <code>Double</code>.</p>
      * <p>
@@ -101,6 +115,18 @@ public class Numbers {
         return Double.parseDouble(str);
     }
 
+    public static Double createDouble(Object d){
+        if(d == null){
+            return null;
+        }
+        if(d instanceof Number){
+            return ((Number)d).doubleValue();
+        }
+        if(d instanceof String){
+            return createDouble((String) d);
+        }
+        return null;
+    }
 
     public static Integer createInteger(String str) {
         if (str == null) {
@@ -110,6 +136,20 @@ public class Numbers {
         return Integer.parseInt(str);
     }
 
+    public static Integer createInteger(Object d){
+        if(d == null){
+            return null;
+        }
+        if(d instanceof Number){
+            return ((Number)d).intValue();
+        }
+        if(d instanceof String){
+            return createInteger((String) d);
+        }
+        return null;
+    }
+
+
     public static Short createShort(String str){
         Integer integer = createInteger(str);
         if(integer==null){
@@ -117,6 +157,7 @@ public class Numbers {
         }
         return integer.shortValue();
     }
+
     public static Byte createByte(String str){
         Integer integer = createInteger(str);
         if(integer==null){
@@ -138,6 +179,19 @@ public class Numbers {
             return null;
         }
         return Long.parseLong(str);
+    }
+
+    public static Long createLong(Object d){
+        if(d == null){
+            return null;
+        }
+        if(d instanceof Number){
+            return ((Number)d).longValue();
+        }
+        if(d instanceof String){
+            return createLong((String) d);
+        }
+        return null;
     }
 
     /**
