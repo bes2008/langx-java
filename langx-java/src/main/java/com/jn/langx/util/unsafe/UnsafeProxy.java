@@ -703,9 +703,9 @@ public interface UnsafeProxy {
      * <li>InterfaceMethodRef: (NYI) a method handle to invoke on that call site's arguments
      * </ul>
      *
-     * @params hostClass context for linkage, access control, protection domain, and class loader
-     * @params data      bytes of a class file
-     * @params cpPatches where non-null entries exist, they replace corresponding CP entries in data
+     * @param hostClass context for linkage, access control, protection domain, and class loader
+     * @param data      bytes of a class file
+     * @param cpPatches where non-null entries exist, they replace corresponding CP entries in data
      */
     public abstract Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches);
 

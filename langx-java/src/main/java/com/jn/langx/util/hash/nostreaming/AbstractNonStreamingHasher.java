@@ -18,7 +18,7 @@ public abstract class AbstractNonStreamingHasher extends AbstractHasher {
      * @param bytes bytes数组
      * @param off   起始位置
      * @param len   要进行hash的byte长度
-     * @return
+     *
      */
     protected abstract long doFinal(byte[] bytes, int off, int len);
 }
