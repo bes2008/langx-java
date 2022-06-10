@@ -27,6 +27,11 @@ public abstract class AbstractFuture<V> implements GenericFuture<V> {
     }
 
     @Override
+    public final boolean isDone() {
+        return isSuccess() || isCancelled() || cause() != null;
+    }
+
+    @Override
     public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         if (await(timeout, unit)) {
             Throwable cause = cause();

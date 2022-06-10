@@ -79,7 +79,7 @@ public interface GenericFuture<V> extends java.util.concurrent.Future<V> {
 
     /**
      * Waits for this future to be completed.
-     *
+     * 一直等，直到完成，或者被中断
      * @throws InterruptedException
      *         if the current thread was interrupted
      */
@@ -89,12 +89,16 @@ public interface GenericFuture<V> extends java.util.concurrent.Future<V> {
      * Waits for this future to be completed without
      * interruption.  This method catches an {@link InterruptedException} and
      * discards it silently.
+     *
+     * 一直等，直到完成。中断后也继续
      */
     GenericFuture<V> awaitUninterruptibly();
 
     /**
      * Waits for this future to be completed within the
      * specified time limit.
+     *
+     * 在特定的时间内一直等，结束条件是： 时间到，中断，完成
      *
      * @return {@code true} if and only if the future was completed within
      *         the specified time limit
@@ -120,6 +124,9 @@ public interface GenericFuture<V> extends java.util.concurrent.Future<V> {
      * Waits for this future to be completed within the
      * specified time limit without interruption.  This method catches an
      * {@link InterruptedException} and discards it silently.
+     *
+     * 在特定的时间内一直等，结束条件是： 时间到，完成
+     * 出现中断，也继续
      *
      * @return {@code true} if and only if the future was completed within
      *         the specified time limit
