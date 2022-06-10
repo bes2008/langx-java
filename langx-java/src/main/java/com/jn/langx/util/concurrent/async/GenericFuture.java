@@ -100,6 +100,8 @@ public interface GenericFuture<V> extends java.util.concurrent.Future<V> {
      *
      * 在特定的时间内一直等，结束条件是： 时间到，中断，完成
      *
+     * 如果时间到了，还没结束，就返回false
+     *
      * @return {@code true} if and only if the future was completed within
      *         the specified time limit
      *

@@ -13,5 +13,5 @@ public interface GenericFutureListener<F extends GenericFuture<?>> extends Event
      *
      * @param future  the source {@link GenericFuture} which called this callback
      */
-    void operationComplete(F future) throws Exception;
+    void operationComplete(F future);
 }

@@ -1,7 +1,9 @@
 package com.jn.langx.util.concurrent.async;
 
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.concurrent.CommonTask;
+import com.jn.langx.util.function.Consumer;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -125,7 +127,7 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
         return this.isDone();
     }
 
-    private GenericFuture<V> await(long timeoutMillis, boolean uninterruptible) throws InterruptedException {
+    private boolean await(long timeoutMillis, boolean uninterruptible) throws InterruptedException {
         if (!isDone()) {
             long start = System.currentTimeMillis();
             long deadline = timeoutMillis < 0 ? Long.MAX_VALUE : (start + timeoutMillis);
@@ -142,7 +144,15 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
                 }
             }
         }
-        return this;
+        boolean completed = isDone();
+        final DefaultFuture _this = this;
+        Pipeline.<GenericFutureListener>of(this.listeners).forEach(new Consumer<GenericFutureListener>() {
+            @Override
+            public void accept(GenericFutureListener listener) {
+                listener.operationComplete(_this);
+            }
+        });
+        return completed;
     }
 
     @Override
@@ -225,8 +235,16 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
         return future;
     }
 
+    public static <V> GenericFuture<V> submit(ExecutorService executorService, Runnable runnable) {
+        return submit(executorService, runnable, true);
+    }
+
     public static <V> GenericFuture<V> submit(ExecutorService executorService, Runnable runnable, boolean cancelable) {
         return submit(executorService, runnable, cancelable, null);
+    }
+
+    public static <V> GenericFuture<V> submit(ExecutorService executorService, Callable<V> callable) {
+        return submit(executorService, callable, true);
     }
 
     public static <V> GenericFuture<V> submit(ExecutorService executorService, Callable<V> callable, boolean cancelable) {
