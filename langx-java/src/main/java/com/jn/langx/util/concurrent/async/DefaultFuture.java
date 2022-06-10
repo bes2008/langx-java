@@ -136,8 +136,11 @@ public class DefaultFuture<V> extends AbstractFuture<V> {
 
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
-        task.cancel(mayInterruptIfRunning);
-        return task.isCancelled();
+        if(cancelable) {
+            task.cancel(mayInterruptIfRunning);
+            return task.isCancelled();
+        }
+        return  false;
     }
 
     @Override
