@@ -1,14 +1,16 @@
 package com.jn.langx.util.concurrent.async;
 
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.concurrent.CommonTask;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class DefaultFuture<V> extends AbstractFuture<V> {
-
-    private Future<V> task;
+public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, Runnable {
+    private CommonTask<V> task;
+    private Future<V> future;
     private final List<GenericFutureListener<? extends GenericFuture<? super V>>> listeners = Collects.emptyArrayList();
     private boolean cancelable = true;
 
@@ -17,10 +19,17 @@ public class DefaultFuture<V> extends AbstractFuture<V> {
      */
     private Throwable cause;
     private boolean success = false;
-    private V result = null;
 
-    public DefaultFuture(Future<V> task) {
-        this.task = task;
+    public DefaultFuture(Callable task) {
+        this.task = new CommonTask<V>(task);
+    }
+
+    public DefaultFuture(Runnable task) {
+        this.task = new CommonTask<V>(task);
+    }
+
+    public void with(Future<V> future) {
+        this.future = future;
     }
 
     public void setCancelable(boolean cancelable) {
@@ -136,21 +145,51 @@ public class DefaultFuture<V> extends AbstractFuture<V> {
 
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
-        if(cancelable) {
-            task.cancel(mayInterruptIfRunning);
-            return task.isCancelled();
+        if (cancelable) {
+            future.cancel(mayInterruptIfRunning);
+            return future.isCancelled();
         }
-        return  false;
+        return false;
+    }
+
+
+    @Override
+    public V call() {
+        try {
+            V r = this.task.call();
+            this.success = true;
+            return r;
+        } catch (Throwable e) {
+            this.cause = e;
+            return null;
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            this.task.run();
+            this.success = true;
+        } catch (Throwable e) {
+            this.cause = e;
+        }
     }
 
     @Override
     public V getNow() {
-        return this.result;
+        if (isDone()) {
+            try {
+                return this.future.get(0, TimeUnit.MILLISECONDS);
+            } catch (Throwable e) {
+                // ignore it;
+            }
+        }
+        return null;
     }
 
     @Override
     public boolean isCancelled() {
-        return this.task.isCancelled();
+        return this.future.isCancelled();
     }
 
     @Override
