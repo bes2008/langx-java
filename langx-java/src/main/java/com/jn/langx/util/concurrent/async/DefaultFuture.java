@@ -5,6 +5,7 @@ import com.jn.langx.util.concurrent.CommonTask;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +20,7 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
      */
     private Throwable cause;
     private boolean success = false;
+    private V expectedResult = null;
 
     public DefaultFuture(Callable task) {
         this.task = new CommonTask<V>(task);
@@ -177,6 +179,9 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
 
     @Override
     public V getNow() {
+        if (expectedResult != null) {
+            return expectedResult;
+        }
         if (isDone()) {
             try {
                 return this.future.get(0, TimeUnit.MILLISECONDS);
@@ -207,4 +212,28 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
         return cause;
     }
 
+    public void setExpectedResult(V expectedResult) {
+        this.expectedResult = expectedResult;
+    }
+
+    public static <V> GenericFuture<V> submit(ExecutorService executorService, Runnable runnable, boolean cancelable, V result) {
+        DefaultFuture<V> future = new DefaultFuture<V>(runnable);
+        future.setExpectedResult(result);
+        future.setCancelable(cancelable);
+        Future<V> f = executorService.submit((Runnable) future, result);
+        future.with(f);
+        return future;
+    }
+
+    public static <V> GenericFuture<V> submit(ExecutorService executorService, Runnable runnable, boolean cancelable) {
+        return submit(executorService, runnable, cancelable, null);
+    }
+
+    public static <V> GenericFuture<V> submit(ExecutorService executorService, Callable<V> callable, boolean cancelable) {
+        DefaultFuture<V> future = new DefaultFuture<V>(callable);
+        future.setCancelable(cancelable);
+        Future<V> f = executorService.submit((Callable<V>) future);
+        future.with(f);
+        return future;
+    }
 }

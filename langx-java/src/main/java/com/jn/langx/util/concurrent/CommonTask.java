@@ -23,4 +23,11 @@ public class CommonTask<V> implements Callable<V>, Runnable {
     public V call() throws Exception {
         return t0.call();
     }
+
+    public Class getExpectClass(){
+        if(t0!=null){
+            return Callable.class;
+        }
+        return Runnable.class;
+    }
 }
