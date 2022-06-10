@@ -145,13 +145,15 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
             }
         }
         boolean completed = isDone();
-        final DefaultFuture _this = this;
-        Pipeline.<GenericFutureListener>of(this.listeners).forEach(new Consumer<GenericFutureListener>() {
-            @Override
-            public void accept(GenericFutureListener listener) {
-                listener.operationComplete(_this);
-            }
-        });
+        if(completed) {
+            final DefaultFuture _this = this;
+            Pipeline.<GenericFutureListener>of(this.listeners).forEach(new Consumer<GenericFutureListener>() {
+                @Override
+                public void accept(GenericFutureListener listener) {
+                    listener.operationComplete(_this);
+                }
+            });
+        }
         return completed;
     }
 
