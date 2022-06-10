@@ -191,14 +191,16 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
 
     @Override
     public V getNow() {
-        if (expectedResult != null) {
-            return expectedResult;
-        }
+
         if (isDone()) {
             try {
                 return this.future.get(0, TimeUnit.MILLISECONDS);
             } catch (Throwable e) {
                 // ignore it;
+            }
+        }else{
+            if (expectedResult != null) {
+                return expectedResult;
             }
         }
         return null;
