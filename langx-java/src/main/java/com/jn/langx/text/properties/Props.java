@@ -37,6 +37,10 @@ public class Props {
         return load(Resources.loadClassPathResource(classpath));
     }
 
+    public static Properties loadFromClasspath(String classpath, ClassLoader classLoader) throws IOException {
+        return load(Resources.loadClassPathResource(classpath, classLoader));
+    }
+
     public static Properties loadFromURL(String url) throws IOException {
         return load(Resources.loadUrlResource(url));
     }
