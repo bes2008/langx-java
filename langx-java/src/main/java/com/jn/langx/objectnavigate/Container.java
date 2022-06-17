@@ -1,4 +1,4 @@
-package com.jn.langx.query;
+package com.jn.langx.objectnavigate;
 
 public interface Container {
     <T> T get(String expression);
