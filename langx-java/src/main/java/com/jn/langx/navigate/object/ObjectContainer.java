@@ -1,8 +1,8 @@
-package com.jn.langx.objectnavigate.object;
+package com.jn.langx.navigate.object;
 
 import com.jn.langx.Accessor;
 import com.jn.langx.accessor.Accessors;
-import com.jn.langx.objectnavigate.Container;
+import com.jn.langx.navigate.Container;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
