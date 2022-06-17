@@ -3,7 +3,11 @@ package com.jn.langx.accessor;
 import com.jn.langx.Accessor;
 import com.jn.langx.Factory;
 
-public interface AccessorFactory extends Factory<Class<?>, Accessor<String,?>> {
+import java.util.List;
+
+public interface AccessorFactory<T> extends Factory<Class<?>, Accessor<String,T>>{
     @Override
-    Accessor<String,?> get(Class<?> klass);
+    Accessor<String,T> get(Class<?> klass);
+
+    List<Class> applyTo();
 }
