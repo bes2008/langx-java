@@ -1,5 +1,7 @@
 package com.jn.langx.query;
 
 public interface Container {
-    <T>T select(String expression);
+    <T> T get(String expression);
+
+    <T> void set(String expression, T value);
 }
