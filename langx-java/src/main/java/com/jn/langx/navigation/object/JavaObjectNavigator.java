@@ -13,6 +13,9 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
+/**
+ * @since 4.6.10
+ */
 public class JavaObjectNavigator implements Navigator<Object> {
     private static final Logger logger = Loggers.getLogger(JavaObjectNavigator.class);
     private String separator;

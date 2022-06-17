@@ -15,6 +15,9 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.util.List;
 
+/**
+ * @since 4.6.10
+ */
 public class XmlNodeNavigator implements Navigator<Node> {
     private static final Logger logger = Loggers.getLogger(XmlNodeNavigator.class);
     @NonNull

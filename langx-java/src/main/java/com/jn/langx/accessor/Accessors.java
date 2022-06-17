@@ -7,10 +7,12 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.reflect.Reflects;
 
 import java.util.*;
 
+/**
+ * @since 4.6.10
+ */
 public class Accessors {
 
     private Accessors() {
@@ -27,7 +29,7 @@ public class Accessors {
     }
 
     public static void register(final AccessorFactory accessorFactory) {
-        final List<Class> classes=accessorFactory.applyTo();
+        final List<Class> classes= accessorFactory.applyTo();
         if(Objs.isNotEmpty(classes)){
             Collects.forEach(classes, new Consumer<Class>() {
                 @Override
@@ -47,8 +49,8 @@ public class Accessors {
             Set<Class> classes =accessorFactoryRegistry.keySet();
             Class matched =Collects.findFirst(classes, new Predicate<Class>() {
                 @Override
-                public boolean test(Class expected) {
-                    return Reflects.isSubClassOrEquals(expected, klass);
+                public boolean test(Class expectedClass) {
+                    return accessorFactoryRegistry.get(expectedClass).appliable(expectedClass, klass);
                 }
             });
             if(matched!=null){
