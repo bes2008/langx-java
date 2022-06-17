@@ -2,7 +2,7 @@ package com.jn.langx.navigation.object;
 
 import com.jn.langx.Accessor;
 import com.jn.langx.accessor.Accessors;
-import com.jn.langx.navigation.Container;
+import com.jn.langx.navigation.Navigator;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -12,29 +12,30 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-
-public class ObjectContainer implements Container {
-    private static final Logger logger = Loggers.getLogger(ObjectContainer.class);
-    private Object containerObject;
+public class JavaObjectNavigator implements Navigator<Object> {
+    private static final Logger logger = Loggers.getLogger(JavaObjectNavigator.class);
     private String separator;
 
-    public ObjectContainer(Object containerObject) {
-        this(containerObject, "/");
+    public JavaObjectNavigator() {
+        this("/");
     }
 
-    public ObjectContainer(Object containerObject, String separator) {
-        this.containerObject = containerObject;
+    public JavaObjectNavigator(String separator) {
         this.separator = Strings.isEmpty(separator) ? "/" : separator;
     }
 
     @Override
-    public <T> T get(String expression) {
+    public <T> T get(Object context, String expression) {
+        if (context == null) {
+            return null;
+        }
+
         String[] segments = Strings.split(expression, separator);
-        return get(Collects.asList(segments));
+        return navigate(context, Collects.asList(segments));
     }
 
-    private <T> T get(List<String> segments) {
-        Object currentObject = this.containerObject;
+    private <T> T navigate(Object context, List<String> segments) {
+        Object currentObject = context;
         for (int i = 0; currentObject != null && i < segments.size(); i++) {
             String subExpr = segments.get(i);
             Accessor accessor = Accessors.of(currentObject);
@@ -49,7 +50,7 @@ public class ObjectContainer implements Container {
     }
 
     @Override
-    public <T> void set(String expression, T value) {
+    public <T> void set(Object context, String expression, T value) {
         String[] segments = Strings.split(expression, separator);
         if (Objs.isEmpty(segments)) {
             return;
@@ -57,7 +58,7 @@ public class ObjectContainer implements Container {
         String key = segments[segments.length - 1];
         List<String> parentExprSegments = Collects.asList(segments).subList(0, segments.length - 1);
 
-        Object parent = get(parentExprSegments);
+        Object parent = navigate(context, parentExprSegments);
         Accessor accessor = Accessors.of(parent);
         if (accessor != null) {
             accessor.set(key, value);
