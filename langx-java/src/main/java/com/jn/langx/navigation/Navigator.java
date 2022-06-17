@@ -1,7 +1,11 @@
 package com.jn.langx.navigation;
 
-public interface Navigator<Context> {
-    <T> T get(Context context, String expression);
+import java.util.List;
 
-    <T> void set(Context context, String expression, T value);
+public interface Navigator<Context> {
+    <E> E get(Context context, String expression);
+
+    <E> List<E> getList(Context context, String expression);
+
+    <E> void set(Context context, String expression, E value);
 }

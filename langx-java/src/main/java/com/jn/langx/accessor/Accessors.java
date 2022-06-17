@@ -39,7 +39,7 @@ public class Accessors {
         }
     }
 
-    public static <T> AccessorFactory findFactory(@NonNull final Class klass) {
+    public static <T> AccessorFactory<T> findFactory(@NonNull final Class klass) {
         Preconditions.checkNotNull(klass);
 
         AccessorFactory factory = accessorFactoryRegistry.get(klass);

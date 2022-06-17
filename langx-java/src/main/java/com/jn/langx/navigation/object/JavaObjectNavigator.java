@@ -34,6 +34,11 @@ public class JavaObjectNavigator implements Navigator<Object> {
         return navigate(context, Collects.asList(segments));
     }
 
+    @Override
+    public <E> List<E> getList(Object object, String expression) {
+        return null;
+    }
+
     private <T> T navigate(Object context, List<String> segments) {
         Object currentObject = context;
         for (int i = 0; currentObject != null && i < segments.size(); i++) {
