@@ -25,6 +25,23 @@ public class XmlNodeNavigator implements Navigator<Node> {
     @Nullable
     private String namespacePrefix;
 
+    public XmlNodeNavigator() {
+        this(null,null);
+    }
+
+    public XmlNodeNavigator(@Nullable XPathFactory xpathFactory) {
+        this(xpathFactory,null);
+    }
+
+    public XmlNodeNavigator(String namespacePrefix) {
+        this(null,namespacePrefix);
+    }
+    public XmlNodeNavigator(@Nullable XPathFactory xpathFactory,
+                            @Nullable String namespacePrefix) {
+        this.xpathFactory = xpathFactory==null? XPathFactory.newInstance():xpathFactory;
+        this.namespacePrefix=namespacePrefix;
+    }
+
     @Override
     public Node get(Node context, String xpathExpression) {
         final XPath xpath = xpathFactory.newXPath();
@@ -34,7 +51,7 @@ public class XmlNodeNavigator implements Navigator<Node> {
             Node node = (Node) exp.evaluate(context, XPathConstants.NODE);
             return node;
         } catch (Throwable ex) {
-            logger.error(ex.getMessage(),ex);
+            logger.error(ex.getMessage(), ex);
             return null;
         }
 
@@ -49,7 +66,7 @@ public class XmlNodeNavigator implements Navigator<Node> {
             NodeList nodeList = (NodeList) exp.evaluate(context, XPathConstants.NODESET);
             return Pipeline.<Node>of(new NodeListIterator(nodeList)).asList();
         } catch (Throwable ex) {
-            logger.error(ex.getMessage(),ex);
+            logger.error(ex.getMessage(), ex);
             return null;
         }
     }
