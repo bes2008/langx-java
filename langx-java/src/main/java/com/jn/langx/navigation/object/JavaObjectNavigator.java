@@ -6,6 +6,7 @@ import com.jn.langx.navigation.Navigator;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
@@ -35,8 +36,8 @@ public class JavaObjectNavigator implements Navigator<Object> {
     }
 
     @Override
-    public <E> List<E> getList(Object object, String expression) {
-        return null;
+    public <E> List<E> getList(Object context, String expression) {
+        return Pipeline.<E>of(get(context, expression)).asList();
     }
 
     private <T> T navigate(Object context, List<String> segments) {
