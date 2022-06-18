@@ -31,6 +31,9 @@ public class AccessorFactoryTests {
         System.out.println(Accessors.of(personDto).getInteger("age"));
 
         System.out.println(new JavaObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
+        new JavaObjectNavigator().set(personDto,"addresses/0/a","newValue");
+        System.out.println(new JavaObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
+        System.out.println(new JavaObjectNavigator().get(personDto,"addresses/0/a"));
 
     }
 
