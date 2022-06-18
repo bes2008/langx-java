@@ -12,7 +12,8 @@ import java.util.List;
 public class StringKeyCollectionAccessorFactory<T> extends AbstractAccessorFactory<T>{
     @Override
     public Accessor<String, T> get(Class<?> klass) {
-        return null;
+        Accessor accessor = new StringKeyCollectionAccessor();
+        return accessor;
     }
 
     @Override

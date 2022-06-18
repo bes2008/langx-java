@@ -10,6 +10,8 @@ import com.jn.langx.util.BasedStringAccessor;
  */
 public class FieldAccessor extends BasedStringAccessor<String, Object> {
 
+    public FieldAccessor() {
+    }
     public FieldAccessor(@NonNull Object target) {
         setTarget(target);
     }
