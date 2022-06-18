@@ -16,15 +16,15 @@ import java.util.List;
 /**
  * @since 4.6.10
  */
-public class JavaObjectNavigator implements Navigator<Object> {
-    private static final Logger logger = Loggers.getLogger(JavaObjectNavigator.class);
+public class ObjectNavigator implements Navigator<Object> {
+    private static final Logger logger = Loggers.getLogger(ObjectNavigator.class);
     private String separator;
 
-    public JavaObjectNavigator() {
+    public ObjectNavigator() {
         this("/");
     }
 
-    public JavaObjectNavigator(String separator) {
+    public ObjectNavigator(String separator) {
         this.separator = Strings.isEmpty(separator) ? "/" : separator;
     }
 

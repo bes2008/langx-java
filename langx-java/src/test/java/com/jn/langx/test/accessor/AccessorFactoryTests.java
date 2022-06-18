@@ -1,7 +1,7 @@
 package com.jn.langx.test.accessor;
 
 import com.jn.langx.accessor.Accessors;
-import com.jn.langx.navigation.object.JavaObjectNavigator;
+import com.jn.langx.navigation.object.ObjectNavigator;
 import com.jn.langx.test.bean.Address;
 import com.jn.langx.test.bean.PersonDto;
 import org.junit.Test;
@@ -30,10 +30,10 @@ public class AccessorFactoryTests {
         System.out.println(Accessors.of(personDto).getString("id"));
         System.out.println(Accessors.of(personDto).getInteger("age"));
 
-        System.out.println(new JavaObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
-        new JavaObjectNavigator().set(personDto,"addresses/0/a","newValue");
-        System.out.println(new JavaObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
-        System.out.println(new JavaObjectNavigator().get(personDto,"addresses/0/a"));
+        System.out.println(new ObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
+        new ObjectNavigator().set(personDto,"addresses/0/a","newValue");
+        System.out.println(new ObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
+        System.out.println(new ObjectNavigator().get(personDto,"addresses/0/a"));
 
     }
 
