@@ -29,12 +29,12 @@ public class JavaObjectNavigator implements Navigator<Object> {
     }
 
     @Override
-    public <T> T get(Object context, String expression) {
+    public <T> T get(Object context, String pathExpression) {
         if (context == null) {
             return null;
         }
 
-        String[] segments = Strings.split(expression, separator);
+        String[] segments = Strings.split(pathExpression, separator);
         return navigate(context, Collects.asList(segments));
     }
 

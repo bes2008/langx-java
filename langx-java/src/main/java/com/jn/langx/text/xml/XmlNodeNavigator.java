@@ -43,11 +43,11 @@ public class XmlNodeNavigator implements Navigator<Node> {
     }
 
     @Override
-    public Node get(Node context, String xpathExpression) {
+    public Node get(Node context, String pathExpression) {
         final XPath xpath = xpathFactory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(context, this.namespacePrefix));
         try {
-            final XPathExpression exp = xpath.compile(xpathExpression);
+            final XPathExpression exp = xpath.compile(pathExpression);
             Node node = (Node) exp.evaluate(context, XPathConstants.NODE);
             return node;
         } catch (Throwable ex) {
