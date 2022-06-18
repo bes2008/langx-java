@@ -28,6 +28,16 @@ public class JavaObjectNavigator implements Navigator<Object> {
         this.separator = Strings.isEmpty(separator) ? "/" : separator;
     }
 
+
+    public <T> Accessor<String, T> getAccessor(Object context, String pathExpression) {
+        T t = get(context, pathExpression);
+        if (t == null) {
+            return null;
+        }
+        return Accessors.of(t);
+    }
+
+
     @Override
     public <T> T get(Object context, String pathExpression) {
         if (context == null) {
@@ -51,7 +61,7 @@ public class JavaObjectNavigator implements Navigator<Object> {
             if (accessor != null) {
                 currentObject = accessor.get(subExpr);
             } else {
-                logger.warn("count'd find a accessor for class: {}, may be it is not a container object", Reflects.getFQNClassName(currentObject.getClass()));
+                logger.warn("count find a accessor for class: {}, may be it is not a container object", Reflects.getFQNClassName(currentObject.getClass()));
                 currentObject = null;
             }
         }
