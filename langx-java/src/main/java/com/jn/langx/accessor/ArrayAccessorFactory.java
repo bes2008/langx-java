@@ -2,10 +2,13 @@ package com.jn.langx.accessor;
 
 import com.jn.langx.Accessor;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.reflect.ArrayAccessor;
+import com.jn.langx.util.collection.ArrayAccessor;
 
 import java.util.List;
 
+/**
+ * @since 4.6.10
+ */
 public class ArrayAccessorFactory implements AccessorFactory<ArrayAccessor> {
     @Override
     public Accessor<String, ArrayAccessor> get(Class<?> klass) {

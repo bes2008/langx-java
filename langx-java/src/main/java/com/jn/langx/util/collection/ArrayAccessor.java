@@ -1,4 +1,4 @@
-package com.jn.langx.util.reflect;
+package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.BasedStringAccessor;

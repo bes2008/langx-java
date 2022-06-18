@@ -1,6 +1,6 @@
 package com.jn.langx.test.util.reflect;
 
-import com.jn.langx.util.reflect.ArrayAccessor;
+import com.jn.langx.util.collection.ArrayAccessor;
 import com.jn.langx.util.reflect.Reflects;
 import org.junit.Test;
 

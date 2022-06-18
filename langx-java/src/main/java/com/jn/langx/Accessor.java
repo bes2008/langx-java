@@ -1,5 +1,6 @@
 package com.jn.langx;
 
+import com.jn.langx.util.collection.ArrayAccessor;
 import com.jn.langx.util.valuegetter.ValueGetter2;
 
 /**
@@ -14,7 +15,7 @@ import com.jn.langx.util.valuegetter.ValueGetter2;
  * @see com.jn.langx.util.reflect.FieldAccessor
  * @see com.jn.langx.text.properties.PropertiesAccessor
  * @see com.jn.langx.util.net.http.HttpQueryStringAccessor
- * @see com.jn.langx.util.reflect.ArrayAccessor
+ * @see ArrayAccessor
  */
 
 public interface Accessor<K, T> extends ValueGetter2<K> {
