@@ -3,6 +3,7 @@ package com.jn.langx.accessor;
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 
 import java.util.Collection;
@@ -16,6 +17,10 @@ public class StringKeyCollectionAccessor extends BasedStringAccessor<String, Col
     @Override
     public void setTarget(Collection target) {
         super.setTarget(Pipeline.of(target).asList());
+    }
+
+    public void setTarget(Object ... elements){
+        this.setTarget(Collects.asList(elements));
     }
 
     @Override
