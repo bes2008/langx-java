@@ -275,12 +275,18 @@ class NamedMatcher implements RegexpMatcher {
      *
      * @return a list of maps, each containing name-value matches
      * (empty if no match found).
+     *
      * <p>
      * Example:
-     * pattern:  (?&lt;dote&gt;\d+).(?&lt;day&gt;\w+)
-     * input:    1 Sun foo bar 2 Mon foo
-     * output:   [{"date":"1", "day":"Sun"}, {"date":"2", "day":"Mon"}]
+     * </p>
+     *
+     * <pre>
+     *  pattern:  (?&lt;date&gt;\d+).(?&lt;day&gt;\w+)
+     *  input:    1 Sun foo bar 2 Mon foo
+     *  output:   [{"date":"1", "day":"Sun"}, {"date":"2", "day":"Mon"}]
+     * </pre>
      */
+    @Override
     public List<Map<String, String>> namedGroups() {
         List<Map<String, String>> result = new ArrayList<Map<String, String>>();
         List<String> groupNames = parentPattern.getNamedGroups();

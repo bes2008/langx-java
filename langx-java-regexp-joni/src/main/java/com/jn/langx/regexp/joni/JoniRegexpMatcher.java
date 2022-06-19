@@ -9,6 +9,9 @@ import org.joni.NameEntry;
 import org.joni.Option;
 import org.joni.Region;
 
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * @since 4.5.0
@@ -457,5 +460,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     @Override
     public void appendTail(StringBuffer sb) {
         sb.append(subBytesAsString(lastAppendPosition, input.length));
+    }
+
+    @Override
+    public List<Map<String, String>> namedGroups() {
+        return null;
     }
 }

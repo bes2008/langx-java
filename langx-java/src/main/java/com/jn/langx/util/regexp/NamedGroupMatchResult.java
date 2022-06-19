@@ -1,5 +1,7 @@
 package com.jn.langx.util.regexp;
 
+import java.util.List;
+import java.util.Map;
 import java.util.regex.MatchResult;
 
 /**
@@ -61,4 +63,6 @@ public interface NamedGroupMatchResult extends MatchResult {
      *                                  with the given name
      */
     int end(String groupName);
+
+    List<Map<String, String>> namedGroups();
 }
