@@ -63,6 +63,7 @@ public class ObjectNavigator implements Navigator<Object> {
             } else {
                 logger.warn("count find a accessor for class: {}, may be it is not a container object", Reflects.getFQNClassName(currentObject.getClass()));
                 currentObject = null;
+                break;
             }
         }
         return (T) currentObject;
