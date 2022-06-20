@@ -65,4 +65,6 @@ public interface NamedGroupMatchResult extends MatchResult {
     int end(String groupName);
 
     List<Map<String, String>> namedGroups();
+
+    List<String> names();
 }

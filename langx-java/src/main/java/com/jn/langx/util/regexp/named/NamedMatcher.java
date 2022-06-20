@@ -310,6 +310,10 @@ class NamedMatcher implements RegexpMatcher {
         return result;
     }
 
+    @Override
+    public List<String> names() {
+        return null;
+    }
 
     /**
      * Returns the start index of the previous match.

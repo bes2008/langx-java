@@ -2,6 +2,7 @@ package com.jn.langx.regexp.joni;
 
 import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import org.joni.Matcher;
@@ -9,6 +10,8 @@ import org.joni.NameEntry;
 import org.joni.Option;
 import org.joni.Region;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -464,6 +467,31 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     @Override
     public List<Map<String, String>> namedGroups() {
-        return null;
+        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+        List<String> groupNames = names();
+
+        if (groupNames.isEmpty()) {
+            return result;
+        }
+
+        int nextIndex = 0;
+        while (this.find(nextIndex)) {
+            Map<String, String> matches = new LinkedHashMap<String, String>();
+
+            for (String groupName : groupNames) {
+                String groupValue = this.group(groupName);
+                matches.put(groupName, groupValue);
+                nextIndex = this.end();
+            }
+
+            result.add(matches);
+        }
+        return result;
+    }
+
+    @Override
+    public List<String> names() {
+        Map<String, NameEntry> named = this.regexp.getNamedGroupMap();
+        return Collects.asList(named.keySet());
     }
 }
