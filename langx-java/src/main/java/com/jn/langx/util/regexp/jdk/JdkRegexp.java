@@ -63,7 +63,7 @@ public class JdkRegexp implements Regexp {
      */
     @Override
     public RegexpMatcher matcher(CharSequence input) {
-        return new JdkMatcher(this.pattern.matcher(input));
+        return new JdkMatcher(this, this.pattern.matcher(input));
     }
 
     /**

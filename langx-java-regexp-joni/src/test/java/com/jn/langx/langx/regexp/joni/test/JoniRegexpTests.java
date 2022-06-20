@@ -132,7 +132,6 @@ public class JoniRegexpTests {
     }
 
 
-
     private void groupNameTest(Regexp regexp, String text) {
         final RegexpMatcher matcher = regexp.matcher(text);
         if (matcher.matches()) {
@@ -220,12 +219,12 @@ public class JoniRegexpTests {
     }
 
     @Test
-    public void test9(){
-        System.out.println(StringTemplates.formatWithPlaceholder("a {}, b: {}, e: {}", 123, 234,545));
+    public void test9() {
+        System.out.println(StringTemplates.formatWithPlaceholder("a {}, b: {}, e: {}", 123, 234, 545));
     }
 
     @Test
-    public void test10(){
+    public void test10() {
         String pattern = "(?:(?<year>\\d{4})\\-(?<month>\\d{2})-(?<dayOfMonth>\\d{2}))";
         List<String> names = null;
         names = new NamedRegexp(pattern).getNamedGroups();
@@ -234,6 +233,31 @@ public class JoniRegexpTests {
         System.out.println(names);
         names = new JoniRegexp(pattern).getNamedGroups();
         System.out.println(names);
+    }
+
+    @Test
+    public void test11() {
+        String str = "a134b2c3d4e5f6g";
+        String pattern = "(?<name>[a-z])(?<number>\\d{1,})";
+
+        System.out.println("------------joni-------------");
+        Regexp regexp = new JoniRegexp(pattern);
+        RegexpMatcher matcher = regexp.matcher(str);
+        List<Map<String, String>> namedGroups = matcher.namedGroups();
+        System.out.println(namedGroups);
+
+        System.out.println("------------jdk6-------------");
+
+        regexp = new NamedRegexp(pattern);
+        matcher = regexp.matcher(str);
+        namedGroups = matcher.namedGroups();
+        System.out.println(namedGroups);
+
+        System.out.println("------------jdk8-------------");
+        regexp = new JoniRegexp(pattern);
+        matcher = regexp.matcher(str);
+        namedGroups = matcher.namedGroups();
+        System.out.println(namedGroups);
     }
 
 }
