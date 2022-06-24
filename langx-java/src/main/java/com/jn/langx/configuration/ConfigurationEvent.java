@@ -34,6 +34,6 @@ public class ConfigurationEvent<T extends Configuration> extends DomainEvent<T> 
 
     @Override
     public String toString() {
-        return StringTemplates.format("{domain: {0}, eventType:{1}, source: {2}}", getDomain(), eventType.name(), getSource().toString());
+        return StringTemplates.formatWithIndex("{domain: {0}, eventType:{1}, source: {2}}", getDomain(), eventType.name(), getSource().toString());
     }
 }

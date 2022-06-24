@@ -56,9 +56,7 @@ public class Hex {
      * @throws CodecException Thrown if an odd number or illegal of characters is supplied
      */
     public static byte[] decodeHex(final char[] data) throws CodecException {
-
         final int len = data.length;
-
         if ((len & 0x01) != 0) {
             throw new CodecException("Odd number of characters.");
         }

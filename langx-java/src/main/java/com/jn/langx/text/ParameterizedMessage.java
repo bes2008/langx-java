@@ -29,7 +29,7 @@ public class ParameterizedMessage {
 
     public String getMessage() {
         if (template != null) {
-            return StringTemplates.format(template, args);
+            return StringTemplates.formatWithIndex(template, args);
         }
         return "";
     }

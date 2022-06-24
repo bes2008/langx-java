@@ -62,10 +62,9 @@ public class StringTemplates {
      *
      * @param template the string template
      * @return formatted string
-     * @see #format(String, Object...)
      */
     public static String formatWithIndex(String template, Object... args) {
-        return format(template, args);
+        return new IndexStringFormatter().format(template, args);
     }
 
     public static Supplier<Object[], String> indexStyleSupplier(final String template) {
@@ -73,17 +72,6 @@ public class StringTemplates {
             @Override
             public String get(Object[] params) {
                 return formatWithIndex(template, params);
-            }
-        };
-    }
-
-
-
-    public static Supplier<Object[], String> supplier(final String template) {
-        return new Supplier<Object[], String>() {
-            @Override
-            public String get(Object[] params) {
-                return format(template, params);
             }
         };
     }
@@ -170,6 +158,11 @@ public class StringTemplates {
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
     }
 
+    public static String format(String template, Regexp variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
+        // 需要自己剔除变量的前后标记
+        return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
+    }
+
     /**
      * 模板变量替换
      * @param template 模板
@@ -231,6 +224,7 @@ public class StringTemplates {
             }
         });
     }
+
     /**
      * 模板替换
      * @return 2.10.1
@@ -257,18 +251,6 @@ public class StringTemplates {
                 return valueGetter.getString(variable);
             }
         });
-    }
-
-    /**
-     * format based index: {0}, {1}, {2}
-     *
-     * @param template the string template
-     * @param args     args
-     * @return formatted string
-     * @see #formatWithIndex(String, Object...)
-     */
-    public static String format(String template, Object... args) {
-        return new IndexStringFormatter().format(template, args);
     }
 
     public static TemplateFluenter fluenter(String template) {

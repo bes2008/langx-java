@@ -1,15 +1,19 @@
 package com.jn.langx.util;
 
+import com.jn.langx.codec.hex.Hexs;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.util.Arrays;
 
 public class Chars {
-    private Chars(){
+    private Chars() {
 
     }
+
     /**
      * \r 回车
      */
@@ -78,8 +82,34 @@ public class Chars {
         return c - 48;
     }
 
-    public static char from(int i){
-        return (char)(i + 48);
+    public static char from(int i) {
+        return (char) (i + 48);
+    }
+
+    public final static Regexp HEX_CHAR_REGEXP = Regexps.createRegexp("(?:[0\\\\][xX])[0-9a-fA-F]{2}");
+
+    /**
+     * 0x5C
+     * \x5C
+     * <p>
+     * ASCII 码表：
+     * https://www.habaijian.com/
+     */
+    public static char fromHex(String hexChar) {
+        return fromHex(hexChar, true);
+    }
+
+    public static char fromHex(String hexChar, boolean valid) {
+        if (valid) {
+            Preconditions.checkTrue(Regexps.match(HEX_CHAR_REGEXP, hexChar), "illegal hex: {}", hexChar);
+        }
+        hexChar = hexChar.substring(2);
+        try {
+            byte b = Hexs.fromHex(hexChar)[0];
+            return b2c(b);
+        } catch (Throwable ex) {
+            throw Throwables.wrapAsRuntimeException(ex);
+        }
     }
 
     public static char toLowerCase(char c) {
@@ -115,9 +145,11 @@ public class Chars {
     public static boolean isUpperCase(char value) {
         return value >= 'A' && value <= 'Z';
     }
+
     public static boolean isDigit(int ch) {
-        return ((ch-'0')|('9'-ch)) >= 0;
+        return ((ch - '0') | ('9' - ch)) >= 0;
     }
+
     public static boolean isLowOrUpperCase(char value) {
         return isUpperCase(value) || isLowerCase(value);
     }
@@ -153,11 +185,11 @@ public class Chars {
         return ch == SPACE || ch == TAB || isCRorLF(ch);
     }
 
-    public static boolean isCRorLF(final char ch){
+    public static boolean isCRorLF(final char ch) {
         return ch == CR || ch == LF;
     }
 
-    public static boolean isNotCRAndLF(final char ch){
+    public static boolean isNotCRAndLF(final char ch) {
         return ch != CR && ch != LF;
     }
 
@@ -218,5 +250,6 @@ public class Chars {
         }
         return bytes;
     }
+
 
 }

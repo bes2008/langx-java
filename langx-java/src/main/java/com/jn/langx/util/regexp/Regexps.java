@@ -83,4 +83,17 @@ public class Regexps {
         }
         return engine.get(pattern, option);
     }
+
+    public static boolean match(Regexp regexp, String text){
+        RegexpMatcher matcher = regexp.matcher(text);
+        return matcher.matches();
+    }
+
+    public static boolean match(String regexp, int flags, String text){
+        return match(createRegexp(regexp, flags),text);
+    }
+
+    public static boolean match(String regexp, String text){
+        return match(createRegexp(regexp),text);
+    }
 }
