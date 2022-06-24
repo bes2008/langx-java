@@ -44,6 +44,9 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
                 return null;
             }
             long initialDelay = this.scheduledExecutionTime.getTime() - System.currentTimeMillis();
+            if(initialDelay<0){
+                initialDelay = 0L;
+            }
             this.currentFuture = this.executor.schedule(this, initialDelay, TimeUnit.MILLISECONDS);
             return this;
         }
