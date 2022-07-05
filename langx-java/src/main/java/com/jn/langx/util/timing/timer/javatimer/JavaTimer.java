@@ -1,5 +1,6 @@
 package com.jn.langx.util.timing.timer.javatimer;
 
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.timing.timer.RunnableToTimerTaskAdapter;
 import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.Timer;
@@ -36,20 +37,22 @@ public class JavaTimer implements Timer {
         long deadline = System.currentTimeMillis() + delayInMills;
 
         final JavaTimeout timeout = new JavaTimeout(this, task, deadline);
-        java.util.TimerTask timerRef = new java.util.TimerTask() {
+        java.util.TimerTask taskRef = new java.util.TimerTask() {
             @Override
             public void run() {
                 timeout.executeTask();
             }
         };
-        timeout.setTaskRef(timerRef);
-        jtimer.schedule(timerRef, delayInMills);
+        timeout.setTaskRef(taskRef);
+        jtimer.schedule(taskRef, delayInMills);
         return timeout;
     }
 
     @Override
     public Set<Timeout> stop() {
-        return null;
+        // 调用 cancel 方法后，queue会自动清空， thread 会自动停止。
+        jtimer.cancel();
+        return Collects.emptyHashSet();
     }
 
     @Override
