@@ -86,7 +86,11 @@ public class Chars {
         return (char) (i + 48);
     }
 
-    public final static Regexp HEX_CHAR_REGEXP = Regexps.createRegexp("(?:[0\\\\][xX])[0-9a-fA-F]{2}");
+    /**
+     * e.g. : 0x5C, \x5C
+     * e.g. : \uF23F
+     */
+    public final static Regexp HEX_CHAR_REGEXP = Regexps.createRegexp("(?:(?:[0\\\\][xX])[0-9a-fA-F]{2})|(\\\\u)[0-9a-fA-F]{4,6}");
 
     /**
      * 0x5C
@@ -99,17 +103,27 @@ public class Chars {
         return fromHex(hexChar, true);
     }
 
-    public static char fromHex(String hexChar, boolean valid) {
+    public static char fromHex(String hex, boolean valid) {
         if (valid) {
-            Preconditions.checkTrue(Regexps.match(HEX_CHAR_REGEXP, hexChar), "illegal hex: {}", hexChar);
+            Preconditions.checkTrue(Regexps.match(HEX_CHAR_REGEXP, hex), "illegal hex: {}", hex);
         }
-        hexChar = hexChar.substring(2);
-        try {
-            byte b = Hexs.fromHex(hexChar)[0];
-            return b2c(b);
-        } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+        if (hex.startsWith("0x") || hex.startsWith("\\x")) {
+            // ascii
+            hex = hex.substring(2);
+            try {
+                byte b = Hexs.fromHex(hex)[0];
+                return b2c(b);
+            } catch (Throwable ex) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }
+        } else if (hex.startsWith("\\u")) {
+            // unicode
+            hex = hex.substring(2);
+            int charCodePoint = Integer.parseInt(hex, 16);
+            char c = (char) charCodePoint;
+            return c;
         }
+        throw new UnsupportedOperationException();
     }
 
     public static char toLowerCase(char c) {

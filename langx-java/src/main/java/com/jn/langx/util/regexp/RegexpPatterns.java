@@ -8,6 +8,10 @@ public class RegexpPatterns {
     private RegexpPatterns() {
     }
 
+    public static final String CHINESE_CHAR_PATTERN = "[\\u4e00-\\u9fa5]";
+    public static final Regexp CHINESE_CHAR = Regexps.createRegexp(CHINESE_CHAR_PATTERN);
+    public static final Regexp CHINESE_CHARS = Regexps.createRegexp(CHINESE_CHAR_PATTERN + "+");
+
     public static final Regexp COMMA_SPLIT_PATTERN = Regexps.createRegexp("\\s*[,]+\\s*");
 
     /**

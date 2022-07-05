@@ -3631,7 +3631,7 @@ public class Strings {
         return builder.toString();
     }
 
-    public static String replaceHexChars(String text){
+    public static String decodeHexChars(String text){
         return StringTemplates.format(text, Chars.HEX_CHAR_REGEXP, new PlaceholderParser() {
             @Override
             public String parse(String variable) {
