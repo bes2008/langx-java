@@ -159,13 +159,7 @@ public class Utf8s {
      */
     @NonNull
     public static String toString(@NonNull final byte[] b) {
-        try {
-            return new String(b, Charsets.UTF_8);
-        } catch (final Exception e) {
-            // This should never happen.
-            //Debug.debugException(e);
-            return new String(b);
-        }
+        return new String(b, Charsets.UTF_8);
     }
 
 
@@ -181,12 +175,7 @@ public class Utf8s {
      */
     @NonNull
     public static String toString(@NonNull final byte[] b, final int offset, final int length) {
-        try {
-            return new String(b, offset, length, Charsets.UTF_8);
-        } catch (final Exception e) {
-            // This should never happen.
-            return new String(b, offset, length);
-        }
+        return new String(b, offset, length, Charsets.UTF_8);
     }
 
     /**
@@ -195,6 +184,7 @@ public class Utf8s {
      * e.g. ：\x{we}
      */
     public final static Regexp ESCAPED_CHAR_REGEXP = Regexps.createRegexp("(?:(?:\\\\0)[0-3][0-7]{2})|(?:(?:\\\\0)[0-7]{1,2})|(?:(?:\\\\x)[0-9a-fA-F]{2})|(?:(?:\\\\u)[0-9a-fA-F]{4})");
+
     /**
      * 0x5C
      * \x5C
@@ -216,8 +206,7 @@ public class Utf8s {
             int charCodePoint = Integer.parseInt(hex, 8);
             char c = (char) charCodePoint;
             return c;
-        }
-        else if (hex.startsWith("0x") || hex.startsWith("\\x") || hex.startsWith("\\u")) {
+        } else if (hex.startsWith("0x") || hex.startsWith("\\x") || hex.startsWith("\\u")) {
             hex = hex.substring(2);
             int charCodePoint = Integer.parseInt(hex, 16);
             char c = (char) charCodePoint;
@@ -226,11 +215,11 @@ public class Utf8s {
         throw new UnsupportedOperationException();
     }
 
-    public static String decodeHexChars(String text){
+    public static String decodeHexChars(String text) {
         return StringTemplates.format(text, ESCAPED_CHAR_REGEXP, new PlaceholderParser() {
             @Override
             public String parse(String variable) {
-                return ""+hexToChar(variable, false);
+                return "" + hexToChar(variable, false);
             }
         });
     }
