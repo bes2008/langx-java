@@ -1,4 +1,4 @@
-package com.jn.langx.util.io.bytes;
+package com.jn.langx.util.io;
 
 
 /**
