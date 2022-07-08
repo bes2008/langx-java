@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.io.Utf8s;
+import com.jn.langx.util.io.unicode.Utf8s;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 

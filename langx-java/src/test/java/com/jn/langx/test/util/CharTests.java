@@ -1,6 +1,6 @@
 package com.jn.langx.test.util;
 
-import com.jn.langx.util.io.Utf8s;
+import com.jn.langx.util.io.unicode.Utf8s;
 import org.junit.Test;
 
 public class CharTests {

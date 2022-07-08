@@ -1,8 +1,8 @@
-package com.jn.langx.util.io;
+package com.jn.langx.util.io.unicode;
 
 public final class Utf16s {
-    public static final int CODEPOINT_MIN_VALUE = 0;
-    public static final int CODEPOINT_MAX_VALUE = 1114111;
+    public static final int CODEPOINT_MIN_VALUE = 0x0;
+    public static final int CODEPOINT_MAX_VALUE = 0x10FFFF;
     public static final int SUPPLEMENTARY_MIN_VALUE = 65536;
     public static final int LEAD_SURROGATE_MIN_VALUE = 55296;
     public static final int TRAIL_SURROGATE_MIN_VALUE = 56320;

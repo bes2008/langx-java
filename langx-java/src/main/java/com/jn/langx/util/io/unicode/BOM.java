@@ -1,4 +1,4 @@
-package com.jn.langx.util.io;
+package com.jn.langx.util.io.unicode;
 
 
 /**
