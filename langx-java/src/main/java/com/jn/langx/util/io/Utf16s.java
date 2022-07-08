@@ -1,4 +1,4 @@
-package com.jn.langx.util.io.bytes;
+package com.jn.langx.util.io;
 
 public final class Utf16s {
     public static final int CODEPOINT_MIN_VALUE = 0;

@@ -1,4 +1,4 @@
-package com.jn.langx.util.io.bytes;
+package com.jn.langx.util.io;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
