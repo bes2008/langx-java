@@ -2,8 +2,13 @@ package com.jn.langx.util.io.bytes;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 
 public class Utf8s {
@@ -123,7 +128,7 @@ public class Utf8s {
      * @param s The string for which to retrieve the UTF-8 byte representation.
      * @return The UTF-8 byte representation for the provided string.
      */
-    @NonNull()
+    @NonNull
     public static byte[] getBytes(@Nullable final String s) {
         final int length;
         if ((s == null) || ((length = s.length()) == 0)) {
@@ -152,7 +157,7 @@ public class Utf8s {
      * @return The string generated from the provided byte array using the UTF-8
      * encoding.
      */
-    @NonNull()
+    @NonNull
     public static String toString(@NonNull final byte[] b) {
         try {
             return new String(b, Charsets.UTF_8);
@@ -174,7 +179,7 @@ public class Utf8s {
      * @return The string generated from the specified portion of the provided
      * byte array using the UTF-8 encoding.
      */
-    @NonNull()
+    @NonNull
     public static String toString(@NonNull final byte[] b, final int offset, final int length) {
         try {
             return new String(b, offset, length, Charsets.UTF_8);
@@ -184,5 +189,50 @@ public class Utf8s {
         }
     }
 
+    /**
+     * e.g. : \x5C
+     * e.g. : \uF23F
+     * e.g. ：\x{we}
+     */
+    public final static Regexp ESCAPED_CHAR_REGEXP = Regexps.createRegexp("(?:(?:\\\\0)[0-3][0-7]{2})|(?:(?:\\\\0)[0-7]{1,2})|(?:(?:\\\\x)[0-9a-fA-F]{2})|(?:(?:\\\\u)[0-9a-fA-F]{4})");
+    /**
+     * 0x5C
+     * \x5C
+     * <p>
+     * ASCII 码表：
+     * https://www.habaijian.com/
+     */
+    public static char hexToChar(String hexChar) {
+        return hexToChar(hexChar, true);
+    }
+
+    public static char hexToChar(String hex, boolean valid) {
+        if (valid) {
+            Preconditions.checkTrue(Regexps.match(ESCAPED_CHAR_REGEXP, hex), "illegal hex: {}", hex);
+        }
+        if (hex.startsWith("\\0")) {
+            // unicode
+            hex = hex.substring(2);
+            int charCodePoint = Integer.parseInt(hex, 8);
+            char c = (char) charCodePoint;
+            return c;
+        }
+        else if (hex.startsWith("0x") || hex.startsWith("\\x") || hex.startsWith("\\u")) {
+            hex = hex.substring(2);
+            int charCodePoint = Integer.parseInt(hex, 16);
+            char c = (char) charCodePoint;
+            return c;
+        }
+        throw new UnsupportedOperationException();
+    }
+
+    public static String decodeHexChars(String text){
+        return StringTemplates.format(text, ESCAPED_CHAR_REGEXP, new PlaceholderParser() {
+            @Override
+            public String parse(String variable) {
+                return ""+hexToChar(variable, false);
+            }
+        });
+    }
 
 }

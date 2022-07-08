@@ -2,9 +2,7 @@ package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.Words;
-import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
@@ -3631,12 +3629,5 @@ public class Strings {
         return builder.toString();
     }
 
-    public static String decodeHexChars(String text){
-        return StringTemplates.format(text, Chars.HEX_CHAR_REGEXP, new PlaceholderParser() {
-            @Override
-            public String parse(String variable) {
-                return ""+Chars.fromHex(variable, false);
-            }
-        });
-    }
+
 }
