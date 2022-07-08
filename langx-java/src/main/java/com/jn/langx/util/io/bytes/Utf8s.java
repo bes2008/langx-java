@@ -215,7 +215,7 @@ public class Utf8s {
         throw new UnsupportedOperationException();
     }
 
-    public static String decodeHexChars(String text) {
+    public static String decodeChars(String text) {
         return StringTemplates.format(text, ESCAPED_CHAR_REGEXP, new PlaceholderParser() {
             @Override
             public String parse(String variable) {
