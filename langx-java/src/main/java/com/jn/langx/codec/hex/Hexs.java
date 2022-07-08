@@ -5,7 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.asn1.bytestring.ByteStringBuffer;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.io.bytes.Utf8s;
+import com.jn.langx.util.io.Utf8s;
 
 import java.text.ParseException;
 

@@ -14,7 +14,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.asn1.spec.ASN1OctetString;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.io.IOs;
-import com.jn.langx.util.io.bytes.Utf8s;
+import com.jn.langx.util.io.Utf8s;
 
 /**
  * This class provides a growable byte array to which data can be appended.

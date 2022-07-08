@@ -6,7 +6,7 @@ import com.jn.langx.asn1.bytestring.ByteString;
 import com.jn.langx.asn1.bytestring.ByteStringBuffer;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.io.bytes.Utf8s;
+import com.jn.langx.util.io.Utf8s;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 

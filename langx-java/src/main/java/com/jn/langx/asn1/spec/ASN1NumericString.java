@@ -2,7 +2,7 @@ package com.jn.langx.asn1.spec;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.util.io.bytes.Utf8s;
+import com.jn.langx.util.io.Utf8s;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
