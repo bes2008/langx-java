@@ -3,7 +3,7 @@ package com.jn.langx.util.concurrent.interceptor;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.TaskInterceptor;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +34,7 @@ import java.util.List;
  * @author jinuo.fang
  */
 public class TaskInterceptorChain implements TaskInterceptor {
-    private LinkedList<TaskInterceptor> interceptors = new LinkedList<TaskInterceptor>();
+    private List<TaskInterceptor> interceptors = new ArrayList<TaskInterceptor>(1);
 
     public TaskInterceptorChain() {
         interceptors.add(new LoggerInterceptor());
@@ -43,8 +43,8 @@ public class TaskInterceptorChain implements TaskInterceptor {
     public void addInterceptor(TaskInterceptor interceptor) {
         if (interceptor != null) {
             TaskInterceptor loggerInterceptor = interceptors.remove(interceptors.size() - 1);
-            interceptors.addLast(interceptor);
-            interceptors.addLast(loggerInterceptor);
+            interceptors.add(interceptor);
+            interceptors.add(loggerInterceptor);
         }
     }
 

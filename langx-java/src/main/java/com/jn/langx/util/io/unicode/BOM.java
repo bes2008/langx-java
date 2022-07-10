@@ -12,19 +12,19 @@ public enum BOM {
     /**
      * 大端
      */
-    UTF16_BE("UTF-16-BE", new byte[]{(byte) 0xFE, (byte) 0xFF},"FEFF"),
+    UTF16_BE("UTF-16BE", new byte[]{(byte) 0xFE, (byte) 0xFF},"FEFF"),
     /**
      * 小端
      */
-    UTF16_LE("UTF-16-LE", new byte[]{(byte) 0xFF, (byte) 0xFE},"FFFE"),
+    UTF16_LE("UTF-16LE", new byte[]{(byte) 0xFF, (byte) 0xFE},"FFFE"),
     /**
      * 大端
      */
-    UTF32_BE("UTF-32-BE", new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF}, "0000FEFF"),
+    UTF32_BE("UTF-32BE", new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF}, "0000FEFF"),
     /**
      * 小端
      */
-    UTF32_LE("UTF-32-LE", new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFE},  "0000FFFE"),
+    UTF32_LE("UTF-32LE", new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFE},  "0000FFFE"),
     ;
 
     private BOM(String name, byte[] bytes, String checkValue) {

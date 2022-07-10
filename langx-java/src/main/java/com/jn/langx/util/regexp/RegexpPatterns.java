@@ -22,7 +22,7 @@ public class RegexpPatterns {
      *  \uFE30 - \uFE4F 纵向表点符号
      *
      */
-    public static final String CHINESE_CHAR_PATTERN  = "[\\x{2E80}-\\x{2EFF}\\x{2F00}-\\x{2FDF}\\x{3000}-\\x{303F}\\x{31C0}-\\x{31EF}\\x{3400}-\\x{4DBF}\\x{4E00}-\\x{9FFF}\\x{F900}-\\x{FAFF}\\x{FE30}-\\x{FE4F}\\x{20000}-\\x{2A6DF}\\x{2A700}-\\x{2EBEF}\\x{2F800}—\\x{2FA1F}\\x{30000}—\\x{3134F}]";
+    public static final String CHINESE_CHAR_PATTERN  = "[\\x{4E00}-\\x{9FFF}\\x{2E80}-\\x{2EFF}\\x{2F00}-\\x{2FDF}\\x{3000}-\\x{303F}\\x{31C0}-\\x{31EF}\\x{3400}-\\x{4DBF}\\x{F900}-\\x{FAFF}\\x{FE30}-\\x{FE4F}\\x{20000}-\\x{2A6DF}\\x{2A700}-\\x{2EBEF}\\x{2F800}—\\x{2FA1F}\\x{30000}—\\x{3134F}]";
     public static final Regexp CHINESE_CHAR = Regexps.createRegexp(CHINESE_CHAR_PATTERN);
     public static final Regexp CHINESE_CHARS = Regexps.createRegexp(CHINESE_CHAR_PATTERN + "+");
 
