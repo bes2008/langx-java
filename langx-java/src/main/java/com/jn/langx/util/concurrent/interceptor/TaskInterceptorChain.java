@@ -33,6 +33,7 @@ import java.util.List;
  *
  * @author jinuo.fang
  */
+@Deprecated
 public class TaskInterceptorChain implements TaskInterceptor {
     private List<TaskInterceptor> interceptors = new ArrayList<TaskInterceptor>(1);
 

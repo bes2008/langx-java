@@ -1,6 +1,7 @@
 package com.jn.langx.util.concurrent;
 
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.logging.Loggers;
 
 import java.util.concurrent.Callable;
 
@@ -16,15 +17,42 @@ public class CommonTask<V> implements Callable<V>, Runnable {
         this.t1 = t;
     }
 
+    public static <V> CommonTask<V> wrap(Runnable r) {
+        if (r instanceof CommonTask) {
+            return (CommonTask) r;
+        }
+        return new CommonTask<V>(r);
+    }
+
+    public static <V> CommonTask<V> wrap(Callable<V> r) {
+        if (r instanceof CommonTask) {
+            return (CommonTask) r;
+        }
+        return new CommonTask<V>(r);
+    }
+
 
     @Override
     public V call() throws Exception {
-        return t0.call();
+        try {
+            return t0.call();
+        } catch (Exception e) {
+            Loggers.getLogger(CommonTask.class).error(e.getMessage(), e);
+            throw e;
+        } catch (Throwable e1) {
+            Loggers.getLogger(CommonTask.class).error(e1.getMessage(), e1);
+            throw Throwables.wrapAsRuntimeException(e1);
+        }
     }
 
     @Override
     public void run() {
-        t1.run();
+        try {
+            t1.run();
+        } catch (Throwable e1) {
+            Loggers.getLogger(CommonTask.class).error(e1.getMessage(), e1);
+            throw Throwables.wrapAsRuntimeException(e1);
+        }
     }
 
     public Class getExpectClass() {

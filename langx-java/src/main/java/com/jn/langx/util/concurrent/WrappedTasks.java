@@ -7,6 +7,7 @@ import java.util.concurrent.Callable;
 /**
  * @author jinuo.fang
  */
+@Deprecated
 public class WrappedTasks {
     public static WrappedRunnable wrap(Runnable target) {
         Preconditions.checkNotNull(target);

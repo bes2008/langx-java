@@ -2,7 +2,7 @@ package com.jn.langx.util.concurrent.interceptor;
 
 import com.jn.langx.util.concurrent.TaskInterceptor;
 import com.jn.langx.util.logging.Loggers;
-
+@Deprecated
 class LoggerInterceptor implements TaskInterceptor {
 
 

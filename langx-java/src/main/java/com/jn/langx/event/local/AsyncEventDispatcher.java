@@ -4,7 +4,7 @@ import com.jn.langx.event.DomainEvent;
 import com.jn.langx.event.EventDispatcher;
 import com.jn.langx.event.EventListener;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.concurrent.WrappedTasks;
+import com.jn.langx.util.concurrent.CommonTask;
 import com.jn.langx.util.function.Consumer;
 
 import java.util.concurrent.ExecutorService;
@@ -45,7 +45,7 @@ public class AsyncEventDispatcher implements EventDispatcher {
     @Override
     public void dispatch(final DomainEvent event, final Iterable<EventListener> subscribers) {
         if (!parallel) {
-            this.getExecutor().execute(WrappedTasks.wrap(new Runnable() {
+            this.getExecutor().execute(CommonTask.wrap(new Runnable() {
                 @Override
                 public void run() {
                     SimpleEventDispatcher.INSTANCE.dispatch(event, subscribers);
@@ -55,7 +55,7 @@ public class AsyncEventDispatcher implements EventDispatcher {
             Collects.forEach(subscribers, new Consumer<EventListener>() {
                 @Override
                 public void accept(final EventListener eventListener) {
-                    AsyncEventDispatcher.this.getExecutor().execute(WrappedTasks.wrap(new Runnable() {
+                    AsyncEventDispatcher.this.getExecutor().execute(CommonTask.wrap(new Runnable() {
                         @Override
                         public void run() {
                             eventListener.on(event);

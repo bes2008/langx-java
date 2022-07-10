@@ -15,19 +15,19 @@ public class WrappedThread extends Thread {
     }
 
     public WrappedThread(ThreadGroup group, Runnable target) {
-        super(group, WrappedTasks.wrap(target));
+        super(group, CommonTask.wrap(target));
     }
 
     public WrappedThread(Runnable target, String name) {
-        super(WrappedTasks.wrap(target), name);
+        super(CommonTask.wrap(target), name);
     }
 
     public WrappedThread(ThreadGroup group, Runnable target, String name) {
-        super(group, WrappedTasks.wrap(target), name);
+        super(group, CommonTask.wrap(target), name);
     }
 
     public WrappedThread(ThreadGroup group, Runnable target, String name, long stackSize) {
-        super(group, WrappedTasks.wrap(target), name, stackSize);
+        super(group, CommonTask.wrap(target), name, stackSize);
     }
 
 }

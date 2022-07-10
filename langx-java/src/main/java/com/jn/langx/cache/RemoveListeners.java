@@ -1,6 +1,7 @@
 package com.jn.langx.cache;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.concurrent.CommonTask;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.concurrent.WrappedTasks;
 
@@ -29,7 +30,7 @@ public class RemoveListeners {
         return new RemoveListener<K, V>() {
             @Override
             public void onRemove(final K key, final V value, final RemoveCause cause) {
-                executor.execute(WrappedTasks.wrap(new Runnable() {
+                executor.execute(CommonTask.wrap(new Runnable() {
                     @Override
                     public void run() {
                         listener.onRemove(key, value, cause);
