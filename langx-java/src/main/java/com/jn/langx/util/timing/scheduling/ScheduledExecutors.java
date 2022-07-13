@@ -9,6 +9,7 @@ import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.timing.timer.*;
+import com.jn.langx.util.timing.timer.immediate.ImmediateTimer;
 import com.jn.langx.util.timing.timer.javatimer.JavaTimer;
 
 import java.util.concurrent.Executor;
@@ -108,4 +109,23 @@ public class ScheduledExecutors {
     public static Timeout javaTimeoutTask(java.util.Timer timer, Executor taskExecutor, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler) {
         return timeoutTask(new JavaTimer(timer, taskExecutor), task, trigger, errorHandler);
     }
+
+    /**
+     * @since 4.6.13
+     * <p>
+     * 基于 immediate timer 来创建定时任务
+     */
+    public static Timeout immediateTask(ImmediateTimer timer, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler) {
+        return timeoutTask(timer, task, trigger, errorHandler);
+    }
+
+    /**
+     * @since 4.6.13
+     * <p>
+     * 基于 immediate timer 来创建定时任务
+     */
+    public static Timeout immediateTask(Executor executor, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler) {
+        return immediateTask(new ImmediateTimer(executor) , task, trigger, errorHandler);
+    }
+
 }

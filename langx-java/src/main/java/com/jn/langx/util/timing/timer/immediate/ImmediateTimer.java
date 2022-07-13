@@ -6,9 +6,17 @@ import com.jn.langx.util.timing.timer.Timeout;
 import com.jn.langx.util.timing.timer.TimerTask;
 
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 public class ImmediateTimer extends AbstractTimer {
+    public ImmediateTimer() {
+
+    }
+
+    public ImmediateTimer(Executor e) {
+        setTaskExecutor(e);
+    }
 
     @Override
     public Timeout newTimeout(Runnable task, long delay, TimeUnit unit) {
