@@ -206,7 +206,7 @@ public class Utf8s {
             int charCodePoint = Integer.parseInt(hex, 8);
             char c = (char) charCodePoint;
             return c;
-        } else if (hex.startsWith("0x") || hex.startsWith("\\x") || hex.startsWith("\\u")) {
+        } else if (hex.startsWith("\\x") || hex.startsWith("\\u")) {
             hex = hex.substring(2);
             int charCodePoint = Integer.parseInt(hex, 16);
             char c = (char) charCodePoint;
