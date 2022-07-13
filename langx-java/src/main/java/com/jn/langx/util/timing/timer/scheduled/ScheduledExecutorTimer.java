@@ -13,13 +13,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * @since 4.6.4
  */
-public class ScheduledExecutorTimer implements Timer {
+public class ScheduledExecutorTimer extends AbstractTimer {
     private ScheduledExecutorService scheduledExecutor;
-    private Executor taskExecutor;
 
     public ScheduledExecutorTimer(ScheduledExecutorService scheduledExecutor, Executor taskExecutor) {
         this.scheduledExecutor = scheduledExecutor;
-        this.taskExecutor = taskExecutor;
+        setTaskExecutor(taskExecutor);
     }
 
     @Override
@@ -51,19 +50,11 @@ public class ScheduledExecutorTimer implements Timer {
         return timeout;
     }
 
-    public Executor getTaskExecutor() {
-        return taskExecutor;
-    }
 
     @Override
     public Set<Timeout> stop() {
         scheduledExecutor.shutdown();
         return null;
-    }
-
-    @Override
-    public boolean isDistinctSupported() {
-        return false;
     }
 
 

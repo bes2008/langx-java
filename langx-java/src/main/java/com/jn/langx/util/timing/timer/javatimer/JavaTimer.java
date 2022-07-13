@@ -1,10 +1,7 @@
 package com.jn.langx.util.timing.timer.javatimer;
 
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.timing.timer.RunnableToTimerTaskAdapter;
-import com.jn.langx.util.timing.timer.Timeout;
-import com.jn.langx.util.timing.timer.Timer;
-import com.jn.langx.util.timing.timer.TimerTask;
+import com.jn.langx.util.timing.timer.*;
 
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -13,17 +10,16 @@ import java.util.concurrent.TimeUnit;
 /**
  * @since 4.6.5
  */
-public class JavaTimer implements Timer {
+public class JavaTimer extends AbstractTimer {
     /**
      * 由 一个线程 + 一个Queue 结合完成的任务执行器
      */
     private java.util.Timer jtimer;
-    private Executor taskExecutor;
 
 
     public JavaTimer(java.util.Timer timer, Executor executor) {
         this.jtimer = timer;
-        this.taskExecutor = executor;
+        setTaskExecutor(executor);
     }
 
     @Override
@@ -55,13 +51,5 @@ public class JavaTimer implements Timer {
         return Collects.emptyHashSet();
     }
 
-    @Override
-    public boolean isDistinctSupported() {
-        return false;
-    }
 
-    @Override
-    public Executor getTaskExecutor() {
-        return this.taskExecutor;
-    }
 }

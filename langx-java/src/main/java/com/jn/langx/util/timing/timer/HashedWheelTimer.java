@@ -65,7 +65,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * timer facility'</a>.  More comprehensive slides are located
  * <a href="http://www.cse.wustl.edu/~cdgill/courses/cs6874/TimingWheels.ppt">here</a>.
  */
-public class HashedWheelTimer implements Timer {
+public class HashedWheelTimer extends AbstractTimer {
 
     private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger();
     private static final AtomicBoolean WARNED_TOO_MANY_INSTANCES = new AtomicBoolean();
@@ -97,7 +97,6 @@ public class HashedWheelTimer implements Timer {
     final Queue<HashedWheelTimeout> cancelledTimeouts = new LinkedBlockingQueue<HashedWheelTimeout>();
     final AtomicLong pendingTimeouts = new AtomicLong(0);
     private final long maxPendingTimeouts;
-    private final Executor taskExecutor;
     volatile long startTime;
     final TimeoutFactory<HashedWheelTimer, ? extends HashedWheelTimeout> timeoutFactory;
 
@@ -240,7 +239,7 @@ public class HashedWheelTimer implements Timer {
         if (ticksPerWheel <= 0) {
             throw new IllegalArgumentException("ticksPerWheel must be greater than 0: " + ticksPerWheel);
         }
-        this.taskExecutor = Objs.useValueIfEmpty(taskExecutor, ImmediateExecutor.INSTANCE);
+        setTaskExecutor(taskExecutor);
         this.timeoutFactory = Objs.useValueIfEmpty(timeoutFactory, HashedWheelTimeoutFactory.INSTANCE);
         // Normalize ticksPerWheel to power of two and initialize the wheel.
         wheel = createWheel(ticksPerWheel);
@@ -587,9 +586,6 @@ public class HashedWheelTimer implements Timer {
         }
     }
 
-    public Executor getTaskExecutor() {
-        return taskExecutor;
-    }
 
     public boolean isDistinctSupported(){
         return timeoutFactory instanceof DistinctHashedWheelTimeoutFactory;
