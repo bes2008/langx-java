@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/fangjinuo/langx-java/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-Apache2.0-green.svg)](https://github.com/fangjinuo/langx-java/blob/master/LICENSE)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3d8c8c9680234698b04819059c9cd6c3)](https://www.codacy.com/manual/fs1194361820/langx-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fangjinuo/langx-java&amp;utm_campaign=Badge_Grade)
 
@@ -8,7 +8,7 @@
 [javadoc](https://apidoc.gitee.com/fangjinuo/langx-java)
 [教程](https://fangjinuo.gitee.io/docs/)
 
-[![maven](https://img.shields.io/badge/maven-v4.6.9.green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:4.6.9)
+[![maven](https://img.shields.io/badge/maven-v4.6.13.green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:4.6.13)
 
 ## [GitHub地址](https://github.com/fangjinuo/langx-java)
 ## [Gitee地址](https://gitee.com/fangjinuo/langx-java)
