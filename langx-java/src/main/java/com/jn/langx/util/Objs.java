@@ -137,6 +137,10 @@ public abstract class Objs{
         return (o != null) ? o.toString() : nullDefault;
     }
 
+    public static String toStringOrNull(Object o) {
+        return (o != null) ? o.toString() : null;
+    }
+
     /**
      * Returns 0 if the arguments are identical and {@code
      * c.compare(a, b)} otherwise.

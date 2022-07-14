@@ -229,6 +229,34 @@ public class Numbers {
         }
         return new BigDecimal(str);
     }
+    /**
+     * 数字转{@link BigDecimal}<br>
+     * Float、Double等有精度问题，转换为字符串后再转换<br>
+     * null转换为0
+     *
+     * @param number 数字
+     * @return {@link BigDecimal}
+     * @since 4.6.13
+     */
+    public static BigDecimal toBigDecimal(Number number) {
+        if (null == number) {
+            return BigDecimal.ZERO;
+        }
+
+        if (number instanceof BigDecimal) {
+            return (BigDecimal) number;
+        } else if (number instanceof Long) {
+            return new BigDecimal((Long) number);
+        } else if (number instanceof Integer) {
+            return new BigDecimal((Integer) number);
+        } else if (number instanceof BigInteger) {
+            return new BigDecimal((BigInteger) number);
+        }
+
+        // Float、Double等有精度问题，转换为字符串后再转换
+        return createBigDecimal(number.toString());
+    }
+
 
     /**
      * 判断是否为0

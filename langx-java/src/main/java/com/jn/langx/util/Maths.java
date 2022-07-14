@@ -6,6 +6,7 @@ import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -467,4 +468,491 @@ public class Maths {
         return clz+delta;
     }
 
+    /**
+     * 提供精确的乘法运算
+     *
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static double mul(float v1, float v2) {
+        return mul(Float.toString(v1), Float.toString(v2)).doubleValue();
+    }
+
+    /**
+     * 提供精确的乘法运算
+     *
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 积
+     *
+     * @since 4.6.13
+     *
+     */
+    public static double mul(float v1, double v2) {
+        return mul(Float.toString(v1), Double.toString(v2)).doubleValue();
+    }
+
+    /**
+     * 提供精确的乘法运算
+     *
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static double mul(double v1, float v2) {
+        return mul(Double.toString(v1), Float.toString(v2)).doubleValue();
+    }
+
+    /**
+     * 提供精确的乘法运算
+     *
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static double mul(double v1, double v2) {
+        return mul(Double.toString(v1), Double.toString(v2)).doubleValue();
+    }
+
+    /**
+     * 提供精确的乘法运算<br>
+     * 如果传入多个值为null或者空，则返回0
+     *
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static double mul(Double v1, Double v2) {
+        //noinspection RedundantCast
+        return mul((Number) v1, (Number) v2).doubleValue();
+    }
+
+    /**
+     * 提供精确的乘法运算<br>
+     * 如果传入多个值为null或者空，则返回0
+     *
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal mul(Number v1, Number v2) {
+        return mul(new Number[]{v1, v2});
+    }
+
+    /**
+     * 提供精确的乘法运算<br>
+     * 如果传入多个值为null或者空，则返回0
+     *
+     * @param values 多个被乘值
+     * @return 积
+     * @since 4.6.13
+     */
+    public static BigDecimal mul(Number... values) {
+        if (Objs.isEmpty(values) || Emptys.isAnyEmpty(values)) {
+            return BigDecimal.ZERO;
+        }
+
+        Number value = values[0];
+        BigDecimal result = new BigDecimal(value.toString());
+        for (int i = 1; i < values.length; i++) {
+            value = values[i];
+            result = result.multiply(new BigDecimal(value.toString()));
+        }
+        return result;
+    }
+
+    /**
+     * 提供精确的乘法运算
+     *
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal mul(String v1, String v2) {
+        return mul(new BigDecimal(v1), new BigDecimal(v2));
+    }
+
+    /**
+     * 提供精确的乘法运算<br>
+     * 如果传入多个值为null或者空，则返回0
+     *
+     * @param values 多个被乘值
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal mul(String... values) {
+        if (Objs.isEmpty(values) || Emptys.isAnyEmpty(values)) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal result = new BigDecimal(values[0]);
+        for (int i = 1; i < values.length; i++) {
+            result = result.multiply(new BigDecimal(values[i]));
+        }
+
+        return result;
+    }
+
+    /**
+     * 提供精确的乘法运算<br>
+     * 如果传入多个值为null或者空，则返回0
+     *
+     * @param values 多个被乘值
+     * @return 积
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal mul(BigDecimal... values) {
+        if (Objs.isEmpty(values) || Emptys.isAnyEmpty(values)) {
+            return BigDecimal.ZERO;
+        }
+
+        BigDecimal result = values[0];
+        for (int i = 1; i < values.length; i++) {
+            result = result.multiply(values[i]);
+        }
+        return result;
+    }
+
+    /**
+     * 默认除法运算精度
+     * @since 4.6.13
+     */
+    private static final int DEFAULT_DIV_SCALE = 10;
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况的时候,精确到小数点后10位,后面的四舍五入
+     *
+     * @param v1 被除数
+     * @param v2 除数
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(float v1, float v2) {
+        return div(v1, v2, DEFAULT_DIV_SCALE);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况的时候,精确到小数点后10位,后面的四舍五入
+     *
+     * @param v1 被除数
+     * @param v2 除数
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(float v1, double v2) {
+        return div(v1, v2, DEFAULT_DIV_SCALE);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况的时候,精确到小数点后10位,后面的四舍五入
+     *
+     * @param v1 被除数
+     * @param v2 除数
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(double v1, float v2) {
+        return div(v1, v2, DEFAULT_DIV_SCALE);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况的时候,精确到小数点后10位,后面的四舍五入
+     *
+     * @param v1 被除数
+     * @param v2 除数
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(double v1, double v2) {
+        return div(v1, v2, DEFAULT_DIV_SCALE);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况的时候,精确到小数点后10位,后面的四舍五入
+     *
+     * @param v1 被除数
+     * @param v2 除数
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(Double v1, Double v2) {
+        return div(v1, v2, DEFAULT_DIV_SCALE);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况的时候,精确到小数点后10位,后面的四舍五入
+     *
+     * @param v1 被除数
+     * @param v2 除数
+     * @return 两个参数的商
+     *
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal div(Number v1, Number v2) {
+        return div(v1, v2, DEFAULT_DIV_SCALE);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况的时候,精确到小数点后10位,后面的四舍五入
+     *
+     * @param v1 被除数
+     * @param v2 除数
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal div(String v1, String v2) {
+        return div(v1, v2, DEFAULT_DIV_SCALE);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 精确度，如果为负值，取绝对值
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(float v1, float v2, int scale) {
+        return div(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 精确度，如果为负值，取绝对值
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(float v1, double v2, int scale) {
+        return div(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 精确度，如果为负值，取绝对值
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(double v1, float v2, int scale) {
+        return div(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 精确度，如果为负值，取绝对值
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(double v1, double v2, int scale) {
+        return div(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 精确度，如果为负值，取绝对值
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(Double v1, Double v2, int scale) {
+        return div(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 精确度，如果为负值，取绝对值
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal div(Number v1, Number v2, int scale) {
+        return div(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 精确度，如果为负值，取绝对值
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal div(String v1, String v2, int scale) {
+        return div(v1, v2, scale, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(float v1, float v2, int scale, RoundingMode roundingMode) {
+        return div(Float.toString(v1), Float.toString(v2), scale, roundingMode).doubleValue();
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(float v1, double v2, int scale, RoundingMode roundingMode) {
+        return div(Float.toString(v1), Double.toString(v2), scale, roundingMode).doubleValue();
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(double v1, float v2, int scale, RoundingMode roundingMode) {
+        return div(Double.toString(v1), Float.toString(v2), scale, roundingMode).doubleValue();
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(double v1, double v2, int scale, RoundingMode roundingMode) {
+        return div(Double.toString(v1), Double.toString(v2), scale, roundingMode).doubleValue();
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static double div(Double v1, Double v2, int scale, RoundingMode roundingMode) {
+        //noinspection RedundantCast
+        return div((Number) v1, (Number) v2, scale, roundingMode).doubleValue();
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal div(Number v1, Number v2, int scale, RoundingMode roundingMode) {
+        if (v1 instanceof BigDecimal && v2 instanceof BigDecimal) {
+            return div((BigDecimal) v1, (BigDecimal) v2, scale, roundingMode);
+        }
+        return div(Objs.toStringOrNull(v1), Objs.toStringOrNull(v2), scale, roundingMode);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal div(String v1, String v2, int scale, RoundingMode roundingMode) {
+        return div(Numbers.createBigDecimal(v1), Numbers.createBigDecimal(v2), scale, roundingMode);
+    }
+
+    /**
+     * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
+     *
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
+     * @param roundingMode 保留小数的模式 {@link RoundingMode}
+     * @return 两个参数的商
+     *
+     *
+     * @since 4.6.13
+     */
+    public static BigDecimal div(BigDecimal v1, BigDecimal v2, int scale, RoundingMode roundingMode) {
+        Preconditions.checkNotNull(v2, "Divisor must be not null !");
+        if (null == v1) {
+            return BigDecimal.ZERO;
+        }
+        if (scale < 0) {
+            scale = -scale;
+        }
+        return v1.divide(v2, scale, roundingMode);
+    }
 }
