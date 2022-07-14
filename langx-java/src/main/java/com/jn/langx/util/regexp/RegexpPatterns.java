@@ -116,7 +116,7 @@ public class RegexpPatterns {
      *
      * @since 4.6.13
      */
-    public static boolean has(@Nullable String text,@Nullable Regexp pattern){
+    public static boolean contains(@Nullable String text,@Nullable Regexp pattern){
         if (pattern == null) {
             if (Emptys.isEmpty(text)) {
                 return true;
