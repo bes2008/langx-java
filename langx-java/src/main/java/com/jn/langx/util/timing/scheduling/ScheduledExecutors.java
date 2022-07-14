@@ -115,8 +115,8 @@ public class ScheduledExecutors {
      * <p>
      * 基于 immediate timer 来创建定时任务
      */
-    public static Timeout immediateTask(ImmediateTimer timer, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler) {
-        return timeoutTask(timer, task, trigger, errorHandler);
+    public static Timeout immediateTask(ImmediateTimer timer, TimerTask task, @Nullable ErrorHandler errorHandler) {
+        return timeoutTask(timer, task, ImmediateTrigger.INSTANCE, errorHandler);
     }
 
     /**
@@ -124,8 +124,8 @@ public class ScheduledExecutors {
      * <p>
      * 基于 immediate timer 来创建定时任务
      */
-    public static Timeout immediateTask(Executor executor, TimerTask task, Trigger trigger, @Nullable ErrorHandler errorHandler) {
-        return immediateTask(new ImmediateTimer(executor) , task, trigger, errorHandler);
+    public static Timeout immediateTask(Executor executor, TimerTask task, @Nullable ErrorHandler errorHandler) {
+        return immediateTask(new ImmediateTimer(executor) , task, errorHandler);
     }
 
 }

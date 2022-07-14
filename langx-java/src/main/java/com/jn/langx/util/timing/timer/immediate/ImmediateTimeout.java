@@ -4,6 +4,9 @@ import com.jn.langx.util.timing.timer.AbstractTimeout;
 import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
 
+/**
+ * @since 4.6.13
+ */
 public class ImmediateTimeout extends AbstractTimeout {
     @Override
     public boolean cancel() {

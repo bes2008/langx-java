@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @since 4.6.13
+ */
 public class ImmediateTimer extends AbstractTimer {
     public ImmediateTimer() {
 
