@@ -95,6 +95,9 @@ public class RegexpPatterns {
         return test(Regexps.createRegexp(pattern), string);
     }
 
+    /**
+     * 判断字符串是否与pattern
+     */
     public static boolean test(@Nullable Regexp pattern, @Nullable String string) {
         if (pattern == null) {
             if (Emptys.isEmpty(string)) {
@@ -106,6 +109,24 @@ public class RegexpPatterns {
             return false;
         }
         return pattern.matcher(string).matches();
+    }
+
+    /**
+     * 判断是否存在匹配的部分
+     *
+     * @since 4.6.13
+     */
+    public static boolean has(@Nullable String text,@Nullable Regexp pattern){
+        if (pattern == null) {
+            if (Emptys.isEmpty(text)) {
+                return true;
+            }
+            return false;
+        }
+        if (Emptys.isEmpty(text)) {
+            return false;
+        }
+        return pattern.matcher(text).find();
     }
 
 }
