@@ -14,10 +14,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImmediateTimer extends AbstractTimer {
     public ImmediateTimer() {
-
+        this.running = true;
     }
 
     public ImmediateTimer(Executor e) {
+        this();
         setTaskExecutor(e);
     }
 
@@ -36,6 +37,7 @@ public class ImmediateTimer extends AbstractTimer {
 
     @Override
     public Set<Timeout> stop() {
+        this.running = false;
         return null;
     }
 

@@ -2,7 +2,10 @@ package com.jn.langx.util.timing.timer.scheduled;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.timing.timer.*;
+import com.jn.langx.util.timing.timer.AbstractTimer;
+import com.jn.langx.util.timing.timer.RunnableToTimerTaskAdapter;
+import com.jn.langx.util.timing.timer.Timeout;
+import com.jn.langx.util.timing.timer.TimerTask;
 
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -19,6 +22,7 @@ public class ScheduledExecutorTimer extends AbstractTimer {
     public ScheduledExecutorTimer(ScheduledExecutorService scheduledExecutor, Executor taskExecutor) {
         this.scheduledExecutor = scheduledExecutor;
         setTaskExecutor(taskExecutor);
+        this.running = true;
     }
 
     @Override
@@ -53,6 +57,7 @@ public class ScheduledExecutorTimer extends AbstractTimer {
 
     @Override
     public Set<Timeout> stop() {
+        this.running = false;
         scheduledExecutor.shutdown();
         return null;
     }

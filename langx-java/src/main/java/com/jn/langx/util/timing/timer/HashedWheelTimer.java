@@ -6,10 +6,10 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.executor.ImmediateExecutor;
 import com.jn.langx.util.logging.Loggers;
-import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.memory.leak.ResourceLeakDetector;
 import com.jn.langx.util.memory.leak.ResourceLeakDetectorFactory;
 import com.jn.langx.util.memory.leak.ResourceLeakTracker;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 
@@ -224,7 +224,7 @@ public class HashedWheelTimer extends AbstractTimer {
         this(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, maxPendingTimeouts, ImmediateExecutor.INSTANCE);
     }
 
-    public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor){
+    public HashedWheelTimer(ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts, Executor taskExecutor) {
         this(threadFactory, tickDuration, unit, ticksPerWheel, leakDetection, maxPendingTimeouts, taskExecutor, HashedWheelTimeoutFactory.INSTANCE);
     }
 
@@ -330,10 +330,13 @@ public class HashedWheelTimer extends AbstractTimer {
                 if (WORKER_STATE_UPDATER.compareAndSet(this, WORKER_STATE_INIT, WORKER_STATE_STARTED)) {
                     workerThread.start();
                 }
+                this.running = true;
                 break;
             case WORKER_STATE_STARTED:
+                this.running = true;
                 break;
             case WORKER_STATE_SHUTDOWN:
+                this.running = false;
                 throw new IllegalStateException("cannot be started once stopped");
             default:
                 throw new Error("Invalid WorkerState");
@@ -357,7 +360,7 @@ public class HashedWheelTimer extends AbstractTimer {
                             ".stop() cannot be called from " +
                             TimerTask.class.getSimpleName());
         }
-
+        this.running = false;
         if (!WORKER_STATE_UPDATER.compareAndSet(this, WORKER_STATE_STARTED, WORKER_STATE_SHUTDOWN)) {
             // workerState can be 0 or 2 at this moment - let it always be 2.
             if (WORKER_STATE_UPDATER.getAndSet(this, WORKER_STATE_SHUTDOWN) != WORKER_STATE_SHUTDOWN) {
@@ -397,7 +400,7 @@ public class HashedWheelTimer extends AbstractTimer {
 
     @Override
     public Timeout newTimeout(Runnable task, long delay, TimeUnit unit) {
-        return newTimeout(new RunnableToTimerTaskAdapter(task), delay ,unit);
+        return newTimeout(new RunnableToTimerTaskAdapter(task), delay, unit);
     }
 
     @Override
@@ -587,7 +590,7 @@ public class HashedWheelTimer extends AbstractTimer {
     }
 
 
-    public boolean isDistinctSupported(){
+    public boolean isDistinctSupported() {
         return timeoutFactory instanceof DistinctHashedWheelTimeoutFactory;
     }
 }

@@ -38,18 +38,21 @@ public class ReschedulingTask implements Timeout, TimerTask {
      * @return 返回timeout
      */
     public Timeout schedule() {
-        synchronized (this.triggerContextMonitor) {
-            this.scheduledExecutionTime = this.trigger.nextExecutionTime(this.triggerContext);
-            if (this.scheduledExecutionTime == null) {
-                return null;
+        if(this.timer.isRunning()) {
+            synchronized (this.triggerContextMonitor) {
+                this.scheduledExecutionTime = this.trigger.nextExecutionTime(this.triggerContext);
+                if (this.scheduledExecutionTime == null) {
+                    return null;
+                }
+                long initialDelay = this.scheduledExecutionTime.getTime() - System.currentTimeMillis();
+                if (initialDelay < 0) {
+                    initialDelay = 0L;
+                }
+                this.timeout = this.timer.newTimeout(this, initialDelay, TimeUnit.MILLISECONDS);
+                return this;
             }
-            long initialDelay = this.scheduledExecutionTime.getTime() - System.currentTimeMillis();
-            if(initialDelay<0){
-                initialDelay = 0L;
-            }
-            this.timeout = this.timer.newTimeout(this, initialDelay, TimeUnit.MILLISECONDS);
-            return this;
         }
+        return null;
     }
 
     public void run(Timeout timeout) throws Exception {

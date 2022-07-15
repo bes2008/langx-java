@@ -1,7 +1,10 @@
 package com.jn.langx.util.timing.timer.javatimer;
 
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.timing.timer.*;
+import com.jn.langx.util.timing.timer.AbstractTimer;
+import com.jn.langx.util.timing.timer.RunnableToTimerTaskAdapter;
+import com.jn.langx.util.timing.timer.Timeout;
+import com.jn.langx.util.timing.timer.TimerTask;
 
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -20,6 +23,7 @@ public class JavaTimer extends AbstractTimer {
     public JavaTimer(java.util.Timer timer, Executor executor) {
         this.jtimer = timer;
         setTaskExecutor(executor);
+        this.running = true;
     }
 
     @Override
@@ -48,6 +52,7 @@ public class JavaTimer extends AbstractTimer {
     public Set<Timeout> stop() {
         // 调用 cancel 方法后，queue会自动清空， thread 会自动停止。
         jtimer.cancel();
+        this.running = false;
         return Collects.emptyHashSet();
     }
 

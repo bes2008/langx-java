@@ -7,6 +7,7 @@ import java.util.concurrent.Executor;
 
 public abstract class AbstractTimer implements Timer {
     protected Executor taskExecutor;
+    protected volatile boolean running;
 
     protected void setTaskExecutor(Executor e){
         this.taskExecutor = Objs.useValueIfEmpty(taskExecutor, ImmediateExecutor.INSTANCE);
@@ -22,4 +23,8 @@ public abstract class AbstractTimer implements Timer {
         return false;
     }
 
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
 }
