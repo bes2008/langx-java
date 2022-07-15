@@ -23,6 +23,9 @@ public abstract class AbstractTimer implements Timer {
         return false;
     }
 
+    /**
+     * @since 4.6.14
+     */
     @Override
     public boolean isRunning() {
         return running;

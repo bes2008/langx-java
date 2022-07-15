@@ -40,5 +40,8 @@ public interface Timer {
      */
     Executor getTaskExecutor();
 
+    /**
+     * @since 4.6.14
+     */
     boolean isRunning();
 }
