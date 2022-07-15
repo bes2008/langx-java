@@ -38,6 +38,9 @@ public class ReschedulingRunnable implements ScheduledFuture<Object>, Runnable {
 
 
     public ScheduledFuture schedule() {
+        if(this.executor.isShutdown() || this.executor.isTerminated()){
+            return null;
+        }
         synchronized (this.triggerContextMonitor) {
             this.scheduledExecutionTime = this.trigger.nextExecutionTime(this.triggerContext);
             if (this.scheduledExecutionTime == null) {
