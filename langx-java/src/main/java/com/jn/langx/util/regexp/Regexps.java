@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -11,6 +12,8 @@ import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.regexp.jdk.JdkRegexpEngine;
 import com.jn.langx.util.regexp.named.Jdk6NamedRegexpEngine;
 
+import java.util.List;
+import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.regex.Pattern;
 
@@ -84,16 +87,35 @@ public class Regexps {
         return engine.get(pattern, option);
     }
 
-    public static boolean match(Regexp regexp, String text){
+    public static boolean match(Regexp regexp, String text) {
         RegexpMatcher matcher = regexp.matcher(text);
         return matcher.matches();
     }
 
-    public static boolean match(String regexp, int flags, String text){
-        return match(createRegexp(regexp, flags),text);
+    public static boolean match(String regexp, int flags, String text) {
+        return match(createRegexp(regexp, flags), text);
     }
 
-    public static boolean match(String regexp, String text){
-        return match(createRegexp(regexp),text);
+    public static boolean match(String regexp, String text) {
+        return match(createRegexp(regexp), text);
+    }
+
+    /**
+     * @since 4.6.14
+     */
+    public static List<Map<String, String>> findNamedGroups(Regexp regexp, String text) {
+        RegexpMatcher matcher = regexp.matcher(text);
+        return matcher.namedGroups();
+    }
+
+    /**
+     * @since 4.6.14
+     */
+    public static Map<String, String> findNamedGroup(Regexp regexp, String text) {
+        List<Map<String, String>> groupsList = findNamedGroups(regexp, text);
+        if (Objs.isNotEmpty(groupsList)) {
+            return groupsList.get(0);
+        }
+        return null;
     }
 }
