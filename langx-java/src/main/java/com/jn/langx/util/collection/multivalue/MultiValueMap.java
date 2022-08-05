@@ -57,6 +57,9 @@ public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
      */
     void addIfAbsent(K key, @Nullable V value);
 
+    void removeValue(K key, @Nullable V value);
+
+
     /**
      * Set the given single value under the given key.
      *

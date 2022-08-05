@@ -108,6 +108,15 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
     }
 
     @Override
+    public void removeValue(K key, V value) {
+        if (value != null) {
+            Collection<V> values = this.getValues(key);
+            values.remove(value);
+        }
+    }
+
+
+    @Override
     public void set(K key, V value) {
         if (key == null || value == null) {
             return;

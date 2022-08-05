@@ -1435,6 +1435,10 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
         }
     }
 
+    @Override
+    public void removeValue(String key, String value) {
+        this.headers.removeValue(key, value);
+    }
 
     @Override
     public int total() {
