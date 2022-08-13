@@ -7,7 +7,7 @@
     <groupId>com.github.fangjinuo.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>4.6.14</version>
+    <version>4.7.0</version>
 
     <name>${groupId}:${artifactId}:${version}</name>
 
@@ -60,6 +60,7 @@
         <module>langx-java-reflect-asm</module>
         <module>langx-java-security-gm</module>
         <module>langx-java-regexp-joni</module>
+        <module>langx-java-security-pam</module>
     </modules>
     <dependencyManagement>
         <dependencies>
