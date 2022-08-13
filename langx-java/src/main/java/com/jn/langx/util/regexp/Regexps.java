@@ -87,15 +87,33 @@ public class Regexps {
         return engine.get(pattern, option);
     }
 
+    /**
+     * 判断 文本中 是否包含指定的 正则可匹配的内容
+     * @since 4.7.0
+     */
+    public static boolean contains(String text, Regexp regexp){
+        RegexpMatcher matcher = regexp.matcher(text);
+        return matcher.find();
+    }
+
+    /**
+     * 判断文本与正则是否匹配
+     */
     public static boolean match(Regexp regexp, String text) {
         RegexpMatcher matcher = regexp.matcher(text);
         return matcher.matches();
     }
 
+    /**
+     * 判断文本与正则是否匹配
+     */
     public static boolean match(String regexp, int flags, String text) {
         return match(createRegexp(regexp, flags), text);
     }
 
+    /**
+     * 判断文本与正则是否匹配
+     */
     public static boolean match(String regexp, String text) {
         return match(createRegexp(regexp), text);
     }

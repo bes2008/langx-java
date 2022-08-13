@@ -43,6 +43,9 @@ public class JavaBeanModelMapper<Target> implements ModelMapper<Object, Target> 
         return target;
     }
 
+    /**
+     * @since 4.3.8
+     */
     public static <Source, Target> List<Target> mapBeans(List<Source> sources, @NonNull final Class targetClass, final String... ignoredFields) {
         return Pipeline.of(sources)
                 .map(new Function<Source, Target>() {
