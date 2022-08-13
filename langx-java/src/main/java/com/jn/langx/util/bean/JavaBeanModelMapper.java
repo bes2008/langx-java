@@ -3,13 +3,15 @@ package com.jn.langx.util.bean;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.reflect.Reflects;
 
 import java.util.List;
 
 /**
- * @since 4.3.7
  * @param <Target>
+ * @since 4.3.7
  */
 @SuppressWarnings("rawtypes")
 public class JavaBeanModelMapper<Target> implements ModelMapper<Object, Target> {
@@ -39,5 +41,15 @@ public class JavaBeanModelMapper<Target> implements ModelMapper<Object, Target> 
         modelMapper.setIgnoreFields(Collects.asList(ignoredFields));
         Target target = modelMapper.map(source);
         return target;
+    }
+
+    public static <Source, Target> List<Target> mapBeans(List<Source> sources, @NonNull final Class targetClass, final String... ignoredFields) {
+        return Pipeline.of(sources)
+                .map(new Function<Source, Target>() {
+                    @Override
+                    public Target apply(Source source) {
+                        return map(source, targetClass, ignoredFields);
+                    }
+                }).asList();
     }
 }
