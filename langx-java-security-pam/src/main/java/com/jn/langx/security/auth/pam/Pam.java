@@ -8,8 +8,7 @@ public class Pam {
     private static final Logger LOG;
     private String serviceName;
     public static final String DEFAULT_SERVICE_NAME = "langx-java-security-pam";
-    private static final String JPAM_SHARED_LIBRARY_NAME = DEFAULT_SERVICE_NAME;
-    
+
     public Pam() {
         this(DEFAULT_SERVICE_NAME);
     }
