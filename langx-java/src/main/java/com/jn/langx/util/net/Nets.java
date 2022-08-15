@@ -1726,4 +1726,22 @@ public class Nets {
         }
         return b.toString();
     }
+
+    /**
+     * @since 4.7.1
+     */
+    public static boolean ping(String host){
+        return ping(host,200);
+    }
+    /**
+     * @since 4.7.1
+     */
+    public static boolean ping(String host, int timeout){
+        try {
+            return InetAddress.getByName(host).isReachable(timeout);
+        }catch (Throwable ex){
+            return false;
+        }
+    }
+
 }
