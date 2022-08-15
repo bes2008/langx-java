@@ -11,6 +11,7 @@ import com.jn.langx.util.function.*;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
+import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Entry;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
@@ -807,6 +808,13 @@ public class Strings {
 
     public static boolean contains(final CharSequence cs, final CharSequence searchChars, boolean ignoreCase) {
         return indexOf(cs, searchChars, ignoreCase) != -1;
+    }
+
+    /**
+     * @since 4.7.0
+     */
+    public static boolean containsRegexp(String text, String regexp){
+        return Regexps.contains(text, Regexps.createRegexp(regexp));
     }
 
     /**
