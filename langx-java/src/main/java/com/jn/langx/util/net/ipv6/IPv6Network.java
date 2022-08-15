@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
  * Immutable representation of an IPv6 network based on an address and a prefix length. An IPv6 network is also an IPv6 address range (but
  * not all ranges are valid networks).
  *
- * @author Jan Van Besien
  */
 public final class IPv6Network extends IPv6AddressRange {
     public static final IPv6Network MULTICAST_NETWORK = fromString("ff00::/8");

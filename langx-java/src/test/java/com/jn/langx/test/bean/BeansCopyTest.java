@@ -1,6 +1,6 @@
 package com.jn.langx.test.bean;
 
-import com.jn.langx.util.bean.Beans;
+import com.jn.langx.beans.JavaBeans;
 import com.jn.langx.util.bean.JavaBeanModelMapper;
 import com.jn.langx.util.collection.Collects;
 import org.junit.Test;
@@ -26,5 +26,7 @@ public class BeansCopyTest {
     public void test() {
         PersonDto pt = JavaBeanModelMapper.map(p, PersonDto.class);
         System.out.println(pt);
+
+        System.out.println(JavaBeans.toMap(pt));
     }
 }

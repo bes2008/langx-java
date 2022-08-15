@@ -11,6 +11,7 @@
 | [Snowflake] | 8 bytes     | up to 20 chars | needs machine/DC configuration, needs central server, sortable
 | [MongoID]   | 12 bytes    | 24 chars       | configuration free, sortable
 | xid         | 12 bytes    | 20 chars       | configuration free, sortable
+| nanoid      | 12 bytes    | 21 chars       | configuration free, not sortable
 
 [UUID]: https://en.wikipedia.org/wiki/Universally_unique_identifier
 [shortuuid]: https://github.com/stochastic-technologies/shortuuid

@@ -3,13 +3,15 @@ package com.jn.langx.beans;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @since 4.3.7
@@ -18,6 +20,32 @@ public class JavaBeans {
     protected JavaBeans() {
     }
 
+    public static Map<String, Object> toMap(Object bean){
+        Map<String, Object> map = Collects.emptyHashMap(true);
+
+        Preconditions.checkNotNull(bean, "bean must not be null");
+
+        Class<?> actualEditable = bean.getClass();
+        PropertyDescriptor[] targetPropertyDescriptors = getPropertyDescriptors(actualEditable);
+        for (PropertyDescriptor targetPropertyDescriptor : targetPropertyDescriptors) {
+            Method readMethod = targetPropertyDescriptor.getReadMethod();
+            if(readMethod!=null){
+                String name = targetPropertyDescriptor.getName();
+
+                try {
+                    if (!Modifiers.isPublic(readMethod.getDeclaringClass())) {
+                        Reflects.makeAccessible(readMethod);
+                    }
+                    Object value = readMethod.invoke(bean);
+                    map.put(name, value);
+                }catch (Throwable ex){
+                    throw new BeansException(
+                            "Could not copy property '" + targetPropertyDescriptor.getName() + "' from source to target", ex);
+                }
+            }
+        }
+        return map;
+    }
 
     /**
      * Copy the property values of the given source bean into the target bean.
@@ -124,11 +152,11 @@ public class JavaBeans {
                     Method readMethod = sourcePropertyDescriptor.getReadMethod();
                     if (readMethod != null && Reflects.isSubClassOrEquals(writeMethod.getParameterTypes()[0], readMethod.getReturnType())) {
                         try {
-                            if (!Modifier.isPublic(readMethod.getDeclaringClass().getModifiers())) {
+                            if (!Modifiers.isPublic(readMethod.getDeclaringClass())) {
                                 Reflects.makeAccessible(readMethod);
                             }
                             Object value = readMethod.invoke(source);
-                            if (!Modifier.isPublic(writeMethod.getDeclaringClass().getModifiers())) {
+                            if (!Modifiers.isPublic(writeMethod.getDeclaringClass())) {
                                 Reflects.makeAccessible(writeMethod);
                             }
                             writeMethod.invoke(target, value);

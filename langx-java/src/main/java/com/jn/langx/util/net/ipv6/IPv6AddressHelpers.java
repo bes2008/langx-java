@@ -16,13 +16,15 @@
 
 package com.jn.langx.util.net.ipv6;
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
 /**
  * Helper methods used by IPv6Address.
  *
- * @author Jan Van Besien
  */
 public final class IPv6AddressHelpers {
     static long[] parseStringArrayIntoLongArray(String[] strings) {
@@ -83,7 +85,7 @@ public final class IPv6AddressHelpers {
         }
     }
 
-    private static final Pattern DOT_DELIM = Pattern.compile("\\.");
+    private static final Regexp DOT_DELIM = Regexps.createRegexp("\\.");
 
     /**
      * Replaces a w.x.y.z substring at the end of the given string with corresponding hexadecimal notation. This is useful in case the

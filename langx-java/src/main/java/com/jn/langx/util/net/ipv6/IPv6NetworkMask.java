@@ -25,7 +25,6 @@ import java.util.BitSet;
  * Immutable representation of an IPv6 network mask. A network mask is nothing more than an IPv6 address with a continuous range of 1 bits
  * starting from the most significant bit. A network mask can also be represented as a prefix length, which is the count of these 1 bits.
  *
- * @author Jan Van Besien
  */
 public final class IPv6NetworkMask implements Serializable {
     private final int prefixLength;

@@ -27,7 +27,6 @@ import java.util.NoSuchElementException;
 /**
  * Immutable representation of a continuous range of IPv6 addresses (bounds included).
  *
- * @author Jan Van Besien
  */
 public class IPv6AddressRange implements Comparable<IPv6AddressRange>, Iterable<IPv6Address>, Serializable {
     private final IPv6Address first;

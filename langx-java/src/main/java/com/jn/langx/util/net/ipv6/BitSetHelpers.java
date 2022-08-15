@@ -22,7 +22,6 @@ import java.util.BitSet;
  * This class contains some helpers for working with BitSets. These are generally not necessary in JDK7, since the BitSet.valueOf(long[])
  * method. However, for java-6 compatibility, we go this way.
  *
- * @author Jan Van Besien
  */
 class BitSetHelpers {
     private BitSetHelpers(){}

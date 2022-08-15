@@ -33,7 +33,6 @@ import java.util.TreeSet;
  * Addresses are allocated in whole subnet blocks at once. These subnet blocks have a predefined prefix length for the whole allocatable
  * range.
  *
- * @author Jan Van Besien
  */
 public final class IPv6AddressPool implements Serializable {
     private final IPv6AddressRange underlyingRange;

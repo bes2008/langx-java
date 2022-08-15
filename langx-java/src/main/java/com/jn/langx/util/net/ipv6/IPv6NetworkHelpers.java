@@ -23,7 +23,6 @@ import static com.jn.langx.util.net.ipv6.BitSetHelpers.bitSetOf;
 /**
  * Helper methods used by IPv6Network.
  *
- * @author Jan Van Besien
  */
 public class IPv6NetworkHelpers {
     static int longestPrefixLength(IPv6Address first, IPv6Address last) {

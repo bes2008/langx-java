@@ -30,7 +30,6 @@ import java.util.Arrays;
 /**
  * Immutable representation of an IPv6 address.
  *
- * @author Jan Van Besien
  */
 public final class IPv6Address implements Comparable<IPv6Address>, Serializable {
     private static final int N_SHORTS = 8;
