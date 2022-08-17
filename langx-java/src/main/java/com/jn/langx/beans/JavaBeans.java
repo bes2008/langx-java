@@ -20,7 +20,7 @@ public class JavaBeans {
     protected JavaBeans() {
     }
 
-    public static Map<String, Object> toMap(Object bean){
+    public static Map<String, Object> toMap(Object bean) {
         Map<String, Object> map = Collects.emptyHashMap(true);
 
         Preconditions.checkNotNull(bean, "bean must not be null");
@@ -29,7 +29,7 @@ public class JavaBeans {
         PropertyDescriptor[] targetPropertyDescriptors = getPropertyDescriptors(actualEditable);
         for (PropertyDescriptor targetPropertyDescriptor : targetPropertyDescriptors) {
             Method readMethod = targetPropertyDescriptor.getReadMethod();
-            if(readMethod!=null){
+            if (readMethod != null) {
                 String name = targetPropertyDescriptor.getName();
 
                 try {
@@ -38,9 +38,9 @@ public class JavaBeans {
                     }
                     Object value = readMethod.invoke(bean);
                     map.put(name, value);
-                }catch (Throwable ex){
+                } catch (Throwable ex) {
                     throw new BeansException(
-                            "Could not copy property '" + targetPropertyDescriptor.getName() + "' from source to target", ex);
+                            "Could not copy property '" + targetPropertyDescriptor.getName() + "' from source to map", ex);
                 }
             }
         }

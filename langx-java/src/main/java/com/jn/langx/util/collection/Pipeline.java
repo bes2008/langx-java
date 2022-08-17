@@ -345,7 +345,7 @@ public class Pipeline<E> {
     }
 
     public static <T> Pipeline<T> of(@Nullable Object anyObject) {
-        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(anyObject));
+        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(anyObject, true));
         return new Pipeline<T>(list);
     }
 
@@ -355,7 +355,7 @@ public class Pipeline<E> {
     }
 
     public static <T> Pipeline<T> of(@Nullable T... array) {
-        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(array));
+        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(array, true));
         return new Pipeline<T>(list);
     }
 
