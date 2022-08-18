@@ -82,6 +82,20 @@ public class Strings {
     }
 
     /**
+     * @since 4.7.2
+     */
+    public static boolean isBlank(CharSequence str) {
+        return str == null || str.toString().trim().isEmpty();
+    }
+
+    /**
+     * @since 4.7.2
+     */
+    public static boolean isNotBlank(CharSequence str) {
+        return !isBlank(str);
+    }
+
+    /**
      * equals:
      * <pre>
      *     <code>
@@ -126,16 +140,16 @@ public class Strings {
      *
      * @param str a specified string
      * @return a new string after trim
-     * @deprecated
      * @see #trimToEmpty(String) (String)
+     * @deprecated
      */
     public static String trimOrEmpty(String str) {
         return getEmptyIfNull(str).trim();
     }
 
     /**
-     * @deprecated
      * @see #trimToNull(String)
+     * @deprecated
      */
     public static String trimOrNull(String str) {
         if (isBlank(str)) {
@@ -813,7 +827,7 @@ public class Strings {
     /**
      * @since 4.7.0
      */
-    public static boolean containsRegexp(String text, String regexp){
+    public static boolean containsRegexp(String text, String regexp) {
         return Regexps.contains(text, Regexps.createRegexp(regexp));
     }
 
@@ -837,6 +851,36 @@ public class Strings {
             pos = idx + token.length();
         }
         return count;
+    }
+
+    public static int countMatches(CharSequence str, CharSequence sub) {
+        if (!isEmpty(str) && !isEmpty(sub)) {
+            int count = 0;
+
+            for (int idx = 0; (idx = indexOf(str, sub, idx)) != -1; idx += sub.length()) {
+                ++count;
+            }
+
+            return count;
+        } else {
+            return 0;
+        }
+    }
+
+    public static int countMatches(CharSequence str, char ch) {
+        if (isEmpty(str)) {
+            return 0;
+        } else {
+            int count = 0;
+
+            for (int i = 0; i < str.length(); ++i) {
+                if (ch == str.charAt(i)) {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
     }
 
 // Padding
@@ -3614,11 +3658,11 @@ public class Strings {
         return Pipeline.of(strings).toArray(String[].class);
     }
 
-    public static String underlineToCamel(String string, boolean firstLetterToLower){
+    public static String underlineToCamel(String string, boolean firstLetterToLower) {
         return separatorToCamel(string, "_", firstLetterToLower);
     }
 
-    public static String separatorToCamel(String string, String separator, boolean firstLetterToLower){
+    public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
         final StringBuilder builder = new StringBuilder();
         Pipeline.<String>of(Strings.split(string, separator)).map(new Function<String, String>() {
             @Override
@@ -3631,7 +3675,7 @@ public class Strings {
                 builder.append(Strings.upperCase(s, 0, 1));
             }
         });
-        if(firstLetterToLower) {
+        if (firstLetterToLower) {
             return Strings.lowerCase(builder.toString(), 0, 1);
         }
         return builder.toString();

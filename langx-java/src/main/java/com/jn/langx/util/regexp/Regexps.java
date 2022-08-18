@@ -12,9 +12,7 @@ import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.regexp.jdk.JdkRegexpEngine;
 import com.jn.langx.util.regexp.named.Jdk6NamedRegexpEngine;
 
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -135,5 +133,14 @@ public class Regexps {
             return groupsList.get(0);
         }
         return null;
+    }
+
+    public static Map<String, String> namedGroups(RegexpMatcher matcher, Set<String> groupNames) {
+        Map<String, String> namedGroups = new LinkedHashMap<String, String>();
+        for (String groupName : groupNames) {
+            String groupValue = matcher.group(groupName);
+            namedGroups.put(groupName, groupValue);
+        }
+        return namedGroups;
     }
 }

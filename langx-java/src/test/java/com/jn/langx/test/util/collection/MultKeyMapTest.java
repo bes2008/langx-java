@@ -5,11 +5,11 @@ import org.junit.Test;
 
 public class MultKeyMapTest {
     @Test
-    public void test(){
+    public void test() {
         MultiKeyMap<String> map = new MultiKeyMap<String>();
-        map.put(1,2,3,"hello");
-        map.put(1,2,"world");
-
-        System.out.println(map.containsKey(1,2));
+        map.put(1, 2, 3, "hello");
+        map.put(1, 2, "world");
+        map.remove2(1, 2);
+        System.out.println(map.containsKey(1, 2));
     }
 }

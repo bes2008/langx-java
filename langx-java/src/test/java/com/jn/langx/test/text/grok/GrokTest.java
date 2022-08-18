@@ -4,12 +4,13 @@ import com.jn.langx.cache.Cache;
 import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Resources;
-import com.jn.langx.text.grok.*;
+import com.jn.langx.text.grok.GrokCompiler;
 import com.jn.langx.text.grok.logstash.EcsCompatibility;
 import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
 import com.jn.langx.text.grok.pattern.MultipleLevelPatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.PatternDefinition;
 import com.jn.langx.text.grok.pattern.SimplePatternDefinitionRepository;
+import com.jn.langx.text.grok.GrokTemplate;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
@@ -24,7 +25,6 @@ import java.util.Map;
 
 public class GrokTest {
     MultipleLevelPatternDefinitionRepository repository;
-    GrokTemplatizedPatternParser patternParser;
     GrokTemplate tomcatLogTemplate;
     GrokTemplate javastackTemplate;
 
@@ -69,12 +69,11 @@ public class GrokTest {
                 .build();
         repository.setCache(cache3);
 
-        DefaultGrokTemplatizedPatternParser grokTemplatizedPatternParser = new DefaultGrokTemplatizedPatternParser();
-        grokTemplatizedPatternParser.setPatternDefinitionRepository(repository);
-        patternParser = grokTemplatizedPatternParser;
+        GrokCompiler compiler =  new GrokCompiler();
+        compiler.setDefinitionRepository(repository);
 
-        this.tomcatLogTemplate = new DefaultGrokTemplate(patternParser.parse("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?"));
-        this.javastackTemplate = new DefaultGrokTemplate(patternParser.parse("(?:%{CRLF}?%{JAVASTACK:stack})?"));
+        this.tomcatLogTemplate = compiler.compile("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?");
+        this.javastackTemplate = compiler.compile("(?:%{CRLF}?%{JAVASTACK:stack})?");
     }
 
     private void test(final GrokTemplate template, String[] messagePaths) {
