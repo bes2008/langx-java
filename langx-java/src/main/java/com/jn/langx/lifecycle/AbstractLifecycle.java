@@ -37,8 +37,8 @@ public abstract class AbstractLifecycle extends AbstractInitializable implements
         try {
             init();
             if (!this.running) {
-                this.doStart();
                 this.running = true;
+                this.doStart();
                 if (logger.isInfoEnabled()) {
                     logger.info("started " + this);
                 }

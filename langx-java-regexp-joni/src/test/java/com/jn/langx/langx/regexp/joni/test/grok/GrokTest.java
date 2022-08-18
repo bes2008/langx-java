@@ -15,6 +15,7 @@ import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.WheelTimers;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -22,12 +23,12 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class GrokTest {
-    MultipleLevelPatternDefinitionRepository repository;
-    GrokTemplate tomcatLogTemplate;
-    GrokTemplate javastackTemplate;
+    static MultipleLevelPatternDefinitionRepository repository;
+    static GrokTemplate tomcatLogTemplate;
+    static GrokTemplate javastackTemplate;
 
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
 
 
         HashedWheelTimer timer = WheelTimers.newHashedWheelTimer();
@@ -70,8 +71,8 @@ public class GrokTest {
         GrokCompiler grokCompiler = new GrokCompiler();
         grokCompiler.setDefinitionRepository(repository);
         grokCompiler.startup();
-        this.tomcatLogTemplate = grokCompiler.compile("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?");
-        this.javastackTemplate = grokCompiler.compile("(?:%{CRLF}?%{JAVASTACK:stack})?");
+        tomcatLogTemplate = grokCompiler.compile("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?");
+        javastackTemplate = grokCompiler.compile("(?:%{CRLF}?%{JAVASTACK:stack})?");
     }
 
     private void test(final GrokTemplate template, String[] messagePaths) {

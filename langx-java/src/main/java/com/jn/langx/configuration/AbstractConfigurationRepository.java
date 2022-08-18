@@ -20,7 +20,6 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.cache.Cache;
 import com.jn.langx.event.EventPublisher;
 import com.jn.langx.lifecycle.AbstractLifecycle;
-import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
