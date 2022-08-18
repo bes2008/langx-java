@@ -19,6 +19,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.cache.Cache;
 import com.jn.langx.event.EventPublisher;
+import com.jn.langx.lifecycle.AbstractLifecycle;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Preconditions;
@@ -38,16 +39,12 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings({"unchecked"})
-public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> implements ConfigurationRepository<T, Loader, Writer>, Reloadable, Lifecycle {
-    @NonNull
-    protected String name;
+
+public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends AbstractLifecycle implements ConfigurationRepository<T, Loader, Writer>, Reloadable, Lifecycle {
     @NonNull
     protected Loader loader;
     @Nullable
     protected Writer writer;
-    protected volatile boolean inited = false;
-    protected volatile boolean running = false;
     @Nullable
     private EventPublisher eventPublisher;
 
@@ -81,13 +78,6 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         this.cache = cache;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
 
     public void setEventFactory(ConfigurationEventFactory<T> eventFactory) {
         this.eventFactory = eventFactory;
@@ -114,14 +104,13 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public void startup() {
+    protected void doStart() {
         if (!inited) {
             init();
         }
         Preconditions.checkNotNull(cache);
-        running = true;
         final Logger logger = Loggers.getLogger(getClass());
-        logger.info("Startup configuration repository: {}", name);
+        logger.info("Startup configuration repository: {}", getName());
 
         if (reloadIntervalInSeconds > 0) {
             try {
@@ -130,7 +119,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
                 logger.warn(ex.getMessage(), ex);
             }
             if (timer == null) {
-                logger.warn("The timer is not specified for the repository ({}) , will use a simple timer", name);
+                logger.warn("The timer is not specified for the repository ({}) , will use a simple timer", getName());
                 timer = new HashedWheelTimer(new CommonThreadFactory("Configuration", true), 50, TimeUnit.MILLISECONDS);
             }
 
@@ -142,7 +131,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
                     } catch (Throwable ex) {
                         logger.error(ex.getMessage(), ex);
                     } finally {
-                        if (running) {
+                        if (isRunning()) {
                             timer.newTimeout(this, reloadIntervalInSeconds, TimeUnit.SECONDS);
                         }
                     }
@@ -154,10 +143,9 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public void shutdown() {
-        running = false;
+    protected void doStop() {
         Logger logger = Loggers.getLogger(getClass());
-        logger.info("Shutdown configuration repository: {}", name);
+        logger.info("Shutdown configuration repository: {}", getName());
         cache.clean();
     }
 
@@ -213,7 +201,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
 
     @Override
     public T add(T configuration, boolean sync) {
-        if (running) {
+        if (isRunning()) {
             logMutation(ConfigurationEventType.ADD, configuration);
             if (sync && writer != null && writer.isSupportsWrite()) {
                 writer.write(configuration);
@@ -233,7 +221,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
 
     @Override
     public void update(T configuration, boolean sync) {
-        if (running) {
+        if (isRunning()) {
             logMutation(ConfigurationEventType.UPDATE, configuration);
             if (sync && writer != null && writer.isSupportsRewrite()) {
                 writer.rewrite(configuration);
@@ -260,9 +248,9 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
 
     @Override
     public void init() throws InitializationException {
-        Preconditions.checkNotNull(name, "Repository has no named");
+        Preconditions.checkNotNull(getName(), "Repository has no named");
         Logger logger = Loggers.getLogger(getClass());
-        logger.info("Initial configuration repository: {}", name);
+        logger.info("Initial configuration repository: {}", getName());
     }
 
     public Map<String, T> getAll() {
@@ -272,7 +260,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     @Override
     public void reload() {
         final Logger logger = Loggers.getLogger(getClass());
-        logger.info("Reload repository {}", name);
+        logger.info("Reload repository {}", getName());
         if (loader != null) {
             Map<String, T> all = loader.loadAll();
             if (all != null) {

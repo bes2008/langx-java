@@ -36,11 +36,13 @@ public class GrokTest {
         // single file repository:
         SimplePatternDefinitionRepository singleFileRepository = new SimplePatternDefinitionRepository();
         singleFileRepository.setName("custom-repository");
+        /*
         Cache<String, PatternDefinition> singleFileRepositoryCache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();
         singleFileRepository.setCache(singleFileRepositoryCache);
         singleFileRepository.setTimer(timer);
+        */
         PatternDefinitionSingleFileLoader loader = new PatternDefinitionSingleFileLoader(Resources.loadClassPathResource("grok_pattern_tomcat.txt", GrokTest.class));
         singleFileRepository.setConfigurationLoader(loader);
 
@@ -58,8 +60,9 @@ public class GrokTest {
 
         //
         repository = new MultipleLevelPatternDefinitionRepository();
-        //repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
+        repository.addRepository(singleFileRepository, Integer.MIN_VALUE);
         repository.addRepository(logstashFileRepository, Integer.MAX_VALUE);
+
         Cache<String, PatternDefinition> cache3 = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();

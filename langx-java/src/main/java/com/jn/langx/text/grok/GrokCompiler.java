@@ -15,11 +15,9 @@ import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
-import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
-import org.slf4j.Logger;
 
 import static java.lang.String.format;
 
@@ -37,7 +35,6 @@ import java.util.TimeZone;
  * @since 4.7.2
  */
 public class GrokCompiler extends AbstractLifecycle {
-    private Logger logger = Loggers.getLogger(GrokCompiler.class);
     private PatternDefinitionRepository definitionRepository;
 
     // We don't want \n and commented line
