@@ -342,8 +342,12 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             int stIdx = this.matcher.search(start, this.input.length, Option.DEFAULT);
             boolean found = stIdx > -1;
             // 搜索完毕后跟上次的位置一样
-            if (stIdx == this.lastBeg && this.lastEnd == this.bytesEnd()) {
-                found = false;
+            try {
+                if (stIdx == this.lastBeg && this.lastEnd == this.bytesEnd()) {
+                    found = false;
+                }
+            }catch (IllegalStateException ex){
+                return false;
             }
             this.lastBeg = start;
             this.lastEnd = this.bytesEnd();

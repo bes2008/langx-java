@@ -7,9 +7,7 @@ import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.grok.GrokCompiler;
 import com.jn.langx.text.grok.logstash.EcsCompatibility;
 import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
-import com.jn.langx.text.grok.pattern.MultipleLevelPatternDefinitionRepository;
-import com.jn.langx.text.grok.pattern.PatternDefinition;
-import com.jn.langx.text.grok.pattern.SimplePatternDefinitionRepository;
+import com.jn.langx.text.grok.pattern.*;
 import com.jn.langx.text.grok.GrokTemplate;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -35,9 +33,8 @@ public class GrokTest {
         HashedWheelTimer timer = WheelTimers.newHashedWheelTimer();
 
 
-        /*
         // single file repository:
-        PatternDefinitionRepository singleFileRepository = new PatternDefinitionRepository();
+        SimplePatternDefinitionRepository singleFileRepository = new SimplePatternDefinitionRepository();
         singleFileRepository.setName("custom-repository");
         Cache<String, PatternDefinition> singleFileRepositoryCache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
@@ -46,7 +43,6 @@ public class GrokTest {
         singleFileRepository.setTimer(timer);
         PatternDefinitionSingleFileLoader loader = new PatternDefinitionSingleFileLoader(Resources.loadClassPathResource("grok_pattern_tomcat.txt", GrokTest.class));
         singleFileRepository.setConfigurationLoader(loader);
-        */
 
         // log stash directory repository:
         SimplePatternDefinitionRepository logstashFileRepository = new SimplePatternDefinitionRepository();
@@ -71,7 +67,6 @@ public class GrokTest {
         GrokCompiler grokCompiler = new GrokCompiler();
         grokCompiler.setDefinitionRepository(repository);
         grokCompiler.startup();
-
         this.tomcatLogTemplate = grokCompiler.compile("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?");
         this.javastackTemplate = grokCompiler.compile("(?:%{CRLF}?%{JAVASTACK:stack})?");
     }

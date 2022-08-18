@@ -15,9 +15,11 @@ import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
+import org.slf4j.Logger;
 
 import static java.lang.String.format;
 
@@ -35,6 +37,7 @@ import java.util.TimeZone;
  * @since 4.7.2
  */
 public class GrokCompiler extends AbstractLifecycle {
+    private Logger logger = Loggers.getLogger(GrokCompiler.class);
     private PatternDefinitionRepository definitionRepository;
 
     // We don't want \n and commented line
@@ -49,7 +52,7 @@ public class GrokCompiler extends AbstractLifecycle {
         return definitionRepository.getAll();
     }
 
-    public GrokCompiler(){
+    public GrokCompiler() {
         setName("grok-compiler");
     }
 
@@ -187,7 +190,7 @@ public class GrokCompiler extends AbstractLifecycle {
         Boolean continueIteration = true;
 
         Map<String, PatternDefinition> patternDefinitionsRegistry = this.definitionRepository.getAll();
-        final Map<String,String> patternDefinitions =new HashMap<String, String>();
+        final Map<String, String> patternDefinitions = new HashMap<String, String>();
         Collects.forEach(patternDefinitionsRegistry, new Consumer2<String, PatternDefinition>() {
             @Override
             public void accept(String key, PatternDefinition value) {
@@ -197,7 +200,7 @@ public class GrokCompiler extends AbstractLifecycle {
 
         // output
         Map<String, String> namedRegexCollection = new HashMap<String, String>();
-
+        Set<String> namedGroups = Groks.getNameGroups(Groks.GROK_PATTERN.getPattern());
         // Replace %{foo} with the regex (mostly group name regex)
         // and then compile the regex
         while (continueIteration) {
@@ -207,11 +210,10 @@ public class GrokCompiler extends AbstractLifecycle {
             }
             iterationLeft--;
 
-            Set<String> namedGroups = Groks.getNameGroups(Groks.GROK_PATTERN.getPattern());
             RegexpMatcher matcher = Groks.GROK_PATTERN.matcher(namedRegex);
             // Match %{Foo:bar} -> pattern name and subname
             // Match %{Foo=regex} -> add new regex definition
-            if (matcher.find()) {
+            if ( matcher.find()) {
                 continueIteration = true;
                 Map<String, String> group = Regexps.namedGroups(matcher, namedGroups);
                 if (group.get("definition") != null) {
