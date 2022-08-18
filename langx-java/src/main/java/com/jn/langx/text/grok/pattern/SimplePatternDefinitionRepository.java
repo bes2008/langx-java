@@ -1,7 +1,12 @@
 package com.jn.langx.text.grok.pattern;
 
 import com.jn.langx.cache.Cache;
+import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.configuration.*;
+import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.util.timing.timer.HashedWheelTimer;
+import com.jn.langx.util.timing.timer.Timer;
+import com.jn.langx.util.timing.timer.WheelTimers;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -63,5 +68,23 @@ public class SimplePatternDefinitionRepository extends AbstractConfigurationRepo
     @Override
     public void reload() {
         super.reload();
+    }
+
+    @Override
+    protected void doInit() throws InitializationException {
+        Timer timer = this.getTimer();
+        if (timer == null) {
+            timer = WheelTimers.newHashedWheelTimer();
+        }
+
+        this.setTimer(timer);
+
+        Cache<String, PatternDefinition> cache = this.cache;
+        if (cache == null) {
+            cache = CacheBuilder.<String, PatternDefinition>newBuilder()
+                    .timer(timer)
+                    .build();
+            this.setCache(cache);
+        }
     }
 }

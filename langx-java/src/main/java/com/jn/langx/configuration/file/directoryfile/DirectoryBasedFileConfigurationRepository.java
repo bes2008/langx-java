@@ -60,13 +60,13 @@ public class DirectoryBasedFileConfigurationRepository<T extends Configuration> 
             loader.setDirectory(directory);
 
             if (writer == null) {
-                logger.warn("The writer is not specified for the repository ({}), will disable write configuration to storage", name);
+                logger.warn("The writer is not specified for the repository ({}), will disable write configuration to storage", getName());
             } else {
                 writer.setDirectory(directory);
             }
             // enable refresh
             if (reloadIntervalInSeconds > 1) {
-                logger.info("The configuration refresh task is disabled for repository: {}", name);
+                logger.info("The configuration refresh task is disabled for repository: {}", getName());
             }
             inited = true;
 

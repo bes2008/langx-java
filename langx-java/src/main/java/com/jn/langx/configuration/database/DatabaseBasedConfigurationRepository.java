@@ -22,11 +22,11 @@ public class DatabaseBasedConfigurationRepository<T extends Configuration> exten
             Preconditions.checkNotNull(loader, "the configuration load is null");
             Logger logger = Loggers.getLogger(getClass());
             if (writer == null) {
-                logger.warn("The writer is not specified for the repository ({}), will disable write configuration to storage", name);
+                logger.warn("The writer is not specified for the repository ({}), will disable write configuration to storage", getName());
             }
             // enable refresh
             if (reloadIntervalInSeconds > 1) {
-                logger.info("The configuration refresh task is disabled for repository: {}", name);
+                logger.info("The configuration refresh task is disabled for repository: {}", getName());
             }
             inited = true;
         }

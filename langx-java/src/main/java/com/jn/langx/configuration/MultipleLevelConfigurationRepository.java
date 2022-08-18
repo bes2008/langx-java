@@ -73,7 +73,7 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
     }
 
     @Override
-    public void startup() {
+    public void doStart() {
         // reverse it
         Pipeline.of(delegates.values()).reverse(true).forEach(new Consumer2<Integer, ConfigurationRepository>() {
             @Override
@@ -81,11 +81,11 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
                 repository.startup();
             }
         });
-        super.startup();
+        super.doStart();
     }
 
-    public void shutdown() {
-        super.shutdown();
+    public void doStop() {
+        super.doStop();
         Pipeline.of(delegates.values()).forEach(new Consumer<ConfigurationRepository>() {
             @Override
             public void accept(ConfigurationRepository configurationRepository) {

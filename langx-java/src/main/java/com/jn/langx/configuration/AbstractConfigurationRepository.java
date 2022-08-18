@@ -52,9 +52,9 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     private ConfigurationEventFactory<T> eventFactory;
 
     @NonNull
-    private Cache<String, T> cache;
+    protected Cache<String, T> cache;
 
-    private Comparator<T> comparator;
+    protected Comparator<T> comparator;
 
     /**
      * units: seconds
@@ -247,7 +247,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public void init() throws InitializationException {
+    protected void doInit() {
         Preconditions.checkNotNull(getName(), "Repository has no named");
         Logger logger = Loggers.getLogger(getClass());
         logger.info("Initial configuration repository: {}", getName());
