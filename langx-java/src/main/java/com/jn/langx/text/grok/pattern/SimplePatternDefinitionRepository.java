@@ -70,6 +70,9 @@ public class SimplePatternDefinitionRepository extends AbstractConfigurationRepo
         super.reload();
     }
 
+    /**
+     * @since 4.7.3
+     */
     @Override
     protected void doInit() throws InitializationException {
         Timer timer = this.getTimer();
