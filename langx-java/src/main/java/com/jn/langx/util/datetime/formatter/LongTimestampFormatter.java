@@ -25,7 +25,7 @@ public class LongTimestampFormatter extends AbstractUtcTimestampFormatter<Long> 
         return dateFormatter.format(date);
     }
 
-    private static final List<Class> SUPPORTED = Collects.<Class>unmodifiableArrayList(long.class, Long.class);
+    private static final List<Class> SUPPORTED = Collects.<Class>immutableArrayList(long.class, Long.class);
 
     @Override
     public List<Class> supported() {

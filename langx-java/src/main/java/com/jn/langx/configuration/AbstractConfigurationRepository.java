@@ -14,18 +14,12 @@
 
 package com.jn.langx.configuration;
 
-import com.jn.langx.Reloadable;
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.annotation.Nullable;
+import com.jn.langx.annotation.NullableIf;
 import com.jn.langx.cache.Cache;
-import com.jn.langx.event.EventPublisher;
-import com.jn.langx.lifecycle.AbstractLifecycle;
-import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
-import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
-import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timeout;
@@ -33,27 +27,14 @@ import com.jn.langx.util.timing.timer.Timer;
 import com.jn.langx.util.timing.timer.TimerTask;
 import org.slf4j.Logger;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
-public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends AbstractLifecycle implements ConfigurationRepository<T, Loader, Writer>, Reloadable, Lifecycle {
-    @NonNull
-    protected Loader loader;
-    @Nullable
-    protected Writer writer;
-    @Nullable
-    private EventPublisher eventPublisher;
-
-    @Nullable
-    private ConfigurationEventFactory<T> eventFactory;
+public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends BaseConfigurationRepository<T,Loader,Writer>{
 
     @NonNull
     protected Cache<String, T> cache;
-
-    protected Comparator<T> comparator;
 
     /**
      * units: seconds
@@ -65,33 +46,11 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         this.reloadIntervalInSeconds = reloadIntervalInSeconds;
     }
 
-    public void setComparator(Comparator<T> comparator) {
-        this.comparator = comparator;
-    }
-
-    public Comparator<T> getComparator() {
-        return comparator;
-    }
-
     public void setCache(Cache<String, T> cache) {
         this.cache = cache;
     }
 
-
-    public void setEventFactory(ConfigurationEventFactory<T> eventFactory) {
-        this.eventFactory = eventFactory;
-    }
-
-    @Override
-    public EventPublisher getEventPublisher() {
-        return eventPublisher;
-    }
-
-    @Override
-    public void setEventPublisher(EventPublisher publisher) {
-        this.eventPublisher = publisher;
-    }
-
+    @NullableIf("reloadIntervalInSeconds>0")
     private Timer timer;
 
     public Timer getTimer() {
@@ -148,35 +107,12 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         cache.clean();
     }
 
-    @Override
-    public void setConfigurationLoader(Loader loader) {
-        this.loader = loader;
-    }
-
-    @Override
-    public Loader getConfigurationLoader() {
-        return this.loader;
-    }
-
-    @Override
-    public Writer getConfigurationWriter() {
-        return this.writer;
-    }
-
-    @Override
-    public void setConfigurationWriter(Writer writer) {
-        this.writer = writer;
-    }
 
     @Override
     public T getById(String id) {
         return cache.get(id);
     }
 
-    @Override
-    public void removeById(String id) {
-        removeById(id, true);
-    }
 
     @Override
     public void removeById(String id, boolean sync) {
@@ -191,11 +127,6 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
                 eventPublisher.publish(eventFactory.createEvent(ConfigurationEventType.ADD, configuration));
             }
         }
-    }
-
-    @Override
-    public void add(T configuration) {
-        add(configuration, true);
     }
 
     @Override
@@ -214,11 +145,6 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     @Override
-    public void update(T configuration) {
-        update(configuration, true);
-    }
-
-    @Override
     public void update(T configuration, boolean sync) {
         if (isRunning()) {
             logMutation(ConfigurationEventType.UPDATE, configuration);
@@ -232,19 +158,6 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
         }
     }
 
-    private void logMutation(ConfigurationEventType eventType, T configuration) {
-        Logger logger = Loggers.getLogger(getClass());
-        if (logger.isInfoEnabled()) {
-            String template = eventFactory == null ? " a configuration: {}" : (Strings.startsWithVowelLetter(eventFactory.getDomain()) ? " an {} configuration: {}" : " a {} configuration: {}");
-            template = Strings.upperCase(eventType.name().toLowerCase(), 0, 1) + template;
-            if (eventFactory != null) {
-                logger.info(template, eventFactory.getDomain(), configuration);
-            } else {
-                logger.info(template, configuration);
-            }
-        }
-    }
-
     @Override
     protected void doInit() {
         Preconditions.checkNotNull(getName(), "Repository has no named");
@@ -253,28 +166,7 @@ public abstract class AbstractConfigurationRepository<T extends Configuration, L
     }
 
     public Map<String, T> getAll() {
-        return Collections.unmodifiableMap(cache.toMap());
+        return Collects.immutableMap(cache.toMap());
     }
 
-    @Override
-    public void reload() {
-        final Logger logger = Loggers.getLogger(getClass());
-        logger.info("Reload repository {}", getName());
-        if (loader != null) {
-            Map<String, T> all = loader.loadAll();
-            if (all != null) {
-                Pipeline.of(all.values())
-                        .forEach(new Consumer<T>() {
-                            @Override
-                            public void accept(T t) {
-                                T old = getById(t.getId());
-                                if (old != null) {
-                                    logger.info("reload {}", t.getId());
-                                }
-                                add(t, false);
-                            }
-                        });
-            }
-        }
-    }
 }

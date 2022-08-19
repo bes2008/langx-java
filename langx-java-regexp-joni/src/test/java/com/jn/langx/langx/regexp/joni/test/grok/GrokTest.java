@@ -14,7 +14,6 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.WheelTimers;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,7 +35,7 @@ public class GrokTest {
 
         // single file repository:
         SimplePatternDefinitionRepository singleFileRepository = new SimplePatternDefinitionRepository();
-        singleFileRepository.setName("custom-repository");
+        singleFileRepository.setName("simple-repository");
         /*
         Cache<String, PatternDefinition> singleFileRepositoryCache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
@@ -48,7 +47,7 @@ public class GrokTest {
         singleFileRepository.setConfigurationLoader(loader);
 
         // log stash directory repository:
-        SimplePatternDefinitionRepository logstashFileRepository = new SimplePatternDefinitionRepository();
+        DefaultPatternDefinitionRepository logstashFileRepository = new DefaultPatternDefinitionRepository();
         Cache<String, PatternDefinition> cache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();

@@ -22,7 +22,7 @@ class GrokDateTimeParser implements DateTimeParser {
 
     public static final String GROUP_TIME_ZONE = "timezone";
 
-    private static final List<String> BASIC_GROUP_NAMES = Collects.unmodifiableArrayList(
+    private static final List<String> BASIC_GROUP_NAMES = Collects.immutableArrayList(
             GROUP_YEAR,
             GROUP_MONTH,
             GROUP_DAY_OF_MONTH,

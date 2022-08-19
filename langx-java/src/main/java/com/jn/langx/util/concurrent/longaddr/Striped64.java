@@ -1,6 +1,9 @@
 package com.jn.langx.util.concurrent.longaddr;
 
 
+import com.jn.langx.util.unsafe.UnsafeProxy;
+import com.jn.langx.util.unsafe.Unsafes;
+
 import java.util.Random;
 
 /**
@@ -93,11 +96,11 @@ abstract class Striped64 extends Number {
         }
 
         // Unsafe mechanics
-        private static final sun.misc.Unsafe UNSAFE;
+        private static final UnsafeProxy UNSAFE;
         private static final long valueOffset;
         static {
             try {
-                UNSAFE = getUnsafe();
+                UNSAFE = Unsafes.getUnsafe();
                 Class<?> ak = Cell.class;
                 valueOffset = UNSAFE.objectFieldOffset
                         (ak.getDeclaredField("value"));
@@ -282,12 +285,12 @@ abstract class Striped64 extends Number {
     }
 
     // Unsafe mechanics
-    private static final sun.misc.Unsafe UNSAFE;
+    private static final UnsafeProxy UNSAFE;
     private static final long baseOffset;
     private static final long busyOffset;
     static {
         try {
-            UNSAFE = getUnsafe();
+            UNSAFE = Unsafes.getUnsafe();
             Class<?> sk = Striped64.class;
             baseOffset = UNSAFE.objectFieldOffset
                     (sk.getDeclaredField("base"));
@@ -298,33 +301,4 @@ abstract class Striped64 extends Number {
         }
     }
 
-    /**
-     * Returns a sun.misc.Unsafe.  Suitable for use in a 3rd party package.
-     * Replace with a simple call to Unsafe.getUnsafe when integrating
-     * into a jdk.
-     *
-     * @return a sun.misc.Unsafe
-     */
-    private static sun.misc.Unsafe getUnsafe() {
-        try {
-            return sun.misc.Unsafe.getUnsafe();
-        } catch (SecurityException tryReflectionInstead) {}
-        try {
-            return java.security.AccessController.doPrivileged
-                    (new java.security.PrivilegedExceptionAction<sun.misc.Unsafe>() {
-                        public sun.misc.Unsafe run() throws Exception {
-                            Class<sun.misc.Unsafe> k = sun.misc.Unsafe.class;
-                            for (java.lang.reflect.Field f : k.getDeclaredFields()) {
-                                f.setAccessible(true);
-                                Object x = f.get(null);
-                                if (k.isInstance(x))
-                                    return k.cast(x);
-                            }
-                            throw new NoSuchFieldError("the Unsafe");
-                        }});
-        } catch (java.security.PrivilegedActionException e) {
-            throw new RuntimeException("Could not initialize intrinsics",
-                    e.getCause());
-        }
-    }
 }

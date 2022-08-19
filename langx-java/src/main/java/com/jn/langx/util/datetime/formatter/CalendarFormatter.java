@@ -14,7 +14,7 @@ public class CalendarFormatter extends AbstractDateTimeFormatter<Calendar> {
         return delegate.format(calendar.getTime());
     }
 
-    private static final List<Class> SUPPORTED = Collects.<Class>unmodifiableArrayList(Calendar.class);
+    private static final List<Class> SUPPORTED = Collects.<Class>immutableArrayList(Calendar.class);
     @Override
     public List<Class> supported() {
         return SUPPORTED;

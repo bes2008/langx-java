@@ -28,7 +28,7 @@ public class DateFormatter extends AbstractUtcTimestampFormatter<Date> {
         return simpleDateFormat.format(date);
     }
 
-    private static final List<Class> SUPPORTED = Collects.<Class>unmodifiableArrayList(Date.class);
+    private static final List<Class> SUPPORTED = Collects.<Class>immutableArrayList(Date.class);
 
     @Override
     public List<Class> supported() {

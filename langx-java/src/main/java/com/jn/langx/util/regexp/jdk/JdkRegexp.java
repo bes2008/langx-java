@@ -100,7 +100,7 @@ public class JdkRegexp implements Regexp {
             // key: group name, value: index
             final Map<String, Integer> map = Reflects.invoke(NAMED_GROUP_MAP_METHOD, this.pattern, Emptys.EMPTY_OBJECTS, true, true);
             if (map == null) {
-                groups = Collects.unmodifiableArrayList();
+                groups = Collects.immutableArrayList();
             } else {
                 TreeSet<String> set = new TreeSet<String>(new OrderedComparator<String>(new Supplier<String, Integer>() {
                     @Override
@@ -109,7 +109,7 @@ public class JdkRegexp implements Regexp {
                     }
                 }));
                 set.addAll(map.keySet());
-                groups = Collects.unmodifiableArrayList(Collects.asList(set));
+                groups = Collects.immutableArrayList(Collects.asList(set));
             }
             namedGroups = new Holder<List<String>>(groups);
         }

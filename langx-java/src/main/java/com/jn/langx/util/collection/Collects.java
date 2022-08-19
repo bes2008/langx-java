@@ -54,10 +54,6 @@ public class Collects {
         return new Hashtable<K, V>();
     }
 
-    public static <K, V> Map<K, V> unmodifiableMap(Map<K, V> map) {
-        return Collections.unmodifiableMap(Objs.useValueIfNull(map, Collects.<K, V>emptyHashMap()));
-    }
-
     /**
      * Get a empty, mutable java.util.TreeMap
      *
@@ -128,7 +124,7 @@ public class Collects {
     }
 
     public static <E> Set<E> immutableSet() {
-        return immutableSet(null);
+        return immutableSet((Set)null);
     }
 
     public static <E> Set<E> immutableSet(Set<E> set) {
@@ -148,11 +144,11 @@ public class Collects {
         return emptyHashSet(false);
     }
 
-    public static <E> Set<E> unmodifiableSet(Collection<E> collection) {
+    public static <E> Set<E> immutableSet(Collection<E> collection) {
         return Collections.unmodifiableSet(asSet(collection));
     }
 
-    public static <E> Set<E> unmodifiableSet(E... elements) {
+    public static <E> Set<E> immutableSet(E... elements) {
         return Collections.unmodifiableSet(asSet(elements));
     }
 
@@ -184,13 +180,6 @@ public class Collects {
         return new TreeSet<E>(comparator);
     }
 
-    public static <E> List<E> unmodifiableArrayList(E... elements) {
-        return unmodifiableArrayList(asList(elements));
-    }
-
-    public static <E> List<E> unmodifiableArrayList(List<E> list) {
-        return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
-    }
 
     /**
      * Get a empty, mutable java.util.ArrayList
@@ -204,6 +193,10 @@ public class Collects {
 
     public static <E> List<E> immutableList() {
         return immutableList(null);
+    }
+
+    public static <E> List<E> immutableArrayList(List<E> list) {
+        return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
     }
 
     public static <E> List<E> immutableArrayList(E... array){

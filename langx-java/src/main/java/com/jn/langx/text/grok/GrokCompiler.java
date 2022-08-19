@@ -5,7 +5,7 @@ import com.jn.langx.lifecycle.AbstractLifecycle;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.text.grok.pattern.PatternDefinition;
 import com.jn.langx.text.grok.pattern.PatternDefinitionRepository;
-import com.jn.langx.text.grok.pattern.SimplePatternDefinitionRepository;
+import com.jn.langx.text.grok.pattern.DefaultPatternDefinitionRepository;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -56,7 +56,7 @@ public class GrokCompiler extends AbstractLifecycle {
     @Override
     public void init() throws InitializationException {
         if (this.definitionRepository == null) {
-            this.definitionRepository = new SimplePatternDefinitionRepository();
+            this.definitionRepository = new DefaultPatternDefinitionRepository();
             this.definitionRepository.setName(this.getName());
         }
     }

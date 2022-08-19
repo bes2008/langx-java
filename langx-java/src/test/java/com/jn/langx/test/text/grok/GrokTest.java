@@ -9,7 +9,7 @@ import com.jn.langx.text.grok.logstash.EcsCompatibility;
 import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
 import com.jn.langx.text.grok.pattern.MultipleLevelPatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.PatternDefinition;
-import com.jn.langx.text.grok.pattern.SimplePatternDefinitionRepository;
+import com.jn.langx.text.grok.pattern.DefaultPatternDefinitionRepository;
 import com.jn.langx.text.grok.GrokTemplate;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -49,7 +49,7 @@ public class GrokTest {
         */
 
         // log stash directory repository:
-        SimplePatternDefinitionRepository logstashFileRepository = new SimplePatternDefinitionRepository();
+        DefaultPatternDefinitionRepository logstashFileRepository = new DefaultPatternDefinitionRepository();
         Cache<String, PatternDefinition> cache = CacheBuilder.<String, PatternDefinition>newBuilder()
                 .timer(timer)
                 .build();
