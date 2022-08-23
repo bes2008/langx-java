@@ -2821,32 +2821,6 @@ public class Strings {
         return newArr;
     }
 
-    /**
-     * <p>Removes diacritics (~= accents) from a string. The case will not be altered.</p>
-     * <p>For instance, '&agrave;' will be replaced by 'a'.</p>
-     * <p>Note that ligatures will be left as is.</p>
-     *
-     * <pre>
-     * StringUtils.stripAccents(null)                = null
-     * StringUtils.stripAccents("")                  = ""
-     * StringUtils.stripAccents("control")           = "control"
-     * StringUtils.stripAccents("&eacute;clair")     = "eclair"
-     * </pre>
-     *
-     * @param input String to be stripped
-     * @return input text with diacritics removed
-     */
-    // See also Lucene's ASCIIFoldingFilter (Lucene 2.9) that replaces accented characters by their unaccented equivalent (and uncommitted bug fix: https://issues.apache.org/jira/browse/LUCENE-1343?focusedCommentId=12858907&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_12858907).
-    public static String stripAccents(final String input) {
-        if (input == null) {
-            return null;
-        }
-        final Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+"); //$NON-NLS-1$
-        final StringBuilder decomposed = new StringBuilder(Normalizer.normalize(input, Normalizer.Form.NFD));
-        convertRemainingAccentCharacters(decomposed);
-        // Note that this doesn't correctly remove ligatures...
-        return pattern.matcher(decomposed).replaceAll(EMPTY);
-    }
 
     private static void convertRemainingAccentCharacters(final StringBuilder decomposed) {
         for (int i = 0; i < decomposed.length(); i++) {
