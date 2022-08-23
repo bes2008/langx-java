@@ -17,7 +17,6 @@ import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 
 import java.nio.charset.Charset;
-import java.text.Normalizer;
 import java.util.*;
 import java.util.regex.Pattern;
 
