@@ -2,18 +2,13 @@ package com.jn.langx.text.grok;
 
 
 import com.jn.langx.Converter;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
 
-import static java.lang.String.format;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -21,7 +16,11 @@ import java.util.Map;
  *
  * @since 4.7.2
  */
-public class Match {
+class Match {
+    /**
+     * Create Empty grok matcher.
+     */
+    public static final Match EMPTY = new Match("", null, null, 0, 0);
     private final CharSequence subject;
     private final Grok grok;
     private final RegexpMatcher match;
@@ -41,11 +40,6 @@ public class Match {
         this.end = end;
     }
 
-    /**
-     * Create Empty grok matcher.
-     */
-    public static final Match EMPTY = new Match("", null, null, 0, 0);
-
     public RegexpMatcher getMatch() {
         return match;
     }
@@ -58,19 +52,19 @@ public class Match {
         return end;
     }
 
+    public boolean isKeepEmptyCaptures() {
+        return this.keepEmptyCaptures;
+    }
+
     /**
      * Ignore empty captures.
      */
     public void setKeepEmptyCaptures(boolean ignore) {
         // clear any cached captures
-        if ( capture.size() > 0) {
+        if (capture.size() > 0) {
             capture = new HashMap<String, Object>();
         }
         this.keepEmptyCaptures = ignore;
-    }
-
-    public boolean isKeepEmptyCaptures() {
-        return this.keepEmptyCaptures;
     }
 
     /**
@@ -84,9 +78,8 @@ public class Match {
 
     /**
      * Match to the <tt>subject</tt> the <tt>regex</tt> and save the matched element into a map.
-     *
+     * <p>
      * Multiple values for the same key are stored as list.
-     *
      */
     public Map<String, Object> capture() {
         return capture(false);
@@ -94,13 +87,13 @@ public class Match {
 
     /**
      * Match to the <tt>subject</tt> the <tt>regex</tt> and save the matched element into a map
-     *
+     * <p>
      * Multiple values to the same key are flattened to one value: the sole non-null value will be captured.
      * Should there be multiple non-null values a RuntimeException is being thrown.
-     *
+     * <p>
      * This can be used in cases like: (foo (.*:message) bar|bar (.*:message) foo) where the regexp guarantees that only
      * one value will be captured.
-     *
+     * <p>
      * See also {@link #capture} which returns multiple values of the same key as list.
      *
      * @return the matched elements
@@ -112,11 +105,12 @@ public class Match {
 
     /**
      * Private implementation of captureFlattened and capture.
+     *
      * @param flattened will it flatten values.
      * @return the matched elements.
      * @throws GrokException if a keys has multiple non-null values, but only if flattened is set to true.
      */
-    private Map<String, Object> capture(final boolean flattened ) throws GrokException {
+    private Map<String, Object> capture(final boolean flattened) throws GrokException {
         if (match == null) {
             return Collections.emptyMap();
         }
@@ -174,7 +168,7 @@ public class Match {
                         }
                         if (currentValue != null && value != null) {
                             throw new GrokException(
-                                    format(
+                                    StringTemplates.formatWithCStyle(
                                             "key '%s' has multiple non-null values, this is not allowed in flattened mode, values:'%s', '%s'",
                                             key,
                                             currentValue,
@@ -224,7 +218,7 @@ public class Match {
                 return "";
             } else {
                 int found = 0;
-                for (int i = 1; i < value.length() - 1; i++ ) {
+                for (int i = 1; i < value.length() - 1; i++) {
                     if (value.charAt(i) == firstChar) {
                         found++;
                     }

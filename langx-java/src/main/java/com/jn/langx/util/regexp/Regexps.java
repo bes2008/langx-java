@@ -7,6 +7,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.MultiKeyMap;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.regexp.jdk.JdkRegexpEngine;
@@ -20,6 +21,12 @@ import java.util.regex.Pattern;
  */
 public class Regexps {
 
+    /**
+     * key1: pattern string
+     * key2: Option
+     * key3: engine
+     */
+    private static MultiKeyMap<Regexp> cache = new MultiKeyMap<Regexp>();
 
     private static final GenericRegistry<RegexpEngine> registry = new GenericRegistry<RegexpEngine>();
 
@@ -82,14 +89,21 @@ public class Regexps {
         if (engine == null) {
             engine = registry.get("jdk");
         }
-        return engine.get(pattern, option);
+
+        Regexp regexp = cache.get(pattern, option, engine.getName());
+        if (regexp == null) {
+            regexp = engine.get(pattern, option);
+            cache.put(pattern, option, engine.getName(), regexp);
+        }
+        return regexp;
     }
 
     /**
      * 判断 文本中 是否包含指定的 正则可匹配的内容
+     *
      * @since 4.7.0
      */
-    public static boolean contains(String text, Regexp regexp){
+    public static boolean contains(String text, Regexp regexp) {
         RegexpMatcher matcher = regexp.matcher(text);
         return matcher.find();
     }

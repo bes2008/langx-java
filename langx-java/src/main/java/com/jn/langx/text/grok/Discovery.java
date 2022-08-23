@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 
 
 /**
@@ -135,15 +136,15 @@ public class Discovery {
             String part = getPart(match, text);
 
             // we skip boundary word
-            Pattern pattern = Pattern.compile(".\\b.");
-            Matcher ma = pattern.matcher(part);
+            Regexp pattern = Regexps.createRegexp(".\\b.");
+            RegexpMatcher ma = pattern.matcher(part);
             if (!ma.find()) {
                 continue;
             }
 
             // We skip the part that already include %{Foo}
-            Pattern pattern2 = Pattern.compile("%\\{[^}+]\\}");
-            Matcher ma2 = pattern2.matcher(part);
+            Regexp pattern2 = Regexps.createRegexp("%\\{[^}+]\\}");
+            RegexpMatcher ma2 = pattern2.matcher(part);
 
             if (ma2.find()) {
                 continue;

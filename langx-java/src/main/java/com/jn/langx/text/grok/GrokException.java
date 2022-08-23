@@ -6,7 +6,7 @@ package com.jn.langx.text.grok;
  * This class is the general class of
  * exceptions produced by failed or interrupted Grok operations.
  *
- * @since 0.0.4
+ * @since 4.7.2
  */
 public class GrokException extends RuntimeException {
 

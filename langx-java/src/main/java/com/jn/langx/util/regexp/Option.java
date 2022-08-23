@@ -1,5 +1,6 @@
 package com.jn.langx.util.regexp;
 
+import com.jn.langx.util.Objs;
 import java.util.regex.Pattern;
 
 /**
@@ -116,4 +117,21 @@ public class Option {
         return opt;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Option option = (Option) o;
+        return ignoreCase == option.ignoreCase && multiline == option.multiline && global == option.global;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objs.hash(ignoreCase, multiline, global);
+    }
 }
