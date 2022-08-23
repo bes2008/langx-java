@@ -6,6 +6,7 @@ import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.predicate.EmptyPredicate;
+import com.jn.langx.util.reflect.Reflects;
 
 import java.util.*;
 
@@ -213,6 +214,15 @@ public class Functions {
 
     public static <E> Predicate<E> emptyPredicate() {
         return EmptyPredicate.IS_EMPTY_PREDICATE;
+    }
+
+    public static <E> Predicate<E> isInstancePredicate(final Class<E> itfc){
+        return new Predicate<E>() {
+            @Override
+            public boolean test(E obj) {
+                return Reflects.isInstance(obj, itfc);
+            }
+        };
     }
 
     public static <E> Predicate<E> notEmptyPredicate() {
