@@ -11,7 +11,6 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.valuegetter.ValueGetter2;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class StringTemplates {
 
@@ -153,11 +152,6 @@ public class StringTemplates {
      * @param args            args
      * @return formatted string
      */
-    public static String format(String template, Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
-        // 需要自己剔除变量的前后标记
-        return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
-    }
-
     public static String format(String template, Regexp variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
         // 需要自己剔除变量的前后标记
         return new CustomPatternStringFormatter(variablePattern, valueGetter).format(template, args);
@@ -205,16 +199,6 @@ public class StringTemplates {
      * @return 替换后排的字符串
      * @since 2.10.1
      */
-    public static String format(String template, Pattern variablePattern, final PlaceholderParser variableValueProvider) {
-        return format(template, variablePattern, new Function2<String, Object[], String>() {
-            @Override
-            public String apply(String variable, Object[] arguments) {
-                // 需要自己剔除变量的前后标记
-                return variableValueProvider.parse(variable);
-            }
-        });
-    }
-
     public static String format(String template, Regexp variablePattern, final PlaceholderParser variableValueProvider) {
         return format(template, variablePattern, new Function2<String, Object[], String>() {
             @Override
@@ -273,7 +257,7 @@ public class StringTemplates {
             return format(new CustomPatternStringFormatter(variablePattern, valueGetter), args);
         }
 
-        public TemplateFluenter format(Pattern variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
+        public TemplateFluenter format(Regexp variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
             return format(new CustomPatternStringFormatter(variablePattern, valueGetter), args);
         }
 

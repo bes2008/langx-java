@@ -1,8 +1,8 @@
 package com.jn.langx.text.stringtemplate;
 
 import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.regexp.Regexp;
 
-import java.util.regex.Pattern;
 
 /**
  * pattern: {0},{1},{2},{3}
@@ -11,12 +11,12 @@ import java.util.regex.Pattern;
 public class IndexStringFormatter extends CustomPatternStringFormatter {
 
     public IndexStringFormatter() {
-        this.setVariablePattern((Pattern) null);
+        this.setVariablePattern((Regexp) null);
         setValueGetter(null);
     }
 
     @Override
-    public void setVariablePattern(Pattern variablePattern) {
+    public void setVariablePattern(Regexp variablePattern) {
         super.setVariablePattern(StringTemplate.defaultPattern);
     }
 

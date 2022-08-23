@@ -5,26 +5,27 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate2;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class LogInjectionPreventionHandler implements Function<String, String> {
-    private Map<Pattern, String> replacementMapping = new HashMap<Pattern, String>();
+    private Map<Regexp, String> replacementMapping = new HashMap<Regexp, String>();
 
-    public void addReplacement(Pattern pattern, String replacement) {
+    public void addReplacement(Regexp pattern, String replacement) {
         replacementMapping.put(pattern, replacement);
     }
 
     public void addCLRFReplacement(String replacement) {
         replacement = Strings.isEmpty(replacement) ? "_" : replacement;
         String pattern = "[\r\n\f]";
-        addReplacement(Pattern.compile(pattern), replacement);
+        addReplacement(Regexps.createRegexp(pattern), replacement);
     }
 
     @Override
@@ -33,11 +34,11 @@ public class LogInjectionPreventionHandler implements Function<String, String> {
             return null;
         }
         final Holder<String> stringHolder = new Holder<String>(input);
-        Collects.forEach(replacementMapping, new Consumer2<Pattern, String>() {
+        Collects.forEach(replacementMapping, new Consumer2<Regexp, String>() {
             @Override
-            public void accept(Pattern pattern, String replacement) {
+            public void accept(Regexp pattern, String replacement) {
                 String v = stringHolder.get();
-                Matcher matcher = pattern.matcher(v);
+                RegexpMatcher matcher = pattern.matcher(v);
                 StringBuffer b = new StringBuffer();
                 while (matcher.find()) {
                     matcher.appendReplacement(b, quoteReplacement(replacement));
@@ -46,9 +47,9 @@ public class LogInjectionPreventionHandler implements Function<String, String> {
                 v = b.toString();
                 stringHolder.set(v);
             }
-        }, new Predicate2<Pattern, String>() {
+        }, new Predicate2<Regexp, String>() {
             @Override
-            public boolean test(Pattern pattern, String str) {
+            public boolean test(Regexp pattern, String str) {
                 return stringHolder.isEmpty();
             }
         });

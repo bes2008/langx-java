@@ -1,6 +1,10 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -335,8 +339,8 @@ class Groups {
      * @return number of open parentheses
      */
     static private int countOpenParens(String s, int pos) {
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile("\\(");
-        java.util.regex.Matcher m = p.matcher(s.subSequence(0, pos));
+        Regexp p = Regexps.compile("\\(");
+        RegexpMatcher m = p.matcher(s.subSequence(0, pos));
 
         int numParens = 0;
 

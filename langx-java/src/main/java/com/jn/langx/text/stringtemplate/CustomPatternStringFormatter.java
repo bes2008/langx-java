@@ -4,7 +4,6 @@ import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
-import java.util.regex.Pattern;
 
 
 public class CustomPatternStringFormatter implements StringTemplateFormatter {
@@ -19,13 +18,8 @@ public class CustomPatternStringFormatter implements StringTemplateFormatter {
         setValueGetter(valueGetter);
     }
 
-    public CustomPatternStringFormatter(Pattern pattern, Function2<String, Object[], String> valueGetter) {
-        setVariablePattern(pattern);
-        setValueGetter(valueGetter);
-    }
-
     public CustomPatternStringFormatter(String pattern, Function2<String, Object[], String> valueGetter) {
-        this(Pattern.compile(pattern), valueGetter);
+        this(Regexps.compile(pattern), valueGetter);
     }
 
 
@@ -38,9 +32,6 @@ public class CustomPatternStringFormatter implements StringTemplateFormatter {
         return variableRegexp;
     }
 
-    public void setVariablePattern(Pattern variablePattern) {
-       setVariablePattern(Regexps.createRegexp(variablePattern));
-    }
 
     public void setVariablePattern(Regexp variablePattern) {
         this.variableRegexp = variablePattern;

@@ -8,7 +8,6 @@ import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
 import org.slf4j.Logger;
 
-import java.util.regex.Pattern;
 
 import static java.util.regex.Matcher.quoteReplacement;
 
@@ -25,17 +24,11 @@ public class StringTemplate {
 
     public StringTemplate variablePattern(String pattern) {
         if (Emptys.isNotEmpty(pattern)) {
-            return variablePattern(Pattern.compile(pattern));
+            return variablePattern(Regexps.compile(pattern));
         }
         return this;
     }
 
-    public StringTemplate variablePattern(Pattern pattern) {
-        if (Emptys.isNotNull(pattern)) {
-            this.variableRegexp = defaultPattern;
-        }
-        return this;
-    }
     public StringTemplate variablePattern(Regexp regexp){
         if (Emptys.isNotNull(regexp)) {
             this.variableRegexp = regexp;

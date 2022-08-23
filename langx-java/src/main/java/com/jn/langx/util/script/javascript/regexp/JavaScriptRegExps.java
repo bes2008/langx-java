@@ -1,13 +1,13 @@
 package com.jn.langx.util.script.javascript.regexp;
 
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.script.ScriptLanguage;
 import com.jn.langx.util.script.SimpleScriptEngineFactory;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 这是一个正则表达式验证。<br>
@@ -43,8 +43,8 @@ public class JavaScriptRegExps {
      * @param pattern
      * @param src
      */
-    public static Matcher getMatcher(String pattern, String src) {
-        return Pattern.compile(pattern).matcher(src);
+    public static RegexpMatcher getMatcher(String pattern, String src) {
+        return Regexps.compile(pattern).matcher(src);
     }
 
     private String pattern = "";

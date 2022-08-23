@@ -7,10 +7,11 @@ import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.converter.*;
 import com.jn.langx.util.function.*;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Convert String argument to the right type.
@@ -39,7 +40,7 @@ public class Converters {
         }
     }
 
-    private static final Pattern SPLITTER = Pattern.compile("[:;]");
+    private static final Regexp SPLITTER = Regexps.createRegexp("[:;]");
 
     private static final Map<String, Converters.Type> TYPES = Pipeline.of(Converters.Type.values())
             .collect(Collects.toMap(new Supplier0<Map<String, Converters.Type>>() {

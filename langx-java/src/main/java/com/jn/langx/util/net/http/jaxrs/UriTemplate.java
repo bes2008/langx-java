@@ -18,11 +18,12 @@ package com.jn.langx.util.net.http.jaxrs;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.net.http.jaxrs.internal.UriTemplateParser;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.net.URI;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -124,7 +125,7 @@ public class UriTemplate {
     /**
      * The regular expression for matching URI templates and names.
      */
-    private static final Pattern TEMPLATE_NAMES_PATTERN = Pattern.compile("\\{([\\w\\?;][-\\w\\.,]*)\\}");
+    private static final Regexp TEMPLATE_NAMES_PATTERN = Regexps.compile("\\{([\\w\\?;][-\\w\\.,]*)\\}");
 
     /**
      * The empty URI template that matches the {@code null} or empty URI path.
@@ -622,7 +623,7 @@ public class UriTemplate {
             StringBuilder builder,
             TemplateValueStrategy valueStrategy) {
         // Find all template variables
-        Matcher m = TEMPLATE_NAMES_PATTERN.matcher(normalizedTemplate);
+        RegexpMatcher m = TEMPLATE_NAMES_PATTERN.matcher(normalizedTemplate);
 
         int i = 0;
         while (m.find()) {

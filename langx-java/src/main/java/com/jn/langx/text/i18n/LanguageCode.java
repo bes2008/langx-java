@@ -2551,32 +2551,6 @@ public enum LanguageCode {
     }
 
 
-    /**
-     * Get a list of {@code LanguageCode} by a name regular expression.
-     * <p>
-     * <p>
-     * This method is almost equivalent to {@link #findByName(Pattern)
-     * findByName}{@code (Pattern.compile(regex))}.
-     * </p>
-     *
-     * @param regex Regular expression for names.
-     * @return List of {@code LanguageCode}. If nothing has matched,
-     * an empty list is returned.
-     * @throws IllegalArgumentException               {@code regex} is {@code null}.
-     * @throws java.util.regex.PatternSyntaxException {@code regex} failed to be compiled.
-     */
-    public static List<LanguageCode> findByName(String regex) {
-        if (regex == null) {
-            throw new IllegalArgumentException("regex is null.");
-        }
-
-        // Compile the regular expression. This may throw
-        // java.util.regex.PatternSyntaxException.
-        Pattern pattern = Pattern.compile(regex);
-
-        return findByName(pattern);
-    }
-
 
     /**
      * Get a list of {@code LanguageCode} by a name pattern.

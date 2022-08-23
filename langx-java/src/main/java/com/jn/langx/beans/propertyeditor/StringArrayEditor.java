@@ -19,7 +19,6 @@ package com.jn.langx.beans.propertyeditor;
 
 import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 /**
  * A property editor for String[]. The text format of a string array is a
@@ -28,7 +27,6 @@ import java.util.regex.Pattern;
  */
 public class StringArrayEditor
         extends PropertyEditorSupport {
-    Pattern commaDelim = Pattern.compile("','|[^,\r\n]+");
 
     static String[] parseList(String text) {
         ArrayList<String> list = new ArrayList<String>();

@@ -16,6 +16,9 @@ import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMapAdapter;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.net.NetworkAddress;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.io.Serializable;
 import java.net.InetSocketAddress;
@@ -26,8 +29,6 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.jn.langx.util.io.Charsets.ISO_8859_1;
 
@@ -401,7 +402,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      *
      * @see <a href="https://tools.ietf.org/html/rfc7232#section-2.3">Section 2.3 of RFC 7232</a>
      */
-    private static final Pattern ETAG_HEADER_VALUE_PATTERN = Pattern.compile("\\*|\\s*((W\\/)?(\"[^\"]*\"))\\s*,?");
+    private static final Regexp ETAG_HEADER_VALUE_PATTERN = Regexps.compile("\\*|\\s*((W\\/)?(\"[^\"]*\"))\\s*,?");
 
     private static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = new DecimalFormatSymbols(Locale.ENGLISH);
 
@@ -1192,7 +1193,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
             List<String> result = new ArrayList<String>();
             for (String value : values) {
                 if (value != null) {
-                    Matcher matcher = ETAG_HEADER_VALUE_PATTERN.matcher(value);
+                    RegexpMatcher matcher = ETAG_HEADER_VALUE_PATTERN.matcher(value);
                     while (matcher.find()) {
                         if ("*".equals(matcher.group())) {
                             result.add(matcher.group());

@@ -4,11 +4,11 @@ import com.jn.langx.Accessor;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.reflect.FieldAccessor;
-
-import java.util.regex.Pattern;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 public class BeanBasedStyleStringFormatter extends CustomPatternStringFormatter {
-    static final Pattern BEAN_VARIABLE_PATTERN = Pattern.compile("\\$\\{[a-zA-Z_]\\w*}");
+    static final Regexp BEAN_VARIABLE_PATTERN = Regexps.compile("\\$\\{[a-zA-Z_]\\w*}");
 
 
     public BeanBasedStyleStringFormatter() {

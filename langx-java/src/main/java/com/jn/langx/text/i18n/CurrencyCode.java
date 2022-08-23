@@ -2660,7 +2660,7 @@ public enum CurrencyCode {
 
         // Compile the regular expression. This may throw
         // java.util.regex.PatternSyntaxException.
-        Pattern pattern = Pattern.compile(regex);
+        Regexp pattern = Regexps.compile(regex);
 
         return findByName(pattern);
     }
@@ -2692,15 +2692,8 @@ public enum CurrencyCode {
      * @return List of {@code CurrencyCde}. If nothing has matched,
      * an empty list is returned.
      * @throws IllegalArgumentException {@code pattern} is {@code null}.
-     * 
+     *
      */
-    public static List<CurrencyCode> findByName(Pattern pattern) {
-        if (pattern == null) {
-            throw new IllegalArgumentException("pattern is null.");
-        }
-        return findByName(Regexps.createRegexp(pattern));
-    }
-
     public static List<CurrencyCode> findByName(Regexp pattern) {
         if (pattern == null) {
             throw new IllegalArgumentException("pattern is null.");

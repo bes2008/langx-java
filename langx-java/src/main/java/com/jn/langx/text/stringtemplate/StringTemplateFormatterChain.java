@@ -5,13 +5,14 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Entry;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class StringTemplateFormatterChain implements StringTemplateFormatter {
     private List<Pair<StringTemplateFormatter, Object[]>> chain = Collects.emptyArrayList();
@@ -23,12 +24,12 @@ public class StringTemplateFormatterChain implements StringTemplateFormatter {
         return this;
     }
 
-    public StringTemplateFormatterChain addFormatterAndParameters(Pattern pattern, Function2<String, Object[], String> valueGetter, Object... args) {
+    public StringTemplateFormatterChain addFormatterAndParameters(Regexp pattern, Function2<String, Object[], String> valueGetter, Object... args) {
         return addFormatterAndParameters(new CustomPatternStringFormatter(pattern, valueGetter), args);
     }
 
     public StringTemplateFormatterChain addFormatterAndParameters(String variablePattern, Function2<String, Object[], String> valueGetter, Object... args) {
-        return addFormatterAndParameters(Pattern.compile(variablePattern), valueGetter, args);
+        return addFormatterAndParameters(Regexps.compile(variablePattern), valueGetter, args);
     }
 
     public StringTemplateFormatterChain addIndexedFormatterAndParameters(Object... args) {

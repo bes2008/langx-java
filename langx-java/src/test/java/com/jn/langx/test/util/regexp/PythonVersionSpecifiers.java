@@ -9,7 +9,6 @@ import com.jn.langx.util.regexp.Regexps;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * 参考官方规范：
@@ -32,7 +31,6 @@ public class PythonVersionSpecifiers {
             + PUBLIC_VERSION_SEG_POST
             + PUBLIC_VERSION_SEG_DEV
             + LOCAL_VERSION_SEG;
-    public static final Pattern VERSION_PATTERN = Pattern.compile(VERSION_PATTERN_STR);
     public static final Regexp VERSION_PATTERN_NAMED = Regexps.createRegexp(VERSION_PATTERN_STR);
 
 

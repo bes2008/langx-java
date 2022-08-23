@@ -25,6 +25,7 @@ public class Regexps {
      * key1: pattern string
      * key2: Option
      * key3: engine
+     * @since 4.7.5
      */
     private static MultiKeyMap<Regexp> cache = new MultiKeyMap<Regexp>();
 
@@ -50,6 +51,12 @@ public class Regexps {
 
     }
 
+    /**
+     * @since 4.7.5
+     */
+    public static Regexp compile(@NonNull String pattern) {
+        return createRegexp(pattern);
+    }
     public static Regexp createRegexp(@NonNull String pattern) {
         return createRegexp(pattern, (Option) null);
     }

@@ -5,22 +5,23 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.MapAccessor;
 import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class MapBasedStringFormatter extends CustomPatternStringFormatter {
     public static enum PatternStyle {
-        $(Pattern.compile("\\$\\{\\w+(\\.\\w+)*}")),
-        PLACE_HOLDER(Pattern.compile("\\{\\w+(\\.\\w+)*}"));
+        $(Regexps.compile("\\$\\{\\w+(\\.\\w+)*}")),
+        PLACE_HOLDER(Regexps.compile("\\{\\w+(\\.\\w+)*}"));
 
-        private Pattern pattern;
+        private Regexp pattern;
 
-        private PatternStyle(Pattern pattern) {
+        private PatternStyle(Regexp pattern) {
             this.pattern = pattern;
         }
 
-        public Pattern getPattern() {
+        public Regexp getPattern() {
             return pattern;
         }
     }

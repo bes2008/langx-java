@@ -5,6 +5,8 @@ import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.net.Nets;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -13,7 +15,6 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.regex.Pattern;
 
 
 /**
@@ -25,7 +26,7 @@ public final class HostsFileParser {
     private static final String WINDOWS_HOSTS_FILE_RELATIVE_PATH = "\\system32\\drivers\\etc\\hosts";
     private static final String X_PLATFORMS_HOSTS_FILE_PATH = "/etc/hosts";
 
-    private static final Pattern WHITESPACES = Pattern.compile("[ \t]+");
+    private static final Regexp WHITESPACES = Regexps.compile("[ \t]+");
 
 
     private static File locateHostsFile() {

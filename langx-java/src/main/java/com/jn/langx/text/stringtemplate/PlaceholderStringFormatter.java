@@ -2,14 +2,14 @@ package com.jn.langx.text.stringtemplate;
 
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.function.Function2;
-
-import java.util.regex.Pattern;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.Regexps;
 
 /**
  * placeholder: {}
  */
 public class PlaceholderStringFormatter extends CustomPatternStringFormatter {
-    private static final Pattern orderPattern = Pattern.compile("\\{}");
+    private static final Regexp orderPattern = Regexps.compile("\\{}");
 
     public PlaceholderStringFormatter() {
         setValueGetter(null);
@@ -31,7 +31,7 @@ public class PlaceholderStringFormatter extends CustomPatternStringFormatter {
     }
 
     @Override
-    public void setVariablePattern(Pattern variablePattern) {
+    public void setVariablePattern(Regexp variablePattern) {
         super.setVariablePattern(orderPattern);
     }
 }

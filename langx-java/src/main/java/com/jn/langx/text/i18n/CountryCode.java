@@ -20,7 +20,6 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 
 /**
@@ -2762,7 +2761,7 @@ public enum CountryCode {
      * Get a list of {@code CountryCode} by a name regular expression.
      * <p>
      * <p>
-     * This method is almost equivalent to {@link #findByName(Pattern)
+     * This method is almost equivalent to {@link #findByName(Regexp)
      * findByName}{@code (Pattern.compile(regex))}.
      * </p>
      *
@@ -2780,48 +2779,12 @@ public enum CountryCode {
 
         // Compile the regular expression. This may throw
         // java.util.regex.PatternSyntaxException.
-        Pattern pattern = Pattern.compile(regex);
+        Regexp pattern = Regexps.compile(regex);
 
         return findByName(pattern);
     }
 
 
-    /**
-     * Get a list of {@code CountryCode} by a name pattern.
-     * <p>
-     * <p>
-     * For example, the list obtained by the code snippet below:
-     * </p>
-     * <p>
-     * <pre style="background-color: #EEEEEE; margin-left: 2em; margin-right: 2em; border: 1px solid black; padding: 0.5em;">
-     * Pattern pattern = Pattern.compile(<span style="color: darkred;">".*United.*"</span>);
-     * List&lt;CountryCode&gt; list = CountryCode.findByName(pattern);</pre>
-     * <p>
-     * <p>
-     * contains 6 {@code CountryCode}s as listed below.
-     * </p>
-     * <p>
-     * <ol>
-     * <li>{@link #AE} : United Arab Emirates
-     * <li>{@link #GB} : United Kingdom
-     * <li>{@link #TZ} : Tanzania, United Republic of
-     * <li>{@link #UK} : United Kingdom
-     * <li>{@link #UM} : United States Minor Outlying Islands
-     * <li>{@link #US} : United States
-     * </ol>
-     *
-     * @param pattern Pattern to match names.
-     * @return List of {@code CountryCode}. If nothing has matched,
-     * an empty list is returned.
-     * @throws IllegalArgumentException {@code pattern} is {@code null}.
-     * @since 1.11
-     */
-    public static List<CountryCode> findByName(Pattern pattern) {
-        if (pattern == null) {
-            throw new IllegalArgumentException("pattern is null.");
-        }
-        return findByName(Regexps.createRegexp(pattern));
-    }
 
     /**
      * Get a list of {@code CountryCode} by a name pattern.
