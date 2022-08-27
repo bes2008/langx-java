@@ -43,6 +43,369 @@ public class Collects {
         public boolean hasMoreElements() { return false; }
         public E nextElement() { throw new NoSuchElementException(); }
     }
+
+
+
+    public static <E> List<E> immutableList() {
+        return immutableList(null);
+    }
+
+    public static <E> List<E> immutableArrayList(List<E> list) {
+        return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
+    }
+
+    public static <E> List<E> immutableArrayList(E... array){
+        return immutableList(Collects.newArrayList(array));
+    }
+
+    public static <E> List<E> immutableList(List<E> list) {
+        if (list == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(list);
+    }
+
+    /**
+     * Get a empty, mutable java.util.ArrayList
+     *
+     * @param <E> Element
+     * @return An empty, mutable java.util.ArrayList
+     */
+    public static <E> List<E> emptyArrayList() {
+        return new ArrayList<E>();
+    }
+
+    /**
+     * Get a empty, mutable java.util.LinkedList
+     *
+     * @param <E> Element
+     * @return An empty, mutable java.util.LinkedList
+     */
+    public static <E> LinkedList<E> emptyLinkedList() {
+        return new LinkedList<E>();
+    }
+
+    public static <E> ArrayList<E> newArrayList(@Nullable Iterable<E> elements) {
+        return new ArrayList<E>(asList(elements));
+    }
+
+    public static <E> ArrayList<E> newArrayList(@Nullable E... elements) {
+        return new ArrayList<E>(asList(elements));
+    }
+
+    public static <E> LinkedList<E> newLinkedList(@Nullable Iterable<E> elements) {
+        return new LinkedList<E>(asList(elements));
+    }
+
+    public static <E> LinkedList<E> newLinkedList(@Nullable E... elements) {
+        return new LinkedList<E>(asList(elements));
+    }
+
+    /**
+     * Convert an array to a ArrayList
+     */
+    public static <E> List<E> asList(@Nullable E... array) {
+        return asList(array, true, ListType.ArrayList);
+    }
+
+    /**
+     * Convert an array to a ArrayList or a LinkedList
+     */
+    public static <E> List<E> asList(@Nullable E[] array, @Nullable ListType listType) {
+        return asList(array, true, listType);
+    }
+
+    /**
+     * Convert an array to a List, if the 'mutable' argument is true, will return an unmodifiable List
+     */
+    public static <E> List<E> asList(@Nullable E[] array, boolean mutable, @Nullable ListType listType) {
+        List<E> immutableList = Emptys.isEmpty(array) ? Collections.<E>emptyList() : Arrays.asList(array);
+        if (listType == null) {
+            listType = ListType.ArrayList;
+        }
+        List<E> list;
+        switch (listType) {
+            case LinkedList:
+                list = new LinkedList<E>(immutableList);
+                break;
+            case ArrayList:
+                list = new ArrayList<E>(immutableList);
+                break;
+            case STACK:
+                list = new java.util.Stack<E>();
+                list.addAll(immutableList);
+                break;
+            case VECTOR:
+                list = new Vector<E>(immutableList);
+                break;
+            case CopyOnWrite:
+                list = new CopyOnWriteArrayList<E>(immutableList);
+                break;
+            default:
+                list = new ArrayList<E>(immutableList);
+                break;
+        }
+        if (!mutable) {
+            list = Collections.unmodifiableList(list);
+        }
+        return list;
+    }
+
+    public static <E> List<E> asList(@Nullable Iterable<E> iterable) {
+        return asList(iterable, true);
+    }
+
+    public static <E> List<E> asList(@Nullable Iterable<E> iterable, boolean mutable) {
+        if (Emptys.isNull(iterable)) {
+            return emptyArrayList();
+        }
+        if (!(iterable instanceof List)) {
+            return (List<E>) asList(collect(iterable, toList()), mutable);
+        }
+        List<E> list = (List<E>) iterable;
+        if (!mutable) {
+            return Collections.unmodifiableList(list);
+        }
+        return list;
+    }
+
+
+    /**
+     * Avoid NPE, create an empty, new list when the specified list is null
+     */
+    public static <E> List<E> getEmptyListIfNull(@Nullable List<E> list) {
+        return getEmptyListIfNull(list, null);
+    }
+
+    /**
+     * @see #getEmptyListIfNull(List)
+     */
+    public static <E> List<E> getEmptyListIfNull(@Nullable List<E> list, @Nullable ListType listType) {
+        if (list == null) {
+            if (listType == null) {
+                return emptyArrayList();
+            }
+            switch (listType) {
+                case LinkedList:
+                    list = emptyLinkedList();
+                    break;
+                case CopyOnWrite:
+                    list = new CopyOnWriteArrayList<E>();
+                    break;
+                case STACK:
+                    list = new java.util.Stack<E>();
+                    break;
+                case VECTOR:
+                    list = new Vector<E>();
+                    break;
+                case ArrayList:
+                    list = emptyArrayList();
+                    break;
+                default:
+                    list = emptyArrayList();
+                    break;
+            }
+        }
+        return list;
+    }
+
+    public static <E> Set<E> immutableSet() {
+        return immutableSet((Set)null);
+    }
+
+    public static <E> Set<E> immutableSet(Set<E> set) {
+        if (set == null) {
+            return Collections.emptySet();
+        }
+        return Collections.unmodifiableSet(set);
+    }
+
+    public static <E> Set<E> immutableSet(Collection<E> collection) {
+        return Collections.unmodifiableSet(asSet(collection));
+    }
+
+    public static <E> Set<E> immutableSet(E... elements) {
+        return Collections.unmodifiableSet(asSet(elements));
+    }
+
+    /**
+     * Get a empty, mutable java.util.HashSet
+     *
+     * @param <E> Element
+     * @return An empty, mutable java.util.HashSet
+     */
+    public static <E> HashSet<E> emptyHashSet() {
+        return emptyHashSet(false);
+    }
+    /**
+     * Get a empty, mutable java.util.HashSet or java.util.LinkedHashSet
+     *
+     * @param <E> Element
+     * @return An empty, mutable java.util.HashSet if is not sequential, else an empty, mutable java.util.LinkedHashSet
+     */
+    public static <E> HashSet<E> emptyHashSet(boolean sequential) {
+        return sequential ? new LinkedHashSet<E>() : new HashSet<E>();
+    }
+
+
+    /**
+     * Get a empty, mutable java.util.TreeSet
+     *
+     * @param <E> Element
+     * @return An empty, mutable java.util.TreeSet
+     */
+    public static <E> TreeSet<E> emptyTreeSet() {
+        return new TreeSet<E>();
+    }
+
+    public static <E> TreeSet<E> emptyTreeSet(@Nullable Comparator<E> comparator) {
+        if (comparator == null) {
+            return emptyTreeSet();
+        }
+        return new TreeSet<E>(comparator);
+    }
+
+
+
+    public static <E> HashSet<E> newHashSet(@Nullable Iterable<E> elements) {
+        return new HashSet<E>(asSet(elements));
+    }
+
+    public static <E> HashSet<E> newHashSet(@Nullable E... elements) {
+        return new HashSet<E>(asList(elements));
+    }
+
+    public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable Iterable<E> elements) {
+        return new LinkedHashSet<E>(asList(elements));
+    }
+
+    public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable E... elements) {
+        return new LinkedHashSet<E>(asList(elements));
+    }
+
+    public static <E> TreeSet<E> newTreeSet(@Nullable Iterable<E> elements) {
+        return new TreeSet<E>(asList(elements));
+    }
+
+    public static <E> TreeSet<E> newTreeSet(@Nullable E... elements) {
+        return new TreeSet<E>(asList(elements));
+    }
+
+
+    /**
+     * Convert an array to a ArrayList
+     */
+    public static <E> Set<E> asSet(@Nullable E... array) {
+        return asSet(array, true, SetType.HashSet);
+    }
+
+    /**
+     * Convert an array to a ArrayList or a LinkedList
+     */
+    public static <E> Set<E> asSet(@Nullable E[] array, @Nullable SetType setType) {
+        return asSet(array, true, setType);
+    }
+
+    public static <E> Set<E> asSet(@Nullable Iterable<E> iterable) {
+        return asSet(iterable, true);
+    }
+
+    public static <E> Set<E> asSet(@Nullable Iterable<E> iterable, boolean mutable) {
+        if (Emptys.isNull(iterable)) {
+            Set set = emptyHashSet();
+            return mutable ? set : Collections.unmodifiableSet(set);
+        }
+
+        Collection<E> c = (iterable instanceof Collection) ? (Collection) iterable : asList(iterable);
+        Set set = new HashSet(c);
+        return mutable ? set : Collections.unmodifiableSet(set);
+    }
+
+    /**
+     * Convert an array to a List, if the 'mutable' argument is true, will return an unmodifiable List
+     */
+    public static <E> Set<E> asSet(@Nullable E[] array, boolean mutable, @Nullable SetType setType) {
+        List<E> immutableList = Emptys.isEmpty(array) ? Collects.<E>emptyArrayList() : Arrays.asList(array);
+        if (setType == null) {
+            setType = SetType.HashSet;
+        }
+        Set<E> set = null;
+        switch (setType) {
+            case HashSet:
+                set = new HashSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSet(set);
+                }
+                break;
+            case LinkedHashSet:
+                set = new LinkedHashSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSet(set);
+                }
+                break;
+            case TreeSet:
+                TreeSet tset = new TreeSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSortedSet(tset);
+                }
+                break;
+            case NonDistinctTreeSet:
+                NonDistinctTreeSet tset2 = new NonDistinctTreeSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSortedSet(tset2);
+                }
+                break;
+            default:
+                set = new HashSet<E>(immutableList);
+                if (!mutable) {
+                    set = Collections.unmodifiableSet(set);
+                }
+                break;
+        }
+
+        return set;
+    }
+
+
+    /**
+     * Avoid NPE, create an empty, new set when the specified set is null
+     */
+    public static <E> Set<E> getEmptySetIfNull(@Nullable Set<E> set) {
+        return getEmptySetIfNull(set, null);
+    }
+
+    /**
+     * @see #getEmptySetIfNull(Set)
+     */
+    public static <E> Set<E> getEmptySetIfNull(@Nullable Set<E> set, @Nullable SetType setType) {
+        if (set == null) {
+            if (setType == null) {
+                return emptyHashSet();
+            }
+            switch (setType) {
+                case HashSet:
+                    set = emptyHashSet();
+                    break;
+                case TreeSet:
+                    set = emptyTreeSet();
+                    break;
+                case LinkedHashSet:
+                    set = emptyHashSet(true);
+                    break;
+                default:
+                    set = emptyHashSet();
+                    break;
+            }
+        }
+        return set;
+    }
+
+
+
+    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
+        return new ConcurrentHashMap<K, V>();
+    }
+
     /**
      * Get a empty, mutable java.util.Hashtable
      *
@@ -123,150 +486,8 @@ public class Collects {
         return new WrappedNonAbsentMap<K, V>(map, supplier);
     }
 
-    public static <E> Set<E> immutableSet() {
-        return immutableSet((Set)null);
-    }
-
-    public static <E> Set<E> immutableSet(Set<E> set) {
-        if (set == null) {
-            return Collections.emptySet();
-        }
-        return Collections.unmodifiableSet(set);
-    }
-
-    /**
-     * Get a empty, mutable java.util.HashSet
-     *
-     * @param <E> Element
-     * @return An empty, mutable java.util.HashSet
-     */
-    public static <E> HashSet<E> emptyHashSet() {
-        return emptyHashSet(false);
-    }
-
-    public static <E> Set<E> immutableSet(Collection<E> collection) {
-        return Collections.unmodifiableSet(asSet(collection));
-    }
-
-    public static <E> Set<E> immutableSet(E... elements) {
-        return Collections.unmodifiableSet(asSet(elements));
-    }
-
-    /**
-     * Get a empty, mutable java.util.HashSet or java.util.LinkedHashSet
-     *
-     * @param <E> Element
-     * @return An empty, mutable java.util.HashSet if is not sequential, else an empty, mutable java.util.LinkedHashSet
-     */
-    public static <E> HashSet<E> emptyHashSet(boolean sequential) {
-        return sequential ? new LinkedHashSet<E>() : new HashSet<E>();
-    }
 
 
-    /**
-     * Get a empty, mutable java.util.TreeSet
-     *
-     * @param <E> Element
-     * @return An empty, mutable java.util.TreeSet
-     */
-    public static <E> TreeSet<E> emptyTreeSet() {
-        return new TreeSet<E>();
-    }
-
-    public static <E> TreeSet<E> emptyTreeSet(@Nullable Comparator<E> comparator) {
-        if (comparator == null) {
-            return emptyTreeSet();
-        }
-        return new TreeSet<E>(comparator);
-    }
-
-
-    /**
-     * Get a empty, mutable java.util.ArrayList
-     *
-     * @param <E> Element
-     * @return An empty, mutable java.util.ArrayList
-     */
-    public static <E> List<E> emptyArrayList() {
-        return new ArrayList<E>();
-    }
-
-    public static <E> List<E> immutableList() {
-        return immutableList(null);
-    }
-
-    public static <E> List<E> immutableArrayList(List<E> list) {
-        return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
-    }
-
-    public static <E> List<E> immutableArrayList(E... array){
-        return immutableList(Collects.newArrayList(array));
-    }
-
-    public static <E> List<E> immutableList(List<E> list) {
-        if (list == null) {
-            return Collections.emptyList();
-        }
-        return Collections.unmodifiableList(list);
-    }
-
-    /**
-     * Get a empty, mutable java.util.LinkedList
-     *
-     * @param <E> Element
-     * @return An empty, mutable java.util.LinkedList
-     */
-    public static <E> LinkedList<E> emptyLinkedList() {
-        return new LinkedList<E>();
-    }
-
-    public static <E> E[] emptyArray(@Nullable Class<E> componentType) {
-        return Arrs.createArray(Primitives.wrap(componentType), 0);
-    }
-
-    public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
-        return new ConcurrentHashMap<K, V>();
-    }
-
-    public static <E> ArrayList<E> newArrayList(@Nullable Iterable<E> elements) {
-        return new ArrayList<E>(asList(elements));
-    }
-
-    public static <E> ArrayList<E> newArrayList(@Nullable E... elements) {
-        return new ArrayList<E>(asList(elements));
-    }
-
-    public static <E> LinkedList<E> newLinkedList(@Nullable Iterable<E> elements) {
-        return new LinkedList<E>(asList(elements));
-    }
-
-    public static <E> LinkedList<E> newLinkedList(@Nullable E... elements) {
-        return new LinkedList<E>(asList(elements));
-    }
-
-    public static <E> HashSet<E> newHashSet(@Nullable Iterable<E> elements) {
-        return new HashSet<E>(asSet(elements));
-    }
-
-    public static <E> HashSet<E> newHashSet(@Nullable E... elements) {
-        return new HashSet<E>(asList(elements));
-    }
-
-    public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable Iterable<E> elements) {
-        return new LinkedHashSet<E>(asList(elements));
-    }
-
-    public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable E... elements) {
-        return new LinkedHashSet<E>(asList(elements));
-    }
-
-    public static <E> TreeSet<E> newTreeSet(@Nullable Iterable<E> elements) {
-        return new TreeSet<E>(asList(elements));
-    }
-
-    public static <E> TreeSet<E> newTreeSet(@Nullable E... elements) {
-        return new TreeSet<E>(asList(elements));
-    }
 
     public static <K, V> HashMap<K, V> newHashMap(@Nullable Map<K, V> map) {
         if (Emptys.isEmpty(map)) {
@@ -411,40 +632,6 @@ public class Collects {
     }
 
 
-    /**
-     * Avoid NPE, create an empty, new set when the specified set is null
-     */
-    public static <E> Set<E> getEmptySetIfNull(@Nullable Set<E> set) {
-        return getEmptySetIfNull(set, null);
-    }
-
-    /**
-     * @see #getEmptySetIfNull(Set)
-     */
-    public static <E> Set<E> getEmptySetIfNull(@Nullable Set<E> set, @Nullable SetType setType) {
-        if (set == null) {
-            if (setType == null) {
-                return emptyHashSet();
-            }
-            switch (setType) {
-                case HashSet:
-                    set = emptyHashSet();
-                    break;
-                case TreeSet:
-                    set = emptyTreeSet();
-                    break;
-                case LinkedHashSet:
-                    set = emptyHashSet(true);
-                    break;
-                default:
-                    set = emptyHashSet();
-                    break;
-            }
-        }
-        return set;
-    }
-
-
     public enum ListType {
         ArrayList,
         LinkedList,
@@ -480,44 +667,6 @@ public class Collects {
         return ListType.ArrayList;
     }
 
-    /**
-     * Avoid NPE, create an empty, new list when the specified list is null
-     */
-    public static <E> List<E> getEmptyListIfNull(@Nullable List<E> list) {
-        return getEmptyListIfNull(list, null);
-    }
-
-    /**
-     * @see #getEmptyListIfNull(List)
-     */
-    public static <E> List<E> getEmptyListIfNull(@Nullable List<E> list, @Nullable ListType listType) {
-        if (list == null) {
-            if (listType == null) {
-                return emptyArrayList();
-            }
-            switch (listType) {
-                case LinkedList:
-                    list = emptyLinkedList();
-                    break;
-                case CopyOnWrite:
-                    list = new CopyOnWriteArrayList<E>();
-                    break;
-                case STACK:
-                    list = new java.util.Stack<E>();
-                    break;
-                case VECTOR:
-                    list = new Vector<E>();
-                    break;
-                case ArrayList:
-                    list = emptyArrayList();
-                    break;
-                default:
-                    list = emptyArrayList();
-                    break;
-            }
-        }
-        return list;
-    }
 
     private static Collection emptyCollectionByInfer(Collection prototype) {
         if (prototype == null) {
@@ -547,147 +696,6 @@ public class Collects {
         return asList(iterable);
     }
 
-    /**
-     * Convert an array to a ArrayList
-     */
-    public static <E> Set<E> asSet(@Nullable E... array) {
-        return asSet(array, true, SetType.HashSet);
-    }
-
-    /**
-     * Convert an array to a ArrayList or a LinkedList
-     */
-    public static <E> Set<E> asSet(@Nullable E[] array, @Nullable SetType setType) {
-        return asSet(array, true, setType);
-    }
-
-    public static <E> Set<E> asSet(@Nullable Iterable<E> iterable) {
-        return asSet(iterable, true);
-    }
-
-    public static <E> Set<E> asSet(@Nullable Iterable<E> iterable, boolean mutable) {
-        if (Emptys.isNull(iterable)) {
-            Set set = emptyHashSet();
-            return mutable ? set : Collections.unmodifiableSet(set);
-        }
-
-        Collection<E> c = (iterable instanceof Collection) ? (Collection) iterable : asList(iterable);
-        Set set = new HashSet(c);
-        return mutable ? set : Collections.unmodifiableSet(set);
-    }
-
-    /**
-     * Convert an array to a List, if the 'mutable' argument is true, will return an unmodifiable List
-     */
-    public static <E> Set<E> asSet(@Nullable E[] array, boolean mutable, @Nullable SetType setType) {
-        List<E> immutableList = Emptys.isEmpty(array) ? Collects.<E>emptyArrayList() : Arrays.asList(array);
-        if (setType == null) {
-            setType = SetType.HashSet;
-        }
-        Set<E> set = null;
-        switch (setType) {
-            case HashSet:
-                set = new HashSet<E>(immutableList);
-                if (!mutable) {
-                    set = Collections.unmodifiableSet(set);
-                }
-                break;
-            case LinkedHashSet:
-                set = new LinkedHashSet<E>(immutableList);
-                if (!mutable) {
-                    set = Collections.unmodifiableSet(set);
-                }
-                break;
-            case TreeSet:
-                TreeSet tset = new TreeSet<E>(immutableList);
-                if (!mutable) {
-                    set = Collections.unmodifiableSortedSet(tset);
-                }
-                break;
-            case NonDistinctTreeSet:
-                NonDistinctTreeSet tset2 = new NonDistinctTreeSet<E>(immutableList);
-                if (!mutable) {
-                    set = Collections.unmodifiableSortedSet(tset2);
-                }
-                break;
-            default:
-                set = new HashSet<E>(immutableList);
-                if (!mutable) {
-                    set = Collections.unmodifiableSet(set);
-                }
-                break;
-        }
-
-        return set;
-    }
-
-    /**
-     * Convert an array to a ArrayList
-     */
-    public static <E> List<E> asList(@Nullable E... array) {
-        return asList(array, true, ListType.ArrayList);
-    }
-
-    /**
-     * Convert an array to a ArrayList or a LinkedList
-     */
-    public static <E> List<E> asList(@Nullable E[] array, @Nullable ListType listType) {
-        return asList(array, true, listType);
-    }
-
-    /**
-     * Convert an array to a List, if the 'mutable' argument is true, will return an unmodifiable List
-     */
-    public static <E> List<E> asList(@Nullable E[] array, boolean mutable, @Nullable ListType listType) {
-        List<E> immutableList = Emptys.isEmpty(array) ? Collections.<E>emptyList() : Arrays.asList(array);
-        if (listType == null) {
-            listType = ListType.ArrayList;
-        }
-        List<E> list;
-        switch (listType) {
-            case LinkedList:
-                list = new LinkedList<E>(immutableList);
-                break;
-            case ArrayList:
-                list = new ArrayList<E>(immutableList);
-                break;
-            case STACK:
-                list = new java.util.Stack<E>();
-                list.addAll(immutableList);
-                break;
-            case VECTOR:
-                list = new Vector<E>(immutableList);
-                break;
-            case CopyOnWrite:
-                list = new CopyOnWriteArrayList<E>(immutableList);
-                break;
-            default:
-                list = new ArrayList<E>(immutableList);
-                break;
-        }
-        if (!mutable) {
-            list = Collections.unmodifiableList(list);
-        }
-        return list;
-    }
-
-    public static <E> List<E> asList(@Nullable Iterable<E> iterable) {
-        return asList(iterable, true);
-    }
-
-    public static <E> List<E> asList(@Nullable Iterable<E> iterable, boolean mutable) {
-        if (Emptys.isNull(iterable)) {
-            return emptyArrayList();
-        }
-        if (!(iterable instanceof List)) {
-            return (List<E>) asList(collect(iterable, toList()), mutable);
-        }
-        List<E> list = (List<E>) iterable;
-        if (!mutable) {
-            return Collections.unmodifiableList(list);
-        }
-        return list;
-    }
 
     public static <E> Collection<E> asCollection(@Nullable Iterable<E> iterable) {
         if (Emptys.isNull(iterable)) {
@@ -705,6 +713,11 @@ public class Collects {
         }
         return (Collection<E>) iterable;
     }
+
+    public static <E> E[] emptyArray(@Nullable Class<E> componentType) {
+        return Arrs.createArray(Primitives.wrap(componentType), 0);
+    }
+
 
     public static <E, C extends Collection<E>> Object[] toArray(@Nullable C collection) {
         if (Emptys.isEmpty(collection)) {
