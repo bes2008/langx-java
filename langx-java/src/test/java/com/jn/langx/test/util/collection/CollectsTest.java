@@ -152,4 +152,12 @@ public class CollectsTest {
         System.out.println(Collects.intersection(list1, list2));
         System.out.println(Collects.union(list1, list2));
     }
+
+    @Test
+    public void testOfMap(){
+        Map map = Collects.ofMap( 1, 3, 5, 6, 7, 9, 8, 8);
+        System.out.println(map);
+        map = Collects.ofMap( 1, 3, 5, 6, 7, 9, 8, 8, 9);
+        System.out.println(map);
+    }
 }

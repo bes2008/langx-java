@@ -36,14 +36,19 @@ public class Collects {
     public static <T> Enumeration<T> immutableEmptyEnumeration() {
         return (Enumeration<T>) ImmutableEmptyEnumeration.EMPTY_ENUMERATION;
     }
+
     private static class ImmutableEmptyEnumeration<E> implements Enumeration<E> {
         static final ImmutableEmptyEnumeration<Object> EMPTY_ENUMERATION
                 = new ImmutableEmptyEnumeration<Object>();
 
-        public boolean hasMoreElements() { return false; }
-        public E nextElement() { throw new NoSuchElementException(); }
-    }
+        public boolean hasMoreElements() {
+            return false;
+        }
 
+        public E nextElement() {
+            throw new NoSuchElementException();
+        }
+    }
 
 
     public static <E> List<E> immutableList() {
@@ -54,7 +59,7 @@ public class Collects {
         return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
     }
 
-    public static <E> List<E> immutableArrayList(E... array){
+    public static <E> List<E> immutableArrayList(E... array) {
         return immutableList(Collects.newArrayList(array));
     }
 
@@ -210,7 +215,7 @@ public class Collects {
     }
 
     public static <E> Set<E> immutableSet() {
-        return immutableSet((Set)null);
+        return immutableSet((Set) null);
     }
 
     public static <E> Set<E> immutableSet(Set<E> set) {
@@ -237,6 +242,7 @@ public class Collects {
     public static <E> HashSet<E> emptyHashSet() {
         return emptyHashSet(false);
     }
+
     /**
      * Get a empty, mutable java.util.HashSet or java.util.LinkedHashSet
      *
@@ -264,7 +270,6 @@ public class Collects {
         }
         return new TreeSet<E>(comparator);
     }
-
 
 
     public static <E> HashSet<E> newHashSet(@Nullable Iterable<E> elements) {
@@ -401,7 +406,6 @@ public class Collects {
     }
 
 
-
     public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
         return new ConcurrentHashMap<K, V>();
     }
@@ -486,7 +490,17 @@ public class Collects {
         return new WrappedNonAbsentMap<K, V>(map, supplier);
     }
 
-
+    public static HashMap ofMap(Object... keyValuePairs) {
+        int size = keyValuePairs.length % 2 == 0 ? keyValuePairs.length / 2 : (keyValuePairs.length / 2 + 1);
+        HashMap map = new HashMap(size);
+        for (int i = 0; i < size; i++) {
+            int j = 2 * i;
+            Object key = keyValuePairs[j];
+            Object value = (j + 1) >= keyValuePairs.length ? null : keyValuePairs[j + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
 
 
     public static <K, V> HashMap<K, V> newHashMap(@Nullable Map<K, V> map) {
@@ -1194,7 +1208,7 @@ public class Collects {
     /**
      * map every element in the collection with the mapper,
      * break the traverse if the mapped result match the breakPredicate
-     *
+     * <p>
      * return the mapped result
      */
     public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate<O> breakPredicate) {
@@ -1216,10 +1230,10 @@ public class Collects {
     /**
      * map every element in the collection with the mapper,
      * break the traverse if the mapped result match the breakPredicate
-     *
+     * <p>
      * return the mapped result
      */
-    public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate2<E,O> breakPredicate) {
+    public static <E, C extends Iterable<E>, O> O firstMap(@Nullable C collection, @NonNull final Function2<Integer, E, O> mapper, final Predicate2<E, O> breakPredicate) {
         final Holder<O> holder = new Holder<O>();
         Collects.forEach(collection, new Consumer2<Integer, E>() {
             @Override
@@ -1229,7 +1243,7 @@ public class Collects {
         }, new Predicate2<Integer, E>() {
             @Override
             public boolean test(Integer index, E element) {
-                return breakPredicate == null ? !holder.isNull() : breakPredicate.test(element,holder.get());
+                return breakPredicate == null ? !holder.isNull() : breakPredicate.test(element, holder.get());
             }
         });
         return holder.get();
@@ -1390,12 +1404,12 @@ public class Collects {
 
     /**
      * 从 collection 中移除 所有出现在 removed中的
+     *
      * @param collection
      * @param removed
-     *
      * @since 4.6.5
      */
-    public static <E, C extends Collection<E>>  void removeAll(C collection, final C removed){
+    public static <E, C extends Collection<E>> void removeAll(C collection, final C removed) {
         removeIf(collection, new Predicate<E>() {
             @Override
             public boolean test(E element) {
