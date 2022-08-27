@@ -1,6 +1,8 @@
 package com.jn.langx.util.pattern;
 
-public interface PatternMatcher {
+import com.jn.langx.Matcher;
+
+public interface PatternMatcher extends Matcher<String> {
     /**
      * @param ignoreCase 忽略大小写
      */
