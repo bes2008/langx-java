@@ -10,27 +10,27 @@ public class PatternTests {
     public void testRegexpMatcher() {
         RegexpMatcher regExpMatcher = new RegexpMatcher("^a.x$");
 
-        Assert.assertEquals(false, regExpMatcher.match("11111"));
-        Assert.assertEquals(false, regExpMatcher.match("a01"));
-        Assert.assertEquals(false, regExpMatcher.match("b0x"));
-        Assert.assertEquals(true, regExpMatcher.match("a0x"));
-        Assert.assertEquals(true, regExpMatcher.match("a.x"));
-        Assert.assertEquals(false, regExpMatcher.match("a0.x"));
+        Assert.assertEquals(false, regExpMatcher.matches("11111"));
+        Assert.assertEquals(false, regExpMatcher.matches("a01"));
+        Assert.assertEquals(false, regExpMatcher.matches("b0x"));
+        Assert.assertEquals(true, regExpMatcher.matches("a0x"));
+        Assert.assertEquals(true, regExpMatcher.matches("a.x"));
+        Assert.assertEquals(false, regExpMatcher.matches("a0.x"));
     }
 
     @Test
     public void antStringPatternSetTests() {
         AntPathMatcher antStyleStringMatcher = new AntPathMatcher((String) null, "/views/products/**/*.cfm");
-        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/index.cfm"));
-        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/SE10/index.cfm"));
-        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/SE10/details.cfm"));
-        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/ST80/index.cfm"));
-        Assert.assertEquals(true, antStyleStringMatcher.match("/views/products/ST80/details.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/SE10/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/SE10/details.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/ST80/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/ST80/details.cfm"));
 
 
-        Assert.assertEquals(false, antStyleStringMatcher.match("/views/index.cfm"));
-        Assert.assertEquals(false, antStyleStringMatcher.match("/views/aboutUs/index.cfm"));
-        Assert.assertEquals(false, antStyleStringMatcher.match("/views/aboutUs/managementTeam.cfm"));
+        Assert.assertEquals(false, antStyleStringMatcher.matches("/views/index.cfm"));
+        Assert.assertEquals(false, antStyleStringMatcher.matches("/views/aboutUs/index.cfm"));
+        Assert.assertEquals(false, antStyleStringMatcher.matches("/views/aboutUs/managementTeam.cfm"));
     }
 
 }

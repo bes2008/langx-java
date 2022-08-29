@@ -75,7 +75,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
     }
 
     @Override
-    public boolean match(final String string) {
+    public Boolean matches(final String string) {
         PatternSet patternSet = defaultPatternSet;
         if (Emptys.isNotEmpty(this.patternSet)) {
             patternSet = this.patternSet;

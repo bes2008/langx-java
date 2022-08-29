@@ -16,7 +16,7 @@ public class GlobMatcher extends AbstractPatternMatcher {
     }
 
     @Override
-    public boolean match(String string) {
+    public Boolean matches(String string) {
         Preconditions.checkNotEmpty(string, "the string is null or empty");
         Preconditions.checkNotEmpty(globPattern, "the regexp is null or empty");
 

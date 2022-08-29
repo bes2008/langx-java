@@ -2,7 +2,7 @@ package com.jn.langx.util.pattern;
 
 import com.jn.langx.Matcher;
 
-public interface PatternMatcher extends Matcher<String> {
+public interface PatternMatcher extends Matcher<String, Boolean> {
     /**
      * @param ignoreCase 忽略大小写
      */
@@ -26,5 +26,5 @@ public interface PatternMatcher extends Matcher<String> {
      *
      * @param string
      */
-    boolean match(String string);
+    Boolean matches(String string);
 }

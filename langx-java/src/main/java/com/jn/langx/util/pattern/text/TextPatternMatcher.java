@@ -16,7 +16,7 @@ public abstract class TextPatternMatcher extends AbstractPatternMatcher {
     }
 
     @Override
-    public boolean match(String string) {
+    public Boolean matches(String string) {
         if (Strings.isEmpty(pattern) && (Strings.isEmpty(string))) {
             return true;
         }
