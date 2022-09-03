@@ -3,14 +3,17 @@ package com.jn.langx.navigation.object;
 import com.jn.langx.Accessor;
 import com.jn.langx.accessor.Accessors;
 import com.jn.langx.navigation.Navigator;
+import com.jn.langx.navigation.Navigators;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
+import com.jn.langx.util.reflect.type.Primitives;
 import org.slf4j.Logger;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -37,6 +40,30 @@ public class ObjectNavigator implements Navigator<Object> {
         return Accessors.of(t);
     }
 
+    @Override
+    public <T> Class<T> getType(Object context, String pathExpression) {
+        T t = get(context, pathExpression);
+        if (t == null) {
+            String parentPath = getParentPath(pathExpression);
+            if(Strings.isNotEmpty(parentPath)){
+                Object parent = get(context, pathExpression);
+
+                if (Primitives.isPrimitiveOrPrimitiveWrapperType(parent.getClass())) {
+                    return null;
+                }
+                String leaf = getLeaf(pathExpression);
+                Field field = Reflects.getAnyField(parent.getClass(), leaf);
+                if (field == null) {
+                    return null;
+                }
+                return (Class<T>) field.getType();
+            } else {
+                return null;
+            }
+        } else {
+            return (Class<T>) t.getClass();
+        }
+    }
 
     @Override
     public <T> T get(Object context, String pathExpression) {
@@ -83,5 +110,15 @@ public class ObjectNavigator implements Navigator<Object> {
         if (accessor != null) {
             accessor.set(key, value);
         }
+    }
+
+    @Override
+    public String getParentPath(String pathExpression) {
+        return Navigators.getParentPath(pathExpression, separator);
+    }
+
+    @Override
+    public String getLeaf(String pathExpression) {
+        return Navigators.getLeaf(pathExpression, separator);
     }
 }

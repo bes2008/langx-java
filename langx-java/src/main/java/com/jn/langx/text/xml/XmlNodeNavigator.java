@@ -6,8 +6,7 @@ import com.jn.langx.navigation.Navigator;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -73,6 +72,53 @@ public class XmlNodeNavigator implements Navigator<Node> {
 
     @Override
     public <T> void set(Node context, String xpath, T value) {
+        throw new UnsupportedOperationException();
+    }
 
+    @Override
+    public <E> Class<E> getType(Node context, String pathExpression) {
+        Node node = get(context,pathExpression);
+        if(node!=null) {
+            int nodeType = node.getNodeType();
+            Class nodeClass = Node.class;
+            switch (nodeType) {
+                case Node.ELEMENT_NODE:
+                    nodeClass = Element.class;
+                    break;
+                case Node.ATTRIBUTE_NODE:
+                    nodeClass = Attr.class;
+                    break;
+                case Node.TEXT_NODE:
+                    nodeClass = Text.class;
+                    break;
+                case Node.CDATA_SECTION_NODE:
+                    nodeClass = CDATASection.class;
+                    break;
+                case Node.ENTITY_NODE:
+                    nodeClass = Entity.class;
+                    break;
+                case Node.ENTITY_REFERENCE_NODE:
+                    nodeClass = EntityReference.class;
+                    break;
+                case Node.COMMENT_NODE:
+                    nodeClass = Comment.class;
+                    break;
+                case Node.DOCUMENT_NODE:
+                    nodeClass = Document.class;
+                    break;
+            }
+            return nodeClass;
+        }
+        return null;
+    }
+
+    @Override
+    public String getParentPath(String pathExpression) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String getLeaf(String pathExpression) {
+        throw new UnsupportedOperationException();
     }
 }
