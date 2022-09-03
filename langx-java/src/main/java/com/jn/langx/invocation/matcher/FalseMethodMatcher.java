@@ -8,12 +8,12 @@ public class FalseMethodMatcher implements MethodMatcher {
     public static final FalseMethodMatcher INSTANCE = new FalseMethodMatcher();
 
     @Override
-    public boolean matches(Method method) {
+    public Boolean matches(Method method) {
         return false;
     }
 
     @Override
-    public boolean matches(MethodInvocation invocation) {
+    public Boolean matches(MethodInvocation invocation) {
         return false;
     }
 

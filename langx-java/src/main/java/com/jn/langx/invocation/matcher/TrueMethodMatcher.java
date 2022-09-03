@@ -8,12 +8,12 @@ public class TrueMethodMatcher implements MethodMatcher {
     public static final TrueMethodMatcher INSTANCE = new TrueMethodMatcher();
 
     @Override
-    public boolean matches(Method method) {
+    public Boolean matches(Method method) {
         return true;
     }
 
     @Override
-    public boolean matches(MethodInvocation invocation) {
+    public Boolean matches(MethodInvocation invocation) {
         return true;
     }
 
