@@ -21,6 +21,7 @@ public class Emptys {
     public static final Object[] EMPTY_OBJECTS = {};
     public static final Class<?>[] EMPTY_CLASSES = {};
     public static final String[] EMPTY_STRINGS = {};
+    public static final String EMPTY_STRING="";
 
     public static boolean isAnyEmpty(Object... args) {
         return Collects.anyMatch(Functions.emptyPredicate(), args);

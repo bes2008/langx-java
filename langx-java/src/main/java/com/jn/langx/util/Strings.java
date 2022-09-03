@@ -815,6 +815,159 @@ public class Strings {
         return containsAny(cs, toCharArray(searchChars));
     }
 
+    /**
+     * <p>Checks that the CharSequence does not contain certain characters.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code true}.
+     * A {@code null} invalid character array will return {@code true}.
+     * An empty String ("") always returns true.</p>
+     *
+     * <pre>
+     * StringUtils.containsNone(null, *)       = true
+     * StringUtils.containsNone(*, null)       = true
+     * StringUtils.containsNone("", *)         = true
+     * StringUtils.containsNone("ab", "")      = true
+     * StringUtils.containsNone("abab", "xyz") = true
+     * StringUtils.containsNone("ab1", "xyz")  = true
+     * StringUtils.containsNone("abz", "xyz")  = false
+     * </pre>
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @param invalidChars  a String of invalid chars, may be null
+     * @return true if it contains none of the invalid chars, or is null
+     * @since 2.0
+     * @since 3.0 Changed signature from containsNone(String, String) to containsNone(CharSequence, String)
+     */
+    public static boolean containsNone(final CharSequence cs, final String invalidChars) {
+        if (cs == null || invalidChars == null) {
+            return true;
+        }
+        return containsNone(cs, invalidChars.toCharArray());
+    }
+
+    // ContainsNone
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Checks that the CharSequence does not contain certain characters.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code true}.
+     * A {@code null} invalid character array will return {@code true}.
+     * An empty CharSequence (length()=0) always returns true.</p>
+     *
+     * <pre>
+     * StringUtils.containsNone(null, *)       = true
+     * StringUtils.containsNone(*, null)       = true
+     * StringUtils.containsNone("", *)         = true
+     * StringUtils.containsNone("ab", '')      = true
+     * StringUtils.containsNone("abab", 'xyz') = true
+     * StringUtils.containsNone("ab1", 'xyz')  = true
+     * StringUtils.containsNone("abz", 'xyz')  = false
+     * </pre>
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @param searchChars  an array of invalid chars, may be null
+     * @return true if it contains none of the invalid chars, or is null
+     * @since 2.0
+     * @since 3.0 Changed signature from containsNone(String, char[]) to containsNone(CharSequence, char...)
+     */
+    public static boolean containsNone(final CharSequence cs, final char... searchChars) {
+        if (cs == null || searchChars == null) {
+            return true;
+        }
+        final int csLen = cs.length();
+        final int csLast = csLen - 1;
+        final int searchLen = searchChars.length;
+        final int searchLast = searchLen - 1;
+        for (int i = 0; i < csLen; i++) {
+            final char ch = cs.charAt(i);
+            for (int j = 0; j < searchLen; j++) {
+                if (searchChars[j] == ch) {
+                    if (Character.isHighSurrogate(ch)) {
+                        if (j == searchLast) {
+                            // missing low surrogate, fine, like String.indexOf(String)
+                            return false;
+                        }
+                        if (i < csLast && searchChars[j + 1] == cs.charAt(i + 1)) {
+                            return false;
+                        }
+                    } else {
+                        // ch is in the Basic Multilingual Plane
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    // ContainsOnly
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Checks if the CharSequence contains only certain characters.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code false}.
+     * A {@code null} valid character array will return {@code false}.
+     * An empty CharSequence (length()=0) always returns {@code true}.</p>
+     *
+     * <pre>
+     * StringUtils.containsOnly(null, *)       = false
+     * StringUtils.containsOnly(*, null)       = false
+     * StringUtils.containsOnly("", *)         = true
+     * StringUtils.containsOnly("ab", '')      = false
+     * StringUtils.containsOnly("abab", 'abc') = true
+     * StringUtils.containsOnly("ab1", 'abc')  = false
+     * StringUtils.containsOnly("abz", 'abc')  = false
+     * </pre>
+     *
+     * @param cs  the String to check, may be null
+     * @param valid  an array of valid chars, may be null
+     * @return true if it only contains valid chars and is non-null
+     * @since 3.0 Changed signature from containsOnly(String, char[]) to containsOnly(CharSequence, char...)
+     */
+    public static boolean containsOnly(final CharSequence cs, final char... valid) {
+        // All these pre-checks are to maintain API with an older version
+        if (valid == null || cs == null) {
+            return false;
+        }
+        if (cs.length() == 0) {
+            return true;
+        }
+        if (valid.length == 0) {
+            return false;
+        }
+        return indexOfAnyBut(cs, valid) == INDEX_NOT_FOUND;
+    }
+
+    /**
+     * <p>Checks if the CharSequence contains only certain characters.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code false}.
+     * A {@code null} valid character String will return {@code false}.
+     * An empty String (length()=0) always returns {@code true}.</p>
+     *
+     * <pre>
+     * StringUtils.containsOnly(null, *)       = false
+     * StringUtils.containsOnly(*, null)       = false
+     * StringUtils.containsOnly("", *)         = true
+     * StringUtils.containsOnly("ab", "")      = false
+     * StringUtils.containsOnly("abab", "abc") = true
+     * StringUtils.containsOnly("ab1", "abc")  = false
+     * StringUtils.containsOnly("abz", "abc")  = false
+     * </pre>
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @param validChars  a String of valid chars, may be null
+     * @return true if it only contains valid chars and is non-null
+     * @since 2.0
+     * @since 3.0 Changed signature from containsOnly(String, String) to containsOnly(CharSequence, String)
+     */
+    public static boolean containsOnly(final CharSequence cs, final String validChars) {
+        if (cs == null || validChars == null) {
+            return false;
+        }
+        return containsOnly(cs, validChars.toCharArray());
+    }
+
     public static boolean contains(final CharSequence cs, final CharSequence searchChars) {
         return contains(cs, searchChars, false);
     }
@@ -3548,6 +3701,103 @@ public class Strings {
         for (int i = startPos; i >= 0; i--) {
             if (regionMatches(str, true, i, searchStr, 0, searchStrLength)) {
                 return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+    // IndexOfAnyBut chars
+    //-----------------------------------------------------------------------
+    /**
+     * <p>Searches a CharSequence to find the first index of any
+     * character not in the given set of characters.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code -1}.
+     * A {@code null} or zero length search array will return {@code -1}.</p>
+     *
+     * <pre>
+     * StringUtils.indexOfAnyBut(null, *)                              = -1
+     * StringUtils.indexOfAnyBut("", *)                                = -1
+     * StringUtils.indexOfAnyBut(*, null)                              = -1
+     * StringUtils.indexOfAnyBut(*, [])                                = -1
+     * StringUtils.indexOfAnyBut("zzabyycdxx", new char[] {'z', 'a'} ) = 3
+     * StringUtils.indexOfAnyBut("aba", new char[] {'z'} )             = 0
+     * StringUtils.indexOfAnyBut("aba", new char[] {'a', 'b'} )        = -1
+
+     * </pre>
+     *
+     * @param cs  the CharSequence to check, may be null
+     * @param searchChars  the chars to search for, may be null
+     * @return the index of any of the chars, -1 if no match or null input
+     * @since 2.0
+     * @since 3.0 Changed signature from indexOfAnyBut(String, char[]) to indexOfAnyBut(CharSequence, char...)
+     */
+    public static int indexOfAnyBut(final CharSequence cs, final char... searchChars) {
+        if (isEmpty(cs) || Objs.isEmpty(searchChars)) {
+            return INDEX_NOT_FOUND;
+        }
+        final int csLen = cs.length();
+        final int csLast = csLen - 1;
+        final int searchLen = searchChars.length;
+        final int searchLast = searchLen - 1;
+        outer:
+        for (int i = 0; i < csLen; i++) {
+            final char ch = cs.charAt(i);
+            for (int j = 0; j < searchLen; j++) {
+                if (searchChars[j] == ch) {
+                    if (i < csLast && j < searchLast && Character.isHighSurrogate(ch)) {
+                        if (searchChars[j + 1] == cs.charAt(i + 1)) {
+                            continue outer;
+                        }
+                    } else {
+                        continue outer;
+                    }
+                }
+            }
+            return i;
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * <p>Search a CharSequence to find the first index of any
+     * character not in the given set of characters.</p>
+     *
+     * <p>A {@code null} CharSequence will return {@code -1}.
+     * A {@code null} or empty search string will return {@code -1}.</p>
+     *
+     * <pre>
+     * StringUtils.indexOfAnyBut(null, *)            = -1
+     * StringUtils.indexOfAnyBut("", *)              = -1
+     * StringUtils.indexOfAnyBut(*, null)            = -1
+     * StringUtils.indexOfAnyBut(*, "")              = -1
+     * StringUtils.indexOfAnyBut("zzabyycdxx", "za") = 3
+     * StringUtils.indexOfAnyBut("zzabyycdxx", "")   = -1
+     * StringUtils.indexOfAnyBut("aba", "ab")        = -1
+     * </pre>
+     *
+     * @param seq  the CharSequence to check, may be null
+     * @param searchChars  the chars to search for, may be null
+     * @return the index of any of the chars, -1 if no match or null input
+     * @since 2.0
+     * @since 3.0 Changed signature from indexOfAnyBut(String, String) to indexOfAnyBut(CharSequence, CharSequence)
+     */
+    public static int indexOfAnyBut(final CharSequence seq, final CharSequence searchChars) {
+        if (isEmpty(seq) || isEmpty(searchChars)) {
+            return INDEX_NOT_FOUND;
+        }
+        final int strLen = seq.length();
+        for (int i = 0; i < strLen; i++) {
+            final char ch = seq.charAt(i);
+            final boolean chFound = indexOf(searchChars, ch, 0) >= 0;
+            if (i + 1 < strLen && Character.isHighSurrogate(ch)) {
+                final char ch2 = seq.charAt(i + 1);
+                if (chFound && indexOf(searchChars, ch2, 0) < 0) {
+                    return i;
+                }
+            } else {
+                if (!chFound) {
+                    return i;
+                }
             }
         }
         return INDEX_NOT_FOUND;

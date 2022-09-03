@@ -30,9 +30,6 @@ import com.jn.langx.util.escape.Escapers;
  * HTML document correctly without domain-specific knowledge beyond what {@code HtmlEscapers}
  * provides. We strongly encourage the use of HTML templating systems.
  *
- * @author Sven Mawson
- * @author David Beaumont
- * @since 15.0
  */
 public final class HtmlEscapers {
     /**
