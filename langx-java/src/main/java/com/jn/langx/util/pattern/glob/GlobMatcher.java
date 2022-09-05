@@ -1,5 +1,6 @@
 package com.jn.langx.util.pattern.glob;
 
+import com.jn.langx.io.resource.PathMatcher;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.pattern.AbstractPatternMatcher;
@@ -7,7 +8,7 @@ import com.jn.langx.util.pattern.AbstractPatternMatcher;
 /**
  * @since 4.5.2
  */
-public class GlobMatcher extends AbstractPatternMatcher {
+public class GlobMatcher extends AbstractPatternMatcher implements PathMatcher {
     private String globPattern;
     private GlobPattern glob;
     @Override

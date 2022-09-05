@@ -2,12 +2,13 @@ package com.jn.langx.util.pattern.patternset;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.io.resource.PathMatcher;
 import com.jn.langx.util.Strings;
 
 /**
  * https://github.com/Mach-II/Mach-II-Framework/wiki/ANT-Style-Pattern-Matcher
  */
-public class AntPathMatcher extends AbstractPatternSetMatcher<StringPatternEntry> {
+public class AntPathMatcher extends AbstractPatternSetMatcher<StringPatternEntry> implements PathMatcher {
 
     /**
      * Default path separator: "/"
@@ -395,4 +396,8 @@ public class AntPathMatcher extends AbstractPatternSetMatcher<StringPatternEntry
         return buffer.toString();
     }
 
+    @Override
+    public Boolean matches(String string) {
+        return super.matches(string);
+    }
 }
