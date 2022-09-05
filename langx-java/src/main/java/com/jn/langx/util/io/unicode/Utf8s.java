@@ -224,4 +224,11 @@ public class Utf8s {
         });
     }
 
+    public static String x2u(String hex){
+        if(hex.startsWith("\\x") && hex.length()==4){
+            return "\\u00"+hex.substring(2);
+        }
+        throw new UnsupportedOperationException("can't convert to unicode");
+    }
+
 }

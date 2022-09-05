@@ -1,4 +1,4 @@
-package com.jn.langx.test.util.charset;
+package com.jn.langx.test.util.unicode;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
