@@ -125,10 +125,10 @@ import java.util.*;
  * Ant-style pattern in such a case, which will search <i>all</i> class path
  * locations that contain the root package.
  *
- * @since 1.0.2
+ * @since 4.8.1
  * @see ClassLoader#getResources(String)
  */
-public class PathPatternResourceLoader implements ResourcePatternLoader {
+class PathPatternResourceLoader implements ResourcePatternLoader {
 
     private static final Logger logger = Loggers.getLogger(PathPatternResourceLoader.class);
 
