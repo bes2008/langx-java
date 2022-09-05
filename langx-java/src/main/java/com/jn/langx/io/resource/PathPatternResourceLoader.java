@@ -12,7 +12,7 @@ import java.util.*;
 
 
 /**
- * A {@link ResourcePatternLoader} implementation that is able to resolve a
+ * A {@link PatternResourceLoader} implementation that is able to resolve a
  * specified resource location path into one or more matching Resources.
  * The source path may be a simple path which has a one-to-one mapping to a
  * target {@link Resource}, or alternatively
@@ -128,7 +128,7 @@ import java.util.*;
  * @since 4.8.1
  * @see ClassLoader#getResources(String)
  */
-class PathPatternResourceLoader implements ResourcePatternLoader {
+class PathPatternResourceLoader implements PatternResourceLoader {
 
     private static final Logger logger = Loggers.getLogger(PathPatternResourceLoader.class);
 
