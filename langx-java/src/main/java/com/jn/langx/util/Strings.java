@@ -1,8 +1,11 @@
 package com.jn.langx.util;
 
+import com.jn.langx.Transformer;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.Words;
+import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
@@ -11,6 +14,7 @@ import com.jn.langx.util.function.*;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
+import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Entry;
 import com.jn.langx.util.struct.Holder;
@@ -1624,6 +1628,21 @@ public class Strings {
         return Pattern.compile(regex, Pattern.DOTALL).matcher(source).replaceAll(replacement);
     }
 
+    /**
+     * 对 text 使用 regexp  进行匹配，把匹配到的内容使用 transformer 进行转换
+     * @param text
+     * @param regexp
+     * @param transformer
+     * @return 替换后的内容
+     */
+    public static String replace(String text, Regexp regexp, final Transformer<String,String> transformer) {
+        return StringTemplates.format(text, regexp, new PlaceholderParser() {
+            @Override
+            public String parse(String searched) {
+                return transformer.transform(searched);
+            }
+        });
+    }
     /**
      * Removes each substring of the source String that matches the given regular expression using the DOTALL option.
      *
@@ -3903,6 +3922,7 @@ public class Strings {
         }
         return builder.toString();
     }
+
 
 
 }

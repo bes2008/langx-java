@@ -17,7 +17,7 @@ public class CharTests {
 
     @Test
     public void test2(){
-        System.out.println(Utf8s.hexToChar("\\x5c"));
-        System.out.println(Utf8s.hexToChar(Utf8s.x2u("\\x5c")));
+        System.out.println(Utf8s.convertHexToUnicode("\\x5c"));
+
     }
 }

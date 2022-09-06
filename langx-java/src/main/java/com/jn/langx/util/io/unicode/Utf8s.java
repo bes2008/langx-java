@@ -1,11 +1,13 @@
 package com.jn.langx.util.io.unicode;
 
+import com.jn.langx.Transformer;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
@@ -184,6 +186,7 @@ public class Utf8s {
      * e.g. ：\x{we}
      */
     public final static Regexp ESCAPED_CHAR_REGEXP = Regexps.createRegexp("(?:(?:\\\\0)[0-3][0-7]{2})|(?:(?:\\\\0)[0-7]{1,2})|(?:(?:\\\\x)[0-9a-fA-F]{2})|(?:(?:\\\\u)[0-9a-fA-F]{4})");
+    public final static Regexp X16_CHAR_REGEXP=Regexps.createRegexp("(?:(?:\\\\x)[0-9a-fA-F]{2})");
 
     /**
      * 0x5C
@@ -224,6 +227,27 @@ public class Utf8s {
         });
     }
 
+    /**
+     * 将 \xFF -> \u00FF
+     *
+     * 将字符串中的 \x 转换为 \u
+     */
+    public static String convertHexToUnicode(String text) {
+        return Strings.replace(text, X16_CHAR_REGEXP, new Transformer<String, String>() {
+            @Override
+            public String transform(String hex) {
+                return x2u(hex);
+            }
+        });
+    }
+
+
+    /**
+     *
+     * 将 \xFF -> \u00FF
+     *
+     * 只能处理一个 hex 字符
+     */
     public static String x2u(String hex){
         if(hex.startsWith("\\x") && hex.length()==4){
             return "\\u00"+hex.substring(2);
