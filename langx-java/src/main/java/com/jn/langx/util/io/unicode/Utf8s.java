@@ -230,7 +230,7 @@ public class Utf8s {
     /**
      * 将 \xFF -> \u00FF
      *
-     * 将字符串中的 \x 转换为 \u
+     * 将字符串中的 hex 转换为 unicode，例如：\xFF 转换为 \u00FF
      */
     public static String convertHexToUnicode(String text) {
         return Strings.replace(text, X16_CHAR_REGEXP, new Transformer<String, String>() {
