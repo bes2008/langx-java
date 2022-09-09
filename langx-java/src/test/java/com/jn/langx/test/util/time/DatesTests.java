@@ -39,4 +39,10 @@ public class DatesTests {
         long d3 = Date.parse(str);
         System.out.println(d3);
     }
+
+    @Test
+    public void test2(){
+        Date l = Dates.parse("2022-09-09 15:49:00", "yyyy-MM-dd HH:mm:ss");
+        System.out.println(l.getTime());
+    }
 }

@@ -174,14 +174,21 @@ public class Dates {
     }
 
     public static Date parse(final String dateString, List<String> patterns) {
+        return parse(dateString, null, null, patterns);
+    }
+
+    public static Date parse(final String dateString, TimeZone tz, Locale locale,  List<String> patterns) {
         if (Objs.length(patterns) == 1) {
             try {
-                return getSimpleDateFormat(patterns.get(0)).parse(dateString);
+                return getSimpleDateFormat(patterns.get(0), tz, locale).parse(dateString);
             } catch (ParseException e) {
                 throw new com.jn.langx.exception.ParseException(e);
             }
         }
-        DateTimeParsedResult dateTimeParsedResult = new CandidatePatternsDateTimeParser(patterns).parse(dateString);
+        DateTimeParsedResult dateTimeParsedResult = new CandidatePatternsDateTimeParser(patterns)
+                .addLocale(locale)
+                .addTimeZone(tz)
+                .parse(dateString);
         if (dateTimeParsedResult != null) {
             return new Date(dateTimeParsedResult.getTimestamp());
         }
