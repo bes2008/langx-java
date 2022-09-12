@@ -3,28 +3,20 @@ package com.jn.langx.util.io;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.io.stream.StringBuilderWriter;
-import com.jn.langx.lifecycle.Destroyable;
-import com.jn.langx.lifecycle.Lifecycle;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
-import com.jn.langx.util.logging.Loggers;
-import com.jn.langx.util.reflect.Reflects;
-import org.slf4j.Logger;
+import com.jn.langx.util.io.close.ObjectCloser;
 
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * @author jinuo.fang
@@ -58,39 +50,11 @@ public class IOs {
     private static char[] SKIP_CHAR_BUFFER;
     private static byte[] SKIP_BYTE_BUFFER;
 
-    public static void close(Object target) {
+    public static void close(final Object target) {
         if (target == null) {
             return;
         }
-
-        try {
-            if (target instanceof Closeable) {
-                ((Closeable) target).close();
-            } else if (target instanceof Lifecycle) {
-                ((Lifecycle) target).shutdown();
-            } else if (target instanceof Destroyable) {
-                ((Destroyable) target).destroy();
-            } else if (target instanceof ResultSet) {
-                ((ResultSet) target).close();
-            } else if (target instanceof Statement) {
-                ((Statement) target).close();
-            } else if (target instanceof Connection) {
-                ((Connection) target).close();
-            } else if (target instanceof Scanner) {
-                ((Scanner) target).close();
-            } else if (target instanceof Socket) {
-                ((Socket) target).close();
-            } else if (target instanceof ServerSocket) {
-                ((ServerSocket) target).close();
-            } else if (target instanceof DatagramSocket) {
-                ((DatagramSocket) target).close();
-            } else {
-                Reflects.invokeAnyMethodForcedIfPresent(target, "close", null, null);
-            }
-        } catch (Throwable ex) {
-            Logger logger = Loggers.getLogger(IOs.class);
-            logger.warn(ex.getMessage(), ex);
-        }
+        ObjectCloser.close(target);
     }
 
     public static String readAsString(Reader reader) throws IOException {

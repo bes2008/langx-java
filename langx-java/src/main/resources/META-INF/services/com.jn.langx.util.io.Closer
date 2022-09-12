@@ -1,0 +1,6 @@
+com.jn.langx.util.io.close.CloseableCloser
+com.jn.langx.lifecycle.LifecycleCloser
+com.jn.langx.lifecycle.DestroyableCloser
+com.jn.langx.util.io.close.ConnectionCloser
+com.jn.langx.util.io.close.ResultSetCloser
+com.jn.langx.util.io.close.StatementCloser
