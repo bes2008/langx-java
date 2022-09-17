@@ -16,7 +16,7 @@
     </description>
 
     <properties>
-        <slf4j.version>1.7.0</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
         <jmh.version>1.23</jmh.version>
     </properties>
 
