@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.github.fangjinuo.langx.security</groupId>
+        <groupId>io.github.bes2008.solution.langx.security</groupId>
         <artifactId>langx-java-security-gm</artifactId>
-        <version>4.8.2</version>
+        <version>5.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

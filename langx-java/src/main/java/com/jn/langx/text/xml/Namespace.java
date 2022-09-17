@@ -9,7 +9,7 @@ package com.jn.langx.text.xml;
  *          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  *          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
  *                         http://maven.apache.org/maven-v4_0_0.xsd">
- *           <groupId>com.github.fangjinuo.langx</groupId>
+ *           <groupId>io.github.bes2008.solution.langx</groupId>
  *           <artifactId>langx-java</artifactId>
  *           <version>1.0.0</version>
  *      </project>
