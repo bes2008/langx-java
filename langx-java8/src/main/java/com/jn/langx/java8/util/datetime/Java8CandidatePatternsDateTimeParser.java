@@ -1,4 +1,4 @@
-package com.jn.langx.util.datetime.parser;
+package com.jn.langx.java8.util.datetime;
 
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.datetime.DateTimeParsedResult;
@@ -12,20 +12,20 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-public class CandidatePatternsDateTimeParser implements DateTimeParser {
+public class Java8CandidatePatternsDateTimeParser implements DateTimeParser {
     private Set<String> patterns = Collects.newLinkedHashSet();
     private Set<TimeZone> timeZones = Collects.newLinkedHashSet(TimeZone.getDefault());
     private Set<Locale> locales = Collects.newLinkedHashSet(Locale.getDefault(), Locale.US);
 
-    public CandidatePatternsDateTimeParser(List<String> patterns) {
+    public Java8CandidatePatternsDateTimeParser(List<String> patterns) {
         this(patterns, null, null);
     }
 
-    public CandidatePatternsDateTimeParser(List<String> patterns, List<TimeZone> timeZones) {
+    public Java8CandidatePatternsDateTimeParser(List<String> patterns, List<TimeZone> timeZones) {
         this(patterns, timeZones, null);
     }
 
-    public CandidatePatternsDateTimeParser(List<String> patterns, List<TimeZone> timeZones, List<Locale> locales) {
+    public Java8CandidatePatternsDateTimeParser(List<String> patterns, List<TimeZone> timeZones, List<Locale> locales) {
         if (patterns != null) {
             this.patterns.addAll(patterns);
         }
@@ -60,7 +60,7 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
                         Collects.forEach(locales, new Consumer<Locale>() {
                             @Override
                             public void accept(Locale locale) {
-                                DateTimeParsedResult r = new SimpleDateParser(pattern, timeZone, locale).parse(datetimeString);
+                                DateTimeParsedResult r = new Java8DateTimeParser(pattern, timeZone, locale).parse(datetimeString);
                                 if (r != null) {
                                     resultHolder.set(r);
                                 }
@@ -73,14 +73,14 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
         return resultHolder.get();
     }
 
-    public CandidatePatternsDateTimeParser addTimeZone(TimeZone timeZone) {
+    public Java8CandidatePatternsDateTimeParser addTimeZone(TimeZone timeZone) {
         if (timeZone != null) {
             this.timeZones.add(timeZone);
         }
         return this;
     }
 
-    public CandidatePatternsDateTimeParser addLocale(Locale locale) {
+    public Java8CandidatePatternsDateTimeParser addLocale(Locale locale) {
         if (locale != null) {
             this.locales.add(locale);
         }

@@ -6,10 +6,11 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.datetime.*;
-import com.jn.langx.util.datetime.parser.CandidatePatternsDateTimeParser;
+import com.jn.langx.util.datetime.parser.CandidateDateTimeParseService;
+import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -77,6 +78,17 @@ public class Dates {
      * @see SimpleDateFormat
      */
     public static final char[] DATE_FORMAT_FLAGS = {'G', 'y', 'Y', 'M', 'w', 'W', 'D', 'd', 'F', 'E', 'u', 'a', 'H', 'k', 'K', 'h', 'm', 's', 'S', 'z', 'Z', 'X'};
+
+    private static final Map<String, CandidateDateTimeParseService> candidateDateTimeParseServiceMap = new HashMap<String, CandidateDateTimeParseService>();
+
+    static {
+        Collects.forEach(ServiceLoader.load(CandidateDateTimeParseService.class), new Consumer<CandidateDateTimeParseService>() {
+            @Override
+            public void accept(CandidateDateTimeParseService candidateDateTimeParseService) {
+                candidateDateTimeParseServiceMap.put(candidateDateTimeParseService.getName(), candidateDateTimeParseService);
+            }
+        });
+    }
 
     @Deprecated
     public static String format(long millis, @NonNull String pattern) {
@@ -174,27 +186,56 @@ public class Dates {
     }
 
     public static Date parse(final String dateString, List<String> patterns) {
-        return parse(dateString, null, null, patterns);
+        return parse(false, dateString, null, null, patterns);
     }
 
-    public static Date parse(final String dateString, TimeZone tz, Locale locale,  List<String> patterns) {
-        if (Objs.length(patterns) == 1) {
-            try {
-                return getSimpleDateFormat(patterns.get(0), tz, locale).parse(dateString);
-            } catch (ParseException e) {
-                throw new com.jn.langx.exception.ParseException(e);
-            }
-        }
-        DateTimeParsedResult dateTimeParsedResult = new CandidatePatternsDateTimeParser(patterns)
-                .addLocale(locale)
-                .addTimeZone(tz)
-                .parse(dateString);
+    public static Date parse(final String dateString, TimeZone tz, Locale locale, List<String> patterns) {
+        return parse(false, dateString, tz, locale, patterns);
+    }
+
+    public static Date parse(boolean autoInferTimeZone, final String dateString, TimeZone tz, Locale locale, List<String> patterns) {
+        tz = tz == null ? TimeZone.getDefault() : tz;
+        locale = locale == null ? Locale.getDefault() : locale;
+        DateTimeParsedResult dateTimeParsedResult = parseDateTime(autoInferTimeZone, dateString, Collects.<TimeZone>asList(tz), Collects.<Locale>asList(locale), patterns);
         if (dateTimeParsedResult != null) {
             return new Date(dateTimeParsedResult.getTimestamp());
         }
         return null;
     }
 
+    public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
+
+    public static DateTimeParsedResult parseDateTime(boolean autoInferTimeZone, final String dateString, List<TimeZone> candidateTZs, List<Locale> candidateLocals, List<String> candidatePatterns) {
+        if (!autoInferTimeZone) {
+            return getCandidateDateTimeParseService().parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
+        }
+
+        final List<String> ps = Collects.newArrayList();
+        Collects.forEach(candidatePatterns, new Consumer<String>() {
+            @Override
+            public void accept(final String pattern) {
+                Collects.forEach(timezone_suffixes, new Consumer<String>() {
+                    @Override
+                    public void accept(String suffix) {
+                        ps.add(pattern + suffix);
+                    }
+                });
+                ps.add(pattern);
+            }
+        });
+        return getCandidateDateTimeParseService().parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
+    }
+
+    public static CandidateDateTimeParseService getCandidateDateTimeParseService() {
+        CandidateDateTimeParseService service = null;
+        if (Platform.is8VMOrGreater()) {
+            service = candidateDateTimeParseServiceMap.get("Java8CandidateDateTimeParseService");
+        }
+        if (service == null) {
+            service = candidateDateTimeParseServiceMap.get("Java6CandidateDateTimeParseService");
+        }
+        return service;
+    }
 
     /**
      * Adds a number of years to a date returning a new object.

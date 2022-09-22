@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.NonAbsentHashMap;
+import com.jn.langx.util.datetime.DateTimeParsedResult;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.struct.Holder;
@@ -14,10 +15,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQuery;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 public class Dates8 {
     private static final ZoneOffset LOCAL_ZONE_OFFSET;
@@ -28,7 +26,7 @@ public class Dates8 {
     private static final char[] JAVA8_TIME_FORMAT_UNIQUE_FLAGS = {'L', 'Q', 'q', 'e', 'c', 'A', 'n', 'N', 'V', 'O', 'x'};
 
     private static final LocalTime ZERO_TIME = LocalTime.of(0, 0, 0, 0);
-    private static Map<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>> temporalQueryMap = new NonAbsentHashMap<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>(new Supplier<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>() {
+    public static final Map<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>> temporalQueryMap = new NonAbsentHashMap<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>(new Supplier<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>() {
         @Override
         public Holder<TemporalQuery<?>> get(Class<? extends TemporalAccessor> tClass) {
             Holder<TemporalQuery<?>> holder = new Holder<TemporalQuery<?>>();
@@ -41,6 +39,7 @@ public class Dates8 {
                         return Reflects.invoke(method, null, new Object[]{temporal}, false, true);
                     }
                 };
+                holder.set(query);
             }
             return holder;
         }
@@ -107,6 +106,23 @@ public class Dates8 {
             t = (T) Dates.parse(dt, pattern);
         }
         return t;
+    }
+
+    public static Date parseDate(String dt, TimeZone tz, Locale locale, List<String> candidatePatterns) {
+        if (tz == null) {
+            tz = TimeZone.getDefault();
+        }
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+        DateTimeParsedResult dateTimeParsedResult = new Java8CandidatePatternsDateTimeParser(candidatePatterns)
+                .addLocale(locale)
+                .addTimeZone(tz)
+                .parse(dt);
+        if (dateTimeParsedResult != null) {
+            return new Date(dateTimeParsedResult.getTimestamp());
+        }
+        return null;
     }
 
     public static OffsetDateTime toOffsetDateTime(LocalDateTime localDateTime) {

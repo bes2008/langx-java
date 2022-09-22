@@ -9,7 +9,7 @@ public class DateParsedResult extends AbstractDateTimeParsedResult {
     private TimeZone tz;
     private Locale locale;
 
-    DateParsedResult(Date date, TimeZone tz, Locale locale){
+    public DateParsedResult(Date date, TimeZone tz, Locale locale){
         this.date = date;
         this.tz = tz;
         this.locale = locale;
