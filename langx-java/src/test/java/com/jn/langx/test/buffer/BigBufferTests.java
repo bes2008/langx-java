@@ -17,7 +17,7 @@ public class BigBufferTests {
 
         String userdir = SystemPropertys.getUserWorkDir();
         System.out.println(userdir);
-        Resource res = Resources.loadFileResource(new File(userdir + "/src/main/java/com/jn/langx/util/collection/Collects.java"));
+        Resource<?> res = Resources.loadFileResource(new File(userdir + "/src/main/java/com/jn/langx/util/collection/Collects.java"));
 
         byte[] bytes = IOs.readFully(res.getInputStream(), (int) res.contentLength());
         BigByteBuffer buffer = new BigByteBuffer(bytes, Integer.MAX_VALUE, DataSize.kb(4).toInt());

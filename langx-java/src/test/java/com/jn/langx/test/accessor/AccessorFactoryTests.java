@@ -33,7 +33,7 @@ public class AccessorFactoryTests {
         System.out.println(new ObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
         new ObjectNavigator().set(personDto,"addresses/0/a","newValue");
         System.out.println(new ObjectNavigator().getAccessor(personDto,"addresses/0").get("a"));
-        System.out.println(new ObjectNavigator().get(personDto,"addresses/0/a"));
+        System.out.println(new ObjectNavigator().<String>get(personDto,"addresses/0/a"));
 
     }
 

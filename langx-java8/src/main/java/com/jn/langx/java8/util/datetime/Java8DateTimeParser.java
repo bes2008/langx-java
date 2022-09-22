@@ -33,8 +33,9 @@ public class Java8DateTimeParser implements DateTimeParser {
 
     @Override
     public DateTimeParsedResult parse(String datetimeString) {
-        DateTimeFormatter formatter = Java8GlobalThreadLocalMap.getDateTimeFormatter(this.pattern, this.timeZone, this.locale);
+        DateTimeFormatter formatter = null;
         try {
+            formatter = Java8GlobalThreadLocalMap.getDateTimeFormatter(this.pattern, this.timeZone, this.locale);
             TemporalAccessor temporalAccessor  = formatter.parse(datetimeString);
             ZonedDateTime zonedDateTime = (ZonedDateTime) temporalAccessor.query(Dates8.temporalQueryMap.get(ZonedDateTime.class).get());
             Date date = new Date(zonedDateTime.toInstant().toEpochMilli());

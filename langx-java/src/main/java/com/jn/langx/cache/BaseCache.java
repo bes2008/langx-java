@@ -182,7 +182,7 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
                  * 利用 timer 可以再次 异步执行
                  */
                 if (timer != null) {
-                    timer.newTimeout(new AbstractCache.RefreshKeyTask(key), 1, TimeUnit.MILLISECONDS);
+                    timer.newTimeout(new BaseCache.RefreshKeyTask(key), 1, TimeUnit.MILLISECONDS);
                 } else {
                     refresh(key);
                 }
