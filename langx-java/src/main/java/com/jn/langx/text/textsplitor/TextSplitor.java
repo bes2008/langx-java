@@ -22,6 +22,8 @@ import java.util.List;
 
 /**
  * 用于单行、多行文本拆分
+ *
+ * @since 5.0.1
  */
 public class TextSplitor extends UnmodifiableIterator<String> implements Closeable {
     private static final Logger logger = Loggers.getLogger(TextSplitor.class);

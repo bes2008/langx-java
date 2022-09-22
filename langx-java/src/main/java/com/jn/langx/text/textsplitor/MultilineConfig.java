@@ -2,6 +2,9 @@ package com.jn.langx.text.textsplitor;
 
 import com.jn.langx.util.Objs;
 
+/**
+ * @since 5.0.1
+ */
 public class MultilineConfig {
     public static enum Match {
         BEFORE,
