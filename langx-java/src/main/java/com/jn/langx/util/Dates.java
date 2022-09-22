@@ -193,6 +193,10 @@ public class Dates {
         return parse(false, dateString, tz, locale, patterns);
     }
 
+
+    /**
+     * @since 5.0.1
+     */
     public static Date parse(boolean autoInferTimeZone, final String dateString, TimeZone tz, Locale locale, List<String> patterns) {
         tz = tz == null ? TimeZone.getDefault() : tz;
         locale = locale == null ? Locale.getDefault() : locale;
@@ -205,6 +209,9 @@ public class Dates {
 
     public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
 
+    /**
+     * @since 5.0.1
+     */
     public static DateTimeParsedResult parseDateTime(boolean autoInferTimeZone, final String dateString, List<TimeZone> candidateTZs, List<Locale> candidateLocals, List<String> candidatePatterns) {
         if (!autoInferTimeZone) {
             return getCandidateDateTimeParseService().parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
