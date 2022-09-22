@@ -24,8 +24,8 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
 
-import static java.security.AccessController.doPrivileged;
 import static com.jn.langx.util.regexp.Option.CASE_INSENSITIVE;
+import static java.security.AccessController.doPrivileged;
 
 
 public class Nets {
@@ -133,8 +133,8 @@ public class Nets {
         IPV4_PREFERRED = systemPropertiesAccessor.getBoolean("java.net.preferIPv4Stack", false);
         IPV6_ADDRESSES_PREFERRED = systemPropertiesAccessor.getBoolean("java.net.preferIPv6Addresses", false);
         final Logger logger = Loggers.getLogger(Nets.class);
-        logger.debug("-Djava.net.preferIPv4Stack: {}", IPV4_PREFERRED);
-        logger.debug("-Djava.net.preferIPv6Addresses: {}", IPV6_ADDRESSES_PREFERRED);
+        logger.trace("-Djava.net.preferIPv4Stack: {}", IPV4_PREFERRED);
+        logger.trace("-Djava.net.preferIPv6Addresses: {}", IPV6_ADDRESSES_PREFERRED);
 
         byte[] LOCALHOST4_BYTES = {127, 0, 0, 1};
         byte[] LOCALHOST6_BYTES = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
@@ -219,9 +219,7 @@ public class Nets {
 
         if (loopbackIface != null) {
             // Found the loopback interface with an INET address.
-            logger.debug(
-                    "Loopback interface: {} ({}, {})",
-                    loopbackIface.getName(), loopbackIface.getDisplayName(), loopbackAddr.getHostAddress());
+            logger.trace("Loopback interface: {} ({}, {})", loopbackIface.getName(), loopbackIface.getDisplayName(), loopbackAddr.getHostAddress());
         } else {
             // Could not find the loopback interface, but we can't leave LOCALHOST as null.
             // Use LOCALHOST6 or LOCALHOST4, preferably the IPv6 one.
@@ -1080,12 +1078,12 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                                                           <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
-     *                                                                                                                                                                                                                                           defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
-     *                                                                                                                                                                                                                                           following the updated guidelines in
-     *                                                                                                                                                                                                                                           <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
-     *                                                                                                                                                                                                                                           <li>{@code false} to strictly follow rfc 5952</li>
-     *                                                                                                                                                                                                                                           </ul>
+     *                                                                                                                                                                                                                                                             <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
+     *                                                                                                                                                                                                                                                             defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
+     *                                                                                                                                                                                                                                                             following the updated guidelines in
+     *                                                                                                                                                                                                                                                             <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
+     *                                                                                                                                                                                                                                                             <li>{@code false} to strictly follow rfc 5952</li>
+     *                                                                                                                                                                                                                                                             </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
@@ -1362,7 +1360,7 @@ public class Nets {
                 public boolean test(NetworkInterface itfc) {
                     try {
                         return itfc.isUp();
-                    }catch (Throwable ex){
+                    } catch (Throwable ex) {
                         // ignore
                     }
                     return false;
@@ -1375,7 +1373,7 @@ public class Nets {
     }
 
     private static final List<String> virtualInterfaces = Collects.newArrayList(
-            "virtualbox", " kernel debug ", "ppp0", "6to4", "loopback", "miniport", "virbr", "docker","veth"
+            "virtualbox", " kernel debug ", "ppp0", "6to4", "loopback", "miniport", "virbr", "docker", "veth"
     );
 
     /**
@@ -1730,16 +1728,17 @@ public class Nets {
     /**
      * @since 4.7.1
      */
-    public static boolean ping(String host){
-        return ping(host,200);
+    public static boolean ping(String host) {
+        return ping(host, 200);
     }
+
     /**
      * @since 4.7.1
      */
-    public static boolean ping(String host, int timeout){
+    public static boolean ping(String host, int timeout) {
         try {
             return InetAddress.getByName(host).isReachable(timeout);
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             return false;
         }
     }
