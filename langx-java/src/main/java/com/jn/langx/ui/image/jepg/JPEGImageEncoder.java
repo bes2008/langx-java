@@ -6,6 +6,11 @@
 
 package com.jn.langx.ui.image.jepg;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.Raster;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * JPEGImageEncoder Interface
@@ -31,15 +36,8 @@ package com.jn.langx.ui.image.jepg;
  * <p>
  * This encoder will process interchange, and abbreviated JPEG
  * streams.
- */
-
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.Raster;
-import java.io.IOException;
-import java.io.OutputStream;
-
-/**
+ *
+ *
  * JPEGImageEncoder encodes buffers of image data into JPEG data
  * streams.  Users of this interface are required to provide image data in
  * a Raster or a BufferedImage, set the necessary parameters in the

@@ -4,17 +4,13 @@
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 
-/**********************************************************************
- **********************************************************************
- **********************************************************************
- *** COPYRIGHT (c) 1997-1998 Eastman Kodak Company.                 ***
- *** As  an unpublished  work pursuant to Title 17 of the United    ***
- *** States Code.  All rights reserved.                             ***
- **********************************************************************
- **********************************************************************
- **********************************************************************/
 
 package com.jn.langx.ui.image.jepg;
+
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
@@ -49,14 +45,8 @@ package com.jn.langx.ui.image.jepg;
  * jpeg streams.  However, progressive jpeg streams are treated as
  * interchange streams.  They return once with the entire image in the
  * image buffer.
- */
-
-import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.io.IOException;
-import java.io.InputStream;
-
-/**
+ *
+ *
  * This interface describes a JPEG data stream decoder.  This decoder
  * takes an InputStream that contains JPEG encoded image data.  The
  * JPEGImageDecoder will decode the JPEG image data according to the
