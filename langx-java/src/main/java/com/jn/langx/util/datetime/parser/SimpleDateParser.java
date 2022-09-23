@@ -14,9 +14,9 @@ import java.util.TimeZone;
 
 public class SimpleDateParser implements DateTimeParser {
     private static final Logger logger = Loggers.getLogger(SimpleDateParser.class);
-    private String pattern;
-    private TimeZone timeZone;
-    private Locale locale;
+    protected String pattern;
+    protected TimeZone timeZone;
+    protected Locale locale;
 
     public SimpleDateParser(String pattern, Locale locale) {
         this(pattern, TimeZone.getDefault(), locale);

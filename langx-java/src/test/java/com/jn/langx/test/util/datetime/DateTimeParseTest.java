@@ -2,7 +2,6 @@ package com.jn.langx.test.util.datetime;
 
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.datetime.fast.FastDateFormat;
 import org.junit.Test;
 
 import java.util.Date;
@@ -28,11 +27,5 @@ public class DateTimeParseTest {
         System.out.println(Dates.format(d, "yyyy-MM-dd'T'HH:mm:ss.SSS"));
     }
 
-
-    @Test
-    public void testFastDateTimeParse() throws Throwable{
-        Date d= FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSX", null, null).parse("2018-01-01T12:09:09.123Z");
-        System.out.println(d);
-    }
 
 }
