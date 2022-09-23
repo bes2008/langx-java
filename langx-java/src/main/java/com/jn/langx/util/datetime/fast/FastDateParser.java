@@ -387,7 +387,7 @@ class FastDateParser implements DateParser, Serializable {
      * given by {@link ParsePosition#getIndex()} has been updated. If the input buffer has been fully
      * parsed, then the index will point to just after the end of the input buffer.
      *
-     * @see org.apache.commons.lang3.time.DateParser#parse(java.lang.String, java.text.ParsePosition)
+     * @see DateParser#parse(java.lang.String, java.text.ParsePosition)
      */
     @Override
     public Date parse(final String source, final ParsePosition pos) {
