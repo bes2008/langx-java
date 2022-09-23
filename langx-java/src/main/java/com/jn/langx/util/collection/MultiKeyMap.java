@@ -44,6 +44,11 @@ public class MultiKeyMap<V> implements Map<Object, V> {
 
     @Override
     public V get(Object key) {
+        if(key instanceof Tuple){
+            if(delegate.containsKey(key)){
+                return delegate.get(key);
+            }
+        }
         return delegate.get(new Tuple(key));
     }
 
