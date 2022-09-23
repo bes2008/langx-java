@@ -3,6 +3,8 @@ package com.jn.langx.util.datetime.parser;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.datetime.DateTimeParsedResult;
 import com.jn.langx.util.datetime.DateTimeParser;
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +13,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class SimpleDateParser implements DateTimeParser {
+    private static final Logger logger = Loggers.getLogger(SimpleDateParser.class);
     private String pattern;
     private TimeZone timeZone;
     private Locale locale;
@@ -39,6 +42,9 @@ public class SimpleDateParser implements DateTimeParser {
             result.setPattern(pattern);
             result.setOriginText(datetimeString);
             return result;
+        }catch (IllegalArgumentException e){
+            logger.warn(e.getMessage(), e);
+            return null;
         } catch (ParseException ex) {
             return null;
         }

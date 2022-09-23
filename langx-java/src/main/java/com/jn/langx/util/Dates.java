@@ -207,6 +207,7 @@ public class Dates {
         return null;
     }
 
+    public static final List<String> simple_timezone_suffixes = Collects.newArrayList("X", "Z", "z");
     public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
 
     /**
@@ -221,7 +222,7 @@ public class Dates {
         Collects.forEach(candidatePatterns, new Consumer<String>() {
             @Override
             public void accept(final String pattern) {
-                Collects.forEach(timezone_suffixes, new Consumer<String>() {
+                Collects.forEach(simple_timezone_suffixes, new Consumer<String>() {
                     @Override
                     public void accept(String suffix) {
                         ps.add(pattern + suffix);
@@ -230,7 +231,8 @@ public class Dates {
                 ps.add(pattern);
             }
         });
-        return getCandidateDateTimeParseService().parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
+        // 只有 SimpleDateFormat支持 时区推断， Java8 的DateTimeFormatter 不支持时区推断
+        return getSimpleCandidateDateTimeParseService().parse(dateString, ps, candidateTZs, candidateLocals);
     }
 
     public static CandidateDateTimeParseService getCandidateDateTimeParseService() {
@@ -242,6 +244,10 @@ public class Dates {
             service = candidateDateTimeParseServiceMap.get("Java6CandidateDateTimeParseService");
         }
         return service;
+    }
+
+    public static CandidateDateTimeParseService getSimpleCandidateDateTimeParseService() {
+        return candidateDateTimeParseServiceMap.get("Java6CandidateDateTimeParseService");
     }
 
     /**
