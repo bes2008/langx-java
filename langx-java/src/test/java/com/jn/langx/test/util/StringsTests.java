@@ -40,9 +40,21 @@ public class StringsTests {
     @Test
     public void splitTest() {
         String string = "a, b, 23, af, (, {, }, 323";
-        Assert.assertTrue(Strings.split(string, "").length > 8);
-        Assert.assertTrue(Strings.split(string, ",").length == 8);
-        Assert.assertTrue(Strings.split(string, " ").length == 8);
+
+        String[] segments = Strings.split(string, "");
+        Assert.assertTrue(segments.length > 8);
+
+        segments = Strings.split(string, ",");
+        Assert.assertTrue(segments.length == 8);
+
+        segments = Strings.split(string, " ");
+        Assert.assertTrue(segments.length == 8);
+
+        string = "system0@*v*@0share-ns-org-10@*v*@0i632d4c-tomcat-00@*v*@0tomcat";
+        segments = Strings.split(string, "0@*v*@0");
+        // 分割后会有Bug
+        Assert.assertEquals(segments[2], "i632d4c-tomcat-0");
+
     }
 
     @Test
@@ -71,8 +83,8 @@ public class StringsTests {
     }
 
     @Test
-    public void testContains(){
-        System.out.println(Strings.containsAny("%(tls)","%,()"));
+    public void testContains() {
+        System.out.println(Strings.containsAny("%(tls)", "%,()"));
     }
 
 }

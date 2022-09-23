@@ -377,8 +377,24 @@ public class Strings {
         if (Emptys.isEmpty(separator)) {
             pipeline = Pipeline.of(string.split(""));
         } else {
-            StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
-            pipeline = Pipeline.of(tokenizer);
+            // 使用 StringTokenizer分割后会有Bug
+            // 例如，第三段被分割后，少了个 0
+            // string = "system0@*v*@0share-ns-org-10@*v*@0i632d4c-tomcat-00@*v*@0tomcat";
+            // Strings.split(string, "0@*v*@0");
+            // StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
+            List<String> list = new ArrayList<String>();
+            int startIndex = 0;
+            int foundIndex = string.indexOf(separator, 0);
+            while (foundIndex >= 0) {
+                list.add(string.substring(startIndex, foundIndex));
+                startIndex = foundIndex + separator.length();
+                foundIndex = string.indexOf(separator, startIndex);
+            }
+            if (startIndex < string.length()) {
+                list.add(string.substring(startIndex));
+            }
+
+            pipeline = Pipeline.of(list);
         }
         return pipeline.map(new Function<String, String>() {
             @Override
@@ -836,8 +852,8 @@ public class Strings {
      * StringUtils.containsNone("abz", "xyz")  = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
-     * @param invalidChars  a String of invalid chars, may be null
+     * @param cs           the CharSequence to check, may be null
+     * @param invalidChars a String of invalid chars, may be null
      * @return true if it contains none of the invalid chars, or is null
      * @since 2.0
      * @since 3.0 Changed signature from containsNone(String, String) to containsNone(CharSequence, String)
@@ -851,6 +867,7 @@ public class Strings {
 
     // ContainsNone
     //-----------------------------------------------------------------------
+
     /**
      * <p>Checks that the CharSequence does not contain certain characters.</p>
      *
@@ -868,8 +885,8 @@ public class Strings {
      * StringUtils.containsNone("abz", 'xyz')  = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
-     * @param searchChars  an array of invalid chars, may be null
+     * @param cs          the CharSequence to check, may be null
+     * @param searchChars an array of invalid chars, may be null
      * @return true if it contains none of the invalid chars, or is null
      * @since 2.0
      * @since 3.0 Changed signature from containsNone(String, char[]) to containsNone(CharSequence, char...)
@@ -906,6 +923,7 @@ public class Strings {
 
     // ContainsOnly
     //-----------------------------------------------------------------------
+
     /**
      * <p>Checks if the CharSequence contains only certain characters.</p>
      *
@@ -923,8 +941,8 @@ public class Strings {
      * StringUtils.containsOnly("abz", 'abc')  = false
      * </pre>
      *
-     * @param cs  the String to check, may be null
-     * @param valid  an array of valid chars, may be null
+     * @param cs    the String to check, may be null
+     * @param valid an array of valid chars, may be null
      * @return true if it only contains valid chars and is non-null
      * @since 3.0 Changed signature from containsOnly(String, char[]) to containsOnly(CharSequence, char...)
      */
@@ -959,8 +977,8 @@ public class Strings {
      * StringUtils.containsOnly("abz", "abc")  = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
-     * @param validChars  a String of valid chars, may be null
+     * @param cs         the CharSequence to check, may be null
+     * @param validChars a String of valid chars, may be null
      * @return true if it only contains valid chars and is non-null
      * @since 2.0
      * @since 3.0 Changed signature from containsOnly(String, String) to containsOnly(CharSequence, String)
@@ -1630,12 +1648,13 @@ public class Strings {
 
     /**
      * 对 text 使用 regexp  进行匹配，把匹配到的内容使用 transformer 进行转换
+     *
      * @param text
      * @param regexp
      * @param transformer
      * @return 替换后的内容
      */
-    public static String replace(String text, Regexp regexp, final Transformer<String,String> transformer) {
+    public static String replace(String text, Regexp regexp, final Transformer<String, String> transformer) {
         return StringTemplates.format(text, regexp, new PlaceholderParser() {
             @Override
             public String parse(String searched) {
@@ -1643,6 +1662,7 @@ public class Strings {
             }
         });
     }
+
     /**
      * Removes each substring of the source String that matches the given regular expression using the DOTALL option.
      *
@@ -3726,6 +3746,7 @@ public class Strings {
     }
     // IndexOfAnyBut chars
     //-----------------------------------------------------------------------
+
     /**
      * <p>Searches a CharSequence to find the first index of any
      * character not in the given set of characters.</p>
@@ -3741,11 +3762,11 @@ public class Strings {
      * StringUtils.indexOfAnyBut("zzabyycdxx", new char[] {'z', 'a'} ) = 3
      * StringUtils.indexOfAnyBut("aba", new char[] {'z'} )             = 0
      * StringUtils.indexOfAnyBut("aba", new char[] {'a', 'b'} )        = -1
-
+     *
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
-     * @param searchChars  the chars to search for, may be null
+     * @param cs          the CharSequence to check, may be null
+     * @param searchChars the chars to search for, may be null
      * @return the index of any of the chars, -1 if no match or null input
      * @since 2.0
      * @since 3.0 Changed signature from indexOfAnyBut(String, char[]) to indexOfAnyBut(CharSequence, char...)
@@ -3794,8 +3815,8 @@ public class Strings {
      * StringUtils.indexOfAnyBut("aba", "ab")        = -1
      * </pre>
      *
-     * @param seq  the CharSequence to check, may be null
-     * @param searchChars  the chars to search for, may be null
+     * @param seq         the CharSequence to check, may be null
+     * @param searchChars the chars to search for, may be null
      * @return the index of any of the chars, -1 if no match or null input
      * @since 2.0
      * @since 3.0 Changed signature from indexOfAnyBut(String, String) to indexOfAnyBut(CharSequence, CharSequence)
@@ -3922,7 +3943,6 @@ public class Strings {
         }
         return builder.toString();
     }
-
 
 
 }
