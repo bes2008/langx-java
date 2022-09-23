@@ -32,7 +32,7 @@ import java.util.TimeZone;
  *
  * @since 5.0.1
  */
-public class DateFormatUtils {
+class DateFormatUtils {
 
     /**
      * The UTC time zone (often referred to as GMT).

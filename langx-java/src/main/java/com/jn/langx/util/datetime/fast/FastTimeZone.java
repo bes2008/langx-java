@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  *
  * @since 5.0.1
  */
-public class FastTimeZone {
+class FastTimeZone {
 
     private static final Pattern GMT_PATTERN = Pattern.compile("^(?:(?i)GMT)?([+-])?(\\d\\d?)?(:?(\\d\\d?))?$");
 

@@ -26,7 +26,7 @@ import java.util.Calendar;
  *
  * @since 5.0.1
  */
-public class CalendarUtils {
+class CalendarUtils {
 
     /**
      * The singleton instance for {@link Calendar#getInstance()}.
