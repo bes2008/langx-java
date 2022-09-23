@@ -147,7 +147,10 @@ public class MultiKeyMap<V> implements Map<Object, V> {
 
     @Override
     public boolean equals(Object o) {
-        return delegate.equals(o);
+        if(o instanceof MultiKeyMap){
+            return delegate.equals(((MultiKeyMap<?>) o).delegate);
+        }
+        return false;
     }
 
     @Override
