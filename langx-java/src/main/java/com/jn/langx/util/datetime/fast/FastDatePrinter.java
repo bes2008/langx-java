@@ -1279,6 +1279,7 @@ class FastDatePrinter implements DatePrinter, Serializable {
 
     /**
      * <p>Inner class to output the numeric day in week.</p>
+     * @since jdk 1.7
      */
     private static class WeekYear implements NumberRule {
         private final NumberRule mRule;

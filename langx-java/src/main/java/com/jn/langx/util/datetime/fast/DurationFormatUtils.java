@@ -64,7 +64,7 @@ class DurationFormatUtils {
      * <p>Pattern used with {@code FastDateFormat} and {@code SimpleDateFormat}
      * for the ISO 8601 period format used in durations.</p>
      *
-     * @see org.apache.commons.lang3.time.FastDateFormat
+     * @see FastDateFormat
      * @see java.text.SimpleDateFormat
      */
     public static final String ISO_EXTENDED_FORMAT_PATTERN = "'P'yyyy'Y'M'M'd'DT'H'H'm'M's.SSS'S'";

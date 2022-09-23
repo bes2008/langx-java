@@ -25,7 +25,7 @@ import java.util.TimeZone;
  * <p>Date and time formatting utilities and constants.</p>
  *
  * <p>Formatting is performed using the thread-safe
- * {@link org.apache.commons.lang3.time.FastDateFormat} class.</p>
+ * {@link FastDateFormat} class.</p>
  *
  * <p>Note that the JDK has a bug wherein calling Calendar.get(int) will
  * override any previously called Calendar.clear() calls. See LANG-755.</p>
