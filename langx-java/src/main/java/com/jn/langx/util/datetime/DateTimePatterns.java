@@ -366,7 +366,7 @@ public class DateTimePatterns {
      * 2020-05-23T17:06:30
      * 2020-05-23T09:06:30</pre>
      */
-    public static final String YYYY_MM_DD_T_HH_MM_SS= "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String YYYY_MM_DD_T_HH_MM_SS = "yyyy-MM-dd'T'HH:mm:ss";
     /**
      * yyyy-MM-dd'T'HH:mm:ssZ <pre>2020-05-23T17:06:30+0800 2020-05-23T09:06:30+0000</pre>
      */
@@ -388,7 +388,6 @@ public class DateTimePatterns {
     public static final String YYYY_MM_DD_T_HH_MM_SS_SSS_Z = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     /**
-     *
      * yyyy-MM-dd'T'HH:mm:ss.SSSxxx
      * <pre>
      * 2020-05-23T17:06:30.272+08:00
