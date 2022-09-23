@@ -18,6 +18,7 @@ package com.jn.langx.util.datetime.fast;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.os.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -221,7 +222,7 @@ class FastDatePrinter implements DatePrinter, Serializable {
                 } else {
                     rule = selectNumberRule(Calendar.YEAR, Math.max(tokenLen, 4));
                 }
-                if (c == 'Y') {
+                if (c == 'Y' && Platform.is7VMOrGreater()) {
                     rule = new WeekYear((NumberRule) rule);
                 }
                 break;
