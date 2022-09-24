@@ -10,18 +10,18 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class FastSimpleDateParser extends SimpleDateParser {
-    private static final Logger logger = Loggers.getLogger(FastSimpleDateParser.class);
+public class GracefulDateParser extends SimpleDateParser {
+    private static final Logger logger = Loggers.getLogger(GracefulDateParser.class);
 
-    public FastSimpleDateParser(String pattern, Locale locale) {
+    public GracefulDateParser(String pattern, Locale locale) {
         super(pattern, locale);
     }
 
-    public FastSimpleDateParser(String pattern, TimeZone timeZone) {
+    public GracefulDateParser(String pattern, TimeZone timeZone) {
         super(pattern, timeZone);
     }
 
-    public FastSimpleDateParser(String pattern, TimeZone timeZone, Locale locale) {
+    public GracefulDateParser(String pattern, TimeZone timeZone, Locale locale) {
         super(pattern, timeZone, locale);
     }
 

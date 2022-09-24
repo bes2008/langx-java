@@ -40,8 +40,6 @@ abstract class FormatCache<F extends Format> {
 
     private final ConcurrentMap<DateFormatCacheKey, F> cInstanceCache = new ConcurrentHashMap<DateFormatCacheKey, F>(7);
 
-    private static final ConcurrentMap<DateFormatCacheKey, String> cDateTimeInstanceCache = new ConcurrentHashMap<DateFormatCacheKey, String>(7);
-
 
     /**
      * Gets a formatter instance using the specified pattern, time zone
