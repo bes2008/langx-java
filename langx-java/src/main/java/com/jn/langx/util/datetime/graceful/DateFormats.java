@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jn.langx.util.datetime.fast;
+package com.jn.langx.util.datetime.graceful;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,7 +25,7 @@ import java.util.TimeZone;
  * <p>Date and time formatting utilities and constants.</p>
  *
  * <p>Formatting is performed using the thread-safe
- * {@link FastDateFormat} class.</p>
+ * {@link GracefulDateFormat} class.</p>
  *
  * <p>Note that the JDK has a bug wherein calling Calendar.get(int) will
  * override any previously called Calendar.clear() calls. See LANG-755.</p>
@@ -38,7 +38,7 @@ class DateFormats {
      * The UTC time zone (often referred to as GMT).
      * This is private as it is mutable.
      */
-    private static final TimeZone UTC_TIME_ZONE = FastTimeZone.getGmtTimeZone();
+    private static final TimeZone UTC_TIME_ZONE = GracefulTimeZone.getGmtTimeZone();
 
     /**
      * ISO 8601 formatter for date-time without time zone.
@@ -50,14 +50,14 @@ class DateFormats {
      *
      * @since 5.0.1
      */
-    public static final FastDateFormat ISO_8601_EXTENDED_DATETIME_FORMAT
-            = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
+    public static final GracefulDateFormat ISO_8601_EXTENDED_DATETIME_FORMAT
+            = GracefulDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
     /**
      * @deprecated - as of 4.0, ISO_DATETIME_FORMAT will be replaced by ISO_8601_EXTENDED_DATETIME_FORMAT.
      */
     @Deprecated
-    public static final FastDateFormat ISO_DATETIME_FORMAT = ISO_8601_EXTENDED_DATETIME_FORMAT;
+    public static final GracefulDateFormat ISO_DATETIME_FORMAT = ISO_8601_EXTENDED_DATETIME_FORMAT;
 
     /**
      * ISO 8601 formatter for date-time with time zone.
@@ -69,14 +69,14 @@ class DateFormats {
      *
      * @since 5.0.1
      */
-    public static final FastDateFormat ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT
-            = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ssZZ");
+    public static final GracefulDateFormat ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT
+            = GracefulDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ssZZ");
 
     /**
      * @deprecated - as of 4.0, ISO_DATETIME_TIME_ZONE_FORMAT will be replaced by ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.
      */
     @Deprecated
-    public static final FastDateFormat ISO_DATETIME_TIME_ZONE_FORMAT = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
+    public static final GracefulDateFormat ISO_DATETIME_TIME_ZONE_FORMAT = ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT;
 
     /**
      * ISO 8601 formatter for date without time zone.
@@ -88,14 +88,14 @@ class DateFormats {
      *
      * @since 5.0.1
      */
-    public static final FastDateFormat ISO_8601_EXTENDED_DATE_FORMAT
-            = FastDateFormat.getInstance("yyyy-MM-dd");
+    public static final GracefulDateFormat ISO_8601_EXTENDED_DATE_FORMAT
+            = GracefulDateFormat.getInstance("yyyy-MM-dd");
 
     /**
      * @deprecated - as of 4.0, ISO_DATE_FORMAT will be replaced by ISO_8601_EXTENDED_DATE_FORMAT.
      */
     @Deprecated
-    public static final FastDateFormat ISO_DATE_FORMAT = ISO_8601_EXTENDED_DATE_FORMAT;
+    public static final GracefulDateFormat ISO_DATE_FORMAT = ISO_8601_EXTENDED_DATE_FORMAT;
 
     /**
      * ISO 8601-like formatter for date with time zone.
@@ -110,8 +110,8 @@ class DateFormats {
      * @deprecated - as of 4.0, ISO_DATE_TIME_ZONE_FORMAT will be removed.
      */
     @Deprecated
-    public static final FastDateFormat ISO_DATE_TIME_ZONE_FORMAT
-            = FastDateFormat.getInstance("yyyy-MM-ddZZ");
+    public static final GracefulDateFormat ISO_DATE_TIME_ZONE_FORMAT
+            = GracefulDateFormat.getInstance("yyyy-MM-ddZZ");
 
     /**
      * Non-compliant formatter for time without time zone (ISO 8601 does not
@@ -125,8 +125,8 @@ class DateFormats {
      * @deprecated - as of 4.0, ISO_TIME_FORMAT will be removed.
      */
     @Deprecated
-    public static final FastDateFormat ISO_TIME_FORMAT
-            = FastDateFormat.getInstance("'T'HH:mm:ss");
+    public static final GracefulDateFormat ISO_TIME_FORMAT
+            = GracefulDateFormat.getInstance("'T'HH:mm:ss");
 
     /**
      * Non-compliant formatter for time with time zone (ISO 8601 does not
@@ -140,8 +140,8 @@ class DateFormats {
      * @deprecated - as of 4.0, ISO_TIME_TIME_ZONE_FORMAT will be removed.
      */
     @Deprecated
-    public static final FastDateFormat ISO_TIME_TIME_ZONE_FORMAT
-            = FastDateFormat.getInstance("'T'HH:mm:ssZZ");
+    public static final GracefulDateFormat ISO_TIME_TIME_ZONE_FORMAT
+            = GracefulDateFormat.getInstance("'T'HH:mm:ssZZ");
 
     /**
      * ISO 8601 formatter for time without time zone.
@@ -153,14 +153,14 @@ class DateFormats {
      *
      * @since 5.0.1
      */
-    public static final FastDateFormat ISO_8601_EXTENDED_TIME_FORMAT
-            = FastDateFormat.getInstance("HH:mm:ss");
+    public static final GracefulDateFormat ISO_8601_EXTENDED_TIME_FORMAT
+            = GracefulDateFormat.getInstance("HH:mm:ss");
 
     /**
      * @deprecated - as of 4.0, ISO_TIME_NO_T_FORMAT will be replaced by ISO_8601_EXTENDED_TIME_FORMAT.
      */
     @Deprecated
-    public static final FastDateFormat ISO_TIME_NO_T_FORMAT = ISO_8601_EXTENDED_TIME_FORMAT;
+    public static final GracefulDateFormat ISO_TIME_NO_T_FORMAT = ISO_8601_EXTENDED_TIME_FORMAT;
 
     /**
      * ISO 8601 formatter for time with time zone.
@@ -172,14 +172,14 @@ class DateFormats {
      *
      * @since 5.0.1
      */
-    public static final FastDateFormat ISO_8601_EXTENDED_TIME_TIME_ZONE_FORMAT
-            = FastDateFormat.getInstance("HH:mm:ssZZ");
+    public static final GracefulDateFormat ISO_8601_EXTENDED_TIME_TIME_ZONE_FORMAT
+            = GracefulDateFormat.getInstance("HH:mm:ssZZ");
 
     /**
      * @deprecated - as of 4.0, ISO_TIME_NO_T_TIME_ZONE_FORMAT will be replaced by ISO_8601_EXTENDED_TIME_TIME_ZONE_FORMAT.
      */
     @Deprecated
-    public static final FastDateFormat ISO_TIME_NO_T_TIME_ZONE_FORMAT = ISO_8601_EXTENDED_TIME_TIME_ZONE_FORMAT;
+    public static final GracefulDateFormat ISO_TIME_NO_T_TIME_ZONE_FORMAT = ISO_8601_EXTENDED_TIME_TIME_ZONE_FORMAT;
 
     /**
      * SMTP (and probably other) date headers.
@@ -190,8 +190,8 @@ class DateFormats {
      * DateFormatUtils class.
      * </p>
      */
-    public static final FastDateFormat SMTP_DATETIME_FORMAT
-            = FastDateFormat.getInstance("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
+    public static final GracefulDateFormat SMTP_DATETIME_FORMAT
+            = GracefulDateFormat.getInstance("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
 
     //-----------------------------------------------------------------------
     /**
@@ -277,7 +277,7 @@ class DateFormats {
      * @param calendar  the calendar to format, not null
      * @param pattern  the pattern to use to format the calendar, not null
      * @return the formatted calendar
-     * @see FastDateFormat#format(Calendar)
+     * @see GracefulDateFormat#format(Calendar)
      * @since 5.0.1
      */
     public static String format(final Calendar calendar, final String pattern) {
@@ -315,7 +315,7 @@ class DateFormats {
      * @param pattern  the pattern to use to format the calendar, not null
      * @param timeZone  the time zone  to use, may be {@code null}
      * @return the formatted calendar
-     * @see FastDateFormat#format(Calendar)
+     * @see GracefulDateFormat#format(Calendar)
      * @since 5.0.1
      */
     public static String format(final Calendar calendar, final String pattern, final TimeZone timeZone) {
@@ -353,7 +353,7 @@ class DateFormats {
      * @param pattern  the pattern to use to format the calendar, not null
      * @param locale  the locale to use, may be {@code null}
      * @return the formatted calendar
-     * @see FastDateFormat#format(Calendar)
+     * @see GracefulDateFormat#format(Calendar)
      * @since 5.0.1
      */
     public static String format(final Calendar calendar, final String pattern, final Locale locale) {
@@ -383,7 +383,7 @@ class DateFormats {
      * @return the formatted date
      */
     public static String format(final Date date, final String pattern, final TimeZone timeZone, final Locale locale) {
-        final FastDateFormat df = FastDateFormat.getInstance(pattern, timeZone, locale);
+        final GracefulDateFormat df = GracefulDateFormat.getInstance(pattern, timeZone, locale);
         return df.format(date);
     }
 
@@ -395,11 +395,11 @@ class DateFormats {
      * @param timeZone  the time zone  to use, may be {@code null}
      * @param locale  the locale to use, may be {@code null}
      * @return the formatted calendar
-     * @see FastDateFormat#format(Calendar)
+     * @see GracefulDateFormat#format(Calendar)
      * @since 5.0.1
      */
     public static String format(final Calendar calendar, final String pattern, final TimeZone timeZone, final Locale locale) {
-        final FastDateFormat df = FastDateFormat.getInstance(pattern, timeZone, locale);
+        final GracefulDateFormat df = GracefulDateFormat.getInstance(pattern, timeZone, locale);
         return df.format(calendar);
     }
 

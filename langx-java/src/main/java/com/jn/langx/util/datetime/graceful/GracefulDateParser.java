@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jn.langx.util.datetime.fast;
+package com.jn.langx.util.datetime.graceful;
 
 import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Objs;
@@ -36,8 +36,8 @@ import java.util.regex.Pattern;
  * <p>FastDateParser is a fast and thread-safe version of
  * {@link java.text.SimpleDateFormat}.</p>
  *
- * <p>To obtain a proxy to a FastDateParser, use {@link FastDateFormat#getInstance(String, TimeZone, Locale)}
- * or another variation of the factory methods of {@link FastDateFormat}.</p>
+ * <p>To obtain a proxy to a FastDateParser, use {@link GracefulDateFormat#getInstance(String, TimeZone, Locale)}
+ * or another variation of the factory methods of {@link GracefulDateFormat}.</p>
  *
  * <p>Since FastDateParser is thread safe, you can use a static member instance:</p>
  * <code>
@@ -60,10 +60,10 @@ import java.util.regex.Pattern;
  * <p>Timing tests indicate this class is as about as fast as SimpleDateFormat
  * in single thread applications and about 25% faster in multi-thread applications.</p>
  *
- * @see FastDatePrinter
+ * @see GracefulDatePrinter
  * @since 5.0.1
  */
-class FastDateParser implements DateParser, Serializable {
+class GracefulDateParser implements DateParser, Serializable {
 
     /**
      * Required for serialization support.
@@ -92,15 +92,15 @@ class FastDateParser implements DateParser, Serializable {
     /**
      * <p>Constructs a new FastDateParser.</p>
      * <p>
-     * Use {@link FastDateFormat#getInstance(String, TimeZone, Locale)} or another variation of the
-     * factory methods of {@link FastDateFormat} to get a cached FastDateParser instance.
+     * Use {@link GracefulDateFormat#getInstance(String, TimeZone, Locale)} or another variation of the
+     * factory methods of {@link GracefulDateFormat} to get a cached FastDateParser instance.
      *
      * @param pattern  non-null {@link java.text.SimpleDateFormat} compatible
      *                 pattern
      * @param timeZone non-null time zone to use
      * @param locale   non-null locale
      */
-    protected FastDateParser(final String pattern, final TimeZone timeZone, final Locale locale) {
+    protected GracefulDateParser(final String pattern, final TimeZone timeZone, final Locale locale) {
         this(pattern, timeZone, locale, null);
     }
 
@@ -114,8 +114,8 @@ class FastDateParser implements DateParser, Serializable {
      * @param centuryStart The start of the century for 2 digit year parsing
      * @since 5.0.1
      */
-    protected FastDateParser(final String pattern, final TimeZone timeZone, final Locale locale,
-                             final Date centuryStart) {
+    protected GracefulDateParser(final String pattern, final TimeZone timeZone, final Locale locale,
+                                 final Date centuryStart) {
         this.pattern = pattern;
         this.timeZone = timeZone;
         this.locale = Objs.useValueIfNull(locale, Locale.getDefault());
@@ -291,10 +291,10 @@ class FastDateParser implements DateParser, Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (!(obj instanceof FastDateParser)) {
+        if (!(obj instanceof GracefulDateParser)) {
             return false;
         }
-        final FastDateParser other = (FastDateParser) obj;
+        final GracefulDateParser other = (GracefulDateParser) obj;
         return pattern.equals(other.pattern) && timeZone.equals(other.timeZone) && locale.equals(other.locale);
     }
 
@@ -510,7 +510,7 @@ class FastDateParser implements DateParser, Serializable {
             return false;
         }
 
-        abstract boolean parse(FastDateParser parser, Calendar calendar, String source, ParsePosition pos,
+        abstract boolean parse(GracefulDateParser parser, Calendar calendar, String source, ParsePosition pos,
                                int maxWidth);
     }
 
@@ -540,7 +540,7 @@ class FastDateParser implements DateParser, Serializable {
         }
 
         @Override
-        boolean parse(final FastDateParser parser, final Calendar calendar, final String source,
+        boolean parse(final GracefulDateParser parser, final Calendar calendar, final String source,
                       final ParsePosition pos, final int maxWidth) {
             final Matcher matcher = pattern.matcher(source.substring(pos.getIndex()));
             if (!matcher.lookingAt()) {
@@ -552,7 +552,7 @@ class FastDateParser implements DateParser, Serializable {
             return true;
         }
 
-        abstract void setCalendar(FastDateParser parser, Calendar calendar, String value);
+        abstract void setCalendar(GracefulDateParser parser, Calendar calendar, String value);
 
         /**
          * Converts this instance to a handy debug string.
@@ -690,7 +690,7 @@ class FastDateParser implements DateParser, Serializable {
         }
 
         @Override
-        boolean parse(final FastDateParser parser, final Calendar calendar, final String source,
+        boolean parse(final GracefulDateParser parser, final Calendar calendar, final String source,
                       final ParsePosition pos, final int maxWidth) {
             for (int idx = 0; idx < formatField.length(); ++idx) {
                 final int sIdx = idx + pos.getIndex();
@@ -749,7 +749,7 @@ class FastDateParser implements DateParser, Serializable {
          * {@inheritDoc}
          */
         @Override
-        void setCalendar(final FastDateParser parser, final Calendar calendar, final String value) {
+        void setCalendar(final GracefulDateParser parser, final Calendar calendar, final String value) {
             final String lowerCase = value.toLowerCase(locale);
             Integer iVal = lKeyValues.get(lowerCase);
             if (iVal == null) {
@@ -797,7 +797,7 @@ class FastDateParser implements DateParser, Serializable {
         }
 
         @Override
-        boolean parse(final FastDateParser parser, final Calendar calendar, final String source,
+        boolean parse(final GracefulDateParser parser, final Calendar calendar, final String source,
                       final ParsePosition pos, final int maxWidth) {
             int idx = pos.getIndex();
             int last = source.length();
@@ -855,7 +855,7 @@ class FastDateParser implements DateParser, Serializable {
          * @param iValue The parsed integer
          * @return The modified value
          */
-        int modify(final FastDateParser parser, final int iValue) {
+        int modify(final GracefulDateParser parser, final int iValue) {
             return iValue;
         }
 
@@ -875,7 +875,7 @@ class FastDateParser implements DateParser, Serializable {
          * {@inheritDoc}
          */
         @Override
-        int modify(final FastDateParser parser, final int iValue) {
+        int modify(final GracefulDateParser parser, final int iValue) {
             return iValue < 100 ? parser.adjustYear(iValue) : iValue;
         }
     };
@@ -965,8 +965,8 @@ class FastDateParser implements DateParser, Serializable {
          * {@inheritDoc}
          */
         @Override
-        void setCalendar(final FastDateParser parser, final Calendar calendar, final String timeZone) {
-            final TimeZone tz = FastTimeZone.getGmtTimeZone(timeZone);
+        void setCalendar(final GracefulDateParser parser, final Calendar calendar, final String timeZone) {
+            final TimeZone tz = GracefulTimeZone.getGmtTimeZone(timeZone);
             if (tz != null) {
                 calendar.setTimeZone(tz);
             } else {
@@ -1009,8 +1009,8 @@ class FastDateParser implements DateParser, Serializable {
          * {@inheritDoc}
          */
         @Override
-        void setCalendar(final FastDateParser parser, final Calendar calendar, final String value) {
-            calendar.setTimeZone(FastTimeZone.getGmtTimeZone(value));
+        void setCalendar(final GracefulDateParser parser, final Calendar calendar, final String value) {
+            calendar.setTimeZone(GracefulTimeZone.getGmtTimeZone(value));
         }
 
         private static final Strategy ISO_8601_1_STRATEGY = new ISO8601TimeZoneStrategy("(Z|(?:[+-]\\d{2}))");
@@ -1040,7 +1040,7 @@ class FastDateParser implements DateParser, Serializable {
 
     private static final Strategy NUMBER_MONTH_STRATEGY = new NumberStrategy(Calendar.MONTH) {
         @Override
-        int modify(final FastDateParser parser, final int iValue) {
+        int modify(final GracefulDateParser parser, final int iValue) {
             return iValue - 1;
         }
     };
@@ -1052,7 +1052,7 @@ class FastDateParser implements DateParser, Serializable {
     private static final Strategy DAY_OF_MONTH_STRATEGY = new NumberStrategy(Calendar.DAY_OF_MONTH);
     private static final Strategy DAY_OF_WEEK_STRATEGY = new NumberStrategy(Calendar.DAY_OF_WEEK) {
         @Override
-        int modify(final FastDateParser parser, final int iValue) {
+        int modify(final GracefulDateParser parser, final int iValue) {
             return iValue == 7 ? Calendar.SUNDAY : iValue + 1;
         }
     };
@@ -1061,14 +1061,14 @@ class FastDateParser implements DateParser, Serializable {
     private static final Strategy HOUR_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY);
     private static final Strategy HOUR24_OF_DAY_STRATEGY = new NumberStrategy(Calendar.HOUR_OF_DAY) {
         @Override
-        int modify(final FastDateParser parser, final int iValue) {
+        int modify(final GracefulDateParser parser, final int iValue) {
             return iValue == 24 ? 0 : iValue;
         }
     };
 
     private static final Strategy HOUR12_STRATEGY = new NumberStrategy(Calendar.HOUR) {
         @Override
-        int modify(final FastDateParser parser, final int iValue) {
+        int modify(final GracefulDateParser parser, final int iValue) {
             return iValue == 12 ? 0 : iValue;
         }
     };

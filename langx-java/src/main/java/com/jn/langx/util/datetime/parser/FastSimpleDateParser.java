@@ -1,7 +1,7 @@
 package com.jn.langx.util.datetime.parser;
 
 import com.jn.langx.util.datetime.DateTimeParsedResult;
-import com.jn.langx.util.datetime.fast.FastDateFormat;
+import com.jn.langx.util.datetime.graceful.GracefulDateFormat;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
@@ -35,9 +35,9 @@ public class FastSimpleDateParser extends SimpleDateParser {
     }
 
     private DateTimeParsedResult parseWithFastDateFormat(String datetimeString) {
-        FastDateFormat simpleDateFormat = null;
+        GracefulDateFormat simpleDateFormat = null;
         try {
-            simpleDateFormat = FastDateFormat.getInstance(this.pattern, this.timeZone, this.locale);
+            simpleDateFormat = GracefulDateFormat.getInstance(this.pattern, this.timeZone, this.locale);
             Date date = simpleDateFormat.parse(datetimeString);
             DateParsedResult result = new DateParsedResult(date, this.timeZone, this.locale);
             result.setPattern(pattern);

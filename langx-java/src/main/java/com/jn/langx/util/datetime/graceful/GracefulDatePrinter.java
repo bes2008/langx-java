@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jn.langx.util.datetime.fast;
+package com.jn.langx.util.datetime.graceful;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
@@ -36,13 +36,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * <p>FastDatePrinter is a fast and thread-safe version of
+ * <p>GracefulDatePrinter is a fast and thread-safe version of
  * {@link java.text.SimpleDateFormat}.</p>
  *
- * <p>To obtain a FastDatePrinter, use {@link FastDateFormat#getInstance(String, TimeZone, Locale)}
- * or another variation of the factory methods of {@link FastDateFormat}.</p>
+ * <p>To obtain a GracefulDatePrinter, use {@link GracefulDateFormat#getInstance(String, TimeZone, Locale)}
+ * or another variation of the factory methods of {@link GracefulDateFormat}.</p>
  *
- * <p>Since FastDatePrinter is thread safe, you can use a static member instance:</p>
+ * <p>Since GracefulDatePrinter is thread safe, you can use a static member instance:</p>
  * <code>
  *     private static final DatePrinter DATE_PRINTER = FastDateFormat.getInstance("yyyy-MM-dd");
  * </code>
@@ -74,12 +74,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * pattern letters is 2, the year is truncated to 2 digits; otherwise it is
  * interpreted as a number.</i> Starting with Java 1.7 a pattern of 'Y' or
  * 'YYY' will be formatted as '2003', while it was '03' in former Java
- * versions. FastDatePrinter implements the behavior of Java 7.</p>
+ * versions. GracefulDatePrinter implements the behavior of Java 7.</p>
  *
  * @since 5.0.1
- * @see FastDateParser
+ * @see GracefulDateParser
  */
-class FastDatePrinter implements DatePrinter, Serializable {
+class GracefulDatePrinter implements DatePrinter, Serializable {
     // A lot of the speed in this class comes from caching, but some comes
     // from the special int to StringBuilder conversion.
     //
@@ -143,16 +143,16 @@ class FastDatePrinter implements DatePrinter, Serializable {
     // Constructor
     //-----------------------------------------------------------------------
     /**
-     * <p>Constructs a new FastDatePrinter.</p>
-     * Use {@link FastDateFormat#getInstance(String, TimeZone, Locale)}  or another variation of the
-     * factory methods of {@link FastDateFormat} to get a cached FastDatePrinter instance.
+     * <p>Constructs a new GracefulDatePrinter.</p>
+     * Use {@link GracefulDateFormat#getInstance(String, TimeZone, Locale)}  or another variation of the
+     * factory methods of {@link GracefulDateFormat} to get a cached GracefulDatePrinter instance.
      *
      * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone  non-null time zone to use
      * @param locale  non-null locale to use
      * @throws NullPointerException if pattern, timeZone, or locale is null.
      */
-    protected FastDatePrinter(final String pattern, final TimeZone timeZone, final Locale locale) {
+    protected GracefulDatePrinter(final String pattern, final TimeZone timeZone, final Locale locale) {
         mPattern = pattern;
         mTimeZone = timeZone;
         mLocale = Objs.useValueIfNull(locale,Locale.getDefault());
@@ -509,7 +509,7 @@ class FastDatePrinter implements DatePrinter, Serializable {
      */
     @Override
     public <B extends Appendable> B format(Calendar calendar, final B buf) {
-        // do not pass in calendar directly, this will cause TimeZone of FastDatePrinter to be ignored
+        // do not pass in calendar directly, this will cause TimeZone of GracefulDatePrinter to be ignored
         if (!calendar.getTimeZone().equals(mTimeZone)) {
             calendar = (Calendar) calendar.clone();
             calendar.setTimeZone(mTimeZone);
@@ -586,10 +586,10 @@ class FastDatePrinter implements DatePrinter, Serializable {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (!(obj instanceof FastDatePrinter)) {
+        if (!(obj instanceof GracefulDatePrinter)) {
             return false;
         }
-        final FastDatePrinter other = (FastDatePrinter) obj;
+        final GracefulDatePrinter other = (GracefulDatePrinter) obj;
         return mPattern.equals(other.mPattern)
             && mTimeZone.equals(other.mTimeZone)
             && mLocale.equals(other.mLocale);
@@ -612,7 +612,7 @@ class FastDatePrinter implements DatePrinter, Serializable {
      */
     @Override
     public String toString() {
-        return "FastDatePrinter[" + mPattern + "," + mLocale + "," + mTimeZone.getID() + "]";
+        return "GracefulDatePrinter[" + mPattern + "," + mLocale + "," + mTimeZone.getID() + "]";
     }
 
     // Serializing

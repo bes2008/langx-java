@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jn.langx.util.datetime.fast;
+package com.jn.langx.util.datetime.graceful;
 
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -27,7 +27,7 @@ import java.util.TimeZone;
  *
  * @since 5.0.1
  */
-class FastTimeZone {
+class GracefulTimeZone {
 
     private static final Regexp GMT_PATTERN = Regexps.compile("^(?:(?i)GMT)?([+-])?(\\d\\d?)?(:?(\\d\\d?))?$");
 
@@ -91,7 +91,7 @@ class FastTimeZone {
     }
 
     // do not instantiate
-    private FastTimeZone() {
+    private GracefulTimeZone() {
     }
 
 }

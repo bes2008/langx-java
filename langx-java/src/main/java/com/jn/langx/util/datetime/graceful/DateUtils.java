@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jn.langx.util.datetime.fast;
+package com.jn.langx.util.datetime.graceful;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -374,7 +374,7 @@ class DateUtils {
         calendar.setLenient(lenient);
 
         for (final String parsePattern : parsePatterns) {
-            final FastDateParser fdp = new FastDateParser(parsePattern, tz, lcl);
+            final GracefulDateParser fdp = new GracefulDateParser(parsePattern, tz, lcl);
             calendar.clear();
             try {
                 if (fdp.parse(str, pos, calendar) && pos.getIndex() == str.length()) {

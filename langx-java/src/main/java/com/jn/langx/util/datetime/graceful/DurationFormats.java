@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jn.langx.util.datetime.fast;
+package com.jn.langx.util.datetime.graceful;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -64,7 +64,7 @@ class DurationFormats {
      * <p>Pattern used with {@code FastDateFormat} and {@code SimpleDateFormat}
      * for the ISO 8601 period format used in durations.</p>
      *
-     * @see FastDateFormat
+     * @see GracefulDateFormat
      * @see java.text.SimpleDateFormat
      */
     public static final String ISO_EXTENDED_FORMAT_PATTERN = "'P'yyyy'Y'M'M'd'DT'H'H'm'M's.SSS'S'";

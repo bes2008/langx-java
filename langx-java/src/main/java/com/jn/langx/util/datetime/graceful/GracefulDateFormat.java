@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jn.langx.util.datetime.fast;
+package com.jn.langx.util.datetime.graceful;
 
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.Throwables;
@@ -67,7 +67,7 @@ import java.util.TimeZone;
  *
  * @since 5.0.1
  */
-public class FastDateFormat extends Format implements DateParser, DatePrinter {
+public class GracefulDateFormat extends Format implements DateParser, DatePrinter {
 
     /**
      * Required for serialization support.
@@ -97,15 +97,15 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      */
     public static final int SHORT = DateFormat.SHORT;
 
-    private static final FormatCache<FastDateFormat> cache = new FormatCache<FastDateFormat>() {
+    private static final FormatCache<GracefulDateFormat> cache = new FormatCache<GracefulDateFormat>() {
         @Override
-        protected FastDateFormat createInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
-            return new FastDateFormat(pattern, timeZone, locale);
+        protected GracefulDateFormat createInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
+            return new GracefulDateFormat(pattern, timeZone, locale);
         }
     };
 
-    private final FastDatePrinter printer;
-    private final FastDateParser parser;
+    private final GracefulDatePrinter printer;
+    private final GracefulDateParser parser;
 
     //-----------------------------------------------------------------------
 
@@ -115,7 +115,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      *
      * @return a date/time formatter
      */
-    public static FastDateFormat getInstance() {
+    public static GracefulDateFormat getInstance() {
         return getInstance(Dates.yyyy_MM_dd_HH_mm_ss);
     }
 
@@ -128,7 +128,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      * @return a pattern based date/time formatter
      * @throws IllegalArgumentException if pattern is invalid
      */
-    public static FastDateFormat getInstance(final String pattern) {
+    public static GracefulDateFormat getInstance(final String pattern) {
         return cache.getInstance(pattern, null, null);
     }
 
@@ -143,7 +143,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      * @return a pattern based date/time formatter
      * @throws IllegalArgumentException if pattern is invalid
      */
-    public static FastDateFormat getInstance(final String pattern, final TimeZone timeZone) {
+    public static GracefulDateFormat getInstance(final String pattern, final TimeZone timeZone) {
         return cache.getInstance(pattern, timeZone, null);
     }
 
@@ -157,7 +157,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      * @return a pattern based date/time formatter
      * @throws IllegalArgumentException if pattern is invalid
      */
-    public static FastDateFormat getInstance(final String pattern, final Locale locale) {
+    public static GracefulDateFormat getInstance(final String pattern, final Locale locale) {
         return cache.getInstance(pattern, null, locale);
     }
 
@@ -174,7 +174,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      * @throws IllegalArgumentException if pattern is invalid
      *                                  or {@code null}
      */
-    public static FastDateFormat getInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
+    public static GracefulDateFormat getInstance(final String pattern, final TimeZone timeZone, final Locale locale) {
         return cache.getInstance(pattern, timeZone, locale);
     }
 
@@ -190,7 +190,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      * @param locale   non-null locale to use
      * @throws NullPointerException if pattern, timeZone, or locale is null.
      */
-    protected FastDateFormat(final String pattern, final TimeZone timeZone, final Locale locale) {
+    protected GracefulDateFormat(final String pattern, final TimeZone timeZone, final Locale locale) {
         this(pattern, timeZone, locale, null);
     }
 
@@ -206,9 +206,9 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      * @param centuryStart The start of the 100 year period to use as the "default century" for 2 digit year parsing.  If centuryStart is null, defaults to now - 80 years
      * @throws NullPointerException if pattern, timeZone, or locale is null.
      */
-    protected FastDateFormat(final String pattern, final TimeZone timeZone, final Locale locale, final Date centuryStart) {
-        printer = new FastDatePrinter(pattern, timeZone, locale);
-        parser = new FastDateParser(pattern, timeZone, locale, centuryStart);
+    protected GracefulDateFormat(final String pattern, final TimeZone timeZone, final Locale locale, final Date centuryStart) {
+        printer = new GracefulDatePrinter(pattern, timeZone, locale);
+        parser = new GracefulDateParser(pattern, timeZone, locale, centuryStart);
     }
 
     // Format methods
@@ -412,10 +412,10 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (!(obj instanceof FastDateFormat)) {
+        if (!(obj instanceof GracefulDateFormat)) {
             return false;
         }
-        final FastDateFormat other = (FastDateFormat) obj;
+        final GracefulDateFormat other = (GracefulDateFormat) obj;
         // no need to check parser, as it has same invariants as printer
         return printer.equals(other.printer);
     }
