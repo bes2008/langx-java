@@ -33,13 +33,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * <p>FastDateParser is a fast and thread-safe version of
+ * <p>GracefulDateParser is a fast and thread-safe version of
  * {@link java.text.SimpleDateFormat}.</p>
  *
- * <p>To obtain a proxy to a FastDateParser, use {@link GracefulDateFormat#getInstance(String, TimeZone, Locale)}
+ * <p>To obtain a proxy to a GracefulDateParser, use {@link GracefulDateFormat#getInstance(String, TimeZone, Locale)}
  * or another variation of the factory methods of {@link GracefulDateFormat}.</p>
  *
- * <p>Since FastDateParser is thread safe, you can use a static member instance:</p>
+ * <p>Since GracefulDateParser is thread safe, you can use a static member instance:</p>
  * <code>
  * private static final DateParser DATE_PARSER = FastDateFormat.getInstance("yyyy-MM-dd");
  * </code>
@@ -90,10 +90,10 @@ class GracefulDateParser implements DateParser, Serializable {
     private static final Comparator<String> LONGER_FIRST_LOWERCASE = Collections.reverseOrder();
 
     /**
-     * <p>Constructs a new FastDateParser.</p>
+     * <p>Constructs a new GracefulDateParser.</p>
      * <p>
      * Use {@link GracefulDateFormat#getInstance(String, TimeZone, Locale)} or another variation of the
-     * factory methods of {@link GracefulDateFormat} to get a cached FastDateParser instance.
+     * factory methods of {@link GracefulDateFormat} to get a cached GracefulDateParser instance.
      *
      * @param pattern  non-null {@link java.text.SimpleDateFormat} compatible
      *                 pattern
@@ -105,7 +105,7 @@ class GracefulDateParser implements DateParser, Serializable {
     }
 
     /**
-     * <p>Constructs a new FastDateParser.</p>
+     * <p>Constructs a new GracefulDateParser.</p>
      *
      * @param pattern      non-null {@link java.text.SimpleDateFormat} compatible
      *                     pattern
@@ -143,7 +143,7 @@ class GracefulDateParser implements DateParser, Serializable {
      * Initializes derived fields from defining fields.
      * This is called from constructor and from readObject (de-serialization)
      *
-     * @param definingCalendar the {@link java.util.Calendar} instance used to initialize this FastDateParser
+     * @param definingCalendar the {@link java.util.Calendar} instance used to initialize this GracefulDateParser
      */
     private void init(final Calendar definingCalendar) {
         patterns = new ArrayList<StrategyAndWidth>();
@@ -315,7 +315,7 @@ class GracefulDateParser implements DateParser, Serializable {
      */
     @Override
     public String toString() {
-        return "FastDateParser[" + pattern + ", " + locale + ", " + timeZone.getID() + "]";
+        return "GracefulDateParser[" + pattern + ", " + locale + ", " + timeZone.getID() + "]";
     }
 
     /**
@@ -325,7 +325,7 @@ class GracefulDateParser implements DateParser, Serializable {
      * @since 5.0.1
      */
     public String toStringAll() {
-        return "FastDateParser [pattern=" + pattern + ", timeZone=" + timeZone + ", locale=" + locale + ", century="
+        return "GracefulDateParser [pattern=" + pattern + ", timeZone=" + timeZone + ", locale=" + locale + ", century="
                 + century + ", startYear=" + startYear + ", patterns=" + patterns + "]";
     }
 
