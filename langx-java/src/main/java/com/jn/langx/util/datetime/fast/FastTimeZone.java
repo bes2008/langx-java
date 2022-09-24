@@ -16,9 +16,11 @@
  */
 package com.jn.langx.util.datetime.fast;
 
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
+
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Faster methods to produce custom time zones.
@@ -27,7 +29,7 @@ import java.util.regex.Pattern;
  */
 class FastTimeZone {
 
-    private static final Pattern GMT_PATTERN = Pattern.compile("^(?:(?i)GMT)?([+-])?(\\d\\d?)?(:?(\\d\\d?))?$");
+    private static final Regexp GMT_PATTERN = Regexps.compile("^(?:(?i)GMT)?([+-])?(\\d\\d?)?(:?(\\d\\d?))?$");
 
     private static final TimeZone GREENWICH = new GmtTimeZone(false, 0, 0);
 
@@ -51,7 +53,7 @@ class FastTimeZone {
             return GREENWICH;
         }
 
-        final Matcher m = GMT_PATTERN.matcher(pattern);
+        final RegexpMatcher m = GMT_PATTERN.matcher(pattern);
         if (m.matches()) {
             final int hours = parseInt(m.group(2));
             final int minutes = parseInt(m.group(4));

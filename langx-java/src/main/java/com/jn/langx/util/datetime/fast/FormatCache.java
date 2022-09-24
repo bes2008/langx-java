@@ -16,15 +16,15 @@
  */
 package com.jn.langx.util.datetime.fast;
 
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.datetime.DateFormatCacheKey;
+
 import java.text.Format;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.datetime.DateFormatCacheKey;
 
 /**
  * FormatCache is a cache and factory for {@link Format}s.
@@ -38,9 +38,9 @@ abstract class FormatCache<F extends Format> {
      */
     static final int NONE = -1;
 
-    private final ConcurrentMap<DateFormatCacheKey, F> cInstanceCache = new ConcurrentHashMap<DateFormatCacheKey,F>(7);
+    private final ConcurrentMap<DateFormatCacheKey, F> cInstanceCache = new ConcurrentHashMap<DateFormatCacheKey, F>(7);
 
-    private static final ConcurrentMap<DateFormatCacheKey, String> cDateTimeInstanceCache = new ConcurrentHashMap<DateFormatCacheKey,String>(7);
+    private static final ConcurrentMap<DateFormatCacheKey, String> cDateTimeInstanceCache = new ConcurrentHashMap<DateFormatCacheKey, String>(7);
 
 
     /**
@@ -48,11 +48,11 @@ abstract class FormatCache<F extends Format> {
      * and locale.
      *
      * @param pattern  {@link java.text.SimpleDateFormat} compatible
-     *  pattern, non-null
-     * @param timeZone  the time zone, null means use the default TimeZone
-     * @param locale  the locale, null means use the default Locale
+     *                 pattern, non-null
+     * @param timeZone the time zone, null means use the default TimeZone
+     * @param locale   the locale, null means use the default Locale
      * @return a pattern based date/time formatter
-     * @throws NullPointerException if pattern is {@code null}
+     * @throws NullPointerException     if pattern is {@code null}
      * @throws IllegalArgumentException if pattern is invalid
      */
     public F getInstance(final String pattern, TimeZone timeZone, Locale locale) {
@@ -60,7 +60,7 @@ abstract class FormatCache<F extends Format> {
         if (timeZone == null) {
             timeZone = TimeZone.getDefault();
         }
-        locale = Objs.useValueIfNull(locale,Locale.getDefault());
+        locale = Objs.useValueIfNull(locale, Locale.getDefault());
         final DateFormatCacheKey key = new DateFormatCacheKey(pattern, timeZone, locale);
         F format = cInstanceCache.get(key);
         if (format == null) {
@@ -80,11 +80,11 @@ abstract class FormatCache<F extends Format> {
      * and locale.
      *
      * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern, this will not be null.
-     * @param timeZone  time zone, this will not be null.
-     * @param locale  locale, this will not be null.
+     * @param timeZone time zone, this will not be null.
+     * @param locale   locale, this will not be null.
      * @return a pattern based date/time formatter
      * @throws IllegalArgumentException if pattern is invalid
-     *  or {@code null}
+     *                                  or {@code null}
      */
     protected abstract F createInstance(String pattern, TimeZone timeZone, Locale locale);
 

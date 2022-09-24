@@ -16,6 +16,8 @@
  */
 package com.jn.langx.util.datetime.fast;
 
+import com.jn.langx.util.Objs;
+
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -30,7 +32,6 @@ class GmtTimeZone extends TimeZone {
     private static final int MINUTES_PER_HOUR = 60;
     private static final int HOURS_PER_DAY = 24;
 
-    // Serializable!
     static final long serialVersionUID = 1L;
 
     private final int offset;
@@ -46,8 +47,8 @@ class GmtTimeZone extends TimeZone {
         final int milliseconds = (minutes + (hours * MINUTES_PER_HOUR)) * MILLISECONDS_PER_MINUTE;
         offset = negate ? -milliseconds : milliseconds;
         zoneId = twoDigits(
-            twoDigits(new StringBuilder(9).append("GMT").append(negate ? '-' : '+'), hours)
-                .append(':'), minutes).toString();
+                twoDigits(new StringBuilder(9).append("GMT").append(negate ? '-' : '+'), hours)
+                        .append(':'), minutes).toString();
 
     }
 
@@ -100,6 +101,6 @@ class GmtTimeZone extends TimeZone {
         if (!(other instanceof GmtTimeZone)) {
             return false;
         }
-        return zoneId == ((GmtTimeZone) other).zoneId;
+        return Objs.equals(zoneId, ((GmtTimeZone) other).zoneId);
     }
 }
