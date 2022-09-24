@@ -62,43 +62,6 @@ interface DatePrinter {
      */
     String format(Calendar calendar);
 
-    /**
-     * <p>Formats a millisecond {@code long} value into the
-     * supplied {@code StringBuffer}.</p>
-     *
-     * @param millis  the millisecond value to format
-     * @param buf  the buffer to format into
-     * @return the specified string buffer
-     * @deprecated Use {{@link #format(long, Appendable)}.
-     */
-    @Deprecated
-    StringBuffer format(long millis, StringBuffer buf);
-
-    /**
-     * <p>Formats a {@code Date} object into the
-     * supplied {@code StringBuffer} using a {@code GregorianCalendar}.</p>
-     *
-     * @param date  the date to format
-     * @param buf  the buffer to format into
-     * @return the specified string buffer
-     * @deprecated Use {{@link #format(Date, Appendable)}.
-     */
-    @Deprecated
-    StringBuffer format(Date date, StringBuffer buf);
-
-    /**
-     * <p>Formats a {@code Calendar} object into the supplied {@code StringBuffer}.</p>
-     * The TimeZone set on the Calendar is only used to adjust the time offset.
-     * The TimeZone specified during the construction of the Parser will determine the TimeZone
-     * used in the formatted string.
-     *
-     * @param calendar  the calendar to format
-     * @param buf  the buffer to format into
-     * @return the specified string buffer
-     * @deprecated Use {{@link #format(Calendar, Appendable)}.
-     */
-    @Deprecated
-    StringBuffer format(Calendar calendar, StringBuffer buf);
 
     /**
      * <p>Formats a millisecond {@code long} value into the
@@ -138,6 +101,17 @@ interface DatePrinter {
      */
     <B extends Appendable> B format(Calendar calendar, B buf);
 
+    /**
+     * <p>Formats a {@code Date}, {@code Calendar} or
+     * {@code Long} (milliseconds) object.</p>
+     *
+     * @param obj  the object to format
+     * @param toAppendTo  the buffer to append to
+     * @param pos  the position - ignored
+     * @return the buffer passed in
+     * @see java.text.DateFormat#format(Object, StringBuffer, FieldPosition)
+     */
+    <B extends Appendable> B format(B toAppendTo, FieldPosition pos, Object obj );
 
     // Accessors
     //-----------------------------------------------------------------------
@@ -164,15 +138,5 @@ interface DatePrinter {
      */
     Locale getLocale();
 
-    /**
-     * <p>Formats a {@code Date}, {@code Calendar} or
-     * {@code Long} (milliseconds) object.</p>
-     *
-     * @param obj  the object to format
-     * @param toAppendTo  the buffer to append to
-     * @param pos  the position - ignored
-     * @return the buffer passed in
-     * @see java.text.DateFormat#format(Object, StringBuffer, FieldPosition)
-     */
-    StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos);
+
 }

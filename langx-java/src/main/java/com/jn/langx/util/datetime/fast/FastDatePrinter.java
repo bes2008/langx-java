@@ -82,13 +82,13 @@ import java.util.concurrent.ConcurrentMap;
  */
 class FastDatePrinter implements DatePrinter, Serializable {
     // A lot of the speed in this class comes from caching, but some comes
-    // from the special int to StringBuffer conversion.
+    // from the special int to StringBuilder conversion.
     //
     // The following produces a padded 2 digit number:
     //   buffer.append((char)(value / 10 + '0'));
     //   buffer.append((char)(value % 10 + '0'));
     //
-    // Note that the fastest append to StringBuffer is a single char (used here).
+    // Note that the fastest append to StringBuilder is a single char (used here).
     // Note that Integer.toString() is not called, the conversion is simply
     // taking the value and adding (mathematically) the ASCII value for '0'.
     // So, don't change this code! It works and is very fast.
@@ -401,15 +401,13 @@ class FastDatePrinter implements DatePrinter, Serializable {
     /**
      * <p>Formats a {@code Date}, {@code Calendar} or
      * {@code Long} (milliseconds) object.</p>
-     * @deprecated Use {{@link #format(Date)}, {{@link #format(Calendar)}, {{@link #format(long)}, or {{@link #format(Object)}
      * @param obj  the object to format
      * @param toAppendTo  the buffer to append to
      * @param pos  the position - ignored
      * @return the buffer passed in
      */
-    @Deprecated
     @Override
-    public StringBuffer format(final Object obj, final StringBuffer toAppendTo, final FieldPosition pos) {
+    public Appendable format(final Appendable toAppendTo, final FieldPosition pos,final Object obj) {
         if (obj instanceof Date) {
             return format((Date) obj, toAppendTo);
         } else if (obj instanceof Calendar) {
@@ -425,7 +423,6 @@ class FastDatePrinter implements DatePrinter, Serializable {
     /**
      * <p>Formats a {@code Date}, {@code Calendar} or
      * {@code Long} (milliseconds) object.</p>
-     * @since 5.0.1
      * @param obj  the object to format
      * @return The formatted value.
      */
@@ -487,34 +484,6 @@ class FastDatePrinter implements DatePrinter, Serializable {
         return format(calendar, new StringBuilder(mMaxLengthEstimate)).toString();
     }
 
-    /* (non-Javadoc)
-     * @see org.apache.commons.lang3.time.DatePrinter#format(long, java.lang.StringBuffer)
-     */
-    @Override
-    public StringBuffer format(final long millis, final StringBuffer buf) {
-        final Calendar c = newCalendar();
-        c.setTimeInMillis(millis);
-        return (StringBuffer) applyRules(c, (Appendable) buf);
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.commons.lang3.time.DatePrinter#format(java.util.Date, java.lang.StringBuffer)
-     */
-    @Override
-    public StringBuffer format(final Date date, final StringBuffer buf) {
-        final Calendar c = newCalendar();
-        c.setTime(date);
-        return (StringBuffer) applyRules(c, (Appendable) buf);
-    }
-
-    /* (non-Javadoc)
-     * @see org.apache.commons.lang3.time.DatePrinter#format(java.util.Calendar, java.lang.StringBuffer)
-     */
-    @Override
-    public StringBuffer format(final Calendar calendar, final StringBuffer buf) {
-        // do not pass in calendar directly, this will cause TimeZone of FastDatePrinter to be ignored
-        return format(calendar.getTime(), buf);
-    }
 
     /* (non-Javadoc)
      * @see org.apache.commons.lang3.time.DatePrinter#format(long, java.lang.Appendable)
@@ -550,27 +519,12 @@ class FastDatePrinter implements DatePrinter, Serializable {
     }
 
     /**
-     * Performs the formatting by applying the rules to the
-     * specified calendar.
-     *
-     * @param calendar the calendar to format
-     * @param buf the buffer to format into
-     * @return the specified string buffer
-     *
-     * @deprecated use {@link #format(Calendar)} or {@link #format(Calendar, Appendable)}
-     */
-    @Deprecated
-    protected StringBuffer applyRules(final Calendar calendar, final StringBuffer buf) {
-        return (StringBuffer) applyRules(calendar, (Appendable) buf);
-    }
-
-    /**
      * <p>Performs the formatting by applying the rules to the
      * specified calendar.</p>
      *
      * @param calendar  the calendar to format
      * @param buf  the buffer to format into
-     * @param <B> the Appendable class type, usually StringBuilder or StringBuffer.
+     * @param <B> the Appendable class type, usually StringBuilder or StringBuilder.
      * @return the specified string buffer
      */
     private <B extends Appendable> B applyRules(final Calendar calendar, final B buf) {
