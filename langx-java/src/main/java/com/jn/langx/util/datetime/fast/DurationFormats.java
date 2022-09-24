@@ -49,7 +49,7 @@ import java.util.TimeZone;
  * size. Values will be left-padded with 0 unless padding is disabled in the method invocation.
  * @since 5.0.1
  */
-class DurationFormatUtils {
+class DurationFormats {
 
     /**
      * <p>DurationFormatUtils instances should NOT be constructed in standard programming.</p>
@@ -57,7 +57,7 @@ class DurationFormatUtils {
      * <p>This constructor is public to permit tools that require a JavaBean instance
      * to operate.</p>
      */
-    public DurationFormatUtils() {
+    public DurationFormats() {
     }
 
     /**

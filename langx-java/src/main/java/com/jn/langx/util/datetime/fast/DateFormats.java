@@ -32,7 +32,7 @@ import java.util.TimeZone;
  *
  * @since 5.0.1
  */
-class DateFormatUtils {
+class DateFormats {
 
     /**
      * The UTC time zone (often referred to as GMT).
@@ -200,7 +200,7 @@ class DateFormatUtils {
      * <p>This constructor is public to permit tools that require a JavaBean instance
      * to operate.</p>
      */
-    public DateFormatUtils() {
+    public DateFormats() {
     }
 
     /**

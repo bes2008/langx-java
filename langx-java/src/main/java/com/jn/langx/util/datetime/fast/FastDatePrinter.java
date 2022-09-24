@@ -18,6 +18,7 @@ package com.jn.langx.util.datetime.fast;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.os.Platform;
 
 import java.io.IOException;
@@ -26,14 +27,12 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.FieldPosition;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 
 /**
@@ -186,7 +185,7 @@ class FastDatePrinter implements DatePrinter, Serializable {
      */
     protected List<Rule> parsePattern() {
         final DateFormatSymbols symbols = new DateFormatSymbols(mLocale);
-        final List<Rule> rules = new ArrayList<Rule>();
+        final List<Rule> rules = Collects.emptyArrayList();
 
         final String[] ERAs = symbols.getEras();
         final String[] months = symbols.getMonths();
@@ -1261,7 +1260,7 @@ class FastDatePrinter implements DatePrinter, Serializable {
 
     //-----------------------------------------------------------------------
 
-    private static final ConcurrentMap<TimeZoneDisplayKey, String> cTimeZoneDisplayCache =
+    private static final ConcurrentHashMap<TimeZoneDisplayKey, String> cTimeZoneDisplayCache =
         new ConcurrentHashMap<TimeZoneDisplayKey, String>(7);
     /**
      * <p>Gets the time zone display name, using a cache for performance.</p>
