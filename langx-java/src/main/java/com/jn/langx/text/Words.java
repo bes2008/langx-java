@@ -21,7 +21,7 @@ public class Words {
      * <p>This constructor is public to permit tools that require a JavaBean
      * instance to operate.</p>
      */
-    public Words() {
+    private Words() {
         super();
     }
 
