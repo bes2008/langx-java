@@ -15,15 +15,12 @@ public class Hexs {
     /**
      * Indicates whether the provided character is a valid hexadecimal digit.
      *
-     * @param  c  The character for which to make the determination.
-     *
-     * @return  {@code true} if the provided character does represent a valid
-     *          hexadecimal digit, or {@code false} if not.
+     * @param c The character for which to make the determination.
+     * @return {@code true} if the provided character does represent a valid
+     * hexadecimal digit, or {@code false} if not.
      */
-    public static boolean isHex(final char c)
-    {
-        switch (c)
-        {
+    public static boolean isHex(final char c) {
+        switch (c) {
             case '0':
             case '1':
             case '2':
@@ -54,37 +51,31 @@ public class Hexs {
     }
 
 
-
     /**
      * Retrieves a hexadecimal representation of the provided byte.
      *
-     * @param  b  The byte to encode as hexadecimal.
-     *
-     * @return  A string containing the hexadecimal representation of the provided
-     *          byte.
+     * @param b The byte to encode as hexadecimal.
+     * @return A string containing the hexadecimal representation of the provided
+     * byte.
      */
     @NonNull()
-    public static String toHex(final byte b)
-    {
+    public static String toHex(final byte b) {
         final StringBuilder buffer = new StringBuilder(2);
         toHex(b, buffer);
         return buffer.toString();
     }
 
 
-
     /**
      * Appends a hexadecimal representation of the provided byte to the given
      * buffer.
      *
-     * @param  b       The byte to encode as hexadecimal.
-     * @param  buffer  The buffer to which the hexadecimal representation is to be
-     *                 appended.
+     * @param b      The byte to encode as hexadecimal.
+     * @param buffer The buffer to which the hexadecimal representation is to be
+     *               appended.
      */
-    public static void toHex(final byte b, @NonNull final StringBuilder buffer)
-    {
-        switch (b & 0xF0)
-        {
+    public static void toHex(final byte b, @NonNull final StringBuilder buffer) {
+        switch (b & 0xF0) {
             case 0x00:
                 buffer.append('0');
                 break;
@@ -135,8 +126,7 @@ public class Hexs {
                 break;
         }
 
-        switch (b & 0x0F)
-        {
+        switch (b & 0x0F) {
             case 0x00:
                 buffer.append('0');
                 break;
@@ -189,19 +179,16 @@ public class Hexs {
     }
 
 
-
     /**
      * Appends a hexadecimal representation of the provided byte to the given
      * buffer.
      *
-     * @param  b       The byte to encode as hexadecimal.
-     * @param  buffer  The buffer to which the hexadecimal representation is to be
-     *                 appended.
+     * @param b      The byte to encode as hexadecimal.
+     * @param buffer The buffer to which the hexadecimal representation is to be
+     *               appended.
      */
-    public static void toHex(final byte b, @NonNull final ByteStringBuffer buffer)
-    {
-        switch (b & 0xF0)
-        {
+    public static void toHex(final byte b, @NonNull final ByteStringBuffer buffer) {
+        switch (b & 0xF0) {
             case 0x00:
                 buffer.append((byte) '0');
                 break;
@@ -252,8 +239,7 @@ public class Hexs {
                 break;
         }
 
-        switch (b & 0x0F)
-        {
+        switch (b & 0x0F) {
             case 0x00:
                 buffer.append((byte) '0');
                 break;
@@ -304,7 +290,6 @@ public class Hexs {
                 break;
         }
     }
-
 
 
     /**
@@ -312,15 +297,13 @@ public class Hexs {
      * array.  No delimiter character will be inserted between the hexadecimal
      * digits for each byte.
      *
-     * @param  b  The byte array to be represented as a hexadecimal string.  It
-     *            must not be {@code null}.
-     *
-     * @return  A string containing a hexadecimal representation of the contents
-     *          of the provided byte array.
+     * @param b The byte array to be represented as a hexadecimal string.  It
+     *          must not be {@code null}.
+     * @return A string containing a hexadecimal representation of the contents
+     * of the provided byte array.
      */
     @NonNull()
-    public static String toHex(@NonNull final byte[] b)
-    {
+    public static String toHex(@NonNull final byte[] b) {
         Preconditions.checkNotNull(b);
 
         final StringBuilder buffer = new StringBuilder(2 * b.length);
@@ -329,50 +312,42 @@ public class Hexs {
     }
 
 
-
     /**
      * Retrieves a hexadecimal representation of the contents of the provided byte
      * array.  No delimiter character will be inserted between the hexadecimal
      * digits for each byte.
      *
-     * @param  b       The byte array to be represented as a hexadecimal string.
-     *                 It must not be {@code null}.
-     * @param  buffer  A buffer to which the hexadecimal representation of the
-     *                 contents of the provided byte array should be appended.
+     * @param bytes  The byte array to be represented as a hexadecimal string.
+     *               It must not be {@code null}.
+     * @param buffer A buffer to which the hexadecimal representation of the
+     *               contents of the provided byte array should be appended.
      */
-    public static void toHex(@NonNull final byte[] b,
-                             @NonNull final StringBuilder buffer)
-    {
-        toHex(b, null, buffer);
+    public static void toHex(@NonNull final byte[] bytes,
+                             @NonNull final StringBuilder buffer) {
+        toHex(bytes, null, buffer);
     }
 
 
-
     /**
      * Retrieves a hexadecimal representation of the contents of the provided byte
      * array.  No delimiter character will be inserted between the hexadecimal
      * digits for each byte.
      *
-     * @param  b          The byte array to be represented as a hexadecimal
-     *                    string.  It must not be {@code null}.
-     * @param  delimiter  A delimiter to be inserted between bytes.  It may be
-     *                    {@code null} if no delimiter should be used.
-     * @param  buffer     A buffer to which the hexadecimal representation of the
-     *                    contents of the provided byte array should be appended.
+     * @param bytes     The byte array to be represented as a hexadecimal
+     *                  string.  It must not be {@code null}.
+     * @param delimiter A delimiter to be inserted between bytes.  It may be
+     *                  {@code null} if no delimiter should be used.
+     * @param buffer    A buffer to which the hexadecimal representation of the
+     *                  contents of the provided byte array should be appended.
      */
-    public static void toHex(@NonNull final byte[] b,
+    public static void toHex(@NonNull final byte[] bytes,
                              @Nullable final String delimiter,
-                             @NonNull final StringBuilder buffer)
-    {
+                             @NonNull final StringBuilder buffer) {
         boolean first = true;
-        for (final byte bt : b)
-        {
-            if (first)
-            {
+        for (final byte bt : bytes) {
+            if (first) {
                 first = false;
-            }
-            else if (delimiter != null)
-            {
+            } else if (delimiter != null) {
                 buffer.append(delimiter);
             }
 
@@ -381,33 +356,29 @@ public class Hexs {
     }
 
 
-
     /**
      * Retrieves a hex-encoded representation of the contents of the provided
-     * array, along with an ASCII representation of its contents next to it.  The
+     * bytes, along with an ASCII representation of its contents next to it.  The
      * output will be split across multiple lines, with up to sixteen bytes per
      * line.  For each of those sixteen bytes, the two-digit hex representation
      * will be appended followed by a space.  Then, the ASCII representation of
      * those sixteen bytes will follow that, with a space used in place of any
      * byte that does not have an ASCII representation.
      *
-     * @param  array   The array whose contents should be processed.
-     * @param  indent  The number of spaces to insert on each line prior to the
-     *                 first hex byte.
-     *
-     * @return  A hex-encoded representation of the contents of the provided
-     *          array, along with an ASCII representation of its contents next to
-     *          it.
+     * @param bytes  The bytes whose contents should be processed.
+     * @param indent The number of spaces to insert on each line prior to the
+     *               first hex byte.
+     * @return A hex-encoded representation of the contents of the provided
+     * bytes, along with an ASCII representation of its contents next to
+     * it.
      */
     @NonNull()
-    public static String toHexPlusASCII(@NonNull final byte[] array,
-                                        final int indent)
-    {
+    public static String toHexPlusASCII(@NonNull final byte[] bytes,
+                                        final int indent) {
         final StringBuilder buffer = new StringBuilder();
-        toHexPlusASCII(array, indent, buffer);
+        toHexPlusASCII(bytes, indent, buffer);
         return buffer.toString();
     }
-
 
 
     /**
@@ -419,53 +390,42 @@ public class Hexs {
      * representation of those sixteen bytes will follow that, with a space used
      * in place of any byte that does not have an ASCII representation.
      *
-     * @param  array   The array whose contents should be processed.
-     * @param  indent  The number of spaces to insert on each line prior to the
-     *                 first hex byte.
-     * @param  buffer  The buffer to which the encoded data should be appended.
+     * @param array  The array whose contents should be processed.
+     * @param indent The number of spaces to insert on each line prior to the
+     *               first hex byte.
+     * @param buffer The buffer to which the encoded data should be appended.
      */
     public static void toHexPlusASCII(@Nullable final byte[] array,
                                       final int indent,
-                                      @NonNull final StringBuilder buffer)
-    {
-        if ((array == null) || (array.length == 0))
-        {
+                                      @NonNull final StringBuilder buffer) {
+        if ((array == null) || (array.length == 0)) {
             return;
         }
 
-        for (int i=0; i < indent; i++)
-        {
+        for (int i = 0; i < indent; i++) {
             buffer.append(' ');
         }
 
         int pos = 0;
         int startPos = 0;
-        while (pos < array.length)
-        {
+        while (pos < array.length) {
             toHex(array[pos++], buffer);
             buffer.append(' ');
 
-            if ((pos % 16) == 0)
-            {
+            if ((pos % 16) == 0) {
                 buffer.append("  ");
-                for (int i=startPos; i < pos; i++)
-                {
-                    if ((array[i] < ' ') || (array[i] > '~'))
-                    {
+                for (int i = startPos; i < pos; i++) {
+                    if ((array[i] < ' ') || (array[i] > '~')) {
                         buffer.append(' ');
-                    }
-                    else
-                    {
+                    } else {
                         buffer.append((char) array[i]);
                     }
                 }
                 buffer.append(EOL);
                 startPos = pos;
 
-                if (pos < array.length)
-                {
-                    for (int i=0; i < indent; i++)
-                    {
+                if (pos < array.length) {
+                    for (int i = 0; i < indent; i++) {
                         buffer.append(' ');
                     }
                 }
@@ -473,22 +433,16 @@ public class Hexs {
         }
 
         // If the last line isn't complete yet, then finish it off.
-        if ((array.length % 16) != 0)
-        {
+        if ((array.length % 16) != 0) {
             final int missingBytes = (16 - (array.length % 16));
-            for (int i=0; i < missingBytes; i++)
-            {
+            for (int i = 0; i < missingBytes; i++) {
                 buffer.append("   ");
             }
             buffer.append("  ");
-            for (int i=startPos; i < array.length; i++)
-            {
-                if ((array[i] < ' ') || (array[i] > '~'))
-                {
+            for (int i = startPos; i < array.length; i++) {
+                if ((array[i] < ' ') || (array[i] > '~')) {
                     buffer.append(' ');
-                }
-                else
-                {
+                } else {
                     buffer.append((char) array[i]);
                 }
             }
@@ -497,36 +451,29 @@ public class Hexs {
     }
 
 
-
     /**
      * Retrieves the bytes that correspond to the provided hexadecimal string.
      *
-     * @param  hexString  The hexadecimal string for which to retrieve the bytes.
-     *                    It must not be {@code null}, and there must not be any
-     *                    delimiter between bytes.
-     *
-     * @return  The bytes that correspond to the provided hexadecimal string.
-     *
-     * @throws ParseException  If the provided string does not represent valid
-     *                          hexadecimal data, or if the provided string does
-     *                          not contain an even number of characters.
+     * @param hexString The hexadecimal string for which to retrieve the bytes.
+     *                  It must not be {@code null}, and there must not be any
+     *                  delimiter between bytes.
+     * @return The bytes that correspond to the provided hexadecimal string.
+     * @throws ParseException If the provided string does not represent valid
+     *                        hexadecimal data, or if the provided string does
+     *                        not contain an even number of characters.
      */
     @NonNull()
     public static byte[] fromHex(@NonNull final String hexString)
-            throws ParseException
-    {
-        if ((hexString.length() % 2) != 0)
-        {
+            throws ParseException {
+        if ((hexString.length() % 2) != 0) {
             String err = "Unable to decode the provided hexadecimal string to a byte array because the provided string had a length of {} characters, but it is only possible to process strings with an even number of characters.";
             err = StringTemplates.formatWithPlaceholder(err, hexString.length());
-            throw new ParseException(err,hexString.length());
+            throw new ParseException(err, hexString.length());
         }
 
         final byte[] decodedBytes = new byte[hexString.length() / 2];
-        for (int i=0, j=0; i < decodedBytes.length; i++, j+= 2)
-        {
-            switch (hexString.charAt(j))
-            {
+        for (int i = 0, j = 0; i < decodedBytes.length; i++, j += 2) {
+            switch (hexString.charAt(j)) {
                 case '0':
                     // No action is required.
                     break;
@@ -587,8 +534,7 @@ public class Hexs {
                     throw new ParseException(err, j);
             }
 
-            switch (hexString.charAt(j+1))
-            {
+            switch (hexString.charAt(j + 1)) {
                 case '0':
                     // No action is required.
                     break;
@@ -645,9 +591,9 @@ public class Hexs {
                     break;
                 default:
                     String err = "Unable to decode the provided hexadecimal string to a byte array because the provided string had a non-hex character at index {}.";
-                    err = StringTemplates.formatWithPlaceholder(err, j+1);
+                    err = StringTemplates.formatWithPlaceholder(err, j + 1);
                     throw new ParseException(err,
-                            j+1);
+                            j + 1);
             }
         }
 
@@ -655,31 +601,25 @@ public class Hexs {
     }
 
 
-
     /**
      * Appends a hex-encoded representation of the provided character to the given
      * buffer.  Each byte of the hex-encoded representation will be prefixed with
      * a backslash.
      *
-     * @param  c       The character to be encoded.
-     * @param  buffer  The buffer to which the hex-encoded representation should
-     *                 be appended.
+     * @param c      The character to be encoded.
+     * @param buffer The buffer to which the hex-encoded representation should
+     *               be appended.
      */
     public static void hexEncode(final char c,
-                                 @NonNull final StringBuilder buffer)
-    {
+                                 @NonNull final StringBuilder buffer) {
         final byte[] charBytes;
-        if (c <= 0x7F)
-        {
-            charBytes = new byte[] { (byte) (c & 0x7F) };
-        }
-        else
-        {
+        if (c <= 0x7F) {
+            charBytes = new byte[]{(byte) (c & 0x7F)};
+        } else {
             charBytes = Utf8s.getBytes(String.valueOf(c));
         }
 
-        for (final byte b : charBytes)
-        {
+        for (final byte b : charBytes) {
             buffer.append('\\');
             toHex(b, buffer);
         }
@@ -690,17 +630,15 @@ public class Hexs {
      * given buffer.  Each byte of the hex-encoded representation will be prefixed
      * with a backslash.
      *
-     * @param  codePoint  The code point to be encoded.
-     * @param  buffer     The buffer to which the hex-encoded representation
-     *                    should be appended.
+     * @param codePoint The code point to be encoded.
+     * @param buffer    The buffer to which the hex-encoded representation
+     *                  should be appended.
      */
     public static void hexEncode(final int codePoint,
-                                 @NonNull final StringBuilder buffer)
-    {
+                                 @NonNull final StringBuilder buffer) {
         final byte[] charBytes = Utf8s.getBytes(new String(new int[]{codePoint}, 0, 1));
 
-        for (final byte b : charBytes)
-        {
+        for (final byte b : charBytes) {
             buffer.append('\\');
             toHex(b, buffer);
         }
