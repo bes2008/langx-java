@@ -14,9 +14,9 @@ import com.jn.langx.util.io.LineDelimiter;
 public class Words {
 
     /**
-     * <p><code>WordUtils</code> instances should NOT be constructed in
+     * <p><code>Words</code> instances should NOT be constructed in
      * standard programming. Instead, the class should be used as
-     * <code>WordUtils.wrap("foo bar", 20);</code>.</p>
+     * <code>Words.wrap("foo bar", 20);</code>.</p>
      * <p>
      * <p>This constructor is public to permit tools that require a JavaBean
      * instance to operate.</p>
@@ -222,9 +222,9 @@ public class Words {
      * upper case.</p>
      * <p>
      * <pre>
-     * WordUtils.capitalize(null)        = null
-     * WordUtils.capitalize("")          = ""
-     * WordUtils.capitalize("i am FINE") = "I Am FINE"
+     * Words.capitalize(null)        = null
+     * Words.capitalize("")          = ""
+     * Words.capitalize("i am FINE") = "I Am FINE"
      * </pre>
      *
      * @param str the String to capitalize, may be null
@@ -251,11 +251,11 @@ public class Words {
      * upper case.</p>
      * <p>
      * <pre>
-     * WordUtils.capitalize(null, *)            = null
-     * WordUtils.capitalize("", *)              = ""
-     * WordUtils.capitalize(*, new char[0])     = *
-     * WordUtils.capitalize("i am fine", null)  = "I Am Fine"
-     * WordUtils.capitalize("i aM.fine", {'.'}) = "I aM.Fine"
+     * Words.capitalize(null, *)            = null
+     * Words.capitalize("", *)              = ""
+     * Words.capitalize(*, new char[0])     = *
+     * Words.capitalize("i am fine", null)  = "I Am Fine"
+     * Words.capitalize("i aM.fine", {'.'}) = "I aM.Fine"
      * </pre>
      *
      * @param str        the String to capitalize, may be null
@@ -296,9 +296,9 @@ public class Words {
      * upper case.</p>
      * <p>
      * <pre>
-     * WordUtils.capitalizeFully(null)        = null
-     * WordUtils.capitalizeFully("")          = ""
-     * WordUtils.capitalizeFully("i am FINE") = "I Am Fine"
+     * Words.capitalizeFully(null)        = null
+     * Words.capitalizeFully("")          = ""
+     * Words.capitalizeFully("i am FINE") = "I Am Fine"
      * </pre>
      *
      * @param str the String to capitalize, may be null
@@ -322,11 +322,11 @@ public class Words {
      * upper case.</p>
      * <p>
      * <pre>
-     * WordUtils.capitalizeFully(null, *)            = null
-     * WordUtils.capitalizeFully("", *)              = ""
-     * WordUtils.capitalizeFully(*, null)            = *
-     * WordUtils.capitalizeFully(*, new char[0])     = *
-     * WordUtils.capitalizeFully("i aM.fine", {'.'}) = "I am.Fine"
+     * Words.capitalizeFully(null, *)            = null
+     * Words.capitalizeFully("", *)              = ""
+     * Words.capitalizeFully(*, null)            = *
+     * Words.capitalizeFully(*, new char[0])     = *
+     * Words.capitalizeFully("i aM.fine", {'.'}) = "I am.Fine"
      * </pre>
      *
      * @param str        the String to capitalize, may be null
@@ -352,9 +352,9 @@ public class Words {
      * A <code>null</code> input String returns <code>null</code>.</p>
      * <p>
      * <pre>
-     * WordUtils.uncapitalize(null)        = null
-     * WordUtils.uncapitalize("")          = ""
-     * WordUtils.uncapitalize("I Am FINE") = "i am fINE"
+     * Words.uncapitalize(null)        = null
+     * Words.uncapitalize("")          = ""
+     * Words.uncapitalize("I Am FINE") = "i am fINE"
      * </pre>
      *
      * @param str the String to uncapitalize, may be null
@@ -377,11 +377,11 @@ public class Words {
      * A <code>null</code> input String returns <code>null</code>.</p>
      * <p>
      * <pre>
-     * WordUtils.uncapitalize(null, *)            = null
-     * WordUtils.uncapitalize("", *)              = ""
-     * WordUtils.uncapitalize(*, null)            = *
-     * WordUtils.uncapitalize(*, new char[0])     = *
-     * WordUtils.uncapitalize("I AM.FINE", {'.'}) = "i AM.fINE"
+     * Words.uncapitalize(null, *)            = null
+     * Words.uncapitalize("", *)              = ""
+     * Words.uncapitalize(*, null)            = *
+     * Words.uncapitalize(*, new char[0])     = *
+     * Words.uncapitalize("I AM.FINE", {'.'}) = "i AM.fINE"
      * </pre>
      *
      * @param str        the String to uncapitalize, may be null
@@ -475,10 +475,10 @@ public class Words {
      * A <code>null</code> input String returns <code>null</code>.</p>
      * <p>
      * <pre>
-     * WordUtils.initials(null)             = null
-     * WordUtils.initials("")               = ""
-     * WordUtils.initials("Ben John Lee")   = "BJL"
-     * WordUtils.initials("Ben J.Lee")      = "BJ"
+     * Words.initials(null)             = null
+     * Words.initials("")               = ""
+     * Words.initials("Ben John Lee")   = "BJL"
+     * Words.initials("Ben J.Lee")      = "BJ"
      * </pre>
      *
      * @param str the String to get initials from, may be null
@@ -502,12 +502,12 @@ public class Words {
      * An empty delimiter array returns an empty String.</p>
      * <p>
      * <pre>
-     * WordUtils.initials(null, *)                = null
-     * WordUtils.initials("", *)                  = ""
-     * WordUtils.initials("Ben John Lee", null)   = "BJL"
-     * WordUtils.initials("Ben J.Lee", null)      = "BJ"
-     * WordUtils.initials("Ben J.Lee", [' ','.']) = "BJL"
-     * WordUtils.initials(*, new char[0])         = ""
+     * Words.initials(null, *)                = null
+     * Words.initials("", *)                  = ""
+     * Words.initials("Ben John Lee", null)   = "BJL"
+     * Words.initials("Ben J.Lee", null)      = "BJ"
+     * Words.initials("Ben J.Lee", [' ','.']) = "BJL"
+     * Words.initials(*, new char[0])         = ""
      * </pre>
      *
      * @param str        the String to get initials from, may be null
