@@ -4,14 +4,13 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.asn1.bytestring.ByteStringBuffer;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.unicode.Utf8s;
 
 import java.text.ParseException;
 
 import static com.jn.langx.util.io.LineDelimiter.EOL;
 
-public class Hexs {
+class Hexs {
     /**
      * Indicates whether the provided character is a valid hexadecimal digit.
      *
@@ -20,34 +19,8 @@ public class Hexs {
      * hexadecimal digit, or {@code false} if not.
      */
     public static boolean isHex(final char c) {
-        switch (c) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-            case 'a':
-            case 'A':
-            case 'b':
-            case 'B':
-            case 'c':
-            case 'C':
-            case 'd':
-            case 'D':
-            case 'e':
-            case 'E':
-            case 'f':
-            case 'F':
-                return true;
-
-            default:
-                return false;
-        }
+        // 0 -9 的 codepoint 范围 48 -57
+        return (c - '0' >= 0 && c - '9' <= 0) || (c - 'a' >= 0 && c - 'f' <= 0) || (c - 'A' >= 0 && c - 'F' <= 0);
     }
 
 
@@ -292,24 +265,6 @@ public class Hexs {
     }
 
 
-    /**
-     * Retrieves a hexadecimal representation of the contents of the provided byte
-     * array.  No delimiter character will be inserted between the hexadecimal
-     * digits for each byte.
-     *
-     * @param b The byte array to be represented as a hexadecimal string.  It
-     *          must not be {@code null}.
-     * @return A string containing a hexadecimal representation of the contents
-     * of the provided byte array.
-     */
-    @NonNull()
-    public static String toHex(@NonNull final byte[] b) {
-        Preconditions.checkNotNull(b);
-
-        final StringBuilder buffer = new StringBuilder(2 * b.length);
-        toHex(b, buffer);
-        return buffer.toString();
-    }
 
 
     /**

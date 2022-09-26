@@ -7,7 +7,7 @@ import com.jn.langx.util.io.Charsets;
  * 16 进制转换工具。
  * 16进制的字符串，就是人为可视化的 0-F 的字符拼在一起的字符串。
  */
-public class Hex {
+public class Hex extends Hexs {
     /**
      * Used to build output as Hex
      *
@@ -38,7 +38,7 @@ public class Hex {
      * 14   'E'
      * 15   'F'
      */
-    private static final char[] DECIMAL_TO_DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    public static final char[] DECIMAL_TO_DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
 
 
@@ -90,7 +90,7 @@ public class Hex {
      * 转成16进制字符串后，再编码成 UTF-8 格式的bytes
      */
     public static byte[] encodeHexAsBytes(String data, boolean toLowerCase) {
-        String hex = encodeHexToString(data, toLowerCase);
+        String hex = encodeHexString(data, toLowerCase);
         return hex.getBytes(Charsets.UTF_8);
     }
 
@@ -99,8 +99,8 @@ public class Hex {
      * @since 3.4.1
      * 转成16进制字符串后，再编码成 UTF-8 格式的bytes
      */
-    public static String encodeHexToString(String data) {
-        return encodeHexToString(data, true);
+    public static String encodeHexString(String data) {
+        return encodeHexString(data, true);
     }
 
 
@@ -108,7 +108,7 @@ public class Hex {
      * @since 3.4.1
      * 转成16进制字符串后，再编码成 UTF-8 格式的bytes
      */
-    public static String encodeHexToString(String data, boolean toLowerCase) {
+    public static String encodeHexString(String data, boolean toLowerCase) {
         return new String(encodeHex(data, toLowerCase));
     }
 

@@ -1,7 +1,7 @@
 package com.jn.langx.asn1.spec;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.codec.hex.Hexs;
+import com.jn.langx.codec.hex.Hex;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
@@ -112,7 +112,7 @@ public final class ASN1Null
     @Override()
     public void toString(@NonNull final StringBuilder buffer) {
         buffer.append("ASN1Null(type=");
-        Hexs.toHex(getType(), buffer);
+        Hex.toHex(getType(), buffer);
         buffer.append(')');
     }
 }

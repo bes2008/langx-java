@@ -21,6 +21,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Locale;
 
+import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.util.Preconditions;
 
 /**
@@ -35,10 +36,7 @@ public abstract class CharSequenceTranslator {
     /**
      * Array containing the hexadecimal alphabet.
      */
-    static final char[] HEX_DIGITS = new char[] {'0', '1', '2', '3',
-                                                 '4', '5', '6', '7',
-                                                 '8', '9', 'A', 'B',
-                                                 'C', 'D', 'E', 'F'};
+    static final char[] HEX_DIGITS = Hex.DECIMAL_TO_DIGITS_UPPER;
 
     /**
      * Translate a set of codepoints, represented by an int index into a CharSequence,

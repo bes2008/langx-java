@@ -11,7 +11,7 @@ import com.jn.langx.annotation.NotExtensible;
 import com.jn.langx.annotation.NotMutable;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.asn1.bytestring.ByteStringBuffer;
-import com.jn.langx.codec.hex.Hexs;
+import com.jn.langx.codec.hex.Hex;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
@@ -1055,11 +1055,11 @@ public class ASN1Element
     public void toString(@NonNull final StringBuilder buffer) {
         final byte[] v = getValue();
         buffer.append("ASN1Element(type=");
-        Hexs.toHex(type, buffer);
+        Hex.toHex(type, buffer);
         buffer.append(", valueLength=");
         buffer.append(v.length);
         buffer.append(", valueBytes='");
-        Hexs.toHex(v, buffer);
+        Hex.toHex(v, buffer);
         buffer.append("')");
     }
 }

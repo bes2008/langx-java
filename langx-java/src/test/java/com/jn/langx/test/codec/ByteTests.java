@@ -120,4 +120,17 @@ public class ByteTests {
         char[] hex_a=new char[]{'6','1'};
         System.out.println(new String(Hex.decodeHex(hex_a),Charsets.UTF_8));
     }
+
+    @Test
+    public void test4(){
+        char c = '0';
+        System.out.println(c-48);
+    }
+
+    @Test
+    public void test5(){
+        String a= "helloworld";
+        System.out.println(Hex.encodeHexString(a.getBytes()));
+        System.out.println(Hex.toHex((byte) ';'));
+    }
 }
