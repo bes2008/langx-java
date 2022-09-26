@@ -199,18 +199,6 @@ public class DateTimePatterns {
 
     // ==================================HH:mm:ss.SSSSSS 相关Pattern==================================
 
-    /**
-     * HH:mm:ss.SSSSSS  <pre>17:26:30.272150</pre>
-     */
-    public static String HH_MM_SS_SSSSSS = "HH:mm:ss.SSSSSS";
-
-
-    // ==================================HH:mm:ss.SSSSSSSSS 相关Pattern==================================
-
-    /**
-     * HH:mm:ss.SSSSSSSSS  <pre>17:26:30.272150620</pre>
-     */
-    public static String HH_MM_SS_SSSSSSSSS = "HH:mm:ss.SSSSSSSSS";
 
 
     // ==================================yyyy-MM-dd HH:mm:ss 相关Pattern==================================
@@ -346,18 +334,6 @@ public class DateTimePatterns {
 
     // ==================================yyyy-MM-dd HH:mm:ss.SSSSSS 相关Pattern==================================
 
-    /**
-     * yyyy-MM-dd HH:mm:ss.SSSSSS <pre>2020-05-23 17:06:30.272150</pre>
-     */
-    public static final String YYYY_MM_DD_HH_MM_SS_SSSSSS = "yyyy-MM-dd HH:mm:ss.SSSSSS";
-
-
-    // ==================================yyyy-MM-dd HH:mm:ss.SSSSSSSSS 相关Pattern==================================
-
-    /**
-     * yyyy-MM-dd HH:mm:ss.SSSSSSSSS <pre>2020-05-23 17:06:30.272150620</pre>
-     */
-    public static final String YYYY_MM_DD_HH_MM_SS_SSSSSSSSS = "yyyy-MM-dd HH:mm:ss.SSSSSSSSS";
 
 
     // ==================================Iso相关Pattern 包含 T==================================
@@ -405,52 +381,8 @@ public class DateTimePatterns {
      */
     public static final String YYYY_MM_DD_T_HH_MM_SS_SSS_XXX_Z = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
-    /**
-     * yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ
-     * <pre>
-     * 2020-05-23T17:06:30.272150+0800
-     * 2020-05-23T09:06:30.272150+0000
-     * </pre>
-     */
-    public static final String YYYY_MM_DD_T_HH_MM_SS_SSSSSS_Z = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ";
-
-    /**
-     * yyyy-MM-dd'T'HH:mm:ss.SSSSSSxxx
-     * <pre>
-     * 2020-05-23T17:06:30.272150+08:00
-     * 2020-05-23T09:06:30.272150+00:00
-     * </pre>
-     */
-    public static final String YYYY_MM_DD_T_HH_MM_SS_SSSSSS_XXX = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSxxx";
-
-    /**
-     * yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX <pre>2020-05-23T17:06:30.272150+08:00 2020-05-23T09:06:30.272150Z 0时区时末尾 为Z</pre>
-     */
-    public static final String YYYY_MM_DD_T_HH_MM_SS_SSSSSS_XXX_Z = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX";
 
 
-    /**
-     * yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSZ <pre>2020-05-23T17:06:30.272150620+0800 2020-05-23T09:06:30.272150620+0000</pre>
-     */
-    public static final String YYYY_MM_DD_T_HH_MM_SS_SSSSSSSSS_Z = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSZ";
-
-    /**
-     * yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSxxx
-     * <pre>
-     * 2020-05-23T17:06:30.272150620+08:00
-     * 2020-05-23T09:06:30.272150620+00:00
-     * </pre>
-     */
-    public static final String YYYY_MM_DD_T_HH_MM_SS_SSSSSSSSS_XXX = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSxxx";
-
-    /**
-     * yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSXXX
-     * <pre>
-     * 2020-05-23T17:06:30.272150620+08:00
-     * 2020-05-23T09:06:30.272150620Z 0时区时末尾 为Z
-     * </pre>
-     */
-    public static final String YYYY_MM_DD_T_HH_MM_SS_SSSSSSSSS_XXX_Z = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSXXX";
 
 
     // ==================================其他格式 Pattern==================================
