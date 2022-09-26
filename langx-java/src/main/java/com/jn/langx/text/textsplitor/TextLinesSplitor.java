@@ -25,8 +25,8 @@ import java.util.List;
  *
  * @since 5.0.1
  */
-public class TextSplitor extends UnmodifiableIterator<String> implements Closeable {
-    private static final Logger logger = Loggers.getLogger(TextSplitor.class);
+public class TextLinesSplitor extends UnmodifiableIterator<String> implements Closeable {
+    private static final Logger logger = Loggers.getLogger(TextLinesSplitor.class);
 
     @NonNull
     private BufferedReader reader;
@@ -53,16 +53,16 @@ public class TextSplitor extends UnmodifiableIterator<String> implements Closeab
     private String flagLine;
     private List<String> nonFlagLines = Collects.emptyArrayList();
 
-    public TextSplitor(String filepath) {
+    public TextLinesSplitor(String filepath) {
         this(Files.openInputStream(new File(filepath)));
     }
 
-    public TextSplitor(Resource resource) throws IOException {
+    public TextLinesSplitor(Resource resource) throws IOException {
         this(resource.getInputStream());
     }
 
 
-    public TextSplitor(InputStream inputStream) {
+    public TextLinesSplitor(InputStream inputStream) {
         this.reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
     }
 
