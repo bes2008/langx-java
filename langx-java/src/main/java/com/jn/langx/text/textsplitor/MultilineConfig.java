@@ -4,6 +4,8 @@ import com.jn.langx.util.Objs;
 
 /**
  * @since 5.0.1
+ *
+ * 参考 filebeat multiline
  */
 public class MultilineConfig {
     public static enum Match {
