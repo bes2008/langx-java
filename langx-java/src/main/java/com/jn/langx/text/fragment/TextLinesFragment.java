@@ -1,4 +1,4 @@
-package com.jn.langx.text.textsplitor;
+package com.jn.langx.text.fragment;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;

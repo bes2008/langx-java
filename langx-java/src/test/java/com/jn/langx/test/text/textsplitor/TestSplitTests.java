@@ -1,8 +1,8 @@
 package com.jn.langx.test.text.textsplitor;
 
 import com.jn.langx.io.resource.Resources;
-import com.jn.langx.text.textsplitor.MultilineConfig;
-import com.jn.langx.text.textsplitor.TextLinesFragment;
+import com.jn.langx.text.fragment.MultilineConfig;
+import com.jn.langx.text.fragment.TextLinesFragment;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import org.junit.Test;
