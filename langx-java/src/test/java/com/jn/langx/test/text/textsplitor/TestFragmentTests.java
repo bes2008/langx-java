@@ -9,17 +9,17 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class TestSplitTests {
+public class TestFragmentTests {
 
     @Test
     public void test() throws IOException {
-        splitFile("/textsplitor/negate_false_match_after", new MultilineConfig("^b", false, MultilineConfig.Match.AFTER, ""));
-        splitFile("/textsplitor/negate_false_match_before", new MultilineConfig("^b", false, MultilineConfig.Match.BEFORE, ""));
-        splitFile("/textsplitor/negate_true_match_after", new MultilineConfig("^b", true, MultilineConfig.Match.AFTER, ""));
-        splitFile("/textsplitor/negate_true_match_before", new MultilineConfig("^b", true, MultilineConfig.Match.BEFORE, ""));
+        fragmentFile("/textsplitor/negate_false_match_after", new MultilineConfig("^b", false, MultilineConfig.Match.AFTER, ""));
+        fragmentFile("/textsplitor/negate_false_match_before", new MultilineConfig("^b", false, MultilineConfig.Match.BEFORE, ""));
+        fragmentFile("/textsplitor/negate_true_match_after", new MultilineConfig("^b", true, MultilineConfig.Match.AFTER, ""));
+        fragmentFile("/textsplitor/negate_true_match_before", new MultilineConfig("^b", true, MultilineConfig.Match.BEFORE, ""));
     }
 
-    static void splitFile(String resourcePath, MultilineConfig multilineConfig) throws IOException {
+    static void fragmentFile(String resourcePath, MultilineConfig multilineConfig) throws IOException {
         System.out.println("==================================");
         TextLinesFragment splitor = new TextLinesFragment(Resources.loadClassPathResource(resourcePath));
         splitor.setMultiline(multilineConfig);
