@@ -207,8 +207,14 @@ public class Dates {
         return null;
     }
 
-    public static final List<String> simple_timezone_suffixes = Collects.newArrayList("X", "Z", "z");
-    public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
+    public static final List<String> simple_timezone_suffixes = Collects.newArrayList(
+            "XXX",
+            "XX",
+            "X",
+            "Z",
+            "z"
+    );
+    public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX","XX","X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
 
     /**
      * @since 5.0.1
