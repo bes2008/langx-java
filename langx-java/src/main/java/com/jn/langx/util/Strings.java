@@ -365,17 +365,35 @@ public class Strings {
         return split(string, separator, doTrim, true);
     }
 
+    public static String[] split(@Nullable String string, @Nullable String separator, final boolean doTrim, final boolean ignoreEmptyTokens) {
+        return split(string, false, separator, doTrim, ignoreEmptyTokens);
+    }
+
+    public static String[] splitRegexp(@Nullable String string, @Nullable String separator) {
+        return splitRegexp(string, separator, true);
+    }
+
+    public static String[] splitRegexp(@Nullable String string, @Nullable String separator, final boolean doTrim) {
+        return splitRegexp(string, separator, doTrim, true);
+    }
+
+    public static String[] splitRegexp(@Nullable String string, @Nullable String separator, final boolean doTrim, final boolean ignoreEmptyTokens) {
+        return split(string, true, separator, doTrim, ignoreEmptyTokens);
+    }
+
     /**
      * split a string, the returned array is not contains: whitespace, null.
      * every element in string[] has the trim() invoked
      */
-    public static String[] split(@Nullable String string, @Nullable String separator, final boolean doTrim, final boolean ignoreEmptyTokens) {
+    public static String[] split(@Nullable String string, boolean separatorIsRegexp, @Nullable String separator, final boolean doTrim, final boolean ignoreEmptyTokens) {
         if (Emptys.isEmpty(string)) {
             return new String[0];
         }
         Pipeline<String> pipeline = null;
         if (Emptys.isEmpty(separator)) {
             pipeline = Pipeline.of(string.split(""));
+        } else if (separatorIsRegexp) {
+            pipeline = Pipeline.of(string.split(separator));
         } else {
             // 使用 StringTokenizer分割后会有Bug
             // 例如，第三段被分割后，少了个 0
