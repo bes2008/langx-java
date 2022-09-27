@@ -2,7 +2,7 @@ package com.jn.langx.test.text.textsplitor;
 
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.textsplitor.MultilineConfig;
-import com.jn.langx.text.textsplitor.TextLinesSplitor;
+import com.jn.langx.text.textsplitor.TextLinesSpliter;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import org.junit.Test;
@@ -21,7 +21,7 @@ public class TestSplitTests {
 
     static void splitFile(String resourcePath, MultilineConfig multilineConfig) throws IOException {
         System.out.println("==================================");
-        TextLinesSplitor splitor = new TextLinesSplitor(Resources.loadClassPathResource(resourcePath));
+        TextLinesSpliter splitor = new TextLinesSpliter(Resources.loadClassPathResource(resourcePath));
         splitor.setMultiline(multilineConfig);
         Collects.forEach(splitor, new Consumer<String>() {
 
