@@ -1,5 +1,6 @@
 package com.jn.langx.util.pattern.regexp;
 
+import com.jn.langx.io.resource.PathMatcher;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.pattern.AbstractPatternMatcher;
@@ -7,7 +8,7 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
 
-public class RegexpMatcher extends AbstractPatternMatcher {
+public class RegexpMatcher extends AbstractPatternMatcher implements PathMatcher {
 
     private String pattern;
     private Regexp regexp;
