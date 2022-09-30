@@ -7,6 +7,8 @@ import com.jn.langx.util.pattern.AbstractPatternMatcher;
 
 /**
  * @since 4.5.2
+ *
+ * https://mincong.io/2019/04/16/glob-expression-understanding/
  */
 public class GlobMatcher extends AbstractPatternMatcher implements PathMatcher {
     private String globPattern;
