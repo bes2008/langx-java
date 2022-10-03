@@ -2,6 +2,7 @@ package com.jn.langx.el.expression.operator.logic;
 
 
 import com.jn.langx.el.expression.Expression;
+import com.jn.langx.el.expression.Expressions;
 import com.jn.langx.el.expression.operator.AbstractUnaryOperator;
 import com.jn.langx.el.expression.value.BooleanExpression;
 import com.jn.langx.el.expression.value.BooleanResultExpression;
@@ -28,6 +29,7 @@ public class Non<E extends Expression<BooleanResultExpression>> extends Abstract
 
     @Override
     public BooleanResultExpression execute() {
-        return new BooleanExpression(!this.getTarget().execute().execute());
+        boolean targetResult = Expressions.getBooleanResult(this.getTarget());
+        return new BooleanExpression(!targetResult);
     }
 }

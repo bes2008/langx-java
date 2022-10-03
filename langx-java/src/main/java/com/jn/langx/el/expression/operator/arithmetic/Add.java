@@ -1,5 +1,6 @@
 package com.jn.langx.el.expression.operator.arithmetic;
 
+import com.jn.langx.el.expression.Expressions;
 import com.jn.langx.el.expression.operator.AbstractBinaryOperator;
 import com.jn.langx.el.expression.value.NumberExpression;
 import com.jn.langx.el.expression.value.NumberResultExpression;
@@ -14,7 +15,9 @@ public class Add extends AbstractBinaryOperator<NumberResultExpression<Number>, 
     @Override
     public NumberResultExpression<Number> execute() {
         NumberExpression<Number> expression = new NumberExpression<Number>();
-        expression.setValue(Numbers.add(getLeft().execute(), getRight().execute()));
+        Number leftResult = Expressions.getNumberResult(getLeft());
+        Number rightResult = Expressions.getNumberResult(getRight());
+        expression.setValue(Numbers.add(leftResult, rightResult));
         return expression;
     }
 }
