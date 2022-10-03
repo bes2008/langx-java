@@ -27,7 +27,7 @@ public class ExpressionTests {
         and.setRight(ni);
 
         System.out.println(and.toString());
-        Assert.assertTrue(and.execute().execute());
+        Assert.assertTrue(and.execute());
     }
 
     @Test
@@ -35,6 +35,6 @@ public class ExpressionTests {
         Add add = new Add();
         add.setLeft(new NumberExpression<Number>(3));
         add.setRight(new NumberExpression<Number>(7));
-        Assert.assertEquals(10L, add.execute().execute());
+        Assert.assertEquals(10L, add.execute());
     }
 }

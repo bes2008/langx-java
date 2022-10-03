@@ -6,7 +6,7 @@ import com.jn.langx.el.expression.value.NumberExpression;
 import com.jn.langx.el.expression.value.NumberResultExpression;
 import com.jn.langx.util.Numbers;
 
-public class Divide extends AbstractBinaryOperator<NumberResultExpression<Number>, NumberResultExpression<Number>, NumberResultExpression<Number>> {
+public class Divide extends AbstractBinaryOperator<NumberResultExpression<Number>, NumberResultExpression<Number>, Number> implements ArithmeticOperator<NumberResultExpression<Number>, NumberResultExpression<Number>> {
 
     public Divide() {
         setOperateSymbol("/");
@@ -23,11 +23,10 @@ public class Divide extends AbstractBinaryOperator<NumberResultExpression<Number
     }
 
     @Override
-    public NumberResultExpression<Number> execute() {
-        NumberExpression<Number> expression = new NumberExpression<Number>();
+    public Number execute() {
         Number leftResult = Expressions.getNumberResult(getLeft());
         Number rightResult = Expressions.getNumberResult(getRight());
-        expression.setValue(Numbers.div(leftResult, rightResult));
-        return expression;
+        Number result =Numbers.div(leftResult, rightResult);
+        return result;
     }
 }

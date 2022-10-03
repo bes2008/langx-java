@@ -6,7 +6,7 @@ import com.jn.langx.el.expression.Expression;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
-public abstract class AbstractBinaryOperator<Left extends Expression, Right extends Expression, Result extends Expression> extends BaseExpression<Result> implements BinaryOperator<Left, Right, Result> {
+public abstract class AbstractBinaryOperator<Left extends Expression, Right extends Expression, Result> extends BaseExpression<Result> implements BinaryOperator<Left, Right, Result> {
     private Left left;
     private Right right;
     protected String operateSymbol;

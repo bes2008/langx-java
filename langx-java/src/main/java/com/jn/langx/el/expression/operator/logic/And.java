@@ -7,7 +7,7 @@ import com.jn.langx.el.expression.operator.AbstractBinaryOperator;
 import com.jn.langx.el.expression.value.BooleanExpression;
 import com.jn.langx.el.expression.value.BooleanResultExpression;
 
-public class And<E extends Expression<BooleanResultExpression>, F extends Expression<BooleanResultExpression>> extends AbstractBinaryOperator<E, F, BooleanResultExpression> implements BinaryLogicOperator<E, F> {
+public class And<E extends Expression<BooleanResultExpression>, F extends Expression<BooleanResultExpression>> extends AbstractBinaryOperator<E, F, Boolean> implements BinaryLogicOperator<E, F> {
     public And() {
         setOperateSymbol("&&");
     }
@@ -23,10 +23,10 @@ public class And<E extends Expression<BooleanResultExpression>, F extends Expres
     }
 
     @Override
-    public BooleanResultExpression execute() {
+    public Boolean execute() {
         boolean leftResult = Expressions.getBooleanResult(getLeft());
         boolean rightResult = Expressions.getBooleanResult(getRight());
-        return new BooleanExpression(leftResult && rightResult);
+        return leftResult && rightResult;
     }
 
 }
