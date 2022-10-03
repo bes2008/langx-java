@@ -25,4 +25,30 @@ public class Subtract extends AbstractBinaryOperator<NumberResultExpression<Numb
         Number result = Numbers.sub(leftResult, rightResult);
         return result;
     }
+
+    @Override
+    public String toString() {
+        NumberResultExpression<Number> left = getLeft();
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(getLeft().toString());
+        stringBuilder.append(" " + getOperateSymbol() + " ");
+
+        NumberResultExpression<Number> right = getRight();
+        boolean rightBrace = false;
+        if (right instanceof ArithmeticOperator) {
+            if (right instanceof Add || right instanceof Subtract) {
+                rightBrace = true;
+            }
+        }
+        if (rightBrace) {
+            stringBuilder.append("(");
+        }
+        stringBuilder.append(getRight().toString());
+        if (rightBrace) {
+            stringBuilder.append(")");
+        }
+        return stringBuilder.toString();
+    }
 }
