@@ -33,7 +33,7 @@ public class Multiple extends AbstractBinaryOperator<NumberResultExpression<Numb
         if (leftBrace) {
             stringBuilder.append("(");
         }
-        stringBuilder.append(getLeft().toString());
+        stringBuilder.append(left.toString());
         if (leftBrace) {
             stringBuilder.append(")");
         }
@@ -49,7 +49,7 @@ public class Multiple extends AbstractBinaryOperator<NumberResultExpression<Numb
         if (rightBrace) {
             stringBuilder.append("(");
         }
-        stringBuilder.append(getRight().toString());
+        stringBuilder.append(right.toString());
         if (rightBrace) {
             stringBuilder.append(")");
         }

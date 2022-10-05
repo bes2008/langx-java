@@ -45,7 +45,7 @@ public class Subtract extends AbstractBinaryOperator<NumberResultExpression<Numb
         if (rightBrace) {
             stringBuilder.append("(");
         }
-        stringBuilder.append(getRight().toString());
+        stringBuilder.append(right.toString());
         if (rightBrace) {
             stringBuilder.append(")");
         }

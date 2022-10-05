@@ -3,6 +3,7 @@ package com.jn.langx.el.expression.operator;
 
 import com.jn.langx.el.expression.BaseExpression;
 import com.jn.langx.el.expression.Expression;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.hash.HashCodeBuilder;
 
@@ -67,12 +68,6 @@ public abstract class AbstractBinaryOperator<Left extends Expression, Right exte
 
         AbstractBinaryOperator<?, ?, ?> that = (AbstractBinaryOperator<?, ?, ?>) object;
 
-        if (!left.equals(that.left)){
-            return false;
-        }
-        if (!right.equals(that.right)) {
-            return false;
-        }
-        return operateSymbol.equals(that.operateSymbol);
+        return Objs.equals(this.toString(), that.toString());
     }
 }
