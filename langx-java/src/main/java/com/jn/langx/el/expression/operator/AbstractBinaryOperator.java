@@ -52,4 +52,27 @@ public abstract class AbstractBinaryOperator<Left extends Expression, Right exte
     public String toString() {
         return left.toString() + " " + getOperateSymbol() + " " + right.toString();
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        if (!super.equals(object)){
+            return false;
+        }
+
+        AbstractBinaryOperator<?, ?, ?> that = (AbstractBinaryOperator<?, ?, ?>) object;
+
+        if (!left.equals(that.left)){
+            return false;
+        }
+        if (!right.equals(that.right)) {
+            return false;
+        }
+        return operateSymbol.equals(that.operateSymbol);
+    }
 }
