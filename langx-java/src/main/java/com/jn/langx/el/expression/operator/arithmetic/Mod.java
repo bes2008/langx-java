@@ -30,4 +30,39 @@ public class Mod extends AbstractBinaryOperator<NumberResultExpression<Number>, 
         Number result = Numbers.mod(leftResult, rightResult);
         return result;
     }
+
+    @Override
+    public String toString() {
+        NumberResultExpression<Number> left = getLeft();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean leftBrace = false;
+        if (left instanceof ArithmeticOperator) {
+            if (left instanceof Add || left instanceof Subtract) {
+                leftBrace = true;
+            }
+        }
+        if (leftBrace) {
+            stringBuilder.append("(");
+        }
+        stringBuilder.append(left.toString());
+        if (leftBrace) {
+            stringBuilder.append(")");
+        }
+        stringBuilder.append(" " + getOperateSymbol() + " ");
+
+        NumberResultExpression<Number> right = getRight();
+        boolean rightBrace = false;
+        if (right instanceof ArithmeticOperator) {
+            rightBrace = true;
+        }
+        if (rightBrace) {
+            stringBuilder.append("(");
+        }
+        stringBuilder.append(right.toString());
+        if (rightBrace) {
+            stringBuilder.append(")");
+        }
+        return stringBuilder.toString();
+    }
 }

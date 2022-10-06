@@ -52,9 +52,7 @@ public class Divide extends AbstractBinaryOperator<NumberResultExpression<Number
         NumberResultExpression<Number> right = getRight();
         boolean rightBrace = false;
         if (right instanceof ArithmeticOperator) {
-            if (right instanceof Add || right instanceof Subtract) {
-                rightBrace = true;
-            }
+            rightBrace = true;
         }
         if (rightBrace) {
             stringBuilder.append("(");
