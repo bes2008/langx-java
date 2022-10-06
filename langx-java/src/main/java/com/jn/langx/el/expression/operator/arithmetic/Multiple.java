@@ -42,7 +42,7 @@ public class Multiple extends AbstractBinaryOperator<NumberResultExpression<Numb
         NumberResultExpression<Number> right = getRight();
         boolean rightBrace = false;
         if (right instanceof ArithmeticOperator) {
-            if (right instanceof Add || right instanceof Subtract) {
+            if (right instanceof Add || right instanceof Subtract || right instanceof Mod) {
                 rightBrace = true;
             }
         }
