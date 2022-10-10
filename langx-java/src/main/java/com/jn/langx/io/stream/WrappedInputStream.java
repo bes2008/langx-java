@@ -1,9 +1,10 @@
 package com.jn.langx.io.stream;
 
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
-import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer4;
+import com.jn.langx.util.function.Function;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -14,41 +15,67 @@ import java.util.List;
  * @since 4.4.2
  */
 public class WrappedInputStream extends FilterInputStream {
-    private List<Consumer4<InputStream, byte[], Integer, Integer>> consumers;
+    private IOStreamPipeline pipeline;
 
-    public WrappedInputStream(InputStream in, List<Consumer4<InputStream, byte[], Integer, Integer>> consumers) {
+    /**
+     * @since 5.0.2
+     */
+    public WrappedInputStream(InputStream in, IOStreamPipeline pipeline) {
         super(in);
-        this.consumers = consumers;
+        this.pipeline = pipeline;
     }
+
+    /**
+     * @since 4.4.2
+     */
+    public WrappedInputStream(InputStream in, List<Consumer4<InputStream, byte[], Integer, Integer>> consumers) {
+        this(in, IOStreamPipeline.of(Pipeline.of(consumers).map(new Function<Consumer4<InputStream, byte[], Integer, Integer>, InputStreamInterceptor>() {
+            @Override
+            public InputStreamInterceptor apply(final Consumer4<InputStream, byte[], Integer, Integer> consumer) {
+                return new InputStreamInterceptor() {
+                    @Override
+                    public boolean beforeRead(InputStream inputStream, byte[] b, int off, int len) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean afterRead(InputStream inputStream, byte[] b, int off, int len) {
+                        consumer.accept(inputStream, b, off, len);
+                        return true;
+                    }
+                };
+            }
+        }).asList()));
+    }
+
 
     @Override
     public int read() throws IOException {
+        if (Objs.isNotNull(this.pipeline)) {
+            this.pipeline.beforeRead(this, Emptys.EMPTY_BYTES, 0, 1);
+        }
         int b = super.read();
 
-        if (Objs.isNotEmpty(this.consumers) && b != -1) {
+        if (Objs.isNotNull(this.pipeline) && b != -1) {
             final byte[] bs = new byte[]{(byte) b};
-            consume(bs, 0, 1);
+            this.pipeline.afterRead(this, bs, 0, 1);
         }
         return b;
     }
 
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
+        if (Objs.isNotNull(this.pipeline)) {
+            this.pipeline.beforeRead(this, b, off, len);
+        }
         int length = super.read(b, off, len);
-        if (Objs.isNotEmpty(this.consumers) && length > 0) {
-            consume(b, off, len);
+
+        if (Objs.isNotNull(this.pipeline) && length > 0) {
+            this.pipeline.afterRead(this, b, off, len);
         }
         return length;
     }
 
-    private void consume(final byte[] b, final int off, final int len) {
-        Collects.forEach(this.consumers, new Consumer<Consumer4<InputStream, byte[], Integer, Integer>>() {
-            @Override
-            public void accept(Consumer4<InputStream, byte[], Integer, Integer> consumer) {
-                consumer.accept(WrappedInputStream.this, b, off, len);
-            }
-        });
-    }
 
     @Override
     public boolean markSupported() {
