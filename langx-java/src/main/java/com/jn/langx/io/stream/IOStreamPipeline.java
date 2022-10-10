@@ -2,7 +2,6 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
 
 import java.io.InputStream;
