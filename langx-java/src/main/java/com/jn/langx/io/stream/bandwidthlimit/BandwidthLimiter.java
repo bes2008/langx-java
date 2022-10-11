@@ -27,9 +27,9 @@ public class BandwidthLimiter {
     //上一次接收到字节流的时间戳——单位纳秒
     private long lastPieceSentOrReceiveTick = System.nanoTime();
     //允许的最大速率，默认为 1024KB/s
-    private int maxRate = 1024;
+    private int maxRate;
     //在maxRate的速率下，通过chunk大小的字节流要多少时间（纳秒）
-    private long timeCostPerChunk = (1000000000L * CHUNK_LENGTH) / (this.maxRate * DataSizes.ONE_KB);
+    private long timeCostPerChunk;
 
     public BandwidthLimiter(int maxRate) {
         this.setMaxRate(maxRate);
@@ -38,14 +38,14 @@ public class BandwidthLimiter {
     //动态调整最大速率
     public void setMaxRate(int maxRate) {
         if (maxRate < 0) {
-            throw new IllegalArgumentException("maxRate can not less than 0");
+            maxRate = 1024;
+        }
+        if (maxRate < 4) {
+            maxRate = 4;
         }
         this.maxRate = maxRate;
-        if (maxRate == 0) {
-            this.timeCostPerChunk = 0;
-        } else {
-            this.timeCostPerChunk = (1000000000L * CHUNK_LENGTH) / (this.maxRate * DataSizes.ONE_KB);
-        }
+        // 纳秒
+        this.timeCostPerChunk = (1000000000L * CHUNK_LENGTH) / (this.maxRate * DataSizes.ONE_KB);
     }
 
     public synchronized void limitNextByte() {
