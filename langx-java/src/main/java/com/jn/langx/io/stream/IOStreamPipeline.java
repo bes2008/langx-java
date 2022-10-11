@@ -2,7 +2,9 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer4;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -59,18 +61,26 @@ public class IOStreamPipeline {
         }
     }
 
-    public static IOStreamPipeline of(IOStreamInterceptor... interceptors){
+    public static IOStreamPipeline of(IOStreamInterceptor... interceptors) {
         return of(Collects.asList(interceptors));
     }
 
-    public static IOStreamPipeline of(List<? extends IOStreamInterceptor> interceptors){
+    public static IOStreamPipeline of(List<? extends IOStreamInterceptor> interceptors) {
         final IOStreamPipeline pipeline = new IOStreamPipeline();
-        Collects.forEach(interceptors, new Consumer<IOStreamInterceptor>(){
+        Collects.forEach(interceptors, new Consumer<IOStreamInterceptor>() {
             @Override
             public void accept(IOStreamInterceptor interceptor) {
                 pipeline.addLast(interceptor);
             }
         });
         return pipeline;
+    }
+
+    public static IOStreamPipeline ofInputStreamConsumers(List<Consumer4<InputStream, byte[], Integer, Integer>> consumers) {
+        return IOStreamPipeline.of(Pipeline.of(consumers).map(ConsumerToInputStreamInterceptorAdapter.consumerToInterceptorMapper).asList());
+    }
+
+    public static IOStreamPipeline ofOutputStreamConsumers(List<Consumer4<OutputStream, byte[], Integer, Integer>> consumers) {
+        return IOStreamPipeline.of(Pipeline.of(consumers).map(ConsumerToOutputStreamInterceptorAdapter.consumerToInterceptorMapper).asList());
     }
 }

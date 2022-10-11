@@ -2,9 +2,7 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
-import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer4;
-import com.jn.langx.util.function.Function;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -29,23 +27,7 @@ public class WrappedInputStream extends FilterInputStream {
      * @since 4.4.2
      */
     public WrappedInputStream(InputStream in, List<Consumer4<InputStream, byte[], Integer, Integer>> consumers) {
-        this(in, IOStreamPipeline.of(Pipeline.of(consumers).map(new Function<Consumer4<InputStream, byte[], Integer, Integer>, InputStreamInterceptor>() {
-            @Override
-            public InputStreamInterceptor apply(final Consumer4<InputStream, byte[], Integer, Integer> consumer) {
-                return new InputStreamInterceptor() {
-                    @Override
-                    public boolean beforeRead(InputStream inputStream, byte[] b, int off, int len) {
-                        return true;
-                    }
-
-                    @Override
-                    public boolean afterRead(InputStream inputStream, byte[] b, int off, int len) {
-                        consumer.accept(inputStream, b, off, len);
-                        return true;
-                    }
-                };
-            }
-        }).asList()));
+        this(in, IOStreamPipeline.ofInputStreamConsumers(consumers));
     }
 
 
