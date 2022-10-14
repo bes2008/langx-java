@@ -85,7 +85,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
             throw new IllegalStateException("has no any pattern");
         }
 
-        boolean matched = Collects.anyMatch(this.patternSet.getIncludes(), new Predicate<PatternEntry>() {
+        boolean matched = Collects.anyMatch(patternSet.getIncludes(), new Predicate<PatternEntry>() {
             @Override
             public boolean test(PatternEntry patternEntry) {
                 return doMatch(patternEntry.getName(), string, option.isGlobal());
@@ -93,7 +93,7 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
         });
 
         if (matched) {
-            matched = Collects.noneMatch(this.patternSet.getExcludes(), new Predicate<PatternEntry>() {
+            matched = Collects.noneMatch(patternSet.getExcludes(), new Predicate<PatternEntry>() {
                 @Override
                 public boolean test(PatternEntry patternEntry) {
                     return doMatch(patternEntry.getName(), string, option.isGlobal());
