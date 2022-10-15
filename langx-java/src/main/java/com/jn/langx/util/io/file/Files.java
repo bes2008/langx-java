@@ -10,7 +10,6 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
-import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
@@ -18,8 +17,8 @@ import com.jn.langx.util.io.file.filter.BooleanFileFilter;
 import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
 
-import java.io.FileFilter;
 import java.io.*;
+import java.io.FilenameFilter;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
@@ -662,7 +661,7 @@ public class Files {
      * @throws IOException          if an IO error occurs during copying
      */
     public static void copyDirectory(final File srcDir, final File destDir,
-                                     final java.io.FileFilter filter) throws IOException {
+                                     final FileFilter filter) throws IOException {
         copyDirectory(srcDir, destDir, filter, true);
     }
 
@@ -711,7 +710,7 @@ public class Files {
      * @throws IOException          if an IO error occurs during copying
      */
     public static void copyDirectory(final File srcDir, final File destDir,
-                                     final java.io.FileFilter filter, final boolean preserveFileDate) throws IOException {
+                                     final FileFilter filter, final boolean preserveFileDate) throws IOException {
         checkFileRequirements(srcDir, destDir);
         if (!srcDir.isDirectory()) {
             throw new IOException("Source '" + srcDir + "' exists but is not a directory");
@@ -723,7 +722,7 @@ public class Files {
         // Cater for destination being directory within the source directory (see IO-141)
         List<String> exclusionList = null;
         if (destDir.getCanonicalPath().startsWith(srcDir.getCanonicalPath())) {
-            final File[] srcFiles = filter == null ? srcDir.listFiles() : srcDir.listFiles(filter);
+            final File[] srcFiles = filter == null ? srcDir.listFiles() : srcDir.listFiles((java.io.FileFilter)filter);
             if (Objs.isNotEmpty(srcFiles)) {
                 exclusionList = new ArrayList<String>(srcFiles.length);
                 for (final File srcFile : srcFiles) {
@@ -770,7 +769,7 @@ public class Files {
                                         final boolean preserveFileDate, final List<String> exclusionList)
             throws IOException {
         // recurse
-        final File[] srcFiles = filter == null ? srcDir.listFiles() : srcDir.listFiles(filter);
+        final File[] srcFiles = filter == null ? srcDir.listFiles() : srcDir.listFiles((FilenameFilter) filter);
         if (srcFiles == null) {  // null if abstract pathname does not denote a directory, or if an I/O error occurs
             throw new IOException("Failed to list contents of " + srcDir);
         }
@@ -1036,13 +1035,13 @@ public class Files {
         if (directory.exists() && directory.isDirectory()) {
 
             // 删除目录下的文件
-            File[] children = directory.listFiles((FileFilter) new IsFileFilter());
+            File[] children = directory.listFiles((java.io.FileFilter) new IsFileFilter());
             if(children!=null) {
                 for (int i = 0; i < children.length; i++) {
                     children[i].delete();
                 }
             }
-            children = directory.listFiles((FileFilter) new IsDirectoryFileFilter());
+            children = directory.listFiles((java.io.FileFilter) new IsDirectoryFileFilter());
             if(children!=null) {
                 for (int i = 0; i < children.length; i++) {
                     cleanDirectory(children[i]);
@@ -1069,7 +1068,7 @@ public class Files {
             throw new IllegalArgumentException(message);
         }
 
-        final File[] files = directory.listFiles((FileFilter) new IsFileFilter());
+        final File[] files = directory.listFiles((java.io.FileFilter) new IsFileFilter());
         if (files == null) {
             return new File[0];
         }
@@ -1842,7 +1841,7 @@ public class Files {
             breakPredicate = Functions.booleanPredicate2(false);
         }
 
-        File[] children = childrenFilter == null ? directory.listFiles() : directory.listFiles((FileFilter) childrenFilter);
+        File[] children = childrenFilter == null ? directory.listFiles() : directory.listFiles((java.io.FileFilter) childrenFilter);
         if (children != null) {
             for (File child : children) {
                 if (breakPredicate.test(out, child)) {
