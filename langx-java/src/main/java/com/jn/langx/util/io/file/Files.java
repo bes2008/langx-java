@@ -13,6 +13,7 @@ import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.LineDelimiter;
 import com.jn.langx.util.io.file.filter.BooleanFileFilter;
 import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
@@ -450,7 +451,7 @@ public class Files {
             throw new IOException("Destination '" + destFile + "' exists but is read-only");
         }
         if (filter != null) {
-            if(!filter.accept(srcFile)){
+            if (!filter.accept(srcFile)) {
                 return;
             }
         }
@@ -1806,35 +1807,43 @@ public class Files {
         write(bytes, Charsets.getDefault(), file, true);
     }
 
-    public static void write(String bytes, File file, boolean append) throws IOException {
-        write(bytes, Charsets.getDefault(), file, append);
+    public static void write(String string, File file, boolean append) throws IOException {
+        write(string, Charsets.getDefault(), file, append);
     }
 
-    public static void write(String bytes, Charset charset, File file) throws IOException {
-        write(bytes, charset, file, true);
+    public static void write(String string, Charset charset, File file) throws IOException {
+        write(string, charset, file, true);
     }
 
-    public static void write(String bytes, Charset charset, File file, boolean append) throws IOException {
+    public static void write(String string, Charset charset, File file, boolean append) throws IOException {
         BufferedWriter fileWriter = null;
         try {
             fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, append), charset));
-            IOs.write(bytes.getBytes(charset), fileWriter);
+            IOs.write(string, fileWriter);
         } finally {
             IOs.close(fileWriter);
         }
     }
 
+    public static void appendLine(File file, String line) throws IOException {
+        write(line + LineDelimiter.DEFAULT, Charsets.UTF_8, file, true);
+    }
+
+    public static List<String> lines(File file) throws IOException {
+        return IOs.readLines(file);
+    }
+
     /**
      * @since 4.1.0
      */
-    public static List<File> find(File directory, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, com.jn.langx.util.io.file.FileFilter filter, Predicate2<List<File>, File> breakPredicate) {
+    public static List<File> find(File directory, @Nullable FileFilter childrenFilter, FileFilter filter, Predicate2<List<File>, File> breakPredicate) {
         return find(directory, 1, childrenFilter, filter, breakPredicate);
     }
 
     /**
      * @since 4.1.0
      */
-    public static List<File> find(File directory, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, com.jn.langx.util.io.file.FileFilter filter, Predicate2<List<File>, File> breakPredicate) {
+    public static List<File> find(File directory, int maxDepth, @Nullable FileFilter childrenFilter, FileFilter filter, Predicate2<List<File>, File> breakPredicate) {
         List<File> out = Collects.emptyArrayList();
         find(directory, out, maxDepth, childrenFilter, filter, breakPredicate);
         return out;
@@ -1847,7 +1856,7 @@ public class Files {
      * @param filter         use the predicate to filter all file or directory what found by search filter
      * @since 4.1.0
      */
-    public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, @Nullable com.jn.langx.util.io.file.FileFilter filter, @NonNull Predicate2<List<File>, File> breakPredicate) {
+    public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable FileFilter childrenFilter, @Nullable FileFilter filter, @NonNull Predicate2<List<File>, File> breakPredicate) {
         if (directory == null || out == null || maxDepth < 1) {
             return;
         }

@@ -10,7 +10,9 @@ import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.close.ObjectCloser;
 
 import java.io.*;
-import java.net.*;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
@@ -2530,6 +2532,15 @@ public class IOs {
 
     // readLines
     //-----------------------------------------------------------------------
+    public static List<String> readLines(File file) throws IOException {
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            return readLines(inputStream);
+        } finally {
+            IOs.close(inputStream);
+        }
+    }
 
     /**
      * Gets the contents of an <code>InputStream</code> as a list of Strings,
