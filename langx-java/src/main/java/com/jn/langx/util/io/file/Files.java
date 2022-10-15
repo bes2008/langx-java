@@ -17,8 +17,8 @@ import com.jn.langx.util.io.file.filter.BooleanFileFilter;
 import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
 
-import java.io.*;
 import java.io.FilenameFilter;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
@@ -308,6 +308,10 @@ public class Files {
         return decoded;
     }
 
+    public static void copyFileToDirectory(final File srcFile, final File destDir) throws IOException {
+        copyFileToDirectory(srcFile, destDir, null);
+    }
+
     /**
      * Copies a file to a directory preserving the file date.
      * <p>
@@ -328,8 +332,8 @@ public class Files {
      * @throws IOException          if an IO error occurs during copying
      * @see #copyFile(File, File, boolean)
      */
-    public static void copyFileToDirectory(final File srcFile, final File destDir) throws IOException {
-        copyFileToDirectory(srcFile, destDir, true);
+    public static void copyFileToDirectory(final File srcFile, final File destDir, FileFilter filter) throws IOException {
+        copyFileToDirectory(srcFile, destDir, true, filter);
     }
 
     /**
@@ -357,7 +361,7 @@ public class Files {
      *                              completes
      * @see #copyFile(File, File, boolean)
      */
-    public static void copyFileToDirectory(final File srcFile, final File destDir, final boolean preserveFileDate)
+    public static void copyFileToDirectory(final File srcFile, final File destDir, final boolean preserveFileDate, FileFilter filter)
             throws IOException {
         if (destDir == null) {
             throw new NullPointerException("Destination must not be null");
@@ -366,7 +370,7 @@ public class Files {
             throw new IllegalArgumentException("Destination '" + destDir + "' is not a directory");
         }
         final File destFile = new File(destDir, srcFile.getName());
-        copyFile(srcFile, destFile, preserveFileDate);
+        copyFile(srcFile, destFile, preserveFileDate, filter);
     }
 
     /**
@@ -389,11 +393,16 @@ public class Files {
      * @throws IOException          if an IO error occurs during copying
      * @throws IOException          if the output file length is not the same as the input file length after the copy
      *                              completes
-     * @see #copyFileToDirectory(File, File)
+     * @see #copyFileToDirectory(File, File, FileFilter)
      * @see #copyFile(File, File, boolean)
      */
     public static void copyFile(final File srcFile, final File destFile) throws IOException {
         copyFile(srcFile, destFile, true);
+    }
+
+    public static void copyFile(final File srcFile, final File destFile,
+                                final boolean preserveFileDate) throws IOException {
+        copyFile(srcFile, destFile, preserveFileDate, null);
     }
 
     /**
@@ -419,11 +428,11 @@ public class Files {
      * @throws IOException          if an IO error occurs during copying
      * @throws IOException          if the output file length is not the same as the input file length after the copy
      *                              completes
-     * @see #copyFileToDirectory(File, File, boolean)
+     * @see #copyFileToDirectory(File, File, boolean, FileFilter)
      * @see #doCopyFile(File, File, boolean)
      */
     public static void copyFile(final File srcFile, final File destFile,
-                                final boolean preserveFileDate) throws IOException {
+                                final boolean preserveFileDate, FileFilter filter) throws IOException {
         checkFileRequirements(srcFile, destFile);
         if (srcFile.isDirectory()) {
             throw new IOException("Source '" + srcFile + "' exists but is a directory");
@@ -439,6 +448,11 @@ public class Files {
         }
         if (destFile.exists() && !destFile.canWrite()) {
             throw new IOException("Destination '" + destFile + "' exists but is read-only");
+        }
+        if (filter != null) {
+            if(!filter.accept(srcFile)){
+                return;
+            }
         }
         doCopyFile(srcFile, destFile, preserveFileDate);
     }
@@ -547,7 +561,7 @@ public class Files {
      * @throws IOException          if source or destination is invalid
      * @throws IOException          if an IO error occurs during copying
      */
-    public static void copyDirectoryToDirectory(final File srcDir, final File destDir) throws IOException {
+    public static void copyDirectoryToDirectory(final File srcDir, final File destDir, FileFilter filter) throws IOException {
         if (srcDir == null) {
             throw new NullPointerException("Source must not be null");
         }
@@ -560,7 +574,7 @@ public class Files {
         if (destDir.exists() && !destDir.isDirectory()) {
             throw new IllegalArgumentException("Destination '" + destDir + "' is not a directory");
         }
-        copyDirectory(srcDir, new File(destDir, srcDir.getName()), true);
+        copyDirectory(srcDir, new File(destDir, srcDir.getName()), filter, true);
     }
 
     /**
@@ -722,7 +736,7 @@ public class Files {
         // Cater for destination being directory within the source directory (see IO-141)
         List<String> exclusionList = null;
         if (destDir.getCanonicalPath().startsWith(srcDir.getCanonicalPath())) {
-            final File[] srcFiles = filter == null ? srcDir.listFiles() : srcDir.listFiles((java.io.FileFilter)filter);
+            final File[] srcFiles = filter == null ? srcDir.listFiles() : srcDir.listFiles((java.io.FileFilter) filter);
             if (Objs.isNotEmpty(srcFiles)) {
                 exclusionList = new ArrayList<String>(srcFiles.length);
                 for (final File srcFile : srcFiles) {
@@ -904,6 +918,9 @@ public class Files {
     }
 
     //-----------------------------------------------------------------------
+    public static void copyToDirectory(final File src, final File destDir) throws IOException {
+        copyToDirectory(src, destDir, null);
+    }
 
     /**
      * Copies a file or directory to within another directory preserving the file dates.
@@ -925,20 +942,24 @@ public class Files {
      * @throws NullPointerException if source or destination is {@code null}
      * @throws IOException          if source or destination is invalid
      * @throws IOException          if an IO error occurs during copying
-     * @see #copyDirectoryToDirectory(File, File)
-     * @see #copyFileToDirectory(File, File)
+     * @see #copyDirectoryToDirectory(File, File, FileFilter)
+     * @see #copyFileToDirectory(File, File, FileFilter)
      */
-    public static void copyToDirectory(final File src, final File destDir) throws IOException {
+    public static void copyToDirectory(final File src, final File destDir, FileFilter filter) throws IOException {
         if (src == null) {
             throw new NullPointerException("Source must not be null");
         }
         if (src.isFile()) {
-            copyFileToDirectory(src, destDir);
+            copyFileToDirectory(src, destDir, filter);
         } else if (src.isDirectory()) {
-            copyDirectoryToDirectory(src, destDir);
+            copyDirectoryToDirectory(src, destDir, filter);
         } else {
             throw new IOException("The source " + src + " does not exist");
         }
+    }
+
+    public static void copyToDirectory(final Iterable<File> srcs, final File destDir) throws IOException {
+        copyToDirectory(srcs, destDir, null);
     }
 
     /**
@@ -959,14 +980,14 @@ public class Files {
      * @throws NullPointerException if source or destination is null
      * @throws IOException          if source or destination is invalid
      * @throws IOException          if an IO error occurs during copying
-     * @see #copyFileToDirectory(File, File)
+     * @see #copyFileToDirectory(File, File, FileFilter)
      */
-    public static void copyToDirectory(final Iterable<File> srcs, final File destDir) throws IOException {
+    public static void copyToDirectory(final Iterable<File> srcs, final File destDir, FileFilter filter) throws IOException {
         if (srcs == null) {
             throw new NullPointerException("Sources must not be null");
         }
         for (final File src : srcs) {
-            copyFileToDirectory(src, destDir);
+            copyToDirectory(src, destDir, filter);
         }
     }
 
@@ -1036,13 +1057,13 @@ public class Files {
 
             // 删除目录下的文件
             File[] children = directory.listFiles((java.io.FileFilter) new IsFileFilter());
-            if(children!=null) {
+            if (children != null) {
                 for (int i = 0; i < children.length; i++) {
                     children[i].delete();
                 }
             }
             children = directory.listFiles((java.io.FileFilter) new IsDirectoryFileFilter());
-            if(children!=null) {
+            if (children != null) {
                 for (int i = 0; i < children.length; i++) {
                     cleanDirectory(children[i]);
                     children[i].delete();
@@ -1820,10 +1841,10 @@ public class Files {
     }
 
     /**
-     * @param directory the base dir
-     * @param maxDepth  [1,100]
+     * @param directory      the base dir
+     * @param maxDepth       [1,100]
      * @param childrenFilter 执行dir.listFiles(childrenFilter)时用到，为了过滤出每一个目录的子文件或目录过滤器
-     * @param filter    use the predicate to filter all file or directory what found by search filter
+     * @param filter         use the predicate to filter all file or directory what found by search filter
      * @since 4.1.0
      */
     public static void find(@NonNull File directory, @NonNull List<File> out, int maxDepth, @Nullable com.jn.langx.util.io.file.FileFilter childrenFilter, @Nullable com.jn.langx.util.io.file.FileFilter filter, @NonNull Predicate2<List<File>, File> breakPredicate) {
