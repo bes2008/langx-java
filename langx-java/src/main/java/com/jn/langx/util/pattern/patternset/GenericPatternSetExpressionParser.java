@@ -43,7 +43,7 @@ public class GenericPatternSetExpressionParser<PatternEntry extends Named> imple
             @Override
             public void accept(String segment) {
                 if (Strings.startsWith(segment, getExcludeFlag())) {
-                    patternSet.addExclude(patternFactory.get(segment));
+                    patternSet.addExclude(patternFactory.get(segment.substring(getExcludeFlag().length())));
                 } else {
                     patternSet.addInclude(patternFactory.get(segment));
                 }

@@ -20,17 +20,37 @@ public class PatternTests {
 
     @Test
     public void antStringPatternSetTests() {
-        AntPathMatcher antStyleStringMatcher = new AntPathMatcher((String) null, "/views/products/**/*.cfm");
+        AntPathMatcher antStyleStringMatcher = new AntPathMatcher((String) null, "/views/**/*.cfm");
+        antStyleStringMatcher.setGlobal(true);
         Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/index.cfm"));
         Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/SE10/index.cfm"));
         Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/SE10/details.cfm"));
         Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/ST80/index.cfm"));
         Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/ST80/details.cfm"));
+        Assert.assertEquals(false, antStyleStringMatcher.matches("/views/products/ST80/details.xyz"));
+
+
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/aboutUs/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/aboutUs/managementTeam.cfm"));
+    }
+
+    @Test
+    public void antStringPatternSetTests2() {
+        AntPathMatcher antStyleStringMatcher = new AntPathMatcher((String) null, "/views/products/**/*.cfm");
+        antStyleStringMatcher.setGlobal(true);
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/SE10/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/SE10/details.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/ST80/index.cfm"));
+        Assert.assertEquals(true, antStyleStringMatcher.matches("/views/products/ST80/details.cfm"));
+        Assert.assertEquals(false, antStyleStringMatcher.matches("/views/products/ST80/details.xyz"));
 
 
         Assert.assertEquals(false, antStyleStringMatcher.matches("/views/index.cfm"));
         Assert.assertEquals(false, antStyleStringMatcher.matches("/views/aboutUs/index.cfm"));
         Assert.assertEquals(false, antStyleStringMatcher.matches("/views/aboutUs/managementTeam.cfm"));
     }
+
 
 }
