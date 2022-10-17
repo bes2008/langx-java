@@ -1803,8 +1803,8 @@ public class Files {
         return (capacity == nread) ? buf : Arrays.copyOf(buf, nread);
     }
 
-    public static void write(String bytes, File file) throws IOException {
-        write(bytes, Charsets.getDefault(), file, true);
+    public static void write(String string, File file) throws IOException {
+        write(string, Charsets.getDefault(), file, false);
     }
 
     public static void write(String string, File file, boolean append) throws IOException {
@@ -1812,7 +1812,7 @@ public class Files {
     }
 
     public static void write(String string, Charset charset, File file) throws IOException {
-        write(string, charset, file, true);
+        write(string, charset, file, false);
     }
 
     public static void write(String string, Charset charset, File file, boolean append) throws IOException {
@@ -1824,9 +1824,12 @@ public class Files {
             IOs.close(fileWriter);
         }
     }
-
     public static void appendLine(File file, String line) throws IOException {
-        write(line + LineDelimiter.DEFAULT, Charsets.UTF_8, file, true);
+        write(line + LineDelimiter.DEFAULT.getValue(), Charsets.UTF_8, file, true);
+    }
+
+    public static void appendLine(File file, String line, Charset charset) throws IOException {
+        write(line + LineDelimiter.DEFAULT.getValue(), charset, file, true);
     }
 
     public static List<String> lines(File file) throws IOException {
