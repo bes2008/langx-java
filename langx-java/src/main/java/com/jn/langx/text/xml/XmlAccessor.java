@@ -5,6 +5,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.logging.Loggers;
+import org.owasp.esapi.ESAPI;
 import org.slf4j.Logger;
 import org.w3c.dom.*;
 
@@ -128,7 +129,8 @@ public class XmlAccessor {
             if (Emptys.isEmpty(attributeName)) {
                 throw new IllegalArgumentException("attributeName is empty .");
             }
-            final Element element = this.getElement(doc, factory, elementXpath);
+            String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+            final Element element = this.getElement(doc, factory, _elementXpath);
             final Attr attr = element.getAttributeNode(attributeName);
             String ret = Emptys.isEmpty(attr) ? "" : attr.getValue();
             if (logger.isDebugEnabled()) {
@@ -144,43 +146,50 @@ public class XmlAccessor {
     public Node getNode(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        final XPathExpression exp = xpath.compile(elementXpath);
+        String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+        final XPathExpression exp = xpath.compile(_elementXpath);
         return (Node) exp.evaluate(doc, XPathConstants.NODE);
     }
 
     public Element getElement(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
-        return (Element) getNode(doc, factory, elementXpath);
+        String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+        return (Element) getNode(doc, factory, _elementXpath);
     }
 
     public Attr getAttr(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
-        return (Attr) getNode(doc, factory, elementXpath);
+        String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+        return (Attr) getNode(doc, factory, _elementXpath);
     }
 
     public NodeList getNodeList(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        final XPathExpression exp = xpath.compile(elementXpath);
+        String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+        final XPathExpression exp = xpath.compile(_elementXpath);
         return (NodeList) exp.evaluate(doc, XPathConstants.NODESET);
     }
 
     public String getString(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        final XPathExpression exp = xpath.compile(elementXpath);
+        String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+        final XPathExpression exp = xpath.compile(_elementXpath);
         return (String) exp.evaluate(doc, XPathConstants.STRING);
     }
 
     public Number getNumber(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        final XPathExpression exp = xpath.compile(elementXpath);
+        String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+        final XPathExpression exp = xpath.compile(_elementXpath);
         return (Number) exp.evaluate(doc, XPathConstants.NUMBER);
     }
 
     public Boolean getBoolean(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        final XPathExpression exp = xpath.compile(elementXpath);
+        String _elementXpath = ESAPI.encoder().encodeForXPath(elementXpath);
+        final XPathExpression exp = xpath.compile(_elementXpath);
         return (Boolean) exp.evaluate(doc, XPathConstants.BOOLEAN);
     }
 }

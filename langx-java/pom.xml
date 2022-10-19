@@ -28,6 +28,12 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder-esapi</artifactId>
+            <version>1.2.3</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
