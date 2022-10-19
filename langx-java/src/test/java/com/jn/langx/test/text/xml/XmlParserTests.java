@@ -11,6 +11,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import javax.xml.xpath.XPathFactory;
 import java.io.InputStream;
 import java.util.List;
@@ -40,10 +41,11 @@ public class XmlParserTests {
                     String prefix = document.getDocumentElement().getPrefix();
                     if (prefix != null) {
                         xpathExpressionString = StringTemplates.formatWithPlaceholder("/{}:project/{}:groupId", prefix);
+                        element = new XmlAccessor(prefix).getElement(document, XPathFactory.newInstance(), xpathExpressionString);
                     } else {
                         xpathExpressionString = "/project/groupId";
+                        element = new XmlAccessor().getElement(document, XPathFactory.newInstance(), xpathExpressionString);
                     }
-                    element = new XmlAccessor().getElement(document, XPathFactory.newInstance(), xpathExpressionString);
                     System.out.println(element.getTextContent());
                 } catch (Throwable ex) {
                     ex.printStackTrace();
