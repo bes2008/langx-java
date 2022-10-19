@@ -23,7 +23,7 @@ public class ObjectIOs {
      * @param obj 必须实现 Serializable 接口
      * @throws IOException
      */
-    public static <T> byte[] serialize(T obj) throws IOException {
+    public final static <T> byte[] serialize(T obj) throws IOException {
         if (obj == null) {
             return null;
         }
@@ -39,7 +39,7 @@ public class ObjectIOs {
     /**
      * 序列化到指定的输出流
      */
-    public static <T> void serialize(T obj, @NonNull OutputStream outputStream) throws IOException {
+    public final static <T> void serialize(T obj, @NonNull OutputStream outputStream) throws IOException {
         if (obj == null) {
             return;
         }
@@ -54,11 +54,11 @@ public class ObjectIOs {
         }
     }
 
-    public static <T> T deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+    public final static <T> T deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
         return deserialize(bytes, null);
     }
 
-    public static <T> T deserialize(byte[] bytes, @Nullable Class<T> targetType) throws IOException, ClassNotFoundException {
+    public final static <T> T deserialize(byte[] bytes, @Nullable Class<T> targetType) throws IOException, ClassNotFoundException {
         if (Emptys.isEmpty(bytes)) {
             return null;
         }
