@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-public interface Trie<T> extends Map<CharSequence, T> {
+interface Trie<T> extends Map<CharSequence, T> {
     public Entry<CharSequence, T> getLongestMatch(CharSequence key);
 
     public Entry<CharSequence, T> getLongestMatch(PushbackReader keyIn) throws IOException;
@@ -131,7 +131,7 @@ public interface Trie<T> extends Map<CharSequence, T> {
         }
     }
 
-    public static class Util {
+    static class Util {
         private Util() {
         }
 
