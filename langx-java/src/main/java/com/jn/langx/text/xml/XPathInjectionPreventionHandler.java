@@ -8,6 +8,9 @@ import com.jn.langx.util.spi.CommonServiceProvider;
 
 import java.util.Iterator;
 
+/**
+ * @since 5.0.2
+ */
 public class XPathInjectionPreventionHandler extends InjectionPreventionHandler {
     private static final GenericRegistry<XPathHandler> registry;
 

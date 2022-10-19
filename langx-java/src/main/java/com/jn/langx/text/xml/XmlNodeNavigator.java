@@ -25,20 +25,21 @@ public class XmlNodeNavigator implements Navigator<Node> {
     private String namespacePrefix;
 
     public XmlNodeNavigator() {
-        this(null,null);
+        this(null, null);
     }
 
     public XmlNodeNavigator(@Nullable XPathFactory xpathFactory) {
-        this(xpathFactory,null);
+        this(xpathFactory, null);
     }
 
     public XmlNodeNavigator(String namespacePrefix) {
-        this(null,namespacePrefix);
+        this(null, namespacePrefix);
     }
+
     public XmlNodeNavigator(@Nullable XPathFactory xpathFactory,
                             @Nullable String namespacePrefix) {
-        this.xpathFactory = xpathFactory==null? XPathFactory.newInstance():xpathFactory;
-        this.namespacePrefix=namespacePrefix;
+        this.xpathFactory = xpathFactory == null ? XPathFactory.newInstance() : xpathFactory;
+        this.namespacePrefix = namespacePrefix;
     }
 
     @Override
@@ -46,6 +47,7 @@ public class XmlNodeNavigator implements Navigator<Node> {
         final XPath xpath = xpathFactory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(context, this.namespacePrefix));
         try {
+            pathExpression = XPathInjectionPreventionHandler.getInstance().apply(pathExpression);
             final XPathExpression exp = xpath.compile(pathExpression);
             Node node = (Node) exp.evaluate(context, XPathConstants.NODE);
             return node;
@@ -61,6 +63,7 @@ public class XmlNodeNavigator implements Navigator<Node> {
         final XPath xpath = xpathFactory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(context, this.namespacePrefix));
         try {
+            xpathExpression = XPathInjectionPreventionHandler.getInstance().apply(xpathExpression);
             final XPathExpression exp = xpath.compile(xpathExpression);
             NodeList nodeList = (NodeList) exp.evaluate(context, XPathConstants.NODESET);
             return Pipeline.<Node>of(new NodeListIterator(nodeList)).asList();
@@ -77,8 +80,8 @@ public class XmlNodeNavigator implements Navigator<Node> {
 
     @Override
     public <E> Class<E> getType(Node context, String pathExpression) {
-        Node node = get(context,pathExpression);
-        if(node!=null) {
+        Node node = get(context, pathExpression);
+        if (node != null) {
             int nodeType = node.getNodeType();
             Class nodeClass = Node.class;
             switch (nodeType) {
