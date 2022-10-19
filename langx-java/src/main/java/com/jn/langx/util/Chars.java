@@ -224,5 +224,8 @@ public class Chars {
         return bytes;
     }
 
+    public static boolean isBmpCodePoint(int codePoint) {
+        return codePoint >>> 16 == 0;
+    }
 
 }
