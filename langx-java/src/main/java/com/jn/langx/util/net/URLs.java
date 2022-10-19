@@ -1,7 +1,9 @@
 package com.jn.langx.util.net;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.jar.multiplelevel.MultipleLevelURLStreamHandler;
@@ -15,6 +17,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class URLs {
@@ -228,7 +231,14 @@ public class URLs {
         }
     }
 
+    private static final List<String> SECURITY_PROTOCOLS = Collects.newArrayList(
+            "file","jar"
+    );
     public static <U extends URLConnection> U openURL(URL url) throws IOException{
-        return (U)url.openConnection();
+        String protocol = url.getProtocol();
+        if(SECURITY_PROTOCOLS.contains(protocol)) {
+            return (U) url.openConnection();
+        }
+        throw new IOException(StringTemplates.formatWithPlaceholder("unsupported protocol: {}", url.toString()));
     }
 }
