@@ -20,8 +20,6 @@ package com.jn.langx.util.collection.list;
 import com.jn.langx.util.collection.iter.OrderedIterator;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.Collection;
@@ -622,6 +620,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * @param outputStream  the stream to write the object to
      * @throws IOException  if anything goes wrong
      */
+    /*
     protected void doWriteObject(final ObjectOutputStream outputStream) throws IOException {
         // Write the size so we know how many nodes to read back
         outputStream.writeInt(size());
@@ -629,7 +628,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
             outputStream.writeObject(e);
         }
     }
-
+*/
     /**
      * Deserializes the data held in this object to the stream specified.
      * <p>
@@ -640,7 +639,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * @throws IOException  if any error occurs while reading from the stream
      * @throws ClassNotFoundException  if a class read from the stream can not be loaded
      */
-    @SuppressWarnings("unchecked")
+    /*
     protected void doReadObject(final ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
         init();
         final int size = inputStream.readInt();
@@ -648,7 +647,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
             add((E) inputStream.readObject());
         }
     }
-
+*/
     //-----------------------------------------------------------------------
     /**
      * A node within the linked list.
