@@ -4,6 +4,7 @@ package com.jn.langx.util.collection;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
@@ -1782,6 +1783,72 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         @Override
         public void clear() {
             ConcurrentReferenceHashMap.this.clear();
+        }
+    }
+
+    /* ---------------- Serialization Support -------------- */
+
+    /**
+     * Save the state of the <tt>ConcurrentReferenceHashMap</tt> instance to a
+     * stream (i.e., serialize it).
+     *
+     * @param s the stream
+     * @serialData the key (Object) and value (Object)
+     * for each key-value mapping, followed by a null pair.
+     * The key-value mappings are emitted in no particular order.
+     */
+    public final void writeObject(java.io.ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+
+        for (int k = 0; k < segments.length; ++k) {
+            Segment<K, V> seg = segments[k];
+            seg.lock();
+            try {
+                HashEntry<K, V>[] tab = seg.table;
+                for (int i = 0; i < tab.length; ++i) {
+                    for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
+                        K key = e.key();
+                        if (key == null) {
+                            // Skip GC'd keys
+                            continue;
+                        }
+
+                        s.writeObject(key);
+                        s.writeObject(e.value());
+                    }
+                }
+            } finally {
+                seg.unlock();
+            }
+        }
+        s.writeObject(null);
+        s.writeObject(null);
+    }
+
+    /**
+     * Reconstitute the <tt>ConcurrentReferenceHashMap</tt> instance from a
+     * stream (i.e., deserialize it).
+     *
+     * @param s the stream
+     */
+    @SuppressWarnings("unchecked")
+    public final void readObject(java.io.ObjectInputStream s)
+            throws IOException, ClassNotFoundException {
+        s.defaultReadObject();
+
+        // Initialize each segment to be minimally sized, and let grow.
+        for (int i = 0; i < segments.length; ++i) {
+            segments[i].setTable(new HashEntry[1]);
+        }
+
+        // Read the keys and values, and put the mappings in the table
+        for (; ; ) {
+            K key = (K) s.readObject();
+            V value = (V) s.readObject();
+            if (key == null) {
+                break;
+            }
+            put(key, value);
         }
     }
 }
