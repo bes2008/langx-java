@@ -55,7 +55,7 @@ public class Files {
     private static final int BUFFER_SIZE = 8192;
 
     public static String getSuffix(File file) {
-        return Filenames.getSuffix(file.getAbsolutePath());
+        return Filenames.getSuffix(Files.getCanonicalPath(file));
     }
 
     public static boolean makeDirs(String dirPath) {
@@ -73,7 +73,7 @@ public class Files {
             if (dir.exists()) {
                 return file.createNewFile();
             } else {
-                throw new IOException(StringTemplates.formatWithPlaceholder("Can't create directory: {}", dir.getAbsolutePath()));
+                throw new IOException(StringTemplates.formatWithPlaceholder("Can't create directory: {}", Files.getCanonicalPath(dir)));
             }
         }
         return true;
@@ -1888,4 +1888,18 @@ public class Files {
         }
     }
 
+    public static final String getCanonicalPath(File file){
+        try {
+            return file.getCanonicalPath();
+        }catch (IOException e){
+            throw Throwables.wrapAsRuntimeIOException(e);
+        }
+    }
+    public static final File getCanonicalFile(File file){
+        try {
+            return file.getCanonicalFile();
+        }catch (IOException e){
+            throw Throwables.wrapAsRuntimeIOException(e);
+        }
+    }
 }

@@ -12,6 +12,7 @@ import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.io.Channels;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.struct.Holder;
 
@@ -37,7 +38,7 @@ public class Resources {
     }
 
     public static FileResource loadFileResource(@NonNull File file) {
-        return loadFileResource(file.getAbsolutePath(), null);
+        return loadFileResource(Files.getCanonicalPath(file), null);
     }
 
     public static FileResource loadFileResource(@NonNull String location) {

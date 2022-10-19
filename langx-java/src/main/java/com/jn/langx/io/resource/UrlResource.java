@@ -2,6 +2,7 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.net.URLs;
 
 import java.io.File;
@@ -58,7 +59,7 @@ public class UrlResource extends AbstractLocatableResource<URL> {
         if (URLs.isFileURL(url)) {
             File file = URLs.getFile(url);
             if (file != null) {
-                return file.getAbsolutePath();
+                return Files.getCanonicalPath(file);
             }
         }
         return url.getPath();

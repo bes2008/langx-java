@@ -4,6 +4,7 @@ import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.ProcessAdapter;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.file.Files;
 
 import java.io.*;
 import java.util.Map;
@@ -65,7 +66,7 @@ public class VmsCommandLauncher extends Java13CommandLauncher {
         script.deleteOnExit();
         PrintWriter out = null;
         try {
-            out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(script.getAbsolutePath(), true), Charsets.UTF_8));
+            out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(Files.getCanonicalPath(script), true), Charsets.UTF_8));
             // add the environment as global symbols for the DCL script
             if (env != null) {
                 final Set<Entry<String, String>> entries = env.entrySet();

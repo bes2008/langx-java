@@ -535,7 +535,7 @@ public class PEMs extends Securitys {
                 input = Files.openInputStream(path);
                 final Collection<? extends Certificate> parsed = certFactory.generateCertificates(input);
                 if (parsed.isEmpty()) {
-                    throw new SecurityException("failed to parse any certificates from [" + path.getAbsolutePath() + "]");
+                    throw new SecurityException("failed to parse any certificates from [" + Files.getCanonicalPath(path) + "]");
                 }
                 certificates.addAll(parsed);
             } finally {

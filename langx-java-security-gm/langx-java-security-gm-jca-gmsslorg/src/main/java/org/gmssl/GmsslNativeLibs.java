@@ -2,6 +2,7 @@ package org.gmssl;
 
 
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.jni.NativeLibraryUtil;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.net.URLs;
@@ -45,7 +46,7 @@ public class GmsslNativeLibs {
             while ((len = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, len);
             }
-            addLibraryDir(jarFile.getParentFile().getAbsolutePath());
+            addLibraryDir(Files.getCanonicalPath(jarFile.getParentFile()));
         } catch (IOException e) {
             Logger logger = Loggers.getLogger(GmsslNativeLibs.class);
             logger.error(e.getMessage(), e);
@@ -79,7 +80,7 @@ public class GmsslNativeLibs {
                 }
             } else if ("file".equals(protocol)) {
                 File file = new File(url.getPath());
-                addLibraryDir(file.getAbsolutePath());
+                addLibraryDir(Files.getCanonicalPath(file));
             }
         }
     }

@@ -3,6 +3,7 @@ package com.jn.langx.aspectj.coderepository;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import org.aspectj.apache.bcel.classfile.JavaClass;
@@ -48,7 +49,7 @@ public class Repositorys {
             try {
                 File classpathRoot = new File(codeBase.toURI());
 
-                ClassPath classPath = new ClassPath(classpathRoot.getAbsolutePath());
+                ClassPath classPath = new ClassPath(Files.getCanonicalPath(classpathRoot));
                 return SyntheticRepository.getInstance(classPath);
             } catch (URISyntaxException ex) {
                 //

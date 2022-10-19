@@ -26,6 +26,7 @@ import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.FileFilter;
 import com.jn.langx.util.io.file.Filenames;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.io.file.filter.AllFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
 import com.jn.langx.util.io.file.filter.ReadableFileFilter;
@@ -104,7 +105,7 @@ public class DirectoryBasedFileConfigurationLoader<T extends Configuration> exte
                         new Function<File, String>() {
                             @Override
                             public String apply(File file) {
-                                return configurationIdSupplier.get(Filenames.extractFilename(file.getAbsolutePath(), false));
+                                return configurationIdSupplier.get(Filenames.extractFilename(Files.getCanonicalPath(file), false));
                             }
                         },
                         new Function<File, Long>() {

@@ -2,6 +2,7 @@ package com.jn.langx.commandline.util;
 
 
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.io.file.Files;
 
 import java.io.File;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class CommandLineStringUtils {
                             if (temp instanceof File) {
                                 // for a file we have to fix the separator chars to allow
                                 // cross-platform compatibility
-                                value = fixFileSeparatorChar(((File) temp).getAbsolutePath());
+                                value = fixFileSeparatorChar(Files.getCanonicalPath((File) temp));
                             } else {
                                 value = temp != null ? temp.toString() : null;
                             }

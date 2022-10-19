@@ -7,6 +7,7 @@ import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.file.Filenames;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.reflect.Reflects;
 
@@ -155,7 +156,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
             }
         }
         if (file != null) {
-            return file.getAbsolutePath();
+            return Files.getCanonicalPath(file);
         }
         if (url != null) {
             return url.toString();

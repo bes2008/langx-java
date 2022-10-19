@@ -1,6 +1,7 @@
 package com.jn.langx.util.jar.multiplelevel;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.file.Files;
 
 import java.io.*;
 
@@ -213,7 +214,7 @@ public class RandomAccessDataFile implements RandomAccessData {
                     this.randomAccessFile = new RandomAccessFile(this.file, "r");
                 } catch (FileNotFoundException ex) {
                     throw new IllegalArgumentException(
-                            String.format("File %s must exist", this.file.getAbsolutePath()));
+                            String.format("File %s must exist", Files.getCanonicalPath(this.file)));
                 }
             }
         }

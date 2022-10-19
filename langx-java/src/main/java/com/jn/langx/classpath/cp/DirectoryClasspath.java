@@ -8,6 +8,7 @@ import com.jn.langx.io.resource.Location;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.io.file.Files;
 
 import java.io.File;
 import java.util.Set;
@@ -49,7 +50,7 @@ public class DirectoryClasspath extends AbstractClasspath {
 
     private void scan(@NonNull final Set<Location> results, @NonNull final File current) {
         if (current.isFile()) {
-            results.add(new Location(FileResource.PREFIX, current.getAbsolutePath()));
+            results.add(new Location(FileResource.PREFIX, Files.getCanonicalPath(current)));
         } else {
             Collects.forEach(current.listFiles(), new Consumer<File>() {
                 @Override

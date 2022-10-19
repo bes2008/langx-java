@@ -2,6 +2,7 @@ package com.jn.langx.commandline;
 
 import com.jn.langx.commandline.util.CommandLineStringUtils;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.io.file.Files;
 
 import java.io.File;
 import java.util.*;
@@ -88,7 +89,7 @@ public class CommandLine {
      */
     public CommandLine(final File executable) {
         this.isFile = true;
-        this.executable = toCleanExecutable(executable.getAbsolutePath());
+        this.executable = toCleanExecutable(Files.getCanonicalPath(executable));
     }
 
     /**

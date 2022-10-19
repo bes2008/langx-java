@@ -68,7 +68,7 @@ public final class DirectoryLock {
      */
     public void release() {
         if (logger.isInfoEnabled()) {
-            logger.info("Releasing lock on " + lockFile().getAbsolutePath());
+            logger.info("Releasing lock on " + Files.getCanonicalPath(lockFile()));
         }
         try {
             lock.release();
@@ -101,7 +101,7 @@ public final class DirectoryLock {
         FileChannel channel = openChannel(lockFile);
         FileLock lock = acquireLock(lockFile, channel);
         if (logger.isInfoEnabled()) {
-            logger.info("Acquired lock on " + lockFile.getAbsolutePath());
+            logger.info("Acquired lock on " + Files.getCanonicalPath(lockFile));
         }
         return new DirectoryLock(dir, channel, lock, logger);
     }
@@ -110,7 +110,7 @@ public final class DirectoryLock {
         try {
             return new RandomAccessFile(lockFile, "rw").getChannel();
         } catch (IOException e) {
-            throw new RuntimeIOException("Cannot create lock file " + lockFile.getAbsolutePath(), e);
+            throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
         }
     }
 
@@ -119,15 +119,15 @@ public final class DirectoryLock {
         try {
             fileLock = channel.tryLock();
             if (fileLock == null) {
-                throw new RuntimeIOException("Cannot acquire lock on " + lockFile.getAbsolutePath()
+                throw new RuntimeIOException("Cannot acquire lock on " + Files.getCanonicalPath(lockFile)
                         + ". Directory is already being used by another member.");
             }
             return fileLock;
         } catch (OverlappingFileLockException e) {
-            throw new RuntimeException("Cannot acquire lock on " + lockFile.getAbsolutePath()
+            throw new RuntimeException("Cannot acquire lock on " + Files.getCanonicalPath(lockFile)
                     + ". Directory is already being used by another member.", e);
         } catch (IOException e) {
-            throw new RuntimeIOException("Unknown failure while acquiring lock on " + lockFile.getAbsolutePath(), e);
+            throw new RuntimeIOException("Unknown failure while acquiring lock on " + Files.getCanonicalPath(lockFile), e);
         } finally {
             if (fileLock == null) {
                 IOs.close(channel);

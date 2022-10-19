@@ -3,6 +3,7 @@ package com.jn.langx.io.resource;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.file.Filenames;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.net.URLs;
 
 import java.io.File;
@@ -49,7 +50,7 @@ public class FileResource extends AbstractLocatableResource<File> {
 
     @Override
     public String getAbsolutePath() {
-        return exists() ? file.getAbsolutePath() : null;
+        return exists() ? Files.getCanonicalPath(file) : null;
     }
 
     @Override
