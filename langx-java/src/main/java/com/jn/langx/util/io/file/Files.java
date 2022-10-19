@@ -23,7 +23,6 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -837,7 +836,7 @@ public class Files {
      * @throws IOException if an IO error occurs during copying
      */
     public static void copyURLToFile(final URL source, final File destination) throws IOException {
-        copyInputStreamToFile(source.openStream(), destination, true);
+        copyInputStreamToFile(new FileInputStream(toFile(source)), destination, true);
     }
 
     /**
@@ -861,10 +860,7 @@ public class Files {
      */
     public static void copyURLToFile(final URL source, final File destination,
                                      final int connectionTimeout, final int readTimeout) throws IOException {
-        final URLConnection connection = source.openConnection();
-        connection.setConnectTimeout(connectionTimeout);
-        connection.setReadTimeout(readTimeout);
-        copyInputStreamToFile(connection.getInputStream(), destination, true);
+        copyInputStreamToFile(new FileInputStream(toFile(source)), destination, true);
     }
 
     /**
