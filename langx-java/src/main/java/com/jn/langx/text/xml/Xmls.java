@@ -10,12 +10,10 @@ import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
@@ -48,6 +46,12 @@ public class Xmls {
             boolean namespaceAware) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
+        String FEATURE = "http://xml.org/sax/features/external-general-entities";
+        factory.setFeature(FEATURE, false); // 不包括外部一般实体。
+        FEATURE = "http://xml.org/sax/features/external-parameter-entities";
+        factory.setFeature(FEATURE, false); // 不包含外部参数实体或外部DTD子集。
+        FEATURE = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+        factory.setFeature(FEATURE, false); // 忽略外部DTD
         factory.setIgnoringElementContentWhitespace(ignoringElementContentWhitespace);
         factory.setNamespaceAware(namespaceAware);
         if (entityResolver != null) {
@@ -76,13 +80,23 @@ public class Xmls {
     }
 
     public static void writeDocToOutputStream(final Document doc, final OutputStream out) throws Exception {
-        final Transformer trans = TransformerFactory.newInstance().newTransformer();
-        trans.transform(new DOMSource(doc), new StreamResult(out));
+        final Transformer transformer = newTransformer();
+        transformer.transform(new DOMSource(doc), new StreamResult(out));
     }
 
+    private static final String FEATURE_SECURE_PROCESSING = "http://javax.xml.XMLConstants/feature/secure-processing";
+
     public static void writeDocToFile(final Document doc, final File file) throws TransformerFactoryConfigurationError, TransformerException {
-        final Transformer trans = TransformerFactory.newInstance().newTransformer();
-        trans.transform(new DOMSource(doc), new StreamResult(file));
+        Transformer transformer = newTransformer();
+        transformer.transform(new DOMSource(doc), new StreamResult(file));
+    }
+
+    public static Transformer newTransformer() throws TransformerConfigurationException {
+        TransformerFactory factory = TransformerFactory.newInstance();
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, false);
+        factory.setAttribute(FEATURE_SECURE_PROCESSING, true);
+        final Transformer trans = factory.newTransformer();
+        return trans;
     }
 
     public static <T> T handleXml(final String xmlpath, final XmlDocumentHandler<T> handler) {
