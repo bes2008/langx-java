@@ -4,6 +4,7 @@ package org.gmssl;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.jni.NativeLibraryUtil;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.net.URLs;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -62,7 +63,7 @@ public class GmsslNativeLibs {
             URL url = dir.nextElement();
             String protocol = url.getProtocol();
             if ("jar".equals(protocol)) {
-                JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
+                JarURLConnection jarURLConnection = URLs.openURL(url);
                 JarFile jarFile = jarURLConnection.getJarFile();
                 // 遍历Jar包
                 Enumeration<JarEntry> entries = jarFile.entries();

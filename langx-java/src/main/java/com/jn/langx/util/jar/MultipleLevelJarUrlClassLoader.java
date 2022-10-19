@@ -2,6 +2,7 @@ package com.jn.langx.util.jar;
 
 import com.jn.langx.util.jar.multiplelevel.JarFile;
 import com.jn.langx.util.jar.multiplelevel.MultipleLevelURLStreamHandler;
+import com.jn.langx.util.net.URLs;
 import com.jn.langx.util.reflect.Reflects;
 
 import java.io.IOException;
@@ -113,7 +114,7 @@ public class MultipleLevelJarUrlClassLoader extends URLClassLoader {
                     String classEntryName = className.replace('.', '/') + ".class";
                     for (URL url : getURLs()) {
                         try {
-                            URLConnection connection = url.openConnection();
+                            URLConnection connection = URLs.openURL(url);
                             if (connection instanceof JarURLConnection) {
                                 java.util.jar.JarFile jarFile = ((JarURLConnection) connection).getJarFile();
                                 if (jarFile.getEntry(classEntryName) != null && jarFile.getEntry(packageEntryName) != null
@@ -140,7 +141,7 @@ public class MultipleLevelJarUrlClassLoader extends URLClassLoader {
     public void clearCache() {
         for (URL url : getURLs()) {
             try {
-                URLConnection connection = url.openConnection();
+                URLConnection connection = URLs.openURL(url);
                 if (connection instanceof java.net.JarURLConnection) {
                     clearCache(connection);
                 }

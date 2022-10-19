@@ -1,5 +1,7 @@
 package com.jn.langx.util.jar.multiplelevel;
 
+import com.jn.langx.util.net.URLs;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
@@ -118,7 +120,7 @@ public class MultipleLevelURLStreamHandler extends URLStreamHandler {
     }
 
     private URLConnection openConnection(URLStreamHandler handler, URL url) throws Exception {
-        return new URL(null, url.toExternalForm(), handler).openConnection();
+        return URLs.openURL(new URL(null, url.toExternalForm(), handler));
     }
 
     @Override

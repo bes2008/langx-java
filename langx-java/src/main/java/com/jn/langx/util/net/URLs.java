@@ -21,8 +21,6 @@ public class URLs {
 
     private static final Map<String,String> URL_PREFIX_MAPPING = new HashMap<String, String>();
 
-
-
     public static URL toURL(URI uri) {
         Preconditions.checkNotNull(uri);
         try {
@@ -154,7 +152,7 @@ public class URLs {
                 }
 
                 // Try a URL connection content-length header
-                URLConnection conn = url.openConnection();
+                URLConnection conn = URLs.openURL(url);
                 HttpURLConnection httpCon = (conn instanceof HttpURLConnection ? (HttpURLConnection) conn : null);
                 if (httpCon != null) {
                     int code = httpCon.getResponseCode();
@@ -197,7 +195,7 @@ public class URLs {
                 }
                 URLConnection con = null;
                 try {
-                    con = url.openConnection();
+                    con = openURL(url);
                     long length = URLConnections.getContentLengthLong(con);
                     if (length < 0) {
                         length = URLConnections.getContentLength(con);
@@ -223,10 +221,14 @@ public class URLs {
 
     public static InputStream getInputStream(URL url) {
         try {
-            URLConnection con = url.openConnection();
+            URLConnection con = openURL(url);
             return con.getInputStream();
         } catch (IOException ex) {
             return null;
         }
+    }
+
+    public static <U extends URLConnection> U openURL(URL url) throws IOException{
+        return (U)url.openConnection();
     }
 }

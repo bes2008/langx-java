@@ -8,6 +8,7 @@ import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.close.ObjectCloser;
+import com.jn.langx.util.net.URLs;
 
 import java.io.*;
 import java.net.URI;
@@ -552,7 +553,7 @@ public class IOs {
      * @throws IOException          if an I/O exception occurs
      */
     public static byte[] toByteArray(final URL url) throws IOException {
-        final URLConnection conn = url.openConnection();
+        final URLConnection conn = URLs.openURL(url);
         try {
             return toByteArray(conn);
         } finally {
