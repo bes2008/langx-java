@@ -6,7 +6,6 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.xml.Namespaces;
 import com.jn.langx.text.xml.XmlAccessor;
 import com.jn.langx.text.xml.Xmls;
-import com.jn.langx.text.xml.errorhandler.IgnoreErrorHandler;
 import com.jn.langx.text.xml.errorhandler.LogErrorHandler;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -45,7 +44,7 @@ public class XmlParserTests {
                     boolean usingCustomNamespace = Namespaces.hasCustomNamespace(document, true);
                     if (usingCustomNamespace) {
                         String prefix = document.getDocumentElement().getPrefix();
-                        if(prefix==null){
+                        if (prefix == null) {
                             prefix = "x";
                         }
                         xpathExpressionString = StringTemplates.formatWithPlaceholder("/{}:project/{}:groupId", prefix, prefix);
