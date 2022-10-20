@@ -128,8 +128,7 @@ public class XmlAccessor {
             if (Emptys.isEmpty(attributeName)) {
                 throw new IllegalArgumentException("attributeName is empty .");
             }
-            String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-            final Element element = this.getElement(doc, factory, _elementXpath);
+            final Element element = this.getElement(doc, factory, elementXpath);
             final Attr attr = element.getAttributeNode(attributeName);
             String ret = Emptys.isEmpty(attr) ? "" : attr.getValue();
             if (logger.isDebugEnabled()) {
@@ -145,50 +144,43 @@ public class XmlAccessor {
     public Node getNode(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-        final XPathExpression exp = xpath.compile(_elementXpath);
+        final XPathExpression exp = xpath.compile(elementXpath);
         return (Node) exp.evaluate(doc, XPathConstants.NODE);
     }
 
     public Element getElement(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
-        String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-        return (Element) getNode(doc, factory, _elementXpath);
+        return (Element) getNode(doc, factory, elementXpath);
     }
 
     public Attr getAttr(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
-        String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-        return (Attr) getNode(doc, factory, _elementXpath);
+        return (Attr) getNode(doc, factory, elementXpath);
     }
 
     public NodeList getNodeList(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-        final XPathExpression exp = xpath.compile(_elementXpath);
+        final XPathExpression exp = xpath.compile(elementXpath);
         return (NodeList) exp.evaluate(doc, XPathConstants.NODESET);
     }
 
     public String getString(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-        final XPathExpression exp = xpath.compile(_elementXpath);
+        final XPathExpression exp = xpath.compile(elementXpath);
         return (String) exp.evaluate(doc, XPathConstants.STRING);
     }
 
     public Number getNumber(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-        final XPathExpression exp = xpath.compile(_elementXpath);
+        final XPathExpression exp = xpath.compile(elementXpath);
         return (Number) exp.evaluate(doc, XPathConstants.NUMBER);
     }
 
     public Boolean getBoolean(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
-        String _elementXpath = XPathInjectionPreventionHandler.getInstance().apply(elementXpath);
-        final XPathExpression exp = xpath.compile(_elementXpath);
+        final XPathExpression exp = xpath.compile(elementXpath);
         return (Boolean) exp.evaluate(doc, XPathConstants.BOOLEAN);
     }
 }

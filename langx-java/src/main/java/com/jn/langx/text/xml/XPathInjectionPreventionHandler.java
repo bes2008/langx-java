@@ -34,11 +34,11 @@ public class XPathInjectionPreventionHandler extends InjectionPreventionHandler 
     }
 
     @Override
-    public String apply(String value) {
+    public String apply(String xpathParameter) {
         XPathHandler OWASP_XPATH_ENCODER = registry.get("owasp-xpath-encoder");
         if (OWASP_XPATH_ENCODER != null) {
-            return OWASP_XPATH_ENCODER.apply(value);
+            return OWASP_XPATH_ENCODER.apply(xpathParameter);
         }
-        return super.apply(value);
+        return super.apply(xpathParameter);
     }
 }

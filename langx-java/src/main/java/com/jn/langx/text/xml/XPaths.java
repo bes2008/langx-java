@@ -37,10 +37,13 @@ public class XPaths {
      * @return expression
      */
     public static String notContainsAttr(String attrName) {
+        attrName = XPathInjectionPreventionHandler.getInstance().apply(attrName);
         return "name(@" + attrName + ")=''";
     }
 
     public static String attrNotEquals(String attrName, String value) {
+        attrName = XPathInjectionPreventionHandler.getInstance().apply(attrName);
+        value = XPathInjectionPreventionHandler.getInstance().apply(value);
         return "@" + attrName + "!=" + value;
     }
 
@@ -55,6 +58,9 @@ public class XPaths {
      * @return expression
      */
     public static String aorB_and_C(String expA, String expB, String expC) {
+        expA = XPathInjectionPreventionHandler.getInstance().apply(expA);
+        expB = XPathInjectionPreventionHandler.getInstance().apply(expB);
+        expC = XPathInjectionPreventionHandler.getInstance().apply(expC);
         return "(" + expA + " or " + expB + ") and " + expC;
     }
 
@@ -67,6 +73,9 @@ public class XPaths {
      * @return expression
      */
     public static String a_or_BandC(String expA, String expB, String expC) {
+        expA = XPathInjectionPreventionHandler.getInstance().apply(expA);
+        expB = XPathInjectionPreventionHandler.getInstance().apply(expB);
+        expC = XPathInjectionPreventionHandler.getInstance().apply(expC);
         return expA + " or (" + expB + " and " + expC + ")";
     }
 
