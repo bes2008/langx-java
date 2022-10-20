@@ -3,9 +3,11 @@ package com.jn.langx.test.text.xml;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.xml.Namespaces;
 import com.jn.langx.text.xml.XmlAccessor;
 import com.jn.langx.text.xml.Xmls;
 import com.jn.langx.text.xml.errorhandler.IgnoreErrorHandler;
+import com.jn.langx.text.xml.errorhandler.LogErrorHandler;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
@@ -34,14 +36,19 @@ public class XmlParserTests {
                 try {
                     Resource resource = Resources.loadClassPathResource(s);
                     inputStream = resource.getInputStream();
-                    Document document = Xmls.getXmlDoc(null, new IgnoreErrorHandler(), inputStream);
+                    Document document = Xmls.getXmlDoc(null, new LogErrorHandler(), inputStream);
 
                     String xpathExpressionString = null;
                     Element element;
-                    String prefix = document.getDocumentElement().getPrefix();
 
-                    if (prefix != null) {
-                        xpathExpressionString = StringTemplates.formatWithPlaceholder("/{}:project/{}:groupId", prefix);
+
+                    boolean usingCustomNamespace = Namespaces.hasCustomNamespace(document, true);
+                    if (usingCustomNamespace) {
+                        String prefix = document.getDocumentElement().getPrefix();
+                        if(prefix==null){
+                            prefix = "x";
+                        }
+                        xpathExpressionString = StringTemplates.formatWithPlaceholder("/{}:project/{}:groupId", prefix, prefix);
                         element = new XmlAccessor(prefix).getElement(document, XPathFactory.newInstance(), xpathExpressionString);
                     } else {
                         xpathExpressionString = "/project/groupId";
