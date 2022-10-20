@@ -7,6 +7,6 @@ import com.jn.langx.util.function.Function;
  */
 public interface XPathHandler extends Function<String, String>, Named {
     @Override
-    String apply(String xpath);
+    String apply(String xpathParameter);
 
 }

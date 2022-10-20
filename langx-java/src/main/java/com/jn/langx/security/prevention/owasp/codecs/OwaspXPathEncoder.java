@@ -12,11 +12,17 @@ public class OwaspXPathEncoder implements XPathHandler {
 
     private HTMLEntityCodec htmlCodec = new HTMLEntityCodec();
 
+    /**
+     *
+     * @param xpathParameter 要在 xpath中拼接的参数
+     *
+     * @see com.jn.langx.text.xml.XPaths
+     */
     @Override
-    public String apply(String xpath) {
-        if (xpath == null) {
+    public String apply(String xpathParameter) {
+        if (xpathParameter == null) {
             return null;
         }
-        return htmlCodec.encode(IMMUNE_XPATH, xpath);
+        return htmlCodec.encode(IMMUNE_XPATH, xpathParameter);
     }
 }
