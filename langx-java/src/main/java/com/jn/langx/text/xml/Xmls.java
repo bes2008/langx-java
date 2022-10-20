@@ -46,7 +46,8 @@ public class Xmls {
             boolean namespaceAware) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
-        /*
+
+
         String FEATURE = "http://xml.org/sax/features/external-general-entities";
         factory.setFeature(FEATURE, false); // 不包括外部一般实体。
         FEATURE = "http://xml.org/sax/features/external-parameter-entities";
@@ -54,7 +55,7 @@ public class Xmls {
         FEATURE = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
         factory.setFeature(FEATURE, false); // 忽略外部DTD
 
-         */
+
         factory.setIgnoringElementContentWhitespace(ignoringElementContentWhitespace);
         factory.setNamespaceAware(namespaceAware);
         if (entityResolver != null) {

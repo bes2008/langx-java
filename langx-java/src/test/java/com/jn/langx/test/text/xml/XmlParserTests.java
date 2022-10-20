@@ -39,6 +39,7 @@ public class XmlParserTests {
                     String xpathExpressionString = null;
                     Element element;
                     String prefix = document.getDocumentElement().getPrefix();
+
                     if (prefix != null) {
                         xpathExpressionString = StringTemplates.formatWithPlaceholder("/{}:project/{}:groupId", prefix);
                         element = new XmlAccessor(prefix).getElement(document, XPathFactory.newInstance(), xpathExpressionString);
