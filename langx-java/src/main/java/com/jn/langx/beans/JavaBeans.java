@@ -194,4 +194,16 @@ public class JavaBeans {
     public static PropertyDescriptor getPropertyDescriptor(Class<?> clazz, String propertyName) throws BeansException {
         return CachedIntrospectionResults.forClass(clazz).getPropertyDescriptor(propertyName);
     }
+
+    /**
+     * @since 5.0.4
+     */
+    public static void mapToBean(Map<String, Object> src, Object target) {
+        Preconditions.checkNotNull(target);
+        if (src == null) {
+            return;
+        }
+        Class targetClass = target.getClass();
+
+    }
 }
