@@ -1,6 +1,6 @@
-package com.jn.langx;
+package com.jn.langx.util.transformer;
 
-import com.jn.langx.util.Preconditions;
+import com.jn.langx.Transformer;
 import com.jn.langx.util.function.Predicate;
 
 public abstract class ConditionTransformer<I, O> implements Transformer<I, O> {
@@ -16,8 +16,7 @@ public abstract class ConditionTransformer<I, O> implements Transformer<I, O> {
 
     @Override
     public O transform(I input) {
-        Preconditions.checkNotNull(this.predicate);
-        if (predicate.test(input)) {
+        if (predicate != null && predicate.test(input)) {
             return doTransform(input);
         }
         return (O) input;

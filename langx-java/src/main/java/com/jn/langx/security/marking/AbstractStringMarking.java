@@ -1,6 +1,6 @@
 package com.jn.langx.security.marking;
 
-public abstract class AbstractStringMarking extends AbstractMarking<String> {
+public abstract class AbstractStringMarking extends Marking<String> {
     @Override
     public abstract String doTransform(String input);
 }

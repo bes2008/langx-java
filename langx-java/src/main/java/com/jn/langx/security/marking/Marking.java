@@ -1,8 +1,8 @@
 package com.jn.langx.security.marking;
 
-import com.jn.langx.ConditionTransformer;
+import com.jn.langx.util.transformer.ConditionTransformer;
 
-public abstract class AbstractMarking<DATA> extends ConditionTransformer<DATA, DATA> {
+public abstract class Marking<DATA> extends ConditionTransformer<DATA, DATA> {
 
     public int getOrder() {
         return 0;
