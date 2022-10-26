@@ -19,7 +19,7 @@ public class OwaspXPathEncoder implements XPathHandler {
      * @see com.jn.langx.text.xml.XPaths
      */
     @Override
-    public String apply(String xpathParameter) {
+    public String transform(String xpathParameter) {
         if (xpathParameter == null) {
             return null;
         }
