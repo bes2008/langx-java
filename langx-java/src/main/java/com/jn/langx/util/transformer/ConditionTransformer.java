@@ -16,7 +16,7 @@ public abstract class ConditionTransformer<I, O> implements Transformer<I, O> {
 
     @Override
     public O transform(I input) {
-        if (predicate != null && predicate.test(input)) {
+        if (predicate == null || predicate.test(input)) {
             return doTransform(input);
         }
         return (O) input;
