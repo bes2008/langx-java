@@ -421,4 +421,8 @@ public abstract class Objs{
         obj2 = temp;
         return new Object[]{obj1, obj2};
     }
+
+    public static <T> T cast(Object o) {
+        return (T)o;
+    }
 }

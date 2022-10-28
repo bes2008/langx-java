@@ -4,6 +4,7 @@
 
 关于中文的拼音的读写，有多种形式。官网：http://www.pinyin.info/
 
+https://unicode-table.com/en/
 
 
 # 1. 罗马化系统 与 其他系统
@@ -120,6 +121,12 @@ Houbb pinyin, duguying-pinyin 他们的功能基本一样，duguying-pinyin支�
 但实际情况下，如果只有上述3个结构的话，在处理多音字时，效率会很低。需要引入分词算法，没有分词算法是不准确的。
 所以，通常的做法是维护的是短语集合。短语集合要区分好常用，和领域知识。通过领域来进行语义切分
 
+
+```text
+    chinese_surname.dict 中国姓氏
+    idiom.dict 成语
+    
+```
 
 
     

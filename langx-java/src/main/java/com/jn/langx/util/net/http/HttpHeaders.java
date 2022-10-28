@@ -1269,6 +1269,18 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
         return this.headers.getFirst(headerName);
     }
 
+    @Override
+    public String getValue(String headerName, int index) {
+        if(index<0){
+            return null;
+        }
+        List<String> headValues = get(headerName);
+        if(index>=headValues.size()){
+            return null;
+        }
+        return headValues.get(index);
+    }
+
     public String getFirstHeader(String... headerNames) {
         return getFirstHeader(new Predicate2<String, String>() {
             @Override

@@ -24,6 +24,8 @@ public interface MultiValueMap<K, V> extends Map<K, Collection<V>> {
      */
     @Nullable
     V getFirst(K key);
+    @Nullable
+    V getValue(K key, int index);
 
     /**
      * Add the given single value to the current list of values for the given key.

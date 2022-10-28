@@ -50,6 +50,11 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
 
     @Override
     public V getFirst(K key) {
+        return getValue(key, 0);
+    }
+
+    @Override
+    public V getValue(K key, int index) {
         if (key == null) {
             return null;
         }
@@ -57,7 +62,10 @@ public class CommonMultiValueMap<K, V> implements MultiValueMap<K, V> {
         if (vs.isEmpty()) {
             return null;
         }
-        return vs.get(0);
+        if (index < 0 || index >= vs.size()) {
+            return null;
+        }
+        return vs.get(index);
     }
 
     @Override
