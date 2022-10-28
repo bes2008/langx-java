@@ -14,11 +14,11 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-public class PinyinDirectoryLoader {
+class PinyinDirectoryLoader {
     private static final Logger logger = Loggers.getLogger(PinyinDirectoryLoader.class);
     private Regexp regexp = Regexps.createRegexp("(?<word>.+):(?<mapping>.+)(\\s*#.*)?");
 
-    public PinyinDirectory load(String dictName , final Resource resource) {
+    PinyinDirectory load(String dictName, final Resource resource) {
         try {
             List<String> lines = IOs.readLines(resource.getInputStream());
 
@@ -27,7 +27,7 @@ public class PinyinDirectoryLoader {
             // 标点符号
             final boolean isPunctuationSymbol = Strings.startsWith(dictName, "chinese_punctuation_symbol");
             // 姓氏
-            final boolean isSurname =  Strings.startsWith(dictName,"chinese_surname");
+            final boolean isSurname = Strings.startsWith(dictName, "chinese_surname");
             // 繁体字
             final boolean isTraditional = Strings.startsWith(dictName, "traditional_");
 
@@ -83,8 +83,8 @@ public class PinyinDirectoryLoader {
             });
 
             return directory;
-        }catch (Throwable e){
-            logger.warn(e.getMessage(),e);
+        } catch (Throwable e) {
+            logger.warn(e.getMessage(), e);
         }
         return null;
     }
