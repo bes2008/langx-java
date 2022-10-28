@@ -1832,6 +1832,11 @@ public class Files {
         return IOs.readLines(file);
     }
 
+    public static List<String> lines(File file, Charset charset) throws IOException {
+        return IOs.readLines(file, charset);
+    }
+
+
     /**
      * @since 4.1.0
      */

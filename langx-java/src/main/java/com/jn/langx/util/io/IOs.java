@@ -2543,6 +2543,15 @@ public class IOs {
         }
     }
 
+    public static List<String> readLines(File file, Charset charset) throws IOException {
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            return readLines(inputStream,charset);
+        } finally {
+            IOs.close(inputStream);
+        }
+    }
     /**
      * Gets the contents of an <code>InputStream</code> as a list of Strings,
      * one entry per line, using the default character encoding of the platform.

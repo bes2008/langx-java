@@ -24,8 +24,8 @@ public class PinyinDirectory implements Named, Configuration {
         this.directory.put(key, item);
     }
 
-    public void getItem(String key) {
-        this.directory.get(key);
+    public PinyinDirectoryItem getItem(String key) {
+        return this.directory.get(key);
     }
 
     @Override
