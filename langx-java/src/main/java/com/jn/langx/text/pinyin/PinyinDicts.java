@@ -11,7 +11,7 @@ import com.jn.langx.util.function.Predicate;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class PinyinDicts {
+class PinyinDicts {
     private static final GenericRegistry<PinyinDict> dictRegistry = new GenericRegistry<PinyinDict>(new LinkedHashMap<String, PinyinDict>());
 
     public static final String DN_HAN_ZI = "hanzi";

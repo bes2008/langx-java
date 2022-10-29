@@ -10,7 +10,7 @@ import com.jn.langx.util.function.Function;
 import java.util.Comparator;
 import java.util.List;
 
-public class Pinyins {
+public class Pinyins extends PinyinDicts{
 
     public static String getPersonName(String name, OutputStyle theOutputStyle) {
         return getPinyin(name, 4, true, theOutputStyle);
@@ -44,8 +44,8 @@ public class Pinyins {
         List<Token> tokens = analyze(PinyinDicts.findDicts(dictNames), text, tokenMaxWord, surnameFirst);
         final OutputStyle outputStyle = theOutputStyle == null ? OutputStyle.DEFAULT_INSTANCE : theOutputStyle;
 
-        final String separator = Objs.useValueIfNull(outputStyle.getSeparator(), "");
 
+        final String chineseCharSeparator = Objs.useValueIfNull(outputStyle.getChineseCharSeparator(), " ");
         List<String> buffer = Pipeline.of(tokens).map(new Function<Token, String>() {
             @Override
             public String apply(Token token) {
@@ -62,13 +62,14 @@ public class Pinyins {
                     return item.getMapping();
                 }
                 if (outputStyle.isWithTone()) {
-                    return Strings.join(separator, Strings.split(item.getPinyinWithTone(), " "));
+                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithTone(), " "));
                 } else {
-                    return Strings.join(separator, Strings.split(item.getPinyinWithoutTone(), " "));
+                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithoutTone(), " "));
                 }
             }
         }).clearNulls().asList();
-        String result = Strings.join(separator, buffer);
+        final String tokenSeparator = Objs.useValueIfNull(outputStyle.getSeparator(), "");
+        String result = Strings.join(tokenSeparator, buffer);
         return result;
     }
 

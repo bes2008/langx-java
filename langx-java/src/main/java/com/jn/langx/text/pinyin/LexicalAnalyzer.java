@@ -19,12 +19,21 @@ class LexicalAnalyzer {
      */
     private int tokenMaxChar = 4;
     private PinyinDict[] dicts;
+    private boolean surnameFirst;
     /**
      * 中文姓氏字典
      */
-
     private static PinyinDict chineseSurnameDict = PinyinDicts.getDict(PinyinDicts.DN_SURNAME);
     private static PinyinDict chinesePunctuationSymbolDict = PinyinDicts.getDict(PinyinDicts.DN_PUNCTUATION_SYMBOL);
+
+    public boolean isSurnameFirst() {
+        return surnameFirst;
+    }
+
+    public void setSurnameFirst(boolean surnameFirst) {
+        this.surnameFirst = surnameFirst;
+    }
+
     public int getTokenMaxChar() {
         return tokenMaxChar;
     }
@@ -82,6 +91,7 @@ class LexicalAnalyzer {
                     // 对中文处理：
                     long start = segmentStartIndex;
                     long end = segmentEnd;
+                    PinyinDictItem surname = null;
 
                     while (start < end) {
                         if (start + tokenMaxChar < end) {
@@ -89,8 +99,11 @@ class LexicalAnalyzer {
                             end = start + tokenMaxChar;
                         }
                         String chineseWords = csb.toString(start, end);
-                        PinyinDictItem item = find(chineseWords);
+                        PinyinDictItem item = find(surname, chineseWords);
                         if (item != null) {
+                            if (surnameFirst && surname == null) {
+                                surname = item;
+                            }
                             PinyinDictItemToken token = new PinyinDictItemToken();
                             token.setBody(item);
                             tokens.add(token);
@@ -117,7 +130,7 @@ class LexicalAnalyzer {
                 // 对停止词处理
                 if (isStopWord) {
                     if (isChinesePunctuationSymbol) {
-                        PinyinDictItem item = find(c,chinesePunctuationSymbolDict);
+                        PinyinDictItem item = find(c, chinesePunctuationSymbolDict);
                         PinyinDictItemToken token = new PinyinDictItemToken();
                         token.setBody(item);
                         tokens.add(token);
@@ -138,6 +151,22 @@ class LexicalAnalyzer {
         }
 
         return tokens;
+    }
+
+    private PinyinDictItem find(PinyinDictItem surname, String chineseWords, PinyinDict... dicts) {
+        if (surnameFirst && surname == null) {
+            // 姓氏还没找到时，就是优先找姓氏
+            surname = findSurname(chineseWords);
+            if (surname == null) {
+                surname = find(chineseWords, dicts);
+            }
+            return surname;
+        }
+        return find(chineseWords, dicts);
+    }
+
+    private PinyinDictItem findSurname(String chineseWords) {
+        return find(chineseWords, chineseSurnameDict);
     }
 
     private PinyinDictItem find(String chineseWords, PinyinDict... dicts) {

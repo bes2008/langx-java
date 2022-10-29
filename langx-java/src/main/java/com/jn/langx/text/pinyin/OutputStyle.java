@@ -12,7 +12,25 @@ public class OutputStyle {
      */
     private boolean withTone = true;
 
-    private String separator = " ";
+    /**
+     * token 之间的分隔符
+     */
+    private String separator = "|";
+
+    /**
+     * 中文字符分隔符
+     */
+    private String chineseCharSeparator =" ";
+
+    private boolean retainWhitespace = false;
+
+    public boolean isRetainWhitespace() {
+        return retainWhitespace;
+    }
+
+    public void setRetainWhitespace(boolean retainWhitespace) {
+        this.retainWhitespace = retainWhitespace;
+    }
 
     public boolean isIgnoreNonChinese() {
         return ignoreNonChinese;
@@ -38,5 +56,13 @@ public class OutputStyle {
 
     public void setSeparator(String separator) {
         this.separator = separator;
+    }
+
+    public String getChineseCharSeparator() {
+        return chineseCharSeparator;
+    }
+
+    public void setChineseCharSeparator(String chineseCharSeparator) {
+        this.chineseCharSeparator = chineseCharSeparator;
     }
 }
