@@ -73,12 +73,6 @@ public abstract class Buffer<BF extends Buffer> implements Rewindable {
         return (BF)this;
     }
 
-    protected final long checkIndex(long i) {                       // package-private
-        if ((i < 0) || (i >= limit))
-            throw new IndexOutOfBoundsException();
-        return i;
-    }
-
     /**
      * Returns this buffer's limit. </p>
      *
@@ -86,6 +80,18 @@ public abstract class Buffer<BF extends Buffer> implements Rewindable {
      */
     public final long limit() {
         return limit;
+    }
+
+    protected final long checkIndex(long i) {
+        if ((i < 0) || (i >= limit))
+            throw new IndexOutOfBoundsException();
+        return i;
+    }
+
+    protected final long checkIndex(long i, long nb) {
+        if ((i < 0) || (nb > limit - i))
+            throw new IndexOutOfBoundsException();
+        return i;
     }
 
     /**
@@ -325,5 +331,25 @@ public abstract class Buffer<BF extends Buffer> implements Rewindable {
      * @since 2.10.6
      */
     public abstract long arrayOffset();
+
+    static void checkBounds(long off, long len, long size) { // package-private
+        if ((off | len | (off + len) | (size - (off + len))) < 0)
+            throw new IndexOutOfBoundsException();
+    }
+
+    public final long markValue() {                             // package-private
+        return mark;
+    }
+
+    public final void truncate() {
+        mark = -1;
+        position = 0;
+        limit = 0;
+        capacity = 0;
+    }
+
+    public final void discardMark() {
+        mark = -1;
+    }
 
 }

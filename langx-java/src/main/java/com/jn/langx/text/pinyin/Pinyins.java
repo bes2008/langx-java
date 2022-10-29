@@ -5,24 +5,36 @@ import com.jn.langx.io.resource.Resources;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.concurrent.clhm.ConcurrentLinkedHashMap;
+import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.regexp.RegexpPatterns;
+import com.jn.langx.util.regexp.Regexps;
 
 import java.util.List;
 
 public class Pinyins {
-    private static final GenericRegistry<PinyinDirectory> dictRegistry = new GenericRegistry<PinyinDirectory>();
+    private static final GenericRegistry<PinyinDirectory> dictRegistry = new GenericRegistry<PinyinDirectory>(new ConcurrentLinkedHashMap.Builder().build());
 
     /**
      * 在指定的字典下检索
      *
      * @see PinyinDirectoryItem, String
      */
-    public static List getPinyin(List<PinyinDirectory> directoryList, String text) {
+    public static List<PinyinDirectoryItem> getPinyin(List<PinyinDirectory> dicts, String text) {
         if (Strings.isEmpty(text)) {
             return Collects.emptyArrayList();
         }
+        int index = 0;
+        String substring = "";
+        String c = text.charAt(index)+"";
+        if(Regexps.match(RegexpPatterns.CHINESE_CHAR,c)){
 
+        }else{
+            
+        }
 
-        return null;
+            return null;
     }
 
     private static final List<String> ENGLISH_PUNCTUATION_SYMBOLS = Collects.newArrayList(
@@ -41,8 +53,7 @@ public class Pinyins {
 
 
     static {
-        // 标点符号大全
-        dictRegistry.register(CHINESE_PUNCTUATION_SYMBOLS);
+
         PinyinDirectoryLoader loader = new PinyinDirectoryLoader();
         // 姓氏大全
         PinyinDirectory CHINESE_SURNAME_DICT = loader.load("chinese_surname", Resources.loadClassPathResource("chinese_surname.dict"));
@@ -55,6 +66,9 @@ public class Pinyins {
         // 成语大全
         PinyinDirectory IDIOM_DICT = loader.load("idiom", Resources.loadClassPathResource("idiom.dict"));
         dictRegistry.register(IDIOM_DICT);
+
+        // 标点符号大全
+        dictRegistry.register(CHINESE_PUNCTUATION_SYMBOLS);
     }
 
     public static void addDirectory(String name, Resource resource) {
@@ -63,5 +77,11 @@ public class Pinyins {
             PinyinDirectory directory = loader.load(name, resource);
             dictRegistry.register(directory);
         }
+    }
+
+    public static List<PinyinDirectory> findDicts(Predicate<PinyinDirectory> predicate) {
+        return Pipeline.of(dictRegistry.instances())
+                .filter(predicate)
+                .asList();
     }
 }

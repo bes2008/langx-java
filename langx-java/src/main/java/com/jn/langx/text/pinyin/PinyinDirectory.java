@@ -8,7 +8,7 @@ import com.jn.langx.util.collection.trie.TrieMap;
 /**
  * 拼音词典
  */
-public class PinyinDirectory implements Named, Configuration {
+class PinyinDirectory implements Named, Configuration {
     private String id;
     /**
      * 词典名称

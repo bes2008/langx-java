@@ -2,7 +2,7 @@ package com.jn.langx.text.pinyin;
 
 import com.jn.langx.annotation.Nullable;
 
-public class PinyinDirectoryItem {
+class PinyinDirectoryItem {
 
     /**
      * 汉字 字、词、成语等
