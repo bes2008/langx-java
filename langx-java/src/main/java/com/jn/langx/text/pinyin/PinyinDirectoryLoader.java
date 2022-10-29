@@ -23,6 +23,8 @@ class PinyinDirectoryLoader {
             List<String> lines = IOs.readLines(resource.getInputStream());
 
             final PinyinDirectory directory = new PinyinDirectory();
+            directory.setName(dictName);
+            directory.setId(dictName);
 
             // 标点符号
             final boolean isPunctuationSymbol = Strings.startsWith(dictName, "chinese_punctuation_symbol");
