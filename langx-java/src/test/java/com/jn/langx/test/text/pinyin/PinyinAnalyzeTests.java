@@ -12,10 +12,9 @@ public class PinyinAnalyzeTests {
     @Test
     public void test() {
         List<String> strs = Collects.newArrayList(
-
+                "hello, 你好呀，he人山人海xx00,仇千丈，world",
                 "你好呀，混蛋！！！",
-                "一二三四五六七⑦⑥⑤④③②① 器起其期",
-                "hello, 你好呀，人山人海，仇千丈,"
+                "一二三四五六七⑦⑥⑤④③②① 器起其期"
         );
         Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override

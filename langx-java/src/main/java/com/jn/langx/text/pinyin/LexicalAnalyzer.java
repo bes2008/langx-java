@@ -42,72 +42,70 @@ class LexicalAnalyzer {
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
         csb.mark();
 
-        long nonChineseSegmentStartIndex = -1;
+        long segmentStartIndex = -1;
+        boolean isChineseSegment = false;
         while (csb.hasRemaining()) {
             String c = csb.get() + "";
             // 是中文 ？
             boolean isChinese = Regexps.match(RegexpPatterns.CHINESE_CHAR, c);
             // 是中文标点符号？
-            boolean isChinesePunctuationSymbol = Pinyins.isChinesePunctuationSymbol(c);
+            boolean isChinesePunctuationSymbol = isChinese && Pinyins.isChinesePunctuationSymbol(c);
             boolean isEnglishPunctuationSymbol = Pinyins.isEnglishPunctuationSymbol(c);
-            boolean findStopWord = isChinesePunctuationSymbol || isEnglishPunctuationSymbol;
+            boolean isStopWord = isChinesePunctuationSymbol || isEnglishPunctuationSymbol;
 
-            if (!isChinese) {
-                if (nonChineseSegmentStartIndex < 0) {
-                    nonChineseSegmentStartIndex = csb.position() - 1;
-                }
-            } else {
-                if (nonChineseSegmentStartIndex > 0) {
-                    long end = csb.position() - 1;
-                    StringToken token = new StringToken();
-                    String substring = csb.toString(nonChineseSegmentStartIndex, end);
-                    token.setBody(substring);
-                    tokens.add(token);
-                    nonChineseSegmentStartIndex = -1;
-                    csb.position(end);
-                    csb.mark();
-                }
+            if (segmentStartIndex < 0) {
+                segmentStartIndex = csb.position() - 1;
+                isChineseSegment = isChinese;
             }
-
+            boolean segmentFinished = isStopWord || !csb.hasRemaining() || isChineseSegment != isChinese;
             /**
-             * 三种情况下，会进行中文处理：
+             * 三种情况下，会进行处理：
              * 1）找到了 标点符号
              * 2）文本读完了
              * 3）刚从中文段切换到非中文段时
              */
-            if (findStopWord || !csb.hasRemaining() || (nonChineseSegmentStartIndex >= 0 && nonChineseSegmentStartIndex == csb.position() - 1)) {
-                // 对中文处理：
+            if (segmentFinished) {
+                long segmentEnd = csb.position() - 1;
+                if (!isChineseSegment) {
+                    // 对非中文处理
+                    long end = segmentEnd;
+                    StringToken token = new StringToken();
+                    String substring = csb.toString(segmentStartIndex, end);
+                    token.setBody(substring);
+                    tokens.add(token);
 
-                long start = csb.markValue();
-                long end = findStopWord ? csb.position() - 1 : csb.position();
+                } else {
+                    // 对中文处理：
+                    long start = csb.markValue();
+                    long end = segmentEnd;
 
-
-                while (start < end) {
-                    String chineseWords = csb.toString(start, end);
-                    PinyinDirectoryItem item = find(chineseWords);
-                    if (item != null) {
-                        PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
-                        token.setBody(item);
-                        tokens.add(token);
-                        start = end;
-                        end = findStopWord ? csb.position() - 1 : csb.position();
-                    } else {
-                        end = end - 1;
-
-                        if (end <= start && start == csb.markValue()) {
-                            StringToken token = new StringToken();
-                            String w = csb.get(start) + "";
-                            token.setBody(w);
+                    while (start < end) {
+                        String chineseWords = csb.toString(start, end);
+                        PinyinDirectoryItem item = find(chineseWords);
+                        if (item != null) {
+                            PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
+                            token.setBody(item);
                             tokens.add(token);
-                            start++;
-                            end = findStopWord ? csb.position() - 1 : csb.position();
-                        }
+                            start = end;
+                            end = isStopWord ? csb.position() - 1 : csb.position();
+                        } else {
+                            end = end - 1;
 
+                            if (end <= start && start == csb.markValue()) {
+                                StringToken token = new StringToken();
+                                String w = csb.get(start) + "";
+                                token.setBody(w);
+                                tokens.add(token);
+                                start++;
+                                end = isStopWord ? csb.position() - 1 : csb.position();
+                            }
+
+                        }
                     }
                 }
 
                 // 对停止词处理
-                if (findStopWord) {
+                if (isStopWord) {
                     if (isChinesePunctuationSymbol) {
                         PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS_DICT);
                         PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
@@ -119,6 +117,13 @@ class LexicalAnalyzer {
                         tokens.add(token);
                     }
                     csb.mark();
+                }
+
+                // 重置段开始
+                segmentStartIndex = -1;
+                if (isChinese != isChineseSegment) {
+                    segmentStartIndex = csb.position() - 1;
+                    isChineseSegment = isChinese;
                 }
             }
         }
