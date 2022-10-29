@@ -2,7 +2,7 @@ package com.jn.langx.text.pinyin;
 
 import com.jn.langx.annotation.Nullable;
 
-class PinyinDirectoryItem {
+class PinyinDictItem {
 
     /**
      * 汉字 字、词、成语等
@@ -50,7 +50,7 @@ class PinyinDirectoryItem {
         return pinyinWithTone;
     }
 
-    public void setPinyinWithTone(String pinyinWithTone) {
+    protected void setPinyinWithTone(String pinyinWithTone) {
         this.pinyinWithTone = pinyinWithTone;
     }
 
@@ -58,7 +58,7 @@ class PinyinDirectoryItem {
         return pinyinWithoutTone;
     }
 
-    public void setPinyinWithoutTone(String pinyinWithoutTone) {
+    protected void setPinyinWithoutTone(String pinyinWithoutTone) {
         this.pinyinWithoutTone = pinyinWithoutTone;
     }
 
@@ -74,7 +74,7 @@ class PinyinDirectoryItem {
         return surnamePinyinWithTone;
     }
 
-    public void setSurnamePinyinWithTone(String surnamePinyinWithTone) {
+    protected void setSurnamePinyinWithTone(String surnamePinyinWithTone) {
         this.surnamePinyinWithTone = surnamePinyinWithTone;
     }
 
@@ -82,7 +82,7 @@ class PinyinDirectoryItem {
         return surnamePinyinWithoutTone;
     }
 
-    public void setSurnamePinyinWithoutTone(String surnamePinyinWithoutTone) {
+    protected void setSurnamePinyinWithoutTone(String surnamePinyinWithoutTone) {
         this.surnamePinyinWithoutTone = surnamePinyinWithoutTone;
     }
 
@@ -90,7 +90,7 @@ class PinyinDirectoryItem {
         return mapping;
     }
 
-    public void setMapping(String mapping) {
+    protected void setMapping(String mapping) {
         this.mapping = mapping;
     }
 
@@ -98,7 +98,7 @@ class PinyinDirectoryItem {
         return isPunctuationSymbol;
     }
 
-    public void setPunctuationSymbol(boolean punctuationSymbol) {
+    protected void setPunctuationSymbol(boolean punctuationSymbol) {
         isPunctuationSymbol = punctuationSymbol;
     }
 
@@ -106,7 +106,7 @@ class PinyinDirectoryItem {
         return traditional;
     }
 
-    public void setTraditional(boolean traditional) {
+    protected void setTraditional(boolean traditional) {
         this.traditional = traditional;
     }
 }

@@ -3,7 +3,7 @@ package com.jn.langx.text.pinyin;
 abstract class Token<T> {
     protected T body;
     boolean isChinese(){
-       return body instanceof PinyinDirectoryItem;
+       return body instanceof PinyinDictItem;
     }
 
     T getBody(){

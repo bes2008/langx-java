@@ -3,7 +3,7 @@ package com.jn.langx.text.pinyin;
 
 import com.jn.langx.Named;
 import com.jn.langx.configuration.Configuration;
-import com.jn.langx.pipeline.Pipelines;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.trie.TrieMap;
 import com.jn.langx.util.function.Functions;
@@ -13,24 +13,25 @@ import java.util.Set;
 /**
  * 拼音词典
  */
-class PinyinDirectory implements Named, Configuration {
+class PinyinDict implements Named, Configuration {
     private String id;
     /**
      * 词典名称
      */
     private String name;
-    private TrieMap<PinyinDirectoryItem> dict = new TrieMap<PinyinDirectoryItem>();
+    private TrieMap<PinyinDictItem> dict = new TrieMap<PinyinDictItem>();
+    private int maxKeyLength = 0;
 
-
-    public void putItem(String key, PinyinDirectoryItem item) {
+    void putItem(String key, PinyinDictItem item) {
         this.dict.put(key, item);
+        this.maxKeyLength = Maths.max(this.maxKeyLength, key.length());
     }
 
-    public PinyinDirectoryItem getItem(String key) {
+    public PinyinDictItem getItem(String key) {
         return this.dict.get(key);
     }
 
-    public Set<String> keys(){
+    public Set<String> keys() {
         return Pipeline.of(this.dict.keySet()).map(Functions.<CharSequence>toStringFunction()).asSet(true);
     }
 
@@ -39,7 +40,7 @@ class PinyinDirectory implements Named, Configuration {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
@@ -52,4 +53,13 @@ class PinyinDirectory implements Named, Configuration {
     public void setId(String id) {
         this.id = id;
     }
+
+    public int size() {
+        return this.dict.size();
+    }
+
+    public int getMaxKeyLength() {
+        return this.maxKeyLength;
+    }
+
 }

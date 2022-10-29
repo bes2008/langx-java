@@ -14,17 +14,17 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-class PinyinDirectoryLoader {
-    private static final Logger logger = Loggers.getLogger(PinyinDirectoryLoader.class);
+class PinyinDictLoader {
+    private static final Logger logger = Loggers.getLogger(PinyinDictLoader.class);
     private Regexp regexp = Regexps.createRegexp("(?<word>.+):(?<mapping>.+)(\\s*#.*)?");
 
     private static final String LOG_INVALID_ITEM = "invalid dict item {} : {}";
 
-    PinyinDirectory load(final String dictName, final Resource resource) {
+    PinyinDict load(final String dictName, final Resource resource) {
         try {
             List<String> lines = IOs.readLines(resource.getInputStream());
 
-            final PinyinDirectory directory = new PinyinDirectory();
+            final PinyinDict directory = new PinyinDict();
             directory.setName(dictName);
             directory.setId(dictName);
 
@@ -63,7 +63,7 @@ class PinyinDirectoryLoader {
                             return;
                         }
 
-                        PinyinDirectoryItem item = new PinyinDirectoryItem();
+                        PinyinDictItem item = new PinyinDictItem();
                         item.setWord(word);
                         item.setMapping(mapping);
 

@@ -18,7 +18,12 @@ class LexicalAnalyzer {
      * 一个token 的最大字符数
      */
     private int tokenMaxChar = 4;
-    private PinyinDirectory[] dicts;
+    private PinyinDict[] dicts;
+    /**
+     * 中文姓氏字典
+     */
+
+    private PinyinDict chineseSurnameDict = Pinyins.getDict("");
 
     public int getTokenMaxChar() {
         return tokenMaxChar;
@@ -30,12 +35,12 @@ class LexicalAnalyzer {
         }
     }
 
-    public List<PinyinDirectory> getDicts() {
+    public List<PinyinDict> getDicts() {
         return Collects.asList(dicts);
     }
 
-    public void setDicts(List<PinyinDirectory> dicts) {
-        this.dicts = Collects.toArray(dicts, PinyinDirectory[].class);
+    public void setDicts(List<PinyinDict> dicts) {
+        this.dicts = Collects.toArray(dicts, PinyinDict[].class);
     }
 
     public List<Token> analyze(String text) {
@@ -84,9 +89,9 @@ class LexicalAnalyzer {
                             end = start + tokenMaxChar;
                         }
                         String chineseWords = csb.toString(start, end);
-                        PinyinDirectoryItem item = find(chineseWords);
+                        PinyinDictItem item = find(chineseWords);
                         if (item != null) {
-                            PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
+                            PinyinDictItemToken token = new PinyinDictItemToken();
                             token.setBody(item);
                             tokens.add(token);
                             start = end;
@@ -112,8 +117,8 @@ class LexicalAnalyzer {
                 // 对停止词处理
                 if (isStopWord) {
                     if (isChinesePunctuationSymbol) {
-                        PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS_DICT);
-                        PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
+                        PinyinDictItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS_DICT);
+                        PinyinDictItemToken token = new PinyinDictItemToken();
                         token.setBody(item);
                         tokens.add(token);
                     } else {
@@ -135,12 +140,12 @@ class LexicalAnalyzer {
         return tokens;
     }
 
-    private PinyinDirectoryItem find(String chineseWords, PinyinDirectory... dicts) {
+    private PinyinDictItem find(String chineseWords, PinyinDict... dicts) {
         if (Objs.isEmpty(dicts)) {
             dicts = this.dicts;
         }
-        PinyinDirectoryItem item = null;
-        for (PinyinDirectory dict : dicts) {
+        PinyinDictItem item = null;
+        for (PinyinDict dict : dicts) {
             item = dict.getItem(chineseWords);
             if (item != null) {
                 break;
