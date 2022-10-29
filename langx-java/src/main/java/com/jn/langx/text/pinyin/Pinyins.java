@@ -16,6 +16,18 @@ import java.util.Set;
 public class Pinyins {
     private static final GenericRegistry<PinyinDirectory> dictRegistry = new GenericRegistry<PinyinDirectory>(new ConcurrentLinkedHashMap.Builder().initialCapacity(100).maximumWeightedCapacity(1000000).build());
 
+    public static String getPinyin(String text) {
+        return getPinyin(text, null);
+    }
+
+    public static String getPinyin(String text, OutputStyle theOutputStyle) {
+        return getPinyin(null, text, theOutputStyle);
+    }
+
+    public static String getPinyin(List<PinyinDirectory> dicts, String text, OutputStyle theOutputStyle) {
+        return getPinyin(dicts, text, 5, theOutputStyle);
+    }
+
     /**
      * 在指定的字典下检索
      *

@@ -19,7 +19,7 @@ public class PinyinAnalyzeTests {
         Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override
             public void accept(String s) {
-                System.out.println(Pinyins.getPinyin(null, s, 5));
+                System.out.println(Pinyins.getPinyin(s));
             }
         });
     }
