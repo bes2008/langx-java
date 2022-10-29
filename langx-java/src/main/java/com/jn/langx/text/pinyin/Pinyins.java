@@ -22,7 +22,7 @@ public class Pinyins {
 
 
     public static String getPinyin(String text, OutputStyle theOutputStyle, String... dictNames) {
-        return getPinyin(text, 5, false, theOutputStyle, dictNames);
+        return getPinyin(text, 50, false, theOutputStyle, dictNames);
     }
 
     public static String getPinyin(String text, int tokenMaxWord, OutputStyle theOutputStyle, String... dictNames) {
@@ -74,7 +74,8 @@ public class Pinyins {
 
     private static List<Token> analyze(List<PinyinDict> dicts, String text, int tokenMaxWord, boolean surnameFirst) {
         LexicalAnalyzer analyzer = new LexicalAnalyzer();
-        analyzer.setDicts(dicts != null ? dicts : PinyinDicts.allDicts());
+        dicts = Objs.isNotEmpty(dicts) ? dicts : PinyinDicts.allDicts();
+        analyzer.setDicts(dicts);
 
         int maxKeyLength = Pipeline.of(dicts)
                 .max(new Comparator<PinyinDict>() {
