@@ -38,6 +38,9 @@ public class Pinyins {
     public static String getPinyin(List<PinyinDirectory> dicts, String text, final int tokenMaxWord, OutputStyle theOutputStyle) {
         List<Token> tokens = analyze(dicts, text, tokenMaxWord);
         final OutputStyle outputStyle = theOutputStyle == null ? OutputStyle.DEFAULT_INSTANCE : theOutputStyle;
+
+        final String separator = Objs.useValueIfNull(outputStyle.getSeparator(), "");
+
         List<String> buffer = Pipeline.of(tokens).map(new Function<Token, String>() {
             @Override
             public String apply(Token token) {
@@ -53,10 +56,13 @@ public class Pinyins {
                 if (item.isPunctuationSymbol()) {
                     return item.getMapping();
                 }
-                return outputStyle.isWithTone() ? item.getPinyinWithTone() : item.getPinyinWithoutTone();
+                if (outputStyle.isWithTone()) {
+                    return Strings.join(separator, Strings.split(item.getPinyinWithTone(), " "));
+                } else {
+                    return Strings.join(separator, Strings.split(item.getPinyinWithoutTone(), " "));
+                }
             }
         }).clearNulls().asList();
-        String separator = Objs.useValueIfNull(outputStyle.getSeparator(), "");
         String result = Strings.join(separator, buffer);
         return result;
     }
