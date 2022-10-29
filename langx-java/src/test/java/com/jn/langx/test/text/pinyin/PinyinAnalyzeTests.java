@@ -14,7 +14,8 @@ public class PinyinAnalyzeTests {
         List<String> strs = Collects.newArrayList(
                 "你好呀，混蛋！！！"
                 , "hello, 你好呀，he人山人海xx00,仇千丈，world"
-                , "一二三四五六七⑦⑥⑤④③②① 器起其期"
+                , "一二三四五六七⑦⑥⑤④③②① 器起其期",
+                "把你们用的开发公共环境机器列表发我一下我申请明天不关机用"
         );
         Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override

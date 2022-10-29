@@ -22,7 +22,9 @@ class LexicalAnalyzer {
     }
 
     public void setTokenMaxChar(int tokenMaxChar) {
-        this.tokenMaxChar = tokenMaxChar;
+        if (tokenMaxChar >= 1) {
+            this.tokenMaxChar = tokenMaxChar;
+        }
     }
 
     public List<PinyinDirectory> getDicts() {
@@ -58,14 +60,9 @@ class LexicalAnalyzer {
                 isChineseSegment = isChinese;
             }
             boolean segmentFinished = isStopWord || !csb.hasRemaining() || isChineseSegment != isChinese;
-            /**
-             * 三种情况下，会进行处理：
-             * 1）找到了 标点符号
-             * 2）文本读完了
-             * 3）刚从中文段切换到非中文段时
-             */
+
             if (segmentFinished) {
-                long segmentEnd =( csb.hasRemaining() || isStopWord) ?  csb.position() - 1 : csb.position();
+                long segmentEnd = (csb.hasRemaining() || isStopWord) ? csb.position() - 1 : csb.position();
                 if (!isChineseSegment) {
                     // 对非中文处理
                     long end = segmentEnd;
@@ -80,6 +77,10 @@ class LexicalAnalyzer {
                     long end = segmentEnd;
 
                     while (start < end) {
+                        if (start + tokenMaxChar < end) {
+                            // 避免总是进行无意义的查找
+                            end = start + tokenMaxChar;
+                        }
                         String chineseWords = csb.toString(start, end);
                         PinyinDirectoryItem item = find(chineseWords);
                         if (item != null) {
