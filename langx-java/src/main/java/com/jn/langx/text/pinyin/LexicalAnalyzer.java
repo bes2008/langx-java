@@ -60,8 +60,8 @@ class LexicalAnalyzer {
                 if (nonChineseSegmentStartIndex > 0) {
                     long end = csb.position() - 1;
                     StringToken token = new StringToken();
-                    String sustring = csb.toString(nonChineseSegmentStartIndex, end);
-                    token.setBody(sustring);
+                    String substring = csb.toString(nonChineseSegmentStartIndex, end);
+                    token.setBody(substring);
                     tokens.add(token);
                     nonChineseSegmentStartIndex = -1;
                     csb.position(end);
@@ -69,6 +69,12 @@ class LexicalAnalyzer {
                 }
             }
 
+            /**
+             * 三种情况下，会进行中文处理：
+             * 1）找到了 标点符号
+             * 2）文本读完了
+             * 3）刚从中文段切换到非中文段时
+             */
             if (findStopWord || !csb.hasRemaining() || (nonChineseSegmentStartIndex >= 0 && nonChineseSegmentStartIndex == csb.position() - 1)) {
                 // 对中文处理：
 
@@ -103,7 +109,7 @@ class LexicalAnalyzer {
                 // 对停止词处理
                 if (findStopWord) {
                     if (isChinesePunctuationSymbol) {
-                        PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS);
+                        PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS_DICT);
                         PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
                         token.setBody(item);
                         tokens.add(token);

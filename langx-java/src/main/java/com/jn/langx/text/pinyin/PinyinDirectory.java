@@ -3,7 +3,12 @@ package com.jn.langx.text.pinyin;
 
 import com.jn.langx.Named;
 import com.jn.langx.configuration.Configuration;
+import com.jn.langx.pipeline.Pipelines;
+import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.trie.TrieMap;
+import com.jn.langx.util.function.Functions;
+
+import java.util.Set;
 
 /**
  * 拼音词典
@@ -14,18 +19,19 @@ class PinyinDirectory implements Named, Configuration {
      * 词典名称
      */
     private String name;
-    private TrieMap<PinyinDirectoryItem> directory = new TrieMap<PinyinDirectoryItem>();
+    private TrieMap<PinyinDirectoryItem> dict = new TrieMap<PinyinDirectoryItem>();
 
-    public TrieMap<PinyinDirectoryItem> getDirectory() {
-        return directory;
-    }
 
     public void putItem(String key, PinyinDirectoryItem item) {
-        this.directory.put(key, item);
+        this.dict.put(key, item);
     }
 
     public PinyinDirectoryItem getItem(String key) {
-        return this.directory.get(key);
+        return this.dict.get(key);
+    }
+
+    public Set<String> keys(){
+        return Pipeline.of(this.dict.keySet()).map(Functions.<CharSequence>toStringFunction()).asSet(true);
     }
 
     @Override

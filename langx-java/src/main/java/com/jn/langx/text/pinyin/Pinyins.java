@@ -11,6 +11,7 @@ import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 
 import java.util.List;
+import java.util.Set;
 
 public class Pinyins {
     private static final GenericRegistry<PinyinDirectory> dictRegistry = new GenericRegistry<PinyinDirectory>(new ConcurrentLinkedHashMap.Builder().initialCapacity(100).maximumWeightedCapacity(1000000).build());
@@ -61,15 +62,17 @@ public class Pinyins {
             ".", "?", "!", ",", ":", "...", ";", "-", "_", "(", ")", "[", "]", "{", "}", "'", "\""
     );
 
-    protected static final PinyinDirectory CHINESE_PUNCTUATION_SYMBOLS = new PinyinDirectoryLoader().load("chinese_punctuation_symbol", Resources.loadClassPathResource("chinese_punctuation_symbol.dict", Pinyins.class));
+    protected static final PinyinDirectory CHINESE_PUNCTUATION_SYMBOLS_DICT = new PinyinDirectoryLoader().load("chinese_punctuation_symbol", Resources.loadClassPathResource("chinese_punctuation_symbol.dict", Pinyins.class));
 
     public static boolean isEnglishPunctuationSymbol(String c) {
         return ENGLISH_PUNCTUATION_SYMBOLS.contains(c);
     }
 
     public static boolean isChinesePunctuationSymbol(String c) {
-        return CHINESE_PUNCTUATION_SYMBOLS.getItem(c) != null;
+        return CHINESE_PUNCTUATION_SYMBOLS_DICT.getItem(c) != null;
     }
+
+    public static final Set<String> CHINESE_PUNCTUATION_SYMBOL_SET = CHINESE_PUNCTUATION_SYMBOLS_DICT.keys();
 
     static {
 
@@ -87,7 +90,7 @@ public class Pinyins {
         dictRegistry.register(IDIOM_DICT);
 
         // 标点符号大全
-        dictRegistry.register(CHINESE_PUNCTUATION_SYMBOLS);
+        dictRegistry.register(CHINESE_PUNCTUATION_SYMBOLS_DICT);
     }
 
     public static void addDict(String name, Resource resource) {
