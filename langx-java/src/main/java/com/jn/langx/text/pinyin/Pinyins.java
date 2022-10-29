@@ -7,15 +7,15 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.concurrent.clhm.ConcurrentLinkedHashMap;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 public class Pinyins {
-    private static final GenericRegistry<PinyinDirectory> dictRegistry = new GenericRegistry<PinyinDirectory>(new ConcurrentLinkedHashMap.Builder().initialCapacity(100).maximumWeightedCapacity(1000000).build());
+    private static final GenericRegistry<PinyinDirectory> dictRegistry = new GenericRegistry<PinyinDirectory>(new LinkedHashMap<String, PinyinDirectory>());
 
     public static String getPinyin(String text) {
         return getPinyin(text, null);
