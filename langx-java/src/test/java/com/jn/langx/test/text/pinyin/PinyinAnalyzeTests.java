@@ -1,5 +1,6 @@
 package com.jn.langx.test.text.pinyin;
 
+import com.jn.langx.text.pinyin.OutputStyle;
 import com.jn.langx.text.pinyin.Pinyins;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -17,10 +18,12 @@ public class PinyinAnalyzeTests {
                 , "一二三四五六七⑦⑥⑤④③②① 器起其期",
                 "把你们用的开发公共环境机器列表发我一下我申请明天不关机用"
         );
+        final OutputStyle style = new OutputStyle();
+        style.setSeparator(" | ");
         Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override
             public void accept(String s) {
-                System.out.println(Pinyins.getPinyin(s));
+                System.out.println(Pinyins.getPinyin(s, style));
             }
         });
     }
