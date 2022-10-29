@@ -80,7 +80,7 @@ public class Pinyins {
             ".", "?", "!", ",", ":", "...", ";", "-", "_", "(", ")", "[", "]", "{", "}", "'", "\""
     );
 
-    protected static final PinyinDirectory CHINESE_PUNCTUATION_SYMBOLS_DICT = new PinyinDirectoryLoader().load("chinese_punctuation_symbol", Resources.loadClassPathResource("chinese_punctuation_symbol.dict", Pinyins.class));
+    protected static final PinyinDirectory CHINESE_PUNCTUATION_SYMBOLS_DICT = new PinyinDirectoryLoader().load("chinese_punctuation_symbol", Resources.loadClassPathResource("dict/chinese_punctuation_symbol.dict", Pinyins.class));
 
     static boolean isEnglishPunctuationSymbol(String c) {
         return ENGLISH_PUNCTUATION_SYMBOLS.contains(c);
@@ -96,15 +96,15 @@ public class Pinyins {
 
         PinyinDirectoryLoader loader = new PinyinDirectoryLoader();
         // 姓氏大全
-        PinyinDirectory CHINESE_SURNAME_DICT = loader.load("chinese_surname", Resources.loadClassPathResource("chinese_surname.dict", Pinyins.class));
+        PinyinDirectory CHINESE_SURNAME_DICT = loader.load("chinese_surname", Resources.loadClassPathResource("dict/chinese_surname.dict", Pinyins.class));
         dictRegistry.register(CHINESE_SURNAME_DICT);
 
         // 单字大全
-        PinyinDirectory HAN_ZI_DICT = loader.load("hanzi", Resources.loadClassPathResource("hanzi.dict", Pinyins.class));
+        PinyinDirectory HAN_ZI_DICT = loader.load("hanzi", Resources.loadClassPathResource("dict/hanzi.dict", Pinyins.class));
         dictRegistry.register(HAN_ZI_DICT);
 
         // 成语大全
-        PinyinDirectory IDIOM_DICT = loader.load("idiom", Resources.loadClassPathResource("idiom.dict", Pinyins.class));
+        PinyinDirectory IDIOM_DICT = loader.load("idiom", Resources.loadClassPathResource("dict/idiom.dict", Pinyins.class));
         dictRegistry.register(IDIOM_DICT);
 
         // 标点符号大全
