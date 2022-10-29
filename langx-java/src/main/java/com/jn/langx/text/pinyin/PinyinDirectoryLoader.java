@@ -18,7 +18,7 @@ class PinyinDirectoryLoader {
     private static final Logger logger = Loggers.getLogger(PinyinDirectoryLoader.class);
     private Regexp regexp = Regexps.createRegexp("(?<word>.+):(?<mapping>.+)(\\s*#.*)?");
 
-    PinyinDirectory load(String dictName, final Resource resource) {
+    PinyinDirectory load(final String dictName, final Resource resource) {
         try {
             List<String> lines = IOs.readLines(resource.getInputStream());
 
@@ -51,10 +51,12 @@ class PinyinDirectoryLoader {
                         String mapping = matcher.group("mapping");
                         if (Strings.isBlank(word) || Strings.isBlank(mapping)) {
                             // ignore
+                            logger.warn("invalid dict item {} : {}", dictName, line);
                             return;
                         }
                         String[] maybe = Strings.split(mapping, ",");
-                        if (Objs.length(maybe) < 1) {
+                        if (Objs.length(maybe) < 1 && !isPunctuationSymbol) {
+                            logger.warn("invalid dict item {} : {}", dictName, line);
                             return;
                         }
 
@@ -80,6 +82,8 @@ class PinyinDirectoryLoader {
                         }
 
                         directory.putItem(word, item);
+                    }else{
+                        logger.warn("invalid dict item {} : {}", dictName, line);
                     }
                 }
             });

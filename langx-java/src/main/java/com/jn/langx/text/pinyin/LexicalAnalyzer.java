@@ -1,5 +1,6 @@
 package com.jn.langx.text.pinyin;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.buffer.CharSequenceBuffer;
@@ -14,7 +15,7 @@ class LexicalAnalyzer {
      * 一个token 的最大字符数
      */
     private int tokenMaxChar = 4;
-    private List<PinyinDirectory> dicts;
+    private PinyinDirectory[] dicts;
 
     public int getTokenMaxChar() {
         return tokenMaxChar;
@@ -25,11 +26,11 @@ class LexicalAnalyzer {
     }
 
     public List<PinyinDirectory> getDicts() {
-        return dicts;
+        return Collects.asList(dicts);
     }
 
     public void setDicts(List<PinyinDirectory> dicts) {
-        this.dicts = dicts;
+        this.dicts = Collects.toArray(dicts, PinyinDirectory[].class);
     }
 
     public List<Token> analyze(String text) {
@@ -39,32 +40,35 @@ class LexicalAnalyzer {
         List<Token> tokens = new ArrayList<Token>(text.length());
 
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
+        csb.mark();
 
         while (csb.position() < csb.limit() && (csb.markValue() < 0 || csb.position() - csb.markValue() < tokenMaxChar)) {
             String c = csb.get() + "";
             // 是中文 ？
-            boolean findStopWord = Regexps.match(RegexpPatterns.CHINESE_CHAR, c);
+            boolean isChinese = Regexps.match(RegexpPatterns.CHINESE_CHAR, c);
+            // 是中文标点符号？
+            boolean isChinesePunctuationSymbol = Pinyins.isChinesePunctuationSymbol(c);
+            boolean findStopWord = !isChinese || isChinesePunctuationSymbol;
+
             if (findStopWord) {
                 // 对中文处理：
                 long start = csb.markValue();
-                long end = csb.position();
+                if (start < 0) {
+                    // 没标记时
+                    start = 0;
+                }
+                long end = findStopWord ? csb.position() - 1 : csb.position();
 
 
                 while (start < end) {
                     String chineseWords = csb.toString(start, end);
-                    PinyinDirectoryItem item = null;
-                    for (PinyinDirectory dict : dicts) {
-                        item = dict.getItem(chineseWords);
-                        if (item != null) {
-                            break;
-                        }
-                    }
+                    PinyinDirectoryItem item = find(chineseWords);
                     if (item != null) {
                         PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
                         token.setBody(item);
                         tokens.add(token);
                         start = end;
-                        end = csb.position();
+                        end = findStopWord ? csb.position() - 1 : csb.position();
                     } else {
                         end = end - 1;
 
@@ -74,20 +78,40 @@ class LexicalAnalyzer {
                             token.setBody(w);
                             tokens.add(token);
                             start++;
-                            end = csb.position();
+                            end = findStopWord ? csb.position() - 1 : csb.position();
                         }
 
                     }
                 }
 
-
                 // 对停止词处理
-                StringToken token = new StringToken();
-                token.setBody(c);
-                tokens.add(token);
+                if (isChinesePunctuationSymbol) {
+                    PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS);
+                    PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
+                    token.setBody(item);
+                    tokens.add(token);
+                } else {
+                    StringToken token = new StringToken();
+                    token.setBody(c);
+                    tokens.add(token);
+                }
             }
         }
 
         return tokens;
+    }
+
+    private PinyinDirectoryItem find(String chineseWords, PinyinDirectory... dicts) {
+        if (Objs.isEmpty(dicts)) {
+            dicts = this.dicts;
+        }
+        PinyinDirectoryItem item = null;
+        for (PinyinDirectory dict : dicts) {
+            item = dict.getItem(chineseWords);
+            if (item != null) {
+                break;
+            }
+        }
+        return item;
     }
 }

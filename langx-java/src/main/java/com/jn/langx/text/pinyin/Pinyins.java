@@ -58,7 +58,7 @@ public class Pinyins {
             ".", "?", "!", ",", ":", "...", ";", "-", "_", "(", ")", "[", "]", "{", "}", "'", "\""
     );
 
-    private static final PinyinDirectory CHINESE_PUNCTUATION_SYMBOLS = new PinyinDirectoryLoader().load("chinese_punctuation_symbol", Resources.loadClassPathResource("chinese_punctuation_symbol.dict", Pinyins.class));
+    protected static final PinyinDirectory CHINESE_PUNCTUATION_SYMBOLS = new PinyinDirectoryLoader().load("chinese_punctuation_symbol", Resources.loadClassPathResource("chinese_punctuation_symbol.dict", Pinyins.class));
 
     public static boolean isEnglishPunctuationSymbol(String c) {
         return ENGLISH_PUNCTUATION_SYMBOLS.contains(c);
