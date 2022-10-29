@@ -4,13 +4,16 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.buffer.CharSequenceBuffer;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.RegexpPatterns;
 import com.jn.langx.util.regexp.Regexps;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class LexicalAnalyzer {
+    private static final Logger logger = Loggers.getLogger(LexicalAnalyzer.class);
     /**
      * 一个token 的最大字符数
      */
@@ -42,7 +45,6 @@ class LexicalAnalyzer {
         List<Token> tokens = new ArrayList<Token>(text.length());
 
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
-        csb.mark();
 
         long segmentStartIndex = -1;
         boolean isChineseSegment = false;
@@ -92,9 +94,11 @@ class LexicalAnalyzer {
                         } else {
                             end = end - 1;
 
-                            if (end <= start && start == csb.markValue()) {
+                            if (end <= start) {
+                                // 汉字在字典里没找到，如果 dict/hanzi.dict 字典库足够全，可能这个代码片段就进不来了
                                 StringToken token = new StringToken();
                                 String w = csb.get(start) + "";
+                                logger.warn("Can't find the pinyin for {}", w);
                                 token.setBody(w);
                                 tokens.add(token);
                                 start++;
@@ -117,7 +121,6 @@ class LexicalAnalyzer {
                         token.setBody(c);
                         tokens.add(token);
                     }
-                    csb.mark();
                 }
 
                 // 重置段开始
