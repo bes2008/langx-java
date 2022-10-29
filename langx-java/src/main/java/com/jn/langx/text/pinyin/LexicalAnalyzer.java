@@ -65,7 +65,7 @@ class LexicalAnalyzer {
              * 3）刚从中文段切换到非中文段时
              */
             if (segmentFinished) {
-                long segmentEnd = csb.hasRemaining() ?  csb.position() - 1 : csb.position();
+                long segmentEnd =( csb.hasRemaining() || isStopWord) ?  csb.position() - 1 : csb.position();
                 if (!isChineseSegment) {
                     // 对非中文处理
                     long end = segmentEnd;
