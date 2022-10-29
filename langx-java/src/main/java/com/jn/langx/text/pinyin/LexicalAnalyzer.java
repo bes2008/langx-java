@@ -87,7 +87,7 @@ class LexicalAnalyzer {
                             token.setBody(item);
                             tokens.add(token);
                             start = end;
-                            end = isStopWord ? csb.position() - 1 : csb.position();
+                            end = segmentEnd;
                         } else {
                             end = end - 1;
 
@@ -97,7 +97,7 @@ class LexicalAnalyzer {
                                 token.setBody(w);
                                 tokens.add(token);
                                 start++;
-                                end = isStopWord ? csb.position() - 1 : csb.position();
+                                end = segmentEnd;
                             }
 
                         }
