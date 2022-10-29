@@ -123,10 +123,10 @@ Houbb pinyin, duguying-pinyin 他们的功能基本一样，duguying-pinyin支�
 
 
 ```text
-    chinese_surname.dict 中国姓氏大全
+    chinese_surname.dict 中国姓氏大全，单姓、复姓
     idiom.dict 成语词典
     chinese_punctuation_symbol.dict 中文标点符号
-    multiple_yin_phrase.dict 多音字大全
+    multiple_yin_phrase.dict 多音字大全，容易读错的且是常用的要放在这里面
 ```
 
 
