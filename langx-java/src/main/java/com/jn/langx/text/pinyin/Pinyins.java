@@ -109,7 +109,7 @@ public class Pinyins {
     }
 
     static boolean isChinesePunctuationSymbol(String c) {
-        return PinyinDicts.CHINESE_PUNCTUATION_SYMBOLS_DICT.getItem(c) != null;
+        return PinyinDicts.getDict(PinyinDicts.DN_PUNCTUATION_SYMBOL).getItem(c) != null;
     }
 
 }

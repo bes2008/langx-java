@@ -23,8 +23,8 @@ class LexicalAnalyzer {
      * 中文姓氏字典
      */
 
-    private PinyinDict chineseSurnameDict = Pinyins.getDict("");
-
+    private static PinyinDict chineseSurnameDict = PinyinDicts.getDict(PinyinDicts.DN_SURNAME);
+    private static PinyinDict chinesePunctuationSymbolDict = PinyinDicts.getDict(PinyinDicts.DN_PUNCTUATION_SYMBOL);
     public int getTokenMaxChar() {
         return tokenMaxChar;
     }
@@ -117,7 +117,7 @@ class LexicalAnalyzer {
                 // 对停止词处理
                 if (isStopWord) {
                     if (isChinesePunctuationSymbol) {
-                        PinyinDictItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS_DICT);
+                        PinyinDictItem item = find(c,chinesePunctuationSymbolDict);
                         PinyinDictItemToken token = new PinyinDictItemToken();
                         token.setBody(item);
                         tokens.add(token);
