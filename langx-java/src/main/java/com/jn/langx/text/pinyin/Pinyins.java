@@ -7,9 +7,8 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.concurrent.clhm.ConcurrentLinkedHashMap;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.regexp.RegexpPatterns;
-import com.jn.langx.util.regexp.Regexps;
 
 import java.util.List;
 
@@ -19,23 +18,41 @@ public class Pinyins {
     /**
      * 在指定的字典下检索
      *
-     * @see PinyinDirectoryItem, String
+     * @see PinyinDirectoryItemToken
+     * @see StringToken
      */
-    public static List<PinyinDirectoryItem> getPinyin(List<PinyinDirectory> dicts, String text) {
-        if (Strings.isEmpty(text)) {
-            return Collects.emptyArrayList();
-        }
-        int index = 0;
-        String substring = "";
-        String c = text.charAt(index)+"";
-        if(Regexps.match(RegexpPatterns.CHINESE_CHAR,c)){
+    public static String getPinyin(List<PinyinDirectory> dicts, String text, final int tokenMaxWord) {
+        List<Token> tokens = analyze(dicts, text, tokenMaxWord);
+        List<String> buffer = Pipeline.of(tokens).map(new Function<Token, String>() {
+            @Override
+            public String apply(Token token) {
+                if (token instanceof StringToken) {
+                    return ((StringToken) token).getBody();
+                }
+                PinyinDirectoryItemToken pinyinToken = (PinyinDirectoryItemToken) token;
+                PinyinDirectoryItem item = pinyinToken.getBody();
+                return item.getMapping();
+            }
+        }).asList();
 
-        }else{
-            
-        }
-
-            return null;
+        String result = Strings.join(" ", buffer);
+        return result;
     }
+
+    private static List<Token> analyze(List<PinyinDirectory> dicts, String text, int tokenMaxWord) {
+        LexicalAnalyzer analyzer = new LexicalAnalyzer();
+        analyzer.setDicts(dicts != null ? dicts : dictRegistry.instances());
+        if (tokenMaxWord < 1) {
+            tokenMaxWord = 1;
+        }
+        if (tokenMaxWord > 5) {
+            tokenMaxWord = 5;
+        }
+        analyzer.setTokenMaxChar(tokenMaxWord);
+        List<Token> tokens = analyzer.analyze(text);
+        return tokens;
+    }
+
 
     private static final List<String> ENGLISH_PUNCTUATION_SYMBOLS = Collects.newArrayList(
             ".", "?", "!", ",", ":", "...", ";", "-", "_", "(", ")", "[", "]", "{", "}", "'", "\""

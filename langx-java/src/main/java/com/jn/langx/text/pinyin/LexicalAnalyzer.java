@@ -16,7 +16,23 @@ class LexicalAnalyzer {
     private int tokenMaxChar = 4;
     private List<PinyinDirectory> dicts;
 
-    List<Token> analyze(String text) {
+    public int getTokenMaxChar() {
+        return tokenMaxChar;
+    }
+
+    public void setTokenMaxChar(int tokenMaxChar) {
+        this.tokenMaxChar = tokenMaxChar;
+    }
+
+    public List<PinyinDirectory> getDicts() {
+        return dicts;
+    }
+
+    public void setDicts(List<PinyinDirectory> dicts) {
+        this.dicts = dicts;
+    }
+
+    public List<Token> analyze(String text) {
         if (Strings.isEmpty(text)) {
             return Collects.emptyArrayList();
         }
@@ -48,18 +64,22 @@ class LexicalAnalyzer {
                         token.setBody(item);
                         tokens.add(token);
                         start = end;
+                        end = csb.position();
                     } else {
                         end = end - 1;
+
+                        if (end <= start && start == csb.markValue()) {
+                            StringToken token = new StringToken();
+                            String w = csb.get(start) + "";
+                            token.setBody(w);
+                            tokens.add(token);
+                            start++;
+                            end = csb.position();
+                        }
+
                     }
                 }
 
-                // 没有找到
-                if (start == csb.markValue()) {
-                    StringToken token = new StringToken();
-                    String w = csb.get(start) + "";
-                    token.setBody(w);
-                    tokens.add(token);
-                }
 
                 // 对停止词处理
                 StringToken token = new StringToken();
