@@ -42,15 +42,34 @@ class LexicalAnalyzer {
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
         csb.mark();
 
+        long nonChineseSegmentStartIndex = -1;
         while (csb.hasRemaining()) {
             String c = csb.get() + "";
             // 是中文 ？
             boolean isChinese = Regexps.match(RegexpPatterns.CHINESE_CHAR, c);
             // 是中文标点符号？
             boolean isChinesePunctuationSymbol = Pinyins.isChinesePunctuationSymbol(c);
-            boolean findStopWord = !isChinese || isChinesePunctuationSymbol;
+            boolean isEnglishPunctuationSymbol = Pinyins.isEnglishPunctuationSymbol(c);
+            boolean findStopWord = isChinesePunctuationSymbol || isEnglishPunctuationSymbol;
 
-            if (findStopWord || !csb.hasRemaining()) {
+            if (!isChinese) {
+                if (nonChineseSegmentStartIndex < 0) {
+                    nonChineseSegmentStartIndex = csb.position() - 1;
+                }
+            } else {
+                if (nonChineseSegmentStartIndex > 0) {
+                    long end = csb.position() - 1;
+                    StringToken token = new StringToken();
+                    String sustring = csb.toString(nonChineseSegmentStartIndex, end);
+                    token.setBody(sustring);
+                    tokens.add(token);
+                    nonChineseSegmentStartIndex = -1;
+                    csb.position(end);
+                    csb.mark();
+                }
+            }
+
+            if (findStopWord || !csb.hasRemaining() || (nonChineseSegmentStartIndex >= 0 && nonChineseSegmentStartIndex == csb.position() - 1)) {
                 // 对中文处理：
 
                 long start = csb.markValue();
@@ -82,7 +101,7 @@ class LexicalAnalyzer {
                 }
 
                 // 对停止词处理
-                if(findStopWord) {
+                if (findStopWord) {
                     if (isChinesePunctuationSymbol) {
                         PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS);
                         PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();

@@ -12,11 +12,12 @@ public class PinyinAnalyzeTests {
     @Test
     public void test() {
         List<String> strs = Collects.newArrayList(
-                "一二三四五六七⑦⑥⑤④③②① 器起其期",
+
                 "你好呀，混蛋！！！",
+                "一二三四五六七⑦⑥⑤④③②① 器起其期",
                 "hello, 你好呀，人山人海，仇千丈,"
         );
-        Pipeline.of(strs).forEach(new Consumer<String>(){
+        Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override
             public void accept(String s) {
                 System.out.println(Pinyins.getPinyin(null, s, 5));
