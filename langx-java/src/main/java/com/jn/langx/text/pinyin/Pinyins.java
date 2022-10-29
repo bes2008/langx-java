@@ -31,7 +31,10 @@ public class Pinyins {
                 }
                 PinyinDirectoryItemToken pinyinToken = (PinyinDirectoryItemToken) token;
                 PinyinDirectoryItem item = pinyinToken.getBody();
-                return item.getMapping();
+                if (item.isPunctuationSymbol()) {
+                    return item.getMapping();
+                }
+                return item.getPinyinWithTone();
             }
         }).asList();
 

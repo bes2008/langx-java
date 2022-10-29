@@ -42,7 +42,7 @@ class LexicalAnalyzer {
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
         csb.mark();
 
-        while (csb.position() < csb.limit() && (csb.markValue() < 0 || csb.position() - csb.markValue() < tokenMaxChar)) {
+        while (csb.hasRemaining()) {
             String c = csb.get() + "";
             // 是中文 ？
             boolean isChinese = Regexps.match(RegexpPatterns.CHINESE_CHAR, c);
@@ -50,13 +50,10 @@ class LexicalAnalyzer {
             boolean isChinesePunctuationSymbol = Pinyins.isChinesePunctuationSymbol(c);
             boolean findStopWord = !isChinese || isChinesePunctuationSymbol;
 
-            if (findStopWord) {
+            if (findStopWord || !csb.hasRemaining()) {
                 // 对中文处理：
+
                 long start = csb.markValue();
-                if (start < 0) {
-                    // 没标记时
-                    start = 0;
-                }
                 long end = findStopWord ? csb.position() - 1 : csb.position();
 
 
@@ -85,15 +82,18 @@ class LexicalAnalyzer {
                 }
 
                 // 对停止词处理
-                if (isChinesePunctuationSymbol) {
-                    PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS);
-                    PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
-                    token.setBody(item);
-                    tokens.add(token);
-                } else {
-                    StringToken token = new StringToken();
-                    token.setBody(c);
-                    tokens.add(token);
+                if(findStopWord) {
+                    if (isChinesePunctuationSymbol) {
+                        PinyinDirectoryItem item = find(c, Pinyins.CHINESE_PUNCTUATION_SYMBOLS);
+                        PinyinDirectoryItemToken token = new PinyinDirectoryItemToken();
+                        token.setBody(item);
+                        tokens.add(token);
+                    } else {
+                        StringToken token = new StringToken();
+                        token.setBody(c);
+                        tokens.add(token);
+                    }
+                    csb.mark();
                 }
             }
         }
