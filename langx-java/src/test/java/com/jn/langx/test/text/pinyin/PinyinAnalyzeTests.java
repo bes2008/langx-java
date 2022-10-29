@@ -12,6 +12,7 @@ public class PinyinAnalyzeTests {
     @Test
     public void test() {
         List<String> strs = Collects.newArrayList(
+                "一二三四五六七⑦⑥⑤④③②① 器起其期",
                 "你好呀，混蛋！！！",
                 "hello, 你好呀，人山人海，仇千丈,"
         );
