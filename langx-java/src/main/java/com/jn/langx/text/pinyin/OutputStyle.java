@@ -5,12 +5,14 @@ public class OutputStyle {
     /**
      * 非中文字符是否忽略掉
      */
-    boolean ignoreNonChinese = false;
+    private boolean ignoreNonChinese = false;
 
     /**
      * 输出的拼音 是否带声调
      */
-    boolean withTone = true;
+    private boolean withTone = true;
+
+    private String separator = " ";
 
     public boolean isIgnoreNonChinese() {
         return ignoreNonChinese;
@@ -29,4 +31,12 @@ public class OutputStyle {
     }
 
     public static final OutputStyle DEFAULT_INSTANCE = new OutputStyle();
+
+    public String getSeparator() {
+        return separator;
+    }
+
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
 }

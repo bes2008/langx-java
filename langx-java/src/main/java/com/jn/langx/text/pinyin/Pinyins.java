@@ -3,6 +3,7 @@ package com.jn.langx.text.pinyin;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.registry.GenericRegistry;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -41,7 +42,7 @@ public class Pinyins {
             @Override
             public String apply(Token token) {
                 if (token instanceof StringToken) {
-                    if (!outputStyle.ignoreNonChinese) {
+                    if (!outputStyle.isIgnoreNonChinese()) {
                         return ((StringToken) token).getBody();
                     } else {
                         return null;
@@ -55,8 +56,8 @@ public class Pinyins {
                 return outputStyle.isWithTone() ? item.getPinyinWithTone() : item.getPinyinWithoutTone();
             }
         }).clearNulls().asList();
-
-        String result = Strings.join(" ", buffer);
+        String separator = Objs.useValueIfNull(outputStyle.getSeparator(), "");
+        String result = Strings.join(separator, buffer);
         return result;
     }
 
