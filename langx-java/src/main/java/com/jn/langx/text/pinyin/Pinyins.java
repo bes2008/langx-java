@@ -22,22 +22,27 @@ public class Pinyins {
      * @see PinyinDirectoryItemToken
      * @see StringToken
      */
-    public static String getPinyin(List<PinyinDirectory> dicts, String text, final int tokenMaxWord) {
+    public static String getPinyin(List<PinyinDirectory> dicts, String text, final int tokenMaxWord, OutputStyle theOutputStyle) {
         List<Token> tokens = analyze(dicts, text, tokenMaxWord);
+        final OutputStyle outputStyle = theOutputStyle == null ? OutputStyle.DEFAULT_INSTANCE : theOutputStyle;
         List<String> buffer = Pipeline.of(tokens).map(new Function<Token, String>() {
             @Override
             public String apply(Token token) {
                 if (token instanceof StringToken) {
-                    return ((StringToken) token).getBody();
+                    if (!outputStyle.ignoreNonChinese) {
+                        return ((StringToken) token).getBody();
+                    } else {
+                        return null;
+                    }
                 }
                 PinyinDirectoryItemToken pinyinToken = (PinyinDirectoryItemToken) token;
                 PinyinDirectoryItem item = pinyinToken.getBody();
                 if (item.isPunctuationSymbol()) {
                     return item.getMapping();
                 }
-                return item.getPinyinWithTone();
+                return outputStyle.isWithTone() ? item.getPinyinWithTone() : item.getPinyinWithoutTone();
             }
-        }).asList();
+        }).clearNulls().asList();
 
         String result = Strings.join(" ", buffer);
         return result;
@@ -64,11 +69,11 @@ public class Pinyins {
 
     protected static final PinyinDirectory CHINESE_PUNCTUATION_SYMBOLS_DICT = new PinyinDirectoryLoader().load("chinese_punctuation_symbol", Resources.loadClassPathResource("chinese_punctuation_symbol.dict", Pinyins.class));
 
-    public static boolean isEnglishPunctuationSymbol(String c) {
+    static boolean isEnglishPunctuationSymbol(String c) {
         return ENGLISH_PUNCTUATION_SYMBOLS.contains(c);
     }
 
-    public static boolean isChinesePunctuationSymbol(String c) {
+    static boolean isChinesePunctuationSymbol(String c) {
         return CHINESE_PUNCTUATION_SYMBOLS_DICT.getItem(c) != null;
     }
 
