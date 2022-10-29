@@ -29,6 +29,18 @@ public class Pinyins {
         return getPinyin(dicts, text, 5, theOutputStyle);
     }
 
+    public static String getPersonName(String name, OutputStyle theOutputStyle) {
+        List<PinyinDirectory> dicts = Pipeline.of("chinese_famous_person", "chinese_surname", "hanzi")
+                .map(new Function<String, PinyinDirectory>() {
+                    @Override
+                    public PinyinDirectory apply(String dictName) {
+                        return dictRegistry.get(dictName);
+                    }
+                }).asList();
+
+        return getPinyin(dicts, name, theOutputStyle);
+    }
+
     /**
      * 在指定的字典下检索
      *
@@ -101,9 +113,10 @@ public class Pinyins {
     static {
 
         PinyinDirectoryLoader loader = new PinyinDirectoryLoader();
-        // 姓氏大全
-        PinyinDirectory CHINESE_SURNAME_DICT = loader.load("chinese_surname", Resources.loadClassPathResource("dict/chinese_surname.dict", Pinyins.class));
-        dictRegistry.register(CHINESE_SURNAME_DICT);
+
+        // 名人 (主要是 一些容易出错的人名)
+        PinyinDirectory FAMOUS_PERSON_DICT = loader.load("chinese_famous_person", Resources.loadClassPathResource("dict/chinese_famous_person.dict", Pinyins.class));
+        dictRegistry.register(FAMOUS_PERSON_DICT);
 
         // 单字大全
         PinyinDirectory HAN_ZI_DICT = loader.load("hanzi", Resources.loadClassPathResource("dict/hanzi.dict", Pinyins.class));
@@ -112,6 +125,10 @@ public class Pinyins {
         // 成语大全
         PinyinDirectory IDIOM_DICT = loader.load("idiom", Resources.loadClassPathResource("dict/idiom.dict", Pinyins.class));
         dictRegistry.register(IDIOM_DICT);
+
+        // 姓氏大全
+        PinyinDirectory CHINESE_SURNAME_DICT = loader.load("chinese_surname", Resources.loadClassPathResource("dict/chinese_surname.dict", Pinyins.class));
+        dictRegistry.register(CHINESE_SURNAME_DICT);
 
         // 标点符号大全
         dictRegistry.register(CHINESE_PUNCTUATION_SYMBOLS_DICT);

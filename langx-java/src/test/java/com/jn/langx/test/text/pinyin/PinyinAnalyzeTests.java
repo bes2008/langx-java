@@ -27,4 +27,25 @@ public class PinyinAnalyzeTests {
             }
         });
     }
+
+    @Test
+    public void personNameTest() {
+        List<String> names = Collects.newArrayList(
+                "查良庸",
+                "冒顿",
+                "盖楼",
+                "南宫婉",
+                "司徒南",
+                "司马南"
+        );
+        final OutputStyle style = new OutputStyle();
+        style.setSeparator(" | ");
+        Pipeline.of(names).forEach(new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                System.out.println(Pinyins.getPersonName(s, style));
+            }
+        });
+    }
+
 }
