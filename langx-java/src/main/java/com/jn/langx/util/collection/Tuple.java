@@ -2,7 +2,6 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.util.*;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Function;
 import com.jn.langx.util.struct.Holder;
 
 import java.io.Serializable;
