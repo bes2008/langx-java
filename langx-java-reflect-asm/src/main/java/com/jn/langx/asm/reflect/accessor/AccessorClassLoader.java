@@ -1,5 +1,7 @@
 package com.jn.langx.asm.reflect.accessor;
 
+import com.jn.langx.util.reflect.Reflects;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
@@ -105,7 +107,7 @@ class AccessorClassLoader extends ClassLoader {
         if (defineClassMethod == null) {
             synchronized (accessClassLoaders) {
                 if (defineClassMethod == null) {
-                    defineClassMethod = ClassLoader.class.getDeclaredMethod("defineClass",
+                    defineClassMethod = Reflects.getDeclaredMethod( ClassLoader.class,"defineClass",
                             new Class[]{String.class, byte[].class, int.class, int.class, ProtectionDomain.class});
                     try {
                         defineClassMethod.setAccessible(true);

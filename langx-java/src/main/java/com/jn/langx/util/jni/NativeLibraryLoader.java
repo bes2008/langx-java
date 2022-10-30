@@ -3,6 +3,7 @@ package com.jn.langx.util.jni;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
+import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -305,7 +306,7 @@ public final class NativeLibraryLoader {
                     try {
                         // Define the helper class in the target ClassLoader,
                         //  then we can call the helper to load the native library.
-                        Method defineClass = ClassLoader.class.getDeclaredMethod("defineClass", String.class,
+                        Method defineClass = Reflects.getDeclaredMethod(ClassLoader.class,"defineClass", String.class,
                                 byte[].class, int.class, int.class);
                         defineClass.setAccessible(true);
                         return (Class<?>) defineClass.invoke(loader, helper.getName(), classBinary, 0,

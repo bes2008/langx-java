@@ -316,8 +316,8 @@ public abstract class SerializableTypeWrapper {
             inputStream.defaultReadObject();
             try {
                 if (this.methodName != null) {
-                    this.methodParameter = new SimpleParameter(
-                            this.declaringClass.getDeclaredMethod(this.methodName, this.parameterTypes), this.parameterIndex);
+                    this.methodParameter = new SimpleParameter( Reflects.getDeclaredMethod(this.declaringClass,this.methodName, this.parameterTypes)
+                            , this.parameterIndex);
                 } else {
                     this.methodParameter = new SimpleParameter(
                             this.declaringClass.getDeclaredConstructor(this.parameterTypes), this.parameterIndex);

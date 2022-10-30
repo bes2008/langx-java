@@ -190,12 +190,7 @@ abstract class BridgeMethodResolver {
      * otherwise {@code null} is returned.
      */
     private static Method searchForMatch(Class<?> type, Method bridgeMethod) {
-        try {
-            return type.getDeclaredMethod(bridgeMethod.getName(), bridgeMethod.getParameterTypes());
-        }
-        catch (NoSuchMethodException ex) {
-            return null;
-        }
+        return Reflects.getDeclaredMethod(type,bridgeMethod.getName(), bridgeMethod.getParameterTypes());
     }
 
     /**
