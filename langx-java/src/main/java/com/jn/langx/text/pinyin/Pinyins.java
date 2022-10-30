@@ -10,7 +10,7 @@ import com.jn.langx.util.function.Function;
 import java.util.Comparator;
 import java.util.List;
 
-public class Pinyins extends PinyinDicts{
+public class Pinyins extends PinyinDicts {
 
     public static String getPersonName(String name, OutputStyle theOutputStyle) {
         return getPinyin(name, 4, true, theOutputStyle);
@@ -41,39 +41,57 @@ public class Pinyins extends PinyinDicts{
      * @see StringToken
      */
     public static String getPinyin(String text, int tokenMaxWord, boolean surnameFirst, OutputStyle theOutputStyle, String... dictNames) {
-        List<Token> tokens = analyze(PinyinDicts.findDicts(dictNames), text, tokenMaxWord, surnameFirst);
+        List<SegmentToken> segmentTokens = analyze(PinyinDicts.findDicts(dictNames), text, tokenMaxWord, surnameFirst);
         final OutputStyle outputStyle = theOutputStyle == null ? OutputStyle.DEFAULT_INSTANCE : theOutputStyle;
 
 
         final String chineseCharSeparator = Objs.useValueIfNull(outputStyle.getChineseCharSeparator(), " ");
-        List<String> buffer = Pipeline.of(tokens).map(new Function<Token, String>() {
+        final String chineseTokenSeparator = Objs.useValueIfNull(outputStyle.getChineseTokenSeparator(), "");
+        List<String> segments = Pipeline.of(segmentTokens).map(new Function<SegmentToken, String>() {
             @Override
-            public String apply(Token token) {
-                if (token instanceof StringToken) {
-                    if (!outputStyle.isIgnoreNonChinese()) {
-                        return ((StringToken) token).getBody();
-                    } else {
-                        return null;
+            public String apply(SegmentToken segmentToken) {
+                String segment = null;
+                // 标点符号
+                if (segmentToken.isPunctuationSymbol()) {
+                    if (outputStyle.isRetainPunctuationSymbol()) {
+                        segment = segmentToken.toString();
                     }
+                    return segment;
                 }
-                PinyinDictItemToken pinyinToken = (PinyinDictItemToken) token;
-                PinyinDictItem item = pinyinToken.getBody();
-                if (item.isPunctuationSymbol()) {
-                    return item.getMapping();
+                // 下面是非标点符号
+
+                // 普通的文本
+                if (segmentToken instanceof StringToken) {
+                    if (outputStyle.isRetainNonChineseChars()) {
+                        segment = ((StringToken) segmentToken).getBody();
+                    }
+                    return segment;
                 }
-                if (outputStyle.isWithTone()) {
-                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithTone(), " "));
-                } else {
-                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithoutTone(), " "));
-                }
+                ChineseSequenceToken chineseSequenceToken = (ChineseSequenceToken) segmentToken;
+                List<PinyinDictItemToken> chineseTokens = chineseSequenceToken.getBody();
+                List<String> chineseTokenPinyins = Pipeline.of(chineseTokens)
+                        .map(new Function<PinyinDictItemToken, String>() {
+                            @Override
+                            public String apply(PinyinDictItemToken pinyinToken) {
+                                PinyinDictItem item = pinyinToken.getBody();
+                                if (outputStyle.isWithTone()) {
+                                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithTone(), " "));
+                                } else {
+                                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithoutTone(), " "));
+                                }
+                            }
+                        }).asList();
+
+                segment = Strings.join(chineseTokenSeparator, chineseTokenPinyins);
+                return segment;
             }
         }).clearNulls().asList();
-        final String tokenSeparator = Objs.useValueIfNull(outputStyle.getSeparator(), "");
-        String result = Strings.join(tokenSeparator, buffer);
+        final String segmentSeparator = Objs.useValueIfNull(outputStyle.getSegmentSeparator(), "");
+        String result = Strings.join(segmentSeparator, segments);
         return result;
     }
 
-    private static List<Token> analyze(List<PinyinDict> dicts, String text, int tokenMaxWord, boolean surnameFirst) {
+    private static List<SegmentToken> analyze(List<PinyinDict> dicts, String text, int tokenMaxWord, boolean surnameFirst) {
         LexicalAnalyzer analyzer = new LexicalAnalyzer();
         dicts = Objs.isNotEmpty(dicts) ? dicts : PinyinDicts.allDicts();
         analyzer.setDicts(dicts);
@@ -96,7 +114,8 @@ public class Pinyins extends PinyinDicts{
             tokenMaxWord = Maths.min(Maths.max(tokenMaxWord, 2), 4);
         }
         analyzer.setTokenMaxChar(tokenMaxWord);
-        List<Token> tokens = analyzer.analyze(text);
+        analyzer.setSurnameFirst(surnameFirst);
+        List<SegmentToken> tokens = analyzer.analyze(text);
         return tokens;
     }
 

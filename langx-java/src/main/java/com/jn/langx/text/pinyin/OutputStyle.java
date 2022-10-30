@@ -5,7 +5,7 @@ public class OutputStyle {
     /**
      * 非中文字符是否忽略掉
      */
-    private boolean ignoreNonChinese = false;
+    private boolean retainNonChineseChars = false;
 
     /**
      * 输出的拼音 是否带声调
@@ -13,16 +13,22 @@ public class OutputStyle {
     private boolean withTone = true;
 
     /**
-     * token 之间的分隔符
+     * segment 之间的分隔符
      */
-    private String separator = "|";
+    private String segmentSeparator = "|";
 
     /**
-     * 中文字符分隔符
+     * 中文segment内token之间的分隔符
      */
-    private String chineseCharSeparator =" ";
+    private String chineseTokenSeparator = "";
+    /**
+     * 中文token 内的字符分隔符
+     */
+    private String chineseCharSeparator = " ";
 
     private boolean retainWhitespace = false;
+
+    private boolean retainPunctuationSymbol = true;
 
     public boolean isRetainWhitespace() {
         return retainWhitespace;
@@ -32,12 +38,12 @@ public class OutputStyle {
         this.retainWhitespace = retainWhitespace;
     }
 
-    public boolean isIgnoreNonChinese() {
-        return ignoreNonChinese;
+    public boolean isRetainNonChineseChars() {
+        return retainNonChineseChars;
     }
 
-    public void setIgnoreNonChinese(boolean ignoreNonChinese) {
-        this.ignoreNonChinese = ignoreNonChinese;
+    public void setRetainNonChineseChars(boolean retainNonChineseChars) {
+        this.retainNonChineseChars = retainNonChineseChars;
     }
 
     public boolean isWithTone() {
@@ -50,12 +56,12 @@ public class OutputStyle {
 
     public static final OutputStyle DEFAULT_INSTANCE = new OutputStyle();
 
-    public String getSeparator() {
-        return separator;
+    public String getSegmentSeparator() {
+        return segmentSeparator;
     }
 
-    public void setSeparator(String separator) {
-        this.separator = separator;
+    public void setSegmentSeparator(String segmentSeparator) {
+        this.segmentSeparator = segmentSeparator;
     }
 
     public String getChineseCharSeparator() {
@@ -64,5 +70,21 @@ public class OutputStyle {
 
     public void setChineseCharSeparator(String chineseCharSeparator) {
         this.chineseCharSeparator = chineseCharSeparator;
+    }
+
+    public boolean isRetainPunctuationSymbol() {
+        return retainPunctuationSymbol;
+    }
+
+    public void setRetainPunctuationSymbol(boolean retainPunctuationSymbol) {
+        this.retainPunctuationSymbol = retainPunctuationSymbol;
+    }
+
+    public String getChineseTokenSeparator() {
+        return chineseTokenSeparator;
+    }
+
+    public void setChineseTokenSeparator(String chineseTokenSeparator) {
+        this.chineseTokenSeparator = chineseTokenSeparator;
     }
 }

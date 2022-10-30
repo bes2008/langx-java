@@ -19,7 +19,7 @@ public class PinyinAnalyzeTests {
                 "把你们用的开发公共环境机器列表发我一下我申请明天不关机用"
         );
         final OutputStyle style = new OutputStyle();
-        style.setSeparator(" | ");
+        style.setSegmentSeparator(" | ");
         Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override
             public void accept(String s) {
@@ -32,7 +32,7 @@ public class PinyinAnalyzeTests {
     public void personNameTest() {
         String name = "查良庸,冒顿,盖楼,南宫婉，司徒南、司马南,仓颉,李颉, 颉冉；";
         final OutputStyle style = new OutputStyle();
-        style.setSeparator("\n");
+        style.setSegmentSeparator("\n");
         System.out.println(Pinyins.getPersonName(name, style));
     }
 

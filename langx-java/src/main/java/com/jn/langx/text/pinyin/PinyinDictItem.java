@@ -1,6 +1,7 @@
 package com.jn.langx.text.pinyin;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
 
 class PinyinDictItem {
 
@@ -37,14 +38,6 @@ class PinyinDictItem {
     @Nullable
     private String pinyinWithoutTone;
 
-    /**
-     * 如果 word 是姓氏时，这两个有值的
-     */
-    @Nullable
-    private String surnamePinyinWithTone;
-
-    @Nullable
-    private String surnamePinyinWithoutTone;
 
     public String getPinyinWithTone() {
         return pinyinWithTone;
@@ -70,21 +63,6 @@ class PinyinDictItem {
         this.word = word;
     }
 
-    public String getSurnamePinyinWithTone() {
-        return surnamePinyinWithTone;
-    }
-
-    protected void setSurnamePinyinWithTone(String surnamePinyinWithTone) {
-        this.surnamePinyinWithTone = surnamePinyinWithTone;
-    }
-
-    public String getSurnamePinyinWithoutTone() {
-        return surnamePinyinWithoutTone;
-    }
-
-    protected void setSurnamePinyinWithoutTone(String surnamePinyinWithoutTone) {
-        this.surnamePinyinWithoutTone = surnamePinyinWithoutTone;
-    }
 
     public String getMapping() {
         return mapping;
@@ -108,5 +86,16 @@ class PinyinDictItem {
 
     protected void setTraditional(boolean traditional) {
         this.traditional = traditional;
+    }
+
+    @Override
+    public String toString() {
+        if (isPunctuationSymbol) {
+            return getMapping();
+        }
+        if (isTraditional()) {
+            return getMapping();
+        }
+        return Objs.useValueIfEmpty(getPinyinWithTone(), getMapping());
     }
 }

@@ -77,11 +77,6 @@ class PinyinDictLoader {
 
                             item.setPinyinWithTone(pinyinWithTone);
                             item.setPinyinWithoutTone(pinyinWithoutTone);
-
-                            if (isSurname) {
-                                item.setSurnamePinyinWithTone(pinyinWithTone);
-                                item.setSurnamePinyinWithoutTone(pinyinWithoutTone);
-                            }
                         }
 
                         directory.putItem(word, item);
