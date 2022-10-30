@@ -56,7 +56,7 @@ public class Pinyins extends PinyinDicts {
     }
 
     private static List<SegmentToken> analyze(List<PinyinDict> dicts, String text, int tokenMaxWord, boolean surnameFirst) {
-        LexicalAnalyzer analyzer = new LexicalAnalyzer();
+        Lexer analyzer = new Lexer();
         dicts = Objs.isNotEmpty(dicts) ? dicts : PinyinDicts.allDicts();
         analyzer.setDicts(dicts);
 

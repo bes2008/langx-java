@@ -16,8 +16,8 @@ import java.util.List;
  * 分析过程中，会使用 标点符号（中、英文）对一段话进行分割，不会使用空格进行分割。
  * @since 5.1.0
  */
-class LexicalAnalyzer {
-    private static final Logger logger = Loggers.getLogger(LexicalAnalyzer.class);
+class Lexer {
+    private static final Logger logger = Loggers.getLogger(Lexer.class);
     /**
      * 一个token 的最大字符数
      */
