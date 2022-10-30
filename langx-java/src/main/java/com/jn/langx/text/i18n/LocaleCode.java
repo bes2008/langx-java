@@ -16,6 +16,8 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.reflect.Reflects;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -1556,7 +1558,7 @@ public enum LocaleCode {
     private static Locale getUndefinedLocale() {
         try {
             // Try to get Locale.ROOT which is available since Java SE 1.6.
-            Field root = Locale.class.getDeclaredField("ROOT");
+            Field root = Reflects.getDeclaredField(Locale.class,"ROOT");
 
             // Return Locale.ROOT.
             return (Locale) root.get(null);

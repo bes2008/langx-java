@@ -10,6 +10,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.unsafe.UnsafeProxy;
 import com.jn.langx.util.unsafe.Unsafes;
 
@@ -3147,7 +3148,7 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V> implements ConcurrentMap
                 U = Unsafes.getUnsafe();
                 Class<?> k = TreeBin.class;
                 LOCKSTATE = U.objectFieldOffset
-                        (k.getDeclaredField("lockState"));
+                        (Reflects.getDeclaredField(k,"lockState"));
             } catch (Exception e) {
                 throw new Error(e);
             }

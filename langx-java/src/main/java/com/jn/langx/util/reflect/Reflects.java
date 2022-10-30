@@ -432,14 +432,15 @@ public class Reflects {
         return field;
     }
 
-    public static Field getDeclaredField(@NonNull Class clazz, @NonNull String fieldName) {
-        Field field = null;
-        try {
-            field = clazz.getDeclaredField(fieldName);
-        } catch (NoSuchFieldException e) {
-            // ignore it
-        }
-        return field;
+    public static Field getDeclaredField(@NonNull Class clazz, @NonNull final String fieldName) {
+        Field[] fields = getDeclaredFields(clazz);
+        Field f = Pipeline.of(fields).findFirst(new Predicate<Field>() {
+            @Override
+            public boolean test(Field field) {
+                return Objs.equals(field.getName(), fieldName);
+            }
+        });
+        return f;
     }
 
     public static Field getAnyField(@NonNull Class clazz, @NonNull String fieldName) {

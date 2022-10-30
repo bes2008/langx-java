@@ -2,6 +2,7 @@ package com.jn.langx.util.unsafe;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 import sun.misc.Unsafe;
 
@@ -16,7 +17,7 @@ public class SunUnsafe extends AbstractUnsafeProxy {
 
     private static Unsafe reflectGetUnsafe() {
         try {
-            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            Field field = Reflects.getDeclaredField(Unsafe.class,"theUnsafe");
             field.setAccessible(true);
             return (Unsafe) field.get(null);
         } catch (Exception e) {

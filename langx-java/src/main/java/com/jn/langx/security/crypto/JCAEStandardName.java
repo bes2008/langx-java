@@ -1,12 +1,12 @@
 package com.jn.langx.security.crypto;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.security.SecurityException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.reflect.Reflects;
 
 import javax.crypto.KeyGenerator;
 import java.security.*;
@@ -161,12 +161,7 @@ public enum JCAEStandardName {
     PKCS12;
 
     JCAEStandardName() {
-        Algorithm algorithm = null;
-        try {
-            algorithm = JCAEStandardName.class.getDeclaredField(name()).getAnnotation(Algorithm.class);
-        } catch (NoSuchFieldException e) {
-        } catch (SecurityException e) {
-        }
+        Algorithm algorithm = Reflects.getDeclaredField(JCAEStandardName.class,name()).getAnnotation(Algorithm.class);
         if (algorithm != null) {
             this.name = algorithm.name();
             this.isAlgorithm = true;

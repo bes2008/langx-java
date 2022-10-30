@@ -1,6 +1,7 @@
 package com.jn.langx.util.concurrent.longaddr;
 
 
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.unsafe.UnsafeProxy;
 import com.jn.langx.util.unsafe.Unsafes;
 
@@ -103,7 +104,7 @@ abstract class Striped64 extends Number {
                 UNSAFE = Unsafes.getUnsafe();
                 Class<?> ak = Cell.class;
                 valueOffset = UNSAFE.objectFieldOffset
-                        (ak.getDeclaredField("value"));
+                        (Reflects.getDeclaredField(ak,"value"));
             } catch (Exception e) {
                 throw new Error(e);
             }
