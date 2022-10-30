@@ -1,6 +1,6 @@
 package com.jn.langx.util;
 
-public class StringMaker {
+class StringMaker {
     private String value;
     private String indexing;
     private int begin;
