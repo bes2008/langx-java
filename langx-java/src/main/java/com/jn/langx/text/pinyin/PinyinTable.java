@@ -7,6 +7,9 @@ import com.jn.langx.util.collection.multivalue.MultiValueMap;
 
 import java.util.List;
 
+/**
+ * @since 5.1.0
+ */
 class PinyinTable {
     /**
      * 声母

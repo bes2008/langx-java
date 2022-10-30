@@ -8,6 +8,9 @@ import com.jn.langx.util.collection.Pipeline;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * @since 5.1.0
+ */
 public class Pinyins extends PinyinDicts {
 
     public static String getPersonName(String name, OutputStyle theOutputStyle) {

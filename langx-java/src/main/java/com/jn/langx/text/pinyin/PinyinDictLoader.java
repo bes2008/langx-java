@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
+/**
+ * @since 5.1.0
+ */
 class PinyinDictLoader {
     private static final Logger logger = Loggers.getLogger(PinyinDictLoader.class);
     private Regexp regexp = Regexps.createRegexp("(?<word>.+):(?<mapping>.+)(?:\\s*\\#.*)?");

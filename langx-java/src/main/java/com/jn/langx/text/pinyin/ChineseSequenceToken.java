@@ -4,6 +4,9 @@ import com.jn.langx.util.collection.Collects;
 
 import java.util.List;
 
+/**
+ * @since 5.1.0
+ */
 class ChineseSequenceToken extends SegmentToken<List<PinyinDictItemToken>> {
     ChineseSequenceToken(){
         setBody( Collects.<PinyinDictItemToken>emptyArrayList());

@@ -3,6 +3,9 @@ package com.jn.langx.text.pinyin;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 
+/**
+ * @since 5.1.0
+ */
 class PinyinDictItem {
 
     /**

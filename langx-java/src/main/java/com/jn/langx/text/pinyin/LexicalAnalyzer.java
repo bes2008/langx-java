@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * 用于对一段文本分析。分析的结果是 一个token即可。
  * 分析过程中，会使用 标点符号（中、英文）对一段话进行分割，不会使用空格进行分割。
+ * @since 5.1.0
  */
 class LexicalAnalyzer {
     private static final Logger logger = Loggers.getLogger(LexicalAnalyzer.class);

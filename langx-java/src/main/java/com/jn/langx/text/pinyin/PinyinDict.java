@@ -11,7 +11,7 @@ import com.jn.langx.util.function.Functions;
 import java.util.Set;
 
 /**
- * 拼音词典
+ * @since 5.1.0
  */
 class PinyinDict implements Named, Configuration {
     private String id;

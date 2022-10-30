@@ -4,7 +4,9 @@ import com.jn.langx.Formatter;
 
 import java.util.List;
 
-
+/**
+ * @since 5.1.0
+ */
 public abstract class OutputFormatter implements Formatter<List<SegmentToken>, String> {
     @Override
     public abstract String format(List<SegmentToken> tokens, Object... args);
