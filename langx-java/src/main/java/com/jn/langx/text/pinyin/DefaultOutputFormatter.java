@@ -7,7 +7,7 @@ import com.jn.langx.util.function.Function;
 
 import java.util.List;
 
-public class DefaultOutputFormatter extends OutputFormatter {
+class DefaultOutputFormatter extends OutputFormatter {
     public DefaultOutputFormatter() {
     }
 
