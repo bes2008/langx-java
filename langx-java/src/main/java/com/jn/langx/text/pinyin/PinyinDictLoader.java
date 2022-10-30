@@ -16,7 +16,7 @@ import java.util.List;
 
 class PinyinDictLoader {
     private static final Logger logger = Loggers.getLogger(PinyinDictLoader.class);
-    private Regexp regexp = Regexps.createRegexp("(?<word>.+):(?<mapping>.+)(\\s*#.*)?");
+    private Regexp regexp = Regexps.createRegexp("(?<word>.+):(?<mapping>.+)(?:\\s*\\#.*)?");
 
     private static final String LOG_INVALID_ITEM = "invalid dict item {} : {}";
 
@@ -52,6 +52,10 @@ class PinyinDictLoader {
                         String word = matcher.group("word");
                         String mapping = matcher.group("mapping");
                         mapping = Strings.trim(mapping);
+                        int commentIndex = Strings.indexOf(mapping, "#");
+                        if (commentIndex >= 0) {
+                            mapping = Strings.substring(mapping,0, commentIndex);
+                        }
                         if (Strings.isBlank(word) || Strings.isBlank(mapping)) {
                             // ignore
                             logger.warn(LOG_INVALID_ITEM, dictName, line);
