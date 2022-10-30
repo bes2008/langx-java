@@ -1,4 +1,4 @@
-package com.jn.langx.io.buffer.charseq;
+package com.jn.langx.util.net.http.url;
 
 
 import com.jn.langx.util.Chars;

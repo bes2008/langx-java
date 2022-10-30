@@ -1,8 +1,8 @@
 package com.jn.langx.util.net.http;
 
-import com.jn.langx.io.buffer.charseq.CharArrayBuffer;
-import com.jn.langx.io.buffer.charseq.TokenParser;
-import com.jn.langx.io.buffer.charseq.ParserCursor;
+import com.jn.langx.util.net.http.url.CharArrayBuffer;
+import com.jn.langx.util.net.http.url.TokenParser;
+import com.jn.langx.util.net.http.url.ParserCursor;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
