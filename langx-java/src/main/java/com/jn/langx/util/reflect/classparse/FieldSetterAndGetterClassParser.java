@@ -10,6 +10,7 @@ import com.jn.langx.util.reflect.Reflects;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,7 +57,7 @@ public class FieldSetterAndGetterClassParser<F extends FieldInfo> implements Cla
         // zero parameter constructor
 
         final Map<String, F> fieldInfoMap = new HashMap<String, F>();
-        Field[] fields = clazz.getDeclaredFields();
+        Collection<Field> fields = Reflects.getAllDeclaredFields(clazz,true);
         Collects.forEach(fields, new Consumer<Field>() {
             @Override
             public void accept(Field field) {

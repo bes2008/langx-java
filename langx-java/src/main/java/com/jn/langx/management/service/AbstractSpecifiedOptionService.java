@@ -98,7 +98,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         return this.getMBeans(specifiedOption, optionValues, null);
     }
 
-    protected Map<String, List<Entry<String, Object>>> getMBeans(final String specifiedOption, final List<String> optionValues, final Class<? extends Unserializable> unerialClazz) throws MBeanException {
+    protected Map<String, List<Entry<String, Object>>> getMBeans(final String specifiedOption, final List<String> optionValues, final Class<? extends Unserializable> unserialClazz) throws MBeanException {
         if (!Strings.isBlank(specifiedOption)) {
             throw new MBeanException("specialOption is null. ");
         }
@@ -118,10 +118,9 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
             }
         }
         final List<String> notSerialAttrs = new ArrayList<String>();
-        if (unerialClazz != null && Reflects.isSubClassOrEquals(Unserializable.class, unerialClazz)) {
-            final Field[] arr$;
-            final Field[] fields = arr$ = unerialClazz.getDeclaredFields();
-            for (final Field field : arr$) {
+        if (unserialClazz != null && Reflects.isSubClassOrEquals(Unserializable.class, unserialClazz)) {
+            final Collection<Field> fields = Reflects.getAllDeclaredFields(unserialClazz,true);
+            for (final Field field : fields) {
                 notSerialAttrs.add(field.getName());
             }
         }

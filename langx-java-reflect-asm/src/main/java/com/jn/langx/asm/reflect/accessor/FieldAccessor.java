@@ -106,9 +106,9 @@ public abstract class FieldAccessor {
         ArrayList<Field> fields = new ArrayList<Field>();
         Class nextClass = type;
         while (nextClass != Object.class) {
-            Field[] declaredFields = nextClass.getDeclaredFields();
-            for (int i = 0, n = declaredFields.length; i < n; i++) {
-                Field field = declaredFields[i];
+            List<Field> declaredFields = Collects.asList(Reflects.getAllDeclaredFields( nextClass));
+            for (int i = 0, n = declaredFields.size(); i < n; i++) {
+                Field field = declaredFields.get(i);
                 int modifiers = field.getModifiers();
                 if (Modifier.isStatic(modifiers)) continue;
                 if (Modifier.isPrivate(modifiers)) continue;

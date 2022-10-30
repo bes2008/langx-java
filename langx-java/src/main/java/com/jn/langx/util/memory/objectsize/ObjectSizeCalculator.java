@@ -5,6 +5,7 @@ import com.jn.langx.cache.Cache;
 import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.IdentityHashSet;
+import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
 
 import java.lang.management.ManagementFactory;
@@ -218,7 +219,7 @@ public class ObjectSizeCalculator {
         public ClassSizeInfo(Class<?> clazz) {
             long fieldsSize = 0;
             final List<Field> referenceFields = new LinkedList<Field>();
-            for (Field f : clazz.getDeclaredFields()) {
+            for (Field f : Reflects.getAllDeclaredFields(clazz)) {
                 if (Modifier.isStatic(f.getModifiers())) {
                     continue;
                 }
