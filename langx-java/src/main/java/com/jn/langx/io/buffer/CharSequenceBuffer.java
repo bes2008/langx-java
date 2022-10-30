@@ -1,8 +1,11 @@
-package com.jn.langx.util.collection.buffer;
+package com.jn.langx.io.buffer;
 
 
 import com.jn.langx.util.collection.buffer.exception.ReadOnlyBufferException;
 
+/**
+ * @since 5.1.0
+ */
 public class CharSequenceBuffer extends CharBuffer<CharSequenceBuffer> {
     private CharSequence str;
     public CharSequenceBuffer(CharSequence s) {

@@ -1,11 +1,15 @@
-package com.jn.langx.util.collection.buffer;
+package com.jn.langx.io.buffer;
 
+import com.jn.langx.util.collection.buffer.Buffer;
 import com.jn.langx.util.collection.buffer.exception.BufferOverflowException;
 import com.jn.langx.util.collection.buffer.exception.BufferUnderflowException;
 import com.jn.langx.util.collection.buffer.exception.ReadOnlyBufferException;
 
 import java.io.IOException;
 
+/**
+ * @since 5.1.0
+ */
 public abstract class CharBuffer<BF extends CharBuffer>
         extends Buffer<BF>
         implements Comparable<BF>, Appendable, CharSequence, Readable {

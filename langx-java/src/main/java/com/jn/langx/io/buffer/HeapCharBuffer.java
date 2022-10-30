@@ -1,9 +1,12 @@
-package com.jn.langx.util.collection.buffer;
+package com.jn.langx.io.buffer;
 
 
 import com.jn.langx.util.collection.buffer.exception.BufferOverflowException;
 import com.jn.langx.util.collection.buffer.exception.BufferUnderflowException;
 
+/**
+ * @since 5.1.0
+ */
 public class HeapCharBuffer extends CharBuffer<HeapCharBuffer> {
 
 

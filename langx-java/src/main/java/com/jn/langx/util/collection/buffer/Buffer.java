@@ -332,7 +332,10 @@ public abstract class Buffer<BF extends Buffer> implements Rewindable {
      */
     public abstract long arrayOffset();
 
-    static void checkBounds(long off, long len, long size) { // package-private
+    /**
+     * @since 5.1.0
+     */
+    protected static void checkBounds(long off, long len, long size) { // package-private
         if ((off | len | (off + len) | (size - (off + len))) < 0)
             throw new IndexOutOfBoundsException();
     }

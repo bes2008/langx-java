@@ -3,7 +3,7 @@ package com.jn.langx.text.pinyin;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.buffer.CharSequenceBuffer;
+import com.jn.langx.io.buffer.CharSequenceBuffer;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.RegexpPatterns;
 import com.jn.langx.util.regexp.Regexps;
