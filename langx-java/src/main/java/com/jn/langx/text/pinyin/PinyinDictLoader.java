@@ -30,8 +30,6 @@ class PinyinDictLoader {
 
             // 标点符号
             final boolean isPunctuationSymbol = Strings.startsWith(dictName, "chinese_punctuation_symbol");
-            // 姓氏
-            final boolean isSurname = Strings.startsWith(dictName, "chinese_surname");
             // 繁体字
             final boolean isTraditional = Strings.startsWith(dictName, "traditional_");
 
@@ -54,7 +52,7 @@ class PinyinDictLoader {
                         mapping = Strings.trim(mapping);
                         int commentIndex = Strings.indexOf(mapping, "#");
                         if (commentIndex >= 0) {
-                            mapping = Strings.substring(mapping,0, commentIndex);
+                            mapping = Strings.substring(mapping, 0, commentIndex);
                         }
                         if (Strings.isBlank(word) || Strings.isBlank(mapping)) {
                             // ignore

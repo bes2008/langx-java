@@ -2,10 +2,8 @@ package com.jn.langx.text.pinyin;
 
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Objs;
-import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.function.Function;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
 public class Pinyins extends PinyinDicts {
 
     public static String getPersonName(String name, OutputStyle theOutputStyle) {
-        return getPinyin(name, 4, true, theOutputStyle);
+        return getPinyin(name, 4, true, theOutputStyle, null);
     }
 
     public static String getPinyin(String text) {
@@ -22,11 +20,15 @@ public class Pinyins extends PinyinDicts {
 
 
     public static String getPinyin(String text, OutputStyle theOutputStyle, String... dictNames) {
-        return getPinyin(text, 50, false, theOutputStyle, dictNames);
+        return getPinyin(text, 50, false, theOutputStyle, null, dictNames);
     }
 
     public static String getPinyin(String text, int tokenMaxWord, OutputStyle theOutputStyle, String... dictNames) {
-        return getPinyin(text, tokenMaxWord, false, theOutputStyle, dictNames);
+        return getPinyin(text, tokenMaxWord, false, theOutputStyle, null, dictNames);
+    }
+
+    public static String getPinyin(String text, int tokenMaxWord, OutputStyle theOutputStyle, OutputFormatter outputFormatter, String... dictNames) {
+        return getPinyin(text, tokenMaxWord, false, theOutputStyle, outputFormatter, dictNames);
     }
 
     /**
@@ -40,54 +42,13 @@ public class Pinyins extends PinyinDicts {
      * @see PinyinDictItemToken
      * @see StringToken
      */
-    public static String getPinyin(String text, int tokenMaxWord, boolean surnameFirst, OutputStyle theOutputStyle, String... dictNames) {
+    public static String getPinyin(String text, int tokenMaxWord, boolean surnameFirst, OutputStyle theOutputStyle, OutputFormatter outputFormatter, String... dictNames) {
         List<SegmentToken> segmentTokens = analyze(PinyinDicts.findDicts(dictNames), text, tokenMaxWord, surnameFirst);
-        final OutputStyle outputStyle = theOutputStyle == null ? OutputStyle.DEFAULT_INSTANCE : theOutputStyle;
-
-
-        final String chineseCharSeparator = Objs.useValueIfNull(outputStyle.getChineseCharSeparator(), " ");
-        final String chineseTokenSeparator = Objs.useValueIfNull(outputStyle.getChineseTokenSeparator(), " ");
-        List<String> segments = Pipeline.of(segmentTokens).map(new Function<SegmentToken, String>() {
-            @Override
-            public String apply(SegmentToken segmentToken) {
-                String segment = null;
-                // 标点符号
-                if (segmentToken.isPunctuationSymbol()) {
-                    if (outputStyle.isRetainPunctuationSymbol()) {
-                        segment = segmentToken.toString();
-                    }
-                    return segment;
-                }
-                // 下面是非标点符号
-
-                // 普通的文本
-                if (segmentToken instanceof StringToken) {
-                    if (outputStyle.isRetainNonChineseChars()) {
-                        segment = ((StringToken) segmentToken).getBody();
-                    }
-                    return segment;
-                }
-                ChineseSequenceToken chineseSequenceToken = (ChineseSequenceToken) segmentToken;
-                List<PinyinDictItemToken> chineseTokens = chineseSequenceToken.getBody();
-                List<String> chineseTokenPinyins = Pipeline.of(chineseTokens)
-                        .map(new Function<PinyinDictItemToken, String>() {
-                            @Override
-                            public String apply(PinyinDictItemToken pinyinToken) {
-                                PinyinDictItem item = pinyinToken.getBody();
-                                if (outputStyle.isWithTone()) {
-                                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithTone(), " "));
-                                } else {
-                                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithoutTone(), " "));
-                                }
-                            }
-                        }).asList();
-
-                segment = Strings.join(chineseTokenSeparator, chineseTokenPinyins);
-                return segment;
-            }
-        }).clearNulls().asList();
-        final String segmentSeparator = Objs.useValueIfNull(outputStyle.getSegmentSeparator(), "");
-        String result = Strings.join(segmentSeparator, segments);
+        if (outputFormatter == null) {
+            outputFormatter = new DefaultOutputFormatter();
+        }
+        outputFormatter.setOutputStyle(theOutputStyle);
+        String result = outputFormatter.format(segmentTokens);
         return result;
     }
 

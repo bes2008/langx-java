@@ -1,0 +1,23 @@
+package com.jn.langx.text.pinyin;
+
+import com.jn.langx.Formatter;
+
+import java.util.List;
+
+
+public abstract class OutputFormatter implements Formatter<List<SegmentToken>, String> {
+    @Override
+    public abstract String format(List<SegmentToken> tokens, Object... args);
+
+    private OutputStyle outputStyle = OutputStyle.DEFAULT_INSTANCE;
+
+    public OutputStyle getOutputStyle() {
+        return outputStyle;
+    }
+
+    public void setOutputStyle(OutputStyle outputStyle) {
+        if (outputStyle != null) {
+            this.outputStyle = outputStyle;
+        }
+    }
+}

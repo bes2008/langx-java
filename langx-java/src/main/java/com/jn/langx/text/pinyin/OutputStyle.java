@@ -5,7 +5,7 @@ public class OutputStyle {
     /**
      * 非中文字符是否忽略掉
      */
-    private boolean retainNonChineseChars = false;
+    private boolean retainNonChineseChars = true;
 
     /**
      * 输出的拼音 是否带声调
