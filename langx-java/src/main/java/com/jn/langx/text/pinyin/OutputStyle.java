@@ -20,7 +20,7 @@ public class OutputStyle {
     /**
      * 中文segment内token之间的分隔符
      */
-    private String chineseTokenSeparator = "";
+    private String chineseTokenSeparator = " ";
     /**
      * 中文token 内的字符分隔符
      */

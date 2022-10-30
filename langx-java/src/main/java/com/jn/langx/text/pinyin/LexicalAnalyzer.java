@@ -69,7 +69,7 @@ class LexicalAnalyzer {
 
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
 
-        long segmentStartIndex = -1;
+        long segmentStart = -1;
         boolean isChineseSegment = false;
         while (csb.hasRemaining()) {
             String c = csb.get() + "";
@@ -80,25 +80,29 @@ class LexicalAnalyzer {
             boolean isEnglishPunctuationSymbol = Pinyins.isEnglishPunctuationSymbol(c);
             boolean isStopWord = isChinesePunctuationSymbol || isEnglishPunctuationSymbol;
 
-            if (segmentStartIndex < 0) {
-                segmentStartIndex = csb.position() - 1;
+            if (segmentStart < 0) {
+                segmentStart = csb.position() - 1;
                 isChineseSegment = isChinese;
             }
             boolean segmentFinished = isStopWord || !csb.hasRemaining() || isChineseSegment != isChinese;
 
             if (segmentFinished) {
                 long segmentEnd = (csb.hasRemaining() || isStopWord) ? csb.position() - 1 : csb.position();
+
                 if (!isChineseSegment) {
                     // 对非中文处理
+                    if (segmentEnd <= segmentStart) {
+                        continue;
+                    }
                     long end = segmentEnd;
                     StringToken token = new StringToken();
-                    String substring = csb.toString(segmentStartIndex, end);
+                    String substring = csb.toString(segmentStart, end);
                     token.setBody(substring);
                     segments.add(token);
 
                 } else {
                     // 对中文处理：
-                    long start = segmentStartIndex;
+                    long start = segmentStart;
                     long end = segmentEnd;
                     PinyinDictItem surname = null;
                     ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
@@ -153,9 +157,9 @@ class LexicalAnalyzer {
                 }
 
                 // 重置段开始
-                segmentStartIndex = -1;
+                segmentStart = -1;
                 if (isChinese != isChineseSegment) {
-                    segmentStartIndex = csb.position() - 1;
+                    segmentStart = isStopWord ? -1 : csb.position() - 1;
                     isChineseSegment = isChinese;
                 }
             }

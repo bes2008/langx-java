@@ -46,7 +46,7 @@ public class Pinyins extends PinyinDicts {
 
 
         final String chineseCharSeparator = Objs.useValueIfNull(outputStyle.getChineseCharSeparator(), " ");
-        final String chineseTokenSeparator = Objs.useValueIfNull(outputStyle.getChineseTokenSeparator(), "");
+        final String chineseTokenSeparator = Objs.useValueIfNull(outputStyle.getChineseTokenSeparator(), " ");
         List<String> segments = Pipeline.of(segmentTokens).map(new Function<SegmentToken, String>() {
             @Override
             public String apply(SegmentToken segmentToken) {

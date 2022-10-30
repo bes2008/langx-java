@@ -33,6 +33,7 @@ public class PinyinAnalyzeTests {
         String name = "查良庸,冒顿,盖楼,南宫婉，司徒南、司马南,仓颉,李颉, 颉冉；";
         final OutputStyle style = new OutputStyle();
         style.setSegmentSeparator("\n");
+        style.setRetainPunctuationSymbol(false);
         System.out.println(Pinyins.getPersonName(name, style));
     }
 
