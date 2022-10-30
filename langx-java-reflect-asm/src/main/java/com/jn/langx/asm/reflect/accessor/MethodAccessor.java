@@ -38,7 +38,7 @@ public abstract class MethodAccessor {
      */
     public int getIndex(String methodName) {
         for (int i = 0, n = methodNames.length; i < n; i++) {
-            if (methodNames[i].equals(methodName)){
+            if (methodNames[i].equals(methodName)) {
                 return i;
             }
         }
@@ -50,7 +50,7 @@ public abstract class MethodAccessor {
      */
     public int getIndex(String methodName, Class... paramTypes) {
         for (int i = 0, n = methodNames.length; i < n; i++) {
-            if (methodNames[i].equals(methodName) && Arrays.equals(paramTypes, parameterTypes[i])){
+            if (methodNames[i].equals(methodName) && Arrays.equals(paramTypes, parameterTypes[i])) {
                 return i;
             }
         }
@@ -62,7 +62,7 @@ public abstract class MethodAccessor {
      */
     public int getIndex(String methodName, int paramsCount) {
         for (int i = 0, n = methodNames.length; i < n; i++) {
-            if (methodNames[i].equals(methodName) && parameterTypes[i].length == paramsCount){
+            if (methodNames[i].equals(methodName) && parameterTypes[i].length == paramsCount) {
                 return i;
             }
         }
@@ -302,12 +302,13 @@ public abstract class MethodAccessor {
     }
 
     private static void addDeclaredMethodsToList(Class type, ArrayList<Method> methods) {
-        Method[] declaredMethods = type.getDeclaredMethods();
-        for (int i = 0, n = declaredMethods.length; i < n; i++) {
-            Method method = declaredMethods[i];
+        List<Method> declaredMethods = Collects.asList(Reflects.getAllDeclaredMethods(type, true));
+        for (int i = 0, n = declaredMethods.size(); i < n; i++) {
+            Method method = declaredMethods.get(i);
             int modifiers = method.getModifiers();
-            // if (Modifier.isStatic(modifiers)) continue;
-            if (Modifier.isPrivate(modifiers)) continue;
+            if (Modifier.isPrivate(modifiers)) {
+                continue;
+            }
             methods.add(method);
         }
     }

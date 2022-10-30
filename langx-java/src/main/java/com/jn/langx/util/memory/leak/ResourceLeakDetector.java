@@ -469,7 +469,7 @@ public class ResourceLeakDetector<T> {
         Set<String> nameSet = new HashSet<String>(Arrays.asList(methodNames));
         // Use loop rather than lookup. This avoids knowing the parameters, and doesn't have to handle
         // NoSuchMethodException.
-        for (Method method : clz.getDeclaredMethods()) {
+        for (Method method : Reflects.getAllDeclaredMethods(clz, false)) {
             if (nameSet.remove(method.getName()) && nameSet.isEmpty()) {
                 break;
             }

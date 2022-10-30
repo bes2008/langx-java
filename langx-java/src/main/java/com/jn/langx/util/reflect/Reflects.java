@@ -818,7 +818,7 @@ public class Reflects {
         final List<Method> methods = new ArrayList<Method>();
         Class<?> clazz = type;
         while (!Object.class.equals(clazz)) {
-            Method[] currentClassMethods = clazz.getDeclaredMethods();
+            Method[] currentClassMethods = getDeclaredMethods(clazz, true);
             for (final Method method : currentClassMethods) {
                 if (annotation == null || method.isAnnotationPresent(annotation)) {
                     methods.add(method);
@@ -871,7 +871,7 @@ public class Reflects {
     }
 
     public static Collection<Method> getAllDeclaredMethods(@NonNull Class clazz, boolean containsStatic) {
-        Method[] methods = clazz.getDeclaredMethods();
+        Method[] methods = getDeclaredMethods(clazz, true);
         return !containsStatic ? filterMethods(methods, Modifier.STATIC) : filterMethods(methods);
     }
 
@@ -904,13 +904,25 @@ public class Reflects {
         return method;
     }
 
-    public static Method getDeclaredMethod(@NonNull Class clazz, @NonNull String methodName, Class... parameterTypes) {
-        Method method;
-        try {
-            method = clazz.getDeclaredMethod(methodName, parameterTypes);
-        } catch (NoSuchMethodException ex) {
-            method = null;
-        }
+    public static Method getDeclaredMethod(@NonNull Class clazz, @NonNull final String methodName, final Class... parameterTypes) {
+
+        Method[] methods = getDeclaredMethods(clazz, true);
+        Method method = Pipeline.of(methods).findFirst(new Predicate<Method>() {
+            @Override
+            public boolean test(Method method) {
+                if (!Objs.equals(method.getName(), methodName)) {
+                    return false;
+                }
+                Class<?>[] pts = method.getParameterTypes();
+                if (pts.length == 0 && (parameterTypes == null || parameterTypes.length == 0)) {
+                    return true;
+                }
+                if (pts.length != parameterTypes.length) {
+                    return false;
+                }
+                return Objs.deepEquals(pts, parameterTypes);
+            }
+        });
         return method;
     }
 
