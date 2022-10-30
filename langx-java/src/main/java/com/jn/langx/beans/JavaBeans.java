@@ -9,9 +9,7 @@ import com.jn.langx.util.reflect.Reflects;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @since 4.3.7
@@ -193,17 +191,5 @@ public class JavaBeans {
     @Nullable
     public static PropertyDescriptor getPropertyDescriptor(Class<?> clazz, String propertyName) throws BeansException {
         return CachedIntrospectionResults.forClass(clazz).getPropertyDescriptor(propertyName);
-    }
-
-    /**
-     * @since 5.0.4
-     */
-    public static void mapToBean(Map<String, Object> src, Object target) {
-        Preconditions.checkNotNull(target);
-        if (src == null) {
-            return;
-        }
-        Class targetClass = target.getClass();
-
     }
 }
