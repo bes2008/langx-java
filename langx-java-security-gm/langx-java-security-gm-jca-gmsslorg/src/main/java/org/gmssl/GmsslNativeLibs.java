@@ -6,6 +6,7 @@ import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.jni.NativeLibraryUtil;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.net.URLs;
+import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -87,7 +88,10 @@ public class GmsslNativeLibs {
 
     public static void addLibraryDir(String libraryPath) throws IOException {
         try {
-            Field field = ClassLoader.class.getDeclaredField("usr_paths");
+            Field field = Reflects.getDeclaredField(ClassLoader.class,"usr_paths");
+            if(field==null){
+                throw new IOException("Failedto get field handle to set library path");
+            }
             field.setAccessible(true);
             String[] paths = (String[]) field.get(null);
             for (int i = 0; i < paths.length; i++) {
@@ -102,8 +106,6 @@ public class GmsslNativeLibs {
             field.set(null, tmp);
         } catch (IllegalAccessException e) {
             throw new IOException("Failedto get permissions to set library path");
-        } catch (NoSuchFieldException e) {
-            throw new IOException("Failedto get field handle to set library path");
         }
     }
 }
