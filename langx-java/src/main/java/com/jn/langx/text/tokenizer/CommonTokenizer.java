@@ -27,7 +27,7 @@ public abstract class CommonTokenizer extends AbstractTokenizer<String> {
             if (delimiterPositions == null) {
                 // 直到结束还没找到分隔符
                 long segmentEnd = this.buffer.limit();
-                String segment = this.buffer.toString(position, segmentEnd);
+                String segment = this.buffer.substring(position, segmentEnd);
                 return segment;
             } else {
                 // 找到了分隔符
@@ -36,7 +36,7 @@ public abstract class CommonTokenizer extends AbstractTokenizer<String> {
                     // 刚一进来这个 getNext()方法，就遇到了分隔符
                     if (returnDelimiter) {
                         // 返回分隔符
-                        String delimiter = this.buffer.toString(position, delimiterPositions[1]);
+                        String delimiter = this.buffer.substring(position, delimiterPositions[1]);
                         this.buffer.position(delimiterPositions[1]);
                         return delimiter;
                     } else {
@@ -45,7 +45,7 @@ public abstract class CommonTokenizer extends AbstractTokenizer<String> {
                         return getNext();
                     }
                 } else if (segmentEnd > position) {
-                    String segment = this.buffer.toString(position, segmentEnd);
+                    String segment = this.buffer.substring(position, segmentEnd);
                     this.buffer.position(segmentEnd);
                     return segment;
                 } else {

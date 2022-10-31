@@ -71,7 +71,7 @@ class Lexer {
                     }
                     long end = segmentEnd;
                     StringToken token = new StringToken();
-                    String substring = csb.toString(segmentStart, end);
+                    String substring = csb.substring(segmentStart, end);
                     token.setBody(substring);
                     segments.add(token);
 
@@ -86,7 +86,7 @@ class Lexer {
                             // 避免总是进行无意义的查找
                             end = start + config.getTokenMaxChar();
                         }
-                        String chineseWords = csb.toString(start, end);
+                        String chineseWords = csb.substring(start, end);
                         PinyinDictItem item = find(surname, chineseWords);
                         if (item != null) {
                             if (config.isSurnameFirst() && surname == null) {

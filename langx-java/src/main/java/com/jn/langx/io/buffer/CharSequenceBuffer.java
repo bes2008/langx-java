@@ -16,7 +16,7 @@ public class CharSequenceBuffer extends CharBuffer<CharSequenceBuffer> {
     public CharSequenceBuffer(CharSequence s, int start, int end) {
         super(-1, start, end, s.length());
         int n = s.length();
-        if ((start < 0) ||  (end < start) || (end > n))
+        if ((start < 0) || (end < start) || (end > n))
             throw new IndexOutOfBoundsException();
         str = s;
     }
@@ -76,7 +76,7 @@ public class CharSequenceBuffer extends CharBuffer<CharSequenceBuffer> {
         return true;
     }
 
-    public final String toString(long start, long end) {
+    public final String substring(long start, long end) {
         return str.toString().substring((int) (start + offset), (int) (end + offset));
     }
 

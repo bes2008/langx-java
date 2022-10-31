@@ -784,10 +784,10 @@ public abstract class CharBuffer<BF extends CharBuffer>
      * @return The specified string
      */
     public String toString() {
-        return toString(position(), limit());
+        return substring(position(), limit());
     }
 
-    public abstract String toString(long start, long end);       // package-private
+    public abstract String substring(long start, long end);
 
 
 // --- Methods to support CharSequence ---

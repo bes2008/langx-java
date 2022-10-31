@@ -149,7 +149,7 @@ public class HeapCharBuffer extends CharBuffer<HeapCharBuffer> {
     }
 
 
-    public String toString(long start, long end) {
+    public String substring(long start, long end) {
         try {
             return new String(hb, (int) (start + offset), (int) (end - start));
         } catch (StringIndexOutOfBoundsException x) {
