@@ -20,11 +20,9 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 /**
  * Helper methods used by IPv6Address.
- *
  */
 public final class IPv6AddressHelpers {
     static long[] parseStringArrayIntoLongArray(String[] strings) {

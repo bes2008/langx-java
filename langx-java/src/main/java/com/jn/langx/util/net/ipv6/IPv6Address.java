@@ -16,8 +16,6 @@
 
 package com.jn.langx.util.net.ipv6;
 
-import static com.jn.langx.util.net.ipv6.IPv6AddressHelpers.prefixWithZeroBytes;
-
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.net.Inet6Address;
@@ -27,9 +25,10 @@ import java.nio.ByteBuffer;
 import java.nio.LongBuffer;
 import java.util.Arrays;
 
+import static com.jn.langx.util.net.ipv6.IPv6AddressHelpers.prefixWithZeroBytes;
+
 /**
  * Immutable representation of an IPv6 address.
- *
  */
 public final class IPv6Address implements Comparable<IPv6Address>, Serializable {
     private static final int N_SHORTS = 8;

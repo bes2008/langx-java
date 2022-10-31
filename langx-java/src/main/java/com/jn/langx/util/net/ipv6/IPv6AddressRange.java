@@ -18,15 +18,10 @@ package com.jn.langx.util.net.ipv6;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Immutable representation of a continuous range of IPv6 addresses (bounds included).
- *
  */
 public class IPv6AddressRange implements Comparable<IPv6AddressRange>, Iterable<IPv6Address>, Serializable {
     private final IPv6Address first;

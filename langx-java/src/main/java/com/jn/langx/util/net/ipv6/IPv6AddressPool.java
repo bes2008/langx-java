@@ -18,13 +18,7 @@ package com.jn.langx.util.net.ipv6;
 
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Immutable representation of an IPv6 address pool.
@@ -32,7 +26,6 @@ import java.util.TreeSet;
  * An IPv6 address pool is like an IPv6 address range in which some addresses are "free" and some are "allocated". Think "dhcp server".
  * Addresses are allocated in whole subnet blocks at once. These subnet blocks have a predefined prefix length for the whole allocatable
  * range.
- *
  */
 public final class IPv6AddressPool implements Serializable {
     private final IPv6AddressRange underlyingRange;
