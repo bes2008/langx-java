@@ -399,7 +399,7 @@ public class Strings {
             // 例如，第三段被分割后，少了个 0
             // string = "system0@*v*@0share-ns-org-10@*v*@0i632d4c-tomcat-00@*v*@0tomcat";
             // Strings.split(string, "0@*v*@0");
-            StringTokenizer tokenizer = new StringTokenizer(string, separator);
+            StrTokenizer tokenizer = new StrTokenizer(string, separator);
             List<String> list = tokenizer.tokenize();
             pipeline = Pipeline.of(list);
         }

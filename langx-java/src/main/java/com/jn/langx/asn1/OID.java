@@ -3,13 +3,13 @@ package com.jn.langx.asn1;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.StrTokenizer;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * This class provides a data structure that may be used for representing object
@@ -160,19 +160,17 @@ public final class OID implements Serializable, Comparable<OID> {
     @Nullable()
     public static List<Integer> parseComponents(@Nullable final String oidString) {
         if ((oidString == null) || oidString.isEmpty() ||
-                oidString.startsWith(".") || oidString.endsWith(".") ||
-                (oidString.indexOf("..") > 0)) {
+                oidString.startsWith(".") || oidString.endsWith(".") ||  (oidString.indexOf("..") > 0)) {
             return null;
         }
 
-        final StringTokenizer tokenizer = new StringTokenizer(oidString, ".");
+        final StrTokenizer tokenizer = new StrTokenizer(oidString, ".");
         final ArrayList<Integer> compList = new ArrayList<Integer>(10);
-        while (tokenizer.hasMoreTokens()) {
-            final String token = tokenizer.nextToken();
+        while (tokenizer.hasNext()) {
+            final String token = tokenizer.next();
             try {
                 compList.add(Integer.parseInt(token));
             } catch (final Exception e) {
-                //Debug.debugException(e);
                 return null;
             }
         }

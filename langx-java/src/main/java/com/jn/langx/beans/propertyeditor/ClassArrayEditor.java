@@ -17,9 +17,10 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.StrTokenizer;
+
 import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 /**
  * A property editor for Class[].
@@ -33,10 +34,10 @@ public class ClassArrayEditor extends PropertyEditorSupport {
     @Override
     public void setAsText(final String text) throws IllegalArgumentException {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        StringTokenizer tokenizer = new StringTokenizer(text, ", \t\r\n");
+        StrTokenizer tokenizer = new StrTokenizer(text, ","," ","\t","\r","\n");
         ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
-        while (tokenizer.hasMoreTokens()) {
-            String name = tokenizer.nextToken();
+        while (tokenizer.hasNext()) {
+            String name = tokenizer.next();
             try {
                 Class<?> c = loader.loadClass(name);
                 classes.add(c);

@@ -2,20 +2,22 @@ package com.jn.langx.util.net.http;
 
 import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.StrTokenizer;
 
 import java.util.*;
+
 
 public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
     private static final String LOCALE_SEPARATOR = ",";
     private static final char QUALITY_SEPARATOR = ';';
     private static final Float DEFAULT_QUALITY = 1.0F;
-    private ArrayList locales = new ArrayList(3);
+    private List locales = new ArrayList(3);
 
     public HttpAcceptLanguageHeaderTokenizer(String header) {
         HttpAcceptLanguageHeaderTokenizer.AcceptLanguage acceptLang;
-        for (StringTokenizer tok = new StringTokenizer(header, ","); tok.hasMoreTokens(); this.locales.add(acceptLang)) {
+        for (StrTokenizer tok = new StrTokenizer(header, ","); tok.hasNext(); this.locales.add(acceptLang)) {
             acceptLang = new HttpAcceptLanguageHeaderTokenizer.AcceptLanguage();
-            String element = tok.nextToken().trim();
+            String element = tok.next().trim();
             int index;
             if ((index = element.indexOf(59)) != -1) {
                 String q = element.substring(index);

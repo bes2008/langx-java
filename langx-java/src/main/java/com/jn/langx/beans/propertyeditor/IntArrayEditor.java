@@ -17,8 +17,11 @@
  */
 package com.jn.langx.beans.propertyeditor;
 
+import com.jn.langx.util.StrTokenizer;
+
 import java.beans.PropertyEditorSupport;
-import java.util.StringTokenizer;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A property editor for int[].
@@ -28,11 +31,13 @@ public class IntArrayEditor extends PropertyEditorSupport {
      * Build a int[] from comma or eol seperated elements
      */
     public void setAsText(final String text) {
-        StringTokenizer tokenizer = new StringTokenizer(text, ",\r\n");
-        int[] theValue = new int[tokenizer.countTokens()];
+        StrTokenizer tokenizer = new StrTokenizer(text, ",", "\r", "\n");
+        List<String> tokens = tokenizer.tokenize();
+        int[] theValue = new int[tokens.size()];
         int i = 0;
-        while (tokenizer.hasMoreTokens()) {
-            theValue[i++] = Integer.decode(tokenizer.nextToken()).intValue();
+        Iterator<String> iter = tokens.iterator();
+        while (iter.hasNext()) {
+            theValue[i++] = Integer.decode(iter.next()).intValue();
         }
         setValue(theValue);
     }

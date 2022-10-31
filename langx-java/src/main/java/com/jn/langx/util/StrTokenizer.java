@@ -10,19 +10,19 @@ import java.util.List;
 /**
  * @since 5.1.0
  */
-public class StringTokenizer extends CommonTokenizer {
+public class StrTokenizer extends CommonTokenizer {
     private static List<String> DEFAULT_DELIMITERS = Collects.newArrayList(" ", "\n", "\t", "\r");
     private List<String> delimiters;
 
-    public StringTokenizer(String str) {
+    public StrTokenizer(String str) {
         this(str, null);
     }
 
-    public StringTokenizer(String str, String... delimiters) {
+    public StrTokenizer(String str, String... delimiters) {
         this(str, false, delimiters);
     }
 
-    public StringTokenizer(String str, boolean returnDelimiter, String... delimiters) {
+    public StrTokenizer(String str, boolean returnDelimiter, String... delimiters) {
         super(str, returnDelimiter);
         this.delimiters = Objs.useValueIfEmpty(Collects.asList(delimiters), DEFAULT_DELIMITERS);
     }

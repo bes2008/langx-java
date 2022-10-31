@@ -2,6 +2,7 @@ package com.jn.langx.util.timing.cron;
 
 
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.StrTokenizer;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -440,11 +441,10 @@ public final class CronExpression implements Serializable, Cloneable {
 
             int exprOn = SECOND;
 
-            StringTokenizer exprsTok = new StringTokenizer(expression, " \t",
-                    false);
+            StrTokenizer exprsTok = new StrTokenizer(expression, " ","\t");
 
-            while (exprsTok.hasMoreTokens() && exprOn <= YEAR) {
-                String expr = exprsTok.nextToken().trim();
+            while (exprsTok.hasNext() && exprOn <= YEAR) {
+                String expr = exprsTok.next().trim();
 
                 // throw an exception if L is used with other days of the month
                 if (exprOn == DAY_OF_MONTH && expr.indexOf('L') != -1 && expr.length() > 1 && expr.contains(",")) {
@@ -458,9 +458,9 @@ public final class CronExpression implements Serializable, Cloneable {
                     throw new ParseException("Support for specifying multiple \"nth\" days is not implemented.", -1);
                 }
 
-                StringTokenizer vTok = new StringTokenizer(expr, ",");
-                while (vTok.hasMoreTokens()) {
-                    String v = vTok.nextToken();
+                StrTokenizer vTok = new StrTokenizer(expr, ",");
+                while (vTok.hasNext()) {
+                    String v = vTok.next();
                     storeExpressionVals(0, v, exprOn);
                 }
 
