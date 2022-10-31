@@ -80,38 +80,40 @@ class Lexer {
                     long start = segmentStart;
                     long end = segmentEnd;
                     PinyinDictItem surname = null;
-                    ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
-                    while (start < end) {
-                        if (start + config.getTokenMaxChar() < end) {
-                            // 避免总是进行无意义的查找
-                            end = start + config.getTokenMaxChar();
-                        }
-                        String chineseWords = csb.substring(start, end);
-                        PinyinDictItem item = find(surname, chineseWords);
-                        if (item != null) {
-                            if (config.isSurnameFirst() && surname == null) {
-                                surname = item;
+                    if(start<end) {
+                        ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
+                        while (start < end) {
+                            if (start + config.getTokenMaxChar() < end) {
+                                // 避免总是进行无意义的查找
+                                end = start + config.getTokenMaxChar();
                             }
-                            chineseSequenceToken.addToken(item);
-                            start = end;
-                            end = segmentEnd;
-                        } else {
-                            end = end - 1;
-
-                            if (end <= start) {
-                                // 汉字在字典里没找到，如果 dict/hanzi.dict 字典库足够全，可能这个代码片段就进不来了
-                                StringToken token = new StringToken();
-                                String w = csb.get(start) + "";
-                                logger.warn("Can't find the pinyin for {}", w);
-                                token.setBody(w);
-                                segments.add(token);
-                                start++;
+                            String chineseWords = csb.substring(start, end);
+                            PinyinDictItem item = find(surname, chineseWords);
+                            if (item != null) {
+                                if (config.isSurnameFirst() && surname == null) {
+                                    surname = item;
+                                }
+                                chineseSequenceToken.addToken(item);
+                                start = end;
                                 end = segmentEnd;
-                            }
+                            } else {
+                                end = end - 1;
 
+                                if (end <= start) {
+                                    // 汉字在字典里没找到，如果 dict/hanzi.dict 字典库足够全，可能这个代码片段就进不来了
+                                    StringToken token = new StringToken();
+                                    String w = csb.get(start) + "";
+                                    logger.warn("Can't find the pinyin for {}", w);
+                                    token.setBody(w);
+                                    segments.add(token);
+                                    start++;
+                                    end = segmentEnd;
+                                }
+
+                            }
                         }
+                        segments.add(chineseSequenceToken);
                     }
-                    segments.add(chineseSequenceToken);
                 }
 
                 // 对停止词处理
