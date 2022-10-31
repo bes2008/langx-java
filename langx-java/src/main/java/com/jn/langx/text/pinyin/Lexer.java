@@ -80,7 +80,7 @@ class Lexer {
                     long start = segmentStart;
                     long end = segmentEnd;
                     PinyinDictItem surname = null;
-                    if(start<end) {
+                    if (start < end) {
                         ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
                         while (start < end) {
                             if (start + config.getTokenMaxChar() < end) {

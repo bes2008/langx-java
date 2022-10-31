@@ -395,23 +395,12 @@ public class Strings {
         } else if (separatorIsRegexp) {
             pipeline = Pipeline.of(string.split(separator));
         } else {
-            // 使用 StringTokenizer分割后会有Bug
+            // 使用 JDK 的 StringTokenizer分割后会有Bug
             // 例如，第三段被分割后，少了个 0
             // string = "system0@*v*@0share-ns-org-10@*v*@0i632d4c-tomcat-00@*v*@0tomcat";
             // Strings.split(string, "0@*v*@0");
-            // StringTokenizer tokenizer = new StringTokenizer(string, separator, false);
-            List<String> list = new ArrayList<String>();
-            int startIndex = 0;
-            int foundIndex = string.indexOf(separator, 0);
-            while (foundIndex >= 0) {
-                list.add(string.substring(startIndex, foundIndex));
-                startIndex = foundIndex + separator.length();
-                foundIndex = string.indexOf(separator, startIndex);
-            }
-            if (startIndex < string.length()) {
-                list.add(string.substring(startIndex));
-            }
-
+            StringTokenizer tokenizer = new StringTokenizer(string, separator);
+            List<String> list = tokenizer.tokenize();
             pipeline = Pipeline.of(list);
         }
         return pipeline.map(new Function<String, String>() {
