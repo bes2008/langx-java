@@ -7,19 +7,19 @@ abstract class Token<T> {
     private T body;
     private boolean punctuationSymbol = false;
 
-    boolean isChinese() {
+    public boolean isChinese() {
         return body instanceof PinyinDictItem;
     }
 
-    boolean isPunctuationSymbol() {
+    public boolean isPunctuationSymbol() {
         return punctuationSymbol;
     }
 
-    public void setPunctuationSymbol(boolean punctuationSymbol) {
+    void setPunctuationSymbol(boolean punctuationSymbol) {
         this.punctuationSymbol = punctuationSymbol;
     }
 
-    T getBody() {
+    public T getBody() {
         return this.body;
     }
 
