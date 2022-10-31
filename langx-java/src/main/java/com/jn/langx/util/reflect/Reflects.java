@@ -39,8 +39,7 @@ public class Reflects {
 
     private static final Regexp lamdbaPattern = Regexps.createRegexp(".*\\$\\$Lambda\\$[0-9]+/.*");
 
-    private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
-    private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");
+
     private static final ParameterServiceRegistry PARAMETER_SERVICE_REGISTRY = ParameterServiceRegistry.getInstance();
 
     private static final Map<Class<?>, Method[]> declaredMethodsCache = new ConcurrentReferenceHashMap<Class<?>, Method[]>(256);
@@ -48,7 +47,8 @@ public class Reflects {
      * Cache for {@link Class#getDeclaredFields()}, allowing for fast iteration.
      */
     private static final Map<Class<?>, Field[]> declaredFieldsCache = new ConcurrentReferenceHashMap<Class<?>, Field[]>(256);
-
+    private static final Method OBJECT_EQUALS = getDeclaredMethod(Object.class, "equals", Object.class);
+    private static final Method OBJECT_HASHCODE = getDeclaredMethod(Object.class, "hashCode");
     private static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
 
     private static final Method[] EMPTY_METHOD_ARRAY = new Method[0];
