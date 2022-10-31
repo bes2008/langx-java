@@ -70,7 +70,7 @@ public final class IPv6Network extends IPv6AddressRange {
      * @return ipv6 network
      */
     public static IPv6Network fromTwoAddresses(IPv6Address one, IPv6Address two) {
-        final IPv6NetworkMask longestPrefixLength = IPv6NetworkMask.fromPrefixLength(IPv6NetworkHelpers.longestPrefixLength(one, two));
+        final IPv6NetworkMask longestPrefixLength = IPv6NetworkMask.fromPrefixLength(IPv6s.longestPrefixLength(one, two));
         return new IPv6Network(one.maskWithNetworkMask(longestPrefixLength), longestPrefixLength);
     }
 
