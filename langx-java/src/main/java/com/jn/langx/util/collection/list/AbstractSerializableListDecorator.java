@@ -29,13 +29,15 @@ import java.util.List;
  */
 public abstract class AbstractSerializableListDecorator<E> extends AbstractListDecorator<E> {
 
-    /** Serialization version */
+    /**
+     * Serialization version
+     */
     private static final long serialVersionUID = 2684959196747496299L;
 
     /**
      * Constructor that wraps (not copies).
      *
-     * @param list  the list to decorate, must not be null
+     * @param list the list to decorate, must not be null
      * @throws NullPointerException if list is null
      */
     protected AbstractSerializableListDecorator(final List<E> list) {
@@ -43,10 +45,11 @@ public abstract class AbstractSerializableListDecorator<E> extends AbstractListD
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Write the list out using a custom routine.
      *
-     * @param out  the output stream
+     * @param out the output stream
      * @throws IOException if an error occurs while writing to the stream
      */
     private void writeObject(final ObjectOutputStream out) throws IOException {
@@ -57,8 +60,8 @@ public abstract class AbstractSerializableListDecorator<E> extends AbstractListD
     /**
      * Read the list in using a custom routine.
      *
-     * @param in  the input stream
-     * @throws IOException if an error occurs while reading from the stream
+     * @param in the input stream
+     * @throws IOException            if an error occurs while reading from the stream
      * @throws ClassNotFoundException if an object read from the stream can not be loaded
      */
     @SuppressWarnings("unchecked")

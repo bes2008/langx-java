@@ -35,11 +35,14 @@ import java.util.ListIterator;
 public abstract class AbstractListDecorator<E> extends AbstractCollectionDecorator<E>
         implements List<E> {
 
-    /** Serialization version--necessary in an abstract class? */
+    /**
+     * Serialization version--necessary in an abstract class?
+     */
     private static final long serialVersionUID = 4500739654952315623L;
 
     /**
      * Constructor only used in deserialization, do not use otherwise.
+     *
      * @since 3.1
      */
     protected AbstractListDecorator() {
@@ -49,7 +52,7 @@ public abstract class AbstractListDecorator<E> extends AbstractCollectionDecorat
     /**
      * Constructor that wraps (not copies).
      *
-     * @param list  the list to decorate, must not be null
+     * @param list the list to decorate, must not be null
      * @throws NullPointerException if list is null
      */
     protected AbstractListDecorator(final List<E> list) {

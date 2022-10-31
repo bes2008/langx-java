@@ -23,13 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.Collection;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * An abstract implementation of a linked list which provides numerous points for
@@ -62,10 +56,14 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      */
     transient Node<E> header;
 
-    /** The size of the list */
+    /**
+     * The size of the list
+     */
     transient int size;
 
-    /** Modification count for iterators */
+    /**
+     * Modification count for iterators
+     */
     transient int modCount;
 
     /**
@@ -81,7 +79,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     /**
      * Constructs a list copying data from the specified collection.
      *
-     * @param coll  the collection to copy
+     * @param coll the collection to copy
      */
     protected AbstractLinkedList(final Collection<? extends E> coll) {
         super();
@@ -205,8 +203,8 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     /**
      * Gets a sublist of the main list.
      *
-     * @param fromIndexInclusive  the index to start from
-     * @param toIndexExclusive  the index to end at
+     * @param fromIndexInclusive the index to start from
+     * @param toIndexExclusive   the index to end at
      * @return the new sublist
      */
     @Override
@@ -427,13 +425,14 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Compares two values for equals.
      * This implementation uses the equals method.
      * Subclasses can override this to match differently.
      *
-     * @param value1  the first value to compare, may be null
-     * @param value2  the second value to compare, may be null
+     * @param value1 the first value to compare, may be null
+     * @param value2 the second value to compare, may be null
      * @return true if equal
      */
     protected boolean isEqualValue(final Object value1, final Object value2) {
@@ -446,7 +445,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * Subclasses can override this to record the change.
      *
      * @param node  node to update
-     * @param value  new value of the node
+     * @param value new value of the node
      */
     protected void updateNode(final Node<E> node, final E value) {
         node.setValue(value);
@@ -457,7 +456,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * This implementation creates a new empty Node.
      * Subclasses can override this to create a different class.
      *
-     * @return  newly created node
+     * @return newly created node
      */
     protected Node<E> createHeaderNode() {
         return new Node<E>();
@@ -468,7 +467,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * This implementation creates a new Node with data.
      * Subclasses can override this to create a different class.
      *
-     * @param value  value of the new node
+     * @param value value of the new node
      * @return a new node containing the value
      */
     protected Node<E> createNode(final E value) {
@@ -483,7 +482,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * {@link #addNode(Node, Node)}.
      *
      * @param node  node to insert before
-     * @param value  value of the newly added node
+     * @param value value of the newly added node
      * @throws NullPointerException if <code>node</code> is null
      */
     protected void addNodeBefore(final Node<E> node, final E value) {
@@ -499,7 +498,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * {@link #addNode(Node, Node)}.
      *
      * @param node  node to insert after
-     * @param value  value of the newly added node
+     * @param value value of the newly added node
      * @throws NullPointerException if <code>node</code> is null
      */
     protected void addNodeAfter(final Node<E> node, final E value) {
@@ -510,8 +509,8 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     /**
      * Inserts a new node into the list.
      *
-     * @param nodeToInsert  new node to insert
-     * @param insertBeforeNode  node to insert before
+     * @param nodeToInsert     new node to insert
+     * @param insertBeforeNode node to insert before
      * @throws NullPointerException if either node is null
      */
     protected void addNode(final Node<E> nodeToInsert, final Node<E> insertBeforeNode) {
@@ -526,7 +525,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     /**
      * Removes the specified node from the list.
      *
-     * @param node  the node to remove
+     * @param node the node to remove
      * @throws NullPointerException if <code>node</code> is null
      */
     protected void removeNode(final Node<E> node) {
@@ -549,13 +548,13 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     /**
      * Gets the node at a particular index.
      *
-     * @param index  the index, starting from 0
-     * @param endMarkerAllowed  whether or not the end marker can be returned if
-     * startIndex is set to the list's size
+     * @param index            the index, starting from 0
+     * @param endMarkerAllowed whether or not the end marker can be returned if
+     *                         startIndex is set to the list's size
      * @return the node at the given index
      * @throws IndexOutOfBoundsException if the index is less than 0; equal to
-     * the size of the list and endMakerAllowed is false; or greater than the
-     * size of the list
+     *                                   the size of the list and endMakerAllowed is false; or greater than the
+     *                                   size of the list
      */
     protected Node<E> getNode(final int index, final boolean endMarkerAllowed) throws IndexOutOfBoundsException {
         // Check the index is within the bounds
@@ -591,10 +590,11 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Creates an iterator for the sublist.
      *
-     * @param subList  the sublist to get an iterator for
+     * @param subList the sublist to get an iterator for
      * @return a new iterator on the given sublist
      */
     protected Iterator<E> createSubListIterator(final LinkedSubList<E> subList) {
@@ -604,8 +604,8 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     /**
      * Creates a list iterator for the sublist.
      *
-     * @param subList  the sublist to get an iterator for
-     * @param fromIndex  the index to start from, relative to the sublist
+     * @param subList   the sublist to get an iterator for
+     * @param fromIndex the index to start from, relative to the sublist
      * @return a new list iterator on the given sublist
      */
     protected ListIterator<E> createSubListListIterator(final LinkedSubList<E> subList, final int fromIndex) {
@@ -613,14 +613,15 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * Serializes the data held in this object to the stream specified.
      * <p>
      * The first serializable subclass must call this method from
      * <code>writeObject</code>.
      *
-     * @param outputStream  the stream to write the object to
-     * @throws IOException  if anything goes wrong
+     * @param outputStream the stream to write the object to
+     * @throws IOException if anything goes wrong
      */
     protected final void doWriteObject(final ObjectOutputStream outputStream) throws IOException {
         // Write the size so we know how many nodes to read back
@@ -636,9 +637,9 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      * The first serializable subclass must call this method from
      * <code>readObject</code>.
      *
-     * @param inputStream  the stream to read the object from
-     * @throws IOException  if any error occurs while reading from the stream
-     * @throws ClassNotFoundException  if a class read from the stream can not be loaded
+     * @param inputStream the stream to read the object from
+     * @throws IOException            if any error occurs while reading from the stream
+     * @throws ClassNotFoundException if a class read from the stream can not be loaded
      */
     @SuppressWarnings("unchecked")
     protected final void doReadObject(final ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
@@ -650,6 +651,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * A node within the linked list.
      * <p>
@@ -658,11 +660,17 @@ public abstract class AbstractLinkedList<E> implements List<E> {
      */
     protected static class Node<E> {
 
-        /** A pointer to the node before this node */
+        /**
+         * A pointer to the node before this node
+         */
         protected Node<E> previous;
-        /** A pointer to the node after this node */
+        /**
+         * A pointer to the node after this node
+         */
         protected Node<E> next;
-        /** The object contained within this node */
+        /**
+         * The object contained within this node
+         */
         protected E value;
 
         /**
@@ -677,7 +685,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
         /**
          * Constructs a new node.
          *
-         * @param value  the value to store
+         * @param value the value to store
          */
         protected Node(final E value) {
             super();
@@ -687,9 +695,9 @@ public abstract class AbstractLinkedList<E> implements List<E> {
         /**
          * Constructs a new node.
          *
-         * @param previous  the previous node in the list
-         * @param next  the next node in the list
-         * @param value  the value to store
+         * @param previous the previous node in the list
+         * @param next     the next node in the list
+         * @param value    the value to store
          */
         protected Node(final Node<E> previous, final Node<E> next, final E value) {
             super();
@@ -710,7 +718,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
         /**
          * Sets the value of the node.
          *
-         * @param value  the value
+         * @param value the value
          */
         protected void setValue(final E value) {
             this.value = value;
@@ -728,7 +736,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
         /**
          * Sets the previous node.
          *
-         * @param previous  the previous node
+         * @param previous the previous node
          */
         protected void setPreviousNode(final Node<E> previous) {
             this.previous = previous;
@@ -746,7 +754,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
         /**
          * Sets the next node.
          *
-         * @param next  the next node
+         * @param next the next node
          */
         protected void setNextNode(final Node<E> next) {
             this.next = next;
@@ -754,12 +762,15 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * A list iterator over the linked list.
      */
     protected static class LinkedListIterator<E> implements ListIterator<E>, OrderedIterator<E> {
 
-        /** The parent list */
+        /**
+         * The parent list
+         */
         protected final AbstractLinkedList<E> parent;
 
         /**
@@ -794,8 +805,8 @@ public abstract class AbstractLinkedList<E> implements List<E> {
         /**
          * Create a ListIterator for a list.
          *
-         * @param parent  the parent list
-         * @param fromIndex  the index to start at
+         * @param parent    the parent list
+         * @param fromIndex the index to start at
          * @throws IndexOutOfBoundsException if fromIndex is less than 0 or greater than the size of the list
          */
         protected LinkedListIterator(final AbstractLinkedList<E> parent, final int fromIndex)
@@ -812,7 +823,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
          * object expects.
          *
          * @throws ConcurrentModificationException If the list's modification
-         * count isn't the value that was expected.
+         *                                         count isn't the value that was expected.
          */
         protected void checkModCount() {
             if (parent.modCount != expectedModCount) {
@@ -825,7 +836,7 @@ public abstract class AbstractLinkedList<E> implements List<E> {
          *
          * @return the last node returned
          * @throws IllegalStateException If {@link #next()} or {@link #previous()} haven't been called,
-         * or if the node has been removed with {@link #remove()} or a new node added with {@link #add(Object)}.
+         *                               or if the node has been removed with {@link #remove()} or a new node added with {@link #add(Object)}.
          */
         protected Node<E> getLastNodeReturned() throws IllegalStateException {
             if (current == null) {
@@ -915,12 +926,15 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * A list iterator over the linked sub list.
      */
     protected static class LinkedSubListIterator<E> extends LinkedListIterator<E> {
 
-        /** The parent list */
+        /**
+         * The parent list
+         */
         protected final LinkedSubList<E> sub;
 
         protected LinkedSubListIterator(final LinkedSubList<E> sub, final int startIndex) {
@@ -959,17 +973,26 @@ public abstract class AbstractLinkedList<E> implements List<E> {
     }
 
     //-----------------------------------------------------------------------
+
     /**
      * The sublist implementation for AbstractLinkedList.
      */
     protected static class LinkedSubList<E> extends AbstractList<E> {
-        /** The main list */
+        /**
+         * The main list
+         */
         AbstractLinkedList<E> parent;
-        /** Offset from the main list */
+        /**
+         * Offset from the main list
+         */
         int offset;
-        /** Sublist size */
+        /**
+         * Sublist size
+         */
         int size;
-        /** Sublist modCount */
+        /**
+         * Sublist modCount
+         */
         int expectedModCount;
 
         protected LinkedSubList(final AbstractLinkedList<E> parent, final int fromIndex, final int toIndex) {
