@@ -1,8 +1,6 @@
 package com.jn.langx.text.tokenizer;
 
 
-import edu.stanford.nlp.process.Tokenizer;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -17,16 +15,6 @@ import java.util.NoSuchElementException;
  */
 
 public abstract class AbstractTokenizer<T> implements Tokenizer<T> {
-
-
-    /**
-     * For tokenizing carriage returns.
-     * We return this token as a representation of newlines when a tokenizer has the option
-     * {@code tokenizeNLs = true}. It is assumed that no tokenizer allows *NL* as a token.
-     * This is certainly true for PTBTokenizer-derived tokenizers, where the asterisks would
-     * become separate tokens.
-     */
-    public static final String NEWLINE_TOKEN = "*NL*";
 
 
     protected T nextToken;

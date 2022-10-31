@@ -8,13 +8,15 @@ import com.jn.langx.util.collection.buffer.exception.ReadOnlyBufferException;
  */
 public class CharSequenceBuffer extends CharBuffer<CharSequenceBuffer> {
     private CharSequence str;
+
     public CharSequenceBuffer(CharSequence s) {
         this(s, 0, s.length());
     }
+
     public CharSequenceBuffer(CharSequence s, int start, int end) {
         super(-1, start, end, s.length());
         int n = s.length();
-        if ((start < 0) || (start > n) || (end < start) || (end > n))
+        if ((start < 0) ||  (end < start) || (end > n))
             throw new IndexOutOfBoundsException();
         str = s;
     }
@@ -29,7 +31,7 @@ public class CharSequenceBuffer extends CharBuffer<CharSequenceBuffer> {
     }
 
     private CharSequenceBuffer(CharSequence s,
-                             long mark,
+                               long mark,
                                long pos,
                                long limit,
                                long cap,
@@ -45,15 +47,15 @@ public class CharSequenceBuffer extends CharBuffer<CharSequenceBuffer> {
 
 
     public final char get() {
-        return str.charAt((int)(nextGetIndex() + offset));
+        return str.charAt((int) (nextGetIndex() + offset));
     }
 
     public final char get(int index) {
-        return str.charAt((int)(checkIndex(index) + offset));
+        return str.charAt((int) (checkIndex(index) + offset));
     }
 
     char getUnchecked(int index) {
-        return str.charAt((int)(checkIndex(index) + offset));
+        return str.charAt((int) (checkIndex(index) + offset));
     }
 
     // ## Override bulk get methods for better performance
@@ -75,7 +77,7 @@ public class CharSequenceBuffer extends CharBuffer<CharSequenceBuffer> {
     }
 
     public final String toString(long start, long end) {
-        return str.toString().substring((int)(start + offset), (int)(end + offset));
+        return str.toString().substring((int) (start + offset), (int) (end + offset));
     }
 
     public final CharSequenceBuffer subSequence(int start, int end) {
