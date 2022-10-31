@@ -56,9 +56,9 @@ public class Pinyins extends PinyinDicts {
     }
 
     private static List<SegmentToken> analyze(List<PinyinDict> dicts, String text, int tokenMaxWord, boolean surnameFirst) {
-        Lexer analyzer = new Lexer();
         dicts = Objs.isNotEmpty(dicts) ? dicts : PinyinDicts.allDicts();
-        analyzer.setDicts(dicts);
+        PinyinTokenizationConfig config = new PinyinTokenizationConfig();
+        config.setDicts(dicts);
 
         int maxKeyLength = Pipeline.of(dicts)
                 .max(new Comparator<PinyinDict>() {
@@ -77,9 +77,10 @@ public class Pinyins extends PinyinDicts {
         if (surnameFirst) {
             tokenMaxWord = Maths.min(Maths.max(tokenMaxWord, 2), 4);
         }
-        analyzer.setTokenMaxChar(tokenMaxWord);
-        analyzer.setSurnameFirst(surnameFirst);
-        List<SegmentToken> tokens = analyzer.analyze(text);
+        config.setTokenMaxChar(tokenMaxWord);
+        config.setSurnameFirst(surnameFirst);
+        PinyinTokenizer pinyinTokenizer = new PinyinTokenizer(text, config);
+        List<SegmentToken> tokens = pinyinTokenizer.tokenize();
         return tokens;
     }
 
