@@ -1,5 +1,8 @@
 package com.jn.langx.util.concurrent;
 
+/**
+ * @see CommonTask
+ */
 @Deprecated
 public class WrappedRunnable extends WrappedTask implements Runnable {
     private Runnable task;

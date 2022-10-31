@@ -6,6 +6,8 @@ import java.util.concurrent.Callable;
 
 /**
  * @author jinuo.fang
+ *
+ * @see CommonTask
  */
 @Deprecated
 public class WrappedTasks {

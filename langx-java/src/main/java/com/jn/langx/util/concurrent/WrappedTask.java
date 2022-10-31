@@ -2,6 +2,9 @@ package com.jn.langx.util.concurrent;
 
 import com.jn.langx.util.concurrent.interceptor.TaskInterceptorChain;
 
+/**
+ * @see CommonTask
+ */
 @Deprecated
 public abstract class WrappedTask<V> extends TaskInterceptorChain {
 

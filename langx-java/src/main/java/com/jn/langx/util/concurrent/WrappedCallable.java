@@ -2,6 +2,10 @@ package com.jn.langx.util.concurrent;
 
 import java.util.concurrent.Callable;
 
+/**
+ * @see CommonTask
+ * @param <V>
+ */
 @Deprecated
 public class WrappedCallable<V> extends WrappedTask<V> implements Callable<V> {
 
