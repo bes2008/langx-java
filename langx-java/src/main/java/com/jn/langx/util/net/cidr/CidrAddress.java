@@ -37,6 +37,7 @@ import static java.lang.Integer.signum;
  * A Classless Inter-Domain Routing address.  This is the combination of an IP address and a netmask.
  * <p>
  * Migrate from wildfly-common.jar
+ *
  * @since 4.1.0
  */
 public final class CidrAddress implements Serializable, Comparable<CidrAddress> {
