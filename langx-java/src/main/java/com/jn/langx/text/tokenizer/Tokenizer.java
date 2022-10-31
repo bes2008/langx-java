@@ -10,6 +10,8 @@ import java.util.List;
  * interface, but provides a lookahead operation {@code peek()}.  An
  * implementation of this interface is expected to have a constructor that
  * takes a single argument, a Reader.
+ *
+ * @since 5.1.0
  */
 public interface Tokenizer<T> extends Iterator<T> {
 
