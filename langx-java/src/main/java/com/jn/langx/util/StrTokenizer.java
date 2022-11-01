@@ -4,6 +4,7 @@ import com.jn.langx.text.tokenizer.CommonTokenizer;
 import com.jn.langx.text.tokenizer.TokenFactory;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class StrTokenizer extends CommonTokenizer<String> {
 
     public StrTokenizer(String str, boolean returnDelimiter, String... delimiters) {
         super(str, returnDelimiter);
-        this.delimiters = Objs.useValueIfEmpty(Collects.asList(delimiters), DEFAULT_DELIMITERS);
+        this.delimiters = Objs.useValueIfEmpty(Pipeline.of(delimiters).filter(Functions.<String>notEmptyPredicate()).asList(), DEFAULT_DELIMITERS);
         this.tokenFactory = new TokenFactory<String>() {
             @Override
             public String get(String tokenContent, Boolean isDelimiter) {
