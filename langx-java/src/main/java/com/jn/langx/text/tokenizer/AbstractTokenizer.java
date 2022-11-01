@@ -16,7 +16,6 @@ import java.util.NoSuchElementException;
 
 public abstract class AbstractTokenizer<T> implements Tokenizer<T> {
 
-
     protected T nextToken;
 
     /**
