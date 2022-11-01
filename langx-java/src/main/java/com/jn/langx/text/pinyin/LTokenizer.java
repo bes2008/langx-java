@@ -3,7 +3,9 @@ package com.jn.langx.text.pinyin;
 import com.jn.langx.text.tokenizer.CommonTokenizer;
 import com.jn.langx.text.tokenizer.TokenFactory;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.RegexpPatterns;
@@ -28,6 +30,9 @@ public class LTokenizer extends CommonTokenizer<SegmentToken> {
             @Override
             public SegmentToken get(String tokenContent, Boolean isDelimiter) {
                 if (isDelimiter) {
+                    if (Strings.isEmpty(tokenContent)) {
+                        return new EmptyStringToken();
+                    }
                     String firstChar = tokenContent.charAt(0) + "";
                     // 是英文标点符号？
                     boolean isEnglishPunctuationSymbol = Pinyins.isEnglishPunctuationSymbol(firstChar);
@@ -105,7 +110,7 @@ public class LTokenizer extends CommonTokenizer<SegmentToken> {
         // 下面是 非 标点符号的情况
         // 接下来看看 前一个字符，与当前字符
         long lastCharPosition = position - 1;
-        if (lastCharPosition >= 0) {
+        if (lastCharPosition >= Maths.maxLong(getBuffer().markValue(), 0L)) {
             String lastChar = getBuffer().get(lastCharPosition) + "";
             boolean lastCharIsChinese = Regexps.match(RegexpPatterns.CHINESE_CHAR, lastChar);
             boolean lastCharPunctuationSymbol = (lastCharIsChinese && Pinyins.isChinesePunctuationSymbol(lastChar)) || Pinyins.isEnglishPunctuationSymbol(lastChar);

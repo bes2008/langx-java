@@ -5,6 +5,9 @@ import com.jn.langx.util.Preconditions;
 
 public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
     private boolean returnDelimiter;
+    /**
+     * buffer#mark()用于标记一个 content segment的开始
+     */
     private CharSequenceBuffer buffer;
     protected TokenFactory<Token> tokenFactory;
 
@@ -35,35 +38,31 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
             } else {
                 // 找到了分隔符
                 long segmentEnd = delimiterPositions[0];
-                if (segmentEnd == delimiterPositions[1]) {
-                    // delimiter is EMPTY string
-                    String segment = this.buffer.substring(position, segmentEnd);
-                    Token token = tokenFactory.get(segment, false);
-                    return token;
-                } else {
-                    if (segmentEnd == position) {
-                        // 刚一进来这个 getNext()方法，就遇到了分隔符
-                        if (returnDelimiter) {
-                            // 返回分隔符
-                            String delimiter = this.buffer.substring(position, delimiterPositions[1]);
-                            this.buffer.position(delimiterPositions[1]);
-                            Token token = tokenFactory.get(delimiter, true);
-                            Preconditions.checkNotNull(token, "the delimiter token is null");
-                            return token;
-                        } else {
-                            // 不返回分隔符的情况下，要再一次进行查找
-                            this.buffer.position(delimiterPositions[1]);
-                            return getNext();
-                        }
-                    } else if (segmentEnd > position) {
-                        String segment = this.buffer.substring(position, segmentEnd);
-                        this.buffer.position(segmentEnd);
-                        Token token = tokenFactory.get(segment, false);
-                        Preconditions.checkNotNull(token, "the token is null");
+                if (segmentEnd == position) {
+                    // 刚一进来这个 getNext()方法，就遇到了分隔符
+                    if (returnDelimiter) {
+                        // 返回分隔符
+                        String delimiter = this.buffer.substring(position, delimiterPositions[1]);
+                        this.buffer.position(delimiterPositions[1]);
+                        this.buffer.mark();
+                        Token token = tokenFactory.get(delimiter, true);
+                        Preconditions.checkNotNull(token, "the delimiter token is null");
                         return token;
                     } else {
-                        throw new TokenizationException("error");
+                        // 不返回分隔符的情况下，要再一次进行查找
+                        this.buffer.position(delimiterPositions[1]);
+                        this.buffer.mark();
+                        return getNext();
                     }
+                } else if (segmentEnd > position) {
+                    String segment = this.buffer.substring(position, segmentEnd);
+                    this.buffer.position(segmentEnd);
+                    this.buffer.mark();
+                    Token token = tokenFactory.get(segment, false);
+                    Preconditions.checkNotNull(token, "the token is null");
+                    return token;
+                } else {
+                    throw new TokenizationException("error");
                 }
             }
         } else {

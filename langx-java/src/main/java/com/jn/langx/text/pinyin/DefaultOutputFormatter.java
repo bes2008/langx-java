@@ -24,9 +24,13 @@ class DefaultOutputFormatter extends OutputFormatter {
         List<String> segments = Pipeline.of(segmentTokens).map(new Function<SegmentToken, String>() {
             @Override
             public String apply(SegmentToken segmentToken) {
+                if(segmentToken instanceof EmptyStringToken){
+                    return null;
+                }
                 String segment = null;
                 // 标点符号
                 if (segmentToken.isPunctuationSymbol()) {
+
                     if (outputStyle.isRetainPunctuationSymbol()) {
                         segment = segmentToken.toString();
                     }
