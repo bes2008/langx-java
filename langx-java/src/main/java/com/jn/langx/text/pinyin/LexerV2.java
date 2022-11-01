@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
+/**
+ * @since 5.1.0
+ */
 class LexerV2 extends CommonTokenizer<SegmentToken> {
     private static Logger logger = Loggers.getLogger(LexerV2.class);
     private LexerConfig config;

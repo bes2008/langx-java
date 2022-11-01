@@ -28,9 +28,9 @@ class LexerV1 implements Tokenizer<SegmentToken> {
     private static PinyinDict chineseSurnameDict = PinyinDicts.getDict(PinyinDicts.DN_SURNAME);
     private static PinyinDict chinesePunctuationSymbolDict = PinyinDicts.getDict(PinyinDicts.DN_PUNCTUATION_SYMBOL);
 
-    LexerV1(String text, LexerConfig config ){
+    LexerV1(String text, LexerConfig config) {
         this.text = text;
-        this.config= config;
+        this.config = config;
     }
 
 
