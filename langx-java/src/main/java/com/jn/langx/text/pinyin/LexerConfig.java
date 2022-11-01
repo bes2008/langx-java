@@ -4,7 +4,7 @@ import com.jn.langx.util.collection.Collects;
 
 import java.util.List;
 
-public class PinyinTokenizationConfig {
+class LexerConfig {
     /**
      * 一个token 的最大字符数
      */

@@ -14,16 +14,16 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-public class LTokenizer extends CommonTokenizer<SegmentToken> {
-    private static Logger logger = Loggers.getLogger(LTokenizer.class);
-    private PinyinTokenizationConfig config;
+class LexerV2 extends CommonTokenizer<SegmentToken> {
+    private static Logger logger = Loggers.getLogger(LexerV2.class);
+    private LexerConfig config;
     /**
      * 中文姓氏字典
      */
     private static PinyinDict chineseSurnameDict = PinyinDicts.getDict(PinyinDicts.DN_SURNAME);
     private static PinyinDict chinesePunctuationSymbolDict = PinyinDicts.getDict(PinyinDicts.DN_PUNCTUATION_SYMBOL);
 
-    LTokenizer(String text, PinyinTokenizationConfig config) {
+    LexerV2(String text, LexerConfig config) {
         super(text, true);
         this.config = config;
         this.tokenFactory = new TokenFactory<SegmentToken>() {
@@ -62,14 +62,14 @@ public class LTokenizer extends CommonTokenizer<SegmentToken> {
                         PinyinDictItem surname = null;
                         ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
                         while (start < end) {
-                            if (start + LTokenizer.this.config.getTokenMaxChar() < end) {
+                            if (start + LexerV2.this.config.getTokenMaxChar() < end) {
                                 // 避免总是进行无意义的查找
-                                end = start + LTokenizer.this.config.getTokenMaxChar();
+                                end = start + LexerV2.this.config.getTokenMaxChar();
                             }
                             String chineseWords = tokenContent.substring(start, end);
                             PinyinDictItem item = find(surname, chineseWords);
                             if (item != null) {
-                                if (LTokenizer.this.config.isSurnameFirst() && surname == null) {
+                                if (LexerV2.this.config.isSurnameFirst() && surname == null) {
                                     surname = item;
                                 }
                                 chineseSequenceToken.addToken(item);

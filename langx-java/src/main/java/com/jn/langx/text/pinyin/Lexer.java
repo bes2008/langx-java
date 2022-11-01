@@ -19,14 +19,14 @@ import java.util.List;
  */
 class Lexer {
     private static final Logger logger = Loggers.getLogger(Lexer.class);
-    private PinyinTokenizationConfig config;
+    private LexerConfig config;
     /**
      * 中文姓氏字典
      */
     private static PinyinDict chineseSurnameDict = PinyinDicts.getDict(PinyinDicts.DN_SURNAME);
     private static PinyinDict chinesePunctuationSymbolDict = PinyinDicts.getDict(PinyinDicts.DN_PUNCTUATION_SYMBOL);
 
-    public void setConfig(PinyinTokenizationConfig config) {
+    public void setConfig(LexerConfig config) {
         this.config = config;
     }
 
@@ -36,7 +36,7 @@ class Lexer {
      * @param text
      * @return
      */
-    public List<SegmentToken> analyze(String text) {
+    public List<SegmentToken> tokenize(String text) {
         if (Strings.isEmpty(text)) {
             return Collects.emptyArrayList();
         }
