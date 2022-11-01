@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class StrTokenizer extends CommonTokenizer<String> {
     private static List<String> DEFAULT_DELIMITERS = Collects.newArrayList(" ", "\n", "\t", "\r");
-    private List<String> delimiters;
+    private List<String> delimiters = DEFAULT_DELIMITERS;
 
     public StrTokenizer(String str) {
         this(str, null);
@@ -26,13 +26,17 @@ public class StrTokenizer extends CommonTokenizer<String> {
 
     public StrTokenizer(String str, boolean returnDelimiter, String... delimiters) {
         super(str, returnDelimiter);
-        this.delimiters = Objs.useValueIfEmpty(Pipeline.of(delimiters).filter(Functions.<String>notEmptyPredicate()).asList(), DEFAULT_DELIMITERS);
+        setDelimiters(Collects.asList(delimiters));
         this.tokenFactory = new TokenFactory<String>() {
             @Override
             public String get(String tokenContent, Boolean isDelimiter) {
                 return tokenContent;
             }
         };
+    }
+
+    public void setDelimiters(List<String> delimiters) {
+        this.delimiters = Objs.useValueIfEmpty(Pipeline.of(delimiters).filter(Functions.<String>notEmptyPredicate()).asList(), this.delimiters);
     }
 
     @Override
