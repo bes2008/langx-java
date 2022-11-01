@@ -101,11 +101,9 @@ class Lexer {
 
                                 if (end <= start) {
                                     // 汉字在字典里没找到，如果 dict/hanzi.dict 字典库足够全，可能这个代码片段就进不来了
-                                    StringToken token = new StringToken();
                                     String w = csb.get(start) + "";
                                     logger.warn("Can't find the pinyin for {}", w);
-                                    token.setBody(w);
-                                    segments.add(token);
+                                    chineseSequenceToken.addToken(w);
                                     start++;
                                     end = segmentEnd;
                                 }

@@ -42,16 +42,21 @@ class DefaultOutputFormatter extends OutputFormatter {
                     return segment;
                 }
                 ChineseSequenceToken chineseSequenceToken = (ChineseSequenceToken) segmentToken;
-                List<PinyinDictItemToken> chineseTokens = chineseSequenceToken.getBody();
+                List<Token> chineseTokens = chineseSequenceToken.getBody();
                 List<String> chineseTokenPinyins = Pipeline.of(chineseTokens)
-                        .map(new Function<PinyinDictItemToken, String>() {
+                        .map(new Function<Token, String>() {
                             @Override
-                            public String apply(PinyinDictItemToken pinyinToken) {
-                                PinyinDictItem item = pinyinToken.getBody();
-                                if (outputStyle.isWithTone()) {
-                                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithTone(), " "));
+                            public String apply(Token pinyinToken) {
+                                if (pinyinToken instanceof StringToken) {
+                                    // 汉字词典里找不到的情况
+                                    return ((StringToken) pinyinToken).getBody();
                                 } else {
-                                    return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithoutTone(), " "));
+                                    PinyinDictItem item = ((PinyinDictItemToken) pinyinToken).getBody();
+                                    if (outputStyle.isWithTone()) {
+                                        return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithTone(), " "));
+                                    } else {
+                                        return Strings.join(chineseCharSeparator, Strings.split(item.getPinyinWithoutTone(), " "));
+                                    }
                                 }
                             }
                         }).asList();

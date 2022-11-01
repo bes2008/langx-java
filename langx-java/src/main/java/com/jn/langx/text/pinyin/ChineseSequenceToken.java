@@ -7,15 +7,23 @@ import java.util.List;
 /**
  * @since 5.1.0
  */
-class ChineseSequenceToken extends SegmentToken<List<PinyinDictItemToken>> {
-    ChineseSequenceToken(){
-        setBody( Collects.<PinyinDictItemToken>emptyArrayList());
+class ChineseSequenceToken extends SegmentToken<List<Token>> {
+    ChineseSequenceToken() {
+        setBody(Collects.<Token>emptyArrayList());
     }
-    void addToken(PinyinDictItemToken token){
+
+    void addToken(Token token) {
         this.getBody().add(token);
     }
-    void addToken(PinyinDictItem item){
+
+    void addToken(PinyinDictItem item) {
         PinyinDictItemToken token = new PinyinDictItemToken();
+        token.setBody(item);
+        addToken(token);
+    }
+
+    void addToken(String item){
+        StringToken token = new StringToken();
         token.setBody(item);
         addToken(token);
     }
