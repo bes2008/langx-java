@@ -3,9 +3,10 @@ package com.jn.langx.text.tokenizer;
 import com.jn.langx.io.buffer.CharSequenceBuffer;
 import com.jn.langx.util.Preconditions;
 
-public abstract class CommonTokenizer extends AbstractTokenizer<String> {
+public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
     private boolean returnDelimiter;
     private CharSequenceBuffer buffer;
+    protected TokenFactory<Token> tokenFactory;
 
     protected CommonTokenizer(String text, boolean returnDelimiter) {
         Preconditions.checkNotNull(text);
@@ -18,8 +19,8 @@ public abstract class CommonTokenizer extends AbstractTokenizer<String> {
     }
 
     @Override
-    protected final String getNext() {
-
+    protected final Token getNext() {
+        Preconditions.checkNotNull(tokenFactory,"the token factory is null");
         boolean hasRemaining = this.buffer.hasRemaining();
         if (hasRemaining) {
             long position = this.buffer.position();
@@ -28,7 +29,9 @@ public abstract class CommonTokenizer extends AbstractTokenizer<String> {
                 // 直到结束还没找到分隔符
                 long segmentEnd = this.buffer.limit();
                 String segment = this.buffer.substring(position, segmentEnd);
-                return segment;
+                Token token = tokenFactory.get(segment, false);
+                Preconditions.checkNotNull(token, "the token is null");
+                return token;
             } else {
                 // 找到了分隔符
                 long segmentEnd = delimiterPositions[0];
@@ -38,7 +41,9 @@ public abstract class CommonTokenizer extends AbstractTokenizer<String> {
                         // 返回分隔符
                         String delimiter = this.buffer.substring(position, delimiterPositions[1]);
                         this.buffer.position(delimiterPositions[1]);
-                        return delimiter;
+                        Token token = tokenFactory.get(delimiter, true);
+                        Preconditions.checkNotNull(token, "the delimiter token is null");
+                        return token;
                     } else {
                         // 不返回分隔符的情况下，要再一次进行查找
                         this.buffer.position(delimiterPositions[1]);
@@ -47,7 +52,9 @@ public abstract class CommonTokenizer extends AbstractTokenizer<String> {
                 } else if (segmentEnd > position) {
                     String segment = this.buffer.substring(position, segmentEnd);
                     this.buffer.position(segmentEnd);
-                    return segment;
+                    Token token = tokenFactory.get(segment, false);
+                    Preconditions.checkNotNull(token, "the token is null");
+                    return token;
                 } else {
                     throw new TokenizationException("error");
                 }

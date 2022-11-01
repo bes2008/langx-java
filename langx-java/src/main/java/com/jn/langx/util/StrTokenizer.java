@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.text.tokenizer.CommonTokenizer;
+import com.jn.langx.text.tokenizer.TokenFactory;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * @since 5.1.0
  */
-public class StrTokenizer extends CommonTokenizer {
+public class StrTokenizer extends CommonTokenizer<String> {
     private static List<String> DEFAULT_DELIMITERS = Collects.newArrayList(" ", "\n", "\t", "\r");
     private List<String> delimiters;
 
@@ -25,6 +26,12 @@ public class StrTokenizer extends CommonTokenizer {
     public StrTokenizer(String str, boolean returnDelimiter, String... delimiters) {
         super(str, returnDelimiter);
         this.delimiters = Objs.useValueIfEmpty(Collects.asList(delimiters), DEFAULT_DELIMITERS);
+        this.tokenFactory = new TokenFactory<String>() {
+            @Override
+            public String get(String tokenContent, Boolean isDelimiter) {
+                return tokenContent;
+            }
+        };
     }
 
     @Override
