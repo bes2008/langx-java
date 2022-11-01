@@ -42,4 +42,13 @@ public class PinyinAnalyzeTests {
         System.out.println(Pinyins.getPersonName(name, style));
     }
 
+    @Test
+    public void multiplePunctuationTests() {
+        String str = "还乡；还有；虚与委蛇；蛇鼠一窝；的确；的情";
+        final OutputStyle style = new OutputStyle();
+        style.setSegmentSeparator("\n");
+        style.setRetainPunctuationSymbol(false);
+        System.out.println(Pinyins.getPersonName(str, style));
+    }
+
 }

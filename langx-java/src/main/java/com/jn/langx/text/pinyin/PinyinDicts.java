@@ -18,10 +18,10 @@ class PinyinDicts {
     private static final GenericRegistry<PinyinDict> dictRegistry = new GenericRegistry<PinyinDict>(new LinkedHashMap<String, PinyinDict>());
 
     public static final String DN_HAN_ZI = "hanzi";
-    public static final String DN_MULTI_YIN_PHRASE = "multiple_yin_phrase";
-    public static final String DN_IDIOM="idiom";
-    public static final String DN_SURNAME="chinese_surname";
-    public static final String DN_PUNCTUATION_SYMBOL="chinese_punctuation_symbol";
+    public static final String DN_MULTIPLE_PUNCTUATION_PHRASE = "multiple_punctuation_phrase";
+    public static final String DN_IDIOM = "idiom";
+    public static final String DN_SURNAME = "chinese_surname";
+    public static final String DN_PUNCTUATION_SYMBOL = "chinese_punctuation_symbol";
 
     public static void registerDict(PinyinDict dict) {
         if (dict != null) {
@@ -78,7 +78,7 @@ class PinyinDicts {
 
 
         // 易错词语 (主要是 一些容易出错的人名，地名，常用词语等)
-        addBuiltinDict(DN_MULTI_YIN_PHRASE);
+        addBuiltinDict(DN_MULTIPLE_PUNCTUATION_PHRASE);
 
         // 单字大全
         addBuiltinDict(DN_HAN_ZI);
