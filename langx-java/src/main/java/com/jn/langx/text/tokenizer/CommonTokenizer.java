@@ -20,7 +20,7 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
 
     @Override
     protected final Token getNext() {
-        Preconditions.checkNotNull(tokenFactory,"the token factory is null");
+        Preconditions.checkNotNull(tokenFactory, "the token factory is null");
         boolean hasRemaining = this.buffer.hasRemaining();
         if (hasRemaining) {
             long position = this.buffer.position();
@@ -35,28 +35,35 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
             } else {
                 // 找到了分隔符
                 long segmentEnd = delimiterPositions[0];
-                if (segmentEnd == position) {
-                    // 刚一进来这个 getNext()方法，就遇到了分隔符
-                    if (returnDelimiter) {
-                        // 返回分隔符
-                        String delimiter = this.buffer.substring(position, delimiterPositions[1]);
-                        this.buffer.position(delimiterPositions[1]);
-                        Token token = tokenFactory.get(delimiter, true);
-                        Preconditions.checkNotNull(token, "the delimiter token is null");
-                        return token;
-                    } else {
-                        // 不返回分隔符的情况下，要再一次进行查找
-                        this.buffer.position(delimiterPositions[1]);
-                        return getNext();
-                    }
-                } else if (segmentEnd > position) {
+                if (segmentEnd == delimiterPositions[1]) {
+                    // delimiter is EMPTY string
                     String segment = this.buffer.substring(position, segmentEnd);
-                    this.buffer.position(segmentEnd);
                     Token token = tokenFactory.get(segment, false);
-                    Preconditions.checkNotNull(token, "the token is null");
                     return token;
                 } else {
-                    throw new TokenizationException("error");
+                    if (segmentEnd == position) {
+                        // 刚一进来这个 getNext()方法，就遇到了分隔符
+                        if (returnDelimiter) {
+                            // 返回分隔符
+                            String delimiter = this.buffer.substring(position, delimiterPositions[1]);
+                            this.buffer.position(delimiterPositions[1]);
+                            Token token = tokenFactory.get(delimiter, true);
+                            Preconditions.checkNotNull(token, "the delimiter token is null");
+                            return token;
+                        } else {
+                            // 不返回分隔符的情况下，要再一次进行查找
+                            this.buffer.position(delimiterPositions[1]);
+                            return getNext();
+                        }
+                    } else if (segmentEnd > position) {
+                        String segment = this.buffer.substring(position, segmentEnd);
+                        this.buffer.position(segmentEnd);
+                        Token token = tokenFactory.get(segment, false);
+                        Preconditions.checkNotNull(token, "the token is null");
+                        return token;
+                    } else {
+                        throw new TokenizationException("error");
+                    }
                 }
             }
         } else {

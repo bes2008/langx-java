@@ -79,7 +79,8 @@ public class Pinyins extends PinyinDicts {
         }
         config.setTokenMaxChar(tokenMaxWord);
         config.setSurnameFirst(surnameFirst);
-        PinyinTokenizer pinyinTokenizer = new PinyinTokenizer(text, config);
+       // PinyinTokenizer pinyinTokenizer = new PinyinTokenizer(text, config);
+        LTokenizer pinyinTokenizer = new LTokenizer(text,config);
         List<SegmentToken> tokens = pinyinTokenizer.tokenize();
         return tokens;
     }

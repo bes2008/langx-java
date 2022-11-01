@@ -23,7 +23,9 @@ public class PinyinAnalyzeTests {
         Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override
             public void accept(String s) {
+                System.out.println(s);
                 System.out.println(Pinyins.getPinyin(s, style));
+                System.out.println("------------------------");
             }
         });
     }
