@@ -1,6 +1,7 @@
 package com.jn.langx.text.pinyin;
 
 import com.jn.langx.io.buffer.CharSequenceBuffer;
+import com.jn.langx.text.tokenizer.Tokenizer;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -17,26 +18,29 @@ import java.util.List;
  *
  * @since 5.1.0
  */
-class Lexer {
-    private static final Logger logger = Loggers.getLogger(Lexer.class);
+class LexerV1 implements Tokenizer<SegmentToken> {
+    private static final Logger logger = Loggers.getLogger(LexerV1.class);
     private LexerConfig config;
+    private String text;
     /**
      * 中文姓氏字典
      */
     private static PinyinDict chineseSurnameDict = PinyinDicts.getDict(PinyinDicts.DN_SURNAME);
     private static PinyinDict chinesePunctuationSymbolDict = PinyinDicts.getDict(PinyinDicts.DN_PUNCTUATION_SYMBOL);
 
-    public void setConfig(LexerConfig config) {
-        this.config = config;
+    LexerV1(String text, LexerConfig config ){
+        this.text = text;
+        this.config= config;
     }
+
 
     /**
      * 对文本分析
      *
-     * @param text
      * @return
      */
-    public List<SegmentToken> tokenize(String text) {
+    @Override
+    public List<SegmentToken> tokenize() {
         if (Strings.isEmpty(text)) {
             return Collects.emptyArrayList();
         }

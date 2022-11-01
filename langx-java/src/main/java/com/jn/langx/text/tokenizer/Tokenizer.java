@@ -1,7 +1,6 @@
 package com.jn.langx.text.tokenizer;
 
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,17 +12,7 @@ import java.util.List;
  *
  * @since 5.1.0
  */
-public interface Tokenizer<T> extends Iterator<T> {
-
-    /**
-     * Returns the next token, without removing it, from the Tokenizer, so
-     * that the same token will be again returned on the next call to
-     * next() or peek().
-     *
-     * @return the next token in the token stream.
-     * @throws java.util.NoSuchElementException If the token stream has no more tokens.
-     */
-    T peek();
+public interface Tokenizer<T> {
 
     /**
      * Returns all tokens of this Tokenizer as a List for convenience.

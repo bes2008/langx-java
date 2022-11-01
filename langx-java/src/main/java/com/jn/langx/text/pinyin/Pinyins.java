@@ -1,5 +1,6 @@
 package com.jn.langx.text.pinyin;
 
+import com.jn.langx.text.tokenizer.Tokenizer;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
@@ -79,9 +80,8 @@ public class Pinyins extends PinyinDicts {
         }
         config.setTokenMaxChar(tokenMaxWord);
         config.setSurnameFirst(surnameFirst);
-        // PinyinTokenizer pinyinTokenizer = new PinyinTokenizer(text, config);
-        LexerV2 pinyinTokenizer = new LexerV2(text, config);
-        List<SegmentToken> tokens = pinyinTokenizer.tokenize();
+        Tokenizer<SegmentToken> lexer = new LexerV2(text, config);
+        List<SegmentToken> tokens = lexer.tokenize();
         return tokens;
     }
 

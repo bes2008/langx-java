@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
  * tokens are available.
  */
 
-public abstract class AbstractTokenizer<T> implements Tokenizer<T> {
+public abstract class AbstractTokenizer<T> implements IterableTokenizer<T> {
 
     protected T nextToken;
 
