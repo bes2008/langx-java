@@ -390,13 +390,7 @@ public class Strings {
             return new String[0];
         }
         Pipeline<String> pipeline = null;
-        if (Emptys.isEmpty(separator)) {
-            // pipeline = Pipeline.of(string.split(""));
-            // 两者等价，但都会把空白去掉，保留高效率的做法
-            StrTokenizer tokenizer = new StrTokenizer(string, separator);
-            List<String> list = tokenizer.tokenize();
-            pipeline = Pipeline.of(list);
-        } else if (separatorIsRegexp) {
+        if (separatorIsRegexp) {
             pipeline = Pipeline.of(string.split(separator));
         } else {
             // 使用 JDK 的 StringTokenizer分割后会有Bug
