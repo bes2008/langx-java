@@ -1730,26 +1730,19 @@ public class Strings {
         if (isEmpty(text) || isEmpty(searchString) || replacement == null || max == 0) {
             return text;
         }
-        int start = 0;
-        int end = text.indexOf(searchString, start);
-        if (end == INDEX_NOT_FOUND) {
-            return text;
-        }
-        final int replLength = searchString.length();
-        int increase = replacement.length() - replLength;
-        increase = increase < 0 ? 0 : increase;
-        increase *= max < 0 ? 16 : max > 64 ? 64 : max;
-        final StringBuilder buf = new StringBuilder(text.length() + increase);
-        while (end != INDEX_NOT_FOUND) {
-            buf.append(text.substring(start, end)).append(replacement);
-            start = end + replLength;
-            if (--max == 0) {
-                break;
+
+        StrTokenizer tokenizer = new StrTokenizer(text, true, max, searchString);
+        List<String> tokens = tokenizer.tokenize();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < tokens.size(); i++) {
+            String token = tokens.get(i);
+            if (Objs.equals(searchString, token)) {
+                builder.append(replacement);
+            } else {
+                builder.append(token);
             }
-            end = text.indexOf(searchString, start);
         }
-        buf.append(text.substring(start));
-        return buf.toString();
+        return builder.toString();
     }
 
     /**

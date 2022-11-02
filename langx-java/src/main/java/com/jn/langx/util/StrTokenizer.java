@@ -14,6 +14,16 @@ import java.util.List;
 public class StrTokenizer extends CommonTokenizer<String> {
     private static List<String> DEFAULT_DELIMITERS = Strings.WHITESPACE_CHAR;
     private List<String> delimiters = DEFAULT_DELIMITERS;
+    /**
+     * 找到的分隔符最大个数，小于0 代表不限制
+     * 找到max个分割符之后，不再进行分割。
+     */
+    private int max;
+
+    /**
+     * 已找到的分隔符的个数
+     */
+    private int foundDelimiterCount = 0;
 
     public StrTokenizer(String str) {
         this(str, null);
@@ -24,8 +34,13 @@ public class StrTokenizer extends CommonTokenizer<String> {
     }
 
     public StrTokenizer(String str, boolean returnDelimiter, String... delimiters) {
+        this(str, returnDelimiter, -1, delimiters);
+    }
+
+    public StrTokenizer(String str, boolean returnDelimiter, int max, String... delimiters) {
         super(str, returnDelimiter);
         setDelimiters(Collects.asList(delimiters));
+        this.max = max < 0 ? Integer.MAX_VALUE : max;
         this.tokenFactory = new TokenFactory<String>() {
             @Override
             public String get(String tokenContent, Boolean isDelimiter) {
@@ -40,14 +55,26 @@ public class StrTokenizer extends CommonTokenizer<String> {
 
     @Override
     protected String getIfDelimiterStart(final long position, char c) {
+        if (foundDelimiterCount < max) {
+            String delimiter = getIfDelimiterStartInternal(position, c);
+            if (delimiter != null) {
+                foundDelimiterCount++;
+            }
+            return delimiter;
+        } else {
+            return null;
+        }
+    }
+
+    private String getIfDelimiterStartInternal(final long position, char c) {
         final String s = c + "";
-        if(this.delimiters.contains("")){
-            if(this.getBuffer().markValue()<position) {
+        if (this.delimiters.contains("")) {
+            if (this.getBuffer().markValue() < position) {
                 return "";
-            }else{
+            } else {
                 return null;
             }
-        }else {
+        } else {
             String delimiter = Pipeline.of(this.delimiters)
                     .findFirst(new Predicate<String>() {
                         @Override
