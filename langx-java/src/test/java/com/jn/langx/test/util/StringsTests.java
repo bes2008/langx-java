@@ -39,7 +39,7 @@ public class StringsTests {
 
     @Test
     public void splitTest() {
-        String string = "a, b, 23, af, (, {, }, 323";
+        String string = "a, b,X 23, af, (, {, }, 323";
 
         String[] segments = Strings.split(string, "");
         Assert.assertTrue(segments.length > 8);
