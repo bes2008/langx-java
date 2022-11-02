@@ -13,7 +13,7 @@ import java.util.List;
  * @since 5.1.0
  */
 public class StrTokenizer extends CommonTokenizer<String> {
-    private static List<String> DEFAULT_DELIMITERS = Collects.newArrayList(" ", "\n", "\t", "\r");
+    private static List<String> DEFAULT_DELIMITERS = Strings.WHITESPACE_CHAR;
     private List<String> delimiters = DEFAULT_DELIMITERS;
 
     public StrTokenizer(String str) {

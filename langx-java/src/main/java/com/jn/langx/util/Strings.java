@@ -36,8 +36,8 @@ public class Strings {
 
     private static final int PAD_LIMIT = 8192;
 
-
-    public static final String WHITESPACE = " \n\r\f\t";
+    public static final List<String> WHITESPACE_CHAR = Collects.immutableArrayList(" ", "\n", "\t", "\r", "\f");
+    public static final String WHITESPACE = join("", WHITESPACE_CHAR);
     /**
      * 空格
      */
@@ -537,18 +537,8 @@ public class Strings {
         if (Strings.isEmpty(str)) {
             return str;
         }
-        int sz = str.length();
-        char[] chs = new char[sz];
-        int count = 0;
-        for (int i = 0; i < sz; i++) {
-            if (!Character.isWhitespace(str.charAt(i))) {
-                chs[count++] = str.charAt(i);
-            }
-        }
-        if (count == sz) {
-            return str;
-        }
-        return new String(chs, 0, count);
+        List<String> tokens = new StrTokenizer(str).tokenize();
+        return join("", tokens);
     }
 
     /**
