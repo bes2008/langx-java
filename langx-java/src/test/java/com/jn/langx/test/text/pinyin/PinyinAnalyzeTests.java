@@ -22,7 +22,7 @@ public class PinyinAnalyzeTests {
                 "把你们用的开发公共环境机器列表发我一下我申请明天不关机用"
         );
         final OutputStyle style = new OutputStyle();
-        style.setSegmentSeparator(" | ");
+        style.setSegmentSeparator("|");
         Pipeline.of(strs).forEach(new Consumer<String>() {
             @Override
             public void accept(String s) {
