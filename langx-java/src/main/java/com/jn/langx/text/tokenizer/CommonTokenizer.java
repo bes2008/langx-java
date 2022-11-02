@@ -12,9 +12,8 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
     protected TokenFactory<Token> tokenFactory;
 
     protected CommonTokenizer(String text, boolean returnDelimiter) {
-        Preconditions.checkNotNull(text);
+        Preconditions.checkNotEmpty(text);
         this.buffer = new CharSequenceBuffer(text);
-        this.buffer.mark();
         this.returnDelimiter = returnDelimiter;
     }
 
