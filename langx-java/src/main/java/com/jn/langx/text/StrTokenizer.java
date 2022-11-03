@@ -15,8 +15,7 @@ import java.util.List;
  * @since 5.1.0
  */
 public class StrTokenizer extends CommonTokenizer<String> {
-    private static List<String> DEFAULT_DELIMITERS = Strings.WHITESPACE_CHAR;
-    private List<String> delimiters = DEFAULT_DELIMITERS;
+    private List<String> delimiters = Strings.WHITESPACE_CHAR;
     /**
      * 找到的分隔符最大个数，小于0 代表不限制
      * 找到max个分割符之后，不再进行分割。
