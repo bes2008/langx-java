@@ -100,7 +100,7 @@ public class NumericEntityEscaper extends CodePointTranslator {
      * {@inheritDoc}
      */
     @Override
-    public boolean translate(final int codepoint, final Writer out) throws IOException {
+    protected boolean translate(final int codepoint, final Writer out) throws IOException {
         if (this.between != this.range.contains(codepoint)) {
             return false;
         }

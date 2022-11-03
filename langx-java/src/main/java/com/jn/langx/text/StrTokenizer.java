@@ -20,7 +20,7 @@ public class StrTokenizer extends CommonTokenizer<String> {
      * 找到的分隔符最大个数，小于0 代表不限制
      * 找到max个分割符之后，不再进行分割。
      */
-    private int max;
+    private final int max;
 
     /**
      * 已找到的分隔符的个数
