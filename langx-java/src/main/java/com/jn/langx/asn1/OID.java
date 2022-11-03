@@ -3,7 +3,7 @@ package com.jn.langx.asn1;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.StrTokenizer;
+import com.jn.langx.text.StrTokenizer;
 
 import java.io.Serializable;
 import java.text.ParseException;

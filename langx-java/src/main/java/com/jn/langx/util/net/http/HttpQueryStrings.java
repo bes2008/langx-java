@@ -3,7 +3,7 @@ package com.jn.langx.util.net.http;
 import com.jn.langx.codec.CodecException;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.StringJoiner;
+import com.jn.langx.text.StringJoiner;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;

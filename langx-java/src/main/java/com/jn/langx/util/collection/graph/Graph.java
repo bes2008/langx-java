@@ -1,7 +1,7 @@
 package com.jn.langx.util.collection.graph;
 
 
-import com.jn.langx.util.StringJoiner;
+import com.jn.langx.text.StringJoiner;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;

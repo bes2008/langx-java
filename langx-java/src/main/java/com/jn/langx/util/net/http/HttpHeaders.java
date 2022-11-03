@@ -6,7 +6,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.util.function.Function2;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.net.mime.MediaType;
-import com.jn.langx.util.StringJoiner;
+import com.jn.langx.text.StringJoiner;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;

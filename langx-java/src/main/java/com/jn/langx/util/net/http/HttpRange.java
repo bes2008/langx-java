@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.io.resource.InputStreamResource;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceRegion;
+import com.jn.langx.text.StringJoiner;
 import com.jn.langx.util.*;
 import com.jn.langx.util.hash.HashCodeBuilder;
 

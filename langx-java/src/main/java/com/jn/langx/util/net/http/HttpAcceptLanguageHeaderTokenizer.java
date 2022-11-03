@@ -2,7 +2,7 @@ package com.jn.langx.util.net.http;
 
 import com.jn.langx.util.Numbers;
 import com.jn.langx.util.Objs;
-import com.jn.langx.util.StrTokenizer;
+import com.jn.langx.text.StrTokenizer;
 
 import java.util.*;
 
