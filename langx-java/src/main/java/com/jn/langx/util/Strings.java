@@ -3,6 +3,8 @@ package com.jn.langx.util;
 import com.jn.langx.Transformer;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StrTokenizer;
+import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.Words;
 import com.jn.langx.text.placeholder.PlaceholderParser;
@@ -185,7 +187,7 @@ public class Strings {
                 .map(mapper)
                 .asList();
 
-        final StringJoiner joiner = new StringJoiner(separator, useValueIfNull(prefix, ""), useValueIfNull(suffix, ""))
+        final com.jn.langx.text.StringJoiner joiner = new StringJoiner(separator, useValueIfNull(prefix, ""), useValueIfNull(suffix, ""))
                 .append(strings, predicate);
         return joiner.toString();
     }

@@ -1,6 +1,8 @@
-package com.jn.langx.util;
+package com.jn.langx.text;
 
 
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate2;

@@ -1,7 +1,10 @@
-package com.jn.langx.util;
+package com.jn.langx.text;
 
 import com.jn.langx.text.tokenizer.CommonTokenizer;
 import com.jn.langx.text.tokenizer.TokenFactory;
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
