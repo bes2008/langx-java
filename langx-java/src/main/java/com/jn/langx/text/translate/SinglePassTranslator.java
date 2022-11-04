@@ -10,7 +10,7 @@ import java.io.Writer;
  *
  * @since 4.8.0
  */
-abstract class SinglePassTranslator extends CharSequenceTranslator {
+public abstract class SinglePassTranslator extends CharSequenceTranslator {
 
     @Override
     public int translate(final CharSequence input, final int index, final Writer out) throws IOException {

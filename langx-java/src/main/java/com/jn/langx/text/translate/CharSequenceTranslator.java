@@ -16,7 +16,7 @@ import java.util.Locale;
  *
  * @since 4.8.0
  */
-abstract class CharSequenceTranslator implements Transformer<CharSequence, String> {
+public abstract class CharSequenceTranslator implements Transformer<CharSequence, String> {
 
     /**
      * Array containing the hexadecimal alphabet.
