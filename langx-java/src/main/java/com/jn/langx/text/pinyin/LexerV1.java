@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @since 5.1.0
  */
-class LexerV1 implements Tokenizer<SegmentToken> {
+class LexerV1 implements Tokenizer<RegionToken> {
     private static final Logger logger = Loggers.getLogger(LexerV1.class);
     private LexerConfig config;
     private String text;
@@ -40,16 +40,16 @@ class LexerV1 implements Tokenizer<SegmentToken> {
      * @return
      */
     @Override
-    public List<SegmentToken> tokenize() {
+    public List<RegionToken> tokenize() {
         if (Strings.isEmpty(text)) {
             return Collects.emptyArrayList();
         }
-        List<SegmentToken> segments = Collects.emptyArrayList();
+        List<RegionToken> segments = Collects.emptyArrayList();
 
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
 
-        long segmentStart = -1;
-        boolean isChineseSegment = false;
+        long regionStart = -1;
+        boolean isChineseRegion = false;
         while (csb.hasRemaining()) {
             String c = csb.get() + "";
             // 是中文 ？
@@ -59,30 +59,30 @@ class LexerV1 implements Tokenizer<SegmentToken> {
             boolean isEnglishPunctuationSymbol = Pinyins.isEnglishPunctuationSymbol(c);
             boolean isStopWord = isChinesePunctuationSymbol || isEnglishPunctuationSymbol;
 
-            if (segmentStart < 0) {
-                segmentStart = csb.position() - 1;
-                isChineseSegment = isChinese;
+            if (regionStart < 0) {
+                regionStart = csb.position() - 1;
+                isChineseRegion = isChinese;
             }
-            boolean segmentFinished = isStopWord || !csb.hasRemaining() || isChineseSegment != isChinese;
+            boolean segmentFinished = isStopWord || !csb.hasRemaining() || isChineseRegion != isChinese;
 
             if (segmentFinished) {
-                long segmentEnd = (csb.hasRemaining() || isStopWord) ? csb.position() - 1 : csb.position();
+                long regionEnd = (csb.hasRemaining() || isStopWord) ? csb.position() - 1 : csb.position();
 
-                if (!isChineseSegment) {
+                if (!isChineseRegion) {
                     // 对非中文处理
-                    if (segmentEnd <= segmentStart) {
+                    if (regionEnd <= regionStart) {
                         continue;
                     }
-                    long end = segmentEnd;
+                    long end = regionEnd;
                     StringToken token = new StringToken();
-                    String substring = csb.substring(segmentStart, end);
+                    String substring = csb.substring(regionStart, end);
                     token.setBody(substring);
                     segments.add(token);
 
                 } else {
                     // 对中文处理：
-                    long start = segmentStart;
-                    long end = segmentEnd;
+                    long start = regionStart;
+                    long end = regionEnd;
                     PinyinDictItem surname = null;
                     if (start < end) {
                         ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
@@ -99,7 +99,7 @@ class LexerV1 implements Tokenizer<SegmentToken> {
                                 }
                                 chineseSequenceToken.addToken(item);
                                 start = end;
-                                end = segmentEnd;
+                                end = regionEnd;
                             } else {
                                 end = end - 1;
 
@@ -109,7 +109,7 @@ class LexerV1 implements Tokenizer<SegmentToken> {
                                     logger.warn("Can't find the pinyin for {}", w);
                                     chineseSequenceToken.addToken(w);
                                     start++;
-                                    end = segmentEnd;
+                                    end = regionEnd;
                                 }
 
                             }
@@ -120,26 +120,26 @@ class LexerV1 implements Tokenizer<SegmentToken> {
 
                 // 对停止词处理
                 if (isStopWord) {
-                    SegmentToken segmentToken = null;
+                    RegionToken regionToken = null;
                     if (isChinesePunctuationSymbol) {
                         ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
                         PinyinDictItem item = find(c, chinesePunctuationSymbolDict);
                         chineseSequenceToken.addToken(item);
-                        segmentToken = chineseSequenceToken;
+                        regionToken = chineseSequenceToken;
                     } else {
                         StringToken stringToken = new StringToken();
                         stringToken.setBody(c);
-                        segmentToken = stringToken;
+                        regionToken = stringToken;
                     }
-                    segments.add(segmentToken);
-                    segmentToken.setPunctuationSymbol(true);
+                    segments.add(regionToken);
+                    regionToken.setPunctuationSymbol(true);
                 }
 
                 // 重置段开始
-                segmentStart = -1;
-                if (isChinese != isChineseSegment) {
-                    segmentStart = isStopWord ? -1 : csb.position() - 1;
-                    isChineseSegment = isChinese;
+                regionStart = -1;
+                if (isChinese != isChineseRegion) {
+                    regionStart = isStopWord ? -1 : csb.position() - 1;
+                    isChineseRegion = isChinese;
                 }
             }
         }

@@ -15,15 +15,15 @@ class DefaultOutputFormatter extends OutputFormatter {
     }
 
     @Override
-    public String format(List<SegmentToken> segmentTokens, Object... args) {
+    public String format(List<RegionToken> segmentTokens, Object... args) {
         final OutputStyle outputStyle = getOutputStyle() == null ? OutputStyle.DEFAULT_INSTANCE : getOutputStyle();
 
 
         final String chineseCharSeparator = Objs.useValueIfNull(outputStyle.getChineseCharSeparator(), " ");
         final String chineseTokenSeparator = Objs.useValueIfNull(outputStyle.getChineseTokenSeparator(), " ");
-        List<String> segments = Pipeline.of(segmentTokens).map(new Function<SegmentToken, String>() {
+        List<String> segments = Pipeline.of(segmentTokens).map(new Function<RegionToken, String>() {
             @Override
-            public String apply(SegmentToken segmentToken) {
+            public String apply(RegionToken segmentToken) {
                 if(segmentToken instanceof EmptyStringToken){
                     return null;
                 }

@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * @since 5.1.0
  */
-class LexerV2 extends CommonTokenizer<SegmentToken> {
+class LexerV2 extends CommonTokenizer<RegionToken> {
     private static Logger logger = Loggers.getLogger(LexerV2.class);
     private LexerConfig config;
     /**
@@ -29,9 +29,9 @@ class LexerV2 extends CommonTokenizer<SegmentToken> {
     LexerV2(String text, LexerConfig config) {
         super(text, true);
         this.config = config;
-        this.tokenFactory = new TokenFactory<SegmentToken>() {
+        this.tokenFactory = new TokenFactory<RegionToken>() {
             @Override
-            public SegmentToken get(String tokenContent, Boolean isDelimiter) {
+            public RegionToken get(String tokenContent, Boolean isDelimiter) {
                 if (isDelimiter) {
                     if (Strings.isEmpty(tokenContent)) {
                         return new EmptyStringToken();
@@ -60,8 +60,8 @@ class LexerV2 extends CommonTokenizer<SegmentToken> {
                         return stringToken;
                     } else {
                         int start = 0;
-                        int segmentEnd = tokenContent.length();
-                        int end = segmentEnd;
+                        int regionEnd = tokenContent.length();
+                        int end = regionEnd;
                         PinyinDictItem surname = null;
                         ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
                         while (start < end) {
@@ -77,7 +77,7 @@ class LexerV2 extends CommonTokenizer<SegmentToken> {
                                 }
                                 chineseSequenceToken.addToken(item);
                                 start = end;
-                                end = segmentEnd;
+                                end = regionEnd;
                             } else {
                                 end = end - 1;
 
@@ -87,7 +87,7 @@ class LexerV2 extends CommonTokenizer<SegmentToken> {
                                     logger.warn("Can't find the pinyin for {}", w);
                                     chineseSequenceToken.addToken(w);
                                     start++;
-                                    end = segmentEnd;
+                                    end = regionEnd;
                                 }
 
                             }

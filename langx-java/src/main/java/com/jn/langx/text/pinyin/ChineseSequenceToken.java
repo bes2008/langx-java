@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @since 5.1.0
  */
-class ChineseSequenceToken extends SegmentToken<List<Token>> {
+class ChineseSequenceToken extends RegionToken<List<Token>> {
     ChineseSequenceToken() {
         setBody(Collects.<Token>emptyArrayList());
     }

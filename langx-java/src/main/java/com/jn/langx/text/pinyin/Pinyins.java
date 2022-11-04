@@ -47,7 +47,7 @@ public class Pinyins extends PinyinDicts {
      * @see StringToken
      */
     public static String getPinyin(String text, int tokenMaxWord, boolean surnameFirst, OutputStyle theOutputStyle, OutputFormatter outputFormatter, String... dictNames) {
-        List<SegmentToken> segmentTokens = analyze(PinyinDicts.findDicts(dictNames), text, tokenMaxWord, surnameFirst);
+        List<RegionToken> segmentTokens = analyze(PinyinDicts.findDicts(dictNames), text, tokenMaxWord, surnameFirst);
         if (outputFormatter == null) {
             outputFormatter = new DefaultOutputFormatter();
         }
@@ -56,7 +56,7 @@ public class Pinyins extends PinyinDicts {
         return result;
     }
 
-    private static List<SegmentToken> analyze(List<PinyinDict> dicts, String text, int tokenMaxWord, boolean surnameFirst) {
+    private static List<RegionToken> analyze(List<PinyinDict> dicts, String text, int tokenMaxWord, boolean surnameFirst) {
         dicts = Objs.isNotEmpty(dicts) ? dicts : PinyinDicts.allDicts();
         LexerConfig config = new LexerConfig();
         config.setDicts(dicts);
@@ -80,8 +80,8 @@ public class Pinyins extends PinyinDicts {
         }
         config.setTokenMaxChar(tokenMaxWord);
         config.setSurnameFirst(surnameFirst);
-        Tokenizer<SegmentToken> lexer = new LexerV2(text, config);
-        List<SegmentToken> tokens = lexer.tokenize();
+        Tokenizer<RegionToken> lexer = new LexerV2(text, config);
+        List<RegionToken> tokens = lexer.tokenize();
         return tokens;
     }
 
