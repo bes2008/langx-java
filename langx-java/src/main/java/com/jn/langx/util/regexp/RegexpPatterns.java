@@ -81,6 +81,8 @@ public class RegexpPatterns {
      */
     public static Regexp PATTERN_IP = Regexps.createRegexp("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)");
 
+    public static Regexp PATTERN_IPv6 = Regexps.createRegexp("(([0-9A-F]{0,4}::[0-9A-F]{0,4})|([0-9A-F]{1,4}:([0-9A-F]{1,4}:){0,5}:[0-9A-F]{1,4})|([0-9A-F]{1,4}(:[0-9A-F]{1,4}){7}))(/\\d{1,6})?");
+
     /**
      * URL 地址
      * https://urlregex.com/

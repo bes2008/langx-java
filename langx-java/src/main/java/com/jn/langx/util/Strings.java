@@ -3437,6 +3437,10 @@ public class Strings {
         return cs.toString().lastIndexOf(searchChar.toString(), start);
     }
 
+    public static int lastIndexOf(final CharSequence cs, final CharSequence searchChar) {
+        return cs.toString().lastIndexOf(searchChar.toString(), cs.length());
+    }
+
     /**
      * <p>Case in-sensitive find of the last index within a CharSequence.</p>
      *

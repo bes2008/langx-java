@@ -120,6 +120,9 @@ class JdkMatcher implements RegexpMatcher {
                 nextIndex = matcher.end();
             }
             result.add(matches);
+            if(matcher.hitEnd()){
+                break;
+            }
         }
         return result;
     }
