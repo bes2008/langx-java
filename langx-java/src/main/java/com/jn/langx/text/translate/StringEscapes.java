@@ -17,10 +17,6 @@ import java.util.Map;
  * </p>
  *
  * <p>
- * #ThreadSafe#
- * </p>
- *
- * <p>
  * This code has been adapted from Apache Commons Lang 3.5.
  * </p>
  *
