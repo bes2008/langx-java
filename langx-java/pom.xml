@@ -12,7 +12,7 @@
 
     <artifactId>langx-java</artifactId>
     <packaging>jar</packaging>
-    <name>${groupId}:${artifactId}:${version}</name>
+    <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
     <description>
         Java lang extensions for java6+, a supplement to , replacement of a Guava, commons-lang.
