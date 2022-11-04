@@ -6,7 +6,7 @@ import com.jn.langx.util.Preconditions;
 public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
     private boolean returnDelimiter;
     /**
-     * buffer#mark()用于标记一个 content segment的开始
+     * buffer#mark()用于标记一个 content region 的开始
      */
     private CharSequenceBuffer buffer;
     protected TokenFactory<Token> tokenFactory;
@@ -30,15 +30,15 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
             long[] delimiterPositions = findNextDelimiter();
             if (delimiterPositions == null) {
                 // 直到结束还没找到分隔符
-                long segmentEnd = this.buffer.limit();
-                String segment = this.buffer.substring(position, segmentEnd);
-                Token token = tokenFactory.get(segment, false);
+                long regionEnd = this.buffer.limit();
+                String region = this.buffer.substring(position, regionEnd);
+                Token token = tokenFactory.get(region, false);
                 Preconditions.checkNotNull(token, "the token is null");
                 return token;
             } else {
                 // 找到了分隔符
-                long segmentEnd = delimiterPositions[0];
-                if (segmentEnd == position) {
+                long regionEnd = delimiterPositions[0];
+                if (regionEnd == position) {
                     // 刚一进来这个 getNext()方法，就遇到了分隔符
                     if (returnDelimiter) {
                         // 返回分隔符
@@ -54,11 +54,11 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
                         this.buffer.mark();
                         return getNext();
                     }
-                } else if (segmentEnd > position) {
-                    String segment = this.buffer.substring(position, segmentEnd);
-                    this.buffer.position(segmentEnd);
+                } else if (regionEnd > position) {
+                    String region = this.buffer.substring(position, regionEnd);
+                    this.buffer.position(regionEnd);
                     this.buffer.mark();
-                    Token token = tokenFactory.get(segment, false);
+                    Token token = tokenFactory.get(region, false);
                     Preconditions.checkNotNull(token, "the token is null");
                     return token;
                 } else {
