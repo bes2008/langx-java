@@ -112,7 +112,12 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                             logger.warn("invalid ip address: {}", segment);
                         }
                         portString = string2Map.get("port");
-                        port = Strings.isEmpty(portString) ? 0 : Numbers.createInteger(portString);
+                        try {
+                            port = Strings.isEmpty(portString) ? 0 : Numbers.createInteger(portString);
+                        } catch (Throwable e) {
+                            logger.warn("invalid ip address: {}", segment);
+                            continue;
+                        }
                         if (port > 65535) {
                             logger.warn("invalid port : {}", segment);
                             continue;
