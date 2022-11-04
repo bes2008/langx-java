@@ -5,6 +5,9 @@ import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.net.Nets;
+import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpPatterns;
+import com.jn.langx.util.regexp.Regexps;
 import org.junit.Test;
 
 import java.net.InetAddress;
@@ -51,5 +54,29 @@ public class NetsTests {
             System.out.println(Nets.toAddressString(currentAddress));
         }
         System.out.println(Nets.getFirstValidMac());
+    }
+
+    @Test
+    public void test() {
+        // ip v6 地址
+
+        String str = "2001:0000:3238:00E1:0063:0000:0000:FEFB";
+        System.out.println(Regexps.match(RegexpPatterns.PATTERN_IPv6, str));
+        str = "2001:0:3238:E1:0063::FEFB";
+        System.out.println(Regexps.match(RegexpPatterns.PATTERN_IPv6, str));
+        str = "::1";
+        System.out.println(Regexps.match(RegexpPatterns.PATTERN_IPv6, str));
+        str = "::";
+        System.out.println(Regexps.match(RegexpPatterns.PATTERN_IPv6, str));
+        str = "::/12";
+        System.out.println(Regexps.match(RegexpPatterns.PATTERN_IPv6, str));
+
+        Regexp IP_SEGMENT_PATTERNS = Regexps.createRegexp("(?<ip>[^/]*)(/(?<prefixLength>\\d{1,6})(:(?<port>\\d{1,6}))?)?");
+        str = "::/12";
+        Map<String, String> stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, str);
+        System.out.println(stringMap);
+        str = "::/12:123";
+        stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, str);
+        System.out.println(stringMap);
     }
 }
