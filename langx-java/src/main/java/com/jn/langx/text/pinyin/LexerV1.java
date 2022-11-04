@@ -44,7 +44,7 @@ class LexerV1 implements Tokenizer<RegionToken> {
         if (Strings.isEmpty(text)) {
             return Collects.emptyArrayList();
         }
-        List<RegionToken> segments = Collects.emptyArrayList();
+        List<RegionToken> regions = Collects.emptyArrayList();
 
         CharSequenceBuffer csb = new CharSequenceBuffer(text);
 
@@ -77,7 +77,7 @@ class LexerV1 implements Tokenizer<RegionToken> {
                     StringToken token = new StringToken();
                     String substring = csb.substring(regionStart, end);
                     token.setBody(substring);
-                    segments.add(token);
+                    regions.add(token);
 
                 } else {
                     // 对中文处理：
@@ -114,7 +114,7 @@ class LexerV1 implements Tokenizer<RegionToken> {
 
                             }
                         }
-                        segments.add(chineseSequenceToken);
+                        regions.add(chineseSequenceToken);
                     }
                 }
 
@@ -131,7 +131,7 @@ class LexerV1 implements Tokenizer<RegionToken> {
                         stringToken.setBody(c);
                         regionToken = stringToken;
                     }
-                    segments.add(regionToken);
+                    regions.add(regionToken);
                     regionToken.setPunctuationSymbol(true);
                 }
 
@@ -144,7 +144,7 @@ class LexerV1 implements Tokenizer<RegionToken> {
             }
         }
 
-        return segments;
+        return regions;
     }
 
     private PinyinDictItem find(PinyinDictItem surname, String chineseWords, PinyinDict... dicts) {
