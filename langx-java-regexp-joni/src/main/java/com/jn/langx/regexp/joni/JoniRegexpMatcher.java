@@ -489,6 +489,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             }
 
             result.add(matches);
+            if(matcher.getEnd()>= this.input.length){
+                break;
+            }
         }
         return result;
     }

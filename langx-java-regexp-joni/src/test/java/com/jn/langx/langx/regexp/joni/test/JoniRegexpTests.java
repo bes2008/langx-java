@@ -8,6 +8,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.regexp.jdk.JdkRegexp;
 import com.jn.langx.util.regexp.named.NamedRegexp;
 import org.jcodings.specific.UTF8Encoding;
@@ -258,6 +259,14 @@ public class JoniRegexpTests {
         matcher = regexp.matcher(str);
         namedGroups = matcher.namedGroups();
         System.out.println(namedGroups);
+    }
+
+    @Test
+    public void test12(){
+        Regexp IP_SEGMENT_PATTERNS = Regexps.createRegexp("(?<ip>[^/]*)(/(?<prefixLength>\\d{1,6})(:(?<port>\\d{1,5}))?)?");
+        String str = "::/12";
+        Map<String, String> stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, str);
+        System.out.println(stringMap);
     }
 
 }

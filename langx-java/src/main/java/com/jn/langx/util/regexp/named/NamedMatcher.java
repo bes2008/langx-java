@@ -306,6 +306,9 @@ class NamedMatcher implements RegexpMatcher {
             }
 
             result.add(matches);
+            if(matcher.hitEnd()){
+                break;
+            }
         }
         return result;
     }
