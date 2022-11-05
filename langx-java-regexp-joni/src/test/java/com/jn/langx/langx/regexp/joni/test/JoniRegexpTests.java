@@ -262,11 +262,17 @@ public class JoniRegexpTests {
     }
 
     @Test
-    public void test12(){
-        Regexp IP_SEGMENT_PATTERNS = Regexps.createRegexp("(?<ip>[^/]*)(/(?<prefixLength>\\d{1,6})(:(?<port>\\d{1,5}))?)?");
+    public void test12() {
+        String regexp = "(?<ip>[^/]*)(/(?<prefixLength>\\d{1,6})(:(?<port>\\d{1,5}))?)?";
+        Regexp IP_SEGMENT_PATTERNS = Regexps.createRegexpWithEngine("joni", regexp);
         String str = "::/12";
         Map<String, String> stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, str);
         System.out.println(stringMap);
+
+        IP_SEGMENT_PATTERNS = Regexps.createRegexpWithEngine("jdk", regexp);
+        stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, str);
+        System.out.println(stringMap);
+
     }
 
 }

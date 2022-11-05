@@ -76,7 +76,9 @@ public class Regexps {
     public static Regexp createRegexp(@NonNull String pattern, @Nullable Option option) {
         return createRegexp((String) null, pattern, option);
     }
-
+    public static Regexp createRegexpWithEngine(@Nullable String engineName, @NonNull String pattern) {
+        return createRegexp(engineName, pattern,null);
+    }
     public static Regexp createRegexp(@Nullable String engineName, @NonNull String pattern, @Nullable Option option) {
         RegexpEngine engine = engineName == null ? null : registry.get(engineName);
         if (engine == null && engineName != null) {
