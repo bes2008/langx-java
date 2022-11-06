@@ -12,7 +12,6 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  * interrupted during such a call, the call continues to block until the result is available or the
  * timeout elapses, and only then re-interrupts the thread.
  *
- * @author Anthony Zana
  * @since 2.10.3
  */
 public final class Uninterrupteds {
