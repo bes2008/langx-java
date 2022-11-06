@@ -9,7 +9,7 @@ import java.util.List;
 public class PipelineValueGetter implements ValueGetter {
     private List<ValueGetter> pipeline = Collects.newArrayList();
 
-    public void addValueGetter(ValueGetter valueGetter){
+    public void addValueGetter(ValueGetter valueGetter) {
         pipeline.add(valueGetter);
     }
 
