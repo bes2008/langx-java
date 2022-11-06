@@ -457,15 +457,11 @@ public class Strings {
      * @param substring the substring to match at the given index
      */
     public static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
-        if (index + substring.length() > str.length()) {
+        if (index >= str.length()) {
             return false;
         }
-        for (int i = 0; i < substring.length(); i++) {
-            if (str.charAt(index + i) != substring.charAt(i)) {
-                return false;
-            }
-        }
-        return true;
+        CharSequence sub0 = str.subSequence(index, str.length()).toString();
+        return equals(sub0, substring);
     }
 
     public static byte[] getBytesUtf8(final String string) {

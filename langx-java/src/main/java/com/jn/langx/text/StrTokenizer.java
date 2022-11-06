@@ -27,6 +27,11 @@ public class StrTokenizer extends CommonTokenizer<String> {
      */
     private int foundDelimiterCount = 0;
 
+    /**
+     * 是否忽略大小写
+     */
+    private boolean ignoreCase = false;
+
     public StrTokenizer(String str) {
         this(str, null);
     }
@@ -36,13 +41,22 @@ public class StrTokenizer extends CommonTokenizer<String> {
     }
 
     public StrTokenizer(String str, boolean returnDelimiter, String... delimiters) {
-        this(str, returnDelimiter, -1, delimiters);
+        this(str, returnDelimiter, false, delimiters);
     }
 
     public StrTokenizer(String str, boolean returnDelimiter, int max, String... delimiters) {
+        this(str, returnDelimiter, false, max, delimiters);
+    }
+
+    public StrTokenizer(String str, boolean returnDelimiter, boolean ignoreCase, String... delimiters) {
+        this(str, returnDelimiter, ignoreCase, -1, delimiters);
+    }
+
+    public StrTokenizer(String str, boolean returnDelimiter, boolean ignoreCase, int max, String... delimiters) {
         super(str, returnDelimiter);
         setDelimiters(Collects.asList(delimiters));
         this.max = max < 0 ? Integer.MAX_VALUE : max;
+        this.ignoreCase = ignoreCase;
         this.tokenFactory = new TokenFactory<String>() {
             @Override
             public String get(String tokenContent, Boolean isDelimiter) {
@@ -81,10 +95,10 @@ public class StrTokenizer extends CommonTokenizer<String> {
                     .findFirst(new Predicate<String>() {
                         @Override
                         public boolean test(String delimiter) {
-                            if (Strings.startsWith(delimiter, s)) {
+                            if (Strings.startsWith(delimiter, s, ignoreCase)) {
                                 if (getBuffer().limit() - position > delimiter.length()) {
                                     String substring = getBuffer().substring(position, position + delimiter.length());
-                                    return Objs.equals(substring, delimiter);
+                                    return Strings.equals(substring, delimiter, ignoreCase);
                                 } else {
                                     return false;
                                 }
