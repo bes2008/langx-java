@@ -1,8 +1,8 @@
 package com.jn.langx.codec.base58;
 
 
-import com.jn.langx.util.Bytes;
 import com.jn.langx.util.collection.PrimitiveArrays;
+import com.jn.langx.util.io.bytes.Bytes;
 
 import java.math.BigInteger;
 

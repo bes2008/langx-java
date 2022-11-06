@@ -1,6 +1,6 @@
 package com.jn.langx.util.jar.multiplelevel;
 
-import com.jn.langx.util.Bytes;
+import com.jn.langx.util.io.bytes.Bytes;
 
 import java.io.IOException;
 

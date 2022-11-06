@@ -1,8 +1,8 @@
 package com.jn.langx.security.crypto.digest.internal;
 
 
-import com.jn.langx.util.Bytes;
 import com.jn.langx.util.Memoable;
+import com.jn.langx.util.io.bytes.Bytes;
 
 /**
  * base implementation of MD4 family style digest as outlined in

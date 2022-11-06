@@ -1,7 +1,5 @@
 package com.jn.langx.util.io.bytes;
 
-import com.jn.langx.util.Bytes;
-
 /**
  * Provides a mechanism to iterate over a collection of bytes.
  */

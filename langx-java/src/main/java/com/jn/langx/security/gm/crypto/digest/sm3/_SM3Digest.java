@@ -1,8 +1,8 @@
 package com.jn.langx.security.gm.crypto.digest.sm3;
 
 import com.jn.langx.security.crypto.digest.internal.GeneralDigest;
-import com.jn.langx.util.Bytes;
 import com.jn.langx.util.Memoable;
+import com.jn.langx.util.io.bytes.Bytes;
 
 /**
  * Implementation of Chinese SM3 digest as described at
