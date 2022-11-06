@@ -187,7 +187,7 @@ public class Strings {
                 .map(mapper)
                 .asList();
 
-        final com.jn.langx.text.StringJoiner joiner = new StringJoiner(separator, useValueIfNull(prefix, ""), useValueIfNull(suffix, ""))
+        final StringJoiner joiner = new StringJoiner(separator, useValueIfNull(prefix, ""), useValueIfNull(suffix, ""))
                 .append(strings, predicate);
         return joiner.toString();
     }
