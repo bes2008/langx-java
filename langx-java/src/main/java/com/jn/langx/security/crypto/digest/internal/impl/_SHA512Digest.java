@@ -1,7 +1,7 @@
 package com.jn.langx.security.crypto.digest.internal.impl;
 
-import com.jn.langx.util.Bytes;
 import com.jn.langx.util.Memoable;
+import com.jn.langx.util.io.bytes.Bytes;
 
 public class _SHA512Digest extends _AbstractLongDigest {
     private static final int DIGEST_LENGTH = 64;
