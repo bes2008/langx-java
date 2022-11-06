@@ -1,6 +1,6 @@
 package com.jn.langx.text.tokenizer;
 
-public class TokenizationException extends RuntimeException{
+public class TokenizationException extends RuntimeException {
     public TokenizationException() {
         super();
     }
