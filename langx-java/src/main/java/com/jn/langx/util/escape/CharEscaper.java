@@ -16,9 +16,7 @@ import com.jn.langx.util.Preconditions;
  * <p>A {@code CharEscaper} instance is required to be stateless, and safe when used concurrently by
  * multiple threads.
  *
- * <p>Popular escapers are defined as constants in classes like {@link
- * com.jn.langx.text.html.HtmlEscapers} and {@link com.jn.langx.text.xml.XmlEscapers}. To create
- * your own escapers extend this class and implement the {@link #escape(char)} method.
+ * <p> To create your own escapers extend this class and implement the {@link #escape(char)} method.
  *
  */
 public abstract class CharEscaper implements Escaper {
