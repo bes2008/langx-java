@@ -155,11 +155,11 @@ public class StringEscapes {
         escapeXml11Map.put("\u0000", Emptys.EMPTY_STRING);
         escapeXml11Map.put("\u000b", "&#11;");
         escapeXml11Map.put("\u000c", "&#12;");
-        escapeXml11Map.put("\ufffe", Emptys.EMPTY_STRING);
-        escapeXml11Map.put("\uffff", Emptys.EMPTY_STRING);
+        escapeXml11Map.put("\ufffe", Emptys.EMPTY_STRING);  // 该字符不允许出现在XML中
+        escapeXml11Map.put("\uffff", Emptys.EMPTY_STRING);  // 该字符不允许出现在XML中
         ESCAPE_XML11 = new AggregateTranslator(
                 new LookupTranslator(EntityArrays.BASIC_ESCAPE),
-                new LookupTranslator(EntityArrays.APOS_ESCAPE),
+                new LookupTranslator(EntityArrays.APOS_ESCAPE), // 单引号
                 new LookupTranslator(Collections.unmodifiableMap(escapeXml11Map)),
                 NumericEntityEscaper.between(0x1, 0x8),
                 NumericEntityEscaper.between(0xe, 0x1f),
@@ -712,7 +712,7 @@ public class StringEscapes {
      * @return a new escaped {@code String}, {@code null} if null string input
      * @see #unescapeXml(java.lang.String)
      */
-    public static String escapeXml10(final String input) {
+    static String escapeXml10(final String input) {
         return ESCAPE_XML10.transform(input);
     }
 
@@ -741,8 +741,12 @@ public class StringEscapes {
      * @return a new escaped {@code String}, {@code null} if null string input
      * @see #unescapeXml(java.lang.String)
      */
-    public static String escapeXml11(final String input) {
+    static String escapeXml11(final String input) {
         return ESCAPE_XML11.transform(input);
+    }
+
+    public static String escapeXml(String content){
+        return escapeXml11(content);
     }
 
     //-----------------------------------------------------------------------
