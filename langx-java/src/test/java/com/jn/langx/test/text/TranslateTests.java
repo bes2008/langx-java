@@ -3,7 +3,6 @@ package com.jn.langx.test.text;
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.translate.StringEscapes;
-import com.jn.langx.text.xml.XmlEscapers;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
@@ -17,8 +16,6 @@ public class TranslateTests {
     @Test
     public void xmlContentEscapeTest() {
         String content = "hello world :  5 > 3 ? true or false";
-        String c1 = XmlEscapers.xmlContentEscaper().escape(content);
-        System.out.println(c1);
 
         String c2 = StringEscapes.escapeXml(content);
         System.out.println(c2);
