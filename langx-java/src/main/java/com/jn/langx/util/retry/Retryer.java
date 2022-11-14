@@ -1,12 +1,16 @@
 package com.jn.langx.util.retry;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 
 public class Retryer {
+    @NonNull
     private RetryConfig config;
+    @NonNull
     private Predicate<Throwable> retryPredicate;
+    @NonNull
     private Consumer2<RetryInfo, Throwable> errorListener;
 
     public Retryer(RetryConfig config) {
