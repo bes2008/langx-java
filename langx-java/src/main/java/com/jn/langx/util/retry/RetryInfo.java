@@ -1,28 +1,25 @@
 package com.jn.langx.util.retry;
 
-public class RetryInfoImpl  implements RetryInfo {
+public class RetryInfo {
 
     private final int attempt;
     private final int maxAttempts;
     private final long backoff; // mills
 
-    public RetryInfoImpl(int attempt, int maxAttempts, long backoff) {
+    public RetryInfo(int attempt, int maxAttempts, long backoff) {
         this.attempt = attempt;
         this.maxAttempts = maxAttempts;
         this.backoff = backoff;
     }
 
-    @Override
     public int getRetryCount() {
         return attempt - 1;
     }
 
-    @Override
     public int getNumberOfAttempts() {
         return attempt;
     }
 
-    @Override
     public int getMaxAttempts() {
         if (isInfiniteRetriesLeft()) {
             return Integer.MAX_VALUE;
@@ -30,7 +27,6 @@ public class RetryInfoImpl  implements RetryInfo {
         return -1;
     }
 
-    @Override
     public int getAttemptsLeft() {
         if (isInfiniteRetriesLeft()) {
             return Integer.MAX_VALUE;
@@ -38,17 +34,14 @@ public class RetryInfoImpl  implements RetryInfo {
         return getMaxAttempts() - attempt;
     }
 
-    @Override
     public boolean isInfiniteRetriesLeft() {
         return maxAttempts<=0;
     }
 
-    @Override
     public long getBackoff() {
         return backoff;
     }
 
-    @Override
     public boolean isLastAttempt() {
         if (isInfiniteRetriesLeft()) {
             return false;
@@ -56,7 +49,6 @@ public class RetryInfoImpl  implements RetryInfo {
         return getMaxAttempts() - 1 == attempt;
     }
 
-    @Override
     public boolean isFirstAttempt() {
         return attempt == 1;
     }

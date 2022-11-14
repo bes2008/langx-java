@@ -54,7 +54,7 @@ public class Retryer {
         if (!isExhausted(attempt, this.config.getMaxAttempts()) && this.retryPredicate.test(e)) {
             long backoffMillis = this.config.getBackoffPolicy().getBackoffTime(this.config, attempt);
 
-            RetryInfo retryInfo = new RetryInfoImpl(attempt, this.config.getMaxAttempts(), backoffMillis);
+            RetryInfo retryInfo = new RetryInfo(attempt, this.config.getMaxAttempts(), backoffMillis);
             this.errorListener.accept(retryInfo, e);
             try {
                 if (backoffMillis > 0) {
