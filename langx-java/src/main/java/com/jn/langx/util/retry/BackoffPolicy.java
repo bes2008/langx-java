@@ -2,12 +2,22 @@ package com.jn.langx.util.retry;
 
 import com.jn.langx.util.random.ThreadLocalRandom;
 
-public class BackoffPolicy {
-    public long getBackoffTime(RetryConfig config, int attempts) {
-        return addJitter(config.getSleepInterval(), config.getJitter());
+public abstract class BackoffPolicy {
+
+    public final long getBackoffTime(RetryConfig config, int attempts) {
+        long backoffTime = getBackoffTimeInternal(config, attempts);
+        backoffTime = addJitter(backoffTime, config.getJitter());
+        long maxSleepTime = config.getMaxSleepTime() > 0 ? config.getTimeUnit().toMillis(config.getMaxSleepTime()) : -1L;
+        backoffTime = maxSleepTime > 0 ? Math.min(backoffTime, config.getMaxSleepTime()) : backoffTime;
+        return backoffTime;
     }
 
-    protected static long addJitter(long interval, float jitter) {
+    protected long getBackoffTimeInternal(RetryConfig config, int attempts) {
+        long backoffTime = config.getTimeUnit().toMillis(config.getSleepInterval());
+        return backoffTime;
+    }
+
+    private final long addJitter(long interval, float jitter) {
         long jitterInterval = (long) (interval * ThreadLocalRandom.current().nextFloat() * jitter);
         return interval + jitterInterval;
     }

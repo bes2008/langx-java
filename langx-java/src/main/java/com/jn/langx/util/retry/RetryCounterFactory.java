@@ -1,7 +1,7 @@
 package com.jn.langx.util.retry;
 
 
-import com.jn.langx.util.retry.backoff.ExponentialBackoffWithLimitPolicy;
+import com.jn.langx.util.retry.backoff.ExponentialBackoffPolicy;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +25,7 @@ public class RetryCounterFactory {
                 sleepIntervalMillis,
                 maxSleepTime,
                 TimeUnit.MILLISECONDS,
-                new ExponentialBackoffWithLimitPolicy()));
+                new ExponentialBackoffPolicy()));
     }
 
     public RetryCounterFactory(RetryConfig retryConfig) {
