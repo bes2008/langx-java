@@ -1,156 +1,22 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.jn.langx.util.retry;
 
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.logging.Loggers;
-import com.jn.langx.util.random.ThreadLocalRandom;
+import com.jn.langx.util.retry.backoff.ExponentialBackoffPolicy;
 import org.slf4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * Operation retry accounting.
- * Use to calculate wait period, {@link #getBackoffTimeAndIncrementAttempts()}}, or for performing
+ * Used to calculate wait period, {@link #getBackoffTimeAndIncrementAttempts()}}, or for performing
  * wait, {@link #sleepUntilNextRetry()}, in accordance with a {@link RetryConfig}, initial
  * settings, and a Retry Policy.
  * Like <a href=https://github.com/rholder/guava-retrying>guava-retrying</a>.
- * @since 4.1.0
+ *
  * @see RetryCounterFactory
+ * @since 4.1.0
  */
 public class RetryCounter {
-    /**
-     *  Configuration for a retry counter
-     */
-    public static class RetryConfig {
-        private int maxAttempts;
-        private long sleepInterval;
-        private long maxSleepTime;
-        private TimeUnit timeUnit;
-        private BackoffPolicy backoffPolicy;
-        private float jitter;
-
-        private static final BackoffPolicy DEFAULT_BACKOFF_POLICY = new ExponentialBackoffPolicy();
-
-        public RetryConfig() {
-            maxAttempts = 1;
-            sleepInterval = 1000;
-            maxSleepTime = -1;
-            timeUnit = TimeUnit.MILLISECONDS;
-            backoffPolicy = DEFAULT_BACKOFF_POLICY;
-            jitter = 0.0f;
-        }
-
-        public RetryConfig(int maxAttempts, long sleepInterval, long maxSleepTime,
-                           TimeUnit timeUnit, BackoffPolicy backoffPolicy) {
-            this.maxAttempts = maxAttempts;
-            this.sleepInterval = sleepInterval;
-            this.maxSleepTime = maxSleepTime;
-            this.timeUnit = timeUnit;
-            this.backoffPolicy = backoffPolicy;
-        }
-
-        public RetryConfig setBackoffPolicy(BackoffPolicy backoffPolicy) {
-            this.backoffPolicy = backoffPolicy;
-            return this;
-        }
-
-        public RetryConfig setMaxAttempts(int maxAttempts) {
-            this.maxAttempts = maxAttempts;
-            return this;
-        }
-
-        public RetryConfig setMaxSleepTime(long maxSleepTime) {
-            this.maxSleepTime = maxSleepTime;
-            return this;
-        }
-
-        public RetryConfig setSleepInterval(long sleepInterval) {
-            this.sleepInterval = sleepInterval;
-            return this;
-        }
-
-        public RetryConfig setTimeUnit(TimeUnit timeUnit) {
-            this.timeUnit = timeUnit;
-            return this;
-        }
-
-        public RetryConfig setJitter(float jitter) {
-            Preconditions.checkArgument(jitter >= 0.0f && jitter < 1.0f,
-                    "Invalid jitter: %s, should be in range [0.0, 1.0)", jitter);
-            this.jitter = jitter;
-            return this;
-        }
-
-        public int getMaxAttempts() {
-            return maxAttempts;
-        }
-
-        public long getMaxSleepTime() {
-            return maxSleepTime;
-        }
-
-        public long getSleepInterval() {
-            return sleepInterval;
-        }
-
-        public TimeUnit getTimeUnit() {
-            return timeUnit;
-        }
-
-        public float getJitter() {
-            return jitter;
-        }
-
-        public BackoffPolicy getBackoffPolicy() {
-            return backoffPolicy;
-        }
-    }
-
-    private static long addJitter(long interval, float jitter) {
-        long jitterInterval = (long) (interval * ThreadLocalRandom.current().nextFloat() * jitter);
-        return interval + jitterInterval;
-    }
-
-    /**
-     * Policy for calculating sleeping intervals between retry attempts
-     */
-    public static class BackoffPolicy {
-        public long getBackoffTime(RetryConfig config, int attempts) {
-            return addJitter(config.getSleepInterval(), config.getJitter());
-        }
-    }
-
-    public static class ExponentialBackoffPolicy extends BackoffPolicy {
-        @Override
-        public long getBackoffTime(RetryConfig config, int attempts) {
-            long backoffTime = (long) (config.getSleepInterval() * Math.pow(2, attempts));
-            return addJitter(backoffTime, config.getJitter());
-        }
-    }
-
-    public static class ExponentialBackoffPolicyWithLimit extends ExponentialBackoffPolicy {
-        @Override
-        public long getBackoffTime(RetryConfig config, int attempts) {
-            long backoffTime = super.getBackoffTime(config, attempts);
-            return config.getMaxSleepTime() > 0 ? Math.min(backoffTime, config.getMaxSleepTime()) : backoffTime;
-        }
-    }
 
 
     private RetryConfig retryConfig;
@@ -198,7 +64,7 @@ public class RetryCounter {
     }
 
     public long getBackoffTime() {
-        return this.retryConfig.backoffPolicy.getBackoffTime(this.retryConfig, getAttemptTimes());
+        return this.retryConfig.getBackoffPolicy().getBackoffTime(this.retryConfig, getAttemptTimes());
     }
 
     public long getBackoffTimeAndIncrementAttempts() {

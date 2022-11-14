@@ -497,4 +497,13 @@ public class Functions {
             }
         };
     }
+
+    public static <T1,T2> Consumer2<T1,T2> noopConsumer2() {
+        return new Consumer2<T1,T2>() {
+            @Override
+            public void accept(T1 t1,T2 t2) {
+                // NOOP
+            }
+        };
+    }
 }
