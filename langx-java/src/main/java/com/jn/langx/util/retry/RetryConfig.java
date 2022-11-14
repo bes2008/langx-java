@@ -19,21 +19,20 @@ public class RetryConfig {
     private static final BackoffPolicy DEFAULT_BACKOFF_POLICY = new ExponentialBackoffPolicy();
 
     public RetryConfig() {
-        maxAttempts = 1;
-        sleepInterval = 1000L;
-        maxSleepTime = -1L;
-        timeUnit = TimeUnit.MILLISECONDS;
-        backoffPolicy = DEFAULT_BACKOFF_POLICY;
+        this(1, 1000L, -1L, null, null);
         jitter = 0.0f;
     }
 
-    public RetryConfig(int maxAttempts, long sleepInterval, long maxSleepTime,
-                       TimeUnit timeUnit, BackoffPolicy backoffPolicy) {
+    public RetryConfig(int maxAttempts,
+                       long sleepInterval,
+                       long maxSleepTime,
+                       TimeUnit timeUnit,
+                       BackoffPolicy backoffPolicy) {
         this.maxAttempts = maxAttempts;
-        this.timeUnit = timeUnit;
+        this.timeUnit = timeUnit == null ? TimeUnit.MILLISECONDS : timeUnit;
         this.sleepInterval = sleepInterval;
         this.maxSleepTime = maxSleepTime;
-        this.backoffPolicy = backoffPolicy;
+        this.backoffPolicy = backoffPolicy == null ? ExponentialBackoffPolicy.INSTANCE : backoffPolicy;
     }
 
     public RetryConfig setBackoffPolicy(BackoffPolicy backoffPolicy) {
@@ -90,5 +89,15 @@ public class RetryConfig {
 
     public BackoffPolicy getBackoffPolicy() {
         return backoffPolicy;
+    }
+
+    public static RetryConfig noneRetryConfig() {
+        RetryConfig config = new RetryConfig();
+        config.setSleepInterval(-1L);
+        return config;
+    }
+
+    public static RetryConfig buildInfiniteAttempts(long sleepInterval, long maxSleepTime, BackoffPolicy backoffPolicy) {
+        return new RetryConfig(-1, sleepInterval, maxSleepTime, TimeUnit.MILLISECONDS, backoffPolicy);
     }
 }
