@@ -31,10 +31,6 @@ public class RetryCounter {
         this.retryConfig = retryConfig;
     }
 
-    public int getMaxAttempts() {
-        return retryConfig.getMaxAttempts();
-    }
-
     /**
      * Sleep for a back off time as supplied by the backoff policy, and increases the attempts
      */
@@ -59,7 +55,7 @@ public class RetryCounter {
         return attempts > 0;
     }
 
-    public int getAttemptTimes() {
+    public int   getAttemptTimes() {
         return attempts;
     }
 

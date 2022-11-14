@@ -16,7 +16,7 @@ public class RetryInfo {
         return attempt - 1;
     }
 
-    public int getNumberOfAttempts() {
+    public int getAttempts() {
         return attempt;
     }
 
@@ -34,8 +34,8 @@ public class RetryInfo {
         return getMaxAttempts() - attempt;
     }
 
-    public boolean isInfiniteRetriesLeft() {
-        return maxAttempts<=0;
+    private boolean isInfiniteRetriesLeft() {
+        return maxAttempts <= 0;
     }
 
     public long getBackoff() {

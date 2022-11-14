@@ -13,7 +13,7 @@ public class Retryer {
         this(null, config);
     }
 
-    public Retryer(Predicate retryPredicate, RetryConfig config) {
+    public Retryer(Predicate<Throwable> retryPredicate, RetryConfig config) {
         this(retryPredicate, config, null);
     }
 
@@ -22,7 +22,6 @@ public class Retryer {
         this.errorListener = errorListener == null ? Functions.<RetryInfo, Throwable>noopConsumer2() : errorListener;
         this.config = config;
     }
-
 
     public static <R> R execute(Predicate<Throwable> retryPredicate, RetryConfig retryConfig, Consumer2<RetryInfo, Throwable> errorListener, Executable<R> executable, Object parameters) throws Exception {
         Retryer retryer = new Retryer(retryPredicate, retryConfig, errorListener);
@@ -58,7 +57,7 @@ public class Retryer {
             this.errorListener.accept(retryInfo, e);
             try {
                 if (backoffMillis > 0) {
-                    Thread.sleep(backoffMillis);
+                    this.config.getTimeUnit().sleep(backoffMillis);
                 }
             } catch (InterruptedException interruptedException) {
                 throw new RuntimeException(e);

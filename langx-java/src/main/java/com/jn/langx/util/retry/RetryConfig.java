@@ -20,8 +20,8 @@ public class RetryConfig {
 
     public RetryConfig() {
         maxAttempts = 1;
-        sleepInterval = 1000;
-        maxSleepTime = -1;
+        sleepInterval = 1000L;
+        maxSleepTime = -1L;
         timeUnit = TimeUnit.MILLISECONDS;
         backoffPolicy = DEFAULT_BACKOFF_POLICY;
         jitter = 0.0f;
@@ -30,9 +30,9 @@ public class RetryConfig {
     public RetryConfig(int maxAttempts, long sleepInterval, long maxSleepTime,
                        TimeUnit timeUnit, BackoffPolicy backoffPolicy) {
         this.maxAttempts = maxAttempts;
+        this.timeUnit = timeUnit;
         this.sleepInterval = sleepInterval;
         this.maxSleepTime = maxSleepTime;
-        this.timeUnit = timeUnit;
         this.backoffPolicy = backoffPolicy;
     }
 
