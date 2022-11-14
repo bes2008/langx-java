@@ -58,7 +58,10 @@ public class Retryer {
             try {
                 if (backoffMillis > 0) {
                     this.config.getTimeUnit().sleep(backoffMillis);
+                } else {
+                    return false;
                 }
+
             } catch (InterruptedException interruptedException) {
                 throw new RuntimeException(e);
             }
