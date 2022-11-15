@@ -1,6 +1,8 @@
 package com.jn.langx.util.retry;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.concurrent.Executable;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
@@ -12,6 +14,7 @@ public class Retryer {
     private Predicate<Throwable> retryPredicate;
     @NonNull
     private Consumer2<RetryInfo, Throwable> errorListener;
+
 
     public Retryer(RetryConfig config) {
         this(null, config);
@@ -37,7 +40,8 @@ public class Retryer {
      */
     private <R> R executeWithRetry(final Executable<R> executable, final int attempt, final Object... parameters) throws Exception {
         try {
-            return executable.execute(parameters);
+            R r = executable.execute(parameters);
+            return r;
         } catch (Throwable e) {
             if (waitAndRetry(attempt, e)) {
                 return executeWithRetry(executable, attempt + 1, parameters);
@@ -56,7 +60,9 @@ public class Retryer {
     private boolean waitAndRetry(int attempt, Throwable e) {
         if (!isExhausted(attempt, this.config.getMaxAttempts()) && this.retryPredicate.test(e)) {
             long backoffMillis = this.config.getBackoffPolicy().getBackoffTime(this.config, attempt);
-
+            if (backoffMillis < 0) {
+                throw new RuntimeException(StringTemplates.formatWithPlaceholder("invalid retry backoff: {}", backoffMillis));
+            }
             RetryInfo retryInfo = new RetryInfo(attempt, this.config.getMaxAttempts(), backoffMillis);
             this.errorListener.accept(retryInfo, e);
             try {
@@ -81,10 +87,6 @@ public class Retryer {
             return false;
         }
         return attempt >= maxAttempts;
-    }
-
-    public static interface Executable<V> {
-        V execute(Object... parameters) throws Exception;
     }
 }
 
