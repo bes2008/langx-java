@@ -1,11 +1,13 @@
 package com.jn.langx.util.retry;
 
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.random.ThreadLocalRandom;
 
 public abstract class BackoffPolicy {
 
     public final long getBackoffTime(RetryConfig config, int attempts) {
         long backoffTime = getBackoffTimeInternal(config, attempts);
+        Preconditions.checkTrue(backoffTime >= 0L, "invalid backoff");
         backoffTime = config.getTimeUnit().toMillis(backoffTime);
         backoffTime = addJitter(backoffTime, config.getJitter());
         long maxSleepTime = config.getMaxSleepTime() > 0 ? config.getTimeUnit().toMillis(config.getMaxSleepTime()) : -1L;
