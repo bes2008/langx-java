@@ -77,6 +77,7 @@ public class Retryer {
 
     private boolean isExhausted(int attempt, int maxAttempts) {
         if (maxAttempts <= 0) {
+            // 无次数限制
             return false;
         }
         return attempt >= maxAttempts;
