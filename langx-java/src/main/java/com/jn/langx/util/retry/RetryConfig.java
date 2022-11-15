@@ -16,8 +16,6 @@ public class RetryConfig {
     private BackoffPolicy backoffPolicy;
     private float jitter;
 
-    private static final BackoffPolicy DEFAULT_BACKOFF_POLICY = new ExponentialBackoffPolicy();
-
     public RetryConfig() {
         this(1, 1000L, -1L, null, null);
         jitter = 0.0f;
