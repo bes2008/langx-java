@@ -20,7 +20,7 @@ public abstract class BackoffPolicy {
         return backoffTime;
     }
 
-    private final long addJitter(long interval, float jitter) {
+    private long addJitter(long interval, float jitter) {
         long jitterInterval = (long) (interval * ThreadLocalRandom.current().nextFloat() * jitter);
         return interval + jitterInterval;
     }
