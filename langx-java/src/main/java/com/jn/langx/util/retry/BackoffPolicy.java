@@ -1,7 +1,7 @@
 package com.jn.langx.util.retry;
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.random.ThreadLocalRandom;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 
 public abstract class BackoffPolicy {
 
@@ -21,7 +21,7 @@ public abstract class BackoffPolicy {
     }
 
     private long addJitter(long interval, float jitter) {
-        long jitterInterval = (long) (interval * ThreadLocalRandom.current().nextFloat() * jitter);
+        long jitterInterval = (long) (interval * GlobalThreadLocalMap.getRandom().nextFloat() * jitter);
         return interval + jitterInterval;
     }
 }
