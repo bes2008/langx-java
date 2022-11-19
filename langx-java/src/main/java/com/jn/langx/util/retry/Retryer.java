@@ -38,7 +38,7 @@ public class Retryer {
     /**
      * 递归调用 retry
      */
-    private <R> R executeWithRetry(final Executable<R> executable, final int attempt, final Object... parameters) throws Exception {
+    public <R> R executeWithRetry(final Executable<R> executable, final int attempt, final Object... parameters) throws Exception {
         try {
             R r = executable.execute(parameters);
             return r;
