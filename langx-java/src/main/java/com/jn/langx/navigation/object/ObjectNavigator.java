@@ -30,14 +30,15 @@ public class ObjectNavigator implements Navigator<Object> {
     }
 
     public ObjectNavigator(String separator) {
-        this(null,separator);
+        this(null, separator);
     }
 
 
-    public ObjectNavigator(String prefix,String suffix) {
+    public ObjectNavigator(String prefix, String suffix) {
         this.prefix = prefix;
         this.suffix = Strings.isEmpty(suffix) ? "/" : suffix;
     }
+
     public <T> Accessor<String, T> getAccessor(Object context, String pathExpression) {
         T t = get(context, pathExpression);
         if (t == null) {
@@ -51,7 +52,7 @@ public class ObjectNavigator implements Navigator<Object> {
         T t = get(context, pathExpression);
         if (t == null) {
             String parentPath = getParentPath(pathExpression);
-            if(Strings.isNotEmpty(parentPath)){
+            if (Strings.isNotEmpty(parentPath)) {
                 Object parent = get(context, pathExpression);
 
                 if (Primitives.isPrimitiveOrPrimitiveWrapperType(parent.getClass())) {
@@ -77,16 +78,7 @@ public class ObjectNavigator implements Navigator<Object> {
             return null;
         }
 
-        String[] segments = Strings.split(pathExpression, suffix);
-        if(Strings.isNotEmpty(this.prefix)){
-            segments = Pipeline.of(segments)
-                    .map(new Function<String, String>() {
-                        @Override
-                        public String apply(String input) {
-                            return Strings.substring(input, prefix.length());
-                        }
-                    }).toArray(String[].class);
-        }
+        String[] segments = getPathSegments(pathExpression);
         return navigate(context, Collects.asList(segments));
     }
 
@@ -111,9 +103,23 @@ public class ObjectNavigator implements Navigator<Object> {
         return (T) currentObject;
     }
 
+    private String[] getPathSegments(String expression) {
+        String[] segments = Strings.split(expression, suffix);
+        if (Strings.isNotEmpty(this.prefix)) {
+            segments = Pipeline.of(segments)
+                    .map(new Function<String, String>() {
+                        @Override
+                        public String apply(String input) {
+                            return Strings.substring(input, prefix.length());
+                        }
+                    }).toArray(String[].class);
+        }
+        return segments;
+    }
+
     @Override
     public <T> void set(Object context, String expression, T value) {
-        String[] segments = Strings.split(expression, suffix);
+        String[] segments = getPathSegments(expression);
         if (Objs.isEmpty(segments)) {
             return;
         }
