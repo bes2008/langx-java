@@ -8,6 +8,7 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -21,17 +22,22 @@ import java.util.List;
  */
 public class ObjectNavigator implements Navigator<Object> {
     private static final Logger logger = Loggers.getLogger(ObjectNavigator.class);
-    private String separator;
+    private String prefix;
+    private String suffix;
 
     public ObjectNavigator() {
         this("/");
     }
 
     public ObjectNavigator(String separator) {
-        this.separator = Strings.isEmpty(separator) ? "/" : separator;
+        this(null,separator);
     }
 
 
+    public ObjectNavigator(String prefix,String suffix) {
+        this.prefix = prefix;
+        this.suffix = Strings.isEmpty(suffix) ? "/" : suffix;
+    }
     public <T> Accessor<String, T> getAccessor(Object context, String pathExpression) {
         T t = get(context, pathExpression);
         if (t == null) {
@@ -71,7 +77,16 @@ public class ObjectNavigator implements Navigator<Object> {
             return null;
         }
 
-        String[] segments = Strings.split(pathExpression, separator);
+        String[] segments = Strings.split(pathExpression, suffix);
+        if(Strings.isNotEmpty(this.prefix)){
+            segments = Pipeline.of(segments)
+                    .map(new Function<String, String>() {
+                        @Override
+                        public String apply(String input) {
+                            return Strings.substring(input, prefix.length());
+                        }
+                    }).toArray(String[].class);
+        }
         return navigate(context, Collects.asList(segments));
     }
 
@@ -98,7 +113,7 @@ public class ObjectNavigator implements Navigator<Object> {
 
     @Override
     public <T> void set(Object context, String expression, T value) {
-        String[] segments = Strings.split(expression, separator);
+        String[] segments = Strings.split(expression, suffix);
         if (Objs.isEmpty(segments)) {
             return;
         }
@@ -114,11 +129,11 @@ public class ObjectNavigator implements Navigator<Object> {
 
     @Override
     public String getParentPath(String pathExpression) {
-        return Navigators.getParentPath(pathExpression, separator);
+        return Navigators.getParentPath(pathExpression, suffix);
     }
 
     @Override
     public String getLeaf(String pathExpression) {
-        return Navigators.getLeaf(pathExpression, separator);
+        return Navigators.getLeaf(pathExpression, suffix);
     }
 }
