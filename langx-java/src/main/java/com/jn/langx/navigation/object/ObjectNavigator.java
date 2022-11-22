@@ -8,7 +8,6 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
-import com.jn.langx.util.function.Function;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -78,7 +77,7 @@ public class ObjectNavigator implements Navigator<Object> {
             return null;
         }
 
-        String[] segments = getPathSegments(pathExpression);
+        String[] segments = Navigators.getPathSegments(pathExpression, this.prefix, this.suffix);
         return navigate(context, Collects.asList(segments));
     }
 
@@ -103,23 +102,9 @@ public class ObjectNavigator implements Navigator<Object> {
         return (T) currentObject;
     }
 
-    private String[] getPathSegments(String expression) {
-        String[] segments = Strings.split(expression, suffix);
-        if (Strings.isNotEmpty(this.prefix)) {
-            segments = Pipeline.of(segments)
-                    .map(new Function<String, String>() {
-                        @Override
-                        public String apply(String input) {
-                            return Strings.substring(input, prefix.length());
-                        }
-                    }).toArray(String[].class);
-        }
-        return segments;
-    }
-
     @Override
     public <T> void set(Object context, String expression, T value) {
-        String[] segments = getPathSegments(expression);
+        String[] segments = Navigators.getPathSegments(expression, this.prefix, this.suffix);
         if (Objs.isEmpty(segments)) {
             return;
         }
