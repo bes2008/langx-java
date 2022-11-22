@@ -16,7 +16,7 @@ import com.jn.langx.util.reflect.parameter.ConstructorParameter;
 import com.jn.langx.util.reflect.parameter.MethodParameter;
 import com.jn.langx.util.reflect.signature.TypeSignatures;
 import com.jn.langx.util.reflect.type.Types;
-import com.jn.langx.util.regexp.Regexp;
+import com.jn.langx.util.regexp.RegexpPatterns;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.struct.Holder;
 import org.slf4j.Logger;
@@ -37,7 +37,6 @@ import static java.lang.System.arraycopy;
 @SuppressWarnings({"unused", "unchecked", "rawtypes"})
 public class Reflects {
 
-    private static final Regexp lamdbaPattern = Regexps.createRegexp(".*\\$\\$Lambda\\$[0-9]+/.*");
 
 
     private static final ParameterServiceRegistry PARAMETER_SERVICE_REGISTRY = ParameterServiceRegistry.getInstance();
@@ -64,7 +63,7 @@ public class Reflects {
     }
 
     public static boolean isLambda(@NonNull Class<?> clazz) {
-        return clazz != null && clazz.isSynthetic() && lamdbaPattern.matcher(getSimpleClassName(clazz)).matches();
+        return clazz != null && clazz.isSynthetic() && Regexps.match(RegexpPatterns.PATTERN_LAMBDA_CLASS,getSimpleClassName(clazz));
     }
 
     public static boolean isStatic(@NonNull Class<?> clazz) {

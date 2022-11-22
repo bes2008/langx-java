@@ -29,9 +29,7 @@ package com.jn.langx.util.escape;
  * extend one of these classes. If you find that you are unable to achieve the desired behavior
  * using either of these classes, please contact the Java libraries team for advice.
  * <p>
- * <p>Popular escapers are defined as constants in classes like {@link
- * com.jn.langx.text.html.HtmlEscapers} and {@link com.jn.langx.text.xml.XmlEscapers}. To create
- * your own escapers, use {@link CharEscaperBuilder}, or extend {@code CharEscaper} or {@code
+ * <p>To create your own escapers, use {@link CharEscaperBuilder}, or extend {@code CharEscaper} or {@code
  * UnicodeEscaper}.
  */
 public interface Escaper {

@@ -1,9 +1,10 @@
 package com.jn.langx.text.translate;
 
 
+import com.jn.langx.util.collection.Collects;
+
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Arrays;
 import java.util.EnumSet;
 
 /**
@@ -56,9 +57,9 @@ class NumericEntityUnescaper extends CharSequenceTranslator {
      */
     public NumericEntityUnescaper(final OPTION... options) {
         if (options.length > 0) {
-            this.options = EnumSet.copyOf(Arrays.asList(options));
+            this.options = EnumSet.copyOf(Collects.asList(options));
         } else {
-            this.options = EnumSet.copyOf(Arrays.asList(OPTION.semiColonRequired));
+            this.options = EnumSet.copyOf(Collects.asList(OPTION.semiColonRequired));
         }
     }
 

@@ -132,4 +132,5 @@ public class RegexpPatterns {
         return pattern.matcher(text).find();
     }
 
+    public static final Regexp PATTERN_LAMBDA_CLASS = Regexps.createRegexp(".*\\$\\$Lambda\\$[0-9]+/.*");
 }
