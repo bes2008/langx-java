@@ -96,7 +96,7 @@ public class StrTokenizer extends CommonTokenizer<String> {
                         @Override
                         public boolean test(String delimiter) {
                             if (Strings.startsWith(delimiter, s, ignoreCase)) {
-                                if (getBuffer().limit() - position > delimiter.length()) {
+                                if (getBuffer().limit() - position >= delimiter.length()) {
                                     String substring = getBuffer().substring(position, position + delimiter.length());
                                     return Strings.equals(substring, delimiter, ignoreCase);
                                 } else {

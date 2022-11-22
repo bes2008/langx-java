@@ -1,5 +1,6 @@
 package com.jn.langx.test.util;
 
+import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.util.Strings;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class StringsTests {
 
     @Test
     public void splitTest() {
-        String string = "a, b,X 23, af, (, {, }, 323";
+        String string = "a, b,X 23, af, (, {, }, 323,";
 
         String[] segments = Strings.split(string, "");
         Assert.assertTrue(segments.length > 8);
@@ -55,6 +56,18 @@ public class StringsTests {
         // 分割后会有Bug
         Assert.assertEquals(segments[2], "i632d4c-tomcat-0");
 
+        string = "[addresses][0][a]";
+        segments = Strings.split(string, "]");
+        System.out.println(segments);
+    }
+
+    @Test
+    public void splitTest2() {
+        String string = "[x][0][a]";
+        String[] segments = Strings.split(string, "]");
+        System.out.println(Strings.join(", ", segments));
+
+        System.out.println(Strings.join(", ",new StrTokenizer(string,true, false,"]")));
     }
 
     @Test
