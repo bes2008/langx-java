@@ -23,13 +23,7 @@ public class Navigators {
             return null;
         }
         List<String> parentPath = Collects.asList(segments).subList(0, segments.length - 1);
-        parentPath = Pipeline.of(parentPath).map(new Function<String, String>() {
-            @Override
-            public String apply(String input) {
-                return Strings.useValueIfNull(prefix, "") + input + Strings.useValueIfNull(suffix, "");
-            }
-        }).asList();
-        return Strings.join("", parentPath);
+        return Strings.iterateJoin("", prefix, suffix, parentPath);
     }
 
     public static String getLeaf(String pathExpression, final String separator) {

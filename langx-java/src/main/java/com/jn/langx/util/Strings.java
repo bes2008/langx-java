@@ -268,6 +268,22 @@ public class Strings {
         return join(separator, PrimitiveArrays.<Long>wrap(array));
     }
 
+    public static <E> String iterateJoin(@NonNull final String separator, final String itemPrefix, final String itemSuffix, final E... objs) {
+        return iterateJoin(separator, itemPrefix, itemSuffix, Collects.asList(objs));
+    }
+
+    public static <E> String iterateJoin(@NonNull final String separator, final String itemPrefix, final String itemSuffix, final List<E> objs) {
+        List<String> strings = Pipeline.of(objs)
+                .clearNulls()
+                .map(new Function<E, String>() {
+                    @Override
+                    public String apply(E input) {
+                        return Strings.useValueIfNull(itemPrefix, "") + input.toString() + Strings.useValueIfNull(itemSuffix, "");
+                    }
+                }).asList();
+        return Strings.join(separator, strings);
+    }
+
     public static String join(@NonNull final String separator, final Object obj) {
         if (obj == null) {
             return "";
