@@ -1,6 +1,7 @@
 package com.jn.langx.commandline;
 
 import com.jn.langx.commandline.util.CommandLineStringUtils;
+import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.file.Files;
 
@@ -322,13 +323,13 @@ public class CommandLine {
         final int inQuote = 1;
         final int inDoubleQuote = 2;
         int state = normal;
-        final StringTokenizer tok = new StringTokenizer(toProcess, "\"' ", true);
+        final StrTokenizer tok = new StrTokenizer(toProcess,  true,"\"","'"," ");
         final ArrayList<String> list = new ArrayList<String>();
         StringBuilder current = new StringBuilder();
         boolean lastTokenHasBeenQuoted = false;
 
-        while (tok.hasMoreTokens()) {
-            final String nextTok = tok.nextToken();
+        while (tok.hasNext()) {
+            final String nextTok = tok.next();
             switch (state) {
                 case inQuote:
                     if (Strings.SINGLE_QUOTE.equals(nextTok)) {

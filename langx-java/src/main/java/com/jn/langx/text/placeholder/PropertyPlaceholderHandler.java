@@ -1,6 +1,7 @@
 package com.jn.langx.text.placeholder;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.properties.PropertiesPlaceholderParser;
 import com.jn.langx.util.Preconditions;
@@ -154,16 +155,16 @@ public class PropertyPlaceholderHandler {
                 if (this.expressionSeparator != null) {
 
                     if (placeholder.contains(expressionSeparator)) {
-                        StringTokenizer tokenizer = new StringTokenizer(placeholder, this.expressionSeparator, true);
+                        StrTokenizer tokenizer = new StrTokenizer(placeholder, true,this.expressionSeparator);
                         StringBuilder variableBuilder = new StringBuilder();
                         StringBuilder expressionBuilder = new StringBuilder();
 
                         int placeholderPrefixSuffixSum = 0;
-                        while (tokenizer.hasMoreTokens()) {
-                            String token = tokenizer.nextToken();
+                        while (tokenizer.hasNext()) {
+                            String token = tokenizer.next();
                             if (Strings.equals(this.expressionSeparator, token) && placeholderPrefixSuffixSum % 2 == 0) {
-                                while (tokenizer.hasMoreTokens()) {
-                                    expressionBuilder.append(tokenizer.nextToken());
+                                while (tokenizer.hasNext()) {
+                                    expressionBuilder.append(tokenizer.next());
                                 }
                             } else {
                                 variableBuilder.append(token);
