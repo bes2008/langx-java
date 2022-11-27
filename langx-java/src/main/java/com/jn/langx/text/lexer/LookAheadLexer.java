@@ -4,12 +4,12 @@ package com.jn.langx.text.lexer;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
-public abstract class LookAheadLexer extends LexerBase {
+public abstract class LookAheadLexer extends AbstractLexer {
     private int myLastOffset;
 
     private int myLastState;
 
-    private final Lexer myBaseLexer;
+    private final AbstractLexer myBaseLexer;
 
     private int myTokenStart;
 
@@ -17,13 +17,13 @@ public abstract class LookAheadLexer extends LexerBase {
 
     private final MutableRandomAccessQueue<Integer> myEndOffsetCache;
 
-    public LookAheadLexer(@NonNull Lexer baseLexer, int capacity) {
+    public LookAheadLexer(@NonNull AbstractLexer baseLexer, int capacity) {
         this.myBaseLexer = baseLexer;
         this.myTypeCache = new MutableRandomAccessQueue<TokenType>(capacity);
         this.myEndOffsetCache = new MutableRandomAccessQueue<Integer>(capacity);
     }
 
-    public LookAheadLexer(@NonNull Lexer baseLexer) {
+    public LookAheadLexer(@NonNull AbstractLexer baseLexer) {
         this(baseLexer, 64);
     }
 
@@ -46,8 +46,9 @@ public abstract class LookAheadLexer extends LexerBase {
             this.myTypeCache.pullFirst();
             this.myTokenStart = this.myEndOffsetCache.pullFirst();
         }
-        if (this.myTypeCache.isEmpty())
+        if (this.myTypeCache.isEmpty()) {
             doLookAhead();
+        }
     }
 
     private void doLookAhead() {
@@ -98,7 +99,7 @@ public abstract class LookAheadLexer extends LexerBase {
     }
 
     public int getTokenEnd() {
-        return ((Integer) this.myEndOffsetCache.peekFirst()).intValue();
+        return this.myEndOffsetCache.peekFirst();
     }
 
     public int getTokenStart() {
