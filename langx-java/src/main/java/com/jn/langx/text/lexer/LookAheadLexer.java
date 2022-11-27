@@ -33,18 +33,18 @@ public abstract class LookAheadLexer extends LexerBase {
 
     protected void addToken(int endOffset, TokenType type) {
         this.myTypeCache.addLast(type);
-        this.myEndOffsetCache.addLast(Integer.valueOf(endOffset));
+        this.myEndOffsetCache.addLast(endOffset);
     }
 
     protected void lookAhead(@NonNull Lexer baseLexer) {
-        Preconditions.checkNotNullArgument(baseLexer,"baseLexer");
+        Preconditions.checkNotNullArgument(baseLexer, "baseLexer");
         advanceLexer(baseLexer);
     }
 
     public void advance() {
         if (!this.myTypeCache.isEmpty()) {
             this.myTypeCache.pullFirst();
-            this.myTokenStart = ((Integer) this.myEndOffsetCache.pullFirst()).intValue();
+            this.myTokenStart = this.myEndOffsetCache.pullFirst();
         }
         if (this.myTypeCache.isEmpty())
             doLookAhead();
@@ -59,8 +59,9 @@ public abstract class LookAheadLexer extends LexerBase {
 
     @NonNull
     public CharSequence getBufferSequence() {
-        if (this.myBaseLexer.getBufferSequence() == null)
-           throw new NullPointerException();
+        if (this.myBaseLexer.getBufferSequence() == null) {
+            throw new NullPointerException();
+        }
         return this.myBaseLexer.getBufferSequence();
     }
 
@@ -88,7 +89,7 @@ public abstract class LookAheadLexer extends LexerBase {
     }
 
     protected final int getCachedOffset(int index) {
-        return ((Integer) this.myEndOffsetCache.get(index)).intValue();
+        return this.myEndOffsetCache.get(index);
     }
 
     public int getState() {
@@ -117,8 +118,9 @@ public abstract class LookAheadLexer extends LexerBase {
     protected void restore(@NonNull LookAheadLexerPosition position) {
         Preconditions.checkNotNullArgument(position, "position");
         start(this.myBaseLexer.getBufferSequence(), position.lastOffset, this.myBaseLexer.getBufferEnd(), position.lastState);
-        for (int i = 0; i < position.advanceCount; i++)
+        for (int i = 0; i < position.advanceCount; i++) {
             advance();
+        }
     }
 
     public TokenType getTokenType() {
