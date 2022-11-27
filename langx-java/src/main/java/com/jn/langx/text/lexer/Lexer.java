@@ -33,8 +33,9 @@ public abstract class Lexer {
 
     @NonNull
     public String getTokenText() {
-        if (getTokenSequence().toString() == null)
+        if (getTokenSequence().toString() == null) {
             throw new NullPointerException();
+        }
         return getTokenSequence().toString();
     }
 

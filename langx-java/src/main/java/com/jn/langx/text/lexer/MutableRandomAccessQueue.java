@@ -103,8 +103,9 @@ class MutableRandomAccessQueue<T> {
 
     T set(int index, T value) {
         int arrayIndex = this.myFirst + index;
-        if (this.isWrapped && arrayIndex >= this.myArray.length)
+        if (this.isWrapped && arrayIndex >= this.myArray.length) {
             arrayIndex -= this.myArray.length;
+        }
         T old = getRaw(arrayIndex);
         this.myArray[arrayIndex] = value;
         return old;
@@ -112,8 +113,9 @@ class MutableRandomAccessQueue<T> {
 
     T get(int index) {
         int arrayIndex = this.myFirst + index;
-        if (this.isWrapped && arrayIndex >= this.myArray.length)
+        if (this.isWrapped && arrayIndex >= this.myArray.length) {
             arrayIndex -= this.myArray.length;
+        }
         return getRaw(arrayIndex);
     }
 }
