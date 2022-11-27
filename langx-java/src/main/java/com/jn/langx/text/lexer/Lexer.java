@@ -11,7 +11,7 @@ interface Lexer {
     void start(@NonNull CharSequence buf);
 
     @NonNull
-    CharSequence getTokenSequence();
+    String getTokenText();
 
     int getState();
 

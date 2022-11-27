@@ -20,8 +20,8 @@ public abstract class AbstractLexer implements Lexer {
     }
 
     @NonNull
-    public CharSequence getTokenSequence() {
-        return getBufferSequence().subSequence(getTokenStart(), getTokenEnd());
+    public String getTokenText() {
+        return getBufferSequence().subSequence(getTokenStart(), getTokenEnd()).toString();
     }
 
     @NonNull
