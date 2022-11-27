@@ -25,7 +25,7 @@ interface Lexer {
     /**
      * 前进
      */
-    void advance();
+    void next();
 
     @NonNull
     LexerPosition getCurrentPosition();

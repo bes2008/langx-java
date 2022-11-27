@@ -41,7 +41,7 @@ public abstract class LookAheadLexer extends AbstractLexer {
         advanceLexer(baseLexer);
     }
 
-    public void advance() {
+    public void next() {
         if (!this.myTypeCache.isEmpty()) {
             this.myTypeCache.pullFirst();
             this.myTokenStart = this.myEndOffsetCache.pullFirst();
@@ -120,7 +120,7 @@ public abstract class LookAheadLexer extends AbstractLexer {
         Preconditions.checkNotNullArgument(position, "position");
         start(this.myBaseLexer.getBufferSequence(), position.lastOffset, this.myBaseLexer.getBufferEnd(), position.lastState);
         for (int i = 0; i < position.advanceCount; i++) {
-            advance();
+            next();
         }
     }
 
@@ -180,6 +180,6 @@ public abstract class LookAheadLexer extends AbstractLexer {
     protected final void advanceAs(@NonNull Lexer lexer, TokenType type) {
         Preconditions.checkNotNullArgument(lexer, "lexer");
         addToken(type);
-        lexer.advance();
+        lexer.next();
     }
 }
