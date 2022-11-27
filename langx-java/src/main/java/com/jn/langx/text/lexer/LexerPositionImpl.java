@@ -1,19 +1,20 @@
 package com.jn.langx.text.lexer;
-class LexerPositionImpl implements LexerPosition {
-    private final int myOffset;
 
-    private final int myState;
+class LexerPositionImpl implements LexerPosition {
+    private final int offset;
+
+    private final int state;
 
     LexerPositionImpl(int offset, int state) {
-        this.myOffset = offset;
-        this.myState = state;
+        this.offset = offset;
+        this.state = state;
     }
 
     public int getOffset() {
-        return this.myOffset;
+        return this.offset;
     }
 
     public int getState() {
-        return this.myState;
+        return this.state;
     }
 }
