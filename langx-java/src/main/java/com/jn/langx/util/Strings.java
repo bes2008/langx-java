@@ -3719,6 +3719,13 @@ public class Strings {
         return separatorToCamel(string, "_", firstLetterToLower);
     }
 
+    /**
+     * 将字符串分割后，转为驼峰
+     * @param string
+     * @param separator
+     * @param firstLetterToLower
+     * @return
+     */
     public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
         final StringBuilder builder = new StringBuilder();
         Pipeline.<String>of(Strings.split(string, separator)).map(new Function<String, String>() {
@@ -3736,6 +3743,30 @@ public class Strings {
             return Strings.lowerCase(builder.toString(), 0, 1);
         }
         return builder.toString();
+    }
+    public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength) {
+        Preconditions.checkNotNullArgument(text, "text");
+        return shortenTextWithEllipsis(text, maxLength, suffixLength, false);
+    }
+
+    public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength, boolean useEllipsisSymbol) {
+        Preconditions.checkNotNullArgument(text, "text");
+        String symbol = useEllipsisSymbol ? "…" : "...";
+        return shortenTextWithEllipsis(text, maxLength, suffixLength, symbol);
+    }
+
+    public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength, @NonNull String symbol) {
+        Preconditions.checkNotNullArgument(text, "text");
+        Preconditions.checkNotNullArgument(symbol, "symbol");
+        int textLength = text.length();
+        if (textLength > maxLength) {
+            int prefixLength = maxLength - suffixLength - symbol.length();
+            assert prefixLength >= 0;
+            if (text.substring(0, prefixLength) + symbol + text.substring(textLength - suffixLength) == null)
+                throw new NullPointerException();
+            return text.substring(0, prefixLength) + symbol + text.substring(textLength - suffixLength);
+        }
+        return text;
     }
 
 
