@@ -30,7 +30,10 @@ interface Lexer {
     @NonNull
     LexerPosition getCurrentPosition();
 
-    // 重来
+    /**
+     * 从指定的位置开始
+     * @param position
+     */
     void restore(@NonNull LexerPosition position);
 
     @NonNull
