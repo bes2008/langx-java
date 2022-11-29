@@ -13,6 +13,7 @@ import com.jn.langx.util.collection.iter.WrappedIterable;
 import com.jn.langx.util.collection.sequence.IterableSequence;
 import com.jn.langx.util.collection.sequence.ListSequence;
 import com.jn.langx.util.collection.sequence.SortedSetSequence;
+import com.jn.langx.util.collection.sort.TimSort;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
@@ -1685,7 +1686,7 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <E extends Comparable<E>, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, boolean reverse) {
+    public static <E extends Comparable<E>, C extends Collection<E>> List<E> sort(@Nullable C collection, boolean reverse) {
         return sort(collection, new ComparableComparator<E>(), reverse);
     }
 
@@ -1693,7 +1694,7 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <E, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator) {
+    public static <E, C extends Collection<E>> List<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator) {
         return sort(collection, comparator, false);
     }
 
@@ -1701,14 +1702,15 @@ public class Collects {
      * sort a collection, return an new list. it is different to
      * Collections.sort(list) is that : Collections.sort() return void
      */
-    public static <E, C extends Collection<E>> TreeSet<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator, boolean reverse) {
+    public static <E, C extends Collection<E>> List<E> sort(@Nullable C collection, @NonNull Comparator<E> comparator, boolean reverse) {
         Preconditions.checkNotNull(comparator);
         if (Emptys.isEmpty(collection)) {
-            return new NonDistinctTreeSet<E>(comparator);
+            return Collects.emptyArrayList();
         } else {
-            TreeSet<E> set = new NonDistinctTreeSet<E>(reverse ? Collections.reverseOrder(comparator) : comparator);
-            set.addAll(filter(collection, Functions.<E>nonNullPredicate()));
-            return set;
+            Comparator c = reverse ? Collections.reverseOrder(comparator) : comparator;
+            Object[] a = Collects.toArray(collection);
+            TimSort.sort(a, c);
+            return (List<E>) asList(a);
         }
     }
 
