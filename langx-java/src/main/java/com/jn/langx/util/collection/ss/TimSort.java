@@ -1,6 +1,9 @@
-package com.jn.langx.util.collection.sort;
+package com.jn.langx.util.collection.ss;
 
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Arrs;
+import com.jn.langx.util.comparator.ComparableComparator;
 
 import java.util.Comparator;
 
@@ -55,6 +58,9 @@ import java.util.Comparator;
  * <p>
  * migrate from jdk 8 TimSort
  *
+ *
+ * 基于 插入排序和并归排序，形成的TimSort
+ * https://www.geeksforgeeks.org/timsort/
  * @since 5.1.1
  */
 public class TimSort<T> {
@@ -194,7 +200,11 @@ public class TimSort<T> {
      * @param workLen    usable size of work array
      */
     public static <T> void sort(T[] a, int fromIndex, int endIndex, Comparator<? super T> comparator, T[] work, int workBase, int workLen) {
-        assert comparator != null && a != null && fromIndex >= 0 && fromIndex <= endIndex && endIndex <= a.length;
+        if (Objs.isEmpty(a)) {
+            return;
+        }
+        comparator = comparator == null ? new ComparableComparator() : comparator;
+        Preconditions.checkTrue(fromIndex >= 0 && fromIndex <= endIndex && endIndex <= a.length, "invalid index, fromIndex:{}, endIndex:{}, length:{}", fromIndex, endIndex, a.length);
 
         int nRemaining = endIndex - fromIndex;
         if (nRemaining < 2)

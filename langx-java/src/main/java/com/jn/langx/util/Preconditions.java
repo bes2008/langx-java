@@ -267,16 +267,16 @@ public class Preconditions {
      *                  If the checkKind corresponds a the name of a range check method
      *                  then the bounds arguments are those that can be passed in order
      *                  to the method.
-     * @param oobef     the exception formatter that when applied with a checkKind
+     * @param outOfBoundExceptionFormatter     the exception formatter that when applied with a checkKind
      *                  and a list out-of-bounds arguments returns a runtime exception.
      *                  If {@code null} then, it is as if an exception formatter was
      *                  supplied that returns {@link IndexOutOfBoundsException} for any
      *                  given arguments.
      * @return the runtime exception
      */
-    private static RuntimeException outOfBounds(Function2<String, List<Integer>, ? extends RuntimeException> oobef, String checkKind, Integer... args) {
+    private static RuntimeException outOfBounds(Function2<String, List<Integer>, ? extends RuntimeException> outOfBoundExceptionFormatter, String checkKind, Integer... args) {
         List<Integer> largs = Collects.asList(args);
-        RuntimeException e = oobef == null ? null : oobef.apply(checkKind, largs);
+        RuntimeException e = outOfBoundExceptionFormatter == null ? null : outOfBoundExceptionFormatter.apply(checkKind, largs);
         return e == null ? new IndexOutOfBoundsException(outOfBoundsMessage(checkKind, largs)) : e;
     }
 
@@ -455,6 +455,9 @@ public class Preconditions {
         return index;
     }
 
+    public static <X extends RuntimeException> int checkFromToIndex(int fromIndex, int toIndex, int length){
+        return checkFromToIndex(fromIndex, toIndex, length,null);
+    }
     /**
      * Checks if the sub-range from {@code fromIndex} (inclusive) to
      * {@code toIndex} (exclusive) is within the bounds of range from {@code 0}

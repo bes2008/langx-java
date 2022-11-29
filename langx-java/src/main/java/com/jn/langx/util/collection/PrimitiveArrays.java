@@ -3,6 +3,7 @@ package com.jn.langx.util.collection;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.ss.DualPivotQuicksort;
 import com.jn.langx.util.function.Supplier;
 
 import java.lang.reflect.Array;
@@ -784,15 +785,16 @@ public class PrimitiveArrays {
 
     // boolean IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final boolean[] array, final boolean valueToFind) {
         return indexOf(array, valueToFind, 0);
@@ -806,12 +808,12 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null}
-     *  array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null}
+     * array input
      */
     public static int indexOf(final boolean[] array, final boolean valueToFind, int startIndex) {
         if (Objs.isEmpty(array)) {
@@ -830,15 +832,16 @@ public class PrimitiveArrays {
 
     // byte IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final byte[] array, final byte valueToFind) {
         return indexOf(array, valueToFind, 0);
@@ -852,11 +855,11 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final byte[] array, final byte valueToFind, int startIndex) {
         if (array == null) {
@@ -875,15 +878,16 @@ public class PrimitiveArrays {
 
     // char IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      * @since 2.1
      */
     public static int indexOf(final char[] array, final char valueToFind) {
@@ -898,11 +902,11 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      * @since 2.1
      */
     public static int indexOf(final char[] array, final char valueToFind, int startIndex) {
@@ -922,15 +926,16 @@ public class PrimitiveArrays {
 
     // double IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final double[] array, final double valueToFind) {
         return indexOf(array, valueToFind, 0);
@@ -943,11 +948,11 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
-     * @param tolerance tolerance of the search
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
+     * @param tolerance   tolerance of the search
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final double[] array, final double valueToFind, final double tolerance) {
         return indexOf(array, valueToFind, 0, tolerance);
@@ -961,11 +966,11 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final double[] array, final double valueToFind, int startIndex) {
         if (Objs.isEmpty(array)) {
@@ -994,12 +999,12 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
-     * @param tolerance tolerance of the search
+     * @param tolerance   tolerance of the search
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final double[] array, final double valueToFind, int startIndex, final double tolerance) {
         if (Objs.isEmpty(array)) {
@@ -1020,15 +1025,16 @@ public class PrimitiveArrays {
 
     // float IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final float[] array, final float valueToFind) {
         return indexOf(array, valueToFind, 0);
@@ -1042,11 +1048,11 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final float[] array, final float valueToFind, int startIndex) {
         if (Objs.isEmpty(array)) {
@@ -1067,15 +1073,16 @@ public class PrimitiveArrays {
 
     // int IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final int[] array, final int valueToFind) {
         return indexOf(array, valueToFind, 0);
@@ -1089,11 +1096,11 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final int[] array, final int valueToFind, int startIndex) {
         if (array == null) {
@@ -1112,15 +1119,16 @@ public class PrimitiveArrays {
 
     // long IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final long[] array, final long valueToFind) {
         return indexOf(array, valueToFind, 0);
@@ -1134,11 +1142,11 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final long[] array, final long valueToFind, int startIndex) {
         if (array == null) {
@@ -1158,15 +1166,16 @@ public class PrimitiveArrays {
 
     // short IndexOf
     //-----------------------------------------------------------------------
+
     /**
      * <p>Finds the index of the given value in the array.
      *
      * <p>This method returns {@link #INDEX_NOT_FOUND} ({@code -1}) for a {@code null} input array.
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final short[] array, final short valueToFind) {
         return indexOf(array, valueToFind, 0);
@@ -1180,11 +1189,11 @@ public class PrimitiveArrays {
      * <p>A negative startIndex is treated as zero. A startIndex larger than the array
      * length will return {@link #INDEX_NOT_FOUND} ({@code -1}).
      *
-     * @param array  the array to search through for the object, may be {@code null}
-     * @param valueToFind  the value to find
+     * @param array       the array to search through for the object, may be {@code null}
+     * @param valueToFind the value to find
      * @param startIndex  the index to start searching at
      * @return the index of the value within the array,
-     *  {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
+     * {@link #INDEX_NOT_FOUND} ({@code -1}) if not found or {@code null} array input
      */
     public static int indexOf(final short[] array, final short valueToFind, int startIndex) {
         if (array == null) {
@@ -1212,12 +1221,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static boolean[] insert(final int index, final boolean[] array, final boolean... values) {
@@ -1254,12 +1263,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static byte[] insert(final int index, final byte[] array, final byte... values) {
@@ -1296,12 +1305,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static char[] insert(final int index, final char[] array, final char... values) {
@@ -1338,12 +1347,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static double[] insert(final int index, final double[] array, final double... values) {
@@ -1380,12 +1389,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static float[] insert(final int index, final float[] array, final float... values) {
@@ -1422,12 +1431,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static int[] insert(final int index, final int[] array, final int... values) {
@@ -1464,12 +1473,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static long[] insert(final int index, final long[] array, final long... values) {
@@ -1506,12 +1515,12 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static short[] insert(final int index, final short[] array, final short... values) {
@@ -1548,13 +1557,13 @@ public class PrimitiveArrays {
      * ArrayUtils.insert(index, null, values)    = null
      * </pre>
      *
-     * @param <T> The type of elements in {@code array} and {@code values}
-     * @param index the position within {@code array} to insert the new values
-     * @param array the array to insert the values into, may be {@code null}
+     * @param <T>    The type of elements in {@code array} and {@code values}
+     * @param index  the position within {@code array} to insert the new values
+     * @param array  the array to insert the values into, may be {@code null}
      * @param values the new values to insert, may be {@code null}
      * @return The new array.
      * @throws IndexOutOfBoundsException if {@code array} is provided
-     * and either {@code index < 0} or {@code index > array.length}
+     *                                   and either {@code index < 0} or {@code index > array.length}
      * @since 3.6
      */
     public static <T> T[] insert(final int index, final T[] array, final T... values) {
@@ -1578,8 +1587,7 @@ public class PrimitiveArrays {
 
         final Class<?> type = array.getClass().getComponentType();
         @SuppressWarnings("unchecked") // OK, because array and values are of type T
-        final
-        T[] result = (T[]) Array.newInstance(type, array.length + values.length);
+        final T[] result = (T[]) Array.newInstance(type, array.length + values.length);
 
         System.arraycopy(values, 0, result, index, values.length);
         if (index > 0) {
@@ -1604,7 +1612,7 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param array  the array to clone, may be {@code null}
+     * @param array the array to clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static byte[] clone(final byte[] array) {
@@ -1620,7 +1628,7 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param array  the array to clone, may be {@code null}
+     * @param array the array to clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static char[] clone(final char[] array) {
@@ -1636,7 +1644,7 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param array  the array to clone, may be {@code null}
+     * @param array the array to clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static double[] clone(final double[] array) {
@@ -1652,7 +1660,7 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param array  the array to clone, may be {@code null}
+     * @param array the array to clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static float[] clone(final float[] array) {
@@ -1668,7 +1676,7 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param array  the array to clone, may be {@code null}
+     * @param array the array to clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static int[] clone(final int[] array) {
@@ -1684,7 +1692,7 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param array  the array to clone, may be {@code null}
+     * @param array the array to clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static long[] clone(final long[] array) {
@@ -1700,7 +1708,7 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param array  the array to clone, may be {@code null}
+     * @param array the array to clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static short[] clone(final short[] array) {
@@ -1712,6 +1720,7 @@ public class PrimitiveArrays {
 
     // Clone
     //-----------------------------------------------------------------------
+
     /**
      * <p>Shallow clones an array returning a typecast result and handling
      * {@code null}.
@@ -1721,8 +1730,8 @@ public class PrimitiveArrays {
      *
      * <p>This method returns {@code null} for a {@code null} input array.
      *
-     * @param <T> the component type of the array
-     * @param array  the array to shallow clone, may be {@code null}
+     * @param <T>   the component type of the array
+     * @param array the array to shallow clone, may be {@code null}
      * @return the cloned array, {@code null} if {@code null} input
      */
     public static <T> T[] clone(final T[] array) {
@@ -1731,4 +1740,304 @@ public class PrimitiveArrays {
         }
         return array.clone();
     }
+
+    /**
+     * Sorts the specified array into ascending numerical order.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(int[] a) {
+        DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified range of the array into ascending order. The range
+     * to be sorted extends from the index {@code fromIndex}, inclusive, to
+     * the index {@code toIndex}, exclusive. If {@code fromIndex == toIndex},
+     * the range to be sorted is empty.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a         the array to be sorted
+     * @param fromIndex the index of the first element, inclusive, to be sorted
+     * @param toIndex   the index of the last element, exclusive, to be sorted
+     * @throws IllegalArgumentException       if {@code fromIndex > toIndex}
+     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or {@code toIndex > a.length}
+     */
+    public static void sort(int[] a, int fromIndex, int toIndex) {
+        Preconditions.checkFromToIndex(fromIndex, toIndex, a.length);
+        DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified array into ascending numerical order.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(long[] a) {
+        DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified range of the array into ascending order. The range
+     * to be sorted extends from the index {@code fromIndex}, inclusive, to
+     * the index {@code toIndex}, exclusive. If {@code fromIndex == toIndex},
+     * the range to be sorted is empty.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a         the array to be sorted
+     * @param fromIndex the index of the first element, inclusive, to be sorted
+     * @param toIndex   the index of the last element, exclusive, to be sorted
+     * @throws IllegalArgumentException       if {@code fromIndex > toIndex}
+     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or {@code toIndex > a.length}
+     */
+    public static void sort(long[] a, int fromIndex, int toIndex) {
+        Preconditions.checkFromToIndex(fromIndex, toIndex, a.length);
+        DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified array into ascending numerical order.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(short[] a) {
+        DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified range of the array into ascending order. The range
+     * to be sorted extends from the index {@code fromIndex}, inclusive, to
+     * the index {@code toIndex}, exclusive. If {@code fromIndex == toIndex},
+     * the range to be sorted is empty.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a         the array to be sorted
+     * @param fromIndex the index of the first element, inclusive, to be sorted
+     * @param toIndex   the index of the last element, exclusive, to be sorted
+     * @throws IllegalArgumentException       if {@code fromIndex > toIndex}
+     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or {@code toIndex > a.length}
+     */
+    public static void sort(short[] a, int fromIndex, int toIndex) {
+        Preconditions.checkFromToIndex(fromIndex, toIndex, a.length);
+        DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified array into ascending numerical order.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(char[] a) {
+        DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified range of the array into ascending order. The range
+     * to be sorted extends from the index {@code fromIndex}, inclusive, to
+     * the index {@code toIndex}, exclusive. If {@code fromIndex == toIndex},
+     * the range to be sorted is empty.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a         the array to be sorted
+     * @param fromIndex the index of the first element, inclusive, to be sorted
+     * @param toIndex   the index of the last element, exclusive, to be sorted
+     * @throws IllegalArgumentException       if {@code fromIndex > toIndex}
+     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or {@code toIndex > a.length}
+     */
+    public static void sort(char[] a, int fromIndex, int toIndex) {
+        Preconditions.checkFromToIndex(fromIndex, toIndex, a.length);
+        DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified array into ascending numerical order.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(byte[] a) {
+        DualPivotQuicksort.sort(a, 0, a.length - 1);
+    }
+
+    /**
+     * Sorts the specified range of the array into ascending order. The range
+     * to be sorted extends from the index {@code fromIndex}, inclusive, to
+     * the index {@code toIndex}, exclusive. If {@code fromIndex == toIndex},
+     * the range to be sorted is empty.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a         the array to be sorted
+     * @param fromIndex the index of the first element, inclusive, to be sorted
+     * @param toIndex   the index of the last element, exclusive, to be sorted
+     * @throws IllegalArgumentException       if {@code fromIndex > toIndex}
+     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or {@code toIndex > a.length}
+     */
+    public static void sort(byte[] a, int fromIndex, int toIndex) {
+        Preconditions.checkFromToIndex(fromIndex, toIndex, a.length);
+        DualPivotQuicksort.sort(a, fromIndex, toIndex - 1);
+    }
+
+    /**
+     * Sorts the specified array into ascending numerical order.
+     *
+     * <p>The {@code <} relation does not provide a total order on all float
+     * values: {@code -0.0f == 0.0f} is {@code true} and a {@code Float.NaN}
+     * value compares neither less than, greater than, nor equal to any value,
+     * even itself. This method uses the total order imposed by the method
+     * {@link Float#compareTo}: {@code -0.0f} is treated as less than value
+     * {@code 0.0f} and {@code Float.NaN} is considered greater than any
+     * other value and all {@code Float.NaN} values are considered equal.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(float[] a) {
+        DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified range of the array into ascending order. The range
+     * to be sorted extends from the index {@code fromIndex}, inclusive, to
+     * the index {@code toIndex}, exclusive. If {@code fromIndex == toIndex},
+     * the range to be sorted is empty.
+     *
+     * <p>The {@code <} relation does not provide a total order on all float
+     * values: {@code -0.0f == 0.0f} is {@code true} and a {@code Float.NaN}
+     * value compares neither less than, greater than, nor equal to any value,
+     * even itself. This method uses the total order imposed by the method
+     * {@link Float#compareTo}: {@code -0.0f} is treated as less than value
+     * {@code 0.0f} and {@code Float.NaN} is considered greater than any
+     * other value and all {@code Float.NaN} values are considered equal.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a         the array to be sorted
+     * @param fromIndex the index of the first element, inclusive, to be sorted
+     * @param toIndex   the index of the last element, exclusive, to be sorted
+     * @throws IllegalArgumentException       if {@code fromIndex > toIndex}
+     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or {@code toIndex > a.length}
+     */
+    public static void sort(float[] a, int fromIndex, int toIndex) {
+        Preconditions.checkFromToIndex(fromIndex, toIndex, a.length);
+        DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified array into ascending numerical order.
+     *
+     * <p>The {@code <} relation does not provide a total order on all double
+     * values: {@code -0.0d == 0.0d} is {@code true} and a {@code Double.NaN}
+     * value compares neither less than, greater than, nor equal to any value,
+     * even itself. This method uses the total order imposed by the method
+     * {@link Double#compareTo}: {@code -0.0d} is treated as less than value
+     * {@code 0.0d} and {@code Double.NaN} is considered greater than any
+     * other value and all {@code Double.NaN} values are considered equal.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a the array to be sorted
+     */
+    public static void sort(double[] a) {
+        DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0);
+    }
+
+    /**
+     * Sorts the specified range of the array into ascending order. The range
+     * to be sorted extends from the index {@code fromIndex}, inclusive, to
+     * the index {@code toIndex}, exclusive. If {@code fromIndex == toIndex},
+     * the range to be sorted is empty.
+     *
+     * <p>The {@code <} relation does not provide a total order on all double
+     * values: {@code -0.0d == 0.0d} is {@code true} and a {@code Double.NaN}
+     * value compares neither less than, greater than, nor equal to any value,
+     * even itself. This method uses the total order imposed by the method
+     * {@link Double#compareTo}: {@code -0.0d} is treated as less than value
+     * {@code 0.0d} and {@code Double.NaN} is considered greater than any
+     * other value and all {@code Double.NaN} values are considered equal.
+     *
+     * <p>Implementation note: The sorting algorithm is a Dual-Pivot Quicksort
+     * by Vladimir Yaroslavskiy, Jon Bentley, and Joshua Bloch. This algorithm
+     * offers O(n log(n)) performance on many data sets that cause other
+     * quicksorts to degrade to quadratic performance, and is typically
+     * faster than traditional (one-pivot) Quicksort implementations.
+     *
+     * @param a         the array to be sorted
+     * @param fromIndex the index of the first element, inclusive, to be sorted
+     * @param toIndex   the index of the last element, exclusive, to be sorted
+     * @throws IllegalArgumentException       if {@code fromIndex > toIndex}
+     * @throws ArrayIndexOutOfBoundsException if {@code fromIndex < 0} or {@code toIndex > a.length}
+     */
+    public static void sort(double[] a, int fromIndex, int toIndex) {
+        Preconditions.checkFromToIndex(fromIndex, toIndex, a.length);
+        DualPivotQuicksort.sort(a, fromIndex, toIndex - 1, null, 0, 0);
+    }
+
+
 }
