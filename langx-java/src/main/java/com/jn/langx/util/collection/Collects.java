@@ -13,7 +13,7 @@ import com.jn.langx.util.collection.iter.WrappedIterable;
 import com.jn.langx.util.collection.sequence.IterableSequence;
 import com.jn.langx.util.collection.sequence.ListSequence;
 import com.jn.langx.util.collection.sequence.SortedSetSequence;
-import com.jn.langx.util.collection.sorted.TimSort;
+import com.jn.langx.util.collection.sort.TimSort;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;

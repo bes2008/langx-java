@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection.sorted;
+package com.jn.langx.util.collection.sort;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.comparator.ComparableComparator;

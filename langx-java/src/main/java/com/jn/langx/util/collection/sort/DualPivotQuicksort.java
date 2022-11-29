@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection.sorted;
+package com.jn.langx.util.collection.sort;
 
 /**
  * This class implements the Dual-Pivot Quicksort algorithm by
