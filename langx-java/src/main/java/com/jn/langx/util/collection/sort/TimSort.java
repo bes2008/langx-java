@@ -54,6 +54,8 @@ import java.util.Comparator;
  * <p>
  * <p>
  * migrate from jdk 8 TimSort
+ *
+ * @since 5.1.1
  */
 public class TimSort<T> {
 
@@ -190,7 +192,6 @@ public class TimSort<T> {
      * @param work       a workspace array (slice)
      * @param workBase   origin of usable space in work array
      * @param workLen    usable size of work array
-     * @since 5.1.1
      */
     public static <T> void sort(T[] a, int fromIndex, int endIndex, Comparator<? super T> comparator, T[] work, int workBase, int workLen) {
         assert comparator != null && a != null && fromIndex >= 0 && fromIndex <= endIndex && endIndex <= a.length;
