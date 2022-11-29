@@ -3,7 +3,7 @@ package com.jn.langx.util.collection;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collection.ss.DualPivotQuicksort;
+import com.jn.langx.util.collection.sorted.DualPivotQuicksort;
 import com.jn.langx.util.function.Supplier;
 
 import java.lang.reflect.Array;

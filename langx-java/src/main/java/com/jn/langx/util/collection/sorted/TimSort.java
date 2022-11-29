@@ -1,4 +1,4 @@
-package com.jn.langx.util.collection.ss;
+package com.jn.langx.util.collection.sorted;
 
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
