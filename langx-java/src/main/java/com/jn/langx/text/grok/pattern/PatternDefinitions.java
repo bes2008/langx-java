@@ -72,6 +72,7 @@ public class PatternDefinitions {
     }
 
     public static Map<String, PatternDefinition> readDefinitions(Resource resource) {
+        logger.info("loading grok pattern definition resource: {}", resource);
         InputStream in = null;
         try {
             in = resource.getInputStream();

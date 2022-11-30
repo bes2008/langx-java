@@ -5,12 +5,12 @@ import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.text.grok.GrokCompiler;
+import com.jn.langx.text.grok.GrokTemplate;
 import com.jn.langx.text.grok.logstash.EcsCompatibility;
 import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
+import com.jn.langx.text.grok.pattern.DefaultPatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.MultipleLevelPatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.PatternDefinition;
-import com.jn.langx.text.grok.pattern.DefaultPatternDefinitionRepository;
-import com.jn.langx.text.grok.GrokTemplate;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
@@ -69,8 +69,9 @@ public class GrokTest {
                 .build();
         repository.setCache(cache3);
 
-        GrokCompiler compiler =  new GrokCompiler();
+        GrokCompiler compiler = new GrokCompiler();
         compiler.setDefinitionRepository(repository);
+        compiler.startup();
 
         this.tomcatLogTemplate = compiler.compile("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?");
         this.javastackTemplate = compiler.compile("(?:%{CRLF}?%{JAVASTACK:stack})?");

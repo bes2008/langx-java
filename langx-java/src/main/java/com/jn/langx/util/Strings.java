@@ -1745,13 +1745,22 @@ public class Strings {
             return text;
         }
 
-        StrTokenizer tokenizer = new StrTokenizer(text, true, max, searchString);
+        StrTokenizer tokenizer = new StrTokenizer(text, true, -1, searchString);
         List<String> tokens = tokenizer.tokenize();
         StringBuilder builder = new StringBuilder();
+        int count = 0;
+        boolean continueReplace = true;
         for (int i = 0; i < tokens.size(); i++) {
+            if (max >= 0) {
+                if (count >= max) {
+                    continueReplace = false;
+                }
+            }
             String token = tokens.get(i);
-            if (Objs.equals(searchString, token)) {
+
+            if (continueReplace && Objs.equals(searchString, token)) {
                 builder.append(replacement);
+                count++;
             } else {
                 builder.append(token);
             }
@@ -3721,6 +3730,7 @@ public class Strings {
 
     /**
      * 将字符串分割后，转为驼峰
+     *
      * @param string
      * @param separator
      * @param firstLetterToLower
@@ -3744,6 +3754,7 @@ public class Strings {
         }
         return builder.toString();
     }
+
     public static String shortenTextWithEllipsis(@NonNull String text, int maxLength, int suffixLength) {
         Preconditions.checkNotNullArgument(text, "text");
         return shortenTextWithEllipsis(text, maxLength, suffixLength, false);

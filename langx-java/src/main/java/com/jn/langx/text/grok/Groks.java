@@ -14,22 +14,24 @@ public class Groks {
 
     /**
      * Extract Grok patter like %{FOO} to FOO, Also Grok pattern with semantic.
+     *
+     * %{TOMCAT_LEVEL: level}
      */
-    public static final Regexp GROK_PATTERN = Regexps.createRegexp(
-            "%\\{"
-                    + "(?<name>"
-                    + "(?<pattern>[A-z0-9]+)"
-                    + "(?::(?<subname>[A-z0-9_:;,\\-\\/\\s\\.']+))?"
-                    + ")"
-                    + "(?:=(?<definition>"
-                    + "(?:"
-                    + "(?:[^{}]+|\\.+)+"
-                    + ")+"
-                    + ")"
-                    + ")?"
-                    + "\\}");
+    private static final String GROK_PATTERN_STR = "%\\{"
+            + "(?<name>"
+            + "(?<pattern>[A-z0-9]+)"
+            + "(?::(?<subname>[A-z0-9_:;,\\-\\/\\s\\.']+))?"
+            + ")"
+            + "(?:=(?<definition>"
+            + "(?:"
+            + "(?:[^{}]+|\\.+)+"
+            + ")+"
+            + ")"
+            + ")?"
+            + "\\}";
+    public static final Regexp GROK_PATTERN = Regexps.createRegexp(GROK_PATTERN_STR);
 
-    public static final Regexp NAMED_REGEX =  Regexps.createRegexp("\\(\\?<([a-zA-Z][a-zA-Z0-9]*)>");
+    private static final Regexp NAMED_REGEX = Regexps.createRegexp("\\(\\?<(\\w+)>");
 
     public static Set<String> getNameGroups(String regex) {
         Set<String> namedGroups = new LinkedHashSet<String>();
@@ -40,4 +42,5 @@ public class Groks {
         return namedGroups;
     }
 
+    public static Set<String> GROK_PATTERN_NAMED_GROUPS = getNameGroups(GROK_PATTERN_STR);
 }

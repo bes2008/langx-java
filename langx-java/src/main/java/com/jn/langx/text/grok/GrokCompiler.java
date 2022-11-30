@@ -3,9 +3,10 @@ package com.jn.langx.text.grok;
 
 import com.jn.langx.lifecycle.AbstractLifecycle;
 import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.text.grok.pattern.DefaultPatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.PatternDefinition;
 import com.jn.langx.text.grok.pattern.PatternDefinitionRepository;
-import com.jn.langx.text.grok.pattern.DefaultPatternDefinitionRepository;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -19,8 +20,6 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
 
-import static java.lang.String.format;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+
+import static java.lang.String.format;
 
 /**
  * @since 4.7.2
@@ -182,9 +183,9 @@ public class GrokCompiler extends AbstractLifecycle {
 
         String namedRegex = pattern;
         int index = 0;
-        /** flag for infinite recursion. */
+
         int iterationLeft = 1000;
-        Boolean continueIteration = true;
+        boolean continueIteration = true;
 
         Map<String, PatternDefinition> patternDefinitionsRegistry = this.definitionRepository.getAll();
         final Map<String, String> patternDefinitions = new HashMap<String, String>();
@@ -197,7 +198,8 @@ public class GrokCompiler extends AbstractLifecycle {
 
         // output
         Map<String, String> namedRegexCollection = new HashMap<String, String>();
-        Set<String> namedGroups = Groks.getNameGroups(Groks.GROK_PATTERN.getPattern());
+        Set<String> namedGroups = Groks.GROK_PATTERN_NAMED_GROUPS;
+
         // Replace %{foo} with the regex (mostly group name regex)
         // and then compile the regex
         while (continueIteration) {
@@ -206,35 +208,43 @@ public class GrokCompiler extends AbstractLifecycle {
                 throw new IllegalArgumentException("Deep recursion pattern compilation of " + pattern);
             }
             iterationLeft--;
-
             RegexpMatcher matcher = Groks.GROK_PATTERN.matcher(namedRegex);
             // Match %{Foo:bar} -> pattern name and subname
             // Match %{Foo=regex} -> add new regex definition
-            if ( matcher.find()) {
+            if (matcher.find()) {
                 continueIteration = true;
                 Map<String, String> group = Regexps.namedGroups(matcher, namedGroups);
                 if (group.get("definition") != null) {
                     patternDefinitions.put(group.get("pattern"), group.get("definition"));
                     group.put("name", group.get("name") + "=" + group.get("definition"));
                 }
-                int count = Strings.countMatches(namedRegex, "%{" + group.get("name") + "}");
+                String grokName = group.get("name");
+                if (Strings.isBlank(grokName)) {
+                    throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("invalid grok, missing name: {}", namedRegex));
+                }
+                int count = Strings.countMatches(namedRegex, "%{" + grokName + "}");
+                String _namedRegexp = namedRegex;
                 for (int i = 0; i < count; i++) {
                     String definitionOfPattern = patternDefinitions.get(group.get("pattern"));
                     if (definitionOfPattern == null) {
-                        throw new IllegalArgumentException(format("No definition for key '%s' found, aborting",
-                                group.get("pattern")));
+                        throw new IllegalArgumentException(format("No definition for key '%s' found, aborting", group.get("pattern")));
                     }
-                    String replacement = String.format("(?<name%d>%s)", index, definitionOfPattern);
-                    if (namedOnly && group.get("subname") == null) {
-                        replacement = String.format("(?:%s)", definitionOfPattern);
+                    String replacement = StringTemplates.formatWithPlaceholder("(?<name{}>{})", index, definitionOfPattern);
+                    String subName = group.get("subname");
+                    if (namedOnly && Strings.isEmpty(subName)) {
+                        replacement = StringTemplates.formatWithPlaceholder("(?:{})", definitionOfPattern);
                     }
-                    namedRegexCollection.put("name" + index,
-                            (group.get("subname") != null ? group.get("subname") : group.get("name")));
-                    namedRegex =
-                            Strings.replace(namedRegex, "%{" + group.get("name") + "}", replacement, 1);
-                    // System.out.println(_expanded_pattern);
+                    String rename = Objs.useValueIfEmpty(subName, grokName);
+                    namedRegexCollection.put("name" + index, rename);
+                    _namedRegexp = Strings.replace(_namedRegexp, "%{" + grokName + "}", replacement, 1);
                     index++;
                 }
+                if(Objs.equals(namedRegex, _namedRegexp)){
+                    continueIteration = false;
+                }else {
+                    namedRegex = _namedRegexp;
+                }
+
             }
         }
 

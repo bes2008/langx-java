@@ -665,7 +665,7 @@ public class MediaType extends MimeType implements Serializable {
     public static void sortBySpecificity(List<MediaType> mediaTypes) {
         Preconditions.checkNotNull(mediaTypes, "'mediaTypes' must not be null");
         if (mediaTypes.size() > 1) {
-            TreeSet<MediaType> sorted = Collects.sort(mediaTypes, SPECIFICITY_COMPARATOR);
+            List<MediaType> sorted = Collects.sort(mediaTypes, SPECIFICITY_COMPARATOR);
             mediaTypes.clear();
             mediaTypes.addAll(sorted);
         }
@@ -694,7 +694,7 @@ public class MediaType extends MimeType implements Serializable {
     public static void sortByQualityValue(List<MediaType> mediaTypes) {
         Preconditions.checkNotNull(mediaTypes, "'mediaTypes' must not be null");
         if (mediaTypes.size() > 1) {
-            TreeSet<MediaType> sorted = Collects.sort(mediaTypes, QUALITY_VALUE_COMPARATOR);
+            List<MediaType> sorted = Collects.sort(mediaTypes, QUALITY_VALUE_COMPARATOR);
             mediaTypes.clear();
             mediaTypes.addAll(sorted);
         }
