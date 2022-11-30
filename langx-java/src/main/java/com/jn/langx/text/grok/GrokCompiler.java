@@ -211,7 +211,9 @@ public class GrokCompiler extends AbstractLifecycle {
             RegexpMatcher matcher = Groks.GROK_PATTERN.matcher(namedRegex);
             // Match %{Foo:bar} -> pattern name and subname
             // Match %{Foo=regex} -> add new regex definition
-            if (matcher.find()) {
+
+            //优化： if(matcher.find()) {
+            while (matcher.find()) {
                 continueIteration = true;
                 Map<String, String> group = Regexps.namedGroups(matcher, namedGroups);
                 if (group.get("definition") != null) {
