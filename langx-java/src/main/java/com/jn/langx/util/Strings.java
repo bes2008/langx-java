@@ -1748,19 +1748,11 @@ public class Strings {
         StrTokenizer tokenizer = new StrTokenizer(text, true, -1, searchString);
         List<String> tokens = tokenizer.tokenize();
         StringBuilder builder = new StringBuilder();
-        int count = 0;
-        boolean continueReplace = true;
         for (int i = 0; i < tokens.size(); i++) {
-            if (max >= 0) {
-                if (count >= max) {
-                    continueReplace = false;
-                }
-            }
             String token = tokens.get(i);
 
-            if (continueReplace && Objs.equals(searchString, token)) {
+            if (Objs.equals(searchString, token)) {
                 builder.append(replacement);
-                count++;
             } else {
                 builder.append(token);
             }

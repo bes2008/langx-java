@@ -26,6 +26,7 @@ public class StrTokenizer extends CommonTokenizer<String> {
      * 已找到的分隔符的个数
      */
     private int foundDelimiterCount = 0;
+    private long lastDelimiterStartPosition = -1;
 
     /**
      * 是否忽略大小写
@@ -71,10 +72,16 @@ public class StrTokenizer extends CommonTokenizer<String> {
 
     @Override
     protected String getIfDelimiterStart(final long position, char c) {
-        if (foundDelimiterCount < max) {
+        boolean continueFind = foundDelimiterCount < max;
+        if (continueFind) {
             String delimiter = getIfDelimiterStartInternal(position, c);
             if (delimiter != null) {
-                foundDelimiterCount++;
+                if(lastDelimiterStartPosition==position){
+                   // 本次为 获取 delimiter
+                }else {
+                    foundDelimiterCount++;
+                    lastDelimiterStartPosition = position;
+                }
             }
             return delimiter;
         } else {

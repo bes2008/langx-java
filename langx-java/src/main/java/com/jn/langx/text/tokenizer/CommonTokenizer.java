@@ -4,7 +4,7 @@ import com.jn.langx.io.buffer.CharSequenceBuffer;
 import com.jn.langx.util.Preconditions;
 
 public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
-    private boolean returnDelimiter;
+    protected boolean returnDelimiter;
     /**
      * buffer#mark()用于标记一个 content region 的开始
      */
