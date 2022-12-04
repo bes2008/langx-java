@@ -50,6 +50,11 @@ public class Arrs extends PrimitiveArrays{
         return array;
     }
 
+    public static byte[] createByteArray(int count) {
+        return (count == 0) ? Emptys.EMPTY_BYTES: new byte[count];
+    }
+
+
     /**
      * Create an array with the specified length.
      * <p>
