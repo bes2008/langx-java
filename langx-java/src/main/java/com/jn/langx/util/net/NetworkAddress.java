@@ -12,7 +12,9 @@ public class NetworkAddress implements Comparable<NetworkAddress> {
 
     public NetworkAddress(String host, int port) {
         this.host = host;
-        this.port = port;
+        if (port > 0) {
+            this.port = port;
+        }
     }
 
     public String getHost() {

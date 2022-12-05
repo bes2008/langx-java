@@ -80,7 +80,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
         Regexp IPv4_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^:]*)(:(?<port>\\d{1,5}))?");
         for (String segment : segments) {
             segment = Strings.strip(segment);
-            // ip/prefixLength:prot
+            // ip/prefixLength:port
             Map<String, String> stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, segment);
             if (stringMap != null) {
                 String ip = stringMap.get("ip");
@@ -102,9 +102,10 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                     continue;
                 }
                 if (!hasBrace && Regexps.match(RegexpPatterns.PATTERN_IP, ip)) {
-                    // IP v4
+                    // IP v4，但没有端口
                     ret.add(new NetworkAddress(ip, port));
-                } else if (!hasBrace && Regexps.match("\\w+(:\\d{1,5})?", ip)) {
+                } else if (!hasBrace && Regexps.match("\\w+(\\.\\w+)*(:\\d{1,5})?", ip)) {
+                    // host:port, ipv4:port
                     Map<String, String> string2Map = Regexps.findNamedGroup(IPv4_SEGMENT_PATTERN, segment);
                     if (string2Map != null) {
                         ip = string2Map.get("ip");

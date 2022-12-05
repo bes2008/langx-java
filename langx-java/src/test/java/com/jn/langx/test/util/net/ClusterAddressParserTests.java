@@ -31,6 +31,10 @@ public class ClusterAddressParserTests {
         addresses = parser.parse("host1");
         System.out.println(addresses);
 
+
+        addresses = parser.parse("192.168.1.1:2100,192.168.1.2:2100,192.168.1.3:2100");
+        System.out.println(addresses);
+
         System.out.println("=======================Test IP V4 end====================");
     }
 
@@ -59,5 +63,6 @@ public class ClusterAddressParserTests {
         addresses = parser.parse("host3:8080,::/12,host2:2181, ::0:9092");
         System.out.println(addresses);
         System.out.println("=======================Test IP V6 end====================");
+
     }
 }
