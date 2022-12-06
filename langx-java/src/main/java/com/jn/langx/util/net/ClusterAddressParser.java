@@ -29,7 +29,8 @@ import java.util.Map;
  * </pre>
  */
 public class ClusterAddressParser implements Parser<String, List<NetworkAddress>> {
-    private static final Regexp IP_PORT_SEGMENT_PATTERNS = Regexps.createRegexp("(?<ip>[^/]*)((/(?<prefixLength>\\d{1,6}))?(:(?<port>\\d{1,5}))?)?");
+    private static final Regexp IPv6_PORT_SEGMENT_PATTERN = Regexps.compile("(?<ipv6>\\[.+])(:(?<port>\\d{1,5}))?");
+    private static final Regexp IP_PORT_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^/]*)((/(?<prefixLength>\\d{1,6}))?(:(?<port>\\d{1,5}))?)?");
     private static final Regexp IPv4_PORT_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^:]*)(:(?<port>\\d{1,5}))?");
     private int defaultPort = -1;
     private boolean supportsPortAtEnd = false;
@@ -89,7 +90,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
         for (String segment : segments) {
             segment = Strings.strip(segment);
             // ip(/prefixLength)?(:port)?
-            Map<String, String> stringMap = Regexps.findNamedGroup(IP_PORT_SEGMENT_PATTERNS, segment);
+            Map<String, String> stringMap = Regexps.findNamedGroup(IP_PORT_SEGMENT_PATTERN, segment);
             if (stringMap != null) {
                 String ip = stringMap.get("ip");
                 if (Strings.isBlank(ip)) {
@@ -100,10 +101,13 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                 if (Strings.isNotEmpty(prefixLength)) {
                     ip = ip + "/" + prefixLength;
                 }
-                boolean hasBrace = ip.startsWith("[") && segment.endsWith("]");
-                ip = hasBrace ? Strings.substring(ip, 1, ip.length() - 1) : segment;
 
-                String portString = stringMap.get("port");
+                int ipv6PortIndex = ip.startsWith("[") ? Strings.indexOf(ip, "]:") : -1;
+                String portString = ipv6PortIndex > 0 ? Strings.substring(ip, ipv6PortIndex + 2) : null;
+                boolean hasBrace = (ip.startsWith("[") && segment.endsWith("]")) || (ipv6PortIndex > 0);
+                ip = hasBrace ? Strings.substring(ip, 1, ipv6PortIndex > 0 ? ipv6PortIndex : (ip.length() - 1)) : segment;
+
+                portString = Strings.isEmpty(portString) ? stringMap.get("port") : portString;
                 int port = Strings.isEmpty(portString) ? 0 : Numbers.createInteger(portString);
                 if (port > 65535) {
                     logger.warn("invalid port : {}", segment);
@@ -129,11 +133,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                         ret.add(new NetworkAddress(ip, port));
                     }
                 } else if (Regexps.match(RegexpPatterns.PATTERN_IPv6, ip)) {
-                    if (!hasBrace) {
-                        ret.add(new NetworkAddress(ip, port));
-                    } else {
-                        ret.add(new NetworkAddress("[" + ip + "]", port));
-                    }
+                    ret.add(new NetworkAddress("[" + ip + "]", port));
                 } else {
                     int portSeparator = Strings.lastIndexOf(segment, ":");
                     if (portSeparator >= 1 && portSeparator < segment.length() - 1) {
@@ -154,11 +154,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                                 ret.add(new NetworkAddress(ip, port));
                                 continue;
                             } else if (Regexps.match(RegexpPatterns.PATTERN_IPv6, ip)) {
-                                if (!hasBrace) {
-                                    ret.add(new NetworkAddress(ip, port));
-                                } else {
-                                    ret.add(new NetworkAddress("[" + ip + "]", port));
-                                }
+                                ret.add(new NetworkAddress("[" + ip + "]", port));
                                 continue;
                             }
                         }

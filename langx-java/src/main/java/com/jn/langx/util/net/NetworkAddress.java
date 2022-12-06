@@ -1,6 +1,7 @@
 package com.jn.langx.util.net;
 
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Strings;
 
 public class NetworkAddress implements Comparable<NetworkAddress> {
     private String host;
