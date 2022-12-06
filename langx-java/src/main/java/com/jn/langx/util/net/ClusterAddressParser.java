@@ -1,10 +1,7 @@
 package com.jn.langx.util.net;
 
 import com.jn.langx.Parser;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Numbers;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
@@ -35,12 +32,22 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
     private static final Regexp IP_SEGMENT_PATTERNS = Regexps.createRegexp("(?<ip>[^/]*)(/(?<prefixLength>\\d{1,6})(:(?<port>\\d{1,5}))?)?");
     private static final Regexp IPv4_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^:]*)(:(?<port>\\d{1,5}))?");
     private int defaultPort = -1;
+    private boolean supportsPortAtEnd = false;
 
     public ClusterAddressParser() {
     }
 
     public ClusterAddressParser(int defaultPort) {
+        this(defaultPort, false);
+    }
+
+    public ClusterAddressParser(int defaultPort, boolean supportsPortAtEnd) {
         setDefaultPort(defaultPort);
+        setSupportsPortAtEnd(supportsPortAtEnd);
+    }
+
+    public void setSupportsPortAtEnd(boolean supportsPortAtEnd) {
+        this.supportsPortAtEnd = supportsPortAtEnd;
     }
 
     /**
@@ -163,30 +170,34 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                 logger.warn("invalid ip address: {}", segment);
             }
         }
+        if (Objs.isNotEmpty(ret)) {
 
-        // 只有最后一个地址有端口时，useUnifiedPortInAddressString 的值为true，即表示统一使用该端口
-        int firstValidPortIndex = Collects.firstOccurrence(ret, new Predicate2<Integer, NetworkAddress>() {
-            @Override
-            public boolean test(Integer index, NetworkAddress address) {
-                return address.getPort() > 0;
+            boolean portAtEnd = supportsPortAtEnd;
+            if (supportsPortAtEnd) {
+                // 只有最后一个地址有端口时，useUnifiedPortInAddressString 的值为true，即表示统一使用该端口
+                int firstValidPortIndex = Collects.firstOccurrence(ret, new Predicate2<Integer, NetworkAddress>() {
+                    @Override
+                    public boolean test(Integer index, NetworkAddress address) {
+                        return address.getPort() > 0 && address.getPort() < 65535;
+                    }
+                });
+
+                portAtEnd = firstValidPortIndex == (ret.size() - 1);
             }
-        });
-
-        boolean useUnifiedPortInAddressString = firstValidPortIndex == (ret.size() - 1);
-
-        final int unifiedPort = useUnifiedPortInAddressString ? ret.get(ret.size() - 1).getPort() : defaultPort;
-        if (unifiedPort > 0) {
-            Collects.forEach(ret, new Predicate<NetworkAddress>() {
-                @Override
-                public boolean test(NetworkAddress address) {
-                    return address.getPort() < 1;
-                }
-            }, new Consumer<NetworkAddress>() {
-                @Override
-                public void accept(NetworkAddress address) {
-                    address.setPort(unifiedPort);
-                }
-            });
+            final int unifiedPort = portAtEnd ? ret.get(ret.size() - 1).getPort() : defaultPort;
+            if (unifiedPort > 0) {
+                Collects.forEach(ret, new Predicate<NetworkAddress>() {
+                    @Override
+                    public boolean test(NetworkAddress address) {
+                        return address.getPort() < 1;
+                    }
+                }, new Consumer<NetworkAddress>() {
+                    @Override
+                    public void accept(NetworkAddress address) {
+                        address.setPort(unifiedPort);
+                    }
+                });
+            }
         }
         return ret;
     }
