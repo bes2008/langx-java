@@ -29,8 +29,8 @@ import java.util.Map;
  * </pre>
  */
 public class ClusterAddressParser implements Parser<String, List<NetworkAddress>> {
-    private static final Regexp IP_SEGMENT_PATTERNS = Regexps.createRegexp("(?<ip>[^/]*)(/(?<prefixLength>\\d{1,6})(:(?<port>\\d{1,5}))?)?");
-    private static final Regexp IPv4_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^:]*)(:(?<port>\\d{1,5}))?");
+    private static final Regexp IP_PORT_SEGMENT_PATTERNS = Regexps.createRegexp("(?<ip>[^/]*)((/(?<prefixLength>\\d{1,6}))?(:(?<port>\\d{1,5}))?)?");
+    private static final Regexp IPv4_PORT_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^:]*)(:(?<port>\\d{1,5}))?");
     private int defaultPort = -1;
     private boolean supportsPortAtEnd = false;
 
@@ -88,8 +88,8 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
 
         for (String segment : segments) {
             segment = Strings.strip(segment);
-            // ip/prefixLength:port
-            Map<String, String> stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, segment);
+            // ip(/prefixLength)?(:port)?
+            Map<String, String> stringMap = Regexps.findNamedGroup(IP_PORT_SEGMENT_PATTERNS, segment);
             if (stringMap != null) {
                 String ip = stringMap.get("ip");
                 if (Strings.isBlank(ip)) {
@@ -114,7 +114,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                     ret.add(new NetworkAddress(ip, port));
                 } else if (!hasBrace && Regexps.match("\\w+(\\.\\w+)*(:\\d{1,5})?", ip)) {
                     // host:port, ipv4:port
-                    Map<String, String> string2Map = Regexps.findNamedGroup(IPv4_SEGMENT_PATTERN, segment);
+                    Map<String, String> string2Map = Regexps.findNamedGroup(IPv4_PORT_SEGMENT_PATTERN, segment);
                     if (string2Map != null) {
                         ip = string2Map.get("ip");
                         if (Strings.isBlank(ip)) {
