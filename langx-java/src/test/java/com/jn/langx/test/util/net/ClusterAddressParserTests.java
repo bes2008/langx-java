@@ -55,10 +55,16 @@ public class ClusterAddressParserTests {
         addresses = parser.parse("2000::1,2000::1:8080,2031:0000:1F1F:0000:0000:0100:11A0:ADDF:9092,host2:2181,host4");
         System.out.println(addresses);
 
+        addresses = parser.parse("host1:9092,host2:2181,host3:8080");
+        System.out.println(addresses);
+
         addresses = parser.parse("host1,host2,host3:8080");
         System.out.println(addresses);
 
         addresses = parser.parse("host1,host2,host3");
+        System.out.println(addresses);
+
+        addresses = parser.parse("host1:9092,192.168.1.2:2181,host3:8080");
         System.out.println(addresses);
 
         addresses = parser.parse("host1");
