@@ -7,21 +7,23 @@ import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Reference;
 
+import java.lang.reflect.Array;
 import java.nio.Buffer;
 import java.util.Collection;
 import java.util.Map;
 
 public class Emptys {
-    private Emptys(){
+    private Emptys() {
 
     }
+
     public static final int[] EMPTY_INTS = {};
     public static final byte[] EMPTY_BYTES = {};
     public static final char[] EMPTY_CHARS = {};
     public static final Object[] EMPTY_OBJECTS = {};
     public static final Class<?>[] EMPTY_CLASSES = {};
     public static final String[] EMPTY_STRINGS = {};
-    public static final String EMPTY_STRING="";
+    public static final String EMPTY_STRING = "";
 
     public static boolean isAnyEmpty(Object... args) {
         return Collects.anyMatch(Functions.emptyPredicate(), args);
@@ -48,10 +50,6 @@ public class Emptys {
         if (object instanceof Map) {
             return ((Map) object).isEmpty();
         }
-        if (object.getClass().isArray()) {
-            return Arrs.getLength(object) <= 0;
-        }
-
         if (object instanceof String) {
             return Strings.isEmpty((String) object);
         }
@@ -72,6 +70,9 @@ public class Emptys {
 
         if (object.getClass().isEnum()) {
             return false;
+        }
+        if (object.getClass().isArray()) {
+            return Array.getLength(object) <= 0;
         }
 
         if (object instanceof EmptyEvalutible) {
