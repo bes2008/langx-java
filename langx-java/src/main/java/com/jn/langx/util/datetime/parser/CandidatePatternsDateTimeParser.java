@@ -38,7 +38,7 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
         if (timeZones != null) {
             tzs = Collects.newLinkedHashSet(timeZones);
             tzs.addAll(this.timeZones);
-        }else{
+        } else {
             tzs = Collects.newLinkedHashSet(timeZones);
         }
 

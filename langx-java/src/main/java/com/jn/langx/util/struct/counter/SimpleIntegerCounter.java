@@ -37,4 +37,9 @@ public class SimpleIntegerCounter extends IntegerCounter {
         Preconditions.checkNotNull(value);
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return value+"";
+    }
 }

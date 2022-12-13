@@ -41,4 +41,9 @@ public class ThreadLocalIntegerCounter extends IntegerCounter {
         Preconditions.checkNotNull(value);
         this.valueHolder.set(value);
     }
+
+    @Override
+    public String toString() {
+        return get().toString();
+    }
 }

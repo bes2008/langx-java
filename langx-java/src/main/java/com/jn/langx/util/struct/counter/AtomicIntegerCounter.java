@@ -37,4 +37,10 @@ public class AtomicIntegerCounter extends IntegerCounter {
         Preconditions.checkNotNull(value);
         vh.set(value);
     }
+
+    @Override
+    public String toString() {
+        return vh.toString();
+    }
+
 }
