@@ -189,6 +189,10 @@ public class Dates {
         return parse(false, dateString, null, null, patterns);
     }
 
+    public static Date parse(final String dateString, TimeZone tz, Locale locale, String pattern) {
+        return parse(dateString, tz, locale, Collects.asList(pattern));
+    }
+
     public static Date parse(final String dateString, TimeZone tz, Locale locale, List<String> patterns) {
         return parse(false, dateString, tz, locale, patterns);
     }
@@ -214,7 +218,7 @@ public class Dates {
             "Z",
             "z"
     );
-    public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX","XX","X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
+    public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX", "XX", "X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
 
     /**
      * @since 5.0.1
