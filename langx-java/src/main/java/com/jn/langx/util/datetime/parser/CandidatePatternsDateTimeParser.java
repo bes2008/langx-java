@@ -1,8 +1,6 @@
 package com.jn.langx.util.datetime.parser;
 
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.PrioritySet;
-import com.jn.langx.util.datetime.DateFormatCacheKey;
 import com.jn.langx.util.datetime.DateTimeParsedResult;
 import com.jn.langx.util.datetime.DateTimeParser;
 import com.jn.langx.util.function.Consumer;
@@ -19,8 +17,6 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
     private Set<TimeZone> timeZones = Collects.newLinkedHashSet(TimeZone.getDefault());
     private Set<Locale> locales = Collects.newLinkedHashSet(Locale.getDefault(), Locale.US);
 
-    private PrioritySet<DateFormatCacheKey> formatCacheKeys;
-
     public CandidatePatternsDateTimeParser(List<String> patterns) {
         this(patterns, null, null);
     }
@@ -33,42 +29,16 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
         if (patterns != null) {
             this.patterns.addAll(patterns);
         }
-
-        final Set<TimeZone> tzs;
         if (timeZones != null) {
-            tzs = Collects.newLinkedHashSet(timeZones);
+            Set<TimeZone> tzs = Collects.newLinkedHashSet(timeZones);
             tzs.addAll(this.timeZones);
-        } else {
-            tzs = Collects.newLinkedHashSet(timeZones);
+            this.timeZones = tzs;
         }
-
-        final Set<Locale> l;
         if (locales != null) {
-            l = Collects.newLinkedHashSet(locales);
+            Set<Locale> l = Collects.newLinkedHashSet(locales);
             l.addAll(this.locales);
-        } else {
-            l = Collects.newLinkedHashSet(locales);
+            this.locales = l;
         }
-        this.locales = l;
-
-        final PrioritySet<DateFormatCacheKey> formatCacheKeys = new PrioritySet<DateFormatCacheKey>(10000);
-        Collects.forEach(patterns, new Consumer<String>() {
-            @Override
-            public void accept(final String pattern) {
-                Collects.forEach(tzs, new Consumer<TimeZone>() {
-                    @Override
-                    public void accept(final TimeZone timeZone) {
-                        Collects.forEach(l, new Consumer<Locale>() {
-                            @Override
-                            public void accept(Locale locale) {
-                                formatCacheKeys.add(new DateFormatCacheKey(pattern, timeZone, locale));
-                            }
-                        });
-                    }
-                });
-            }
-        });
-        this.formatCacheKeys = formatCacheKeys;
     }
 
     @Override
@@ -81,52 +51,38 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
                 return !resultHolder.isNull();
             }
         };
-
-        Collects.forEach(formatCacheKeys, new Consumer<DateFormatCacheKey>() {
+        Collects.forEach(patterns, new Consumer<String>() {
             @Override
-            public void accept(DateFormatCacheKey dateFormatCacheKey) {
-                DateTimeParsedResult r = new GracefulDateParser(dateFormatCacheKey.pattern, TimeZone.getTimeZone(dateFormatCacheKey.timeZoneId), dateFormatCacheKey.locale).parse(datetimeString);
-                if (r != null) {
-                    resultHolder.set(r);
-                    formatCacheKeys.increment(dateFormatCacheKey);
-                }
+            public void accept(final String pattern) {
+                Collects.forEach(timeZones, new Consumer<TimeZone>() {
+                    @Override
+                    public void accept(final TimeZone timeZone) {
+                        Collects.forEach(locales, new Consumer<Locale>() {
+                            @Override
+                            public void accept(Locale locale) {
+                                DateTimeParsedResult r = new GracefulDateParser(pattern, timeZone, locale).parse(datetimeString);
+                                if (r != null) {
+                                    resultHolder.set(r);
+                                }
+                            }
+                        }, breakPredicate);
+                    }
+                }, breakPredicate);
             }
         }, breakPredicate);
         return resultHolder.get();
     }
 
-    public CandidatePatternsDateTimeParser addTimeZone(final TimeZone timeZone) {
+    public CandidatePatternsDateTimeParser addTimeZone(TimeZone timeZone) {
         if (timeZone != null) {
             this.timeZones.add(timeZone);
-            Collects.forEach(patterns, new Consumer<String>() {
-                @Override
-                public void accept(final String pattern) {
-                    Collects.forEach(locales, new Consumer<Locale>() {
-                        @Override
-                        public void accept(Locale locale) {
-                            formatCacheKeys.add(new DateFormatCacheKey(pattern, timeZone, locale));
-                        }
-                    });
-                }
-            });
         }
         return this;
     }
 
-    public CandidatePatternsDateTimeParser addLocale(final Locale locale) {
+    public CandidatePatternsDateTimeParser addLocale(Locale locale) {
         if (locale != null) {
             this.locales.add(locale);
-            Collects.forEach(patterns, new Consumer<String>() {
-                @Override
-                public void accept(final String pattern) {
-                    Collects.forEach(timeZones, new Consumer<TimeZone>() {
-                        @Override
-                        public void accept(final TimeZone timeZone) {
-                            formatCacheKeys.add(new DateFormatCacheKey(pattern, timeZone, locale));
-                        }
-                    });
-                }
-            });
         }
         return this;
     }
