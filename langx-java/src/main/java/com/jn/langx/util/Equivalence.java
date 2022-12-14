@@ -54,7 +54,7 @@ public abstract class Equivalence<T> {
      * <p>Called by {@link #equivalent}. {@code a} and {@code b} are not the same
      * object and are not nulls.
      *
-     * @since 10.0 (previously, subclasses would override equivalent())
+     *  (previously, subclasses would override equivalent())
      */
     protected abstract boolean doEquivalent(T a, T b);
 
@@ -138,7 +138,7 @@ public abstract class Equivalence<T> {
      * <pre>   {@code
      *   equiv.wrap(obj).equals(obj) // always false}</pre>
      *
-     * @since 10.0
+     * 
      */
     public static final class Wrapper<T> implements Serializable {
         private final Equivalence<? super T> equivalence;
@@ -212,7 +212,7 @@ public abstract class Equivalence<T> {
      * <p>
      * <p>Note that this method performs a similar function for equivalences
      *
-     * @since 10.0
+     * 
      */
     public final <S extends T> Equivalence<Iterable<S>> pairwise() {
         // Ideally, the returned equivalence would support Iterable<? extends T>. However,
@@ -276,9 +276,9 @@ public abstract class Equivalence<T> {
      * value is null and {@link Object#equals} returns {@code true}. {@link Equivalence#hash} returns
      * {@code 0} if passed a null value.
      *
-     * @since 13.0
-     * @since 8.0 (in Equivalences with null-friendly behavior)
-     * @since 4.0 (in Equivalences)
+     * 
+     *  (in Equivalences with null-friendly behavior)
+     *  (in Equivalences)
      */
     public static Equivalence<Object> equals() {
         return Equals.INSTANCE;
@@ -289,8 +289,8 @@ public abstract class Equivalence<T> {
      * System#identityHashCode(Object)} to compute the hash code.  {@link Equivalence#equivalent}
      * returns {@code true} if {@code a == b}, including in the case that a and b are both null.
      *
-     * @since 13.0
-     * @since 4.0 (in Equivalences)
+     * 
+     *  (in Equivalences)
      */
     public static Equivalence<Object> identity() {
         return Identity.INSTANCE;
