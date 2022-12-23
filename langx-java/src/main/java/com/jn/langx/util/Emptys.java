@@ -9,8 +9,7 @@ import com.jn.langx.util.struct.Reference;
 
 import java.lang.reflect.Array;
 import java.nio.Buffer;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 public class Emptys {
     private Emptys() {
@@ -24,6 +23,8 @@ public class Emptys {
     public static final Class<?>[] EMPTY_CLASSES = {};
     public static final String[] EMPTY_STRINGS = {};
     public static final String EMPTY_STRING = "";
+    public static final SortedMap EMPTY_TREE_MAP=new TreeMap();
+    public static final SortedSet EMPTY_TREE_SET = new TreeSet();
 
     public static boolean isAnyEmpty(Object... args) {
         return Collects.anyMatch(Functions.emptyPredicate(), args);
