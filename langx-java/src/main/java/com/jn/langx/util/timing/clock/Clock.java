@@ -14,5 +14,17 @@ package com.jn.langx.util.timing.clock;
  * timestamps is not affected by adjustments to the system clock, so it never jumps.
  */
 public interface Clock {
+    /**
+     * Returns the current time tick.
+     *
+     * @return time tick in nanoseconds
+     */
+    long getTick();
+
+    /**
+     * Returns the current time in milliseconds.
+     *
+     * @return time in milliseconds
+     */
     long getTime();
 }

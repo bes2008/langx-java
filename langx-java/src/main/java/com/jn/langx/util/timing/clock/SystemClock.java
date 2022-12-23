@@ -12,6 +12,11 @@ package com.jn.langx.util.timing.clock;
 public class SystemClock implements Clock {
 
     @Override
+    public long getTick() {
+        return System.nanoTime();
+    }
+
+    @Override
     public long getTime() {
         return System.currentTimeMillis();
     }

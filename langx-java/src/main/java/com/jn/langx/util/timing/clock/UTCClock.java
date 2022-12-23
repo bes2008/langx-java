@@ -8,6 +8,11 @@ public class UTCClock implements Clock {
     private final TimeZone utcZone = TimeZone.getTimeZone("UTC");
 
     @Override
+    public long getTick() {
+        return getTime() * 10 ^ 6;
+    }
+
+    @Override
     public long getTime() {
         return Calendar.getInstance(utcZone).getTimeInMillis();
     }
