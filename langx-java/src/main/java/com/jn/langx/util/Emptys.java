@@ -23,7 +23,7 @@ public class Emptys {
     public static final Class<?>[] EMPTY_CLASSES = {};
     public static final String[] EMPTY_STRINGS = {};
     public static final String EMPTY_STRING = "";
-    public static final SortedMap EMPTY_TREE_MAP=new TreeMap();
+    public static final SortedMap EMPTY_TREE_MAP = new TreeMap();
     public static final SortedSet EMPTY_TREE_SET = new TreeSet();
 
     public static boolean isAnyEmpty(Object... args) {
