@@ -23,7 +23,7 @@ import java.util.Collection;
  * <code>"{}"</code>, where the {@code prefix} is <code>"{"</code>, the
  * {@code suffix} is <code>"}"</code> and nothing has been added to the
  * {@code StringJoiner}.
- *
+ * <p>
  * Note: <p>The String {@code "[George:Sally:Fred]"} may be constructed as follows:
  *
  * <pre> {@code
@@ -169,7 +169,12 @@ public final class StringJoiner implements Appendable {
         }
     }
 
-    public StringJoiner append(Collection<? extends CharSequence> newElements) {
+    public StringJoiner append(Object[] newElements) {
+        return append(Collects.asList(newElements));
+    }
+
+
+    public StringJoiner append(Collection newElements) {
         return append(newElements, null);
     }
 
@@ -177,7 +182,11 @@ public final class StringJoiner implements Appendable {
         Consumer2<Integer, E> consumer = new Consumer2<Integer, E>() {
             @Override
             public void accept(Integer key, E newElement) {
-                add(newElement);
+                if (Objs.isEmpty(newElement)) {
+                    add(emptyValue);
+                } else {
+                    add(newElement.toString());
+                }
             }
         };
         Collects.forEach(newElements, predicate, consumer);
