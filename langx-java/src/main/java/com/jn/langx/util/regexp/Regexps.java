@@ -22,9 +22,17 @@ import java.util.regex.Pattern;
 public class Regexps {
 
     /**
+     * 完全等价于 == Pattern.quote(s)
+     */
+    public static String quote(String s) {
+        return Pattern.quote(s);
+    }
+
+    /**
      * key1: pattern string
      * key2: Option
      * key3: engine
+     *
      * @since 4.7.5
      */
     private static MultiKeyMap<Regexp> cache = new MultiKeyMap<Regexp>();
@@ -57,6 +65,7 @@ public class Regexps {
     public static Regexp compile(@NonNull String pattern) {
         return createRegexp(pattern);
     }
+
     public static Regexp createRegexp(@NonNull String pattern) {
         return createRegexp(pattern, (Option) null);
     }
@@ -76,9 +85,11 @@ public class Regexps {
     public static Regexp createRegexp(@NonNull String pattern, @Nullable Option option) {
         return createRegexp((String) null, pattern, option);
     }
+
     public static Regexp createRegexpWithEngine(@Nullable String engineName, @NonNull String pattern) {
-        return createRegexp(engineName, pattern,null);
+        return createRegexp(engineName, pattern, null);
     }
+
     public static Regexp createRegexp(@Nullable String engineName, @NonNull String pattern, @Nullable Option option) {
         RegexpEngine engine = engineName == null ? null : registry.get(engineName);
         if (engine == null && engineName != null) {
