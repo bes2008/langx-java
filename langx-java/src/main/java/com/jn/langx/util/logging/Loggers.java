@@ -44,7 +44,7 @@ public class Loggers {
      * @param messageSupplier 异常消息
      * @param ex              异常
      */
-    public static void log(int count, @Nullable Logger logger, @Nullable Level level, @Nullable Marker marker, final @Nullable Throwable ex, Supplier<Object[], String> messageSupplier, Object... args) {
+    public static void log(int count, @Nullable Logger logger, @Nullable Level level, @Nullable final Marker marker, final @Nullable Throwable ex, Supplier<Object[], String> messageSupplier, Object... args) {
         Preconditions.checkNotNull(messageSupplier, "the message supplier is null");
         if (logger == null) {
             if (ex == null) {
@@ -75,10 +75,18 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex != null) {
-                                lgr.trace(message, ex);
+                            if (marker != null) {
+                                if (ex != null) {
+                                    lgr.trace(marker, message, ex);
+                                } else {
+                                    lgr.trace(marker, message);
+                                }
                             } else {
-                                lgr.trace(message);
+                                if (ex != null) {
+                                    lgr.trace(message, ex);
+                                } else {
+                                    lgr.trace(message);
+                                }
                             }
                         }
                     });
@@ -90,10 +98,18 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex != null) {
-                                lgr.debug(message, ex);
+                            if (marker != null) {
+                                if (ex != null) {
+                                    lgr.debug(marker, message, ex);
+                                } else {
+                                    lgr.debug(marker, message);
+                                }
                             } else {
-                                lgr.debug(message);
+                                if (ex != null) {
+                                    lgr.debug(message, ex);
+                                } else {
+                                    lgr.debug(message);
+                                }
                             }
                         }
                     });
@@ -104,10 +120,18 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex != null) {
-                                lgr.info(message, ex);
+                            if (marker != null) {
+                                if (ex != null) {
+                                    lgr.info(marker, message, ex);
+                                } else {
+                                    lgr.info(marker, message);
+                                }
                             } else {
-                                lgr.info(message);
+                                if (ex != null) {
+                                    lgr.info(message, ex);
+                                } else {
+                                    lgr.info(message);
+                                }
                             }
                         }
                     });
@@ -118,10 +142,18 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex != null) {
-                                lgr.warn(message, ex);
+                            if (marker != null) {
+                                if (ex != null) {
+                                    lgr.warn(marker, message, ex);
+                                } else {
+                                    lgr.warn(marker, message);
+                                }
                             } else {
-                                lgr.warn(message);
+                                if (ex != null) {
+                                    lgr.warn(message, ex);
+                                } else {
+                                    lgr.warn(message);
+                                }
                             }
                         }
                     });
@@ -132,10 +164,18 @@ public class Loggers {
                     Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                         @Override
                         public void accept(Integer index) {
-                            if (ex != null) {
-                                lgr.error(message, ex);
+                            if (marker != null) {
+                                if (ex != null) {
+                                    lgr.error(marker, message, ex);
+                                } else {
+                                    lgr.error(marker, message);
+                                }
                             } else {
-                                lgr.error(message);
+                                if (ex != null) {
+                                    lgr.error(message, ex);
+                                } else {
+                                    lgr.error(message);
+                                }
                             }
                         }
                     });
@@ -145,10 +185,18 @@ public class Loggers {
                 Collects.forEach(Arrs.range(count), new Consumer<Integer>() {
                     @Override
                     public void accept(Integer index) {
-                        if (ex != null) {
-                            lgr.warn(message, ex);
+                        if (marker != null) {
+                            if (ex != null) {
+                                lgr.warn(marker, message, ex);
+                            } else {
+                                lgr.warn(marker, message);
+                            }
                         } else {
-                            lgr.warn(message);
+                            if (ex != null) {
+                                lgr.warn(message, ex);
+                            } else {
+                                lgr.warn(message);
+                            }
                         }
                     }
                 });
