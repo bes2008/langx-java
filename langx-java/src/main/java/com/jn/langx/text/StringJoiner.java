@@ -178,10 +178,10 @@ public final class StringJoiner implements Appendable {
         return append(newElements, null);
     }
 
-    public <E extends CharSequence> StringJoiner append(Collection<E> newElements, Predicate2<Integer, E> predicate) {
-        Consumer2<Integer, E> consumer = new Consumer2<Integer, E>() {
+    public StringJoiner append(Collection newElements, Predicate2<Integer, Object> predicate) {
+        Consumer2<Integer, Object> consumer = new Consumer2<Integer, Object>() {
             @Override
-            public void accept(Integer key, E newElement) {
+            public void accept(Integer key, Object newElement) {
                 if (Objs.isEmpty(newElement)) {
                     add(emptyValue);
                 } else {
