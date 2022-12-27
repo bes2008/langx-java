@@ -12,6 +12,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 public class Loggers {
 
@@ -20,13 +21,20 @@ public class Loggers {
     }
 
     public static void log(@Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, String message, Object... args) {
-        log(1, logger, level, ex, buildPlaceholderMessageSupplierOrNull(message, args), args);
+        log(logger, level, (Marker) null, ex, message, args);
+    }
+
+    public static void log(@Nullable Logger logger, @Nullable Level level, @Nullable Marker marker, final @Nullable Throwable ex, String message, Object... args) {
+        log(1, logger, level, marker, ex, buildPlaceholderMessageSupplierOrNull(message, args), args);
     }
 
     public static void log(int count, @Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, @Nullable String message, Object... args) {
         log(count, logger, level, ex, buildPlaceholderMessageSupplierOrNull(message, args), args);
     }
 
+    public static void log(int count, @Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, Supplier<Object[], String> messageSupplier, Object... args) {
+        log(count, logger, level, null, ex, messageSupplier, args);
+    }
 
     /**
      * 把消息记录到日志中
@@ -36,7 +44,7 @@ public class Loggers {
      * @param messageSupplier 异常消息
      * @param ex              异常
      */
-    public static void log(int count, @Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, Supplier<Object[], String> messageSupplier, Object... args) {
+    public static void log(int count, @Nullable Logger logger, @Nullable Level level, @Nullable Marker marker, final @Nullable Throwable ex, Supplier<Object[], String> messageSupplier, Object... args) {
         Preconditions.checkNotNull(messageSupplier, "the message supplier is null");
         if (logger == null) {
             if (ex == null) {
