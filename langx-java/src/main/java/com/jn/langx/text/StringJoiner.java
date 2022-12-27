@@ -178,7 +178,7 @@ public final class StringJoiner implements Appendable {
         return append(newElements, null);
     }
 
-    public StringJoiner append(Collection newElements, Predicate2<Integer, Object> predicate) {
+    public StringJoiner append(Collection newElements, Predicate2<Integer, ?> predicate) {
         Consumer2<Integer, Object> consumer = new Consumer2<Integer, Object>() {
             @Override
             public void accept(Integer key, Object newElement) {
@@ -189,7 +189,8 @@ public final class StringJoiner implements Appendable {
                 }
             }
         };
-        Collects.forEach(newElements, predicate, consumer);
+        Predicate2 p = predicate;
+        Collects.forEach(newElements, p, consumer);
         return this;
     }
 
