@@ -15,4 +15,8 @@ public abstract class AbstractFileFilter implements FileFilter {
         return accept(dir, name);
     }
 
+    @Override
+    public boolean accept(File dir, String name) {
+        return accept(new File(dir, name));
+    }
 }
