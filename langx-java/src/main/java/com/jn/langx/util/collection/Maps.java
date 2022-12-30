@@ -1,14 +1,18 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.struct.Pair;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Maps {
 
@@ -145,6 +149,58 @@ public class Maps {
         }
 
         return map;
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap() {
+        return Collects.emptyHashMap();
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap(Map<K, V> map) {
+        return Collects.newHashMap(map);
+    }
+
+    public static <K, V> HashMap<K, V> newHashMapWithExpectedSize(int expectedSize) {
+        return new HashMap<K, V>(Maths.max(expectedSize, 0));
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
+        return new LinkedHashMap<K, V>();
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(Map<K, V> map) {
+        return new LinkedHashMap<K, V>(map);
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMapWithExpectedSize(int expectedSize) {
+        return new LinkedHashMap<K, V>(Maths.max(expectedSize, 0));
+    }
+
+    public static <K, V> ConcurrentMap<K, V> newConcurrentMap() {
+        return new ConcurrentHashMap<K, V>();
+    }
+
+    public static <K, V> TreeMap<K, V> newTreeMap() {
+        return Collects.emptyTreeMap();
+    }
+
+    public static <K, V> TreeMap<K, V> newTreeMap(SortedMap<K, V> map) {
+        return new TreeMap<K, V>(map);
+    }
+
+    public static <C, K extends C, V> TreeMap<K, V> newTreeMap(Comparator<C> comparator) {
+        return new TreeMap<K, V>(comparator);
+    }
+
+    public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Class<K> type) {
+        return new EnumMap<K, V>(checkNotNull(type));
+    }
+
+    public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Map<K, V> map) {
+        return new EnumMap<K, V>(map);
+    }
+
+    public static <K, V> IdentityHashMap<K, V> newIdentityHashMap() {
+        return new IdentityHashMap<K, V>();
     }
 
 }
