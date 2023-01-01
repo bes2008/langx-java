@@ -58,7 +58,12 @@ public class Collects {
     public static <E> List<E> immutableList() {
         return immutableList(null);
     }
-
+    public static <E> List<E> immutableList(List<E> list) {
+        if (list == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(list);
+    }
     public static <E> List<E> immutableArrayList(List<E> list) {
         return Collections.unmodifiableList(Objs.useValueIfNull(list, Collects.<E>emptyArrayList()));
     }
@@ -67,12 +72,7 @@ public class Collects {
         return immutableList(Collects.newArrayList(array));
     }
 
-    public static <E> List<E> immutableList(List<E> list) {
-        if (list == null) {
-            return Collections.emptyList();
-        }
-        return Collections.unmodifiableList(list);
-    }
+
 
     /**
      * Get a empty, mutable java.util.ArrayList
@@ -93,21 +93,55 @@ public class Collects {
     public static <E> LinkedList<E> emptyLinkedList() {
         return new LinkedList<E>();
     }
+    public static <E> ArrayList<E> newArrayList() {
+        return new ArrayList<E>();
+    }
 
-    public static <E> ArrayList<E> newArrayList(@Nullable Iterable<E> elements) {
+
+    public static <E> ArrayList<E> newArrayList(Iterable<E> elements) {
         return new ArrayList<E>(asList(elements));
     }
 
+    public static <E> ArrayList<E> newArrayList(Iterator<E> elements) {
+        return newArrayList(Collects.<E>asIterable(elements));
+    }
+
+
     public static <E> ArrayList<E> newArrayList(@Nullable E... elements) {
         return new ArrayList<E>(asList(elements));
+    }
+
+    public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
+        return new ArrayList<E>(Maths.max(0, initialArraySize));
+    }
+
+    public static <E> ArrayList<E> newArrayListWithExpectedSize(int estimatedSize) {
+        return new ArrayList<E>(Maths.max(0, estimatedSize));
+    }
+
+    public static <E> LinkedList<E> newLinkedList() {
+        return new LinkedList<E>();
     }
 
     public static <E> LinkedList<E> newLinkedList(@Nullable Iterable<E> elements) {
         return new LinkedList<E>(asList(elements));
     }
 
+    public static <E> LinkedList<E> newLinkedList(@Nullable Iterator<E> elements) {
+        return newLinkedList(Collects.<E>asIterable(elements));
+    }
+
     public static <E> LinkedList<E> newLinkedList(@Nullable E... elements) {
         return new LinkedList<E>(asList(elements));
+    }
+
+
+    public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
+        return new CopyOnWriteArrayList<E>();
+    }
+
+    public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList(Iterable<E> elements) {
+        return new CopyOnWriteArrayList<E>(Collects.asList(elements));
     }
 
     /**

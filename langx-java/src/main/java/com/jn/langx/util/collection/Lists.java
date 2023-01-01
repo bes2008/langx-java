@@ -1,15 +1,12 @@
 package com.jn.langx.util.collection;
 
-
-import com.jn.langx.util.Maths;
-
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Lists {
     public static <E> ArrayList<E> newArrayList() {
-        return new ArrayList<E>();
+        return Collects.newArrayList();
     }
 
     public static <E> ArrayList<E> newArrayList(E... elements) {
@@ -25,15 +22,15 @@ public class Lists {
     }
 
     public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
-        return new ArrayList<E>(Maths.max(0, initialArraySize));
+        return Collects.newArrayListWithCapacity(initialArraySize);
     }
 
     public static <E> ArrayList<E> newArrayListWithExpectedSize(int estimatedSize) {
-        return new ArrayList<E>(Maths.max(0, estimatedSize));
+        return Collects.newArrayListWithExpectedSize(estimatedSize);
     }
 
     public static <E> LinkedList<E> newLinkedList() {
-        return new LinkedList<E>();
+        return Collects.<E>newLinkedList();
     }
 
     public static <E> LinkedList<E> newLinkedList(Iterable<E> elements) {
@@ -41,11 +38,11 @@ public class Lists {
     }
 
     public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
-        return new CopyOnWriteArrayList<E>();
+        return Collects.newCopyOnWriteArrayList();
     }
 
     public static <E> CopyOnWriteArrayList<E> newCopyOnWriteArrayList(Iterable<E> elements) {
-        return new CopyOnWriteArrayList<E>(Collects.asList(elements));
+        return Collects.newCopyOnWriteArrayList(elements);
     }
 
     public static <E> List<E> asList( E first, E[] rest) {
