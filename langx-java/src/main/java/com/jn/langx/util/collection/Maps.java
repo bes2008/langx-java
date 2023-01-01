@@ -12,7 +12,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.jn.langx.util.Preconditions.checkNotNull;
+
 
 public class Maps {
 
@@ -152,7 +153,7 @@ public class Maps {
     }
 
     public static <K, V> HashMap<K, V> newHashMap() {
-        return Collects.emptyHashMap();
+        return Collects.newHashMap();
     }
 
     public static <K, V> HashMap<K, V> newHashMap(Map<K, V> map) {
@@ -160,47 +161,47 @@ public class Maps {
     }
 
     public static <K, V> HashMap<K, V> newHashMapWithExpectedSize(int expectedSize) {
-        return new HashMap<K, V>(Maths.max(expectedSize, 0));
+        return Collects.newHashMapWithExpectedSize(expectedSize);
     }
 
     public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
-        return new LinkedHashMap<K, V>();
+        return Collects.newLinkedHashMap();
     }
 
     public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(Map<K, V> map) {
-        return new LinkedHashMap<K, V>(map);
+        return Collects.newLinkedHashMap(map);
     }
 
     public static <K, V> LinkedHashMap<K, V> newLinkedHashMapWithExpectedSize(int expectedSize) {
-        return new LinkedHashMap<K, V>(Maths.max(expectedSize, 0));
+        return Collects.newLinkedHashMapWithExpectedSize(expectedSize);
     }
 
     public static <K, V> ConcurrentMap<K, V> newConcurrentMap() {
-        return new ConcurrentHashMap<K, V>();
+        return Collects.newConcurrentMap();
     }
 
     public static <K, V> TreeMap<K, V> newTreeMap() {
-        return Collects.emptyTreeMap();
+        return Collects.newTreeMap();
     }
 
     public static <K, V> TreeMap<K, V> newTreeMap(SortedMap<K, V> map) {
-        return new TreeMap<K, V>(map);
+        return Collects.newTreeMap(map);
     }
 
     public static <C, K extends C, V> TreeMap<K, V> newTreeMap(Comparator<C> comparator) {
-        return new TreeMap<K, V>(comparator);
+        return Collects.newTreeMap(comparator);
     }
 
     public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Class<K> type) {
-        return new EnumMap<K, V>(checkNotNull(type));
+        return Collects.newEnumMap(type);
     }
 
     public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Map<K, V> map) {
-        return new EnumMap<K, V>(map);
+        return Collects.newEnumMap(map);
     }
 
     public static <K, V> IdentityHashMap<K, V> newIdentityHashMap() {
-        return new IdentityHashMap<K, V>();
+        return Collects.newIdentityHashMap();
     }
 
 }

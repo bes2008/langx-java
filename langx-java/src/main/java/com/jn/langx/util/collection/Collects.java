@@ -26,9 +26,11 @@ import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import static com.jn.langx.util.Preconditions.checkNotNull;
 import static com.jn.langx.util.function.Functions.emptyHashSetSupplier0;
 import static com.jn.langx.util.function.Functions.emptyTreeSetSupplier0;
 
@@ -605,13 +607,57 @@ public class Collects {
         }
         return map;
     }
+    public static <K, V> Map<K, V> newMap(Pair<K, V>... pairs) {
+        Map<K, V> map = new HashMap<K, V>(pairs.length);
+        for (int i = 0; i < pairs.length; ++i) {
+            Pair<K, V> pair = pairs[i];
+            map.put(pair.getKey(), pair.getValue());
+        }
 
+        return map;
+    }
+
+    public static <K, V> HashMap<K, V> newHashMap() {
+        return Collects.emptyHashMap();
+    }
 
     public static <K, V> HashMap<K, V> newHashMap(@Nullable Map<K, V> map) {
         if (Emptys.isEmpty(map)) {
             return emptyHashMap();
         }
         return new HashMap<K, V>(map);
+    }
+
+    public static <K, V> HashMap<K, V> newHashMapWithExpectedSize(int expectedSize) {
+        return new HashMap<K, V>(Maths.max(expectedSize, 0));
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
+        return new LinkedHashMap<K, V>();
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(Map<K, V> map) {
+        return new LinkedHashMap<K, V>(map);
+    }
+
+    public static <K, V> LinkedHashMap<K, V> newLinkedHashMapWithExpectedSize(int expectedSize) {
+        return new LinkedHashMap<K, V>(Maths.max(expectedSize, 0));
+    }
+
+    public static <K, V> ConcurrentMap<K, V> newConcurrentMap() {
+        return new ConcurrentHashMap<K, V>();
+    }
+
+    public static <K, V> TreeMap<K, V> newTreeMap() {
+        return Collects.emptyTreeMap();
+    }
+
+    public static <K, V> TreeMap<K, V> newTreeMap(SortedMap<K, V> map) {
+        return new TreeMap<K, V>(map);
+    }
+
+    public static <C, K extends C, V> TreeMap<K, V> newTreeMap(Comparator<C> comparator) {
+        return new TreeMap<K, V>(comparator);
     }
 
     public static <K, V> TreeMap<K, V> newTreeMap(Map<K, V> map) {
@@ -634,6 +680,20 @@ public class Collects {
         }
         return treeMap;
     }
+    public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Class<K> type) {
+        return new EnumMap<K, V>(checkNotNull(type));
+    }
+
+    public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Map<K, V> map) {
+        return new EnumMap<K, V>(map);
+    }
+
+    public static <K, V> IdentityHashMap<K, V> newIdentityHashMap() {
+        return new IdentityHashMap<K, V>();
+    }
+
+
+
 
     public enum MapType {
         StringMap,
