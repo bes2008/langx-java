@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.diff.*;
@@ -16,6 +17,7 @@ import com.jn.langx.util.collection.sequence.SortedSetSequence;
 import com.jn.langx.util.collection.sort.TimSort;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.comparator.Comparators;
+import com.jn.langx.util.concurrent.ConcurrentHashSet;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -25,6 +27,7 @@ import com.jn.langx.util.struct.Pair;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import static com.jn.langx.util.function.Functions.emptyHashSetSupplier0;
 import static com.jn.langx.util.function.Functions.emptyTreeSetSupplier0;
@@ -272,13 +275,37 @@ public class Collects {
         return new TreeSet<E>(comparator);
     }
 
+    public static <E extends Enum<E>> EnumSet<E> newEnumSet(Iterable<E> iterable, Class<E> elementType) {
+        EnumSet<E> set = EnumSet.noneOf(elementType);
+        Collects.addAll(set, Collects.<E>asList(iterable));
+        return set;
+    }
 
-    public static <E> HashSet<E> newHashSet(@Nullable Iterable<E> elements) {
-        return new HashSet<E>(asSet(elements));
+    public static <E> HashSet<E> newHashSet() {
+        return new HashSet<E>();
     }
 
     public static <E> HashSet<E> newHashSet(@Nullable E... elements) {
         return new HashSet<E>(asList(elements));
+    }
+
+    public static <E> HashSet<E> newHashSet(@Nullable Iterable<E> elements) {
+        return new HashSet<E>(asList(elements));
+    }
+
+    public static <E> HashSet<E> newHashSet(Iterator<E> elements) {
+        HashSet<E> set = newHashSet();
+        Collects.addAll(set, Collects.<E>asIterable(elements));
+        return set;
+    }
+
+    public static <E> HashSet<E> newHashSetWithExpectedSize(int expectedSize) {
+        return new HashSet<E>(Maths.max(0, expectedSize));
+    }
+
+
+    public static <E> LinkedHashSet<E> newLinkedHashSet() {
+        return new LinkedHashSet<E>();
     }
 
     public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable Iterable<E> elements) {
@@ -288,14 +315,56 @@ public class Collects {
     public static <E> LinkedHashSet<E> newLinkedHashSet(@Nullable E... elements) {
         return new LinkedHashSet<E>(asList(elements));
     }
+    public static <E> LinkedHashSet<E> newLinkedHashSetWithExpectedSize(int expectedSize) {
+        return new LinkedHashSet<E>(Maths.max(0, expectedSize));
+    }
+
+    public static <E extends Comparable> TreeSet<E> newTreeSet() {
+        return new TreeSet<E>();
+    }
+
+
+    public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
+        return new TreeSet<E>(Preconditions.checkNotNull(comparator));
+    }
 
     public static <E> TreeSet<E> newTreeSet(@Nullable Iterable<E> elements) {
         return new TreeSet<E>(asList(elements));
     }
 
+
+
     public static <E> TreeSet<E> newTreeSet(@Nullable E... elements) {
         return new TreeSet<E>(asList(elements));
     }
+
+
+    public static <E> Set<E> newIdentityHashSet() {
+        return Collections.newSetFromMap(Maps.<E, Boolean>newIdentityHashMap());
+    }
+
+    public static <E> Set<E> newConcurrentHashSet() {
+        return new ConcurrentHashSet<E>();
+    }
+
+    public static <E> Set<E> newConcurrentHashSet(Iterable<E> elements) {
+        Set<E> set = newConcurrentHashSet();
+        Collects.addAll(set, Collects.asList(elements));
+        return set;
+    }
+
+
+    public static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet() {
+        return new CopyOnWriteArraySet<E>();
+    }
+
+    public static <E> CopyOnWriteArraySet<E> newCopyOnWriteArraySet(Iterable<E> elements) {
+        CopyOnWriteArraySet<E> set = new CopyOnWriteArraySet<E>();
+        Collects.addAll(set, Collects.asList(elements));
+        return set;
+    }
+
+
 
 
     /**
