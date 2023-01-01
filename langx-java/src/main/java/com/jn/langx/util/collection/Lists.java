@@ -18,7 +18,7 @@ public class Lists {
     }
 
     public static <E> ArrayList<E> newArrayList(Iterator<E> elements) {
-        return Collects.newArrayList(Collects.<E>asIterable(elements));
+        return Collects.newArrayList(elements);
     }
 
     public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
