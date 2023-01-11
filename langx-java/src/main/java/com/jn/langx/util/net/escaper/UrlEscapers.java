@@ -7,8 +7,8 @@ import com.jn.langx.util.escape.Escaper;
  * {@code Escaper} instances suitable for strings to be included in particular sections of URLs.
  * <p>
  * <p>If the resulting URLs are inserted into an HTML or XML document, they will require additional
- * escaping with {@link com.jn.langx.text.html.HtmlEscapers} or {@link
- * com.jn.langx.text.xml.XmlEscapers}.
+ * escaping with
+ * }.
  */
 public final class UrlEscapers {
     private UrlEscapers() {

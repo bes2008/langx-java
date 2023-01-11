@@ -3726,7 +3726,6 @@ public class Strings {
      * @param string
      * @param separator
      * @param firstLetterToLower
-     * @return
      */
     public static String separatorToCamel(String string, String separator, boolean firstLetterToLower) {
         final StringBuilder builder = new StringBuilder();

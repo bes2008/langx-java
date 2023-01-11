@@ -109,7 +109,7 @@ public interface JPEGEncodeParam extends Cloneable, JPEGDecodeParam {
      * Sets the coefficient quantization tables at index
      * passed. tableNum must range in value from 0 - 3.
      *
-     * @param qtable   that will be used.
+     * @param qTable   that will be used.
      * @param tableNum the index of the table to be set.
      */
     public void setQTable(int tableNum, JPEGQTable qTable);

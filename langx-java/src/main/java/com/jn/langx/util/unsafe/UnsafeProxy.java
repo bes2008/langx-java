@@ -919,8 +919,8 @@ public interface UnsafeProxy {
      *
      * @return the number of samples actually retrieved; or -1
      * if the load average is unobtainable.
-     * @params loadavg an array of double of size nelems
-     * @params nelems the number of samples to be retrieved and
+     * @param loadavg an array of double of size nelems
+     * @param nelems the number of samples to be retrieved and
      * must be 1 to 3.
      */
     public abstract int getLoadAverage(double[] loadavg, int nelems);
