@@ -1,10 +1,14 @@
 package com.jn.langx.util.timing.cron;
 
 import com.jn.langx.Builder;
+import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Functions;
+import com.jn.langx.util.function.Predicate;
 
 import java.text.ParseException;
 
@@ -35,7 +39,7 @@ public class CronExpressionBuilder implements Builder<CronExpression> {
     @Override
     public CronExpression build() {
         Preconditions.checkNotEmpty(this.expression);
-        String[] segments = Strings.split(this.expression, " |\t");
+        String[] segments = Pipeline.<String>of(new StrTokenizer(this.expression, " ","\t")).filter(Functions.<String>notEmptyPredicate()).toArray(String[].class);
         // unix-like cron:    分 时 日 月 星期
         // quartz cron:    秒 分 时 日 月 星期 年  //年不是必须的
 

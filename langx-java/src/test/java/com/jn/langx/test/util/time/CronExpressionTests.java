@@ -88,5 +88,24 @@ public class CronExpressionTests {
 
     }
 
+    @Test
+    public void test3(){
+        CronExpression cronExpression = new CronExpressionBuilder()
+                .type(CronExpressionType.QUARTZ)
+                .expression("* * * * * ?")
+                .build();
+        int i = 1000;
+        Date previous = new Date();
+        Date next = null;
+
+        while (i>0){
+            next = CronExpressions.nextTime(cronExpression, previous);
+            System.out.println(Dates.format(next, Dates.yyyy_MM_dd_HH_mm_ss));
+            previous=next;
+            next=null;
+            i--;
+        }
+
+    }
 
 }
