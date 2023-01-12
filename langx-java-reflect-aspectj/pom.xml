@@ -12,7 +12,7 @@
     <artifactId>langx-java-reflect-aspectj</artifactId>
     <name>${groupId}:${artifactId}:${version}</name>
     <properties>
-        <aspectj.version>1.6.0</aspectj.version>
+        <aspectj.version>1.9.19</aspectj.version>
 
     </properties>
 
