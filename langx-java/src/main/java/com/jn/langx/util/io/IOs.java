@@ -25,13 +25,29 @@ import java.util.List;
  * @author jinuo.fang
  */
 public class IOs {
+
+    /**
+     * LF char.
+     *
+     * @since 5.1.6
+     */
+    public static final int LF = '\n';
+
+
+    /**
+     * CR char.
+     *
+     * @since 5.1.6
+     */
+    public static final int CR = '\r';
+
     public static final int EOF = -1;
     public static final String LINE_SEPARATOR = LineDelimiter.DEFAULT.getValue();
     /**
      * The default buffer size ({@value}) to use for
      * {@link #copyLarge(InputStream, OutputStream)}
      */
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+    public static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
     /**
      * The default buffer size to use for the skip() methods.

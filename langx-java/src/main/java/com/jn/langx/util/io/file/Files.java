@@ -1907,4 +1907,14 @@ public class Files {
             throw Throwables.wrapAsRuntimeIOException(e);
         }
     }
+    public static void setLastModified(File file){
+        setLastModified(file, System.currentTimeMillis());
+    }
+    public static void setLastModified(File file, long time){
+        file.setLastModified(time);
+    }
+
+    public static long getLastModified(File file){
+        return file.lastModified();
+    }
 }
