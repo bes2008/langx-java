@@ -15,7 +15,7 @@
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
     <description>
-        Java lang extensions for java6+, a supplement to , replacement of a Guava, commons-lang.
+        Java lang extensions for java6+, a supplement to , replacement of a Guava, apache commons, hutool.
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
 
@@ -27,11 +27,6 @@
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-io</artifactId>
-            <version>3.4.0</version>
         </dependency>
     </dependencies>
 
