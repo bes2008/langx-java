@@ -22,7 +22,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarFile;
 
@@ -195,12 +194,13 @@ public class ClassLoaders {
      * for primitives (e.g. "int") and array class names (e.g. "String[]").
      * Furthermore, it is also capable of resolving nested class names in Java source
      * style (e.g. "java.lang.Thread.State" instead of "java.lang.Thread$State").
-     * @param name the name of the Class
+     *
+     * @param name        the name of the Class
      * @param classLoader the class loader to use
-     * (may be {@code null}, which indicates the default class loader)
+     *                    (may be {@code null}, which indicates the default class loader)
      * @return a class instance for the supplied name
      * @throws ClassNotFoundException if the class was not found
-     * @throws LinkageError if the class file could not be loaded
+     * @throws LinkageError           if the class file could not be loaded
      * @see Class#forName(String, boolean, ClassLoader)
      */
     public static Class<?> forName(String name, @NonNull ClassLoader classLoader)
@@ -209,8 +209,11 @@ public class ClassLoaders {
         Preconditions.checkNotNull(name, "Name must not be null");
 
         Class<?> clazz = Primitives.get(name);
-        if(clazz!=null){
+        if (clazz != null) {
             return clazz;
+        }
+        if (classLoader == null) {
+            return null;
         }
         // "java.lang.String[]" style arrays
         if (name.endsWith("[]")) {
@@ -232,19 +235,16 @@ public class ClassLoaders {
             Class<?> elementClass = forName(elementName, classLoader);
             return Array.newInstance(elementClass, 0).getClass();
         }
-
-        ClassLoader clToUse = Preconditions.checkNotNull(classLoader, "the classloader is null");
+        ClassLoader clToUse = classLoader;
         try {
             return Class.forName(name, false, clToUse);
-        }
-        catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             int lastDotIndex = name.lastIndexOf('.');
             if (lastDotIndex != -1) {
                 String nestedClassName = name.substring(0, lastDotIndex) + '$' + name.substring(lastDotIndex + 1);
                 try {
                     return Class.forName(nestedClassName, false, clToUse);
-                }
-                catch (ClassNotFoundException ex2) {
+                } catch (ClassNotFoundException ex2) {
                     // Swallow - let original exception get through
                 }
             }
@@ -277,7 +277,7 @@ public class ClassLoaders {
         if (logger.isTraceEnabled()) {
             logger.trace("Unable to load class named [{}] from the thread context ClassLoader. Trying the current ClassLoader...", fqcn);
         }
-        if(clazz!=null){
+        if (clazz != null) {
             return clazz;
         }
         clazz = forName(fqcn, ClassLoaders.class.getClassLoader());
