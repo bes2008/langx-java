@@ -16,18 +16,21 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarFile;
 
 public class ClassLoaders {
-    private ClassLoaders(){
+    private ClassLoaders() {
 
     }
+
 
     public static ClassLoader getClassLoader(final Class<?> clazz) {
         if (System.getSecurityManager() == null) {
@@ -188,6 +191,69 @@ public class ClassLoaders {
     };
 
     /**
+     * Replacement for {@code Class.forName()} that also returns Class instances
+     * for primitives (e.g. "int") and array class names (e.g. "String[]").
+     * Furthermore, it is also capable of resolving nested class names in Java source
+     * style (e.g. "java.lang.Thread.State" instead of "java.lang.Thread$State").
+     * @param name the name of the Class
+     * @param classLoader the class loader to use
+     * (may be {@code null}, which indicates the default class loader)
+     * @return a class instance for the supplied name
+     * @throws ClassNotFoundException if the class was not found
+     * @throws LinkageError if the class file could not be loaded
+     * @see Class#forName(String, boolean, ClassLoader)
+     */
+    public static Class<?> forName(String name, @NonNull ClassLoader classLoader)
+            throws ClassNotFoundException, LinkageError {
+
+        Preconditions.checkNotNull(name, "Name must not be null");
+
+        Class<?> clazz = Primitives.get(name);
+        if(clazz!=null){
+            return clazz;
+        }
+        // "java.lang.String[]" style arrays
+        if (name.endsWith("[]")) {
+            String elementClassName = name.substring(0, name.length() - "[]".length());
+            Class<?> elementClass = forName(elementClassName, classLoader);
+            return Array.newInstance(elementClass, 0).getClass();
+        }
+
+        // "[Ljava.lang.String;" style arrays
+        if (name.startsWith("[L") && name.endsWith(";")) {
+            String elementName = name.substring("[L".length(), name.length() - 1);
+            Class<?> elementClass = forName(elementName, classLoader);
+            return Array.newInstance(elementClass, 0).getClass();
+        }
+
+        // "[[I" or "[[Ljava.lang.String;" style arrays
+        if (name.startsWith("[")) {
+            String elementName = name.substring("[".length());
+            Class<?> elementClass = forName(elementName, classLoader);
+            return Array.newInstance(elementClass, 0).getClass();
+        }
+
+        ClassLoader clToUse = Preconditions.checkNotNull(classLoader, "the classloader is null");
+        try {
+            return Class.forName(name, false, clToUse);
+        }
+        catch (ClassNotFoundException ex) {
+            int lastDotIndex = name.lastIndexOf('.');
+            if (lastDotIndex != -1) {
+                String nestedClassName = name.substring(0, lastDotIndex) + '$' + name.substring(lastDotIndex + 1);
+                try {
+                    return Class.forName(nestedClassName, false, clToUse);
+                }
+                catch (ClassNotFoundException ex2) {
+                    // Swallow - let original exception get through
+                }
+            }
+            throw ex;
+        }
+    }
+
+
+    /**
      * Attempts to load the specified class name from the current thread's
      * {@link Thread#getContextClassLoader() context class loader}, then the
      * current ClassLoader (<code>ClassUtils.class.getClassLoader()</code>), then the system/application
@@ -202,24 +268,25 @@ public class ClassLoaders {
      */
     public static Class<?> forName(String fqcn) throws ClassNotFoundException {
 
-        Class<?> clazz = THREAD_CL_ACCESSOR.loadClass(fqcn);
-        Logger logger = Loggers.getLogger(ClassLoaders.class);
-        if (clazz == null) {
-            if (logger.isTraceEnabled()) {
-                logger.trace("Unable to load class named [{}] from the thread context ClassLoader. Trying the current ClassLoader...", fqcn);
-            }
-            clazz = CLASS_CL_ACCESSOR.loadClass(fqcn);
+        Class<?> clazz = Primitives.get(fqcn);
+        if (clazz != null) {
+            return clazz;
         }
+        Logger logger = Loggers.getLogger(ClassLoaders.class);
+        clazz = forName(fqcn, Thread.currentThread().getContextClassLoader());
+        if (logger.isTraceEnabled()) {
+            logger.trace("Unable to load class named [{}] from the thread context ClassLoader. Trying the current ClassLoader...", fqcn);
+        }
+        if(clazz!=null){
+            return clazz;
+        }
+        clazz = forName(fqcn, ClassLoaders.class.getClassLoader());
 
         if (clazz == null) {
             if (logger.isTraceEnabled()) {
                 logger.trace("Unable to load class named [{}] from the current ClassLoader. Trying the system/application ClassLoader...", fqcn);
             }
-            clazz = SYSTEM_CL_ACCESSOR.loadClass(fqcn);
-        }
-
-        if (clazz == null) {
-            clazz = Primitives.get(fqcn);
+            clazz = forName(fqcn, ClassLoader.getSystemClassLoader());
         }
 
         if (clazz == null) {
