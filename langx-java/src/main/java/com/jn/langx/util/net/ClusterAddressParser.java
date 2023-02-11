@@ -165,7 +165,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                         }
                     }
 
-                    logger.warn("invalid ipv6 address: {}", segment);
+                    logger.warn("invalid ip address: {}", segment);
                 }
             } else {
                 logger.warn("invalid ip address: {}", segment);
