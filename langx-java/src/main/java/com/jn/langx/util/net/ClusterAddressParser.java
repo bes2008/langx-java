@@ -115,7 +115,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                 }
                 if (!hasBrace && Regexps.match(RegexpPatterns.PATTERN_IP, ip)) {
                     // IP v4，但没有端口
-                    ret.add(new NetworkAddress(ip, port));
+                    ret.add(new NetworkAddress(ip, port, NetworkAddress.AddrMode.V4));
                 } else if (!hasBrace && Regexps.match("\\w+(\\.\\w+)*(:\\d{1,5})?", ip)) {
                     // host:port, ipv4:port
                     Map<String, String> string2Map = Regexps.findNamedGroup(IPv4_PORT_SEGMENT_PATTERN, segment);
@@ -130,10 +130,15 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                             logger.warn("invalid port : {}", segment);
                             continue;
                         }
-                        ret.add(new NetworkAddress(ip, port));
+
+                        NetworkAddress.AddrMode v = NetworkAddress.AddrMode.HOST;
+                        if(Regexps.match(RegexpPatterns.PATTERN_IP, ip)){
+                            v = NetworkAddress.AddrMode.V4;
+                        }
+                        ret.add(new NetworkAddress(ip, port, v));
                     }
                 } else if (Regexps.match(RegexpPatterns.PATTERN_IPv6, ip)) {
-                    ret.add(new NetworkAddress("[" + ip + "]", port));
+                    ret.add(new NetworkAddress("[" + ip + "]", port, NetworkAddress.AddrMode.V6));
                 } else {
                     int portSeparator = Strings.lastIndexOf(segment, ":");
                     if (portSeparator >= 1 && portSeparator < segment.length() - 1) {
@@ -151,10 +156,10 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                             ip = Strings.substring(segment, 0, portSeparator);
                             if (!hasBrace && Regexps.match(RegexpPatterns.PATTERN_IP, ip)) {
                                 // IP v4
-                                ret.add(new NetworkAddress(ip, port));
+                                ret.add(new NetworkAddress(ip, port, NetworkAddress.AddrMode.V4));
                                 continue;
                             } else if (Regexps.match(RegexpPatterns.PATTERN_IPv6, ip)) {
-                                ret.add(new NetworkAddress("[" + ip + "]", port));
+                                ret.add(new NetworkAddress("[" + ip + "]", port, NetworkAddress.AddrMode.V6));
                                 continue;
                             }
                         }

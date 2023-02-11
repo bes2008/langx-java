@@ -2,6 +2,8 @@ package com.jn.langx.test.util.net;
 
 import com.jn.langx.util.net.ClusterAddressParser;
 import com.jn.langx.util.net.NetworkAddress;
+import com.jn.langx.util.regexp.RegexpPatterns;
+import com.jn.langx.util.regexp.Regexps;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -13,6 +15,12 @@ public class ClusterAddressParserTests {
     @BeforeClass
     public static void init(){
         parser.setDefaultPort(80);
+    }
+
+    @Test
+    public void testIpv4Ip(){
+        System.out.println(Regexps.match(RegexpPatterns.PATTERN_IP,"192.168.19.16"));
+        System.out.println(Regexps.match(RegexpPatterns.PATTERN_IP,"192.168.19.16/23"));
     }
 
     @Test
@@ -31,6 +39,8 @@ public class ClusterAddressParserTests {
         addresses = parser.parse("host1");
         System.out.println(addresses);
 
+        addresses = parser.parse("192.168.19.16:2100");
+        System.out.println(addresses);
 
         addresses = parser.parse("192.168.1.1:2100,192.168.1.2:2100,192.168.1.3:2100");
         System.out.println(addresses);

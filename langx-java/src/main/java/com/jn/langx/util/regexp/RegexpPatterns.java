@@ -77,9 +77,9 @@ public class RegexpPatterns {
 
     /**
      * IP地址
-     * https://ipregex.com/
+     * 192.168.0.3
      */
-    public static Regexp PATTERN_IP = Regexps.createRegexp("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)");
+    public static Regexp PATTERN_IP = Regexps.createRegexp("((2(5[0-5]|[0-4]\\d))|([0-1]?\\d{1,2}))(\\.((2(5[0-5]|[0-4]\\d))|([0-1]?\\d{1,2}))){3}(/\\d{1,2})?");
 
     public static Regexp PATTERN_IPv6 = Regexps.createRegexp("(([0-9A-F]{0,4}::[0-9A-F]{0,4})|([0-9A-F]{1,4}:([0-9A-F]{1,4}:){0,5}:[0-9A-F]{1,4})|([0-9A-F]{1,4}(:[0-9A-F]{1,4}){7}))(/\\d{1,6})?");
 

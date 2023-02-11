@@ -1,20 +1,40 @@
 package com.jn.langx.util.net;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
 
 public class NetworkAddress implements Comparable<NetworkAddress> {
     private String host;
     private int port;
+    private AddrMode addrMode;
+
+    public static enum AddrMode {
+        V4, V6, HOST;
+    }
+
 
     public NetworkAddress() {
 
     }
 
     public NetworkAddress(String host, int port) {
+        this(host, port, AddrMode.HOST);
+    }
+
+    public NetworkAddress(String host, int port, AddrMode addrMode) {
         this.host = host;
         if (port > 0) {
             this.port = port;
         }
+        this.addrMode = addrMode;
+    }
+
+    public AddrMode getAddrMode() {
+        return addrMode;
+    }
+
+    public void setAddrMode(AddrMode addrMode) {
+        this.addrMode = addrMode;
     }
 
     public String getHost() {
@@ -61,6 +81,11 @@ public class NetworkAddress implements Comparable<NetworkAddress> {
 
     @Override
     public String toString() {
-        return port > 0 ? (host + ":" + port) : host;
+        // return port > 0 ? (host + ":" + port) : host;
+        return show();
+    }
+
+    public String show(){
+        return StringTemplates.formatWithPlaceholder( "{host: {}, port:{}, version: {}}", host, port, addrMode);
     }
 }
