@@ -86,6 +86,6 @@ public class NetworkAddress implements Comparable<NetworkAddress> {
     }
 
     public String show(){
-        return StringTemplates.formatWithPlaceholder( "{host: {}, port:{}, version: {}}", host, port, addrMode);
+        return StringTemplates.formatWithPlaceholder( "{host: {}, port:{}, addrMode: {}}", host, port, addrMode);
     }
 }
