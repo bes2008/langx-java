@@ -28,6 +28,13 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>flow-server</artifactId>
+            <version>23.3.4</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

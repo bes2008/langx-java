@@ -5,8 +5,10 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Closer;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 
+import java.io.Closeable;
 import java.util.Map;
 import java.util.ServiceLoader;
 
@@ -37,6 +39,14 @@ public class ObjectCloser {
     public static void close(Object obj) {
         if (obj == null) {
             return;
+        }
+
+        if(obj instanceof Closeable){
+            try {
+                ((Closeable) obj).close();
+            }catch (Throwable e){
+                Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", obj.toString());
+            }
         }
         Class type = obj.getClass();
         findCloser(type).close(obj);
