@@ -78,6 +78,12 @@ class JdkMatcher implements RegexpMatcher {
     }
 
     @Override
+    public RegexpMatcher reset(CharSequence content) {
+        this.matcher.reset(content);
+        return this;
+    }
+
+    @Override
     public boolean find() {
         return matcher.find();
     }

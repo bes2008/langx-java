@@ -23,10 +23,10 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     /**
      * 原始字符串， 此处记录了两种形态：
      */
-    final byte[] input;
+    private byte[] input;
 
 
-    final Matcher matcher;
+    private Matcher matcher;
     private JoniRegexp regexp;
 
 
@@ -47,10 +47,13 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     JoniRegexpMatcher(JoniRegexp regexp, CharSequence input) {
         this.regexp = regexp;
+        this.init(input);
+    }
+
+    void init(CharSequence input){
         this.input = input.toString().getBytes(Charsets.UTF_8);
         this.matcher = regexp.regex.matcher(this.input);
     }
-
 
     private int toBytesIndex(int charIndex) {
         if (charIndex < 0) {
@@ -300,6 +303,13 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         this.lastBeg = -1;
         this.lastEnd = 0;
         this.lastAppendPosition = 0;
+        return this;
+    }
+
+    @Override
+    public RegexpMatcher reset(CharSequence content) {
+        this.reset();
+        this.init(content);
         return this;
     }
 

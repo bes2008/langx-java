@@ -28,6 +28,8 @@ public interface RegexpMatcher extends NamedGroupMatchResult {
      */
     RegexpMatcher reset();
 
+    RegexpMatcher reset(CharSequence content);
+
     /**
      * Attempts to find the next subsequence of the input sequence that matches
      * the pattern.
