@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.1.6</version>
+    <version>5.1.7</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
