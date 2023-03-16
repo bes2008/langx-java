@@ -127,6 +127,7 @@ public class Nets {
      * {@code true} if an IPv6 address should be preferred when a host has both an IPv4 address and an IPv6 address.
      */
     private static final boolean IPV6_ADDRESSES_PREFERRED;
+    private static final List<String> virtualInterfaces;
 
     static {
         final PropertiesAccessor systemPropertiesAccessor = SystemPropertys.getAccessor();
@@ -135,7 +136,11 @@ public class Nets {
         final Logger logger = Loggers.getLogger(Nets.class);
         logger.trace("-Djava.net.preferIPv4Stack: {}", IPV4_PREFERRED);
         logger.trace("-Djava.net.preferIPv6Addresses: {}", IPV6_ADDRESSES_PREFERRED);
-
+        /**
+         * @since 5.1.8
+         */
+        String[] virtualNetworkInterfaces = Strings.split(systemPropertiesAccessor.getString("langx.virtual.network.interfaces", "virtualbox,kernel debug,ppp0,6to4,loopback,miniport,virbr,docker,veth,calic,br,pan, virtual"),",");
+        virtualInterfaces = Collects.asList(Collects.asSet(virtualNetworkInterfaces));
         byte[] LOCALHOST4_BYTES = {127, 0, 0, 1};
         byte[] LOCALHOST6_BYTES = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
 
@@ -1372,9 +1377,6 @@ public class Nets {
         return Collects.emptyArrayList();
     }
 
-    private static final List<String> virtualInterfaces = Collects.newArrayList(
-            "virtualbox", " kernel debug ", "ppp0", "6to4", "loopback", "miniport", "virbr", "docker", "veth"
-    );
 
     /**
      * 获取有效的网卡接口
@@ -1391,6 +1393,24 @@ public class Nets {
                     @Override
                     public boolean test(NetworkInterface networkInterface) {
                         return !networkInterface.isVirtual();
+                    }
+                }).filter(new Predicate<NetworkInterface>() {
+                    @Override
+                    public boolean test(NetworkInterface networkInterface) {
+                        try {
+                            return networkInterface.isUp();
+                        }catch (IOException e){
+                            return false;
+                        }
+                    }
+                }).filter(new Predicate<NetworkInterface>() {
+                    @Override
+                    public boolean test(NetworkInterface networkInterface) {
+                        try {
+                            return !networkInterface.isLoopback();
+                        }catch (IOException e){
+                            return false;
+                        }
                     }
                 }).filter(new Predicate<NetworkInterface>() {
                     @Override
