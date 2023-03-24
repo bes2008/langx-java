@@ -19,6 +19,7 @@ import java.util.*;
 public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiffResult<E>> {
     private Comparator<E> comparator;
     private KeyBuilder<String, E> keyBuilder;
+    private List<JudgeType> judgeTypes;
 
     public void diffUsingMap(@Nullable KeyBuilder<String, E> keyBuilder) {
         this.keyBuilder = keyBuilder;
@@ -50,14 +51,14 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
             Map<String, E> oldMap = Collects.map(oldCollection, new Mapper<E, Pair<String, E>>() {
                 @Override
                 public Pair<String, E> apply(E element) {
-                    return new com.jn.langx.util.struct.Entry(keyBuilder.getKey(element), element);
+                    return new Pair<String, E>(keyBuilder.getKey(element), element);
                 }
             });
 
             Map<String, E> newMap = Collects.map(newCollection, new Mapper<E, Pair<String, E>>() {
                 @Override
                 public Pair<String, E> apply(E element) {
-                    return new com.jn.langx.util.struct.Entry(keyBuilder.getKey(element), element);
+                    return new Pair<String, E>(keyBuilder.getKey(element), element);
                 }
             });
 
@@ -84,7 +85,7 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
         final List<E> adds = new ArrayList<E>();
         final List<E> removes = new ArrayList<E>();
         final List<E> equals = new ArrayList<E>();
-        final Comparator<E> comp =  comparator == null ? new EqualsComparator<E>():comparator;
+        final Comparator<E> comp = comparator == null ? new EqualsComparator<E>() : comparator;
         Collects.forEach(newCollection, new Consumer<E>() {
             @Override
             public void accept(final E newValue) {

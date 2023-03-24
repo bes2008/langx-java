@@ -18,6 +18,8 @@ public class MapDiffer<K, V> implements Differ<Map<K, V>, MapDiffResult<K, V>> {
     @Nullable
     private Comparator<V> valueComparator;
 
+
+
     public void setKeyComparator(@Nullable Comparator<K> comparator) {
         this.keyComparator = comparator;
     }
