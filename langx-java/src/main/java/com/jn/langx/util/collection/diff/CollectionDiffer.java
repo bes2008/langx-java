@@ -19,7 +19,17 @@ import java.util.*;
 public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiffResult<E>> {
     private Comparator<E> comparator;
     private KeyBuilder<String, E> keyBuilder;
-    private List<JudgeType> judgeTypes;
+    private List<JudgeType> judgeTypes = Collects.asList(EnumSet.allOf(JudgeType.class));
+
+    public List<JudgeType> getJudgeTypes() {
+        return judgeTypes;
+    }
+
+    public void setJudgeTypes(List<JudgeType> judgeTypes) {
+        if (judgeTypes != null) {
+            this.judgeTypes = judgeTypes;
+        }
+    }
 
     public void diffUsingMap(@Nullable KeyBuilder<String, E> keyBuilder) {
         this.keyBuilder = keyBuilder;
@@ -65,6 +75,7 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
             MapDiffer<String, E> mapDiffer = new MapDiffer<String, E>();
             mapDiffer.setValueComparator(comparator);
             mapDiffer.setKeyComparator(new EqualsComparator<String>());
+            mapDiffer.setJudgeTypes(judgeTypes);
             MapDiffResult<String, E> dr = mapDiffer.diff(oldMap, newMap);
             result.setAdds(dr.getAdds().values());
             result.setRemoves(dr.getRemoves().values());
@@ -86,35 +97,38 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
         final List<E> removes = new ArrayList<E>();
         final List<E> equals = new ArrayList<E>();
         final Comparator<E> comp = comparator == null ? new EqualsComparator<E>() : comparator;
-        Collects.forEach(newCollection, new Consumer<E>() {
-            @Override
-            public void accept(final E newValue) {
-                if (Collects.anyMatch(oldCollection, new Predicate<E>() {
-                    @Override
-                    public boolean test(E oldValue) {
-                        return comp.compare(oldValue, newValue) == 0;
+        if (judgeTypes.contains(JudgeType.ADDED) || judgeTypes.contains(JudgeType.EQUALED)) {
+            Collects.forEach(newCollection, new Consumer<E>() {
+                @Override
+                public void accept(final E newValue) {
+                    if (Collects.anyMatch(oldCollection, new Predicate<E>() {
+                        @Override
+                        public boolean test(E oldValue) {
+                            return comp.compare(oldValue, newValue) == 0;
+                        }
+                    })) {
+                        equals.add(newValue);
+                    } else {
+                        adds.add(newValue);
                     }
-                })) {
-                    equals.add(newValue);
-                } else {
-                    adds.add(newValue);
                 }
-            }
-        });
-
-        Collects.forEach(oldCollection, new Consumer<E>() {
-            @Override
-            public void accept(final E oldValue) {
-                if (Collects.noneMatch(newCollection, new Predicate<E>() {
-                    @Override
-                    public boolean test(E newValue) {
-                        return comp.compare(oldValue, newValue) == 0;
+            });
+        }
+        if (judgeTypes.contains(JudgeType.REMOVED)) {
+            Collects.forEach(oldCollection, new Consumer<E>() {
+                @Override
+                public void accept(final E oldValue) {
+                    if (Collects.noneMatch(newCollection, new Predicate<E>() {
+                        @Override
+                        public boolean test(E newValue) {
+                            return comp.compare(oldValue, newValue) == 0;
+                        }
+                    })) {
+                        removes.add(oldValue);
                     }
-                })) {
-                    removes.add(oldValue);
                 }
-            }
-        });
+            });
+        }
 
         result.setAdds(adds);
         result.setRemoves(removes);

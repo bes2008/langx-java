@@ -17,7 +17,17 @@ public class MapDiffer<K, V> implements Differ<Map<K, V>, MapDiffResult<K, V>> {
     private Comparator<K> keyComparator;
     @Nullable
     private Comparator<V> valueComparator;
+    private List<JudgeType> judgeTypes = Collects.asList(EnumSet.allOf(JudgeType.class));
 
+    public List<JudgeType> getJudgeTypes() {
+        return judgeTypes;
+    }
+
+    public void setJudgeTypes(List<JudgeType> judgeTypes) {
+        if (judgeTypes != null) {
+            this.judgeTypes = judgeTypes;
+        }
+    }
 
 
     public void setKeyComparator(@Nullable Comparator<K> comparator) {
@@ -50,6 +60,7 @@ public class MapDiffer<K, V> implements Differ<Map<K, V>, MapDiffResult<K, V>> {
         Set<K> newKeys = newMap.keySet();
         CollectionDiffer<K> keyDiffer = new CollectionDiffer<K>();
         keyDiffer.setComparator(keyComparator);
+        keyDiffer.setJudgeTypes(getJudgeTypes());
         CollectionDiffResult<K> keyDiffResult = keyDiffer.diff(oldKeys, newKeys);
 
         Collection<K> addsKeys = keyDiffResult.getAdds();
@@ -73,26 +84,28 @@ public class MapDiffer<K, V> implements Differ<Map<K, V>, MapDiffResult<K, V>> {
         Collection<K> keyEquals = keyDiffResult.getEquals();
         final Map<K, V> equalsMap = new HashMap<K, V>();
         final Map<K, V> updatesMap = new HashMap<K, V>();
-        Collects.forEach(keyEquals, new Consumer<K>() {
-            @Override
-            public void accept(K key) {
-                V oldValue = oldMap.get(key);
-                V newValue = newMap.get(key);
-                if (valueComparator == null) {
-                    if (oldValue.equals(newValue)) {
-                        equalsMap.put(key, newValue);
+        if (judgeTypes.contains(JudgeType.EQUALED) || judgeTypes.contains(JudgeType.UPDATED)) {
+            Collects.forEach(keyEquals, new Consumer<K>() {
+                @Override
+                public void accept(K key) {
+                    V oldValue = oldMap.get(key);
+                    V newValue = newMap.get(key);
+                    if (valueComparator == null) {
+                        if (oldValue.equals(newValue)) {
+                            equalsMap.put(key, newValue);
+                        } else {
+                            updatesMap.put(key, newValue);
+                        }
                     } else {
-                        updatesMap.put(key, newValue);
-                    }
-                } else {
-                    if (valueComparator.compare(oldValue, newValue) == 0) {
-                        equalsMap.put(key, newValue);
-                    } else {
-                        updatesMap.put(key, newValue);
+                        if (valueComparator.compare(oldValue, newValue) == 0) {
+                            equalsMap.put(key, newValue);
+                        } else {
+                            updatesMap.put(key, newValue);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
         result.setAdds(addsMap);
         result.setRemoves(removesMap);
