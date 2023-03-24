@@ -70,11 +70,7 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
             result.setEquals(dr.getEquals().values());
             result.setUpdates(dr.getUpdates().values());
         } else {
-            if (isDiffUsingEqualMethod()) {
-                diffWithObjectEquals(oldCollection, newCollection, result);
-            } else {
-                diffWithComparator(oldCollection, newCollection, result);
-            }
+            doDiff(oldCollection, newCollection, result);
         }
         return result;
     }
@@ -83,36 +79,19 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
         return this.keyBuilder != null;
     }
 
-    private boolean isDiffUsingEqualMethod() {
-        return comparator == null || comparator instanceof EqualsComparator;
-    }
 
-
-    private void diffWithObjectEquals(Collection<E> oldCollection, Collection<E> newCollection, CollectionDiffResult<E> result) {
-        List<E> removes = new ArrayList<E>(oldCollection);
-        removes.removeAll(newCollection);
-        result.setRemoves(removes);
-
-        List<E> equals = new ArrayList<E>(oldCollection);
-        equals.removeAll(removes);
-        result.setEquals(equals);
-
-        List<E> adds = new ArrayList<E>(newCollection);
-        adds.removeAll(oldCollection);
-        result.setAdds(adds);
-    }
-
-    private void diffWithComparator(final Collection<E> oldCollection, final Collection<E> newCollection, CollectionDiffResult<E> result) {
+    private void doDiff(final Collection<E> oldCollection, final Collection<E> newCollection, CollectionDiffResult<E> result) {
         final List<E> adds = new ArrayList<E>();
         final List<E> removes = new ArrayList<E>();
         final List<E> equals = new ArrayList<E>();
+        final Comparator<E> comp =  comparator == null ? new EqualsComparator<E>():comparator;
         Collects.forEach(newCollection, new Consumer<E>() {
             @Override
             public void accept(final E newValue) {
                 if (Collects.anyMatch(oldCollection, new Predicate<E>() {
                     @Override
                     public boolean test(E oldValue) {
-                        return comparator.compare(oldValue, newValue) == 0;
+                        return comp.compare(oldValue, newValue) == 0;
                     }
                 })) {
                     equals.add(newValue);
@@ -128,7 +107,7 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
                 if (Collects.noneMatch(newCollection, new Predicate<E>() {
                     @Override
                     public boolean test(E newValue) {
-                        return comparator.compare(oldValue, newValue) == 0;
+                        return comp.compare(oldValue, newValue) == 0;
                     }
                 })) {
                     removes.add(oldValue);
@@ -140,4 +119,5 @@ public class CollectionDiffer<E> implements Differ<Collection<E>, CollectionDiff
         result.setRemoves(removes);
         result.setEquals(equals);
     }
+
 }
