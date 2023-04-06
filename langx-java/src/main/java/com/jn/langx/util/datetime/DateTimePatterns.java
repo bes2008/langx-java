@@ -380,6 +380,7 @@ public class DateTimePatterns {
      * </pre>
      */
     public static final String YYYY_MM_DD_T_HH_MM_SS_SSS_XXX_Z = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    public static final String ISO_8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
 
 
 
