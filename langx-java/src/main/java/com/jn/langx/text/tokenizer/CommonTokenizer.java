@@ -42,7 +42,7 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
                     // 刚一进来这个 getNext()方法，就遇到了分隔符
                     if (returnDelimiter) {
                         // 返回分隔符
-                        String delimiter = this.buffer.substring(position, delimiterPositions[1]);
+                        String delimiter = getDelimiter(position, delimiterPositions[1]);
                         this.buffer.position(delimiterPositions[1]);
                         this.buffer.mark();
                         Token token = tokenFactory.get(delimiter, true);
@@ -86,6 +86,12 @@ public abstract class CommonTokenizer<Token> extends AbstractTokenizer<Token> {
         return null;
     }
 
+    protected String getDelimiter(long start, long end){
+        String delimiter = this.buffer.substring(start,end);
+        this.buffer.position(end);
+        this.buffer.mark();
+        return delimiter;
+    }
 
     /**
      * 如果接下来是 delimiter，就返回，如果不是范围null

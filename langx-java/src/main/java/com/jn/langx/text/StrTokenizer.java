@@ -71,15 +71,22 @@ public class StrTokenizer extends CommonTokenizer<String> {
     }
 
     @Override
+    protected String getDelimiter(long start, long end) {
+        String delimiter = super.getDelimiter(start, end);
+        foundDelimiterCount++;
+        return delimiter;
+    }
+
+    @Override
     protected String getIfDelimiterStart(final long position, char c) {
         boolean continueFind = foundDelimiterCount < max;
         if (continueFind) {
             String delimiter = getIfDelimiterStartInternal(position, c);
             if (delimiter != null) {
-                if(lastDelimiterStartPosition==position){
-                   // 本次为 获取 delimiter
-                }else {
-                    foundDelimiterCount++;
+                if (lastDelimiterStartPosition == position) {
+                    // 本次为 获取 delimiter
+                } else {
+                    // foundDelimiterCount++;
                     lastDelimiterStartPosition = position;
                 }
             }

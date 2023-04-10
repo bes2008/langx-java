@@ -100,4 +100,13 @@ public class StringsTests {
         System.out.println(Strings.containsAny("%(tls)", "%,()"));
     }
 
+    @Test
+    public void replace(){
+        String str = "abc123abc456abc";
+        System.out.println(Strings.replace(str, "abc", "ABC", -1));
+        System.out.println(Strings.replace(str, "abc", "ABC", 2));
+        System.out.println(Strings.replace(str, "abc", "ABC", 1));
+    }
+
+
 }

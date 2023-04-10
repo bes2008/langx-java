@@ -1745,7 +1745,7 @@ public class Strings {
             return text;
         }
 
-        StrTokenizer tokenizer = new StrTokenizer(text, true, -1, searchString);
+        StrTokenizer tokenizer = new StrTokenizer(text, true, max, searchString);
         List<String> tokens = tokenizer.tokenize();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < tokens.size(); i++) {
