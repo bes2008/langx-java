@@ -3,7 +3,7 @@ package com.jn.langx.beans;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.reflect.Modifiers;
 import com.jn.langx.util.reflect.Reflects;
 
@@ -19,7 +19,7 @@ public class JavaBeans {
     }
 
     public static Map<String, Object> toMap(Object bean) {
-        Map<String, Object> map = Collects.emptyHashMap(true);
+        Map<String, Object> map = Maps.newLinkedHashMap();
 
         Preconditions.checkNotNull(bean, "bean must not be null");
 

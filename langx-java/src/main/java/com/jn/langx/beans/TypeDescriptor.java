@@ -4,6 +4,7 @@ package com.jn.langx.beans;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.ResolvableType;
 import com.jn.langx.util.reflect.type.SimpleParameter;
@@ -16,7 +17,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,7 +30,7 @@ class TypeDescriptor implements Serializable {
     private static final boolean streamAvailable = ClassLoaders.hasClass(
             "java.util.stream.Stream", TypeDescriptor.class.getClassLoader());
 
-    private static final Map<Class<?>, TypeDescriptor> commonTypesCache = new HashMap<Class<?>, TypeDescriptor>(32);
+    private static final Map<Class<?>, TypeDescriptor> commonTypesCache = Maps.<Class<?>, TypeDescriptor>newHashMapWithExpectedSize(32);
 
     private static final Class<?>[] CACHED_COMMON_TYPES = {
             boolean.class, Boolean.class, byte.class, Byte.class, char.class, Character.class,
@@ -295,7 +295,7 @@ class TypeDescriptor implements Serializable {
      * Is this type a {@link Collection} type?
      */
     public boolean isCollection() {
-        return Collection.class.isAssignableFrom(getType());
+        return Reflects.isSubClassOrEquals(Collection.class, getType());
     }
 
     /**
@@ -352,7 +352,7 @@ class TypeDescriptor implements Serializable {
      * Is this type a {@link Map} type?
      */
     public boolean isMap() {
-        return Map.class.isAssignableFrom(getType());
+        return Reflects.isSubClassOrEquals(Map.class, getType());
     }
 
     /**
