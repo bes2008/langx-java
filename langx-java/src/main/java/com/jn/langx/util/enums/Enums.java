@@ -46,12 +46,12 @@ public class Enums {
     }
 
     private static EnumGetter selectGetter(final Class tClass) {
-        EnumGetter selector = GETTER_REGISTRY.get(tClass);
-        if (selector == null && Reflects.isSubClass(CommonEnum.class, tClass)) {
-            selector = GETTER_REGISTRY.get(CommonEnum.class);
+        EnumGetter getter = GETTER_REGISTRY.get(tClass);
+        if (getter == null && Reflects.isSubClass(CommonEnum.class, tClass)) {
+            getter = GETTER_REGISTRY.get(CommonEnum.class);
         }
 
-        if (selector == null) {
+        if (getter == null) {
             Pipeline.of(GETTER_REGISTRY.keySet()).findFirst(new Predicate<Class>() {
                 @Override
                 public boolean test(Class aClass) {
@@ -66,10 +66,10 @@ public class Enums {
             });
 
         }
-        if (selector == null) {
-            selector = GETTER_REGISTRY.get(Enum.class);
+        if (getter == null) {
+            getter = GETTER_REGISTRY.get(Enum.class);
         }
-        return selector;
+        return getter;
     }
 
     /**
@@ -100,6 +100,10 @@ public class Enums {
         Preconditions.checkNotNull(tClass);
         EnumGetter getter = selectGetter(tClass);
         T t = (T) getter.getByCode(tClass, code);
+        if (t == null && !(getter instanceof JvmEnumGetter)) {
+            getter = getJvmEnumGetter();
+            t = (T) getter.getByCode(tClass, code);
+        }
         return t;
     }
 
@@ -114,6 +118,10 @@ public class Enums {
         Preconditions.checkNotNull(tClass);
         EnumGetter getter = selectGetter(tClass);
         T t = (T) getter.getByName(tClass, name);
+        if (t == null && !(getter instanceof JvmEnumGetter)) {
+            getter = getJvmEnumGetter();
+            t = (T) getter.getByName(tClass, name);
+        }
         return t;
     }
 
@@ -121,6 +129,10 @@ public class Enums {
         Preconditions.checkNotNull(tClass);
         EnumGetter getter = selectGetter(tClass);
         T t = (T) getter.getByToString(tClass, value);
+        if (t == null && !(getter instanceof JvmEnumGetter)) {
+            getter = getJvmEnumGetter();
+            t = (T) getter.getByToString(tClass, value);
+        }
         return t;
     }
 
@@ -128,7 +140,15 @@ public class Enums {
         Preconditions.checkNotNull(tClass);
         EnumGetter getter = selectGetter(tClass);
         T t = (T) getter.getByDisplayText(tClass, displayText);
+        if (t == null && !(getter instanceof JvmEnumGetter)) {
+            getter = getJvmEnumGetter();
+            t = (T) getter.getByDisplayText(tClass, displayText);
+        }
         return t;
+    }
+
+    private static EnumGetter getJvmEnumGetter() {
+        return GETTER_REGISTRY.get(Enum.class);
     }
 
     public static <T extends Enum<T>> T inferEnum(Class<T> targetClass, String text) {

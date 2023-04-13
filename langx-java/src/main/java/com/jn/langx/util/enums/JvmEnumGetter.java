@@ -8,7 +8,7 @@ import com.jn.langx.util.function.Predicate;
 import java.util.EnumSet;
 import java.util.List;
 
-public class JvmEnumGetter implements EnumGetter {
+public final class JvmEnumGetter implements EnumGetter {
 
     @Override
     public List<Class> applyTo() {
