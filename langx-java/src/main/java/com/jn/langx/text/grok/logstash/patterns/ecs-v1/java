@@ -4,7 +4,7 @@ JAVAFILE (?:[a-zA-Z$_0-9. -]+)
 #Allow special <init>, <clinit> methods
 JAVAMETHOD (?:(<(?:cl)?init>)|[a-zA-Z$_][a-zA-Z$_0-9]*)
 #Line number is optional in special cases 'Native method' or 'Unknown source'
-JAVASTACKTRACEPART %{SPACE}at %{JAVACLASS}\.%{JAVAMETHOD}\(%{JAVAFILE}(?::%{INT})?\)
+JAVASTACKTRACEPART %{SPACE}at %{JAVACLASS:exceptionClass}\.%{JAVAMETHOD}\(%{JAVAFILE}(?::%{INT})?\)
 # Java Logs
 JAVATHREAD (?:[A-Z]{2}-Processor[\d]+)
 JAVALOGMESSAGE (?:.*)

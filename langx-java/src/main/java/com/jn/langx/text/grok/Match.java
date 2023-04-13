@@ -23,7 +23,7 @@ class Match {
     public static final Match EMPTY = new Match("", null, null, 0, 0);
     private final CharSequence subject;
     private final Grok grok;
-    private final RegexpMatcher match;
+    private final RegexpMatcher matcher;
     private final int start;
     private final int end;
     private boolean keepEmptyCaptures = true;
@@ -35,13 +35,13 @@ class Match {
     public Match(CharSequence subject, Grok grok, RegexpMatcher match, int start, int end) {
         this.subject = subject;
         this.grok = grok;
-        this.match = match;
+        this.matcher = match;
         this.start = start;
         this.end = end;
     }
 
-    public RegexpMatcher getMatch() {
-        return match;
+    public RegexpMatcher getMatcher() {
+        return matcher;
     }
 
     public int getStart() {
@@ -111,7 +111,7 @@ class Match {
      * @throws GrokException if a keys has multiple non-null values, but only if flattened is set to true.
      */
     private Map<String, Object> capture(final boolean flattened) throws GrokException {
-        if (match == null) {
+        if (matcher == null) {
             return Collections.emptyMap();
         }
 
@@ -119,12 +119,12 @@ class Match {
             return capture;
         }
 
-        capture = new HashMap<String, Object>();
+        capture = new LinkedHashMap<String, Object>();
 
         // _capture.put("LINE", this.line);
         // _capture.put("LENGTH", this.line.length() +"");
 
-        Map<String, String> mappedw = Regexps.namedGroups(this.match, this.grok.namedGroups);
+        Map<String, String> mappedw = Regexps.namedGroups(this.matcher, this.grok.namedGroups);
         Collects.forEach(mappedw, new Consumer2<String, String>() {
             @Override
             public void accept(String key, String valueString) {
@@ -238,7 +238,7 @@ class Match {
      * @return boolean
      */
     public Boolean isNull() {
-        return this.match == null;
+        return this.matcher == null;
     }
 
 }
