@@ -160,6 +160,10 @@ public class Maps {
         return Collects.newHashMap(map);
     }
 
+    public static <K, V> HashMap<K, V> newHashMap(int expectedSize) {
+        return Maps.newHashMapWithExpectedSize(expectedSize);
+    }
+
     public static <K, V> HashMap<K, V> newHashMapWithExpectedSize(int expectedSize) {
         return Collects.newHashMapWithExpectedSize(expectedSize);
     }
