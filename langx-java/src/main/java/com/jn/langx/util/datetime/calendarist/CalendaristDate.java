@@ -1,4 +1,4 @@
-package com.jn.langx.util.datetime.calendarist.pojo;
+package com.jn.langx.util.datetime.calendarist;
 
 import java.io.Serializable;
 

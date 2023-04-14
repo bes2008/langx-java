@@ -1,4 +1,4 @@
-package com.jn.langx.util.datetime.calendarist.base;
+package com.jn.langx.util.datetime.calendarist;
 
 public enum ConvertFromType {
 

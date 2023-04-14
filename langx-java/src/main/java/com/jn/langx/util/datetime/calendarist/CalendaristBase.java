@@ -1,45 +1,43 @@
-package com.jn.langx.util.datetime.calendarist.core;
+package com.jn.langx.util.datetime.calendarist;
 
-
-import com.jn.langx.util.datetime.calendarist.base.ConvertFromType;
 
 public abstract class CalendaristBase {
 
-    public final static int   YEAR                  = 1;
+    public final static int YEAR = 1;
 
-    public final static int   MONTH                 = 2;
+    public final static int MONTH = 2;
 
-    public final static int   WEEK_OF_YEAR          = 3;
+    public final static int WEEK_OF_YEAR = 3;
 
-    public final static int   WEEK_OF_MONTH         = 4;
+    public final static int WEEK_OF_MONTH = 4;
 
-    public final static int   DATE                  = 5;
+    public final static int DATE = 5;
 
-    public final static int   DAY_OF_MONTH          = 5;
+    public final static int DAY_OF_MONTH = 5;
 
-    public final static int   DAY_OF_YEAR           = 6;
+    public final static int DAY_OF_YEAR = 6;
 
-    public final static int   DAY_OF_WEEK           = 7;
+    public final static int DAY_OF_WEEK = 7;
 
-    public final static int   DAY_OF_WEEK_IN_MONTH  = 8;
+    public final static int DAY_OF_WEEK_IN_MONTH = 8;
 
-    public final static int   AM_PM                 = 9;
+    public final static int AM_PM = 9;
 
-    public final static int   HOUR                  = 10;
+    public final static int HOUR = 10;
 
-    public final static int   HOUR_OF_DAY           = 11;
+    public final static int HOUR_OF_DAY = 11;
 
-    public final static int   MINUTE                = 12;
+    public final static int MINUTE = 12;
 
-    public final static int   SECOND                = 13;
+    public final static int SECOND = 13;
 
-    public final static int   MILLISECOND           = 14;
+    public final static int MILLISECOND = 14;
 
-    public final static int   TIMEMILLIS            = 15;
+    public final static int TIMEMILLIS = 15;
 
-    public final static int   LEAP_MONTH_OF_CURRENT = 21;
+    public final static int LEAP_MONTH_OF_CURRENT = 21;
 
-    public final static int   LEAP_MONTH            = 22;
+    public final static int LEAP_MONTH = 22;
 
     /**
      * 从阳历转换 OR 从阴历转换
@@ -48,7 +46,7 @@ public abstract class CalendaristBase {
      */
     protected ConvertFromType from;
 
-    protected int[]           fields                = new int[25];
+    protected int[] fields = new int[25];
 
     public void set(int field, int value) {
         validateSet(field, value);

@@ -1,30 +1,10 @@
 package com.jn.langx.util.datetime.calendarist;
 
 
-import com.jn.langx.util.datetime.calendarist.base.ConvertFromType;
-import com.jn.langx.util.datetime.calendarist.core.CalendaristBase;
-import com.jn.langx.util.datetime.calendarist.core.convert.CalendaristConvert;
-import com.jn.langx.util.datetime.calendarist.pojo.CycleDate;
-import com.jn.langx.util.datetime.calendarist.pojo.LunarDate;
-import com.jn.langx.util.datetime.calendarist.pojo.SolarDate;
-
 import java.util.Calendar;
 
 public class Calendarist extends CalendaristBase {
 
-    public static void main(String[] args) {
-        // 设置要转换的阳历日期
-        Calendarist calendarist = Calendarist.fromSolar(2021, 8, 17, 12, 15, 55, 58);
-        // 转阴历
-        LunarDate lunarDate = calendarist.toLunar();
-        System.out.println(lunarDate);
-        // 转阳历
-        SolarDate solarDate = calendarist.toSolar();
-        System.out.println(solarDate);
-        // 转干支历
-        CycleDate cycleDate = calendarist.toCycle();
-        System.out.println(cycleDate);
-    }
 
     /**
      * 从阴历开始转换

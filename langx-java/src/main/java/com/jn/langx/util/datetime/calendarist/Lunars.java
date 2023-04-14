@@ -1,8 +1,6 @@
 package com.jn.langx.util.datetime.calendarist;
 
 
-import com.jn.langx.util.datetime.calendarist.pojo.SolarDate;
-
 import java.util.Calendar;
 import java.util.Date;
 

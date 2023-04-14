@@ -1,4 +1,4 @@
-package com.jn.langx.util.datetime.calendarist.base;
+package com.jn.langx.util.datetime.calendarist;
 
 import com.jn.langx.util.enums.base.CommonEnum;
 import com.jn.langx.util.enums.base.EnumDelegate;
