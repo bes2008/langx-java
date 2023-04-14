@@ -2,10 +2,10 @@ package com.jn.langx.util.datetime.calendarist.core.convert;
 
 
 import com.jn.langx.util.datetime.calendarist.CalendaristConstants;
+import com.jn.langx.util.datetime.calendarist.Lunars;
 import com.jn.langx.util.datetime.calendarist.pojo.CycleDate;
 import com.jn.langx.util.datetime.calendarist.pojo.LunarDate;
 import com.jn.langx.util.datetime.calendarist.pojo.SolarDate;
-import com.luna.common.calendarist.utils.CalendaristUtils;
 
 import java.util.Calendar;
 
@@ -46,7 +46,7 @@ public class CalendaristConvert {
         // offset是当年的第几天
         int iYear, daysOfYear = 0;
         for (iYear = CalendaristConstants.MIN_YEAR; iYear < CalendaristConstants.MAX_YEAR && offset > 0; iYear++) {
-            daysOfYear = CalendaristUtils.daysOfYear(iYear);
+            daysOfYear = Lunars.daysOfYear(iYear);
             offset -= daysOfYear;
         }
         if (offset < 0) {
@@ -57,7 +57,7 @@ public class CalendaristConvert {
         // 农历年份
         year = iYear;
 
-        leapMonth = CalendaristUtils.leapMonth(iYear); // 闰哪个月,1-12
+        leapMonth = Lunars.leapMonth(iYear); // 闰哪个月,1-12
         leap = false;
 
         // 用当年的天数offset,逐个减去每月（农历）的天数，求出当天是本月的第几天
@@ -67,9 +67,9 @@ public class CalendaristConvert {
             if (leapMonth > 0 && iMonth == (leapMonth + 1) && !leap) {
                 --iMonth;
                 leap = true;
-                daysOfMonth = CalendaristUtils.daysOfLeapMonth(year);
+                daysOfMonth = Lunars.daysOfLeapMonth(year);
             } else {
-                daysOfMonth = CalendaristUtils.daysOfMonth(year, iMonth);
+                daysOfMonth = Lunars.daysOfMonth(year, iMonth);
             }
 
             offset -= daysOfMonth;
@@ -99,7 +99,7 @@ public class CalendaristConvert {
         month = iMonth;
         day = offset + 1;
 
-        Calendar calendar = CalendaristUtils.getCalendarInstance();
+        Calendar calendar = Lunars.getCalendarInstance();
         calendar.setTimeInMillis(timeMillis);
 
         return new LunarDate(
@@ -125,7 +125,7 @@ public class CalendaristConvert {
         }
 
         int days = CalendaristConstants.LUNAR_MONTH_DAYS[lunarDate.getYear() - 1887];
-        int leap = CalendaristUtils.getBitInt(days, 4, 13);
+        int leap = Lunars.getBitInt(days, 4, 13);
         int offset = 0;
         int loopend = leap;
 
@@ -138,17 +138,17 @@ public class CalendaristConvert {
         }
 
         for (int i = 0; i < loopend; i++) {
-            offset += CalendaristUtils.getBitInt(days, 1, 12 - i) == 1 ? 30 : 29;
+            offset += Lunars.getBitInt(days, 1, 12 - i) == 1 ? 30 : 29;
         }
         offset += lunarDate.getDay();
 
         int solar11 = CalendaristConstants.SOLAR_CODE[lunarDate.getYear() - 1887];
 
-        int y = CalendaristUtils.getBitInt(solar11, 12, 9);
-        int m = CalendaristUtils.getBitInt(solar11, 4, 5);
-        int d = CalendaristUtils.getBitInt(solar11, 5, 0);
+        int y = Lunars.getBitInt(solar11, 12, 9);
+        int m = Lunars.getBitInt(solar11, 4, 5);
+        int d = Lunars.getBitInt(solar11, 5, 0);
 
-        long g = CalendaristUtils.solarToInt(y, m, d) + offset - 1;
+        long g = Lunars.solarToInt(y, m, d) + offset - 1;
 
         long year = (10000 * g + 14780) / 3652425;
         long ddd = g - (365 * year + year / 4 - year / 100 + year / 400);
@@ -182,7 +182,7 @@ public class CalendaristConvert {
         SolarDate solarDate = toSolar(lunarDate);
 
         // 月柱 1900年1月小寒以前为 丙子月(60进制12)
-        int firstNode = CalendaristUtils.getFirstTerm(solarDate.getYear(), solarDate.getMonth()); // 返回当月「节」为几日开始
+        int firstNode = Lunars.getFirstTerm(solarDate.getYear(), solarDate.getMonth()); // 返回当月「节」为几日开始
         int cM = (solarDate.getYear() - 1900) * 12 + (solarDate.getMonth() - 1) + 12;
 
         // 依节气月柱, 以「节」为界
@@ -194,7 +194,7 @@ public class CalendaristConvert {
         long startMillis = -28800000L;
 
         // 获取本月1号的时间戳
-        Calendar calendar = CalendaristUtils.getCalendarInstance();
+        Calendar calendar = Lunars.getCalendarInstance();
         calendar.set(solarDate.getYear(), solarDate.getMonth() - 1, 1, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
@@ -216,7 +216,7 @@ public class CalendaristConvert {
 
         // 月柱 1900年1月小寒以前为 丙子月(60进制12)
         // 返回当月「节」为几日开始
-        int firstNode = CalendaristUtils.getFirstTerm(solarDate.getYear(), solarDate.getMonth());
+        int firstNode = Lunars.getFirstTerm(solarDate.getYear(), solarDate.getMonth());
         int cM = (solarDate.getYear() - 1900) * 12 + (solarDate.getMonth() - 1) + 12;
 
         // 依节气月柱, 以「节」为界
@@ -228,7 +228,7 @@ public class CalendaristConvert {
         long startMillis = -28800000L;
 
         // 获取本月1号的时间戳
-        Calendar calendar = CalendaristUtils.getCalendarInstance();
+        Calendar calendar = Lunars.getCalendarInstance();
         calendar.set(solarDate.getYear(), solarDate.getMonth() - 1, 1, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 

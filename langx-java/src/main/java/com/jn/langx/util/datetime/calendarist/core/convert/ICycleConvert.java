@@ -1,6 +1,7 @@
 package com.jn.langx.util.datetime.calendarist.core.convert;
 
-import com.luna.common.calendarist.pojo.CycleDate;
+
+import com.jn.langx.util.datetime.calendarist.pojo.CycleDate;
 
 public interface ICycleConvert {
 

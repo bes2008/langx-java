@@ -1,6 +1,7 @@
 package com.jn.langx.util.datetime.calendarist.core.convert;
 
-import com.luna.common.calendarist.pojo.SolarDate;
+
+import com.jn.langx.util.datetime.calendarist.pojo.SolarDate;
 
 public interface ISolarConvert {
 
