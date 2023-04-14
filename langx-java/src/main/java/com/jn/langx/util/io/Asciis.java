@@ -1,7 +1,12 @@
 package com.jn.langx.util.io;
 
+import com.jn.langx.util.Chars;
+import com.jn.langx.util.Strings;
+
 public class Asciis {
-    private Asciis(){}
+    private Asciis() {
+    }
+
     /**
      * prefix of ascii string of native character
      */
@@ -88,6 +93,24 @@ public class Asciis {
         tmp = str.substring(4, 6);
         code += Integer.parseInt(tmp, 16);
         return (char) code;
+    }
+
+    public static boolean isAsciiChar(char c) {
+        return Chars.isAscii(c);
+    }
+
+    public static boolean isAsciiString(String str) {
+        if (Strings.isNotEmpty(str)) {
+            for (int i = 0; i < str.length(); i++) {
+                char c = str.charAt(i);
+                if (!isAsciiChar(c)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
