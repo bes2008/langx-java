@@ -2,6 +2,9 @@ package com.jn.langx.util.datetime.calendarist;
 
 import java.io.Serializable;
 
+/**
+ * @since 5.2.0
+ */
 public class CalendaristDate implements Serializable {
 
     // 阳历 OR 农历的年、月、日

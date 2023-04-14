@@ -4,7 +4,9 @@ package com.jn.langx.util.datetime.calendarist;
 import java.util.Calendar;
 
 /**
- * 阳历日期
+ * 节气日期
+ *
+ * @since 5.2.0
  */
 public class SolarDate extends CalendaristDate {
 

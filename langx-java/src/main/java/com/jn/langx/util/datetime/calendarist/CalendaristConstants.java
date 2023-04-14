@@ -2,6 +2,9 @@ package com.jn.langx.util.datetime.calendarist;
 
 import java.util.TimeZone;
 
+/**
+ * @since 5.2.0
+ */
 public class CalendaristConstants {
 
     /**

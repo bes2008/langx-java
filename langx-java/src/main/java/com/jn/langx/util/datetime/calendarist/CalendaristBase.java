@@ -1,6 +1,8 @@
 package com.jn.langx.util.datetime.calendarist;
 
-
+/**
+ * @since 5.2.0
+ */
 public abstract class CalendaristBase {
 
     public final static int YEAR = 1;

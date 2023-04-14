@@ -3,6 +3,8 @@ package com.jn.langx.util.datetime.calendarist;
 
 /**
  * 干支日期
+ *
+ * @since 5.2.0
  */
 public class CycleDate extends CalendaristDate {
 

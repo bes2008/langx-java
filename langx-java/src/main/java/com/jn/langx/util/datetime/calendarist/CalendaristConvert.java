@@ -24,6 +24,7 @@ import java.util.Calendar;
  *
  * https://www.cnblogs.com/doubleWin/p/10690127.html
  *
+ * @since 5.2.0
  */
 public class CalendaristConvert {
 

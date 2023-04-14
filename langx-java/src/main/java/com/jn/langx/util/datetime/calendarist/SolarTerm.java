@@ -5,6 +5,8 @@ import com.jn.langx.util.enums.base.EnumDelegate;
 
 /**
  * 节气类型
+ *
+ * @since 5.2.0
  */
 public enum SolarTerm implements CommonEnum {
 

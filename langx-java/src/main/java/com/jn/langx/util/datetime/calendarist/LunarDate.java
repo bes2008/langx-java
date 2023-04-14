@@ -3,6 +3,8 @@ package com.jn.langx.util.datetime.calendarist;
 
 /**
  * 阴历日期
+ *
+ * @since 5.2.0
  */
 public class LunarDate extends CalendaristDate {
 

@@ -6,6 +6,8 @@ import java.util.Date;
 
 /**
  * 农历
+ *
+ * @since 5.2.0
  */
 public class Lunars {
 
