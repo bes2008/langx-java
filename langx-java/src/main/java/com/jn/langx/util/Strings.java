@@ -3,6 +3,7 @@ package com.jn.langx.util;
 import com.jn.langx.Transformer;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
@@ -1710,6 +1711,19 @@ public class Strings {
      */
     public static String replace(final String text, final String searchString, final String replacement) {
         return replace(text, searchString, replacement, -1);
+    }
+
+
+    public static String replace(String text, int start, int end, String replacement){
+        Preconditions.checkIndex(start, text.length());
+        if(end < start || end>text.length()){
+            throw new IllegalParameterException("end offset is invalid");
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(text.substring(0, start));
+        builder.append(replacement);
+        builder.append(text.substring(end));
+        return builder.toString();
     }
 
     /**
