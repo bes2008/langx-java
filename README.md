@@ -13,6 +13,7 @@
 ## [GitHub地址](https://github.com/fangjinuo/langx-java)
 ## [Gitee地址](https://gitee.com/fangjinuo/langx-java)
 
+# [OpenSource Licenses](https://opensource.org/licenses/)
 
 # langx-java
 Java lang extensions
