@@ -9,7 +9,7 @@ import com.jn.langx.util.spi.CommonServiceProvider;
 public class Maskings {
     public final static class Strategy {
         public static String PHONE = "phone";
-        public static String PASSWORD = "pswd";
+        public static String STAR_6 = "STAR_6";
     }
 
     private static final GenericRegistry<Masker> registry = new GenericRegistry<Masker>();

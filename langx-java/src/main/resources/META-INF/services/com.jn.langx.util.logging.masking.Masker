@@ -1,2 +1,2 @@
 com.jn.langx.util.logging.masking.impl.PhoneMasker
-com.jn.langx.util.logging.masking.impl.PswdMasker
+com.jn.langx.util.logging.masking.impl.Star6Masker
