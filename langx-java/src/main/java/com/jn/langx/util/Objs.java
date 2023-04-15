@@ -1,6 +1,7 @@
 package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.logging.masking.Mask;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+@Mask
 public abstract class Objs{
     /**
      * Returns {@code true} if the arguments are equal to each other
