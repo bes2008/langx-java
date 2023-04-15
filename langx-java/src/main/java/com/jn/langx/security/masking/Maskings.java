@@ -1,11 +1,13 @@
-package com.jn.langx.util.logging.masking;
+package com.jn.langx.security.masking;
 
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.spi.CommonServiceProvider;
-
+/**
+ * @since 5.2.0
+ */
 public class Maskings {
     public final static class Strategy {
         public static String PHONE = "phone";

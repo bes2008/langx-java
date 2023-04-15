@@ -1,10 +1,11 @@
-package com.jn.langx.util.logging.masking.impl;
+package com.jn.langx.security.masking.impl;
 
-import com.jn.langx.util.logging.masking.AbstractStringMarker;
-import com.jn.langx.util.logging.masking.Maskings;
+import com.jn.langx.security.masking.AbstractStringMarker;
+import com.jn.langx.security.masking.Maskings;
 
 /**
  * 使用 6 颗星星替代
+ * @since 5.2.0
  */
 public class Star6Masker extends AbstractStringMarker {
     @Override

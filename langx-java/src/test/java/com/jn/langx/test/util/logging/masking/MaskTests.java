@@ -1,6 +1,6 @@
 package com.jn.langx.test.util.logging.masking;
 
-import com.jn.langx.util.logging.masking.Maskings;
+import com.jn.langx.security.masking.Maskings;
 import org.junit.Test;
 
 public class MaskTests {

@@ -1,9 +1,11 @@
-package com.jn.langx.util.logging.masking.impl;
+package com.jn.langx.security.masking.impl;
 
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.logging.masking.AbstractStringMarker;
-import com.jn.langx.util.logging.masking.Maskings;
-
+import com.jn.langx.security.masking.AbstractStringMarker;
+import com.jn.langx.security.masking.Maskings;
+/**
+ * @since 5.2.0
+ */
 public class PhoneMasker extends AbstractStringMarker {
     @Override
     public String doTransform(String text) {
