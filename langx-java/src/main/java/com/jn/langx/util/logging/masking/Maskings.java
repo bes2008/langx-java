@@ -7,6 +7,10 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.spi.CommonServiceProvider;
 
 public class Maskings {
+    public static class Strategy {
+        public static final String PHONE = "phone";
+        public static final String PASSWORD = "pswd";
+    }
 
     private static final GenericRegistry<Masker> registry = new GenericRegistry<Masker>();
 

@@ -2,6 +2,7 @@ package com.jn.langx.util.logging.masking.impl;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.logging.masking.AbstractStringMarker;
+import com.jn.langx.util.logging.masking.Maskings;
 
 public class PhoneMasker extends AbstractStringMarker {
     @Override
@@ -17,6 +18,6 @@ public class PhoneMasker extends AbstractStringMarker {
 
     @Override
     public String getName() {
-        return "phone";
+        return Maskings.Strategy.PHONE;
     }
 }

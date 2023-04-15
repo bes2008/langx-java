@@ -1,6 +1,7 @@
 package com.jn.langx.util.logging.masking.impl;
 
 import com.jn.langx.util.logging.masking.AbstractStringMarker;
+import com.jn.langx.util.logging.masking.Maskings;
 
 public class PswdMasker extends AbstractStringMarker {
     @Override
@@ -10,6 +11,6 @@ public class PswdMasker extends AbstractStringMarker {
 
     @Override
     public String getName() {
-        return "pswd";
+        return Maskings.Strategy.PASSWORD;
     }
 }
