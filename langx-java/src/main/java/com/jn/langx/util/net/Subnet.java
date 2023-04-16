@@ -38,8 +38,10 @@ public class Subnet {
     public static Subnet forPattern(String pattern) {
         final InetAddress ipAddress;
         final int mask;
-        if (pattern.matches("(\\d+\\.)*\\*(\\.\\*)*")) // Asterisk subnet notation
-        {
+
+
+        if (pattern.matches("(\\d+\\.)*\\*(\\.\\*)*")) {
+            // Asterisk subnet notation
             String[] parts = pattern.split("\\.");
             int asteriskCount = 0;
             for (int i = parts.length - 1; i >= 0 && parts[i].equals("*"); --i) {
@@ -47,13 +49,13 @@ public class Subnet {
             }
             ipAddress = Nets.forString(pattern.replace("*", "0"));
             mask = 32 - 8 * asteriskCount;
-        } else if (pattern.contains("/")) // CIDR subnet notation
-        {
+        } else if (pattern.contains("/")) {
+            // CIDR subnet notation
             final String[] addressComponents = pattern.split("/", 2);
             ipAddress = Nets.forString(addressComponents[0]);
             mask = Integer.parseInt(addressComponents[1]);
-        } else // Plain IP address (Treated as all ones subnet for matching purposes)
-        {
+        } else {
+            // Plain IP address (Treated as all ones subnet for matching purposes)
             ipAddress = Nets.forString(pattern);
             mask = 8 * ipAddress.getAddress().length;
         }
