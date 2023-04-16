@@ -4,7 +4,7 @@ package com.jn.langx.commandline.util;
  * Provides debugging support.
  *
  */
-public class CommandLineDebugUtils {
+public class CommandLineDebugs {
     /**
      * System property to determine how to handle exceptions. When
      * set to "false" we rethrow the otherwise silently catched

@@ -1,6 +1,6 @@
 package com.jn.langx.commandline;
 
-import com.jn.langx.commandline.util.CommandLineDebugUtils;
+import com.jn.langx.commandline.util.CommandLineDebugs;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,7 +56,7 @@ public class InputStreamPumper implements Runnable {
             }
         } catch (final Exception e) {
             final String msg = "Got exception while reading/writing the stream";
-            CommandLineDebugUtils.handleException(msg, e);
+            CommandLineDebugs.handleException(msg, e);
         } finally {
         }
     }

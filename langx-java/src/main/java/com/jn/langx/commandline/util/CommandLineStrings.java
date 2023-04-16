@@ -14,7 +14,7 @@ import java.util.Map;
  * This class is not part of the public API and could change without
  * warning.
  */
-public class CommandLineStringUtils {
+public class CommandLineStrings {
 
 
     /**

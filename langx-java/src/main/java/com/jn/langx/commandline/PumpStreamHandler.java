@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedOutputStream;
 
-import com.jn.langx.commandline.util.CommandLineDebugUtils;
+import com.jn.langx.commandline.util.CommandLineDebugs;
 
 /**
  * Copies standard output and error of sub-processes to standard output and error
@@ -131,7 +131,7 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
                 os.close();
             } catch (final IOException e) {
                 final String msg = "Got exception while closing output stream";
-                CommandLineDebugUtils.handleException(msg, e);
+                CommandLineDebugs.handleException(msg, e);
             }
         }
     }
@@ -170,7 +170,7 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
                 err.flush();
             } catch (final IOException e) {
                 final String msg = "Got exception while flushing the error stream : " + e.getMessage();
-                CommandLineDebugUtils.handleException(msg, e);
+                CommandLineDebugs.handleException(msg, e);
             }
         }
 
@@ -179,7 +179,7 @@ public class PumpStreamHandler implements ExecuteStreamHandler {
                 out.flush();
             } catch (final IOException e) {
                 final String msg = "Got exception while flushing the output stream";
-                CommandLineDebugUtils.handleException(msg, e);
+                CommandLineDebugs.handleException(msg, e);
             }
         }
 
