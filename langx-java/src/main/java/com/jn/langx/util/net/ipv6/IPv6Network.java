@@ -16,6 +16,8 @@
 
 package com.jn.langx.util.net.ipv6;
 
+import com.jn.langx.util.Numbers;
+
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -23,7 +25,6 @@ import java.util.NoSuchElementException;
 /**
  * Immutable representation of an IPv6 network based on an address and a prefix length. An IPv6 network is also an IPv6 address range (but
  * not all ranges are valid networks).
- *
  */
 public final class IPv6Network extends IPv6AddressRange {
     public static final IPv6Network MULTICAST_NETWORK = fromString("ff00::/8");
@@ -81,29 +82,23 @@ public final class IPv6Network extends IPv6AddressRange {
      * @return ipv6 network
      */
     public static IPv6Network fromString(String string) {
-        if (string.indexOf('/') == -1) {
-            throw new IllegalArgumentException("Expected format is network-address/prefix-length");
+        int prefixLengthSpiltIndex = string.indexOf('/');
+        int prefixLength = 0;
+        if (prefixLengthSpiltIndex != -1) {
+            String prefixLengthPart = string.substring(prefixLengthSpiltIndex + 1);
+            try {
+                prefixLength = Numbers.createInteger(prefixLengthPart);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Prefix length should be a positive integer");
+            }
         }
-
-        final String networkAddressString = parseNetworkAddress(string);
-        int prefixLength = parsePrefixLength(string);
+        final String networkAddressString = string.substring(0, prefixLengthSpiltIndex);
 
         final IPv6Address networkAddress = IPv6Address.fromString(networkAddressString);
 
         return fromAddressAndMask(networkAddress, new IPv6NetworkMask(prefixLength));
     }
 
-    private static String parseNetworkAddress(String string) {
-        return string.substring(0, string.indexOf('/'));
-    }
-
-    private static int parsePrefixLength(String string) {
-        try {
-            return Integer.parseInt(string.substring(string.indexOf('/') + 1));
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Prefix length should be a positive integer");
-        }
-    }
 
     /**
      * Split a network in smaller subnets of a given size.

@@ -11,6 +11,7 @@ import java.net.InetAddress;
  */
 public class Subnet {
     private final InetAddress ipAddress;
+    // >=0
     private final int mask;
 
     private Subnet(InetAddress ipAddress, int mask) {
