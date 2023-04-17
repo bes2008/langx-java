@@ -3,6 +3,7 @@ package com.jn.langx.util.net;
 import com.jn.langx.Parser;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate;
@@ -14,7 +15,6 @@ import com.jn.langx.util.regexp.Regexps;
 import org.slf4j.Logger;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +29,6 @@ import java.util.Map;
  * </pre>
  */
 public class ClusterAddressParser implements Parser<String, List<NetworkAddress>> {
-    private static final Regexp IPv6_PORT_SEGMENT_PATTERN = Regexps.compile("(?<ipv6>\\[.+])(:(?<port>\\d{1,5}))?");
     private static final Regexp IP_PORT_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^/]*)((/(?<prefixLength>\\d{1,6}))?(:(?<port>\\d{1,5}))?)?");
     private static final Regexp IPv4_PORT_SEGMENT_PATTERN = Regexps.createRegexp("(?<ip>[^:]*)(:(?<port>\\d{1,5}))?");
     private int defaultPort = -1;
@@ -82,7 +81,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
             return Collections.emptyList();
         }
 
-        final List<NetworkAddress> ret = new LinkedList<NetworkAddress>();
+        final List<NetworkAddress> ret = Lists.newArrayList();
 
         String[] segments = Strings.split(s, ",");
         Logger logger = Loggers.getLogger(getClass());
@@ -113,7 +112,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                     logger.warn("invalid port : {}", segment);
                     continue;
                 }
-                if (!hasBrace && Regexps.match(RegexpPatterns.PATTERN_IP, ip)) {
+                if (!hasBrace && Regexps.match(RegexpPatterns.PATTERN_IPv4, ip)) {
                     // IP v4，但没有端口
                     ret.add(new NetworkAddress(ip, port, NetworkAddress.AddrMode.V4));
                 } else if (!hasBrace && Regexps.match("\\w+(\\.\\w+)*(:\\d{1,5})?", ip)) {
@@ -132,7 +131,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                         }
 
                         NetworkAddress.AddrMode v = NetworkAddress.AddrMode.HOST;
-                        if(Regexps.match(RegexpPatterns.PATTERN_IP, ip)){
+                        if(Regexps.match(RegexpPatterns.PATTERN_IPv4, ip)){
                             v = NetworkAddress.AddrMode.V4;
                         }
                         ret.add(new NetworkAddress(ip, port, v));
@@ -154,7 +153,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                                 continue;
                             }
                             ip = Strings.substring(segment, 0, portSeparator);
-                            if (!hasBrace && Regexps.match(RegexpPatterns.PATTERN_IP, ip)) {
+                            if (!hasBrace && Regexps.match(RegexpPatterns.PATTERN_IPv4, ip)) {
                                 // IP v4
                                 ret.add(new NetworkAddress(ip, port, NetworkAddress.AddrMode.V4));
                                 continue;
