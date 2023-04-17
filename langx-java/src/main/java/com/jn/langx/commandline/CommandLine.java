@@ -1,6 +1,5 @@
 package com.jn.langx.commandline;
 
-import com.jn.langx.commandline.util.CommandLineStringUtils;
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.file.Files;
@@ -123,7 +122,7 @@ public class CommandLine {
         // Expand the executable and replace '/' and '\\' with the platform
         // specific file separator char. This is safe here since we know
         // that this is a platform specific command.
-        return CommandLineStringUtils.fixFileSeparatorChar(expandArgument(executable));
+        return CommandLineStrings.fixFileSeparatorChar(expandArgument(executable));
     }
 
     /**
@@ -219,7 +218,7 @@ public class CommandLine {
         // check if we can really quote the argument - if not throw an
         // IllegalArgumentException
         if (handleQuoting) {
-            CommandLineStringUtils.quoteArgument(argument);
+            CommandLineStrings.quoteArgument(argument);
         }
 
         arguments.add(new Argument(argument, handleQuoting));
@@ -240,7 +239,7 @@ public class CommandLine {
         for (int i = 0; i < result.length; i++) {
             currArgument = arguments.get(i);
             expandedArgument = expandArgument(currArgument.getValue());
-            result[i] = currArgument.isHandleQuoting() ? CommandLineStringUtils.quoteArgument(expandedArgument) : expandedArgument;
+            result[i] = currArgument.isHandleQuoting() ? CommandLineStrings.quoteArgument(expandedArgument) : expandedArgument;
         }
 
         return result;
@@ -301,7 +300,7 @@ public class CommandLine {
      * @return the expanded string
      */
     private String expandArgument(final String argument) {
-        return CommandLineStringUtils.stringSubstitution(argument, this.getSubstitutionMap(), true).toString();
+        return CommandLineStrings.stringSubstitution(argument, this.getSubstitutionMap(), true).toString();
     }
 
     /**
@@ -391,7 +390,7 @@ public class CommandLine {
         } else if (dirtyExecutable.trim().length() == 0) {
             throw new IllegalArgumentException("Executable can not be empty");
         } else {
-            return CommandLineStringUtils.fixFileSeparatorChar(dirtyExecutable);
+            return CommandLineStrings.fixFileSeparatorChar(dirtyExecutable);
         }
     }
 

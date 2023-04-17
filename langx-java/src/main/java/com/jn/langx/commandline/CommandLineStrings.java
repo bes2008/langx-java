@@ -1,4 +1,4 @@
-package com.jn.langx.commandline.util;
+package com.jn.langx.commandline;
 
 
 import com.jn.langx.util.Strings;
@@ -14,7 +14,7 @@ import java.util.Map;
  * This class is not part of the public API and could change without
  * warning.
  */
-public class CommandLineStrings {
+class CommandLineStrings {
 
 
     /**

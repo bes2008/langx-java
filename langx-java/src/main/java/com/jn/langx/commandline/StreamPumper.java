@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.jn.langx.commandline.util.CommandLineDebugs;
-
 /**
  * Copies all data from an input stream to an output stream.
  */

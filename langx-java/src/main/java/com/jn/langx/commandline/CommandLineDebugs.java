@@ -1,4 +1,4 @@
-package com.jn.langx.commandline.util;
+package com.jn.langx.commandline;
 
 /**
  * Provides debugging support.
