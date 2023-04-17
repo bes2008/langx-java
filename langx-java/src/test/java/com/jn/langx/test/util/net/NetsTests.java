@@ -90,5 +90,8 @@ public class NetsTests {
     @Test
     public void testIpv6ToInt() throws Throwable{
         System.out.println(Nets.ipv6AddressToLong("fe80:0000:0000:0000:021b:77ff:fbd6:7860"));
+
+        System.out.println(Nets.ipv4MappingToIpv6("127.0.0.1"));
+        System.out.println(Nets.ipv4MappingToIpv6("127.0.0.1", true));
     }
 }

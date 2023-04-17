@@ -25,11 +25,11 @@ public class Numbers {
      * given as arguments to the {@link
      * #parseUnsignedInt(java.lang.String, int)} method.
      *
-     * @param s   a {@code String} containing the unsigned {@code int}
-     *            representation to be parsed
-     * @return    the unsigned integer value represented by the argument in decimal.
-     * @throws    NumberFormatException  if the string does not contain a
-     *            parsable unsigned integer.
+     * @param s a {@code String} containing the unsigned {@code int}
+     *          representation to be parsed
+     * @return the unsigned integer value represented by the argument in decimal.
+     * @throws NumberFormatException if the string does not contain a
+     *                               parsable unsigned integer.
      * @since 4.2.0
      */
     public static int parseUnsignedInt(String s) throws NumberFormatException {
@@ -38,7 +38,7 @@ public class Numbers {
 
     public static int parseUnsignedInt(String s, int radix)
             throws NumberFormatException {
-        if (s == null)  {
+        if (s == null) {
             throw new NumberFormatException("null");
         }
 
@@ -51,7 +51,7 @@ public class Numbers {
                         "on unsigned string %s.", s));
             } else {
                 if (len <= 5 || // Integer.MAX_VALUE in Character.MAX_RADIX is 6 digits
-                        (radix == 10 && len <= 9) ) { // Integer.MAX_VALUE in base 10 is 10 digits
+                        (radix == 10 && len <= 9)) { // Integer.MAX_VALUE in base 10 is 10 digits
                     return Integer.parseInt(s, radix);
                 } else {
                     long ell = Long.parseLong(s, radix);
@@ -85,14 +85,14 @@ public class Numbers {
         return Float.parseFloat(str);
     }
 
-    public static Float createFloat(Object d){
-        if(d == null){
+    public static Float createFloat(Object d) {
+        if (d == null) {
             return null;
         }
-        if(d instanceof Number){
-            return ((Number)d).floatValue();
+        if (d instanceof Number) {
+            return ((Number) d).floatValue();
         }
-        if(d instanceof String){
+        if (d instanceof String) {
             return createFloat((String) d);
         }
         return null;
@@ -115,14 +115,14 @@ public class Numbers {
         return Double.parseDouble(str);
     }
 
-    public static Double createDouble(Object d){
-        if(d == null){
+    public static Double createDouble(Object d) {
+        if (d == null) {
             return null;
         }
-        if(d instanceof Number){
-            return ((Number)d).doubleValue();
+        if (d instanceof Number) {
+            return ((Number) d).doubleValue();
         }
-        if(d instanceof String){
+        if (d instanceof String) {
             return createDouble((String) d);
         }
         return null;
@@ -136,35 +136,36 @@ public class Numbers {
         return Integer.parseInt(str);
     }
 
-    public static Integer createInteger(Object d){
-        if(d == null){
+    public static Integer createInteger(Object d) {
+        if (d == null) {
             return null;
         }
-        if(d instanceof Number){
-            return ((Number)d).intValue();
+        if (d instanceof Number) {
+            return ((Number) d).intValue();
         }
-        if(d instanceof String){
+        if (d instanceof String) {
             return createInteger((String) d);
         }
         return null;
     }
 
 
-    public static Short createShort(String str){
+    public static Short createShort(String str) {
         Integer integer = createInteger(str);
-        if(integer==null){
+        if (integer == null) {
             return null;
         }
         return integer.shortValue();
     }
 
-    public static Byte createByte(String str){
+    public static Byte createByte(String str) {
         Integer integer = createInteger(str);
-        if(integer==null){
+        if (integer == null) {
             return null;
         }
         return integer.byteValue();
     }
+
     /**
      * <p>Convert a <code>String</code> to a <code>Long</code>.</p>
      * <p>
@@ -181,14 +182,14 @@ public class Numbers {
         return Long.parseLong(str);
     }
 
-    public static Long createLong(Object d){
-        if(d == null){
+    public static Long createLong(Object d) {
+        if (d == null) {
             return null;
         }
-        if(d instanceof Number){
-            return ((Number)d).longValue();
+        if (d instanceof Number) {
+            return ((Number) d).longValue();
         }
-        if(d instanceof String){
+        if (d instanceof String) {
             return createLong((String) d);
         }
         return null;
@@ -229,6 +230,7 @@ public class Numbers {
         }
         return new BigDecimal(str);
     }
+
     /**
      * 数字转{@link BigDecimal}<br>
      * Float、Double等有精度问题，转换为字符串后再转换<br>
@@ -633,7 +635,7 @@ public class Numbers {
         if (Byte.class == targetClass) {
             return (T) (isHexNumber(trimmed) ? Byte.decode(trimmed) : createByte(trimmed));
         } else if (Short.class == targetClass) {
-            return (T) (isHexNumber(trimmed) ? Short.decode(trimmed) : (T)createShort(trimmed));
+            return (T) (isHexNumber(trimmed) ? Short.decode(trimmed) : (T) createShort(trimmed));
         } else if (Integer.class == targetClass) {
             return (T) (isHexNumber(trimmed) ? Integer.decode(trimmed) : createInteger(trimmed));
         } else if (Long.class == targetClass) {
@@ -928,7 +930,6 @@ public class Numbers {
     }
 
 
-
     /**
      * Compares two {@code long} values numerically.
      * The value returned is identical to what would be returned by:
@@ -936,18 +937,16 @@ public class Numbers {
      *    Long.valueOf(x).compareTo(Long.valueOf(y))
      * </pre>
      *
-     * @param  x the first {@code long} to compare
-     * @param  y the second {@code long} to compare
+     * @param x the first {@code long} to compare
+     * @param y the second {@code long} to compare
      * @return the value {@code 0} if {@code x == y};
-     *         a value less than {@code 0} if {@code x < y}; and
-     *         a value greater than {@code 0} if {@code x > y}
+     * a value less than {@code 0} if {@code x < y}; and
+     * a value greater than {@code 0} if {@code x > y}
      * @since 4.4.7
      */
     public static int compare(long x, long y) {
         return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
-
-
 
 
     /**
@@ -957,11 +956,11 @@ public class Numbers {
      *    Integer.valueOf(x).compareTo(Integer.valueOf(y))
      * </pre>
      *
-     * @param  x the first {@code int} to compare
-     * @param  y the second {@code int} to compare
+     * @param x the first {@code int} to compare
+     * @param y the second {@code int} to compare
      * @return the value {@code 0} if {@code x == y};
-     *         a value less than {@code 0} if {@code x < y}; and
-     *         a value greater than {@code 0} if {@code x > y}
+     * a value less than {@code 0} if {@code x < y}; and
+     * a value greater than {@code 0} if {@code x > y}
      * @since 4.4.7
      */
     public static int compare(int x, int y) {
@@ -976,11 +975,11 @@ public class Numbers {
      *    Byte.valueOf(x).compareTo(Byte.valueOf(y))
      * </pre>
      *
-     * @param  x the first {@code byte} to compare
-     * @param  y the second {@code byte} to compare
+     * @param x the first {@code byte} to compare
+     * @param y the second {@code byte} to compare
      * @return the value {@code 0} if {@code x == y};
-     *         a value less than {@code 0} if {@code x < y}; and
-     *         a value greater than {@code 0} if {@code x > y}
+     * a value less than {@code 0} if {@code x < y}; and
+     * a value greater than {@code 0} if {@code x > y}
      * @since 4.4.7
      */
     public static int compare(byte x, byte y) {
@@ -995,11 +994,11 @@ public class Numbers {
      *    Character.valueOf(x).compareTo(Character.valueOf(y))
      * </pre>
      *
-     * @param  x the first {@code char} to compare
-     * @param  y the second {@code char} to compare
+     * @param x the first {@code char} to compare
+     * @param y the second {@code char} to compare
      * @return the value {@code 0} if {@code x == y};
-     *         a value less than {@code 0} if {@code x < y}; and
-     *         a value greater than {@code 0} if {@code x > y}
+     * a value less than {@code 0} if {@code x < y}; and
+     * a value greater than {@code 0} if {@code x > y}
      * @since 4.4.7
      */
     public static int compare(char x, char y) {
@@ -1014,11 +1013,11 @@ public class Numbers {
      *    Short.valueOf(x).compareTo(Short.valueOf(y))
      * </pre>
      *
-     * @param  x the first {@code short} to compare
-     * @param  y the second {@code short} to compare
+     * @param x the first {@code short} to compare
+     * @param y the second {@code short} to compare
      * @return the value {@code 0} if {@code x == y};
-     *         a value less than {@code 0} if {@code x < y}; and
-     *         a value greater than {@code 0} if {@code x > y}
+     * a value less than {@code 0} if {@code x < y}; and
+     * a value greater than {@code 0} if {@code x > y}
      * @since 4.4.7
      */
     public static int compare(short x, short y) {
@@ -1033,18 +1032,18 @@ public class Numbers {
      *    new Float(f1).compareTo(new Float(f2))
      * </pre>
      *
-     * @param   f1        the first {@code float} to compare.
-     * @param   f2        the second {@code float} to compare.
-     * @return  the value {@code 0} if {@code f1} is
-     *          numerically equal to {@code f2}; a value less than
-     *          {@code 0} if {@code f1} is numerically less than
-     *          {@code f2}; and a value greater than {@code 0}
-     *          if {@code f1} is numerically greater than
-     *          {@code f2}.
+     * @param f1 the first {@code float} to compare.
+     * @param f2 the second {@code float} to compare.
+     * @return the value {@code 0} if {@code f1} is
+     * numerically equal to {@code f2}; a value less than
+     * {@code 0} if {@code f1} is numerically less than
+     * {@code f2}; and a value greater than {@code 0}
+     * if {@code f1} is numerically greater than
+     * {@code f2}.
      * @since 4.4.7
      */
     public static int compare(float f1, float f2) {
-        return Float.compare(f1,f2);
+        return Float.compare(f1, f2);
     }
 
     /**
@@ -1055,18 +1054,18 @@ public class Numbers {
      *    new Double(d1).compareTo(new Double(d2))
      * </pre>
      *
-     * @param   d1        the first {@code double} to compare
-     * @param   d2        the second {@code double} to compare
-     * @return  the value {@code 0} if {@code d1} is
-     *          numerically equal to {@code d2}; a value less than
-     *          {@code 0} if {@code d1} is numerically less than
-     *          {@code d2}; and a value greater than {@code 0}
-     *          if {@code d1} is numerically greater than
-     *          {@code d2}.
+     * @param d1 the first {@code double} to compare
+     * @param d2 the second {@code double} to compare
+     * @return the value {@code 0} if {@code d1} is
+     * numerically equal to {@code d2}; a value less than
+     * {@code 0} if {@code d1} is numerically less than
+     * {@code d2}; and a value greater than {@code 0}
+     * if {@code d1} is numerically greater than
+     * {@code d2}.
      * @since 4.4.7
      */
     public static int compare(double d1, double d2) {
-        return Double.compare(d1,d2);
+        return Double.compare(d1, d2);
     }
 
 }

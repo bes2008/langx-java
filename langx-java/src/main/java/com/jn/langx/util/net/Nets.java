@@ -2,6 +2,7 @@ package com.jn.langx.util.net;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.properties.PropertiesAccessor;
@@ -699,7 +700,6 @@ public class Nets {
     }
 
 
-
     public static final Long ipAddressToLong(byte[] ip) {
         long result = 0;
         for (int i = 0; i < ip.length; i++) {
@@ -728,15 +728,63 @@ public class Nets {
     public static int ipv4AddressToInt(String ipv4) {
         return ipAddressToLong(ipv4).intValue();
     }
+
     public static long ipv6AddressToLong(String ipv6) {
         return ipAddressToLong(ipv6);
     }
+    public static String ipv4MappingToIpv6(String ipv4) {
+        return ipv4MappingToIpv6(ipv4,false);
+    }
+    public static String ipv4MappingToIpv6(String ipv4, boolean optimal) {
+        byte[] ipv4Bytes = createByteArrayFromIpAddressString(ipv4);
+        byte[] ipv6Bytes = ipv4MappingToIpv6Bytes(ipv4Bytes);
+        return toIpv6Address(ipv6Bytes,optimal);
+    }
+    public static String toIpv6Address(byte[] bytes) {
+        return toIpv6Address(bytes,false);
+    }
+    public static String toIpv6Address(byte[] bytes, boolean optimal) {
+        if (bytes.length != IPV6_BYTE_COUNT) {
+            throw new IllegalArgumentException("invalid ipv6 address");
+        }
+        if(optimal){
+            return toOptimalStringV6(bytes);
+        }
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            if(i!=0){
+                builder.append(":");
+            }
+            builder.append(Hex.DECIMAL_TO_DIGITS_UPPER[(0xF0 & bytes[i]) >> 4]);
+            builder.append(Hex.DECIMAL_TO_DIGITS_UPPER[0x0F & bytes[i]]);
+            i++;
+            builder.append(Hex.DECIMAL_TO_DIGITS_UPPER[(0xF0 & bytes[i]) >> 4]);
+            builder.append(Hex.DECIMAL_TO_DIGITS_UPPER[0x0F & bytes[i]]);
+        }
+        return builder.toString();
+    }
 
+    public static byte[] ipv4MappingToIpv6Bytes(byte[] ipv4Bytes) {
+        if (ipv4Bytes == null || ipv4Bytes.length != IPV4_PART_COUNT) {
+            throw new IllegalParameterException(StringTemplates.formatWithPlaceholder("illegal ipv4 address: {}", ipv4Bytes));
+        }
+        byte[] ipv6Bytes = new byte[16];
+        for (int i = 0; i < 10; i++) {
+            ipv6Bytes[i] = 0x00;
+        }
+        for (int i = 10; i < 12; i++) {
+            ipv6Bytes[i] = (byte) 0xff;
+        }
+        for (int i = 12; i < 16; i++) {
+            ipv6Bytes[i] = ipv4Bytes[i - 12];
+        }
+        return ipv6Bytes;
+    }
 
     /**
      * Converts a 32-bit integer into an IPv4 address.
      */
-    public static String intToIpV4Address(int i) {
+    public static String intToIpv4Address(int i) {
         StringBuilder buf = new StringBuilder(15);
         buf.append(i >> 24 & 0xff);
         buf.append('.');
@@ -1389,12 +1437,7 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       following the updated guidelines in
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <li>{@code false} to strictly follow rfc 5952</li>
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </ul>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
