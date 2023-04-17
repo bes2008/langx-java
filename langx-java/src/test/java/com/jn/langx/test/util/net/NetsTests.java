@@ -10,6 +10,7 @@ import com.jn.langx.util.regexp.RegexpPatterns;
 import com.jn.langx.util.regexp.Regexps;
 import org.junit.Test;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.List;
@@ -57,7 +58,7 @@ public class NetsTests {
     }
 
     @Test
-    public void test() {
+    public void testIpv6Pattern() {
         // ip v6 地址
 
         String str = "2001:0000:3238:00E1:0063:0000:0000:FEFB";
@@ -78,5 +79,16 @@ public class NetsTests {
         str = "::/12:123";
         stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, str);
         System.out.println(stringMap);
+    }
+
+    @Test
+    public void testIpv4ToInt() throws Throwable{
+        System.out.println(Nets.ipv4AddressToInt((Inet4Address) InetAddress.getByName("localhost")));
+        System.out.println(Nets.ipv4AddressToInt("127.0.0.1"));
+    }
+
+    @Test
+    public void testIpv6ToInt() throws Throwable{
+        System.out.println(Nets.ipv6AddressToLong("fe80:0000:0000:0000:021b:77ff:fbd6:7860"));
     }
 }

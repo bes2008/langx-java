@@ -33,8 +33,7 @@ public abstract class LogOutputStream extends OutputStream {
     /**
      * the internal buffer
      */
-    private final ByteArrayOutputStream buffer = new ByteArrayOutputStream(
-            INTIAL_SIZE);
+    private final ByteArrayOutputStream buffer = new ByteArrayOutputStream(INTIAL_SIZE);
 
     private boolean skip = false;
 
@@ -151,7 +150,7 @@ public abstract class LogOutputStream extends OutputStream {
         try {
             processLine(buffer.toString(Charsets.UTF_8.name()));
             buffer.reset();
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             Logger logger = Loggers.getLogger(getClass());
             logger.error(ex.getMessage(), ex);
         }

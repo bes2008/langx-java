@@ -2,6 +2,7 @@ package com.jn.langx.util.net;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.properties.PropertiesAccessor;
 import com.jn.langx.util.*;
@@ -140,7 +141,7 @@ public class Nets {
         /**
          * @since 5.1.8
          */
-        String[] virtualNetworkInterfaces = Strings.split(systemPropertiesAccessor.getString("langx.virtual.network.interfaces", "virtualbox,kernel debug,ppp0,6to4,loopback,miniport,virbr,docker,veth,calic,br,pan, virtual"),",");
+        String[] virtualNetworkInterfaces = Strings.split(systemPropertiesAccessor.getString("langx.virtual.network.interfaces", "virtualbox,kernel debug,ppp0,6to4,loopback,miniport,virbr,docker,veth,calic,br,pan, virtual"), ",");
         virtualInterfaces = Collects.asList(Collects.asSet(virtualNetworkInterfaces));
         byte[] LOCALHOST4_BYTES = {127, 0, 0, 1};
         byte[] LOCALHOST6_BYTES = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
@@ -689,6 +690,63 @@ public class Nets {
 
     }
 
+    /**
+     * Convert {@link Inet4Address} into {@code int}
+     */
+    public static int ipv4AddressToInt(Inet4Address ipAddress) {
+        byte[] octets = ipAddress.getAddress();
+        return ipAddressToLong(octets).intValue();
+    }
+
+
+
+    public static final Long ipAddressToLong(byte[] ip) {
+        long result = 0;
+        for (int i = 0; i < ip.length; i++) {
+            byte octet = ip[i];
+            if (i > 0) {
+                result = result << 8;
+            }
+            result = result | (octet & 0xff);
+        }
+        return result;
+    }
+
+    public static Long ipAddressToLong(String ipAddress) {
+        byte[] bytes = createByteArrayFromIpAddressString(ipAddress);
+        if (bytes != null) {
+            if (bytes.length == IPV4_PART_COUNT) {
+                return ipAddressToLong(bytes);
+            }
+            if (bytes.length == IPV6_BYTE_COUNT) {
+                return ipAddressToLong(bytes);
+            }
+        }
+        throw new IllegalParameterException(StringTemplates.formatWithPlaceholder("invalid ip address: {}", ipAddress));
+    }
+
+    public static int ipv4AddressToInt(String ipv4) {
+        return ipAddressToLong(ipv4).intValue();
+    }
+    public static long ipv6AddressToLong(String ipv6) {
+        return ipAddressToLong(ipv6);
+    }
+
+
+    /**
+     * Converts a 32-bit integer into an IPv4 address.
+     */
+    public static String intToIpV4Address(int i) {
+        StringBuilder buf = new StringBuilder(15);
+        buf.append(i >> 24 & 0xff);
+        buf.append('.');
+        buf.append(i >> 16 & 0xff);
+        buf.append('.');
+        buf.append(i >> 8 & 0xff);
+        buf.append('.');
+        buf.append(i & 0xff);
+        return buf.toString();
+    }
 
     /**
      * Takes a {@link String} and parses it to see if it is a valid IPV4 address.
@@ -704,7 +762,6 @@ public class Nets {
         return isValidIpV4Address((String) ip, from, toExcluded);
     }
 
-    @SuppressWarnings("DuplicateBooleanBranch")
     private static boolean isValidIpV4Address(String ip, int from, int toExcluded) {
         int len = toExcluded - from;
         int i;
@@ -1018,9 +1075,8 @@ public class Nets {
      *                 e.g. {@code "192.168.0.1"} or {@code "2001:db8::1"}
      * @return {@link java.net.InetAddress} representing the argument
      * @throws IllegalArgumentException if the argument is not a valid
-     *         IP string literal
-     *
-     *         @since 5.2.0
+     *                                  IP string literal
+     * @since 5.2.0
      */
     public static InetAddress forString(String ipString) {
         byte[] addr = textToNumericFormatV4(ipString);
@@ -1063,7 +1119,6 @@ public class Nets {
      *
      * @param ipString {@code String} to evaluated as an IP string literal
      * @return {@code true} if the argument is a valid IP string literal
-     *
      * @since 5.2.0
      */
     public static boolean isInetAddress(String ipString) {
@@ -1076,7 +1131,6 @@ public class Nets {
     }
 
     /**
-     *
      * @since 5.2.0
      */
     private static byte[] textToNumericFormatV4(String ipString) {
@@ -1117,7 +1171,6 @@ public class Nets {
     }
 
     /**
-     *
      * @since 5.2.0
      */
     private static byte[] textToNumericFormatV6(String ipString) {
@@ -1228,8 +1281,7 @@ public class Nets {
      * @param hostAddr A RFC 3986 section 3.2.2 encoded IPv4 or IPv6 address
      * @return an InetAddress representing the address in {@code hostAddr}
      * @throws IllegalArgumentException if {@code hostAddr} is not a valid
-     *     IPv4 address, or IPv6 address surrounded by square brackets
-     *
+     *                                  IPv4 address, or IPv6 address surrounded by square brackets
      * @since 5.2.0
      */
     public static InetAddress forUriString(String hostAddr) {
@@ -1337,12 +1389,12 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                                                                             <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
-     *                                                                                                                                                                                                                                                             defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
-     *                                                                                                                                                                                                                                                             following the updated guidelines in
-     *                                                                                                                                                                                                                                                             <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
-     *                                                                                                                                                                                                                                                             <li>{@code false} to strictly follow rfc 5952</li>
-     *                                                                                                                                                                                                                                                             </ul>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <li>{@code true} to stray from strict rfc 5952 and support the "IPv4 mapped" format
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       defined in <a href="http://tools.ietf.org/html/rfc4291#section-2.5.5">rfc 4291 section 2</a> while still
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       following the updated guidelines in
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <a href="http://tools.ietf.org/html/rfc5952#section-4">rfc 5952 section 4</a></li>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <li>{@code false} to strictly follow rfc 5952</li>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
@@ -1515,31 +1567,13 @@ public class Nets {
 
     // visible for tests
     static byte[] validIpV4ToBytes(String ip) {
-        int i;
-        return new byte[]{
-                ipv4WordToByte(ip, 0, i = ip.indexOf('.', 1)),
-                ipv4WordToByte(ip, i + 1, i = ip.indexOf('.', i + 2)),
-                ipv4WordToByte(ip, i + 1, i = ip.indexOf('.', i + 2)),
-                ipv4WordToByte(ip, i + 1, ip.length())
-        };
-    }
-
-    private static byte ipv4WordToByte(String ip, int from, int toExclusive) {
-        int ret = decimalDigit(ip, from);
-        from++;
-        if (from == toExclusive) {
-            return (byte) ret;
+        String[] segments = Strings.split(ip, ".");
+        byte[] bytes = new byte[segments.length];
+        for (int i = 0; i < segments.length; i++) {
+            byte octet = Numbers.createByte(segments[i]);
+            bytes[i] = octet;
         }
-        ret = ret * 10 + decimalDigit(ip, from);
-        from++;
-        if (from == toExclusive) {
-            return (byte) ret;
-        }
-        return (byte) (ret * 10 + decimalDigit(ip, from));
-    }
-
-    private static int decimalDigit(String str, int pos) {
-        return str.charAt(pos) - '0';
+        return bytes;
     }
 
     /**
@@ -1653,7 +1687,7 @@ public class Nets {
                     public boolean test(NetworkInterface networkInterface) {
                         try {
                             return networkInterface.isUp();
-                        }catch (IOException e){
+                        } catch (IOException e) {
                             return false;
                         }
                     }
@@ -1662,7 +1696,7 @@ public class Nets {
                     public boolean test(NetworkInterface networkInterface) {
                         try {
                             return !networkInterface.isLoopback();
-                        }catch (IOException e){
+                        } catch (IOException e) {
                             return false;
                         }
                     }
@@ -1939,8 +1973,6 @@ public class Nets {
 
 
     /**
-     * @param bytes
-     * @return
      * @since 4.1.0
      */
     private static String toOptimalStringV6(final byte[] bytes) {
