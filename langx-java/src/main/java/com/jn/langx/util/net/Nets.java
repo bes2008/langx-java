@@ -732,27 +732,31 @@ public class Nets {
     public static long ipv6AddressToLong(String ipv6) {
         return ipAddressToLong(ipv6);
     }
+
     public static String ipv4MappingToIpv6(String ipv4) {
-        return ipv4MappingToIpv6(ipv4,false);
+        return ipv4MappingToIpv6(ipv4, false);
     }
+
     public static String ipv4MappingToIpv6(String ipv4, boolean optimal) {
         byte[] ipv4Bytes = createByteArrayFromIpAddressString(ipv4);
         byte[] ipv6Bytes = ipv4MappingToIpv6Bytes(ipv4Bytes);
-        return toIpv6Address(ipv6Bytes,optimal);
+        return toIpv6Address(ipv6Bytes, optimal);
     }
+
     public static String toIpv6Address(byte[] bytes) {
-        return toIpv6Address(bytes,false);
+        return toIpv6Address(bytes, false);
     }
+
     public static String toIpv6Address(byte[] bytes, boolean optimal) {
         if (bytes.length != IPV6_BYTE_COUNT) {
             throw new IllegalArgumentException("invalid ipv6 address");
         }
-        if(optimal){
+        if (optimal) {
             return toOptimalStringV6(bytes);
         }
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
-            if(i!=0){
+            if (i != 0) {
                 builder.append(":");
             }
             builder.append(Hex.DECIMAL_TO_DIGITS_UPPER[(0xF0 & bytes[i]) >> 4]);
@@ -1437,7 +1441,7 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </ul>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
