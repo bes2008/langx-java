@@ -5,7 +5,7 @@ import java.util.Comparator;
 
 public class ReverseComparator<V> implements Comparator<V>, Serializable {
     private static final long serialVersionUID = 1L;
-    private Comparator<V> delegate;
+    private transient Comparator<V> delegate;
 
     public ReverseComparator(Comparator<V> delegate) {
         this.delegate = delegate;

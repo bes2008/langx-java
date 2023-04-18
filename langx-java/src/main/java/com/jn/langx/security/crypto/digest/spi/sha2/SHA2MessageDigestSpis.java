@@ -4,7 +4,9 @@ import com.jn.langx.security.crypto.digest.LangxMessageDigestSpi;
 import com.jn.langx.security.crypto.digest.internal.impl.*;
 
 public class SHA2MessageDigestSpis {
+    private SHA2MessageDigestSpis(){
 
+    }
     public static class SHA224MessageDigest extends LangxMessageDigestSpi {
         public SHA224MessageDigest(){
             super(new _SHA224Digest());

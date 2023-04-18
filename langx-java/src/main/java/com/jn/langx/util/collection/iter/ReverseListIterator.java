@@ -38,8 +38,8 @@ public class ReverseListIterator<E> implements Iterator<E> {
      * Get the next element.
      *
      * @return The next element.
-     * @throws NoSuchElementException
      */
+    @Override
     public E next() {
         if (current < 0) {
             throw new NoSuchElementException();
@@ -51,6 +51,7 @@ public class ReverseListIterator<E> implements Iterator<E> {
     /**
      * Remove the current element.
      */
+    @Override
     public void remove() {
         list.remove(current);
     }

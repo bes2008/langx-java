@@ -7,6 +7,7 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.collection.MultiKeyMap;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
@@ -166,7 +167,7 @@ public class Regexps {
         if (Objs.isNotEmpty(groupsList)) {
             return groupsList.get(0);
         }
-        return null;
+        return Maps.newHashMap();
     }
 
     public static Map<String, String> namedGroups(RegexpMatcher matcher, Set<String> groupNames) {

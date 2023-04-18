@@ -4,6 +4,9 @@ import java.net.URLConnection;
 import java.util.Date;
 
 public class URLConnections {
+    private URLConnections(){
+
+    }
     public static long getHeaderFieldLong(URLConnection conn, String name, long defaultValue) {
         try {
             String value = conn.getHeaderField(name);

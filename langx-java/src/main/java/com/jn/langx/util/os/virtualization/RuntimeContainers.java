@@ -28,7 +28,7 @@ public class RuntimeContainers {
                 try {
                     executor.setStreamHandler(handler);
                     executor.execute(commandLine);
-                } catch (Throwable ex) {
+                } catch (Exception ex) {
                     logger.error(ex.getMessage(), ex);
                 }
             } else {
@@ -38,7 +38,8 @@ public class RuntimeContainers {
                 runtimeContainer = new Holder<RuntimeContainer>(handler.getContainer());
             }
         }
-        return runtimeContainer.get();
+
+        return runtimeContainer == null? null:runtimeContainer.get();
     }
 
 

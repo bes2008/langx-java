@@ -21,7 +21,9 @@ public class Repositorys {
     private static Repository bootstrapRepository = new ClassLoaderRepository((ClassLoader) null);
 
     private static ConcurrentReferenceHashMap<ClassLoader, Repository> classLoaderRepositoryMap = new ConcurrentReferenceHashMap<ClassLoader, Repository>(16, 0.95f, Runtime.getRuntime().availableProcessors(), ReferenceType.SOFT, ReferenceType.STRONG);
+    private Repositorys(){
 
+    }
     public static Repository getClassLoaderRepository(Class clazz) {
         Preconditions.checkNotNull(clazz);
         ClassLoader classLoader = clazz.getClassLoader();

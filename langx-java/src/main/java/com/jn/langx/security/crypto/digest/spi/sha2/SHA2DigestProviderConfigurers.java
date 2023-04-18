@@ -4,7 +4,9 @@ import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.security.crypto.provider.LangxSecurityProviderConfigurer;
 
 public class SHA2DigestProviderConfigurers {
+    private SHA2DigestProviderConfigurers(){
 
+    }
     public static class SHA224DigestProviderConfigurer implements LangxSecurityProviderConfigurer {
         @Override
         public void configure(LangxSecurityProvider provider) {

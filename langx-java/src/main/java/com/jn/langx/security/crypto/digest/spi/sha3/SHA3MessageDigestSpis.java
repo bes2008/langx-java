@@ -8,7 +8,9 @@ import com.jn.langx.security.crypto.key.spi.BaseKeyGeneratorSpi;
 import com.jn.langx.security.crypto.mac.HmacCoreSpi;
 
 public class SHA3MessageDigestSpis {
+    private SHA3MessageDigestSpis(){
 
+    }
     public static class SHA3MessageDigest extends LangxMessageDigestSpi {
 
         public SHA3MessageDigest() {

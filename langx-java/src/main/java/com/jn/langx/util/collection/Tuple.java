@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Tuple extends BasedStringAccessor<Integer, Collection> implements Iterable, Serializable {
     private static final long serialVersionUID = 1L;
-    private List<Object> elements = Collects.emptyArrayList();
+    private transient List<Object> elements = Collects.emptyArrayList();
     private int maxSize = 0;
 
     public Tuple(Object value0, Object... values) {
@@ -134,15 +134,6 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
         return true;
     }
 
-    private boolean equals(Object o1, Object o2) {
-        if (o1 == null && o2 == null) {
-            return true;
-        }
-        if (o1 == null || o2 == null) {
-            return false;
-        }
-        return o1.equals(o2);
-    }
 
     public Object[] toArray() {
         return elements.toArray();

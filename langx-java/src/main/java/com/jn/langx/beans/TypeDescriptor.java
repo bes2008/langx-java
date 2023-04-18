@@ -241,7 +241,6 @@ class TypeDescriptor implements Serializable {
      * @param annotationType the annotation type
      * @return the annotation, or {@code null} if no such annotation exists on this type descriptor
      */
-    @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
         if (this.annotatedElement.isEmpty()) {
             // Shortcut: AnnotatedElementUtils would have to expect AnnotatedElement.getAnnotations()

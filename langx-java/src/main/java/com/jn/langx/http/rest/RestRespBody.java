@@ -347,7 +347,7 @@ public class RestRespBody<T> {
     /**
      * 505
      */
-    public static <T> RestRespBody<T> error505(int statusCode, String errorCode, String errorMessage) {
+    public static <T> RestRespBody<T> error505(String errorCode, String errorMessage) {
         return httpVersionNotSupported(errorCode, errorMessage);
     }
 
