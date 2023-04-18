@@ -78,10 +78,8 @@ public final class ASN1Null
 
             return new ASN1Null(elementBytes[0]);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

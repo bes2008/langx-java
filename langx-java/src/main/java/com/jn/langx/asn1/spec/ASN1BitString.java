@@ -335,10 +335,8 @@ public final class ASN1BitString extends ASN1Element {
 
             return new ASN1BitString(elementBytes[0], bits, bytes, elementValue);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

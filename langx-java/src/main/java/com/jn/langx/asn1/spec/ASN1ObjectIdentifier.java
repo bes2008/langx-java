@@ -265,10 +265,8 @@ public final class ASN1ObjectIdentifier
             final OID oid = decodeValue(elementValue);
             return new ASN1ObjectIdentifier(elementBytes[0], oid, elementValue);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

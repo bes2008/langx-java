@@ -1,5 +1,6 @@
 package com.jn.langx.codec.hex;
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.codec.CodecException;
 import com.jn.langx.util.io.Charsets;
 
@@ -40,7 +41,9 @@ public class Hex extends Hexs {
      */
     public static final char[] DECIMAL_TO_DIGITS_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
-
+    public static void toHex(final byte b, @NonNull final StringBuilder buffer) {
+        Hexs.toHex(b, buffer);
+    }
 
     public static byte[] decodeHex(String data) {
         return decodeHex(data.toCharArray());

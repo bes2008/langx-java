@@ -391,10 +391,8 @@ public final class ASN1OctetString extends ASN1Element implements ByteString {
             return new ASN1OctetString(elementBytes[0], elementBytes, valueStartPos,
                     length);
         } catch (final ASN1Exception ae) {
-            ////Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

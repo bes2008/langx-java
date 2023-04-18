@@ -3,6 +3,7 @@ package com.jn.langx.asn1.spec;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.asn1.bytestring.ByteStringBuffer;
+import com.jn.langx.util.Preconditions;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -348,6 +349,18 @@ public final class ASN1Buffer implements Serializable {
         addInteger(ASN1Constants.UNIVERSAL_INTEGER_TYPE, longValue);
     }
 
+    private void appendToBuffer(final long longValue, int rightMove, long first) {
+        Preconditions.checkTrue(rightMove >= 0 && rightMove % 8 == 0);
+        int i=0;
+        while (rightMove > 0) {
+            buffer.append((byte) ((longValue >> rightMove) &  (i==0 ? first : 0xFFL )));
+            rightMove = rightMove - 8;
+            i++;
+        }
+        if (rightMove == 0) {
+            buffer.append((byte) (longValue & (i==0 ? first : 0xFFL )));
+        }
+    }
 
     /**
      * Adds an integer element to this ASN.1 buffer using the provided BER type.
@@ -361,39 +374,61 @@ public final class ASN1Buffer implements Serializable {
         if (longValue < 0) {
             if ((longValue & 0xFFFFFFFFFFFFFF80L) == 0xFFFFFFFFFFFFFF80L) {
                 buffer.append((byte) 0x01);
-                buffer.append((byte) (longValue & 0xFFL));
+                /*
+                    buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 0, 0xFFL);
             } else if ((longValue & 0xFFFFFFFFFFFF8000L) == 0xFFFFFFFFFFFF8000L) {
                 buffer.append((byte) 0x02);
+                /*
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 8, 0xFFL);
             } else if ((longValue & 0xFFFFFFFFFF800000L) == 0xFFFFFFFFFF800000L) {
                 buffer.append((byte) 0x03);
+                /*
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 16, 0xFFL);
             } else if ((longValue & 0xFFFFFFFF80000000L) == 0xFFFFFFFF80000000L) {
                 buffer.append((byte) 0x04);
+                /*
                 buffer.append((byte) ((longValue >> 24) & 0xFFL));
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+
+                 */
+                appendToBuffer(longValue, 24, 0xFFL);
             } else if ((longValue & 0xFFFFFF8000000000L) == 0xFFFFFF8000000000L) {
                 buffer.append((byte) 0x05);
+                /*
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
                 buffer.append((byte) ((longValue >> 24) & 0xFFL));
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+
+                 */
+                appendToBuffer(longValue, 32, 0xFFL);
             } else if ((longValue & 0xFFFF800000000000L) == 0xFFFF800000000000L) {
                 buffer.append((byte) 0x06);
+                /*
                 buffer.append((byte) ((longValue >> 40) & 0xFFL));
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
                 buffer.append((byte) ((longValue >> 24) & 0xFFL));
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+
+                 */
+                appendToBuffer(longValue, 40, 0xFFL);
             } else if ((longValue & 0xFF80000000000000L) == 0xFF80000000000000L) {
                 buffer.append((byte) 0x07);
+                /*
                 buffer.append((byte) ((longValue >> 48) & 0xFFL));
                 buffer.append((byte) ((longValue >> 40) & 0xFFL));
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
@@ -401,8 +436,12 @@ public final class ASN1Buffer implements Serializable {
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+
+                 */
+                appendToBuffer(longValue, 48, 0xFFL);
             } else {
                 buffer.append((byte) 0x08);
+                /*
                 buffer.append((byte) ((longValue >> 56) & 0xFFL));
                 buffer.append((byte) ((longValue >> 48) & 0xFFL));
                 buffer.append((byte) ((longValue >> 40) & 0xFFL));
@@ -411,43 +450,65 @@ public final class ASN1Buffer implements Serializable {
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 56, 0xFFL);
             }
         } else {
             if ((longValue & 0x000000000000007FL) == longValue) {
                 buffer.append((byte) 0x01);
+                /*
                 buffer.append((byte) (longValue & 0x7FL));
+                 */
+                appendToBuffer(longValue, 0, 0x7FL);
             } else if ((longValue & 0x0000000000007FFFL) == longValue) {
                 buffer.append((byte) 0x02);
+                /*
                 buffer.append((byte) ((longValue >> 8) & 0x7FL));
                 buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 8, 0x7FL);
             } else if ((longValue & 0x00000000007FFFFFL) == longValue) {
                 buffer.append((byte) 0x03);
+                /*
                 buffer.append((byte) ((longValue >> 16) & 0x7FL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 16, 0x7FL);
             } else if ((longValue & 0x000000007FFFFFFFL) == longValue) {
                 buffer.append((byte) 0x04);
+                /*
                 buffer.append((byte) ((longValue >> 24) & 0x7FL));
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 24, 0x7FL);
             } else if ((longValue & 0x0000007FFFFFFFFFL) == longValue) {
                 buffer.append((byte) 0x05);
+                /*
                 buffer.append((byte) ((longValue >> 32) & 0x7FL));
                 buffer.append((byte) ((longValue >> 24) & 0xFFL));
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+                 */
+                appendToBuffer(longValue, 32, 0x7FL);
             } else if ((longValue & 0x00007FFFFFFFFFFFL) == longValue) {
                 buffer.append((byte) 0x06);
+                /*
                 buffer.append((byte) ((longValue >> 40) & 0x7FL));
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
                 buffer.append((byte) ((longValue >> 24) & 0xFFL));
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+
+                 */
+                appendToBuffer(longValue, 40, 0x7FL);
             } else if ((longValue & 0x007FFFFFFFFFFFFFL) == longValue) {
                 buffer.append((byte) 0x07);
+                /*
                 buffer.append((byte) ((longValue >> 48) & 0x7FL));
                 buffer.append((byte) ((longValue >> 40) & 0xFFL));
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
@@ -455,8 +516,12 @@ public final class ASN1Buffer implements Serializable {
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+
+                 */
+                appendToBuffer(longValue, 48, 0x7FL);
             } else {
                 buffer.append((byte) 0x08);
+                /*
                 buffer.append((byte) ((longValue >> 56) & 0x7FL));
                 buffer.append((byte) ((longValue >> 48) & 0xFFL));
                 buffer.append((byte) ((longValue >> 40) & 0xFFL));
@@ -465,6 +530,9 @@ public final class ASN1Buffer implements Serializable {
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
                 buffer.append((byte) ((longValue >> 8) & 0xFFL));
                 buffer.append((byte) (longValue & 0xFFL));
+
+                 */
+                appendToBuffer(longValue, 56, 0x7FL);
             }
         }
     }

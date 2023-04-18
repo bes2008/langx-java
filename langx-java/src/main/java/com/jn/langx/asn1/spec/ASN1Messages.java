@@ -1,6 +1,8 @@
 package com.jn.langx.asn1.spec;
 
 
+import com.jn.langx.util.logging.Loggers;
+
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
@@ -394,6 +396,7 @@ enum ASN1Messages {
         try {
             rb = ResourceBundle.getBundle("unboundid-ldapsdk-asn1");
         } catch (final Exception e) {
+            Loggers.getLogger(ASN1Messages.class).warn("can't find the resource bundle: unboundid-ldapsdk-asn1");
         }
         RESOURCE_BUNDLE = rb;
     }

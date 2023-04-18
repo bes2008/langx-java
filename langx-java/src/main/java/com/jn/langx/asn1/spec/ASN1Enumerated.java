@@ -147,10 +147,8 @@ public final class ASN1Enumerated extends ASN1Element {
 
             return new ASN1Enumerated(elementBytes[0], intValue, value);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

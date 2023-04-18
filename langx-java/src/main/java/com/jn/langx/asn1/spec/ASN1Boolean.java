@@ -133,10 +133,8 @@ public final class ASN1Boolean extends ASN1Element {
             final boolean booleanValue = (value[0] != 0x00);
             return new ASN1Boolean(elementBytes[0], booleanValue, value);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

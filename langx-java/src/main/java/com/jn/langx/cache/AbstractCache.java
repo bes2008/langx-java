@@ -142,15 +142,15 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
 
     @Override
     public Map<K, V> getAll(Iterable<K> keys) {
-        final Map<K, V> map = new HashMap<K, V>();
+        final Map<K, V> m = new HashMap<K, V>();
         Collects.forEach(keys, new Consumer<K>() {
             @Override
             public void accept(K key) {
                 V v = get(key);
-                map.put(key, v);
+                m.put(key, v);
             }
         });
-        return map;
+        return m;
     }
 
     @Override
@@ -454,14 +454,14 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
 
     @Override
     public Map<K, V> toMap() {
-        final Map<K, V> map = new HashMap<K, V>();
+        final Map<K, V> m = new HashMap<K, V>();
         Collects.forEach(this.map, new Consumer2<K, Entry<K, V>>() {
             @Override
             public void accept(K key, Entry<K, V> entry) {
-                map.put(key, entry.getValue(false));
+                m.put(key, entry.getValue(false));
             }
         });
-        return map;
+        return m;
     }
 
     protected void setMap(ConcurrentReferenceHashMap<K, Entry<K, V>> map) {

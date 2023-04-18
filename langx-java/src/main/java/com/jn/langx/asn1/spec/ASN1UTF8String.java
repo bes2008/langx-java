@@ -124,10 +124,8 @@ public final class ASN1UTF8String extends ASN1Element {
             return new ASN1UTF8String(elementBytes[0],
                     Utf8s.toString(elementValue), elementValue);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

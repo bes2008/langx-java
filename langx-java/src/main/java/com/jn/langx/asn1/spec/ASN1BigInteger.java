@@ -145,10 +145,8 @@ public final class ASN1BigInteger extends ASN1Element {
             final BigInteger bigIntegerValue = new BigInteger(elementValue);
             return new ASN1BigInteger(elementBytes[0], bigIntegerValue, elementValue);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }

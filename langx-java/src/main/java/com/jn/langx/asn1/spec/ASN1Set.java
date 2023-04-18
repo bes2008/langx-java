@@ -8,7 +8,6 @@ import com.jn.langx.asn1.bytestring.ByteStringBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
 
 
@@ -274,8 +273,7 @@ public final class ASN1Set
      *                       element.
      */
     @NonNull()
-    public static ASN1Set decodeAsSet(@NonNull final byte[] elementBytes)
-            throws ASN1Exception {
+    public static ASN1Set decodeAsSet(@NonNull final byte[] elementBytes) throws ASN1Exception {
         try {
             int valueStartPos = 2;
             int length = (elementBytes[1] & 0x7F);
@@ -328,7 +326,6 @@ public final class ASN1Set
             } catch (final ASN1Exception ae) {
                 throw ae;
             } catch (final Exception e) {
-                ////Debug.debugException(e);
                 throw new ASN1Exception(ERR_SET_BYTES_DECODE_EXCEPTION.get(e), e);
             }
 
@@ -340,10 +337,8 @@ public final class ASN1Set
 
             return new ASN1Set(elementBytes[0], elements, value);
         } catch (final ASN1Exception ae) {
-            ////Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }
@@ -395,7 +390,6 @@ public final class ASN1Set
         } catch (final ASN1Exception ae) {
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(
                     ERR_SET_DECODE_EXCEPTION.get(String.valueOf(element), e), e);
         }

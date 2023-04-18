@@ -426,7 +426,6 @@ public final class ASN1StreamReader
 
         totalBytesRead += length;
         final ASN1Element e = new ASN1Element((byte) type, value);
-        //Debug.debugASN1Read(e);
         return e;
     }
 
@@ -466,7 +465,6 @@ public final class ASN1StreamReader
             totalBytesRead++;
 
             final Boolean booleanValue = (value != 0x00);
-            //Debug.debugASN1Read(Level.INFO, "Boolean", type, 1, booleanValue);
             return booleanValue;
         } else {
             skip(length);
@@ -542,7 +540,6 @@ public final class ASN1StreamReader
         final String timestamp = Utf8s.toString(value);
         final Date date =
                 new Date(ASN1GeneralizedTime.decodeTimestamp(timestamp));
-        //Debug.debugASN1Read(Level.INFO, "GeneralizedTime", type, length, timestamp);
         return date;
     }
 
@@ -608,7 +605,6 @@ public final class ASN1StreamReader
         }
 
         totalBytesRead += length;
-        //Debug.debugASN1Read(Level.INFO, "Integer", type, length, intValue);
         return intValue;
     }
 
@@ -686,7 +682,6 @@ public final class ASN1StreamReader
         }
 
         totalBytesRead += length;
-        //Debug.debugASN1Read(Level.INFO, "Long", type, length, longValue);
         return longValue;
     }
 
@@ -733,7 +728,6 @@ public final class ASN1StreamReader
         final BigInteger bigIntegerValue = new BigInteger(valueBytes);
 
         totalBytesRead += length;
-        //Debug.debugASN1Read(Level.INFO, "BigInteger", type, length, bigIntegerValue);
         return bigIntegerValue;
     }
 
@@ -763,7 +757,6 @@ public final class ASN1StreamReader
             skip(length);
             throw new ASN1Exception(ERR_NULL_HAS_VALUE.get());
         }
-        //Debug.debugASN1Read(Level.INFO, "Null", type, 0, null);
     }
 
 
@@ -805,7 +798,6 @@ public final class ASN1StreamReader
         }
 
         totalBytesRead += length;
-        //Debug.debugASN1Read(Level.INFO, "byte[]", type, length, value);
         return value;
     }
 
@@ -850,7 +842,6 @@ public final class ASN1StreamReader
         totalBytesRead += length;
 
         final String s = Utf8s.toString(value);
-        //Debug.debugASN1Read(Level.INFO, "String", type, length, s);
         return s;
     }
 
@@ -898,7 +889,6 @@ public final class ASN1StreamReader
 
         final String timestamp = Utf8s.toString(value);
         final Date date = new Date(ASN1UTCTime.decodeTimestamp(timestamp));
-        //Debug.debugASN1Read(Level.INFO, "UTCTime", type, length, timestamp);
         return date;
     }
 
@@ -931,7 +921,6 @@ public final class ASN1StreamReader
 
         final int length = readLength();
 
-        //Debug.debugASN1Read(Level.INFO, "Sequence Header", type, length, null);
         return new ASN1StreamReaderSequence(this, (byte) type, length);
     }
 
@@ -963,7 +952,6 @@ public final class ASN1StreamReader
 
         final int length = readLength();
 
-        //  Debug.debugASN1Read(Level.INFO, "Set Header", type, length, null);
         return new ASN1StreamReaderSet(this, (byte) type, length);
     }
 
@@ -1002,7 +990,6 @@ public final class ASN1StreamReader
                 return saslInputStream.read();
             }
         } catch (final SocketTimeoutException ste) {
-            //Debug.debugException(Level.FINEST, ste);
 
             if ((initial && ignoreInitialSocketTimeout) ||
                     ((!initial) && ignoreSubsequentSocketTimeout)) {
@@ -1010,7 +997,6 @@ public final class ASN1StreamReader
                     try {
                         return inputStream.read();
                     } catch (final SocketTimeoutException ste2) {
-                        // Debug.debugException(Level.FINEST, ste2);
                     }
                 }
             } else {
@@ -1050,13 +1036,11 @@ public final class ASN1StreamReader
         try {
             return inputStream.read(buffer, offset, length);
         } catch (final SocketTimeoutException ste) {
-            //Debug.debugException(Level.FINEST, ste);
             if (ignoreSubsequentSocketTimeout) {
                 while (true) {
                     try {
                         return inputStream.read(buffer, offset, length);
                     } catch (final SocketTimeoutException ste2) {
-                        //Debug.debugException(Level.FINEST, ste2);
                     }
                 }
             } else {

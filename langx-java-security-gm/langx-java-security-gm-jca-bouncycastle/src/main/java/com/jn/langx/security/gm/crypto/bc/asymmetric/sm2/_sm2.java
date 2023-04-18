@@ -64,8 +64,6 @@ class _sm2 {
      * 私钥转换为 {@link ECPrivateKeyParameters}
      *
      * @param key key
-     * @return
-     * @throws InvalidKeyException
      */
     public static ECPrivateKeyParameters privateKeyToParams(String algorithm, byte[] key) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException {
         Preconditions.checkNotNull(key, "key must be not null !");
@@ -78,7 +76,6 @@ class _sm2 {
      *
      * @param algorithm 算法
      * @param key       key
-     * @return
      */
     public static PrivateKey generatePrivateKey(String algorithm, byte[] key) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Preconditions.checkNotNull(algorithm, "algorithm must be not null !");
@@ -92,10 +89,8 @@ class _sm2 {
      * 公钥转换为 {@link ECPublicKeyParameters}
      *
      * @param key key
-     * @return
-     * @throws InvalidKeyException
      */
-    public static ECPublicKeyParameters publicKeyToParams(String algorithm, byte[] key) throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException {
+    public static ECPublicKeyParameters publicKeyToParams(String algorithm, byte[] key) throws InvalidKeyException{
         Preconditions.checkNotNull(key, "key must be not null !");
         PublicKey publicKey = new BytesBasedPublicKeySupplier().get(key, algorithm, null);
         return (ECPublicKeyParameters) ECUtil.generatePublicKeyParameter(publicKey);

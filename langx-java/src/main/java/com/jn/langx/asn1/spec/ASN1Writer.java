@@ -19,8 +19,7 @@ public final class ASN1Writer {
      * The thread-local buffers that will be used for encoding the elements.
      */
     @NonNull
-    private static final ThreadLocal<ByteStringBuffer> BUFFERS =
-            new ThreadLocal<ByteStringBuffer>();
+    private static final ThreadLocal<ByteStringBuffer> BUFFERS = new ThreadLocal<ByteStringBuffer>();
 
 
     /**
@@ -49,7 +48,6 @@ public final class ASN1Writer {
     public static void writeElement(@NonNull final ASN1Element element,
                                     @NonNull final OutputStream outputStream)
             throws IOException {
-        // Debug.debugASN1Write(element);
 
         ByteStringBuffer buffer = BUFFERS.get();
         if (buffer == null) {
@@ -84,7 +82,6 @@ public final class ASN1Writer {
     public static void writeElement(@NonNull final ASN1Element element,
                                     @NonNull final ByteBuffer buffer)
             throws BufferOverflowException {
-        //Debug.debugASN1Write(element);
 
         ByteStringBuffer b = BUFFERS.get();
         if (b == null) {
