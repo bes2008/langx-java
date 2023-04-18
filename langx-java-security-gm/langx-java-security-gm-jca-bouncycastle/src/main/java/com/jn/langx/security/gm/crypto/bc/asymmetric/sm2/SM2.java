@@ -20,7 +20,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 
-class _sm2 {
+class SM2 {
     /**
      * 构建ECDomainParameters对象
      *

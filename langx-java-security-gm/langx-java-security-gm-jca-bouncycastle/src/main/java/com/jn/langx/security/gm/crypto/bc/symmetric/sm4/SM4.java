@@ -11,9 +11,11 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 
-class _sm4 {
+class SM4 {
 
+    private SM4(){
 
+    }
     private static final String PROVIDER_NAME = "BC";
     public static final String ALGORITHM_NAME = "SM4";
     public static final String ALGORITHM_NAME_ECB_PADDING = "SM4/ECB/PKCS5Padding";
@@ -150,7 +152,7 @@ class _sm4 {
 
             data = Base64.encodeBase64String(bytes);
             return data;
-        } catch (Throwable var5) {
+        } catch (Exception var5) {
             throw new GeneralSecurityException("SM4加密失败");
         }
     }
@@ -175,7 +177,7 @@ class _sm4 {
 
             data = new String(bytes, Charsets.UTF_8);
             return data;
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw new GeneralSecurityException("SM4解密失败");
         }
     }
@@ -229,7 +231,7 @@ class _sm4 {
 
             data = new String(bytes, Charsets.UTF_8);
             return data;
-        } catch (Throwable var5) {
+        } catch (Exception var5) {
             throw new GeneralSecurityException("SM4解密失败, error: {}", var5);
         }
     }

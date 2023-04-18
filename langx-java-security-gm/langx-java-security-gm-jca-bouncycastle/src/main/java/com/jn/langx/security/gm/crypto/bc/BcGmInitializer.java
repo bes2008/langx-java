@@ -57,12 +57,12 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
             provider = new BouncyCastleProvider();
             Securitys.addProvider(provider);
         }
-        final Provider _provider = provider;
+        final Provider p = provider;
         Collects.forEach(map, new Consumer2<String, String>() {
             @Override
             public void accept(String key, String value) {
-                if (!_provider.containsKey(key)) {
-                    _provider.put(key, value);
+                if (!p.containsKey(key)) {
+                    p.put(key, value);
                 }
             }
         });

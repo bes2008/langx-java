@@ -16,8 +16,8 @@ import java.security.SecureRandom;
 /**
  * 注意，在使用 CBC模式下使用时，传递的 secureRandom 必须是调用过 setSeed()之后的
  */
-class _SM4s extends Symmetrics {
-    public static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(_SM4s.class).getBytes(Charsets.UTF_8);
+class SM4s extends Symmetrics {
+    public static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(SM4s.class).getBytes(Charsets.UTF_8);
     public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, Provider provider, SecureRandom secureRandom) {
         return encrypt(bytes, symmetricKey, "SM4", (String) null, provider, secureRandom);
     }
