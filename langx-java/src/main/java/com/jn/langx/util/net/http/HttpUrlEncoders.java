@@ -172,7 +172,7 @@ public class HttpUrlEncoders {
     /**
      * unreserved = ALPHA / DIGIT / "-" / "." / "_" / "~"
      */
-    public final static BitSet UNRESERVED = new BitSet();
+    public static final BitSet UNRESERVED = new BitSet();
 
     static {
         UNRESERVED.or(ALPHA);
@@ -189,7 +189,7 @@ public class HttpUrlEncoders {
      * Note: we don't allow escaped here since we will escape it ourselves, so we don't want to allow them in the
      * unescaped sequences
      */
-    public final static BitSet PCHAR = new BitSet();
+    public static final BitSet PCHAR = new BitSet();
 
     static {
         PCHAR.or(UNRESERVED);
@@ -201,7 +201,7 @@ public class HttpUrlEncoders {
     /**
      * path_segment = pchar &#x3C;without&#x3E; ";"
      */
-    public final static BitSet PATH_SEGMENT = new BitSet();
+    public static final BitSet PATH_SEGMENT = new BitSet();
 
     static {
         PATH_SEGMENT.or(PCHAR);
@@ -212,7 +212,7 @@ public class HttpUrlEncoders {
     /**
      * path_param_name = pchar &#x3C;without&#x3E; ";" | "="
      */
-    public final static BitSet PATH_PARAM_NAME = new BitSet();
+    public static final BitSet PATH_PARAM_NAME = new BitSet();
 
     static {
         PATH_PARAM_NAME.or(PCHAR);
@@ -224,7 +224,7 @@ public class HttpUrlEncoders {
     /**
      * path_param_value = pchar &#x3C;without&#x3E; ";"
      */
-    public final static BitSet PATH_PARAM_VALUE = new BitSet();
+    public static final BitSet PATH_PARAM_VALUE = new BitSet();
 
     static {
         PATH_PARAM_VALUE.or(PCHAR);
@@ -235,7 +235,7 @@ public class HttpUrlEncoders {
     /**
      * query = pchar / "/" / "?"
      */
-    public final static BitSet QUERY = new BitSet();
+    public static final BitSet QUERY = new BitSet();
 
     static {
         QUERY.or(PCHAR);
@@ -251,7 +251,7 @@ public class HttpUrlEncoders {
     /**
      * fragment = pchar / "/" / "?"
      */
-    public final static BitSet FRAGMENT = new BitSet();
+    public static final BitSet FRAGMENT = new BitSet();
 
     static {
         FRAGMENT.or(PCHAR);

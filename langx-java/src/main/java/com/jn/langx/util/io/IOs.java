@@ -1476,17 +1476,12 @@ public class IOs {
      * <p>
      * This method uses {@link String#getBytes()}.
      *
-     * @param data   the <code>StringBuffer</code> to write, null ignored
+     * @param data   the <code>Appendable</code> to write, null ignored
      * @param output the <code>OutputStream</code> to write to
      * @throws NullPointerException if output is null
      * @throws IOException          if an I/O error occurs
      */
-    public static void write(final StringBuffer data, final OutputStream output)
-            throws IOException {
-        write(data, output, (String) null);
-    }
-
-    public static void write(final StringBuilder data, final OutputStream output)
+    public static void write(final Appendable data, final OutputStream output)
             throws IOException {
         write(data, output, (String) null);
     }
@@ -1509,14 +1504,7 @@ public class IOs {
      * @throws java.nio.charset.UnsupportedCharsetException thrown instead of {@link java.io
      *                                                      .UnsupportedEncodingException} in version 2.2 if the encoding is not supported.
      */
-    public static void write(final StringBuffer data, final OutputStream output, final String encoding)
-            throws IOException {
-        if (data != null) {
-            output.write(data.toString().getBytes(Charsets.getCharset(encoding)));
-        }
-    }
-
-    public static void write(final StringBuilder data, final OutputStream output, final String encoding)
+    public static void write(final Appendable data, final OutputStream output, final String encoding)
             throws IOException {
         if (data != null) {
             output.write(data.toString().getBytes(Charsets.getCharset(encoding)));
@@ -2768,4 +2756,7 @@ public class IOs {
         return filterInputStreamRead((byte) theByte);
     }
 
+    private IOs(){
+
+    }
 }

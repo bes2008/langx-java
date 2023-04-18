@@ -169,7 +169,7 @@ public abstract class FieldAccessor {
             access.fieldTypes = fieldTypes;
             access.fields = fields.toArray(new Field[fields.size()]);
             return access;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new RuntimeException("Error constructing field access class: " + accessClassName, t);
         }
     }

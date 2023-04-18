@@ -108,6 +108,7 @@ public final class IPv6Network extends IPv6AddressRange {
     /**
      * @return like <code>toString</code> but without using shorthand notations for addresses
      */
+    @Override
     public String toLongString() {
         return address.toLongString() + "/" + networkMask.asPrefixLength();
     }

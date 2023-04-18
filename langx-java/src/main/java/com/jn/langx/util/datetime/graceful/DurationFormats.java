@@ -497,7 +497,7 @@ class DurationFormats {
         boolean inLiteral = false;
         // Although the buffer is stored in a Token, the Tokens are only
         // used internally, so cannot be accessed by other threads
-        StringBuilder buffer = null;
+        StringBuilder buffer = new StringBuilder();
         Token previous = null;
         for (int i = 0; i < format.length(); i++) {
             final char ch = format.charAt(i);
@@ -540,7 +540,6 @@ class DurationFormats {
                 break;
             default:
                 if (buffer == null) {
-                    buffer = new StringBuilder();
                     list.add(new Token(buffer));
                 }
                 buffer.append(ch);

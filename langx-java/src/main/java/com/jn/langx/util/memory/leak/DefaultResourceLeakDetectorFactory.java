@@ -26,7 +26,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
                     return SystemPropertys.getAccessor().getString("langx.customResourceLeakDetector");
                 }
             });
-        } catch (Throwable cause) {
+        } catch (Exception cause) {
             Loggers.getLogger(getClass()).error("Could not access System property: langx.customResourceLeakDetector", cause);
             customLeakDetector = null;
         }
@@ -50,7 +50,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
             } else {
                 logger.error("Class {} does not inherit from ResourceLeakDetector.", customLeakDetector);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             logger.error("Could not load custom resource leak detector class provided: {}",
                     customLeakDetector, t);
         }
@@ -68,7 +68,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
             } else {
                 logger.error("Class {} does not inherit from ResourceLeakDetector.", customLeakDetector);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             logger.error("Could not load custom resource leak detector class provided: {}",
                     customLeakDetector, t);
         }
@@ -86,7 +86,7 @@ public class DefaultResourceLeakDetectorFactory extends ResourceLeakDetectorFact
                 logger.debug("Loaded custom ResourceLeakDetector: {}",
                         customClassConstructor.getDeclaringClass().getName());
                 return leakDetector;
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 logger.error(
                         "Could not load custom resource leak detector provided: {} with the given resource: {}",
                         customClassConstructor.getDeclaringClass().getName(), resource, t);

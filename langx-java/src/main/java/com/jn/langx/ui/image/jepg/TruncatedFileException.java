@@ -22,6 +22,7 @@ import java.awt.image.Raster;
  * @since 4.3.8
  */
 public class TruncatedFileException extends RuntimeException {
+    private static final long serialVersionUID = -1L;
     private Raster ras = null;
     private BufferedImage bi = null;
 

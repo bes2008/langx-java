@@ -34,7 +34,7 @@ public class StrTokenizer extends CommonTokenizer<String> {
     private boolean ignoreCase = false;
 
     public StrTokenizer(String str) {
-        this(str, null);
+        this(str, (String)null);
     }
 
     public StrTokenizer(String str, String... delimiters) {

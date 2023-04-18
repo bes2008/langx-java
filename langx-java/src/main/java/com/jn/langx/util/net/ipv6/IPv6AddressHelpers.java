@@ -9,6 +9,9 @@ import java.util.Arrays;
  * Helper methods used by IPv6Address.
  */
 public final class IPv6AddressHelpers {
+    private IPv6AddressHelpers(){
+
+    }
     static long[] parseStringArrayIntoLongArray(String[] strings) {
         final long[] longs = new long[strings.length];
         for (int i = 0; i < strings.length; i++) {

@@ -340,7 +340,7 @@ class Groups {
      *            of this position are evaluated
      * @return number of open parentheses
      */
-    static private int countOpenParens(String s, int pos) {
+    private static int countOpenParens(String s, int pos) {
         Regexp p = Regexps.compile("\\(");
         RegexpMatcher m = p.matcher(s.subSequence(0, pos));
 

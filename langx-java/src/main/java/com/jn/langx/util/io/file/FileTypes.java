@@ -77,7 +77,7 @@ public class FileTypes {
         try {
             in = new FileInputStream(file);
             return readFileMagic(in);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         } finally {
             IOs.close(in);

@@ -62,4 +62,8 @@ public class IODebugger {
         }
         return "";
     }
+
+    private IODebugger(){
+
+    }
 }

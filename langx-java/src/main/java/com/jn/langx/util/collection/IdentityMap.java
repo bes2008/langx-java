@@ -151,15 +151,16 @@ public final class IdentityMap<K, V> implements Map<K, V> {
         private KeyIterator(Iterator<IdentityKey<K>> iterator) {
             identityKeyIterator = iterator;
         }
-
+        @Override
         public boolean hasNext() {
             return identityKeyIterator.hasNext();
         }
-
+        @Override
         public K next() {
             return identityKeyIterator.next().getRealKey();
         }
 
+        @Override
         public void remove() {
             throw new UnsupportedOperationException();
         }

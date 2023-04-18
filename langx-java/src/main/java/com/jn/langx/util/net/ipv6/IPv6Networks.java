@@ -9,6 +9,9 @@ import static com.jn.langx.util.net.ipv6.BitSetHelpers.bitSetOf;
  *
  */
 public class IPv6Networks {
+    private IPv6Networks(){
+
+    }
     static int longestPrefixLength(IPv6Address first, IPv6Address last) {
         final BitSet firstBits = bitSetOf(first.getLowBits(), first.getHighBits());
         final BitSet lastBits = bitSetOf(last.getLowBits(), last.getHighBits());

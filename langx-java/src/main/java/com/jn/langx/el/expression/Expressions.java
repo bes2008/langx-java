@@ -16,4 +16,7 @@ public class Expressions {
         }
         return (Boolean) resultExpression;
     }
+    private Expressions(){
+
+    }
 }

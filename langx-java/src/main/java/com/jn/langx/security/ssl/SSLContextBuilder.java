@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.*;
-import java.security.cert.CertificateException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -102,11 +101,11 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         return loadTrustMaterial(trustStore, trustStrategy);
     }
 
-    public SSLContextBuilder loadTrustMaterial(final File file, final char[] storePassword) throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+    public SSLContextBuilder loadTrustMaterial(final File file, final char[] storePassword) throws NoSuchAlgorithmException, KeyStoreException {
         return loadTrustMaterial(file, storePassword, null);
     }
 
-    public SSLContextBuilder loadTrustMaterial(final File file) throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+    public SSLContextBuilder loadTrustMaterial(final File file) throws NoSuchAlgorithmException, KeyStoreException {
         return loadTrustMaterial(file, null);
     }
 
@@ -123,7 +122,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         return loadTrustMaterial(trustStore, trustStrategy);
     }
 
-    public SSLContextBuilder loadTrustMaterial(final URL url, final char[] storePassword) throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+    public SSLContextBuilder loadTrustMaterial(final URL url, final char[] storePassword) throws NoSuchAlgorithmException, KeyStoreException, IOException {
         return loadTrustMaterial(url, storePassword, null);
     }
 
@@ -171,7 +170,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         return loadKeyMaterial(identityStore, keyPassword, aliasStrategy);
     }
 
-    public SSLContextBuilder loadKeyMaterial(final URL url, final char[] storePassword, final char[] keyPassword) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, CertificateException, IOException {
+    public SSLContextBuilder loadKeyMaterial(final URL url, final char[] storePassword, final char[] keyPassword) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, IOException {
         return loadKeyMaterial(url, storePassword, keyPassword, null);
     }
 

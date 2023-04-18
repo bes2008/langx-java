@@ -466,11 +466,11 @@ public final class Xid implements Comparable<Xid> {
         return (((b3) << 24) |
                 ((b2 & 0xff) << 16) |
                 ((b1 & 0xff) << 8) |
-                ((b0 & 0xff)));
+                b0 & 0xff);
     }
 
     private static short makeShort(final byte b1, final byte b0) {
-        return (short) (((b1 & 0xff) << 8) | ((b0 & 0xff)));
+        return (short) (((b1 & 0xff) << 8) | b0 & 0xff);
     }
 
     private static byte int3(final int x) {

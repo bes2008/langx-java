@@ -394,6 +394,7 @@ public class ForkJoinWorkerThread extends Thread {
      * called explicitly. It performs the main run loop to execute
      * {@link ForkJoinTask}s.
      */
+    @Override
     public void run() {
         Throwable exception = null;
         try {
