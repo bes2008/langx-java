@@ -639,4 +639,7 @@ public class Dates {
         return TimeZone.getDefault();
     }
 
+    private Dates(){
+
+    }
 }

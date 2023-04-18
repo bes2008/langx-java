@@ -3,6 +3,9 @@ package com.jn.langx.util;
 import java.math.BigInteger;
 
 public class DataSizes {
+    private DataSizes(){
+
+    }
 
     /**
      * The number of bytes in a kilobyte.

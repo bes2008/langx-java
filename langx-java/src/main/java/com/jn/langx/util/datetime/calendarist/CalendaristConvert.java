@@ -1,32 +1,28 @@
 package com.jn.langx.util.datetime.calendarist;
 
-
-import com.jn.langx.util.datetime.calendarist.CalendaristConstants;
-import com.jn.langx.util.datetime.calendarist.Lunars;
-import com.jn.langx.util.datetime.calendarist.CycleDate;
-import com.jn.langx.util.datetime.calendarist.LunarDate;
-import com.jn.langx.util.datetime.calendarist.SolarDate;
-
 import java.util.Calendar;
 
 /**
  * 转换工具类
- *
+ * <p>
  * 参考：
  * https://blog.csdn.net/FengRenYuanDeFZ/article/details/100162807
- *
+ * <p>
  * https://zhuanlan.zhihu.com/p/57261062
  * https://github.com/CutePandaSh/zhdate/blob/master/zhdate/__init__.py
- *
+ * <p>
  * https://github.com/isee15/Lunar-Solar-Calendar-Converter/blob/master/Java/cn/z/LunarSolarConverter.java
- *
+ * <p>
  * https://blog.csdn.net/qq784515681/article/details/80861706#commentsedit
- *
+ * <p>
  * https://www.cnblogs.com/doubleWin/p/10690127.html
  *
  * @since 5.2.0
  */
 public class CalendaristConvert {
+    private CalendaristConvert() {
+
+    }
 
     /**
      * 阳历时间戳转农历时间
@@ -35,17 +31,21 @@ public class CalendaristConvert {
      * @return {@link LunarDate}
      */
     public static LunarDate toLunar(long timeMillis) {
-        int year, month, day, leapMonth;
+        int year;
+        int month;
+        int day;
+        int leapMonth;
         boolean leap;
 
         // 求出和1900年1月31日相差的天数
-        int offset = (int)((timeMillis - CalendaristConstants.LUNAR_INIT_TIMESTAMP) / 86400000L);
+        int offset = (int) ((timeMillis - CalendaristConstants.LUNAR_INIT_TIMESTAMP) / 86400000L);
 
         // 用offset减去每农历年的天数
         // 计算当天是农历第几天
         // i最终结果是农历的年份
         // offset是当年的第几天
-        int iYear, daysOfYear = 0;
+        int iYear;
+        int daysOfYear = 0;
         for (iYear = CalendaristConstants.MIN_YEAR; iYear < CalendaristConstants.MAX_YEAR && offset > 0; iYear++) {
             daysOfYear = Lunars.daysOfYear(iYear);
             offset -= daysOfYear;
@@ -62,7 +62,8 @@ public class CalendaristConvert {
         leap = false;
 
         // 用当年的天数offset,逐个减去每月（农历）的天数，求出当天是本月的第几天
-        int iMonth, daysOfMonth = 0;
+        int iMonth;
+        int daysOfMonth = 0;
         for (iMonth = 1; iMonth < 13 && offset > 0; iMonth++) {
             // 闰月
             if (leapMonth > 0 && iMonth == (leapMonth + 1) && !leap) {
@@ -104,14 +105,14 @@ public class CalendaristConvert {
         calendar.setTimeInMillis(timeMillis);
 
         return new LunarDate(
-            year,
-            month,
-            day,
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
-            calendar.get(Calendar.SECOND),
-            calendar.get(Calendar.MILLISECOND),
-            leap);
+                year,
+                month,
+                day,
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND),
+                calendar.get(Calendar.MILLISECOND),
+                leap);
     }
 
     /**
@@ -163,9 +164,9 @@ public class CalendaristConvert {
         long dd = ddd - (mi * 306 + 5) / 10 + 1;
 
         return new SolarDate(
-            (int)year, (int)mm, (int)dd,
-            lunarDate.getHour(), lunarDate.getMinute(), lunarDate.getSecond(),
-            lunarDate.getMillis());
+                (int) year, (int) mm, (int) dd,
+                lunarDate.getHour(), lunarDate.getMinute(), lunarDate.getSecond(),
+                lunarDate.getMillis());
     }
 
     /**
@@ -199,7 +200,7 @@ public class CalendaristConvert {
         calendar.set(solarDate.getYear(), solarDate.getMonth() - 1, 1, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        int cD = (int)((calendar.getTimeInMillis() - startMillis) / 86400000L) + 25567 + 10 + solarDate.getDay() - 1;
+        int cD = (int) ((calendar.getTimeInMillis() - startMillis) / 86400000L) + 25567 + 10 + solarDate.getDay() - 1;
 
         return new CycleDate(lunarDate.getYear() - 1864, cM, cD, solarDate.getHour(), 0, 0, 0);
     }
@@ -233,7 +234,7 @@ public class CalendaristConvert {
         calendar.set(solarDate.getYear(), solarDate.getMonth() - 1, 1, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        int cD = (int)((solarDate.getTimestamp() - startMillis) / 86400000L) + 25567 + 10 + solarDate.getDay() - 1;
+        int cD = (int) ((solarDate.getTimestamp() - startMillis) / 86400000L) + 25567 + 10 + solarDate.getDay() - 1;
 
         // 阴历日期
         LunarDate lunarDate = toLunar(solarDate.getTimestamp());

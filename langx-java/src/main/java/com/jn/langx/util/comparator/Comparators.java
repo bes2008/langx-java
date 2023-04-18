@@ -14,7 +14,9 @@ public class Comparators {
     public static final Comparator<String> STRING_COMPARATOR_IGNORE_CASE = new StringComparator(true);
     public static final Comparator<Character> CHAR_COMPARATOR = new CharComparator();
 
+    private Comparators(){
 
+    }
     /**
      * Returns a new {@code Comparator} which is the result of chaining the
      * given {@code Comparator}s.  If the first {@code Comparator}

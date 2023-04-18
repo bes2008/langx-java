@@ -1,6 +1,5 @@
 package com.jn.langx.util.collection.iter;
 
-import com.jn.langx.util.Preconditions;
 
 import java.util.Enumeration;
 

@@ -5,6 +5,9 @@ package com.jn.langx.commandline;
  *
  */
 class CommandLineDebugs {
+    private CommandLineDebugs(){
+
+    }
     /**
      * System property to determine how to handle exceptions. When
      * set to "false" we rethrow the otherwise silently catched

@@ -30,6 +30,7 @@ public class FileEditor extends TextPropertyEditorSupport {
      * @return a URL object
      * @throws RuntimeException An IOException occured.
      */
+    @Override
     public Object getValue() {
         try {
             return new File(getAsText()).getCanonicalFile();

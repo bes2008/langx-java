@@ -101,6 +101,7 @@ public class HTMLEntityCodec extends AbstractIntegerCodec
      *   &#xhhhh;
      *   &name;
      */
+    @Override
     public Integer decodeCharacter( PushbackSequence<Integer> input ) {
         input.mark();
         Integer first = input.next();

@@ -100,7 +100,7 @@ public class Discovery {
         // Compile the pattern
         for (Entry<String, String> stringStringEntry : grokPatterns.entrySet()) {
             @SuppressWarnings("rawtypes")
-            Entry pairs = (Entry) stringStringEntry;
+            Entry pairs =  stringStringEntry;
             String key = pairs.getKey().toString();
 
             try {

@@ -1,6 +1,9 @@
 package com.jn.langx.util.timing.clock;
 
 public class Clocks {
+    private Clocks(){
+
+    }
     private static final Clock DEFAULT = new SystemClock();
 
     /**

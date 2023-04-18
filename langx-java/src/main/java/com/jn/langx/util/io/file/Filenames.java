@@ -169,5 +169,7 @@ public class Filenames {
     public static String getSuffixAsUpperCase(String filename) {
         return getSuffix(filename).toUpperCase();
     }
+    private Filenames(){
 
+    }
 }

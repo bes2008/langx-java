@@ -61,7 +61,7 @@ public abstract class AbstractCollectionDecorator<E> implements Collection<E>, S
 
     /** The collection being decorated */
 
-    transient private Collection<E> collection;
+    private transient Collection<E> collection;
 
     /**
      * Constructor only used in deserialization, do not use otherwise.

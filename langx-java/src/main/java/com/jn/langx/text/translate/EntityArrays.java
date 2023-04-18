@@ -12,7 +12,9 @@ import java.util.Map;
  * @since 4.8.0
  */
 class EntityArrays {
+    private EntityArrays(){
 
+    }
    /**
      * A Map&lt;CharSequence, CharSequence&gt; to to escape
      * <a href="https://secure.wikimedia.org/wikipedia/en/wiki/ISO/IEC_8859-1">ISO-8859-1</a>

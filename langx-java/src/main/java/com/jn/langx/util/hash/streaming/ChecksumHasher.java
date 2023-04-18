@@ -8,7 +8,7 @@ import java.util.zip.Checksum;
 public abstract class ChecksumHasher extends AbstractStreamingHasher {
     private Checksum checksum;
 
-    public ChecksumHasher(Checksum checksum) {
+    protected ChecksumHasher(Checksum checksum) {
         this.checksum = checksum;
     }
 

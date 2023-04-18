@@ -15,7 +15,9 @@ import java.util.Map;
  * @since 4.5.0
  */
 class Groups {
+    private Groups(){
 
+    }
     /**
      * index of group within patterns above where group name is captured
      */

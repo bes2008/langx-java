@@ -16,7 +16,7 @@ public abstract class ExceptionIgnoringAccessor implements ClassLoaderAccessor {
             } catch (ClassNotFoundException e) {
                 Logger log = Loggers.getLogger(ExceptionIgnoringAccessor.class);
                 if (log.isTraceEnabled()) {
-                    log.trace("Unable to load clazz named [" + fqcn + "] from class loader [" + cl + "]");
+                    log.trace("Unable to load clazz named [{}] from class loader [{}]", fqcn, cl);
                 }
             }
         }

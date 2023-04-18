@@ -28,6 +28,7 @@ public class FloatEditor extends PropertyEditorSupport {
     /**
      * Map the argument text into and Integer using Integer.valueOf.
      */
+    @Override
     public void setAsText(final String text) {
         Object newValue = Numbers.createFloat(text);
         setValue(newValue);

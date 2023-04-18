@@ -75,7 +75,7 @@ public class AutoLock implements Closeable, Serializable {
      * </pre>
      */
     public static class WithCondition extends AutoLock {
-        private final Condition _condition = newCondition();
+        private final transient Condition _condition = newCondition();
 
         @Override
         public AutoLock.WithCondition lock() {

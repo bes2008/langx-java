@@ -124,8 +124,9 @@ public interface CommandLineExecutor {
      *                          subprocess returned a exit value indicating a failure
      *                          {@link CommandLineExecutor#setExitValue(int)}.
      */
-    int execute(CommandLine command) throws ExecuteException, IOException;
-    int execute(boolean async, CommandLine command) throws ExecuteException, IOException;
+    int execute(CommandLine command) throws IOException;
+
+    int execute(boolean async, CommandLine command) throws IOException;
 
     /**
      * Methods for starting synchronous execution.
@@ -138,8 +139,9 @@ public interface CommandLineExecutor {
      *                          subprocess returned a exit value indicating a failure
      *                          {@link CommandLineExecutor#setExitValue(int)}.
      */
-    int execute( CommandLine command, Map<String, String> environment) throws ExecuteException, IOException;
-    int execute(boolean async, CommandLine command, Map<String, String> environment) throws ExecuteException, IOException;
+    int execute(CommandLine command, Map<String, String> environment) throws IOException;
+
+    int execute(boolean async, CommandLine command, Map<String, String> environment) throws IOException;
 
     /**
      * Methods for starting asynchronous execution. The child process inherits
@@ -150,8 +152,9 @@ public interface CommandLineExecutor {
      * @param handler capture process termination and exit code
      * @throws ExecuteException execution of subprocess failed
      */
-    int execute(CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException;
-    int execute(boolean async, CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException;
+    int execute(CommandLine command, ExecuteResultHandler handler) throws IOException;
+
+    int execute(boolean async, CommandLine command, ExecuteResultHandler handler) throws IOException;
 
     /**
      * Methods for starting asynchronous execution. The child process inherits
@@ -164,8 +167,9 @@ public interface CommandLineExecutor {
      * @param handler     capture process termination and exit code
      * @throws ExecuteException execution of subprocess failed
      */
-    int execute(CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws ExecuteException, IOException;
-    int execute(boolean async, CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws ExecuteException, IOException;
+    int execute(CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws IOException;
+
+    int execute(boolean async, CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws IOException;
 
     ExecuteStreamHandler getStreamHandler();
 

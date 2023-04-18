@@ -9,7 +9,7 @@ public class DebugHandler extends AbstractHandler {
     public void inbound(HandlerContext ctx)throws Throwable {
         Logger logger = Loggers.getLogger(getClass());
         if (logger.isDebugEnabled()) {
-            logger.debug("inbounding, context: {}", ctx.toString());
+            logger.debug("inbounding, context: {}", ctx);
         }
         super.inbound(ctx);
     }
@@ -18,7 +18,7 @@ public class DebugHandler extends AbstractHandler {
     public void outbound(HandlerContext ctx) throws Throwable {
         Logger logger = Loggers.getLogger(getClass());
         if (logger.isDebugEnabled()) {
-            logger.debug("outbounding, context: {}", ctx.toString());
+            logger.debug("outbounding, context: {}", ctx);
         }
         super.outbound(ctx);
     }

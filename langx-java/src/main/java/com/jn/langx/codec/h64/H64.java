@@ -18,7 +18,9 @@ import java.io.IOException;
  * @since 3.4.1
  */
 public class H64 {
+    private H64(){
 
+    }
     private static final char[] itoa64 = new char[]{
             '.', '/', '0', '1', '2', '3', '4', '5',
             '6', '7', '8', '9', 'A', 'B', 'C', 'D',

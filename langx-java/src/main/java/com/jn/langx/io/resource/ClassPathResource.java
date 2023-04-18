@@ -151,7 +151,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         if (url != null) {
             try {
                 file = new File(url.toURI());
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
 
             }
         }
@@ -168,7 +168,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
     public URL getRealResource() {
         try {
             return getUrl();
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             return null;
         }
     }
@@ -234,7 +234,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
             }
             try {
                 is = this.clazz.getResourceAsStream(path);
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 // ignore
             }
             if (is == null) {

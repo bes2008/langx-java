@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class FIFOCache<K, V> extends AbstractCache<K, V> {
     public FIFOCache() {
-        super(Integer.MAX_VALUE, 60 * 1000);
+        super(Integer.MAX_VALUE, 60L * 1000);
     }
 
     public FIFOCache(int maxCapacity, long evictExpiredInterval) {

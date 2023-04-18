@@ -4,6 +4,9 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Strings;
 
 public class Consoles {
+    private Consoles(){
+
+    }
     public static void format(String template, Object... args) {
         String message = StringTemplates.formatWithPlaceholder(template, args);
         System.out.println(message);

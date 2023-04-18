@@ -115,5 +115,7 @@ public class FileTypes {
         return type;
     }
 
+    private FileTypes(){
 
+    }
 }

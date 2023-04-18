@@ -7,6 +7,7 @@ package com.jn.langx.util.datetime;
  */
 public class DateTimePatterns {
 
+
     // ==================================yyyy-MM-dd相关Pattern==================================
 
     /**
@@ -152,49 +153,49 @@ public class DateTimePatterns {
     /**
      * HH:mm:ss  <pre>17:26:30</pre>
      */
-    public static String HH_MM_SS = "HH:mm:ss";
+    public static final String HH_MM_SS = "HH:mm:ss";
 
     /**
      * H:m:s  <pre>17:6:30</pre>
      */
-    public static String H_M_S = "H:m:s";
+    public static final String H_M_S = "H:m:s";
 
     /**
      * HHmmss  <pre>170630</pre>
      */
-    public static String HHMMSS = "HHmmss";
+    public static final String HHMMSS = "HHmmss";
 
     /**
      * HH时mm分ss秒  <pre>17时06分30秒</pre>
      */
-    public static String HH_MM_SS_CN = "HH时mm分ss秒";
+    public static final String HH_MM_SS_CN = "HH时mm分ss秒";
 
     /**
      * HH:mm  <pre>17:06</pre>
      */
-    public static String HH_MM = "HH:mm";
+    public static final String HH_MM = "HH:mm";
 
     /**
      * H:m  <pre>17:6</pre>
      */
-    public static String H_M = "H:m";
+    public static final String H_M = "H:m";
 
     /**
      * HH时mm分 <pre>17时06分</pre>
      */
-    public static String HH_MM_CN = "HH时mm分";
+    public static final String HH_MM_CN = "HH时mm分";
 
     /**
      * hh:mm a <pre>05:06 下午 如果需要 显示PM 需要设置 Locale.ENGLISH</pre>
      */
-    public static String HH_MM_A = "hh:mm a";
+    public static final String HH_MM_A = "hh:mm a";
 
     // ==================================HH:mm:ss.SSS 相关Pattern==================================
 
     /**
      * HH:mm:ss.SSS  <pre>17:26:30.272</pre>
      */
-    public static String HH_MM_SS_SSS = "HH:mm:ss.SSS";
+    public static final String HH_MM_SS_SSS = "HH:mm:ss.SSS";
 
 
     // ==================================HH:mm:ss.SSSSSS 相关Pattern==================================
@@ -395,5 +396,5 @@ public class DateTimePatterns {
      * </pre>
      */
     public static final String EEE_MMM_DD_HH_MM_SS_ZZZ_YYYY = "EEE MMM dd HH:mm:ss zzz yyyy";
-
+    private DateTimePatterns(){}
 }

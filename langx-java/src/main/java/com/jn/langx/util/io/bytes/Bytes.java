@@ -337,7 +337,7 @@ public class Bytes {
     public static long bigEndianToLong(byte[] bs, int off) {
         int hi = bigEndianToInt(bs, off);
         int lo = bigEndianToInt(bs, off + 4);
-        return ((long) (hi & 0xffffffffL) << 32) | (long) (lo & 0xffffffffL);
+        return ( (hi & 0xffffffffL) << 32) |(lo & 0xffffffffL);
     }
 
     public static void bigEndianToLong(byte[] bs, int off, long[] ns) {
@@ -474,7 +474,7 @@ public class Bytes {
     public static long littleEndianToLong(byte[] bs, int off) {
         int lo = littleEndianToInt(bs, off);
         int hi = littleEndianToInt(bs, off + 4);
-        return ((long) (hi & 0xffffffffL) << 32) | (long) (lo & 0xffffffffL);
+        return ( (hi & 0xffffffffL) << 32) |  (lo & 0xffffffffL);
     }
 
     public static void littleEndianToLong(byte[] bs, int off, long[] ns) {

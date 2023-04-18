@@ -561,6 +561,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
      * @param o element to be removed from this queue, if present
      * @return {@code true} if this queue changed as a result of the call
      */
+    @Override
     public boolean remove(Object o) {
         if (o == null) return false;
         fullyLock();
@@ -588,6 +589,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
      * @param o object to be checked for containment in this queue
      * @return {@code true} if this queue contains the specified element
      */
+    @Override
     public boolean contains(Object o) {
         if (o == null){
             return false;
@@ -613,6 +615,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
      *
      * @return an array containing all of the elements in this queue
      */
+    @Override
     public Object[] toArray() {
         fullyLock();
         try {
@@ -663,7 +666,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
      *                              this queue
      * @throws NullPointerException if the specified array is null
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public <T> T[] toArray(T[] a) {
         fullyLock();
         try {
@@ -684,6 +687,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
         }
     }
 
+    @Override
     public String toString() {
         fullyLock();
         try {
@@ -711,6 +715,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
      * Atomically removes all of the elements from this queue.
      * The queue will be empty after this call returns.
      */
+    @Override
     public void clear() {
         fullyLock();
         try {
@@ -868,6 +873,7 @@ public class DistinctLinkedBlockingQueue<E> extends AbstractQueue<E> implements 
             }
         }
 
+        @Override
         public void remove() {
             if (lastRet == null) {
                 throw new IllegalStateException();

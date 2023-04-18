@@ -13,11 +13,14 @@ import java.util.BitSet;
  * @see <a href="http://www.ietf.org/rfc/rfc3986.txt">RFC-3986</a>
  */
 public class HttpUrlEncoders {
+    private HttpUrlEncoders() {
+
+    }
 
     /**
      * gen-delims = ":" / "/" / "?" / "#" / "[" / "]" / "@"
      */
-    public final static BitSet GEN_DELIMS = new BitSet();
+    public  static final  BitSet GEN_DELIMS = new BitSet();
 
     static {
         GEN_DELIMS.set(':');
@@ -32,7 +35,7 @@ public class HttpUrlEncoders {
     /**
      * sub-delims = "!" / "$" / "&#x26;" / "'" / "(" / ")" / "*" / "+" / "," / ";" / "="
      */
-    public final static BitSet SUB_DELIMS = new BitSet();
+    public  static final  BitSet SUB_DELIMS = new BitSet();
 
     static {
         SUB_DELIMS.set('!');
@@ -51,7 +54,7 @@ public class HttpUrlEncoders {
     /**
      * reserved = gen-delims | sub-delims
      */
-    public final static BitSet RESERVED = new BitSet();
+    public static final  BitSet RESERVED = new BitSet();
 
     static {
         RESERVED.or(GEN_DELIMS);
@@ -62,7 +65,7 @@ public class HttpUrlEncoders {
      * lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" |
      * "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
      */
-    public final static BitSet LOW_ALPHA = new BitSet();
+    public static final  BitSet LOW_ALPHA = new BitSet();
 
     static {
         LOW_ALPHA.set('a');
@@ -97,7 +100,7 @@ public class HttpUrlEncoders {
      * upalpha = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" |
      * "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
      */
-    public final static BitSet UP_ALPHA = new BitSet();
+    public static final  BitSet UP_ALPHA = new BitSet();
 
     static {
         UP_ALPHA.set('A');
@@ -131,7 +134,7 @@ public class HttpUrlEncoders {
     /**
      * alpha = lowalpha | upalpha
      */
-    public final static BitSet ALPHA = new BitSet();
+    public static final  BitSet ALPHA = new BitSet();
 
     static {
         ALPHA.or(LOW_ALPHA);
@@ -141,7 +144,7 @@ public class HttpUrlEncoders {
     /**
      * digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
      */
-    public final static BitSet DIGIT = new BitSet();
+    public static final  BitSet DIGIT = new BitSet();
 
     static {
         DIGIT.set('0');
@@ -159,7 +162,7 @@ public class HttpUrlEncoders {
     /**
      * alphanum = alpha | digit
      */
-    public final static BitSet ALPHANUM = new BitSet();
+    public static final  BitSet ALPHANUM = new BitSet();
 
     static {
         ALPHANUM.or(ALPHA);

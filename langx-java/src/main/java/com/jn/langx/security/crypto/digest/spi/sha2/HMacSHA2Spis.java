@@ -4,6 +4,9 @@ import com.jn.langx.security.crypto.key.spi.BaseKeyGeneratorSpi;
 import com.jn.langx.security.crypto.mac.HmacCoreSpi;
 
 public class HMacSHA2Spis {
+    private HMacSHA2Spis(){
+
+    }
     public static class HMacSHA224Spi extends HmacCoreSpi {
         public HMacSHA224Spi() {
             super("SHA-224");

@@ -284,7 +284,6 @@ class DurationFormats {
         // Used to optimise for differences under 28 days and
         // called formatDuration(millis, format); however this did not work
         // over leap years.
-        // TODO: Compare performance to see if anything was lost by
         // losing this optimisation.
 
         final Token[] tokens = lexx(format);
@@ -508,7 +507,6 @@ class DurationFormats {
             }
             String value = null;
             switch (ch) {
-            // TODO: Need to handle escaping of '
             case '\'':
                 if (inLiteral) {
                     buffer = null;

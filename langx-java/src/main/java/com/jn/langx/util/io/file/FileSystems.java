@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileSystems {
+    private FileSystems(){
 
+    }
     /**
      * Checks if the request number of bytes of free disk space are available under the given
      * path.
@@ -29,7 +31,7 @@ public class FileSystems {
             // One alternative is to launch and parse a DIR command and look at the reported free space.
             // This is a temporary fix to get the CI tests going which relies on SUBST'ed drives to manage long paths.
             Logger logger = Loggers.getLogger(FileSystems.class);
-            logger.warn("Cannot retrieve free space on " + path.toString() + ". This is probably a SUBST'ed drive.");
+            logger.warn("Cannot retrieve free space on {}. This is probably a SUBST'ed drive.",path);
             return true;
         }
 
@@ -64,7 +66,7 @@ public class FileSystems {
         return !isSymlink(file);
     }
 
-    public static boolean isSymlink(final File file) throws IOException {
+    public static boolean isSymlink(final File file) {
         Preconditions.checkNotNull(file);
         if (Platform.JAVA_VERSION_INT < 7) {
             return false;

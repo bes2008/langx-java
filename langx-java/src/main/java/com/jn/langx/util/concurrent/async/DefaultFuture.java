@@ -234,7 +234,7 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
         DefaultFuture<V> future = new DefaultFuture<V>(runnable);
         future.setExpectedResult(result);
         future.setCancelable(cancelable);
-        Future<V> f = executorService.submit((Runnable) future, result);
+        Future<V> f = executorService.submit(future, result);
         future.with(f);
         return future;
     }

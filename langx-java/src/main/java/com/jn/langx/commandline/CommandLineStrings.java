@@ -15,7 +15,9 @@ import java.util.Map;
  * warning.
  */
 class CommandLineStrings {
+    private CommandLineStrings(){
 
+    }
 
     /**
      * Perform a series of substitutions.

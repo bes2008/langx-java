@@ -118,4 +118,8 @@ public class GZips {
         }
     }
 
+    private GZips(){
+
+    }
+
 }

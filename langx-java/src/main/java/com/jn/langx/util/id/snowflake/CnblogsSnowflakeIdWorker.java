@@ -3,7 +3,6 @@ package com.jn.langx.util.id.snowflake;
 import com.jn.langx.cache.Cache;
 import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.cache.FIFOCache;
-import com.jn.langx.util.id.snowflake.SnowflakeIdWorker;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;

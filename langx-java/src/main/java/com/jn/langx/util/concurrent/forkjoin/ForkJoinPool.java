@@ -1621,6 +1621,7 @@ public ForkJoinPool(int parallelism,
      * @throws RejectedExecutionException if the task cannot be
      *         scheduled for execution
      */
+    @Override
     public <T> ForkJoinTask<T> submit(Callable<T> task) {
         if (task == null)
             throw new NullPointerException();
@@ -1634,6 +1635,7 @@ public ForkJoinPool(int parallelism,
      * @throws RejectedExecutionException if the task cannot be
      *         scheduled for execution
      */
+    @Override
     public <T> ForkJoinTask<T> submit(Runnable task, T result) {
         if (task == null)
             throw new NullPointerException();
@@ -1647,6 +1649,7 @@ public ForkJoinPool(int parallelism,
      * @throws RejectedExecutionException if the task cannot be
      *         scheduled for execution
      */
+    @Override
     public ForkJoinTask<?> submit(Runnable task) {
         if (task == null)
             throw new NullPointerException();
@@ -1663,6 +1666,7 @@ public ForkJoinPool(int parallelism,
      * @throws NullPointerException       {@inheritDoc}
      * @throws RejectedExecutionException {@inheritDoc}
      */
+    @Override
     public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks) {
         ArrayList<ForkJoinTask<T>> forkJoinTasks =
                 new ArrayList<ForkJoinTask<T>>(tasks.size());
@@ -2151,11 +2155,11 @@ public ForkJoinPool(int parallelism,
     // AbstractExecutorService overrides.  These rely on undocumented
     // fact that ForkJoinTask.adapt returns ForkJoinTasks that also
     // implement RunnableFuture.
-
+    @Override
     protected <T> RunnableFuture<T> newTaskFor(Runnable runnable, T value) {
         return (RunnableFuture<T>) ForkJoinTask.adapt(runnable, value);
     }
-
+    @Override
     protected <T> RunnableFuture<T> newTaskFor(Callable<T> callable) {
         return (RunnableFuture<T>) ForkJoinTask.adapt(callable);
     }

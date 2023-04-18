@@ -214,6 +214,7 @@ public class FileDigestGenerator {
         private long nextMapStartPosition = 0L;
         private long remainingLength = 0L;
 
+        @Override
         public void setFile(File file) {
             super.setFile(file);
 
@@ -259,7 +260,9 @@ public class FileDigestGenerator {
 
     static class FileReaderFactory {
         private static final long SIZE_10M = 10 * 1024 * 1024;
+        private FileReaderFactory(){
 
+        }
         public static FileReader getFileReader(String filePath) {
             File file = new File(filePath);
 

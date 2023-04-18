@@ -228,11 +228,13 @@ public final class CidrAddress implements Serializable, Comparable<CidrAddress> 
             if (cachedBytes.length == 4) {
                 // calculate
                 if (netmaskBits == 0) {
-                    return this.broadcast = Nets.INET4_BROADCAST;
+                    this.broadcast = Nets.INET4_BROADCAST;
+                    return this.broadcast;
                 } else {
                     final byte[] bytes = maskBits1(cachedBytes.clone(), netmaskBits);
                     try {
-                        return this.broadcast = (Inet4Address) InetAddress.getByAddress(Nets.toOptimalString(bytes), bytes);
+                        this.broadcast = (Inet4Address) InetAddress.getByAddress(Nets.toOptimalString(bytes), bytes);
+                        return this.broadcast;
                     } catch (UnknownHostException e) {
                         throw Throwables.wrapAsRuntimeException(e);
                     }
@@ -325,9 +327,11 @@ public final class CidrAddress implements Serializable, Comparable<CidrAddress> 
         if (toString == null) {
             final int scopeId = getScopeId();
             if (scopeId == 0) {
-                return this.toString = String.format("%s/%d", Nets.toOptimalString(cachedBytes), Integer.valueOf(netmaskBits));
+                this.toString = String.format("%s/%d", Nets.toOptimalString(cachedBytes), Integer.valueOf(netmaskBits));
+                return this.toString;
             } else {
-                return this.toString = String.format("%s%%%d/%d", Nets.toOptimalString(cachedBytes), Integer.valueOf(scopeId), Integer.valueOf(netmaskBits));
+                this.toString = String.format("%s%%%d/%d", Nets.toOptimalString(cachedBytes), Integer.valueOf(scopeId), Integer.valueOf(netmaskBits));
+                return this.toString;
             }
         }
         return toString;

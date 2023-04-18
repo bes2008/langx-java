@@ -12,6 +12,7 @@ public class Fnv1_32Hasher extends AbstractStreamingHasher {
 
     private int hash = INITIAL_VALUE;
 
+    @Override
     public void update(byte b) {
         hash *= MULTIPLIER;
         hash ^= 0xff & b;

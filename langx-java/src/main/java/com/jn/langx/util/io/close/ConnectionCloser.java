@@ -2,7 +2,6 @@ package com.jn.langx.util.io.close;
 
 import com.jn.langx.util.collection.Collects;
 
-import java.io.Closeable;
 import java.sql.Connection;
 import java.util.List;
 

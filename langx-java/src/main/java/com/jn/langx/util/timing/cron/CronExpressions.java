@@ -3,6 +3,7 @@ package com.jn.langx.util.timing.cron;
 import java.util.Date;
 
 public class CronExpressions {
+    private CronExpressions(){}
     public static Date nextTime(String cron, Date time) {
         return nextTime(cron, CronExpressionType.QUARTZ, time);
     }

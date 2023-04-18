@@ -675,7 +675,7 @@ public abstract class CharBuffer<BF extends CharBuffer>
         int h = 1;
         int p = (int)position();
         for (int i =(int) limit() - 1; i >= p; i--)
-            h = 31 * h + (int) get(i);
+            h = 31 * h + get(i);
 
         return h;
     }

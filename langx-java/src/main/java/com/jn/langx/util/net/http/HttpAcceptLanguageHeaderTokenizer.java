@@ -53,7 +53,7 @@ public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
             return ((HttpAcceptLanguageHeaderTokenizer.AcceptLanguage) this.locales.remove(0)).locale;
         }
     }
-
+    @Override
     public final void remove() {
         throw new UnsupportedOperationException(this.getClass().getName() + " does not support remove()");
     }

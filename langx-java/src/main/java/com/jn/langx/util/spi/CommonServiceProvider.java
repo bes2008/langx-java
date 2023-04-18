@@ -33,7 +33,7 @@ public class CommonServiceProvider<T> implements ServiceProvider<T> {
                 if (predicate.test(t)) {
                     ret.add(t);
                 }
-            }catch (Throwable e){
+            }catch (Exception e){
                 logger.error(e.getMessage(),e);
             }
 

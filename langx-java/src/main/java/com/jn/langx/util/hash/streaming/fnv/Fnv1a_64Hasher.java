@@ -26,8 +26,8 @@ import com.jn.langx.util.hash.streaming.AbstractStreamingHasher;
  * @since 4.4.0
  */
 public class Fnv1a_64Hasher extends AbstractStreamingHasher {
-    private final static long INITIAL_VALUE = 0xcbf29ce484222325L;
-    private final static long MULTIPLIER = 0x100000001b3L;
+    private static final long INITIAL_VALUE = 0xcbf29ce484222325L;
+    private static final long MULTIPLIER = 0x100000001b3L;
 
     private long hash = INITIAL_VALUE;
 

@@ -6,7 +6,9 @@ import com.jn.langx.util.comparator.ComparableComparator;
 import java.util.Comparator;
 
 public class BinarySearch {
+    private BinarySearch(){
 
+    }
 
     public static <T> int binarySearch(T[] a, int fromIndex, int toIndex,
                                        T key, Comparator<? super T> c) {

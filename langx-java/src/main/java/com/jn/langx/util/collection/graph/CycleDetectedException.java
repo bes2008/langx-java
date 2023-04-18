@@ -20,6 +20,7 @@ public class CycleDetectedException extends RuntimeException {
         return Strings.join("-->", cycle);
     }
 
+    @Override
     public String getMessage() {
         return super.getMessage() + " " + cycleToString();
     }

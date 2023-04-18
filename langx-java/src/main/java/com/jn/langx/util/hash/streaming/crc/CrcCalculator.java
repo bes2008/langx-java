@@ -63,7 +63,7 @@ class CrcCalculator {
     }
 
     private long createTableEntry(int index) {
-        long r = (long) index;
+        long r = index;
 
         if (metadata.isRefIn()) {
             r = CrcCalculator.reverseBits(r, hashSize);

@@ -305,4 +305,7 @@ public abstract class GenericTypeResolver {
         }
     }
 
+    private GenericTypeResolver(){
+
+    }
 }

@@ -188,6 +188,8 @@ class Hexs {
         }
     }
 
+    protected Hexs(){
 
+    }
 
 }

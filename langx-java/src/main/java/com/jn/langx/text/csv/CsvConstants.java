@@ -4,7 +4,9 @@ package com.jn.langx.text.csv;
  * Constants for this package.
  */
 final class CsvConstants {
+    private CsvConstants(){
 
+    }
     static final char BACKSLASH = '\\';
 
     static final char BACKSPACE = '\b';

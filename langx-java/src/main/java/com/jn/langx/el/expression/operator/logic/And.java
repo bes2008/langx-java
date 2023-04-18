@@ -4,7 +4,6 @@ package com.jn.langx.el.expression.operator.logic;
 import com.jn.langx.el.expression.Expression;
 import com.jn.langx.el.expression.Expressions;
 import com.jn.langx.el.expression.operator.AbstractBinaryOperator;
-import com.jn.langx.el.expression.value.BooleanExpression;
 import com.jn.langx.el.expression.value.BooleanResultExpression;
 
 public class And<E extends Expression<BooleanResultExpression>, F extends Expression<BooleanResultExpression>> extends AbstractBinaryOperator<E, F, Boolean> implements BinaryLogicOperator<E, F> {

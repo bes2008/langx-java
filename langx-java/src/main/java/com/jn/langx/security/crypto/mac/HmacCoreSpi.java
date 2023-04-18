@@ -96,6 +96,7 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
         this.messageDigest.update(bytes, off, len);
     }
 
+    @Override
     protected void engineUpdate(ByteBuffer buffer) {
         if (this.first) {
             this.messageDigest.update(this.inputPad);
@@ -130,7 +131,7 @@ public class HmacCoreSpi extends MacSpi implements Cloneable {
         }
 
     }
-
+    @Override
     public Object clone() throws CloneNotSupportedException {
         HmacCoreSpi var1 = (HmacCoreSpi) super.clone();
         var1.messageDigest = (MessageDigest) this.messageDigest.clone();

@@ -7,7 +7,7 @@ import com.jn.langx.util.retry.RetryConfig;
  * 指数级
  */
 public class ExponentialBackoffPolicy extends BackoffPolicy {
-    public static ExponentialBackoffPolicy INSTANCE = new ExponentialBackoffPolicy();
+    public static final ExponentialBackoffPolicy INSTANCE = new ExponentialBackoffPolicy();
 
     @Override
     public long getBackoffTimeInternal(RetryConfig config, int attempts) {

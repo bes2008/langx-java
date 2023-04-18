@@ -26,7 +26,7 @@ public class Dates8 {
     private static final char[] JAVA8_TIME_FORMAT_UNIQUE_FLAGS = {'L', 'Q', 'q', 'e', 'c', 'A', 'n', 'N', 'V', 'O', 'x'};
 
     private static final LocalTime ZERO_TIME = LocalTime.of(0, 0, 0, 0);
-    public static final Map<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>> temporalQueryMap = new NonAbsentHashMap<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>(new Supplier<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>() {
+    private static final Map<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>> temporalQueryMap = new NonAbsentHashMap<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>(new Supplier<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>() {
         @Override
         public Holder<TemporalQuery<?>> get(Class<? extends TemporalAccessor> tClass) {
             Holder<TemporalQuery<?>> holder = new Holder<TemporalQuery<?>>();
@@ -139,5 +139,9 @@ public class Dates8 {
 
     static {
         LOCAL_ZONE_OFFSET = _getLocalZoneOffset();
+    }
+
+    private Dates8(){
+
     }
 }

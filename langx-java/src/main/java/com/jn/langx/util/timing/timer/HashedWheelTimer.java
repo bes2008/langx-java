@@ -589,7 +589,7 @@ public class HashedWheelTimer extends AbstractTimer {
         }
     }
 
-
+    @Override
     public boolean isDistinctSupported() {
         return timeoutFactory instanceof DistinctHashedWheelTimeoutFactory;
     }

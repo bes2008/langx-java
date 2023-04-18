@@ -4,7 +4,9 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.io.file.Filenames;
 
 public class Classpaths {
+    private Classpaths(){
 
+    }
     public static String classNameToPath(String className) {
         Preconditions.checkNotNull(className, "className is null or empty");
         if (className.endsWith(".class")) {

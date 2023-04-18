@@ -1917,4 +1917,8 @@ public class Files {
     public static long getLastModified(File file){
         return file.lastModified();
     }
+
+    private Files(){
+
+    }
 }

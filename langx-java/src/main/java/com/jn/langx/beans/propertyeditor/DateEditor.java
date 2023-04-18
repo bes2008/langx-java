@@ -83,6 +83,7 @@ public class DateEditor extends PropertyEditorSupport {
      *
      * @param value a java.util.Date
      */
+    @Override
     public void setValue(Object value) {
         if (value instanceof Date || value == null) {
             this.text = null;
@@ -98,6 +99,7 @@ public class DateEditor extends PropertyEditorSupport {
      *
      * @param text the string date
      */
+    @Override
     public void setAsText(String text) {
         ParseException pe = null;
 
@@ -129,6 +131,7 @@ public class DateEditor extends PropertyEditorSupport {
      *
      * @return date as string
      */
+    @Override
     public String getAsText() {
         if (text == null) {
             DateFormat df = formats[formats.length - 1];

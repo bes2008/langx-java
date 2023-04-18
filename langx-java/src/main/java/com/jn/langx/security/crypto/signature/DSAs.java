@@ -52,7 +52,7 @@ public class DSAs extends Signatures {
     }
 
     public static boolean verify(@Nullable String signatureInstanceAlgorithm, @Nullable String provider, @NonNull byte[] publicKey, byte[] data, byte[] signature) {
-        PublicKey pubKey = PKIs.createPublicKey(DSA, null, new X509EncodedKeySpec(publicKey));
+        PublicKey pubKey = PKIs.createPublicKey(DSA, provider, new X509EncodedKeySpec(publicKey));
         return verify(signatureInstanceAlgorithm, (String) null, pubKey, data, signature);
     }
 

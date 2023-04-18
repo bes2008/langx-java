@@ -77,7 +77,7 @@ public class HashCodeBuilder implements Builder<Integer> {
 
         for (int i = 0; i < array.length; ++i) {
             if (deep && array[i] instanceof Object[]) {
-                hashcode ^= generate((Object[]) ((Object[]) array[i]), true);
+                hashcode ^= generate(((Object[]) array[i]), true);
             } else {
                 hashcode ^= array[i].hashCode();
             }

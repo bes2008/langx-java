@@ -65,7 +65,7 @@ public class HeapCharBuffer extends CharBuffer<HeapCharBuffer> {
         return hb[(int) ix(i)];
     }
 
-
+    @Override
     public HeapCharBuffer get(char[] dst, int offset, int length) {
         checkBounds(offset, length, dst.length);
         if (length > remaining())
@@ -99,7 +99,7 @@ public class HeapCharBuffer extends CharBuffer<HeapCharBuffer> {
 
 
     }
-
+    @Override
     public CharBuffer put(char[] src, int offset, int length) {
 
         checkBounds(offset, length, src.length);
@@ -111,7 +111,7 @@ public class HeapCharBuffer extends CharBuffer<HeapCharBuffer> {
 
 
     }
-
+    @Override
     public HeapCharBuffer put(CharBuffer src) {
 
         if (src instanceof HeapCharBuffer) {

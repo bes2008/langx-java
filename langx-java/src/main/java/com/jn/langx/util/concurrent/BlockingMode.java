@@ -115,17 +115,9 @@ public class BlockingMode implements Serializable {
         BlockingMode mode = ABORT;
         switch (type) {
             case RUN_TYPE:
-                mode = RUN;
-                break;
             case WAIT_TYPE:
-                mode = RUN;
-                break;
             case DISCARD_TYPE:
-                mode = RUN;
-                break;
             case DISCARD_OLDEST_TYPE:
-                mode = RUN;
-                break;
             case ABORT_TYPE:
                 mode = RUN;
                 break;

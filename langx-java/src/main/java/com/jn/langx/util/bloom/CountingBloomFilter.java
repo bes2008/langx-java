@@ -31,7 +31,7 @@ public final class CountingBloomFilter extends Filter {
     /**
      * We are using 4bit buckets, so each bucket can count to 15
      */
-    private final static long BUCKET_MAX_VALUE = 15;
+    private static final long BUCKET_MAX_VALUE = 15;
 
     /**
      * Default constructor - use with readFields

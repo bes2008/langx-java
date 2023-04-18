@@ -97,12 +97,12 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
     }
 
     @Override
-    public Method getReadMethod() {
+    public synchronized Method getReadMethod() {
         return this.readMethod;
     }
 
     @Override
-    public Method getWriteMethod() {
+    public synchronized Method getWriteMethod() {
         return this.writeMethod;
     }
 
@@ -122,7 +122,7 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
     }
 
     @Override
-    public Class<?> getPropertyType() {
+    public synchronized Class<?> getPropertyType() {
         return this.propertyType;
     }
 

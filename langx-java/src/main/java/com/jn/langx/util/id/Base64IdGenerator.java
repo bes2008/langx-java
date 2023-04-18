@@ -4,7 +4,6 @@ import com.jn.langx.IdGenerator;
 import com.jn.langx.codec.base64.Base64;
 
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -27,25 +26,6 @@ public class Base64IdGenerator implements IdGenerator {
         return getBase64UUID(INSTANCE);
     }
 
-    /**
-     * Returns a Base64 encoded of a Version 4.0 compatible UUID
-     * as defined here: http://www.ietf.org/rfc/rfc4122.txt
-     */
-    public String getBase64UUIDSecureString() {
-        byte[] uuidBytes = null;
-        byte[] encodedBytes = null;
-        try {
-            uuidBytes = getUUIDBytes(INSTANCE);
-            return Base64.encodeBase64URLSafeString(uuidBytes);
-        } finally {
-            if (uuidBytes != null) {
-                Arrays.fill(uuidBytes, (byte) 0);
-            }
-            if (encodedBytes != null) {
-                Arrays.fill(encodedBytes, (byte) 0);
-            }
-        }
-    }
 
     /**
      * Returns a Base64 encoded version of a Version 4.0 compatible UUID

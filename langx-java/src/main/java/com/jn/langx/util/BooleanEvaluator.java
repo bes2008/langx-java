@@ -52,8 +52,8 @@ public class BooleanEvaluator {
     }
 
     public void addFalseFactors(List<Object> falseFactors) {
-        if (Emptys.isNotEmpty(trueFactors)) {
-            Collects.forEach(trueFactors, new Consumer<Object>() {
+        if (Emptys.isNotEmpty(falseFactors)) {
+            Collects.forEach(falseFactors, new Consumer<Object>() {
                 @Override
                 public void accept(Object object) {
                     addFalseFactor(object);

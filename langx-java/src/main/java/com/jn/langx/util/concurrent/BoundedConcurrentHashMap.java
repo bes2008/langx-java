@@ -277,7 +277,7 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
 
     public interface EvictionPolicy<K, V> {
 
-        public final static int MAX_BATCH_SIZE = 64;
+        public static final int MAX_BATCH_SIZE = 64;
 
         HashEntry<K, V> createNewEntry(K key, int hash, HashEntry<K, V> next, V value);
 
@@ -1188,9 +1188,9 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
 
         final int evictCap;
 
-        transient final EvictionPolicy<K, V> eviction;
+        final transient EvictionPolicy<K, V> eviction;
 
-        transient final EvictionListener<K, V> evictionListener;
+        final transient EvictionListener<K, V> evictionListener;
 
         Segment(int cap, int evictCap, float lf, Eviction es, EvictionListener<K, V> listener) {
             loadFactor = lf;

@@ -68,14 +68,14 @@ public final class DirectoryLock {
      */
     public void release() {
         if (logger.isInfoEnabled()) {
-            logger.info("Releasing lock on " + Files.getCanonicalPath(lockFile()));
+            logger.info("Releasing lock on {}", Files.getCanonicalPath(lockFile()));
         }
         try {
             lock.release();
         } catch (ClosedChannelException e) {
             // ignore it
         } catch (IOException e) {
-            logger.error("Problem while releasing the lock on " + lockFile(), e);
+            logger.error("Problem while releasing the lock on {}" , lockFile(), e);
         }
         try {
             channel.close();

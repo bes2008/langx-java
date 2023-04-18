@@ -24,6 +24,9 @@ import java.util.Collection;
 import java.util.Map;
 
 public class HttpQueryStrings {
+    private HttpQueryStrings(){
+
+    }
     public static StringMap getQueryStringStringMap(String url) {
         if (url == null) {
             return StringMap.EMPTY;

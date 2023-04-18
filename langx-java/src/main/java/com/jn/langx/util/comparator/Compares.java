@@ -5,6 +5,9 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.reflect.Reflects;
 
 public class Compares {
+    private Compares(){
+
+    }
     /**
      * grater than
      */

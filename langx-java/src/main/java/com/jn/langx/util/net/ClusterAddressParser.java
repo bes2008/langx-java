@@ -148,7 +148,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                             portString = Strings.substring(segment, portSeparator + 1);
                             try {
                                 port = Strings.isEmpty(portString) ? 0 : Numbers.createInteger(portString);
-                            } catch (Throwable e) {
+                            } catch (Exception e) {
                                 logger.warn("invalid ip address: {}", segment);
                                 continue;
                             }

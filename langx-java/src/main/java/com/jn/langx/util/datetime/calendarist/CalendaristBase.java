@@ -5,41 +5,41 @@ package com.jn.langx.util.datetime.calendarist;
  */
 public abstract class CalendaristBase {
 
-    public final static int YEAR = 1;
+    public static final int YEAR = 1;
 
-    public final static int MONTH = 2;
+    public static final int MONTH = 2;
 
-    public final static int WEEK_OF_YEAR = 3;
+    public static final int WEEK_OF_YEAR = 3;
 
-    public final static int WEEK_OF_MONTH = 4;
+    public static final int WEEK_OF_MONTH = 4;
 
-    public final static int DATE = 5;
+    public static final int DATE = 5;
 
-    public final static int DAY_OF_MONTH = 5;
+    public static final int DAY_OF_MONTH = 5;
 
-    public final static int DAY_OF_YEAR = 6;
+    public static final int DAY_OF_YEAR = 6;
 
-    public final static int DAY_OF_WEEK = 7;
+    public static final int DAY_OF_WEEK = 7;
 
-    public final static int DAY_OF_WEEK_IN_MONTH = 8;
+    public static final int DAY_OF_WEEK_IN_MONTH = 8;
 
-    public final static int AM_PM = 9;
+    public static final int AM_PM = 9;
 
-    public final static int HOUR = 10;
+    public static final int HOUR = 10;
 
-    public final static int HOUR_OF_DAY = 11;
+    public static final int HOUR_OF_DAY = 11;
 
-    public final static int MINUTE = 12;
+    public static final int MINUTE = 12;
 
-    public final static int SECOND = 13;
+    public static final int SECOND = 13;
 
-    public final static int MILLISECOND = 14;
+    public static final int MILLISECOND = 14;
 
-    public final static int TIMEMILLIS = 15;
+    public static final int TIMEMILLIS = 15;
 
-    public final static int LEAP_MONTH_OF_CURRENT = 21;
+    public static final int LEAP_MONTH_OF_CURRENT = 21;
 
-    public final static int LEAP_MONTH = 22;
+    public static final int LEAP_MONTH = 22;
 
     /**
      * 从阳历转换 OR 从阴历转换

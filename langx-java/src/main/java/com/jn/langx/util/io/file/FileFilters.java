@@ -17,6 +17,9 @@ import java.io.File;
 import java.util.List;
 
 public class FileFilters {
+    private FileFilters(){
+
+    }
     public static FileFilter allFileFilter(@NonNull FileFilter... predicates) {
         return allFileFilter(Collects.newArrayList(predicates));
     }

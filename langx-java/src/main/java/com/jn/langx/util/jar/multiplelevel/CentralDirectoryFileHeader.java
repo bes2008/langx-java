@@ -59,7 +59,7 @@ final class CentralDirectoryFileHeader implements FileHeader, Cloneable{
         // Load variable part
         dataOffset += 46;
         if (variableData != null) {
-            data = variableData.read(variableOffset + 46, nameLength + extraLength + commentLength);
+            data = variableData.read(variableOffset + 46L, nameLength + extraLength + commentLength);
             dataOffset = 0;
         }
         this.name = new AsciiBytes(data, dataOffset, (int) nameLength);

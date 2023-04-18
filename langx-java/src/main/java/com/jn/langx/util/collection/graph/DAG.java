@@ -3,6 +3,7 @@ package com.jn.langx.util.collection.graph;
 import java.util.List;
 
 public class DAG<T> extends Graph<T> {
+    @Override
     public boolean addEdge(Vertex<T> from, Vertex<T> to, int weight) {
         if (!hasVertex(from.getName())) {
             addVertex(from);

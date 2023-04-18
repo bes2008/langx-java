@@ -25,7 +25,7 @@ public class Enums {
 
     }
 
-    private final static Map<Class, EnumGetter> GETTER_REGISTRY;
+    private static final Map<Class, EnumGetter> GETTER_REGISTRY;
 
     static {
         final Map<Class, EnumGetter> r = Maps.newLinkedHashMap();

@@ -1,6 +1,5 @@
 package com.jn.langx.util.reflect.reference;
 
-import com.jn.langx.util.hash.Hashed;
 import com.jn.langx.util.struct.Reference;
 
 public class HashedStrongReference<V> implements Reference<V> {

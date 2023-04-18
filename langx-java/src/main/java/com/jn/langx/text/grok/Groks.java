@@ -11,7 +11,9 @@ import java.util.Set;
  * @since 4.7.2
  */
 public class Groks {
+    private Groks(){
 
+    }
     /**
      * Extract Grok patter like %{FOO} to FOO, Also Grok pattern with semantic.
      *

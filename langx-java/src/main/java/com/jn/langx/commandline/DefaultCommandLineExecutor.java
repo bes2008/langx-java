@@ -173,7 +173,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     }
 
     @Override
-    public int execute(CommandLine command) throws ExecuteException, IOException {
+    public int execute(CommandLine command) throws IOException {
         return execute(false, command);
     }
 
@@ -182,7 +182,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     }
 
     @Override
-    public int execute(CommandLine command, Map<String, String> environment) throws ExecuteException, IOException {
+    public int execute(CommandLine command, Map<String, String> environment) throws IOException {
         return execute(false, command, environment);
     }
 
@@ -191,7 +191,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     }
 
     @Override
-    public int execute(CommandLine command, ExecuteResultHandler handler) throws ExecuteException, IOException {
+    public int execute(CommandLine command, ExecuteResultHandler handler) throws IOException {
         return execute(false, command, handler);
     }
 
@@ -200,7 +200,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     }
 
     @Override
-    public int execute(CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws ExecuteException, IOException {
+    public int execute(CommandLine command, Map<String, String> environment, File workingDirectory, ExecuteStreamHandler streamHandler, ExecuteResultHandler handler) throws IOException {
         return execute(false, command, environment, workingDirectory, streamHandler, handler);
     }
 

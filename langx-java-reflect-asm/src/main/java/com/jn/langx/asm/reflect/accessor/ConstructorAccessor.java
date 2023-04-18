@@ -9,7 +9,7 @@ import org.objectweb.asm.Opcodes;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
-abstract public class ConstructorAccessor<T> {
+public abstract class ConstructorAccessor<T> {
     boolean isNonStaticMemberClass;
 
     public boolean isNonStaticMemberClass() {
@@ -96,7 +96,7 @@ abstract public class ConstructorAccessor<T> {
         ConstructorAccessor<T> access;
         try {
             access = (ConstructorAccessor<T>) accessorClass.newInstance();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new RuntimeException("Exception constructing constructor access class: " + accessClassName, t);
         }
         if (!(access instanceof PublicConstructorAccessor) && !AccessorClassLoader.areInSameRuntimeClassLoader(type, accessorClass)) {
@@ -111,7 +111,7 @@ abstract public class ConstructorAccessor<T> {
         return access;
     }
 
-    static private void insertConstructor(ClassWriter cw, String superclassNameInternal) {
+    private static void insertConstructor(ClassWriter cw, String superclassNameInternal) {
         MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         mv.visitCode();
         mv.visitVarInsn(Opcodes.ALOAD, 0);

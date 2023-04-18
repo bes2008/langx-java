@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CommonEventPublisher implements EventPublisher, NameAware {
     private EventDispatcher dispatcher;
     private String name;
-    protected final static AtomicIntegerCounter counter = new AtomicIntegerCounter(0);
+    protected static final AtomicIntegerCounter counter = new AtomicIntegerCounter(0);
     public EventDispatcher getDispatcher() {
         return dispatcher;
     }

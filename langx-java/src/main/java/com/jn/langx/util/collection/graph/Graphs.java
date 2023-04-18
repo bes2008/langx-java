@@ -16,7 +16,9 @@ import com.jn.langx.util.function.Supplier;
 import java.util.*;
 
 public class Graphs {
+    private Graphs(){
 
+    }
     private static final Supplier<String, VisitStatus> NOT_VISITED_SUPPLIER = new Supplier<String, VisitStatus>() {
         @Override
         public VisitStatus get(String name) {

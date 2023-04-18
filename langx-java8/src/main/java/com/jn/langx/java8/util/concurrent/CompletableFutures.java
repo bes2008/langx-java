@@ -8,6 +8,9 @@ import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
 public class CompletableFutures {
+    private CompletableFutures(){
+
+    }
     public static CompletableFuture<Void> runAsync(@NonNull Runnable runnable, @Nullable Executor executor) {
         if (executor == null) {
             return CompletableFuture.runAsync(runnable);

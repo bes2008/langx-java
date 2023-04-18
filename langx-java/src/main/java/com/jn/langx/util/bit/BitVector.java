@@ -20,11 +20,11 @@ public final class BitVector implements Cloneable {
     }
 
     public BitVector(long[] bits) {
-        this.bits = (long[])bits.clone();
+        this.bits = bits.clone();
     }
 
     public void copy(BitVector other) {
-        this.bits = (long[])other.bits.clone();
+        this.bits = other.bits.clone();
     }
 
     private static long slotsNeeded(long length) {

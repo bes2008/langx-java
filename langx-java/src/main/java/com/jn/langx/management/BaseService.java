@@ -35,7 +35,7 @@ public abstract class BaseService implements MBeanService {
         } catch (Exception ex) {
             Loggers.getLogger(getClass()).warn(ex.getMessage(),ex);
         }
-        Loggers.getLogger(getClass()).debug("create an ObjectName : " + oname);
+        Loggers.getLogger(getClass()).debug("create an ObjectName : {}", oname);
         return oname;
     }
 

@@ -108,4 +108,8 @@ public class GmsslNativeLibs {
             throw new IOException("Failedto get permissions to set library path");
         }
     }
+
+    private GmsslNativeLibs(){
+
+    }
 }

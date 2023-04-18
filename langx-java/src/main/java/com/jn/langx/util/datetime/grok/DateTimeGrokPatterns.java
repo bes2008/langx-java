@@ -107,4 +107,7 @@ class DateTimeGrokPatterns {
 
     private static final DateTimeGrokPatternDefinition PD_DATE_TIME = new DateTimeGrokPatternDefinition("yyy","");
 
+    private DateTimeGrokPatterns(){
+
+    }
 }

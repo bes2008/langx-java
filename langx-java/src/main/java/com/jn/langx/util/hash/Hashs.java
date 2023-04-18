@@ -25,7 +25,7 @@ import static java.lang.Math.abs;
  */
 public class Hashs {
     private static final Logger logger = Loggers.getLogger(Hashs.class);
-    private final static Registry<String, Hasher> hasherFactoryRegistry;
+    private static final Registry<String, Hasher> hasherFactoryRegistry;
 
     static {
         final GenericRegistry<Hasher> registry = new GenericRegistry<Hasher>(Collects.<String, Hasher>emptyHashMap(true));
@@ -164,5 +164,9 @@ public class Hashs {
         }
 
         return abs(hash) % length;
+    }
+
+    private Hashs(){
+
     }
 }

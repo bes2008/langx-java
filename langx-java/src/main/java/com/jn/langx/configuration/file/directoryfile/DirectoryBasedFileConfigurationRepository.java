@@ -73,6 +73,7 @@ public class DirectoryBasedFileConfigurationRepository<T extends Configuration> 
         }
     }
 
+    @Override
     public void reload() {
         Map<String, Long> modifiedTimeMap = loader.scanConfigurationFileModifiedTimes();
         try {

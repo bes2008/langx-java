@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public abstract class CommandLauncherProxy extends LocalCommandLauncher {
 
-    public CommandLauncherProxy(final CommandLauncher<ProcessAdapter> launcher) {
+    protected CommandLauncherProxy(final CommandLauncher<ProcessAdapter> launcher) {
         myLauncher = launcher;
     }
 

@@ -8,6 +8,6 @@ public class DistinctHashedWheelTimeoutFactory implements TimeoutFactory<HashedW
 
     @Override
     public DistinctHashedWheelTimeout create(HashedWheelTimer timer, TimerTask task, long deadline) {
-        return new DistinctHashedWheelTimeout((HashedWheelTimer) timer, task, deadline);
+        return new DistinctHashedWheelTimeout( timer, task, deadline);
     }
 }

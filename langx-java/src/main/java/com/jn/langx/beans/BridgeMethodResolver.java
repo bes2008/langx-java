@@ -27,7 +27,9 @@ import java.util.*;
  * @since 4.3.7
  */
 abstract class BridgeMethodResolver {
+    private BridgeMethodResolver(){
 
+    }
     /**
      * Find the original method for the supplied {@link Method bridge Method}.
      * <p>It is safe to call this method passing in a non-bridge {@link Method} instance.
