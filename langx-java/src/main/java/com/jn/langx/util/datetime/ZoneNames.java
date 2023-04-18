@@ -15,6 +15,9 @@ import java.util.Map;
  * @since 4.5.2
  */
 class ZoneNames {
+    private ZoneNames(){
+
+    }
 
     public static String toZid(String zid, Locale locale) {
         String mzone = zidToMzone.get(zid);

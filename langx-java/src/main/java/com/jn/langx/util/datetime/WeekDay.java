@@ -8,13 +8,13 @@ import java.util.Calendar;
  * @since 4.5.2
  */
 public enum WeekDay implements CommonEnum {
-    sun(Calendar.SUNDAY, "sunday", "日"),
-    mon(Calendar.MONDAY, "monday", "一"),
-    tue(Calendar.TUESDAY, "tuesday", "二"),
-    wed(Calendar.WEDNESDAY, "wednesday", "三"),
-    thu(Calendar.THURSDAY, "thursday", "四"),
-    fri(Calendar.FRIDAY, "friday", "五"),
-    sat(Calendar.SATURDAY, "saturday", "六");
+    SUN(Calendar.SUNDAY, "sunday", "日"),
+    MON(Calendar.MONDAY, "monday", "一"),
+    TUE(Calendar.TUESDAY, "tuesday", "二"),
+    WED(Calendar.WEDNESDAY, "wednesday", "三"),
+    THU(Calendar.THURSDAY, "thursday", "四"),
+    FRI(Calendar.FRIDAY, "friday", "五"),
+    SAT(Calendar.SATURDAY, "saturday", "六");
     private int code;
     private String fullname;
     private String chinese;
