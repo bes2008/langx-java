@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 
 public class Unsafes {
+    private Unsafes(){
+
+    }
     private static UnsafeProxy loadFirst() {
         ServiceLoader<UnsafeProxy> unsafeProxies = ServiceLoader.load(UnsafeProxy.class);
         Iterator<UnsafeProxy> iterator = unsafeProxies.iterator();

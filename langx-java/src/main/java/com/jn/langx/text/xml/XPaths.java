@@ -26,7 +26,9 @@ import java.util.List;
  * @author jinuo.fang
  */
 public class XPaths {
+    private XPaths(){
 
+    }
 
     // ---- 属性判断
 

@@ -1,7 +1,7 @@
 package com.jn.langx.util.retry;
 
 public class RetryableRunnable implements Runnable{
-    private transient Runnable task;
+    private Runnable task;
     private RetryConfig retryConfig = new RetryConfig();
     /**
      * 已尝试次数

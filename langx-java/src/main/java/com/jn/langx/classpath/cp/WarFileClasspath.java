@@ -103,7 +103,6 @@ public class WarFileClasspath extends AbstractClasspath {
     }
 
     private String getUrl(String relativePath) {
-        // todo refactor the war class path
         relativePath = Classpaths.getCanonicalFilePath(relativePath);
         return StringTemplates.formatWithPlaceholder("{}/{}", this.root.getLocation(), relativePath);
     }

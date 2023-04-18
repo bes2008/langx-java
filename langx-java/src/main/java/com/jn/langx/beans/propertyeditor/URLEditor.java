@@ -32,6 +32,7 @@ public class URLEditor extends TextPropertyEditorSupport {
      * @return a URL object
      * @throws RuntimeException An MalformedURLException occured.
      */
+    @Override
     public Object getValue() {
         try {
             return URLs.newURL(getAsText());

@@ -34,6 +34,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
         return (this.myPosition < this.myCount) ? (this.myBuffer[this.myPosition++] & 0xFF) : -1;
     }
 
+    @Override
     public int read(@NonNull byte[] b, int off, int len) {
         Preconditions.checkNotEmpty(b);
         if (off < 0 || len < 0 || len > b.length - off)
@@ -48,7 +49,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
         this.myPosition += len;
         return len;
     }
-
+    @Override
     public long skip(long n) {
         if (this.myPosition + n > this.myCount)
             n = (this.myCount - this.myPosition);
@@ -57,19 +58,19 @@ public class UnsyncByteArrayInputStream extends InputStream {
         this.myPosition = (int)(this.myPosition + n);
         return n;
     }
-
+    @Override
     public int available() {
         return this.myCount - this.myPosition;
     }
-
+    @Override
     public boolean markSupported() {
         return true;
     }
-
+    @Override
     public void mark(int readLimit) {
         this.myMarkedPosition = this.myPosition;
     }
-
+    @Override
     public void reset() {
         this.myPosition = this.myMarkedPosition;
     }

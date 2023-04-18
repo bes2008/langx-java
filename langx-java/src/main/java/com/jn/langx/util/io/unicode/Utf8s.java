@@ -14,6 +14,9 @@ import com.jn.langx.util.regexp.Regexps;
 
 
 public class Utf8s {
+    private Utf8s(){
+
+    }
 
     /**
      * Indicates whether the contents of the provided array are valid UTF-8.

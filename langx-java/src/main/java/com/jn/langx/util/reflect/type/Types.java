@@ -14,6 +14,7 @@ import java.util.*;
  * @author jinuo.fang
  */
 public class Types {
+
     private static final Type[] EMPTY_TYPE_ARRAY = new Type[]{};
 
     /**
@@ -50,7 +51,7 @@ public class Types {
     public static Class getPrimitiveWrapClass(Type type) {
         return Primitives.wrap(type);
     }
-
+    private Types(){}
     /**
      * show a type as a string, for examples:
      */

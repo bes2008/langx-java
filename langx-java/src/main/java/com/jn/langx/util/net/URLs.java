@@ -22,13 +22,17 @@ import java.util.Map;
 
 public class URLs {
 
+
     private static final Map<String,String> URL_PREFIX_MAPPING = new HashMap<String, String>();
+    private URLs(){
+
+    }
 
     public static URL toURL(URI uri) {
         Preconditions.checkNotNull(uri);
         try {
             return uri.toURL();
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             Loggers.getLogger(URLs.class).warn("error url: {}", uri);
             return null;
         }
@@ -38,7 +42,7 @@ public class URLs {
         Preconditions.checkNotNull(url);
         try {
             return new URL(url);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             Loggers.getLogger(URLs.class).warn("error url: {}", url);
             return null;
         }
@@ -188,7 +192,11 @@ public class URLs {
         Preconditions.checkNotNull(url);
         try {
             if (URLs.isFileURL(url)) {
-                return URLs.getFile(url).length();
+                File f = URLs.getFile(url);
+                if(f!=null){
+                    return f.length();
+                }
+
             } else {
                 if (isJarURL(url)) {
                     if (isMultipleLevelJarURL(url)) {
@@ -217,7 +225,7 @@ public class URLs {
                     }
                 }
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             return -1;
         }
     }

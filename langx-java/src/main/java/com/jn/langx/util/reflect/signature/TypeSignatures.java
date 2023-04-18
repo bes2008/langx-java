@@ -8,6 +8,9 @@ import com.jn.langx.util.reflect.Reflects;
 import java.lang.reflect.Method;
 
 public class TypeSignatures {
+    private TypeSignatures(){
+
+    }
     public static String toTypeSignature(String typeString) {
         Preconditions.checkNotNull(typeString);
         String signature = "";

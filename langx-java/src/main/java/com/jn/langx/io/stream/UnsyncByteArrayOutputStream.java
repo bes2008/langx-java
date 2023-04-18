@@ -60,6 +60,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream {
         this.myBuffer = newBuffer;
     }
 
+    @Override
     public void write(byte[] b, int off, int len) {
         Preconditions.checkNotNull(b);
         if (off < 0 || off > b.length || len < 0 || off + len > b.length || off + len < 0)

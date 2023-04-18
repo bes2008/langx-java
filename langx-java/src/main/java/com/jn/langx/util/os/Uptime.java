@@ -1,5 +1,7 @@
 package com.jn.langx.util.os;
 
+import com.jn.langx.util.logging.Loggers;
+
 import java.lang.reflect.Method;
 
 /**
@@ -31,10 +33,10 @@ public class Uptime {
                     throw new UnsupportedOperationException("getRuntimeMXBean() method returned null");
                 }
                 uptimeMethod = runtimeClass.getMethod("getUptime", noParams);
-                if (mxBean == null) {
+                if (uptimeMethod == null) {
                     throw new UnsupportedOperationException("method getUptime() not found");
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 throw new UnsupportedOperationException("Implementation not available in this environment", e);
             }
         }
@@ -43,7 +45,7 @@ public class Uptime {
         public long getUptime() {
             try {
                 return (Long) uptimeMethod.invoke(mxBean);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 return NOIMPL;
             }
         }
@@ -61,7 +63,7 @@ public class Uptime {
         try {
             impl = new Uptime.DefaultImpl();
         } catch (UnsupportedOperationException e) {
-            System.err.printf("Defaulting Uptime to NOIMPL due to (%s) %s%n", e.getClass().getName(), e.getMessage());
+            Loggers.getLogger(Uptime.class).error("Defaulting Uptime to NOIMPL due to {} {}", e.getClass().getName(), e.getMessage());
             impl = null;
         }
     }
