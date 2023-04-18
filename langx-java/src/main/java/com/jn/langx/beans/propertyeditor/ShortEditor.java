@@ -26,6 +26,7 @@ public class ShortEditor extends PropertyEditorSupport {
     /**
      * Map the argument text into and Short using Short.decode.
      */
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text)) {
             setValue(null);

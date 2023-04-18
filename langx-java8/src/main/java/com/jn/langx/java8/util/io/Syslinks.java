@@ -9,7 +9,9 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 
 public class Syslinks {
+    private Syslinks(){
 
+    }
     /**
      * Reads the target of the symbolic link
      *

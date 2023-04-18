@@ -5,7 +5,6 @@ import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.collection.sequence.AbstractCharSequence;
-import com.jn.langx.util.collection.sequence.Sequence;
 import com.jn.langx.util.function.Consumer2;
 
 import java.util.Collection;

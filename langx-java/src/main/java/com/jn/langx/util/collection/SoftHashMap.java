@@ -213,8 +213,7 @@ public class SoftHashMap<K, V> implements Map<K, V> {
         processQueue();
         Collection<K> keys = map.keySet();
         if (keys.isEmpty()) {
-            //noinspection unchecked
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         Collection<V> values = new ArrayList<V>(keys.size());
         for (K key : keys) {
@@ -264,7 +263,7 @@ public class SoftHashMap<K, V> implements Map<K, V> {
         Collection<K> keys = map.keySet();
         if (keys.isEmpty()) {
             //noinspection unchecked
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         Map<K, V> kvPairs = new HashMap<K, V>(keys.size());

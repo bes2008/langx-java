@@ -7,7 +7,6 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Holder;
 
-import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.Provider;
 import java.security.SecureRandom;
@@ -20,6 +19,10 @@ public class Securitys {
     private static volatile boolean providersLoaded = false;
     private static LangxSecurityProvider langxSecurityProvider;
 
+    private Securitys() {
+
+    }
+
     public static void setup() {
         if (!providersLoaded) {
             synchronized (Securitys.class) {
@@ -27,7 +30,8 @@ public class Securitys {
             }
         }
     }
-    private final static SecureRandom SECURE_RANDOM ;
+
+    private static final SecureRandom SECURE_RANDOM;
 
     public static Provider getProvider(String name) {
         if (Strings.isNotBlank(name)) {
@@ -121,10 +125,10 @@ public class Securitys {
 
     static {
         setup();
-        SECURE_RANDOM= new SecureRandom();
+        SECURE_RANDOM = new SecureRandom();
     }
 
-    public static  SecureRandom getSecureRandom(){
+    public static SecureRandom getSecureRandom() {
         return SECURE_RANDOM;
     }
 }

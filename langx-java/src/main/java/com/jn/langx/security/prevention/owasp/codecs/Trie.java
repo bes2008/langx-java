@@ -102,6 +102,7 @@ interface Trie<T> extends Map<CharSequence, T> {
             super(toWrap);
         }
 
+        @Override
         public T put(CharSequence key, T value) {
             throw new UnsupportedOperationException("Unmodifiable Trie");
         }
@@ -110,22 +111,27 @@ interface Trie<T> extends Map<CharSequence, T> {
             throw new UnsupportedOperationException("Unmodifiable Trie");
         }
 
+        @Override
         public void putAll(Map<? extends CharSequence, ? extends T> t) {
             throw new UnsupportedOperationException("Unmodifiable Trie");
         }
 
+        @Override
         public void clear() {
             throw new UnsupportedOperationException("Unmodifiable Trie");
         }
 
+        @Override
         public Set<CharSequence> keySet() {
             return Collections.unmodifiableSet(super.keySet());
         }
 
+        @Override
         public Collection<T> values() {
             return Collections.unmodifiableCollection(super.values());
         }
 
+        @Override
         public Set<Entry<CharSequence, T>> entrySet() {
             return Collections.unmodifiableSet(super.entrySet());
         }

@@ -1,5 +1,7 @@
 package com.jn.langx.cache;
 
+import com.jn.langx.util.collection.Lists;
+
 import java.util.List;
 
 /**
@@ -46,6 +48,6 @@ public class SimpleCache<K,V> extends AbstractCache<K,V>{
 
     @Override
     protected List<K> forceEvict(int count) {
-        return null;
+        return Lists.newArrayList();
     }
 }

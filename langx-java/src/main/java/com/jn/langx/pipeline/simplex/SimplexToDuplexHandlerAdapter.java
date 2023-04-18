@@ -3,7 +3,7 @@ package com.jn.langx.pipeline.simplex;
 import com.jn.langx.pipeline.AbstractHandler;
 import com.jn.langx.pipeline.HandlerContext;
 
-public class SimplexToDuplexHandlerAdapter<T> extends AbstractHandler {
+public class SimplexToDuplexHandlerAdapter extends AbstractHandler {
     private SimplexHandler handler;
 
     public SimplexToDuplexHandlerAdapter(SimplexHandler handler){
@@ -15,10 +15,5 @@ public class SimplexToDuplexHandlerAdapter<T> extends AbstractHandler {
         Object result = handler.apply(ctx.getTarget());
         ctx.getCurrentValueHolder().set(result);
         super.inbound(ctx);
-    }
-
-    @Override
-    public void outbound(HandlerContext ctx) throws Throwable {
-        super.outbound(ctx);
     }
 }

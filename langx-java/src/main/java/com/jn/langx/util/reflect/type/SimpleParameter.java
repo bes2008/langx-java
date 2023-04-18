@@ -410,7 +410,6 @@ public class SimpleParameter {
                     Integer index = getTypeIndexForLevel(i);
                     type = args[index != null ? index : args.length - 1];
                 }
-                // TODO: Object.class if unresolvable
             }
             if (type instanceof Class) {
                 return (Class<?>) type;

@@ -38,6 +38,7 @@ public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
      * Set will be re-sorted, otherwise the element is simply added
      * to the end. Added element must not be null.
      */
+    @Override
     public boolean add(E o) {
         Preconditions.checkNotNull(o, "Can not add NULL object");
         writeLock.lock();
@@ -57,6 +58,7 @@ public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
     /**
      * Adds all elements in this Collection.
      */
+    @Override
     public boolean addAll(Collection<? extends E> c) {
         Preconditions.checkNotNull(c, "Can not merge with NULL set");
         writeLock.lock();
@@ -73,6 +75,7 @@ public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean remove(Object o) {
         writeLock.lock();
         try {
@@ -85,6 +88,7 @@ public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean removeAll(Collection<?> c) {
         if (Objs.isEmpty(c)) {
             return false;

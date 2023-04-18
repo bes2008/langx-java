@@ -2,6 +2,7 @@ package com.jn.langx.util.timing.timer.scheduled;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Sets;
 import com.jn.langx.util.timing.timer.AbstractTimer;
 import com.jn.langx.util.timing.timer.RunnableToTimerTaskAdapter;
 import com.jn.langx.util.timing.timer.Timeout;
@@ -59,7 +60,7 @@ public class ScheduledExecutorTimer extends AbstractTimer {
     public Set<Timeout> stop() {
         this.running = false;
         scheduledExecutor.shutdown();
-        return null;
+        return Sets.newHashSet();
     }
 
 

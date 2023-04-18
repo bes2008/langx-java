@@ -46,7 +46,7 @@ public class SimplePatternDefinitionRepository extends BaseConfigurationReposito
         if (reloadIntervalInSeconds > 0) {
             try {
                 reload();
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 logger.warn(ex.getMessage(), ex);
             }
             if (timer == null) {
@@ -59,7 +59,7 @@ public class SimplePatternDefinitionRepository extends BaseConfigurationReposito
                 public void run(Timeout timeout) throws Exception {
                     try {
                         reload();
-                    } catch (Throwable ex) {
+                    } catch (Exception ex) {
                         logger.error(ex.getMessage(), ex);
                     } finally {
                         if (isRunning()) {

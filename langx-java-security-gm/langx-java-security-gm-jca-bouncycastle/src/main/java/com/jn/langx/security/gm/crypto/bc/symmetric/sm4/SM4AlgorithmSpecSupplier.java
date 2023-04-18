@@ -49,7 +49,7 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
             try {
                 secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
                 secureRandom.setSeed(SECURE_RANDOM_SEED_DEFAULT);
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }
         }

@@ -16,7 +16,7 @@ public class SimpleSession extends AttributableSet implements Session, SessionMa
     private Date lastAccessTime;
     private long maxInactiveInterval;
     private boolean invalid = false;
-    private transient SessionManager sessionManager;
+    private SessionManager sessionManager;
 
     public String getId() {
         return id;

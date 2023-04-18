@@ -5,7 +5,7 @@ import com.jn.langx.util.function.Consumer2;
 import java.util.*;
 
 @SuppressWarnings({"all"})
-public class CommonTree implements Tree<TreeNode> {
+public class CommonTree implements Tree {
     private static final long serialVersionUID = 1L;
     private transient Map<String, TreeNode> nodeMap = new HashMap();
     private List<TreeNode> nodes = new LinkedList<TreeNode>();

@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-public interface Tree<T extends TreeNode> extends Serializable {
+public interface Tree extends Serializable {
     void addNode(TreeNode paramTreeNode);
 
     void addNode(String paramString, TreeNode paramTreeNode);

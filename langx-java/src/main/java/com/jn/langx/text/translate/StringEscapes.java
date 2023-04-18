@@ -398,7 +398,7 @@ public class StringEscapes {
      * <p>This constructor is public to permit tools that require a JavaBean
      * instance to operate.</p>
      */
-    public StringEscapes() {
+    private StringEscapes() {
         super();
     }
 

@@ -10,7 +10,6 @@ public abstract class UnmodifiableIterator<E> implements Iterator<E> {
      * Guaranteed to throw an exception and leave the underlying data unmodified.
      *
      * @throws UnsupportedOperationException always
-     * @deprecated Unsupported operation.
      */
     @Override
     public final void remove() {

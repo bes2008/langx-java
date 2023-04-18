@@ -16,7 +16,7 @@ public class SM2ParameterSpec implements AlgorithmParameterSpec, IDGetter {
     }
 
     public SM2ParameterSpec(String id) {
-        this(Strings.isEmpty(id) ? (byte[]) null : id.getBytes(Charsets.UTF_8));
+        this(Strings.isEmpty(id) ? null : id.getBytes(Charsets.UTF_8));
     }
 
     public SM2ParameterSpec(byte[] id) {

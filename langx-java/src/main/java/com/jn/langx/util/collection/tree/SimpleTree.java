@@ -6,7 +6,7 @@ import com.jn.langx.util.function.Consumer2;
 import java.util.*;
 
 @SuppressWarnings("all")
-public class SimpleTree implements Tree<TreeNode> {
+public class SimpleTree implements Tree {
     private static final long serialVersionUID = -9051148743662948065L;
     private List<TreeNode> nodes = new ArrayList<TreeNode>();
     private transient Map<String, TreeNode> nodeMap = new HashMap<String, TreeNode>();

@@ -10,18 +10,15 @@ import java.util.*;
  * the standard methods of the {@link Map} interface, this implementation offers
  * methods to check if a key prefix is contained, get the best matching key from
  * an example key and retrieve prefixed views on the map.
- *
+ * <p>
  * This map does not support null keys, instead an empty string should be used.
- *
+ * <p>
  * The implementation uses nested {@link HashMap}s with {@link Character} keys
  * internally to ensure <code>O(k)</code> performance where <code>k</code> is
  * the length of an existing key, <code>keyLen</code> is the key which is used
  * for retrieval or modification operations and <code>k &le; keyLen</code>.
  *
- * @param <V>
- *            The value type that the trie holds.
- *
- *
+ * @param <V> The value type that the trie holds.
  */
 public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializable, Map<CharSequence, V> {
 
@@ -85,8 +82,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
     /**
      * Constructs a new TrieMap with the values from the given map.
      *
-     * @param map
-     *            The map from which to construct this TrieMap
+     * @param map The map from which to construct this TrieMap
      */
     public TrieMap(final Map<CharSequence, ? extends V> map) {
         this(map, false);
@@ -96,8 +92,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
     /**
      * Constructs a new TrieMap by deep cloning the internally used nodes.
      *
-     * @param map
-     *            The map from which to construct this TrieMap
+     * @param map The map from which to construct this TrieMap
      */
     public TrieMap(final TrieMap<? extends V> map) {
         this(map, false);
@@ -106,14 +101,12 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
     /**
      * Internally used to encapsulate all initializations.
      *
-     * @param map
-     *            The map from which to construct this TrieMap or null
-     * @param nullAllowed
-     *            Whether null is allowed or not
+     * @param map         The map from which to construct this TrieMap or null
+     * @param nullAllowed Whether null is allowed or not
      */
     @SuppressWarnings("unchecked")
     private TrieMap(final Map<CharSequence, ? extends V> map, final boolean nullAllowed) {
-        if (nullAllowed  || !(map instanceof TrieMap<?>)) {
+        if (nullAllowed || !(map instanceof TrieMap<?>)) {
             this.root = new TrieNode<V>(false);
         } else {
             this.root = ((TrieMap<V>) map).root.cloneDeep();
@@ -249,8 +242,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
     /**
      * Returns true when an entry exists that that has the given prefix.
      *
-     * @param prefix
-     *            The prefix for which to check if an entry is contained.
+     * @param prefix The prefix for which to check if an entry is contained.
      * @return True when an entry with the given prefix exists, otherwise false.
      */
     public boolean containsKeyPrefix(final CharSequence prefix) {
@@ -491,8 +483,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
     /**
      * Iterator implementation for TrieMap.
      *
-     * @param <E>
-     *            The type of the entry
+     * @param <E> The type of the entry
      */
     private abstract class TrieIterator<E> implements Iterator<E> {
 
@@ -634,12 +625,12 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
 
         @Override
         public boolean contains(final Object o) {
-            return containsKey((CharSequence) o);
+            return containsKey(o);
         }
 
         @Override
         public boolean remove(final Object o) {
-            return TrieMap.this.remove((CharSequence) o) != null;
+            return TrieMap.this.remove(o) != null;
         }
 
         @Override
@@ -728,8 +719,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
      * A special implementation of TrieMap that gives a prefixed view on an
      * existing TrieMap.
      *
-     * @param <V>
-     *            The value type that the trie holds.
+     * @param <V> The value type that the trie holds.
      */
     private static class SubTrieMap<V> extends TrieMap<V> {
 
@@ -901,8 +891,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
      * prefix. Although the implementation behaves like described, it makes the
      * calls in a more performant way.
      *
-     * @param prefix
-     *            The prefix which to use for the sub map.
+     * @param prefix The prefix which to use for the sub map.
      * @return A prefixed view on the current map.
      */
     public TrieMap<V> subMap(final CharSequence prefix) {

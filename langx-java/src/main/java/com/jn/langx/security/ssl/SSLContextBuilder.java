@@ -96,7 +96,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         return loadTrustMaterial(null, trustStrategy);
     }
 
-    public SSLContextBuilder loadTrustMaterial(final File file, final char[] storePassword, final TrustStrategy trustStrategy) throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+    public SSLContextBuilder loadTrustMaterial(final File file, final char[] storePassword, final TrustStrategy trustStrategy) throws NoSuchAlgorithmException, KeyStoreException{
         Preconditions.checkNotNullArgument(file, "Truststore file");
         final KeyStore trustStore = KeyStores.getKeyStore(KeyStore.getDefaultType(), null, file, storePassword);
         return loadTrustMaterial(trustStore, trustStrategy);
@@ -110,7 +110,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         return loadTrustMaterial(file, null);
     }
 
-    public SSLContextBuilder loadTrustMaterial(final URL url, final char[] storePassword, final TrustStrategy trustStrategy) throws NoSuchAlgorithmException, KeyStoreException, CertificateException, IOException {
+    public SSLContextBuilder loadTrustMaterial(final URL url, final char[] storePassword, final TrustStrategy trustStrategy) throws NoSuchAlgorithmException, KeyStoreException, IOException {
         Preconditions.checkNotNullArgument(url, "Truststore URL");
         KeyStore trustStore = null;
         InputStream inputStream = null;
@@ -149,17 +149,17 @@ public class SSLContextBuilder implements Builder<SSLContext> {
         return loadKeyMaterial(keystore, keyPassword, null);
     }
 
-    public SSLContextBuilder loadKeyMaterial(final File file, final char[] storePassword, final char[] keyPassword, final PrivateKeyAliasChooseStrategy aliasStrategy) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, CertificateException, IOException {
+    public SSLContextBuilder loadKeyMaterial(final File file, final char[] storePassword, final char[] keyPassword, final PrivateKeyAliasChooseStrategy aliasStrategy) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException {
         Preconditions.checkNotNullArgument(file, "Keystore file");
         final KeyStore identityStore = KeyStores.getKeyStore(KeyStore.getDefaultType(), null, file, storePassword);
         return loadKeyMaterial(identityStore, keyPassword, aliasStrategy);
     }
 
-    public SSLContextBuilder loadKeyMaterial(final File file, final char[] storePassword, final char[] keyPassword) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, CertificateException, IOException {
+    public SSLContextBuilder loadKeyMaterial(final File file, final char[] storePassword, final char[] keyPassword) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException {
         return loadKeyMaterial(file, storePassword, keyPassword, null);
     }
 
-    public SSLContextBuilder loadKeyMaterial(final URL url, final char[] storePassword, final char[] keyPassword, final PrivateKeyAliasChooseStrategy aliasStrategy) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, CertificateException, IOException {
+    public SSLContextBuilder loadKeyMaterial(final URL url, final char[] storePassword, final char[] keyPassword, final PrivateKeyAliasChooseStrategy aliasStrategy) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, IOException {
         Preconditions.checkNotNullArgument(url, "Keystore URL");
         KeyStore identityStore = null;
         InputStream inputStream = url.openStream();

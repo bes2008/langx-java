@@ -31,6 +31,10 @@ public class ScheduledExecutors {
         scheduledExecutorService = new ScheduledThreadPoolExecutor(schedulerCoreSize, new CommonThreadFactory(schedulerThreadPrefix, true));
     }
 
+    private ScheduledExecutors(){
+
+    }
+
     public static ScheduledExecutorService getScheduledExecutor() {
         return scheduledExecutorService;
     }

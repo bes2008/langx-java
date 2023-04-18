@@ -70,7 +70,7 @@ public final class Signals {
             return doRegister(signalName, signalHandler);
         } catch (Exception e) {
             // Ignore this one too, if the above failed, the signal API is incompatible with what we're expecting
-            logger.debug("Error registering handler for signal ", signalName, e);
+            logger.error("Error registering handler for signal {}  ", signalName, e);
             return null;
         }
     }
@@ -82,7 +82,7 @@ public final class Signals {
         } catch (Exception e) {
             final Logger logger = Loggers.getLogger(Signals.class);
             // Ignore this one too, if the above failed, the signal API is incompatible with what we're expecting
-            logger.debug("Error registering default handler for signal ", name, e);
+            logger.error("Error registering default handler for signal {} ", name, e);
             return null;
         }
     }
@@ -96,7 +96,7 @@ public final class Signals {
         } catch (Exception e) {
             final Logger logger = Loggers.getLogger(Signals.class);
             // Ignore
-            logger.debug("Error unregistering handler for signal ", name, e);
+            logger.error("Error unregistering handler for signal {}", name, e);
         }
     }
 
@@ -112,7 +112,7 @@ public final class Signals {
             if (e.getCause() instanceof IllegalArgumentException) {
                 logger.debug("Ignoring unsupported signal {}", name);
             } else {
-                logger.debug("Error registering handler for signal ", name, e);
+                logger.error("Error registering handler for signal {}", name, e);
             }
             return null;
         }
@@ -129,7 +129,7 @@ public final class Signals {
             if (handler == signalHandlerClass.getField("SIG_IGN").get(null)) {
                 return "SIG_IGN";
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             // ignore
         }
         return handler != null ? handler.toString() : "null";

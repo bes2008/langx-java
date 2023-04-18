@@ -30,7 +30,7 @@ public class StringArrayEditor
 
     static String[] parseList(String text) {
         ArrayList<String> list = new ArrayList<String>();
-        StringBuffer tmp = new StringBuffer();
+        StringBuilder tmp = new StringBuilder();
         for (int n = 0; n < text.length(); n++) {
             char c = text.charAt(n);
             switch (c) {
@@ -65,6 +65,7 @@ public class StringArrayEditor
      * Build a String[] from comma or eol seperated elements with a \,
      * representing a ',' to include in the current string element.
      */
+    @Override
     public void setAsText(final String text) {
         String[] theValue = parseList(text);
         setValue(theValue);
@@ -73,9 +74,10 @@ public class StringArrayEditor
     /**
      * @return a comma seperated string of the array elements
      */
+    @Override
     public String getAsText() {
         String[] theValue = (String[]) getValue();
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
         int length = theValue == null ? 0 : theValue.length;
         for (int n = 0; n < length; n++) {
             String s = theValue[n];

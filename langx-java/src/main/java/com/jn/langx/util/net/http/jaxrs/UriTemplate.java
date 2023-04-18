@@ -629,7 +629,6 @@ public class UriTemplate {
         while (m.find()) {
             builder.append(normalizedTemplate, i, m.start());
             String variableName = m.group(1);
-            // TODO matrix
             char firstChar = variableName.charAt(0);
             if (firstChar == '?' || firstChar == ';') {
                 final char prefix;
@@ -904,7 +903,6 @@ public class UriTemplate {
             }
 
             if (notEmpty(host)) {
-                // TODO check IPv6 address
                 offset = createUriComponent(UriComponent.Type.HOST, host, values,
                         offset, encode, mapValues, sb);
             }

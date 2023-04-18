@@ -26,7 +26,7 @@ public class Threads {
      */
     public static int getAvailableThreadNum(float blockRate) {
         if (blockRate >= 1 || blockRate < 0) {
-            throw new IllegalParameterException(new ExceptionMessage("The parameter blockRate is invalid,the valid value scope is [{1},{2}), but given : {0}。", new Object[]{blockRate, 0, 1}));
+            throw new IllegalParameterException(new ExceptionMessage("The parameter blockRate is invalid,the valid value scope is [{1},{2}), but given : {0}。", blockRate, 0, 1));
         }
         int cpuCoreNum = Runtime.getRuntime().availableProcessors();
         return (int) (cpuCoreNum / (1 - blockRate));

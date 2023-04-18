@@ -67,10 +67,12 @@ public class SM2CipherSpi extends BaseCipherSpi {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     protected void engineUpdateAAD(byte[] bytes, int i, int i1) {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     protected void engineUpdateAAD(ByteBuffer byteBuffer) {
         throw new UnsupportedOperationException();
     }
@@ -123,7 +125,7 @@ public class SM2CipherSpi extends BaseCipherSpi {
         try {
             byte[] out = engine.processBlock(bytes, offset, length);
             return out;
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
     }

@@ -89,6 +89,7 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         return signer.verifySignature(bytes);
     }
 
+    @Override
     protected void engineSetParameter(AlgorithmParameterSpec params) throws InvalidAlgorithmParameterException {
         if (params instanceof SM2ParameterSpec) {
             paramSpec = params;
@@ -101,15 +102,14 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
         }
     }
 
+    @Override
     protected AlgorithmParameters engineGetParameters() {
-        if (engineParams == null) {
-            if (paramSpec != null) {
-                try {
-                    engineParams = helper.createAlgorithmParameters("PSS");
-                    engineParams.init(paramSpec);
-                } catch (Exception e) {
-                    throw new RuntimeException(e.toString());
-                }
+        if (engineParams == null && paramSpec != null) {
+            try {
+                engineParams = helper.createAlgorithmParameters("PSS");
+                engineParams.init(paramSpec);
+            } catch (Exception e) {
+                throw new RuntimeException(e.toString());
             }
         }
 

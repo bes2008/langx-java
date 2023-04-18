@@ -67,11 +67,11 @@ public class UnsyncByteArrayInputStream extends InputStream {
         return true;
     }
     @Override
-    public void mark(int readLimit) {
+    public synchronized void mark(int readLimit) {
         this.myMarkedPosition = this.myPosition;
     }
     @Override
-    public void reset() {
+    public synchronized void reset() {
         this.myPosition = this.myMarkedPosition;
     }
 }

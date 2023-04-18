@@ -36,6 +36,7 @@ public class TextPropertyEditorSupport extends PropertyEditorSupport {
      *
      * @param text The string to be parsed.
      */
+    @Override
     public void setAsText(final String text) {
         setValue(text);
     }

@@ -196,7 +196,7 @@ public class URLs {
                 if(f!=null){
                     return f.length();
                 }
-
+                return -1L;
             } else {
                 if (isJarURL(url)) {
                     if (isMultipleLevelJarURL(url)) {
@@ -214,7 +214,7 @@ public class URLs {
                     return length;
                 } catch (IOException ex) {
                     // ignore it
-                    return -1;
+                    return -1L;
                 } finally {
                     if (con!=null) {
                         try {

@@ -273,7 +273,7 @@ public class StringTemplates {
             return format(new BeanBasedStyleStringFormatter(), bean);
         }
 
-        public <T> TemplateFluenter formatWithMap(Map<String, Object> map) {
+        public TemplateFluenter formatWithMap(Map<String, Object> map) {
             return format(new MapBasedStringFormatter(), map);
         }
 

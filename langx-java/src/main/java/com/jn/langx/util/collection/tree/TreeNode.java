@@ -114,7 +114,7 @@ public class TreeNode<T extends TreeNode> extends BasedStringAccessor<String, Ma
 
     public List<T> removeChildNodes() {
         if ((this.children == null) || (this.children.isEmpty())) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         List<T> ret = new LinkedList(this.children);
         this.children.clear();

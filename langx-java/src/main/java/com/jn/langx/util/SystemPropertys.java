@@ -35,7 +35,9 @@ public class SystemPropertys {
         javaVersionToClassVersion.put("9.0", "53");
         javaVersionToClassVersion.put("10.0", "54");
     }
+    private SystemPropertys(){
 
+    }
     public static String getClassPathSeparator() {
         return System.getProperty("path.separator");
     }

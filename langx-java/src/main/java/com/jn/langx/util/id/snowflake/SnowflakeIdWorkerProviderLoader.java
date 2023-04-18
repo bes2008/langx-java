@@ -14,7 +14,9 @@ public class SnowflakeIdWorkerProviderLoader {
     private static volatile boolean loaded = false;
 
     private static final Map<String, SnowflakeIdWorkerProvider> LOADED_PROVIDER_MAP = new HashMap<String, SnowflakeIdWorkerProvider>();
+    private SnowflakeIdWorkerProviderLoader(){
 
+    }
     public static SnowflakeIdWorkerProvider getProvider() {
         if (!loaded) {
             synchronized (SnowflakeIdWorkerProviderLoader.class) {

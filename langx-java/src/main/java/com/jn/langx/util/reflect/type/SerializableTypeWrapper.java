@@ -36,13 +36,13 @@ public abstract class SerializableTypeWrapper {
     private static final Class<?>[] SUPPORTED_SERIALIZABLE_TYPES = {
             GenericArrayType.class, ParameterizedType.class, TypeVariable.class, WildcardType.class};
 
-    public static final ConcurrentReferenceHashMap<Type, Type> cache = new ConcurrentReferenceHashMap<Type, Type>(256);
+    protected static final ConcurrentReferenceHashMap<Type, Type> cache = new ConcurrentReferenceHashMap<Type, Type>(256);
 
 
     /**
      * Return a {@link Serializable} variant of {@link Field#getGenericType()}.
      */
-    public final static Type forField(Field field) {
+    public static final Type forField(Field field) {
         return forTypeProvider(new FieldTypeProvider(field));
     }
 
@@ -50,7 +50,7 @@ public abstract class SerializableTypeWrapper {
      * Return a {@link Serializable} variant of
      * {@link SimpleParameter#getGenericParameterType()}.
      */
-    public final static Type forMethodParameter(SimpleParameter methodParameter) {
+    public static final Type forMethodParameter(SimpleParameter methodParameter) {
         return forTypeProvider(new MethodParameterTypeProvider(methodParameter));
     }
 
@@ -58,7 +58,7 @@ public abstract class SerializableTypeWrapper {
      * Return a {@link Serializable} variant of {@link Class#getGenericSuperclass()}.
      */
     @SuppressWarnings("serial")
-    public final static Type forGenericSuperclass(final Class<?> type) {
+    public static final Type forGenericSuperclass(final Class<?> type) {
         return forTypeProvider(new SimpleTypeProvider() {
             @Override
             public Type getType() {
@@ -71,7 +71,7 @@ public abstract class SerializableTypeWrapper {
      * Return a {@link Serializable} variant of {@link Class#getGenericInterfaces()}.
      */
     @SuppressWarnings("serial")
-    public final static Type[] forGenericInterfaces(final Class<?> type) {
+    public static final Type[] forGenericInterfaces(final Class<?> type) {
         Type[] result = new Type[type.getGenericInterfaces().length];
         for (int i = 0; i < result.length; i++) {
             final int index = i;
@@ -88,7 +88,7 @@ public abstract class SerializableTypeWrapper {
     /**
      * Return a {@link Serializable} variant of {@link Class#getTypeParameters()}.
      */
-    public final static Type[] forTypeParameters(final Class<?> type) {
+    public static final Type[] forTypeParameters(final Class<?> type) {
         Type[] result = new Type[type.getTypeParameters().length];
         for (int i = 0; i < result.length; i++) {
             final int index = i;
@@ -109,7 +109,7 @@ public abstract class SerializableTypeWrapper {
      * @return the original non-serializable type
      */
     @SuppressWarnings("unchecked")
-    public final static <T extends Type> T unwrap(T type) {
+    public static final <T extends Type> T unwrap(T type) {
         Type unwrapped = type;
         while (unwrapped instanceof SerializableTypeProxy) {
             unwrapped = ((SerializableTypeProxy) type).getTypeProvider().getType();
@@ -120,7 +120,7 @@ public abstract class SerializableTypeWrapper {
     /**
      * Return a {@link Serializable} {@link Type} backed by a {@link TypeProvider} .
      */
-    public final static Type forTypeProvider(TypeProvider provider) {
+    public static final Type forTypeProvider(TypeProvider provider) {
         Type providedType = provider.getType();
         if (providedType == null || providedType instanceof Serializable) {
             // No serializable type wrapping necessary (e.g. for java.lang.Class)
@@ -179,7 +179,7 @@ public abstract class SerializableTypeWrapper {
      * Base implementation of {@link TypeProvider} with a {@code null} source.
      */
     @SuppressWarnings("serial")
-    private static abstract class SimpleTypeProvider implements TypeProvider {
+    private abstract static class SimpleTypeProvider implements TypeProvider {
 
         @Override
         public Object getSource() {
@@ -194,7 +194,7 @@ public abstract class SerializableTypeWrapper {
      * or {@code Type[]}.
      */
     @SuppressWarnings("serial")
-    private final static class TypeProxyInvocationHandler implements InvocationHandler, Serializable {
+    private static final class TypeProxyInvocationHandler implements InvocationHandler, Serializable {
 
         private final TypeProvider provider;
 
@@ -240,7 +240,7 @@ public abstract class SerializableTypeWrapper {
      * {@link TypeProvider} for {@link Type}s obtained from a {@link Field}.
      */
     @SuppressWarnings("serial")
-    public final static class FieldTypeProvider implements TypeProvider {
+    public static final class FieldTypeProvider implements TypeProvider {
 
         private final String fieldName;
 
@@ -264,7 +264,7 @@ public abstract class SerializableTypeWrapper {
             return this.field;
         }
 
-        public void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
+        private void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
             inputStream.defaultReadObject();
             this.field = Reflects.getDeclaredField(this.declaringClass, this.fieldName);
             if (this.field == null) {
@@ -277,7 +277,7 @@ public abstract class SerializableTypeWrapper {
     /**
      * {@link TypeProvider} for {@link Type}s obtained from a {@link MethodParameter}.
      */
-    public final static class MethodParameterTypeProvider implements TypeProvider {
+    public static final class MethodParameterTypeProvider implements TypeProvider {
         private final String methodName;
 
         private final Class<?>[] parameterTypes;
@@ -312,11 +312,11 @@ public abstract class SerializableTypeWrapper {
             return this.methodParameter;
         }
 
-        public final void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
+        private void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
             inputStream.defaultReadObject();
             try {
                 if (this.methodName != null) {
-                    this.methodParameter = new SimpleParameter( Reflects.getDeclaredMethod(this.declaringClass,this.methodName, this.parameterTypes)
+                    this.methodParameter = new SimpleParameter(Reflects.getDeclaredMethod(this.declaringClass, this.methodName, this.parameterTypes)
                             , this.parameterIndex);
                 } else {
                     this.methodParameter = new SimpleParameter(
@@ -333,7 +333,7 @@ public abstract class SerializableTypeWrapper {
      * {@link TypeProvider} for {@link Type}s obtained by invoking a no-arg method.
      */
     @SuppressWarnings("serial")
-    public final static class MethodInvokeTypeProvider implements TypeProvider {
+    public static final class MethodInvokeTypeProvider implements TypeProvider {
 
         private final TypeProvider provider;
 

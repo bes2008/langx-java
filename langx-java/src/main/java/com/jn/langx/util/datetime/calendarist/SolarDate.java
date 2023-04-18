@@ -29,66 +29,82 @@ public class SolarDate extends CalendaristDate {
         this.dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
     }
 
+    @Override
     public int getYear() {
         return year;
     }
 
+    @Override
     public void setYear(int year) {
         this.year = year;
     }
 
+    @Override
     public int getMonth() {
         return month;
     }
 
+    @Override
     public void setMonth(int month) {
         this.month = month;
     }
 
+    @Override
     public int getDay() {
         return day;
     }
 
+    @Override
     public void setDay(int day) {
         this.day = day;
     }
 
+    @Override
     public int getHour() {
         return hour;
     }
 
+    @Override
     public void setHour(int hour) {
         this.hour = hour;
     }
 
+    @Override
     public int getMinute() {
         return minute;
     }
 
+    @Override
     public void setMinute(int minute) {
         this.minute = minute;
     }
 
+    @Override
     public int getSecond() {
         return second;
     }
 
+    @Override
     public void setSecond(int second) {
         this.second = second;
     }
 
+    @Override
     public int getMillis() {
         return millis;
     }
 
+    @Override
     public void setMillis(int millis) {
         this.millis = millis;
     }
 
+    @Override
     public long getTimestamp() {
         return timestamp;
     }
 
+    @Override
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }

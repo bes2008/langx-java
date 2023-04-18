@@ -5,7 +5,9 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public class Sets {
+    private Sets(){
 
+    }
     public static <E extends Enum<E>> EnumSet<E> newEnumSet(Iterable<E> iterable, Class<E> elementType) {
         return Collects.newEnumSet(iterable, elementType);
     }

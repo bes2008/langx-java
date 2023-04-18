@@ -125,7 +125,7 @@ public class ShutdownHookProcessDestroyer implements InstructionSequenceDestroye
     public boolean add(final InstructionSequence process) {
         synchronized (processes) {
             // if this list is empty, register the shutdown hook
-            if (processes.size() == 0) {
+            if (processes.isEmpty()) {
                 addShutdownHook();
             }
             processes.addElement((ProcessAdapter) process);
@@ -144,7 +144,7 @@ public class ShutdownHookProcessDestroyer implements InstructionSequenceDestroye
     public boolean remove(final InstructionSequence process) {
         synchronized (processes) {
             final boolean processRemoved = processes.removeElement(process);
-            if (processRemoved && processes.size() == 0) {
+            if (processRemoved && processes.isEmpty()) {
                 removeShutdownHook();
             }
             return processRemoved;
