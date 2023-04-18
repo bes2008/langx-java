@@ -12,7 +12,7 @@ public class ForceCloser extends AbstractCloser<Object> {
     }
 
     @Override
-    protected void doClose(Object o) throws Throwable {
+    protected void doClose(Object o) throws Exception {
         Reflects.invokeAnyMethodForcedIfPresent(o, "close", null, null);
     }
 }

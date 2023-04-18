@@ -12,7 +12,7 @@ public class DestroyableCloser extends AbstractCloser<Destroyable> {
     }
 
     @Override
-    protected void doClose(Destroyable destroyable) throws Throwable {
+    protected void doClose(Destroyable destroyable) throws Exception {
         destroyable.destroy();
     }
 }

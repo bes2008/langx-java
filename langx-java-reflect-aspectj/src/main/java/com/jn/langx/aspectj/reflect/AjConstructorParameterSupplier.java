@@ -101,7 +101,7 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
                     }
                 }
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if(ex instanceof ClassNotFoundException) {
                 logger.error("Can't find the class {} when use BCEL load it", classname, ex);
             }else{

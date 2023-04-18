@@ -28,6 +28,4 @@ public abstract class AbstractDateTimeFormatter<DATE_TIME> implements DateTimeFo
         return this.locale;
     }
 
-    @Override
-    public abstract DateTimeFormatter<DATE_TIME> get();
 }

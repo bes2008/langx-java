@@ -750,7 +750,9 @@ public class ASN1Element
         if (o == this) {
             return true;
         }
-
+        if(!(o instanceof ASN1Element)){
+            return false;
+        }
         try {
             final ASN1Element e = (ASN1Element) o;
             return ((type == e.getType()) && Arrays.equals(getValue(), e.getValue()));

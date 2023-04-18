@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CloseableCloser extends AbstractCloser<Closeable> {
     @Override
-    protected void doClose(Closeable closeable) throws Throwable{
+    protected void doClose(Closeable closeable) throws Exception{
         closeable.close();
     }
 

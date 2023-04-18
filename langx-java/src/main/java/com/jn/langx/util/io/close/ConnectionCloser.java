@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ConnectionCloser extends AbstractCloser<Connection> {
     @Override
-    protected void doClose(Connection connection) throws Throwable {
+    protected void doClose(Connection connection) throws Exception {
         connection.close();
     }
 

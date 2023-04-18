@@ -1,6 +1,5 @@
 package com.jn.langx.util.hash.streaming;
 
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.hash.StreamingHasher;
 
@@ -9,7 +8,7 @@ import com.jn.langx.util.hash.StreamingHasher;
  */
 public abstract class AbstractStreamingHasher extends AbstractHasher implements StreamingHasher {
 
-    public AbstractStreamingHasher(){
+    protected AbstractStreamingHasher(){
 
     }
     /**

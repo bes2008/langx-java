@@ -15,7 +15,4 @@ public abstract class AbstractUtcTimestampFormatter<Date> extends AbstractDateTi
         this.tz = tz;
     }
 
-
-    @Override
-    public abstract String format(Date date);
 }

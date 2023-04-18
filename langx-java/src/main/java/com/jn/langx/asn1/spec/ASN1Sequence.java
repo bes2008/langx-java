@@ -365,7 +365,6 @@ public final class ASN1Sequence
             } catch (final ASN1Exception ae) {
                 throw ae;
             } catch (final Exception e) {
-                //Debug.debugException(e);
                 throw new ASN1Exception(ERR_SEQUENCE_BYTES_DECODE_EXCEPTION.get(e), e);
             }
 
@@ -377,10 +376,8 @@ public final class ASN1Sequence
 
             return new ASN1Sequence(elementBytes[0], elements, value);
         } catch (final ASN1Exception ae) {
-            //Debug.debugException(ae);
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(ERR_ELEMENT_DECODE_EXCEPTION.get(e), e);
         }
     }
@@ -433,7 +430,6 @@ public final class ASN1Sequence
         } catch (final ASN1Exception ae) {
             throw ae;
         } catch (final Exception e) {
-            //Debug.debugException(e);
             throw new ASN1Exception(
                     ERR_SEQUENCE_DECODE_EXCEPTION.get(String.valueOf(element), e), e);
         }

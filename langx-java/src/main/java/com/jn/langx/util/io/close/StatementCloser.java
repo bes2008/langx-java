@@ -12,7 +12,7 @@ public class StatementCloser extends AbstractCloser<Statement>{
     }
 
     @Override
-    protected void doClose(Statement statement) throws Throwable {
+    protected void doClose(Statement statement) throws Exception {
         statement.close();
     }
 }

@@ -12,7 +12,7 @@ public class AutoCloseableCloser extends AbstractCloser<AutoCloseable> {
     }
 
     @Override
-    protected void doClose(AutoCloseable autoCloseable) throws Throwable {
+    protected void doClose(AutoCloseable autoCloseable) throws Exception {
         autoCloseable.close();
     }
 }

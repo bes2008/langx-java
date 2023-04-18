@@ -84,8 +84,5 @@ public abstract class AbstractClasspath implements Classpath {
         return pipeline.asSet(true);
     }
 
-    @Override
-    public abstract Set<Location> allResources();
-
 
 }

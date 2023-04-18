@@ -1,5 +1,7 @@
 package com.jn.langx.configuration;
 
+import com.jn.langx.util.collection.Maps;
+
 import java.util.Map;
 
 public class AbstractConfigurationLoader<T extends Configuration> implements ConfigurationLoader<T> {
@@ -10,6 +12,6 @@ public class AbstractConfigurationLoader<T extends Configuration> implements Con
 
     @Override
     public Map<String, T> loadAll() {
-        return null;
+        return Maps.newHashMap();
     }
 }

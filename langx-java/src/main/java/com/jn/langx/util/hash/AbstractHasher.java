@@ -36,18 +36,6 @@ public abstract class AbstractHasher implements Hasher {
         return hash(bytes, bytes.length, seed);
     }
 
-    /**
-     * 一次性计算 hash
-     * <p>
-     * Calculate a hash using bytes from 0 to <code>length</code>, and
-     * the provided seed value
-     *
-     * @param bytes  input bytes
-     * @param length length of the valid bytes to consider
-     * @param seed   seed value
-     * @return hash value
-     */
-    public abstract long hash(byte[] bytes, int length, long seed);
 
 
     /********************************************************************************

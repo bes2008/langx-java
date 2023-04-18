@@ -18,7 +18,7 @@ public abstract class AbstractPushbackSequence<T> implements PushbackSequence<T>
     protected int index = 0;
     protected int mark = 0;
 
-    public AbstractPushbackSequence(String input) {
+    protected AbstractPushbackSequence(String input) {
         this.input = input;
     }
 

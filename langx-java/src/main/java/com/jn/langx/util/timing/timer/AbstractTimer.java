@@ -10,7 +10,7 @@ public abstract class AbstractTimer implements Timer {
     protected volatile boolean running;
 
     protected void setTaskExecutor(Executor e){
-        this.taskExecutor = Objs.useValueIfEmpty(taskExecutor, ImmediateExecutor.INSTANCE);
+        this.taskExecutor = Objs.useValueIfEmpty(e, ImmediateExecutor.INSTANCE);
     }
 
     @Override

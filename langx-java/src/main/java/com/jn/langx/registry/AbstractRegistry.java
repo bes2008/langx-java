@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractRegistry<K,V> extends AbstractInitializable implements Registry<K,V>{
     protected Map<K, V> registry;
 
-    public AbstractRegistry() {
+    protected AbstractRegistry() {
         this(new ConcurrentHashMap<K, V>());
     }
 
-    public AbstractRegistry(Map<K, V> registry) {
+    protected AbstractRegistry(Map<K, V> registry) {
         this.registry = registry;
     }
 
@@ -23,8 +23,6 @@ public abstract class AbstractRegistry<K,V> extends AbstractInitializable implem
         return registry.get(key);
     }
 
-    @Override
-    public abstract void register(V v) ;
 
     @Override
     public void register(K key, V v) {

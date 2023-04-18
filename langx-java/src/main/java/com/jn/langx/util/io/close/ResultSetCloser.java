@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ResultSetCloser extends AbstractCloser<ResultSet> {
     @Override
-    protected void doClose(ResultSet resultSet) throws Throwable {
+    protected void doClose(ResultSet resultSet) throws Exception {
         resultSet.close();
     }
 

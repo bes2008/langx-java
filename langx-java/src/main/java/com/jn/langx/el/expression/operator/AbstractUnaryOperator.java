@@ -34,6 +34,7 @@ public abstract class AbstractUnaryOperator<E extends Expression<R>, R> extends 
         return operateSymbol + " " + target.toString();
     }
 
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().with(operateSymbol).with(target).build();
     }

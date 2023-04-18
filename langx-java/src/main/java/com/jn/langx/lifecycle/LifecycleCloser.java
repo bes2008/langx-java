@@ -12,7 +12,7 @@ public class LifecycleCloser extends AbstractCloser<Lifecycle> {
     }
 
     @Override
-    protected void doClose(Lifecycle lifecycle) throws Throwable {
+    protected void doClose(Lifecycle lifecycle) throws Exception {
         lifecycle.shutdown();
     }
 }

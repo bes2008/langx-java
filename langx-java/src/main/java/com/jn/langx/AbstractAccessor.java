@@ -3,7 +3,6 @@ package com.jn.langx;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.*;
 
@@ -88,7 +87,7 @@ public abstract class AbstractAccessor<K, T> implements Accessor<K, T> {
 
     @Override
     public <E> E getAny(Predicate2<K, E> predicate, K... keys) {
-        E v = Pipeline.of(keys)
+        E v = Pipeline.<K>of(keys)
                 .firstMap(new Function2<Integer, K, E>() {
                     @Override
                     public E apply(Integer keyIndex, K key) {

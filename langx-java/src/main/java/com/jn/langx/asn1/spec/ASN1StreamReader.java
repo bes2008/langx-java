@@ -27,8 +27,7 @@ import static com.jn.langx.asn1.spec.ASN1Messages.*;
  * {@code ASN1StreamReader} instances are not threadsafe and must not be
  * accessed concurrently by multiple threads.
  */
-public final class ASN1StreamReader
-        implements Closeable {
+public final class ASN1StreamReader implements Closeable {
     /**
      * The default maximum element size that will be used for the constructor that
      * does not specify a size.

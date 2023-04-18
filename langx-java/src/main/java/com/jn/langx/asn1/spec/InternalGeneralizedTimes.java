@@ -15,7 +15,7 @@ class InternalGeneralizedTimes {
 
     @NonNull
     public static String encodeGeneralizedTime(@NonNull Date d) {
-        SimpleDateFormat dateFormat = (SimpleDateFormat) GENERALIZED_TIME_FORMATTERS.get();
+        SimpleDateFormat dateFormat = GENERALIZED_TIME_FORMATTERS.get();
         if (dateFormat == null) {
             dateFormat = new SimpleDateFormat("yyyyMMddHHmmss.SSS'Z'");
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

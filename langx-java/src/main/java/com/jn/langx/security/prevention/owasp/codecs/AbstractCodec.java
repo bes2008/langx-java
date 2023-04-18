@@ -16,7 +16,7 @@ public abstract class AbstractCodec<T> implements OwaspCodec<T> {
     /**
      * Default constructor
      */
-    public AbstractCodec() {
+    protected AbstractCodec() {
         for (char c = 0; c < 0xFF; c++) {
             if (c >= 0x30 && c <= 0x39 || c >= 0x41 && c <= 0x5A || c >= 0x61 && c <= 0x7A) {
                 hex[c] = null;
@@ -42,7 +42,7 @@ public abstract class AbstractCodec<T> implements OwaspCodec<T> {
             final int point = input.codePointAt(offset);
             if (Chars.isBmpCodePoint(point)) {
                 //We can then safely cast this to char and maintain legacy behavior.
-                sb.append(encodeCharacter(immune, new Character((char) point)));
+                sb.append(encodeCharacter(immune, (char) point));
             } else {
                 sb.append(encodeCharacter(immune, point));
             }

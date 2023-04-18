@@ -21,23 +21,23 @@ public abstract class AbstractPatternSetMatcher<PatternEntry extends Named> exte
     @Nullable
     private PatternSet<PatternEntry> patternSet;
 
-    public AbstractPatternSetMatcher(@Nullable PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable String defaultPatternExpression) {
+    protected AbstractPatternSetMatcher(@Nullable PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable String defaultPatternExpression) {
         setExpressionParser(expressionParser);
         setDefaultExpression(defaultPatternExpression);
     }
 
-    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet) {
+    protected AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet) {
         setExpressionParser(expressionParser);
         setDefaultPatternSet(defaultPatternSet);
     }
 
-    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet, PatternSet<PatternEntry> patternSet) {
+    protected AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable PatternSet<PatternEntry> defaultPatternSet, PatternSet<PatternEntry> patternSet) {
         setExpressionParser(expressionParser);
         setDefaultPatternSet(defaultPatternSet);
         setPatternSet(patternSet);
     }
 
-    public AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable String defaultPatternSet, String patternSetExpression) {
+    protected AbstractPatternSetMatcher(@NonNull PatternSetExpressionParser<PatternEntry> expressionParser, @Nullable String defaultPatternSet, String patternSetExpression) {
         setExpressionParser(expressionParser);
         setDefaultExpression(defaultPatternSet);
         setPatternExpression(patternSetExpression);

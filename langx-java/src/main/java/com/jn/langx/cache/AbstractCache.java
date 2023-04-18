@@ -222,11 +222,11 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
             if (loader != null) {
                 try {
                     value = loader.get(key);
-                } catch (Throwable ex) {
+                } catch (Exception ex) {
                     logger.warn(errorMessage, key, ex.getMessage(), ex);
                 }
             } else {
-                Holder<Throwable> exceptionHolder = new Holder<Throwable>();
+                Holder<Exception> exceptionHolder = new Holder<Exception>();
                 value = loadByGlobalLoader(key, exceptionHolder);
                 if (value == null) {
                     if (exceptionHolder.get() != null) {
@@ -268,7 +268,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
             return null;
         }
         Preconditions.checkNotNull(key);
-        Holder<Throwable> exceptionHolder = new Holder<Throwable>();
+        Holder<Exception> exceptionHolder = new Holder<Exception>();
         V value = loadByGlobalLoader(key, exceptionHolder);
         if (value == null) {
             if (exceptionHolder.get() != null) {
@@ -307,20 +307,17 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         }, new Predicate<K>() {
             @Override
             public boolean test(K key) {
-                if (timeout != null && timeout.isCancelled()) {
-                    return true;
-                }
-                return false;
+                return timeout != null && timeout.isCancelled();
             }
         });
     }
 
-    private V loadByGlobalLoader(@NonNull K key, @NonNull Holder<Throwable> error) {
+    private V loadByGlobalLoader(@NonNull K key, @NonNull Holder<Exception> error) {
         V value = null;
         if (globalLoader != null) {
             try {
                 value = globalLoader.load(key);
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 error.set(ex);
             }
         }

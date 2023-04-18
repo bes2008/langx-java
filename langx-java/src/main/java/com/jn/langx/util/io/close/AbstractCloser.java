@@ -13,13 +13,13 @@ public abstract class AbstractCloser<I> implements Closer<I> {
         if (i != null) {
             try {
                 doClose(i);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 Loggers.getLogger(getClass()).warn("error occur when close {}, error: {}", Reflects.getFQNClassName(i.getClass()), e.getMessage(), e);
             }
         }
     }
 
-    protected abstract void doClose(@NonNull I i) throws Throwable;
+    protected abstract void doClose(@NonNull I i) throws Exception;
 
 
 }

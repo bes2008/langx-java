@@ -4,6 +4,8 @@ import com.jn.langx.management.BaseService;
 import com.jn.langx.management.MBeanException;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.struct.Entry;
@@ -18,7 +20,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
     protected Map<String, Map<String, Object>> queryMBeanAttrs(final String specifiedOption, final Hashtable<String, String> options, final Collection<String> attributeNames) {
         Preconditions.checkNotNull(specifiedOption, "specialOption is null. ");
         final ObjectName queryOname = this.createObjectName(options);
-        final Set<ObjectInstance> instances = (Set<ObjectInstance>) this.conn.queryMBeans(queryOname, (QueryExp) null);
+        final Set<ObjectInstance> instances = this.conn.queryMBeans(queryOname, (QueryExp) null);
         final List<ObjectName> onames = new ArrayList<ObjectName>();
         if (instances != null && !instances.isEmpty()) {
             for (final ObjectInstance ins : instances) {
@@ -26,12 +28,12 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
             }
         }
         Logger logger = Loggers.getLogger(getClass());
-        Map<String, Map<String, Object>> map = (Map<String, Map<String, Object>>) Collections.EMPTY_MAP;
+        Map<String, Map<String, Object>> map = Maps.newLinkedHashMap();
         if (!onames.isEmpty()) {
             map = new HashMap<String, Map<String, Object>>();
             for (final ObjectName oname : onames) {
                 try {
-                    final List<Attribute> attrList = this.conn.getAttributes(oname, (String[]) attributeNames.toArray(new String[0])).asList();
+                    final List<Attribute> attrList = this.conn.getAttributes(oname, attributeNames.toArray(new String[0])).asList();
                     if (attrList == null || attrList.isEmpty()) {
                         continue;
                     }
@@ -43,7 +45,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
                     }
                     map.put(oname.getKeyProperty(specifiedOption), mbean);
                 } catch (Exception ex) {
-                    logger.error("Get thread pool infoes error", (Throwable) ex);
+                    logger.error("Get thread pool infoes error", ex);
                 }
             }
         }
@@ -59,7 +61,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         final List<ObjectName> objectNames = new LinkedList<ObjectName>();
         if (optionValues == null || optionValues.isEmpty()) {
             final ObjectName oname = this.createObjectName(null);
-            final Set<ObjectName> allValue = (Set<ObjectName>) this.conn.queryNames(oname, (QueryExp) null);
+            final Set<ObjectName> allValue = this.conn.queryNames(oname, (QueryExp) null);
             for (final ObjectName optionObjectName : allValue) {
                 objectNames.add(optionObjectName);
             }
@@ -75,7 +77,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
             Logger logger = Loggers.getLogger(getClass());
             for (final ObjectName oname3 : objectNames) {
                 logger.debug("query attributes : " + attributeNames);
-                final List<Attribute> attrList = this.conn.getAttributes(oname3, (String[]) attributeNames.toArray(new String[0])).asList();
+                final List<Attribute> attrList = this.conn.getAttributes(oname3, attributeNames.toArray(new String[0])).asList();
                 if (attrList == null) {
                     continue;
                 }
@@ -105,7 +107,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         final List<ObjectName> objectNames = new LinkedList<ObjectName>();
         if (optionValues == null || optionValues.isEmpty()) {
             final ObjectName oname = this.createObjectName(null);
-            final Set<ObjectName> allValue = (Set<ObjectName>) this.conn.queryNames(oname, (QueryExp) null);
+            final Set<ObjectName> allValue = this.conn.queryNames(oname, (QueryExp) null);
             for (final ObjectName optionObjectName : allValue) {
                 objectNames.add(optionObjectName);
             }
@@ -141,7 +143,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
                     continue;
                 }
                 logger.debug("query attributes : " + attributeNames);
-                final List<Attribute> attrList = this.conn.getAttributes(oname2, (String[]) attributeNames.toArray(new String[0])).asList();
+                final List<Attribute> attrList = this.conn.getAttributes(oname2,  attributeNames.toArray(new String[0])).asList();
                 if (attrList == null) {
                     continue;
                 }

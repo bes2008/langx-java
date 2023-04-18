@@ -22,6 +22,7 @@ import com.jn.langx.util.collection.iter.OrderedIterator;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -36,7 +37,7 @@ import java.util.*;
  *
  * @since 4.7.6
  */
-public abstract class AbstractLinkedList<E> implements List<E> {
+public abstract class AbstractLinkedList<E> implements List<E> , Serializable {
 
     /*
      * Implementation notes:

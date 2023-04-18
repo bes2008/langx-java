@@ -54,14 +54,14 @@ import java.util.Iterator;
  * @param <E> the type of the elements in the collection
  * @since 4.7.6
  */
-public abstract class AbstractCollectionDecorator<E>
-        implements Collection<E>, Serializable {
+public abstract class AbstractCollectionDecorator<E> implements Collection<E>, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 6249888059822088500L;
 
     /** The collection being decorated */
-    private Collection<E> collection;
+
+    transient private Collection<E> collection;
 
     /**
      * Constructor only used in deserialization, do not use otherwise.
