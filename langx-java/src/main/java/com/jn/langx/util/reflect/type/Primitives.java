@@ -1,12 +1,10 @@
 package com.jn.langx.util.reflect.type;
 
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.collection.Collects;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Primitives {
@@ -30,7 +28,6 @@ public class Primitives {
     static {
         Map<Class<?>, Class<?>> primToWrap = new HashMap<Class<?>, Class<?>>(16);
         Map<Class<?>, Class<?>> wrapToPrim = new HashMap<Class<?>, Class<?>>(16);
-        Map<String, Class> nameToPrim = new HashMap<String, Class>(16);
         add(primToWrap, wrapToPrim, boolean.class, Boolean.class);
         add(primToWrap, wrapToPrim, byte.class, Byte.class);
         add(primToWrap, wrapToPrim, char.class, Character.class);

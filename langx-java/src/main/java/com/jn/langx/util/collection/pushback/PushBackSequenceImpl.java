@@ -63,9 +63,10 @@ public class PushBackSequenceImpl extends AbstractPushbackSequence<Integer> {
      * @return true if it is a hexidecimal digit, false otherwise.
      */
     public static boolean isHexDigit( Integer c ) {
-        if ( c == null ) return false;
-        Integer ch = Integer.valueOf(c);
-        return (ch >= '0' && ch <= '9' ) || (ch >= 'a' && ch <= 'f' ) || (ch >= 'A' && ch <= 'F' );
+        if ( c == null ) {
+            return false;
+        }
+        return (c >= '0' && c <= '9' ) || (c >= 'a' && c <= 'f' ) || (c >= 'A' && c <= 'F' );
     }
 
     /**
@@ -74,9 +75,10 @@ public class PushBackSequenceImpl extends AbstractPushbackSequence<Integer> {
      * @return true if it is an octal digit, false otherwise.
      */
     public static boolean isOctalDigit( Integer c ) {
-        if ( c == null ) return false;
-        Integer ch = Integer.valueOf(c);
-        return ch >= '0' && ch <= '7';
+        if ( c == null ){
+            return false;
+        }
+        return c >= '0' && c <= '7';
     }
 
     /**

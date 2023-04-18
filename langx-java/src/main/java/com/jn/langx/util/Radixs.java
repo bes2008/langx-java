@@ -24,6 +24,9 @@ import java.math.BigInteger;
  * hex：十六进制
  */
 public class Radixs {
+    private Radixs(){
+
+    }
     public static String toRadix(int b, int radix) {
         if (radix <= 0) {
             radix = 10;

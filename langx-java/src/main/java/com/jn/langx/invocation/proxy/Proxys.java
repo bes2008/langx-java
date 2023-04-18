@@ -4,7 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 public class Proxys {
+    private Proxys(){
 
+    }
     public static Class<?> getProxyClass(Class<?>... interfaces) {
         return Proxy.getProxyClass(Thread.currentThread().getContextClassLoader(), interfaces);
     }

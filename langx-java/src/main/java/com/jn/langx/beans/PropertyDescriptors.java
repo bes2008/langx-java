@@ -8,6 +8,9 @@ import java.beans.PropertyDescriptor;
  * @since 4.3.7
  */
 class PropertyDescriptors {
+    private PropertyDescriptors(){
+
+    }
     /**
      * Compare the given {@code PropertyDescriptors} and return {@code true} if
      * they are equivalent, i.e. their read method, write method, property type,

@@ -37,6 +37,7 @@ public class PropertiesEditor extends TextPropertyEditorSupport {
      * @return a Properties object
      * @throws RuntimeException An IOException occured.
      */
+    @Override
     public Object getValue() {
         try {
             // Load the current key=value properties into a Properties object

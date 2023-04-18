@@ -6,7 +6,7 @@ public abstract class Range<T> implements EmptyEvalutible {
     private T start;
     private T endInclusive;
 
-    public Range(T start, T endInclusive){
+    protected Range(T start, T endInclusive){
         setStart(start);
         setEndInclusive(endInclusive);
     }

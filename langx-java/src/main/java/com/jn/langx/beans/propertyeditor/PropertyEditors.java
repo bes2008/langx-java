@@ -62,8 +62,8 @@ public class PropertyEditors {
      * specific editors by appending the org.jboss.util.propertyeditor package
      * to the PropertyEditorManager editor search path.
      */
-    public synchronized static void init() {
-        if (initialized == false) {
+    public static synchronized  void init() {
+        if (!initialized ) {
             AccessController.doPrivileged(Initialize.instance);
             initialized = true;
         }
@@ -286,7 +286,7 @@ public class PropertyEditors {
         boolean trace = log.isTraceEnabled();
         Iterator keys = beanProps.keySet().iterator();
         if (trace)
-            log.trace("Mapping properties for bean: " + bean);
+            log.trace("Mapping properties for bean: {}" ,bean);
         while (keys.hasNext()) {
             String name = (String) keys.next();
             String text = beanProps.getProperty(name);
@@ -323,14 +323,12 @@ public class PropertyEditors {
             }
             Method setter = pd.getWriteMethod();
             if (trace)
-                log.trace("Property editor found for: " + name + ", editor: " + pd + ", setter: " + setter);
+                log.trace("Property editor found for: {}, editor: {}, setter: {}" , name, pd,setter);
             if (setter != null) {
                 Class<?> ptype = pd.getPropertyType();
                 PropertyEditor editor = PropertyEditorManager.findEditor(ptype);
-                if (editor == null) {
-                    if (trace) {
-                        log.trace("Failed to find property editor for: " + name);
-                    }
+                if (editor == null && trace) {
+                        log.trace("Failed to find property editor for: {}" , name);
                 }
                 if (editor != null) {
                     try {

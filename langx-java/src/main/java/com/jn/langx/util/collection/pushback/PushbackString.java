@@ -20,6 +20,7 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
      *
      * @see org.owasp.esapi.codecs.PushbackSequence#index()
      */
+    @Override
     public int index() {
         return index;
     }
@@ -29,6 +30,7 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
      *
      * @see org.owasp.esapi.codecs.PushbackSequence#hasNext()
      */
+    @Override
     public boolean hasNext() {
         if (pushback != null){
             return true;

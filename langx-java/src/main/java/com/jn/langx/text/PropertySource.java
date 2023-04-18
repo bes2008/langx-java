@@ -1,7 +1,6 @@
 package com.jn.langx.text;
 
 import com.jn.langx.Nameable;
-import com.jn.langx.Named;
 
 public interface PropertySource extends Nameable {
 

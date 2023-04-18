@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buffer<BF> {
 
-    public ReadWriteBuffer(long mark, long pos, long lim, long cap) {
+    protected ReadWriteBuffer(long mark, long pos, long lim, long cap) {
         super(mark, pos, lim, cap);
     }
 

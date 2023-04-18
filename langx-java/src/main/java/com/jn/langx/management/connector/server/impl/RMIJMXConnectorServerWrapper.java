@@ -3,6 +3,13 @@ package com.jn.langx.management.connector.server.impl;
 import com.jn.langx.management.connector.server.JMXConnectorServerWrapper;
 import com.jn.langx.util.collection.Arrs;
 
+import javax.management.MBeanServer;
+import javax.management.remote.JMXConnectorServer;
+import javax.management.remote.JMXConnectorServerFactory;
+import javax.management.remote.JMXServiceURL;
+import javax.management.remote.rmi.RMIConnectorServer;
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.management.ManagementFactory;
@@ -13,14 +20,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.util.HashMap;
-
-import javax.management.MBeanServer;
-import javax.management.remote.JMXConnectorServer;
-import javax.management.remote.JMXConnectorServerFactory;
-import javax.management.remote.JMXServiceURL;
-import javax.management.remote.rmi.RMIConnectorServer;
-import javax.rmi.ssl.SslRMIClientSocketFactory;
-import javax.rmi.ssl.SslRMIServerSocketFactory;
 
 
 public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
@@ -144,10 +143,8 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
                                             MBeanServer theMBeanServer) {
 
         // Create the RMI registry
-        if (rmiRegistryPort == -1) {
-            if (!startRmiRegistry) {
-                rmiRegistryPort = rmiServerPort;
-            }
+        if (rmiRegistryPort == -1 && !startRmiRegistry) {
+            rmiRegistryPort = rmiServerPort;
         }
         try {
             LocateRegistry.createRegistry(rmiRegistryPort);

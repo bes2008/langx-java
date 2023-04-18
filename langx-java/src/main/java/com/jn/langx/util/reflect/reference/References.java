@@ -4,6 +4,9 @@ package com.jn.langx.util.reflect.reference;
 import java.lang.ref.ReferenceQueue;
 
 public class References {
+    private References(){
+
+    }
     public static <V> Object newReference(V value, ReferenceType referenceType) {
         return newReference(null, value, referenceType, null, false);
     }

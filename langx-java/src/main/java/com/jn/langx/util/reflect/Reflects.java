@@ -1414,6 +1414,9 @@ public class Reflects {
             if (methodName.startsWith("is")) {
                 fieldName = methodName.substring(2);
             }
+            if(Objs.isEmpty(fieldName)){
+                fieldName = methodName;
+            }
             return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length() > 1 ? fieldName.substring(1) : "");
         }
         return null;

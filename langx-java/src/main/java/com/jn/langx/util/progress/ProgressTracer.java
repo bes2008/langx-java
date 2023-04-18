@@ -58,7 +58,7 @@ public class ProgressTracer extends AbstractInitializable implements EventPublis
 
     @Override
     public void setEventPublisher(EventPublisher publisher) {
-        this.eventPublisher = eventPublisher;
+        this.eventPublisher = publisher;
     }
 
     public GenericRegistry<ProgressSource> getTracing() {

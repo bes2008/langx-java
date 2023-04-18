@@ -5,6 +5,9 @@ import com.jn.langx.util.Objs;
 import java.beans.PropertyDescriptor;
 
 public class PropertyDescriptors {
+    private PropertyDescriptors(){
+
+    }
     /**
      * Compare the given {@code PropertyDescriptors} and return {@code true} if
      * they are equivalent, i.e. their read method, write method, property type,

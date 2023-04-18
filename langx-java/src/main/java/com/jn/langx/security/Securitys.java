@@ -19,7 +19,7 @@ public class Securitys {
     private static volatile boolean providersLoaded = false;
     private static LangxSecurityProvider langxSecurityProvider;
 
-    private Securitys() {
+    protected Securitys() {
 
     }
 
