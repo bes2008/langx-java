@@ -83,7 +83,7 @@ public class ObjectNavigator implements Navigator<Object> {
 
     @Override
     public <E> List<E> getList(Object context, String expression) {
-        return Pipeline.<E>of((Object) get(context, expression)).asList();
+        return Pipeline.<E>of(get(context, expression)).asList();
     }
 
     private <T> T navigate(Object context, List<String> segments) {

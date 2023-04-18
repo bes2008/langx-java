@@ -20,7 +20,7 @@ public class VMIdGenerator implements IdGenerator<byte[]> {
                     String ip = Nets.getLocalIp();
                     this.address = ip.getBytes(Charsets.UTF_8);
                     address = this.address;
-                } catch (Throwable ex) {
+                } catch (Exception ex) {
                     throw Throwables.wrapAsRuntimeException(ex);
                 }
             }

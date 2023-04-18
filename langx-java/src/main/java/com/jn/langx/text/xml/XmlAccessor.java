@@ -112,7 +112,7 @@ public class XmlAccessor {
         }
     }
 
-    public String getElementAttribute(final String xmlFilePath, final String elementXpath, final String attributeName) throws Exception {
+    public String getElementAttribute(final String xmlFilePath, final String elementXpath, final String attributeName) {
         return Xmls.handleXml(xmlFilePath, new XmlDocumentHandler<String>() {
             @Override
             public String handle(final Document doc) throws Exception {

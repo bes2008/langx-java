@@ -185,8 +185,8 @@ public class Utf8s {
      * e.g. : \uF23F
      * e.g. ：\x{we}
      */
-    public final static Regexp ESCAPED_CHAR_REGEXP = Regexps.createRegexp("(?:(?:\\\\0)[0-3][0-7]{2})|(?:(?:\\\\0)[0-7]{1,2})|(?:(?:\\\\x)[0-9a-fA-F]{2})|(?:(?:\\\\u)[0-9a-fA-F]{4})");
-    public final static Regexp X16_CHAR_REGEXP=Regexps.createRegexp("(?:(?:\\\\x)[0-9a-fA-F]{2})");
+    public static final Regexp ESCAPED_CHAR_REGEXP = Regexps.createRegexp("(?:(?:\\\\0)[0-3][0-7]{2})|(?:(?:\\\\0)[0-7]{1,2})|(?:(?:\\\\x)[0-9a-fA-F]{2})|(?:(?:\\\\u)[0-9a-fA-F]{4})");
+    public static final Regexp X16_CHAR_REGEXP=Regexps.createRegexp("(?:(?:\\\\x)[0-9a-fA-F]{2})");
 
     /**
      * 0x5C

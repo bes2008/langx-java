@@ -4,6 +4,9 @@ import javax.management.ObjectName;
 import java.util.Set;
 
 public class ObjectNames {
+    private ObjectNames(){
+
+    }
     public static Set<ObjectName> queryObjectNames(JMXConnection connection, String objectName) throws MBeanException {
         ObjectName oname = null;
         try {

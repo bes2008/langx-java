@@ -312,7 +312,6 @@ public class PatternWithGroups {
             }
         }
 
-        // TODO check for consistency of different capturing groups
         // that must have the same value
 
         return true;

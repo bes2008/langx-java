@@ -6,6 +6,9 @@ import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.reflect.Reflects;
 
 public class Orders {
+    private Orders(){
+
+    }
     public static final Supplier<Object, Integer> DEFAULT_ORDER_SUPPLIER = new Supplier<Object, Integer>() {
         @Override
         public Integer get(Object input) {

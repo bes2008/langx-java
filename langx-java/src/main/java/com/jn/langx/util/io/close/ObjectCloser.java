@@ -25,6 +25,9 @@ public class ObjectCloser {
         });
     }
 
+    private ObjectCloser(){
+
+    }
     public static void register(final Closer closer) {
         if (closer != null) {
             Collects.forEach(closer.applyTo(), new Consumer<Class>() {
@@ -44,8 +47,8 @@ public class ObjectCloser {
         if(obj instanceof Closeable){
             try {
                 ((Closeable) obj).close();
-            }catch (Throwable e){
-                Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", obj.toString());
+            }catch (Exception e){
+                Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", obj);
             }
         }
         Class type = obj.getClass();

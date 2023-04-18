@@ -3,6 +3,7 @@ package com.jn.langx.text.xml;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.navigation.Navigator;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
@@ -51,7 +52,7 @@ public class XmlNodeNavigator implements Navigator<Node> {
             final XPathExpression exp = xpath.compile(pathExpression);
             Node node = (Node) exp.evaluate(context, XPathConstants.NODE);
             return node;
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             return null;
         }
@@ -67,9 +68,9 @@ public class XmlNodeNavigator implements Navigator<Node> {
             final XPathExpression exp = xpath.compile(xpathExpression);
             NodeList nodeList = (NodeList) exp.evaluate(context, XPathConstants.NODESET);
             return Pipeline.<Node>of(new NodeListIterator(nodeList)).asList();
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
-            return null;
+            return Lists.newArrayList();
         }
     }
 

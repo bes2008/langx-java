@@ -276,12 +276,12 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> implements C
 
         @Override
         public void set(E e) {
-
+            // ignore it
         }
 
         @Override
         public void add(E e) {
-
+            // ignore it
         }
     }
 
@@ -440,7 +440,7 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> implements C
     }
 
     public void trimToSize() {
-
+        // ignore it
     }
 
     public void ensureCapacity(int minCapacity) {

@@ -2,8 +2,8 @@ package com.jn.langx.util.id.vm;
 
 
 import com.jn.langx.util.collection.PrimitiveArrays;
-import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.hash.HashCodeBuilder;
+import com.jn.langx.util.os.Platform;
 
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -29,7 +29,6 @@ import java.util.Arrays;
  *
  * <p>Numbers are converted to radix(Character.MAX_RADIX) when converting
  *    to strings.
- *
  */
 public class VMID implements Serializable {
     /**
@@ -190,7 +189,7 @@ public class VMID implements Serializable {
      *
      * @return Virtual machine identifier.
      */
-    public synchronized static VMID getInstance() {
+    public static synchronized VMID getInstance() {
         if (instance == null) {
             instance = create();
         }

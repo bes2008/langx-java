@@ -40,14 +40,4 @@ public class MaskSet extends LinkedHashSet<Integer> {
         int mask = ((Number) o).intValue();
         return Masks.containsOperand(this.masks, mask);
     }
-
-    @Override
-    public Iterator<Integer> iterator() {
-        return super.iterator();
-    }
-
-    @Override
-    public int size() {
-        return super.size();
-    }
 }

@@ -24,6 +24,9 @@ import java.util.Map;
  * @since 4.5.0
  */
 public class PatternDefinitions {
+    private PatternDefinitions (){
+
+    }
     private static final Logger logger = Loggers.getLogger(PatternDefinitions.class);
 
     private static final Regexp DEFINITION_PATTERN = Regexps.createRegexp("^(?<name>\\w+)\\s+(?<expression>.+)$");

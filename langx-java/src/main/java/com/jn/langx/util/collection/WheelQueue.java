@@ -37,7 +37,7 @@ public class WheelQueue<E> implements Queue<E> {
         this.lock.lock();
         try {
             if (size() > 0) {
-                return (E) this.list.remove(0);
+                return this.list.remove(0);
             }
             throw new NoSuchElementException();
         } finally {
@@ -49,7 +49,7 @@ public class WheelQueue<E> implements Queue<E> {
     public E poll() {
         this.lock.lock();
         try {
-            return (E) (size() > 0 ? this.list.remove(0) : null);
+            return (size() > 0 ? this.list.remove(0) : null);
         } finally {
             this.lock.unlock();
         }
@@ -67,7 +67,7 @@ public class WheelQueue<E> implements Queue<E> {
     public E get() {
         this.lock.lock();
         try {
-            return (E) get(true);
+            return get(true);
         } finally {
             this.lock.unlock();
         }
@@ -91,7 +91,7 @@ public class WheelQueue<E> implements Queue<E> {
     public E peek() {
         this.lock.lock();
         try {
-            return (E) get(false);
+            return get(false);
         } finally {
             this.lock.unlock();
         }

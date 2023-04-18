@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.StrTokenizer;
+import com.jn.langx.util.collection.Lists;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -137,7 +138,7 @@ public final class OID implements Serializable, Comparable<OID> {
     @Nullable()
     private static List<Integer> toList(@Nullable final int... components) {
         if (components == null) {
-            return null;
+            return Lists.newArrayList();
         }
 
         final ArrayList<Integer> compList = new ArrayList<Integer>(components.length);
@@ -161,7 +162,7 @@ public final class OID implements Serializable, Comparable<OID> {
     public static List<Integer> parseComponents(@Nullable final String oidString) {
         if ((oidString == null) || oidString.isEmpty() ||
                 oidString.startsWith(".") || oidString.endsWith(".") ||  (oidString.indexOf("..") > 0)) {
-            return null;
+            return Lists.newArrayList();
         }
 
         final StrTokenizer tokenizer = new StrTokenizer(oidString, ".");
@@ -171,7 +172,7 @@ public final class OID implements Serializable, Comparable<OID> {
             try {
                 compList.add(Integer.parseInt(token));
             } catch (final Exception e) {
-                return null;
+                return Lists.newArrayList();
             }
         }
 

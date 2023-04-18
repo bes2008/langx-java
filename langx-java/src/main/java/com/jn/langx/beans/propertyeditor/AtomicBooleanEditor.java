@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * AtomicBoolean property editor.
  */
 public class AtomicBooleanEditor extends PropertyEditorSupport {
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text))
             setValue(null);

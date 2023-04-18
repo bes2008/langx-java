@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * AtomicInteger property editor.
  */
 public class AtomicIntegerEditor extends PropertyEditorSupport {
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text)) {
             setValue(null);

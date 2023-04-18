@@ -6,7 +6,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 public class WheelTimers {
+    private WheelTimers(){
 
+    }
     public static HashedWheelTimer newHashedWheelTimer() {
         return newHashedWheelTimer(null);
     }

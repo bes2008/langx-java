@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 
 public class OnClassesConditions {
     private static final Logger logger = Loggers.getLogger(OnClassesConditions.class);
+    private OnClassesConditions(){
 
+    }
     public static boolean anyPresent(final Class klass, boolean defaultValueIfMissOnClassesAnnotation) {
         OnClasses annotation = Reflects.getAnnotation(klass, OnClasses.class);
         if (annotation != null) {

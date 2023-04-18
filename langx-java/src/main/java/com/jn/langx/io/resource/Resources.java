@@ -24,7 +24,9 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 public class Resources {
+    private Resources(){
 
+    }
     public static <V extends Resource> V loadResource(@NonNull Location location) {
         return Locations.<V>newResource(location.toString());
     }

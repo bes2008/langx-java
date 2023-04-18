@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * AtomicLong property editor.
  */
 public class AtomicLongEditor extends PropertyEditorSupport {
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text)) {
             setValue(null);

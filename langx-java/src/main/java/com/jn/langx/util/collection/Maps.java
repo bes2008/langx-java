@@ -1,7 +1,6 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.Maths;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.function.Supplier;
@@ -9,10 +8,7 @@ import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.struct.Pair;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import static com.jn.langx.util.Preconditions.checkNotNull;
 
 
 public class Maps {

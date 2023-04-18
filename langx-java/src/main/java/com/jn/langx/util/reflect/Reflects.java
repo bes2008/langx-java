@@ -1054,7 +1054,7 @@ public class Reflects {
                 }
                 return null;
             }
-            return invokeMethodOrNull(method, object, parameters, throwException);
+            return invoke(method, object, parameters, force, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
@@ -1077,7 +1077,7 @@ public class Reflects {
                 }
                 return null;
             }
-            return invokeMethodOrNull(method, object, parameters, throwException);
+            return invoke(method, object, parameters, force, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
@@ -1100,7 +1100,7 @@ public class Reflects {
                 }
                 return null;
             }
-            return invokeMethodOrNull(method, object, parameters, throwException);
+            return invoke(method, object, parameters, force, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         }
@@ -1594,8 +1594,6 @@ public class Reflects {
     }
 
     /**
-     * @param parent
-     * @param child
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child) {
@@ -1604,8 +1602,6 @@ public class Reflects {
 
 
     /**
-     * @param parent
-     * @param child
      * @since 4.3.2
      */
     public static boolean isSubClassOrEquals(@NonNull final String parent, @NonNull Class child, final boolean checkSuperClass, final boolean checkInterfaces) {
