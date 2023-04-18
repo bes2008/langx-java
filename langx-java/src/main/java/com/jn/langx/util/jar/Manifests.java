@@ -14,7 +14,9 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 public class Manifests {
+    private Manifests(){
 
+    }
     public static Manifest loadManifest() {
         URL url = Reflects.getCodeLocation(Manifests.class);
         if (url.getPath().endsWith("target/classes/")) {

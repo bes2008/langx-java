@@ -12,7 +12,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class Maths {
+    private Maths(){
 
+    }
     /**
      * 求最大值
      */

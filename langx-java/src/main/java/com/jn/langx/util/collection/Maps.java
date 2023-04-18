@@ -12,7 +12,9 @@ import java.util.concurrent.ConcurrentMap;
 
 
 public class Maps {
+    private Maps(){
 
+    }
     public static <K, V> V get(@NonNull Map<K, V> map, @NonNull K key) {
         return map.get(key);
     }

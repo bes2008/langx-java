@@ -7,126 +7,126 @@ package com.jn.langx.util;
 public interface JvmConstants {
 
     // Major and minor version of the code
-    public final static short MAJOR_1_1 = 45;
-    public final static short MINOR_1_1 = 3;
-    public final static short MAJOR_1_2 = 46;
-    public final static short MINOR_1_2 = 0;
-    public final static short MAJOR_1_3 = 47;
-    public final static short MINOR_1_3 = 0;
-    public final static short MAJOR_1_4 = 48;
-    public final static short MINOR_1_4 = 0;
-    public final static short MAJOR_1_5 = 49;
-    public final static short MINOR_1_5 = 0;
-    public final static short MAJOR_1_6 = 50;
-    public final static short MINOR_1_6 = 0;
-    public final static short MAJOR_1_7 = 51;
-    public final static short MINOR_1_7 = 0;
-    public final static short MAJOR_1_8 = 52;
-    public final static short MINOR_1_8 = 0;
-    public final static short MAJOR_1_9 = 53;
-    public final static short MINOR_1_9 = 0;
-    public final static short MAJOR_10 = 54;
-    public final static short MINOR_10 = 0;
-    public final static short MAJOR_11 = 55;
-    public final static short MINOR_11 = 0;
-    public final static short MAJOR_12 = 56;
-    public final static short MINOR_12 = 0;
-    public final static short MAJOR_13 = 57;
-    public final static short MINOR_13 = 0;
-    public final static short MAJOR_14 = 58;
-    public final static short MINOR_14 = 0;
-    public final static short MAJOR_15 = 59;
-    public final static short MINOR_15 = 0;
-    public final static short MAJOR_16 = 60;
-    public final static short MINOR_16 = 0;
-    public final static short MAJOR_17 = 61;
-    public final static short MINOR_17 = 0;
-    public final static short MAJOR_18 = 62;
-    public final static short MINOR_18 = 0;
-    public final static short MAJOR_19 = 63;
-    public final static short MINOR_19 = 0;
+    public static final short MAJOR_1_1 = 45;
+    public static final short MINOR_1_1 = 3;
+    public static final short MAJOR_1_2 = 46;
+    public static final short MINOR_1_2 = 0;
+    public static final short MAJOR_1_3 = 47;
+    public static final short MINOR_1_3 = 0;
+    public static final short MAJOR_1_4 = 48;
+    public static final short MINOR_1_4 = 0;
+    public static final short MAJOR_1_5 = 49;
+    public static final short MINOR_1_5 = 0;
+    public static final short MAJOR_1_6 = 50;
+    public static final short MINOR_1_6 = 0;
+    public static final short MAJOR_1_7 = 51;
+    public static final short MINOR_1_7 = 0;
+    public static final short MAJOR_1_8 = 52;
+    public static final short MINOR_1_8 = 0;
+    public static final short MAJOR_1_9 = 53;
+    public static final short MINOR_1_9 = 0;
+    public static final short MAJOR_10 = 54;
+    public static final short MINOR_10 = 0;
+    public static final short MAJOR_11 = 55;
+    public static final short MINOR_11 = 0;
+    public static final short MAJOR_12 = 56;
+    public static final short MINOR_12 = 0;
+    public static final short MAJOR_13 = 57;
+    public static final short MINOR_13 = 0;
+    public static final short MAJOR_14 = 58;
+    public static final short MINOR_14 = 0;
+    public static final short MAJOR_15 = 59;
+    public static final short MINOR_15 = 0;
+    public static final short MAJOR_16 = 60;
+    public static final short MINOR_16 = 0;
+    public static final short MAJOR_17 = 61;
+    public static final short MINOR_17 = 0;
+    public static final short MAJOR_18 = 62;
+    public static final short MINOR_18 = 0;
+    public static final short MAJOR_19 = 63;
+    public static final short MINOR_19 = 0;
 
-    public final static int PREVIEW_MINOR_VERSION = 65535;
+    public static final int PREVIEW_MINOR_VERSION = 65535;
 
     // Defaults
-    public final static short MAJOR = MAJOR_1_1;
-    public final static short MINOR = MINOR_1_1;
+    public static final short MAJOR = MAJOR_1_1;
+    public static final short MINOR = MINOR_1_1;
 
     /** Maximum value for an unsigned short */
-    public final static int MAX_SHORT = 65535; // 2^16 - 1
+    public static final int MAX_SHORT = 65535; // 2^16 - 1
 
     /** Maximum value for an unsigned byte */
-    public final static int MAX_BYTE = 255; // 2^8 - 1
+    public static final int MAX_BYTE = 255; // 2^8 - 1
 
     /** Access flags for classes, fields and methods */
-    public final static short ACC_PUBLIC = 0x0001;
-    public final static short ACC_PRIVATE = 0x0002;
-    public final static short ACC_PROTECTED = 0x0004;
-    public final static short ACC_STATIC = 0x0008;
+    public static final short ACC_PUBLIC = 0x0001;
+    public static final short ACC_PRIVATE = 0x0002;
+    public static final short ACC_PROTECTED = 0x0004;
+    public static final short ACC_STATIC = 0x0008;
 
-    public final static short ACC_FINAL = 0x0010;
-    public final static short ACC_SYNCHRONIZED = 0x0020;
-    public final static short ACC_VOLATILE = 0x0040;
-    public final static short ACC_TRANSIENT = 0x0080;
+    public static final short ACC_FINAL = 0x0010;
+    public static final short ACC_SYNCHRONIZED = 0x0020;
+    public static final short ACC_VOLATILE = 0x0040;
+    public static final short ACC_TRANSIENT = 0x0080;
 
-    public final static short ACC_NATIVE = 0x0100;
-    public final static short ACC_INTERFACE = 0x0200;
-    public final static short ACC_ABSTRACT = 0x0400;
-    public final static short ACC_STRICT = 0x0800;
+    public static final short ACC_NATIVE = 0x0100;
+    public static final short ACC_INTERFACE = 0x0200;
+    public static final short ACC_ABSTRACT = 0x0400;
+    public static final short ACC_STRICT = 0x0800;
 
-    public final static short ACC_SYNTHETIC = 0x1000;
+    public static final short ACC_SYNTHETIC = 0x1000;
 
-    public final static short ACC_ANNOTATION = 0x2000;
-    public final static short ACC_ENUM = 0x4000;
-    public final static int ACC_MODULE = 0x8000;
-    public final static short ACC_BRIDGE = 0x0040;
-    public final static short ACC_VARARGS = 0x0080;
+    public static final short ACC_ANNOTATION = 0x2000;
+    public static final short ACC_ENUM = 0x4000;
+    public static final int ACC_MODULE = 0x8000;
+    public static final short ACC_BRIDGE = 0x0040;
+    public static final short ACC_VARARGS = 0x0080;
 
     // Module related
     // Indicates that any module which depends on the current module,
     // implicitly declares a dependence on the module indicated by this entry.
-    public final static int MODULE_ACC_TRANSITIVE   = 0x0020;
+    public static final int MODULE_ACC_TRANSITIVE   = 0x0020;
     // Indicates that this dependence is mandatory in the static phase, i.e., at
     // compile time, but is optional in the dynamic phase, i.e., at run time.
-    public final static int MODULE_ACC_STATIC_PHASE = 0x0040;
+    public static final int MODULE_ACC_STATIC_PHASE = 0x0040;
     // Indicates that this dependence was not explicitly or implicitly declared
     // in the source of the module declaration.
-    public final static int MODULE_ACC_SYNTHETIC    = 0x1000;
+    public static final int MODULE_ACC_SYNTHETIC    = 0x1000;
     // Indicates that this dependence was implicitly declared in the source of
     // the module declaration
-    public final static int MODULE_ACC_MANDATED     = 0x8000;
+    public static final int MODULE_ACC_MANDATED     = 0x8000;
 
     // Applies to classes compiled by new compilers only
-    public final static short ACC_SUPER = 0x0020;
+    public static final short ACC_SUPER = 0x0020;
 
-    public final static short MAX_ACC_FLAG = ACC_STRICT;
+    public static final short MAX_ACC_FLAG = ACC_STRICT;
 
-    public final static String[] ACCESS_NAMES = { "public", "private", "protected", "static", "final", "synchronized", "volatile",
+    public static final String[] ACCESS_NAMES = { "public", "private", "protected", "static", "final", "synchronized", "volatile",
             "transient", "native", "interface", "abstract", "strictfp" };
 
     /** Tags in constant pool to denote type of constant */
-    public final static byte CONSTANT_Utf8 = 1;
-    public final static byte CONSTANT_Integer = 3;
-    public final static byte CONSTANT_Float = 4;
-    public final static byte CONSTANT_Long = 5;
-    public final static byte CONSTANT_Double = 6;
-    public final static byte CONSTANT_Class = 7;
-    public final static byte CONSTANT_Fieldref = 9;
-    public final static byte CONSTANT_String = 8;
-    public final static byte CONSTANT_Methodref = 10;
-    public final static byte CONSTANT_InterfaceMethodref = 11;
-    public final static byte CONSTANT_NameAndType = 12;
+    public static final byte CONSTANT_Utf8 = 1;
+    public static final byte CONSTANT_Integer = 3;
+    public static final byte CONSTANT_Float = 4;
+    public static final byte CONSTANT_Long = 5;
+    public static final byte CONSTANT_Double = 6;
+    public static final byte CONSTANT_Class = 7;
+    public static final byte CONSTANT_Fieldref = 9;
+    public static final byte CONSTANT_String = 8;
+    public static final byte CONSTANT_Methodref = 10;
+    public static final byte CONSTANT_InterfaceMethodref = 11;
+    public static final byte CONSTANT_NameAndType = 12;
 
-    public final static byte CONSTANT_MethodHandle = 15;
-    public final static byte CONSTANT_MethodType = 16;
-    public final static byte CONSTANT_Dynamic = 17;
-    public final static byte CONSTANT_InvokeDynamic = 18;
+    public static final byte CONSTANT_MethodHandle = 15;
+    public static final byte CONSTANT_MethodType = 16;
+    public static final byte CONSTANT_Dynamic = 17;
+    public static final byte CONSTANT_InvokeDynamic = 18;
 
-    public final static byte CONSTANT_Module = 19;
-    public final static byte CONSTANT_Package = 20;
+    public static final byte CONSTANT_Module = 19;
+    public static final byte CONSTANT_Package = 20;
 
 
-    public final static String[] CONSTANT_NAMES = { "", "CONSTANT_Utf8", "", "CONSTANT_Integer", "CONSTANT_Float", "CONSTANT_Long",
+    public static final String[] CONSTANT_NAMES = { "", "CONSTANT_Utf8", "", "CONSTANT_Integer", "CONSTANT_Float", "CONSTANT_Long",
             "CONSTANT_Double", "CONSTANT_Class", "CONSTANT_String", "CONSTANT_Fieldref", "CONSTANT_Methodref",
             "CONSTANT_InterfaceMethodref", "CONSTANT_NameAndType","","","CONSTANT_MethodHandle","CONSTANT_MethodType","","CONSTANT_InvokeDynamic",
             // J9:
@@ -136,16 +136,16 @@ public interface JvmConstants {
      * The name of the static initializer, also called &quot;class initialization method&quot; or &quot;interface initialization
      * method&quot;. This is &quot;&lt;clinit&gt;&quot;.
      */
-    public final static String STATIC_INITIALIZER_NAME = "<clinit>";
+    public static final String STATIC_INITIALIZER_NAME = "<clinit>";
 
     /**
      * The name of every constructor method in a class, also called &quot;instance initialization method&quot;. This is
      * &quot;&lt;init&gt;&quot;.
      */
-    public final static String CONSTRUCTOR_NAME = "<init>";
+    public static final String CONSTRUCTOR_NAME = "<init>";
 
     /** The names of the interfaces implemented by arrays */
-    public final static String[] INTERFACES_IMPLEMENTED_BY_ARRAYS = { "java.lang.Cloneable", "java.io.Serializable" };
+    public static final String[] INTERFACES_IMPLEMENTED_BY_ARRAYS = { "java.lang.Cloneable", "java.io.Serializable" };
 
     /**
      * Limitations of the Java Virtual Machine. See The Java Virtual Machine Specification, Second Edition, page 152, chapter 4.10.

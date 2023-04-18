@@ -1,7 +1,6 @@
 package com.jn.langx.commandline.launcher;
 
 import com.jn.langx.commandline.CommandLine;
-import com.jn.langx.commandline.InstructionSequence;
 import com.jn.langx.commandline.ProcessAdapter;
 import com.jn.langx.commandline.environment.EnvironmentUtils;
 

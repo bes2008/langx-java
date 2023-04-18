@@ -5,13 +5,19 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.spi.CommonServiceProvider;
+
 /**
  * @since 5.2.0
  */
 public class Maskings {
-    public final static class Strategy {
+
+    public static final class Strategy {
         public static String PHONE = "phone";
         public static String STAR_6 = "STAR_6";
+
+        private Strategy(){
+
+        }
     }
 
     private static final GenericRegistry<Masker> registry = new GenericRegistry<Masker>();
@@ -39,5 +45,9 @@ public class Maskings {
 
     public static void registerMasker(Masker masker) {
         registry.register(masker);
+    }
+
+    private Maskings() {
+
     }
 }

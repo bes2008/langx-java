@@ -28,7 +28,7 @@ public class LoopBackoffPolicy extends BackoffPolicy {
 
     @Override
     protected long getBackoffTimeInternal(RetryConfig config, int attempts) {
-        Preconditions.checkTrue(this.candidateBackoff.size() > 0);
+        Preconditions.checkTrue(!this.candidateBackoff.isEmpty());
         int index = (attempts - 1) % this.candidateBackoff.size();
         long backoff = this.candidateBackoff.get(index);
         return backoff;

@@ -24,10 +24,12 @@ import java.beans.PropertyEditorSupport;
  * Locale editor.
  */
 public class LocaleEditor extends PropertyEditorSupport {
+    @Override
     public void setAsText(String text) {
         setValue(text);
     }
 
+    @Override
     public String getAsText() {
         Object value = getValue();
         return (value != null ? value.toString() : "");

@@ -4,6 +4,9 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.net.URLs;
 
 public class Locations {
+    private Locations(){
+
+    }
     public static Location parseLocation(String location) {
         Resource resource = new DefaultResourceLoader().loadResource(location);
         if (resource == null) {

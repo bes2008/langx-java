@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 public class Loggers {
+    private Loggers(){
+
+    }
 
     public static void log(@NonNull Throwable ex) {
         log(1, null, null, ex, (Supplier<Object[], String>) null);

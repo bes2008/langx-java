@@ -10,6 +10,9 @@ import java.util.Date;
  * @since 5.2.0
  */
 public class Lunars {
+    private Lunars() {
+    }
+
 
     /**
      * 获取JAVA日期处理实例

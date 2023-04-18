@@ -1687,4 +1687,8 @@ public class Reflects {
         Class clazz = array.getClass();
         return clazz.getComponentType();
     }
+
+    private Reflects(){
+
+    }
 }

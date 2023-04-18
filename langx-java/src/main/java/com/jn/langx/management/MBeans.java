@@ -6,6 +6,9 @@ import javax.management.ObjectName;
 import java.util.*;
 
 public class MBeans {
+    private MBeans(){
+
+    }
     public static Map<String, Object> getAttributes(JMXConnection connection, String objectName, List<String> attributeNames) {
         MBean mbean = getMBean(connection, objectName, attributeNames);
         return mbean.getAttributeMap();

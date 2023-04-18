@@ -28,6 +28,7 @@ public class LongEditor extends PropertyEditorSupport {
     /**
      * Map the argument text into and Integer using Integer.valueOf.
      */
+    @Override
     public void setAsText(final String text) {
         if (PropertyEditors.isNull(text)) {
             setValue(null);

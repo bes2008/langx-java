@@ -29,6 +29,7 @@ public enum Level implements CommonEnum {
     /**
      * Returns the string representation of this Level.
      */
+    @Override
     public String toString() {
         return this.getName();
     }

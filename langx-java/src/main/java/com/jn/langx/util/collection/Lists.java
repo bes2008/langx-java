@@ -5,6 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Lists {
+    private Lists(){}
     public static <E> ArrayList<E> newArrayList() {
         return Collects.newArrayList();
     }

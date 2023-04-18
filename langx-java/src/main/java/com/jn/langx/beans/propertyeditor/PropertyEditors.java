@@ -394,8 +394,9 @@ public class PropertyEditors {
             PropertyEditorManager.registerEditor(Character.TYPE, CharacterEditor.class);
 
             try {
-                if (System.getProperty("com.jn.langx.util.null.disabled") != null)
+                if (System.getProperty("com.jn.langx.util.null.disabled") != null) {
                     disableIsNull = true;
+                }
             } catch (Throwable ignored) {
                 Logger log = Loggers.getLogger(PropertyEditors.class);
                 log.error("Error retrieving system property com.jn.langx.util.null.disabled", ignored);

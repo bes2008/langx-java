@@ -32,7 +32,9 @@ import java.util.Collection;
  * @since 3.4.2
  */
 public abstract class Lifecycles {
+    private Lifecycles(){
 
+    }
 
     public static void init(Object o) {
         if (o instanceof Initializable) {

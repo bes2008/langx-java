@@ -25,7 +25,7 @@ public class LongConverter implements Converter<Object, Long> {
             return 0L;
         }
         if (input instanceof Boolean) {
-            return (Boolean) input ? 1L : 0L;
+            return ((Boolean) input).booleanValue() ? 1L : 0L;
         }
         if (input instanceof Number) {
             return Numbers.convertNumberToTargetClass((Number) input, Long.class);

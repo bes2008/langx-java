@@ -43,7 +43,7 @@ public abstract class LogOutputStream extends OutputStream {
      * Creates a new instance of this class.
      * Uses the default level of 999.
      */
-    public LogOutputStream() {
+    protected LogOutputStream() {
         this(999);
     }
 
@@ -52,7 +52,7 @@ public abstract class LogOutputStream extends OutputStream {
      *
      * @param level loglevel used to log data written to this stream.
      */
-    public LogOutputStream(final int level) {
+    protected LogOutputStream(final int level) {
         this.level = level;
     }
 

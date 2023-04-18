@@ -1,5 +1,6 @@
 package com.jn.langx.util.bit;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -28,7 +29,7 @@ public final class Masks {
      */
     public static int createMask(Collection<Integer> operands) {
         Preconditions.checkNotNull(operands, "operand is required");
-        Preconditions.checkArgument(operands.size() >= 1, "operands is required");
+        Preconditions.checkArgument(Objs.isNotEmpty(operands), "operands is required");
         int mask = 0;
         for (int operand : operands) {
             mask = addOperand(mask, operand);

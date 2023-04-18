@@ -94,11 +94,12 @@ public final class Matrix {
     public NumVector getColumn(final int column) {
         validate(column, this.width);
         return new NumVector.Modified(this.vector) {
+            @Override
             public double get(int row) {
                 Matrix.validate(row, Matrix.this.height);
                 return super.get(column + row * Matrix.this.width);
             }
-
+            @Override
             public int getSize() {
                 return Matrix.this.height;
             }
@@ -112,11 +113,12 @@ public final class Matrix {
     public NumVector getRow(final int row) {
         validate(row, this.height);
         return new Modified(this.vector) {
+            @Override
             public double get(int column) {
                 Matrix.validate(column, Matrix.this.width);
                 return super.get(column + row * Matrix.this.width);
             }
-
+            @Override
             public int getSize() {
                 return Matrix.this.width;
             }

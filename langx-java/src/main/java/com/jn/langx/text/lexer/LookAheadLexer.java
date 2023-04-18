@@ -17,13 +17,13 @@ public abstract class LookAheadLexer extends AbstractLexer {
 
     private final MutableRandomAccessQueue<Integer> myEndOffsetCache;
 
-    public LookAheadLexer(@NonNull AbstractLexer baseLexer, int capacity) {
+    protected LookAheadLexer(@NonNull AbstractLexer baseLexer, int capacity) {
         this.myBaseLexer = baseLexer;
         this.myTypeCache = new MutableRandomAccessQueue<TokenType>(capacity);
         this.myEndOffsetCache = new MutableRandomAccessQueue<Integer>(capacity);
     }
 
-    public LookAheadLexer(@NonNull AbstractLexer baseLexer) {
+    protected LookAheadLexer(@NonNull AbstractLexer baseLexer) {
         this(baseLexer, 64);
     }
 
@@ -107,10 +107,12 @@ public abstract class LookAheadLexer extends AbstractLexer {
     }
 
     @NonNull
+    @Override
     public LookAheadLexerPosition getCurrentPosition() {
         return new LookAheadLexerPosition(this, ImmutableUserMap.EMPTY);
     }
 
+    @Override
     public final void restore(@NonNull LexerPosition position) {
         Preconditions.checkNotNullArgument(position, "position");
         restore((LookAheadLexerPosition) position);

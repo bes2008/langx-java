@@ -39,6 +39,7 @@ public class LangxMessageDigestSpi extends MessageDigest implements BufferSizeAw
         delegate.update(input, offset, len);
     }
 
+    @Override
     public int engineGetDigestLength() {
         return digestSize;
     }
