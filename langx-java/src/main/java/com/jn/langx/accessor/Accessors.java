@@ -71,6 +71,7 @@ public class Accessors {
     public static <T> Accessor<String, T> of(@NonNull T object) {
         Preconditions.checkNotNull(object);
         Accessor<String, T> accessor = of(object.getClass());
+        Preconditions.checkNotNull(accessor);
         accessor.setTarget(object);
         return accessor;
     }

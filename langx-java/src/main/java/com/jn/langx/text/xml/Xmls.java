@@ -19,7 +19,10 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 public class Xmls {
-    private static final String NULL_XML_STR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    public static final String NULL_XML_STR = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+    private Xmls() {
+    }
 
     public static Document getXmlDoc(InputStream xml) throws Exception {
         return getXmlDoc(null, xml);
@@ -48,12 +51,12 @@ public class Xmls {
         factory.setIgnoringComments(ignoreComments);
 
 
-        String FEATURE = "http://xml.org/sax/features/external-general-entities";
-        factory.setFeature(FEATURE, false); // 不包括外部一般实体。
-        FEATURE = "http://xml.org/sax/features/external-parameter-entities";
-        factory.setFeature(FEATURE, false); // 不包含外部参数实体或外部DTD子集。
-        FEATURE = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
-        factory.setFeature(FEATURE, false); // 忽略外部DTD
+        String feature = "http://xml.org/sax/features/external-general-entities";
+        factory.setFeature(feature, false); // 不包括外部一般实体。
+        feature = "http://xml.org/sax/features/external-parameter-entities";
+        factory.setFeature(feature, false); // 不包含外部参数实体或外部DTD子集。
+        feature = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
+        factory.setFeature(feature, false); // 忽略外部DTD
 
 
         factory.setIgnoringElementContentWhitespace(ignoringElementContentWhitespace);

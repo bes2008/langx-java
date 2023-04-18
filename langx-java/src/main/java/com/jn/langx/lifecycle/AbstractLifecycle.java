@@ -40,7 +40,7 @@ public abstract class AbstractLifecycle extends AbstractInitializable implements
                 this.running = true;
                 this.doStart();
                 if (logger.isInfoEnabled()) {
-                    logger.info("started " + this);
+                    logger.info("started {}" , this);
                 }
             }
         } finally {
@@ -55,7 +55,7 @@ public abstract class AbstractLifecycle extends AbstractInitializable implements
                 this.doStop();
                 this.running = false;
                 if (logger.isInfoEnabled()) {
-                    logger.info("stopped " + this);
+                    logger.info("stopped {}" , this);
                 }
             }
         } finally {

@@ -54,8 +54,7 @@ public final class ASN1UTCTime extends ASN1Element {
      * The thread-local date formatter used to encode and decode UTC time values.
      */
     @NonNull
-    private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTERS =
-            new ThreadLocal<SimpleDateFormat>();
+    private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTERS = new ThreadLocal<SimpleDateFormat>();
 
 
     /**

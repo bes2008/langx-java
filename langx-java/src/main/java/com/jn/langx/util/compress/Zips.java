@@ -14,6 +14,9 @@ import java.util.zip.ZipInputStream;
  * @author jinuo.fang
  */
 public class Zips {
+    private Zips(){
+
+    }
 
     /**
      * Taille du buffer pour les lectures/écritures.
