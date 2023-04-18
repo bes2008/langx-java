@@ -370,12 +370,12 @@ final class JoniRegexpMatcher implements RegexpMatcher {
      * {@inheritDoc}
      */
     @Override
-    public RegexpMatcher appendReplacement(StringBuffer sb, String replacement) {
+    public RegexpMatcher appendReplacement(StringBuilder sb, String replacement) {
         this.appendReplacement(sb, this.group(), replacement);
         return this;
     }
 
-    private void appendReplacement(StringBuffer sb, String matched, String replacement) {
+    private void appendReplacement(StringBuilder sb, String matched, String replacement) {
         // If no match, return error
         if (isInitialStatus()) {
             throw new IllegalStateException("No match available");
@@ -475,7 +475,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
      * {@inheritDoc}
      */
     @Override
-    public void appendTail(StringBuffer sb) {
+    public void appendTail(StringBuilder sb) {
         sb.append(subBytesAsString(lastAppendPosition, input.length));
     }
 

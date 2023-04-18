@@ -4,7 +4,10 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.regexp.RegexpMatcher;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -94,14 +97,18 @@ class JdkMatcher implements RegexpMatcher {
     }
 
     @Override
-    public RegexpMatcher appendReplacement(StringBuffer b, String replacement) {
-        matcher.appendReplacement(b, replacement);
+    public RegexpMatcher appendReplacement(StringBuilder b, String replacement) {
+        StringBuffer buf = new StringBuffer();
+        matcher.appendReplacement(buf, replacement);
+        b.append(buf.toString());
         return this;
     }
 
     @Override
-    public void appendTail(StringBuffer b) {
-        matcher.appendTail(b);
+    public void appendTail(StringBuilder b) {
+        StringBuffer buf = new StringBuffer();
+        matcher.appendTail(buf);
+        b.append(buf.toString());
     }
 
     @Override
@@ -126,7 +133,7 @@ class JdkMatcher implements RegexpMatcher {
                 nextIndex = matcher.end();
             }
             result.add(matches);
-            if(matcher.hitEnd()){
+            if (matcher.hitEnd()) {
                 break;
             }
         }

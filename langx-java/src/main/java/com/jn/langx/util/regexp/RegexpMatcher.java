@@ -75,11 +75,11 @@ public interface RegexpMatcher extends NamedGroupMatchResult {
      * @param replacement 替换物
      * @return 匹配器
      */
-    RegexpMatcher appendReplacement(StringBuffer b, String replacement);
+    RegexpMatcher appendReplacement(StringBuilder b, String replacement);
     /**
      * 把原始文本中 剩余部分添加的 StringBuffer中
      *
      * @param b
      */
-    void appendTail(StringBuffer b);
+    void appendTail(StringBuilder b);
 }

@@ -64,7 +64,7 @@ public class StringTemplate {
         }
 
         RegexpMatcher matcher = variableRegexp.matcher(this.template);
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         Logger logger = Loggers.getLogger(getClass());
         while (matcher.find()) {
             final String matched = matcher.group();

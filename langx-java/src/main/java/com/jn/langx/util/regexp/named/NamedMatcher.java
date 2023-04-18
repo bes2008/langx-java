@@ -191,8 +191,10 @@ class NamedMatcher implements RegexpMatcher {
      * @param replacement The replacement string
      * @return The target string buffer
      */
-    public RegexpMatcher appendReplacement(StringBuffer sb, String replacement) {
-        matcher.appendReplacement(sb, parentPattern.replaceProperties(replacement));
+    public RegexpMatcher appendReplacement(StringBuilder sb, String replacement) {
+        StringBuffer buf = new StringBuffer();
+        matcher.appendReplacement(buf, parentPattern.replaceProperties(replacement));
+        sb.append(buf.toString());
         return this;
     }
 
@@ -201,8 +203,10 @@ class NamedMatcher implements RegexpMatcher {
      *
      * @param sb The target string buffer
      */
-    public void appendTail(StringBuffer sb) {
-        matcher.appendTail(sb);
+    public void appendTail(StringBuilder sb) {
+        StringBuffer buf = new StringBuffer();
+        matcher.appendTail(buf);
+        sb.append(buf.toString());
     }
 
     /**

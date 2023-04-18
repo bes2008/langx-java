@@ -39,7 +39,7 @@ public class LogInjectionPreventionHandler implements Function<String, String> {
             public void accept(Regexp pattern, String replacement) {
                 String v = stringHolder.get();
                 RegexpMatcher matcher = pattern.matcher(v);
-                StringBuffer b = new StringBuffer();
+                StringBuilder b = new StringBuilder();
                 while (matcher.find()) {
                     matcher.appendReplacement(b, quoteReplacement(replacement));
                 }
