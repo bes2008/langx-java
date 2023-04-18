@@ -65,8 +65,8 @@ public class ParameterizedTypeImpl implements ParameterizedType {
     static final Type[] EMPTY_TYPE_ARRAY = new Type[]{};
 
     public static final class WildcardTypeImpl implements WildcardType, Serializable {
-        private final Type upperBound;
-        private final Type lowerBound;
+        private transient final Type upperBound;
+        private transient final Type lowerBound;
 
         public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
             checkArgument(lowerBounds.length <= 1);

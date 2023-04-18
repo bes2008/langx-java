@@ -89,7 +89,7 @@ public final class NativeLibraryLoader {
             f = new File("/tmp");
         }
         Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
-        logger.warn("Failed to get the temporary directory; falling back to: " + f);
+        logger.warn("Failed to get the temporary directory; falling back to: {} " , f);
         return f;
     }
 
@@ -128,7 +128,7 @@ public final class NativeLibraryLoader {
                 load(name, loader);
                 logger.debug("Successfully loaded the library: {}", name);
                 return;
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 logger.debug("Unable to load the library '{}', trying next name...", name, t);
             }
         }
@@ -215,7 +215,7 @@ public final class NativeLibraryLoader {
                                     "to set native working directory separately.",
                             tmpFile.getPath(),NATIVE_LIBRARY_WORK_DIR_KEY);
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 logger.debug("Error checking if {} is on a file store mounted with noexec", tmpFile, t);
             }
             // Re-throw to fail the load
@@ -368,7 +368,7 @@ public final class NativeLibraryLoader {
 
     private static final class NoexecVolumeDetector {
 
-        private static boolean canExecuteExecutable(File file) throws IOException {
+        private static boolean canExecuteExecutable(File file) {
             if (Platform.JAVA_VERSION_INT < 7) {
                 // Pre-JDK7, the Java API did not directly support POSIX permissions; instead of implementing a custom
                 // work-around, assume true, which disables the check.

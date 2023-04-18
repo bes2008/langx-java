@@ -7,7 +7,7 @@ public class NumVector {
         if (values.length == 0) {
             throw new IllegalArgumentException("no values");
         } else {
-            return new NumVector((double[])values.clone());
+            return new NumVector(values.clone());
         }
     }
 
@@ -136,7 +136,7 @@ public class NumVector {
     }
 
     double[] toArray() {
-        return (double[])this.array.clone();
+        return this.array.clone();
     }
 
     static class Modified extends NumVector {
@@ -144,6 +144,7 @@ public class NumVector {
             super(vector.array);
         }
 
+        @Override
         double[] toArray() {
             int size = this.getSize();
             double[] result = new double[size];

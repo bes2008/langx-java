@@ -802,7 +802,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
             me.ifExceptionThrow();
         } catch (IOException e) {
             throw e;
-        } catch (Throwable th) {
+        } catch (Exception th) {
             throw new IOException(th);
         }
     }
@@ -1051,7 +1051,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
                         logger.debug("notifyEvents {} {}", listener, events);
                     }
                     ((PathWatcher.EventListListener) listener).onPathWatchEvents(events);
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     logger.warn("Unable to notify PathWatch Events", t);
                 }
             } else {
@@ -1068,7 +1068,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
                     if (listener instanceof PathWatcher.Listener) {
                         try {
                             ((PathWatcher.Listener) listener).onPathWatchEvent(event);
-                        } catch (Throwable t) {
+                        } catch (Exception t) {
                             logger.warn("Unable to notify PathWatch Events", t);
                         }
                     }

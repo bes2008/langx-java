@@ -22,7 +22,7 @@ public class PrefixHashMap<V> extends HashMap<String, V> implements Cloneable {
 
 
     public PrefixHashMap(String prefix, Map<String, V> map) {
-        this(prefix, true);
+        this(prefix, true, map);
     }
 
     public PrefixHashMap(String prefix, boolean readUsingPrefix, Map<String, V> map) {

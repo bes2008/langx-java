@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.sort.DualPivotQuicksort;
@@ -30,7 +31,7 @@ public class PrimitiveArrays {
      * various method from {@link java.util.List}.
      */
     public static final int INDEX_NOT_FOUND = -1;
-    public static final List<Class> PRIMITIVE_ARRAY_CLASSES = Collects.asList(Collects.asList(
+    protected static final List<Class> PRIMITIVE_ARRAY_CLASSES = Collects.asList(Collects.asList(
             BYTE_ARRAY_CLASS,
             SHORT_ARRAY_CLASS,
             INT_ARRAY_CLASS,
@@ -1231,7 +1232,7 @@ public class PrimitiveArrays {
      */
     public static boolean[] insert(final int index, final boolean[] array, final boolean... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1273,7 +1274,7 @@ public class PrimitiveArrays {
      */
     public static byte[] insert(final int index, final byte[] array, final byte... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1315,7 +1316,7 @@ public class PrimitiveArrays {
      */
     public static char[] insert(final int index, final char[] array, final char... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1357,7 +1358,7 @@ public class PrimitiveArrays {
      */
     public static double[] insert(final int index, final double[] array, final double... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1399,7 +1400,7 @@ public class PrimitiveArrays {
      */
     public static float[] insert(final int index, final float[] array, final float... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1441,7 +1442,7 @@ public class PrimitiveArrays {
      */
     public static int[] insert(final int index, final int[] array, final int... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1483,7 +1484,7 @@ public class PrimitiveArrays {
      */
     public static long[] insert(final int index, final long[] array, final long... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1525,7 +1526,7 @@ public class PrimitiveArrays {
      */
     public static short[] insert(final int index, final short[] array, final short... values) {
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1576,7 +1577,7 @@ public class PrimitiveArrays {
          */
 
         if (array == null) {
-            return null;
+            return array;
         }
         if (Objs.isEmpty(values)) {
             return clone(array);
@@ -1601,7 +1602,7 @@ public class PrimitiveArrays {
 
     public static boolean[] clone(final boolean[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1617,7 +1618,7 @@ public class PrimitiveArrays {
      */
     public static byte[] clone(final byte[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1633,7 +1634,7 @@ public class PrimitiveArrays {
      */
     public static char[] clone(final char[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1649,7 +1650,7 @@ public class PrimitiveArrays {
      */
     public static double[] clone(final double[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1665,7 +1666,7 @@ public class PrimitiveArrays {
      */
     public static float[] clone(final float[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1681,7 +1682,7 @@ public class PrimitiveArrays {
      */
     public static int[] clone(final int[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1697,7 +1698,7 @@ public class PrimitiveArrays {
      */
     public static long[] clone(final long[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1713,7 +1714,7 @@ public class PrimitiveArrays {
      */
     public static short[] clone(final short[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }
@@ -1736,7 +1737,7 @@ public class PrimitiveArrays {
      */
     public static <T> T[] clone(final T[] array) {
         if (array == null) {
-            return null;
+            return array;
         }
         return array.clone();
     }

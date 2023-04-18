@@ -92,7 +92,7 @@ class PinyinDictLoader {
             });
 
             return directory;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }
         return null;

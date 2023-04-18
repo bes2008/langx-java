@@ -3,6 +3,7 @@ package com.jn.langx.io.resource;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
@@ -181,7 +182,7 @@ class PathPatternResourceLoader implements PatternResourceLoader {
     }
 
     public List<Resource> getResources(String locationPattern) {
-        return null;
+        return Lists.newArrayList();
     }
 
 }

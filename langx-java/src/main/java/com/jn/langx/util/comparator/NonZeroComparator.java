@@ -7,7 +7,7 @@ import java.util.Comparator;
 
 public class NonZeroComparator<E> implements Comparator<E>, Serializable {
     private static final long serialVersionUID = 1L;
-    private Comparator<E> delegate;
+    private transient Comparator<E> delegate;
 
     public NonZeroComparator(Comparator<E> comparator) {
         Preconditions.checkNotNull(comparator);

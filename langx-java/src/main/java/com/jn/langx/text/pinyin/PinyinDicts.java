@@ -40,7 +40,9 @@ class PinyinDicts {
     static void addBuiltinDict(String name) {
         addDict(name, Resources.loadClassPathResource(dictPath(name), Pinyins.class));
     }
+    protected PinyinDicts(){
 
+    }
     public static List<PinyinDict> findDicts(Predicate<PinyinDict> predicate) {
         return Pipeline.of(dictRegistry.instances())
                 .filter(predicate)

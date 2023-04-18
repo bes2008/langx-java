@@ -25,10 +25,8 @@ public class ParallelingComparator implements Comparator, Serializable {
         for (int i = 0; i < delegates.size(); i++) {
             Comparator comparator = delegates.get(i);
             int delta = comparator.compare(o1, o2);
-            if (!isNegative) {
-                if (delta != 0) {
-                    isNegative = delta < 0;
-                }
+            if (!isNegative && delta != 0) {
+                isNegative = delta < 0;
             }
             int leftMove = (delegates.size() - 1 - i) * leftMoveUnit;
 

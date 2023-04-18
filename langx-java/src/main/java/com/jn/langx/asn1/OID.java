@@ -160,8 +160,7 @@ public final class OID implements Serializable, Comparable<OID> {
      */
     @Nullable()
     public static List<Integer> parseComponents(@Nullable final String oidString) {
-        if ((oidString == null) || oidString.isEmpty() ||
-                oidString.startsWith(".") || oidString.endsWith(".") ||  (oidString.indexOf("..") > 0)) {
+        if ((oidString == null) || oidString.isEmpty() || oidString.startsWith(".") || oidString.endsWith(".") ||  (oidString.indexOf("..") > 0)) {
             return Lists.newArrayList();
         }
 

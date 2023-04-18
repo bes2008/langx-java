@@ -25,8 +25,6 @@ public class Pam {
 
     native boolean isSharedLibraryWorking();
 
-    private void callback() {
-    }
 
     public boolean authenticateSuccessful(String username, String credentials) {
         PamAuthcResult success = PamAuthcResult.PAM_SUCCESS;
@@ -49,12 +47,6 @@ public class Pam {
                 return pamReturnValue;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Pam pam = new Pam();
-        PamAuthcResult pamReturnValue = pam.authenticate(args[0], args[1]);
-        System.out.println("Response: " + pamReturnValue);
     }
 
     private native int authenticate(String var1, String var2, String var3, boolean var4);

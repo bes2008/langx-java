@@ -198,7 +198,7 @@ public class Preconditions {
     /**
      * @since 2.8.7
      */
-    public static <T> void checkArgument(boolean expression, final @Nullable String errorMessage, Object... params) {
+    public static void checkArgument(boolean expression, final @Nullable String errorMessage, Object... params) {
         checkArgument(expression, new Supplier<Object[], String>() {
             @Override
             public String get(Object[] args) {
@@ -237,7 +237,7 @@ public class Preconditions {
     /**
      * @since 2.8.7
      */
-    public static <T> void checkTrue(boolean expression, final @Nullable String errorMessage, Object... params) {
+    public static void checkTrue(boolean expression, final @Nullable String errorMessage, Object... params) {
         checkTrue(expression, new Supplier<Object[], String>() {
             @Override
             public String get(Object[] args) {
@@ -371,7 +371,7 @@ public class Preconditions {
 
     private static String outOfBoundsMessage(String checkKind, List<Integer> args) {
         if (checkKind == null && args == null) {
-            return String.format("Range check failed");
+            return String.format("Range check failed: %s", args);
         } else if (checkKind == null) {
             return String.format("Range check failed: %s", args);
         } else if (args == null) {

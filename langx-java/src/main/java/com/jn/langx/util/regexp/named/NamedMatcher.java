@@ -1,6 +1,7 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.regexp.RegexpMatcher;
 
 import java.util.ArrayList;
@@ -315,7 +316,7 @@ class NamedMatcher implements RegexpMatcher {
 
     @Override
     public List<String> names() {
-        return null;
+        return Lists.newArrayList();
     }
 
     /**

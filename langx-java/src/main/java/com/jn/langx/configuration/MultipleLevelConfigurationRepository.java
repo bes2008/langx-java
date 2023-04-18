@@ -84,6 +84,7 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
         super.doStart();
     }
 
+    @Override
     public void doStop() {
         super.doStop();
         Pipeline.of(delegates.values()).forEach(new Consumer<ConfigurationRepository>() {
@@ -133,6 +134,7 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
         }).asList());
     }
 
+    @Override
     public void removeById(final String id, final boolean sync) {
         super.removeById(id, sync);
         Collects.forEach(delegates.values(), new Consumer<ConfigurationRepository>() {
@@ -161,6 +163,7 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
         return super.add(configuration, sync);
     }
 
+    @Override
     public void update(T configuration, boolean sync) {
         ConfigurationRepository old = findFirstRepository(configuration.getId());
         if (old != null) {
@@ -170,6 +173,7 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
         }
     }
 
+    @Override
     public Map<String, T> getAll() {
         final Map<String, T> map = Collects.<String, T>emptyHashMap(true);
         Pipeline.of(delegates.values()).reverse(true).forEach(new Consumer<ConfigurationRepository>() {

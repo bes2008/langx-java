@@ -8,7 +8,7 @@ public class OwaspXPathEncoder implements XPathHandler {
         return "owasp-xpath-encoder";
     }
 
-    private final static char[] IMMUNE_XPATH = {',', '.', '-', '_', ' '};
+    private static final char[] IMMUNE_XPATH = {',', '.', '-', '_', ' '};
 
     private HTMLEntityCodec htmlCodec = new HTMLEntityCodec();
 

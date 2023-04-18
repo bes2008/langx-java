@@ -10,7 +10,9 @@ import com.jn.langx.util.function.Function;
 import java.util.List;
 
 public class Navigators {
+    private Navigators(){
 
+    }
     public static String getParentPath(String pathExpression, String separator) {
         return getParentPath(pathExpression, null, separator);
     }

@@ -20,8 +20,10 @@ public class Namespaces {
     /**
      * 绝大部分 xml中，都会有 xsi这个命名空间的，
      */
-    public static String NAMESPACE_XSI_NAME = "xsi";
+    public static final String NAMESPACE_XSI_NAME = "xsi";
+    private Namespaces(){
 
+    }
     public static String getNodeNamespaceURI(@NonNull Node node) {
         return node.getNamespaceURI();
     }

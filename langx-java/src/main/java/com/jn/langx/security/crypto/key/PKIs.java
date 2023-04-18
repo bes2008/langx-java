@@ -11,7 +11,6 @@ import com.jn.langx.security.crypto.cipher.CipherAlgorithmSuite;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.key.store.KeyStores;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.text.stringtemplate.StringTemplate;
 import com.jn.langx.util.ClassLoaders;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;

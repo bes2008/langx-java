@@ -282,7 +282,7 @@ public class NamedRegexp implements Regexp, Serializable {
      * @param replacement the string to replace the target
      * @return the modified string (original instance of {@code input})
      */
-    static private StringBuilder replace(StringBuilder input, java.util.regex.Pattern pattern, String replacement) {
+    private static StringBuilder replace(StringBuilder input, java.util.regex.Pattern pattern, String replacement) {
         java.util.regex.Matcher m = pattern.matcher(input);
         while (m.find()) {
             if (isEscapedChar(input.toString(), m.start())) {

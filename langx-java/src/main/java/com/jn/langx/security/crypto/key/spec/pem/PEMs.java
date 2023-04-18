@@ -193,7 +193,7 @@ public class PEMs extends Securitys {
      * @throws IOException              if the file can't be read
      * @throws GeneralSecurityException if the private key can't be generated from the {@link PKCS8EncodedKeySpec}
      */
-    private static PrivateKey parsePKCS8(BufferedReader bReader) throws IOException, GeneralSecurityException {
+    private static PrivateKey parsePKCS8(BufferedReader bReader) throws IOException {
         StringBuilder sb = new StringBuilder();
         String line = bReader.readLine();
         String pkcs8_footer = DEFAULT_PEM_STYLE_REGISTRY.get(PKCS8).getFooter();

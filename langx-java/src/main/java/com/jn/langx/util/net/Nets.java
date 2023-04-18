@@ -277,7 +277,7 @@ public class Nets {
                     } else {
                         // Try to get from sysctl
                         Integer tmp = null;
-                        if (systemPropertiesAccessor.getBoolean("io.netty.net.somaxconn.trySysctl", false)) {
+                        if (systemPropertiesAccessor.getBoolean("com.langx.net.somaxconn.trySysctl", false)) {
                             tmp = sysctlGetInt("kern.ipc.somaxconn");
                             if (tmp == null) {
                                 tmp = sysctlGetInt("kern.ipc.soacceptqueue");
@@ -308,6 +308,10 @@ public class Nets {
                 return somaxconn;
             }
         });
+    }
+
+    private Nets(){
+
     }
 
 
@@ -1557,7 +1561,7 @@ public class Nets {
             // addr.getHostString()
             try {
                 return Reflects.invokePublicMethod(addr, "getHostString", null, null, true, true);
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 return addr.getHostName();
             }
         }
@@ -1700,7 +1704,7 @@ public class Nets {
                 public boolean test(NetworkInterface itfc) {
                     try {
                         return itfc.isUp();
-                    } catch (Throwable ex) {
+                    } catch (Exception ex) {
                         // ignore
                     }
                     return false;
@@ -1770,7 +1774,7 @@ public class Nets {
                         }
                         try {
                             return Emptys.isNotEmpty(networkInterface.getHardwareAddress());
-                        } catch (Throwable ex) {
+                        } catch (Exception ex) {
                             return false;
                         }
                     }
@@ -2091,7 +2095,7 @@ public class Nets {
     public static boolean ping(String host, int timeout) {
         try {
             return InetAddress.getByName(host).isReachable(timeout);
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             return false;
         }
     }

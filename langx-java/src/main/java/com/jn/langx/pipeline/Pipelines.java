@@ -6,7 +6,9 @@ import com.jn.langx.util.function.Consumer;
 import java.util.List;
 
 public class Pipelines {
+    private Pipelines(){
 
+    }
     public static DefaultPipeline newPipeline(List<Handler> handlers) {
         DefaultPipeline pipeline = new DefaultPipeline();
         addHandlers(pipeline, handlers);

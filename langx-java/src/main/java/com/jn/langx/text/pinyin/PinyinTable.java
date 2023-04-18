@@ -64,7 +64,9 @@ class PinyinTable {
         toneMap.put("ü", Collects.newArrayList("ü", "ǖ", "ǘ", "ǚ", "ǜ"));
          */
     }
+    private PinyinTable(){
 
+    }
 
     public static String replaceTone(String pinyin) {
         final StringBuilder builder = new StringBuilder(pinyin.length());

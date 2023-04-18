@@ -15,7 +15,9 @@ public class Numbers {
     private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
+    private Numbers(){
 
+    }
     /**
      * Parses the string argument as an unsigned decimal integer. The
      * characters in the string must all be decimal digits, except
@@ -362,22 +364,20 @@ public class Numbers {
         boolean foundDigit = false;
         // deal with any possible sign up front
         int start = (chars[0] == '-') ? 1 : 0;
-        if (sz > start + 1) {
-            if (chars[start] == '0' && chars[start + 1] == 'x') {
-                int i = start + 2;
-                if (i == sz) {
-                    return false; // str == "0x"
-                }
-                // checking hex (it can't be anything else)
-                for (; i < chars.length; i++) {
-                    if ((chars[i] < '0' || chars[i] > '9')
-                            && (chars[i] < 'a' || chars[i] > 'f')
-                            && (chars[i] < 'A' || chars[i] > 'F')) {
-                        return false;
-                    }
-                }
-                return true;
+        if (sz > start + 1 && chars[start] == '0' && chars[start + 1] == 'x') {
+            int i = start + 2;
+            if (i == sz) {
+                return false; // str == "0x"
             }
+            // checking hex (it can't be anything else)
+            for (; i < chars.length; i++) {
+                if ((chars[i] < '0' || chars[i] > '9')
+                        && (chars[i] < 'a' || chars[i] > 'f')
+                        && (chars[i] < 'A' || chars[i] > 'F')) {
+                    return false;
+                }
+            }
+            return true;
         }
         sz--; // don't want to loop to the last char, check it afterwords
         // for type qualifiers

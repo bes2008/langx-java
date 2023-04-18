@@ -29,7 +29,9 @@ public class Platform {
     public static final String processId = getProcessId0();
     // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
     private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
+    private Platform(){
 
+    }
 
     /**
      * Return whether this runtime environment lives within a native image.
@@ -76,7 +78,7 @@ public class Platform {
         try {
             Class.forName("kaffe.util.NotImplemented");
             return true;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             // swallow as this simply doesn't seem to be Kaffe
         }
         return false;
@@ -122,7 +124,7 @@ public class Platform {
         for (int i = 0; i < components.length; i++) {
             try {
                 version[i] = Integer.parseInt(components[i]);
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 // ignore it
             }
         }
@@ -218,7 +220,7 @@ public class Platform {
         // java.ext.dirs
         try {
             javaHome = System.getProperty("java.home");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             // ignore
         }
         if (null != javaHome) {
@@ -258,7 +260,7 @@ public class Platform {
                 java.lang.management.RuntimeMXBean runtimeMXBean = java.lang.management.ManagementFactory.getRuntimeMXBean();
                 return runtimeMXBean.getName().split("@")[0];
             }
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             if (isAndroid) {
                 try {
                     return new File("/proc/self").getCanonicalFile().getName();

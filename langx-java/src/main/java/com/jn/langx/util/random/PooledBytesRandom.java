@@ -1,6 +1,5 @@
 package com.jn.langx.util.random;
 
-import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 
