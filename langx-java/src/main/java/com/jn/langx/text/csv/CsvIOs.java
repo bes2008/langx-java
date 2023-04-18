@@ -9,6 +9,9 @@ import java.nio.CharBuffer;
  * Copied from Apache Commons IO.
  */
 class CsvIOs {
+    private CsvIOs(){
+
+    }
 
     /**
      * <p>

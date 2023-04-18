@@ -77,7 +77,7 @@ public class Dates {
     /**
      * @see SimpleDateFormat
      */
-    public static final char[] DATE_FORMAT_FLAGS = {'G', 'y', 'Y', 'M', 'w', 'W', 'D', 'd', 'F', 'E', 'u', 'a', 'H', 'k', 'K', 'h', 'm', 's', 'S', 'z', 'Z', 'X'};
+    private static final char[] DATE_FORMAT_FLAGS = {'G', 'y', 'Y', 'M', 'w', 'W', 'D', 'd', 'F', 'E', 'u', 'a', 'H', 'k', 'K', 'h', 'm', 's', 'S', 'z', 'Z', 'X'};
 
     private static final Map<String, CandidateDateTimeParseService> candidateDateTimeParseServiceMap = new HashMap<String, CandidateDateTimeParseService>();
 
@@ -211,14 +211,14 @@ public class Dates {
         return null;
     }
 
-    public static final List<String> simple_timezone_suffixes = Collects.newArrayList(
+    private static final List<String> simple_timezone_suffixes = Collects.newArrayList(
             "XXX",
             "XX",
             "X",
             "Z",
             "z"
     );
-    public static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX", "XX", "X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
+    private static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX", "XX", "X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
 
     /**
      * @since 5.0.1

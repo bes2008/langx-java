@@ -32,7 +32,7 @@ public class CPUs {
                 try {
                     executor.setStreamHandler(handler);
                     executor.execute(commandLine);
-                } catch (Throwable ex) {
+                } catch (Exception ex) {
                     logger.error(ex.getMessage(), ex);
                 }
             } else {
