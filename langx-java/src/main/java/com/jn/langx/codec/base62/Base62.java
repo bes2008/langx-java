@@ -1,6 +1,7 @@
 package com.jn.langx.codec.base62;
 
 import com.jn.langx.io.stream.BufferExposingByteArrayOutputStream;
+import com.jn.langx.util.io.IOs;
 
 public final class Base62 {
     private static final int STANDARD_BASE = 256;
@@ -42,25 +43,40 @@ public final class Base62 {
 
     private static byte[] convert(byte[] message, int sourceBase, int targetBase) {
         int estimatedLength = estimateOutputLength(message.length, sourceBase, targetBase);
-        BufferExposingByteArrayOutputStream out = new BufferExposingByteArrayOutputStream(estimatedLength);
-        byte[] source = message;
-        while (source.length > 0) {
-            BufferExposingByteArrayOutputStream quotient = new BufferExposingByteArrayOutputStream(source.length);
-            int remainder = 0;
-            for (byte b : source) {
-                int accumulator = (b & 0xFF) + remainder * sourceBase;
-                int digit = (accumulator - accumulator % targetBase) / targetBase;
-                remainder = accumulator % targetBase;
-                if (quotient.size() > 0 || digit > 0)
-                    quotient.write(digit);
+        BufferExposingByteArrayOutputStream out = null;
+        int length = 0;
+        byte[] array = null;
+        try {
+            out = new BufferExposingByteArrayOutputStream(estimatedLength);
+            byte[] source = message;
+            while (source.length > 0) {
+                BufferExposingByteArrayOutputStream quotient = null;
+                try {
+                    quotient = new BufferExposingByteArrayOutputStream(source.length);
+                    int remainder = 0;
+                    for (byte b : source) {
+                        int accumulator = (b & 0xFF) + remainder * sourceBase;
+                        int digit = (accumulator - accumulator % targetBase) / targetBase;
+                        remainder = accumulator % targetBase;
+                        if (quotient.size() > 0 || digit > 0)
+                            quotient.write(digit);
+                    }
+                    out.write(remainder);
+                    source = quotient.toByteArray();
+                } finally {
+                    IOs.close(quotient);
+                }
+
             }
-            out.write(remainder);
-            source = quotient.toByteArray();
+            for (int i = 0; i < message.length - 1 && message[i] == 0; i++) {
+                out.write(0);
+            }
+            length = out.size();
+            array = out.getInternalBuffer();
+        } finally {
+            IOs.close(out);
         }
-        for (int i = 0; i < message.length - 1 && message[i] == 0; i++)
-            out.write(0);
-        int length = out.size();
-        byte[] array = out.getInternalBuffer();
+
         int k = 0;
         int j = length - 1;
         while (j > k) {

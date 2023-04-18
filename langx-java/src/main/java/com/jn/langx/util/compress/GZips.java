@@ -36,17 +36,6 @@ public class GZips {
 
     }
 
-    /**
-     * @return Retourne la string decompressee
-     */
-    public static StringBuffer bytesToStringBuffer(byte[] in) {
-        return bytesToStringBuffer(in, new Supplier0<StringBuffer>() {
-            @Override
-            public StringBuffer get() {
-                return new StringBuffer();
-            }
-        });
-    }
 
     /**
      * @return Retourne la string decompressee
@@ -88,7 +77,7 @@ public class GZips {
      * @return la string decompressee
      */
     public static String bytesToString(byte[] in) {
-        return bytesToStringBuffer(in).toString();
+        return bytesToStringBuilder(in).toString();
     }
 
     /**
