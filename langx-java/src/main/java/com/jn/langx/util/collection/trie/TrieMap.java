@@ -20,7 +20,7 @@ import java.util.*;
  *
  * @param <V> The value type that the trie holds.
  */
-public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializable, Map<CharSequence, V> {
+public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V> implements Serializable, Map<CharSequence, V> {
 
     private static final long serialVersionUID = 1L;
 
@@ -721,7 +721,7 @@ public class TrieMap<V> extends AbstractMap<CharSequence, V> implements Serializ
      *
      * @param <V> The value type that the trie holds.
      */
-    private static class SubTrieMap<V> extends TrieMap<V> {
+    private static class SubTrieMap<V extends Serializable> extends TrieMap<V> {
 
         private static final long serialVersionUID = 1;
 

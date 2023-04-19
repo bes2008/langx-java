@@ -47,7 +47,7 @@ public class IntArrayEditor extends PropertyEditorSupport {
      */
     public String getAsText() {
         int[] theValue = (int[]) getValue();
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
         int length = theValue == null ? 0 : theValue.length;
         for (int n = 0; n < length; n++) {
             if (n > 0)

@@ -60,7 +60,7 @@ import com.jn.langx.util.reflect.type.SerializableTypeWrapper.TypeProvider;
  *
  * @since 4.3.7
  */
-public final class ResolvableType implements Serializable {
+public class ResolvableType implements Serializable {
 
     /**
      * {@code ResolvableType} returned when no value is available. {@code NONE} is used

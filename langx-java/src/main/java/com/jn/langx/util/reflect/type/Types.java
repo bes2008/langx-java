@@ -108,10 +108,6 @@ public class Types {
         return new ParameterizedTypeImpl.GenericArrayTypeImpl(componentType);
     }
 
-    public static boolean equal(Object a, Object b) {
-        return a == b || (a != null && a.equals(b));
-    }
-
     /**
      * Returns true if {@code a} and {@code b} are equal.
      */
@@ -131,7 +127,7 @@ public class Types {
 
             ParameterizedType pa = (ParameterizedType) a;
             ParameterizedType pb = (ParameterizedType) b;
-            return equal(pa.getOwnerType(), pb.getOwnerType())
+            return Objs.equals(pa.getOwnerType(), pb.getOwnerType())
                     && pa.getRawType().equals(pb.getRawType())
                     && Arrays.equals(pa.getActualTypeArguments(), pb.getActualTypeArguments());
 

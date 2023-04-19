@@ -85,22 +85,25 @@ class InternalGeneralizedTimes {
             case 10:
                 formatStr = "yyyyMMddHH" + subSecFormatStr;
                 break;
-            case 11:
-            case 13:
-            default:
-                String err = "Unable to parse the provided timestamp {} because it had an invalid number of characters before the sub-second and/or time zone portion.";
-                err = StringTemplates.formatWithPlaceholder(err, t);
-                throw new ParseException(err, periodPos);
             case 12:
                 formatStr = "yyyyMMddHHmm" + subSecFormatStr;
                 break;
             case 14:
                 formatStr = "yyyyMMddHHmmss" + subSecFormatStr;
+                break;
+            default:
+                String err = "Unable to parse the provided timestamp {} because it had an invalid number of characters before the sub-second and/or time zone portion.";
+                err = StringTemplates.formatWithPlaceholder(err, t);
+                throw new ParseException(err, periodPos);
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(formatStr);
         dateFormat.setTimeZone(tz);
         dateFormat.setLenient(false);
         return dateFormat.parse(trimmedTimestamp);
+    }
+
+    private InternalGeneralizedTimes(){
+
     }
 }

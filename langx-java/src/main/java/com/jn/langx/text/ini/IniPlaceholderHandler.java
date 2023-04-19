@@ -151,7 +151,7 @@ public class IniPlaceholderHandler {
                     result.replace(startIndex, endIndex + this.placeholderSuffix.length(), propVal);
                     Logger logger = Loggers.getLogger(getClass());
                     if (logger.isTraceEnabled()) {
-                        logger.trace("Resolved placeholder '" + placeholder + "'");
+                        logger.trace("Resolved placeholder '{}",placeholder);
                     }
                     startIndex = result.indexOf(this.placeholderPrefix, startIndex + propVal.length());
                 } else if (this.ignoreUnresolvablePlaceholders) {

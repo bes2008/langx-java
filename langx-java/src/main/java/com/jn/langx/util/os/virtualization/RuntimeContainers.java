@@ -42,5 +42,7 @@ public class RuntimeContainers {
         return runtimeContainer == null? null:runtimeContainer.get();
     }
 
+    private RuntimeContainers(){
 
+    }
 }

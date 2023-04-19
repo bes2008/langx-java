@@ -1446,22 +1446,6 @@ public class IOs {
 
     // write StringBuffer
     //-----------------------------------------------------------------------
-
-    /**
-     * Writes chars from a <code>StringBuffer</code> to a <code>Writer</code>.
-     *
-     * @param data   the <code>StringBuffer</code> to write, null ignored
-     * @param output the <code>Writer</code> to write to
-     * @throws NullPointerException if output is null
-     * @throws IOException          if an I/O error occurs
-     */
-    public static void write(final StringBuffer data, final Writer output)
-            throws IOException {
-        if (data != null) {
-            output.write(data.toString());
-        }
-    }
-
     public static void write(final StringBuilder data, final Writer output)
             throws IOException {
         if (data != null) {

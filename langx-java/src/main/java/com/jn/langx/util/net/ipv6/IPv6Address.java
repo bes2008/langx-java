@@ -463,13 +463,13 @@ public final class IPv6Address implements Comparable<IPv6Address>, Serializable 
     }
 
     public int compareTo(IPv6Address that) {
-        if (this.highBits == that.highBits)
+        if (this.highBits == that.highBits) {
             if (this.lowBits == that.lowBits) {
                 return 0;
             } else {
                 return IPv6AddressHelpers.isLessThanUnsigned(this.lowBits, that.lowBits) ? -1 : 1;
             }
-        else if (this.highBits == that.highBits) {
+        } else if (this.highBits == that.highBits) {
             return 0;
         } else {
             return IPv6AddressHelpers.isLessThanUnsigned(this.highBits, that.highBits) ? -1 : 1;

@@ -953,7 +953,6 @@ public class UriTemplate {
         return string != null && !string.isEmpty();
     }
 
-    @SuppressWarnings("unchecked")
     private static int createUriComponent(final UriComponent.Type componentType,
                                           String template,
                                           final String[] values,
@@ -962,7 +961,7 @@ public class UriTemplate {
                                           final Map<String, ?> _mapValues,
                                           final StringBuilder b) {
 
-        final Map<String, Object> mapValues = (Map<String, Object>) _mapValues;
+        final Map mapValues =  _mapValues;
 
         if (template.indexOf('{') == -1) {
             b.append(template);

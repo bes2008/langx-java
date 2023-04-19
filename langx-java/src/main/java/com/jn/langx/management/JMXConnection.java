@@ -12,7 +12,7 @@ public abstract class JMXConnection implements Closeable {
         return this.conn;
     }
 
-    public JMXConnection(final MBeanServerConnection conn) {
+    protected JMXConnection(final MBeanServerConnection conn) {
         this.conn = conn;
     }
 

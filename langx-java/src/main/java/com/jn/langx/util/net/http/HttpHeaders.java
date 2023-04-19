@@ -407,7 +407,7 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     private static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS = new DecimalFormatSymbols(Locale.ENGLISH);
 
     private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
-    final MultiValueMap<String, String> headers;
+    private final MultiValueMap<String, String> headers;
     /**
      * Date formats with time zone as specified in the HTTP RFC to use for formatting.
      *

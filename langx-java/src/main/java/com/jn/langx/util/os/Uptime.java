@@ -78,7 +78,7 @@ public class Uptime {
 
     public static long getUptime() {
         Uptime u = getInstance();
-        if (u == null || u.impl == null) {
+        if (u.impl == null) {
             return NOIMPL;
         }
         return u.impl.getUptime();

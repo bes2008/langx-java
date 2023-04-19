@@ -40,4 +40,8 @@ public class Iterables {
         }
         return nullIterator();
     }
+
+    private Iterables(){
+
+    }
 }

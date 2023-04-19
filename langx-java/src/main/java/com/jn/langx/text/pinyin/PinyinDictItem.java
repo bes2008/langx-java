@@ -3,10 +3,13 @@ package com.jn.langx.text.pinyin;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 
+import java.io.Serializable;
+
 /**
  * @since 5.1.0
  */
-class PinyinDictItem {
+class PinyinDictItem implements Serializable {
+    private static final long serialVersionUID = -1L;
 
     /**
      * 汉字 字、词、成语等
