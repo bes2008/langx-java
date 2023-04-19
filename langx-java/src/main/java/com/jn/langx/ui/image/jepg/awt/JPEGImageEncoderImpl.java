@@ -6,29 +6,16 @@ import com.jn.langx.ui.image.jepg.JPEGDecodeParam;
 import com.jn.langx.ui.image.jepg.JPEGEncodeParam;
 import com.jn.langx.ui.image.jepg.JPEGImageEncoder;
 
-import java.awt.Point;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.color.ColorSpace;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.ComponentSampleModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
-import java.awt.image.IndexColorModel;
-import java.awt.image.Raster;
-import java.awt.image.RescaleOp;
-import java.awt.image.SampleModel;
-import java.awt.image.SinglePixelPackedSampleModel;
-import java.awt.image.WritableRaster;
+import java.awt.image.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
- *  @since 4.3.8
+ * @since 4.3.8
  */
 public class JPEGImageEncoderImpl implements JPEGImageEncoder {
     private OutputStream outStream;
@@ -56,36 +43,32 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
     public int getDefaultColorId(ColorModel var1) {
         boolean var2 = var1.hasAlpha();
         ColorSpace var3 = var1.getColorSpace();
-        ColorSpace var4 = null;
-        switch(var3.getType()) {
-            case 3:
-                if (var4 == null) {
-                    try {
-                        var4 = ColorSpace.getInstance(1002);
-                    } catch (IllegalArgumentException var6) {
-                    }
-                }
 
+        switch (var3.getType()) {
+            case 3:
+                ColorSpace var4 = null;
+                try {
+                    var4 = ColorSpace.getInstance(1002);
+                } catch (IllegalArgumentException var6) {
+                }
                 if (var3 == var4) {
                     return var2 ? 10 : 5;
                 }
-
                 return var2 ? 7 : 3;
-            case 4:
-            case 7:
-            case 8:
-            default:
-                return 0;
             case 5:
                 if (var2) {
                     return 7;
                 }
-
                 return 3;
             case 6:
                 return 1;
             case 9:
                 return 4;
+            case 4:
+            case 7:
+            case 8:
+            default:
+                return 0;
         }
     }
 
@@ -98,7 +81,7 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
     }
 
     public synchronized JPEGEncodeParam getJPEGEncodeParam() {
-        return (JPEGEncodeParam)this.param.clone();
+        return (JPEGEncodeParam) this.param.clone();
     }
 
     public JPEGEncodeParam getDefaultJPEGEncodeParam(Raster var1, int var2) {
@@ -147,13 +130,13 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
                 WritableRaster var2 = var1.getRaster();
                 ColorModel var3 = var1.getColorModel();
                 if (var3 instanceof IndexColorModel) {
-                    IndexColorModel var4 = (IndexColorModel)var3;
+                    IndexColorModel var4 = (IndexColorModel) var3;
                     var1 = var4.convertToIntDiscrete(var2, false);
                     var2 = var1.getRaster();
                     var3 = var1.getColorModel();
                 }
 
-                this.encode((Raster)var2, (ColorModel)var3);
+                this.encode( var2, var3);
             }
         } else {
             throw new ImageFormatException("Param block's width/height doesn't match the BufferedImage");
@@ -176,7 +159,7 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
             if (this.param.getEncodedColorID() != 0 && this.param.getNumComponents() != var1.getNumBands()) {
                 throw new ImageFormatException("Param block's COLOR_ID doesn't match the Raster.");
             } else {
-                this.encode(var1, (ColorModel)null);
+                this.encode(var1, (ColorModel) null);
             }
         } else {
             throw new ImageFormatException("Param block's width/height doesn't match the Raster");
@@ -195,13 +178,13 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
         } else if (!(var2 instanceof ComponentSampleModel)) {
             return false;
         } else {
-            ComponentSampleModel var3 = (ComponentSampleModel)var2;
+            ComponentSampleModel var3 = (ComponentSampleModel) var2;
             if (var3.getPixelStride() != var2.getNumBands()) {
                 return false;
             } else {
                 int[] var4 = var3.getBandOffsets();
 
-                for(int var5 = 0; var5 < var4.length; ++var5) {
+                for (int var5 = 0; var5 < var4.length; ++var5) {
                     if (var4[var5] != var5) {
                         return false;
                     }
@@ -219,13 +202,13 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
         } else if (!(var2 instanceof SinglePixelPackedSampleModel)) {
             return false;
         } else {
-            SinglePixelPackedSampleModel var3 = (SinglePixelPackedSampleModel)var2;
+            SinglePixelPackedSampleModel var3 = (SinglePixelPackedSampleModel) var2;
             int[] var4 = new int[]{16711680, 65280, 255, -16777216};
             int[] var5 = var3.getBitMasks();
             if (var5.length != 3 && var5.length != 4) {
                 return false;
             } else {
-                for(int var6 = 0; var6 < var5.length; ++var6) {
+                for (int var6 = 0; var6 < var5.length; ++var6) {
                     if (var5[var6] != var4[var6]) {
                         return false;
                     }
@@ -241,7 +224,7 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
         int var5 = var3.getNumBands();
         int var4;
         if (var2 == null) {
-            for(var4 = 0; var4 < var5; ++var4) {
+            for (var4 = 0; var4 < var5; ++var4) {
                 if (var3.getSampleSize(var4) > 8) {
                     throw new ImageFormatException("JPEG encoder can only accept 8 bit data.");
                 }
@@ -249,14 +232,7 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
         }
 
         int var6 = this.param.getEncodedColorID();
-        switch(this.param.getNumComponents()) {
-            case 1:
-                if (var6 != 1 && var6 != 0 && this.param.findAPP0() != null) {
-                    throw new ImageFormatException("1 band JFIF files imply Y or unknown encoding.\nParam block indicates alternate encoding.");
-                }
-            case 2:
-            default:
-                break;
+        switch (this.param.getNumComponents()) {
             case 3:
                 if (var6 != 3 && this.param.findAPP0() != null) {
                     throw new ImageFormatException("3 band JFIF files imply YCbCr encoding.\nParam block indicates alternate encoding.");
@@ -266,10 +242,18 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
                 if (var6 != 4 && this.param.findAPP0() != null) {
                     throw new ImageFormatException("4 band JFIF files imply CMYK encoding.\nParam block indicates alternate encoding.");
                 }
+                break;
+            case 1:
+                if (var6 != 1 && var6 != 0 && this.param.findAPP0() != null) {
+                    throw new ImageFormatException("1 band JFIF files imply Y or unknown encoding.\nParam block indicates alternate encoding.");
+                }
+            case 2:
+            default:
+                break;
         }
 
         if (!this.param.isImageInfoValid()) {
-            this.writeJPEGStream(this.param, var2, this.outStream, (Object)null, 0, 0);
+            this.writeJPEGStream(this.param, var2, this.outStream, (Object) null, 0, 0);
         } else {
             DataBuffer var7 = var1.getDataBuffer();
             boolean var11 = false;
@@ -283,7 +267,7 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
 
                 var13 = var2.getComponentSize();
 
-                for(var4 = 0; var4 < var5; ++var4) {
+                for (var4 = 0; var4 < var5; ++var4) {
                     if (var13[var4] != 8) {
                         var12 = false;
                     }
@@ -296,25 +280,25 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
             int var10;
             ComponentSampleModel var14;
             if (var12 && this.useGiven(var1)) {
-                var14 = (ComponentSampleModel)var3;
+                var14 = (ComponentSampleModel) var3;
                 var10 = var7.getOffset() + var14.getOffset(var1.getMinX() - var1.getSampleModelTranslateX(), var1.getMinY() - var1.getSampleModelTranslateY());
                 var9 = var14.getScanlineStride();
-                var8 = ((DataBufferByte)var7).getData();
+                var8 = ((DataBufferByte) var7).getData();
             } else if (var12 && this.canPack(var1)) {
-                SinglePixelPackedSampleModel var22 = (SinglePixelPackedSampleModel)var3;
+                SinglePixelPackedSampleModel var22 = (SinglePixelPackedSampleModel) var3;
                 var10 = var7.getOffset() + var22.getOffset(var1.getMinX() - var1.getSampleModelTranslateX(), var1.getMinY() - var1.getSampleModelTranslateY());
                 var9 = var22.getScanlineStride();
-                var8 = ((DataBufferInt)var7).getData();
+                var8 = ((DataBufferInt) var7).getData();
                 this.pack = true;
             } else {
                 int[] var15 = new int[var5];
                 float[] var16 = new float[var5];
 
-                for(var4 = 0; var4 < var5; ++var4) {
+                for (var4 = 0; var4 < var5; ++var4) {
                     var15[var4] = var4;
                     if (!var12) {
                         if (var13[var4] != 8) {
-                            var16[var4] = 255.0F / (float)((1 << var13[var4]) - 1);
+                            var16[var4] = 255.0F / (float) ((1 << var13[var4]) - 1);
                         } else {
                             var16[var4] = 1.0F;
                         }
@@ -327,12 +311,12 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
                     var17.setRect(var1);
                 } else {
                     float[] var18 = new float[var5];
-                    RescaleOp var19 = new RescaleOp(var16, var18, (RenderingHints)null);
+                    RescaleOp var19 = new RescaleOp(var16, var18, (RenderingHints) null);
                     var19.filter(var1, var17);
                     if (var11) {
                         int[] var20 = new int[var5];
 
-                        for(var4 = 0; var4 < var5; ++var4) {
+                        for (var4 = 0; var4 < var5; ++var4) {
                             var20[var4] = 8;
                         }
 
@@ -342,7 +326,7 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
                 }
 
                 var7 = var17.getDataBuffer();
-                var8 = ((DataBufferByte)var7).getData();
+                var8 = ((DataBufferByte) var7).getData();
                 var10 = var7.getOffset() + var14.getOffset(0, 0);
                 var9 = var14.getScanlineStride();
             }
@@ -387,7 +371,7 @@ public class JPEGImageEncoderImpl implements JPEGImageEncoder {
 
     private int getNearestColorId(ColorModel var1) {
         ColorSpace var2 = var1.getColorSpace();
-        switch(var2.getType()) {
+        switch (var2.getType()) {
             case 5:
                 if (var1.hasAlpha()) {
                     return 6;

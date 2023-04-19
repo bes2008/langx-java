@@ -132,7 +132,7 @@ class JavaScriptDateParser {
                                     return false;
                                 }
 
-                                if (!this.skipDelimiter((char)(this.isSet(5) ? '.' : ':'))) {
+                                if (!this.skipDelimiter((this.isSet(5) ? '.' : ':'))) {
                                     continue label91;
                                 }
                             }
@@ -359,7 +359,7 @@ class JavaScriptDateParser {
         String key = this.string.substring(start, this.pos).toLowerCase(Locale.ENGLISH);
 
         JavaScriptDateParser.Name name;
-        for(name = (JavaScriptDateParser.Name)names.get(key); this.pos < this.length && isAsciiLetter(this.string.charAt(this.pos)); ++this.pos) {
+        for(name = names.get(key); this.pos < this.length && isAsciiLetter(this.string.charAt(this.pos)); ++this.pos) {
         }
 
         this.tokenLength = this.pos - start;

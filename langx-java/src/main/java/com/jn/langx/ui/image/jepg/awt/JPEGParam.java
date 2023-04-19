@@ -665,14 +665,13 @@ public class JPEGParam implements JPEGEncodeParam, Cloneable {
     public static int getDefaultColorId(ColorModel var0) {
         boolean var1 = var0.hasAlpha();
         ColorSpace var2 = var0.getColorSpace();
-        ColorSpace var3 = null;
+
         switch (var2.getType()) {
             case 3:
-                if (var3 == null) {
-                    try {
-                        var3 = ColorSpace.getInstance(1002);
-                    } catch (IllegalArgumentException var5) {
-                    }
+                ColorSpace var3 = null;
+                try {
+                    var3 = ColorSpace.getInstance(1002);
+                } catch (IllegalArgumentException var5) {
                 }
 
                 if (var2 == var3) {
@@ -680,11 +679,7 @@ public class JPEGParam implements JPEGEncodeParam, Cloneable {
                 }
 
                 return var1 ? 7 : 3;
-            case 4:
-            case 7:
-            case 8:
-            default:
-                return 0;
+
             case 5:
                 if (var1) {
                     return 7;
@@ -695,6 +690,11 @@ public class JPEGParam implements JPEGEncodeParam, Cloneable {
                 return 1;
             case 9:
                 return 4;
+            case 4:
+            case 7:
+            case 8:
+            default:
+                return 0;
         }
     }
 }

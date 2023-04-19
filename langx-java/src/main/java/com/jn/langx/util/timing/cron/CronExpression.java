@@ -1,8 +1,8 @@
 package com.jn.langx.util.timing.cron;
 
 
-import com.jn.langx.util.Objs;
 import com.jn.langx.text.StrTokenizer;
+import com.jn.langx.util.Objs;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -168,7 +168,6 @@ import java.util.*;
  * "0 0 14-6 ? * FRI-MON". </li>
  * </ul>
  * </p>
- *
  */
 @SuppressWarnings({"unused"})
 public final class CronExpression implements Serializable, Cloneable {
@@ -331,7 +330,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
         Date newDate;
 
-        //FUTURE_TODO: (QUARTZ-481) IMPROVE THIS! The following is a BAD solution to this problem. Performance will be very bad here, depending on the cron expression. It is, however A solution.
+        // (QUARTZ-481) IMPROVE THIS! The following is a BAD solution to this problem. Performance will be very bad here, depending on the cron expression. It is, however A solution.
 
         //keep getting the next included time until it's farther than one second
         // apart. At that point, lastDate is the last valid fire time. We return
@@ -441,7 +440,7 @@ public final class CronExpression implements Serializable, Cloneable {
 
             int exprOn = SECOND;
 
-            StrTokenizer exprsTok = new StrTokenizer(expression, " ","\t");
+            StrTokenizer exprsTok = new StrTokenizer(expression, " ", "\t");
 
             while (exprsTok.hasNext() && exprOn <= YEAR) {
                 String expr = exprsTok.next().trim();
@@ -1581,7 +1580,7 @@ public final class CronExpression implements Serializable, Cloneable {
      * that the <code>CronExpression</code> matches.
      */
     public Date getTimeBefore(Date endTime) {
-        // FUTURE_TODO: implement QUARTZ-423
+        //  implement QUARTZ-423
         return null;
     }
 
@@ -1590,7 +1589,7 @@ public final class CronExpression implements Serializable, Cloneable {
      * <code>CronExpression</code> will match.
      */
     public Date getFinalFireTime() {
-        // FUTURE_TODO: implement QUARTZ-423
+        //  implement QUARTZ-423
         return null;
     }
 
