@@ -16,7 +16,7 @@ public abstract class BaseService implements MBeanService {
     protected String domain;
     protected JMXConnection conn;
 
-    public BaseService() {
+    protected BaseService() {
         this.defaultOptions = new Hashtable<String, String>();
         this.init();
     }

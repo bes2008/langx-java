@@ -33,9 +33,9 @@ public class SnowflakeIdWorkerProviderLoader {
                     loaded = true;
                     Logger logger = Loggers.getLogger(SnowflakeIdWorkerProviderLoader.class);
                     if (LOADED_PROVIDER_MAP.isEmpty()) {
-                        logger.warn("Has not any SnowflakeIdWorkerProvider found, will use the SystemEnvironmentSnowflakeIdWorkerProvider: {}", LOADED_PROVIDER_MAP.keySet().toString());
+                        logger.warn("Has not any SnowflakeIdWorkerProvider found, will use the SystemEnvironmentSnowflakeIdWorkerProvider: {}", LOADED_PROVIDER_MAP.keySet());
                     } else if (LOADED_PROVIDER_MAP.size() > 1) {
-                        logger.warn("Too many SnowflakeIdWorkerProvider instances found: {}, will use the first", LOADED_PROVIDER_MAP.keySet().toString());
+                        logger.warn("Too many SnowflakeIdWorkerProvider instances found: {}, will use the first", LOADED_PROVIDER_MAP.keySet());
                     }
                 }
             }

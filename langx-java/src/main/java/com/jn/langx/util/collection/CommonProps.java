@@ -6,7 +6,7 @@ import java.util.Map;
 public class CommonProps<P> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    protected Map<String, P> props;
+    protected transient Map<String, P> props;
 
     public Map<String, P> getProps() {
         return props;

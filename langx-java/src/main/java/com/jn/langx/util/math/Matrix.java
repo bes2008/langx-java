@@ -16,7 +16,7 @@ public final class Matrix {
             if (width * height != values.length) {
                 throw new IllegalArgumentException("unexpected amount of values");
             } else {
-                return new Matrix(width, height, (double[])values.clone());
+                return new Matrix(width, height, values.clone());
             }
         }
     }

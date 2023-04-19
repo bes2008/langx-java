@@ -5,7 +5,6 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.StringMap;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
-import com.jn.langx.util.io.LineDelimiter;
 import com.jn.langx.util.logging.Loggers;
 
 import java.security.AccessController;

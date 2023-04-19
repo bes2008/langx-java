@@ -11,7 +11,6 @@ import javax.management.remote.rmi.RMIConnectorServer;
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 import javax.rmi.ssl.SslRMIServerSocketFactory;
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.management.ManagementFactory;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -299,9 +298,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
         this.serviceName = serviceName;
     }
 
-    @SuppressWarnings("serial")
-    public static class RmiClientLocalhostSocketFactory implements
-            RMIClientSocketFactory, Serializable {
+    public static class RmiClientLocalhostSocketFactory implements RMIClientSocketFactory {
         private static final String FORCED_HOST = "localhost";
 
         private RMIClientSocketFactory factory = null;

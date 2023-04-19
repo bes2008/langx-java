@@ -60,7 +60,7 @@ import com.jn.langx.util.reflect.type.SerializableTypeWrapper.TypeProvider;
  *
  * @since 4.3.7
  */
-public class ResolvableType implements Serializable {
+public final class ResolvableType implements Serializable {
 
     /**
      * {@code ResolvableType} returned when no value is available. {@code NONE} is used
@@ -1411,7 +1411,7 @@ public class ResolvableType implements Serializable {
     }
 
 
-    private static final class SyntheticParameterizedType implements ParameterizedType, Serializable {
+    private static final class SyntheticParameterizedType implements ParameterizedType{
 
         private final Type rawType;
 

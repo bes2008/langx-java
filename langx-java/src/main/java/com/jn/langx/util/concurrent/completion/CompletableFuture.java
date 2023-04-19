@@ -1197,7 +1197,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                                  CompletableFuture<S> b,
                                  Function2<? super R, ? super S, ? extends T> f,
                                  BiApply<R, S, T> c) {
-        Object r, s;
+        Object r;
+        Object s;
         Throwable x;
         if (a == null || (r = a.result.get()) == null || b == null || (s = b.result.get()) == null || f == null) {
             return false;
@@ -1278,7 +1279,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                                   CompletableFuture<S> b,
                                   Consumer2<? super R, ? super S> f,
                                   BiAccept<R, S> c) {
-        Object r, s;
+        Object r;
+        Object s;
         Throwable x;
         if (a == null || (r = a.result.get()) == null || b == null || (s = b.result.get()) == null || f == null) {
             return false;
@@ -1359,7 +1361,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
 
     final boolean biRun(CompletableFuture<?> a, CompletableFuture<?> b,
                         Runnable f, BiRun<?, ?> c) {
-        Object r, s;
+        Object r;
+        Object s;
         Throwable x;
         if (a == null || (r = a.result.get()) == null || b == null || (s = b.result.get()) == null || f == null) {
             return false;
@@ -1420,7 +1423,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
     }
 
     boolean biRelay(CompletableFuture<?> a, CompletableFuture<?> b) {
-        Object r, s;
+        Object r;
+        Object s;
         Throwable x;
         if (a == null || (r = a.result.get()) == null || b == null || (s = b.result.get()) == null) {
             return false;
@@ -1446,7 +1450,8 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
         if (lo > hi) { // empty
             d.result.set(NIL);
         } else {
-            CompletableFuture<?> a, b;
+            CompletableFuture<?> a;
+            CompletableFuture<?> b;
             int mid = (lo + hi) >>> 1;
             if ((a = (lo == mid ? cfs[lo] : andTree(cfs, lo, mid))) == null || (b = (lo == hi ? a : (hi == mid + 1) ? cfs[hi] : andTree(cfs, mid + 1, hi))) == null) {
                 throw new NullPointerException();
@@ -1929,7 +1934,6 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 spins = (Runtime.getRuntime().availableProcessors() > 1) ?
                         1 << 8 : 0; // Use brief spin-wait on multiprocessors
             } else if (spins > 0) {
-                // TODO ThreadLocalRandom.nextSecondarySeed()
                 //if (ThreadLocalRandom.nextSecondarySeed() >= 0)
                 //    --spins;
             } else if (q == null) {
@@ -1941,7 +1945,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 cleanStack();
                 return null;
             } else if (q.thread != null && result.get() == null) {
-                // TODO ForkJoinPool.managedBlock(q)
+                //  ForkJoinPool.managedBlock(q)
             }
         }
         if (q != null) {
@@ -1986,7 +1990,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
                 }
                 throw new TimeoutException();
             } else if (q.thread != null && result.get() == null) {
-                // TODO ForkJoinPool.managedBlock
+                //  ForkJoinPool.managedBlock
             }
         }
         if (q.interruptControl < 0) {

@@ -7,21 +7,19 @@ import java.util.List;
 
 /**
  * Wraps multiple exceptions.
- *
+ * <p>
  * Allows multiple exceptions to be thrown as a single exception.
- *
+ * <p>
  * The MultiException itself should not be thrown instead one of the
  * ifExceptionThrow* methods should be called instead.
  */
 @SuppressWarnings("serial")
-public class MultiException extends Exception
-{
+public class MultiException extends Exception {
     private static final String DEFAULT_MESSAGE = "Multiple exceptions";
 
     private List<Throwable> nested;
 
-    public MultiException()
-    {
+    public MultiException() {
         // Avoid filling in stack trace information.
         super(DEFAULT_MESSAGE, null, false, false);
         this.nested = new ArrayList<>();
@@ -31,48 +29,40 @@ public class MultiException extends Exception
      * Create a MultiException which may be thrown.
      *
      * @param nested The nested exceptions which will be suppressed by this
-     * exception.
+     *               exception.
      */
-    private MultiException(List<Throwable> nested)
-    {
+    private MultiException(List<Throwable> nested) {
         super(DEFAULT_MESSAGE);
         this.nested = new ArrayList<>(nested);
 
-        if (nested.size() > 0)
+        if (!nested.isEmpty()) {
             initCause(nested.get(0));
-
-        for (Throwable t : nested)
-        {
+        }
+        for (Throwable t : nested) {
             if (t != this && t != getCause())
                 addSuppressed(t);
         }
     }
 
-    public void add(Throwable e)
-    {
-        if (e instanceof MultiException)
-        {
-            MultiException me = (MultiException)e;
+    public void add(Throwable e) {
+        if (e instanceof MultiException) {
+            MultiException me = (MultiException) e;
             nested.addAll(me.nested);
-        }
-        else
+        } else
             nested.add(e);
     }
 
-    public int size()
-    {
+    public int size() {
         return (nested == null) ? 0 : nested.size();
     }
 
-    public List<Throwable> getThrowables()
-    {
+    public List<Throwable> getThrowables() {
         if (nested == null)
             return Collections.emptyList();
         return nested;
     }
 
-    public Throwable getThrowable(int i)
-    {
+    public Throwable getThrowable(int i) {
         return nested.get(i);
     }
 
@@ -85,21 +75,19 @@ public class MultiException extends Exception
      * @throws Exception the Error or Exception if nested is 1, or the MultiException itself if nested is more than 1.
      */
     public void ifExceptionThrow()
-            throws Exception
-    {
+            throws Exception {
         if (nested == null)
             return;
 
-        switch (nested.size())
-        {
+        switch (nested.size()) {
             case 0:
                 break;
             case 1:
                 Throwable th = nested.get(0);
                 if (th instanceof Error)
-                    throw (Error)th;
+                    throw (Error) th;
                 if (th instanceof Exception)
-                    throw (Exception)th;
+                    throw (Exception) th;
                 throw new MultiException(nested);
             default:
                 throw new MultiException(nested);
@@ -112,26 +100,24 @@ public class MultiException extends Exception
      * contains a single error or runtime exception that is thrown, otherwise the this
      * multi exception is thrown, wrapped in a runtime exception.
      *
-     * @throws Error If this exception contains exactly 1 {@link Error}
+     * @throws Error            If this exception contains exactly 1 {@link Error}
      * @throws RuntimeException If this exception contains 1 {@link Throwable} but it is not an error,
-     * or it contains more than 1 {@link Throwable} of any type.
+     *                          or it contains more than 1 {@link Throwable} of any type.
      */
     public void ifExceptionThrowRuntime()
-            throws Error
-    {
+            throws Error {
         if (nested == null)
             return;
 
-        switch (nested.size())
-        {
+        switch (nested.size()) {
             case 0:
                 break;
             case 1:
                 Throwable th = nested.get(0);
                 if (th instanceof Error)
-                    throw (Error)th;
+                    throw (Error) th;
                 else if (th instanceof RuntimeException)
-                    throw (RuntimeException)th;
+                    throw (RuntimeException) th;
                 else
                     throw new RuntimeException(th);
             default:
@@ -148,13 +134,11 @@ public class MultiException extends Exception
      * @throws MultiException the multiexception if there are nested exception
      */
     public void ifExceptionThrowMulti()
-            throws MultiException
-    {
+            throws MultiException {
         if (nested == null)
             return;
 
-        if (nested.size() > 0)
-        {
+        if (!nested.isEmpty()) {
             throw new MultiException(nested);
         }
     }
@@ -169,36 +153,30 @@ public class MultiException extends Exception
      * @throws Exception the Error or Exception if at least one is added.
      */
     public void ifExceptionThrowSuppressed()
-            throws Exception
-    {
-        if (nested == null || nested.size() == 0)
+            throws Exception {
+        if (nested == null || nested.isEmpty())
             return;
 
         Throwable th = nested.get(0);
         if (!Error.class.isInstance(th) && !Exception.class.isInstance(th))
             th = new MultiException(Collections.emptyList());
 
-        for (Throwable s : nested)
-        {
+        for (Throwable s : nested) {
             if (s != th)
                 th.addSuppressed(s);
         }
         if (Error.class.isInstance(th))
-            throw (Error)th;
-        throw (Exception)th;
+            throw (Error) th;
+        throw (Exception) th;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder str = new StringBuilder();
         str.append(MultiException.class.getSimpleName());
-        if ((nested == null) || (nested.size() <= 0))
-        {
+        if ((nested == null) || (nested.isEmpty())) {
             str.append("[]");
-        }
-        else
-        {
+        } else {
             str.append(nested);
         }
         return str.toString();

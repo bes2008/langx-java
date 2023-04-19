@@ -174,4 +174,8 @@ public class MultiValueMaps {
         });
     }
 
+    private MultiValueMaps(){
+
+    }
+
 }

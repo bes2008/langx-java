@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
-    private OrderedComparator comparator;
+    private transient OrderedComparator comparator;
 
     private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
 

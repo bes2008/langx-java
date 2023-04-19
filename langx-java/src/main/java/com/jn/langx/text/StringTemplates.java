@@ -281,4 +281,8 @@ public class StringTemplates {
             return template;
         }
     }
+
+    private StringTemplates(){
+
+    }
 }

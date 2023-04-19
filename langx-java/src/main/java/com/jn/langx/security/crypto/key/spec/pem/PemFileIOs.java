@@ -10,8 +10,8 @@ import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.io.stream.StringBuilderWriter;
 import com.jn.langx.security.Securitys;
-import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
 import com.jn.langx.security.crypto.key.spec.KeyEncoding;
+import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.*;
 import com.jn.langx.util.io.Charsets;
@@ -93,9 +93,7 @@ public class PemFileIOs extends Securitys {
                                 throw new KeyFileFormatException(StringTemplates.formatWithPlaceholder("error format key file : {}", filepath));
                             }
                         } else if (line.startsWith("-----END")) {
-                            if (!endLineFound) {
-                                endLineFound = true;
-                            }
+                            endLineFound = true;
                         } else {
                             throw new KeyFileFormatException(StringTemplates.formatWithPlaceholder("error format key file : {}", filepath));
                         }

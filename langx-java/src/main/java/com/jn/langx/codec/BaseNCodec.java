@@ -130,7 +130,7 @@ public abstract class BaseNCodec implements BinaryCodec {
      *
      * @see <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045 section 2.1</a>
      */
-    public static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
+    protected static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};
     /**
      * Byte used to pad output.
      */

@@ -92,4 +92,8 @@ public final class Base62 {
     private static int estimateOutputLength(int inputLength, int sourceBase, int targetBase) {
         return (int) Math.ceil(Math.log(sourceBase) / Math.log(targetBase) * inputLength);
     }
+
+    private Base62(){
+
+    }
 }

@@ -500,7 +500,7 @@ public class Reflects {
         result.addAll(declaredFields);
         Class superClass = clazz.getSuperclass();
         if (superClass == null || Object.class == superClass) {
-            return;
+            
         } else {
             findAllFields(result, superClass, containsStatic);
         }

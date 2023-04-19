@@ -40,8 +40,9 @@ import java.util.Currency;
  *   <li>Money类实现了Serializable接口，支持作为远程调用的参数和返回值。
  *   <li>Money类实现了equals和hashCode方法。
  * </ul>
- *
+ * <p>
  * migrate from hutool
+ *
  * @since 4.4.7
  */
 
@@ -116,9 +117,9 @@ public class Money implements Serializable, Comparable<Money> {
     public Money(long yuan, int cent, Currency currency) {
         this.currency = currency;
 
-        if(0 == yuan) {
+        if (0 == yuan) {
             this.cent = cent;
-        } else{
+        } else {
             this.cent = (yuan * getCentFactor()) + (cent % getCentFactor());
         }
     }
@@ -695,7 +696,7 @@ public class Money implements Serializable, Comparable<Money> {
      * 如果相除后的金额不能转换为整数分，使用指定的取整模式
      * {@code roundingMode}进行取整。
      *
-     * @param val 除数
+     * @param val          除数
      * @param roundingMode 保留小数方式
      * @return 累除后的结果。
      */
@@ -759,7 +760,7 @@ public class Money implements Serializable, Comparable<Money> {
         }
 
         long remainder = cent;
-
+        Preconditions.checkTrue(total > 0);
         for (int i = 0; i < results.length; i++) {
             results[i] = newMoneyWithSameCurrency((cent * ratios[i]) / total);
             remainder -= results[i].cent;

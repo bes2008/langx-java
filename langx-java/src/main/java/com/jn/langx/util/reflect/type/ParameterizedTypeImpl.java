@@ -65,8 +65,8 @@ public class ParameterizedTypeImpl implements ParameterizedType {
     static final Type[] EMPTY_TYPE_ARRAY = new Type[]{};
 
     public static final class WildcardTypeImpl implements WildcardType, Serializable {
-        private transient final Type upperBound;
-        private transient final Type lowerBound;
+        private final transient Type upperBound;
+        private final transient Type lowerBound;
 
         public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {
             checkArgument(lowerBounds.length <= 1);
@@ -142,7 +142,7 @@ public class ParameterizedTypeImpl implements ParameterizedType {
         return o != null ? o.hashCode() : 0;
     }
 
-    public static final class GenericArrayTypeImpl implements GenericArrayType, Serializable {
+    public static final class GenericArrayTypeImpl implements GenericArrayType {
         private final Type componentType;
 
         public GenericArrayTypeImpl(Type componentType) {

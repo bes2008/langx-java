@@ -80,12 +80,6 @@ public class GZips {
         return bytesToStringBuilder(in).toString();
     }
 
-    /**
-     * @return Retourne la string compressee
-     */
-    public static byte[] stringBufferToBytes(StringBuffer elem) {
-        return stringToBytes(elem.toString());
-    }
 
     /**
      * @return Retourne la string compressee

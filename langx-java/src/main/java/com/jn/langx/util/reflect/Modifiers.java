@@ -185,4 +185,8 @@ public class Modifiers {
     public static boolean isSynthetic(Member member) {
         return hasModifier(member, SYNTHETIC);
     }
+
+    private Modifiers(){
+
+    }
 }

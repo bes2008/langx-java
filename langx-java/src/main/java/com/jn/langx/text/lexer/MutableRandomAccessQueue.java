@@ -22,7 +22,7 @@ class MutableRandomAccessQueue<T> {
     void addLast(T object) {
         int currentSize = size();
         if (currentSize == this.myArray.length) {
-            this.myArray = (Object[]) normalize(Math.max(currentSize * 3 / 2, 10));
+            this.myArray = normalize(Math.max(currentSize * 3 / 2, 10));
             this.myFirst = 0;
             this.myLast = currentSize;
             this.isWrapped = false;
@@ -87,16 +87,16 @@ class MutableRandomAccessQueue<T> {
     private T[] normalize(T[] result) {
         Preconditions.checkNotNullArgument(result, "result");
         if (this.isWrapped) {
-            int tailLength = copyFromTo(this.myFirst, this.myArray.length, (Object[]) result, 0);
-            copyFromTo(0, this.myLast, (Object[]) result, tailLength);
+            int tailLength = copyFromTo(this.myFirst, this.myArray.length, result, 0);
+            copyFromTo(0, this.myLast, result, tailLength);
         } else {
-            copyFromTo(this.myFirst, this.myLast, (Object[]) result, 0);
+            copyFromTo(this.myFirst, this.myLast, result, 0);
         }
         return result;
     }
 
     void clear() {
-        Arrays.fill(this.myArray, (Object) null);
+        Arrays.fill(this.myArray, null);
         this.myFirst = this.myLast = 0;
         this.isWrapped = false;
     }

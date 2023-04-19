@@ -75,7 +75,7 @@ public class BigBufferedImage extends BufferedImage {
         return null;
     }
 
-    private static BufferedImage createBigBufferedImage(File tempDir, int width, int height, int imageType) throws FileNotFoundException, IOException {
+    private static BufferedImage createBigBufferedImage(File tempDir, int width, int height, int imageType) throws IOException {
         FileDataBuffer buffer = new FileDataBuffer(tempDir, width * height, 4);
         ColorModel colorModel = null;
         BandedSampleModel sampleModel = null;
@@ -195,19 +195,19 @@ public class BigBufferedImage extends BufferedImage {
         private RandomAccessFile[] accessFiles;
         private MappedByteBuffer[] buffer;
 
-        public FileDataBuffer(File dir, int size) throws FileNotFoundException, IOException {
+        public FileDataBuffer(File dir, int size) throws IOException {
             super(TYPE_BYTE, size);
             this.dir = dir;
             init();
         }
 
-        public FileDataBuffer(File dir, int size, int numBanks) throws FileNotFoundException, IOException {
+        public FileDataBuffer(File dir, int size, int numBanks) throws IOException {
             super(TYPE_BYTE, size, numBanks);
             this.dir = dir;
             init();
         }
 
-        private void init() throws FileNotFoundException, IOException {
+        private void init() throws IOException {
             FileDataBufferDeleterHook.undisposedBuffers.add(this);
             if (dir == null) {
                 dir = new File(".");

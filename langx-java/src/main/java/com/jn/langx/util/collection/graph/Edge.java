@@ -28,7 +28,7 @@ public class Edge<T> {
     }
 
     public Edge(Vertex<T> from, Vertex<T> to, int weight) {
-        this(from, to, null, 0);
+        this(from, to, null, weight);
     }
 
     /**

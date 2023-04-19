@@ -78,159 +78,159 @@ public interface JPEGDecodeParam extends Cloneable {
     /**
      * Unknown or Undefined Color ID
      */
-    public final static int COLOR_ID_UNKNOWN = 0;
+    public static final int COLOR_ID_UNKNOWN = 0;
 
     /**
      * Monochrome
      */
-    public final static int COLOR_ID_GRAY = 1;
+    public static final int COLOR_ID_GRAY = 1;
 
     /**
      * Red, Green, and Blue
      */
-    public final static int COLOR_ID_RGB = 2;
+    public static final int COLOR_ID_RGB = 2;
 
     /**
      * YCbCr
      */
-    public final static int COLOR_ID_YCbCr = 3;
+    public static final int COLOR_ID_YCbCr = 3;
 
     /**
      * CMYK
      */
-    public final static int COLOR_ID_CMYK = 4;
+    public static final int COLOR_ID_CMYK = 4;
 
     /**
      * PhotoYCC
      */
-    public final static int COLOR_ID_PYCC = 5;
+    public static final int COLOR_ID_PYCC = 5;
 
     /**
      * RGB-Alpha
      */
-    public final static int COLOR_ID_RGBA = 6;
+    public static final int COLOR_ID_RGBA = 6;
 
     /**
      * YCbCr-Alpha
      */
-    public final static int COLOR_ID_YCbCrA = 7;
+    public static final int COLOR_ID_YCbCrA = 7;
 
     /**
      * RGB-Alpha with R, G, and B inverted.
      */
-    public final static int COLOR_ID_RGBA_INVERTED = 8;
+    public static final int COLOR_ID_RGBA_INVERTED = 8;
 
     /**
      * YCbCr-Alpha with Y, Cb, and Cr inverted.
      */
-    public final static int COLOR_ID_YCbCrA_INVERTED = 9;
+    public static final int COLOR_ID_YCbCrA_INVERTED = 9;
 
     /**
      * PhotoYCC-Alpha
      */
-    public final static int COLOR_ID_PYCCA = 10;
+    public static final int COLOR_ID_PYCCA = 10;
 
     /**
      * YCbCrK
      */
-    public final static int COLOR_ID_YCCK = 11;
+    public static final int COLOR_ID_YCCK = 11;
 
     /**
      * Number of color ids defined.
      */
-    final static int NUM_COLOR_ID = 12;
+    static final int NUM_COLOR_ID = 12;
 
     /**
      * Number of allowed Huffman and Quantization Tables
      */
-    final static int NUM_TABLES = 4;
+    static final int NUM_TABLES = 4;
 
     /**
      * The X and Y units simply indicate the aspect ratio of the pixels.
      */
-    public final static int DENSITY_UNIT_ASPECT_RATIO = 0;
+    public static final int DENSITY_UNIT_ASPECT_RATIO = 0;
     /**
      * Pixel density is in pixels per inch.
      */
-    public final static int DENSITY_UNIT_DOTS_INCH = 1;
+    public static final int DENSITY_UNIT_DOTS_INCH = 1;
     /**
      * Pixel density is in pixels per centemeter.
      */
-    public final static int DENSITY_UNIT_DOTS_CM = 2;
+    public static final int DENSITY_UNIT_DOTS_CM = 2;
     /**
      * The max known value for DENSITY_UNIT
      */
-    final static int NUM_DENSITY_UNIT = 3;
+    static final int NUM_DENSITY_UNIT = 3;
 
     /**
      * APP0 marker - JFIF info
      */
-    public final static int APP0_MARKER = 0xE0;
+    public static final int APP0_MARKER = 0xE0;
     /**
      * APP1 marker
      */
-    public final static int APP1_MARKER = 0xE1;
+    public static final int APP1_MARKER = 0xE1;
     /**
      * APP2 marker
      */
-    public final static int APP2_MARKER = 0xE2;
+    public static final int APP2_MARKER = 0xE2;
     /**
      * APP3 marker
      */
-    public final static int APP3_MARKER = 0xE3;
+    public static final int APP3_MARKER = 0xE3;
     /**
      * APP4 marker
      */
-    public final static int APP4_MARKER = 0xE4;
+    public static final int APP4_MARKER = 0xE4;
     /**
      * APP5 marker
      */
-    public final static int APP5_MARKER = 0xE5;
+    public static final int APP5_MARKER = 0xE5;
     /**
      * APP6 marker
      */
-    public final static int APP6_MARKER = 0xE6;
+    public static final int APP6_MARKER = 0xE6;
     /**
      * APP7 marker
      */
-    public final static int APP7_MARKER = 0xE7;
+    public static final int APP7_MARKER = 0xE7;
     /**
      * APP8 marker
      */
-    public final static int APP8_MARKER = 0xE8;
+    public static final int APP8_MARKER = 0xE8;
     /**
      * APP9 marker
      */
-    public final static int APP9_MARKER = 0xE9;
+    public static final int APP9_MARKER = 0xE9;
     /**
      * APPA marker
      */
-    public final static int APPA_MARKER = 0xEA;
+    public static final int APPA_MARKER = 0xEA;
     /**
      * APPB marker
      */
-    public final static int APPB_MARKER = 0xEB;
+    public static final int APPB_MARKER = 0xEB;
     /**
      * APPC marker
      */
-    public final static int APPC_MARKER = 0xEC;
+    public static final int APPC_MARKER = 0xEC;
     /**
      * APPD marker
      */
-    public final static int APPD_MARKER = 0xED;
+    public static final int APPD_MARKER = 0xED;
     /**
      * APPE marker - Adobe info
      */
-    public final static int APPE_MARKER = 0xEE;
+    public static final int APPE_MARKER = 0xEE;
     /**
      * APPF marker
      */
-    public final static int APPF_MARKER = 0xEF;
+    public static final int APPF_MARKER = 0xEF;
 
     /**
      * Adobe marker indicates presence/need for Adobe marker.
      */
-    public final static int COMMENT_MARKER = 0XFE;
+    public static final int COMMENT_MARKER = 0XFE;
 
     public Object clone();
 
