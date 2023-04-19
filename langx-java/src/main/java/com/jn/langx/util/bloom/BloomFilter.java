@@ -83,8 +83,7 @@ public class BloomFilter extends Filter {
 
     @Override
     public void and(Filter filter) {
-        if (filter == null
-                || !(filter instanceof BloomFilter)
+        if (!(filter instanceof BloomFilter)
                 || filter.vectorSize != this.vectorSize
                 || filter.nbHash != this.nbHash) {
             throw new IllegalArgumentException("filters cannot be and-ed");
@@ -114,8 +113,7 @@ public class BloomFilter extends Filter {
 
     @Override
     public void or(Filter filter) {
-        if (filter == null
-                || !(filter instanceof BloomFilter)
+        if (!(filter instanceof BloomFilter)
                 || filter.vectorSize != this.vectorSize
                 || filter.nbHash != this.nbHash) {
             throw new IllegalArgumentException("filters cannot be or-ed");
@@ -125,8 +123,7 @@ public class BloomFilter extends Filter {
 
     @Override
     public void xor(Filter filter) {
-        if (filter == null
-                || !(filter instanceof BloomFilter)
+        if (!(filter instanceof BloomFilter)
                 || filter.vectorSize != this.vectorSize
                 || filter.nbHash != this.nbHash) {
             throw new IllegalArgumentException("filters cannot be xor-ed");

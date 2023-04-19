@@ -182,7 +182,6 @@ public class ByteArrayOutputStream extends OutputStream {
      * @return total number of bytes read from the input stream
      * (and written to this stream)
      * @throws IOException if an I/O error occurs while reading the input stream
-     * 
      */
     public synchronized int write(final InputStream in) throws IOException {
         int readCount = 0;
@@ -281,7 +280,6 @@ public class ByteArrayOutputStream extends OutputStream {
      * @param input Stream to be fully buffered.
      * @return A fully buffered stream.
      * @throws IOException if an I/O error occurs
-     * 
      */
     public static InputStream toBufferedInputStream(final InputStream input)
             throws IOException {
@@ -311,9 +309,14 @@ public class ByteArrayOutputStream extends OutputStream {
      */
     public static InputStream toBufferedInputStream(final InputStream input, final int size) throws IOException {
         // It does not matter if a ByteArrayOutputStream is not closed as close() is a no-op
-        final ByteArrayOutputStream output = new ByteArrayOutputStream(size);
-        output.write(input);
-        return output.toInputStream();
+        ByteArrayOutputStream output = null;
+        try {
+            output = new ByteArrayOutputStream(size);
+            output.write(input);
+            return output.toInputStream();
+        } finally {
+            IOs.close(output);
+        }
     }
 
     /**
@@ -324,7 +327,6 @@ public class ByteArrayOutputStream extends OutputStream {
      * @return the current contents of this output stream.
      * @see java.io.ByteArrayOutputStream#toByteArray()
      * @see #reset()
-     * 
      */
     public synchronized InputStream toInputStream() {
         int remaining = count;
@@ -376,7 +378,7 @@ public class ByteArrayOutputStream extends OutputStream {
      *
      * @return the contents of the byte array as a String
      * @see java.io.ByteArrayOutputStream#toString()
-     *  use {@link #toString(String)} instead
+     * use {@link #toString(String)} instead
      * @deprecated
      */
     @Override
@@ -406,7 +408,6 @@ public class ByteArrayOutputStream extends OutputStream {
      * @param charset the character encoding
      * @return the string converted from the byte array
      * @see java.io.ByteArrayOutputStream#toString(String)
-     * 
      */
     public String toString(final Charset charset) {
         return new String(toByteArray(), charset);

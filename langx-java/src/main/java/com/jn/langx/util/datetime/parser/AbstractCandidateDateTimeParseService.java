@@ -1,6 +1,6 @@
 package com.jn.langx.util.datetime.parser;
 
-import com.jn.langx.util.Preconditions;
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.ArrayKey;
 import com.jn.langx.util.datetime.DateTimeParsedResult;
 import com.jn.langx.util.datetime.DateTimeParser;
@@ -25,11 +25,12 @@ public abstract class AbstractCandidateDateTimeParseService implements Candidate
             parser = newParser(candidatePatterns, candidateTimeZones, candidateLocales);
             if (parser != null) {
                 cache.put(key, parser);
+                return parser.parse(dt);
             }
         }
-        Preconditions.checkNotNull(parser);
-        return parser.parse(dt);
+        return null;
     }
 
+    @NonNull
     protected abstract DateTimeParser newParser(List<String> candidatePatterns, List<TimeZone> candidateTimeZones, List<Locale> candidateLocales);
 }

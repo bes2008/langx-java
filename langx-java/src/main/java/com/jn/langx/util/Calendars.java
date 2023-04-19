@@ -1,12 +1,9 @@
 package com.jn.langx.util;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.datetime.DateField;
 
 import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 import static com.jn.langx.util.datetime.DateField.*;
 
@@ -167,20 +164,6 @@ public class Calendars {
         TO_NOW;
     }
 
-    /**
-     * Java 6 Calendar API 已经做了这个事情
-     */
-    private static enum WeekType {
-        MONDAY_TO_SUNDAY(Locale.CHINA, Locale.CHINESE),
-        SUNDAY_TO_SATUREDAY(Locale.ENGLISH, Locale.JAPAN, Locale.JAPANESE, Locale.US, Locale.UK),
-        SATUREDAY_TO_Friday;
-
-        private List<Locale> locales;
-
-        WeekType(Locale... locales) {
-            this.locales = Collects.asList(locales);
-        }
-    }
 
 
 }

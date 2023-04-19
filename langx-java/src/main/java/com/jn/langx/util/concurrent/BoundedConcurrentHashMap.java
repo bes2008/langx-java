@@ -392,8 +392,8 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
          */
         private static final long serialVersionUID = -7645068174197717838L;
 
-        private final ConcurrentLinkedQueue<HashEntry<K, V>> accessQueue;
-        private final Segment<K, V> segment;
+        private final transient ConcurrentLinkedQueue<HashEntry<K, V>> accessQueue;
+        private final transient Segment<K, V> segment;
         private final int maxBatchQueueSize;
         private final int trimDownSize;
         private final float batchThresholdFactor;
