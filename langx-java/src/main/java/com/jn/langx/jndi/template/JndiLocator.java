@@ -124,8 +124,7 @@ public class JndiLocator {
             if (!convertedName.equals(jndiName)) {
                 // Try fallback to originally specified name...
                 if (log.isDebugEnabled()) {
-                    log.debug("Converted JNDI name [" + convertedName +
-                            "] not found - trying original name [" + jndiName + "]. " + ex);
+                    log.debug("Converted JNDI name [{}] not found - trying original name [{}]. " ,convertedName,jndiName,ex);
                 }
                 jndiObject = getJndiTemplate().lookup(jndiName, requiredType);
             } else {

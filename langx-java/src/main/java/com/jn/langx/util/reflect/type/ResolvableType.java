@@ -77,7 +77,7 @@ public class ResolvableType implements Serializable {
     /**
      * The underlying Java type being managed (only ever {@code null} for {@link #NONE}).
      */
-    private final Type type;
+    private final transient Type type;
 
     /**
      * Optional provider for the type.
@@ -1380,10 +1380,9 @@ public class ResolvableType implements Serializable {
     }
 
 
-    @SuppressWarnings("serial")
     private static class TypeVariablesVariableResolver implements VariableResolver {
 
-        private final TypeVariable<?>[] variables;
+        private final transient TypeVariable<?>[] variables;
 
         private final ResolvableType[] generics;
 

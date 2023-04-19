@@ -16,13 +16,13 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
         }
     };
 
-    Comparator<? super K> comparator;
-    Node<K, V> root;
+    transient Comparator<? super K> comparator;
+    transient Node<K, V> root;
     int size = 0;
     int modCount = 0;
 
     // Used to preserve iteration order
-    final Node<K, V> header = new Node<K, V>();
+    final transient Node<K, V> header = new Node<K, V>();
 
     /**
      * Create a natural order, empty tree map whose keys must be mutually
@@ -402,8 +402,8 @@ public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Seri
                 pivotLeft != null ? pivotLeft.height : 0) + 1;
     }
 
-    private EntrySet entrySet;
-    private KeySet keySet;
+    private transient EntrySet entrySet;
+    private transient KeySet keySet;
 
     @Override
     public Set<Entry<K, V>> entrySet() {

@@ -9,4 +9,7 @@ public class JmxAuthBuilder {
         auth.put("jmx.remote.credentials", new String[]{user, password});
         return (Map<String, ?>) auth;
     }
+    private JmxAuthBuilder(){
+
+    }
 }

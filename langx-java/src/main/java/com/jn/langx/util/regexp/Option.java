@@ -1,12 +1,15 @@
 package com.jn.langx.util.regexp;
 
 import com.jn.langx.util.Objs;
+
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 /**
  * @since 4.5.0
  */
-public class Option {
+public class Option implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * Enables case-insensitive matching.
      *

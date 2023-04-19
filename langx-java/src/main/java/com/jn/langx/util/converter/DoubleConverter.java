@@ -23,7 +23,7 @@ public class DoubleConverter implements Converter<Object, Double> {
             return 0D;
         }
         if (input instanceof Boolean) {
-            return (Boolean) ((Boolean) input).booleanValue() ? 1D : 0D;
+            return ((Boolean) input).booleanValue() ? 1D : 0D;
         }
         if (input instanceof Number) {
             return Numbers.convertNumberToTargetClass((Number) input, Double.class);

@@ -24,7 +24,7 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
 
     private static final long serialVersionUID = 1L;
 
-    private static final class TrieNode<V> implements Serializable {
+    private static final class TrieNode<V extends Serializable> implements Serializable {
 
         private static final long serialVersionUID = 1L;
         private final Map<Character, TrieNode<V>> children;

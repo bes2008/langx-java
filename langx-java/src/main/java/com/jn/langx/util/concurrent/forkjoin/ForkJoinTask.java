@@ -1210,11 +1210,10 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
      * to be compliant with AbstractExecutorService constraints
      * when used in ForkJoinPool.
      */
-    static final class AdaptedRunnable<T> extends ForkJoinTask<T>
-            implements RunnableFuture<T> {
-        final Runnable runnable;
-        final T resultOnCompletion;
-        T result;
+    static final class AdaptedRunnable<T> extends ForkJoinTask<T> implements RunnableFuture<T> {
+        final transient Runnable runnable;
+        final transient T resultOnCompletion;
+        transient T result;
         AdaptedRunnable(Runnable runnable, T result) {
             if (runnable == null) throw new NullPointerException();
             this.runnable = runnable;
@@ -1234,10 +1233,9 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
     /**
      * Adaptor for Callables
      */
-    static final class AdaptedCallable<T> extends ForkJoinTask<T>
-            implements RunnableFuture<T> {
-        final Callable<? extends T> callable;
-        T result;
+    static final class AdaptedCallable<T> extends ForkJoinTask<T> implements RunnableFuture<T> {
+        final transient Callable<? extends T> callable;
+        transient T result;
         AdaptedCallable(Callable<? extends T> callable) {
             if (callable == null) throw new NullPointerException();
             this.callable = callable;

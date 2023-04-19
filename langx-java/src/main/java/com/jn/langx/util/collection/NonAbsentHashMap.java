@@ -37,7 +37,7 @@ import java.util.Map;
  * @see WrappedNonAbsentMap
  */
 public class NonAbsentHashMap<K, V> extends HashMap<K, V> {
-    private Supplier<K, V> supplier;
+    private transient Supplier<K, V> supplier;
 
     public NonAbsentHashMap(@NonNull Supplier<K, V> supplier) {
         super();

@@ -3,7 +3,6 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
 
@@ -12,7 +11,7 @@ import java.util.*;
 
 public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable, Cloneable {
 
-    private final LinkedHashMap<String, V> targetMap;
+    private final transient LinkedHashMap<String, V> targetMap;
 
     private final Locale locale;
 

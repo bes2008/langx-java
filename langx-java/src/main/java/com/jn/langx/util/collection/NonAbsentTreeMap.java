@@ -10,7 +10,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class NonAbsentTreeMap<K, V> extends TreeMap<K, V> {
-    private Supplier<K, V> supplier;
+    private transient Supplier<K, V> supplier;
 
     public NonAbsentTreeMap(@NonNull Supplier<K, V> supplier) {
         super();

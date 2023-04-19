@@ -713,7 +713,7 @@ class TypeDescriptor implements Serializable {
      */
     private class AnnotatedElementAdapter implements AnnotatedElement, Serializable {
 
-        private final Annotation[] annotations;
+        private final transient Annotation[] annotations;
 
         public AnnotatedElementAdapter(Annotation[] annotations) {
             this.annotations = annotations;

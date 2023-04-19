@@ -184,32 +184,32 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
     }
 
     // The backing data store holding the key-value associations
-    final ConcurrentMap<K, Node<K, V>> data;
+    final transient ConcurrentMap<K, Node<K, V>> data;
     final int concurrencyLevel;
 
     // These fields provide support to bound the map by a maximum capacity
     @GuardedBy("evictionLock")
     final long[] readBufferReadCount;
     @GuardedBy("evictionLock")
-    final LinkedDeque<Node<K, V>> evictionDeque;
+    final transient LinkedDeque<Node<K, V>> evictionDeque;
 
     @GuardedBy("evictionLock") // must write under lock
     final AtomicLong weightedSize;
     @GuardedBy("evictionLock") // must write under lock
     final AtomicLong capacity;
 
-    final Lock evictionLock;
-    final Queue<Runnable> writeBuffer;
-    final AtomicLong[] readBufferWriteCount;
-    final AtomicLong[] readBufferDrainAtWriteCount;
-    final AtomicReference<Node<K, V>>[][] readBuffers;
+    final transient Lock evictionLock;
+    final transient Queue<Runnable> writeBuffer;
+    final transient AtomicLong[] readBufferWriteCount;
+    final transient AtomicLong[] readBufferDrainAtWriteCount;
+    final transient AtomicReference<Node<K, V>>[][] readBuffers;
 
-    final AtomicReference<DrainStatus> drainStatus;
-    final EntryWeigher<? super K, ? super V> weigher;
+    final transient AtomicReference<DrainStatus> drainStatus;
+    final transient EntryWeigher<? super K, ? super V> weigher;
 
     // These fields provide support for notifying a listener.
-    final Queue<Node<K, V>> pendingNotifications;
-    final EvictionListener<K, V> listener;
+    final transient Queue<Node<K, V>> pendingNotifications;
+    final transient EvictionListener<K, V> listener;
 
     transient Set<K> keySet;
     transient Collection<V> values;
@@ -1164,10 +1164,8 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * A node contains the key, the weighted value, and the linkage pointers on
      * the page-replacement algorithm's data structures.
      */
-    @SuppressWarnings("serial")
-    static final class Node<K, V> extends AtomicReference<WeightedValue<V>>
-            implements Linked<Node<K, V>> {
-        final K key;
+    static final class Node<K, V> extends AtomicReference<WeightedValue<V>> implements Linked<Node<K, V>> {
+        transient final K key;
         @GuardedBy("evictionLock")
         Node<K, V> prev;
         @GuardedBy("evictionLock")
@@ -1431,7 +1429,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      */
     static final class BoundedEntryWeigher<K, V> implements EntryWeigher<K, V>, Serializable {
         static final long serialVersionUID = 1;
-        final EntryWeigher<? super K, ? super V> weigher;
+        final transient EntryWeigher<? super K, ? super V> weigher;
 
         BoundedEntryWeigher(EntryWeigher<? super K, ? super V> weigher) {
             checkNotNull(weigher);
@@ -1516,10 +1514,10 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * used as a fast warm-up process.
      */
     static final class SerializationProxy<K, V> implements Serializable {
-        final EntryWeigher<? super K, ? super V> weigher;
-        final EvictionListener<K, V> listener;
+        final transient EntryWeigher<? super K, ? super V> weigher;
+        final transient EvictionListener<K, V> listener;
         final int concurrencyLevel;
-        final Map<K, V> data;
+        final transient Map<K, V> data;
         final long capacity;
 
         SerializationProxy(ConcurrentLinkedHashMap<K, V> map) {
