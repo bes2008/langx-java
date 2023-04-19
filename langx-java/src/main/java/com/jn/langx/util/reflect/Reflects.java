@@ -1329,6 +1329,27 @@ public class Reflects {
         return new String(chars);
     }
 
+    /**
+     * @since 5.2.0
+     */
+    public static String getIsSetter(String s) {
+        String ret = s;
+        if(!Strings.startsWith(s,"is")){
+            ret = getIsGetter(s);
+        }
+        char[] c = ret.toCharArray();
+        char[] chars = new char[c.length + 3];
+
+        chars[0] = 's';
+        chars[1] = 'e';
+        chars[2] = 't';
+        chars[3] = Chars.toUpperCase(c[0]);
+
+        arraycopy(c, 1, chars, 4, c.length - 1);
+
+        return new String(chars);
+    }
+
     public static Method getSetter(Class clazz, String field) {
         String setter = getSetter(field);
 
