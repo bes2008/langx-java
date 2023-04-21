@@ -1,5 +1,6 @@
 package com.jn.langx.io.stream;
 
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.Charsets;
@@ -50,14 +51,17 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
 
             @Override
             public byte[] next() {
-                try {
-                    ByteBuffer byteBuffer = nextSegment();
-                    byte[] bytes = new byte[byteBuffer.remaining()];
-                    byteBuffer.get(bytes);
-                    return bytes;
-                } catch (IOException ex) {
-                    return new byte[0];
+                if(hasNext()) {
+                    try {
+                        ByteBuffer byteBuffer = nextSegment();
+                        byte[] bytes = new byte[byteBuffer.remaining()];
+                        byteBuffer.get(bytes);
+                        return bytes;
+                    } catch (IOException ex) {
+                        return Emptys.EMPTY_BYTES;
+                    }
                 }
+                return Emptys.EMPTY_BYTES;
             }
 
             @Override
@@ -69,24 +73,33 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
 
     private int fill() throws IOException {
         if (buf == null) {
-            buf = ByteBuffer.allocate(8192);
+            buf = ByteBuffer.allocate(40);
         } else {
             if (!buf.hasRemaining()) {
-                // 不足 5% 时 expand the buffer
-                if ((buf.capacity() - buf.limit()) < buf.capacity() / 20) {
-                    // expand capacity
-                    ByteBuffer buf2 = ByteBuffer.allocate(buf.capacity() * 2);
-                    int start = buf.arrayOffset();
-                    buf2.put(buf.array(), start , buf.position()-start);
+                // Buffer 的 limit 后面也没有任何容量了
+                if (buf.capacity() == buf.limit()) {
+                    // 如果当前segment的起始位置 超过了容量的 50% , 就要move 到开头，否则就扩容
+                    int newBufCapacity;
+                    if(buf.arrayOffset() >  buf.array().length /2){
+                        // 前移
+                        newBufCapacity = buf.array().length;
+                    }else{
+                        // 扩容
+                        newBufCapacity = buf.array().length * 2;
+                    }
+                    ByteBuffer buf2 = ByteBuffer.allocate(newBufCapacity);
+                    buf2.put(buf.array(), buf.arrayOffset(), buf.limit());
                     buf = buf2;
                 }
             }
         }
+        buf.mark();
         int length = channel.read(buf);
         if (length == -1) {
             eof = true;
         }
         buf.limit(buf.position());
+        buf.reset();
         return length;
     }
 
@@ -96,7 +109,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
                 fill();
             }
         }
-        return buf != null && buf.hasRemaining();
+        return buf != null && (buf.hasRemaining() || !eof);
 
     }
 
@@ -106,12 +119,13 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
         }
         if (buf == null || !buf.hasRemaining()) {
             fill();
-            if (!buf.hasRemaining()) {
-                return null;
+            if (!buf.hasRemaining() && eof) {
+                int start = buf.arrayOffset();
+                ByteBuffer ret = ByteBuffer.wrap(buf.array(), start, buf.position());
+                return ret;
             }
         }
 
-        int start = buf.position();
         delimiter.clear();
         byte firstByteOfDelimiter = delimiter.get();
         A:
@@ -127,12 +141,12 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
 
                 // found
                 delimiter.clear();
-
-                buf.mark();
                 int current = buf.position();
-                int end = current - delimiter.limit();
-                ByteBuffer ret = ByteBuffer.wrap(buf.array(), start, end-start);
-                buf.slice();
+                int length = current - delimiter.limit();
+                int start = buf.arrayOffset();
+                ByteBuffer ret = ByteBuffer.wrap(buf.array(), start, length);
+                // 每次找到后，进行切分，只要剩余部分继续作为 buf
+                this.buf = this.buf.slice();
                 return ret;
             }
         }
@@ -149,4 +163,5 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
     public void close() throws IOException {
         channel.close();
     }
+
 }
