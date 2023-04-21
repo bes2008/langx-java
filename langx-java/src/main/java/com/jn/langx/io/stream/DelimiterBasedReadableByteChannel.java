@@ -75,7 +75,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
         if (buf == null) {
             buf = ByteBuffer.allocate(256);
         } else {
-            if (!buf.hasRemaining()) {
+            if (buf.remaining()< this.delimiter.limit()) {
                 // Buffer 的 limit 后面也没有任何容量了
                 if (buf.capacity() == buf.limit()) {
                     // 如果当前segment的起始位置 超过了容量的 80% , 就要move 到开头，否则就扩容

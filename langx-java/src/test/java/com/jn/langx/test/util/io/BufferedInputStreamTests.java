@@ -7,6 +7,7 @@ import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.LineDelimiter;
 import com.jn.langx.util.progress.ProgressSource;
 import com.jn.langx.util.reflect.Reflects;
 import org.junit.Test;
@@ -126,12 +127,13 @@ public class BufferedInputStreamTests {
         BufferedInputStream bin = null;
         try {
             bin = new BufferedInputStream(file.getInputStream());
-            DelimiterBasedReadableByteChannel channel = new DelimiterBasedReadableByteChannel(Channels.newChannel(bin), ";\r\n");
+
+            DelimiterBasedReadableByteChannel channel = new DelimiterBasedReadableByteChannel(Channels.newChannel(bin), LineDelimiter.DEFAULT.getValue());
             Iterator<byte[]> iter = channel.iterator();
             int i =0;
             while (iter.hasNext()) {
                 if(i>0){
-                    System.out.print(";\r\n");
+                    System.out.print(LineDelimiter.DEFAULT.getValue());
                 }
 
                 byte[] bytes = iter.next();
