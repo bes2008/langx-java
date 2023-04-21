@@ -1,6 +1,7 @@
 package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.Charsets;
@@ -75,7 +76,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
         if (buf == null) {
             buf = ByteBuffer.allocate(256);
         } else {
-            if (buf.remaining()< this.delimiter.limit()) {
+            if (buf.remaining()< Maths.max(this.delimiter.limit(),1)) {
                 // Buffer 的 limit 后面也没有任何容量了
                 if (buf.capacity() == buf.limit()) {
                     // 如果当前segment的起始位置 超过了容量的 80% , 就要move 到开头，否则就扩容
