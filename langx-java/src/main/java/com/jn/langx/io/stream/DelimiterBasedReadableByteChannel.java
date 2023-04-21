@@ -70,27 +70,14 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
     private int fill() throws IOException {
         if (buf == null) {
             buf = ByteBuffer.allocate(8192);
-            buf.mark();
         } else {
-            buf.reset();
             if (!buf.hasRemaining()) {
-                buf.clear();
-                buf.mark();
-            } else {
-                // move remaining to begin
-                if (buf.remaining() <= buf.capacity() / 3) {
-                    ByteBuffer moving = buf.slice();
-                    moving.limit(buf.remaining());
-                    buf.clear();
-                    buf.mark();
-                    buf.put(moving);
-                } else {
+                // 不足 5% 时 expand the buffer
+                if ((buf.capacity() - buf.limit()) < buf.capacity() / 20) {
                     // expand capacity
                     ByteBuffer buf2 = ByteBuffer.allocate(buf.capacity() * 2);
-                    ByteBuffer moving = buf.slice();
-                    moving.limit(buf.remaining());
-                    buf2.mark();
-                    buf2.put(moving);
+                    int start = buf.arrayOffset();
+                    buf2.put(buf.array(), start , buf.position()-start);
                     buf = buf2;
                 }
             }
@@ -100,34 +87,31 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
             eof = true;
         }
         buf.limit(buf.position());
-        buf.reset();
         return length;
     }
 
     public boolean hasNextSegment() throws IOException {
-        if (buf == null || !buf.hasRemaining() || buf.remaining() < delimiter.limit()) {
+        if (buf == null || !buf.hasRemaining()) {
             if (!eof) {
                 fill();
             }
         }
-        return buf !=null && buf.hasRemaining();
+        return buf != null && buf.hasRemaining();
 
     }
 
     public ByteBuffer nextSegment() throws IOException {
-        if (buf == null || !buf.hasRemaining() || buf.remaining() < delimiter.limit()) {
-            if (!eof) {
-                fill();
+        if (buf == null && eof) {
+            return null;
+        }
+        if (buf == null || !buf.hasRemaining()) {
+            fill();
+            if (!buf.hasRemaining()) {
+                return null;
             }
         }
-        if (eof) {
-            return buf;
-        }
-        if (!buf.hasRemaining()) {
-            return buf;
-        }
 
-        buf.mark();
+        int start = buf.position();
         delimiter.clear();
         byte firstByteOfDelimiter = delimiter.get();
         A:
@@ -143,21 +127,16 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
 
                 // found
                 delimiter.clear();
-                //firstByteOfDelimiter = delimiter.get();
 
-                int current = buf.position();
-                buf.reset();
-                ByteBuffer ret = buf.slice();
-                ret.limit(current - delimiter.limit() - buf.position());
-                int bufferLimit = buf.limit();
-                buf.clear();
-                buf.limit(bufferLimit);
-                buf.position(current);
                 buf.mark();
+                int current = buf.position();
+                int end = current - delimiter.limit();
+                ByteBuffer ret = ByteBuffer.wrap(buf.array(), start, end-start);
+                buf.slice();
                 return ret;
             }
         }
-
+        fill();
         return nextSegment();
     }
 
