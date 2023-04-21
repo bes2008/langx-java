@@ -73,14 +73,14 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
 
     private int fill() throws IOException {
         if (buf == null) {
-            buf = ByteBuffer.allocate(40);
+            buf = ByteBuffer.allocate(256);
         } else {
             if (!buf.hasRemaining()) {
                 // Buffer 的 limit 后面也没有任何容量了
                 if (buf.capacity() == buf.limit()) {
-                    // 如果当前segment的起始位置 超过了容量的 50% , 就要move 到开头，否则就扩容
+                    // 如果当前segment的起始位置 超过了容量的 80% , 就要move 到开头，否则就扩容
                     int newBufCapacity;
-                    if(buf.arrayOffset() >  buf.array().length /2){
+                    if(buf.arrayOffset() >  buf.array().length * 0.8){
                         // 前移
                         newBufCapacity = buf.array().length;
                     }else{
