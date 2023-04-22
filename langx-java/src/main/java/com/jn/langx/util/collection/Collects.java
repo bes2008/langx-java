@@ -1622,7 +1622,7 @@ public class Collects {
         return hasRemoved;
     }
 
-    public static boolean anyMatch(@NonNull Predicate<Object> predicate, Object... array) {
+    public static boolean anyMatch(@NonNull Predicate predicate, Object... array) {
         return anyMatch(asList(array), predicate);
     }
 
@@ -2542,7 +2542,9 @@ public class Collects {
     public static <E, C extends Collection<E>> C clearNulls(@Nullable C collection) {
         return (C) filter(collection, Functions.nonNullPredicate());
     }
-
+    public static <E, C extends Collection<E>> C clearEmptys(@Nullable C collection) {
+        return (C) filter(collection, Functions.notEmptyPredicate());
+    }
 
     /**
      * Randomly permutes the specified list using a default source of

@@ -2,11 +2,16 @@ package com.jn.langx.util.io;
 
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Predicate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class LineDelimiter {
     public static final char CR = '\r';
@@ -92,5 +97,30 @@ public class LineDelimiter {
 
             return buf.toString();
         }
+    }
+
+    public static boolean isLineDelimiter(final String str) {
+        return Pipeline.of(WINDOWS, UNIX, MAC)
+                .anyMatch(new Predicate<LineDelimiter>() {
+                    @Override
+                    public boolean test(LineDelimiter delimiter) {
+                        return Objs.equals(delimiter.getValue(), str);
+                    }
+                });
+    }
+
+    public static List<LineDelimiter> supportedLineDelimiters() {
+        return Pipeline.of(WINDOWS, UNIX, MAC).asList();
+    }
+
+    public static List<String> supportedLineDelimiterStrings() {
+        return Pipeline.of(supportedLineDelimiters())
+                .map(new Function<LineDelimiter, String>() {
+                    @Override
+                    public String apply(LineDelimiter lineDelimiter) {
+                        return lineDelimiter.getValue();
+                    }
+                })
+                .asList();
     }
 }

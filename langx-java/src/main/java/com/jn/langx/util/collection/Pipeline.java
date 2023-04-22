@@ -160,6 +160,10 @@ public class Pipeline<E> {
         return new Pipeline<E>(Collects.clearNulls(this.collection));
     }
 
+    public Pipeline<E> clearEmptys(){
+        return new Pipeline<E>(Collects.clearEmptys(this.collection));
+    }
+
     public int count() {
         return this.collection.size();
     }

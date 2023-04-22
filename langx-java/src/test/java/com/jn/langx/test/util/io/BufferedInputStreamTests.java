@@ -1,10 +1,12 @@
 package com.jn.langx.test.util.io;
 
 import com.jn.langx.io.resource.FileResource;
+import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.io.stream.*;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.LineDelimiter;
@@ -176,5 +178,17 @@ public class BufferedInputStreamTests {
         System.out.println(workDir);
         String currentFilePath = workDir + "/src/main/java/" + Reflects.getFQNClassName(Collects.class).replaceAll("\\.", "/") + ".java";
         return Resources.loadFileResource(currentFilePath);
+    }
+
+
+    @Test
+    public void test001() {
+        Resource res = Resources.loadClassPathResource("00DE8E3E-95E3-4885-A760-A269A6836AE2.txt", BufferedInputStreamTests.class);
+        Resources.readLines(res, Charsets.UTF_8, new Consumer<String>() {
+            @Override
+            public void accept(String line) {
+                System.out.println(line);
+            }
+        });
     }
 }
