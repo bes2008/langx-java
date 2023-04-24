@@ -4,6 +4,7 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.StrTokenizer;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Lists;
 
 import java.io.Serializable;
@@ -160,7 +161,7 @@ public final class OID implements Serializable, Comparable<OID> {
      */
     @Nullable()
     public static List<Integer> parseComponents(@Nullable final String oidString) {
-        if ((oidString == null) || oidString.isEmpty() || oidString.startsWith(".") || oidString.endsWith(".") ||  (oidString.indexOf("..") > 0)) {
+        if (Strings.isEmpty(oidString) ||  (oidString.indexOf("..") > 0) || oidString.startsWith(".") || oidString.endsWith(".") ) {
             return Lists.newArrayList();
         }
 

@@ -505,6 +505,9 @@ public class Numbers {
             }
             //Requesting a specific type..
             String numeric = str.substring(0, str.length() - 1);
+            if(Strings.isEmpty(numeric)){
+                return 0;
+            }
             boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
             Number number = null;
             switch (lastChar) {

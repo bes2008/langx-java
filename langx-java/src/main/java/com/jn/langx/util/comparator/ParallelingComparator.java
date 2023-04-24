@@ -18,7 +18,7 @@ public class ParallelingComparator implements Comparator, Serializable {
     private int compare0(Object o1, Object o2) {
         Preconditions.checkTrue(isValid());
         int leftMoveUnit = 32 / delegates.size();
-        int deltaMax = Numbers.toInt(Math.pow(2, leftMoveUnit + 1)) - 1;
+        int deltaMax = Numbers.toInt(Math.pow(2, leftMoveUnit + 1D)) - 1;
         int result = 0;
 
         boolean isNegative = false;

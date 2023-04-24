@@ -221,7 +221,6 @@ public class Resources {
     }
 
     public static void readLines(@NonNull Resource resource, @NonNull Charset charset, Consumer<String> consumer) {
-        final List<String> lines = Collects.emptyArrayList();
         readUsingDelimiter(resource, "\n", charset, consumer);
     }
 

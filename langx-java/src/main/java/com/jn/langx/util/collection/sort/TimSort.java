@@ -760,7 +760,7 @@ public class TimSort<T> {
                 if (--len1 == 1)
                     break outer;
                 minGallop--;
-            } while (count1 >= MIN_GALLOP | count2 >= MIN_GALLOP);
+            } while (count1 >= MIN_GALLOP || count2 >= MIN_GALLOP);
             if (minGallop < 0)
                 minGallop = 0;
             minGallop += 2;  // Penalize for leaving gallop mode
@@ -886,7 +886,7 @@ public class TimSort<T> {
                     break outer;
                 }
                 minGallop--;
-            } while (count1 >= MIN_GALLOP | count2 >= MIN_GALLOP);
+            } while (count1 >= MIN_GALLOP || count2 >= MIN_GALLOP);
             if (minGallop < 0) {
                 minGallop = 0;
             }

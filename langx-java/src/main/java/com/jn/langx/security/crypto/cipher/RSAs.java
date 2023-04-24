@@ -92,9 +92,8 @@ public class RSAs extends Asymmetrics {
      * @param pkcs1PrivateKey pkcs1 格式的 private key, base64 编码后的
      * @return pkcs8 格式的 private key，返回的是 未经过 base64 编码的
      */
-    static byte[] pkcs1_to_pkcs8(byte[] pkcs1PrivateKey) {
-
-        return null;
+    private static byte[] pkcs1_to_pkcs8(byte[] pkcs1PrivateKey) {
+        return pkcs1PrivateKey;
     }
 
     /**

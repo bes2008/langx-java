@@ -15,8 +15,8 @@ public class StringTemplate {
     /**
      * index pattern
      */
-    public final static Regexp defaultPattern = Regexps.createRegexp("\\{\\d+}");
-    private final static Function2<String, Object[], String> defaultValueGetter = new IndexBasedValueGetter();
+    public static final Regexp defaultPattern = Regexps.createRegexp("\\{\\d+}");
+    private static final Function2<String, Object[], String> defaultValueGetter = new IndexBasedValueGetter();
 
     private Regexp variableRegexp = defaultPattern;
     private String template;
