@@ -28,11 +28,10 @@ public class Subtract extends AbstractBinaryOperator<NumberResultExpression<Numb
 
     @Override
     public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
         NumberResultExpression<Number> left = getLeft();
 
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append(getLeft().toString());
+        stringBuilder.append(left.toString());
         stringBuilder.append(" " + getOperateSymbol() + " ");
 
         NumberResultExpression<Number> right = getRight();

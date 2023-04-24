@@ -117,7 +117,7 @@ public class Tuple extends BasedStringAccessor<Integer, Collection> implements I
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof Tuple)) {
+        if (!(obj instanceof Tuple)) {
             return false;
         }
         Tuple t = (Tuple) obj;

@@ -364,19 +364,22 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
         TrieNode<V> lastInUseNode = currentNode;
         int lastInUseIndex = 0;
 
-        for (int i = 0; i < keyLength && currentNode != null; i++) {
-            if (currentNode.inUse) {
-                lastInUseNode = currentNode;
-                lastInUseIndex = i;
+        if(currentNode!=null) {
+            for (int i = 0; i < keyLength && currentNode != null; i++) {
+                if (currentNode.inUse) {
+                    lastInUseNode = currentNode;
+                    lastInUseIndex = i;
+                }
+
+                currentNode = currentNode.children.get(key.charAt(i));
             }
-
-            currentNode = currentNode.children.get(key.charAt(i));
         }
-
         currentNode = lastInUseNode;
 
-        for (int i = lastInUseIndex; i < keyLength; i++) {
-            currentNode = currentNode.children.remove(key.charAt(i)).unset();
+        if(currentNode!=null) {
+            for (int i = lastInUseIndex; i < keyLength; i++) {
+                currentNode = currentNode.children.remove(key.charAt(i)).unset();
+            }
         }
     }
 
