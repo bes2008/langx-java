@@ -3,6 +3,7 @@ package com.jn.langx.util.collection.graph;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.graph.traverser.BreadthFirstGraphTraverser;
 import com.jn.langx.util.collection.graph.traverser.DeepFirstGraphTraverser;
@@ -91,7 +92,7 @@ public class Graphs {
             Collections.reverse(cycle);
             return cycle;
         }
-        return null;
+        return Lists.immutableList();
     }
 
     public static List<String> detectCycle(final Vertex vertex) {

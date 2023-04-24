@@ -316,8 +316,11 @@ public class HttpUrlEncoders {
     public static String encodeQueryNameOrValueNoParen(final String queryNameOrValueNoParen) {
         try {
             String query = encodePart(queryNameOrValueNoParen, Charsets.UTF_8.name(), QUERY);
-            query = query.replace("(", "");
-            return query.replace(")", "");
+            if(query!=null) {
+                query = query.replace("(", "");
+                return query.replace(")", "");
+            }
+            return null;
         } catch (final UnsupportedEncodingException e) {
             // should not happen
             throw new RuntimeException(e);

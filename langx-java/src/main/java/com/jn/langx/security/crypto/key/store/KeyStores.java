@@ -7,6 +7,7 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
@@ -229,7 +230,7 @@ public class KeyStores extends Securitys {
     public static List<Certificate> findCertificateChain(@NonNull KeyStore keyStore, @NonNull String alias) {
         try {
             if (!keyStore.containsAlias(alias)) {
-                return null;
+                return Lists.immutableList();
             }
             Certificate[] certificates = keyStore.getCertificateChain(alias);
             return Collects.newArrayList(certificates);
@@ -237,7 +238,7 @@ public class KeyStores extends Securitys {
             Logger logger = Loggers.getLogger(PKIs.class);
             logger.warn("can't find a valid certificate, the alias is {}", alias);
         }
-        return null;
+        return Lists.immutableList();
     }
 
     public static PublicKey findPublicKey(@NonNull KeyStore keyStore, @NonNull String alias) {

@@ -1165,7 +1165,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * the page-replacement algorithm's data structures.
      */
     static final class Node<K, V> extends AtomicReference<WeightedValue<V>> implements Linked<Node<K, V>> {
-        transient final K key;
+        final transient K key;
         @GuardedBy("evictionLock")
         Node<K, V> prev;
         @GuardedBy("evictionLock")

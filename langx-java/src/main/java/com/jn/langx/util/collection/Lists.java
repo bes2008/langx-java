@@ -61,4 +61,7 @@ public class Lists {
         return list;
     }
 
+    public static <E> List<E> immutableList(){
+        return Collects.immutableList();
+    }
 }

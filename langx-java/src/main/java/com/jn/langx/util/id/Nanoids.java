@@ -52,7 +52,6 @@ public class Nanoids {
                 byte[] bytes = randomBytesSupplier.get(step);
                 int i = step;
 
-                inner:
                 while (i-- > 0) {
                     int index = bytes[i] & mask;
                     id.append(index >= alphabet.length() ? "" : alphabet.charAt(index));

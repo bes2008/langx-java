@@ -7,7 +7,7 @@ public class JmxAuthBuilder {
     public static Map<String, ?> buildAuth(final String user, final String password) {
         final Map auth = new HashMap();
         auth.put("jmx.remote.credentials", new String[]{user, password});
-        return (Map<String, ?>) auth;
+        return auth;
     }
     private JmxAuthBuilder(){
 

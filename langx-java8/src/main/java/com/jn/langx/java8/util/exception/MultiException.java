@@ -158,15 +158,17 @@ public class MultiException extends Exception {
             return;
 
         Throwable th = nested.get(0);
-        if (!Error.class.isInstance(th) && !Exception.class.isInstance(th))
+        if (!(th instanceof Error) && !(th instanceof Exception))
             th = new MultiException(Collections.emptyList());
 
         for (Throwable s : nested) {
-            if (s != th)
+            if (s != th) {
                 th.addSuppressed(s);
+            }
         }
-        if (Error.class.isInstance(th))
+        if (th instanceof Error) {
             throw (Error) th;
+        }
         throw (Exception) th;
     }
 

@@ -430,9 +430,7 @@ public class Nets {
                 br.close();
             }
         } finally {
-            if (process != null) {
-                process.destroy();
-            }
+            process.destroy();
         }
     }
 

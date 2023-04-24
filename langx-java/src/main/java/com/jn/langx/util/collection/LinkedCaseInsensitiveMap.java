@@ -123,7 +123,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
     @Override
     @Nullable
     public V put(String key, @Nullable V value) {
-        String internalKey = convertKey((String) key);
+        String internalKey = convertKey(key);
         return this.targetMap.put(internalKey, value);
     }
 

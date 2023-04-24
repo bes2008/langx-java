@@ -2,6 +2,7 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.bytes.Bytes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +29,7 @@ public class ByteBufferInputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
-        return byteBuffer.get();
+        return Bytes.forRead(byteBuffer.get());
     }
 
     @Override

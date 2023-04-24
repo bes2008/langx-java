@@ -233,7 +233,7 @@ public class Maths {
      */
     public static long saturatedAdd(long a, long b) {
         long naiveSum = a + b;
-        if ((a ^ b) < 0 | (a ^ naiveSum) >= 0) {
+        if ((a ^ b) < 0 || (a ^ naiveSum) >= 0) {
             // If a and b have different signs or a has the same sign as the result then there was no
             // overflow, return.
             return naiveSum;
@@ -250,7 +250,7 @@ public class Maths {
      */
     public static long saturatedSubtract(long a, long b) {
         long naiveDifference = a - b;
-        if ((a ^ b) >= 0 | (a ^ naiveDifference) >= 0) {
+        if ((a ^ b) >= 0 || (a ^ naiveDifference) >= 0) {
             // If a and b have the same signs or a has the same sign as the result then there was no
             // overflow, return.
             return naiveDifference;
@@ -277,7 +277,7 @@ public class Maths {
         }
         // the return value if we will overflow (which we calculate by overflowing a long :) )
         long limit = Long.MAX_VALUE + ((a ^ b) >>> (Long.SIZE - 1));
-        if (leadingZeros < Long.SIZE | (a < 0 & b == Long.MIN_VALUE)) {
+        if (leadingZeros < Long.SIZE || (a < 0 && b == Long.MIN_VALUE)) {
             // overflow
             return limit;
         }
@@ -301,7 +301,7 @@ public class Maths {
         if (k < 0) {
             throw new IllegalArgumentException(" Argument k must be >= 0");
         }
-        if (b >= -2 & b <= 2) {
+        if (b >= -2 && b <= 2) {
             switch ((int) b) {
                 case 0:
                     return (k == 0) ? 1 : 0;
@@ -338,7 +338,7 @@ public class Maths {
                     }
                     k >>= 1;
                     if (k > 0) {
-                        if (-FLOOR_SQRT_MAX_LONG > b | b > FLOOR_SQRT_MAX_LONG) {
+                        if (-FLOOR_SQRT_MAX_LONG > b || b > FLOOR_SQRT_MAX_LONG) {
                             return limit;
                         }
                         b *= b;

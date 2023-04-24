@@ -14,7 +14,7 @@ class LinuxGetRuntimeContainerHandler extends GetRuntimeContainerHandler {
     public void start() throws IOException {
         this.outputContent.reset();
         String content = IOs.readAsString(this.subProcessOutputStream);
-        content.trim();
+        content = content.trim();
 
         // 没有在容器下
         if ("/".equals(content)) {

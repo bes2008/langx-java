@@ -35,7 +35,7 @@ public class EnvironmentUtils {
      */
     public static String[] toStrings(final Map<String, String> environment) {
         if (environment == null) {
-            return null;
+            return new String[0];
         }
         final String[] result = new String[environment.size()];
         int i = 0;

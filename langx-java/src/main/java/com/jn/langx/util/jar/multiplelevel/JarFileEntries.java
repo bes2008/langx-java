@@ -74,7 +74,7 @@ class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
                     if (JarFileEntries.this.jarFile.isSigned()) {
                         return false;
                     }
-                    return size() >= ENTRY_CACHE_SIZE;
+                    return super.size() >= ENTRY_CACHE_SIZE;
                 }
 
             });

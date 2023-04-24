@@ -869,7 +869,7 @@ public class KeyComparatorHashMap<K, V> extends AbstractMap<K, V> implements Map
     @Override
     public Set<Map.Entry<K, V>> entrySet() {
         final Set<Map.Entry<K, V>> es = entrySet;
-        return (es != null ? es : (entrySet = (Set<Map.Entry<K, V>>) new EntrySet()));
+        return (es != null ? es : (entrySet = new EntrySet()));
     }
 
     private class EntrySet extends AbstractSet/*<Map.Entry<K,V>>*/ {

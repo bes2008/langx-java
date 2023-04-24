@@ -3,7 +3,6 @@ package com.jn.langx.aspectj.reflect;
 import com.jn.langx.annotation.Name;
 import com.jn.langx.aspectj.coderepository.Repositorys;
 import com.jn.langx.lifecycle.InitializationException;
-import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.jar.JarNotFoundException;
 import com.jn.langx.util.logging.Loggers;
@@ -61,6 +60,7 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
         if (this.delegate == null && Platform.JAVA_VERSION_INT >= 8) {
             throw new JarNotFoundException("Can't find the langx-java8.jar in the classpath");
         }
+        // 低于 java 8的根本走不到这里，所以不会报 NPE
         MethodParameter delegate = this.delegate.get(meta);
         if (Strings.isEmpty(parameterName)) {
             parameterName = delegate.getName();
