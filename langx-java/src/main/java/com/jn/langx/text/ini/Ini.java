@@ -190,7 +190,7 @@ public class Ini implements Map<String, Ini.Section> {
                         sectionContent = new StringBuilder();
                         sectionName = newSectionName;
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Parsing [" + newSectionName + "]");
+                            logger.debug("Parsing [{}]",newSectionName);
                         }
                     } else {
                         sectionContent.append(rawLine).append("\n");
@@ -375,7 +375,7 @@ public class Ini implements Map<String, Ini.Section> {
         protected static String[] splitKeyValue(String keyValueLine) {
             String line = Strings.useValueIfBlank(keyValueLine, null);
             if (line == null) {
-                return null;
+                return Emptys.EMPTY_STRINGS;
             } else {
                 StringBuilder keyBuffer = new StringBuilder();
                 StringBuilder valueBuffer = new StringBuilder();
@@ -410,22 +410,27 @@ public class Ini implements Map<String, Ini.Section> {
         private static Map<String, String> toMapProps(String content) {
             Map<String, String> props = new LinkedHashMap<String, String>();
             StringBuilder lineBuffer = new StringBuilder();
-            Scanner scanner = new Scanner(content);
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(content);
 
-            while (scanner.hasNextLine()) {
-                String line = Strings.trim(scanner.nextLine());
-                if (isContinued(line)) {
-                    line = line.substring(0, line.length() - 1);
-                    lineBuffer.append(line);
-                } else {
-                    lineBuffer.append(line);
-                    line = lineBuffer.toString();
-                    lineBuffer = new StringBuilder();
-                    String[] kvPair = splitKeyValue(line);
-                    if (kvPair != null && kvPair.length == 2) {
-                        props.put(kvPair[0], kvPair[1]);
+                while (scanner.hasNextLine()) {
+                    String line = Strings.trim(scanner.nextLine());
+                    if (isContinued(line)) {
+                        line = line.substring(0, line.length() - 1);
+                        lineBuffer.append(line);
+                    } else {
+                        lineBuffer.append(line);
+                        line = lineBuffer.toString();
+                        lineBuffer = new StringBuilder();
+                        String[] kvPair = splitKeyValue(line);
+                        if (kvPair != null && kvPair.length == 2) {
+                            props.put(kvPair[0], kvPair[1]);
+                        }
                     }
                 }
+            }finally {
+                IOs.close(scanner);
             }
 
             return props;
