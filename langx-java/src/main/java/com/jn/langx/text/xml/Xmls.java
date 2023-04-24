@@ -57,6 +57,8 @@ public class Xmls {
         factory.setFeature(feature, false); // 不包含外部参数实体或外部DTD子集。
         feature = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
         factory.setFeature(feature, false); // 忽略外部DTD
+        factory.setFeature(XMLConstants.ACCESS_EXTERNAL_DTD,false);
+        factory.setFeature(XMLConstants.ACCESS_EXTERNAL_SCHEMA,false);
 
 
         factory.setIgnoringElementContentWhitespace(ignoringElementContentWhitespace);
@@ -100,7 +102,8 @@ public class Xmls {
 
     public static Transformer newTransformer() throws TransformerConfigurationException {
         TransformerFactory factory = TransformerFactory.newInstance();
-        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, false);
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, factory);
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, false);
         factory.setAttribute(FEATURE_SECURE_PROCESSING, true);
         final Transformer trans = factory.newTransformer();
         return trans;
