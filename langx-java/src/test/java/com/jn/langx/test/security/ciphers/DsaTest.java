@@ -1,7 +1,6 @@
 package com.jn.langx.test.security.ciphers;
 
 
-import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.signature.DSAs;
 import org.junit.Assert;

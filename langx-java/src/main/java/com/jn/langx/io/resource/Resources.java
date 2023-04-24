@@ -220,11 +220,15 @@ public class Resources {
         return lines;
     }
 
-    public static List<String> readLines(@NonNull Resource resource, @NonNull Charset charset, Consumer<String> consumer) {
+    public static void readLines(@NonNull Resource resource, @NonNull Charset charset, Consumer<String> consumer) {
         final List<String> lines = Collects.emptyArrayList();
         readUsingDelimiter(resource, "\n", charset, consumer);
-        return lines;
     }
+
+    public static void readLines(@NonNull Resource resource, @NonNull Charset charset, Consumer2<Integer, String> consumer) {
+        readUsingDelimiter(resource, "\n", charset, consumer);
+    }
+
 
     public static void readLines(@NonNull String location, @NonNull Charset charset, @NonNull final Consumer<String> consumer) {
         readUsingDelimiter(location, "\n", charset, consumer);
