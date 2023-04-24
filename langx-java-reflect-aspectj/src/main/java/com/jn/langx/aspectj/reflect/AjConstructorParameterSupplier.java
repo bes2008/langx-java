@@ -37,12 +37,9 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
     }
 
     @Override
-    public void init() throws InitializationException {
-        if (!inited) {
-            if (delegate == null) {
-                delegate = ParameterServiceRegistry.getInstance().getDefaultConstructorParameterSupplier();
-            }
-            inited = true;
+    protected void doInit() throws InitializationException {
+        if (delegate == null) {
+            delegate = ParameterServiceRegistry.getInstance().getDefaultConstructorParameterSupplier();
         }
     }
 

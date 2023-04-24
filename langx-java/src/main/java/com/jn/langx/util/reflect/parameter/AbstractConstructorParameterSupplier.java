@@ -1,14 +1,7 @@
 package com.jn.langx.util.reflect.parameter;
 
-import com.jn.langx.lifecycle.InitializationException;
+import com.jn.langx.lifecycle.AbstractInitializable;
 
-public abstract class AbstractConstructorParameterSupplier implements ConstructorParameterSupplier {
-    protected volatile boolean inited = false;
+public abstract class AbstractConstructorParameterSupplier extends AbstractInitializable implements ConstructorParameterSupplier {
 
-    @Override
-    public void init() throws InitializationException {
-        if (!inited) {
-            inited = true;
-        }
-    }
 }
