@@ -48,7 +48,7 @@ class CrcCalculator {
             int toRight = (hashSize - 8);
             toRight = Math.max(toRight, 0);
             for (int i = offset; i < offset + length; i++) {
-                crc = (table[(int) (((crc >> toRight) ^ data[i]) & 0xFF)] ^ (crc << 8));
+                crc = (table[(int) (((crc >> toRight) ^ data[i] & 0xFF) & 0xFF)] ^ (crc << 8));
                 crc &= mask;
             }
         }

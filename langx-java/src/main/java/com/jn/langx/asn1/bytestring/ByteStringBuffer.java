@@ -1261,19 +1261,19 @@ public final class ByteStringBuffer
                     StringTemplates.formatWithPlaceholder("The provided capacity {} is negative.", capacity));
         }
 
-        if (this.capacity == capacity) {
-            return;
-        } else if (this.capacity < capacity) {
-            final byte[] newArray = new byte[capacity];
-            System.arraycopy(array, 0, newArray, 0, this.capacity);
-            array = newArray;
-            this.capacity = capacity;
-        } else {
-            final byte[] newArray = new byte[capacity];
-            System.arraycopy(array, 0, newArray, 0, capacity);
-            array = newArray;
-            endPos = Math.min(endPos, capacity);
-            this.capacity = capacity;
+        if (this.capacity != capacity) {
+            if (this.capacity < capacity) {
+                final byte[] newArray = new byte[capacity];
+                System.arraycopy(array, 0, newArray, 0, this.capacity);
+                array = newArray;
+                this.capacity = capacity;
+            } else {
+                final byte[] newArray = new byte[capacity];
+                System.arraycopy(array, 0, newArray, 0, capacity);
+                array = newArray;
+                endPos = Math.min(endPos, capacity);
+                this.capacity = capacity;
+            }
         }
     }
 

@@ -121,8 +121,7 @@ public final class CountingBloomFilter extends Filter {
 
     @Override
     public void and(Filter filter) {
-        if (filter == null
-                || !(filter instanceof CountingBloomFilter)
+        if (!(filter instanceof CountingBloomFilter)
                 || filter.vectorSize != this.vectorSize
                 || filter.nbHash != this.nbHash) {
             throw new IllegalArgumentException("filters cannot be and-ed");
@@ -206,8 +205,7 @@ public final class CountingBloomFilter extends Filter {
 
     @Override
     public void or(Filter filter) {
-        if (filter == null
-                || !(filter instanceof CountingBloomFilter)
+        if (!(filter instanceof CountingBloomFilter)
                 || filter.vectorSize != this.vectorSize
                 || filter.nbHash != this.nbHash) {
             throw new IllegalArgumentException("filters cannot be or-ed");

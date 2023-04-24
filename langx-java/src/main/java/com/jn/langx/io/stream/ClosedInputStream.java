@@ -3,6 +3,7 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.io.IOs;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -32,4 +33,8 @@ public class ClosedInputStream extends InputStream {
         return IOs.EOF;
     }
 
+    @Override
+    public int read(byte[] b, int off, int len) throws IOException {
+        return super.read(b, off, len);
+    }
 }

@@ -1207,7 +1207,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
          * Retrieves the value held by the current <tt>WeightedValue</tt>.
          */
         V getValue() {
-            return get().value;
+            return super.get().value;
         }
     }
 
