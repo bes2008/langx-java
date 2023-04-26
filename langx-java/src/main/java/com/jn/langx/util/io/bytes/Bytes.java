@@ -1,6 +1,7 @@
 package com.jn.langx.util.io.bytes;
 
 import com.jn.langx.util.Chars;
+import com.jn.langx.util.io.Unsigneds;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -568,22 +569,24 @@ public class Bytes {
     }
 
     /**
+     *
+     * 1. 什么是有符号位的数字，无符号位的数字？
+     * <pre>
+     * 有符号位的数字，>0 时前面都是0， < 0时前面都是1。
+     * 无符号位的数字，因为前面没有标识指定是正值还是负值，所以都是 >=0的值。
+     * </pre>
+     *
+     * 2. java中数字的表示
+     * <pre>
+     * java中所有数字都有符号位的数字，
      * byte的范围： -128 ~ 127
-     * 而 java io stream 要求的返回值为 0-255。所以需要 对值 进行处理。
+     * int的范围：Integer.MIN_VALUE ~ Integer.MAX_VALUE
+     * </pre>
      *
-     * 负数用补码表示，
      *
-     * 基于 InputStream.read()方法的说明 ，要求返回的值得是 0-255之间，当到达流的结尾时，返回 -1。
-     * 但因为 java 中 byte 是 一个 8bit 有符号的数字，其取值范围在 -128 ~ 127 之间。
-     *
-     * 取出的值是byte 要转为 int 的话，就要在 前面的24 bit上加上 1，即为：111111111111111111111111________
-     *
-     * According to the Java documentation, any implementation of the InputSteam.read() method is supposed to read the next byte of data from the input stream. The value byte must be an int in the range 0 to 255. If no byte is available because the end of the stream has been reached, the value -1 is returned.
-     * But in Java, the byte primitive data type is an 8-bit signed two’s complement integer. It has a minimum value of -128 and a maximum value of 127. So by contract, the implementation of an InputSteam.read() method should never directly return a byte primitive data type. A conversion into an unsigned byte must be done before by applying a bitmask.
      */
     public static int forRead(byte b){
-        // 只取后 8 位
-        return b & 0xFF;
+        return Unsigneds.toUnsignedByte(b);
     }
 
 }
