@@ -3,6 +3,7 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Unsigneds;
 
 import java.io.InputStream;
 
@@ -31,7 +32,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
     }
 
     public int read() {
-        return (this.myPosition < this.myCount) ? (this.myBuffer[this.myPosition++] & 0xFF) : -1;
+        return (this.myPosition < this.myCount) ? Unsigneds.toUnsignedByte(this.myBuffer[this.myPosition++]) : -1;
     }
 
     @Override
