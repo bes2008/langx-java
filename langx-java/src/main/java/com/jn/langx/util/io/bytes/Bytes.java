@@ -1,7 +1,6 @@
 package com.jn.langx.util.io.bytes;
 
 import com.jn.langx.util.Chars;
-import com.jn.langx.util.Unsigneds;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -568,25 +567,5 @@ public class Bytes {
         return buffer.array();
     }
 
-    /**
-     *
-     * 1. 什么是有符号位的数字，无符号位的数字？
-     * <pre>
-     * 有符号位的数字，>0 时前面都是0， < 0时前面都是1。
-     * 无符号位的数字，因为前面没有标识指定是正值还是负值，所以都是 >=0的值。
-     * </pre>
-     *
-     * 2. java中数字的表示
-     * <pre>
-     * java中所有数字都有符号位的数字，
-     * byte的范围： -128 ~ 127
-     * int的范围：Integer.MIN_VALUE ~ Integer.MAX_VALUE
-     * </pre>
-     *
-     *
-     */
-    public static int forRead(byte b){
-        return Unsigneds.toUnsignedByte(b);
-    }
 
 }

@@ -2,6 +2,7 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Unsigneds;
 import com.jn.langx.util.function.Consumer4;
 
 import java.io.FilterInputStream;
@@ -39,7 +40,7 @@ public class WrappedInputStream extends FilterInputStream {
         int b = super.read();
 
         if (Objs.isNotNull(this.pipeline) && b != -1) {
-            final byte[] bs = new byte[]{(byte) b};
+            final byte[] bs = new byte[]{Unsigneds.toSignedByte(b)};
             this.pipeline.afterRead(this, bs, 0, 1);
         }
         return b;

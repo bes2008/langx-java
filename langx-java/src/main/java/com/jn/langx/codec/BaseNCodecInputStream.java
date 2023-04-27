@@ -1,6 +1,8 @@
 package com.jn.langx.codec;
 
 
+import com.jn.langx.util.Unsigneds;
+
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,13 +75,13 @@ public class BaseNCodecInputStream extends FilterInputStream {
      */
     @Override
     public int read() throws IOException {
-        int r = read(singleByte, 0, 1);
-        while (r == 0) {
-            r = read(singleByte, 0, 1);
+        int length = read(singleByte, 0, 1);
+        while (length == 0) {
+            length = read(singleByte, 0, 1);
         }
-        if (r > 0) {
+        if (length > 0) {
             final byte b = singleByte[0];
-            return b < 0 ? 256 + b : b;
+            return Unsigneds.toUnsignedByte(b);
         }
         return EOF;
     }

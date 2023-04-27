@@ -2,7 +2,6 @@ package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Unsigneds;
-import com.jn.langx.util.io.bytes.Bytes;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -118,7 +117,7 @@ public class BufferedInputStream extends FilterInputStream {
                 return -1;
             }
         }
-        return Bytes.forRead(buf.get());
+        return Unsigneds.toUnsignedByte(buf.get());
     }
 
     /**
