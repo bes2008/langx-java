@@ -1,7 +1,7 @@
 package com.jn.langx.util.io.bytes;
 
 import com.jn.langx.util.Chars;
-import com.jn.langx.util.io.Unsigneds;
+import com.jn.langx.util.Unsigneds;
 
 import java.io.*;
 import java.nio.ByteBuffer;

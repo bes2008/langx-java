@@ -1,4 +1,4 @@
-package com.jn.langx.util.io;
+package com.jn.langx.util;
 
 import com.jn.langx.util.Preconditions;
 
@@ -18,6 +18,10 @@ public class Unsigneds {
     }
 
     public static int toUnsignedShort(short b) {
+        return b & 0xFFFF;
+    }
+
+    public static int toUnsignedChar(char b) {
         return b & 0xFFFF;
     }
 
@@ -42,6 +46,16 @@ public class Unsigneds {
             return (short) r;
         } else {
             return (short) b;
+        }
+    }
+
+    public static char toSignedChar(int b) {
+        Preconditions.checkTrue(b >= 0, "not a signed short: {}", b);
+        if (b >= 0x8000) {
+            int r = b - 1 - 0xFFFF;
+            return (char) r;
+        } else {
+            return (char) b;
         }
     }
 
