@@ -24,8 +24,8 @@ public class Unsigneds {
         return b & 0xFFFF;
     }
 
-    public static long toUnsignedInt(short b) {
-        return b & 0xFFFFFFFL;
+    public static long toUnsignedInt(int b) {
+        return b & 0xFFFFFFFFL;
     }
 
     public static byte toSignedByte(int b) {
