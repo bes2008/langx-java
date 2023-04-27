@@ -1,6 +1,8 @@
 package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Unsigneds;
+import com.jn.langx.util.io.bytes.Bytes;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -102,12 +104,11 @@ public class BufferedInputStream extends FilterInputStream {
         return readByte();
     }
 
-    private synchronized byte readByte() throws IOException {
+    private synchronized int readByte() throws IOException {
         if (buf == null) {
             if (in.available() > 0) {
                 fill();
-            }
-            if (buf == null) {
+            }else {
                 return -1;
             }
         }
@@ -117,7 +118,7 @@ public class BufferedInputStream extends FilterInputStream {
                 return -1;
             }
         }
-        return buf.get();
+        return Bytes.forRead(buf.get());
     }
 
     /**
@@ -127,9 +128,9 @@ public class BufferedInputStream extends FilterInputStream {
     private int read1(byte[] bytes, int off, int len) throws IOException {
         int i = 0;
         for (; i < len; ) {
-            byte b = readByte();
+            int b = readByte();
             if (b != -1) {
-                bytes[off] = b;
+                bytes[off] = Unsigneds.toSignedByte(b);
                 off++;
                 i++;
             } else {
