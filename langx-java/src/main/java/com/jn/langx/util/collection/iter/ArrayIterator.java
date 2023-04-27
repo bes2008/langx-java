@@ -49,7 +49,7 @@ public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterabl
 
     @Override
     public Iterator<E> iterator() {
-        return this;
+        return new ArrayIterator<E>(array, reversed);
     }
 
     @Override

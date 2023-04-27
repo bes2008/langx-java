@@ -397,7 +397,7 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
         private final int maxBatchQueueSize;
         private final int trimDownSize;
         private final float batchThresholdFactor;
-        private final Set<HashEntry<K, V>> evicted;
+        private final transient Set<HashEntry<K, V>> evicted;
 
         public LRU(Segment<K, V> s, int capacity, float lf, int maxBatchSize, float batchThresholdFactor) {
             super(capacity, lf, true);
@@ -413,7 +413,7 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
         public Set<HashEntry<K, V>> execute() {
             Set<HashEntry<K, V>> evictedCopy = new HashSet<HashEntry<K, V>>();
             for (HashEntry<K, V> e : accessQueue) {
-                put(e, e.value);
+                super.put(e, e.value);
             }
             evictedCopy.addAll(evicted);
             accessQueue.clear();
@@ -423,7 +423,7 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
 
         @Override
         public Set<HashEntry<K, V>> onEntryMiss(HashEntry<K, V> e) {
-            put(e, e.value);
+            super.put(e, e.value);
             if (!evicted.isEmpty()) {
                 Set<HashEntry<K, V>> evictedCopy = new HashSet<HashEntry<K, V>>();
                 evictedCopy.addAll(evicted);
@@ -453,7 +453,7 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
 
         @Override
         public void onEntryRemove(HashEntry<K, V> e) {
-            remove(e);
+            super.remove(e);
             // we could have multiple instances of e in accessQueue; remove them all
             while (accessQueue.remove(e)) {
                 continue;
@@ -472,7 +472,7 @@ public class BoundedConcurrentHashMap<K, V> extends AbstractMap<K, V>
         }
 
         protected boolean isAboveThreshold() {
-            return size() > trimDownSize;
+            return super.size() > trimDownSize;
         }
 
         @Override

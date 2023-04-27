@@ -214,11 +214,13 @@ public class ExecuteWatchdog implements TimeoutObserver {
      * The caller of this method must be holding the lock on this
      */
     private void ensureStarted() {
-        while (!processStarted) {
-            try {
-                this.wait();
-            } catch (final InterruptedException e) {
-                throw new RuntimeException(e.getMessage());
+        synchronized (this) {
+            while (!processStarted) {
+                try {
+                    this.wait();
+                } catch (final InterruptedException e) {
+                    throw new RuntimeException(e.getMessage());
+                }
             }
         }
     }

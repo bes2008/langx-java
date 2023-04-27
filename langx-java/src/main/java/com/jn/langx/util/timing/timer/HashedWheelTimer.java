@@ -447,9 +447,8 @@ public class HashedWheelTimer extends AbstractTimer {
         Logger logger = Loggers.getLogger(HashedWheelTimer.class);
         if (logger.isErrorEnabled()) {
             String resourceType = Reflects.getSimpleClassName(HashedWheelTimer.class);
-            logger.error("You are creating too many " + resourceType + " instances. " +
-                    resourceType + " is a shared resource that must be reused across the JVM," +
-                    "so that only a few instances are created.");
+            logger.error("You are creating too many {} instances. {} is a shared resource that must be reused across the JVM," +
+                    "so that only a few instances are created.", resourceType, resourceType);
         }
     }
 

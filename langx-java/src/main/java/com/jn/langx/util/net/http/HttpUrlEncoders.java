@@ -357,7 +357,7 @@ public class HttpUrlEncoders {
             return null;
         }
         // start at *3 for the worst case when everything is %encoded on one byte
-        final StringBuffer encoded = new StringBuffer(part.length() * 3);
+        final StringBuilder encoded = new StringBuilder(part.length() * 3);
         final char[] toEncode = part.toCharArray();
         for (final char c : toEncode) {
             if (allowed.get(c)) {

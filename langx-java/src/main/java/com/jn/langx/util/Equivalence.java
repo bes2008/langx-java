@@ -141,9 +141,9 @@ public abstract class Equivalence<T> {
      * 
      */
     public static final class Wrapper<T> implements Serializable {
-        private final Equivalence<? super T> equivalence;
+        private final transient Equivalence<? super T> equivalence;
         @Nullable
-        private final T reference;
+        private final transient T reference;
 
         private Wrapper(Equivalence<? super T> equivalence, @Nullable T reference) {
             this.equivalence = Preconditions.checkNotNull(equivalence);
@@ -230,9 +230,9 @@ public abstract class Equivalence<T> {
 
     private static final class EquivalentToPredicate<T> implements Predicate<T>, Serializable {
 
-        private final Equivalence<T> equivalence;
+        private final transient Equivalence<T> equivalence;
         @Nullable
-        private final T target;
+        private final transient T target;
 
         EquivalentToPredicate(Equivalence<T> equivalence, @Nullable T target) {
             this.equivalence = Preconditions.checkNotNull(equivalence);
@@ -345,8 +345,8 @@ public abstract class Equivalence<T> {
 
         private static final long serialVersionUID = 0;
 
-        private final Function<F, ? extends T> function;
-        private final Equivalence<T> resultEquivalence;
+        private final transient Function<F, ? extends T> function;
+        private final transient Equivalence<T> resultEquivalence;
 
         FunctionalEquivalence(
                 Function<F, ? extends T> function, Equivalence<T> resultEquivalence) {
@@ -391,7 +391,7 @@ public abstract class Equivalence<T> {
     final class PairwiseEquivalence<T> extends Equivalence<Iterable<T>>
             implements Serializable {
 
-        final Equivalence<? super T> elementEquivalence;
+        final transient Equivalence<? super T> elementEquivalence;
 
         PairwiseEquivalence(Equivalence<? super T> elementEquivalence) {
             this.elementEquivalence = Preconditions.checkNotNull(elementEquivalence);

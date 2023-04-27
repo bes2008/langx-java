@@ -1,6 +1,5 @@
 package com.jn.langx.util.collection.sequence;
 
-import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.iter.EmptyIterator;
 
 import java.util.*;

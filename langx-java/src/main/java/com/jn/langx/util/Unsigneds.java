@@ -10,6 +10,9 @@ package com.jn.langx.util;
  * 因为本身 Java 对各个类型的长度是做了定义的，所以跨平台使用不会有问题。
  */
 public class Unsigneds {
+    private Unsigneds(){
+
+    }
     public static int toUnsignedByte(byte b) {
         // 等价于： b < 0 ? (b + 256 ) : b
         // 等价于： b < 0 ? (b + 0xFF +1) : b

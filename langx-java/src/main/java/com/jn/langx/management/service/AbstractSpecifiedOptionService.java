@@ -75,7 +75,9 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         try {
             Logger logger = Loggers.getLogger(getClass());
             for (final ObjectName oname3 : objectNames) {
-                logger.debug("query attributes : " + attributeNames);
+                if(logger.isDebugEnabled()) {
+                    logger.debug("query attributes : {}", attributeNames);
+                }
                 final List<Attribute> attrList = this.conn.getAttributes(oname3, attributeNames.toArray(new String[0])).asList();
                 if (attrList == null) {
                     continue;
@@ -141,7 +143,9 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
                 if (attributeNames.isEmpty()) {
                     continue;
                 }
-                logger.debug("query attributes : " + attributeNames);
+                if(logger.isDebugEnabled()) {
+                    logger.debug("query attributes : {}", attributeNames);
+                }
                 final List<Attribute> attrList = this.conn.getAttributes(oname2,  attributeNames.toArray(new String[0])).asList();
                 if (attrList == null) {
                     continue;

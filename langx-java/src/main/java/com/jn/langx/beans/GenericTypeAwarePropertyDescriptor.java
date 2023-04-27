@@ -40,7 +40,7 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
 
         super(propertyName, null, null);
 
-        if (beanClass == null)  {
+        if (beanClass == null) {
             throw new IntrospectionException("Bean class must not be null");
         }
         this.beanClass = beanClass;
@@ -83,8 +83,7 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
 
         if (this.readMethod != null) {
             this.propertyType = GenericTypeResolver.resolveReturnType(this.readMethod, this.beanClass);
-        }
-        else if (this.writeMethodParameter != null) {
+        } else if (this.writeMethodParameter != null) {
             this.propertyType = this.writeMethodParameter.getParameterType();
         }
 
@@ -110,9 +109,7 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
         Set<Method> ambiguousCandidates = this.ambiguousWriteMethods;
         if (ambiguousCandidates != null) {
             this.ambiguousWriteMethods = null;
-            Loggers.getLogger(GenericTypeAwarePropertyDescriptor.class).warn("Invalid JavaBean property '" +
-                    getName() + "' being accessed! Ambiguous write methods found next to actually used [" +
-                    this.writeMethod + "]: " + ambiguousCandidates);
+            Loggers.getLogger(GenericTypeAwarePropertyDescriptor.class).warn("Invalid JavaBean property '{}' being accessed! Ambiguous write methods found next to actually used [{}]: {}", getName(), this.writeMethod, ambiguousCandidates);
         }
         return this.writeMethod;
     }

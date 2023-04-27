@@ -126,7 +126,7 @@ public class BufferedInputStream extends FilterInputStream {
      */
     private int read1(byte[] bytes, int off, int len) throws IOException {
         int i = 0;
-        for (; i < len; ) {
+        while ( i < len) {
             int b = readByte();
             if (b != -1) {
                 bytes[off] = Unsigneds.toSignedByte(b);
