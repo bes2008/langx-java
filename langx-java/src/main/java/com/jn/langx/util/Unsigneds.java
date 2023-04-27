@@ -1,6 +1,5 @@
 package com.jn.langx.util;
 
-import com.jn.langx.util.Preconditions;
 
 /**
  * 目前想要获得无符号的效果，
@@ -29,43 +28,41 @@ public class Unsigneds {
         return b & 0xFFFFFFFL;
     }
 
-    public static int toSignedByte(int b) {
+    public static byte toSignedByte(int b) {
         Preconditions.checkTrue(b >= 0, "not a signed byte: {}", b);
+        int r = b;
         if (b >= 0x80) {
-            return b - 1 - 0xFF;
-        } else {
-            return (byte) b;
+            r = b - 1 - 0xFF;
         }
+        return (byte) r;
     }
 
 
     public static short toSignedShort(int b) {
         Preconditions.checkTrue(b >= 0, "not a signed short: {}", b);
+        int r = b;
         if (b >= 0x8000) {
-            int r = b - 1 - 0xFFFF;
-            return (short) r;
-        } else {
-            return (short) b;
+            r = b - 1 - 0xFFFF;
         }
+        return (short) r;
     }
 
     public static char toSignedChar(int b) {
         Preconditions.checkTrue(b >= 0, "not a signed short: {}", b);
+        int r = b;
         if (b >= 0x8000) {
-            int r = b - 1 - 0xFFFF;
-            return (char) r;
-        } else {
-            return (char) b;
+            r = b - 1 - 0xFFFF;
         }
+        return (char) r;
     }
 
     public static int toSignedInt(long b) {
         Preconditions.checkTrue(b >= 0, "not a signed int: {}", b);
+        long r = b;
         if (b >= 0x80000000) {
-            long r = b - 1 - 0xFFFFFFFFL;
-            return (int) r;
-        } else {
-            return (byte) b;
+            r = b - 1 - 0xFFFFFFFFL;
+
         }
+        return (int) r;
     }
 }
