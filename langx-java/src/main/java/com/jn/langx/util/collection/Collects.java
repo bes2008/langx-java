@@ -58,7 +58,24 @@ public class Collects {
 
 
     public static <E> List<E> immutableList() {
-        return immutableList(null);
+        return immutableList((List)null);
+    }
+
+    /**
+     * @since 5.2.4
+     */
+    public static <E> List<E> immutableList(E... elements){
+        return immutableList(asList(elements));
+    }
+
+    /**
+     * @since 5.2.4
+     */
+    public static <E> List<E> immutableList(Collection<E> list) {
+        if (list == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(asList(list));
     }
     public static <E> List<E> immutableList(List<E> list) {
         if (list == null) {

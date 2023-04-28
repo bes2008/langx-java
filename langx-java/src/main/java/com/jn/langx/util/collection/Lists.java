@@ -64,4 +64,18 @@ public class Lists {
     public static <E> List<E> immutableList(){
         return Collects.immutableList();
     }
+
+    /**
+     * @since 5.2.4
+     */
+    public static <E> List<E> immutableList(Collection<E> elements){
+        return Collects.immutableList(elements);
+    }
+
+    /**
+     * @since 5.2.4
+     */
+    public static <E> List<E> immutableList(E... elements){
+        return Collects.immutableList(elements);
+    }
 }

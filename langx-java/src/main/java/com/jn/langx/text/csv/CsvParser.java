@@ -1,6 +1,7 @@
 package com.jn.langx.text.csv;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.collection.Maps;
 
 import java.io.*;
 import java.net.URL;
@@ -479,7 +480,7 @@ public final class CsvParser implements Iterable<CsvRecord>, Closeable {
      */
     public Map<String, Integer> getHeaderMap() {
         if (this.headerMap == null) {
-            return null;
+            return Maps.newHashMap();
         }
         final Map<String, Integer> map = createEmptyHeaderMap();
         map.putAll(this.headerMap);

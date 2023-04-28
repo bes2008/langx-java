@@ -76,4 +76,24 @@ public class Sets {
         return Collects.newCopyOnWriteArraySet(elements);
     }
 
+    /**
+     * @since 5.2.4
+     */
+    public static <E> Set<E> immutableSet(){
+        return Collects.immutableSet();
+    }
+
+    /**
+     * @since 5.2.4
+     */
+    public static <E> Set<E> immutableSet(Collection<E> collection){
+        return Collects.immutableSet(collection);
+    }
+
+    /**
+     * @since 5.2.4
+     */
+    public static <E> Set<E> immutableSet(E... es){
+        return Collects.immutableSet(es);
+    }
 }
