@@ -37,7 +37,7 @@ import static java.lang.String.format;
  */
 public class GrokCompiler extends AbstractLifecycle {
     private PatternDefinitionRepository definitionRepository;
-    private String regexpEngine = "jdk";
+    private String regexpEngine;
 
     // We don't want \n and commented line
     private static final Regexp patternLinePattern = Regexps.createRegexp("^([A-z0-9_]+)\\s+(.*)$");
@@ -52,7 +52,11 @@ public class GrokCompiler extends AbstractLifecycle {
     }
 
     public GrokCompiler() {
-        setName("grok-compiler");
+        this("grok-compiler");
+    }
+
+    public GrokCompiler(String name) {
+        this(name, null);
     }
 
     public GrokCompiler(String name, String regexpEngine) {
