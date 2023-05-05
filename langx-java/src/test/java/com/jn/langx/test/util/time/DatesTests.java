@@ -42,7 +42,9 @@ public class DatesTests {
 
     @Test
     public void test2(){
-        Date l = Dates.parse("2022-09-09 15:49:00", "yyyy-MM-dd HH:mm:ss");
-        System.out.println(l.getTime());
+        for (int i = 0; i< 1000; i++) {
+            Date l = Dates.parse("2022-09-09 15:49:00", "yyyy-MM-dd HH:mm:ss");
+            System.out.println(l.getTime());
+        }
     }
 }

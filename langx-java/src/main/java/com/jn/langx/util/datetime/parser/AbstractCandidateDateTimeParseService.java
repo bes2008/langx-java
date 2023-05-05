@@ -25,10 +25,9 @@ public abstract class AbstractCandidateDateTimeParseService implements Candidate
             parser = newParser(candidatePatterns, candidateTimeZones, candidateLocales);
             if (parser != null) {
                 cache.put(key, parser);
-                return parser.parse(dt);
             }
         }
-        return null;
+        return parser.parse(dt);
     }
 
     @NonNull

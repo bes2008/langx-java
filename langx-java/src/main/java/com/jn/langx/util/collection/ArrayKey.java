@@ -18,7 +18,7 @@ public class ArrayKey {
      */
     public ArrayKey(final Object... keys) {
         this.keys = keys;
-        this.hashCode = Objs.hashCode(keys);
+        this.hashCode = Objs.hash(keys);
     }
 
     @Override

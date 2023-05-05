@@ -74,7 +74,7 @@ public abstract class Objs{
      * @see Object#hashCode
      */
     public static int hashCode(Object o) {
-        return o != null ? o.hashCode() : 0;
+        return hash(o);
     }
 
     /**
