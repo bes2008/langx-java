@@ -20,37 +20,26 @@ class Match {
     /**
      * Create Empty grok matcher.
      */
-    public static final Match EMPTY = new Match("", null, null, 0, 0);
+    public static final Match EMPTY = new Match("", null, null);
     private final CharSequence subject;
     private final Grok grok;
     private final RegexpMatcher matcher;
-    private final int start;
-    private final int end;
     private boolean keepEmptyCaptures = true;
     private Map<String, Object> capture = Collections.emptyMap();
 
     /**
      * Create a new {@code Match} object.
      */
-    public Match(CharSequence subject, Grok grok, RegexpMatcher match, int start, int end) {
+    public Match(CharSequence subject, Grok grok, RegexpMatcher matcher) {
         this.subject = subject;
         this.grok = grok;
-        this.matcher = match;
-        this.start = start;
-        this.end = end;
+        this.matcher = matcher;
     }
 
     public RegexpMatcher getMatcher() {
         return matcher;
     }
 
-    public int getStart() {
-        return start;
-    }
-
-    public int getEnd() {
-        return end;
-    }
 
     public boolean isKeepEmptyCaptures() {
         return this.keepEmptyCaptures;

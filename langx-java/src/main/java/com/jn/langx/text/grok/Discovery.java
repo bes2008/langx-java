@@ -169,6 +169,6 @@ public class Discovery {
             return "";
         }
 
-        return text.substring(matcher.getStart(), matcher.getEnd());
+        return text;
     }
 }

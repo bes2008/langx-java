@@ -169,12 +169,9 @@ public class Grok implements GrokTemplate {
         }
 
         RegexpMatcher matcher = compiledNamedRegex.matcher(text);
-        if (matcher.find()) {
-            return new Match(
-                    text, this, matcher, matcher.start(0), matcher.end(0)
-            );
+        if (matcher.matches()) {
+            return new Match(text, this, matcher);
         }
-
         return Match.EMPTY;
     }
 
