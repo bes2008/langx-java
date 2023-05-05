@@ -105,10 +105,7 @@ public class Regexps {
             option = Option.DEFAULT;
         }
         if (engine == null) {
-            engine = registry.get("joni");
-        }
-        if (engine == null) {
-            engine = registry.get("jdk");
+            engine = getRegexpEngine("joni");
         }
 
         Regexp regexp = cache.get(pattern, option, engine.getName());
@@ -117,6 +114,23 @@ public class Regexps {
             cache.put(pattern, option, engine.getName(), regexp);
         }
         return regexp;
+    }
+
+    public static RegexpEngine findRegexpEngine(String engine){
+        return getRegexpEngine(engine,"UNKNOWN");
+    }
+
+    public static RegexpEngine getRegexpEngine(String engine){
+        return getRegexpEngine(engine,"jdk");
+    }
+
+    public static RegexpEngine getRegexpEngine(String engineName, String defaultEngine){
+        RegexpEngine engine = null;
+        engine = registry.get(engineName);
+        if (engine == null) {
+            engine = registry.get(defaultEngine);
+        }
+        return engine;
     }
 
     /**

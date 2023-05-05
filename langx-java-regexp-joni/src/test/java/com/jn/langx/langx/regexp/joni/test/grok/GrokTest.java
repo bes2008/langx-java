@@ -67,7 +67,7 @@ public class GrokTest {
                 .timer(timer)
                 .build();
         repository.setCache(cache3);
-        GrokCompiler grokCompiler = new GrokCompiler();
+        GrokCompiler grokCompiler = new GrokCompiler("joni-grok","joni");
         grokCompiler.setDefinitionRepository(repository);
         grokCompiler.startup();
         tomcatLogTemplate = grokCompiler.compile("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?");

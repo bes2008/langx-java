@@ -37,6 +37,7 @@ import static java.lang.String.format;
  */
 public class GrokCompiler extends AbstractLifecycle {
     private PatternDefinitionRepository definitionRepository;
+    private String regexpEngine = "jdk";
 
     // We don't want \n and commented line
     private static final Regexp patternLinePattern = Regexps.createRegexp("^([A-z0-9_]+)\\s+(.*)$");
@@ -52,6 +53,17 @@ public class GrokCompiler extends AbstractLifecycle {
 
     public GrokCompiler() {
         setName("grok-compiler");
+    }
+
+    public GrokCompiler(String name, String regexpEngine) {
+        setName(name);
+        setRegexpEngine(regexpEngine);
+    }
+
+    public void setRegexpEngine(String regexpEngine) {
+        if (Strings.isNotEmpty(regexpEngine) && Regexps.findRegexpEngine(regexpEngine) != null) {
+            this.regexpEngine = regexpEngine;
+        }
     }
 
     @Override
@@ -241,9 +253,9 @@ public class GrokCompiler extends AbstractLifecycle {
                     _namedRegexp = Strings.replace(_namedRegexp, "%{" + grokName + "}", replacement, 1);
                     index++;
                 }
-                if(Objs.equals(namedRegex, _namedRegexp)){
+                if (Objs.equals(namedRegex, _namedRegexp)) {
                     continueIteration = false;
-                }else {
+                } else {
                     namedRegex = _namedRegexp;
                 }
 
@@ -259,6 +271,7 @@ public class GrokCompiler extends AbstractLifecycle {
                 namedRegex,
                 namedRegexCollection,
                 patternDefinitions,
+                this.regexpEngine,
                 timeZoneId
         );
     }

@@ -3,6 +3,7 @@ package com.jn.langx.text.grok;
 import com.jn.langx.Converter;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
@@ -55,6 +56,7 @@ public class Grok implements GrokTemplate {
      */
     private Discovery disco;
 
+
     /**
      * only use in grok discovery.
      */
@@ -64,10 +66,11 @@ public class Grok implements GrokTemplate {
                 String namedRegex,
                 Map<String, String> namedRegexCollection,
                 Map<String, String> patternDefinitions,
+                String regexpEngine,
                 String defaultTimeZone) {
         this.originalGrokPattern = pattern;
         this.namedRegex = namedRegex;
-        this.compiledNamedRegex = Regexps.createRegexp(namedRegex);
+        this.compiledNamedRegex = Regexps.createRegexp(regexpEngine, namedRegex, Option.DEFAULT);
         this.namedRegexCollection = namedRegexCollection;
         this.namedGroups = Groks.getNameGroups(namedRegex);
         this.groupTypes = Converters.getGroupTypes(namedRegexCollection.values());
