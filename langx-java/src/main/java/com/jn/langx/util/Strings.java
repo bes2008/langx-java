@@ -4,6 +4,7 @@ import com.jn.langx.Transformer;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.IllegalParameterException;
+import com.jn.langx.io.stream.UnicodeInputStream;
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
@@ -14,6 +15,8 @@ import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.unicode.BOM;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.regexp.Regexp;
@@ -22,6 +25,8 @@ import com.jn.langx.util.struct.Entry;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -1713,9 +1718,9 @@ public class Strings {
     }
 
 
-    public static String replace(String text, int start, int end, String replacement){
+    public static String replace(String text, int start, int end, String replacement) {
         Preconditions.checkIndex(start, text.length());
-        if(end < start || end>text.length()){
+        if (end < start || end > text.length()) {
             throw new IllegalParameterException("end offset is invalid");
         }
         StringBuilder builder = new StringBuilder();
@@ -3784,5 +3789,18 @@ public class Strings {
         return text;
     }
 
+
+    public static BOM findBom(String str) {
+        UnicodeInputStream inputStream = null;
+        try {
+            inputStream = new UnicodeInputStream(new ByteArrayInputStream(str.getBytes()));
+            return inputStream.getBom();
+        } catch (IOException e) {
+
+        } finally {
+            IOs.close(inputStream);
+        }
+        return null;
+    }
 
 }

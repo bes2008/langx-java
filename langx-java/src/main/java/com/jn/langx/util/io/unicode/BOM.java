@@ -1,6 +1,11 @@
 package com.jn.langx.util.io.unicode;
 
 
+import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.function.Predicate;
+
+import java.util.EnumSet;
+
 /**
  * Byte Order Mark (BOM)
  * <p>
@@ -12,11 +17,11 @@ public enum BOM {
     /**
      * 大端
      */
-    UTF16_BE("UTF-16BE", new byte[]{(byte) 0xFE, (byte) 0xFF},"FEFF"),
+    UTF16_BE("UTF-16BE", new byte[]{(byte) 0xFE, (byte) 0xFF}, "FEFF"),
     /**
      * 小端
      */
-    UTF16_LE("UTF-16LE", new byte[]{(byte) 0xFF, (byte) 0xFE},"FFFE"),
+    UTF16_LE("UTF-16LE", new byte[]{(byte) 0xFF, (byte) 0xFE}, "FFFE"),
     /**
      * 大端
      */
@@ -24,7 +29,7 @@ public enum BOM {
     /**
      * 小端
      */
-    UTF32_LE("UTF-32LE", new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFE},  "0000FFFE"),
+    UTF32_LE("UTF-32LE", new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFE}, "0000FFFE"),
     ;
 
     private BOM(String name, byte[] bytes, String checkValue) {
@@ -47,6 +52,29 @@ public enum BOM {
 
     public String getCheckValue() {
         return checkValue;
+    }
+
+    public static BOM findBom(final byte[] bytes) {
+        if (bytes == null || bytes.length < 2) {
+            return null;
+        }
+        // 只取前4个
+        BOM b = Collects.findFirst(EnumSet.allOf(BOM.class), new Predicate<BOM>() {
+            @Override
+            public boolean test(BOM bom) {
+                byte[] checkbytes = bom.bytes;
+                if (bytes.length < checkbytes.length) {
+                    return false;
+                }
+                for (int i = 0; i < checkbytes.length; i++) {
+                    if (bytes[i] != checkbytes[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        });
+        return b;
     }
 }
 
