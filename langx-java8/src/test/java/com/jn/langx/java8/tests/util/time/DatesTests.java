@@ -147,4 +147,15 @@ public class DatesTests {
         }
     }
 
+    @Test
+    public void test5() {
+        List<String> datetimes = Lists.newArrayList(
+                "2022-09-09 15:49:00"
+        );
+
+        for (String datetime : datetimes) {
+            DateTimeParsedResult r = Dates.parseDateTime(true, datetime, null, null, Collects.asList("yyyy-MM-dd HH:mm:ss"));
+            System.out.println(StringTemplates.formatWithPlaceholder("{}, {} , {}", r.getTimestamp(), r.getLocale(), r.getTimeZone()));
+        }
+    }
 }
