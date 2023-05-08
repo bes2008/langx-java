@@ -261,6 +261,7 @@ public class GrokCompiler extends AbstractLifecycle {
                     continueIteration = false;
                 } else {
                     namedRegex = _namedRegexp;
+                    matcher = Groks.GROK_PATTERN.matcher(namedRegex);
                 }
 
             }
