@@ -2,9 +2,10 @@ package com.jn.langx.java8.util.concurrent;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.NonAbsentHashMap;
-import com.jn.langx.util.datetime.DateFormatCacheKey;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
+import com.jn.langx.util.datetime.DateFormatCacheKey;
 import com.jn.langx.util.function.Supplier;
 
 import java.time.ZoneId;
@@ -17,9 +18,13 @@ public class Java8GlobalThreadLocalMap extends GlobalThreadLocalMap {
     private final Map<DateFormatCacheKey, DateTimeFormatter> dateFormatMap = new NonAbsentHashMap<DateFormatCacheKey, DateTimeFormatter>(new Supplier<DateFormatCacheKey, DateTimeFormatter>() {
         @Override
         public DateTimeFormatter get(DateFormatCacheKey key) {
-            DateTimeFormatter df = DateTimeFormatter.ofPattern(key.pattern)
-                    .withLocale(key.locale)
-                    .withZone(ZoneId.of(key.timeZoneId));
+            DateTimeFormatter df = DateTimeFormatter.ofPattern(key.pattern);
+            if (key.locale != null) {
+                df = df.withLocale(key.locale);
+            }
+            if (Strings.isNotEmpty(key.timeZoneId)) {
+                df = df.withZone(ZoneId.of(key.timeZoneId));
+            }
             return df;
         }
     });

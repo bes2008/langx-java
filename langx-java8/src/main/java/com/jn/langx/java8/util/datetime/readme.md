@@ -30,7 +30,7 @@
     所以它是 java.util.Calendar 的替代品
 
 # OffsetDateTime
-    用于表示 日期、时间，但它带 时区信息
+    用于表示 日期、时间，但它带 offset 信息
     也可以理解成：OffsetDateTime = LocalDateTime + ZoneOffset= LocalDate + LocalTime + ZoneOffset
     相比 LocalDateTime, 它保留了与 UTC时间的 offset
       

@@ -16,7 +16,7 @@ import java.util.Map;
 import static com.jn.langx.util.SystemPropertys.getJavaIOTmpDir;
 
 public class Platform {
-    private static final String    OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
+    private static final String OSNAME = SystemPropertys.get("os.name", "").toLowerCase(Locale.US).replaceAll("[^a-z0-9]+", "");
 
     public static final boolean isWindows = isWindows0();
     public static final int JAVA_VERSION_INT = javaVersion();
@@ -25,11 +25,12 @@ public class Platform {
     private static final boolean IS_IVKVM_DOT_NET = isIkvmDotNet0();
     public static final boolean isGroovyAvailable = isGroovyAvailable0();
     public static final boolean isMaxOS = OS.isMaxOSX();
-    public static final boolean isOSX=isOSX();
+    public static final boolean isOSX = isOSX();
     public static final String processId = getProcessId0();
     // See https://github.com/oracle/graal/blob/master/sdk/src/org.graalvm.nativeimage/src/org/graalvm/nativeimage/ImageInfo.java
     private static final boolean imageCode = (System.getProperty("org.graalvm.nativeimage.imagecode") != null);
-    private Platform(){
+
+    private Platform() {
 
     }
 
@@ -44,6 +45,7 @@ public class Platform {
     private static boolean isOSX() {
         return OSNAME.startsWith("macosx") || OSNAME.startsWith("osx");
     }
+
     private static boolean isWindows0() {
         return System.getProperty("os.name", "").toLowerCase(Locale.US).contains("win");
     }
@@ -136,6 +138,7 @@ public class Platform {
         }
     }
 
+
     public static boolean is3VMOrGreater() {
         return JAVA_VERSION_INT >= 3;
     }
@@ -180,30 +183,33 @@ public class Platform {
         return JAVA_VERSION_INT >= 13;
     }
 
-    private static final Map<Integer,Integer> classMajorVersionToJdkVersion=new LinkedHashMap<Integer, Integer>();
+    private static final Map<Integer, Integer> classMajorVersionToJdkVersion = new LinkedHashMap<Integer, Integer>();
+
     static {
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_1,1);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_2,2);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_3,3);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_4,4);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_5,5);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_6,6);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_7,7);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_8,8);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_1_9,9);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_10,10);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_11,11);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_12,12);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_13,14);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_14,14);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_15,15);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_16,16);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_17,17);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_18,18);
-        classMajorVersionToJdkVersion.put((int)JvmConstants.MAJOR_19,19);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_1, 1);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_2, 2);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_3, 3);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_4, 4);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_5, 5);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_6, 6);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_7, 7);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_8, 8);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_1_9, 9);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_10, 10);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_11, 11);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_12, 12);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_13, 14);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_14, 14);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_15, 15);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_16, 16);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_17, 17);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_18, 18);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_19, 19);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_20, 20);
+        classMajorVersionToJdkVersion.put((int) JvmConstants.MAJOR_21, 21);
     }
 
-    public static int getJavaVersion(int classMajorVersion){
+    public static int getJavaVersion(int classMajorVersion) {
         return classMajorVersionToJdkVersion.get(classMajorVersion);
     }
 
@@ -318,7 +324,7 @@ public class Platform {
         return new File(getUserHomeDirectoryPath());
     }
 
-    public static int cpuCore(){
+    public static int cpuCore() {
         return CpuCoreSensor.availableProcessors();
     }
 

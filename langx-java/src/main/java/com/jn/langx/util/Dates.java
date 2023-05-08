@@ -7,6 +7,7 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.datetime.*;
 import com.jn.langx.util.datetime.parser.CandidateDateTimeParseService;
+import com.jn.langx.util.datetime.parser.Java6CandidateDateTimeParseService;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
@@ -197,6 +198,12 @@ public class Dates {
         return parse(false, dateString, tz, locale, patterns);
     }
 
+    /**
+     * @since 5.2.5
+     */
+    public static Date parse(boolean autoInferTimeZone, final String dateString, TimeZone tz, Locale locale, String... patterns) {
+        return parse(autoInferTimeZone, dateString, tz, locale, Collects.asList(patterns));
+    }
 
     /**
      * @since 5.0.1
@@ -218,21 +225,22 @@ public class Dates {
             "Z",
             "z"
     );
-    private static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX", "XX", "X", "x", "Z", "z", "O", "V") : Collects.newArrayList("X", "Z", "z");
+    private static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX", "XX", "X", "x", "Z", "z", "OOO", "OO", "O", "V") : Collects.newArrayList("X", "Z", "z");
 
     /**
      * @since 5.0.1
      */
     public static DateTimeParsedResult parseDateTime(boolean autoInferTimeZone, final String dateString, List<TimeZone> candidateTZs, List<Locale> candidateLocals, List<String> candidatePatterns) {
         if (!autoInferTimeZone) {
-            return getCandidateDateTimeParseService().parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
+            return getCandidateDateTimeParseServiceForParse(dateString).parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
         }
 
         final List<String> ps = Collects.newArrayList();
+        final CandidateDateTimeParseService dateTimeParseService = getCandidateDateTimeParseServiceForParse(dateString);
         Collects.forEach(candidatePatterns, new Consumer<String>() {
             @Override
             public void accept(final String pattern) {
-                Collects.forEach(simple_timezone_suffixes, new Consumer<String>() {
+                Collects.forEach(dateTimeParseService instanceof Java6CandidateDateTimeParseService ? simple_timezone_suffixes : timezone_suffixes, new Consumer<String>() {
                     @Override
                     public void accept(String suffix) {
                         ps.add(pattern + suffix);
@@ -241,8 +249,18 @@ public class Dates {
                 ps.add(pattern);
             }
         });
-        // 只有 SimpleDateFormat支持 时区推断， Java8 的DateTimeFormatter 不支持时区推断
-        return getSimpleCandidateDateTimeParseService().parse(dateString, ps, candidateTZs, candidateLocals);
+
+        // java 6 SimpleDateFormat , java8 DateTimeFormatter 都支持自动推断时区的
+        // getSimpleCandidateDateTimeParseService().parse(dateString, ps, candidateTZs, candidateLocals);
+        return dateTimeParseService.parse(dateString, ps, candidateTZs, candidateLocals);
+    }
+
+    public static CandidateDateTimeParseService getCandidateDateTimeParseServiceForParse(String datetime) {
+        // jdk 8 上 在pattern 中使用 O 时解析 GMT 时间时是有问题的， jdk 9 中修复了
+        if (!Platform.is9VMOrGreater() && datetime.contains("GMT")) {
+            return getSimpleCandidateDateTimeParseService();
+        }
+        return getCandidateDateTimeParseService();
     }
 
     public static CandidateDateTimeParseService getCandidateDateTimeParseService() {
@@ -639,7 +657,7 @@ public class Dates {
         return TimeZone.getDefault();
     }
 
-    private Dates(){
+    private Dates() {
 
     }
 }

@@ -51,23 +51,32 @@ public class Java8CandidatePatternsDateTimeParser implements DateTimeParser {
                 return !resultHolder.isNull();
             }
         };
+
         Collects.forEach(patterns, new Consumer<String>() {
             @Override
             public void accept(final String pattern) {
-                Collects.forEach(timeZones, new Consumer<TimeZone>() {
-                    @Override
-                    public void accept(final TimeZone timeZone) {
-                        Collects.forEach(locales, new Consumer<Locale>() {
-                            @Override
-                            public void accept(Locale locale) {
-                                DateTimeParsedResult r = new Java8DateTimeParser(pattern, timeZone, locale).parse(datetimeString);
-                                if (r != null) {
-                                    resultHolder.set(r);
+
+                // 先用 tz =null, local =null 去解析，失败时，再用指定的 tz, local 去解析;
+                DateTimeParsedResult r = new Java8DateTimeParser(pattern, null, null).parse(datetimeString);
+                if (r != null) {
+                    resultHolder.set(r);
+                } else {
+                    // 这里的代码基本上是不会执行了
+                    Collects.forEach(timeZones, new Consumer<TimeZone>() {
+                        @Override
+                        public void accept(final TimeZone timeZone) {
+                            Collects.forEach(locales, new Consumer<Locale>() {
+                                @Override
+                                public void accept(Locale locale) {
+                                    DateTimeParsedResult r = new Java8DateTimeParser(pattern, timeZone, locale).parse(datetimeString);
+                                    if (r != null) {
+                                        resultHolder.set(r);
+                                    }
                                 }
-                            }
-                        }, breakPredicate);
-                    }
-                }, breakPredicate);
+                            }, breakPredicate);
+                        }
+                    }, breakPredicate);
+                }
             }
         }, breakPredicate);
         return resultHolder.get();

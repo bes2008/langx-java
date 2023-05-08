@@ -45,6 +45,10 @@ public interface JvmConstants {
     public static final short MINOR_18 = 0;
     public static final short MAJOR_19 = 63;
     public static final short MINOR_19 = 0;
+    public static final short MAJOR_20 = 64;
+    public static final short MINOR_20 = 0;
+    public static final short MAJOR_21 = 65;
+    public static final short MINOR_21 = 0;
 
     public static final int PREVIEW_MINOR_VERSION = 65535;
 
