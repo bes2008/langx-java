@@ -225,7 +225,7 @@ public class Dates {
             "Z",
             "z"
     );
-    private static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX", "XX", "X", "x", "Z", "z", "OOO", "OO", "O", "V") : Collects.newArrayList("X", "Z", "z");
+    private static final List<String> timezone_suffixes = Platform.is8VMOrGreater() ? Collects.newArrayList("XXX", "XX", "X", "x", "Z", "z", "OOOO", "O", "V") : Collects.newArrayList("X", "Z", "z");
 
     /**
      * @since 5.0.1

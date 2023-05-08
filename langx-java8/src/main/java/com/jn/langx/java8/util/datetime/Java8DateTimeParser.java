@@ -3,9 +3,12 @@ package com.jn.langx.java8.util.datetime;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.java8.util.concurrent.Java8GlobalThreadLocalMap;
+import com.jn.langx.util.Dates;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.datetime.DateTimeParsedResult;
 import com.jn.langx.util.datetime.DateTimeParser;
 import com.jn.langx.util.datetime.parser.DateParsedResult;
+import com.jn.langx.util.os.Platform;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -39,7 +42,11 @@ public class Java8DateTimeParser implements DateTimeParser {
     @Override
     public DateTimeParsedResult parse(String datetimeString) {
         DateTimeFormatter formatter = null;
-        // jdk 8 上 在pattern 中使用 O 时解析 GMT 时间时是有问题的， jdk 9 中修复了
+        // jdk 8 上 在pattern 中使用 O 时解析 GMT 时间时是有问题的， jdk 9 中修复了，所以解析GMT时，不会走这里
+        if (!Platform.is9VMOrGreater() && datetimeString.contains("GMT")) {
+            return Dates.getSimpleCandidateDateTimeParseService().parse(datetimeString, Lists.newArrayList(pattern), timeZone==null? null: Lists.newArrayList(timeZone), Lists.newArrayList(locale));
+        }
+
         try {
             formatter = Java8GlobalThreadLocalMap.getDateTimeFormatter(this.pattern, this.timeZone, this.locale);
             ZonedDateTime zonedDateTime = ZonedDateTime.parse(datetimeString, formatter);
