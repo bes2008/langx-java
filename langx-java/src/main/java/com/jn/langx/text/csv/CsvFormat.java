@@ -1236,7 +1236,7 @@ public final class CsvFormat implements Serializable {
         final int end = len;
 
         final char delim = getDelimiter();
-        final char escape = getEscapeCharacter().charValue();
+        final char escape = getEscapeCharacter();
 
         while (pos < end) {
             char c = value.charAt(pos);
@@ -1270,7 +1270,7 @@ public final class CsvFormat implements Serializable {
         int pos = 0;
 
         final char delim = getDelimiter();
-        final char escape = getEscapeCharacter().charValue();
+        final char escape = getEscapeCharacter();
         final StringBuilder builder = new StringBuilder(CsvIOs.DEFAULT_BUFFER_SIZE);
 
         int c;
@@ -1315,7 +1315,7 @@ public final class CsvFormat implements Serializable {
         final int end = len;
 
         final char delimChar = getDelimiter();
-        final char quoteChar = getQuoteCharacter().charValue();
+        final char quoteChar = getQuoteCharacter();
 
         QuoteMode quoteModePolicy = getQuoteMode();
         if (quoteModePolicy == null) {
@@ -1425,7 +1425,7 @@ public final class CsvFormat implements Serializable {
 
         int pos = 0;
 
-        final char quote = getQuoteCharacter().charValue();
+        final char quote = getQuoteCharacter();
         final StringBuilder builder = new StringBuilder(CsvIOs.DEFAULT_BUFFER_SIZE);
 
         out.append(quote);
@@ -1538,17 +1538,17 @@ public final class CsvFormat implements Serializable {
             throw new IllegalArgumentException("The delimiter cannot be a line break");
         }
 
-        if (quoteCharacter != null && delimiter == quoteCharacter.charValue()) {
+        if (quoteCharacter != null && delimiter == quoteCharacter) {
             throw new IllegalArgumentException(
                     "The quoteChar character and the delimiter cannot be the same ('" + quoteCharacter + "')");
         }
 
-        if (escapeCharacter != null && delimiter == escapeCharacter.charValue()) {
+        if (escapeCharacter != null && delimiter == escapeCharacter) {
             throw new IllegalArgumentException(
                     "The escape character and the delimiter cannot be the same ('" + escapeCharacter + "')");
         }
 
-        if (commentMarker != null && delimiter == commentMarker.charValue()) {
+        if (commentMarker != null && delimiter == commentMarker) {
             throw new IllegalArgumentException(
                     "The comment start character and the delimiter cannot be the same ('" + commentMarker + "')");
         }

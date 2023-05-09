@@ -152,8 +152,8 @@ public abstract class Filter implements Writable {
         if (keys == null) {
             throw new IllegalArgumentException("Key[] may not be null");
         }
-        for (int i = 0; i < keys.length; i++) {
-            add(keys[i]);
+        for (Key key : keys) {
+            add(key);
         }
     }//end add()
 

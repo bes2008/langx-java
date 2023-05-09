@@ -67,7 +67,7 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
         if (index >= input.length()){
             return null;
         }
-        return Character.valueOf(input.charAt(index++));
+        return input.charAt(index++);
     }
 
     /*
@@ -112,7 +112,7 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
         if (c == null){
             return false;
         }
-        char ch = c.charValue();
+        char ch = c;
         return (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F');
     }
 
@@ -125,7 +125,7 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
         if (c == null){
             return false;
         }
-        char ch = c.charValue();
+        char ch = c;
         return ch >= '0' && ch <= '7';
     }
 
@@ -147,7 +147,7 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
         if (index >= input.length()){
             return null;
         }
-        return Character.valueOf(input.charAt(index));
+        return input.charAt(index);
     }
 
     /*

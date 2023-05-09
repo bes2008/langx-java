@@ -84,10 +84,8 @@ public class BufferedInputStreamTests {
         try {
             bin = new BufferedInputStream(file.getInputStream());
             DelimiterBasedReadableByteChannel channel = new DelimiterBasedReadableByteChannel(Channels.newChannel(bin), "\n");
-            Iterator<byte[]> iter = channel.iterator();
-            while (iter.hasNext()) {
-                byte[] bytes = iter.next();
-                System.out.println(new String(bytes,0,bytes.length, Charsets.UTF_8.name()));
+            for (byte[] bytes : channel) {
+                System.out.println(new String(bytes, 0, bytes.length, Charsets.UTF_8.name()));
             }
         } catch (IOException ex) {
             ex.printStackTrace();

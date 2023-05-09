@@ -94,8 +94,8 @@ public class GmsslNativeLibs {
             }
             field.setAccessible(true);
             String[] paths = (String[]) field.get(null);
-            for (int i = 0; i < paths.length; i++) {
-                if (libraryPath.equals(paths[i])) {
+            for (String path : paths) {
+                if (libraryPath.equals(path)) {
                     return;
                 }
             }

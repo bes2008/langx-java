@@ -32,7 +32,7 @@ class LexerV2 extends CommonTokenizer<RegionToken> {
         this.tokenFactory = new TokenFactory<RegionToken>() {
             @Override
             public RegionToken get(String tokenContent, Boolean isDelimiter) {
-                boolean isDelimiterBool = isDelimiter==null? false: isDelimiter.booleanValue();
+                boolean isDelimiterBool = isDelimiter==null? false: isDelimiter;
                 if (isDelimiterBool) {
                     if (Strings.isEmpty(tokenContent)) {
                         return new EmptyStringToken();

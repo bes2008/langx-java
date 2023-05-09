@@ -22,6 +22,7 @@ public class GMsTests {
 
 
     // @Test
+    @Test
     public void testSM2_cipher() {
         String str = "hello_234";
         KeyPair keyPair = new SM2KeyGenerator().genKeyPair();
@@ -53,6 +54,7 @@ public class GMsTests {
     }
 
     // @Test
+    @Test
     public void testSM2_sign() {
         String str = "hello_234";
         KeyPair keyPair = new SM2KeyGenerator().genKeyPair();
@@ -79,6 +81,7 @@ public class GMsTests {
      * 测试后证明，使用BC SM3，GmSSL SM3 结果一致，可以互通
      */
     //@Test
+    @Test
     public void testSM3() {
         String str = "hello_234";
         byte[] bytes = null;

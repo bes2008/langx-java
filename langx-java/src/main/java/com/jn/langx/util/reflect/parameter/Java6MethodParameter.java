@@ -294,8 +294,8 @@ public class Java6MethodParameter implements MethodParameter {
         if (null == declaredAnnotations) {
             declaredAnnotations = new HashMap<Class<? extends Annotation>, Annotation>();
             Annotation[] ann = getDeclaredAnnotations();
-            for (int i = 0; i < ann.length; i++) {
-                declaredAnnotations.put(ann[i].annotationType(), ann[i]);
+            for (Annotation annotation : ann) {
+                declaredAnnotations.put(annotation.annotationType(), annotation);
             }
         }
         return declaredAnnotations;

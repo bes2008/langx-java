@@ -176,7 +176,7 @@ public final class CsvPrinter implements Flushable, Closeable {
         if (!newRecord) {
             println();
         }
-        out.append(format.getCommentMarker().charValue());
+        out.append(format.getCommentMarker());
         out.append(SP);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
@@ -187,7 +187,7 @@ public final class CsvPrinter implements Flushable, Closeable {
                     }
                 case LF:
                     println();
-                    out.append(format.getCommentMarker().charValue());
+                    out.append(format.getCommentMarker());
                     out.append(SP);
                     break;
                 default:

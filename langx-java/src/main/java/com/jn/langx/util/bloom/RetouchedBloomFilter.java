@@ -131,8 +131,8 @@ public final class RetouchedBloomFilter extends BloomFilter
         Preconditions.checkNotNull(keys, "\"Key[] can not be null");
 
 
-        for (int i = 0; i < keys.length; i++) {
-            addFalsePositive(keys[i]);
+        for (Key key : keys) {
+            addFalsePositive(key);
         }
     }
 
@@ -351,22 +351,20 @@ public final class RetouchedBloomFilter extends BloomFilter
     @Override
     public void write(DataOutput out) throws IOException {
         super.write(out);
-        for (int i = 0; i < fpVector.length; i++) {
-            List<Key> list = fpVector[i];
+        for (List<Key> list : fpVector) {
             out.writeInt(list.size());
             for (Key k : list) {
                 k.write(out);
             }
         }
-        for (int i = 0; i < keyVector.length; i++) {
-            List<Key> list = keyVector[i];
+        for (List<Key> list : keyVector) {
             out.writeInt(list.size());
             for (Key k : list) {
                 k.write(out);
             }
         }
-        for (int i = 0; i < ratio.length; i++) {
-            out.writeDouble(ratio[i]);
+        for (double v : ratio) {
+            out.writeDouble(v);
         }
     }
 
@@ -374,8 +372,7 @@ public final class RetouchedBloomFilter extends BloomFilter
     public void readFields(DataInput in) throws IOException {
         super.readFields(in);
         createVector();
-        for (int i = 0; i < fpVector.length; i++) {
-            List<Key> list = fpVector[i];
+        for (List<Key> list : fpVector) {
             int size = in.readInt();
             for (int j = 0; j < size; j++) {
                 Key k = new Key();
@@ -383,8 +380,7 @@ public final class RetouchedBloomFilter extends BloomFilter
                 list.add(k);
             }
         }
-        for (int i = 0; i < keyVector.length; i++) {
-            List<Key> list = keyVector[i];
+        for (List<Key> list : keyVector) {
             int size = in.readInt();
             for (int j = 0; j < size; j++) {
                 Key k = new Key();

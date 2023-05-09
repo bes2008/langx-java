@@ -429,7 +429,7 @@ public final class CsvParser implements Iterable<CsvRecord>, Closeable {
                         }
                     }
                     if (header != null) {
-                        hdrMap.put(header, Integer.valueOf(i));
+                        hdrMap.put(header, i);
                         if (headerNames == null) {
                             headerNames = new ArrayList<String>(headerRecord.length);
                         }

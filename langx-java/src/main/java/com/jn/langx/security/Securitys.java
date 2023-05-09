@@ -106,9 +106,7 @@ public class Securitys {
     }
 
     private static void loadGMSupports() {
-        Iterator<GmInitializer> iter = ServiceLoader.load(GmInitializer.class).iterator();
-        while (iter.hasNext()) {
-            GmInitializer initializer = iter.next();
+        for (GmInitializer initializer : ServiceLoader.load(GmInitializer.class)) {
             initializer.init();
         }
     }

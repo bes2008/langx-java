@@ -16,7 +16,7 @@ public class LongTimestampFormatter extends AbstractUtcTimestampFormatter<Long> 
     public String format(Long d) {
         // 如果到 s 是10位，到毫秒是 13位
         Preconditions.checkNotNull(d);
-        Preconditions.checkNotNull(d.longValue() >= min10);
+        Preconditions.checkNotNull(d >= min10);
         if (d < min13) {
             d = d * 1000;
         }

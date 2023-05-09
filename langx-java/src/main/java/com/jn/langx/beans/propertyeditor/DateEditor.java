@@ -103,10 +103,10 @@ public class DateEditor extends PropertyEditorSupport {
     public void setAsText(String text) {
         ParseException pe = null;
 
-        for (int i = 0; i < formats.length; i++) {
+        for (DateFormat format : formats) {
             try {
                 // try to parse the date
-                DateFormat df = formats[i];
+                DateFormat df = format;
                 Date date = df.parse(text);
 
                 // store the date in both forms

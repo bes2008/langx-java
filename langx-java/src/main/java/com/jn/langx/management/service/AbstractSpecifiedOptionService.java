@@ -130,8 +130,8 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
                 final MBeanInfo mbeanInfo = this.conn.getMBeanInfo(oname2);
                 final MBeanAttributeInfo[] attrInfos = mbeanInfo.getAttributes();
                 final List<String> attributeNames = new LinkedList<String>();
-                for (int i = 0; i < attrInfos.length; ++i) {
-                    final String attrName = attrInfos[i].getName();
+                for (MBeanAttributeInfo attrInfo : attrInfos) {
+                    final String attrName = attrInfo.getName();
                     if (!notSerialAttrs.contains(attrName)) {
                         attributeNames.add(attrName);
                     }

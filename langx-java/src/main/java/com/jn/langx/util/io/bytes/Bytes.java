@@ -328,8 +328,8 @@ public class Bytes {
     }
 
     public static void intToBigEndian(int[] ns, byte[] bs, int off) {
-        for (int i = 0; i < ns.length; ++i) {
-            intToBigEndian(ns[i], bs, off);
+        for (int n : ns) {
+            intToBigEndian(n, bs, off);
             off += 4;
         }
     }
@@ -365,8 +365,8 @@ public class Bytes {
     }
 
     public static void longToBigEndian(long[] ns, byte[] bs, int off) {
-        for (int i = 0; i < ns.length; ++i) {
-            longToBigEndian(ns[i], bs, off);
+        for (long n : ns) {
+            longToBigEndian(n, bs, off);
             off += 8;
         }
     }
@@ -465,8 +465,8 @@ public class Bytes {
     }
 
     public static void intToLittleEndian(int[] ns, byte[] bs, int off) {
-        for (int i = 0; i < ns.length; ++i) {
-            intToLittleEndian(ns[i], bs, off);
+        for (int n : ns) {
+            intToLittleEndian(n, bs, off);
             off += 4;
         }
     }
@@ -509,8 +509,8 @@ public class Bytes {
     }
 
     public static void longToLittleEndian(long[] ns, byte[] bs, int off) {
-        for (int i = 0; i < ns.length; ++i) {
-            longToLittleEndian(ns[i], bs, off);
+        for (long n : ns) {
+            longToLittleEndian(n, bs, off);
             off += 8;
         }
     }

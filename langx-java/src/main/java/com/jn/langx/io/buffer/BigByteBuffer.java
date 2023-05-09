@@ -149,8 +149,8 @@ public class BigByteBuffer extends Buffer<BigByteBuffer> {
 
     public BigByteBuffer put(byte[] bytes) {
         if (bytes != null) {
-            for (int i = 0; i < bytes.length; i++) {
-                put(bytes[i]);
+            for (byte aByte : bytes) {
+                put(aByte);
             }
         }
         return this;

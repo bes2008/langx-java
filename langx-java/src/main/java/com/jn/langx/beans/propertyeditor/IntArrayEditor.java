@@ -35,9 +35,8 @@ public class IntArrayEditor extends PropertyEditorSupport {
         List<String> tokens = tokenizer.tokenize();
         int[] theValue = new int[tokens.size()];
         int i = 0;
-        Iterator<String> iter = tokens.iterator();
-        while (iter.hasNext()) {
-            theValue[i++] = Integer.decode(iter.next()).intValue();
+        for (String token : tokens) {
+            theValue[i++] = Integer.decode(token);
         }
         setValue(theValue);
     }

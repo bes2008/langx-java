@@ -289,7 +289,7 @@ public class HTMLEntityCodec extends AbstractIntegerCodec
             input.next();
 
         // check for a trailing semicolen
-        if(input.peek(Integer.valueOf(';')))
+        if(input.peek((int) ';'))
             input.next();
 
         return entry.getValue();

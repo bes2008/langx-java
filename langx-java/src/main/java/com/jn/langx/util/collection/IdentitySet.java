@@ -66,9 +66,8 @@ public class IdentitySet implements Set {
     }
 
     public boolean containsAll(Collection c) {
-        Iterator it = c.iterator();
-        while (it.hasNext()) {
-            if (!map.containsKey(it.next())) {
+        for (Object o : c) {
+            if (!map.containsKey(o)) {
                 return false;
             }
         }

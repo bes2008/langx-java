@@ -303,8 +303,8 @@ public class PatternWithGroups {
 
         groupValues.clear();
         if (groupIndexes.length > 0) {
-            for (int i = 0; i < groupIndexes.length; i++) {
-                groupValues.add(m.group(groupIndexes[i]));
+            for (int groupIndex : groupIndexes) {
+                groupValues.add(m.group(groupIndex));
             }
         } else {
             for (int i = 1; i <= m.groupCount(); i++) {

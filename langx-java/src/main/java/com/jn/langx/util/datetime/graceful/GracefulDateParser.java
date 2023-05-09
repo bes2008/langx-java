@@ -756,7 +756,7 @@ class GracefulDateParser implements DateParser, Serializable {
                 // match missing the optional trailing period
                 iVal = lKeyValues.get(lowerCase + '.');
             }
-            calendar.set(field, iVal.intValue());
+            calendar.set(field, iVal);
         }
 
         /**

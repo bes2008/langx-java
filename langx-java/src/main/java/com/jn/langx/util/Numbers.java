@@ -528,7 +528,7 @@ public class Numbers {
                 case 'F':
                     try {
                         Float f = createFloat(numeric);
-                        if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                        if (!(f.isInfinite() || (f == 0.0F && !allZeros))) {
                             number = f;
                         }
                     } catch (NumberFormatException nfe) {
@@ -586,7 +586,7 @@ public class Numbers {
                 boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
                 try {
                     Float f = createFloat(str);
-                    if (!(f.isInfinite() || (f.floatValue() == 0.0F && !allZeros))) {
+                    if (!(f.isInfinite() || (f == 0.0F && !allZeros))) {
                         return f;
                     }
                 } catch (NumberFormatException nfe) {
@@ -594,7 +594,7 @@ public class Numbers {
                 }
                 try {
                     Double d = createDouble(str);
-                    if (!(d.isInfinite() || (d.doubleValue() == 0.0D && !allZeros))) {
+                    if (!(d.isInfinite() || (d == 0.0D && !allZeros))) {
                         return d;
                     }
                 } catch (NumberFormatException nfe) {

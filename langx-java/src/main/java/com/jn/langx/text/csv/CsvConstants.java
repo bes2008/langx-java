@@ -25,7 +25,7 @@ final class CsvConstants {
      */
     static final String CRLF = "\r\n";
 
-    static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');
+    static final Character DOUBLE_QUOTE_CHAR = '"';
 
     static final String EMPTY = "";
 

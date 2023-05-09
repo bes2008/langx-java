@@ -44,7 +44,7 @@ public class IntegerConverter implements Converter<Object, Integer> {
             return Numbers.convertNumberToTargetClass(number, Integer.class);
         }
         if (input instanceof Character) {
-            return ((Character) input).charValue() - 48;
+            return (Character) input - 48;
         }
         if(input instanceof CommonEnum){
             return ((CommonEnum)input).getCode();

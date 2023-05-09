@@ -278,9 +278,9 @@ public class PropertyEditors {
         HashMap<String, PropertyDescriptor> propertyMap = new HashMap<String, PropertyDescriptor>();
         BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
         PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
-        for (int p = 0; p < props.length; p++) {
-            String fieldName = props[p].getName();
-            propertyMap.put(fieldName, props[p]);
+        for (PropertyDescriptor prop : props) {
+            String fieldName = prop.getName();
+            propertyMap.put(fieldName, prop);
         }
         Logger log = Loggers.getLogger(PropertyEditors.class);
         boolean trace = log.isTraceEnabled();

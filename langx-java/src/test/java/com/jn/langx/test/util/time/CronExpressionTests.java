@@ -13,6 +13,7 @@ import java.util.Date;
 public class CronExpressionTests {
     Date date = new Date();
 
+    @Test
     public void test01() throws Throwable {
         System.out.println("======test01 start=========");
         System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss));
@@ -41,6 +42,7 @@ public class CronExpressionTests {
         System.out.println("======test01 end=========");
     }
 
+    @Test
     public void test02() throws Throwable {
         System.out.println("======test02 start=========");
         System.out.println("date: " + Dates.format(date, Dates.yyyy_MM_dd_HH_mm_ss));

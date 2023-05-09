@@ -2233,19 +2233,19 @@ public enum CountryCode {
         alpha4Map.put("ZRCD", ZR);
 
         // BU and MM have the same numeric code 104. MM should be used.
-        numericMap.put(Integer.valueOf(104), MM);
+        numericMap.put(104, MM);
 
         // CD and ZR have the same numeric code 180. CD should be used.
-        numericMap.put(Integer.valueOf(180), CD);
+        numericMap.put(180, CD);
 
         // FI and SF have the same numeric code 246. FI should be used.
-        numericMap.put(Integer.valueOf(246), FI);
+        numericMap.put(246, FI);
 
         // GB and UK have the same numeric code 826. GB should be used.
-        numericMap.put(Integer.valueOf(826), GB);
+        numericMap.put(826, GB);
 
         // TL and TP have the same numeric code 626. TL should be used.
-        numericMap.put(Integer.valueOf(626), TL);
+        numericMap.put(626, TL);
     }
 
 

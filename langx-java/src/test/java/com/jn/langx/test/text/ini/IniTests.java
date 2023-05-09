@@ -19,6 +19,7 @@ import java.io.InputStream;
 public class IniTests {
 
 
+    @Test
     public void test() {
         Ini ini = buildFromClasspath("classpath:/ini/a.ini");
         System.out.println(ini);

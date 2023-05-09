@@ -233,8 +233,8 @@ public class Platform {
             File binDir = new File(javaHome, "bin");
             if (binDir.isDirectory() && binDir.canRead()) {
                 String[] execs = new String[]{"java", "java.exe"};
-                for (int i = 0; i < execs.length; i++) {
-                    result = new File(binDir, execs[i]);
+                for (String exec : execs) {
+                    result = new File(binDir, exec);
                     if (result.canRead()) {
                         break;
                     }

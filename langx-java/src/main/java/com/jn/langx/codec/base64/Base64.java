@@ -486,8 +486,8 @@ public class Base64 extends BaseNCodec {
      * <code>false</code>, otherwise
      */
     public static boolean isBase64(final byte[] arrayOctet) {
-        for (int i = 0; i < arrayOctet.length; i++) {
-            if (!isBase64(arrayOctet[i]) && !isWhiteSpace(arrayOctet[i])) {
+        for (byte b : arrayOctet) {
+            if (!isBase64(b) && !isWhiteSpace(b)) {
                 return false;
             }
         }

@@ -486,13 +486,12 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
             try {
                 Constructor<?> noArgCtor = null;
                 Constructor<?>[] cs = ec.getConstructors();// public ctors only
-                for (int i = 0; i < cs.length; ++i) {
-                    Constructor<?> c = cs[i];
+                for (Constructor<?> c : cs) {
                     Class<?>[] ps = c.getParameterTypes();
                     if (ps.length == 0)
                         noArgCtor = c;
                     else if (ps.length == 1 && ps[0] == Throwable.class)
-                        return (Throwable)(c.newInstance(ex));
+                        return (Throwable) (c.newInstance(ex));
                 }
                 if (noArgCtor != null) {
                     Throwable wx = (Throwable)(noArgCtor.newInstance());

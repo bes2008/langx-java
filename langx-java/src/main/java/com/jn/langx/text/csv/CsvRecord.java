@@ -84,11 +84,11 @@ public final class CsvRecord implements Serializable, Iterable<String> {
                     headerMap.keySet()));
         }
         try {
-            return values[index.intValue()];
+            return values[index];
         } catch (final ArrayIndexOutOfBoundsException e) {
             throw new IllegalArgumentException(String.format(
                     "Index for header '%s' is %d but CSVRecord only has %d values!", name, index,
-                    Integer.valueOf(values.length)));
+                    values.length));
         }
     }
 
@@ -189,7 +189,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
      * @return whether a given columns is mapped and has a value
      */
     public boolean isSet(final String name) {
-        return isMapped(name) && getHeaderMapRaw().get(name).intValue() < values.length;
+        return isMapped(name) && getHeaderMapRaw().get(name) < values.length;
     }
 
     /**
@@ -213,7 +213,7 @@ public final class CsvRecord implements Serializable, Iterable<String> {
             return map;
         }
         for (final Entry<String, Integer> entry : getHeaderMapRaw().entrySet()) {
-            final int col = entry.getValue().intValue();
+            final int col = entry.getValue();
             if (col < values.length) {
                 map.put(entry.getKey(), values[col]);
             }

@@ -277,8 +277,7 @@ abstract class Striped64 extends Number {
         base = initialValue;
         if (as != null) {
             int n = as.length;
-            for (int i = 0; i < n; ++i) {
-                Cell a = as[i];
+            for (Cell a : as) {
                 if (a != null)
                     a.value = initialValue;
             }

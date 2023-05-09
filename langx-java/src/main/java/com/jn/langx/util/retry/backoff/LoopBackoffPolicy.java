@@ -21,7 +21,7 @@ public class LoopBackoffPolicy extends BackoffPolicy {
                 .filter(new Predicate<Long>() {
                     @Override
                     public boolean test(Long value) {
-                        return value != null && value.longValue() > 0;
+                        return value != null && value > 0;
                     }
                 }).clearNulls().asList();
     }

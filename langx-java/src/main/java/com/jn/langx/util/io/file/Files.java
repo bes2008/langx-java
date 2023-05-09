@@ -1052,15 +1052,15 @@ public class Files {
             // 删除目录下的文件
             File[] children = directory.listFiles((java.io.FileFilter) new IsFileFilter());
             if (children != null) {
-                for (int i = 0; i < children.length; i++) {
-                    children[i].delete();
+                for (File child : children) {
+                    child.delete();
                 }
             }
             children = directory.listFiles((java.io.FileFilter) new IsDirectoryFileFilter());
             if (children != null) {
-                for (int i = 0; i < children.length; i++) {
-                    cleanDirectory(children[i]);
-                    children[i].delete();
+                for (File child : children) {
+                    cleanDirectory(child);
+                    child.delete();
                 }
             }
         }

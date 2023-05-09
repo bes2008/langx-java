@@ -118,9 +118,8 @@ public class MultiKeyMap<V> implements Map<Object, V> {
 
     @Override
     public void putAll(Map<? extends Object, ? extends V> m) {
-        Iterator iter = m.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<Object, V> entry = (Map.Entry<Object, V>) iter.next();
+        for (Entry<?, ? extends V> value : m.entrySet()) {
+            Entry<Object, V> entry = (Entry<Object, V>) value;
             put(entry.getKey(), entry.getValue());
         }
     }

@@ -1,5 +1,7 @@
 package com.jn.langx.util.concurrent.clhm;
 
+import com.jn.langx.util.collection.Lists;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
@@ -220,11 +222,7 @@ public final class Weighers {
             if (values instanceof Collection<?>) {
                 return ((Collection<?>) values).size();
             }
-            int size = 0;
-            for (Iterator<?> i = values.iterator(); i.hasNext();) {
-                i.next();
-                size++;
-            }
+            int size = Lists.newArrayList(values).size();
             return size;
         }
     }

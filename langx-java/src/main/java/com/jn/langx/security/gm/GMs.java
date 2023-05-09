@@ -42,9 +42,7 @@ public class GMs extends AbstractInitializable {
 
     @Override
     protected void doInit() throws InitializationException {
-        Iterator<GmService> iter = ServiceLoader.load(GmService.class).iterator();
-        while (iter.hasNext()) {
-            GmService gmService = iter.next();
+        for (GmService gmService : ServiceLoader.load(GmService.class)) {
             registry.register(gmService);
         }
     }

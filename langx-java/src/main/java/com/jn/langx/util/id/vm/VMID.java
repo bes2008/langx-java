@@ -122,8 +122,8 @@ public class VMID implements Serializable {
     public String toString() {
         StringBuilder buff = new StringBuilder();
 
-        for (int i = 0; i < address.length; i++) {
-            int n = (address[i] & 0xFF);
+        for (byte b : address) {
+            int n = (b & 0xFF);
             buff.append(Integer.toString(n, Character.MAX_RADIX));
         }
 

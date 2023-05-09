@@ -595,8 +595,8 @@ public class KeyComparatorHashMap<K, V> extends AbstractMap<K, V> implements Map
         }
 
         final Entry[] tab = table;
-        for (int i = 0; i < tab.length; i++) {
-            for (Entry e = tab[i]; e != null; e = e.next) {
+        for (Entry entry : tab) {
+            for (Entry e = entry; e != null; e = e.next) {
                 if (value.equals(e.value)) {
                     return true;
                 }

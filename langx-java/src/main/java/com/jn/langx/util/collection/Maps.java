@@ -142,8 +142,7 @@ public class Maps {
 
     public static <K, V> Map<K, V> newMap(Pair<K, V>... pairs) {
         Map<K, V> map = new HashMap<K, V>(pairs.length);
-        for (int i = 0; i < pairs.length; ++i) {
-            Pair<K, V> pair = pairs[i];
+        for (Pair<K, V> pair : pairs) {
             map.put(pair.getKey(), pair.getValue());
         }
 

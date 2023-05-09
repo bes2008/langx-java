@@ -21,8 +21,8 @@ public class Asciis {
     public static String native2Ascii(String str) {
         char[] chars = str.toCharArray();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < chars.length; i++) {
-            sb.append(char2Ascii(chars[i]));
+        for (char aChar : chars) {
+            sb.append(char2Ascii(aChar));
         }
         return sb.toString();
     }

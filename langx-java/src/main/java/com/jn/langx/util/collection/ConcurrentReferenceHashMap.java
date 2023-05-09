@@ -603,8 +603,8 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             if (count != 0) { // read-volatile
                 HashEntry<K, V>[] tab = table;
                 int len = tab.length;
-                for (int i = 0; i < len; i++) {
-                    for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
+                for (HashEntry<K, V> kvHashEntry : tab) {
+                    for (HashEntry<K, V> e = kvHashEntry; e != null; e = e.next) {
                         Object opaque = e.valueRef;
                         V v;
 
@@ -728,11 +728,9 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             threshold = (int) (newTable.length * loadFactor);
             int sizeMask = newTable.length - 1;
             int reduce = 0;
-            for (int i = 0; i < oldCapacity; i++) {
+            for (HashEntry<K, V> e : oldTable) {
                 // We need to guarantee that any existing reads of old Map can
                 //  proceed. So we cannot yet null out each bin.
-                HashEntry<K, V> e = oldTable[i];
-
                 if (e != null) {
                     HashEntry<K, V> next = e.next;
                     int idx = e.hash & sizeMask;
@@ -1109,14 +1107,14 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
         if (check != sum) { // Resort to locking all segments
             sum = 0;
-            for (int i = 0; i < segments.length; ++i) {
-                segments[i].lock();
+            for (Segment<K, V> segment : segments) {
+                segment.lock();
             }
-            for (int i = 0; i < segments.length; ++i) {
-                sum += segments[i].count;
+            for (Segment<K, V> kvSegment : segments) {
+                sum += kvSegment.count;
             }
-            for (int i = 0; i < segments.length; ++i) {
-                segments[i].unlock();
+            for (Segment<K, V> segment : segments) {
+                segment.unlock();
             }
         }
         if (sum > Integer.MAX_VALUE) {
@@ -1211,20 +1209,20 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             }
         }
         // Resort to locking all segments
-        for (int i = 0; i < segments.length; ++i) {
-            segments[i].lock();
+        for (Segment<K, V> segment : segments) {
+            segment.lock();
         }
         boolean found = false;
         try {
-            for (int i = 0; i < segments.length; ++i) {
-                if (segments[i].containsValue(value)) {
+            for (Segment<K, V> segment : segments) {
+                if (segment.containsValue(value)) {
                     found = true;
                     break;
                 }
             }
         } finally {
-            for (int i = 0; i < segments.length; ++i) {
-                segments[i].unlock();
+            for (Segment<K, V> segment : segments) {
+                segment.unlock();
             }
         }
         return found;
@@ -1368,8 +1366,8 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      */
     @Override
     public void clear() {
-        for (int i = 0; i < segments.length; ++i) {
-            segments[i].clear();
+        for (Segment<K, V> segment : segments) {
+            segment.clear();
         }
     }
 
@@ -1385,8 +1383,8 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      * of this table, so if it is to be used, it should be used sparingly.
      */
     public void purgeStaleEntries() {
-        for (int i = 0; i < segments.length; ++i) {
-            segments[i].removeStale();
+        for (Segment<K, V> segment : segments) {
+            segment.removeStale();
         }
     }
 
@@ -1800,13 +1798,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
     public final void writeObject(java.io.ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
 
-        for (int k = 0; k < segments.length; ++k) {
-            Segment<K, V> seg = segments[k];
+        for (Segment<K, V> seg : segments) {
             seg.lock();
             try {
                 HashEntry<K, V>[] tab = seg.table;
-                for (int i = 0; i < tab.length; ++i) {
-                    for (HashEntry<K, V> e = tab[i]; e != null; e = e.next) {
+                for (HashEntry<K, V> kvHashEntry : tab) {
+                    for (HashEntry<K, V> e = kvHashEntry; e != null; e = e.next) {
                         K key = e.key();
                         if (key == null) {
                             // Skip GC'd keys
@@ -1837,8 +1834,8 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         s.defaultReadObject();
 
         // Initialize each segment to be minimally sized, and let grow.
-        for (int i = 0; i < segments.length; ++i) {
-            segments[i].setTable(new HashEntry[1]);
+        for (Segment<K, V> segment : segments) {
+            segment.setTable(new HashEntry[1]);
         }
 
         // Read the keys and values, and put the mappings in the table

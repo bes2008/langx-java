@@ -104,8 +104,8 @@ public class Key implements WritableComparable<Key> {
     @Override
     public int hashCode() {
         int result = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            result ^= Byte.valueOf(bytes[i]).hashCode();
+        for (byte aByte : bytes) {
+            result ^= Byte.valueOf(aByte).hashCode();
         }
         result ^= Double.valueOf(weight).hashCode();
         return result;
