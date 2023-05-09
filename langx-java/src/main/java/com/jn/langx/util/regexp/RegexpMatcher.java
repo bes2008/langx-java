@@ -82,4 +82,6 @@ public interface RegexpMatcher extends NamedGroupMatchResult {
      * @param b
      */
     void appendTail(StringBuilder b);
+
+    void interrupt();
 }

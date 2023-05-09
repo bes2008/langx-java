@@ -541,4 +541,9 @@ class NamedMatcher implements RegexpMatcher {
     public String toString() {
         return matcher.toString();
     }
+
+    @Override
+    public void interrupt() {
+
+    }
 }
