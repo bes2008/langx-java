@@ -23,12 +23,12 @@ public class MBeans {
         Set<ObjectName> objectNames = ObjectNames.queryObjectNames(connection, objectName);
         ObjectName oname = null;
         if (objectNames.size() > 1) {
-            oname = objectNames.toArray(new ObjectName[objectNames.size()])[0];
+            oname = objectNames.toArray(new ObjectName[0])[0];
         }
         boolean getAttributes = attributeNames != null && !attributeNames.isEmpty();
         MBean mbean = MBean.of(oname);
         if (getAttributes) {
-            mbean.putAttributes(connection.getAttributes(oname, attributeNames.toArray(new String[attributeNames.size()])));
+            mbean.putAttributes(connection.getAttributes(oname, attributeNames.toArray(new String[0])));
         }
         return mbean;
     }
@@ -41,7 +41,7 @@ public class MBeans {
             MBean mbean = MBean.of(oname);
             mbeans.add(mbean);
             if (getAttributes) {
-                mbean.putAttributes(connection.getAttributes(oname, attributeNames.toArray(new String[attributeNames.size()])));
+                mbean.putAttributes(connection.getAttributes(oname, attributeNames.toArray(new String[0])));
             }
         }
         return mbeans;

@@ -611,7 +611,7 @@ public final class CsvParser implements Iterable<CsvRecord>, Closeable {
         if (!this.recordList.isEmpty()) {
             this.recordNumber++;
             final String comment = sb == null ? null : sb.toString();
-            result = new CsvRecord(this, this.recordList.toArray(new String[this.recordList.size()]),
+            result = new CsvRecord(this, this.recordList.toArray(new String[0]),
                     comment, this.recordNumber, startCharPosition);
         }
         return result;

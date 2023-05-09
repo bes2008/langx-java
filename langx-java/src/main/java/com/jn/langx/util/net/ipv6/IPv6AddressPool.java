@@ -1,6 +1,8 @@
 package com.jn.langx.util.net.ipv6;
 
 
+import com.jn.langx.util.collection.Sets;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -32,7 +34,7 @@ public final class IPv6AddressPool implements Serializable {
     public static IPv6AddressPool fromRangeAndSubnet(final IPv6AddressRange range,
                                                      final IPv6NetworkMask allocationSubnetSize) {
         // in the beginning, all is free
-        return new IPv6AddressPool(range, allocationSubnetSize, new TreeSet<IPv6AddressRange>(Arrays.asList(range)), null);
+        return new IPv6AddressPool(range, allocationSubnetSize, Sets.<IPv6AddressRange>newTreeSet(range), null);
     }
 
     /**

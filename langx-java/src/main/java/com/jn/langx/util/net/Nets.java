@@ -1863,7 +1863,7 @@ public class Nets {
             return InetAddress.getLocalHost();
         } else if (Emptys.isNotEmpty(addresses)) {
             //else return the first available addrress
-            return addresses.toArray(new InetAddress[addresses.size()])[0];
+            return addresses.toArray(new InetAddress[0])[0];
         } else {
             //else we are forcedt to use the localhost address.
             return InetAddress.getLocalHost();

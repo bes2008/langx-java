@@ -167,7 +167,7 @@ public abstract class FieldAccessor {
             FieldAccessor access = (FieldAccessor) accessClass.newInstance();
             access.fieldNames = fieldNames;
             access.fieldTypes = fieldTypes;
-            access.fields = fields.toArray(new Field[fields.size()]);
+            access.fields = fields.toArray(new Field[0]);
             return access;
         } catch (Exception t) {
             throw new RuntimeException("Error constructing field access class: " + accessClassName, t);

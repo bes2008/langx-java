@@ -61,9 +61,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         if (optionValues == null || optionValues.isEmpty()) {
             final ObjectName oname = this.createObjectName(null);
             final Set<ObjectName> allValue = this.conn.queryNames(oname, (QueryExp) null);
-            for (final ObjectName optionObjectName : allValue) {
-                objectNames.add(optionObjectName);
-            }
+            objectNames.addAll(allValue);
         } else {
             for (final String optionValue : optionValues) {
                 final Hashtable<String, String> options = new Hashtable<String, String>();
@@ -109,9 +107,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         if (optionValues == null || optionValues.isEmpty()) {
             final ObjectName oname = this.createObjectName(null);
             final Set<ObjectName> allValue = this.conn.queryNames(oname, (QueryExp) null);
-            for (final ObjectName optionObjectName : allValue) {
-                objectNames.add(optionObjectName);
-            }
+            objectNames.addAll(allValue);
         } else {
             for (final String optionValue : optionValues) {
                 final Hashtable<String, String> options = new Hashtable<String, String>();

@@ -17,6 +17,7 @@
 package com.jn.langx.util.net.http.jaxrs;
 
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 
@@ -356,7 +357,7 @@ public class UriComponent {
 
         tables[Type.HOST.ordinal()] = initEncodingTable(l);
 
-        tables[Type.PORT.ordinal()] = initEncodingTable(Arrays.asList("0-9"));
+        tables[Type.PORT.ordinal()] = initEncodingTable(Lists.newArrayList("0-9"));
 
         l.add(":");
 

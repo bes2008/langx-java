@@ -96,9 +96,7 @@ public class CopyOnWriteConcurrentMap<K,V> implements ConcurrentMap<K, V> {
     @Override
     public synchronized void putAll(Map<? extends K, ? extends V> m) {
         final Map<K, V> delegate = new HashMap<K,V>(this.delegate);
-        for(Entry<? extends K, ? extends V> e : m.entrySet()) {
-            delegate.put(e.getKey(), e.getValue());
-        }
+        delegate.putAll(m);
         this.delegate = delegate;
     }
 

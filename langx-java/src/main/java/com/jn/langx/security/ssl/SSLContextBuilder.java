@@ -175,8 +175,8 @@ public class SSLContextBuilder implements Builder<SSLContext> {
     }
 
     protected void initSSLContext(final SSLContext sslcontext, final Collection<KeyManager> keyManagers, final Collection<TrustManager> trustManagers, final SecureRandom secureRandom) throws KeyManagementException {
-        sslcontext.init(!keyManagers.isEmpty() ? keyManagers.toArray(new KeyManager[keyManagers.size()]) : null,
-                !trustManagers.isEmpty() ? trustManagers.toArray(new TrustManager[trustManagers.size()]) : null,
+        sslcontext.init(!keyManagers.isEmpty() ? keyManagers.toArray(new KeyManager[0]) : null,
+                !trustManagers.isEmpty() ? trustManagers.toArray(new TrustManager[0]) : null,
                 secureRandom);
     }
 

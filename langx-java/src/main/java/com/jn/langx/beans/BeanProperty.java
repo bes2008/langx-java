@@ -180,7 +180,7 @@ final class BeanProperty {
             addAnnotationsToMap(annotationMap, getReadMethod());
             addAnnotationsToMap(annotationMap, getWriteMethod());
             addAnnotationsToMap(annotationMap, getField());
-            annotations = annotationMap.values().toArray(new Annotation[annotationMap.size()]);
+            annotations = annotationMap.values().toArray(new Annotation[0]);
             annotationCache.put(this, annotations);
         }
         return annotations;

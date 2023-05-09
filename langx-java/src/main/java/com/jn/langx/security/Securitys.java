@@ -88,12 +88,7 @@ public class Securitys {
 
             if (expectedProvider != null) {
                 Map<String, String> properties = langxSecurityProvider.getProperties();
-                Iterator<Map.Entry<String, String>> entryIterator = properties.entrySet().iterator();
-
-                while (entryIterator.hasNext()) {
-                    Map.Entry<String, String> entry = entryIterator.next();
-                    expectedProvider.put(entry.getKey(), entry.getValue());
-                }
+                expectedProvider.putAll(properties);
             }
         }
         // 如果上述两种借法都没成功，那么langx provider中的算法，只能使用  message digest算法和 hmac算法。

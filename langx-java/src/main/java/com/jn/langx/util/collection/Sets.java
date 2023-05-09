@@ -59,7 +59,9 @@ public class Sets {
     public static <E extends Comparable> TreeSet<E> newTreeSet(Iterable<E> elements) {
         return Collects.newTreeSet(elements);
     }
-
+    public static <E> TreeSet<E> newTreeSet(E... elements) {
+        return Collects.newTreeSet(elements);
+    }
     public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
         return Collects.newTreeSet(comparator);
     }
