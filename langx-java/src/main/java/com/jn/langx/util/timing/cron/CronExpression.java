@@ -712,7 +712,9 @@ public final class CronExpression implements Serializable, Cloneable {
                 throw new ParseException("'L' option is not valid here. (pos=" + i + ")", i);
             }
             TreeSet<Integer> set = getSet(type);
-            set.add(val);
+            if (set != null) {
+                set.add(val);
+            }
             i++;
             return i;
         }
@@ -726,7 +728,9 @@ public final class CronExpression implements Serializable, Cloneable {
             if (val > 31)
                 throw new ParseException("The 'W' option does not make sense with values larger than 31 (max number of days in a month)", i);
             TreeSet<Integer> set = getSet(type);
-            set.add(val);
+            if (set != null) {
+                set.add(val);
+            }
             i++;
             return i;
         }
@@ -748,7 +752,9 @@ public final class CronExpression implements Serializable, Cloneable {
             }
 
             TreeSet<Integer> set = getSet(type);
-            set.add(val);
+            if (set != null) {
+                set.add(val);
+            }
             i++;
             return i;
         }
@@ -975,12 +981,13 @@ public final class CronExpression implements Serializable, Cloneable {
         }
 
         if ((incr == 0 || incr == -1) && val != ALL_SPEC_INT) {
-            if (val != -1) {
-                set.add(val);
-            } else {
-                set.add(NO_SPEC);
+            if (set != null) {
+                if (val != -1) {
+                    set.add(val);
+                } else {
+                    set.add(NO_SPEC);
+                }
             }
-
             return;
         }
 
@@ -989,7 +996,10 @@ public final class CronExpression implements Serializable, Cloneable {
 
         if (val == ALL_SPEC_INT && incr <= 0) {
             incr = 1;
-            set.add(ALL_SPEC); // put in a marker, but also fill values
+            if(set!=null) {
+                // put in a marker, but also fill values
+                set.add(ALL_SPEC);
+            }
         }
 
         if (type == SECOND || type == MINUTE) {

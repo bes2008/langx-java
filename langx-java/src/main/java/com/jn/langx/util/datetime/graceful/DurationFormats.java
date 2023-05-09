@@ -190,9 +190,6 @@ class DurationFormats {
                     duration = tmp;
                     tmp = Strings.replaceOnce(duration, " 0 minutes", Strings.EMPTY);
                     duration = tmp;
-                    if (tmp.length() != duration.length()) {
-                        duration = Strings.replaceOnce(tmp, " 0 seconds", Strings.EMPTY);
-                    }
                 }
             }
             if (!duration.isEmpty()) {
@@ -542,7 +539,9 @@ class DurationFormats {
                 if (buffer == null) {
                     list.add(new Token(buffer));
                 }
-                buffer.append(ch);
+                else {
+                    buffer.append(ch);
+                }
             }
 
             if (value != null) {

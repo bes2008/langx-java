@@ -3,10 +3,7 @@ package com.jn.langx.util.io;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.io.stream.StringBuilderWriter;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Maths;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Throwables;
+import com.jn.langx.util.*;
 import com.jn.langx.util.io.close.ObjectCloser;
 import com.jn.langx.util.net.URLs;
 
@@ -2058,11 +2055,15 @@ public class IOs {
 
         String line1 = br1.readLine();
         String line2 = br2.readLine();
-        while (line1 != null && line2 != null && line1.equals(line2)) {
+        while (line1 != null && Objs.equals(line1, line2)) {
             line1 = br1.readLine();
             line2 = br2.readLine();
         }
-        return line1 == null ? line2 == null ? true : false : line1.equals(line2);
+        if(line1==null){
+            return line2==null;
+        }else{
+            return Objs.equals(line1, line2);
+        }
     }
 
     /**

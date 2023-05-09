@@ -39,14 +39,14 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
     }
 
     private void setDelimiters(String... delimiters) {
-        boolean hasLineDelimiter = Collects.anyMatch( new Predicate<String>() {
+        boolean hasLineDelimiter = Collects.anyMatch(new Predicate<String>() {
             @Override
             public boolean test(String delimiter) {
                 return LineDelimiter.isLineDelimiter(delimiter);
             }
-        },delimiters);
+        }, delimiters);
         List<String> dels = Pipeline.of(delimiters).asList();
-        if(hasLineDelimiter){
+        if (hasLineDelimiter) {
             dels.addAll(LineDelimiter.supportedLineDelimiterStrings());
         }
 

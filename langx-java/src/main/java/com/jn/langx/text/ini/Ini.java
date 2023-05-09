@@ -212,9 +212,7 @@ public class Ini implements Map<String, Ini.Section> {
         Collects.forEach(m, new Consumer2<String, Section>() {
             @Override
             public void accept(String key, Section section) {
-                if (section == null) {
-                    section = Ini.this.createSectionIfAbsent(key);
-                }
+                Ini.this.createSectionIfAbsent(key,section);
             }
         });
 

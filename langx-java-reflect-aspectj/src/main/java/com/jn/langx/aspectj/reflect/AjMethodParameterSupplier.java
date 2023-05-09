@@ -57,7 +57,7 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
             meta.setName(parameterName);
         }
         // 获取参数，这里拿到的参数很可能跟之前获取的不一样
-        if (this.delegate == null && Platform.JAVA_VERSION_INT >= 8) {
+        if (this.delegate == null && Platform.is8VMOrGreater()) {
             throw new JarNotFoundException("Can't find the langx-java8.jar in the classpath");
         }
         // 低于 java 8的根本走不到这里，所以不会报 NPE

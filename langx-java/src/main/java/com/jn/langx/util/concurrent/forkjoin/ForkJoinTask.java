@@ -687,7 +687,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
             if (t != null) {
                 if (ex != null)
                     t.cancel(false);
-                else if (t.doJoin() < NORMAL && ex == null)
+                else if (t.doJoin() < NORMAL)
                     ex = t.getException();
             }
         }
@@ -744,7 +744,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
             if (t != null) {
                 if (ex != null)
                     t.cancel(false);
-                else if (t.doJoin() < NORMAL && ex == null)
+                else if (t.doJoin() < NORMAL)
                     ex = t.getException();
             }
         }

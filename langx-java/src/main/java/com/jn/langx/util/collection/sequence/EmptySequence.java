@@ -4,6 +4,7 @@ import com.jn.langx.util.collection.iter.EmptyIterator;
 
 import java.util.*;
 
+@SuppressWarnings("ConstantConditions")
 public class EmptySequence<E> implements Sequence<E>{
     private static final EmptySequence INSTANCE = new EmptySequence();
     @Override

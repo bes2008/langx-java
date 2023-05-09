@@ -318,7 +318,7 @@ public class Arrs extends PrimitiveArrays{
     }
 
     @SuppressWarnings("rawtypes")
-    public static <E> boolean isMixedArray(E[] objs) {
+    public static <E> boolean isMixedArray(E... objs) {
         final Holder<Class> elementType = new Holder<Class>();
         boolean isMixed = Collects.anyMatch(new Predicate<Object>() {
             @Override

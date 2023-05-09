@@ -416,7 +416,6 @@ public class ClassLoaders {
             } catch (Throwable ex) {
                 Logger logger = Loggers.getLogger(ClassLoaders.class);
                 logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
-                IOs.close(jarFile);
             }
         }
         return null;
