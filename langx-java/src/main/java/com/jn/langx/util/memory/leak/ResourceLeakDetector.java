@@ -337,7 +337,8 @@ public class ResourceLeakDetector<T> {
                     final int numElements = oldHead.pos + 1;
                     if (numElements >= TARGET_RECORDS) {
                         final int backOffFactor = Math.min(numElements - TARGET_RECORDS, 30);
-                        if (dropped = ThreadLocalRandom.current().nextInt(1 << backOffFactor) != 0) {
+                        dropped = ThreadLocalRandom.current().nextInt(1 << backOffFactor) != 0;
+                        if (dropped) {
                             prevHead = oldHead.next;
                         }
                     } else {
