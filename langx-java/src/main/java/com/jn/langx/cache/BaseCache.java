@@ -21,6 +21,7 @@ import com.jn.langx.util.timing.timer.TimerTask;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("rawtypes")
 public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
     // unit: mills
     protected volatile long evictExpiredInterval;

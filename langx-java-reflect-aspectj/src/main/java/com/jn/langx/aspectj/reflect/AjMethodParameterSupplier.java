@@ -76,7 +76,7 @@ public class AjMethodParameterSupplier extends AbstractMethodParameterSupplier {
         Logger logger = Loggers.getLogger(getClass());
         try {
             Method method = (Method) meta.getExecutable();
-            Class declaringClass = method.getDeclaringClass();
+            Class<?> declaringClass = method.getDeclaringClass();
             classname = Reflects.getFQNClassName(declaringClass);
 
             Repository repository = Repositorys.getClassLoaderRepository(declaringClass);

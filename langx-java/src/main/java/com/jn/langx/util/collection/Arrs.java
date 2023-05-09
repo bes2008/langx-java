@@ -309,7 +309,7 @@ public class Arrs extends PrimitiveArrays{
         if (objs == null) {
             return null;
         }
-        Class componentType = objs.getClass().getComponentType();
+        Class<?> componentType = objs.getClass().getComponentType();
         E[] newArray = (E[]) createArray(componentType, objs.length);
         for (int i = 0; i < newArray.length; i++) {
             newArray[i] = objs[i];
@@ -317,6 +317,7 @@ public class Arrs extends PrimitiveArrays{
         return newArray;
     }
 
+    @SuppressWarnings("rawtypes")
     public static <E> boolean isMixedArray(E[] objs) {
         final Holder<Class> elementType = new Holder<Class>();
         boolean isMixed = Collects.anyMatch(new Predicate<Object>() {

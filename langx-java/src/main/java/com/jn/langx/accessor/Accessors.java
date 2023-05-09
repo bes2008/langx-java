@@ -13,6 +13,7 @@ import java.util.*;
 /**
  * @since 4.6.10
  */
+@SuppressWarnings("rawtypes")
 public class Accessors {
 
     private Accessors() {

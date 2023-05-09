@@ -5,6 +5,7 @@ import com.jn.langx.util.collection.Arrs;
 
 import java.lang.reflect.Constructor;
 
+@SuppressWarnings("ALL")
 public class AopConstructorInvocation implements ConstructorInvocation {
     private Constructor constructor;
     private Object[] arguments;

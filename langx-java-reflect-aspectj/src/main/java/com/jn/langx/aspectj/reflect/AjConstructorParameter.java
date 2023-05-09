@@ -30,6 +30,7 @@ public class AjConstructorParameter implements ConstructorParameter {
         return delegate.isNamePresent();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Constructor getDeclaringExecutable() {
         return delegate.getDeclaringExecutable();

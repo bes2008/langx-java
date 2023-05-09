@@ -9,6 +9,7 @@ import java.util.Random;
 /**
  * https://github.com/elastic/elasticsearch/tree/master/server/src/main/java/org/elasticsearch/common
  */
+@SuppressWarnings("ALL")
 public class Base64IdGenerator implements IdGenerator {
     public static final SecureRandom INSTANCE = new SecureRandom();
 

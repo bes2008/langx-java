@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * @since 4.6.2
  */
+@SuppressWarnings("ALL")
 public class AsyncEventDispatcher implements EventDispatcher {
     private ExecutorService executor;
     /**

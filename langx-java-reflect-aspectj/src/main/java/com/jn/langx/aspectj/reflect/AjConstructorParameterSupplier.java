@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Constructor;
 
+@SuppressWarnings("rawtypes")
 @Name(AjReflectConstants.DEFAULT_PARAMETER_SUPPLIER_NAME)
 public class AjConstructorParameterSupplier extends AbstractConstructorParameterSupplier {
     private ConstructorParameterSupplier delegate;
