@@ -132,7 +132,7 @@ final class CentralDirectoryFileHeader implements FileHeader, Cloneable{
         Calendars.setHours(calendar,hour);
         Calendars.setMinutes(calendar,minute);
         Calendars.setSeconds(calendar,second);
-        return calendar.getTimeInMillis() - calendar.getTimeZone() .getRawOffset() * 1000;
+        return calendar.getTimeInMillis() - calendar.getTimeZone().getRawOffset();
     }
 
     long getCrc() {

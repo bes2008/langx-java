@@ -165,7 +165,7 @@ public class UriTemplateParser {
         }
 
         int[] indexes = new int[names.size()];
-        indexes[0] = 0 + groupCounts.get(0);
+        indexes[0] = groupCounts.get(0);
         for (int i = 1; i < indexes.length; i++) {
             indexes[i] = indexes[i - 1] + groupCounts.get(i);
         }

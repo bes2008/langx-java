@@ -256,6 +256,6 @@ public abstract class AbstractStatefulLifecycle implements StatefulLifecycle, Ev
     /**
      * An exception, which if thrown by doStart will immediately stop the component
      */
-    public class StopException extends RuntimeException {
+    public static class StopException extends RuntimeException {
     }
 }

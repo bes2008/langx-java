@@ -340,7 +340,7 @@ public abstract class Equivalence<T> {
         private static final long serialVersionUID = 1;
     }
 
-    final class FunctionalEquivalence<F, T> extends Equivalence<F>
+    static final class FunctionalEquivalence<F, T> extends Equivalence<F>
             implements Serializable {
 
         private static final long serialVersionUID = 0;
@@ -388,7 +388,7 @@ public abstract class Equivalence<T> {
         }
     }
 
-    final class PairwiseEquivalence<T> extends Equivalence<Iterable<T>>
+    static final class PairwiseEquivalence<T> extends Equivalence<Iterable<T>>
             implements Serializable {
 
         final transient Equivalence<? super T> elementEquivalence;

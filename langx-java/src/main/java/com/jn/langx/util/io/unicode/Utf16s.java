@@ -198,7 +198,7 @@ public final class Utf16s {
     }
 
     public static int getRawSupplementary(char var0, char var1) {
-        return (var0 << 10) + var1 + -56613888;
+        return (var0 << 10) + var1 -56613888;
     }
 
 }
