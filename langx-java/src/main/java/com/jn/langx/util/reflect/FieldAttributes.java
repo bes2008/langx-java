@@ -125,8 +125,6 @@ public class FieldAttributes implements MemberAttributes<Field>{
      * @return the value of the represented field in object
      * {@code obj}; primitive values are wrapped in an appropriate
      * object before being returned
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
      */
     Object get(Object instance) throws IllegalAccessException {
         return field.get(instance);

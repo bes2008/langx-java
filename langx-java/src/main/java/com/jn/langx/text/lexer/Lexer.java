@@ -32,7 +32,6 @@ interface Lexer {
 
     /**
      * 从指定的位置开始
-     * @param position
      */
     void restore(@NonNull LexerPosition position);
 

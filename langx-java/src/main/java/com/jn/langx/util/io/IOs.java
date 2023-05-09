@@ -2730,7 +2730,6 @@ public class IOs {
      * 也就是说，存在 -1 ~ -128 这些数，也就是执行 read()一旦返回 -1，就会中断流的读取，而实际上流并未结束。
      * 解决该问题的办法，就是两者范围统一。
      *
-     * @param theByte
      */
     public static final int filterInputStreamRead(byte theByte) {
         return theByte < 0 ? (theByte + 256) : theByte;

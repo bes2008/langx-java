@@ -235,8 +235,6 @@ public class SystemPropertys {
     /**
      * 如果不存在 指定的key,则设置为 value
      *
-     * @param key
-     * @param value
      * @since 2.10.2
      */
     public static void setPropertyIfAbsent(String key, String value) {
@@ -246,8 +244,6 @@ public class SystemPropertys {
     /**
      * 如果根据key获取到的值满足 predicate, 则将值设置为value
      *
-     * @param key
-     * @param value
      * @since 2.10.2
      */
     public static void setPropertyIfMatched(String key, Predicate<String> predicate, String value) {
@@ -260,8 +256,6 @@ public class SystemPropertys {
     /**
      * 如果根据key获取到的值满足 predicate, 则将值设置为value
      *
-     * @param key
-     * @param value
      * @since 3.5.6
      */
     public static void setProperty(String key, String value){

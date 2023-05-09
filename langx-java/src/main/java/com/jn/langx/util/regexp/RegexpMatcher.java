@@ -79,7 +79,6 @@ public interface RegexpMatcher extends NamedGroupMatchResult {
     /**
      * 把原始文本中 剩余部分添加的 StringBuffer中
      *
-     * @param b
      */
     void appendTail(StringBuilder b);
 }

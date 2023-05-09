@@ -285,7 +285,6 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
 
 
     /**
-     * @param timeout
      * @since 4.0.4
      */
     @Override
@@ -294,7 +293,7 @@ public abstract class AbstractCache<K, V> extends BaseCache<K, V> {
         Collects.forEach(keys, new Consumer<K>() {
             @Override
             public void accept(K key) {
-                /**
+                /*
                  * @since 4.0.5
                  * 利用 timer 可以再次 异步执行
                  */

@@ -37,7 +37,6 @@ class LexerV1 implements Tokenizer<RegionToken> {
     /**
      * 对文本分析
      *
-     * @return
      */
     @Override
     public List<RegionToken> tokenize() {

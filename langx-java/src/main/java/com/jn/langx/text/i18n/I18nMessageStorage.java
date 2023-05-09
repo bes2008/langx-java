@@ -11,7 +11,6 @@ public interface I18nMessageStorage {
     /**
      * 设置默认的locale
      *
-     * @param locale
      */
     void setLocale(@NonNull Locale locale);
 

@@ -47,9 +47,6 @@ class _sm4 {
 
     /**
      * ecb 加密
-     *
-     * @param key
-     * @param data
      */
     public static byte[] encryptEcbPadding(byte[] key, byte[] data) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = generateEcbCipher(ENCRYPT_MODE, key);
@@ -59,8 +56,6 @@ class _sm4 {
     /**
      * ecb 解密
      *
-     * @param key
-     * @param cipherText
      */
     public static byte[] decryptEcbPadding(byte[] key, byte[] cipherText) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException {
         Cipher cipher = generateEcbCipher(DECRYPT_MODE, key);
@@ -70,8 +65,6 @@ class _sm4 {
     /**
      * cbc 加密
      *
-     * @param key
-     * @param data
      */
     public static byte[] encryptCbcPadding(byte[] key, byte[] iv, byte[] data) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
         Cipher cipher = generateCbcCipher(ENCRYPT_MODE, key, iv);
@@ -87,9 +80,6 @@ class _sm4 {
     /**
      * cbc 解密
      *
-     * @param key
-     * @param iv
-     * @param cipherText
      */
     public static byte[] decryptCbcPadding(byte[] key, byte[] iv, String cipherText) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidAlgorithmParameterException {
         byte[] cipherBytes = Base64.decodeBase64(cipherText);
@@ -105,9 +95,6 @@ class _sm4 {
     /**
      * ecb cipher
      *
-     * @param mode
-     * @param key
-     * @return
      */
     private static Cipher generateEcbCipher(int mode, byte[] key) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException {
         Cipher cipher = Cipher.getInstance(ALGORITHM_NAME_ECB_PADDING, PROVIDER_NAME);
@@ -119,9 +106,6 @@ class _sm4 {
     /**
      * cbc cipher
      *
-     * @param mode
-     * @param key
-     * @return
      */
     private static Cipher generateCbcCipher(int mode, byte[] key, byte[] iv) throws InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException {
         Cipher cipher = Cipher.getInstance(ALGORITHM_NAME_CBC_PADDING, PROVIDER_NAME);
@@ -134,10 +118,6 @@ class _sm4 {
     /**
      * ecb 加密 times 次
      *
-     * @param data
-     * @param salt
-     * @param times
-     * @return=
      */
     public static String encryptEcbDataTimes(String data, String salt, int times) throws GeneralSecurityException {
         try {
@@ -158,11 +138,6 @@ class _sm4 {
     /**
      * ecb 解密 times 次
      *
-     * @param data
-     * @param salt
-     * @param times
-     * @return
-     * @throws GeneralSecurityException
      */
     public static String decryptEcbDataTimes(String data, String salt, int times) throws GeneralSecurityException {
         try {
@@ -183,10 +158,6 @@ class _sm4 {
     /**
      * cbc 加密 times 次
      *
-     * @param data
-     * @param salt
-     * @param times
-     * @return=
      */
     public static String encryptCbcDataTimes(String data, String salt, int times) {
         try {
@@ -210,11 +181,6 @@ class _sm4 {
     /**
      * cbc 解密 times 次
      *
-     * @param data
-     * @param salt
-     * @param times
-     * @return
-     * @throws GeneralSecurityException
      */
     public static String decryptCbcDataTimes(String data, String salt, int times) throws GeneralSecurityException {
         try {

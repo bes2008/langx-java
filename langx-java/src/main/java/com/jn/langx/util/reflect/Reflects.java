@@ -127,7 +127,7 @@ public class Reflects {
     }
 
     public static String getPackageName(@NonNull String classFullName) {
-        /**
+        /*
          * 类名A$类名B：类名A中的类名B
          *
          * 类名A$12：类名A中的匿名内部类，种类索引为12（类索引从1开始）
@@ -990,9 +990,8 @@ public class Reflects {
     }
 
     /**
-     * @param clazz
-     * @param defensive 是否返回可保护的值，因为是从 cache 中获取的，为了保护缓存值不被改变，通常 传值为 true
-     * @return
+     * @param defensive boolean
+     *                 是否返回可保护的值，因为是从 cache 中获取的，为了保护缓存值不被改变，通常 传值为 true
      */
     private static Method[] getDeclaredMethods(Class<?> clazz, boolean defensive) {
         Preconditions.checkNotNull(clazz, "Class must not be null");
@@ -1383,8 +1382,6 @@ public class Reflects {
     /**
      * 找到 public 的, 非 static 的 Getter
      *
-     * @param clazz
-     * @param field
      */
     public static Method getGetter(Class clazz, String field) {
         String simple = "get" + field;
@@ -1691,9 +1688,6 @@ public class Reflects {
     /**
      * 判断 obj 是否是 targetType 的实例
      *
-     * @param object
-     * @param targetType
-     * @param <T>
      * @return 如果是，返回true
      * @since 2.10.2
      */

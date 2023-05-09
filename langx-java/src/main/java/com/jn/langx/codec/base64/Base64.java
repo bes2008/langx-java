@@ -119,8 +119,6 @@ public class Base64 extends BaseNCodec {
 
     /**
      * Base64 uses 6-bit fields.
-     */
-    /**
      * Mask used to extract 6 bits, used when encoding
      */
     private static final int MASK_6BITS = 0x3f;

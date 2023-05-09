@@ -265,7 +265,6 @@ public class Numbers {
     /**
      * 判断是否为0
      *
-     * @param number
      * @return 如为 0， 则返回true
      */
     public static boolean isZero(Number number) {

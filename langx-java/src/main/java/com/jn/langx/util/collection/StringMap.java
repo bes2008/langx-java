@@ -33,7 +33,6 @@ public class StringMap extends HashMap<String, String> {
 
     /**
      * 只适用于一个name对应一个value的场景
-     * @param url
      */
     public static StringMap httpUrlParameters(String url) {
         return HttpQueryStrings.getQueryStringStringMap(url);

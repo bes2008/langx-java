@@ -55,7 +55,6 @@ public class UID implements Serializable, Cloneable {
     /**
      * Copy a UID.
      *
-     * @param uid
      */
     protected UID(final UID uid) {
         time = uid.time;

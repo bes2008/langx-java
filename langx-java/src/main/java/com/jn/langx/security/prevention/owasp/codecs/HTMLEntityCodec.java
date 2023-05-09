@@ -164,7 +164,6 @@ public class HTMLEntityCodec extends AbstractIntegerCodec
      *             decimal encoded string, such as 65
      * @return
      *             character representation of this decimal value, e.g. A
-     * @throws NumberFormatException
      */
     private Integer parseNumber( PushbackSequence<Integer> input ) {
         StringBuilder sb = new StringBuilder();
@@ -204,7 +203,6 @@ public class HTMLEntityCodec extends AbstractIntegerCodec
      *             Hex encoded input (such as 437ae;)
      * @return
      *             A single character from the string
-     * @throws NumberFormatException
      */
     private Integer parseHex( PushbackSequence<Integer> input ) {
         StringBuilder sb = new StringBuilder();

@@ -24,9 +24,6 @@ public class WrappedOutputStream extends FilterOutputStream {
 
     /**
      *
-     * @param out
-     * @param consumers
-     *
      * @since 4.4.2
      */
     public WrappedOutputStream(OutputStream out, List<Consumer4<OutputStream, byte[], Integer, Integer>> consumers) {

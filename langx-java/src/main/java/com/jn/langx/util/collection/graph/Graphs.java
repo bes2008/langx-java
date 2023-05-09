@@ -71,8 +71,6 @@ public class Graphs {
      * This method will be called when an edge leading to given vertex was added and we want to check if introduction of
      * this edge has not resulted in apparition of cycle in the graph
      *
-     * @param vertex
-     * @param vertexStateMap
      */
     public static List<String> detectCycle(final Vertex vertex, final Map<String, VisitStatus> vertexStateMap) {
         final LinkedList<String> cycleStack = new LinkedList<String>();

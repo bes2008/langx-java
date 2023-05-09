@@ -207,7 +207,6 @@ public class NamedRegexp implements Regexp, Serializable {
      *  <ul>
      *  <li>{@link NamedMatcher#replaceAll(String)}</li>
      *  <li>{@link NamedMatcher#replaceFirst(String)}</li>
-     *  <li>{@link NamedMatcher#appendReplacement(StringBuffer, String)}</li>
      *  </ul>
      * @param replacementPattern the input string to be evaluated
      * @return the modified string

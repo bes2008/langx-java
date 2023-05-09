@@ -30,7 +30,6 @@ public class FilterChain<REQ, RESP> extends AbstractChain<REQ, RESP> {
 
     /**
      * 如果 是独占 chain，则 每一次使用chain时，需要新建一个独有的chain
-     * @param shareChain
      */
     public FilterChain(boolean shareChain) {
         if(shareChain){

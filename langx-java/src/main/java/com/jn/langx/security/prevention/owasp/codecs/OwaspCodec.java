@@ -15,8 +15,7 @@ public interface OwaspCodec<T> {
     /**
      * Encode a String so that it can be safely used in a specific context.
      *
-     * @param immune
-     * @param input
+     * @param input String
      *         the String to encode
      * @return the encoded String
      */
@@ -37,8 +36,7 @@ public interface OwaspCodec<T> {
     /**
      * Default codepoint implementation that should be overridden in specific codecs.
      *
-     * @param immune
-     * @param codePoint
+     * @param codePoint int
      *         the integer to encode
      * @return
      *         the encoded Character
@@ -104,8 +102,6 @@ public interface OwaspCodec<T> {
     /**
      * Utility to search a char[] for a specific char.
      *
-     * @param c
-     * @param array
      * @return True if the supplied array contains the specified character. False otherwise.
      */
     public boolean containsCharacter(char c, char[] array);

@@ -12,7 +12,6 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
     }
 
     /**
-     * @param e
      * @since 3.3.1
      */
     public abstract BF put(@Nullable E e);
@@ -28,8 +27,6 @@ public abstract class ReadWriteBuffer<E, BF extends ReadWriteBuffer> extends Buf
     public abstract BF put(Collection<E> es);
 
     /**
-     * @param index
-     * @param e
      * @since 3.3.1
      */
     public abstract BF put(long index, @Nullable E e);

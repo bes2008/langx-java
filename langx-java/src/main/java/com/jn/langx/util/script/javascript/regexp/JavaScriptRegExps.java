@@ -40,8 +40,6 @@ public class JavaScriptRegExps {
     /**
      * 提供了对于JDK中的Pattern与Matcher的调用入口
      *
-     * @param pattern
-     * @param src
      */
     public static RegexpMatcher getMatcher(String pattern, String src) {
         return Regexps.compile(pattern).matcher(src);
@@ -92,7 +90,6 @@ public class JavaScriptRegExps {
     /**
      * 这个方法可以多次调用Js中Reg的test方法
      *
-     * @param str
      */
     public Object test(String str, MutilTest mutilTest) {
         if (isIgnoreCase) {

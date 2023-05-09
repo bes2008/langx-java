@@ -34,7 +34,6 @@ public class Vertex<T> extends AbstractNameable {
     /**
      * Create a vertex with the given name and no data
      *
-     * @param n
      */
     public Vertex(String n) {
         this(n, null);

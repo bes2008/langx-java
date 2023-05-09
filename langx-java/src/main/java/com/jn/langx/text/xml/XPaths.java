@@ -54,9 +54,6 @@ public class XPaths {
     /**
      * ( a or b ) and c
      *
-     * @param expA
-     * @param expB
-     * @param expC
      * @return expression
      */
     public static String aorB_and_C(String expA, String expB, String expC) {
@@ -69,9 +66,6 @@ public class XPaths {
     /**
      * a or ( b and c)
      *
-     * @param expA
-     * @param expB
-     * @param expC
      * @return expression
      */
     public static String a_or_BandC(String expA, String expB, String expC) {

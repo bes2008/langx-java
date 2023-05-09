@@ -50,7 +50,6 @@ public class RelativeTimeManager {
     /**
      * get a machine's time based on specified time
      *
-     * @param machineId
      * @param specifiedTime specified time at current machine
      */
     public long getMachineRelativeTime(String machineId, long specifiedTime) {

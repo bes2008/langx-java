@@ -126,7 +126,7 @@ public class Base32 extends BaseNCodec {
     // The private member fields below are used with the new streaming approach, which requires
     // some state be preserved between calls of encode() and decode().
 
-    /**
+    /*
      * Place holder for the bytes we're dealing with for our based logic.
      * Bitwise operations store and extract the encoding or decoding from this variable.
      */

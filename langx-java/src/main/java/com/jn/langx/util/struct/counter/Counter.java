@@ -45,7 +45,6 @@ public interface Counter<E extends Number> {
 
     /**
      * 设置值
-     * @param value
      */
     void set(E value);
 }

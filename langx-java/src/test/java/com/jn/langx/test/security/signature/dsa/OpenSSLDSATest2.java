@@ -137,7 +137,6 @@ public class OpenSSLDSATest2 {
      * 签名
      *
      * @param content 待签名字符串
-     * @return
      */
     public static String sign(String content) {
         try {
@@ -160,7 +159,6 @@ public class OpenSSLDSATest2 {
      *
      * @param signature 签名串
      * @param contecnt  待校验内容
-     * @return
      */
     public static boolean verify(String signature, String contecnt) {
         try {

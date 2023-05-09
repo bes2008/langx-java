@@ -69,10 +69,6 @@ public class HashTrie<T> implements Trie<T>
             return new Entry<T>(key,value);
         }
 
-        /*************/
-        /* Map.Entry */
-        /*************/
-
         public CharSequence getKey()
         {
             return key;
@@ -88,9 +84,6 @@ public class HashTrie<T> implements Trie<T>
             throw new UnsupportedOperationException();
         }
 
-        /********************/
-        /* java.lang.Object */
-        /********************/
 
         public boolean equals(Map.Entry other)
         {
@@ -428,9 +421,6 @@ public class HashTrie<T> implements Trie<T>
         return maxKeyLen;
     }
 
-    /*****************/
-    /* java.util.Map */
-    /*****************/
 
     /**
      * Clear all entries.

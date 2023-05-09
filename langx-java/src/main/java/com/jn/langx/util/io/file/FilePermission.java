@@ -12,16 +12,13 @@ import java.util.Set;
 
 public enum FilePermission {
 
-    /***
+    /**
      *           user group other
      *            RWX   RWX   RWX
      *  二进制     110   100   100
      *
      * 以0开始的数字，代表了是 8进制的。
      * 以 0x 开始的数字，代表是 16进制的
-     */
-
-    /**
      * read permission, owner
      */
     USR_R(00400),
@@ -100,7 +97,6 @@ public enum FilePermission {
     /**
      * 根据 unix 权限码转换成响应的权限，参数是 10进制的
      *
-     * @param mask
      */
     public static Set<FilePermission> fromMask(int mask) {
         final List<FilePermission> perms = new LinkedList<FilePermission>();
@@ -115,7 +111,6 @@ public enum FilePermission {
     /**
      * 转换为 unix 权限码，返回数据是 10进制的
      *
-     * @param perms
      */
     public static int toMask(Set<FilePermission> perms) {
         return Masks.createMask(perms, new Function<FilePermission, Integer>() {

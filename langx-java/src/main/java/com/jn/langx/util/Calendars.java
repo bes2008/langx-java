@@ -14,7 +14,6 @@ public class Calendars {
     /**
      * 求每个月的第一天是星期几
      *
-     * @return
      */
     private static int getNumberOfFirstDayInMonth(int year, int month) {
         if (month < 3) {
@@ -32,8 +31,6 @@ public class Calendars {
     /**
      * 判断是否为闰年
      *
-     * @param year
-     * @return
      */
     private static boolean isLeapYear(int year) {
         return year % 400 != 0 && (year % 4 == 0 || year % 100 == 0);

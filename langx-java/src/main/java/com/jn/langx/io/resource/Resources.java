@@ -123,7 +123,6 @@ public class Resources {
      *
      * @param resource the resource
      * @return the input stream
-     * @throws IOException
      * @since 3.4.2
      */
     public static InputStream getInputStream(String resource) throws IOException {

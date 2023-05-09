@@ -15,8 +15,6 @@ public class CronExpressions {
     /**
      * 根据cron来获取下一个时间
      *
-     * @param cron
-     * @param time
      * @return 获取 time参数的下一个时间
      */
     public static Date nextTime(CronExpression cron, Date time) {

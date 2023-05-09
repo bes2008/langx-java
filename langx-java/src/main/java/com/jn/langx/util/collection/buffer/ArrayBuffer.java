@@ -31,7 +31,6 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
     /**
      * 把指定的数组 包装为 ArrayBuffer，从 offset开始，包装长度为 length
      *
-     * @param buf
      */
     public ArrayBuffer(E[] buf, int offset, int length) {
         this(-1, offset, offset + length, buf.length, buf, 0);

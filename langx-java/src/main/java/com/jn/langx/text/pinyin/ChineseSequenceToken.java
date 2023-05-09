@@ -18,7 +18,6 @@ class ChineseSequenceToken extends RegionToken<List<Token>> {
 
     /**
      * 正常情况下，该集合下都是调用该方法，放的是 映射到的字符token
-     * @param item
      */
     void addToken(PinyinDictItem item) {
         PinyinDictItemToken token = new PinyinDictItemToken();
@@ -28,7 +27,6 @@ class ChineseSequenceToken extends RegionToken<List<Token>> {
 
     /**
      * 当遇到中文标点符号、或者某个汉字没有在字典里时，会走这个方法
-     * @param item
      */
     void addToken(String item) {
         StringToken token = new StringToken();

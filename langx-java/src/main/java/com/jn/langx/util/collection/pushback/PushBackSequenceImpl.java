@@ -9,10 +9,6 @@ package com.jn.langx.util.collection.pushback;
  * migrate from owasp:esapi-encoder
  */
 public class PushBackSequenceImpl extends AbstractPushbackSequence<Integer> {
-    /**
-     *
-     * @param input
-     */
     public PushBackSequenceImpl( String input ) {
         super(input);
     }
@@ -59,7 +55,6 @@ public class PushBackSequenceImpl extends AbstractPushbackSequence<Integer> {
 
     /**
      * Returns true if the parameter character is a hexidecimal digit 0 through 9, a through f, or A through F.
-     * @param c
      * @return true if it is a hexidecimal digit, false otherwise.
      */
     public static boolean isHexDigit( Integer c ) {
@@ -71,7 +66,6 @@ public class PushBackSequenceImpl extends AbstractPushbackSequence<Integer> {
 
     /**
      * Returns true if the parameter character is an octal digit 0 through 7.
-     * @param c
      * @return true if it is an octal digit, false otherwise.
      */
     public static boolean isOctalDigit( Integer c ) {
@@ -95,7 +89,6 @@ public class PushBackSequenceImpl extends AbstractPushbackSequence<Integer> {
 
     /**
      * Test to see if the next codePoint is a particular value without affecting the current index.
-     * @param c
      * @return if the next value is equal to the supplied value.
      */
     public boolean peek( Integer c ) {

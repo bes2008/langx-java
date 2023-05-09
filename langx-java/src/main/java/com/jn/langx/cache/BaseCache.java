@@ -169,7 +169,6 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
     }
 
     /**
-     * @param timeout
      * @since 4.0.4
      */
     protected void refreshAllAsync(@Nullable final Timeout timeout) {
@@ -177,7 +176,7 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
         Collects.forEach(keys, new Consumer<K>() {
             @Override
             public void accept(K key) {
-                /**
+                /*
                  * @since 4.0.5
                  * 利用 timer 可以再次 异步执行
                  */

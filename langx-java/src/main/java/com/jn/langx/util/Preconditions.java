@@ -65,11 +65,6 @@ public class Preconditions {
     }
 
     /**
-     *
-     * @param obj
-     * @param parameter
-     * @param <T>
-     *
      * @since 4.1.0
      */
     public static <T> T checkNotNullArgument(@NonNull T obj, @NotEmpty String parameter){

@@ -15,7 +15,6 @@ public interface PatternMatcher extends Matcher<String, Boolean> {
 
     /**
      * 是否做全部匹配
-     * @param global
      */
     void setGlobal(boolean global);
 
@@ -24,7 +23,6 @@ public interface PatternMatcher extends Matcher<String, Boolean> {
     /**
      * 测试是否匹配
      *
-     * @param string
      */
     Boolean matches(String string);
 }

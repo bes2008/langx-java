@@ -698,12 +698,6 @@ public final class CsvFormat implements Serializable {
      * @param nullString              the line separator to use for output
      * @param headerComments          the comments to be printed by the Printer before the actual CSV data
      * @param header                  the header
-     * @param skipHeaderRecord
-     * @param allowMissingColumnNames
-     * @param ignoreHeaderCase
-     * @param trim
-     * @param trailingDelimiter
-     * @param autoFlush
      * @throws IllegalArgumentException if the delimiter is a line break character
      */
     private CsvFormat(final char delimiter, final Character quoteChar, final QuoteMode quoteMode,
@@ -1421,7 +1415,6 @@ public final class CsvFormat implements Serializable {
     /**
      * Always use quotes unless QuoteMode is NONE, so we not have to look ahead.
      *
-     * @throws IOException
      */
     private void printWithQuotes(final Reader reader, final Appendable out) throws IOException {
 
@@ -1539,7 +1532,6 @@ public final class CsvFormat implements Serializable {
     /**
      * Verifies the consistency of the parameters and throws an IllegalArgumentException if necessary.
      *
-     * @throws IllegalArgumentException
      */
     private void validate() throws IllegalArgumentException {
         if (isLineBreak(delimiter)) {

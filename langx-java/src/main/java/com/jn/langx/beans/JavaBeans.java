@@ -97,21 +97,6 @@ public class JavaBeans {
         copyProperties(source, target, null, ignoreProperties);
     }
 
-    /**
-     * Copy the property values of the given source bean into the target bean.
-     * <p>Note: The source and target classes do not have to match or even be derived
-     * from each other, as long as the properties match. Any bean properties that the
-     * source bean exposes but the target bean does not will silently be ignored.
-     * <p>This is just a convenience method. For more complex transfer needs,
-     * consider using a full BeanWrapper.
-     * @param source the source bean
-     * @param target the target bean
-    //   * @throws BeansException if the copying failed
-    //    * @see BeanWrapper
-     */
-    // public static void copyProperties(Object source, Object target) throws BeansException {
-    //     copyProperties(source, target, null, (String[]) null);
-    // }
 
     /**
      * Copy the property values of the given source bean into the given target bean.

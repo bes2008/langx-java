@@ -125,9 +125,6 @@ public class Files {
      *
      * @param file the file to open for input, must not be {@code null}
      * @return a new {@link FileInputStream} for the specified file
-     * @throws FileNotFoundException if the file does not exist
-     * @throws IOException           if the file object is a directory
-     * @throws IOException           if the file cannot be read
      */
     public static FileInputStream openInputStream(final File file) {
         try {

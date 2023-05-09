@@ -527,21 +527,6 @@ public abstract class BaseNCodec implements BinaryCodec {
         return len;
     }
 
-
-    /**
-     * Returns true if decoding behavior is strict. Decoding will raise an {@link IllegalArgumentException} if trailing
-     * bits are not part of a valid encoding.
-     *
-     * <p>
-     * The default is false for lenient decoding. Decoding will compose trailing bits into 8-bit bytes and discard the
-     * remainder.
-     * </p>
-     *
-     * @return true if using strict decoding
-     * @since 4.3.0
-     */
-
-
     /**
      * Defines the decoding behavior when the input bytes contain leftover trailing bits that
      * cannot be created by a valid encoding. These can be bits that are unused from the final

@@ -372,7 +372,7 @@ public class KeyComparatorHashMap<K, V> extends AbstractMap<K, V> implements Map
         final int hash = keyComparatorHash(k);
         final int i = indexFor(hash, table.length);
 
-        /**
+        /*
          * Look for preexisting entry for key.  This will never happen for
          * clone or de-serialize.  It will only happen for construction if the
          * input Map is a sorted map whose ordering is inconsistent w/ equals.

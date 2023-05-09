@@ -106,7 +106,6 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
      * Returns true if the parameter character is a hexidecimal digit 0 through
      * 9, a through f, or A through F.
      *
-     * @param c
      * @return true if it is a hexidecimal digit, false otherwise.
      */
     public static boolean isHexDigit(Character c) {
@@ -120,7 +119,6 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
     /**
      * Returns true if the parameter character is an octal digit 0 through 7.
      *
-     * @param c
      * @return true if it is an octal digit, false otherwise.
      */
     public static boolean isOctalDigit(Character c) {

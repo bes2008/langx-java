@@ -55,10 +55,6 @@ public class Key implements WritableComparable<Key> {
         set(value, weight);
     }
 
-    /**
-     * @param value
-     * @param weight
-     */
     public void set(byte[] value, double weight) {
         if (value == null) {
             throw new IllegalArgumentException("value can not be null");

@@ -72,7 +72,6 @@ public class BlockingMode implements Serializable {
     /**
      * A utility method to convert a string name to a BlockingMode
      *
-     * @param name
      * @return The associated BlockingMode constant if name is valid, null otherwise
      */
     public static final BlockingMode toBlockingMode(String name) {
@@ -108,7 +107,6 @@ public class BlockingMode implements Serializable {
      * compared using ==.
      *
      * @return The BlockingMode instance for the XXX_TYPE int.
-     * @throws ObjectStreamException
      */
     Object readResolve() throws ObjectStreamException {
         // Replace the marshalled instance type with the local instance

@@ -139,7 +139,7 @@ public class Nets {
         final Logger logger = Loggers.getLogger(Nets.class);
         logger.trace("-Djava.net.preferIPv4Stack: {}", IPV4_PREFERRED);
         logger.trace("-Djava.net.preferIPv6Addresses: {}", IPV6_ADDRESSES_PREFERRED);
-        /**
+        /*
          * @since 5.1.8
          */
         String[] virtualNetworkInterfaces = Strings.split(systemPropertiesAccessor.getString("langx.virtual.network.interfaces", "virtualbox,kernel debug,ppp0,6to4,loopback,miniport,virbr,docker,veth,calic,br,pan, virtual"), ",");
@@ -1931,7 +1931,6 @@ public class Nets {
     }
 
     /**
-     * @param scopeName
      * @since 4.1.0
      */
     public static NetworkInterface findInterfaceWithScopeId(String scopeName) {
@@ -1951,7 +1950,6 @@ public class Nets {
     }
 
     /**
-     * @param networkInterface
      * @since 4.1.0
      */
     public static int getScopeId(NetworkInterface networkInterface) {
@@ -1959,8 +1957,6 @@ public class Nets {
     }
 
     /**
-     * @param networkInterface
-     * @param compareWith
      * @since 4.1.0
      */
     public static int getScopeId(final NetworkInterface networkInterface, InetAddress compareWith) {

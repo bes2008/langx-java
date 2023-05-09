@@ -56,7 +56,6 @@ public class HttpQueryStrings {
     /**
      * 不会对URL中的特殊字符做处理
      *
-     * @param map
      */
     public static String toQueryString(Map<String, Object> map, final Map<Class, Function<Object, String>> converterMap) {
         return toQueryString(map, true, null, converterMap);
@@ -74,7 +73,6 @@ public class HttpQueryStrings {
     /**
      * 不会对URL中的特殊字符做处理，如需处理，请调用 UrlEncoder 类
      *
-     * @param map
      */
     public static String toQueryString(Map<String, String> map, final boolean encode) {
         final StringJoiner joiner = new StringJoiner("&", "", "");

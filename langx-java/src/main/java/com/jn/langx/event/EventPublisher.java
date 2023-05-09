@@ -17,10 +17,6 @@ import java.util.List;
 public interface EventPublisher<EVENT extends DomainEvent> extends EventBus<EVENT> {
     void publish(EVENT event);
 
-    /**
-     * @param eventDomain
-     * @param listener
-     */
     void addEventListener(String eventDomain, EventListener listener);
 
     void addFirst(String eventDomain, EventListener listener);

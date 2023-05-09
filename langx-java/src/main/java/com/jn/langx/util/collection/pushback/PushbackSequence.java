@@ -2,10 +2,6 @@ package com.jn.langx.util.collection.pushback;
 
 public interface PushbackSequence<T> {
 
-    /**
-     *
-     * @param c
-     */
     void pushback(T c);
 
     /**

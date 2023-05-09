@@ -53,8 +53,6 @@ public class GmsslorgGmService extends AbstractGmService {
      *     sm2encrypt-with-sha512
      * </pre>
      *
-     * @param data
-     * @param publicKey
      */
     @Override
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {
@@ -115,10 +113,7 @@ public class GmsslorgGmService extends AbstractGmService {
     }
 
     /**
-     * @param data
-     * @param mode      目前只能用 CBC模式
-     * @param secretKey
-     * @param iv
+     * @param mode Symmetrics.MODE     目前只能用 CBC模式
      * @return 加密后的值
      * <p>
      * SM4 默认采用 PKC#7 padding
