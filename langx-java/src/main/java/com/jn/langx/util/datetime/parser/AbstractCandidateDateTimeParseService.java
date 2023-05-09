@@ -27,7 +27,10 @@ public abstract class AbstractCandidateDateTimeParseService implements Candidate
                 cache.put(key, parser);
             }
         }
-        return parser.parse(dt);
+        if(parser != null) {
+            return parser.parse(dt);
+        }
+        return null;
     }
 
     @NonNull
