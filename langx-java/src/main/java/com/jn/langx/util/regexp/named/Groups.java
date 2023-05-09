@@ -40,7 +40,7 @@ class Groups {
     /**
      * Pattern to match properties for named capture groups in a replacement string
      */
-    public static final java.util.regex.Pattern PROPERTY_PATTERN = java.util.regex.Pattern.compile("\\$\\{(" + NAME_PATTERN + ")\\}", java.util.regex.Pattern.DOTALL);
+    public static final java.util.regex.Pattern PROPERTY_PATTERN = java.util.regex.Pattern.compile("\\$\\{(" + NAME_PATTERN + ")}", java.util.regex.Pattern.DOTALL);
 
     /**
      * Contains the position and group index of capture groups

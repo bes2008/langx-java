@@ -104,7 +104,7 @@ public class Java6ConstructorParameter implements ConstructorParameter {
             sb.append(' ');
 
         if (isVarArgs())
-            sb.append(typename.replaceFirst("\\[\\]$", "..."));
+            sb.append(typename.replaceFirst("\\[]$", "..."));
         else
             sb.append(typename);
 

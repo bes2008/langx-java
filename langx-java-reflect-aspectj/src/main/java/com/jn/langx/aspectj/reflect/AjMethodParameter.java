@@ -115,7 +115,7 @@ public class AjMethodParameter implements MethodParameter {
                 sb.append(' ');
 
             if (isVarArgs())
-                sb.append(typename.replaceFirst("\\[\\]$", "..."));
+                sb.append(typename.replaceFirst("\\[]$", "..."));
             else
                 sb.append(typename);
 
