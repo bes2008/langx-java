@@ -66,7 +66,7 @@ public class Asciis {
         int begin = 0;
         int index = str.indexOf(PREFIX);
         while (index != -1) {
-            sb.append(str.substring(begin, index));
+            sb.append(str, begin, index);
             sb.append(ascii2Char(str.substring(index, index + 6)));
             begin = index + 6;
             index = str.indexOf(PREFIX, begin);

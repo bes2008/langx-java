@@ -534,7 +534,7 @@ public class TimSort<T> {
      */
     private static <T> int gallopLeft(T key, T[] a, int base, int len, int hint,
                                       Comparator<? super T> c) {
-        assert len > 0 && hint >= 0 && hint < len;
+        assert hint >= 0 && hint < len;
         int lastOfs = 0;
         int ofs = 1;
         if (c.compare(key, a[base + hint]) > 0) {

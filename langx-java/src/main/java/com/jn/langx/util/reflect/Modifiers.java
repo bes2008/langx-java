@@ -19,8 +19,7 @@ public class Modifiers {
     static final int MANDATED = 0x00008000;
     static final int SYNTHETIC = 0x00001000;
 
-    private static final Set<Integer> supportedModifiers = new HashSet<Integer>(Collects.asList(new Integer[]{
-            Modifier.ABSTRACT,
+    private static final Set<Integer> supportedModifiers = new HashSet<Integer>(Collects.asList(Modifier.ABSTRACT,
             Modifier.FINAL,
             Modifier.INTERFACE,
             Modifier.NATIVE,
@@ -33,8 +32,7 @@ public class Modifiers {
             Modifier.TRANSIENT,
             Modifier.VOLATILE,
             MANDATED,
-            SYNTHETIC
-    }));
+            SYNTHETIC));
 
     static {
         Collection<Field> fields = Reflects.getAllPublicFields(Modifier.class, true);

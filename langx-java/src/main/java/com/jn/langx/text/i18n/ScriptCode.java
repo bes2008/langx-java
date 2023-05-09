@@ -1203,7 +1203,7 @@ public enum ScriptCode {
                         sb = new StringBuilder();
 
                         // Copy all the previous letters so far.
-                        sb.append(code.substring(0, i));
+                        sb.append(code, 0, i);
 
                         // Lower the current letter.
                         sb.append(Character.toLowerCase(ch));

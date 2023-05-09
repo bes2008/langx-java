@@ -23,9 +23,9 @@ public interface Parameter<T> extends AnnotatedElement {
 
     boolean isVarArgs();
 
-    <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass);
+    <A extends Annotation> A[] getDeclaredAnnotationsByType(Class<A> annotationClass);
 
-    <T extends Annotation> T[] getAnnotationsByType(Class<T> annotationClass);
+    <A extends Annotation> A[] getAnnotationsByType(Class<A> annotationClass);
 
     int getIndex();
 }

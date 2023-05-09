@@ -64,7 +64,7 @@ public class DirectoryBasedFileConfigurationWriter<T extends Configuration> impl
         BufferedOutputStream outputStream = null;
         try {
             if (Files.makeFile(filePath)) {
-                outputStream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
+                outputStream = new BufferedOutputStream(new FileOutputStream(filePath));
                 IOs.write(configString, outputStream, encoding);
             } else {
                 Logger logger = Loggers.getLogger(getClass());

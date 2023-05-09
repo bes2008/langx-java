@@ -103,15 +103,19 @@ public class Ini implements Map<String, Ini.Section> {
         String name = cleanName(sectionName);
         return this.sections.get(name);
     }
-
-    public Ini.Section addSection(String sectionName) {
+    public Ini.Section createSectionIfAbsent(String sectionName) {
+        return createSectionIfAbsent(sectionName, null);
+    }
+    public Ini.Section createSectionIfAbsent(String sectionName, Ini.Section s) {
         String name = cleanName(sectionName);
         Ini.Section section = this.getSection(name);
         if (section == null) {
             section = new Ini.Section(name);
             this.sections.put(name, section);
         }
-
+        if(s!=null) {
+            section.putAll(s);
+        }
         return section;
     }
 
@@ -124,7 +128,7 @@ public class Ini implements Map<String, Ini.Section> {
         String name = cleanName(sectionName);
         Ini.Section section = this.getSection(name);
         if (section == null) {
-            section = this.addSection(name);
+            section = this.createSectionIfAbsent(name);
         }
 
         section.put(propertyName, propertyValue);
@@ -186,7 +190,7 @@ public class Ini implements Map<String, Ini.Section> {
                 if (!line.startsWith(COMMENT_POUND) && !line.startsWith(COMMENT_SEMICOLON)) {
                     String newSectionName = getSectionName(line);
                     if (newSectionName != null) {
-                        this.addSection(sectionName, sectionContent);
+                        this.addSectionIfAbsent(sectionName, sectionContent);
                         sectionContent = new StringBuilder();
                         sectionName = newSectionName;
                         if (logger.isDebugEnabled()) {
@@ -201,7 +205,7 @@ public class Ini implements Map<String, Ini.Section> {
             logger.error(ex.getMessage(), ex);
         }
 
-        this.addSection(sectionName, sectionContent);
+        this.addSectionIfAbsent(sectionName, sectionContent);
     }
 
     public void merge(Map<String, Ini.Section> m) {
@@ -209,17 +213,14 @@ public class Ini implements Map<String, Ini.Section> {
             @Override
             public void accept(String key, Section section) {
                 if (section == null) {
-                    section = Ini.this.addSection(key);
-                    if (section != null) {
-                        section.putAll(section);
-                    }
+                    section = Ini.this.createSectionIfAbsent(key);
                 }
             }
         });
 
     }
 
-    private void addSection(String name, StringBuilder content) {
+    private void addSectionIfAbsent(String name, StringBuilder content) {
         if (content.length() > 0) {
             String contentString = content.toString();
             String cleaned = Strings.trim(contentString);

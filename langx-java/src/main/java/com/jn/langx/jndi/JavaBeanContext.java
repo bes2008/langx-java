@@ -69,10 +69,7 @@ public class JavaBeanContext implements Context {
     @Override
     public void unbind(Name name) throws NamingException {
         judgeName(name);
-        if (map.containsKey(name)) {
-            map.remove(name);
-            // map.put(name, null);
-        }
+        map.remove(name);
     }
 
     @Override

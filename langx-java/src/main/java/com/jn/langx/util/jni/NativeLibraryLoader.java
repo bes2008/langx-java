@@ -183,7 +183,7 @@ public final class NativeLibraryLoader {
 
         int index = libname.lastIndexOf('.');
         String prefix = libname.substring(0, index);
-        String suffix = libname.substring(index, libname.length());
+        String suffix = libname.substring(index);
         InputStream in = null;
         OutputStream out = null;
         File tmpFile = null;

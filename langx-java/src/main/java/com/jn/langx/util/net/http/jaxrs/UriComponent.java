@@ -299,7 +299,7 @@ public class UriComponent {
 
                 if (sb == null) {
                     sb = new StringBuilder();
-                    sb.append(s.substring(0, offset));
+                    sb.append(s, 0, offset);
                 }
 
                 if (codePoint < 0x80) {

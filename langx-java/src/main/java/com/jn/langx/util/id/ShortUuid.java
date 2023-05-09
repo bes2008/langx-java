@@ -111,15 +111,15 @@ public final class ShortUuid {
             }
 
             StringBuilder sb = new StringBuilder()
-                    .append(str.substring(0, 8))
+                    .append(str, 0, 8)
                     .append("-")
-                    .append(str.substring(8, 12))
+                    .append(str, 8, 12)
                     .append("-")
-                    .append(str.substring(12, 16))
+                    .append(str, 12, 16)
                     .append("-")
-                    .append(str.substring(16, 20))
+                    .append(str, 16, 20)
                     .append("-")
-                    .append(str.substring(20, 32));
+                    .append(str, 20, 32);
 
             return sb.toString();
         }

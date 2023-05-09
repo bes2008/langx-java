@@ -17,6 +17,7 @@
 package com.jn.langx.util.net.http.jaxrs;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.net.http.jaxrs.internal.UriTemplateParser;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -333,7 +334,7 @@ public class UriTemplate {
 
         final String path = uri.getPath();
 
-        if (path == null || path.isEmpty() || !path.contains("/.")) {
+        if (Strings.isEmpty(path) || !path.contains("/.")) {
             return uri;
         }
 

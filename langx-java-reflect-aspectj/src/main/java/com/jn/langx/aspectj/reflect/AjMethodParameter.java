@@ -91,7 +91,7 @@ public class AjMethodParameter implements MethodParameter {
     }
 
     @Override
-    public <T extends Annotation> T[] getDeclaredAnnotationsByType(Class<T> annotationClass) {
+    public <A extends Annotation> A[] getDeclaredAnnotationsByType(Class<A> annotationClass) {
         return delegate.getDeclaredAnnotationsByType(annotationClass);
     }
 

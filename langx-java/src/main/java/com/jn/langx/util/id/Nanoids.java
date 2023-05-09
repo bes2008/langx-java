@@ -71,7 +71,7 @@ public class Nanoids {
                 randomBytesSupplier = GlobalThreadLocalMap.pooledBytesRandom();
             }
             byte[] randomBytes = randomBytesSupplier.get(expectedIdLength);
-            StringBuilder b = new StringBuilder("");
+            StringBuilder b = new StringBuilder();
             // We are reading directly from the random pool to avoid creating new array
             int mask = alphabet.length() - 1;
             for (int i = 0; i < expectedIdLength; i++) {

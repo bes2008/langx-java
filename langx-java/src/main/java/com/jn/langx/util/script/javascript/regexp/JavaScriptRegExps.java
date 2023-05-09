@@ -76,7 +76,7 @@ public class JavaScriptRegExps {
                 engine.eval(script);
                 Object regexp = engine.get("reg");
                 Invocable inv = (Invocable) engine;
-                Object returnValue = inv.invokeMethod(regexp, "test", new Object[]{str});
+                Object returnValue = inv.invokeMethod(regexp, "test", str);
                 Boolean match = (Boolean) returnValue;
                 return match;
             } catch (Exception e) {
