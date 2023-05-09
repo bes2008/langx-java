@@ -253,11 +253,11 @@ public class Ini implements Map<String, Ini.Section> {
             Collects.forEach(this.sections, new Consumer2<String, Section>() {
                 @Override
                 public void accept(String sectionName, Section section) {
-                    sb.append(SECTION_PREFIX + sectionName + SECTION_SUFFIX).append("\n");
+                    sb.append(SECTION_PREFIX).append(sectionName).append(SECTION_SUFFIX).append("\n");
                     Collects.forEach(section.props, new Consumer2<String, String>() {
                         @Override
                         public void accept(String key, String value) {
-                            sb.append(key + "=" + value).append("\n");
+                            sb.append(key).append("=").append(value).append("\n");
                         }
                     });
                     sb.append("\n");

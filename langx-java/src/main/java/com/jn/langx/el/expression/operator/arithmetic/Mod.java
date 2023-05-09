@@ -49,7 +49,7 @@ public class Mod extends AbstractBinaryOperator<NumberResultExpression<Number>, 
         if (leftBrace) {
             stringBuilder.append(")");
         }
-        stringBuilder.append(" " + getOperateSymbol() + " ");
+        stringBuilder.append(" ").append(getOperateSymbol()).append(" ");
 
         NumberResultExpression<Number> right = getRight();
         boolean rightBrace = false;

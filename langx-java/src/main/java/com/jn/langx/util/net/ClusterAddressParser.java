@@ -63,14 +63,14 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
                     builder.append(",");
                 }
                 if (style == ClusterAddressStyle.HOST_PORT_PAIR) {
-                    builder.append(address.getHost() + ":" + address.getPort());
+                    builder.append(address.getHost()).append(":").append(address.getPort());
                 } else if (style == ClusterAddressStyle.PORT_AT_END) {
                     builder.append(address.getHost());
                 }
             }
         });
         if (style == ClusterAddressStyle.PORT_AT_END) {
-            builder.append(":" + addresses.get(addresses.size() - 1).getPort());
+            builder.append(":").append(addresses.get(addresses.size() - 1).getPort());
         }
         return builder.toString();
     }

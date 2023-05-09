@@ -1180,12 +1180,12 @@ public class Reflects {
         try {
             StringBuilder sb = new StringBuilder();
             if (returnType != null) {
-                sb.append(getTypeName(returnType) + " ");
+                sb.append(getTypeName(returnType)).append(" ");
             }
             if (Strings.isNotBlank(clazzFQN)) {
-                sb.append(clazzFQN + ".");
+                sb.append(clazzFQN).append(".");
             }
-            sb.append(methodName + "(");
+            sb.append(methodName).append("(");
             if (!Emptys.isEmpty(parameterTypes)) {
                 // avoid clone
                 Class[] params = parameterTypes;

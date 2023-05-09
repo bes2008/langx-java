@@ -30,7 +30,7 @@ public class PushBackSequenceImpl extends AbstractPushbackSequence<Integer> {
         if ( input == null ) return null;
         if ( input.length() == 0 ) return null;
         if ( index >= input.length() ) return null;
-        final Integer point = input.codePointAt(index);
+        final int point = input.codePointAt(index);
         index += Character.charCount(point);
         return point;
     }

@@ -60,11 +60,11 @@ public final class ShortUuid {
         public ShortUuid build(UUID uuid) {
             String uuidStr = uuid.toString().replaceAll("-", "");
 
-            Double factor = Math.log(25d) / Math.log(alphabetSize);
-            Double length = Math.ceil(factor * 16);
+            double factor = Math.log(25d) / Math.log(alphabetSize);
+            double length = Math.ceil(factor * 16);
 
             BigInteger number = new BigInteger(uuidStr, 16);
-            String encoded = encode(number, alphabet, length.intValue());
+            String encoded = encode(number, alphabet, (int) length);
 
             return new ShortUuid(encoded);
         }

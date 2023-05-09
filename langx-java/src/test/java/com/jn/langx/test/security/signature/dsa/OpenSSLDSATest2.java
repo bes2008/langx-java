@@ -87,7 +87,7 @@ public class OpenSSLDSATest2 {
             StringBuilder privatekey = new StringBuilder();
             s = br.readLine();
             while (s.charAt(0) != '-') {
-                privatekey.append(s + "\r");
+                privatekey.append(s).append("\r");
                 System.out.println(s);
                 s = br.readLine();
             }
@@ -115,7 +115,7 @@ public class OpenSSLDSATest2 {
             StringBuilder publickey = new StringBuilder();
             s = br.readLine();
             while (s.charAt(0) != '-') {
-                publickey.append(s + "\r");
+                publickey.append(s).append("\r");
                 System.out.println(s);
                 s = br.readLine();
 
