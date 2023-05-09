@@ -2731,11 +2731,11 @@ public class IOs {
      * 解决该问题的办法，就是两者范围统一。
      *
      */
-    public static final int filterInputStreamRead(byte theByte) {
+    public static int filterInputStreamRead(byte theByte) {
         return theByte < 0 ? (theByte + 256) : theByte;
     }
 
-    public static final int filterInputStreamRead(int theByte) {
+    public static int filterInputStreamRead(int theByte) {
         return filterInputStreamRead((byte) theByte);
     }
 

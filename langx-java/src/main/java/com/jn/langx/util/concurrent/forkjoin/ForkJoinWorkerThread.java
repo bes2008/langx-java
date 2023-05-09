@@ -438,8 +438,8 @@ public class ForkJoinWorkerThread extends Thread {
      * CASes slot i of array q from t to null. Caller must ensure q is
      * non-null and index is in range.
      */
-    private static final boolean casSlotNull(ForkJoinTask<?>[] q, int i,
-                                             ForkJoinTask<?> t) {
+    private static boolean casSlotNull(ForkJoinTask<?>[] q, int i,
+                                       ForkJoinTask<?> t) {
         return UNSAFE.compareAndSwapObject(q, (i << ASHIFT) + ABASE, t, null);
     }
 
@@ -448,8 +448,8 @@ public class ForkJoinWorkerThread extends Thread {
      * array q.  Caller must ensure q is non-null and index is in
      * range. This method is used only during resets and backouts.
      */
-    private static final void writeSlot(ForkJoinTask<?>[] q, int i,
-                                        ForkJoinTask<?> t) {
+    private static void writeSlot(ForkJoinTask<?>[] q, int i,
+                                  ForkJoinTask<?> t) {
         UNSAFE.putObjectVolatile(q, (i << ASHIFT) + ABASE, t);
     }
 

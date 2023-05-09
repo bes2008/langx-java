@@ -76,7 +76,7 @@ public class PropertyEditors {
      * @param value the value
      * @return true when the string has the value null
      */
-    public static final boolean isNull(final String value) {
+    public static boolean isNull(final String value) {
         return isNull(value, true, true);
     }
 
@@ -88,7 +88,7 @@ public class PropertyEditors {
      * @param empty whether to include the empty string as null
      * @return true when the string has the value null
      */
-    public static final boolean isNull(final String value, final boolean trim, final boolean empty) {
+    public static boolean isNull(final String value, final boolean trim, final boolean empty) {
         // For backwards compatibility
         if (disableIsNull)
             return false;

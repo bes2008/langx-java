@@ -42,7 +42,7 @@ public abstract class SerializableTypeWrapper {
     /**
      * Return a {@link Serializable} variant of {@link Field#getGenericType()}.
      */
-    public static final Type forField(Field field) {
+    public static Type forField(Field field) {
         return forTypeProvider(new FieldTypeProvider(field));
     }
 
@@ -50,7 +50,7 @@ public abstract class SerializableTypeWrapper {
      * Return a {@link Serializable} variant of
      * {@link SimpleParameter#getGenericParameterType()}.
      */
-    public static final Type forMethodParameter(SimpleParameter methodParameter) {
+    public static Type forMethodParameter(SimpleParameter methodParameter) {
         return forTypeProvider(new MethodParameterTypeProvider(methodParameter));
     }
 
@@ -58,7 +58,7 @@ public abstract class SerializableTypeWrapper {
      * Return a {@link Serializable} variant of {@link Class#getGenericSuperclass()}.
      */
     @SuppressWarnings("serial")
-    public static final Type forGenericSuperclass(final Class<?> type) {
+    public static Type forGenericSuperclass(final Class<?> type) {
         return forTypeProvider(new SimpleTypeProvider() {
             @Override
             public Type getType() {
@@ -71,7 +71,7 @@ public abstract class SerializableTypeWrapper {
      * Return a {@link Serializable} variant of {@link Class#getGenericInterfaces()}.
      */
     @SuppressWarnings("serial")
-    public static final Type[] forGenericInterfaces(final Class<?> type) {
+    public static Type[] forGenericInterfaces(final Class<?> type) {
         Type[] result = new Type[type.getGenericInterfaces().length];
         for (int i = 0; i < result.length; i++) {
             final int index = i;
@@ -88,7 +88,7 @@ public abstract class SerializableTypeWrapper {
     /**
      * Return a {@link Serializable} variant of {@link Class#getTypeParameters()}.
      */
-    public static final Type[] forTypeParameters(final Class<?> type) {
+    public static Type[] forTypeParameters(final Class<?> type) {
         Type[] result = new Type[type.getTypeParameters().length];
         for (int i = 0; i < result.length; i++) {
             final int index = i;
@@ -109,7 +109,7 @@ public abstract class SerializableTypeWrapper {
      * @return the original non-serializable type
      */
     @SuppressWarnings("unchecked")
-    public static final <T extends Type> T unwrap(T type) {
+    public static <T extends Type> T unwrap(T type) {
         Type unwrapped = type;
         while (unwrapped instanceof SerializableTypeProxy) {
             unwrapped = ((SerializableTypeProxy) type).getTypeProvider().getType();
@@ -120,7 +120,7 @@ public abstract class SerializableTypeWrapper {
     /**
      * Return a {@link Serializable} {@link Type} backed by a {@link TypeProvider} .
      */
-    public static final Type forTypeProvider(TypeProvider provider) {
+    public static Type forTypeProvider(TypeProvider provider) {
         Type providedType = provider.getType();
         if (providedType == null || providedType instanceof Serializable) {
             // No serializable type wrapping necessary (e.g. for java.lang.Class)

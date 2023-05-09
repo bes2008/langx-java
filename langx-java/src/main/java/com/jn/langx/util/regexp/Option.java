@@ -81,7 +81,7 @@ public class Option implements Serializable {
 
     public static final Option DEFAULT = new Option();
 
-    public static final Option buildOption(int flags) {
+    public static Option buildOption(int flags) {
         Option option = new Option();
         option.setMultiline(has(flags, MULTILINE));
         option.setIgnoreCase(has(flags, CASE_INSENSITIVE));

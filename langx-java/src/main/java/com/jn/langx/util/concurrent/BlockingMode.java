@@ -74,7 +74,7 @@ public class BlockingMode implements Serializable {
      *
      * @return The associated BlockingMode constant if name is valid, null otherwise
      */
-    public static final BlockingMode toBlockingMode(String name) {
+    public static BlockingMode toBlockingMode(String name) {
         BlockingMode mode = null;
         if (name == null) {
             mode = null;

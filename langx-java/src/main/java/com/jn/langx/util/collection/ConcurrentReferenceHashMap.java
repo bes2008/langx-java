@@ -410,7 +410,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         @SuppressWarnings("unchecked")
-        static final <K, V> HashEntry<K, V>[] newArray(int i) {
+        static <K, V> HashEntry<K, V>[] newArray(int i) {
             return new HashEntry[i];
         }
     }
@@ -519,7 +519,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         @SuppressWarnings("unchecked")
-        static final <K, V> Segment<K, V>[] newArray(int i) {
+        static <K, V> Segment<K, V>[] newArray(int i) {
             return new Segment[i];
         }
 

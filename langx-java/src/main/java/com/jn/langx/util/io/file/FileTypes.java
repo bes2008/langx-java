@@ -30,7 +30,7 @@ public class FileTypes {
         init();
     }
 
-    private static final void init() {
+    private static void init() {
         try {
             Resource r = Resources.loadClassPathResource("filetypes.properties", FileTypes.class);
             Properties properties = Props.load(r);
@@ -48,7 +48,7 @@ public class FileTypes {
     }
 
 
-    public static final String getType(final String fileHexHeader) {
+    public static String getType(final String fileHexHeader) {
         Map.Entry entry = Collects.findFirst(fileTypesMap, new Predicate2<String, List<String>>() {
             @Override
             public boolean test(String magicCode, List<String> types) {

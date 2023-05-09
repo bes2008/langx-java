@@ -31,7 +31,7 @@ public class PythonVersionSpecifiersJava8 {
     public static final NamedRegexp VERSION_PATTERN_NAMED = NamedRegexp.compile(VERSION_PATTERN_STR);
 
 
-    public static final MapAccessor extractVersionSegments(String version) {
+    public static MapAccessor extractVersionSegments(String version) {
         final RegexpMatcher matcher = VERSION_PATTERN.matcher(version);
         if (matcher.matches()) {
             final Map<String, Object> map = new HashMap<>();

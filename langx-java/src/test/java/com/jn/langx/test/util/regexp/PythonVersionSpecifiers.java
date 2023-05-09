@@ -34,7 +34,7 @@ public class PythonVersionSpecifiers {
     public static final Regexp VERSION_PATTERN_NAMED = Regexps.createRegexp(VERSION_PATTERN_STR);
 
 
-    public static final MapAccessor extractVersionSegments(String version) {
+    public static MapAccessor extractVersionSegments(String version) {
         final RegexpMatcher matcher = VERSION_PATTERN_NAMED.matcher(version);
         matcher.matches();
       //  if (matcher.matches()) {

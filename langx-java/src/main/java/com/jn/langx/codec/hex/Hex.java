@@ -178,7 +178,7 @@ public class Hex extends Hexs {
      * @param toDigits the output alphabet
      * @return A char[] containing hexadecimal characters
      */
-    private static final char[] encodeHex(final byte[] data, final char[] toDigits) {
+    private static char[] encodeHex(final byte[] data, final char[] toDigits) {
         final int length = data.length;
         final char[] out = new char[length << 1];   // 长度 * 2
 

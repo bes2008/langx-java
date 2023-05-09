@@ -15,7 +15,7 @@ public class CPUs {
     private CPUs() {
     }
 
-    public static final String getCpuId() {
+    public static String getCpuId() {
         if (cpuId == null) {
             DefaultCommandLineExecutor executor = new DefaultCommandLineExecutor();
             CommandLine commandLine = null;

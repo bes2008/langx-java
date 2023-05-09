@@ -535,7 +535,7 @@ public abstract class ForkJoinTask<V> implements Future<V>, Serializable {
      * If lock is available, poll stale refs and remove them.
      * Called from ForkJoinPool when pools become quiescent.
      */
-    static final void helpExpungeStaleExceptions() {
+    static void helpExpungeStaleExceptions() {
         final ReentrantLock lock = exceptionTableLock;
         if (lock.tryLock()) {
             try {

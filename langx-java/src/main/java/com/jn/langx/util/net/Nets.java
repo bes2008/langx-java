@@ -702,7 +702,7 @@ public class Nets {
     }
 
 
-    public static final Long ipAddressToLong(byte[] ip) {
+    public static Long ipAddressToLong(byte[] ip) {
         long result = 0;
         for (int i = 0; i < ip.length; i++) {
             byte octet = ip[i];

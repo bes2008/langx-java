@@ -504,7 +504,7 @@ public class StringEscapes {
      * @param input String to escape values in, may be null
      * @return String with escaped values, {@code null} if null string input
      */
-    public static final String escapeJava(final String input) {
+    public static String escapeJava(final String input) {
         return ESCAPE_JAVA.transform(input);
     }
 
@@ -537,7 +537,7 @@ public class StringEscapes {
      * @param input String to escape values in, may be null
      * @return String with escaped values, {@code null} if null string input
      */
-    public static final String escapeEcmaScript(final String input) {
+    public static String escapeEcmaScript(final String input) {
         return ESCAPE_ECMASCRIPT.transform(input);
     }
 
@@ -563,7 +563,7 @@ public class StringEscapes {
      * @param input String to escape values in, may be null
      * @return String with escaped values, {@code null} if null string input
      */
-    public static final String escapeJson(final String input) {
+    public static String escapeJson(final String input) {
         return ESCAPE_JSON.transform(input);
     }
 
@@ -576,7 +576,7 @@ public class StringEscapes {
      * @param input the {@code String} to unescape, may be null
      * @return a new unescaped {@code String}, {@code null} if null string input
      */
-    public static final String unescapeJava(final String input) {
+    public static String unescapeJava(final String input) {
         return UNESCAPE_JAVA.transform(input);
     }
 
@@ -591,7 +591,7 @@ public class StringEscapes {
      * @return A new unescaped {@code String}, {@code null} if null string input
      * @see #unescapeJava(String)
      */
-    public static final String unescapeEcmaScript(final String input) {
+    public static String unescapeEcmaScript(final String input) {
         return UNESCAPE_ECMASCRIPT.transform(input);
     }
 
@@ -606,7 +606,7 @@ public class StringEscapes {
      * @return A new unescaped {@code String}, {@code null} if null string input
      * @see #unescapeJava(String)
      */
-    public static final String unescapeJson(final String input) {
+    public static String unescapeJson(final String input) {
         return UNESCAPE_JSON.transform(input);
     }
 
@@ -637,7 +637,7 @@ public class StringEscapes {
      * @see <a href="http://www.w3.org/TR/html401/charset.html#h-5.3">HTML 4.01 Character References</a>
      * @see <a href="http://www.w3.org/TR/html401/charset.html#code-position">HTML 4.01 Code positions</a>
      */
-    public static final String escapeHtml4(final String input) {
+    public static String escapeHtml4(final String input) {
         return ESCAPE_HTML4.transform(input);
     }
 
@@ -648,7 +648,7 @@ public class StringEscapes {
      * @param input the {@code String} to escape, may be null
      * @return a new escaped {@code String}, {@code null} if null string input
      */
-    public static final String escapeHtml3(final String input) {
+    public static String escapeHtml3(final String input) {
         return ESCAPE_HTML3.transform(input);
     }
 
@@ -669,7 +669,7 @@ public class StringEscapes {
      * @param input the {@code String} to unescape, may be null
      * @return a new unescaped {@code String}, {@code null} if null string input
      */
-    public static final String unescapeHtml4(final String input) {
+    public static String unescapeHtml4(final String input) {
         return UNESCAPE_HTML4.transform(input);
     }
 
@@ -681,7 +681,7 @@ public class StringEscapes {
      * @param input the {@code String} to unescape, may be null
      * @return a new unescaped {@code String}, {@code null} if null string input
      */
-    public static final String unescapeHtml3(final String input) {
+    public static String unescapeHtml3(final String input) {
         return UNESCAPE_HTML3.transform(input);
     }
 
@@ -767,7 +767,7 @@ public class StringEscapes {
      * @see #escapeXml10(String)
      * @see #escapeXml11(String)
      */
-    public static final String unescapeXml(final String input) {
+    public static String unescapeXml(final String input) {
         return UNESCAPE_XML.transform(input);
     }
 
@@ -792,7 +792,7 @@ public class StringEscapes {
      * @return The input String, enclosed in double quotes if the value contains a comma,
      * newline or double quote, {@code null} if null string input
      */
-    public static final String escapeCsv(final String input) {
+    public static String escapeCsv(final String input) {
         return ESCAPE_CSV.transform(input);
     }
 
@@ -816,7 +816,7 @@ public class StringEscapes {
      * @return The input String, with enclosing double quotes removed and embedded double
      * quotes unescaped, {@code null} if null string input
      */
-    public static final String unescapeCsv(final String input) {
+    public static String unescapeCsv(final String input) {
         return UNESCAPE_CSV.transform(input);
     }
 
@@ -837,7 +837,7 @@ public class StringEscapes {
      * @return String with escaped values, {@code null} if null string input
      * @see <a href="http://pubs.opengroup.org/onlinepubs/7908799/xcu/chap2.html">Shell Command Language</a>
      */
-    public static final String escapeXSI(final String input) {
+    public static String escapeXSI(final String input) {
         return ESCAPE_XSI.transform(input);
     }
 
@@ -848,7 +848,7 @@ public class StringEscapes {
      * @return a new unescaped {@code String}, {@code null} if null string input
      * @see StringEscapes#escapeXSI(String)
      */
-    public static final String unescapeXSI(final String input) {
+    public static String unescapeXSI(final String input) {
         return UNESCAPE_XSI.transform(input);
     }
 

@@ -1890,14 +1890,14 @@ public class Files {
         }
     }
 
-    public static final String getCanonicalPath(File file){
+    public static String getCanonicalPath(File file){
         try {
             return file.getCanonicalPath();
         }catch (IOException e){
             throw Throwables.wrapAsRuntimeIOException(e);
         }
     }
-    public static final File getCanonicalFile(File file){
+    public static File getCanonicalFile(File file){
         try {
             return file.getCanonicalFile();
         }catch (IOException e){
