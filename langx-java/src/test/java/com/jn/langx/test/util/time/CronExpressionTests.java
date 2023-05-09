@@ -23,7 +23,7 @@ public class CronExpressionTests {
         while (i < 100) {
             date = Dates.addMinutes(date, 1);
             date = Dates.addSeconds(date, 13);
-            Date nextDate = null;
+            Date nextDate;
             nextDate = CronExpressions.nextTime(cronExpression, date);
 
             Date nextDate2 = cronExpression.getTimeAfter(date);
@@ -53,7 +53,7 @@ public class CronExpressionTests {
             date = Dates.addHours(date, 1);
             date = Dates.addMinutes(date, 1);
             date = Dates.addSeconds(date, 13);
-            Date nextDate = null;
+            Date nextDate;
             nextDate = CronExpressions.nextTime(cronExpression, date);
             Date nextDate2 = cronExpression.getTimeAfter(date);
 
@@ -78,13 +78,12 @@ public class CronExpressionTests {
                 .build();
         int i = 20;
         Date previous = new Date();
-        Date next = null;
+        Date next;
 
         while (i>0){
             next = CronExpressions.nextTime(cronExpression, previous);
             System.out.println(Dates.format(next, Dates.yyyy_MM_dd_HH_mm_ss));
             previous=next;
-            next=null;
             i--;
         }
 
@@ -98,13 +97,12 @@ public class CronExpressionTests {
                 .build();
         int i = 1000;
         Date previous = new Date();
-        Date next = null;
+        Date next;
 
         while (i>0){
             next = CronExpressions.nextTime(cronExpression, previous);
             System.out.println(Dates.format(next, Dates.yyyy_MM_dd_HH_mm_ss));
             previous=next;
-            next=null;
             i--;
         }
 

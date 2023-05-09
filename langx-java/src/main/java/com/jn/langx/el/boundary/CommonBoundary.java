@@ -28,7 +28,7 @@ public class CommonBoundary implements Boundary {
     public boolean test(final String value) {
         Preconditions.checkNotEmpty(predicates);
         Preconditions.checkNotNull(logicOperatorType);
-        boolean ret = false;
+        boolean ret;
         switch (logicOperatorType) {
             case AND:
                 ret = Functions.allPredicate(predicates).test(value);

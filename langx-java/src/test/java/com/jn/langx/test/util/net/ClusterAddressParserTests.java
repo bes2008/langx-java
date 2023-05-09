@@ -26,7 +26,7 @@ public class ClusterAddressParserTests {
     @Test
     public void testIpv4Port() {
         System.out.println("=======================Test IP V4 start====================");
-        List<NetworkAddress> addresses = null;
+        List<NetworkAddress> addresses;
         addresses = parser.parse("host1:9092,host2:2181,host3:8080");
         System.out.println(addresses);
 
@@ -55,7 +55,7 @@ public class ClusterAddressParserTests {
     @Test
     public void testIpv6Port() {
         System.out.println("=======================Test IP V6 start====================");
-        List<NetworkAddress> addresses = null;
+        List<NetworkAddress> addresses;
         addresses = parser.parse("2031:0000:1F1F:0000:0000:0100:11A0:ADDF:9092,host2:2181,host3:8080");
         System.out.println(addresses);
 

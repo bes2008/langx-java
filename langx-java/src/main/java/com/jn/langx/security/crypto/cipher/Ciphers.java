@@ -228,7 +228,7 @@ public class Ciphers extends Securitys {
 
         AlgorithmParameterSpec parameterSpec = null;
         AlgorithmParameters parameters = null;
-        Object parameter = null;
+        Object parameter;
 
         // 获取全局默认的 parameter supplier, 这部分也是人为定义的，但又没有加入到 Provider中的
         if (parameterSupplier == null && suite != null) {
@@ -257,7 +257,7 @@ public class Ciphers extends Securitys {
         }
         try {
 
-            Cipher cipher = null;
+            Cipher cipher;
             if (parameters != null) {
                 cipher = Ciphers.createCipher(algorithmTransformation, provider, encrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, key, parameters, secureRandom);
             } else {

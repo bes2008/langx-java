@@ -31,7 +31,7 @@ public class CommonThreadFactory implements ThreadFactory, Factory<Runnable, Thr
 
     private boolean daemon;
     private String prefix;
-    private int factoryNo = 0;
+    private int factoryNo;
 
     public CommonThreadFactory() {
         this("COMMON", false);

@@ -51,8 +51,8 @@ public abstract class ConstructorAccessor<T> {
                 String accessClassNameInternal = accessClassName.replace('.', '/');
                 String classNameInternal = className.replace('.', '/');
                 String enclosingClassNameInternal;
-                Constructor<T> constructor = null;
-                int modifiers = 0;
+                Constructor<T> constructor;
+                int modifiers;
                 if (!isNonStaticMemberClass) {
                     enclosingClassNameInternal = null;
                     try {

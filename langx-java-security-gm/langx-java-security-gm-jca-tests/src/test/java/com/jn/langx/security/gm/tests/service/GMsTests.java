@@ -169,7 +169,7 @@ public class GMsTests {
 
         GmService gmService2 = gms.getGmService(GmsslorgGmService.NAME);
         byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
-        byte[] decryptedBytes2 = null;
+        byte[] decryptedBytes2;
         if (encryptedBytes2 != null) {
             showSM4(gmService2, "SM4/" + mode.name(), sm4Key, null, encryptedBytes2);
             decryptedBytes2 = gmService2.sm4Decrypt(encryptedBytes2, mode, sm4Key);
