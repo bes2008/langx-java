@@ -34,7 +34,7 @@ public class PythonVersionSpecifiersJava8 {
     public static final MapAccessor extractVersionSegments(String version) {
         final RegexpMatcher matcher = VERSION_PATTERN.matcher(version);
         if (matcher.matches()) {
-            final Map<String, Object> map = new HashMap<String, Object>();
+            final Map<String, Object> map = new HashMap<>();
             Pipeline.of("epoch", "release", "pre", "preLabel", "preN", "post", "postLabel", "postN", "dev", "devN", "local")
                     .forEach(new Consumer<String>() {
                         @Override

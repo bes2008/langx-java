@@ -43,7 +43,7 @@ public class Java8CandidatePatternsDateTimeParser implements DateTimeParser {
 
     @Override
     public DateTimeParsedResult parse(final String datetimeString) {
-        final Holder<DateTimeParsedResult> resultHolder = new Holder<DateTimeParsedResult>();
+        final Holder<DateTimeParsedResult> resultHolder = new Holder<>();
 
         final Predicate breakPredicate = new Predicate() {
             @Override

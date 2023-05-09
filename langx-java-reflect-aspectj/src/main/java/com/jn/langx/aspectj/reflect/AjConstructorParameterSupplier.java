@@ -64,6 +64,8 @@ public class AjConstructorParameterSupplier extends AbstractConstructorParameter
         String classname = null;
         Logger logger = Loggers.getLogger(AjConstructorParameterSupplier.class);
         try {
+            //noinspection rawtypes
+            @SuppressWarnings("rawtypes")
             Constructor constructor = (Constructor) meta.getExecutable();
             Class declaringClass = constructor.getDeclaringClass();
             classname = Reflects.getFQNClassName(declaringClass);

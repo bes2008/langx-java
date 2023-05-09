@@ -14,6 +14,7 @@ import com.jn.langx.util.struct.Holder;
 
 import java.util.*;
 
+@SuppressWarnings("ALL")
 public abstract class AbstractCharSequence<S extends CharSequence> implements Sequence<Character> {
     protected S charSequence;
 

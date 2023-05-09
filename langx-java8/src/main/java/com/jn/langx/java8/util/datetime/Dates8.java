@@ -26,10 +26,10 @@ public class Dates8 {
     private static final char[] JAVA8_TIME_FORMAT_UNIQUE_FLAGS = {'L', 'Q', 'q', 'e', 'c', 'A', 'n', 'N', 'V', 'O', 'x'};
 
     public static final LocalTime ZERO_TIME = LocalTime.of(0, 0, 0, 0);
-    public static final Map<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>> temporalQueryMap = new NonAbsentHashMap<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>(new Supplier<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>() {
+    public static final Map<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>> temporalQueryMap = new NonAbsentHashMap<>(new Supplier<Class<? extends TemporalAccessor>, Holder<TemporalQuery<?>>>() {
         @Override
         public Holder<TemporalQuery<?>> get(Class<? extends TemporalAccessor> tClass) {
-            Holder<TemporalQuery<?>> holder = new Holder<TemporalQuery<?>>();
+            Holder<TemporalQuery<?>> holder = new Holder<>();
             Method method = Reflects.getDeclaredMethod(tClass, "from", TemporalAccessor.class);
             if (method != null) {
                 method.setAccessible(true);

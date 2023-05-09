@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class Java8GlobalThreadLocalMap extends GlobalThreadLocalMap {
-    private final Map<DateFormatCacheKey, DateTimeFormatter> dateFormatMap = new NonAbsentHashMap<DateFormatCacheKey, DateTimeFormatter>(new Supplier<DateFormatCacheKey, DateTimeFormatter>() {
+    private final Map<DateFormatCacheKey, DateTimeFormatter> dateFormatMap = new NonAbsentHashMap<>(new Supplier<DateFormatCacheKey, DateTimeFormatter>() {
         @Override
         public DateTimeFormatter get(DateFormatCacheKey key) {
             DateTimeFormatter df = DateTimeFormatter.ofPattern(key.pattern);

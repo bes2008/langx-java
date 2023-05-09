@@ -5,6 +5,7 @@ import com.jn.langx.util.reflect.Reflects;
 /**
  * @since 4.6.10
  */
+@SuppressWarnings("ALL")
 public abstract class AbstractAccessorFactory<T> implements AccessorFactory<T> {
 
     @Override

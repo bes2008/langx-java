@@ -12,6 +12,7 @@ import com.jn.langx.util.function.Predicate;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("rawtypes")
 public abstract class AbstractClasspath implements Classpath {
     @Override
     public ClassFile findClassFile(String classname) {

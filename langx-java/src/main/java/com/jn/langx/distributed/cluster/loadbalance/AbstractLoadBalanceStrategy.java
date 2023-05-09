@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION> implements LoadBalanceStrategy<NODE, INVOCATION> {
     private String name;
     @Nullable

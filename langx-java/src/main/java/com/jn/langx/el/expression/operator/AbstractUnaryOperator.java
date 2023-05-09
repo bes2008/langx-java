@@ -40,6 +40,7 @@ public abstract class AbstractUnaryOperator<E extends Expression<R>, R> extends 
         return new HashCodeBuilder().with(operateSymbol).with(target).build();
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(Object o) {
         if (o == this) {
