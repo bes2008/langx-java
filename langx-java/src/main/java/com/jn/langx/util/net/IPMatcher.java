@@ -210,7 +210,6 @@ public class IPMatcher {
          * Return a newly-created <tt>IPMatcher</tt> based on the contents of
          * the <tt>Builder</tt>.
          *
-         * @return
          */
         public IPMatcher build() {
             return new IPMatcher(subnets);

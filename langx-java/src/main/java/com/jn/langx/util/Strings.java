@@ -2088,7 +2088,6 @@ public class Strings {
      *
      * @param str the String to capitalize, may be null
      * @return the capitalized String, {@code null} if null String input
-     * @see Words#capitalize(String)
      * @see #uncapitalize(String)
      */
     public static String capitalize(final String str) {
@@ -2113,7 +2112,6 @@ public class Strings {
      * <p>Uncapitalizes a String changing the first letter to title case as
      * per {@link Character#toLowerCase(char)}. No other letters are changed.</p>
      * <p>
-     * <p>For a word based algorithm, see {@link Words#uncapitalize(String)}.
      * A {@code null} input String returns {@code null}.</p>
      * <p>
      * <pre>
@@ -2125,7 +2123,6 @@ public class Strings {
      *
      * @param str the String to uncapitalize, may be null
      * @return the uncapitalized String, {@code null} if null String input
-     * @see Words#uncapitalize(String)
      * @see #capitalize(String)
      */
     public static String uncapitalize(final String str) {
@@ -2156,7 +2153,6 @@ public class Strings {
      * <li>Lower case character converts to Upper case</li>
      * </ul>
      * <p>
-     * <p>For a word based algorithm, see {@link Words#swapCase(String)}.
      * A {@code null} input String returns {@code null}.</p>
      * <p>
      * <pre>

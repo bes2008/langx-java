@@ -5793,7 +5793,6 @@ public enum LanguageAlpha3Code {
      * Get a list of {@code LanguageAlpha3Code} by a name regular expression.
      * <p>
      * <p>
-     * This method is almost equivalent to {@link #findByName(Pattern)
      * findByName}{@code (Pattern.compile(regex))}.
      * </p>
      *
