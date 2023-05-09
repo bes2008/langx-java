@@ -1,6 +1,5 @@
 package com.jn.langx.test.security.messagedigest;
 
-import com.jn.langx.util.Chars;
 import com.jn.langx.util.io.Charsets;
 
 import java.io.*;

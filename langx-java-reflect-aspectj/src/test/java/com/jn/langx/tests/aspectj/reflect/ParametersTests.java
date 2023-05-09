@@ -1,15 +1,9 @@
 package com.jn.langx.tests.aspectj.reflect;
 
 
-import com.jn.langx.aspectj.reflect.AjReflectConstants;
-import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.reflect.parameter.MethodParameter;
-import com.jn.langx.util.reflect.type.Types;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.util.List;
 
 public class ParametersTests {

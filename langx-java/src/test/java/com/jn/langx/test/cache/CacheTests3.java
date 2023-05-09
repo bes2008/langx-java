@@ -3,7 +3,6 @@ package com.jn.langx.test.cache;
 import com.jn.langx.cache.*;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Dates;
-import com.jn.langx.util.collection.DistinctLinkedBlockingQueue;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
 import com.jn.langx.util.random.ThreadLocalRandom;
 import com.jn.langx.util.timing.timer.DistinctHashedWheelTimeoutFactory;
@@ -11,7 +10,6 @@ import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timer;
 import org.junit.Test;
 
-import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;

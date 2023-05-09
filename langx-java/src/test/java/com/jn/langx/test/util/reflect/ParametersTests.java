@@ -1,13 +1,8 @@
 package com.jn.langx.test.util.reflect;
 
-import com.jn.langx.util.reflect.Reflects;
-import com.jn.langx.util.reflect.parameter.ConstructorParameter;
-import com.jn.langx.util.reflect.parameter.MethodParameter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class ParametersTests {

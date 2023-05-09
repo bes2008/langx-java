@@ -20,8 +20,6 @@ package com.jn.langx.beans.propertyeditor;
 
 import com.jn.langx.util.net.URLs;
 
-import java.net.MalformedURLException;
-
 /**
  * A property editor for {@link java.net.URL}.
  */

@@ -20,7 +20,6 @@ import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 
 /**

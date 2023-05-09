@@ -5,7 +5,6 @@ import com.jn.langx.util.io.file.FilePermission;
 import com.jn.langx.util.io.file.UnixFileAccessMode;
 import org.junit.Test;
 
-import java.util.Set;
 
 public class UnixFileAccessModeTests {
     @Test

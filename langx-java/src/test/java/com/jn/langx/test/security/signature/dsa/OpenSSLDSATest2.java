@@ -1,12 +1,10 @@
 package com.jn.langx.test.security.signature.dsa;
 
 import com.jn.langx.codec.base64.Base64;
-import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.io.Charsets;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.Key;
