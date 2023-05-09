@@ -1,6 +1,7 @@
 package com.jn.langx.regexp.joni;
 
 import com.jn.langx.util.Chars;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
@@ -50,7 +51,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         this.init(input);
     }
 
-    void init(CharSequence input){
+    void init(CharSequence input) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
         this.matcher = regexp.regex.matcher(this.input);
     }
@@ -224,7 +225,22 @@ final class JoniRegexpMatcher implements RegexpMatcher {
      * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
      */
     private int bytesStart(String groupName) {
-        return getGroupBeginEnd(groupName, false)[0];
+        int[] groupOffsets = getGroupBeginEnd(groupName, false);
+        if (Objs.length(groupOffsets) > 0) {
+            return groupOffsets[0];
+        }
+        return -1;
+    }
+
+    /**
+     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
+     */
+    private int bytesEnd(String groupName) {
+        int[] groupOffsets = getGroupBeginEnd(groupName, false);
+        if (Objs.length(groupOffsets) > 1) {
+            return groupOffsets[1];
+        }
+        return -1;
     }
 
     /**
@@ -235,12 +251,6 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         return toCharIndex(bytesEnd(groupName));
     }
 
-    /**
-     * @return 返回的是 byte[] 中的 索引, JDK Regexp 返回的是 String的索引
-     */
-    private int bytesEnd(String groupName) {
-        return getGroupBeginEnd(groupName, false)[1];
-    }
 
     private int[] getGroupBeginEnd(String groupName, boolean forGetGroupValue) {
         if (isInitialStatus()) {
@@ -356,7 +366,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
                 if (stIdx == this.lastBeg && this.lastEnd == this.bytesEnd()) {
                     found = false;
                 }
-            }catch (IllegalStateException ex){
+            } catch (IllegalStateException ex) {
                 return false;
             }
             this.lastBeg = start;
@@ -499,7 +509,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             }
 
             result.add(matches);
-            if(matcher.getEnd()>= this.input.length){
+            if (matcher.getEnd() >= this.input.length) {
                 break;
             }
         }

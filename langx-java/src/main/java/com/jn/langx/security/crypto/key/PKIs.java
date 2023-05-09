@@ -186,10 +186,7 @@ public class PKIs extends KeyStores {
 
     public static SecretKey createSecretKey(String algorithm) {
         KeyGenerator keyGenerator = getKeyGenerator(algorithm, null);
-        if (keyGenerator != null) {
-            return keyGenerator.generateKey();
-        }
-        return null;
+        return keyGenerator.generateKey();
     }
 
     public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {

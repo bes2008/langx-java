@@ -162,8 +162,7 @@ public class Lunars {
      * @return int
      */
     public static int getFirstTerm(int solarYear, int solarMonth) {
-        long times = 31556925974L * (solarYear - 1900)
-                + CalendaristConstants.SOLAR_TERM_INFO[(solarMonth - 1) * 2] * 60000L + ((long)0.7 * (solarYear - 1900));
+        long times = 31556925974L * (solarYear - 1900) + CalendaristConstants.SOLAR_TERM_INFO[(solarMonth - 1) * 2] * 60000L + (int)(0.7 * (solarYear - 1900));
         Date offDate = new Date(times - 2208549300000L);
         // 1、取得本地时间：
         Calendar cal = getCalendarInstance();

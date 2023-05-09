@@ -50,7 +50,7 @@ public class Java6ConstructorParameter implements ConstructorParameter {
      * @return Whether or not this is equal to the argument.
      */
     public boolean equals(Object obj) {
-        if (obj instanceof Java6MethodParameter) {
+        if (obj instanceof Java6ConstructorParameter) {
             Java6ConstructorParameter other = (Java6ConstructorParameter) obj;
             return (other.constructor.equals(constructor) && other.index == index);
         }

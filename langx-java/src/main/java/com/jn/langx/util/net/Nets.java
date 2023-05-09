@@ -1050,7 +1050,7 @@ public class Nets {
             // The following bit shifting is to restructure the bytes to be left (most significant) to
             // right (least significant) while also accounting for each IPv4 digit is base 10.
             begin = (value & 0xf) * 100 + ((value >> 4) & 0xf) * 10 + ((value >> 8) & 0xf);
-            if (begin < 0 || begin > 255) {
+            if (begin > 255) {
                 return null;
             }
             bytes[currentIndex++] = (byte) begin;
