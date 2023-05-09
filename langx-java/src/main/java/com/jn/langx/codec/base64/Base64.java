@@ -123,10 +123,6 @@ public class Base64 extends BaseNCodec {
      */
     private static final int MASK_6BITS = 0x3f;
 
-    // The static final fields above are used for the original static byte[] methods on Base64.
-    // The private member fields below are used with the new streaming approach, which requires
-    // some state be preserved between calls of encode() and decode().
-
     /**
      * Encode table to use: either STANDARD or URL_SAFE. Note: the DECODE_TABLE above remains static because it is able
      * to decode both STANDARD and URL_SAFE streams, but the encodeTable must be a member variable so we can switch

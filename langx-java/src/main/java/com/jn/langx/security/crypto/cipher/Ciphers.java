@@ -219,9 +219,7 @@ public class Ciphers extends Securitys {
                 algorithmTransformation = suite.getTransformation();
             }
             if (Emptys.isEmpty(algorithmTransformation)) {
-                /*
-                 * 绝大部分算法，都是支持 ECB 模式的，所以就将 ECB模式作为默认
-                 */
+                //绝大部分算法，都是支持 ECB 模式的，所以就将 ECB模式作为默认
                 algorithmTransformation = Ciphers.createAlgorithmTransformation(algorithm, "ECB", "PKCS5Padding");
             }
         }

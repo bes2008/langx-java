@@ -17,12 +17,8 @@ import com.jn.langx.util.os.OS;
  * JVM or requires starting a process to get them running
  * an OS command line.
  *
- * @version $Id: DefaultProcessingEnvironment.java 1636056 2014-11-01 21:12:52Z ggregory $
  */
 public class DefaultProcessingEnvironment {
-
-    // the line separator of the system
-//    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     /** the environment variables of the process */
     protected Map<String, String> procEnvironment;
