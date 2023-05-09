@@ -84,7 +84,7 @@ public class GMsTests {
     @Test
     public void testSM3() {
         String str = "hello_234";
-        byte[] bytes = null;
+        byte[] bytes;
         GmService gmService = gms.getGmService(BcGmService.NAME);
 
         bytes = gmService.sm3(str.getBytes());

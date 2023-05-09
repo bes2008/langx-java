@@ -37,7 +37,7 @@ public class XmlParserTests {
                     inputStream = resource.getInputStream();
                     Document document = Xmls.getXmlDoc(null, new LogErrorHandler(), inputStream);
 
-                    String xpathExpressionString = null;
+                    String xpathExpressionString;
                     Element element;
 
 

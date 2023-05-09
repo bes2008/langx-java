@@ -127,7 +127,7 @@ public class KeyStores extends Securitys {
     public static KeyStore getKeyStore(@NonNull String type, @Nullable String provider, File file, char[] password) {
         try {
             FileInputStream inputStream = null;
-            KeyStore keyStore = null;
+            KeyStore keyStore;
             try {
                 inputStream = new FileInputStream(file);
                 keyStore = getKeyStore(type, provider, inputStream, password);

@@ -119,7 +119,7 @@ class LexerV1 implements Tokenizer<RegionToken> {
 
                 // 对停止词处理
                 if (isStopWord) {
-                    RegionToken regionToken = null;
+                    RegionToken regionToken;
                     if (isChinesePunctuationSymbol) {
                         ChineseSequenceToken chineseSequenceToken = new ChineseSequenceToken();
                         PinyinDictItem item = find(c, chinesePunctuationSymbolDict);

@@ -44,7 +44,7 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
         if (Emptys.isNotEmpty(iv)) {
             return new IvParameterSpec(iv);
         }
-        IvParameterSpec ivParameterSpec = null;
+        IvParameterSpec ivParameterSpec;
         if (secureRandom == null) {
             try {
                 secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());

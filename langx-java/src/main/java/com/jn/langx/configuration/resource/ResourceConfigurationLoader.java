@@ -42,11 +42,11 @@ public class ResourceConfigurationLoader<T extends Configuration> extends Abstra
         Preconditions.checkNotEmpty(configurationId, "the configuration id is null or empty");
         Location location = resourceLocationProvider.get(configurationId);
         Preconditions.checkNotNull(location, "Can't find the location for configuration : {}", configurationId);
-        T configuration = null;
+        T configuration;
         Resource resource = Resources.loadResource(location);
         Logger logger = Loggers.getLogger(getClass());
         if (resource != null && resource.exists()) {
-            InputStream inputStream = null;
+            InputStream inputStream;
             try {
                 inputStream = resource.getInputStream();
                 configuration = parser.parse(inputStream);

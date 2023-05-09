@@ -3,7 +3,7 @@ package com.jn.langx.util.hash;
 import com.jn.langx.Builder;
 
 public class HashCodeBuilder implements Builder<Integer> {
-    private int hash = 0;
+    private int hash;
 
     public HashCodeBuilder() {
         this(0);

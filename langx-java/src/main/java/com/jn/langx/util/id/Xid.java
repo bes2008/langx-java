@@ -370,7 +370,7 @@ public final class Xid implements Comparable<Xid> {
     private static String base32Hex(final byte[] bytes) {
         int i = 0;
         int index = 0;
-        int digit = 0;
+        int digit;
         int currByte;
         int nextByte;
         StringBuilder base32 = new StringBuilder((bytes.length + 7) * 8 / 5);

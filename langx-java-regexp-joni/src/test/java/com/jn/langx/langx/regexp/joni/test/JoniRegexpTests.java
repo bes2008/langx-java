@@ -227,7 +227,7 @@ public class JoniRegexpTests {
     @Test
     public void test10() {
         String pattern = "(?:(?<year>\\d{4})\\-(?<month>\\d{2})-(?<dayOfMonth>\\d{2}))";
-        List<String> names = null;
+        List<String> names;
         names = new NamedRegexp(pattern).getNamedGroups();
         System.out.println(names);
         names = new JdkRegexp(pattern).getNamedGroups();

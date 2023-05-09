@@ -45,7 +45,7 @@ public class PemFileIOs extends Securitys {
                 throw new NullPointerException();
             }
             encoding = Objs.useValueIfNull(encoding, KeyEncoding.BASE64);
-            byte[] bytes = null;
+            byte[] bytes;
             switch (encoding) {
                 case HEX:
                     bytes = content.getBytes(Charsets.UTF_8);
@@ -79,7 +79,7 @@ public class PemFileIOs extends Securitys {
         try {
             InputStream inputStream = resource.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charsets.UTF_8));
-            String line = null;
+            String line;
             boolean beginLineFound = false;
             boolean endLineFound = false;
             while ((line = bufferedReader.readLine()) != null && !endLineFound) {
@@ -190,7 +190,7 @@ public class PemFileIOs extends Securitys {
             writer.write(LineDelimiter.DEFAULT.getValue());
         }
 
-        String encodedKeyString = null;
+        String encodedKeyString;
         switch (encoding) {
             case BASE64:
                 encodedKeyString = Base64.encodeBase64String(keyBytes);

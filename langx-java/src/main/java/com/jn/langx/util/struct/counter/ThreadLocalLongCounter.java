@@ -3,7 +3,7 @@ package com.jn.langx.util.struct.counter;
 import com.jn.langx.util.Preconditions;
 
 public class ThreadLocalLongCounter extends LongCounter {
-    private ThreadLocal<Long> valueHolder = new ThreadLocal<Long>();
+    private ThreadLocal<Long> valueHolder;
 
     public ThreadLocalLongCounter() {
         this(0L);

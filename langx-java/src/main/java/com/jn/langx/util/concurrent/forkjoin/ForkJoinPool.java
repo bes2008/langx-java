@@ -1394,8 +1394,7 @@ public class ForkJoinPool extends AbstractExecutorService {
         return (a > (p >>>= 1) ? 0 :
                 a > (p >>>= 1) ? 1 :
                         a > (p >>>= 1) ? 2 :
-                                a > (p >>>= 1) ? 4 :
-                                        8);
+                                a > (p >>>= 1) ? 4 : 8);
     }
 
     // Exported methods

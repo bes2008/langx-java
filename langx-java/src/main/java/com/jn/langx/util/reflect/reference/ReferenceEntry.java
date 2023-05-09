@@ -13,7 +13,7 @@ public class ReferenceEntry<K, V> {
     protected Object valueRef;
     private ReferenceType valueReferenceType = ReferenceType.STRONG;
     private ReferenceQueue refQueue;
-    private boolean wrappedWhenStrong = false;
+    private boolean wrappedWhenStrong;
 
     public ReferenceEntry(K key, ReferenceType keyReferenceType, V value, ReferenceType valueReferenceType, ReferenceQueue referenceQueue, boolean wrappedWhenStrong) {
         setKeyReferenceType(keyReferenceType);

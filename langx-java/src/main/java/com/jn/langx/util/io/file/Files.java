@@ -511,7 +511,7 @@ public class Files {
             output = fos.getChannel();
             final long size = input.size();
             long pos = 0;
-            long count = 0;
+            long count;
             while (pos < size) {
                 final long remain = size - pos;
                 count = remain > FILE_COPY_BUFFER_SIZE ? FILE_COPY_BUFFER_SIZE : remain;

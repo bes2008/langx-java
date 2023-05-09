@@ -13,7 +13,7 @@ public class TypeSignatures {
     }
     public static String toTypeSignature(String typeString) {
         Preconditions.checkNotNull(typeString);
-        String signature = "";
+        String signature;
         if ("boolean".equals(typeString)) {
             signature = "Z";
         } else if ("byte".equals(typeString)) {

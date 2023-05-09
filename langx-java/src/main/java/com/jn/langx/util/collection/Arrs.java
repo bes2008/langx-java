@@ -333,7 +333,7 @@ public class Arrs extends PrimitiveArrays{
                 return false;
             }
         }, objs);
-        objs.getClass().getComponentType();
+        // objs.getClass().getComponentType();
         return isMixed;
     }
 

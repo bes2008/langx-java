@@ -62,7 +62,7 @@ public class XmlNodeContentAccessor extends BasedStringAccessor<XPathExpression,
 
     @Override
     public void remove(XPathExpression exp) {
-        Node node = null;
+        Node node;
         Throwable exception = null;
         try {
             node = (Node) exp.evaluate(getTarget(), XPathConstants.NODE);

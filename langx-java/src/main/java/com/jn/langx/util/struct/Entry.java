@@ -67,7 +67,7 @@ public class Entry<K, V> extends Pair<K, V> {
             return map;
         }
         String[] entryArray = str.split(entrySpec);
-        Entry<String, String> entry = null;
+        Entry<String, String> entry;
         for (String keyValue : entryArray) {
             try {
                 entry = Entry.newEntry(keyValue, keyValueSpec);
@@ -88,7 +88,7 @@ public class Entry<K, V> extends Pair<K, V> {
             return map;
         }
         String[] entryArray = str.split(entrySpec);
-        Entry<String, String> entry = null;
+        Entry<String, String> entry;
         for (String keyValue : entryArray) {
             try {
                 entry = Entry.newEntry(keyValue, keyValueSpec);
@@ -114,7 +114,7 @@ public class Entry<K, V> extends Pair<K, V> {
                 return list;
             }
 
-            int nextIndex = -1;
+            int nextIndex;
             while ((nextIndex = src.indexOf(listSpecFlag, index + listSpecFlag.length())) != -1) {
                 strList.add(src.substring(index, nextIndex));
                 index = nextIndex;

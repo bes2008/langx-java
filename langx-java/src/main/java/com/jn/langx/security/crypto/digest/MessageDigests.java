@@ -55,7 +55,7 @@ public class MessageDigests extends Securitys {
         MessageDigest messageDigest = MessageDigests.newDigest(algorithm);
         BufferedInputStream bi = new BufferedInputStream(inputStream);
         byte[] bytes = new byte[8192];
-        int length = 0;
+        int length;
         try {
             while ((length = bi.read(bytes, 0, 8192)) != -1) {
                 messageDigest.update(bytes, 0, length);

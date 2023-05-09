@@ -191,7 +191,7 @@ public class FileDigestGenerator {
                 e.printStackTrace();
             }
             if (length != -1) {
-                byte[] ret = null;
+                byte[] ret;
                 if (length == maxLength) {
                     ret = bytes;
                 } else {
@@ -241,7 +241,7 @@ public class FileDigestGenerator {
         }
 
         private int mapNextFilePart() {
-            int mmapsize = 0;
+            int mmapsize;
             if (remainingLength >= Integer.MAX_VALUE) {
                 mmapsize = Integer.MAX_VALUE;
             } else {

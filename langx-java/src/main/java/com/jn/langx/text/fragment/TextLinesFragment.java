@@ -101,7 +101,7 @@ public class TextLinesFragment extends UnmodifiableIterator<String> implements C
     }
 
     private String readLine() {
-        String line = null;
+        String line;
         try {
             line = this.reader.readLine();
         } catch (IOException e) {

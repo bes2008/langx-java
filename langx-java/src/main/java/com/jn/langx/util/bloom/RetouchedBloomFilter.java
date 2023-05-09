@@ -149,7 +149,7 @@ public final class RetouchedBloomFilter extends BloomFilter
             throw new IllegalArgumentException("Key is not a member");
         }
 
-        int index = 0;
+        int index;
         int[] h = hash.hash(k);
 
         switch (scheme) {

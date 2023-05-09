@@ -89,7 +89,7 @@ public class FileTypes {
             byte[] bytes = new byte[28];
             int length = IOs.read(in, bytes);
             if (length > 0) {
-                byte[] bs = null;
+                byte[] bs;
                 if (length < 28) {
                     bs = new byte[length];
                     System.arraycopy(bytes, 0, bs, 0, length);

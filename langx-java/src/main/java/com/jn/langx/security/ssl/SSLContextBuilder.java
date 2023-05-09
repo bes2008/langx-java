@@ -54,7 +54,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
 
     public SSLContextBuilder setProtocol(String protocol) {
         protocol = Strings.useValueIfEmpty(protocol, SSLs.TLS);
-        SSLProtocolVersion protocolVersion = null;
+        SSLProtocolVersion protocolVersion;
         if ("SSL".equals(protocol)) {
             protocolVersion = SSLProtocolVersion.SSLv30;
         } else {
@@ -111,7 +111,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
 
     public SSLContextBuilder loadTrustMaterial(final URL url, final char[] storePassword, final TrustStrategy trustStrategy) throws NoSuchAlgorithmException, KeyStoreException, IOException {
         Preconditions.checkNotNullArgument(url, "Truststore URL");
-        KeyStore trustStore = null;
+        KeyStore trustStore;
         InputStream inputStream = null;
         try {
             inputStream = url.openStream();
@@ -160,7 +160,7 @@ public class SSLContextBuilder implements Builder<SSLContext> {
 
     public SSLContextBuilder loadKeyMaterial(final URL url, final char[] storePassword, final char[] keyPassword, final PrivateKeyAliasChooseStrategy aliasStrategy) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, IOException {
         Preconditions.checkNotNullArgument(url, "Keystore URL");
-        KeyStore identityStore = null;
+        KeyStore identityStore;
         InputStream inputStream = url.openStream();
         try {
             identityStore = KeyStores.getKeyStore(KeyStore.getDefaultType(), null, inputStream, storePassword);

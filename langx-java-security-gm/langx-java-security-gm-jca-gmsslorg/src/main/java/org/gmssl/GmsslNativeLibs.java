@@ -29,7 +29,7 @@ public class GmsslNativeLibs {
             jarFile.getParentFile().mkdirs();
         }
         InputStream in = null;
-        BufferedInputStream reader = null;
+        BufferedInputStream reader;
         FileOutputStream writer = null;
         try {
             in = GmSSL.class.getResourceAsStream(entityName);
@@ -43,7 +43,7 @@ public class GmsslNativeLibs {
             reader = new BufferedInputStream(in);
             writer = new FileOutputStream(jarFile);
             byte[] buffer = new byte[1024];
-            int len = 0;
+            int len;
             while ((len = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, len);
             }

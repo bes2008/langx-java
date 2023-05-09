@@ -117,7 +117,7 @@ public class Hashs {
             String digestAlgorithm = Strings.substring(hasherName, MessageDigestHasher.HASHER_NAME_PREFIX.length());
             return (H) new MessageDigestHasher(digestAlgorithm);
         }
-        Hasher hasher = null;
+        Hasher hasher;
         try {
             hasher = new HMacHasher(hasherName, (byte[]) initParams);
             return (H) hasher;

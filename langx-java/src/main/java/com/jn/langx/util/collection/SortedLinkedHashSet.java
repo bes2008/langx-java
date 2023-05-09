@@ -43,7 +43,7 @@ public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
         Preconditions.checkNotNull(o, "Can not add NULL object");
         writeLock.lock();
         try {
-            boolean present = false;
+            boolean present;
             if (o instanceof Ordered) {
                 present = this.addOrderedElement((Ordered) o);
             } else {

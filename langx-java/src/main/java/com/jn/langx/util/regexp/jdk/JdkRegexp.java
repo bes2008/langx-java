@@ -96,7 +96,7 @@ public class JdkRegexp implements Regexp {
     @Override
     public List<String> getNamedGroups() {
         if (namedGroups == null) {
-            List<String> groups = null;
+            List<String> groups;
             // key: group name, value: index
             final Map<String, Integer> map = Reflects.invoke(NAMED_GROUP_MAP_METHOD, this.pattern, Emptys.EMPTY_OBJECTS, true, true);
             if (map == null) {

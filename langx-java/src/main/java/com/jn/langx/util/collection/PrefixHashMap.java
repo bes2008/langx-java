@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class PrefixHashMap<V> extends HashMap<String, V> implements Cloneable {
     private String prefix;
-    private boolean readUsingPrefix = true;
+    private boolean readUsingPrefix;
 
     public PrefixHashMap(String prefix) {
         this(prefix, true);

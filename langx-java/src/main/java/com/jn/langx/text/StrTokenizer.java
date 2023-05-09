@@ -31,7 +31,7 @@ public class StrTokenizer extends CommonTokenizer<String> {
     /**
      * 是否忽略大小写
      */
-    private boolean ignoreCase = false;
+    private boolean ignoreCase;
 
     public StrTokenizer(String str) {
         this(str, (String)null);

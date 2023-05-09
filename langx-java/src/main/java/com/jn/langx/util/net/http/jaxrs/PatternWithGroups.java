@@ -16,6 +16,7 @@
 
 package com.jn.langx.util.net.http.jaxrs;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
@@ -385,7 +386,7 @@ public class PatternWithGroups {
             return false;
         }
         final PatternWithGroups that = (PatternWithGroups) obj;
-        if (this.regex != that.regex && (this.regex == null || !this.regex.equals(that.regex))) {
+        if (!Objs.equals(this.regex, that.regex)) {
             return false;
         }
         return true;

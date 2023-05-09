@@ -41,7 +41,7 @@ public class Java8DateTimeParser implements DateTimeParser {
 
     @Override
     public DateTimeParsedResult parse(String datetimeString) {
-        DateTimeFormatter formatter = null;
+        DateTimeFormatter formatter;
         // jdk 8 上 在pattern 中使用 O 时解析 GMT 时间时是有问题的， jdk 9 中修复了，所以解析GMT时，不会走这里
         if (!Platform.is9VMOrGreater() && datetimeString.contains("GMT")) {
             return Dates.getSimpleCandidateDateTimeParseService().parse(datetimeString, Lists.newArrayList(pattern), timeZone==null? null: Lists.newArrayList(timeZone), Lists.newArrayList(locale));

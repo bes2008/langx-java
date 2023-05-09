@@ -35,7 +35,7 @@ public class GracefulDateParser extends SimpleDateParser {
     }
 
     private DateTimeParsedResult parseWithFastDateFormat(String datetimeString) {
-        GracefulDateFormat simpleDateFormat = null;
+        GracefulDateFormat simpleDateFormat;
         try {
             simpleDateFormat = GracefulDateFormat.getInstance(this.pattern, this.timeZone, this.locale);
             Date date = simpleDateFormat.parse(datetimeString);

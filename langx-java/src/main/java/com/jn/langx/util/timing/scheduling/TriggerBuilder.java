@@ -44,8 +44,8 @@ public class TriggerBuilder implements Builder<Trigger> {
             throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("illegal trigger expression: {}", expression));
         }
         RegexpMatcher matcher = EXPRESSION_REGEXP.matcher(expression);
-        String triggerType = null;
-        String exp = null;
+        String triggerType;
+        String exp;
         if (matcher.matches()) {
             triggerType = matcher.group("type");
             exp = matcher.group("exp");

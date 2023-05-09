@@ -158,7 +158,7 @@ public class PKIs extends KeyStores {
 
     public static KeyGenerator getKeyGenerator(@NonNull String algorithm, @Nullable String provider) {
         Preconditions.checkNotEmpty(algorithm);
-        KeyGenerator keyGenerator = null;
+        KeyGenerator keyGenerator;
         try {
             keyGenerator = Strings.isBlank(provider) ? KeyGenerator.getInstance(algorithm) : KeyGenerator.getInstance(algorithm, provider);
             return keyGenerator;

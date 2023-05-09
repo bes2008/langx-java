@@ -126,7 +126,7 @@ public class Regexps {
     }
 
     public static RegexpEngine getRegexpEngine(String engineName, String defaultEngine){
-        RegexpEngine engine = null;
+        RegexpEngine engine;
         engine = registry.get(engineName);
         if (engine == null) {
             engine = registry.get(defaultEngine);

@@ -301,7 +301,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
     public static class RmiClientLocalhostSocketFactory implements RMIClientSocketFactory {
         private static final String FORCED_HOST = "localhost";
 
-        private RMIClientSocketFactory factory = null;
+        private RMIClientSocketFactory factory;
 
         public RmiClientLocalhostSocketFactory(RMIClientSocketFactory theFactory) {
             factory = theFactory;

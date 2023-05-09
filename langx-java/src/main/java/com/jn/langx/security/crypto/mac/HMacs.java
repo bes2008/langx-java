@@ -53,7 +53,7 @@ public class HMacs extends Securitys {
     }
 
     public static Mac createMac(String algorithm) {
-        Mac mac = null;
+        Mac mac;
         try {
             mac = Mac.getInstance(algorithm);
             return mac;
@@ -79,7 +79,7 @@ public class HMacs extends Securitys {
     }
 
     public static Mac createMac(String algorithm, byte[] secretKey) {
-        SecretKey key = null;
+        SecretKey key;
         if (secretKey == null) {
             KeyGenerator keyGenerator = PKIs.getKeyGenerator(algorithm, null);
             key = keyGenerator.generateKey();

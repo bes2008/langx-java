@@ -45,7 +45,7 @@ public class JavaScriptRegExps {
         return Regexps.compile(pattern).matcher(src);
     }
 
-    private String pattern = "";
+    private String pattern;
     private boolean isIgnoreCase = false;// 忽略大小写
 
     public JavaScriptRegExps(String pattern) {

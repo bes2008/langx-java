@@ -111,7 +111,7 @@ public class Xmls {
 
     public static <T> T handleXml(final String xmlpath, final XmlDocumentHandler<T> handler) {
         InputStream input = null;
-        Document doc = null;
+        Document doc;
         try {
             final File file = new File(xmlpath);
             if (!file.exists()) {
