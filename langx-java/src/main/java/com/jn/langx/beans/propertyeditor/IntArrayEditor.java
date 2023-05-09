@@ -20,7 +20,6 @@ package com.jn.langx.beans.propertyeditor;
 import com.jn.langx.text.StrTokenizer;
 
 import java.beans.PropertyEditorSupport;
-import java.util.Iterator;
 import java.util.List;
 
 /**
