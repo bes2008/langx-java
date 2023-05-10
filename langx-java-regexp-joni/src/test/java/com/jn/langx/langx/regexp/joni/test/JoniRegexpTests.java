@@ -278,7 +278,7 @@ public class JoniRegexpTests {
     }
 
     public static String chineseToMD5String(String str) {
-        if (Regexps.contains(str, RegexpPatterns.CHINESE_CHAR)) {
+        if (Regexps.contains(str, Regexps.createRegexp("joni",RegexpPatterns.CHINESE_CHAR_PATTERN, null))) {
             str = MessageDigests.md5(str);
         }
         return str;
