@@ -3,12 +3,11 @@ package com.jn.langx.text.grok;
 import com.jn.langx.Converter;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.regexp.Option;
-import com.jn.langx.util.regexp.Regexp;
-import com.jn.langx.util.regexp.RegexpMatcher;
-import com.jn.langx.util.regexp.Regexps;
+import com.jn.langx.util.regexp.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -45,11 +44,33 @@ public class Grok implements GrokTemplate {
      */
     private final Map<String, String> grokPatternDefinition;
 
-    public final Set<String> namedGroups;
+    final Set<String> namedGroups;
 
-    public final Map<String, Converters.Type> groupTypes;
+    final Map<String, Converters.Type> groupTypes;
 
-    public final Map<String, Converter> converters;
+    final Map<String, Converter> converters;
+
+    public Regexp getCompiledNamedRegex() {
+        return compiledNamedRegex;
+    }
+
+    public Map<String, String> getGrokPatternDefinition() {
+        return grokPatternDefinition;
+    }
+
+    public Set<String> getNamedGroups() {
+        return namedGroups;
+    }
+
+    public Map<String, Converters.Type> getGroupTypes() {
+        return groupTypes;
+    }
+
+    public Map<String, Converter> getConverters() {
+        return converters;
+    }
+
+    private MatcherWatchdog watchdog;
 
     /**
      * {@code Grok} discovery.
@@ -67,7 +88,7 @@ public class Grok implements GrokTemplate {
                 Map<String, String> namedRegexCollection,
                 Map<String, String> patternDefinitions,
                 String regexpEngine,
-                String defaultTimeZone) {
+                String defaultTimeZone, MatcherWatchdog watchdog) {
         this.originalGrokPattern = pattern;
         this.namedRegex = namedRegex;
         this.compiledNamedRegex = Regexps.createRegexp(regexpEngine, namedRegex, Option.DEFAULT);
@@ -76,6 +97,7 @@ public class Grok implements GrokTemplate {
         this.groupTypes = Converters.getGroupTypes(namedRegexCollection.values());
         this.converters = Converters.getConverters(namedRegexCollection.values(), defaultTimeZone);
         this.grokPatternDefinition = patternDefinitions;
+        this.watchdog = watchdog;
     }
 
     public String getSavedPattern() {
@@ -172,10 +194,19 @@ public class Grok implements GrokTemplate {
         }
 
         RegexpMatcher matcher = compiledNamedRegex.matcher(text);
-        if (matcher.matches()) {
-            return new Match(text, this, matcher);
+        if (watchdog != null) {
+            watchdog.register(matcher);
         }
-        return Match.EMPTY;
+        Match match = null;
+        if (matcher.matches()) {
+            match = new Match(text, this, matcher);
+        } else {
+            match = Match.EMPTY;
+        }
+        if (watchdog != null) {
+            watchdog.unregister(matcher);
+        }
+        return match;
     }
 
     /**
@@ -192,5 +223,6 @@ public class Grok implements GrokTemplate {
         }
         return disco.discover(input);
     }
+
 
 }

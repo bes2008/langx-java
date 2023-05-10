@@ -1,7 +1,8 @@
 package com.jn.langx.util.regexp;
 
 import com.jn.langx.util.function.Consumer2;
-import com.jn.langx.util.function.supplier.LongSupplier;
+import com.jn.langx.util.timing.clock.Clock;
+import com.jn.langx.util.timing.clock.SystemClock;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,26 +11,36 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class DefaultMatcherWatchdog implements MatcherWatchdog {
 
+    /**
+     * 检查超时的间隔
+     */
     private final long interval;
     private final long maxExecutionTime;
-    private final LongSupplier relativeTimeSupplier;
+    private final Clock clock;
+    /**
+     * 调度代理
+     */
     private final Consumer2<Long, Runnable> scheduler;
     private final AtomicInteger registered = new AtomicInteger(0);
     private final AtomicBoolean running = new AtomicBoolean(false);
-    final ConcurrentHashMap<RegexpMatcher, Long> registry = new ConcurrentHashMap<RegexpMatcher, Long>();
+    private final ConcurrentHashMap<RegexpMatcher, Long> registry = new ConcurrentHashMap<RegexpMatcher, Long>();
 
-    public DefaultMatcherWatchdog(long interval, long maxExecutionTime, LongSupplier relativeTimeSupplier, Consumer2<Long, Runnable> scheduler) {
-        this.interval = interval;
+    public DefaultMatcherWatchdog(long intervalInMills, long maxExecutionTime, Consumer2<Long, Runnable> schedulerProxy) {
+        this(intervalInMills, maxExecutionTime, new SystemClock(), schedulerProxy);
+    }
+
+    public DefaultMatcherWatchdog(long intervalInMills, long maxExecutionTime, Clock clock, Consumer2<Long, Runnable> schedulerProxy) {
+        this.interval = intervalInMills;
         this.maxExecutionTime = maxExecutionTime;
-        this.relativeTimeSupplier = relativeTimeSupplier;
-        this.scheduler = scheduler;
+        this.clock = clock;
+        this.scheduler = schedulerProxy;
     }
 
     public void register(RegexpMatcher matcher) {
         registered.getAndIncrement();
-        Long previousValue = registry.put(matcher, relativeTimeSupplier.getAsLong());
+        Long previousValue = registry.put(matcher, clock.getTime());
         if (running.compareAndSet(false, true)) {
-            scheduler.accept(interval,createInterruptTask());
+            scheduler.accept(interval, createInterruptTask());
         }
         assert previousValue == null;
     }
@@ -42,15 +53,14 @@ public class DefaultMatcherWatchdog implements MatcherWatchdog {
     public void unregister(RegexpMatcher matcher) {
         Long previousValue = registry.remove(matcher);
         registered.decrementAndGet();
-        assert previousValue != null;
     }
 
     private void interruptLongRunningExecutions() {
-        final long currentRelativeTime = relativeTimeSupplier.getAsLong();
+        final long currentTime = clock.getTime();
         for (Map.Entry<RegexpMatcher, Long> entry : registry.entrySet()) {
-            if ((currentRelativeTime - entry.getValue()) > maxExecutionTime) {
+            long deadline = entry.getValue();
+            if ((currentTime - deadline) > maxExecutionTime) {
                 entry.getKey().interrupt();
-                // not removing the entry here, this happens in the unregister() method.
             }
         }
         if (registered.get() > 0) {
@@ -60,8 +70,8 @@ public class DefaultMatcherWatchdog implements MatcherWatchdog {
         }
     }
 
-    private Runnable createInterruptTask(){
-       return new Runnable() {
+    private Runnable createInterruptTask() {
+        return new Runnable() {
             @Override
             public void run() {
                 interruptLongRunningExecutions();

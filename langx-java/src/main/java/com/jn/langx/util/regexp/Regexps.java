@@ -11,8 +11,6 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.collection.MultiKeyMap;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.function.Consumer2;
-import com.jn.langx.util.function.supplier.LongSupplier;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.regexp.jdk.JdkRegexpEngine;
 import com.jn.langx.util.regexp.named.Jdk6NamedRegexpEngine;
@@ -196,23 +194,5 @@ public class Regexps {
         return namedGroups;
     }
 
-    /**
-     * Returns an implementation that checks for each fixed interval if there are threads that have invoked {@link MatcherWatchdog#register(RegexpMatcher)}
-     * and not {@link MatcherWatchdog#unregister(RegexpMatcher)} and have been in this state for longer than the specified max execution interval and
-     * then interrupts these threads.
-     *
-     * @param interval              The fixed interval to check if there are threads to interrupt
-     * @param maxExecutionTime      The time a thread has the execute an operation.
-     * @param relativeTimeSupplier  A supplier that returns relative time
-     * @param scheduler             A scheduler that is able to execute a command for each fixed interval
-     */
-    static MatcherWatchdog newInstance(
-            long interval,
-            long maxExecutionTime,
-            LongSupplier relativeTimeSupplier,
-            Consumer2<Long, Runnable> scheduler
-    ) {
-        return new DefaultMatcherWatchdog(interval, maxExecutionTime, relativeTimeSupplier, scheduler);
-    }
 
 }

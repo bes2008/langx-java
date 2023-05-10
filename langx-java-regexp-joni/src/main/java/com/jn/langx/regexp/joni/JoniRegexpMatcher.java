@@ -4,11 +4,13 @@ import com.jn.langx.util.Chars;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import org.joni.Matcher;
 import org.joni.NameEntry;
 import org.joni.Option;
 import org.joni.Region;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,6 +22,7 @@ import java.util.Map;
  * @since 4.5.0
  */
 final class JoniRegexpMatcher implements RegexpMatcher {
+    private static final Logger logger = Loggers.getLogger(JoniRegexpMatcher.class);
     /**
      * 原始字符串， 此处记录了两种形态：
      */
@@ -50,7 +53,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         this.init(input);
     }
 
-    void init(CharSequence input){
+    void init(CharSequence input) {
         this.input = input.toString().getBytes(Charsets.UTF_8);
         this.matcher = regexp.regex.matcher(this.input);
     }
@@ -356,7 +359,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
                 if (stIdx == this.lastBeg && this.lastEnd == this.bytesEnd()) {
                     found = false;
                 }
-            }catch (IllegalStateException ex){
+            } catch (IllegalStateException ex) {
                 return false;
             }
             this.lastBeg = start;
@@ -499,7 +502,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
             }
 
             result.add(matches);
-            if(matcher.getEnd()>= this.input.length){
+            if (matcher.getEnd() >= this.input.length) {
                 break;
             }
         }
@@ -514,6 +517,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
 
     @Override
     public void interrupt() {
+        if (logger.isWarnEnabled()) {
+            logger.warn("regexp match execution too long, pattern: {}, text: {}", this.regexp.getPattern(), new String(input));
+        }
         this.matcher.interrupt();
     }
 }

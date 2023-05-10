@@ -9,9 +9,12 @@ import com.jn.langx.text.grok.logstash.EcsCompatibility;
 import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
 import com.jn.langx.text.grok.pattern.*;
 import com.jn.langx.text.grok.GrokTemplate;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.regexp.DefaultMatcherWatchdog;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.WheelTimers;
 import org.junit.BeforeClass;
@@ -20,6 +23,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class GrokTest {
     static MultipleLevelPatternDefinitionRepository repository;
@@ -69,6 +74,14 @@ public class GrokTest {
         repository.setCache(cache3);
         GrokCompiler grokCompiler = new GrokCompiler("joni-grok");
         grokCompiler.setDefinitionRepository(repository);
+
+        final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
+        grokCompiler.setWatchdog(new DefaultMatcherWatchdog(50, 1000, new Consumer2<Long, Runnable>() {
+            @Override
+            public void accept(Long intervalInMills, Runnable interruptTask) {
+                scheduledThreadPoolExecutor.schedule(interruptTask, intervalInMills, TimeUnit.MILLISECONDS);
+            }
+        }));
         grokCompiler.startup();
         tomcatLogTemplate = grokCompiler.compile("%{TOMCAT7_LOG}(?:%{CRLF}?%{JAVASTACK:stack})?");
         javastackTemplate = grokCompiler.compile("(?:%{CRLF}?%{JAVASTACK:stack})?");
@@ -83,6 +96,7 @@ public class GrokTest {
                     InputStream in = resource.getInputStream();
                     String message = IOs.readAsString(in);
                     IOs.close(in);
+                    // message = Strings.replace(Strings.replace(message,"\n", "\\n"),"\t","\\t");
                     Map<String, Object> result = template.extract(message);
                     System.out.println(result);
                 } catch (IOException ex) {
