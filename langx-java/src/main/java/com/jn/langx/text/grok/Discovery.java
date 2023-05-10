@@ -21,7 +21,7 @@ import com.jn.langx.util.regexp.Regexps;
  *
  * @since 4.7.2
  */
-public class Discovery {
+class Discovery {
 
     private Grok grok;
 
