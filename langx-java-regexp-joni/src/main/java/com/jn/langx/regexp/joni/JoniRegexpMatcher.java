@@ -511,4 +511,9 @@ final class JoniRegexpMatcher implements RegexpMatcher {
         Map<String, NameEntry> named = this.regexp.getNamedGroupMap();
         return Collects.asList(named.keySet());
     }
+
+    @Override
+    public void interrupt() {
+        this.matcher.interrupt();
+    }
 }

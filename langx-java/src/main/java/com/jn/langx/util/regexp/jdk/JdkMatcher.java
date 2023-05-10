@@ -145,4 +145,8 @@ class JdkMatcher implements RegexpMatcher {
         return Collects.asList(this.regexp.getNamedGroups());
     }
 
+    @Override
+    public void interrupt() {
+
+    }
 }
