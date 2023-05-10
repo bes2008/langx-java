@@ -518,7 +518,7 @@ final class JoniRegexpMatcher implements RegexpMatcher {
     @Override
     public void interrupt() {
         if (logger.isWarnEnabled()) {
-            logger.warn("regexp match execution too long, pattern: {}, text: {}", this.regexp.getPattern(), new String(input));
+            logger.warn("regexp match execution too long, will be interrupted, pattern: {}, text: {}", this.regexp.getPattern(), new String(input));
         }
         this.matcher.interrupt();
     }
