@@ -73,6 +73,7 @@ public class GrokTest {
                 .build();
         repository.setCache(cache3);
         GrokCompiler grokCompiler = new GrokCompiler("joni-grok");
+        grokCompiler.setRegexpEngine("joni");
         grokCompiler.setDefinitionRepository(repository);
 
         final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
