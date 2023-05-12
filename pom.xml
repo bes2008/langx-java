@@ -59,6 +59,7 @@
         <module>langx-java-security-gm</module>
         <module>langx-java-regexp-joni</module>
         <module>langx-java-security-pam</module>
+        <module>langx-asn1</module>
     </modules>
     <dependencyManagement>
         <dependencies>
