@@ -60,7 +60,6 @@
         <module>langx-java-regexp-joni</module>
         <module>langx-java-security-pam</module>
         <module>langx-asn1</module>
-        <module>langx-commandline</module>
     </modules>
     <dependencyManagement>
         <dependencies>
