@@ -8,7 +8,7 @@
 [javadoc](https://apidoc.gitee.com/fangjinuo/langx-java)
 [教程](https://fangjinuo.gitee.io/docs/)
 
-[![maven](https://img.shields.io/badge/maven-v5.0.1.green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:5.0.1)
+[![maven](https://img.shields.io/badge/maven-v5.2.6.green.svg)](https://search.maven.org/search?q=g:com.github.fangjinuo.langx%20AND%20v:5.2.6)
 
 ## [GitHub地址](https://github.com/fangjinuo/langx-java)
 ## [Gitee地址](https://gitee.com/fangjinuo/langx-java)
