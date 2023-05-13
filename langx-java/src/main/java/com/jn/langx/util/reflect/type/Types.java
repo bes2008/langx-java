@@ -57,7 +57,7 @@ public class Types {
      */
     public static String typeToString(Type type) {
         if (type instanceof Class) {
-            Class ctype = (Class) type;
+            @SuppressWarnings("rawtypes") Class ctype = (Class) type;
             if (ctype.isArray()) {
                 try {
                     Class cl = ctype;

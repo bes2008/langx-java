@@ -2216,7 +2216,7 @@ public enum CountryCode {
             }
 
             if (cc.getNumeric() != -1) {
-                numericMap.put(Integer.valueOf(cc.getNumeric()), cc);
+                numericMap.put(cc.getNumeric(), cc);
             }
         }
 

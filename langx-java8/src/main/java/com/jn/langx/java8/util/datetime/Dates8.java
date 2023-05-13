@@ -17,6 +17,7 @@ import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQuery;
 import java.util.*;
 
+@SuppressWarnings({"ALL", "Convert2Lambda"})
 public class Dates8 {
     private static final ZoneOffset LOCAL_ZONE_OFFSET;
     /**

@@ -76,6 +76,7 @@ public class WeakIdentityHashMap<K, V> implements Map<K, V> {
 
     public boolean equals(Object o) {
         if (o instanceof WeakIdentityHashMap) {
+            //noinspection rawtypes
             return backingStore.equals(((WeakIdentityHashMap) o).backingStore);
         }
         return false;

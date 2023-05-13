@@ -7,6 +7,7 @@ public class WheelQueue<E> implements Queue<E> {
     private final LinkedList<E> list;
     private final ReentrantLock lock;
 
+    @SuppressWarnings("rawtypes")
     public WheelQueue() {
         this.list = new LinkedList();
         this.lock = new ReentrantLock(true);

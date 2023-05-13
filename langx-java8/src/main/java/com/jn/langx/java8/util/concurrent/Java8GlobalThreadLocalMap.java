@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+@SuppressWarnings({"ALL", "Convert2Lambda"})
 public class Java8GlobalThreadLocalMap extends GlobalThreadLocalMap {
     private final Map<DateFormatCacheKey, DateTimeFormatter> dateFormatMap = new NonAbsentHashMap<>(new Supplier<DateFormatCacheKey, DateTimeFormatter>() {
         @Override
