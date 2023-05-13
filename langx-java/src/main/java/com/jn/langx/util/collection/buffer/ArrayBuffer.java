@@ -15,6 +15,7 @@ public class ArrayBuffer<E> extends ReadWriteBuffer<E, ArrayBuffer<E>> {
     // 起点偏移量
     private int offset = 0;
 
+    @SuppressWarnings("unchecked")
     public ArrayBuffer(int maxCapacity) {
         super(-1, 0, maxCapacity, maxCapacity);
         this.array = (E[]) new Object[maxCapacity];

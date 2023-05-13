@@ -144,13 +144,12 @@ public class TextLinesFragment extends UnmodifiableIterator<String> implements C
                         // 加在 下一个 不匹配的行 之前
                         this.flagLine = line;
                         record = concatMultiline();
-                        this.nonFlagLines.clear();
                     } else {
                         // 加在 上一个 不匹配的行 之后
                         record = concatMultiline();
                         this.flagLine = line;
-                        this.nonFlagLines.clear();
                     }
+                    this.nonFlagLines.clear();
                 } else {
                     this.nonFlagLines.add(line);
                 }
@@ -166,13 +165,12 @@ public class TextLinesFragment extends UnmodifiableIterator<String> implements C
                         // 加在 下一个匹配的行之前
                         this.flagLine = line;
                         record = concatMultiline();
-                        this.nonFlagLines.clear();
                     } else {
                         // 加在 上一个匹配的行之后
                         record = concatMultiline();
                         this.flagLine = line;
-                        this.nonFlagLines.clear();
                     }
+                    this.nonFlagLines.clear();
                 }
             }
         }

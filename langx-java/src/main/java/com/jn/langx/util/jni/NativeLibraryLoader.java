@@ -376,9 +376,7 @@ public final class NativeLibraryLoader {
             }
 
             // If we can already execute, there is nothing to do.
-            if (file.canExecute()) {
-                return true;
-            }
+            file.canExecute();
 
             // On volumes, with noexec set, even files with the executable POSIX permissions will fail to execute.
             // The File#canExecute() method honors this behavior, probaby via parsing the noexec flag when initializing

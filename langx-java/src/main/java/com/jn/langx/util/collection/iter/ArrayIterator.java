@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 /**
  * @author jinuo.fang
  */
+@SuppressWarnings("unchecked")
 public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterable<E> {
     private final E[] array;
     private int index = 0;

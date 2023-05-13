@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Basic implementation of the life cycle interface for components.
  */
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class AbstractStatefulLifecycle implements StatefulLifecycle, EventPublisherAware {
     private static final Logger logger = Loggers.getLogger(AbstractStatefulLifecycle.class);
 

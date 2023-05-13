@@ -790,11 +790,10 @@ public final class CronExpression implements Serializable, Cloneable {
                     int v3 = vs.value;
                     addToSet(val, end, v3, type);
                     i = vs.pos;
-                    return i;
                 } else {
                     addToSet(val, end, v2, type);
-                    return i;
                 }
+                return i;
             } else {
                 addToSet(val, end, 1, type);
                 return i;

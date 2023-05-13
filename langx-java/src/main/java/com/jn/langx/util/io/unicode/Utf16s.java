@@ -22,9 +22,7 @@ public final class Utf16s {
     }
 
     private static int _charAt(String string, int index, char c) {
-        if (c > '\udfff') {
-            return c;
-        } else {
+        if (c <= '\udfff') {
             char var3;
             if (c <= '\udbff') {
                 ++index;
@@ -44,17 +42,15 @@ public final class Utf16s {
                 }
             }
 
-            return c;
         }
+        return c;
     }
 
     public static int charAt(char[] chars, int beginIndex, int endIndex, int index) {
         index += beginIndex;
         if (index >= beginIndex && index < endIndex) {
             char c = chars[index];
-            if (!isSurrogate(c)) {
-                return c;
-            } else {
+            if (isSurrogate(c)) {
                 char c1;
                 if (c <= '\udbff') {
                     ++index;
@@ -78,8 +74,8 @@ public final class Utf16s {
                     }
                 }
 
-                return c;
             }
+            return c;
         } else {
             throw new ArrayIndexOutOfBoundsException(index);
         }

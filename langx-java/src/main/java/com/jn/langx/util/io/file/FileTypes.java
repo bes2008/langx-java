@@ -48,6 +48,7 @@ public class FileTypes {
     }
 
 
+    @SuppressWarnings("unchecked")
     public static String getType(final String fileHexHeader) {
         Map.Entry entry = Collects.findFirst(fileTypesMap, new Predicate2<String, List<String>>() {
             @Override

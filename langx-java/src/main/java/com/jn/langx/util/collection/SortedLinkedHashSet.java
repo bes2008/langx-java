@@ -124,7 +124,7 @@ public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
     @SuppressWarnings("rawtypes")
     private boolean addOrderedElement(Ordered adding) {
         boolean added = false;
-        E[] tempUnorderedElements = (E[]) this.toArray();
+        @SuppressWarnings("unchecked") E[] tempUnorderedElements = (E[]) this.toArray();
         if (super.contains(adding)) {
             return false;
         }
@@ -138,10 +138,8 @@ public class SortedLinkedHashSet<E> extends LinkedHashSet<E> {
                 if (current instanceof Ordered) {
                     if (this.comparator.compare(adding, current) < 0) {
                         added = super.add((E) adding);
-                        super.add(current);
-                    } else {
-                        super.add(current);
                     }
+                    super.add(current);
                 } else {
                     tempSet.add(current);
                 }

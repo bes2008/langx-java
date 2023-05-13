@@ -242,11 +242,9 @@ class TypeDescriptor implements Serializable {
      * @return the annotation, or {@code null} if no such annotation exists on this type descriptor
      */
     public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-        if (this.annotatedElement.isEmpty()) {
-            // Shortcut: AnnotatedElementUtils would have to expect AnnotatedElement.getAnnotations()
-            // to return a copy of the array, whereas we can do it more efficiently here.
-            return null;
-        }
+        // Shortcut: AnnotatedElementUtils would have to expect AnnotatedElement.getAnnotations()
+        // to return a copy of the array, whereas we can do it more efficiently here.
+        this.annotatedElement.isEmpty();
         return null;
         //return AnnotatedElementUtils.getMergedAnnotation(this.annotatedElement, annotationType);
     }

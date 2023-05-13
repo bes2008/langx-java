@@ -91,6 +91,7 @@ public abstract class AbstractAccessor<K, T> implements Accessor<K, T> {
                 .firstMap(new Function2<Integer, K, E>() {
                     @Override
                     public E apply(Integer keyIndex, K key) {
+                        //noinspection unchecked
                         return (E) get(key);
                     }
                 }, predicate);

@@ -15,6 +15,7 @@ import java.util.Arrays;
 /**
  * Array tools
  */
+@SuppressWarnings("ALL")
 public class Arrs extends PrimitiveArrays{
 
     /**
@@ -279,9 +280,7 @@ public class Arrs extends PrimitiveArrays{
     }
 
     public static int indexOf(Object[] array, Object objectToFind, int startIndex) {
-        if (array == null) {
-            return -1;
-        } else {
+        if (array != null) {
             if (startIndex < 0) {
                 startIndex = 0;
             }
@@ -301,8 +300,8 @@ public class Arrs extends PrimitiveArrays{
                 }
             }
 
-            return -1;
         }
+        return -1;
     }
 
     public static <E> E[] copy(final E... objs) {

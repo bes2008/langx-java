@@ -850,23 +850,21 @@ public final class ByteStringBuffer
         } else if (off == 0) {
             if (len == endPos) {
                 endPos = 0;
-                return this;
             } else {
                 final int newEndPos = endPos - len;
                 System.arraycopy(array, len, array, 0, newEndPos);
                 endPos = newEndPos;
-                return this;
             }
+            return this;
         } else {
             if ((off + len) == endPos) {
                 endPos = off;
-                return this;
             } else {
                 final int bytesToCopy = endPos - (off + len);
                 System.arraycopy(array, (off + len), array, off, bytesToCopy);
                 endPos -= len;
-                return this;
             }
+            return this;
         }
     }
 
@@ -1211,10 +1209,8 @@ public final class ByteStringBuffer
         if (length > endPos) {
             ensureCapacity(length);
             Arrays.fill(array, endPos, length, (byte) 0x00);
-            endPos = length;
-        } else {
-            endPos = length;
         }
+        endPos = length;
     }
 
 
@@ -1262,18 +1258,16 @@ public final class ByteStringBuffer
         }
 
         if (this.capacity != capacity) {
+            final byte[] newArray = new byte[capacity];
             if (this.capacity < capacity) {
-                final byte[] newArray = new byte[capacity];
                 System.arraycopy(array, 0, newArray, 0, this.capacity);
                 array = newArray;
-                this.capacity = capacity;
             } else {
-                final byte[] newArray = new byte[capacity];
                 System.arraycopy(array, 0, newArray, 0, capacity);
                 array = newArray;
                 endPos = Math.min(endPos, capacity);
-                this.capacity = capacity;
             }
+            this.capacity = capacity;
         }
     }
 

@@ -230,15 +230,15 @@ public final class OID implements Serializable, Comparable<OID> {
 
                 case '.':
                     if (buffer.length() == 0) {
+                        String err;
                         if (i == 0) {
-                            String err = "Unable to parse {} as an object identifier because it starts with a period.";
+                            err = "Unable to parse {} as an object identifier because it starts with a period.";
                             err = StringTemplates.formatWithPlaceholder(err, oidString);
-                            throw new ParseException(err, i);
                         } else {
-                            String err = "Unable to parse {} as an object identifier because it contains consecutive periods at position {}.";
+                            err = "Unable to parse {} as an object identifier because it contains consecutive periods at position {}.";
                             err = StringTemplates.formatWithPlaceholder(err, oidString, i);
-                            throw new ParseException(err, i);
                         }
+                        throw new ParseException(err, i);
                     }
 
                     if ((buffer.length() > 1) && (buffer.charAt(0) == '0')) {

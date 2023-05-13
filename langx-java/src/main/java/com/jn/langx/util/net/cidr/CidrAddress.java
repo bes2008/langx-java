@@ -328,11 +328,10 @@ public final class CidrAddress implements Serializable, Comparable<CidrAddress> 
             final int scopeId = getScopeId();
             if (scopeId == 0) {
                 this.toString = String.format("%s/%d", Nets.toOptimalString(cachedBytes), netmaskBits);
-                return this.toString;
             } else {
                 this.toString = String.format("%s%%%d/%d", Nets.toOptimalString(cachedBytes), scopeId, netmaskBits);
-                return this.toString;
             }
+            return this.toString;
         }
         return toString;
     }
