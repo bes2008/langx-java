@@ -48,6 +48,11 @@ public class Maps {
     }
 
 
+    public static <K,V> void reput(@NonNull Map<K, V> map, @NonNull K key){
+        V v = map.remove(key);
+        map.put(key,v);
+    }
+
     public static <K, V> V putIfAbsent(@NonNull Map<K, V> map, @NonNull K key, final V value) {
         // jdk 8 中，value 为 supplier时，不会走参数有supplier的方法，很纳闷
         if (value instanceof Supplier) {
