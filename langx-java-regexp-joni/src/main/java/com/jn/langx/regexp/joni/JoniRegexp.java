@@ -42,9 +42,9 @@ public class JoniRegexp implements Regexp {
             byte[] patternBytes = pattern.getBytes(Charsets.UTF_8);
             this.regex = new Regex(patternBytes, 0, patternBytes.length, toJoniFlags(option), UTF8Encoding.INSTANCE, Syntax.Java);
         } catch (JOniException ex1) {
-            throwParseException("syntax", ex1.getMessage());
+            throwParseException("joni", ex1.getMessage(), ex1);
         } catch (PatternSyntaxException ex2) {
-            throwParseException("syntax", ex2.getMessage());
+            throwParseException("syntax", ex2.getMessage(), ex2);
         } catch (StackOverflowError var8) {
             throw new RuntimeException(var8);
         }
@@ -95,8 +95,8 @@ public class JoniRegexp implements Regexp {
         return option;
     }
 
-    private static void throwParseException(String key, String str) throws ParseException {
-        throw new ParseException(StringTemplates.formatWithPlaceholder("joni regexp parse error: key: {}, error: {}", key, str));
+    private static void throwParseException(String key, String str, Exception e) throws ParseException {
+        throw new ParseException(StringTemplates.formatWithPlaceholder("joni regexp parse error: key: {}, error: {}", key, str), e);
     }
 
     /**

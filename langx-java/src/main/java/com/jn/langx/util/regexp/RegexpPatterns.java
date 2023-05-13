@@ -22,9 +22,42 @@ public class RegexpPatterns {
      * \uFE30 - \uFE4F 纵向标点符号
      * \uFF01 - \uFF1F 标点符号
      */
-    public static final String CHINESE_CHAR_PATTERN = "[\\x{4E00}-\\x{9FFF}\\x{2E80}-\\x{2EFF}\\x{2F00}-\\x{2FDF}\\x{3000}-\\x{303F}\\x{31C0}-\\x{31EF}\\x{3400}-\\x{4DBF}\\x{F900}-\\x{FAFF}\\x{FE30}-\\x{FE4F}\\x{FF01}-\\x{FF1F}\\x{20000}-\\x{2A6DF}\\x{2A700}-\\x{2EBEF}\\x{2F800}—\\x{2FA1F}\\x{30000}—\\x{3134F}]";
-    public static final Regexp CHINESE_CHAR = Regexps.createRegexp(CHINESE_CHAR_PATTERN);
-    public static final Regexp CHINESE_CHARS = Regexps.createRegexp(CHINESE_CHAR_PATTERN + "+");
+    // jdk 上可用, joni 上不可用
+    public static final String CHINESE_CHAR_PATTERN = "["
+            + "\\x{4E00}-\\x{9FFF}"
+            + "\\x{2E80}-\\x{2EFF}"
+            + "\\x{2F00}-\\x{2FDF}"
+            + "\\x{3000}-\\x{303F}"
+            + "\\x{31C0}-\\x{31EF}"
+            + "\\x{3400}-\\x{4DBF}"
+            + "\\x{F900}-\\x{FAFF}"
+            + "\\x{FE30}-\\x{FE4F}"
+            + "\\x{FF01}-\\x{FF1F}"
+            + "\\x{20000}-\\x{2A6DF}"
+            + "\\x{2A700}-\\x{2EBEF}"
+            + "\\x{2F800}—\\x{2FA1F}"
+            + "\\x{30000}—\\x{3134F}"
+            + "]";
+    // JONI ，JDK上均可用
+    public static final String CHINESE_CHAR_PATTERN_JONI = "["
+            + "\\x4E00-\\x9FFF"   // joni OK
+            //+ "\\x2E80-\\x2EFF"   // joni error
+            //+ "\\x2F00-\\x2FDF"   // joni error
+            + "\\x3000-\\x303F"   // joni OK
+            + "\\x31C0-\\x31EF"   // joni OK
+            + "\\x3400-\\x4DBF"   // joni OK
+            + "\\xF900-\\xFAFF"   // joni OK
+            + "\\xFE30-\\xFE4F"   // joni OK
+            + "\\xFF01-\\xFF1F"  // joni OK
+            //+ "\\x{20000}-\\x{2A6DF}"  // joni error
+            // + "\\x{2A700}-\\x{2EBEF}" // joni error
+            + "\\x{2F800}—\\x{2FA1F}" // joni OK
+            + "\\x{30000}—\\x{3134F}" // joni OK
+            + "]";
+
+
+    public static final Regexp CHINESE_CHAR = Regexps.createRegexp("jdk", CHINESE_CHAR_PATTERN, null);
+    public static final Regexp CHINESE_CHARS = Regexps.createRegexp("jdk", CHINESE_CHAR_PATTERN + "+", null);
 
     public static final Regexp COMMA_SPLIT_PATTERN = Regexps.createRegexp("\\s*[,]+\\s*");
 

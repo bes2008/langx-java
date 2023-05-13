@@ -16,6 +16,7 @@ import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.regexp.MatcherWatchdog;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
@@ -38,6 +39,8 @@ import static java.lang.String.format;
 public class GrokCompiler extends AbstractLifecycle {
     private PatternDefinitionRepository definitionRepository;
     private String regexpEngine;
+
+    private MatcherWatchdog watchdog;
 
     // We don't want \n and commented line
     private static final Regexp patternLinePattern = Regexps.createRegexp("^([A-z0-9_]+)\\s+(.*)$");
@@ -62,6 +65,10 @@ public class GrokCompiler extends AbstractLifecycle {
     public GrokCompiler(String name, String regexpEngine) {
         setName(name);
         setRegexpEngine(regexpEngine);
+    }
+
+    public void setWatchdog(MatcherWatchdog watchdog) {
+        this.watchdog = watchdog;
     }
 
     public void setRegexpEngine(String regexpEngine) {
@@ -277,7 +284,8 @@ public class GrokCompiler extends AbstractLifecycle {
                 namedRegexCollection,
                 patternDefinitions,
                 this.regexpEngine,
-                timeZoneId
+                timeZoneId,
+                watchdog
         );
     }
 }

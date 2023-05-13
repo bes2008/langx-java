@@ -105,8 +105,9 @@ public class Regexps {
         if (option == null) {
             option = Option.DEFAULT;
         }
+
         if (engine == null) {
-            engine = getRegexpEngine("joni");
+            engine = getRegexpEngine("jdk");
         }
 
         Regexp regexp = cache.get(pattern, option, engine.getName());
@@ -193,4 +194,6 @@ public class Regexps {
         }
         return namedGroups;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.jn.langx.langx.regexp.joni.test;
 
 import com.jn.langx.regexp.joni.JoniRegexp;
+import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
@@ -8,6 +9,7 @@ import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
+import com.jn.langx.util.regexp.RegexpPatterns;
 import com.jn.langx.util.regexp.Regexps;
 import com.jn.langx.util.regexp.jdk.JdkRegexp;
 import com.jn.langx.util.regexp.named.NamedRegexp;
@@ -273,6 +275,19 @@ public class JoniRegexpTests {
         stringMap = Regexps.findNamedGroup(IP_SEGMENT_PATTERNS, str);
         System.out.println(stringMap);
 
+    }
+
+    public static String chineseToMD5String(String str) {
+        if (Regexps.contains(str, Regexps.createRegexp("joni",RegexpPatterns.CHINESE_CHAR_PATTERN, null))) {
+            str = MessageDigests.md5(str);
+        }
+        return str;
+    }
+
+    @Test
+    public void testChinese(){
+        String s = "123421中你3人23";
+        System.out.println(chineseToMD5String(s));
     }
 
 }
