@@ -429,17 +429,17 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
         }
 
         @Override
-        public final CharSequence getKey() {
+        public CharSequence getKey() {
             return key;
         }
 
         @Override
-        public final V getValue() {
+        public V getValue() {
             return node.value;
         }
 
         @Override
-        public final V setValue(final V value) {
+        public V setValue(final V value) {
             final V oldValue = node.value;
             node.value = value;
             return oldValue;

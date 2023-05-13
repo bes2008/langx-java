@@ -581,7 +581,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<V> tryFire(int mode) {
+        CompletableFuture<V> tryFire(int mode) {
             CompletableFuture<V> d;
             CompletableFuture<T> a;
             if ((d = dep) == null || !d.uniApply(a = src, fn, mode > 0 ? null : this)) {
@@ -645,7 +645,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<Void> tryFire(int mode) {
+        CompletableFuture<Void> tryFire(int mode) {
             CompletableFuture<Void> d;
             CompletableFuture<T> a;
             if ((d = dep) == null || !d.uniAccept(a = src, fn, mode > 0 ? null : this)) {
@@ -711,7 +711,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<Void> tryFire(int mode) {
+        CompletableFuture<Void> tryFire(int mode) {
             CompletableFuture<Void> d;
             CompletableFuture<T> a;
             if ((d = dep) == null || !d.uniRun(a = src, fn, mode > 0 ? null : this)) {
@@ -770,7 +770,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<T> tryFire(int mode) {
+        CompletableFuture<T> tryFire(int mode) {
             CompletableFuture<T> d;
             CompletableFuture<T> a;
             if ((d = dep) == null || !d.uniWhenComplete(a = src, fn, mode > 0 ? null : this)) {
@@ -841,7 +841,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<V> tryFire(int mode) {
+        CompletableFuture<V> tryFire(int mode) {
             CompletableFuture<V> d;
             CompletableFuture<T> a;
             if ((d = dep) == null || !d.uniHandle(a = src, fn, mode > 0 ? null : this)) {
@@ -908,7 +908,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<T> tryFire(int mode) { // never ASYNC
+        CompletableFuture<T> tryFire(int mode) { // never ASYNC
             // assert mode != ASYNC;
             CompletableFuture<T> d;
             CompletableFuture<T> a;
@@ -967,7 +967,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             super(null, dep, src);
         }
 
-        final CompletableFuture<T> tryFire(int mode) {
+        CompletableFuture<T> tryFire(int mode) {
             CompletableFuture<T> d;
             CompletableFuture<T> a;
             if ((d = dep) == null || !d.uniRelay(a = src)) {
@@ -1001,7 +1001,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<V> tryFire(int mode) {
+        CompletableFuture<V> tryFire(int mode) {
             CompletableFuture<V> d;
             CompletableFuture<T> a;
             if ((d = dep) == null || !d.uniCompose(a = src, fn, mode > 0 ? null : this)) {
@@ -1118,7 +1118,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.base = base;
         }
 
-        final CompletableFuture<?> tryFire(int mode) {
+        CompletableFuture<?> tryFire(int mode) {
             BiCompletion<?, ?, ?> c;
             CompletableFuture<?> d;
             if ((c = base) == null || (d = c.tryFire(mode)) == null) {
@@ -1128,7 +1128,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             return d;
         }
 
-        final boolean isLive() {
+        boolean isLive() {
             BiCompletion<?, ?, ?> c;
             return (c = base) != null && c.dep != null;
         }
@@ -1178,7 +1178,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<V> tryFire(int mode) {
+        CompletableFuture<V> tryFire(int mode) {
             CompletableFuture<V> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1260,7 +1260,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<Void> tryFire(int mode) {
+        CompletableFuture<Void> tryFire(int mode) {
             CompletableFuture<Void> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1344,7 +1344,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<Void> tryFire(int mode) {
+        CompletableFuture<Void> tryFire(int mode) {
             CompletableFuture<Void> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1408,7 +1408,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             super(null, dep, src, snd);
         }
 
-        final CompletableFuture<Void> tryFire(int mode) {
+        CompletableFuture<Void> tryFire(int mode) {
             CompletableFuture<Void> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1499,7 +1499,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<V> tryFire(int mode) {
+        CompletableFuture<V> tryFire(int mode) {
             CompletableFuture<V> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1570,7 +1570,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<Void> tryFire(int mode) {
+        CompletableFuture<Void> tryFire(int mode) {
             CompletableFuture<Void> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1644,7 +1644,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        final CompletableFuture<Void> tryFire(int mode) {
+        CompletableFuture<Void> tryFire(int mode) {
             CompletableFuture<Void> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1706,7 +1706,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             super(null, dep, src, snd);
         }
 
-        final CompletableFuture<Object> tryFire(int mode) {
+        CompletableFuture<Object> tryFire(int mode) {
             CompletableFuture<Object> d;
             CompletableFuture<T> a;
             CompletableFuture<U> b;
@@ -1764,14 +1764,14 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        public final Void getRawResult() {
+        public Void getRawResult() {
             return null;
         }
 
-        public final void setRawResult(Void v) {
+        public void setRawResult(Void v) {
         }
 
-        public final boolean exec() {
+        public boolean exec() {
             run();
             return true;
         }
@@ -1815,14 +1815,14 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.fn = fn;
         }
 
-        public final Void getRawResult() {
+        public Void getRawResult() {
             return null;
         }
 
-        public final void setRawResult(Void v) {
+        public void setRawResult(Void v) {
         }
 
-        public final boolean exec() {
+        public boolean exec() {
             run();
             return true;
         }
@@ -1876,7 +1876,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             this.deadline = deadline;
         }
 
-        final CompletableFuture<?> tryFire(int ignore) {
+        CompletableFuture<?> tryFire(int ignore) {
             Thread w; // no need to atomically claim
             if ((w = thread) != null) {
                 thread = null;
@@ -1915,7 +1915,7 @@ public class CompletableFuture<T> implements Future<T>, CompletionStep<T> {
             return isReleasable();
         }
 
-        final boolean isLive() {
+        boolean isLive() {
             return thread != null;
         }
     }

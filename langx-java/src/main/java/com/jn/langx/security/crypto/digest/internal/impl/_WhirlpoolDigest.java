@@ -195,7 +195,7 @@ public final class _WhirlpoolDigest implements Memoable, Digest {
         }
     }
 
-    protected void processBlock() {
+    void processBlock() {
         // buffer contents have been transferred to the _block[] array via
         // processFilledBuffer
 

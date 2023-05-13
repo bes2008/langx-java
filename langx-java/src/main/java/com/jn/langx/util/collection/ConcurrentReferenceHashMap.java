@@ -253,12 +253,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         @Override
-        public final int keyHash() {
+        public int keyHash() {
             return hash;
         }
 
         @Override
-        public final Object keyRef() {
+        public Object keyRef() {
             return this;
         }
     }
@@ -275,12 +275,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         @Override
-        public final int keyHash() {
+        public int keyHash() {
             return hash;
         }
 
         @Override
-        public final Object keyRef() {
+        public Object keyRef() {
             return this;
         }
     }
@@ -296,12 +296,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         @Override
-        public final int keyHash() {
+        public int keyHash() {
             return hash;
         }
 
         @Override
-        public final Object keyRef() {
+        public Object keyRef() {
             return keyRef;
         }
     }
@@ -317,12 +317,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         @Override
-        public final int keyHash() {
+        public int keyHash() {
             return hash;
         }
 
         @Override
-        public final Object keyRef() {
+        public Object keyRef() {
             return keyRef;
         }
     }
@@ -355,7 +355,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             this.valueRef = newValueReference(value, valueType, refQueue);
         }
 
-        final Object newKeyReference(
+        Object newKeyReference(
                 K key, ReferenceType keyType,
                 ReferenceQueue<Object> refQueue) {
             if (keyType == ReferenceType.WEAK) {
@@ -368,7 +368,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             return key;
         }
 
-        final Object newValueReference(
+        Object newValueReference(
                 V value, ReferenceType valueType,
                 ReferenceQueue<Object> refQueue) {
             if (valueType == ReferenceType.WEAK) {
@@ -382,7 +382,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         }
 
         @SuppressWarnings("unchecked")
-        final K key() {
+        K key() {
             if (keyRef instanceof KeyReference) {
                 return ((Reference<K>) keyRef).get();
             }
@@ -390,12 +390,12 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             return (K) keyRef;
         }
 
-        final V value() {
+        V value() {
             return dereferenceValue(valueRef);
         }
 
         @SuppressWarnings("unchecked")
-        final V dereferenceValue(Object value) {
+        V dereferenceValue(Object value) {
             if (value instanceof KeyReference) {
                 return ((Reference<V>) value).get();
             }
@@ -403,7 +403,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             return (V) value;
         }
 
-        final void setValue(V value, ReferenceType valueType, ReferenceQueue<Object> refQueue) {
+        void setValue(V value, ReferenceType valueType, ReferenceQueue<Object> refQueue) {
             this.valueRef = newValueReference(value, valueType, refQueue);
         }
 
@@ -816,7 +816,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
             }
         }
 
-        final void removeStale() {
+        void removeStale() {
             KeyReference ref;
             while ((ref = (KeyReference) refQueue.poll()) != null) {
                 remove(ref.keyRef(), ref.keyHash(), null, true);

@@ -39,7 +39,7 @@ public final class LongAdder extends Striped64 implements Serializable, LongAdda
     /**
      * Version of plus for use in retryUpdate
      */
-    final long fn(long v, long x) { return v + x; }
+    long fn(long v, long x) { return v + x; }
 
     /**
      * Creates a new adder with initial sum of zero.
