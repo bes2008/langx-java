@@ -266,10 +266,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         }
         ClassPathResource o2 = (ClassPathResource) obj;
 
-        if (!Objs.equals(this.getLocation(), o2.getLocation())) {
-            return false;
-        }
-        return true;
+        return Objs.equals(this.getLocation(), o2.getLocation());
     }
 
     @Override

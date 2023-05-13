@@ -1653,9 +1653,7 @@ public class Reflects {
                     if (Objs.equals(parentClassName, parent)) {
                         return true;
                     }
-                    if (isSubClassOrEquals(parent, parentClass, checkSuperClass, checkInterfaces)) {
-                        return true;
-                    }
+                    return isSubClassOrEquals(parent, parentClass, checkSuperClass, checkInterfaces);
                 }
             }
 

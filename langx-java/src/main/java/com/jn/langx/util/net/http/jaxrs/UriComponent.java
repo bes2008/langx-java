@@ -167,7 +167,7 @@ public class UriComponent {
 
         for (int i = 0; i < s.length(); i++) {
             final char c = s.charAt(i);
-            if ((c < 0x80 && c != '%' && !table[c]) || c >= 0x80) {
+            if (c >= 0x80 || (c != '%' && !table[c])) {
                 if (!template || (c != '{' && c != '}')) {
                     return i;
                 }

@@ -522,10 +522,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
             } else if (!path.equals(other.path)) {
                 return false;
             }
-            if (type != other.type) {
-                return false;
-            }
-            return true;
+            return type == other.type;
         }
 
         public Path getPath() {

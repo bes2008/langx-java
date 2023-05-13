@@ -38,10 +38,7 @@ public class FieldSetterAndGetterClassParser<F extends FieldInfo> implements Cla
     }
 
     private boolean isParsable(Class clazz) {
-        if (clazz == null || clazz == Object.class || clazz.isInterface() || clazz.isArray() || clazz.isAnnotation() || clazz.isPrimitive()) {
-            return false;
-        }
-        return true;
+        return clazz != null && clazz != Object.class && !clazz.isInterface() && !clazz.isArray() && !clazz.isAnnotation() && !clazz.isPrimitive();
     }
 
     @Override

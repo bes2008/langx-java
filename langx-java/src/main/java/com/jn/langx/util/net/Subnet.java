@@ -113,9 +113,7 @@ public class Subnet {
         Subnet subnet = (Subnet) o;
 
         if (mask != subnet.mask) return false;
-        if (!ipAddress.equals(subnet.ipAddress)) return false;
-
-        return true;
+        return ipAddress.equals(subnet.ipAddress);
     }
 
     @Override

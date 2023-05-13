@@ -11,10 +11,7 @@ public class DoubleConverter implements Converter<Object, Double> {
 
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
-        if(Primitives.isDouble(targetClass)){
-            return true;
-        }
-        return false;
+        return Primitives.isDouble(targetClass);
     }
 
     @Override

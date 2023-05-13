@@ -224,10 +224,7 @@ class CrcAlgoMetadata implements Named {
         if (this.check != other.check) {
             return false;
         }
-        if (!Objs.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
+        return Objs.equals(this.name, other.name);
     }
 
 }

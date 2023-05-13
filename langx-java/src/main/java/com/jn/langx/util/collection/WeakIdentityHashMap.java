@@ -150,9 +150,7 @@ public class WeakIdentityHashMap<K, V> implements Map<K, V> {
             }
             if (o instanceof WeakIdentityHashMap.IdentityWeakReference) {
                 IdentityWeakReference ref = (IdentityWeakReference) o;
-                if (this.get() == ref.get()) {
-                    return true;
-                }
+                return this.get() == ref.get();
             }
             return false;
         }

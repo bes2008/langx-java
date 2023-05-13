@@ -135,10 +135,7 @@ public class RegexpPatterns {
      */
     public static boolean test(@Nullable Regexp pattern, @Nullable String string) {
         if (pattern == null) {
-            if (Emptys.isEmpty(string)) {
-                return true;
-            }
-            return false;
+            return Emptys.isEmpty(string);
         }
         if (Emptys.isEmpty(string)) {
             return false;
@@ -153,10 +150,7 @@ public class RegexpPatterns {
      */
     public static boolean contains(@Nullable String text, @Nullable Regexp pattern) {
         if (pattern == null) {
-            if (Emptys.isEmpty(text)) {
-                return true;
-            }
-            return false;
+            return Emptys.isEmpty(text);
         }
         if (Emptys.isEmpty(text)) {
             return false;

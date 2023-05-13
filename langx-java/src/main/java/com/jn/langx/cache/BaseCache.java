@@ -190,10 +190,7 @@ public abstract class BaseCache<K, V> implements Cache<K, V>, Lifecycle {
         }, new Predicate<K>() {
             @Override
             public boolean test(K key) {
-                if (timeout != null && timeout.isCancelled()) {
-                    return true;
-                }
-                return false;
+                return timeout != null && timeout.isCancelled();
             }
         });
     }

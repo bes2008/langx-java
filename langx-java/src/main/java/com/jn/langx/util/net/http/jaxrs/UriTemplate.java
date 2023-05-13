@@ -93,15 +93,12 @@ public class UriTemplate {
             // If the number of template variables is equal
             // compare the number of explicit regexes
             i = o2.getNumberOfExplicitRegexes() - o1.getNumberOfExplicitRegexes();
-            if (i != 0) {
-                return i;
-            }
+            return i;
 
             // If the number of explicit characters and template variables
             // are equal then
             // the order does not matter as long as templates with different
             // explicit characters are distinguishable
-            return 0;
         }
     };
 

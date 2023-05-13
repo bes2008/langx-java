@@ -56,9 +56,6 @@ public abstract class AbstractUnaryOperator<E extends Expression<R>, R> extends 
         if (!Objs.equals(this.operateSymbol, other.operateSymbol)) {
             return false;
         }
-        if (!Objs.equals(this.target, other.target)) {
-            return false;
-        }
-        return true;
+        return Objs.equals(this.target, other.target);
     }
 }

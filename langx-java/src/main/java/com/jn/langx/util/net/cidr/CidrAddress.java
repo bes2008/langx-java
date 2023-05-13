@@ -372,9 +372,7 @@ public final class CidrAddress implements Serializable, Comparable<CidrAddress> 
         if (bits > 0) {
             assert bits < 8;
             int mask = 0xff << 8 - bits;
-            if ((address[i] & 0xff & mask) != (test[i] & 0xff & mask)) {
-                return false;
-            }
+            return (address[i] & 0xff & mask) == (test[i] & 0xff & mask);
         }
         return true;
     }

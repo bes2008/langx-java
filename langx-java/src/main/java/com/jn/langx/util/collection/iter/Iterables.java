@@ -24,10 +24,7 @@ public class Iterables {
         if (obj instanceof Iterator) {
             return true;
         }
-        if (obj instanceof Enumeration) {
-            return true;
-        }
-        return false;
+        return obj instanceof Enumeration;
     }
 
     public static <E> NullIterator<E> nullIterator() {

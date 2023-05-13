@@ -50,10 +50,7 @@ public class Divide extends AbstractBinaryOperator<NumberResultExpression<Number
         stringBuilder.append(" ").append(getOperateSymbol()).append(" ");
 
         NumberResultExpression<Number> right = getRight();
-        boolean rightBrace = false;
-        if (right instanceof ArithmeticOperator) {
-            rightBrace = true;
-        }
+        boolean rightBrace = right instanceof ArithmeticOperator;
         if (rightBrace) {
             stringBuilder.append("(");
         }

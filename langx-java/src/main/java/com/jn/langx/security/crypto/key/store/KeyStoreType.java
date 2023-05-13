@@ -42,10 +42,7 @@ public class KeyStoreType {
         if (!Objs.equals(this.type, that.type)) {
             return false;
         }
-        if (!Objs.equals(this.provider, that.provider)) {
-            return false;
-        }
-        return true;
+        return Objs.equals(this.provider, that.provider);
     }
 
     @Override

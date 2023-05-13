@@ -36,11 +36,7 @@ public class Locations {
             return false;
         }
 
-        if (resource instanceof UrlResource) {
-            return true;
-        }
-
-        return false;
+        return resource instanceof UrlResource;
     }
 
     public static boolean isJarLocation(Location location) {

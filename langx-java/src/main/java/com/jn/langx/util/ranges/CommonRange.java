@@ -21,9 +21,7 @@ public class CommonRange<T extends Comparable<T>> extends Range<T> {
         T end = getEndInclusive();
         if (end != null) {
             int delta = end.compareTo(value);
-            if (delta < 0) {
-                return false;
-            }
+            return delta >= 0;
         }
         return true;
     }

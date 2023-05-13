@@ -29,10 +29,7 @@ public class Namespaces {
     }
 
     public static boolean isNamespaceAttribute(Attr attribute) {
-        if (XMLNS_ATTRIBUTE.equals(attribute.getLocalName()) || (XMLNS_ATTRIBUTE + ":" + attribute.getLocalName()).equals(attribute.getName())) {
-            return true;
-        }
-        return false;
+        return XMLNS_ATTRIBUTE.equals(attribute.getLocalName()) || (XMLNS_ATTRIBUTE + ":" + attribute.getLocalName()).equals(attribute.getName());
     }
 
     public static Map<String, Namespace> getDocumentNamespaces(Node node) {
@@ -100,10 +97,7 @@ public class Namespaces {
                 return isCustomNamespace(namespace);
             }
         })) {
-            if (isDefaultIfJustHasXsi && namespaceMap.size() == 1 && namespaceMap.containsKey(NAMESPACE_XSI_NAME)) {
-                return false;
-            }
-            return true;
+            return !isDefaultIfJustHasXsi || namespaceMap.size() != 1 || !namespaceMap.containsKey(NAMESPACE_XSI_NAME);
         }
 
         return false;

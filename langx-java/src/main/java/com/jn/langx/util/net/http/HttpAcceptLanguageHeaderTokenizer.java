@@ -83,10 +83,7 @@ public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
             if(!Objs.equals(this.locale, ac.locale)){
                 return false;
             }
-            if(!Objs.equals(this.quality, ac.quality)){
-                return false;
-            }
-            return true;
+            return Objs.equals(this.quality, ac.quality);
         }
 
         @Override

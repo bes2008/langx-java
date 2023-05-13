@@ -51,10 +51,7 @@ public class Pair<K, V> implements Map.Entry<K, V> {
         if (!Objs.equals(key, that.key)) {
             return false;
         }
-        if (!Objs.equals(value, that.value)) {
-            return false;
-        }
-        return true;
+        return Objs.equals(value, that.value);
     }
 
     @Override

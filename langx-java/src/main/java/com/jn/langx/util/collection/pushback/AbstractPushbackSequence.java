@@ -46,8 +46,6 @@ public abstract class AbstractPushbackSequence<T> implements PushbackSequence<T>
             return false;
         if (input.length() == 0)
             return false;
-        if (index >= input.length())
-            return false;
-        return true;
+        return index < input.length();
     }
 }

@@ -58,10 +58,7 @@ public class Enums {
                     if (aClass == Enum.class) {
                         return false;
                     }
-                    if (Reflects.isSubClassOrEquals(aClass, tClass)) {
-                        return true;
-                    }
-                    return false;
+                    return Reflects.isSubClassOrEquals(aClass, tClass);
                 }
             });
 

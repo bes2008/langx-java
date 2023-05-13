@@ -35,10 +35,7 @@ public class Entry<K, V> extends Pair<K, V> {
         if (!Objs.equals(getKey(), that.getKey())) {
             return false;
         }
-        if (!Objs.equals(getValue(), that.getValue())) {
-            return false;
-        }
-        return true;
+        return Objs.equals(getValue(), that.getValue());
     }
 
     @Override

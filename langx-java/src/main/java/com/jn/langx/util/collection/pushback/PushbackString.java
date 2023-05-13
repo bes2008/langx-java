@@ -41,10 +41,7 @@ public class PushbackString extends AbstractPushbackSequence<Character> {
         if (input.length() == 0){
             return false;
         }
-        if (index >= input.length()){
-            return false;
-        }
-        return true;
+        return index < input.length();
     }
 
     /*

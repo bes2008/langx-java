@@ -475,11 +475,7 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
             final Object v1 = this.node.value;
             final Object v2 = other.getValue();
 
-            if (v1 != v2 && (v1 == null || !v1.equals(v2))) {
-                return false;
-            }
-
-            return true;
+            return v1 == v2 || (v1 != null && v1.equals(v2));
         }
     }
 

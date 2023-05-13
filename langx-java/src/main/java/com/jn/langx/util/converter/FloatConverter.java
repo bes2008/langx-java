@@ -11,10 +11,7 @@ public class FloatConverter implements Converter<Object, Float> {
 
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
-        if(Primitives.isFloat(targetClass)){
-            return true;
-        }
-        return false;
+        return Primitives.isFloat(targetClass);
     }
 
     @Override

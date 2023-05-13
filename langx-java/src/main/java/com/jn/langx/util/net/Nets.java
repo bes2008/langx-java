@@ -505,11 +505,7 @@ public class Nets {
             return false;
         }
 
-        if (asciiString.length() > MAX_DOMAIN_PART_LENGTH) {
-            return false;
-        }
-
-        return true;
+        return asciiString.length() <= MAX_DOMAIN_PART_LENGTH;
     }
 
 
@@ -840,10 +836,7 @@ public class Nets {
 
 
     public static boolean isValidPort(int port) {
-        if (port < 0 || port > 0xFFFF) {
-            return false;
-        }
-        return true;
+        return port >= 0 && port <= 0xFFFF;
     }
 
     /**

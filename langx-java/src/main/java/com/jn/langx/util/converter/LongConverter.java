@@ -13,10 +13,7 @@ public class LongConverter implements Converter<Object, Long> {
 
     @Override
     public boolean isConvertible(Class sourceClass, Class targetClass) {
-        if(Primitives.isLong(targetClass)){
-            return true;
-        }
-        return false;
+        return Primitives.isLong(targetClass);
     }
 
     @Override

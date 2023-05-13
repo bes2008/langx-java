@@ -386,10 +386,7 @@ public class PatternWithGroups {
             return false;
         }
         final PatternWithGroups that = (PatternWithGroups) obj;
-        if (!Objs.equals(this.regex, that.regex)) {
-            return false;
-        }
-        return true;
+        return Objs.equals(this.regex, that.regex);
     }
 
     @Override

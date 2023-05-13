@@ -788,13 +788,8 @@ public final class CsvFormat implements Serializable {
             return false;
         }
         if (recordSeparator == null) {
-            if (other.recordSeparator != null) {
-                return false;
-            }
-        } else if (!recordSeparator.equals(other.recordSeparator)) {
-            return false;
-        }
-        return true;
+            return other.recordSeparator == null;
+        } else return recordSeparator.equals(other.recordSeparator);
     }
 
     /**

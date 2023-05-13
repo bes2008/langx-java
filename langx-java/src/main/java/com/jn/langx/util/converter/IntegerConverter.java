@@ -21,9 +21,7 @@ public class IntegerConverter implements Converter<Object, Integer> {
             if (sourceClass.isEnum() || Reflects.isSubClassOrEquals(CommonEnum.class, sourceClass)) {
                 return true;
             }
-            if(Primitives.isChar(sourceClass)){
-                return true;
-            }
+            return Primitives.isChar(sourceClass);
         }
         return false;
     }

@@ -296,7 +296,7 @@ public class HashTrie<T> implements Trie<T>
          */
         boolean containsValue(Object toFind)
         {
-            if(value != null && toFind.equals(value))
+            if(toFind.equals(value))
                 return true;
             if(nextMap == null)
                 return false;
