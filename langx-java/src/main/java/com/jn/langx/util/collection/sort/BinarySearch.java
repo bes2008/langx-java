@@ -5,6 +5,7 @@ import com.jn.langx.util.comparator.ComparableComparator;
 
 import java.util.Comparator;
 
+@SuppressWarnings("ALL")
 public class BinarySearch {
     private BinarySearch(){
 

@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
+@SuppressWarnings("ALL")
 public class CandidatePatternsDateTimeParser implements DateTimeParser {
     private Set<String> patterns = Collects.newLinkedHashSet();
     private Set<TimeZone> timeZones = Collects.newLinkedHashSet(TimeZone.getDefault());

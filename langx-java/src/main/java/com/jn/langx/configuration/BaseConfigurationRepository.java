@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * @since 4.7.4
  */
+@SuppressWarnings("rawtypes")
 public abstract class BaseConfigurationRepository <T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends AbstractLifecycle implements ConfigurationRepository<T, Loader, Writer>, Reloadable {
     @NonNull
     protected Loader loader;

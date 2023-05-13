@@ -4,6 +4,7 @@ import com.jn.langx.IdGenerator;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+@SuppressWarnings("ALL")
 public class AutoIncrementIdGenerator implements IdGenerator {
     private final AtomicLong value;
 

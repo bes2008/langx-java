@@ -37,7 +37,7 @@ public class PooledBytesRandom extends CommonBytesRandom {
         return getRandomBytes(size);
     }
 
-    private final byte[] getRandomBytes(int bytesLength) {
+    private byte[] getRandomBytes(int bytesLength) {
         // 检查是否需要重新生成随机数
         boolean reGenBytes = false;
         if (pool == null || pool.capacity() < bytesLength) {

@@ -13,6 +13,7 @@ import java.util.Set;
 /**
  * @since 4.5.2
  */
+@SuppressWarnings("rawtypes")
 public class CandidatePatternsTimeParser implements TimeParser {
     private final Set<String> patterns = Collects.newLinkedHashSet("HH:mm:ss", "hh:mm:ss a");
     private final Set<Locale> locales = Collects.newLinkedHashSet(Locale.ENGLISH, Locale.getDefault());

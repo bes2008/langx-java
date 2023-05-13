@@ -54,6 +54,7 @@ public class ClassArrayEditor extends PropertyEditorSupport {
     /**
      * @return a comma seperated string of the class array
      */
+    @SuppressWarnings("rawtypes")
     @Override
     public String getAsText() {
         Class<?>[] theValue = (Class[]) getValue();

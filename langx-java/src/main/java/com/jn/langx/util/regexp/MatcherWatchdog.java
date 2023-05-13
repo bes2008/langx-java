@@ -5,7 +5,7 @@ package com.jn.langx.util.regexp;
  * Threads that invoke {@link #register(RegexpMatcher)}, but take too long to invoke the {@link #unregister(RegexpMatcher)} method
  * will be interrupted.
  * <p>
- * This is needed for Joni's {@link org.joni.Matcher#search(int, int, int)} method, because
+ * This is needed for Joni's {@literal search(int, int, int)} method, because
  * it can end up spinning endlessly if the regular expression is too complex. Joni has checks
  * that for every 30k iterations it checks if the current thread is interrupted and if so
  * returns {@link RegexpMatcher#interrupt()}.

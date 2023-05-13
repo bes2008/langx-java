@@ -11,7 +11,7 @@ import com.jn.langx.util.timing.timer.Timer;
 import java.lang.ref.ReferenceQueue;
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings({"unused"})
+@SuppressWarnings({"unused", "rawtypes"})
 public class CacheBuilder<K, V> {
     private Class cacheClass = LRUCache.class;
     private int concurrencyLevel = Runtime.getRuntime().availableProcessors();
@@ -49,6 +49,7 @@ public class CacheBuilder<K, V> {
         return new CacheBuilder<K, V>();
     }
 
+    @SuppressWarnings("rawtypes")
     public CacheBuilder<K, V> cacheClass(Class cacheClass) {
         this.cacheClass = cacheClass;
         return this;

@@ -16,6 +16,7 @@ public class BeanAccessorFactory<T> extends AbstractAccessorFactory<T> {
         return accessor;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public List<Class> applyTo() {
         return Collects.<Class>asList(Object.class);

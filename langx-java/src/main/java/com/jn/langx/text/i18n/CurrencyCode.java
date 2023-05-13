@@ -1565,7 +1565,7 @@ public enum CurrencyCode {
 
     /**
      * <a href="http://en.wikipedia.org/wiki/Russian_ruble">Russian Ruble</a>
-     * before the 1998 redenomination (1 {@link #RUB} = 1,000 {@link #RUR}).
+     * before the 1998 redenomination (1 {@link #RUB} = 1,000  #RUR).
      * [numeric code = 810, minor unit = 2]
      * <p>
      * <p>Used by:</p>

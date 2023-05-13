@@ -26,6 +26,7 @@ import java.util.*;
  *
  * @since 4.3.7
  */
+@SuppressWarnings("rawtypes")
 abstract class BridgeMethodResolver {
     private BridgeMethodResolver(){
 

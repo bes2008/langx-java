@@ -5,6 +5,7 @@ import com.jn.langx.util.io.close.AbstractCloser;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class AutoCloseableCloser extends AbstractCloser<AutoCloseable> {
     @Override
     public List<Class> applyTo() {
