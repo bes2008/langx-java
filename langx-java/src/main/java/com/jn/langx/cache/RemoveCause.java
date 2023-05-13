@@ -5,5 +5,5 @@ public enum RemoveCause {
     EXPLICIT,
     COLLECTED,
     REPLACED,
-    SIZE;
+    SIZE
 }

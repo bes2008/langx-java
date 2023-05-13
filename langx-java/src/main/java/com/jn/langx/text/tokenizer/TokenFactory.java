@@ -10,5 +10,5 @@ import com.jn.langx.util.function.Supplier2;
  * @param <Token>
  */
 public interface TokenFactory<Token> extends Supplier2<String, Boolean, Token> {
-    public Token get(String tokenContent, Boolean isDelimiter);
+    Token get(String tokenContent, Boolean isDelimiter);
 }

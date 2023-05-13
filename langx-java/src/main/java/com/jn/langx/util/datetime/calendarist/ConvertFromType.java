@@ -9,6 +9,6 @@ public enum ConvertFromType {
 
     FROM_LUNAR(),
 
-    FROM_CYCLE();
+    FROM_CYCLE()
 
 }

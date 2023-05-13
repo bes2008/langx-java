@@ -6,7 +6,7 @@ public class SessionEvent extends DomainEvent<Session> {
     public static enum SessionEventType {
         CREATED,
         EXPIRE,
-        INVALIDATED;
+        INVALIDATED
     }
 
     private SessionEventType eventType;

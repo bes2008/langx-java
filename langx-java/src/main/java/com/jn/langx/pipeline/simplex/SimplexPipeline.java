@@ -8,6 +8,6 @@ public interface SimplexPipeline {
 
      void clear();
 
-    public Object handle(Object message);
+    Object handle(Object message);
 
 }

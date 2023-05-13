@@ -216,7 +216,7 @@ public class ClusterAddressParser implements Parser<String, List<NetworkAddress>
 
     public static enum ClusterAddressStyle {
         HOST_PORT_PAIR,
-        PORT_AT_END;
+        PORT_AT_END
     }
 
 

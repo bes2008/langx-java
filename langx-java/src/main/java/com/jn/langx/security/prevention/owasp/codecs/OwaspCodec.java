@@ -19,7 +19,7 @@ public interface OwaspCodec<T> {
      *         the String to encode
      * @return the encoded String
      */
-    public String encode(char[] immune, String input);
+    String encode(char[] immune, String input);
 
     /**
      * Default implementation that should be overridden in specific codecs.
@@ -31,7 +31,7 @@ public interface OwaspCodec<T> {
      * @return
      *         the encoded Character
      */
-    public String encodeCharacter(char[] immune, Character c);
+    String encodeCharacter(char[] immune, Character c);
 
     /**
      * Default codepoint implementation that should be overridden in specific codecs.
@@ -41,7 +41,7 @@ public interface OwaspCodec<T> {
      * @return
      *         the encoded Character
      */
-    public String encodeCharacter(char[] immune, int codePoint);
+    String encodeCharacter(char[] immune, int codePoint);
 
     /**
      * Decode a String that was encoded using the encode method in this Class
@@ -51,7 +51,7 @@ public interface OwaspCodec<T> {
      * @return
      *        the decoded String
      */
-    public String decode(String input);
+    String decode(String input);
 
     /**
      * Returns the decoded version of the next character from the input string and advances the
@@ -62,48 +62,48 @@ public interface OwaspCodec<T> {
      *
      * @return the decoded Character
      */
-    public T decodeCharacter(PushbackSequence<T> input);
+    T decodeCharacter(PushbackSequence<T> input);
 
     /**
      * Lookup the hex value of any character that is not alphanumeric.
      * @param c The character to lookup.
      * @return return null if alphanumeric or the character code in hex.
      */
-    public String getHexForNonAlphanumeric(char c);
+    String getHexForNonAlphanumeric(char c);
 
     /**
      * Lookup the hex value of any character that is not alphanumeric.
      * @param c The character to lookup.
      * @return return null if alphanumeric or the character code in hex.
      */
-    public String getHexForNonAlphanumeric(int c);
+    String getHexForNonAlphanumeric(int c);
 
     /**
      * Convert the {@code char} parameter to its octal representation.
      * @param c the character for which to return the new representation.
      * @return the octal representation.
      */
-    public String toOctal(char c);
+    String toOctal(char c);
 
     /**
      * Convert the {@code char} parameter to its hexadecimal representation.
      * @param c the character for which to return the new representation.
      * @return the hexadecimal representation.
      */
-    public String toHex(char c);
+    String toHex(char c);
 
     /**
      * Convert the {@code int} parameter to its hexadecimal representation.
      * @param c the character for which to return the new representation.
      * @return the hexadecimal representation.
      */
-    public String toHex(int c);
+    String toHex(int c);
 
     /**
      * Utility to search a char[] for a specific char.
      *
      * @return True if the supplied array contains the specified character. False otherwise.
      */
-    public boolean containsCharacter(char c, char[] array);
+    boolean containsCharacter(char c, char[] array);
 
 }

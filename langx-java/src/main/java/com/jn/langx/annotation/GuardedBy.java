@@ -11,5 +11,5 @@ import static java.lang.annotation.ElementType.*;
 @Documented
 @Target(value = {TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE})
 public @interface GuardedBy {
-    public String value();
+    String value();
 }

@@ -14,7 +14,7 @@ public interface Hasher extends Factory<Object, Hasher>, Named {
      * @param bytes input bytes
      * @return hash value
      */
-    public long hash(byte[] bytes);
+    long hash(byte[] bytes);
 
     /**
      * 一次性计算 hash
@@ -26,7 +26,7 @@ public interface Hasher extends Factory<Object, Hasher>, Named {
      * @param seed  seed value
      * @return hash value
      */
-    public long hash(byte[] bytes, long seed);
+    long hash(byte[] bytes, long seed);
 
     /**
      * 一次性计算 hash
@@ -39,7 +39,7 @@ public interface Hasher extends Factory<Object, Hasher>, Named {
      * @param seed   seed value
      * @return hash value
      */
-    public long hash(byte[] bytes, int length, long seed);
+    long hash(byte[] bytes, int length, long seed);
 
     @Override
     Hasher get(Object initParams);

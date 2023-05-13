@@ -14,7 +14,7 @@ public interface Stack<E> extends Collection<E> {
      * @return  the <code>item</code> argument.
      * @see     java.util.Vector#addElement
      */
-    public E push(E item);
+    E push(E item);
 
     /**
      * Removes the object at the top of this stack and returns that
@@ -24,7 +24,7 @@ public interface Stack<E> extends Collection<E> {
      *          of the <tt>Vector</tt> object).
      * @throws EmptyStackException  if this stack is empty.
      */
-    public  E pop() ;
+    E pop() ;
 
     /**
      * Looks at the object at the top of this stack without removing it
@@ -34,7 +34,7 @@ public interface Stack<E> extends Collection<E> {
      *          of the <tt>Vector</tt> object).
      * @throws  EmptyStackException  if this stack is empty.
      */
-    public E peek() ;
+    E peek() ;
 
 
     /**
@@ -51,5 +51,5 @@ public interface Stack<E> extends Collection<E> {
      *          the object is located; the return value <code>-1</code>
      *          indicates that the object is not on the stack.
      */
-    public int search(Object o);
+    int search(Object o);
 }

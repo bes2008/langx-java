@@ -364,14 +364,14 @@ public class ForkJoinPool extends AbstractExecutorService {
      * for {@code ForkJoinWorkerThread} subclasses that extend base
      * functionality or initialize threads with different contexts.
      */
-    public static interface ForkJoinWorkerThreadFactory {
+    public interface ForkJoinWorkerThreadFactory {
         /**
          * Returns a new worker thread operating in the given pool.
          *
          * @param pool the pool this thread works in
          * @throws NullPointerException if the pool is null
          */
-        public ForkJoinWorkerThread newThread(ForkJoinPool pool);
+        ForkJoinWorkerThread newThread(ForkJoinPool pool);
     }
 
     /**
@@ -2111,7 +2111,7 @@ public class ForkJoinPool extends AbstractExecutorService {
      *   }
      * }}</pre>
      */
-    public static interface ManagedBlocker {
+    public interface ManagedBlocker {
         /**
          * Possibly blocks the current thread, for example waiting for
          * a lock or condition.

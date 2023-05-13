@@ -8,5 +8,5 @@ public enum EcsCompatibility {
     /**
      * 采用ecs-v1
      */
-    v1;
+    v1
 }

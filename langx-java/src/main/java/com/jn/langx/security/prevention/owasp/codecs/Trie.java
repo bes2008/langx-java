@@ -9,13 +9,13 @@ import java.util.Map;
 import java.util.Set;
 
 interface Trie<T> extends Map<CharSequence, T> {
-    public Entry<CharSequence, T> getLongestMatch(CharSequence key);
+    Entry<CharSequence, T> getLongestMatch(CharSequence key);
 
-    public Entry<CharSequence, T> getLongestMatch(PushbackReader keyIn) throws IOException;
+    Entry<CharSequence, T> getLongestMatch(PushbackReader keyIn) throws IOException;
 
-    public int getMaxKeyLength();
+    int getMaxKeyLength();
 
-    static class TrieProxy<T> implements Trie<T> {
+    class TrieProxy<T> implements Trie<T> {
         private Trie<T> wrapped;
 
         TrieProxy(Trie<T> toWrap) {
@@ -97,7 +97,7 @@ interface Trie<T> extends Map<CharSequence, T> {
         }
     }
 
-    static class Unmodifiable<T> extends TrieProxy<T> {
+    class Unmodifiable<T> extends TrieProxy<T> {
         Unmodifiable(Trie<T> toWrap) {
             super(toWrap);
         }
@@ -137,7 +137,7 @@ interface Trie<T> extends Map<CharSequence, T> {
         }
     }
 
-    static class Util {
+    class Util {
         private Util() {
         }
 

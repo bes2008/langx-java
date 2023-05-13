@@ -10,8 +10,8 @@ import java.lang.reflect.Method;
 public class Uptime {
     public static final int NOIMPL = -1;
 
-    public static interface Impl {
-        public long getUptime();
+    public interface Impl {
+        long getUptime();
     }
 
     public static class DefaultImpl implements Uptime.Impl {

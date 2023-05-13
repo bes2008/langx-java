@@ -125,8 +125,6 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         IDENTITY_COMPARISONS
     }
 
-    ;
-
     /* ---------------- Constants -------------- */
 
     static final ReferenceType DEFAULT_KEY_TYPE = ReferenceType.WEAK;

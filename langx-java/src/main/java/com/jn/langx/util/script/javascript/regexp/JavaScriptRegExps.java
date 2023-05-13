@@ -160,6 +160,6 @@ public class JavaScriptRegExps {
 
 
     interface MutilTest {
-        public Object invoke(Invocable engine, Object obj, Object[] params);
+        Object invoke(Invocable engine, Object obj, Object[] params);
     }
 }

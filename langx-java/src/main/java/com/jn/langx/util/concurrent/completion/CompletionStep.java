@@ -134,7 +134,7 @@ public interface CompletionStep<T> {
      * @param <U> the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> thenApply(Function<? super T, ? extends U> fn);
+    <U> CompletionStep<U> thenApply(Function<? super T, ? extends U> fn);
 
     /**
      * Returns a new CompletionStage that, when this stage completes
@@ -150,7 +150,7 @@ public interface CompletionStep<T> {
      * @param <U> the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> thenApplyAsync
+    <U> CompletionStep<U> thenApplyAsync
     (Function<? super T, ? extends U> fn);
 
     /**
@@ -167,7 +167,7 @@ public interface CompletionStep<T> {
      * @param <U>      the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> thenApplyAsync
+    <U> CompletionStep<U> thenApplyAsync
     (Function<? super T, ? extends U> fn,
      Executor executor);
 
@@ -183,7 +183,7 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> thenAccept(Consumer<? super T> action);
+    CompletionStep<Void> thenAccept(Consumer<? super T> action);
 
     /**
      * Returns a new CompletionStage that, when this stage completes
@@ -198,7 +198,7 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> thenAcceptAsync(Consumer<? super T> action);
+    CompletionStep<Void> thenAcceptAsync(Consumer<? super T> action);
 
     /**
      * Returns a new CompletionStage that, when this stage completes
@@ -213,8 +213,8 @@ public interface CompletionStep<T> {
      * @param executor the executor to use for asynchronous execution
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> thenAcceptAsync(Consumer<? super T> action,
-                                                Executor executor);
+    CompletionStep<Void> thenAcceptAsync(Consumer<? super T> action,
+                                         Executor executor);
 
     /**
      * Returns a new CompletionStage that, when this stage completes
@@ -227,7 +227,7 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> thenRun(Runnable action);
+    CompletionStep<Void> thenRun(Runnable action);
 
     /**
      * Returns a new CompletionStage that, when this stage completes
@@ -241,7 +241,7 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> thenRunAsync(Runnable action);
+    CompletionStep<Void> thenRunAsync(Runnable action);
 
     /**
      * Returns a new CompletionStage that, when this stage completes
@@ -255,8 +255,8 @@ public interface CompletionStep<T> {
      * @param executor the executor to use for asynchronous execution
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> thenRunAsync(Runnable action,
-                                             Executor executor);
+    CompletionStep<Void> thenRunAsync(Runnable action,
+                                      Executor executor);
 
     /**
      * Returns a new CompletionStage that, when this and the other
@@ -273,7 +273,7 @@ public interface CompletionStep<T> {
      * @param <V>   the function's return type
      * @return the new CompletionStage
      */
-    public <U, V> CompletionStep<V> thenCombine
+    <U, V> CompletionStep<V> thenCombine
     (CompletionStep<? extends U> other,
      Function2<? super T, ? super U, ? extends V> fn);
 
@@ -293,7 +293,7 @@ public interface CompletionStep<T> {
      * @param <V>   the function's return type
      * @return the new CompletionStage
      */
-    public <U, V> CompletionStep<V> thenCombineAsync
+    <U, V> CompletionStep<V> thenCombineAsync
     (CompletionStep<? extends U> other,
      Function2<? super T, ? super U, ? extends V> fn);
 
@@ -314,7 +314,7 @@ public interface CompletionStep<T> {
      * @param <V>      the function's return type
      * @return the new CompletionStage
      */
-    public <U, V> CompletionStep<V> thenCombineAsync
+    <U, V> CompletionStep<V> thenCombineAsync
     (CompletionStep<? extends U> other,
      Function2<? super T, ? super U, ? extends V> fn,
      Executor executor);
@@ -333,7 +333,7 @@ public interface CompletionStep<T> {
      * @param <U>    the type of the other CompletionStage's result
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<Void> thenAcceptBoth
+    <U> CompletionStep<Void> thenAcceptBoth
     (CompletionStep<? extends U> other,
      Consumer2<? super T, ? super U> action);
 
@@ -352,7 +352,7 @@ public interface CompletionStep<T> {
      * @param <U>    the type of the other CompletionStage's result
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<Void> thenAcceptBothAsync
+    <U> CompletionStep<Void> thenAcceptBothAsync
     (CompletionStep<? extends U> other,
      Consumer2<? super T, ? super U> action);
 
@@ -372,7 +372,7 @@ public interface CompletionStep<T> {
      * @param <U>      the type of the other CompletionStage's result
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<Void> thenAcceptBothAsync
+    <U> CompletionStep<Void> thenAcceptBothAsync
     (CompletionStep<? extends U> other,
      Consumer2<? super T, ? super U> action,
      Executor executor);
@@ -389,8 +389,8 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> runAfterBoth(CompletionStep<?> other,
-                                             Runnable action);
+    CompletionStep<Void> runAfterBoth(CompletionStep<?> other,
+                                      Runnable action);
 
     /**
      * Returns a new CompletionStage that, when this and the other
@@ -405,8 +405,8 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> runAfterBothAsync(CompletionStep<?> other,
-                                                  Runnable action);
+    CompletionStep<Void> runAfterBothAsync(CompletionStep<?> other,
+                                           Runnable action);
 
     /**
      * Returns a new CompletionStage that, when this and the other
@@ -422,9 +422,9 @@ public interface CompletionStep<T> {
      * @param executor the executor to use for asynchronous execution
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> runAfterBothAsync(CompletionStep<?> other,
-                                                  Runnable action,
-                                                  Executor executor);
+    CompletionStep<Void> runAfterBothAsync(CompletionStep<?> other,
+                                           Runnable action,
+                                           Executor executor);
 
     /**
      * Returns a new CompletionStage that, when either this or the
@@ -440,7 +440,7 @@ public interface CompletionStep<T> {
      * @param <U>   the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> applyToEither
+    <U> CompletionStep<U> applyToEither
     (CompletionStep<? extends T> other,
      Function<? super T, U> fn);
 
@@ -459,7 +459,7 @@ public interface CompletionStep<T> {
      * @param <U>   the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> applyToEitherAsync
+    <U> CompletionStep<U> applyToEitherAsync
     (CompletionStep<? extends T> other,
      Function<? super T, U> fn);
 
@@ -479,7 +479,7 @@ public interface CompletionStep<T> {
      * @param <U>      the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> applyToEitherAsync
+    <U> CompletionStep<U> applyToEitherAsync
     (CompletionStep<? extends T> other,
      Function<? super T, U> fn,
      Executor executor);
@@ -497,7 +497,7 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> acceptEither
+    CompletionStep<Void> acceptEither
     (CompletionStep<? extends T> other,
      Consumer<? super T> action);
 
@@ -515,7 +515,7 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> acceptEitherAsync
+    CompletionStep<Void> acceptEitherAsync
     (CompletionStep<? extends T> other,
      Consumer<? super T> action);
 
@@ -534,7 +534,7 @@ public interface CompletionStep<T> {
      * @param executor the executor to use for asynchronous execution
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> acceptEitherAsync
+    CompletionStep<Void> acceptEitherAsync
     (CompletionStep<? extends T> other,
      Consumer<? super T> action,
      Executor executor);
@@ -551,8 +551,8 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> runAfterEither(CompletionStep<?> other,
-                                               Runnable action);
+    CompletionStep<Void> runAfterEither(CompletionStep<?> other,
+                                        Runnable action);
 
     /**
      * Returns a new CompletionStage that, when either this or the
@@ -567,7 +567,7 @@ public interface CompletionStep<T> {
      *               returned CompletionStage
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> runAfterEitherAsync
+    CompletionStep<Void> runAfterEitherAsync
     (CompletionStep<?> other,
      Runnable action);
 
@@ -585,7 +585,7 @@ public interface CompletionStep<T> {
      * @param executor the executor to use for asynchronous execution
      * @return the new CompletionStage
      */
-    public CompletionStep<Void> runAfterEitherAsync
+    CompletionStep<Void> runAfterEitherAsync
     (CompletionStep<?> other,
      Runnable action,
      Executor executor);
@@ -614,7 +614,7 @@ public interface CompletionStep<T> {
      * @param <U> the type of the returned CompletionStage's result
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> thenCompose
+    <U> CompletionStep<U> thenCompose
     (Function<? super T, ? extends CompletionStep<U>> fn);
 
     /**
@@ -639,7 +639,7 @@ public interface CompletionStep<T> {
      * @param <U> the type of the returned CompletionStage's result
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> thenComposeAsync
+    <U> CompletionStep<U> thenComposeAsync
     (Function<? super T, ? extends CompletionStep<U>> fn);
 
     /**
@@ -664,7 +664,7 @@ public interface CompletionStep<T> {
      * @param <U>      the type of the returned CompletionStage's result
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> thenComposeAsync
+    <U> CompletionStep<U> thenComposeAsync
     (Function<? super T, ? extends CompletionStep<U>> fn,
      Executor executor);
 
@@ -683,7 +683,7 @@ public interface CompletionStep<T> {
      * @param <U> the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> handle
+    <U> CompletionStep<U> handle
     (Function2<? super T, Throwable, ? extends U> fn);
 
     /**
@@ -702,7 +702,7 @@ public interface CompletionStep<T> {
      * @param <U> the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> handleAsync
+    <U> CompletionStep<U> handleAsync
     (Function2<? super T, Throwable, ? extends U> fn);
 
     /**
@@ -722,7 +722,7 @@ public interface CompletionStep<T> {
      * @param <U>      the function's return type
      * @return the new CompletionStage
      */
-    public <U> CompletionStep<U> handleAsync
+    <U> CompletionStep<U> handleAsync
     (Function2<? super T, Throwable, ? extends U> fn,
      Executor executor);
 
@@ -748,7 +748,7 @@ public interface CompletionStep<T> {
      * @param action the action to perform
      * @return the new CompletionStage
      */
-    public CompletionStep<T> whenComplete
+    CompletionStep<T> whenComplete
     (Consumer2<? super T, ? super Throwable> action);
 
     /**
@@ -774,7 +774,7 @@ public interface CompletionStep<T> {
      * @param action the action to perform
      * @return the new CompletionStage
      */
-    public CompletionStep<T> whenCompleteAsync
+    CompletionStep<T> whenCompleteAsync
     (Consumer2<? super T, ? super Throwable> action);
 
     /**
@@ -801,7 +801,7 @@ public interface CompletionStep<T> {
      * @param executor the executor to use for asynchronous execution
      * @return the new CompletionStage
      */
-    public CompletionStep<T> whenCompleteAsync
+    CompletionStep<T> whenCompleteAsync
     (Consumer2<? super T, ? super Throwable> action,
      Executor executor);
 
@@ -817,7 +817,7 @@ public interface CompletionStep<T> {
      *           exceptionally
      * @return the new CompletionStage
      */
-    public CompletionStep<T> exceptionally
+    CompletionStep<T> exceptionally
     (Function<Throwable, ? extends T> fn);
 
     /**
@@ -830,6 +830,6 @@ public interface CompletionStep<T> {
      *
      * @return the CompletableFuture
      */
-    public CompletableFuture<T> toCompletableFuture();
+    CompletableFuture<T> toCompletableFuture();
 
 }

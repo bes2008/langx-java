@@ -401,13 +401,13 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
     }
 
     public static enum DirAction {
-        IGNORE, WATCH, ENTER;
+        IGNORE, WATCH, ENTER
     }
 
     /**
      * Listener for path change events
      */
-    public static interface Listener extends EventListener {
+    public interface Listener extends EventListener {
         void onPathWatchEvent(PathWatcher.PathWatchEvent event);
     }
 
@@ -416,7 +416,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
      * <p>
      * Listener that reports accumulated events in one shot
      */
-    public static interface EventListListener extends EventListener {
+    public interface EventListListener extends EventListener {
         void onPathWatchEvents(List<PathWatcher.PathWatchEvent> events);
     }
 
@@ -557,7 +557,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
      * Type of an event
      */
     public static enum PathWatchEventType {
-        ADDED, DELETED, MODIFIED, UNKNOWN;
+        ADDED, DELETED, MODIFIED, UNKNOWN
     }
 
     private static final Logger logger = Loggers.getLogger(PathWatcher.class);

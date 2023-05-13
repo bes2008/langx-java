@@ -65,7 +65,7 @@ public interface UnsafeProxy {
      * @throws RuntimeException No defined exceptions are thrown, not even
      *                          {@link NullPointerException}
      */
-    public abstract int getInt(Object o, long offset);
+    int getInt(Object o, long offset);
 
     /**
      * Stores a value into a given Java variable.
@@ -87,14 +87,14 @@ public interface UnsafeProxy {
      * @throws RuntimeException No defined exceptions are thrown, not even
      *                          {@link NullPointerException}
      */
-    public abstract void putInt(Object o, long offset, int x);
+    void putInt(Object o, long offset, int x);
 
     /**
      * Fetches a reference value from a given Java variable.
      *
      * @see #getInt(Object, long)
      */
-    public abstract Object getObject(Object o, long offset);
+    Object getObject(Object o, long offset);
 
     /**
      * Stores a reference value into a given Java variable.
@@ -107,77 +107,77 @@ public interface UnsafeProxy {
      *
      * @see #putInt(Object, int, int)
      */
-    public abstract void putObject(Object o, long offset, Object x);
+    void putObject(Object o, long offset, Object x);
 
     /**
      * @see #getInt(Object, long)
      */
-    public abstract boolean getBoolean(Object o, long offset);
+    boolean getBoolean(Object o, long offset);
 
     /**
      * @see #putInt(Object, int, int)
      */
-    public abstract void putBoolean(Object o, long offset, boolean x);
+    void putBoolean(Object o, long offset, boolean x);
 
     /**
      * @see #getInt(Object, long)
      */
-    public abstract byte getByte(Object o, long offset);
+    byte getByte(Object o, long offset);
 
     /**
      * @see #putInt(Object, int, int)
      */
-    public abstract void putByte(Object o, long offset, byte x);
+    void putByte(Object o, long offset, byte x);
 
     /**
      * @see #getInt(Object, long)
      */
-    public abstract short getShort(Object o, long offset);
+    short getShort(Object o, long offset);
 
     /**
      * @see #putInt(Object, int, int)
      */
-    public abstract void putShort(Object o, long offset, short x);
+    void putShort(Object o, long offset, short x);
 
     /**
      * @see #getInt(Object, long)
      */
-    public abstract char getChar(Object o, long offset);
+    char getChar(Object o, long offset);
 
     /**
      * @see #putInt(Object, int, int)
      */
-    public abstract void putChar(Object o, long offset, char x);
+    void putChar(Object o, long offset, char x);
 
     /**
      * @see #getInt(Object, long)
      */
-    public abstract long getLong(Object o, long offset);
+    long getLong(Object o, long offset);
 
     /**
      * @see #putInt(Object, int, int)
      */
-    public abstract void putLong(Object o, long offset, long x);
+    void putLong(Object o, long offset, long x);
 
     /**
      * @see #getInt(Object, long)
      */
-    public abstract float getFloat(Object o, long offset);
+    float getFloat(Object o, long offset);
 
     /**
      * @see #putInt(Object, int, int)
      */
-    public abstract void putFloat(Object o, long offset, float x);
+    void putFloat(Object o, long offset, float x);
 
     /**
      * @see #getInt(Object, long)
      */
-    public abstract double getDouble(Object o, long offset);
+    double getDouble(Object o, long offset);
 
     /**
      * @see #putInt(Object, int, int)
      */
-    public abstract void putDouble(Object o, long offset, double x);
+    void putDouble(Object o, long offset, double x);
 
     /**
      * This method, like all others with 32-bit offsets, was
@@ -188,127 +188,127 @@ public interface UnsafeProxy {
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public int getInt(Object o, int offset);
+
+    int getInt(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putInt(Object o, int offset, int x);
+
+    void putInt(Object o, int offset, int x);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public Object getObject(Object o, int offset);
+
+    Object getObject(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putObject(Object o, int offset, Object x);
+
+    void putObject(Object o, int offset, Object x);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public boolean getBoolean(Object o, int offset);
+
+    boolean getBoolean(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putBoolean(Object o, int offset, boolean x);
+
+    void putBoolean(Object o, int offset, boolean x);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public byte getByte(Object o, int offset);
+
+    byte getByte(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putByte(Object o, int offset, byte x);
+
+    void putByte(Object o, int offset, byte x);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public short getShort(Object o, int offset);
+
+    short getShort(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putShort(Object o, int offset, short x);
+
+    void putShort(Object o, int offset, short x);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public char getChar(Object o, int offset);
+
+    char getChar(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putChar(Object o, int offset, char x) ;
+
+    void putChar(Object o, int offset, char x) ;
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public long getLong(Object o, int offset);
+
+    long getLong(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putLong(Object o, int offset, long x);
+
+    void putLong(Object o, int offset, long x);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public float getFloat(Object o, int offset);
+
+    float getFloat(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putFloat(Object o, int offset, float x);
+
+    void putFloat(Object o, int offset, float x);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public double getDouble(Object o, int offset);
+
+    double getDouble(Object o, int offset);
 
     /**
      *  As of jdk 1.4.1, cast the 32-bit offset argument to a long.
      * See {@link #staticFieldOffset}.
      */
-    
-    public void putDouble(Object o, int offset, double x);
+
+    void putDouble(Object o, int offset, double x);
 
     // These work on values in the C heap.
 
@@ -319,7 +319,7 @@ public interface UnsafeProxy {
      *
      * @see #allocateMemory
      */
-    public abstract byte getByte(long address);
+    byte getByte(long address);
 
     /**
      * Stores a value into a given memory address.  If the address is zero, or
@@ -328,67 +328,67 @@ public interface UnsafeProxy {
      *
      * @see #getByte(long)
      */
-    public abstract void putByte(long address, byte x);
+    void putByte(long address, byte x);
 
     /**
      * @see #getByte(long)
      */
-    public abstract short getShort(long address);
+    short getShort(long address);
 
     /**
      * @see #putByte(long, byte)
      */
-    public abstract void putShort(long address, short x);
+    void putShort(long address, short x);
 
     /**
      * @see #getByte(long)
      */
-    public abstract char getChar(long address);
+    char getChar(long address);
 
     /**
      * @see #putByte(long, byte)
      */
-    public abstract void putChar(long address, char x);
+    void putChar(long address, char x);
 
     /**
      * @see #getByte(long)
      */
-    public abstract int getInt(long address);
+    int getInt(long address);
 
     /**
      * @see #putByte(long, byte)
      */
-    public abstract void putInt(long address, int x);
+    void putInt(long address, int x);
 
     /**
      * @see #getByte(long)
      */
-    public abstract long getLong(long address);
+    long getLong(long address);
 
     /**
      * @see #putByte(long, byte)
      */
-    public abstract void putLong(long address, long x);
+    void putLong(long address, long x);
 
     /**
      * @see #getByte(long)
      */
-    public abstract float getFloat(long address);
+    float getFloat(long address);
 
     /**
      * @see #putByte(long, byte)
      */
-    public abstract void putFloat(long address, float x);
+    void putFloat(long address, float x);
 
     /**
      * @see #getByte(long)
      */
-    public abstract double getDouble(long address);
+    double getDouble(long address);
 
     /**
      * @see #putByte(long, byte)
      */
-    public abstract void putDouble(long address, double x);
+    void putDouble(long address, double x);
 
     /**
      * Fetches a  pointer from a given memory address.  If the address is
@@ -404,7 +404,7 @@ public interface UnsafeProxy {
      *
      * @see #allocateMemory
      */
-    public abstract long getAddress(long address);
+    long getAddress(long address);
 
     /**
      * Stores a  pointer into a given memory address.  If the address is
@@ -416,7 +416,7 @@ public interface UnsafeProxy {
      *
      * @see #getAddress(long)
      */
-    public abstract void putAddress(long address, long x);
+    void putAddress(long address, long x);
 
     /// wrappers for malloc, realloc, free:
 
@@ -433,7 +433,7 @@ public interface UnsafeProxy {
      * @see #getByte(long)
      * @see #putByte(long, byte)
      */
-    public abstract long allocateMemory(long bytes);
+    long allocateMemory(long bytes);
 
     /**
      * Resizes a new block of  memory, to the given size in bytes.  The
@@ -450,7 +450,7 @@ public interface UnsafeProxy {
      * @throws OutOfMemoryError         if the allocation is refused by the system
      * @see #allocateMemory
      */
-    public abstract long reallocateMemory(long address, long bytes);
+    long reallocateMemory(long address, long bytes);
 
     /**
      * Sets all bytes in a given block of memory to a fixed value
@@ -469,7 +469,7 @@ public interface UnsafeProxy {
      *
      * @since 1.7
      */
-    public abstract void setMemory(Object o, long offset, long bytes, byte value);
+    void setMemory(Object o, long offset, long bytes, byte value);
 
     /**
      * Sets all bytes in a given block of memory to a fixed value
@@ -478,7 +478,7 @@ public interface UnsafeProxy {
      *
      * <p>Equivalent to <code>setMemory(null, address, bytes, value)</code>.
      */
-    public void setMemory(long address, long bytes, byte value);
+    void setMemory(long address, long bytes, byte value);
 
     /**
      * Sets all bytes in a given block of memory to a copy of another
@@ -497,9 +497,9 @@ public interface UnsafeProxy {
      *
      * @since 1.7
      */
-    public abstract void copyMemory(Object srcBase, long srcOffset,
-                                    Object destBase, long destOffset,
-                                    long bytes);
+    void copyMemory(Object srcBase, long srcOffset,
+                    Object destBase, long destOffset,
+                    long bytes);
 
     /**
      * Sets all bytes in a given block of memory to a copy of another
@@ -508,7 +508,7 @@ public interface UnsafeProxy {
      * <p>
      * Equivalent to <code>copyMemory(null, srcAddress, null, destAddress, bytes)</code>.
      */
-    public void copyMemory(long srcAddress, long destAddress, long bytes);
+    void copyMemory(long srcAddress, long destAddress, long bytes);
 
     /**
      * Disposes of a block of  memory, as obtained from {@link
@@ -517,7 +517,7 @@ public interface UnsafeProxy {
      *
      * @see #allocateMemory
      */
-    public abstract void freeMemory(long address);
+    void freeMemory(long address);
 
     /// random queries
 
@@ -526,7 +526,7 @@ public interface UnsafeProxy {
      * {@link #staticFieldOffset}, {@link #objectFieldOffset},
      * or {@link #arrayBaseOffset}.
      */
-    public static int INVALID_FIELD_OFFSET = -1;
+    int INVALID_FIELD_OFFSET = -1;
 
     /**
      * Returns the offset of a field, truncated to 32 bits.
@@ -543,8 +543,8 @@ public interface UnsafeProxy {
      *  As of jdk 1.4.1, use {@link #staticFieldOffset} for static
      * fields and {@link #objectFieldOffset} for non-static fields.
      */
-    
-    public int fieldOffset(Field f);
+
+    int fieldOffset(Field f);
 
     /**
      * Returns the base address for accessing some static field
@@ -566,8 +566,8 @@ public interface UnsafeProxy {
      * This method works only for JVMs which store all statics
      * for a given class in one place.
      */
-    
-    public Object staticFieldBase(Class<?> c);
+
+    Object staticFieldBase(Class<?> c);
 
     /**
      * Report the location of a given field in the storage allocation of its
@@ -588,7 +588,7 @@ public interface UnsafeProxy {
      *
      * @see #getInt(Object, long)
      */
-    public abstract long staticFieldOffset(Field f);
+    long staticFieldOffset(Field f);
 
     /**
      * Report the location of a given static field, in conjunction with {@link
@@ -608,7 +608,7 @@ public interface UnsafeProxy {
      *
      * @see #getInt(Object, long)
      */
-    public abstract long objectFieldOffset(Field f);
+    long objectFieldOffset(Field f);
 
     /**
      * Report the location of a given static field, in conjunction with {@link
@@ -620,7 +620,7 @@ public interface UnsafeProxy {
      * not be used in any way except as argument to the get and put routines in
      * this class.
      */
-    public abstract Object staticFieldBase(Field f);
+    Object staticFieldBase(Field f);
 
     /**
      * Detect if the given class may need to be initialized. This is often
@@ -629,14 +629,14 @@ public interface UnsafeProxy {
      *
      * @return false only if a call to {@code ensureClassInitialized} would have no effect
      */
-    public abstract boolean shouldBeInitialized(Class<?> c);
+    boolean shouldBeInitialized(Class<?> c);
 
     /**
      * Ensure the given class has been initialized. This is often
      * needed in conjunction with obtaining the static field base of a
      * class.
      */
-    public abstract void ensureClassInitialized(Class<?> c);
+    void ensureClassInitialized(Class<?> c);
 
     /**
      * Report the offset of the first element in the storage allocation of a
@@ -648,7 +648,7 @@ public interface UnsafeProxy {
      * @see #getInt(Object, long)
      * @see #putInt(Object, long, int)
      */
-    public abstract int arrayBaseOffset(Class<?> arrayClass);
+    int arrayBaseOffset(Class<?> arrayClass);
 
 
     /**
@@ -662,7 +662,7 @@ public interface UnsafeProxy {
      * @see #getInt(Object, long)
      * @see #putInt(Object, long, int)
      */
-    public abstract int arrayIndexScale(Class<?> arrayClass);
+    int arrayIndexScale(Class<?> arrayClass);
 
 
     /**
@@ -671,13 +671,13 @@ public interface UnsafeProxy {
      * other primitive types (as stored in  memory blocks) is determined
      * fully by their information content.
      */
-    public abstract int addressSize();
+    int addressSize();
 
     /**
      * Report the size in bytes of a  memory page (whatever that is).
      * This value will always be a power of two.
      */
-    public abstract int pageSize();
+    int pageSize();
 
 
     /// random trusted operations from JNI:
@@ -686,9 +686,9 @@ public interface UnsafeProxy {
      * Tell the VM to define a class, without security checks.  By default, the
      * class loader and protection domain come from the caller's class.
      */
-    public abstract Class<?> defineClass(String name, byte[] b, int off, int len,
-                                         ClassLoader loader,
-                                         ProtectionDomain protectionDomain);
+    Class<?> defineClass(String name, byte[] b, int off, int len,
+                         ClassLoader loader,
+                         ProtectionDomain protectionDomain);
 
     /**
      * Define a class but do not make it known to the class loader or system dictionary.
@@ -707,38 +707,38 @@ public interface UnsafeProxy {
      * @param data      bytes of a class file
      * @param cpPatches where non-null entries exist, they replace corresponding CP entries in data
      */
-    public abstract Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches);
+    Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches);
 
 
     /**
      * Allocate an instance but do not run any constructor.
      * Initializes the class if it has not yet been.
      */
-    public abstract Object allocateInstance(Class<?> cls)
+    Object allocateInstance(Class<?> cls)
             throws InstantiationException;
 
     /**
      * Lock the object.  It must get unlocked via {@link #monitorExit}.
      */
-    public abstract void monitorEnter(Object o);
+    void monitorEnter(Object o);
 
     /**
      * Unlock the object.  It must have been locked via {@link
      * #monitorEnter}.
      */
-    public abstract void monitorExit(Object o);
+    void monitorExit(Object o);
 
     /**
      * Tries to lock the object.  Returns true or false to indicate
      * whether the lock succeeded.  If it did, the object must be
      * unlocked via {@link #monitorExit}.
      */
-    public abstract boolean tryMonitorEnter(Object o);
+    boolean tryMonitorEnter(Object o);
 
     /**
      * Throw the exception without telling the verifier.
      */
-    public abstract void throwException(Throwable ee);
+    void throwException(Throwable ee);
 
 
     /**
@@ -747,9 +747,9 @@ public interface UnsafeProxy {
      *
      * @return <tt>true</tt> if successful
      */
-    public abstract boolean compareAndSwapObject(Object o, long offset,
-                                                 Object expected,
-                                                 Object x);
+    boolean compareAndSwapObject(Object o, long offset,
+                                 Object expected,
+                                 Object x);
 
     /**
      * Atomically update Java variable to <tt>x</tt> if it is currently
@@ -757,9 +757,9 @@ public interface UnsafeProxy {
      *
      * @return <tt>true</tt> if successful
      */
-    public abstract boolean compareAndSwapInt(Object o, long offset,
-                                              int expected,
-                                              int x);
+    boolean compareAndSwapInt(Object o, long offset,
+                              int expected,
+                              int x);
 
     /**
      * Atomically update Java variable to <tt>x</tt> if it is currently
@@ -767,101 +767,101 @@ public interface UnsafeProxy {
      *
      * @return <tt>true</tt> if successful
      */
-    public abstract boolean compareAndSwapLong(Object o, long offset,
-                                               long expected,
-                                               long x);
+    boolean compareAndSwapLong(Object o, long offset,
+                               long expected,
+                               long x);
 
     /**
      * Fetches a reference value from a given Java variable, with volatile
      * load semantics. Otherwise identical to {@link #getObject(Object, long)}
      */
-    public abstract Object getObjectVolatile(Object o, long offset);
+    Object getObjectVolatile(Object o, long offset);
 
     /**
      * Stores a reference value into a given Java variable, with
      * volatile store semantics. Otherwise identical to {@link #putObject(Object, long, Object)}
      */
-    public abstract void putObjectVolatile(Object o, long offset, Object x);
+    void putObjectVolatile(Object o, long offset, Object x);
 
     /**
      * Volatile version of {@link #getInt(Object, long)}
      */
-    public abstract int getIntVolatile(Object o, long offset);
+    int getIntVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putInt(Object, long, int)}
      */
-    public abstract void putIntVolatile(Object o, long offset, int x);
+    void putIntVolatile(Object o, long offset, int x);
 
     /**
      * Volatile version of {@link #getBoolean(Object, long)}
      */
-    public abstract boolean getBooleanVolatile(Object o, long offset);
+    boolean getBooleanVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putBoolean(Object, long, boolean)}
      */
-    public abstract void putBooleanVolatile(Object o, long offset, boolean x);
+    void putBooleanVolatile(Object o, long offset, boolean x);
 
     /**
      * Volatile version of {@link #getByte(Object, long)}
      */
-    public abstract byte getByteVolatile(Object o, long offset);
+    byte getByteVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putByte(Object, long, byte)}
      */
-    public abstract void putByteVolatile(Object o, long offset, byte x);
+    void putByteVolatile(Object o, long offset, byte x);
 
     /**
      * Volatile version of {@link #getShort(Object, long)}
      */
-    public abstract short getShortVolatile(Object o, long offset);
+    short getShortVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putShort(Object, long, short)}
      */
-    public abstract void putShortVolatile(Object o, long offset, short x);
+    void putShortVolatile(Object o, long offset, short x);
 
     /**
      * Volatile version of {@link #getChar(Object, long)}
      */
-    public abstract char getCharVolatile(Object o, long offset);
+    char getCharVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putChar(Object, long, char)}
      */
-    public abstract void putCharVolatile(Object o, long offset, char x);
+    void putCharVolatile(Object o, long offset, char x);
 
     /**
      * Volatile version of {@link #getLong(Object, long)}
      */
-    public abstract long getLongVolatile(Object o, long offset);
+    long getLongVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putLong(Object, long, long)}
      */
-    public abstract void putLongVolatile(Object o, long offset, long x);
+    void putLongVolatile(Object o, long offset, long x);
 
     /**
      * Volatile version of {@link #getFloat(Object, long)}
      */
-    public abstract float getFloatVolatile(Object o, long offset);
+    float getFloatVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putFloat(Object, long, float)}
      */
-    public abstract void putFloatVolatile(Object o, long offset, float x);
+    void putFloatVolatile(Object o, long offset, float x);
 
     /**
      * Volatile version of {@link #getDouble(Object, long)}
      */
-    public abstract double getDoubleVolatile(Object o, long offset);
+    double getDoubleVolatile(Object o, long offset);
 
     /**
      * Volatile version of {@link #putDouble(Object, long, double)}
      */
-    public abstract void putDoubleVolatile(Object o, long offset, double x);
+    void putDoubleVolatile(Object o, long offset, double x);
 
     /**
      * Version of {@link #putObjectVolatile(Object, long, Object)}
@@ -870,17 +870,17 @@ public interface UnsafeProxy {
      * underlying field is a Java volatile (or if an array cell, one
      * that is otherwise only accessed using volatile accesses).
      */
-    public abstract void putOrderedObject(Object o, long offset, Object x);
+    void putOrderedObject(Object o, long offset, Object x);
 
     /**
      * Ordered/Lazy version of {@link #putIntVolatile(Object, long, int)}
      */
-    public abstract void putOrderedInt(Object o, long offset, int x);
+    void putOrderedInt(Object o, long offset, int x);
 
     /**
      * Ordered/Lazy version of {@link #putLongVolatile(Object, long, long)}
      */
-    public abstract void putOrderedLong(Object o, long offset, long x);
+    void putOrderedLong(Object o, long offset, long x);
 
     /**
      * Unblock the given thread blocked on <tt>park</tt>, or, if it is
@@ -894,7 +894,7 @@ public interface UnsafeProxy {
      *
      * @param thread the thread to unpark.
      */
-    public abstract void unpark(Object thread);
+    void unpark(Object thread);
 
     /**
      * Block current thread, returning when a balancing
@@ -907,7 +907,7 @@ public interface UnsafeProxy {
      * because <tt>unpark</tt> is, so it would be strange to place it
      * elsewhere.
      */
-    public abstract void park(boolean isAbsolute, long time);
+    void park(boolean isAbsolute, long time);
 
     /**
      * Gets the load average in the system run queue assigned
@@ -923,7 +923,7 @@ public interface UnsafeProxy {
      * @param nelems the number of samples to be retrieved and
      * must be 1 to 3.
      */
-    public abstract int getLoadAverage(double[] loadavg, int nelems);
+    int getLoadAverage(double[] loadavg, int nelems);
 
     // The following contain CAS-based Java implementations used on
     // platforms not supporting  instructions
@@ -939,7 +939,7 @@ public interface UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public int getAndAddInt(Object o, long offset, int delta);
+    int getAndAddInt(Object o, long offset, int delta);
 
     /**
      * Atomically adds the given value to the current value of a field
@@ -952,7 +952,7 @@ public interface UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public long getAndAddLong(Object o, long offset, long delta);
+    long getAndAddLong(Object o, long offset, long delta);
 
     /**
      * Atomically exchanges the given value with the current value of
@@ -965,7 +965,7 @@ public interface UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public int getAndSetInt(Object o, long offset, int newValue);
+    int getAndSetInt(Object o, long offset, int newValue);
 
     /**
      * Atomically exchanges the given value with the current value of
@@ -978,7 +978,7 @@ public interface UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public long getAndSetLong(Object o, long offset, long newValue);
+    long getAndSetLong(Object o, long offset, long newValue);
 
     /**
      * Atomically exchanges the given reference value with the current
@@ -991,7 +991,7 @@ public interface UnsafeProxy {
      * @return the previous value
      * @since jdk 1.8
      */
-    public Object getAndSetObject(Object o, long offset, Object newValue);
+    Object getAndSetObject(Object o, long offset, Object newValue);
 
     /**
      * Ensures lack of reordering of loads before the fence
@@ -999,7 +999,7 @@ public interface UnsafeProxy {
      *
      * @since jdk 1.8
      */
-    public abstract void loadFence();
+    void loadFence();
 
     /**
      * Ensures lack of reordering of stores before the fence
@@ -1007,7 +1007,7 @@ public interface UnsafeProxy {
      *
      * @since jdk 1.8
      */
-    public abstract void storeFence();
+    void storeFence();
 
     /**
      * Ensures lack of reordering of loads or stores before the fence
@@ -1015,5 +1015,5 @@ public interface UnsafeProxy {
      *
      * @since jdk 1.8
      */
-    public abstract void fullFence();
+    void fullFence();
 }

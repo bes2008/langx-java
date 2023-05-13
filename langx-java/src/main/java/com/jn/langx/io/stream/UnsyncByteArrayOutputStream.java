@@ -105,7 +105,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream {
         return new UnsyncByteArrayInputStream(this.myBuffer, 0, this.myCount);
     }
 
-    public static interface ByteArrayAllocator {
+    public interface ByteArrayAllocator {
         byte[] allocate(int param1Int);
     }
 }

@@ -10,7 +10,7 @@ import com.jn.langx.util.Objs;
 public class MultilineConfig {
     public static enum Match {
         BEFORE,
-        AFTER;
+        AFTER
     }
 
     private String pattern;

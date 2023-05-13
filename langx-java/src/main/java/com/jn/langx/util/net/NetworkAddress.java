@@ -9,7 +9,7 @@ public class NetworkAddress implements Comparable<NetworkAddress> {
     private AddrMode addrMode;
 
     public static enum AddrMode {
-        V4, V6, HOST;
+        V4, V6, HOST
     }
 
 

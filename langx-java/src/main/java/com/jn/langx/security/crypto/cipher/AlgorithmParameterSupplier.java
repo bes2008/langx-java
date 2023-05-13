@@ -10,5 +10,5 @@ import java.security.SecureRandom;
  * @see java.security.AlgorithmParameters
  */
 public interface AlgorithmParameterSupplier {
-    public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom);
+    Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom);
 }

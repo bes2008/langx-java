@@ -5521,8 +5521,6 @@ public enum LanguageAlpha3Code {
         COMMON
     }
 
-    ;
-
 
     /**
      * Language name.

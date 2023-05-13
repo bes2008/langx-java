@@ -16,20 +16,19 @@ public @interface Algorithm {
      *
      * @return the algorithm name
      */
-    public String name();
+    String name();
 
 
     /**
      * 算法类型，可取值有：{Signature, MessageDigest, KeyPairGenerator, or ParameterGenerator}
      * @return the used scene
      */
-    @SuppressWarnings("rawtypes")
-    public Class[] apply();
+    @SuppressWarnings("rawtypes") Class[] apply();
 
     /**
      * 算法描述
      *
      * @return the description
      */
-    public String desc() default "";
+    String desc() default "";
 }

@@ -109,7 +109,7 @@ public class UriTemplate {
      * A strategy interface for processing parameters, should be replaced with
      * a JDK 8 one day in the future.
      */
-    private static interface TemplateValueStrategy {
+    private interface TemplateValueStrategy {
         /**
          * Get a value for a given template variable.
          *
@@ -120,7 +120,7 @@ public class UriTemplate {
          * @throws IllegalArgumentException in case no value has been found and the strategy
          *                                            does not support {@code null} values.
          */
-        public String valueFor(String templateVariable, String matchedGroup);
+        String valueFor(String templateVariable, String matchedGroup);
     }
 
     /**
