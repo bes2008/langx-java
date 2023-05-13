@@ -5528,7 +5528,7 @@ public enum LanguageAlpha3Code {
     private final String name;
 
 
-    private LanguageAlpha3Code(String name) {
+    LanguageAlpha3Code(String name) {
         this.name = name;
     }
 

@@ -21,11 +21,11 @@ public enum SSLProtocolVersion implements CommonEnum{
     private byte major;
     private byte minor;
 
-    private SSLProtocolVersion(int code, String name, String displayText) {
+    SSLProtocolVersion(int code, String name, String displayText) {
         this(code, (byte) (code >>> 8), (byte) (code & 255), name, displayText);
     }
 
-    private SSLProtocolVersion(int code, int major, int minor, String name, String displayText) {
+    SSLProtocolVersion(int code, int major, int minor, String name, String displayText) {
         this.delegate = new EnumDelegate(code, name, displayText);
         this.major = (byte) major;
         this.minor = (byte) minor;

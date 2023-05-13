@@ -2255,7 +2255,7 @@ public enum CountryCode {
     private final Assignment assignment;
 
 
-    private CountryCode(String name, String alpha3, int numeric, Assignment assignment) {
+    CountryCode(String name, String alpha3, int numeric, Assignment assignment) {
         this.name = name;
         this.alpha3 = alpha3;
         this.numeric = numeric;

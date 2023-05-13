@@ -11,13 +11,13 @@ import com.jn.langx.util.regexp.Regexps;
 import java.util.Map;
 
 public class MapBasedStringFormatter extends CustomPatternStringFormatter {
-    public static enum PatternStyle {
+    public enum PatternStyle {
         $(Regexps.compile("\\$\\{\\w+(\\.\\w+)*}")),
         PLACE_HOLDER(Regexps.compile("\\{\\w+(\\.\\w+)*}"));
 
         private Regexp pattern;
 
-        private PatternStyle(Regexp pattern) {
+        PatternStyle(Regexp pattern) {
             this.pattern = pattern;
         }
 

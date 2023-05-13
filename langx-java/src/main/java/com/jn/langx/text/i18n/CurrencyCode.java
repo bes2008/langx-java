@@ -2313,7 +2313,7 @@ public enum CurrencyCode {
     private final List<CountryCode> countryList;
 
 
-    private CurrencyCode(String name, int numeric, int minorUnit, CountryCode... countries) {
+    CurrencyCode(String name, int numeric, int minorUnit, CountryCode... countries) {
         this.name = name;
         this.numeric = numeric;
         this.minorUnit = minorUnit;

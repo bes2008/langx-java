@@ -32,7 +32,7 @@ public enum BOM {
     UTF32_LE("UTF-32LE", new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0xFF, (byte) 0xFE}, "0000FFFE"),
     ;
 
-    private BOM(String name, byte[] bytes, String checkValue) {
+    BOM(String name, byte[] bytes, String checkValue) {
         this.name = name;
         this.bytes = bytes;
         this.checkValue = checkValue;

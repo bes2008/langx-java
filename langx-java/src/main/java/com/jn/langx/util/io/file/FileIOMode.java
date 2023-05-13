@@ -22,7 +22,7 @@ public enum FileIOMode implements CommonEnum, Delegatable<EnumDelegate> {
     private EnumDelegate delegate;
     private String identifier;
 
-    private FileIOMode(String identifier, int code, String name, String displayText) {
+    FileIOMode(String identifier, int code, String name, String displayText) {
         this.identifier = identifier;
         this.delegate = new EnumDelegate(code, name, displayText);
     }

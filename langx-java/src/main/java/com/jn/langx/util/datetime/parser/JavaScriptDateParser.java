@@ -595,7 +595,7 @@ class JavaScriptDateParser {
         }
     }
 
-    private static enum Token {
+    private enum Token {
         UNKNOWN,
         NUMBER,
         SEPARATOR,
@@ -604,7 +604,7 @@ class JavaScriptDateParser {
         SIGN,
         END;
 
-        private Token() {
+        Token() {
         }
     }
 }

@@ -19,7 +19,7 @@ public enum TimeUnit2 implements CommonEnum {
     private String simpleName;
     private java.util.concurrent.TimeUnit unit;
 
-    private TimeUnit2(int code, String simpleName, String name, String displayText, TimeUnit unit) {
+    TimeUnit2(int code, String simpleName, String name, String displayText, TimeUnit unit) {
         this.delegate = new EnumDelegate(code, name, displayText);
         this.simpleName = simpleName;
         this.unit = unit;

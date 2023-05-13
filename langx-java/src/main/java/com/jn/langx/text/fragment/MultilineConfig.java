@@ -8,7 +8,7 @@ import com.jn.langx.util.Objs;
  * 参考 filebeat multiline
  */
 public class MultilineConfig {
-    public static enum Match {
+    public enum Match {
         BEFORE,
         AFTER
     }

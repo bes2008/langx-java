@@ -975,7 +975,7 @@ public enum LocaleCode {
     private final String string;
 
 
-    private LocaleCode(LanguageCode language, CountryCode country) {
+    LocaleCode(LanguageCode language, CountryCode country) {
         this.language = language;
         this.country = country;
 

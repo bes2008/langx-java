@@ -3,7 +3,7 @@ package com.jn.langx.distributed.session;
 import com.jn.langx.event.DomainEvent;
 
 public class SessionEvent extends DomainEvent<Session> {
-    public static enum SessionEventType {
+    public enum SessionEventType {
         CREATED,
         EXPIRE,
         INVALIDATED

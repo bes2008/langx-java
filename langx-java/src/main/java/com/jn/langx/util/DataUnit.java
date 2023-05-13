@@ -21,7 +21,7 @@ public enum DataUnit {
     private List<String> symbols;
     private long bytes;
 
-    private DataUnit(long bytes, String... symbols) {
+    DataUnit(long bytes, String... symbols) {
         this.symbols = Collects.asList(symbols);
         this.bytes = bytes;
     }

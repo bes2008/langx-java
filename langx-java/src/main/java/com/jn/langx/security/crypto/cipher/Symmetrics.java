@@ -33,7 +33,7 @@ public class Symmetrics extends Ciphers {
         return decrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
     }
 
-    public static enum MODE {
+    public enum MODE {
         ECB(CipherAlgorithmMode.ECB),
         CBC(CipherAlgorithmMode.CBC),
         CFB(CipherAlgorithmMode.CFB),

@@ -54,7 +54,7 @@ public enum CronExpressionType implements CommonEnum {
 
     private EnumDelegate enumDelegate;
 
-    private CronExpressionType(int code, String name, String displayText){
+    CronExpressionType(int code, String name, String displayText){
         this.enumDelegate = new EnumDelegate(code, name, displayText);
     }
 

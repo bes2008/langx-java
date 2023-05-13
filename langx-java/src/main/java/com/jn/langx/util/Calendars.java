@@ -155,7 +155,7 @@ public class Calendars {
     }
 
 
-    public static enum RecentIntervalType {
+    public enum RecentIntervalType {
         NATURE_INTERVAL,
         TO_YESTERDAY,
         TO_NOW

@@ -1055,7 +1055,7 @@ public enum ScriptCode {
     /**
      * Constructor.
      */
-    private ScriptCode(int numeric, String name) {
+    ScriptCode(int numeric, String name) {
         this.numeric = numeric;
         this.name = name;
     }

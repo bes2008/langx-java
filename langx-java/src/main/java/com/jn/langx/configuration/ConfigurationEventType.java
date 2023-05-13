@@ -24,7 +24,7 @@ public enum ConfigurationEventType implements CommonEnum{
 
     private EnumDelegate delegate;
 
-    private ConfigurationEventType(int code, String name, String displayText) {
+    ConfigurationEventType(int code, String name, String displayText) {
         this.delegate = new EnumDelegate(code, name, displayText);
     }
 

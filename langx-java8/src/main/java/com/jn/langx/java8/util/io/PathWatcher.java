@@ -400,7 +400,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
         }
     }
 
-    public static enum DirAction {
+    public enum DirAction {
         IGNORE, WATCH, ENTER
     }
 
@@ -553,7 +553,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
      * <p>
      * Type of an event
      */
-    public static enum PathWatchEventType {
+    public enum PathWatchEventType {
         ADDED, DELETED, MODIFIED, UNKNOWN
     }
 

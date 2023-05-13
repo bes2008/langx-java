@@ -421,7 +421,7 @@ enum ASN1Messages {
     /**
      * Creates a new message key.
      */
-    private ASN1Messages(final String defaultText) {
+    ASN1Messages(final String defaultText) {
         this.defaultText = defaultText;
     }
 

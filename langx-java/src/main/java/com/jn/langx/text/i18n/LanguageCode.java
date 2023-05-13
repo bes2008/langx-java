@@ -2121,7 +2121,7 @@ public enum LanguageCode {
     };
 
 
-    private LanguageCode() {
+    LanguageCode() {
     }
 
 

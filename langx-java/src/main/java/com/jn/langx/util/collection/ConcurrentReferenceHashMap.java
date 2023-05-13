@@ -117,7 +117,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
      */
 
 
-    public static enum Option {
+    public enum Option {
         /**
          * Indicates that referential-equality (== instead of .equals()) should
          * be used when locating keys. This offers similar behavior to {@link java.util.IdentityHashMap}

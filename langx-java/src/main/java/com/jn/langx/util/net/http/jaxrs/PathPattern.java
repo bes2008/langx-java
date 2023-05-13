@@ -62,7 +62,7 @@ public final class PathPattern extends PatternWithGroups {
      * The set of right hand path patterns that may be appended to a path
      * pattern.
      */
-    public static enum RightHandPath {
+    public enum RightHandPath {
 
         /**
          * A capturing group that matches zero or more path segments and
@@ -77,7 +77,7 @@ public final class PathPattern extends PatternWithGroups {
         //
         private final String regex;
 
-        private RightHandPath(String regex) {
+        RightHandPath(String regex) {
             this.regex = regex;
         }
 
