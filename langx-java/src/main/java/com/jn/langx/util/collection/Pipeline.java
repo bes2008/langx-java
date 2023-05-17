@@ -42,7 +42,7 @@ public class Pipeline<E> {
         return Collects.firstMap(collection, mapper, breakPredicate);
     }
 
-    public <O> O firstMap(@NonNull final Function2<Integer, E, O> mapper, Predicate2<E,O> breakPredicate) {
+    public <O> O firstMap(@NonNull final Function2<Integer, E, O> mapper, Predicate2<E, O> breakPredicate) {
         return Collects.firstMap(collection, mapper, breakPredicate);
     }
 
@@ -160,7 +160,7 @@ public class Pipeline<E> {
         return new Pipeline<E>(Collects.clearNulls(this.collection));
     }
 
-    public Pipeline<E> clearEmptys(){
+    public Pipeline<E> clearEmptys() {
         return new Pipeline<E>(Collects.clearEmptys(this.collection));
     }
 
@@ -266,7 +266,7 @@ public class Pipeline<E> {
     }
 
     public Pipeline<E> add(E e) {
-        if(e!=null) {
+        if (e != null) {
             this.collection.add(e);
         }
         return this;
@@ -281,7 +281,7 @@ public class Pipeline<E> {
     }
 
 
-    public Pipeline<E> remove(E e){
+    public Pipeline<E> remove(E e) {
         List<E> list = asList();
         list.remove(e);
         return new Pipeline<E>(list);
@@ -290,7 +290,7 @@ public class Pipeline<E> {
     /**
      * @since 4.6.5
      */
-    public Pipeline<E> removeIf(Predicate<E> predicate){
+    public Pipeline<E> removeIf(Predicate<E> predicate) {
         Collects.removeIf(this.collection, predicate);
         return this;
     }
@@ -298,7 +298,7 @@ public class Pipeline<E> {
     /**
      * @since 4.6.5
      */
-    public Pipeline<E> removeAll(Collection<E> removed){
+    public Pipeline<E> removeAll(Collection<E> removed) {
         Collects.removeAll(this.collection, removed);
         return this;
     }
@@ -340,12 +340,37 @@ public class Pipeline<E> {
         return set;
     }
 
-
     public List<E> asList() {
         if (collection instanceof List) {
             return (List<E>) collection;
         }
         return new ArrayList<E>(getAll());
+    }
+
+    public <K> Map<K, E> asMap(@NonNull final Map<K, E> map, @NonNull final Function<E, K> keyMapper) {
+        return asMap(new Supplier0<Map<K, E>>() {
+            @Override
+            public Map<K, E> get() {
+                return map;
+            }
+        }, keyMapper, Functions.<E>noopFunction());
+    }
+
+    public <K> Map<K, E> asMap(@NonNull final Supplier0<Map<K, E>> mapFactory, @NonNull final Function<E, K> keyMapper) {
+        return asMap(mapFactory, keyMapper, Functions.<E>noopFunction());
+    }
+
+    public <K, V> Map<K, V> asMap(@NonNull final Map<K, V> map, @NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper) {
+        return asMap(new Supplier0<Map<K, V>>() {
+            @Override
+            public Map<K, V> get() {
+                return map;
+            }
+        }, keyMapper, valueMapper);
+    }
+
+    public <K, V> Map<K, V> asMap(@NonNull final Supplier0<Map<K, V>> mapFactory, @NonNull final Function<E, K> keyMapper, @NonNull final Function<E, V> valueMapper) {
+        return collect(Collects.toMap(mapFactory, keyMapper, valueMapper));
     }
 
     public static <T> Pipeline<T> of(@Nullable Object anyObject) {
