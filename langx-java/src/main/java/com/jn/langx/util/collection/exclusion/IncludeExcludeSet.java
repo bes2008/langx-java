@@ -47,6 +47,7 @@ public class IncludeExcludeSet<T, P> implements Predicate<P> {
     /**
      * Default constructor over {@link HashSet}
      */
+    @SuppressWarnings("unchecked")
     public IncludeExcludeSet() {
         this(HashSet.class);
     }

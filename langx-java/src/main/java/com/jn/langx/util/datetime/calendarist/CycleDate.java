@@ -6,6 +6,7 @@ package com.jn.langx.util.datetime.calendarist;
  *
  * @since 5.2.0
  */
+@SuppressWarnings("DuplicatedCode")
 public class CycleDate extends CalendaristDate {
 
     // 年份对应的干支

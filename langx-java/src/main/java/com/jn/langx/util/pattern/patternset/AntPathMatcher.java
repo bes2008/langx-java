@@ -8,7 +8,7 @@ import com.jn.langx.util.Strings;
 /**
  * https://github.com/Mach-II/Mach-II-Framework/wiki/ANT-Style-Pattern-Matcher
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class AntPathMatcher extends AbstractPatternSetMatcher<StringPatternEntry> implements PathMatcher {
 
     /**

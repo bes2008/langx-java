@@ -10,6 +10,7 @@ import com.jn.langx.util.reflect.Reflects;
 import java.util.EnumSet;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class CommonEnumGetter implements EnumGetter {
     @Override
     public List<Class> applyTo() {
