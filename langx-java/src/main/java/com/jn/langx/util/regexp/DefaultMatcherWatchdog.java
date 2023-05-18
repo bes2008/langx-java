@@ -51,7 +51,7 @@ public class DefaultMatcherWatchdog implements MatcherWatchdog {
     }
 
     public void unregister(RegexpMatcher matcher) {
-        Long previousValue = registry.remove(matcher);
+        registry.remove(matcher);
         registered.decrementAndGet();
     }
 

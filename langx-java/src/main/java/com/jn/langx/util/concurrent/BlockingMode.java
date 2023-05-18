@@ -17,6 +17,8 @@
  */
 package com.jn.langx.util.concurrent;
 
+import com.jn.langx.util.Strings;
+
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
@@ -76,18 +78,18 @@ public class BlockingMode implements Serializable {
      */
     public static BlockingMode toBlockingMode(String name) {
         BlockingMode mode = null;
-        if (name == null) {
-            mode = null;
-        } else if (name.equalsIgnoreCase("run")) {
-            mode = RUN;
-        } else if (name.equalsIgnoreCase("wait")) {
-            mode = WAIT;
-        } else if (name.equalsIgnoreCase("discard")) {
-            mode = DISCARD;
-        } else if (name.equalsIgnoreCase("discardOldest")) {
-            mode = DISCARD_OLDEST;
-        } else if (name.equalsIgnoreCase("abort")) {
-            mode = ABORT;
+        if (Strings.isNotEmpty(name)) {
+            if (name.equalsIgnoreCase("run")) {
+                mode = RUN;
+            } else if (name.equalsIgnoreCase("wait")) {
+                mode = WAIT;
+            } else if (name.equalsIgnoreCase("discard")) {
+                mode = DISCARD;
+            } else if (name.equalsIgnoreCase("discardOldest")) {
+                mode = DISCARD_OLDEST;
+            } else if (name.equalsIgnoreCase("abort")) {
+                mode = ABORT;
+            }
         }
         return mode;
     }

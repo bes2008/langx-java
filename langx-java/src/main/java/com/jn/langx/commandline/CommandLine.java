@@ -2,6 +2,7 @@ package com.jn.langx.commandline;
 
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.io.file.Files;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class CommandLine {
     /**
      * The arguments of the command.
      */
-    private final Vector<Argument> arguments = new Vector<Argument>();
+    private final List<Argument> arguments = Lists.<Argument>newArrayList();
 
     /**
      * The program to execute.
