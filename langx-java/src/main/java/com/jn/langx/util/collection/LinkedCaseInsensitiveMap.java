@@ -23,7 +23,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
      * @see #convertKey(String)
      */
     public LinkedCaseInsensitiveMap() {
-        this((Locale) null);
+        this(null);
     }
 
     /**

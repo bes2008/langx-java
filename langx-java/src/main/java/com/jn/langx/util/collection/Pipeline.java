@@ -374,17 +374,17 @@ public class Pipeline<E> {
     }
 
     public static <T> Pipeline<T> of(@Nullable Object anyObject) {
-        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(anyObject, true));
+        Collection<T> list = Collects.asCollection(Collects.<T>asIterable(anyObject, true));
         return new Pipeline<T>(list);
     }
 
     public static <T> Pipeline<T> of(@Nullable Iterable<T> iterable) {
-        Collection<T> list = Collects.<T>asCollection(iterable);
+        Collection<T> list = Collects.asCollection(iterable);
         return new Pipeline<T>(list);
     }
 
     public static <T> Pipeline<T> of(@Nullable T... array) {
-        Collection<T> list = Collects.<T>asCollection(Collects.<T>asIterable(array, true));
+        Collection<T> list = Collects.asCollection(Collects.<T>asIterable(array, true));
         return new Pipeline<T>(list);
     }
 

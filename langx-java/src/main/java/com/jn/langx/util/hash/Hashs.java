@@ -30,7 +30,7 @@ public class Hashs {
     static {
         final GenericRegistry<Hasher> registry = new GenericRegistry<Hasher>(Collects.<String, Hasher>emptyHashMap(true));
         registry.init();
-        Collects.forEach(ServiceLoader.<Hasher>load(Hasher.class), new Consumer<Hasher>() {
+        Collects.forEach(ServiceLoader.load(Hasher.class), new Consumer<Hasher>() {
             @Override
             public void accept(Hasher factory) {
                 registry.register(factory);

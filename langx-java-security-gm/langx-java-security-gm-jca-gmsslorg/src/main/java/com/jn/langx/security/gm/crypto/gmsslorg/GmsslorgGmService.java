@@ -25,8 +25,8 @@ public class GmsslorgGmService extends AbstractGmService {
 
     static {
         gmssl = new GmSSL();
-        supportedCiphers = Pipeline.<String>of(gmssl.getCiphers())
-                .collect(Collects.<String, String, String>toTreeMap(new Function<String, String>() {
+        supportedCiphers = Pipeline.of(gmssl.getCiphers())
+                .collect(Collects.toTreeMap(new Function<String, String>() {
                     @Override
                     public String apply(String key) {
                         return key.toUpperCase();
@@ -104,7 +104,7 @@ public class GmsslorgGmService extends AbstractGmService {
 
     @Override
     public byte[] sm4Encrypt(byte[] data, byte[] secretKey) {
-        return sm4Encrypt(data, (Symmetrics.MODE) null, secretKey);
+        return sm4Encrypt(data, null, secretKey);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class GmsslorgGmService extends AbstractGmService {
     }
 
     public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
-        return sm4Decrypt(encryptedBytes, (Symmetrics.MODE) null, secretKey);
+        return sm4Decrypt(encryptedBytes, null, secretKey);
     }
 
     @Override

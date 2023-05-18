@@ -660,7 +660,7 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
                 return false;
             }
 
-            @SuppressWarnings("unchecked") final Map.Entry<CharSequence, V> e = (Map.Entry<CharSequence, V>) (Map.Entry<?, ?>) o;
+            @SuppressWarnings("unchecked") final Map.Entry<CharSequence, V> e = (Map.Entry<CharSequence, V>) o;
             final V value = get(e.getKey());
             return value != null && value.equals(e.getValue());
         }
@@ -700,7 +700,7 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
         @SuppressWarnings("unchecked")
         @Override
         public boolean contains(final Object o) {
-            return TrieMap.this.containsValue((V) o);
+            return TrieMap.this.containsValue(o);
         }
 
         @Override

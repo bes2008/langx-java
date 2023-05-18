@@ -144,7 +144,7 @@ public class Converters {
                     public String[] apply(String input) {
                         return splitGrokPattern(input);
                     }
-                }).collect(Collects.<String[], String, Converters.Type>toHashMap(new Function<String[], String>() {
+                }).collect(Collects.toHashMap(new Function<String[], String>() {
                     @Override
                     public String apply(String[] input) {
                         return input[0];

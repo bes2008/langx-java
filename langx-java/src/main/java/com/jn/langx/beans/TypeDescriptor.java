@@ -30,7 +30,7 @@ class TypeDescriptor implements Serializable {
     private static final boolean streamAvailable = ClassLoaders.hasClass(
             "java.util.stream.Stream", TypeDescriptor.class.getClassLoader());
 
-    private static final Map<Class<?>, TypeDescriptor> commonTypesCache = Maps.<Class<?>, TypeDescriptor>newHashMapWithExpectedSize(32);
+    private static final Map<Class<?>, TypeDescriptor> commonTypesCache = Maps.newHashMapWithExpectedSize(32);
 
     private static final Class<?>[] CACHED_COMMON_TYPES = {
             boolean.class, Boolean.class, byte.class, Byte.class, char.class, Character.class,

@@ -11,7 +11,7 @@ public class IterableSequence<E> implements Sequence<E> {
     private ListSequence<E> delegate;
 
     public IterableSequence(Iterable<E> iterable) {
-        List<E> list = Collects.<E>asList(iterable);
+        List<E> list = Collects.asList(iterable);
         this.delegate = new ListSequence<E>(list);
     }
 

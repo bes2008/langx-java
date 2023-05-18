@@ -50,7 +50,7 @@ public class DelimiterBasedReadableByteChannel implements ReadableByteChannel, I
             dels.addAll(LineDelimiter.supportedLineDelimiterStrings());
         }
 
-        List<ByteBuffer> ds = Pipeline.<String>of(dels)
+        List<ByteBuffer> ds = Pipeline.of(dels)
                 .clearEmptys()
                 .distinct()
                 .sort(new Comparator<String>() {

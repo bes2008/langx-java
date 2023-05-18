@@ -54,7 +54,7 @@ public class Key<T> {
     public static Key<?> findKeyByName(@NonNull String name) {
         Preconditions.checkNotNullArgument(name, "name");
         synchronized (allKeys) {
-            for (Key<?> key : (Iterable<Key<?>>) allKeys.values()) {
+            for (Key<?> key : allKeys.values()) {
                 if (name.equals(key.myName))
                     return key;
             }

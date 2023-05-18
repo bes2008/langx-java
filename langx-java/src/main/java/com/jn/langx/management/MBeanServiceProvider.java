@@ -52,9 +52,9 @@ public class MBeanServiceProvider extends AbstractRegistry<Class, MBeanService> 
             Logger logger = Loggers.getLogger(MBeanServiceProvider.class);
             while (iter.hasNext()) {
                 try {
-                    final S svc = (S) iter.next();
+                    final S svc = iter.next();
                     if (svc.isServiceMatch()) {
-                        INSTANCE.register((Class<?>) serviceClazz, svc);
+                        INSTANCE.register(serviceClazz, svc);
                         return svc;
                     }
                 } catch (Throwable ex) {

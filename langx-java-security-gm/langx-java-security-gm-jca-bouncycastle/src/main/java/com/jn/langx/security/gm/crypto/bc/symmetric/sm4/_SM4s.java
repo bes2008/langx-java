@@ -19,7 +19,7 @@ import java.security.SecureRandom;
 class _SM4s extends Symmetrics {
     public static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(_SM4s.class).getBytes(Charsets.UTF_8);
     public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, Provider provider, SecureRandom secureRandom) {
-        return encrypt(bytes, symmetricKey, "SM4", (String) null, provider, secureRandom);
+        return encrypt(bytes, symmetricKey, "SM4", null, provider, secureRandom);
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {

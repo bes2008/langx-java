@@ -28,7 +28,7 @@ public class Resources {
 
     }
     public static <V extends Resource> V loadResource(@NonNull Location location) {
-        return Locations.<V>newResource(location.toString());
+        return Locations.newResource(location.toString());
     }
 
     public static <V extends Resource> V loadResource(@NonNull String location) {

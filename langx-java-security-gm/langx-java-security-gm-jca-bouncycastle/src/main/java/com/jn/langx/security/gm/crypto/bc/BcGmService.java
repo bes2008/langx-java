@@ -62,7 +62,7 @@ public class BcGmService extends AbstractGmService {
 
     @Override
     public byte[] sm4Encrypt(byte[] data, byte[] secretKey) {
-        return sm4Encrypt(data, (Symmetrics.MODE) null, secretKey);
+        return sm4Encrypt(data, null, secretKey);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class BcGmService extends AbstractGmService {
 
     @Override
     public byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey) {
-        return sm4Decrypt(encryptedBytes, (Symmetrics.MODE) null, secretKey);
+        return sm4Decrypt(encryptedBytes, null, secretKey);
     }
 
     public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey) {

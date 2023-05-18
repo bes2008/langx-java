@@ -261,7 +261,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * @see CommandLineExecutor#setExitValues(int[])
      */
     public void setExitValues(final int[] values) {
-        this.exitValues = values == null ? null : (int[]) values.clone();
+        this.exitValues = values == null ? null : values.clone();
     }
 
     /**

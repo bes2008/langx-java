@@ -1464,7 +1464,7 @@ public class IOs {
      */
     public static void write(final Appendable data, final OutputStream output)
             throws IOException {
-        write(data, output, (String) null);
+        write(data, output, null);
     }
 
 

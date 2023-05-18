@@ -211,7 +211,7 @@ public class Dates {
     public static Date parse(boolean autoInferTimeZone, final String dateString, TimeZone tz, Locale locale, List<String> patterns) {
         tz = tz == null ? TimeZone.getDefault() : tz;
         locale = locale == null ? Locale.getDefault() : locale;
-        DateTimeParsedResult dateTimeParsedResult = parseDateTime(autoInferTimeZone, dateString, Collects.<TimeZone>asList(tz), Collects.<Locale>asList(locale), patterns);
+        DateTimeParsedResult dateTimeParsedResult = parseDateTime(autoInferTimeZone, dateString, Collects.asList(tz), Collects.asList(locale), patterns);
         if (dateTimeParsedResult != null) {
             return new Date(dateTimeParsedResult.getTimestamp());
         }

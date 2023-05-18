@@ -15,7 +15,7 @@ public class Lists {
     }
 
     public static <E> ArrayList<E> newArrayList(Iterable<E> elements) {
-      return Collects.<E>newArrayList(elements);
+      return Collects.newArrayList(elements);
     }
 
     public static <E> ArrayList<E> newArrayList(Iterator<E> elements) {
@@ -31,7 +31,7 @@ public class Lists {
     }
 
     public static <E> LinkedList<E> newLinkedList() {
-        return Collects.<E>newLinkedList();
+        return Collects.newLinkedList();
     }
 
     public static <E> LinkedList<E> newLinkedList(Iterable<E> elements) {

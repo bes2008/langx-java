@@ -54,7 +54,7 @@ public class Comparators {
     }
 
     public static <T> Comparator<T> chain(Comparator<T>... c) {
-        return chain(Pipeline.<Comparator<T>>of(c).asList());
+        return chain(Pipeline.of(c).asList());
     }
 
     /**

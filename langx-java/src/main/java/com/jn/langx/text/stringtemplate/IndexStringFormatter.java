@@ -11,7 +11,7 @@ import com.jn.langx.util.regexp.Regexp;
 public class IndexStringFormatter extends CustomPatternStringFormatter {
 
     public IndexStringFormatter() {
-        this.setVariablePattern((Regexp) null);
+        this.setVariablePattern(null);
         setValueGetter(null);
     }
 

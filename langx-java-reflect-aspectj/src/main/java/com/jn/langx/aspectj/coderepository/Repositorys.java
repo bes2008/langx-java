@@ -18,7 +18,7 @@ import java.net.URL;
 
 public class Repositorys {
 
-    private static Repository bootstrapRepository = new ClassLoaderRepository((ClassLoader) null);
+    private static Repository bootstrapRepository = new ClassLoaderRepository(null);
 
     private static ConcurrentReferenceHashMap<ClassLoader, Repository> classLoaderRepositoryMap = new ConcurrentReferenceHashMap<ClassLoader, Repository>(16, 0.95f, Runtime.getRuntime().availableProcessors(), ReferenceType.SOFT, ReferenceType.STRONG);
     private Repositorys(){

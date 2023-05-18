@@ -236,7 +236,7 @@ public class GracefulDateFormat extends Format implements DateParser, DatePrinte
 
     @Override
     public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-        return this.<StringBuffer>format(toAppendTo, pos, obj);
+        return this.format(toAppendTo, pos, obj);
     }
 
     /**

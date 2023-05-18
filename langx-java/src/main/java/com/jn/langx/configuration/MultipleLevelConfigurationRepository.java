@@ -175,7 +175,7 @@ public class MultipleLevelConfigurationRepository<T extends Configuration, Loade
 
     @Override
     public Map<String, T> getAll() {
-        final Map<String, T> map = Collects.<String, T>emptyHashMap(true);
+        final Map<String, T> map = Collects.emptyHashMap(true);
         Pipeline.of(delegates.values()).reverse(true).forEach(new Consumer<ConfigurationRepository>() {
             @Override
             public void accept(ConfigurationRepository configurationRepository) {

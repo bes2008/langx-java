@@ -11,7 +11,7 @@ import java.util.*;
 
 public class CommonServiceProvider<T> implements ServiceProvider<T> {
     private static Logger logger = Loggers.getLogger(CommonServiceProvider.class);
-    private Predicate<T> predicate = Functions.<T>truePredicate();
+    private Predicate<T> predicate = Functions.truePredicate();
     private Comparator<T> comparator = new OrderedComparator<T>();
 
     public void setPredicate(Predicate<T> predicate) {

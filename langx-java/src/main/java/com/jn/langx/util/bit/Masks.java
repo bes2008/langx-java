@@ -20,7 +20,7 @@ public final class Masks {
     }
 
     public static int createMask(int... operands) {
-        return createMask(Collects.<Integer>asList(Collects.<Integer>asIterable(operands)));
+        return createMask(Collects.asList(Collects.<Integer>asIterable(operands)));
     }
 
     /**

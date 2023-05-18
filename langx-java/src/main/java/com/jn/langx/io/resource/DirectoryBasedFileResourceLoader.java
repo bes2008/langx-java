@@ -51,7 +51,7 @@ public class DirectoryBasedFileResourceLoader implements ResourceLoader {
 
     @Override
     public FileResource loadResource(String filename) {
-        return delegate.<FileResource>loadResource(FileResource.PREFIX + directory + File.separator + filename);
+        return delegate.loadResource(FileResource.PREFIX + directory + File.separator + filename);
     }
 
     @Override

@@ -186,7 +186,7 @@ public class CacheBuilder<K, V> {
         cache.setRemoveListener(removeListener);
         if (evictExpiredInterval > 0 || refreshAllInterval > 0 || timer != null) {
             if (refreshAllInterval > 0 && distinctWhenRefresh && timer instanceof HashedWheelTimer) {
-                Preconditions.checkArgument(((HashedWheelTimer) timer).isDistinctSupported(), "not a distinct supported timer, use the DistinctHashedWheelTimeoutFactory.class when create the timer");
+                Preconditions.checkArgument(timer.isDistinctSupported(), "not a distinct supported timer, use the DistinctHashedWheelTimeoutFactory.class when create the timer");
             }
             cache.setTimer(timer);
         }

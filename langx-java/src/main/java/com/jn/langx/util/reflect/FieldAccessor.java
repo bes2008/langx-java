@@ -19,7 +19,7 @@ public class FieldAccessor extends BasedStringAccessor<String, Object> {
 
     private <V> V getFieldValue(String fieldName, V defaultValue) {
         V v;
-        v = Reflects.<V>getAnyFieldValue(getTarget(), fieldName, true, true);
+        v = Reflects.getAnyFieldValue(getTarget(), fieldName, true, true);
         if (v == null) {
             v = defaultValue;
         }

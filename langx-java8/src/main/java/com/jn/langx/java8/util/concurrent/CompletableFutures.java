@@ -21,9 +21,9 @@ public class CompletableFutures {
 
     public static <T> CompletableFuture<T> supplyAsync(@NonNull Supplier<T> runnable, @Nullable Executor executor) {
         if (executor == null) {
-            return CompletableFuture.<T>supplyAsync(runnable);
+            return CompletableFuture.supplyAsync(runnable);
         } else {
-            return CompletableFuture.<T>supplyAsync(runnable, executor);
+            return CompletableFuture.supplyAsync(runnable, executor);
         }
     }
 }

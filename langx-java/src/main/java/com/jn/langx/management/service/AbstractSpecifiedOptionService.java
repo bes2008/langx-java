@@ -19,7 +19,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
     protected Map<String, Map<String, Object>> queryMBeanAttrs(final String specifiedOption, final Hashtable<String, String> options, final Collection<String> attributeNames) {
         Preconditions.checkNotNull(specifiedOption, "specialOption is null. ");
         final ObjectName queryOname = this.createObjectName(options);
-        final Set<ObjectInstance> instances = this.conn.queryMBeans(queryOname, (QueryExp) null);
+        final Set<ObjectInstance> instances = this.conn.queryMBeans(queryOname, null);
         final List<ObjectName> onames = new ArrayList<ObjectName>();
         if (instances != null && !instances.isEmpty()) {
             for (final ObjectInstance ins : instances) {
@@ -60,7 +60,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         final List<ObjectName> objectNames = new LinkedList<ObjectName>();
         if (optionValues == null || optionValues.isEmpty()) {
             final ObjectName oname = this.createObjectName(null);
-            final Set<ObjectName> allValue = this.conn.queryNames(oname, (QueryExp) null);
+            final Set<ObjectName> allValue = this.conn.queryNames(oname, null);
             objectNames.addAll(allValue);
         } else {
             for (final String optionValue : optionValues) {
@@ -106,7 +106,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
         final List<ObjectName> objectNames = new LinkedList<ObjectName>();
         if (optionValues == null || optionValues.isEmpty()) {
             final ObjectName oname = this.createObjectName(null);
-            final Set<ObjectName> allValue = this.conn.queryNames(oname, (QueryExp) null);
+            final Set<ObjectName> allValue = this.conn.queryNames(oname, null);
             objectNames.addAll(allValue);
         } else {
             for (final String optionValue : optionValues) {

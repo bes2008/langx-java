@@ -665,7 +665,7 @@ public class KeyComparatorHashMap<K, V> extends AbstractMap<K, V> implements Map
 
         @Override
         public K getKey() {
-            return KeyComparatorHashMap.<K>unmaskNull(key);
+            return KeyComparatorHashMap.unmaskNull(key);
         }
 
         @Override

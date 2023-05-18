@@ -1485,7 +1485,7 @@ public class ForkJoinPool extends AbstractExecutorService {
         this.factory = factory;
         this.ueh = handler;
         this.locallyFifo = mode == FIFO_QUEUE;
-        long np = (long) (-parallelism); // offset ctl counts
+        long np = -parallelism; // offset ctl counts
         this.ctl = ((np << AC_SHIFT) & AC_MASK) | ((np << TC_SHIFT) & TC_MASK);
         this.submissionQueue = new ForkJoinTask<?>[INITIAL_QUEUE_CAPACITY];
         // initialize workers array with room for 2*parallelism if possible

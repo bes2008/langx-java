@@ -1038,7 +1038,7 @@ public class Reflects {
 
     public static <V> V invokePublicMethodForcedIfPresent(@NonNull Object object, @NonNull String methodName, @Nullable Class[] parameterTypes, @Nullable Object[] parameters) {
         try {
-            return (V) invokePublicMethod(object, methodName, parameterTypes, parameters, true, false);
+            return invokePublicMethod(object, methodName, parameterTypes, parameters, true, false);
         } catch (Throwable ex) {
             return null;
         }

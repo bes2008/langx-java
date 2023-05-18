@@ -34,7 +34,7 @@ public final class ShortUuid {
         if (!(o instanceof ShortUuid))
             return false;
 
-        return ((ShortUuid) o).toString().equals(uuid);
+        return o.toString().equals(uuid);
     }
 
     public static class Builder {

@@ -24,7 +24,7 @@ public class Loggers {
     }
 
     public static void log(@Nullable Logger logger, @Nullable Level level, final @Nullable Throwable ex, String message, Object... args) {
-        log(logger, level, (Marker) null, ex, message, args);
+        log(logger, level, null, ex, message, args);
     }
 
     public static void log(@Nullable Logger logger, @Nullable Level level, @Nullable Marker marker, final @Nullable Throwable ex, String message, Object... args) {

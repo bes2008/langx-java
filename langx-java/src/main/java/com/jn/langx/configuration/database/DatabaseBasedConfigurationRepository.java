@@ -36,7 +36,7 @@ public class DatabaseBasedConfigurationRepository<T extends Configuration> exten
     public void reload() {
         Map<String, T> newConfigs = loader.loadAll();
         Map<String, T> oldConfigs = getAll();
-        MapDiffResult<String, T> differResult = Collects.<String, T, Map<String, T>>diff(oldConfigs, newConfigs, getComparator(), Comparators.STRING_COMPARATOR);
+        MapDiffResult<String, T> differResult = Collects.diff(oldConfigs, newConfigs, getComparator(), Comparators.STRING_COMPARATOR);
         if (differResult.hasDifference()) {
             Collects.forEach(differResult.getAdds(), new Consumer<T>() {
                 @Override

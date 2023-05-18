@@ -293,7 +293,7 @@ public class Numbers {
             return ((AtomicInteger) number).get() == 0;
         }
         if (number instanceof BigInteger) {
-            return ((BigInteger) number).intValue() == 0;
+            return number.intValue() == 0;
         }
         if (number instanceof AtomicLong) {
             return number.longValue() == 0L;

@@ -31,7 +31,7 @@ public class DateFormatCacheKey {
     }
 
     public DateFormatCacheKey(@NonNull String pattern, @Nullable TimeZone timeZone, @Nullable Locale locale) {
-        this(pattern, timeZone == null ? (String) null : timeZone.getID(), locale);
+        this(pattern, timeZone == null ? null : timeZone.getID(), locale);
     }
 
     public DateFormatCacheKey(@NonNull String pattern, @Nullable String timeZoneId, @Nullable Locale locale) {

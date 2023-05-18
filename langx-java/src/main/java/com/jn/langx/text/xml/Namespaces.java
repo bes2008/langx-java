@@ -52,7 +52,7 @@ public class Namespaces {
             public Namespace apply(Attr attr) {
                 return new Namespace(attr.getLocalName(), attr.getValue());
             }
-        }).collect(Collects.<Namespace, String, Namespace>toHashMap(new Function<Namespace, String>() {
+        }).collect(Collects.toHashMap(new Function<Namespace, String>() {
             @Override
             public String apply(Namespace input) {
                 return input.getPrefix();

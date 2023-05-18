@@ -141,7 +141,7 @@ public class Enums {
 
     public static <T extends Enum<T>> T inferEnum(Class<T> targetClass, String text) {
         if (targetClass.isEnum() && Reflects.isSubClassOrEquals(Enum.class, targetClass)) {
-            T v = Enums.<T>ofDisplayText(targetClass, text);
+            T v = Enums.ofDisplayText(targetClass, text);
             if (v == null) {
                 return ofName(targetClass, text);
             }

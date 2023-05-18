@@ -46,7 +46,7 @@ public class Modifiers {
             @Override
             public Integer apply(Field field) {
                 try {
-                    return (Integer) Reflects.getFieldValue(field, Modifier.class, true, false);
+                    return Reflects.getFieldValue(field, Modifier.class, true, false);
                 } catch (Throwable ex) {
                     return Modifier.PUBLIC;
                 }

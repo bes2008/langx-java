@@ -299,7 +299,7 @@ public class Functions {
     }
 
     public static <E> Predicate<E> allPredicate(List<Predicate<E>> predicates) {
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
+        final Pipeline<Predicate<E>> pipeline = Pipeline.of(predicates);
         return new Predicate<E>() {
             @Override
             public boolean test(final E value) {
@@ -320,7 +320,7 @@ public class Functions {
     }
 
     public static <E> Predicate<E> anyPredicate(List<Predicate<E>> predicates) {
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
+        final Pipeline<Predicate<E>> pipeline = Pipeline.of(predicates);
         return new Predicate<E>() {
             @Override
             public boolean test(final E value) {
@@ -341,7 +341,7 @@ public class Functions {
     }
 
     public static <E> Predicate<E> nonePredicate(List<Predicate<E>> predicates) {
-        final Pipeline<Predicate<E>> pipeline = Pipeline.<Predicate<E>>of(predicates);
+        final Pipeline<Predicate<E>> pipeline = Pipeline.of(predicates);
         return new Predicate<E>() {
             @Override
             public boolean test(final E value) {

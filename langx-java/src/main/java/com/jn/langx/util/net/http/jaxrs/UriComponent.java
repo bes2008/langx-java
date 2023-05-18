@@ -803,7 +803,7 @@ public class UriComponent {
         if (bb == null) {
             bb = ByteBuffer.allocate(1);
         } else {
-            ((Buffer) bb).clear();
+            bb.clear();
         }
 
         while (true) {
@@ -821,8 +821,8 @@ public class UriComponent {
             }
 
             // Check if the byte buffer needs to be increased in size
-            if (((Buffer) bb).position() == bb.capacity()) {
-                ((Buffer) bb).flip();
+            if (bb.position() == bb.capacity()) {
+                bb.flip();
                 // Create a new byte buffer with the maximum number of possible
                 // octets, hence resize should only occur once
                 final ByteBuffer bb_new = ByteBuffer.allocate(s.length() / 3);
@@ -831,7 +831,7 @@ public class UriComponent {
             }
         }
 
-        ((Buffer) bb).flip();
+        bb.flip();
         return bb;
     }
 
@@ -843,7 +843,7 @@ public class UriComponent {
      */
     private static int decodeOctets(final int i, final ByteBuffer bb, final StringBuilder sb) {
         // If there is only one octet and is an ASCII character
-        if (((Buffer) bb).limit() == 1 && (bb.get(0) & 0xFF) < 0x80) {
+        if (bb.limit() == 1 && (bb.get(0) & 0xFF) < 0x80) {
             // Octet can be appended directly
             sb.append((char) bb.get(0));
             return i + 2;
@@ -851,7 +851,7 @@ public class UriComponent {
             //
             final CharBuffer cb = UTF_8_CHARSET.decode(bb);
             sb.append(cb.toString());
-            return i + ((Buffer) bb).limit() * 3 - 1;
+            return i + bb.limit() * 3 - 1;
         }
     }
 

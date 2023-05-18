@@ -43,7 +43,7 @@ public class DSAs extends Signatures {
     }
 
     public static boolean verify(@NonNull byte[] publicKey, byte[] data, byte[] signature) {
-        return verify(null, (String) null, publicKey, data, signature);
+        return verify(null, null, publicKey, data, signature);
     }
 
     public static boolean verify(@Nullable String signatureInstanceAlgorithm, @NonNull byte[] publicKey, byte[] data, byte[] signature) {
