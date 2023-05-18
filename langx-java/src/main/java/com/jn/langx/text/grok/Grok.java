@@ -197,7 +197,7 @@ public class Grok implements GrokTemplate {
         if (watchdog != null) {
             watchdog.register(matcher);
         }
-        Match match = null;
+        Match match;
         if (matcher.find()) {
             match = new Match(text, this, matcher);
         } else {

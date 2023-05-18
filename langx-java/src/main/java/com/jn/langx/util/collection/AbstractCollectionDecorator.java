@@ -16,6 +16,8 @@
  */
 package com.jn.langx.util.collection;
 
+import com.jn.langx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
@@ -113,7 +115,7 @@ public abstract class AbstractCollectionDecorator<E> implements Collection<E>, S
     }
 
     @Override
-    public boolean addAll(final Collection<? extends E> coll) {
+    public boolean addAll(@NonNull final Collection<? extends E> coll) {
         return decorated().addAll(coll);
     }
 
@@ -153,22 +155,22 @@ public abstract class AbstractCollectionDecorator<E> implements Collection<E>, S
     }
 
     @Override
-    public <T> T[] toArray(final T[] object) {
+    public <T> T[] toArray(@NonNull final T[] object) {
         return decorated().toArray(object);
     }
 
     @Override
-    public boolean containsAll(final Collection<?> coll) {
+    public boolean containsAll(@NonNull final Collection<?> coll) {
         return decorated().containsAll(coll);
     }
 
     @Override
-    public boolean removeAll(final Collection<?> coll) {
+    public boolean removeAll(@NonNull final Collection<?> coll) {
         return decorated().removeAll(coll);
     }
 
     @Override
-    public boolean retainAll(final Collection<?> coll) {
+    public boolean retainAll(@NonNull final Collection<?> coll) {
         return decorated().retainAll(coll);
     }
 

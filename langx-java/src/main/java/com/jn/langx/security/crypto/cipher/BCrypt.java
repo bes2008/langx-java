@@ -660,8 +660,8 @@ public class BCrypt {
         byte[] saltb;
         byte[] hashed;
         char minor = (char) 0;
-        int rounds = 0;
-        int off = 0;
+        int rounds;
+        int off;
         StringBuilder rs = new StringBuilder();
 
         if (salt.charAt(0) != '$' || salt.charAt(1) != '2')

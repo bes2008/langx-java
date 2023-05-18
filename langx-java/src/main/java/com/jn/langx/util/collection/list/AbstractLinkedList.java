@@ -17,6 +17,7 @@
 package com.jn.langx.util.collection.list;
 
 
+import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.collection.iter.OrderedIterator;
 
 import java.io.IOException;
@@ -228,7 +229,7 @@ public abstract class AbstractLinkedList<E> implements List<E> , Serializable {
     }
 
     @Override
-    public boolean addAll(final Collection<? extends E> coll) {
+    public boolean addAll(@NonNull final Collection<? extends E> coll) {
         return addAll(size, coll);
     }
 

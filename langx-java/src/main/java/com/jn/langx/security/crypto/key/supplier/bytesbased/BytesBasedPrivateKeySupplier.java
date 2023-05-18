@@ -48,7 +48,7 @@ public class BytesBasedPrivateKeySupplier implements BytesBasedKeySupplier<Priva
                 .forEach(new Consumer<Parser<byte[], ? extends KeySpec>>() {
                     @Override
                     public void accept(Parser<byte[], ? extends KeySpec> parser) {
-                        KeySpec keySpec = null;
+                        KeySpec keySpec;
                         try {
                             keySpec = parser.parse(bytes);
                             if (keySpec != null) {

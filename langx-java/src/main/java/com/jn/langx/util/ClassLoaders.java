@@ -8,7 +8,6 @@ import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Supplier;
-import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.type.Primitives;
@@ -409,7 +408,7 @@ public class ClassLoaders {
     public static JarFile getJarFile(Class<?> klass) {
         URL location = Reflects.getCodeLocation(klass);
         if (location != null) {
-            JarFile jarFile = null;
+            JarFile jarFile;
             try {
                 jarFile = new JarFile(new File(location.toURI()));
                 return jarFile;

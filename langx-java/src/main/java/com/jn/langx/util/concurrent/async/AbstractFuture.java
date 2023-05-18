@@ -1,5 +1,7 @@
 package com.jn.langx.util.concurrent.async;
 
+import com.jn.langx.annotation.NonNull;
+
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +34,7 @@ public abstract class AbstractFuture<V> implements GenericFuture<V> {
     }
 
     @Override
-    public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+    public V get(long timeout, @NonNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         if (await(timeout, unit)) {
             Throwable cause = cause();
             if (cause == null) {

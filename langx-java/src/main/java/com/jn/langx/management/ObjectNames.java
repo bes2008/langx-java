@@ -8,7 +8,7 @@ public class ObjectNames {
 
     }
     public static Set<ObjectName> queryObjectNames(JMXConnection connection, String objectName) throws MBeanException {
-        ObjectName oname = null;
+        ObjectName oname;
         try {
             oname = ObjectName.getInstance(objectName);
         } catch (Throwable e) {

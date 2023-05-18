@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 @SuppressWarnings("unchecked")
 public class ArrayIterator<E> extends UnmodifiableIterator<E> implements Iterable<E> {
     private final E[] array;
-    private int index = 0;
+    private int index;
     private final int length;
     private boolean reversed;
 

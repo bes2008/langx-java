@@ -44,8 +44,8 @@ public final class Base62 {
     private static byte[] convert(byte[] message, int sourceBase, int targetBase) {
         int estimatedLength = estimateOutputLength(message.length, sourceBase, targetBase);
         BufferExposingByteArrayOutputStream out = null;
-        int length = 0;
-        byte[] array = null;
+        int length;
+        byte[] array;
         try {
             out = new BufferExposingByteArrayOutputStream(estimatedLength);
             byte[] source = message;
