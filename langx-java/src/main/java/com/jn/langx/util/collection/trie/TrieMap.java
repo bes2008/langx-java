@@ -779,8 +779,7 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
             if (subRootNode == null) {
                 final CharSequence localPrefix = prefix;
                 return parent.put(
-                        new StringBuilder(localPrefix.length() + key.length())
-                                .append(localPrefix).append(key).toString(),
+                        String.valueOf(localPrefix) + key,
                         value);
             } else {
                 return super.put(key, value);
@@ -809,9 +808,7 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
                  * We delegate the remove to the parent when we would try to
                  * remove the root of this sub map
                  */
-                return parent.remove(new StringBuilder(localPrefix.length()
-                        + key.length()).append(localPrefix).append(key)
-                        .toString());
+                return parent.remove(String.valueOf(localPrefix) + key);
             } else {
                 final int capturedModCount = modCount;
                 final V removed = super.remove(key);
@@ -837,9 +834,8 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
                  * We delegate the remove to the parent when we would try to
                  * remove the root of this sub map
                  */
-                return parent.removeMapping(new StringBuilder(localPrefix
-                        .length() + key.length()).append(localPrefix)
-                        .append(key).toString());
+                return parent.removeMapping(String.valueOf(localPrefix) +
+                        key);
             } else {
                 final int capturedModCount = modCount;
                 final V removed = super.removeMapping(key);
@@ -878,9 +874,7 @@ public class TrieMap<V extends Serializable> extends AbstractMap<CharSequence, V
         public TrieMap<V> subMap(final CharSequence prefix) {
             ensureLatest();
             final CharSequence localPrefix = this.prefix;
-            return parent.subMap(new StringBuilder(localPrefix.length()
-                    + prefix.length()).append(localPrefix).append(prefix)
-                    .toString());
+            return parent.subMap(String.valueOf(localPrefix) + prefix);
         }
     }
 

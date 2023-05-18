@@ -314,7 +314,7 @@ class Groups {
     private static boolean isNoncapturingParen(String s, int pos) {
 
         //int len = s.length();
-        boolean isLookbehind = false;
+        boolean isLookbehind;
 
         // code-coverage reports show that pos and the text to
         // check never exceed len in this class, so it's safe

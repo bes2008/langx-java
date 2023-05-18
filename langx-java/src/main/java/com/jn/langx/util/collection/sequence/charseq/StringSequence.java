@@ -87,22 +87,20 @@ public class StringSequence extends AbstractCharSequence<String> {
     public void add(int index, Character element) {
         String before = Strings.substring(this.charSequence, 0, index);
         String after = Strings.substring(this.charSequence, index, size());
-        StringBuilder builder = new StringBuilder(size() + 1);
-        builder.append(before)
-                .append(element)
-                .append(after);
-        this.charSequence = builder.toString();
+        String builder = before +
+                element +
+                after;
+        this.charSequence = builder;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends Character> c) {
         String before = Strings.substring(this.charSequence, 0, index);
         String after = Strings.substring(this.charSequence, index, size());
-        StringBuilder builder = new StringBuilder(size() + c.size());
-        builder.append(before)
-                .append(toString(c))
-                .append(after);
-        this.charSequence = builder.toString();
+        String builder = before +
+                toString(c) +
+                after;
+        this.charSequence = builder;
         return true;
     }
 
@@ -111,10 +109,9 @@ public class StringSequence extends AbstractCharSequence<String> {
         String before = Strings.substring(this.charSequence, 0, index);
         String after = Strings.substring(this.charSequence, index, size());
         Character ch = this.charSequence.charAt(index);
-        StringBuilder builder = new StringBuilder(size());
-        builder.append(before)
-                .append(after);
-        this.charSequence = builder.toString();
+        String builder = before +
+                after;
+        this.charSequence = builder;
         return ch;
     }
 

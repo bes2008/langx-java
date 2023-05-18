@@ -110,18 +110,17 @@ public final class ShortUuid {
                 str = String.format("%32s", str).replace(' ', '0');
             }
 
-            StringBuilder sb = new StringBuilder()
-                    .append(str, 0, 8)
-                    .append("-")
-                    .append(str, 8, 12)
-                    .append("-")
-                    .append(str, 12, 16)
-                    .append("-")
-                    .append(str, 16, 20)
-                    .append("-")
-                    .append(str, 20, 32);
+            String sb = str.substring(0, 8) +
+                    "-" +
+                    str.substring(8, 12) +
+                    "-" +
+                    str.substring(12, 16) +
+                    "-" +
+                    str.substring(16, 20) +
+                    "-" +
+                    str.substring(20, 32);
 
-            return sb.toString();
+            return sb;
         }
     }
 

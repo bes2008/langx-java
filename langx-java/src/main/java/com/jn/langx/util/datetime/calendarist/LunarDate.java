@@ -52,18 +52,17 @@ public class LunarDate extends CalendaristDate {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("LunarDate{");
-        sb.append("year=").append(year);
-        sb.append(", month=").append(month);
-        sb.append(", day=").append(day);
-        sb.append(", hour=").append(hour);
-        sb.append(", minute=").append(minute);
-        sb.append(", second=").append(second);
-        sb.append(", millis=").append(millis);
-        sb.append(", timestamp=").append(timestamp);
-        sb.append(", itsLeapMonth=").append(itsLeapMonth);
-        sb.append(", leapMonth=").append(leapMonth);
-        sb.append('}');
-        return sb.toString();
+        String sb = "LunarDate{" + "year=" + year +
+                ", month=" + month +
+                ", day=" + day +
+                ", hour=" + hour +
+                ", minute=" + minute +
+                ", second=" + second +
+                ", millis=" + millis +
+                ", timestamp=" + timestamp +
+                ", itsLeapMonth=" + itsLeapMonth +
+                ", leapMonth=" + leapMonth +
+                '}';
+        return sb;
     }
 }

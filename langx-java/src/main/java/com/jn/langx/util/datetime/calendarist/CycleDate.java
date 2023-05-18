@@ -82,21 +82,20 @@ public class CycleDate extends CalendaristDate {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CycleDate{");
-        sb.append("year=").append(year);
-        sb.append(", month=").append(month);
-        sb.append(", day=").append(day);
-        sb.append(", hour=").append(hour);
-        sb.append(", minute=").append(minute);
-        sb.append(", second=").append(second);
-        sb.append(", millis=").append(millis);
-        sb.append(", timestamp=").append(timestamp);
-        sb.append(", eraYear=").append(eraYear);
-        sb.append(", eraMonth=").append(eraMonth);
-        sb.append(", eraDay=").append(eraDay);
-        sb.append(", eraHour=").append(eraHour);
-        sb.append(", zodiac=").append(zodiac);
-        sb.append('}');
-        return sb.toString();
+        String sb = "CycleDate{" + "year=" + year +
+                ", month=" + month +
+                ", day=" + day +
+                ", hour=" + hour +
+                ", minute=" + minute +
+                ", second=" + second +
+                ", millis=" + millis +
+                ", timestamp=" + timestamp +
+                ", eraYear=" + eraYear +
+                ", eraMonth=" + eraMonth +
+                ", eraDay=" + eraDay +
+                ", eraHour=" + eraHour +
+                ", zodiac=" + zodiac +
+                '}';
+        return sb;
     }
 }

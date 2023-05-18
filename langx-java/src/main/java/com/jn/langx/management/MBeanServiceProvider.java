@@ -57,7 +57,6 @@ public class MBeanServiceProvider extends AbstractRegistry<Class, MBeanService> 
                         INSTANCE.register((Class<?>) serviceClazz, svc);
                         return svc;
                     }
-                    continue;
                 } catch (Throwable ex) {
                     logger.warn("Exception occured when get the service [" + serviceClazz + "]", ex);
                 }

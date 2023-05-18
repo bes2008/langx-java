@@ -834,13 +834,11 @@ public class Money implements Serializable, Comparable<Money> {
      * @return 本对象内部变量的字符串表示。
      */
     public String dump() {
-        return new StringBuilder()
-                .append("cent = ")
-                .append(this.cent)
-                .append(File.separatorChar)
-                .append("currency = ")
-                .append(this.currency)
-                .toString();
+        return "cent = " +
+                this.cent +
+                File.separatorChar +
+                "currency = " +
+                this.currency;
     }
 
     /**

@@ -787,15 +787,14 @@ public class Nets {
      * Converts a 32-bit integer into an IPv4 address.
      */
     public static String intToIpv4Address(int i) {
-        StringBuilder buf = new StringBuilder(15);
-        buf.append(i >> 24 & 0xff);
-        buf.append('.');
-        buf.append(i >> 16 & 0xff);
-        buf.append('.');
-        buf.append(i >> 8 & 0xff);
-        buf.append('.');
-        buf.append(i & 0xff);
-        return buf.toString();
+        String buf = String.valueOf(i >> 24 & 0xff) +
+                '.' +
+                (i >> 16 & 0xff) +
+                '.' +
+                (i >> 8 & 0xff) +
+                '.' +
+                (i & 0xff);
+        return buf;
     }
 
     /**

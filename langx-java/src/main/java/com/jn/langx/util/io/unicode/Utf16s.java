@@ -186,10 +186,9 @@ public final class Utf16s {
         if (c < 65536) {
             return String.valueOf((char)c);
         } else {
-            StringBuilder buffer = new StringBuilder();
-            buffer.append(getLeadSurrogate(c));
-            buffer.append(getTrailSurrogate(c));
-            return buffer.toString();
+            String buffer = String.valueOf(getLeadSurrogate(c)) +
+                    getTrailSurrogate(c);
+            return buffer;
         }
     }
 

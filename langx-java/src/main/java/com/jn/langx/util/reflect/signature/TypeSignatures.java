@@ -62,14 +62,13 @@ public class TypeSignatures {
         String methodName = method.getName();
         String parameterTypesSignature = toTypeSignature(parameterTypes);
         String returnTypeSignature = toTypeSignature(returnType);
-        return new StringBuilder()
-                .append(declaringClassSignature)
-                .append(".")
-                .append(methodName)
-                .append(":(")
-                .append(parameterTypesSignature)
-                .append(")")
-                .append(returnTypeSignature).toString();
+        return declaringClassSignature +
+                "." +
+                methodName +
+                ":(" +
+                parameterTypesSignature +
+                ")" +
+                returnTypeSignature;
     }
 
 

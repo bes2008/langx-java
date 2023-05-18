@@ -1501,10 +1501,9 @@ public class ForkJoinPool extends AbstractExecutorService {
         workers = new ForkJoinWorkerThread[n + 1];
         this.submissionLock = new ReentrantLock();
         this.termination = submissionLock.newCondition();
-        StringBuilder sb = new StringBuilder("ForkJoinPool-");
-        sb.append(poolNumberGenerator.incrementAndGet());
-        sb.append("-worker-");
-        this.workerNamePrefix = sb.toString();
+        String sb = "ForkJoinPool-" + poolNumberGenerator.incrementAndGet() +
+                "-worker-";
+        this.workerNamePrefix = sb;
     }
 
     private static int checkParallelism(int parallelism) {

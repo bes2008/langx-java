@@ -243,7 +243,7 @@ public class Loggers {
         Preconditions.checkNotNull(level);
         Preconditions.checkNotNull(logger);
 
-        boolean enabled = false;
+        boolean enabled;
         switch (level) {
             case TRACE:
                 enabled = logger.isTraceEnabled();
