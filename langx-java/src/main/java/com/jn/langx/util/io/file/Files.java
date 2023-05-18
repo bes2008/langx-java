@@ -514,7 +514,7 @@ public class Files {
             long count;
             while (pos < size) {
                 final long remain = size - pos;
-                count = remain > FILE_COPY_BUFFER_SIZE ? FILE_COPY_BUFFER_SIZE : remain;
+                count = Math.min(remain, FILE_COPY_BUFFER_SIZE);
                 final long bytesCopied = output.transferFrom(input, pos, count);
                 if (bytesCopied == 0) {
                     break;

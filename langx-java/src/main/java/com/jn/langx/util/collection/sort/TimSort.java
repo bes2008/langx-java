@@ -230,7 +230,7 @@ public class TimSort<T> {
 
             // If run is short, extend to min(minRun, nRemaining)
             if (runLen < minRun) {
-                int force = nRemaining <= minRun ? nRemaining : minRun;
+                int force = Math.min(nRemaining, minRun);
                 binarySort(a, fromIndex, fromIndex + force, fromIndex + runLen, comparator);
                 runLen = force;
             }
@@ -604,7 +604,7 @@ public class TimSort<T> {
      */
     private static <T> int gallopRight(T key, T[] a, int base, int len,
                                        int hint, Comparator<? super T> c) {
-        assert len > 0 && hint >= 0 && hint < len;
+        assert hint >= 0 && hint < len;
 
         int ofs = 1;
         int lastOfs = 0;
@@ -765,7 +765,7 @@ public class TimSort<T> {
                 minGallop = 0;
             minGallop += 2;  // Penalize for leaving gallop mode
         }  // End of "outer" loop
-        this.minGallop = minGallop < 1 ? 1 : minGallop;  // Write back to field
+        this.minGallop = Math.max(minGallop, 1);  // Write back to field
 
         if (len1 == 1) {
             assert len2 > 0;
@@ -892,7 +892,7 @@ public class TimSort<T> {
             }
             minGallop += 2;  // Penalize for leaving gallop mode
         }  // End of "outer" loop
-        this.minGallop = minGallop < 1 ? 1 : minGallop;  // Write back to field
+        this.minGallop = Math.max(minGallop, 1);  // Write back to field
 
         if (len2 == 1) {
             assert len1 > 0;

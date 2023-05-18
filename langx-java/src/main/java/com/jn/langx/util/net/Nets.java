@@ -857,7 +857,7 @@ public class Nets {
             return -1;
         }
         final int sz = cs.length();
-        for (int i = start < 0 ? 0 : start; i < sz; i++) {
+        for (int i = Math.max(start, 0); i < sz; i++) {
             if (cs.charAt(i) == searchChar) {
                 return i;
             }

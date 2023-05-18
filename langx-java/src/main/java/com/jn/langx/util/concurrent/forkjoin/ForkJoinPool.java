@@ -1755,7 +1755,7 @@ public class ForkJoinPool extends AbstractExecutorService {
      */
     public int getRunningThreadCount() {
         int r = parallelism + (int) (ctl >> AC_SHIFT);
-        return (r <= 0) ? 0 : r; // suppress momentarily negative values
+        return Math.max(r, 0); // suppress momentarily negative values
     }
 
     /**
@@ -1767,7 +1767,7 @@ public class ForkJoinPool extends AbstractExecutorService {
      */
     public int getActiveThreadCount() {
         int r = parallelism + (int) (ctl >> AC_SHIFT) + blockedCount;
-        return (r <= 0) ? 0 : r; // suppress momentarily negative values
+        return Math.max(r, 0); // suppress momentarily negative values
     }
 
     /**

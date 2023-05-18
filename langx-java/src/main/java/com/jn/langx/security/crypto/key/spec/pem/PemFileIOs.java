@@ -47,9 +47,6 @@ public class PemFileIOs extends Securitys {
             encoding = Objs.useValueIfNull(encoding, KeyEncoding.BASE64);
             byte[] bytes;
             switch (encoding) {
-                case HEX:
-                    bytes = content.getBytes(Charsets.UTF_8);
-                    break;
                 case BASE64:
                     bytes = Base64.decodeBase64(content);
                     break;

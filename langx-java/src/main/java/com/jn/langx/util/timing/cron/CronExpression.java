@@ -1049,8 +1049,6 @@ public final class CronExpression implements Serializable, Cloneable {
         if (stopAt < startAt) {
             switch (type) {
                 case SECOND:
-                    max = 60;
-                    break;
                 case MINUTE:
                     max = 60;
                     break;
@@ -1604,29 +1602,20 @@ public final class CronExpression implements Serializable, Cloneable {
 
         switch (monthNum) {
             case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
                 return 31;
             case 2:
                 return (isLeapYear(year)) ? 29 : 28;
-            case 3:
-                return 31;
             case 4:
-                return 30;
-            case 5:
-                return 31;
             case 6:
-                return 30;
-            case 7:
-                return 31;
-            case 8:
-                return 31;
             case 9:
-                return 30;
-            case 10:
-                return 31;
             case 11:
                 return 30;
-            case 12:
-                return 31;
             default:
                 throw new IllegalArgumentException("Illegal month number: "
                         + monthNum);

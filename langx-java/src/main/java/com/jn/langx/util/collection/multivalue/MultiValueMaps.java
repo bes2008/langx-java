@@ -20,7 +20,7 @@ public class MultiValueMaps {
      */
     private static <I1, I2, O> Function2<I1, I2, O> createGetParameterMapper(int parameterIndex) {
         parameterIndex = parameterIndex >= 2 ? 1 : parameterIndex;
-        parameterIndex = parameterIndex < 0 ? 0 : parameterIndex;
+        parameterIndex = Math.max(parameterIndex, 0);
         final int index = parameterIndex;
         return new Function2<I1, I2, O>() {
             @Override
