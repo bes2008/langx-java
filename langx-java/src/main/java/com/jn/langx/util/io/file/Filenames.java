@@ -6,7 +6,6 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class Filenames {
     /**

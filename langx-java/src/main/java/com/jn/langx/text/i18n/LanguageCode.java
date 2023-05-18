@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
  *
  * @author jinuo.fang
  */
+@SuppressWarnings("ALL")
 public enum LanguageCode {
     /**
      * Undefined.

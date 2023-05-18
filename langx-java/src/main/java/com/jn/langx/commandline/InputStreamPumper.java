@@ -55,7 +55,6 @@ public class InputStreamPumper implements Runnable {
         } catch (final Exception e) {
             final String msg = "Got exception while reading/writing the stream";
             CommandLineDebugs.handleException(msg, e);
-        } finally {
         }
     }
 
