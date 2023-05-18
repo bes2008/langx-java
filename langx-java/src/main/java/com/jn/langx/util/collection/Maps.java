@@ -113,7 +113,7 @@ public class Maps {
 
     @NonNull
     public static <K, V> Map<K, V> of() {
-        return of();
+        return newHashMap();
     }
 
     @NonNull

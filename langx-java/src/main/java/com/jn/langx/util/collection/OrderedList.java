@@ -231,7 +231,7 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> implements C
 
         @Override
         public boolean hasNext() {
-            if (current < iters.size()) {
+            if (current < iters.size()-1) {
                 return true;
             }
             return iters.get(current).hasNext();

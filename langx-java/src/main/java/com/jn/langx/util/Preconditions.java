@@ -366,11 +366,11 @@ public class Preconditions {
 
     private static String outOfBoundsMessage(String checkKind, List<Integer> args) {
         if (checkKind == null && args == null) {
-            return String.format("Range check failed: %s", args);
+            return "Range check failed: kind: null, args: null";
         } else if (checkKind == null) {
-            return String.format("Range check failed: %s", args);
+            return StringTemplates.formatWithPlaceholder("Range check failed: {}", args);
         } else if (args == null) {
-            return String.format("Range check failed: %s", checkKind);
+            return StringTemplates.formatWithPlaceholder("Range check failed: {}", checkKind);
         }
 
         int argSize = 0;

@@ -15,19 +15,23 @@ import java.util.jar.Manifest;
 
 @SuppressWarnings("JavaReflectionMemberAccess")
 public class Manifests {
-    private Manifests(){
+    private Manifests() {
 
     }
+
     public static Manifest loadManifest() {
         URL url = Reflects.getCodeLocation(Manifests.class);
-        if (url.getPath().endsWith("target/classes/")) {
-            return null;
+        if (url != null) {
+            if (url.getPath().endsWith("target/classes/")) {
+                return null;
+            }
+            String jarPath = url.getPath();
+            if (jarPath.startsWith("file:")) {
+                jarPath = jarPath.replaceFirst("file:", "");
+            }
+            return loadManifest(jarPath);
         }
-        String jarPath = url.getPath();
-        if (jarPath.startsWith("file:")) {
-            jarPath = jarPath.replaceFirst("file:", "");
-        }
-        return loadManifest(jarPath);
+        return null;
     }
 
 

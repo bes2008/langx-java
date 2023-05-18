@@ -138,20 +138,11 @@ public final class BitVector implements Cloneable {
             int slotShift = (int)(shift >> 6);
             int slot;
             int from;
-            if (leftShift == 0) {
-                slot = this.bits.length;
+            slot = this.bits.length;
 
-                for(from = slot - slotShift; slot >= slotShift; this.bits[slot] = this.slot(from)) {
-                    --slot;
-                    --from;
-                }
-            } else {
-                slot = this.bits.length;
-
-                for(from = slot - slotShift; slot > 0; this.bits[slot] = this.slot(from - 1) >>> leftShift | this.slot(from) << rightShift) {
-                    --slot;
-                    --from;
-                }
+            for(from = slot - slotShift; slot > 0; this.bits[slot] = this.slot(from - 1) >>> leftShift | this.slot(from) << rightShift) {
+                --slot;
+                --from;
             }
         }
 
