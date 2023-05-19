@@ -220,11 +220,7 @@ public class MultipleLevelURLStreamHandler extends URLStreamHandler {
         }
         String source = file.substring(0, separatorIndex);
         String entry = canonicalize(file.substring(separatorIndex + 2));
-        try {
-            result += new URL(source).hashCode();
-        } catch (MalformedURLException ex) {
-            result += source.hashCode();
-        }
+        result += source.hashCode();
         result += entry.hashCode();
         return result;
     }

@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
+@SuppressWarnings("unchecked")
 public abstract class AbstractConfigurationRepository<T extends Configuration, Loader extends ConfigurationLoader<T>, Writer extends ConfigurationWriter<T>> extends BaseConfigurationRepository<T,Loader,Writer>{
 
     @NonNull

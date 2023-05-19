@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("ALL")
 public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION> implements LoadBalanceStrategy<NODE, INVOCATION> {
     private String name;
     @Nullable
@@ -35,6 +35,7 @@ public abstract class AbstractLoadBalanceStrategy<NODE extends Node, INVOCATION>
         return loadBalancer;
     }
 
+    @SuppressWarnings("unchecked")
     public void setLoadBalancer(LoadBalancer loadBalancer) {
         this.loadBalancer = loadBalancer;
     }

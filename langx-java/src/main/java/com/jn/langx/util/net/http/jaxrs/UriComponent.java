@@ -343,8 +343,7 @@ public class UriComponent {
     private static boolean[][] initEncodingTables() {
         final boolean[][] tables = new boolean[Type.values().length][];
 
-        final List<String> l = new ArrayList<String>();
-        l.addAll(Arrays.asList(SCHEME));
+        final List<String> l = new ArrayList<String>(Arrays.asList(SCHEME));
         tables[Type.SCHEME.ordinal()] = initEncodingTable(l);
 
         l.clear();

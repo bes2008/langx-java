@@ -24,8 +24,7 @@ public abstract class BaseService implements MBeanService {
     protected abstract void init();
 
     protected ObjectName createObjectName(final Hashtable<String, String> table) {
-        final Hashtable<String, String> options = new Hashtable<String, String>();
-        options.putAll(this.defaultOptions);
+        final Hashtable<String, String> options = new Hashtable<String, String>(this.defaultOptions);
         if (table != null) {
             options.putAll(table);
         }
