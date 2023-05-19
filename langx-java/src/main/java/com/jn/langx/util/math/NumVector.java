@@ -1,5 +1,7 @@
 package com.jn.langx.util.math;
 
+import com.jn.langx.util.Objs;
+
 public class NumVector {
     private final double[] array;
 
@@ -9,6 +11,10 @@ public class NumVector {
         } else {
             return new NumVector(values.clone());
         }
+    }
+
+    public int hashCode(){
+        return Objs.hash(array);
     }
 
     public boolean equals(Object object) {

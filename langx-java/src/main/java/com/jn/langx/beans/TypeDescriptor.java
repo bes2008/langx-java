@@ -760,7 +760,7 @@ class TypeDescriptor implements Serializable {
 
         @Override
         public int hashCode() {
-            return Arrays.hashCode(this.annotations);
+            return Objs.hash(this.annotations);
         }
 
         @Override

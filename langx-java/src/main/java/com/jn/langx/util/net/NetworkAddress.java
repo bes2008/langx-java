@@ -74,9 +74,7 @@ public class NetworkAddress implements Comparable<NetworkAddress> {
 
     @Override
     public int hashCode() {
-        int result = host != null ? host.hashCode() : 0;
-        result = 31 * result + port;
-        return result;
+        return Objs.hash(host, port);
     }
 
     @Override

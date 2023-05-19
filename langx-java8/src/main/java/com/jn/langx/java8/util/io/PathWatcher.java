@@ -3,6 +3,7 @@ package com.jn.langx.java8.util.io;
 
 import com.jn.langx.java8.util.exception.MultiException;
 import com.jn.langx.lifecycle.AbstractStatefulLifecycle;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.exclusion.IncludeExcludeSet;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
@@ -535,11 +536,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
 
         @Override
         public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = (prime * result) + ((path == null) ? 0 : path.hashCode());
-            result = (prime * result) + ((type == null) ? 0 : type.hashCode());
-            return result;
+            return Objs.hash(path, type);
         }
 
         @Override

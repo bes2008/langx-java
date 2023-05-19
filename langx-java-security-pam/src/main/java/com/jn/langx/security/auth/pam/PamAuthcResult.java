@@ -1,6 +1,8 @@
 package com.jn.langx.security.auth.pam;
 
 
+import com.jn.langx.util.Objs;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,7 +71,7 @@ public class PamAuthcResult {
     }
 
     public int hashCode() {
-        return this.id;
+        return Objs.hash(this.id);
     }
 
     public String toString() {

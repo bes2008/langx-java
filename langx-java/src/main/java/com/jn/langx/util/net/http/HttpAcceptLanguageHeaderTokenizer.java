@@ -88,9 +88,7 @@ public class HttpAcceptLanguageHeaderTokenizer implements Iterator {
 
         @Override
         public int hashCode() {
-            int result = locale.hashCode();
-            result = 31 * result + quality.hashCode();
-            return result;
+            return Objs.hash(locale, quality);
         }
     }
 }

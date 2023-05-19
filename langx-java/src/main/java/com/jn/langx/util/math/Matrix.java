@@ -1,4 +1,5 @@
 package com.jn.langx.util.math;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.math.NumVector.Modified;
 
 public final class Matrix {
@@ -45,6 +46,10 @@ public final class Matrix {
         return new Matrix(vector.getSize(), 1, vector);
     }
 
+
+    public int hashCode(){
+        return Objs.hash(this.width, this.height, this.vector);
+    }
     public boolean equals(Object object) {
         if (!(object instanceof Matrix)) {
             return false;

@@ -629,7 +629,8 @@ class ConcurrentHashMapV8<K,V> extends AbstractMap<K,V> implements ConcurrentMap
 
         @Override
         public final boolean equals(Object o) {
-            Object k, v, u; Map.Entry<?,?> e;
+            Object k, v, u;
+            Map.Entry<?,?> e;
             return ((o instanceof Map.Entry) &&
                     (k = (e = (Map.Entry<?,?>)o).getKey()) != null &&
                     (v = e.getValue()) != null &&

@@ -143,10 +143,9 @@ final class GenericTypeAwarePropertyDescriptor extends PropertyDescriptor {
 
     @Override
     public int hashCode() {
-        int hashCode = getBeanClass().hashCode();
-        hashCode = 29 * hashCode + Objs.hashCode(getReadMethod());
-        hashCode = 29 * hashCode + Objs.hashCode(getWriteMethod());
-        return hashCode;
+        return Objs.hash(getBeanClass(), getReadMethod(), getWriteMethod());
     }
+
+
 
 }
