@@ -120,7 +120,7 @@ class JavaScriptDateParser {
                             }
 
                             this.skipDelimiter('-');
-                            break;
+
                         } else {
                             if (!this.setTimeField(this.numValue)) {
                                 return false;
@@ -137,6 +137,7 @@ class JavaScriptDateParser {
                                 }
                             }
                         }
+                        break;
                     case NAME:
                         if (this.nameValue == null) {
                             return false;
@@ -179,6 +180,7 @@ class JavaScriptDateParser {
                         if (!this.skipParentheses()) {
                             return false;
                         }
+                        break;
                     case SEPARATOR:
                         break;
                     default:
@@ -565,7 +567,7 @@ class JavaScriptDateParser {
     }
 
     private static class Name {
-        final String name;
+        final String n;
         final String key;
         final int value;
         final int type;
@@ -580,18 +582,18 @@ class JavaScriptDateParser {
 
             assert name.equals(name.toLowerCase(Locale.ENGLISH));
 
-            this.name = name;
+            this.n = name;
             this.key = name.substring(0, Math.min(3, name.length()));
             this.type = type;
             this.value = value;
         }
 
         public boolean matches(String str, int offset, int len) {
-            return this.name.regionMatches(true, 0, str, offset, len);
+            return this.n.regionMatches(true, 0, str, offset, len);
         }
 
         public String toString() {
-            return this.name;
+            return this.n;
         }
     }
 
