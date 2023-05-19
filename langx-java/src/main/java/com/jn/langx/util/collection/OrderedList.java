@@ -2,6 +2,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.Ordered;
 import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.multivalue.CommonMultiValueMap;
@@ -326,7 +327,7 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> implements C
 
     @Override
     public boolean equals(Object o) {
-        return map.equals(o);
+        return Objs.equals(map,o);
     }
 
     @Override

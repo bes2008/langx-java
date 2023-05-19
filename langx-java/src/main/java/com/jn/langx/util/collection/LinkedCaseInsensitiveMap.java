@@ -3,6 +3,7 @@ package com.jn.langx.util.collection;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Supplier;
 
@@ -200,7 +201,7 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 
     @Override
     public boolean equals(Object obj) {
-        return this.targetMap.equals(obj);
+        return Objs.equals(this.targetMap,obj);
     }
 
     @Override

@@ -29,7 +29,7 @@ public class Key<T> {
     }
 
     public final boolean equals(Object obj) {
-        return (obj == this);
+        return obj == this;
     }
 
     public String toString() {

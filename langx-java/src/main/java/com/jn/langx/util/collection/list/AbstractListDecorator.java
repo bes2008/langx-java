@@ -16,6 +16,7 @@
  */
 package com.jn.langx.util.collection.list;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.AbstractCollectionDecorator;
 
 import java.util.Collection;
@@ -71,12 +72,12 @@ public abstract class AbstractListDecorator<E> extends AbstractCollectionDecorat
 
     @Override
     public boolean equals(final Object object) {
-        return object == this || decorated().equals(object);
+        return object == this || Objs.equals(decorated(), object);
     }
 
     @Override
     public int hashCode() {
-        return decorated().hashCode();
+        return Objs.hash(decorated());
     }
 
     //-----------------------------------------------------------------------

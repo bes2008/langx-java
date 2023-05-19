@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection.sequence;
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
@@ -101,7 +102,7 @@ public class ListSequence<E> implements Sequence<E> {
 
     @Override
     public boolean equals(Object o) {
-        return list.equals(o);
+        return Objs.equals(list,o);
     }
 
     @Override

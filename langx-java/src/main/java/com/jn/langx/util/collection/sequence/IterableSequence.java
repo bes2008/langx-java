@@ -1,5 +1,6 @@
 package com.jn.langx.util.collection.sequence;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 
 import java.util.Collection;
@@ -107,7 +108,7 @@ public class IterableSequence<E> implements Sequence<E> {
 
     @Override
     public boolean equals(Object o) {
-        return delegate.equals(o);
+        return Objs.equals(delegate,o);
     }
 
     @Override

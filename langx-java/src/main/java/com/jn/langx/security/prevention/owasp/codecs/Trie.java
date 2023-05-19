@@ -1,6 +1,8 @@
 package com.jn.langx.security.prevention.owasp.codecs;
 
 
+import com.jn.langx.util.Objs;
+
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.util.Collection;
@@ -89,7 +91,7 @@ interface Trie<T> extends Map<CharSequence, T> {
         }
 
         public boolean equals(Object other) {
-            return wrapped.equals(other);
+            return Objs.equals(wrapped,other);
         }
 
         public int hashCode() {

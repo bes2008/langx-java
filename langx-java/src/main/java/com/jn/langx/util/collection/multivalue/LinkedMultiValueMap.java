@@ -2,6 +2,7 @@ package com.jn.langx.util.collection.multivalue;
 
 
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate2;
@@ -117,7 +118,7 @@ public class LinkedMultiValueMap<K, V> extends CommonMultiValueMap<K, V> impleme
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        return this.targetMap.equals(obj);
+        return Objs.equals(this.targetMap,obj);
     }
 
     @Override
