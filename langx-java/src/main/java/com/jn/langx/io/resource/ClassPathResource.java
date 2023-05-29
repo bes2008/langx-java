@@ -251,7 +251,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         } else {
             is = ClassLoader.getSystemResourceAsStream(getPath());
         }
-        if (is == null) {
+        if (is == null && globalClassLoader != null) {
             is = globalClassLoader.getResourceAsStream(getPath());
         }
 
