@@ -1,13 +1,16 @@
 package com.jn.langx.cache;
 
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.concurrent.clhm.ConcurrentLinkedHashMap;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.timing.timer.Timer;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
  * 最近最少使用
+ *
  * @param <K>
  * @param <V>
  */
@@ -17,7 +20,8 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
      * key: entry.key
      * Value: entry
      */
-    private LinkedHashMap<K, K> lru = new LinkedHashMap<K, K>();
+    private ConcurrentLinkedHashMap<K, K> lru = new ConcurrentLinkedHashMap.Builder().concurrencyLevel(Maths.max(4, Platform.cpuCore()))
+            .build();
 
     public LRUCache() {
         super(Integer.MAX_VALUE, 60 * 1000);
