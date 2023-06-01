@@ -13,6 +13,7 @@ import org.xml.sax.ErrorHandler;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -40,25 +41,34 @@ public class Xmls {
         return getXmlDoc(entityResolver, errorHandler, xml, false, false, namespaceAware);
     }
 
+    /**
+     * @since 5.2.7
+     */
+    public static void setFeature(DocumentBuilderFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setFeature(feature, enabled);
+        } catch (ParserConfigurationException e) {
+            // ignore it
+        }
+    }
+
+
     public static Document getXmlDoc(
             EntityResolver entityResolver,
             ErrorHandler errorHandler,
             final InputStream xml,
             boolean ignoreComments,
             boolean ignoringElementContentWhitespace,
-            boolean namespaceAware) throws Exception {
+            boolean namespaceAware
+    ) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
 
-
-        String feature = "http://xml.org/sax/features/external-general-entities";
-        factory.setFeature(feature, false); // 不包括外部一般实体。
-        feature = "http://xml.org/sax/features/external-parameter-entities";
-        factory.setFeature(feature, false); // 不包含外部参数实体或外部DTD子集。
-        feature = "http://apache.org/xml/features/nonvalidating/load-external-dtd";
-        factory.setFeature(feature, false); // 忽略外部DTD
-        factory.setFeature(XMLConstants.ACCESS_EXTERNAL_DTD,false);
-        factory.setFeature(XMLConstants.ACCESS_EXTERNAL_SCHEMA,false);
+        setFeature(factory,"http://xml.org/sax/features/external-general-entities", false); // 不包括外部一般实体。
+        setFeature(factory,"http://xml.org/sax/features/external-parameter-entities", false); // 不包含外部参数实体或外部DTD子集。
+        setFeature(factory,"http://apache.org/xml/features/nonvalidating/load-external-dtd", false); // 忽略外部DTD
+        setFeature(factory, XMLConstants.ACCESS_EXTERNAL_DTD, false); // 不访问外部 dtd
+        setFeature(factory, XMLConstants.ACCESS_EXTERNAL_SCHEMA, false); // 不访问外部 schema
 
 
         factory.setIgnoringElementContentWhitespace(ignoringElementContentWhitespace);
