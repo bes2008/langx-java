@@ -20,7 +20,9 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
      * key: entry.key
      * Value: entry
      */
-    private ConcurrentLinkedHashMap<K, K> lru = new ConcurrentLinkedHashMap.Builder().concurrencyLevel(Maths.max(4, Platform.cpuCore()))
+    private ConcurrentLinkedHashMap<K, K> lru = new ConcurrentLinkedHashMap.Builder()
+            .initialCapacity(16)
+            .concurrencyLevel(Maths.min(4, Platform.cpuCore()))
             .build();
 
     public LRUCache() {
