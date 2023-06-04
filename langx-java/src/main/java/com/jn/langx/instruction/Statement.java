@@ -1,7 +1,11 @@
 package com.jn.langx.instruction;
 
+import com.jn.langx.annotation.NonNull;
+
 abstract class Statement<R> implements Instruction<R> {
+    @NonNull
     private Closure closure;
+    @NonNull
     private Action<R> action;
 
     @Override

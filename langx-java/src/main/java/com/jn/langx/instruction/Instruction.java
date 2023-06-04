@@ -6,7 +6,8 @@ package com.jn.langx.instruction;
  *  1) 表达式
  *  2) 语句：
  *      2.1) 声明变量，赋值
- *      2.2) 函数调用
+ *      2.2） 取变量值
+ *      2.3) 函数调用
  * </pre>
  *
  * @see com.jn.langx.el.expression.Expression

@@ -1,6 +1,7 @@
 package com.jn.langx.instruction;
 
-public final class SetVariableStatement<R> extends Statement<R> {
+public class GetVariableStatement<R> extends Statement<R> {
+
     /**
      * 闭包中的变量，或者对象的字段
      */
