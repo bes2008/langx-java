@@ -91,4 +91,20 @@ public class ClusterAddressParserTests {
         System.out.println("=======================Test IP V6 end====================");
 
     }
+
+
+    @Test
+    public void pingTest(){
+        String str = "[fe80::e19e:f7b9:8e86:1f70]:9200,[fe80::217f:3627:af5:7c89]:9200,fe80::a469:ab51:4e8c:b87:9200";
+        List<NetworkAddress> addresses = parser.parse(str);
+        System.out.println(addresses);
+    }
+
+
+    @Test
+    public void pingtest2(){
+        String regexp = "((([0]{1,4}(:[0]{1,4}){4}):FFFF)|(::FFFF))";
+        System.out.println("0000:0000:0000:0000:0000:FFFF".matches(regexp));
+    }
+
 }

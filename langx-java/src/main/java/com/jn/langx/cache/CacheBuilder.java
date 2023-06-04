@@ -3,6 +3,7 @@ package com.jn.langx.cache;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.ConcurrentReferenceHashMap;
+import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings({"unused", "rawtypes"})
 public class CacheBuilder<K, V> {
     private Class cacheClass = LRUCache.class;
-    private int concurrencyLevel = Runtime.getRuntime().availableProcessors();
+    private int concurrencyLevel = Platform.cpuCore();
     private int initialCapacity;
 
     private Loader<K, V> loader;

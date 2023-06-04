@@ -35,7 +35,7 @@ class LFUCache <K, V> extends AbstractCache<K, V> {
     });
 
     @Override
-    protected void addToCache(Entry<K, V> entry) {
+    protected synchronized void addToCache(Entry<K, V> entry) {
         K key = entry.getKey();
         if (key != null) {
             lastUsedTimeSortedMap.put(key, entry.getLastUsedTime());
@@ -43,7 +43,7 @@ class LFUCache <K, V> extends AbstractCache<K, V> {
     }
 
     @Override
-    protected void removeFromCache(Entry<K, V> entry, RemoveCause removeCause) {
+    protected synchronized void removeFromCache(Entry<K, V> entry, RemoveCause removeCause) {
         K key = entry.getKey();
         if (key != null) {
             lastUsedTimeSortedMap.remove(entry.getKey());

@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.bes2008.solution.langx</groupId>
         <artifactId>langx</artifactId>
-        <version>5.2.6</version>
+        <version>5.2.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,18 +21,6 @@
             <groupId>org.jruby.joni</groupId>
             <artifactId>joni</artifactId>
             <version>2.1.44</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
 
         <!-- 支持 Perl 5 正则, Awk 正则 -->

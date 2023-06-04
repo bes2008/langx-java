@@ -5,26 +5,10 @@ import com.jn.langx.annotation.Immutable;
 import com.jn.langx.annotation.ThreadSafe;
 import com.jn.langx.util.ClassLoaders;
 
-import static com.jn.langx.util.Preconditions.*;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.unmodifiableMap;
-import static java.util.Collections.unmodifiableSet;
-
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.AbstractCollection;
-import java.util.AbstractMap;
-import java.util.AbstractQueue;
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -32,6 +16,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static com.jn.langx.util.Preconditions.*;
+import static java.util.Collections.*;
 
 
 /**
@@ -1670,7 +1657,9 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
          *                               not set
          */
         public ConcurrentLinkedHashMap<K, V> build() {
-            checkState(capacity >= 0);
+            if (capacity < 0) {
+                capacity = 0;
+            }
             return new ConcurrentLinkedHashMap<K, V>(this);
         }
     }

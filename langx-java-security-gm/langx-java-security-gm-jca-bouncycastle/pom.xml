@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.bes2008.solution.langx.security</groupId>
         <artifactId>langx-java-security-gm</artifactId>
-        <version>5.2.6</version>
+        <version>5.2.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,18 +20,6 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

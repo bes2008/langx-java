@@ -61,7 +61,7 @@ public class CandidatePatternsDateTimeParser implements DateTimeParser {
                         Collects.forEach(locales, new Consumer<Locale>() {
                             @Override
                             public void accept(Locale locale) {
-                                DateTimeParsedResult r = new GracefulDateParser(pattern, timeZone, locale).parse(datetimeString);
+                                DateTimeParsedResult r = new SimpleDateParser(pattern, timeZone, locale).parse(datetimeString);
                                 if (r != null) {
                                     resultHolder.set(r);
                                 }

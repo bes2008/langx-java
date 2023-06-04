@@ -30,6 +30,12 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
     @Nullable
     private Class<?> clazz;
 
+    private static ClassLoader globalClassLoader;
+
+    public static void setGlobalClassLoader(ClassLoader classLoader) {
+        globalClassLoader = classLoader;
+    }
+
     /**
      * Create a new {@code ClassPathResource} for {@code ClassLoader} usage.
      * A leading slash will be removed, as the ClassLoader resource access
@@ -245,6 +251,10 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         } else {
             is = ClassLoader.getSystemResourceAsStream(getPath());
         }
+        if (is == null && globalClassLoader != null) {
+            is = globalClassLoader.getResourceAsStream(getPath());
+        }
+
         if (is == null) {
             throw new FileNotFoundException(toString() + " cannot be opened because it does not exist");
         }
