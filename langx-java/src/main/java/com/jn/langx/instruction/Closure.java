@@ -2,7 +2,6 @@ package com.jn.langx.instruction;
 
 import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -88,6 +87,16 @@ public class Closure {
         return this.localVariables.get(variableName);
     }
 
+    public boolean hasVariable(String variableName){
+        if (this.localVariables != null && this.localVariables.containsKey(variableName)) {
+            return true;
+        }
+        if (this.arguments != null && this.arguments.containsKey(variableName)) {
+            return true;
+        }
+        return false;
+    }
+
     public Object getVariable(String variableName) {
         if (this.localVariables != null && this.localVariables.containsKey(variableName)) {
             return this.localVariables.get(variableName);
@@ -95,11 +104,7 @@ public class Closure {
         if (this.arguments != null && this.arguments.containsKey(variableName)) {
             return this.arguments.get(variableName);
         }
-
-        if (this.parent != null) {
-            return this.parent.getVariable(variableName);
-        }
-        throw new UndefinedException(StringTemplates.formatWithPlaceholder("{} is undefined", variableName));
+        return null;
     }
 
     public Closure getParent() {
