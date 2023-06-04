@@ -2,7 +2,7 @@ package com.jn.langx.instruction;
 
 import com.jn.langx.annotation.Nullable;
 
-public class InvocationStatement<R> extends Statement<R> {
+public final class InvocationStatement<R> extends Statement<R> {
     /**
      * 函数名称
      */

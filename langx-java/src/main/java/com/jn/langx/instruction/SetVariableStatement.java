@@ -2,7 +2,7 @@ package com.jn.langx.instruction;
 
 import com.jn.langx.annotation.Nullable;
 
-public class SetVariableStatement<R> extends Statement<R> {
+public final class SetVariableStatement<R> extends Statement<R> {
     @Nullable
     private Object owner;
     private String variableName;

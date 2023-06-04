@@ -1,6 +1,6 @@
 package com.jn.langx.instruction;
 
-public abstract class Statement<R> implements Instruction<R> {
+abstract class Statement<R> implements Instruction<R> {
     private Closure closure;
     private Action<R> action;
 
