@@ -2,6 +2,7 @@ package com.jn.langx.instruction;
 
 import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
@@ -17,8 +18,6 @@ import java.util.Map;
 public class Closure {
     @Nullable
     private Closure parent;
-    @Nullable
-    private Object owner;
 
     /**
      * 闭包的参数
@@ -87,7 +86,7 @@ public class Closure {
         return this.localVariables.get(variableName);
     }
 
-    public boolean hasVariable(String variableName){
+    public boolean hasDirectedVariable(String variableName) {
         if (this.localVariables != null && this.localVariables.containsKey(variableName)) {
             return true;
         }
@@ -104,7 +103,11 @@ public class Closure {
         if (this.arguments != null && this.arguments.containsKey(variableName)) {
             return this.arguments.get(variableName);
         }
-        return null;
+
+        if (parent != null) {
+            return parent.getVariable(variableName);
+        }
+        throw new UndefinedException(StringTemplates.formatWithPlaceholder("{} is undefined", variableName));
     }
 
     public Closure getParent() {
@@ -115,11 +118,4 @@ public class Closure {
         this.parent = parent;
     }
 
-    public Object getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Object owner) {
-        this.owner = owner;
-    }
 }

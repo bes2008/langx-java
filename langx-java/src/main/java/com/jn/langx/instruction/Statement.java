@@ -6,6 +6,8 @@ abstract class Statement<R> implements Instruction<R> {
     @NonNull
     private Closure closure;
     @NonNull
+    private Object owner;
+    @NonNull
     private Action<R> action;
 
     @Override
@@ -24,5 +26,13 @@ abstract class Statement<R> implements Instruction<R> {
 
     public void setAction(Action<R> action) {
         this.action = action;
+    }
+
+    public Object getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Object owner) {
+        this.owner = owner;
     }
 }

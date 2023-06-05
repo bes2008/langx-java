@@ -6,15 +6,6 @@ public final class SetVariableStatement<R> extends Statement<R> {
      */
     private String variableName;
 
-
-    public Object getOwner() {
-        return getClosure().getOwner();
-    }
-
-    public void setOwner(Object owner) {
-        getClosure().setOwner(owner);
-    }
-
     public String getVariableName() {
         return variableName;
     }
