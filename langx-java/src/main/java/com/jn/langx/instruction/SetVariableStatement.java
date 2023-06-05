@@ -16,6 +16,6 @@ public final class SetVariableStatement<R> extends Statement<R> {
 
     @Override
     public <R1> R1 execute() {
-        return getAction().doAction(getOwner(), variableName, getClosure());
+        return getAction().doAction(this);
     }
 }

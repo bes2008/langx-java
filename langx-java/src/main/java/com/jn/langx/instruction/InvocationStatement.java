@@ -25,7 +25,7 @@ public final class InvocationStatement<R> extends Statement<R> {
 
     @Override
     public <R1> R1 execute() {
-        return getAction().doAction(getOwner(), functionName, getClosure());
+        return getAction().doAction(this);
     }
 
     public List<String> getArgumentNames() {
