@@ -8,9 +8,6 @@ public class GetVariableAction<R> implements Action<R> {
 
         String variableName = stmt.getVariableName();
         Closure closure = stmt.getClosure();
-        if (closure.hasVariable(variableName)) {
-            return (R) closure.getVariable(variableName);
-        }
-        return null;
+        return (R)closure.getVariable(variableName);
     }
 }
