@@ -141,21 +141,37 @@ public class XmlAccessor {
         }
     }
 
+    public Node getNode(final Document doc, String elementXpath) throws XPathExpressionException {
+        return getNode(doc, null, elementXpath);
+    }
+
     public Node getNode(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {
-        final XPath xpath = factory.newXPath();
-        xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
         boolean usingCustomNamespace = Namespaces.hasCustomNamespace(doc);
         elementXpath = XPaths.wrapXpath(elementXpath, usingCustomNamespace, defaultNamespacePrefix);
+        final XPath xpath = (factory == null ? XPathFactory.newInstance() : factory).newXPath();
+        xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
         final XPathExpression exp = xpath.compile(elementXpath);
         return (Node) exp.evaluate(doc, XPathConstants.NODE);
+    }
+
+    public Element getElement(final Document doc, final String elementXpath) throws XPathExpressionException {
+        return (Element) getNode(doc, null, elementXpath);
     }
 
     public Element getElement(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         return (Element) getNode(doc, factory, elementXpath);
     }
 
+    public Attr getAttr(final Document doc, final String elementXpath) throws XPathExpressionException {
+        return (Attr) getNode(doc, null, elementXpath);
+    }
+
     public Attr getAttr(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
         return (Attr) getNode(doc, factory, elementXpath);
+    }
+
+    public NodeList getNodeList(final Document doc, String elementXpath) throws XPathExpressionException {
+        return getNodeList(doc, null, elementXpath);
     }
 
     public NodeList getNodeList(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {

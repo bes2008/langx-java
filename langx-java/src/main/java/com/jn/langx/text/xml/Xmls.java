@@ -7,6 +7,8 @@ import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 
@@ -17,6 +19,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import java.io.*;
 
 public class Xmls {
@@ -64,9 +68,9 @@ public class Xmls {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
 
-        setFeature(factory,"http://xml.org/sax/features/external-general-entities", false); // 不包括外部一般实体。
-        setFeature(factory,"http://xml.org/sax/features/external-parameter-entities", false); // 不包含外部参数实体或外部DTD子集。
-        setFeature(factory,"http://apache.org/xml/features/nonvalidating/load-external-dtd", false); // 忽略外部DTD
+        setFeature(factory, "http://xml.org/sax/features/external-general-entities", false); // 不包括外部一般实体。
+        setFeature(factory, "http://xml.org/sax/features/external-parameter-entities", false); // 不包含外部参数实体或外部DTD子集。
+        setFeature(factory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false); // 忽略外部DTD
         setFeature(factory, XMLConstants.ACCESS_EXTERNAL_DTD, false); // 不访问外部 dtd
         setFeature(factory, XMLConstants.ACCESS_EXTERNAL_SCHEMA, false); // 不访问外部 schema
 
@@ -136,4 +140,16 @@ public class Xmls {
             IOs.close(input);
         }
     }
+
+
+    public static NodeList findNodeList(Document doc, String xpath) throws XPathExpressionException {
+        NodeList nodes = new XmlAccessor(Namespaces.hasCustomNamespace(doc) ? "x" : null).getNodeList(doc, XPathFactory.newInstance(), xpath);
+        return nodes;
+    }
+
+    public static Element findElement(Document doc, String xpath) throws XPathExpressionException {
+        Element element = new XmlAccessor(Namespaces.hasCustomNamespace(doc) ? "x" : null).getElement(doc, XPathFactory.newInstance(), xpath);
+        return element;
+    }
+
 }
