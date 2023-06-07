@@ -1,6 +1,7 @@
 package com.jn.langx.text.xml;
 
 
+import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Function;
@@ -18,15 +19,15 @@ import java.util.List;
  * 所有属性：@*<br>
  * 并列关系：|<br>
  * 约束关系：[]<br>
- *
- *
+ * <p>
+ * <p>
  * 避免注入的方案：
  * https://cheatsheetseries.owasp.org/cheatsheets/Injection_Prevention_in_Java_Cheat_Sheet.html
  *
  * @author jinuo.fang
  */
 public class XPaths {
-    private XPaths(){
+    private XPaths() {
 
     }
 
@@ -75,14 +76,23 @@ public class XPaths {
         return expA + " or (" + expB + " and " + expC + ")";
     }
 
-    public static String useNamespace(String xpathExpr, final String namespacePrefix) {
+    public static String wrapXpath(String xpath, boolean usingCustomNamespace, String namespacePrefix) {
+        if (usingCustomNamespace && Emptys.isNotEmpty(xpath)) {
+            return XPaths.wrapXpath(xpath, namespacePrefix);
+        }
+        return xpath;
+    }
+
+    public static String wrapXpath(String xpathExpr, final String namespacePrefix) {
+        boolean startWithSlash = Strings.startsWith(xpathExpr, "/");
         String[] segments = Strings.split(xpathExpr, "/");
+        final String prefix =  namespacePrefix + ":";
         List<String> prefixedSegments = Pipeline.of(segments).clearNulls().map(new Function<String, String>() {
             @Override
             public String apply(String segment) {
-                return namespacePrefix + ":" + segment;
+                return Strings.startsWith(segment, prefix)?segment:(prefix+segment);
             }
         }).asList();
-        return "/" + Strings.join("/", prefixedSegments);
+        return (startWithSlash ? "/" : "") + Strings.join("/", prefixedSegments);
     }
 }

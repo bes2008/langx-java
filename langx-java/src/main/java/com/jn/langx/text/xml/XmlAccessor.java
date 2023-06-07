@@ -141,9 +141,11 @@ public class XmlAccessor {
         }
     }
 
-    public Node getNode(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+    public Node getNode(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        boolean usingCustomNamespace = Namespaces.hasCustomNamespace(doc);
+        elementXpath = XPaths.wrapXpath(elementXpath, usingCustomNamespace, defaultNamespacePrefix);
         final XPathExpression exp = xpath.compile(elementXpath);
         return (Node) exp.evaluate(doc, XPathConstants.NODE);
     }
@@ -156,30 +158,38 @@ public class XmlAccessor {
         return (Attr) getNode(doc, factory, elementXpath);
     }
 
-    public NodeList getNodeList(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+    public NodeList getNodeList(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        boolean usingCustomNamespace = Namespaces.hasCustomNamespace(doc);
+        elementXpath = XPaths.wrapXpath(elementXpath, usingCustomNamespace, defaultNamespacePrefix);
         final XPathExpression exp = xpath.compile(elementXpath);
         return (NodeList) exp.evaluate(doc, XPathConstants.NODESET);
     }
 
-    public String getString(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+    public String getString(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        boolean usingCustomNamespace = Namespaces.hasCustomNamespace(doc);
+        elementXpath = XPaths.wrapXpath(elementXpath, usingCustomNamespace, defaultNamespacePrefix);
         final XPathExpression exp = xpath.compile(elementXpath);
         return (String) exp.evaluate(doc, XPathConstants.STRING);
     }
 
-    public Number getNumber(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+    public Number getNumber(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        boolean usingCustomNamespace = Namespaces.hasCustomNamespace(doc);
+        elementXpath = XPaths.wrapXpath(elementXpath, usingCustomNamespace, defaultNamespacePrefix);
         final XPathExpression exp = xpath.compile(elementXpath);
         return (Number) exp.evaluate(doc, XPathConstants.NUMBER);
     }
 
-    public Boolean getBoolean(final Document doc, final XPathFactory factory, final String elementXpath) throws XPathExpressionException {
+    public Boolean getBoolean(final Document doc, final XPathFactory factory, String elementXpath) throws XPathExpressionException {
         final XPath xpath = factory.newXPath();
         xpath.setNamespaceContext(new NodeNamespaceContext(doc, defaultNamespacePrefix));
+        boolean usingCustomNamespace = Namespaces.hasCustomNamespace(doc);
+        elementXpath = XPaths.wrapXpath(elementXpath, usingCustomNamespace, defaultNamespacePrefix);
         final XPathExpression exp = xpath.compile(elementXpath);
         return (Boolean) exp.evaluate(doc, XPathConstants.BOOLEAN);
     }
