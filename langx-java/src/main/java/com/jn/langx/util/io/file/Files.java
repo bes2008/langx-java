@@ -5,10 +5,7 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.io.stream.NullOutputStream;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Maths;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Strings;
-import com.jn.langx.util.Throwables;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
@@ -62,7 +59,8 @@ public class Files {
 
     public static final File newFile(String path) {
         if (Strings.isNotEmpty(path)) {
-            return new File(Filenames.cleanPath(path));
+            Preconditions.checkArgument(Filenames.checkFilePath(path), "path");
+            return new File(path);
         }
         return null;
     }
@@ -71,7 +69,8 @@ public class Files {
         if (file == null) {
             return null;
         }
-        return new File(file, Filenames.cleanPath(subpath));
+        Preconditions.checkArgument(Filenames.checkFilePath(subpath), "path");
+        return new File(file, subpath);
     }
 
     public static String getSuffix(File file) {
