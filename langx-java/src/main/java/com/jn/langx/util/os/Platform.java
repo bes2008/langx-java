@@ -230,15 +230,19 @@ public class Platform {
             // ignore
         }
         if (null != javaHome) {
-            File binDir = new File(javaHome, "bin");
-            if (binDir.isDirectory() && binDir.canRead()) {
-                String[] execs = new String[]{"java", "java.exe"};
-                for (String exec : execs) {
-                    result = new File(binDir, exec);
-                    if (result.canRead()) {
-                        break;
+            try {
+                File binDir = new File(javaHome, "bin");
+                if (binDir.isDirectory() && binDir.canRead()) {
+                    String[] execs = new String[]{"java", "java.exe"};
+                    for (String exec : execs) {
+                        result = new File(binDir, exec);
+                        if (result.canRead()) {
+                            break;
+                        }
                     }
                 }
+            }catch (Throwable e){
+                // ignore ite
             }
         }
         return result;
