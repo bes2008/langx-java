@@ -17,6 +17,8 @@ import com.jn.langx.util.io.LineDelimiter;
 import com.jn.langx.util.io.file.filter.BooleanFileFilter;
 import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
 
 import java.io.FilenameFilter;
 import java.io.*;
@@ -53,6 +55,8 @@ public class Files {
      */
     private static final int MAX_BUFFER_SIZE = Integer.MAX_VALUE - 8;
     private static final int BUFFER_SIZE = 8192;
+
+    private static final Logger logger = Loggers.getLogger(Files.class);
 
     public static String getSuffix(File file) {
         return Filenames.getSuffix(Files.getCanonicalPath(file));
@@ -130,18 +134,19 @@ public class Files {
         try {
             if (file.exists()) {
                 if (file.isDirectory()) {
-                    throw new IOException("File '" + file + "' exists but is a directory");
+                    throw new IOException(StringTemplates.formatWithPlaceholder("File '{}' exists but is a directory", file));
                 }
                 if (!file.canRead()) {
-                    throw new IOException("File '" + file + "' cannot be read");
+                    throw new IOException(StringTemplates.formatWithPlaceholder("File '{}' cannot be read", file));
                 }
             } else {
-                throw new FileNotFoundException("File '" + file + "' does not exist");
+                throw new FileNotFoundException(StringTemplates.formatWithPlaceholder("File '{}' does not exist", file));
             }
             return new FileInputStream(file);
-        } catch (Throwable ex) {
-            throw Throwables.wrapAsRuntimeException(ex);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
         }
+        return null;
     }
 
     /**
@@ -1817,6 +1822,7 @@ public class Files {
             IOs.close(fileWriter);
         }
     }
+
     public static void appendLine(File file, String line) throws IOException {
         write(line + LineDelimiter.DEFAULT.getValue(), Charsets.UTF_8, file, true);
     }
@@ -1890,32 +1896,35 @@ public class Files {
         }
     }
 
-    public static String getCanonicalPath(File file){
+    public static String getCanonicalPath(File file) {
         try {
             return file.getCanonicalPath();
-        }catch (IOException e){
+        } catch (IOException e) {
             throw Throwables.wrapAsRuntimeIOException(e);
         }
     }
-    public static File getCanonicalFile(File file){
+
+    public static File getCanonicalFile(File file) {
         try {
             return file.getCanonicalFile();
-        }catch (IOException e){
+        } catch (IOException e) {
             throw Throwables.wrapAsRuntimeIOException(e);
         }
     }
-    public static void setLastModified(File file){
+
+    public static void setLastModified(File file) {
         setLastModified(file, System.currentTimeMillis());
     }
-    public static void setLastModified(File file, long time){
+
+    public static void setLastModified(File file, long time) {
         file.setLastModified(time);
     }
 
-    public static long getLastModified(File file){
+    public static long getLastModified(File file) {
         return file.lastModified();
     }
 
-    private Files(){
+    private Files() {
 
     }
 }

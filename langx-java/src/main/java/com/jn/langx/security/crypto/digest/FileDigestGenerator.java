@@ -152,7 +152,7 @@ public class FileDigestGenerator {
         }
 
         public final boolean hasNext() {
-            return readedLength < fileLength;
+            return input != null && readedLength < fileLength;
         }
 
         public final void close() {
@@ -177,7 +177,9 @@ public class FileDigestGenerator {
         @Override
         public void setFile(File file) {
             FileInputStream fileInput = Files.openInputStream(file);
-            input = new BufferedInputStream(fileInput);
+            if (fileInput != null) {
+                input = new BufferedInputStream(fileInput);
+            }
         }
 
         @Override
@@ -219,7 +221,9 @@ public class FileDigestGenerator {
             super.setFile(file);
 
             FileInputStream fileInput = Files.openInputStream(file);
-            input = fileInput.getChannel();
+            if (fileInput != null) {
+                input = fileInput.getChannel();
+            }
             remainingLength = fileLength;
         }
 
@@ -260,9 +264,11 @@ public class FileDigestGenerator {
 
     static class FileReaderFactory {
         private static final long SIZE_10M = 10 * 1024 * 1024;
-        private FileReaderFactory(){
+
+        private FileReaderFactory() {
 
         }
+
         public static FileReader getFileReader(String filePath) {
             File file = new File(filePath);
 

@@ -87,10 +87,17 @@ public class PEMs extends Securitys {
      */
     public static PrivateKey readPrivateKey(File keyFile, Supplier0<char[]> passwordSupplier) throws GeneralSecurityException {
         BufferedReader bReader = null;
+        FileInputStream fileInputStream = null;
         try {
-            bReader = new BufferedReader(new InputStreamReader(Files.openInputStream(keyFile), Charsets.UTF_8));
-            return readPrivateKey(bReader, passwordSupplier);
+            fileInputStream = Files.openInputStream(keyFile);
+            if (fileInputStream != null) {
+                bReader = new BufferedReader(new InputStreamReader(fileInputStream, Charsets.UTF_8));
+                return readPrivateKey(bReader, passwordSupplier);
+            } else {
+                return null;
+            }
         } finally {
+            IOs.close(fileInputStream);
             IOs.close(bReader);
         }
     }
@@ -534,11 +541,13 @@ public class PEMs extends Securitys {
             InputStream input = null;
             try {
                 input = Files.openInputStream(path);
-                final Collection<? extends Certificate> parsed = certFactory.generateCertificates(input);
-                if (parsed.isEmpty()) {
-                    throw new SecurityException("failed to parse any certificates from [" + Files.getCanonicalPath(path) + "]");
+                if(input!=null) {
+                    final Collection<? extends Certificate> parsed = certFactory.generateCertificates(input);
+                    if (parsed.isEmpty()) {
+                        throw new SecurityException("failed to parse any certificates from [" + Files.getCanonicalPath(path) + "]");
+                    }
+                    certificates.addAll(parsed);
                 }
-                certificates.addAll(parsed);
             } finally {
                 IOs.close(input);
             }
