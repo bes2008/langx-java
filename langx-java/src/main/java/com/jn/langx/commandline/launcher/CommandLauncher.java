@@ -23,8 +23,7 @@ public interface CommandLauncher<P extends InstructionSequence> {
      * @return the newly created process
      * @throws IOException if attempting to run a command in a specific directory
      */
-    P exec(final CommandLine cmd, final Map<String, String> env)
-            throws IOException;
+    P exec(final CommandLine cmd, final Map<String, String> env)  throws IOException;
 
     /**
      * Launches the given command in a new process, in the given working
@@ -38,8 +37,7 @@ public interface CommandLauncher<P extends InstructionSequence> {
      * @return the newly created process
      * @throws IOException if trying to change directory
      */
-    P exec(final CommandLine cmd, final Map<String, String> env,
-                             final File workingDir) throws IOException;
+    P exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException;
 
 
     /**

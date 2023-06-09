@@ -28,16 +28,10 @@ public class WinNTCommandLauncher extends CommandLauncherProxy {
      */
     @Override
     public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException {
-        if (workingDir == null) {
-            return exec(cmd, env);
-        }
 
-        // Use cmd.exe to change to the specified directory before running
-        // the command
         final CommandLine newCmd = new CommandLine("cmd");
         newCmd.addArgument("/c");
         newCmd.addArguments(cmd.toStrings());
-
-        return exec(newCmd, env);
+        return super.exec(newCmd, env, workingDir);
     }
 }

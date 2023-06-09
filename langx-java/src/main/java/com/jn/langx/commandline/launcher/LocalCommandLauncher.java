@@ -16,10 +16,8 @@ import java.util.Map;
  */
 public abstract class LocalCommandLauncher implements CommandLauncher<ProcessAdapter> {
 
-    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env)
-            throws IOException {
-        final String[] envVar = EnvironmentUtils.toStrings(env);
-        return new ProcessAdapter(Runtime.getRuntime().exec(cmd.toStrings(), envVar));
+    public final ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env) throws IOException{
+         return exec(cmd, env, null);
     }
 
     public abstract ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException;

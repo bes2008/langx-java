@@ -34,16 +34,11 @@ public class OS2CommandLauncher extends CommandLauncherProxy {
      * @throws IOException forwarded from the exec method of the command launcher
      */
     @Override
-    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env,
-                               final File workingDir) throws IOException {
-        if (workingDir == null) {
-            return exec(cmd, env);
-        }
-
+    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env, final File workingDir) throws IOException {
         final CommandLine newCmd = new CommandLine("cmd");
         newCmd.addArgument("/c");
         newCmd.addArguments(cmd.toStrings());
 
-        return exec(newCmd, env);
+        return super.exec(newCmd, env, workingDir);
     }
 }
