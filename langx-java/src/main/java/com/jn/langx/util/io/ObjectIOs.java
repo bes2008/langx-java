@@ -2,6 +2,7 @@ package com.jn.langx.util.io;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.io.stream.obj.SecureObjectInputStream;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
@@ -64,7 +65,7 @@ public class ObjectIOs {
         ObjectInputStream input = null;
         try {
             ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
-            input = new ObjectInputStream(bai);
+            input = new SecureObjectInputStream(bai);
             Object obj = input.readObject();
             if (obj == null) {
                 return null;
