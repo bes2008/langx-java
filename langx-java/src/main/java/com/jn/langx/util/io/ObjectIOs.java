@@ -63,8 +63,9 @@ public class ObjectIOs {
             return null;
         }
         ObjectInputStream input = null;
+        ByteArrayInputStream bai = null;
         try {
-            ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
+            bai = new ByteArrayInputStream(bytes);
             input = new SecureObjectInputStream(bai);
             Object obj = input.readObject();
             if (obj == null) {
@@ -79,6 +80,7 @@ public class ObjectIOs {
                 return (T) obj;
             }
         } finally {
+            IOs.close(bai);
             IOs.close(input);
         }
 
