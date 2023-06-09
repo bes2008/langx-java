@@ -305,8 +305,8 @@ public class Functions {
             public boolean test(final E value) {
                 return pipeline.allMatch(new Predicate<Predicate<E>>() {
                     @Override
-                    public boolean test(Predicate<E> filter) {
-                        return filter.test(value);
+                    public boolean test(Predicate<E> predicate) {
+                        return predicate.test(value);
                     }
                 });
             }
