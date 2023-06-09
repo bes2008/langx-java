@@ -21,10 +21,9 @@ public class GmsslNativeLibs {
 
     private static void saveLibrary(JarEntry jarEntry) {
         File tmpFile = new File("./.gmssl");
-        String rootOutputPath = tmpFile.getAbsoluteFile() + File.separator;
         String entityName = jarEntry.getName();
         String fileName = entityName.substring(entityName.lastIndexOf("/") + 1);
-        File jarFile = new File(rootOutputPath + File.separator + entityName);
+        File jarFile = new File(tmpFile, entityName);
         if (!jarFile.getParentFile().exists()) {
             jarFile.getParentFile().mkdirs();
         }
@@ -88,8 +87,8 @@ public class GmsslNativeLibs {
 
     public static void addLibraryDir(String libraryPath) throws IOException {
         try {
-            Field field = Reflects.getDeclaredField(ClassLoader.class,"usr_paths");
-            if(field==null){
+            Field field = Reflects.getDeclaredField(ClassLoader.class, "usr_paths");
+            if (field == null) {
                 throw new IOException("Failedto get field handle to set library path");
             }
             field.setAccessible(true);
@@ -109,7 +108,7 @@ public class GmsslNativeLibs {
         }
     }
 
-    private GmsslNativeLibs(){
+    private GmsslNativeLibs() {
 
     }
 }
