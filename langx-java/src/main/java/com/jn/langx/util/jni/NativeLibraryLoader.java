@@ -105,15 +105,14 @@ public final class NativeLibraryLoader {
         if (path == null) {
             return null;
         }
-
-        File f = new File(path);
-        f.mkdirs();
-
-        if (!f.isDirectory()) {
-            return null;
-        }
-
+        File f = null;
         try {
+            f = new File(path);
+            f.mkdirs();
+
+            if (!f.isDirectory()) {
+                return null;
+            }
             return f.getAbsoluteFile();
         } catch (Exception ignored) {
             return f;
