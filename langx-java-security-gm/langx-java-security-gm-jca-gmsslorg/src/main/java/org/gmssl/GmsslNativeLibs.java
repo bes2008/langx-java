@@ -1,6 +1,7 @@
 package org.gmssl;
 
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.jni.NativeLibraryUtil;
@@ -79,32 +80,36 @@ public class GmsslNativeLibs {
                     }
                 }
             } else if ("file".equals(protocol)) {
-                File file = new File(url.getPath());
+                File file = URLs.getFile(url);
+                ;
+
                 addLibraryDir(Files.getCanonicalPath(file));
             }
         }
     }
 
     public static void addLibraryDir(String libraryPath) throws IOException {
-        try {
-            Field field = Reflects.getDeclaredField(ClassLoader.class, "usr_paths");
-            if (field == null) {
-                throw new IOException("Failedto get field handle to set library path");
-            }
-            field.setAccessible(true);
-            String[] paths = (String[]) field.get(null);
-            for (String path : paths) {
-                if (libraryPath.equals(path)) {
-                    return;
+        if (Strings.isNotEmpty(libraryPath)) {
+            try {
+                Field field = Reflects.getDeclaredField(ClassLoader.class, "usr_paths");
+                if (field == null) {
+                    throw new IOException("Failedto get field handle to set library path");
                 }
-            }
+                field.setAccessible(true);
+                String[] paths = (String[]) field.get(null);
+                for (String path : paths) {
+                    if (libraryPath.equals(path)) {
+                        return;
+                    }
+                }
 
-            String[] tmp = new String[paths.length + 1];
-            System.arraycopy(paths, 0, tmp, 0, paths.length);
-            tmp[paths.length] = libraryPath;
-            field.set(null, tmp);
-        } catch (IllegalAccessException e) {
-            throw new IOException("Failedto get permissions to set library path");
+                String[] tmp = new String[paths.length + 1];
+                System.arraycopy(paths, 0, tmp, 0, paths.length);
+                tmp[paths.length] = libraryPath;
+                field.set(null, tmp);
+            } catch (IllegalAccessException e) {
+                throw new IOException("Failedto get permissions to set library path");
+            }
         }
     }
 
