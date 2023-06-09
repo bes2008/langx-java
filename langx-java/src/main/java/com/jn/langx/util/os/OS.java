@@ -176,6 +176,10 @@ public final class OS {
         return isOs("windows", null, null, "6.1");
     }
 
+    public static boolean isWindows(String family){
+        return isFamily(family);
+    }
+
     public static boolean isFamilyZOS() {
         return isFamily(FAMILY_Z_OS);
     }

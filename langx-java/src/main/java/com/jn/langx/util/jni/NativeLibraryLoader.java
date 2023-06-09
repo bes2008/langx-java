@@ -2,6 +2,7 @@ package com.jn.langx.util.jni;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
@@ -32,7 +33,7 @@ public final class NativeLibraryLoader {
         boolean assignWorkDirFailed = false;
         if (Strings.isNotEmpty(workdir)) {
             try {
-                File f = new File(workdir);
+                File f = Files.newFile(workdir);
                 if (!f.exists()) {
                     f.mkdirs();
                 }
@@ -107,7 +108,7 @@ public final class NativeLibraryLoader {
         }
         File f = null;
         try {
-            f = new File(path);
+            f = Files.newFile(path);
             f.mkdirs();
 
             if (!f.isDirectory()) {

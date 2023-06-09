@@ -7,6 +7,7 @@ import com.jn.langx.io.stream.NullOutputStream;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Maths;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
@@ -18,6 +19,7 @@ import com.jn.langx.util.io.file.filter.BooleanFileFilter;
 import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.net.URLs;
 import org.slf4j.Logger;
 
 import java.io.FilenameFilter;
@@ -57,6 +59,20 @@ public class Files {
     private static final int BUFFER_SIZE = 8192;
 
     private static final Logger logger = Loggers.getLogger(Files.class);
+
+    public static final File newFile(String path) {
+        if (Strings.isNotEmpty(path)) {
+            return new File(Filenames.cleanPath(path));
+        }
+        return null;
+    }
+
+    public static final File newFile(File file, String subpath) {
+        if (file == null) {
+            return null;
+        }
+        return new File(file, Filenames.cleanPath(subpath));
+    }
 
     public static String getSuffix(File file) {
         return Filenames.getSuffix(Files.getCanonicalPath(file));
@@ -142,7 +158,11 @@ public class Files {
             } else {
                 throw new FileNotFoundException(StringTemplates.formatWithPlaceholder("File '{}' does not exist", file));
             }
-            return new FileInputStream(file);
+
+            File f = URLs.getFile(URLs.toURL(file.toURI()));
+            if (f != null) {
+                return new FileInputStream(f);
+            }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
