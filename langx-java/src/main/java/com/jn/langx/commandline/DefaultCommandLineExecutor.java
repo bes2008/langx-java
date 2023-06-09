@@ -2,7 +2,7 @@ package com.jn.langx.commandline;
 
 import com.jn.langx.commandline.launcher.CommandLauncher;
 import com.jn.langx.commandline.launcher.CommandLauncherFactory;
-import com.jn.langx.commandline.launcher.LocalCommandLauncher;
+import com.jn.langx.commandline.launcher.AbstractLocalCommandLauncher;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.completion.CompletableFuture;
@@ -300,7 +300,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         if (workingDir == null) {
             throw new IOException(" the work directory is not exist.");
         }
-        if (launcher instanceof LocalCommandLauncher) {
+        if (launcher instanceof AbstractLocalCommandLauncher) {
             if (!workingDir.exists()) {
                 throw new IOException(workingDir + " doesn't exist.");
             }

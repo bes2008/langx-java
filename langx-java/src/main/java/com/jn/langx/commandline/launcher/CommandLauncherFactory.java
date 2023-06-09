@@ -23,7 +23,7 @@ public final class CommandLauncherFactory {
         if (OS.isFamilyOpenVms()) {
             launcher = new VmsCommandLauncher();
         } else {
-            launcher = new Java13CommandLauncher();
+            launcher = new Java1_5CommandLauncher();
         }
 
         return launcher;

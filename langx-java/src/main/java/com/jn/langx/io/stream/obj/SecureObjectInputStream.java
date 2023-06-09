@@ -28,7 +28,7 @@ public class SecureObjectInputStream extends ObjectInputStream {
     }
 
     private void initPredicate(SecureObjectClassPredicate... predicates) {
-        List<Predicate> ps = Pipeline.<Predicate>of(predicates)
+        List<Predicate<ObjectStreamClass>> ps = Pipeline.<Predicate<ObjectStreamClass>>of(predicates)
                 .clearNulls()
                 .asList();
         if (ps.size() == 0) {

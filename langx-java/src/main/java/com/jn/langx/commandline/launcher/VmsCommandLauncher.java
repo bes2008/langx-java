@@ -17,20 +17,7 @@ import java.util.Set;
  * before launching commands. This is due to limitations of both the DCL
  * interpreter and the Java VM implementation.
  */
-public class VmsCommandLauncher extends Java13CommandLauncher {
-
-    /**
-     * Launches the given command in a new process.
-     */
-    @Override
-    public ProcessAdapter exec(final CommandLine cmd, final Map<String, String> env)
-            throws IOException {
-        final CommandLine vmsCmd = new CommandLine(
-                createCommandFile(cmd, env).getPath()
-        );
-
-        return super.exec(vmsCmd, env);
-    }
+public class VmsCommandLauncher extends Java1_5CommandLauncher {
 
     /**
      * Launches the given command in a new process, in the given working

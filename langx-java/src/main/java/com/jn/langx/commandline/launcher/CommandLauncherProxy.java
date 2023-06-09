@@ -12,7 +12,7 @@ import java.util.Map;
  * A command launcher that proxies another command launcher. Sub-classes
  * override exec(args, env, workdir)
  */
-public abstract class CommandLauncherProxy extends LocalCommandLauncher {
+public abstract class CommandLauncherProxy extends AbstractLocalCommandLauncher {
     protected final CommandLauncher<ProcessAdapter> myLauncher;
 
     protected CommandLauncherProxy(final CommandLauncher<ProcessAdapter> launcher) {
