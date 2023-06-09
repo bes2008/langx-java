@@ -226,8 +226,7 @@ public final class NativeLibraryLoader {
             // Re-throw to fail the load
             throw e;
         } catch (Exception e) {
-            throw (UnsatisfiedLinkError) new UnsatisfiedLinkError(
-                    "could not load a native library: " + name).initCause(e);
+            throw (UnsatisfiedLinkError) new UnsatisfiedLinkError( "could not load a native library: " + name).initCause(e);
         } finally {
             closeQuietly(in);
             closeQuietly(out);
