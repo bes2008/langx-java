@@ -1,5 +1,6 @@
 package com.jn.langx.util.jni;
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
@@ -19,29 +20,35 @@ public final class NativeLibraryLoader {
     private static final String NATIVE_RESOURCE_HOME = "META-INF/native/";
     private static final File WORKDIR;
     private static final boolean DELETE_NATIVE_LIB_AFTER_LOADING;
-    private static final String NATIVE_LIBRARY_KEY_PREFIX="com.jn.langx.native";
-    private static final String NATIVE_LIBRARY_WORK_DIR_KEY=NATIVE_LIBRARY_KEY_PREFIX+".workdir";
-    private static final String NATIVE_LIBRARY_DELETE_AFTER_LOADING_KEY=NATIVE_LIBRARY_KEY_PREFIX+".deleteLibAfterLoading";
+    private static final String NATIVE_LIBRARY_KEY_PREFIX = "com.jn.langx.native";
+    private static final String NATIVE_LIBRARY_WORK_DIR_KEY = NATIVE_LIBRARY_KEY_PREFIX + ".workdir";
+    private static final String NATIVE_LIBRARY_DELETE_AFTER_LOADING_KEY = NATIVE_LIBRARY_KEY_PREFIX + ".deleteLibAfterLoading";
+
     static {
+        File WORKDIR1 = null;
         String workdir = SystemPropertys.get(NATIVE_LIBRARY_WORK_DIR_KEY);
         Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
-        if (workdir != null) {
-            File f = new File(workdir);
-            f.mkdirs();
 
+        boolean assignWorkDirFailed = false;
+        if (Strings.isNotEmpty(workdir)) {
             try {
+                File f = new File(workdir);
+                if (!f.exists()) {
+                    f.mkdirs();
+                }
+
                 f = f.getAbsoluteFile();
-            } catch (Exception ignored) {
-                // Good to have an absolute path, but it's OK.
+                WORKDIR1 = f;
+                logger.debug("-D{}: {}", NATIVE_LIBRARY_WORK_DIR_KEY, WORKDIR1);
+            } catch (Throwable e) {
+                assignWorkDirFailed = true;
             }
-
-            WORKDIR = f;
-            logger.debug("-D{}: {}" , NATIVE_LIBRARY_WORK_DIR_KEY, WORKDIR);
-        } else {
-            WORKDIR = tmpdir();
-            logger.debug("-D{}: {} ", NATIVE_LIBRARY_WORK_DIR_KEY, WORKDIR);
         }
-
+        if (assignWorkDirFailed) {
+            WORKDIR1 = tmpdir();
+            logger.debug("-D{}: {} ", NATIVE_LIBRARY_WORK_DIR_KEY, WORKDIR1);
+        }
+        WORKDIR = WORKDIR1;
         DELETE_NATIVE_LIB_AFTER_LOADING = SystemPropertys.getAccessor().getBoolean(NATIVE_LIBRARY_DELETE_AFTER_LOADING_KEY, true);
     }
 
@@ -89,7 +96,7 @@ public final class NativeLibraryLoader {
             f = new File("/tmp");
         }
         Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
-        logger.warn("Failed to get the temporary directory; falling back to: {} " , f);
+        logger.warn("Failed to get the temporary directory; falling back to: {} ", f);
         return f;
     }
 
@@ -118,8 +125,7 @@ public final class NativeLibraryLoader {
      * Loads the first available library in the collection with the specified
      * {@link ClassLoader}.
      *
-     * @throws IllegalArgumentException
-     *         if none of the given libraries load successfully.
+     * @throws IllegalArgumentException if none of the given libraries load successfully.
      */
     public static void loadFirstAvailable(ClassLoader loader, String... names) {
         Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
@@ -213,7 +219,7 @@ public final class NativeLibraryLoader {
                     logger.info("{} exists but cannot be executed even when execute permissions set; " +
                                     "check volume for \"noexec\" flag; use -D{}=[path] " +
                                     "to set native working directory separately.",
-                            tmpFile.getPath(),NATIVE_LIBRARY_WORK_DIR_KEY);
+                            tmpFile.getPath(), NATIVE_LIBRARY_WORK_DIR_KEY);
                 }
             } catch (Exception t) {
                 logger.debug("Error checking if {} is on a file store mounted with noexec", tmpFile, t);
@@ -237,8 +243,9 @@ public final class NativeLibraryLoader {
 
     /**
      * Loading the native library into the specified {@link ClassLoader}.
-     * @param loader - The {@link ClassLoader} where the native library will be loaded into
-     * @param name - The native library path or name
+     *
+     * @param loader   - The {@link ClassLoader} where the native library will be loaded into
+     * @param name     - The native library path or name
      * @param absolute - Whether the native library will be loaded by path or by name
      */
     private static void loadLibrary(final ClassLoader loader, final String name, final boolean absolute) {
@@ -288,6 +295,7 @@ public final class NativeLibraryLoader {
 
     /**
      * Try to load the helper {@link Class} into specified {@link ClassLoader}.
+     *
      * @param loader - The {@link ClassLoader} where to load the helper {@link Class}
      * @param helper - The helper {@link Class}
      * @return A new helper Class defined in the specified ClassLoader.
@@ -306,7 +314,7 @@ public final class NativeLibraryLoader {
                     try {
                         // Define the helper class in the target ClassLoader,
                         //  then we can call the helper to load the native library.
-                        Method defineClass = Reflects.getDeclaredMethod(ClassLoader.class,"defineClass", String.class,
+                        Method defineClass = Reflects.getDeclaredMethod(ClassLoader.class, "defineClass", String.class,
                                 byte[].class, int.class, int.class);
                         defineClass.setAccessible(true);
                         return (Class<?>) defineClass.invoke(loader, helper.getName(), classBinary, 0,
@@ -321,6 +329,7 @@ public final class NativeLibraryLoader {
 
     /**
      * Load the helper {@link Class} as a byte array, to be redefined in specified {@link ClassLoader}.
+     *
      * @param clazz - The helper {@link Class} provided by this bundle
      * @return The binary content of helper {@link Class}.
      * @throws ClassNotFoundException Helper class not found or loading failed
@@ -340,7 +349,7 @@ public final class NativeLibraryLoader {
         InputStream in = null;
         try {
             in = classUrl.openStream();
-            for (int r; (r = in.read(buf)) != -1;) {
+            for (int r; (r = in.read(buf)) != -1; ) {
                 out.write(buf, 0, r);
             }
             return out.toByteArray();
