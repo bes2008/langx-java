@@ -40,13 +40,15 @@ public class XPaths {
      * @return expression
      */
     public static String notContainsAttr(String attrName) {
-        attrName = XPathInjectionPreventionHandler.getInstance().apply(attrName);
+        XPathInjectionPreventionHandler handler = XPathInjectionPreventionHandler.getInstance();
+        attrName = handler.apply(attrName);
         return "name(@" + attrName + ")=''";
     }
 
     public static String attrNotEquals(String attrName, String value) {
-        attrName = XPathInjectionPreventionHandler.getInstance().apply(attrName);
-        value = XPathInjectionPreventionHandler.getInstance().apply(value);
+        XPathInjectionPreventionHandler handler = XPathInjectionPreventionHandler.getInstance();
+        attrName = handler.apply(attrName);
+        value = handler.apply(value);
         return "@" + attrName + "!=" + value;
     }
 
@@ -58,9 +60,10 @@ public class XPaths {
      * @return expression
      */
     public static String aorB_and_C(String expA, String expB, String expC) {
-        expA = XPathInjectionPreventionHandler.getInstance().apply(expA);
-        expB = XPathInjectionPreventionHandler.getInstance().apply(expB);
-        expC = XPathInjectionPreventionHandler.getInstance().apply(expC);
+        XPathInjectionPreventionHandler handler = XPathInjectionPreventionHandler.getInstance();
+        expA = handler.apply(expA);
+        expB = handler.apply(expB);
+        expC = handler.apply(expC);
         return "(" + expA + " or " + expB + ") and " + expC;
     }
 
@@ -70,9 +73,10 @@ public class XPaths {
      * @return expression
      */
     public static String a_or_BandC(String expA, String expB, String expC) {
-        expA = XPathInjectionPreventionHandler.getInstance().apply(expA);
-        expB = XPathInjectionPreventionHandler.getInstance().apply(expB);
-        expC = XPathInjectionPreventionHandler.getInstance().apply(expC);
+        XPathInjectionPreventionHandler handler = XPathInjectionPreventionHandler.getInstance();
+        expA = handler.apply(expA);
+        expB = handler.apply(expB);
+        expC = handler.apply(expC);
         return expA + " or (" + expB + " and " + expC + ")";
     }
 
@@ -86,11 +90,11 @@ public class XPaths {
     public static String wrapXpath(String xpathExpr, final String namespacePrefix) {
         boolean startWithSlash = Strings.startsWith(xpathExpr, "/");
         String[] segments = Strings.split(xpathExpr, "/");
-        final String prefix =  namespacePrefix + ":";
+        final String prefix = namespacePrefix + ":";
         List<String> prefixedSegments = Pipeline.of(segments).clearNulls().map(new Function<String, String>() {
             @Override
             public String apply(String segment) {
-                return Strings.startsWith(segment, prefix)?segment:(prefix+segment);
+                return Strings.startsWith(segment, prefix) ? segment : (prefix + segment);
             }
         }).asList();
         return (startWithSlash ? "/" : "") + Strings.join("/", prefixedSegments);
