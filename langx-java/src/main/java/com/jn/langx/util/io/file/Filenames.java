@@ -38,7 +38,11 @@ public class Filenames {
      * @param path the original path
      * @return the normalized path
      */
-    public static String cleanPath(String path) {
+    private static String cleanPath(String path) {
+        return normalize(path);
+    }
+
+    private static String cleanPath0(String path) {
         if (Strings.isEmpty(path)) {
             return path;
         }
