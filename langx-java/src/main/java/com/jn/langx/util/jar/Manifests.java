@@ -75,6 +75,7 @@ public class Manifests {
         } catch (Throwable ex) {
             Logger logger = Loggers.getLogger(Manifests.class);
             logger.warn("Can't find the jar for class: {}", Reflects.getFQNClassName(klass));
+        }finally {
             IOs.close(jarFile);
         }
         return null;
