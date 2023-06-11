@@ -489,7 +489,7 @@ public class Filenames {
         if (ch1 == ':') {
             ch0 = Character.toUpperCase(ch0);
             if (ch0 >= 'A' && ch0 <= 'Z') {
-                if (len == 2 && !FS.getCurrent().supportsDriveLetter()) {
+                if (len == 2 && !OsFileSystem.getCurrent().supportsDriveLetter()) {
                     return 0;
                 }
                 if (len == 2 || !isSeparator(fileName.charAt(2))) {

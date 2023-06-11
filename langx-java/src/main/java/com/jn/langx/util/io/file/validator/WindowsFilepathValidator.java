@@ -2,36 +2,21 @@ package com.jn.langx.util.io.file.validator;
 
 import com.jn.langx.text.StrTokenizer;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.collection.Collects;
-import com.jn.langx.util.collection.Lists;
+import com.jn.langx.util.io.file.OsFileSystem;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
-import java.util.List;
 
 public class WindowsFilepathValidator extends AbstractFilepathValidator {
 
 
 
-    private Character[] illegalChars = {'"', ':', '?', '*', '<', '>', '|'};
-    private static final Regexp PARTITION = Regexps.compile("[A-Za-z]");
-    private static final List<String> RETAIN_PARTITIONS = Lists.newArrayList(
-            "CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
-    );
+    private static final Regexp PARTITION = Regexps.compile("[A-Za-z]((\\w|\\$)+)?");
+
 
     @Override
     public boolean isLegalFilename(String name) {
-        if (Strings.startsWith(name, " ") || Strings.startsWith(name, "\t")) {
-            return false;
-        }
-
-        for (int i = 0; i < name.length(); i++) {
-            char c = name.charAt(i);
-            if (Collects.contains(illegalChars, c)) {
-                return false;
-            }
-        }
-        return true;
+        return OsFileSystem.WINDOWS.isLegalFileName(name);
     }
 
     @Override
@@ -71,17 +56,20 @@ public class WindowsFilepathValidator extends AbstractFilepathValidator {
             if (!isLegalFilename(partition)) {
                 return false;
             }
-            if (RETAIN_PARTITIONS.contains(Strings.upperCase(partition))) {
+            if (OsFileSystem.WINDOWS.getReservedFileNames().contains(Strings.upperCase(partition))) {
                 return false;
             }
 
+            if(!Regexps.match(PARTITION, partition)){
+                return false;
+            }
         }
 
         // 验证 pathPart
         if (Strings.isEmpty(pathPart)) {
             return false;
         }
-        StrTokenizer tokenizer = new StrTokenizer(pathPart, false, "/", "\\");
+        StrTokenizer tokenizer = new StrTokenizer(pathPart, false, OsFileSystem.WINDOWS.getPathSeparatorStrings());
         while (tokenizer.hasNext()) {
             String segment = tokenizer.next();
             if (!isLegalFilename(segment)) {
