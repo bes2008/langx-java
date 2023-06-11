@@ -67,7 +67,7 @@ public class Files {
     }
 
     public static File newFile(String dir, String subpath) {
-        return newFile(newFile(dir),subpath);
+        return newFile(newFile(dir), subpath);
     }
 
     public static File newFile(File file, String subpath) {
@@ -77,10 +77,12 @@ public class Files {
         Preconditions.checkArgument(Filenames.checkFilePath(subpath), "path");
         return new File(file, subpath);
     }
-    public static RandomAccessFile newRandomAccessFile(File file, FileIOMode mode) throws FileNotFoundException{
+
+    public static RandomAccessFile newRandomAccessFile(File file, FileIOMode mode) throws FileNotFoundException {
         return new RandomAccessFile(file, mode.getIdentifier());
     }
-    public static RandomAccessFile newRandomAccessFile(String filepath, FileIOMode mode) throws FileNotFoundException{
+
+    public static RandomAccessFile newRandomAccessFile(String filepath, FileIOMode mode) throws FileNotFoundException {
         Preconditions.checkArgument(Filenames.checkFilePath(filepath), "filepath");
         return new RandomAccessFile(filepath, mode.getIdentifier());
     }
@@ -869,7 +871,14 @@ public class Files {
      * @throws IOException if an IO error occurs during copying
      */
     public static void copyURLToFile(final URL source, final File destination) throws IOException {
-        copyInputStreamToFile(new FileInputStream(toFile(source)), destination, true);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(toFile(source));
+            copyInputStreamToFile(fis, destination);
+        } finally {
+            IOs.close(fis);
+        }
+
     }
 
     /**
@@ -893,7 +902,14 @@ public class Files {
      */
     public static void copyURLToFile(final URL source, final File destination,
                                      final int connectionTimeout, final int readTimeout) throws IOException {
-        copyInputStreamToFile(new FileInputStream(toFile(source)), destination, true);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(toFile(source));
+            copyInputStreamToFile(fis, destination);
+        } finally {
+            IOs.close(fis);
+        }
+
     }
 
     /**
@@ -911,14 +927,8 @@ public class Files {
      * @throws IOException if <code>destination</code> needs creating but can't be
      * @throws IOException if an IO error occurs during copying
      */
-    public static void copyInputStreamToFile(final InputStream source, final File destination, boolean closeInputStream) throws IOException {
-        try {
-            copyToFile(source, destination, false);
-        } finally {
-            if (closeInputStream) {
-                IOs.close(source);
-            }
-        }
+    public static void copyInputStreamToFile(final InputStream source, final File destination) throws IOException {
+        copyToFile(source, destination);
     }
 
     /**
@@ -936,14 +946,13 @@ public class Files {
      * @throws IOException if <code>destination</code> needs creating but can't be
      * @throws IOException if an IO error occurs during copying
      */
-    public static void copyToFile(final InputStream source, final File destination, boolean closeInputStream) throws IOException {
+    public static void copyToFile(final InputStream source, final File destination) throws IOException {
+        OutputStream out = null;
         try {
-            OutputStream out = openOutputStream(destination);
+            out = openOutputStream(destination);
             IOs.copy(source, out);
         } finally {
-            if (closeInputStream) {
-                IOs.close(source);
-            }
+            IOs.close(out);
         }
     }
 
