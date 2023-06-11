@@ -138,7 +138,7 @@ public class URLs {
 
     public static File getFile(URL url) {
         if (isFileURL(url)) {
-            return new File(url.getFile());
+            return Files.newFile(url.getFile());
         }
         return null;
     }
