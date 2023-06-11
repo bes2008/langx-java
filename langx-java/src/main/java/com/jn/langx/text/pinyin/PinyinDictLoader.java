@@ -1,11 +1,12 @@
 package com.jn.langx.text.pinyin;
 
 import com.jn.langx.io.resource.Resource;
+import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
-import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -25,7 +26,7 @@ class PinyinDictLoader {
 
     PinyinDict load(final String dictName, final Resource resource) {
         try {
-            List<String> lines = IOs.readLines(resource.getInputStream());
+            List<String> lines = Resources.readLines(resource, Charsets.UTF_8);
 
             final PinyinDict directory = new PinyinDict();
             directory.setName(dictName);

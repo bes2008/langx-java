@@ -9,6 +9,7 @@ import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.ResourceLocationProvider;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
@@ -46,7 +47,7 @@ public class ResourceConfigurationLoader<T extends Configuration> extends Abstra
         Resource resource = Resources.loadResource(location);
         Logger logger = Loggers.getLogger(getClass());
         if (resource != null && resource.exists()) {
-            InputStream inputStream;
+            InputStream inputStream = null;
             try {
                 inputStream = resource.getInputStream();
                 configuration = parser.parse(inputStream);
@@ -55,6 +56,8 @@ public class ResourceConfigurationLoader<T extends Configuration> extends Abstra
                 }
             } catch (IOException ex) {
                 logger.error(ex.getMessage(), ex);
+            } finally {
+                IOs.close(inputStream);
             }
         } else {
             logger.error("Location {} is not exists", location);

@@ -73,7 +73,7 @@ public class Xmls {
         setFeature(factory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false); // 忽略外部DTD
         setFeature(factory, XMLConstants.ACCESS_EXTERNAL_DTD, false); // 不访问外部 dtd
         setFeature(factory, XMLConstants.ACCESS_EXTERNAL_SCHEMA, false); // 不访问外部 schema
-        setFeature(factory,"http://javax.xml.XMLConstants/feature/secure-processing", true);
+        setFeature(factory, "http://javax.xml.XMLConstants/feature/secure-processing", true);
 
         // 设置 XInclude 处理的状态为false,禁止实体扩展引用
         factory.setXIncludeAware(false);
@@ -102,7 +102,13 @@ public class Xmls {
         if (!file.exists()) {
             throw new FileNotFoundException("File '" + xmlfilepathOrURI + "' does not exist .");
         }
-        return getXmlDoc(new DTDEntityResolver(dtdInputStream), new FileInputStream(file));
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file);
+            return getXmlDoc(new DTDEntityResolver(dtdInputStream), fis);
+        } finally {
+            IOs.close(fis);
+        }
     }
 
     public static void writeDocToOutputStream(final Document doc, final OutputStream out) throws Exception {
