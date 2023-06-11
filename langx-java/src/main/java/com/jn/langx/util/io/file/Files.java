@@ -57,7 +57,7 @@ public class Files {
 
     private static final Logger logger = Loggers.getLogger(Files.class);
 
-    public static final File newFile(String path) {
+    public static File newFile(String path) {
         if (Strings.isNotEmpty(path)) {
             Preconditions.checkArgument(Filenames.checkFilePath(path), "path");
             return new File(path);
@@ -65,12 +65,17 @@ public class Files {
         return null;
     }
 
-    public static final File newFile(File file, String subpath) {
+    public static File newFile(File file, String subpath) {
         if (file == null) {
             return null;
         }
         Preconditions.checkArgument(Filenames.checkFilePath(subpath), "path");
         return new File(file, subpath);
+    }
+
+    public static RandomAccessFile newRandomAccessFile(String filepath, FileIOMode mode) throws FileNotFoundException{
+        Preconditions.checkArgument(Filenames.checkFilePath(filepath), "filepath");
+        return new RandomAccessFile(filepath, mode.getIdentifier());
     }
 
     public static String getSuffix(File file) {

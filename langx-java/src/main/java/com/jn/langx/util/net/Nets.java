@@ -476,6 +476,10 @@ public class Nets {
         return isValidDomainAddress(domain, EMAIL_DOMAIN_PATTERN);
     }
 
+    public static boolean isValidHostAddress(String str){
+        return isValidDomainAddress(str) || isValidIpV6Address(str) || isValidIpV4Address(str);
+    }
+
     /**
      * Checks validity of a domain name.
      *
