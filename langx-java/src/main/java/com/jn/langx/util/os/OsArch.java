@@ -14,12 +14,14 @@ public enum OsArch implements CommonEnum {
     X64(2002, "x64", "64 位 x86 架构", OsArchSeries.X86, 64),
     X86(2003, "x86", "32 位 x86 架构", OsArchSeries.X86, 32),
     X32(2004, "x32", "32 位 x86 架构", OsArchSeries.X86, 32),
+    I386(2005, "i386", "32 位 x86 架构", OsArchSeries.X86, 32),
     AMD64(3005, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64),
     ARM64(3001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM, 64),
     ARM(3002, "arm", "32 位 ARM 架构", OsArchSeries.ARM, 32),
     AARCH64(3003, "aarch64", "64 位 ARM 架构", OsArchSeries.ARM, 64), // ARM v8
     PPC64LE(4001, "ppc64le", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
     PPC64(4002, "ppc64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
+    POWERPC(4003, "powerpc", "32 位 PowerPC 架构", OsArchSeries.POWER, 32),
     S390X(5001, "s390x", "64 位 IBM System z 架构", OsArchSeries.Z, 64),
     S390(5002, "s390", "31 位 IBM System z 架构", OsArchSeries.Z, 31),
     MIPS64(6001, "mips64", "64 位 MIPS 架构", OsArchSeries.MIPS, 64),
@@ -33,6 +35,10 @@ public enum OsArch implements CommonEnum {
         this.delegate = new EnumDelegate(code, name, displayName);
         this.series = series;
         this.bit = bit;
+    }
+
+    public int getBit() {
+        return bit;
     }
 
     public static OsArch findByName(String osArch) {
@@ -53,6 +59,8 @@ public enum OsArch implements CommonEnum {
         }
         return false;
     }
+
+
 
     public static boolean isX86Compatible(String osArch) {
         return isArchCompatible(OsArchSeries.X86, osArch);
