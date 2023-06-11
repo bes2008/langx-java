@@ -60,7 +60,8 @@ public class Files {
     public static File newFile(String path) {
         if (Strings.isNotEmpty(path)) {
             Preconditions.checkArgument(Filenames.checkFilePath(path), "path");
-            return new File(path);
+            String thepath = Filenames.cleanPath(path);
+            return new File(thepath);
         }
         return null;
     }

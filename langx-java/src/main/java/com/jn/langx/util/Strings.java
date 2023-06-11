@@ -3799,4 +3799,22 @@ public class Strings {
         return null;
     }
 
+    public static char[] chars(CharSequence sequence) {
+        return chars(sequence, 0);
+    }
+
+    public static char[] chars(CharSequence sequence, int begin) {
+        return chars(sequence, begin, sequence.length());
+    }
+
+    public static char[] chars(CharSequence sequence, int begin, int end) {
+        CharSequence sub = sequence.subSequence(begin, end);
+        int length = sub.length();
+        char[] ret = new char[length];
+        for (int i = 0; i < sub.length(); i++) {
+            ret[i] = sub.charAt(i);
+        }
+        return ret;
+    }
+
 }

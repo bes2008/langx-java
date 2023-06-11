@@ -5,7 +5,6 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.file.validator.FilepathValidators;
 import com.jn.langx.util.net.Nets;
-import org.apache.commons.io.FileSystem;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -38,7 +37,7 @@ public class Filenames {
      * @param path the original path
      * @return the normalized path
      */
-    private static String cleanPath(String path) {
+    public static String cleanPath(String path) {
         return normalize(path);
     }
 
@@ -153,7 +152,7 @@ public class Filenames {
      * @param ch The Windows or Linux name separator.
      * @return The Windows or Linux name separator.
      */
-    private static char flipSeparator(final char ch) {
+    static char flipSeparator(final char ch) {
         if (ch == UNIX_NAME_SEPARATOR) {
             return WINDOWS_NAME_SEPARATOR;
         }
@@ -490,7 +489,7 @@ public class Filenames {
         if (ch1 == ':') {
             ch0 = Character.toUpperCase(ch0);
             if (ch0 >= 'A' && ch0 <= 'Z') {
-                if (len == 2 && !FileSystem.getCurrent().supportsDriveLetter()) {
+                if (len == 2 && !FS.getCurrent().supportsDriveLetter()) {
                     return 0;
                 }
                 if (len == 2 || !isSeparator(fileName.charAt(2))) {
