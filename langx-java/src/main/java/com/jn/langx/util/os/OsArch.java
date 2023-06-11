@@ -9,27 +9,30 @@ import com.jn.langx.util.function.Predicate;
 import java.util.EnumSet;
 
 public enum OsArch implements CommonEnum {
-    X86_64(1001, "x86_64", "64 位 x86 架构", OsArchSeries.X86),
-    X64(1002, "x64", "64 位 x86 架构", OsArchSeries.X86),
-    X86(1003, "x86", "32 位 x86 架构", OsArchSeries.X86),
-    X32(1004, "x32", "32 位 x86 架构", OsArchSeries.X86),
-    AMD64(1005, "amd64", "64 位 x86 架构", OsArchSeries.X86),
-    ARM64(2001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM),
-    ARM(2002, "arm", "32 位 ARM 架构", OsArchSeries.ARM),
-    AARCH64(2003, "aarch64", "64 位 ARM 架构", OsArchSeries.ARM), // ARM v8
-    PPC64LE(3001, "ppc64le", "64 位 PowerPC 架构", OsArchSeries.POWER),
-    PPC64(3002, "ppc64", "64 位 PowerPC 架构", OsArchSeries.POWER),
-    S390X(4001, "s390x", "64 位 IBM System z 架构", OsArchSeries.Z),
-    S390(4002, "s390", "31 位 IBM System z 架构", OsArchSeries.Z),
-    MIPS64(5001, "mips64", "64 位 MIPS 架构", OsArchSeries.MIPS),
-    MIPS(5002, "mips", "32 位 MIPS 架构", OsArchSeries.MIPS),
-    SH(6001, "sh", "SuperH 架构", OsArchSeries.SH),
-    ;
+    IA64(1001, "ia64", "64 位 Intel Itanium 处理器", OsArchSeries.IA, 64),
+    X86_64(2001, "x86_64", "64 位 x86 架构", OsArchSeries.X86, 64),
+    X64(2002, "x64", "64 位 x86 架构", OsArchSeries.X86, 64),
+    X86(2003, "x86", "32 位 x86 架构", OsArchSeries.X86, 32),
+    X32(2004, "x32", "32 位 x86 架构", OsArchSeries.X86, 32),
+    AMD64(3005, "amd64", "64 位 x86 架构", OsArchSeries.X86, 64),
+    ARM64(3001, "arm64", "64 位 ARM 架构", OsArchSeries.ARM, 64),
+    ARM(3002, "arm", "32 位 ARM 架构", OsArchSeries.ARM, 32),
+    AARCH64(3003, "aarch64", "64 位 ARM 架构", OsArchSeries.ARM, 64), // ARM v8
+    PPC64LE(4001, "ppc64le", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
+    PPC64(4002, "ppc64", "64 位 PowerPC 架构", OsArchSeries.POWER, 64),
+    S390X(5001, "s390x", "64 位 IBM System z 架构", OsArchSeries.Z, 64),
+    S390(5002, "s390", "31 位 IBM System z 架构", OsArchSeries.Z, 31),
+    MIPS64(6001, "mips64", "64 位 MIPS 架构", OsArchSeries.MIPS, 64),
+    MIPS(6002, "mips", "32 位 MIPS 架构", OsArchSeries.MIPS, 32),
+    SH(7001, "sh", "SuperH 架构", OsArchSeries.SH, 64);
     EnumDelegate delegate;
     private OsArchSeries series;
+    private int bit;
 
-    OsArch(int code, String name, String displayName, OsArchSeries series) {
+    OsArch(int code, String name, String displayName, OsArchSeries series, int bit) {
         this.delegate = new EnumDelegate(code, name, displayName);
+        this.series = series;
+        this.bit = bit;
     }
 
     public static OsArch findByName(String osArch) {
@@ -59,6 +62,9 @@ public enum OsArch implements CommonEnum {
         return isArchCompatible(OsArchSeries.ARM, osArch);
     }
 
+    public static boolean isPowerCompatible(String osArch) {
+        return isArchCompatible(OsArchSeries.POWER, osArch);
+    }
 
     @Override
     public int getCode() {
