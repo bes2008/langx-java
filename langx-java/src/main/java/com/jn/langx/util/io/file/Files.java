@@ -77,7 +77,9 @@ public class Files {
         Preconditions.checkArgument(Filenames.checkFilePath(subpath), "path");
         return new File(file, subpath);
     }
-
+    public static RandomAccessFile newRandomAccessFile(File file, FileIOMode mode) throws FileNotFoundException{
+        return new RandomAccessFile(file, mode.getIdentifier());
+    }
     public static RandomAccessFile newRandomAccessFile(String filepath, FileIOMode mode) throws FileNotFoundException{
         Preconditions.checkArgument(Filenames.checkFilePath(filepath), "filepath");
         return new RandomAccessFile(filepath, mode.getIdentifier());

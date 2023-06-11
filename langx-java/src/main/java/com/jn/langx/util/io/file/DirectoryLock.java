@@ -19,6 +19,7 @@ import com.jn.langx.exception.RuntimeIOException;
 import com.jn.langx.util.io.IOs;
 import org.slf4j.Logger;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -33,7 +34,7 @@ import java.nio.channels.OverlappingFileLockException;
  * <p>
  * DirectoryLock is acquired by calling {@link #lockForDirectory(File, Logger)}.
  */
-public final class DirectoryLock {
+public final class DirectoryLock implements Closeable {
 
     public static final String FILE_NAME = "lock";
 
@@ -63,6 +64,11 @@ public final class DirectoryLock {
         return lock;
     }
 
+    @Override
+    public void close() throws IOException {
+        release();
+    }
+
     /**
      * Releases the lock on directory.
      */
@@ -75,7 +81,7 @@ public final class DirectoryLock {
         } catch (ClosedChannelException e) {
             // ignore it
         } catch (IOException e) {
-            logger.error("Problem while releasing the lock on {}" , lockFile(), e);
+            logger.error("Problem while releasing the lock on {}", lockFile(), e);
         }
         try {
             channel.close();
@@ -98,7 +104,18 @@ public final class DirectoryLock {
      */
     public static DirectoryLock lockForDirectory(File dir, Logger logger) {
         File lockFile = new File(dir, FILE_NAME);
-        FileChannel channel = openChannel(lockFile);
+        FileChannel channel = null;
+        RandomAccessFile arf = null;
+        try {
+            arf = Files.newRandomAccessFile(lockFile, FileIOMode.READ_WRITE);
+            channel = arf.getChannel();
+        } catch (IOException e) {
+            throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
+        }
+        if (channel == null) {
+            IOs.close(arf);
+            return null;
+        }
         FileLock lock = acquireLock(lockFile, channel);
         if (logger.isInfoEnabled()) {
             logger.info("Acquired lock on " + Files.getCanonicalPath(lockFile));
