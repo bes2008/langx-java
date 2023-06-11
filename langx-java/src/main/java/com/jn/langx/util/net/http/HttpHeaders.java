@@ -1,21 +1,25 @@
 package com.jn.langx.util.net.http;
 
 
+import com.jn.langx.annotation.NotThreadSafe;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
-import com.jn.langx.util.function.Function2;
-import com.jn.langx.util.function.Predicate2;
-import com.jn.langx.util.net.mime.MediaType;
 import com.jn.langx.text.StringJoiner;
-import com.jn.langx.util.*;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.multivalue.LinkedMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMapAdapter;
+import com.jn.langx.util.datetime.DateTimeFormatterFactoryRegistry;
 import com.jn.langx.util.function.Function;
+import com.jn.langx.util.function.Function2;
+import com.jn.langx.util.function.Predicate2;
 import com.jn.langx.util.net.NetworkAddress;
+import com.jn.langx.util.net.mime.MediaType;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
 import com.jn.langx.util.regexp.Regexps;
@@ -26,13 +30,11 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.jn.langx.util.io.Charsets.ISO_8859_1;
 
-
+@NotThreadSafe
 public class HttpHeaders implements MultiValueMap<String, String>, Serializable {
 
     /**
@@ -414,8 +416,6 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-7.1.1.1">Section 7.1.1.1 of RFC 7231</a>
      */
 
-    private final SimpleDateFormat dateFormatter = Dates.getSimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", GMT, Locale.US);
-
     /**
      * An empty {@code HttpHeaders} instance (immutable).
      */
@@ -425,11 +425,12 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
      *
      * @see <a href="https://tools.ietf.org/html/rfc7231#section-7.1.1.1">Section 7.1.1.1 of RFC 7231</a>
      */
+    /*
     private final SimpleDateFormat[] dateParsers = new SimpleDateFormat[]{
             Dates.getSimpleDateFormat("EEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
             Dates.getSimpleDateFormat("EEE MMM dd HH:mm:ss yyyy", GMT, Locale.US)
     };
-
+    */
 
     /**
      * Construct a new, empty instance of the {@code HttpHeaders} object.
@@ -1096,17 +1097,13 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
     }
 
     public void setExpires(long time) {
-        set(EXPIRES, this.dateFormatter.format(new Date(time)));
+        set(EXPIRES, DateTimeFormatterFactoryRegistry.getInstance().get(Long.class).get().format(time));
     }
 
     public Date getExpires() {
         String value = getFirst(EXPIRES);
         if (Strings.isNotEmpty(value)) {
-            try {
-                Date date = this.dateFormatter.parse(value);
-            } catch (ParseException ex) {
 
-            }
         }
         return null;
     }
@@ -1271,11 +1268,11 @@ public class HttpHeaders implements MultiValueMap<String, String>, Serializable 
 
     @Override
     public String getValue(String headerName, int index) {
-        if(index<0){
+        if (index < 0) {
             return null;
         }
         List<String> headValues = get(headerName);
-        if(index>=headValues.size()){
+        if (index >= headValues.size()) {
             return null;
         }
         return headValues.get(index);
