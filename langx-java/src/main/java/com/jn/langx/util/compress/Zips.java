@@ -94,8 +94,9 @@ public class Zips {
      */
     public static void uncompressFiltered(File file, File targetDir, String... excludes) throws IOException {
 
-        ZipFile zipFile = new ZipFile(file);
+        ZipFile zipFile = null;
         try {
+            zipFile = new ZipFile(file);
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
             while (entries.hasMoreElements()) {

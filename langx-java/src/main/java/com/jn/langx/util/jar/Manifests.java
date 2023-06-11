@@ -66,8 +66,9 @@ public class Manifests {
     }
 
     public static Manifest getManifest(Class<?> klass) {
-        JarFile jarFile = ClassLoaders.getJarFile(klass);
+        JarFile jarFile = null;
         try {
+            jarFile = ClassLoaders.getJarFile(klass);
             if (jarFile != null) {
                 return jarFile.getManifest();
             }
