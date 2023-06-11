@@ -5,6 +5,7 @@ import com.jn.langx.io.stream.ByteArrayOutputStream;
 import com.jn.langx.io.stream.StringBuilderWriter;
 import com.jn.langx.util.*;
 import com.jn.langx.util.io.close.ObjectCloser;
+import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.net.URLs;
 
 import java.io.*;
@@ -70,7 +71,15 @@ public class IOs {
         if (target == null) {
             return;
         }
-        ObjectCloser.close(target);
+        if (target instanceof Closeable) {
+            try {
+                ((Closeable) target).close();
+            } catch (Exception e) {
+                Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", target);
+            }
+        } else {
+            ObjectCloser.close(target);
+        }
     }
 
     public static String readAsString(Reader reader) throws IOException {
@@ -2059,9 +2068,9 @@ public class IOs {
             line1 = br1.readLine();
             line2 = br2.readLine();
         }
-        if(line1==null){
-            return line2==null;
-        }else{
+        if (line1 == null) {
+            return line2 == null;
+        } else {
             return Objs.equals(line1, line2);
         }
     }
@@ -2536,11 +2545,12 @@ public class IOs {
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
-            return readLines(inputStream,charset);
+            return readLines(inputStream, charset);
         } finally {
             IOs.close(inputStream);
         }
     }
+
     /**
      * Gets the contents of an <code>InputStream</code> as a list of Strings,
      * one entry per line, using the default character encoding of the platform.
@@ -2730,7 +2740,6 @@ public class IOs {
      * <p>
      * 也就是说，存在 -1 ~ -128 这些数，也就是执行 read()一旦返回 -1，就会中断流的读取，而实际上流并未结束。
      * 解决该问题的办法，就是两者范围统一。
-     *
      */
     public static int filterInputStreamRead(byte theByte) {
         return theByte < 0 ? (theByte + 256) : theByte;
@@ -2740,7 +2749,7 @@ public class IOs {
         return filterInputStreamRead((byte) theByte);
     }
 
-    private IOs(){
+    private IOs() {
 
     }
 }
