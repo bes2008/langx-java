@@ -152,23 +152,28 @@ public class BufferedInputStreamTests {
     @Test
     public void test6() throws IOException{
         FileResource file = getCurrentFileResource();
-        InputStream fileInputStream = file.getInputStream();
-        ProgressSource progressSource = new ProgressSource(file.getPath(), file.getRealResource().length());
-        ProgressTracedInputStream inputStream = new ProgressTracedInputStream(fileInputStream, progressSource);
-        progressSource.start();
-        String str = IOs.readAsString(inputStream);
-        progressSource.finish();
+        InputStream fileInputStream = null;
+        try {
+            fileInputStream = file.getInputStream();
+            ProgressSource progressSource = new ProgressSource(file.getPath(), file.getRealResource().length());
+            ProgressTracedInputStream inputStream = new ProgressTracedInputStream(fileInputStream, progressSource);
+            progressSource.start();
+            String str = IOs.readAsString(inputStream);
+            progressSource.finish();
 
-        System.out.println(progressSource);
-        System.out.println("===========================================");
+            System.out.println(progressSource);
+            System.out.println("===========================================");
 
-        byte[] bytes = str.getBytes(Charsets.UTF_8);
-        ProgressSource ps2 = new ProgressSource(file.getPath(), bytes.length);
-        OutputStream out = new ProgressTracedOutputStream(System.out, ps2);
-        IOs.write(bytes,out);
-        ps2.finished();
+            byte[] bytes = str.getBytes(Charsets.UTF_8);
+            ProgressSource ps2 = new ProgressSource(file.getPath(), bytes.length);
+            OutputStream out = new ProgressTracedOutputStream(System.out, ps2);
+            IOs.write(bytes, out);
+            ps2.finished();
 
-        System.out.println(progressSource);
+            System.out.println(progressSource);
+        }finally {
+            IOs.close(fileInputStream);
+        }
     }
 
     public FileResource getCurrentFileResource() {

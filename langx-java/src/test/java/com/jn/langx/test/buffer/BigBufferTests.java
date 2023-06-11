@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class BigBufferTests {
     @Test
@@ -18,19 +19,24 @@ public class BigBufferTests {
         String userdir = SystemPropertys.getUserWorkDir();
         System.out.println(userdir);
         Resource<?> res = Resources.loadFileResource(new File(userdir + "/src/main/java/com/jn/langx/util/collection/Collects.java"));
+        InputStream inputStream = null;
+        try {
+            inputStream = res.getInputStream();
+            byte[] bytes = IOs.readFully(inputStream, (int) res.contentLength());
+            BigByteBuffer buffer = new BigByteBuffer(bytes, Integer.MAX_VALUE, DataSize.kb(4).toInt());
 
-        byte[] bytes = IOs.readFully(res.getInputStream(), (int) res.contentLength());
-        BigByteBuffer buffer = new BigByteBuffer(bytes, Integer.MAX_VALUE, DataSize.kb(4).toInt());
+            buffer.flip();
 
-        buffer.flip();
+            buffer.rewind();
+            printWithIndex(buffer);
+            System.out.println("\n=====================");
 
-        buffer.rewind();
-        printWithIndex(buffer);
-        System.out.println("\n=====================");
-
-        buffer.rewind();
-        print(buffer);
-        System.out.println("\n=====================");
+            buffer.rewind();
+            print(buffer);
+            System.out.println("\n=====================");
+        } finally {
+            IOs.close(inputStream);
+        }
     }
 
     private void printWithIndex(BigByteBuffer buffer) {

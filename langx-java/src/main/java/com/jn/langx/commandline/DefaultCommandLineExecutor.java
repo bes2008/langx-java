@@ -8,6 +8,7 @@ import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.completion.CompletableFuture;
 import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Supplier0;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
 import org.slf4j.Logger;
 
@@ -315,24 +316,9 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * @param process the <CODE>Process</CODE>.
      */
     private void closeProcessStreams(final InstructionSequence process) {
-
-        try {
-            process.getInputStream().close();
-        } catch (final IOException e) {
-            setExceptionCaught(e);
-        }
-
-        try {
-            process.getOutputStream().close();
-        } catch (final IOException e) {
-            setExceptionCaught(e);
-        }
-
-        try {
-            process.getErrorStream().close();
-        } catch (final IOException e) {
-            setExceptionCaught(e);
-        }
+        IOs.close( process.getInputStream());
+        IOs.close( process.getOutputStream());
+        IOs.close( process.getErrorStream());
     }
 
     /**
@@ -401,7 +387,6 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
                 setExceptionCaught(e);
             }
 
-            closeProcessStreams(process);
 
             if (getExceptionCaught() != null) {
                 throw Throwables.wrapAsRuntimeException(getExceptionCaught());
@@ -423,6 +408,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
             return exitValue;
         } finally {
+            closeProcessStreams(process);
             Logger logger = Loggers.getLogger(getClass());
             // remove the process to the list of those to destroy if the VM exits
             if (this.getProcessDestroyer() != null) {

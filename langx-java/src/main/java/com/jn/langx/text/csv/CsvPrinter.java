@@ -332,21 +332,4 @@ public final class CsvPrinter implements Flushable, Closeable {
         printRecords(Arrays.asList(values));
     }
 
-    /**
-     * Prints all the objects in the given JDBC result set.
-     *
-     * @param resultSet result set the values to print.
-     * @throws IOException  If an I/O error occurs
-     * @throws SQLException if a database access error occurs
-     */
-    public void printRecords(final ResultSet resultSet) throws SQLException, IOException {
-        final int columnCount = resultSet.getMetaData().getColumnCount();
-        while (resultSet.next()) {
-            for (int i = 1; i <= columnCount; i++) {
-                final Object object = resultSet.getObject(i);
-                print(object instanceof Clob ? ((Clob) object).getCharacterStream() : object);
-            }
-            println();
-        }
-    }
 }

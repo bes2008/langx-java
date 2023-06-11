@@ -7,6 +7,7 @@ import com.jn.langx.util.Maths;
 import com.jn.langx.util.Radixs;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -105,11 +106,16 @@ public class ByteTests {
         String workdir = SystemPropertys.getUserWorkDir();
         System.out.println(workdir);
         Resource resource = Resources.loadFileResource(workdir + "/src/test/java/com/jn/langx/test/codec/ByteTests.java");
-        InputStream inputStream = resource.getInputStream();
-        byte[] bytes = new byte[64];
-        int length = -1;
-        while ((length = inputStream.read(bytes)) != -1) {
-            printBytesHex(bytes, length);
+        InputStream inputStream = null;
+        try {
+            inputStream = resource.getInputStream();
+            byte[] bytes = new byte[64];
+            int length = -1;
+            while ((length = inputStream.read(bytes)) != -1) {
+                printBytesHex(bytes, length);
+            }
+        }finally {
+            IOs.close(inputStream);
         }
     }
 
