@@ -63,7 +63,11 @@ public class Files {
             String thepath = Filenames.cleanPath(path);
             return new File(thepath);
         }
-        return null;
+        return new File("");
+    }
+
+    public static File newFile(String dir, String subpath) {
+        return newFile(newFile(dir),subpath);
     }
 
     public static File newFile(File file, String subpath) {

@@ -3,6 +3,7 @@ package com.jn.langx.util.os;
 import com.jn.langx.util.JvmConstants;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
@@ -231,7 +232,7 @@ public class Platform {
         }
         if (null != javaHome) {
             try {
-                File binDir = new File(javaHome, "bin");
+                File binDir = Files.newFile(javaHome, "bin");
                 if (binDir.isDirectory() && binDir.canRead()) {
                     String[] execs = new String[]{"java", "java.exe"};
                     for (String exec : execs) {
@@ -307,7 +308,7 @@ public class Platform {
      * @return the system temporary directory.
      */
     public static File getTempDirectory() {
-        return new File(getTempDirectoryPath());
+        return Files.newFile(getTempDirectoryPath());
     }
 
     /**
@@ -325,7 +326,7 @@ public class Platform {
      * @return the user's home directory.
      */
     public static File getUserHomeDirectory() {
-        return new File(getUserHomeDirectoryPath());
+        return Files.newFile(getUserHomeDirectoryPath());
     }
 
     public static int cpuCore() {

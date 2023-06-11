@@ -24,7 +24,7 @@ public class GmsslNativeLibs {
         File tmpFile = new File("./.gmssl");
         String entityName = jarEntry.getName();
         String fileName = entityName.substring(entityName.lastIndexOf("/") + 1);
-        File jarFile = new File(tmpFile, entityName);
+        File jarFile = Files.newFile(tmpFile, entityName);
         if (!jarFile.getParentFile().exists()) {
             jarFile.getParentFile().mkdirs();
         }

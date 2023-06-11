@@ -1,6 +1,7 @@
 package com.jn.langx.util.net.hosts;
 
 
+import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.Preconditions;
@@ -32,8 +33,8 @@ public final class HostsFileParser {
     private static File locateHostsFile() {
         File hostsFile;
         if (Platform.isWindows) {
-            hostsFile = new File(System.getenv("SystemRoot") + WINDOWS_HOSTS_FILE_RELATIVE_PATH);
-            if (!hostsFile.exists()) {
+            hostsFile = Files.newFile(System.getenv("SystemRoot") + WINDOWS_HOSTS_FILE_RELATIVE_PATH);
+            if (hostsFile!=null && !hostsFile.exists()) {
                 hostsFile = new File(WINDOWS_DEFAULT_SYSTEM_ROOT + WINDOWS_HOSTS_FILE_RELATIVE_PATH);
             }
         } else {
