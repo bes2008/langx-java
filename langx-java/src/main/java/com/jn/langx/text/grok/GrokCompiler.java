@@ -159,23 +159,26 @@ public class GrokCompiler extends AbstractLifecycle {
      * Registers multiple pattern definitions from a given Reader.
      */
     public void register(Reader input) throws IOException {
-        Pipeline.of(IOs.readLines(input)).map(new Function<String, RegexpMatcher>() {
-            @Override
-            public RegexpMatcher apply(String line) {
-                return patternLinePattern.matcher(line);
-            }
-        }).filter(new Predicate<RegexpMatcher>() {
-            @Override
-            public boolean test(RegexpMatcher matcher) {
-                return matcher.matches();
-            }
-        }).forEach(new Consumer2<Integer, RegexpMatcher>() {
-            @Override
-            public void accept(Integer key, RegexpMatcher m) {
-                register(m.group(1), m.group(2));
-            }
-        });
-        IOs.close(input);
+        try {
+            Pipeline.of(IOs.readLines(input)).map(new Function<String, RegexpMatcher>() {
+                @Override
+                public RegexpMatcher apply(String line) {
+                    return patternLinePattern.matcher(line);
+                }
+            }).filter(new Predicate<RegexpMatcher>() {
+                @Override
+                public boolean test(RegexpMatcher matcher) {
+                    return matcher.matches();
+                }
+            }).forEach(new Consumer2<Integer, RegexpMatcher>() {
+                @Override
+                public void accept(Integer key, RegexpMatcher m) {
+                    register(m.group(1), m.group(2));
+                }
+            });
+        }finally {
+            IOs.close(input);
+        }
     }
 
     /**

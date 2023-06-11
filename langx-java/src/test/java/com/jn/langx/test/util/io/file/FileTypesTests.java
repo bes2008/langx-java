@@ -2,20 +2,26 @@ package com.jn.langx.test.util.io.file;
 
 import com.jn.langx.io.resource.Resource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.FileTypes;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.InputStream;
 
 public class FileTypesTests {
     @Test
     public void test() throws Throwable {
+        InputStream in = null;
         try {
             Resource r = Resources.loadClassPathResource("FileTypesTests.class", FileTypesTests.class);
-            String h = FileTypes.readFileMagic(r.getInputStream());
+            in =  r.getInputStream();
+            String h = FileTypes.readFileMagic(in);
             System.out.println(FileTypes.getType(h));
         } catch (Throwable ex) {
             ex.printStackTrace();
+        }finally {
+            IOs.close(in);
         }
     }
 
