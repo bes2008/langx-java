@@ -62,7 +62,7 @@ public class Zips {
                 if (renameFrom != null && renameTo != null) {
                     name = name.replaceAll(renameFrom, renameTo);
                 }
-                File target = new File(targetDir, name);
+                File target = Files.newFile(targetDir, name);
                 if (entry.isDirectory()) {
                     Files.makeDirs(target);
                 } else {
@@ -113,7 +113,7 @@ public class Zips {
                 }
 
                 if (!excludeEntry) {
-                    File target = new File(targetDir, name);
+                    File target = Files.newFile(targetDir, name);
                     if (entry.isDirectory()) {
                         Files.makeDirs(target);
                     } else {
