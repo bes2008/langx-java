@@ -167,7 +167,12 @@ public class PemFileIOs extends Securitys {
     }
 
     public static void writeKey(byte[] keyBytes, File file, KeyEncoding encoding, String headerLine, String footerLine) throws IOException {
-        writeKey(keyBytes, new FileOutputStream(file, true), encoding, headerLine, footerLine);
+        FileOutputStream out= new FileOutputStream(file, true);
+        try {
+            writeKey(keyBytes, out, encoding, headerLine, footerLine);
+        }finally {
+            IOs.close(out);
+        }
     }
 
     public static void writeKey(byte[] keyBytes, OutputStream outputStream, KeyEncoding encoding, String headerLine, String footerLine) throws IOException {

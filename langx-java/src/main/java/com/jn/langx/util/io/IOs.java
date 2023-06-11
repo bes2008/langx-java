@@ -67,6 +67,17 @@ public class IOs {
     private static char[] SKIP_CHAR_BUFFER;
     private static byte[] SKIP_BYTE_BUFFER;
 
+    public static void close(final Closeable target) {
+        if (target == null) {
+            return;
+        }
+        try {
+            target.close();
+        } catch (Exception e) {
+            Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", target);
+        }
+    }
+
     public static void close(final Object target) {
         if (target == null) {
             return;
