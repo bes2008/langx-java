@@ -58,7 +58,9 @@
         <module>langx-java-reflect-asm</module>
         <module>langx-java-security-gm</module>
         <module>langx-java-regexp-joni</module>
+        <!--
         <module>langx-java-security-pam</module>
+        -->
         <module>langx-java-fastdateformat</module>
     </modules>
     <dependencyManagement>
@@ -88,11 +90,13 @@
                 <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <!--
             <dependency>
                 <groupId>io.github.bes2008.solution.langx.security</groupId>
                 <artifactId>langx-java-security-gm-jca-gmsslorg</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            -->
             <dependency>
                 <groupId>io.github.bes2008.solution.langx.security</groupId>
                 <artifactId>langx-java-security-gm-jca-jsse</artifactId>

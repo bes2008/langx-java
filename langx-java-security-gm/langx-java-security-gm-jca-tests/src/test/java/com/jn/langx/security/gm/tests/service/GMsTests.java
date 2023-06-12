@@ -8,7 +8,7 @@ import com.jn.langx.security.gm.GmService;
 import com.jn.langx.security.gm.crypto.key.SM2KeyGenerator;
 import com.jn.langx.security.gm.crypto.key.SM4KeyGenerator;
 import com.jn.langx.security.gm.crypto.bc.BcGmService;
-import com.jn.langx.security.gm.crypto.gmsslorg.GmsslorgGmService;
+// import com.jn.langx.security.gm.crypto.gmsslorg.GmsslorgGmService;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
@@ -33,6 +33,7 @@ public class GMsTests {
         byte[] bytes = gmService.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
         System.out.println(new String(bytes));
 
+        /*
         // 测试2：使用 GmSSL  sm2encrypt-with-sha1 进行加解密
         GmService gmService2 = gms.getGmService(GmsslorgGmService.NAME);
         byte[] encrypted2 = gmService2.sm2Encrypt(str.getBytes(), keyPair.getPublic().getEncoded());
@@ -50,7 +51,7 @@ public class GMsTests {
         // 测试4：
         byte[] bytes4 = gmService2.sm2Decrypt(encrypted, keyPair.getPrivate().getEncoded());
         System.out.println(new String(bytes4));
-
+        */
     }
 
     // @Test
@@ -66,6 +67,7 @@ public class GMsTests {
         System.out.println(verified);
 
         // 测试2：使用 GmSSL  sm2sign 进行签名、验证
+        /*
         GmService gmService2 = gms.getGmService(GmsslorgGmService.NAME);
         byte[] signature2 = gmService2.sm2Sign(str.getBytes(), keyPair.getPrivate().getEncoded());
         boolean verified2 = gmService2.sm2Verify(str.getBytes(), keyPair.getPublic().getEncoded(), signature2);
@@ -75,6 +77,7 @@ public class GMsTests {
         // 测试3：使用 gmssl api来 验证 bc 的前面
         boolean verified3 = gmService2.sm2Verify(str.getBytes(), keyPair.getPublic().getEncoded(), signature);
         System.out.println(verified3);
+         */
     }
 
     /**
@@ -96,6 +99,7 @@ public class GMsTests {
         bytes = gmService.sm3(str.getBytes(), 2);
         showSM3(gmService, null, 2, bytes);
 
+        /*
         gmService = gms.getGmService(GmsslorgGmService.NAME);
 
         bytes = gmService.sm3(str.getBytes());
@@ -106,6 +110,8 @@ public class GMsTests {
 
         bytes = gmService.sm3(str.getBytes(), 2);
         showSM3(gmService, null, 2, bytes);
+
+         */
     }
 
     void showSM3(GmService service, String salt, int iterations, byte[] sm3ed) {
@@ -166,7 +172,7 @@ public class GMsTests {
         showSM4(gmService, "SM4/" + mode.name(), sm4Key, null, encryptedBytes);
         byte[] decryptedBytes1 = gmService.sm4Decrypt(encryptedBytes, mode, sm4Key);
         System.out.println("1：" + new String(decryptedBytes1));
-
+        /*
         GmService gmService2 = gms.getGmService(GmsslorgGmService.NAME);
         byte[] encryptedBytes2 = gmService2.sm4Encrypt(str.getBytes(), mode, sm4Key, GmService.SM4_IV_DEFAULT);
         byte[] decryptedBytes2;
@@ -204,6 +210,8 @@ public class GMsTests {
         }
 
         System.out.println("\n\n=====================================================\n\n");
+
+         */
     }
 
     public void showSM4(GmService service, String transformation, byte[] key, byte[] iv, byte[] encrypted) {
