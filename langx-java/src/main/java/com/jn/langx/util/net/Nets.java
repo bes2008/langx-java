@@ -227,7 +227,7 @@ public class Nets {
 
         if (loopbackIface != null) {
             // Found the loopback interface with an INET address.
-            logger.trace("Loopback interface: {} ({}, {})", loopbackIface.getName(), loopbackIface.getDisplayName(), loopbackAddr.getHostAddress());
+            logger.debug("Loopback interface: {} ({}, {})", Objs.useValueIfNull(loopbackIface.getName(),""), Objs.useValueIfNull(loopbackIface.getDisplayName(),""), Objs.useValueIfNull(loopbackAddr.getHostAddress(),""));
         } else {
             // Could not find the loopback interface, but we can't leave LOCALHOST as null.
             // Use LOCALHOST6 or LOCALHOST4, preferably the IPv6 one.

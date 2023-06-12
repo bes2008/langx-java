@@ -102,12 +102,10 @@ public class BaseNCodecInputStream extends FilterInputStream {
     public int read(final byte b[], final int offset, final int len) throws IOException {
         if (b == null) {
             throw new NullPointerException();
-        } else if (offset < 0 || len < 0) {
+        } else if (offset < 0 || len <= 0) {
             throw new IndexOutOfBoundsException();
         } else if (offset > b.length || offset + len > b.length) {
             throw new IndexOutOfBoundsException();
-        } else if (len == 0) {
-            return 0;
         } else {
             int readLen = 0;
             /*

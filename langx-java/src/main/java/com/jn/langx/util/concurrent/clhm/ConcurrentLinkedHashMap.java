@@ -5,6 +5,7 @@ import com.jn.langx.annotation.Immutable;
 import com.jn.langx.annotation.ThreadSafe;
 import com.jn.langx.util.ClassLoaders;
 
+import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -1489,7 +1490,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
         return new SerializationProxy<K, V>(this);
     }
 
-    private void readObject(ObjectInputStream stream) throws InvalidObjectException {
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         throw new InvalidObjectException("Proxy required");
     }
 

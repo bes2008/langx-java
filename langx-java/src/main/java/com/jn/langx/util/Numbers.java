@@ -15,9 +15,11 @@ public class Numbers {
     private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
-    private Numbers(){
+
+    private Numbers() {
 
     }
+
     /**
      * Parses the string argument as an unsigned decimal integer. The
      * characters in the string must all be decimal digits, except
@@ -504,7 +506,7 @@ public class Numbers {
             }
             //Requesting a specific type..
             String numeric = str.substring(0, str.length() - 1);
-            if(Strings.isEmpty(numeric)){
+            if (Strings.isEmpty(numeric)) {
                 return 0;
             }
             boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
@@ -693,7 +695,7 @@ public class Numbers {
             } catch (ParseException ex) {
                 throw new IllegalArgumentException("Could not parse number: " + ex.getMessage());
             } finally {
-                if (resetBigDecimal) {
+                if (resetBigDecimal && decimalFormat != null) {
                     decimalFormat.setParseBigDecimal(false);
                 }
             }

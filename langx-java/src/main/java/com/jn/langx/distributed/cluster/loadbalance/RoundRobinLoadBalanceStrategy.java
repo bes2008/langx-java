@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class RoundRobinLoadBalanceStrategy<NODE extends Node, INVOCATION> extends AbstractLoadBalanceStrategy<NODE, INVOCATION> {
 
-    public RoundRobinLoadBalanceStrategy(){
+    public RoundRobinLoadBalanceStrategy() {
         setName("RoundRobin");
     }
 
@@ -107,7 +107,7 @@ public class RoundRobinLoadBalanceStrategy<NODE extends Node, INVOCATION> extend
                 }
             });
         }
-        if (selectedNode != null) {
+        if (selectedNode != null && selectedWRR != null) {
             selectedWRR.sel(totalWeight);
             return selectedNode;
         }

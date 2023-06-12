@@ -38,7 +38,6 @@ import static java.lang.System.arraycopy;
 public class Reflects {
 
 
-
     private static final ParameterServiceRegistry PARAMETER_SERVICE_REGISTRY = ParameterServiceRegistry.getInstance();
 
     private static final Map<Class<?>, Method[]> declaredMethodsCache = new ConcurrentReferenceHashMap<Class<?>, Method[]>(256);
@@ -63,7 +62,7 @@ public class Reflects {
     }
 
     public static boolean isLambda(@NonNull Class<?> clazz) {
-        return clazz != null && clazz.isSynthetic() && Regexps.match(RegexpPatterns.PATTERN_LAMBDA_CLASS,getSimpleClassName(clazz));
+        return clazz != null && clazz.isSynthetic() && Regexps.match(RegexpPatterns.PATTERN_LAMBDA_CLASS, getSimpleClassName(clazz));
     }
 
     public static boolean isStatic(@NonNull Class<?> clazz) {
@@ -500,7 +499,7 @@ public class Reflects {
         result.addAll(declaredFields);
         Class superClass = clazz.getSuperclass();
         if (superClass == null || Object.class == superClass) {
-            
+
         } else {
             findAllFields(result, superClass, containsStatic);
         }
@@ -991,7 +990,7 @@ public class Reflects {
 
     /**
      * @param defensive boolean
-     *                 是否返回可保护的值，因为是从 cache 中获取的，为了保护缓存值不被改变，通常 传值为 true
+     *                  是否返回可保护的值，因为是从 cache 中获取的，为了保护缓存值不被改变，通常 传值为 true
      */
     private static Method[] getDeclaredMethods(Class<?> clazz, boolean defensive) {
         Preconditions.checkNotNull(clazz, "Class must not be null");
@@ -1333,7 +1332,7 @@ public class Reflects {
      */
     public static String getIsSetter(String s) {
         String ret = s;
-        if(!Strings.startsWith(s,"is")){
+        if (!Strings.startsWith(s, "is")) {
             ret = getIsGetter(s);
         }
         char[] c = ret.toCharArray();
@@ -1381,7 +1380,6 @@ public class Reflects {
 
     /**
      * 找到 public 的, 非 static 的 Getter
-     *
      */
     public static Method getGetter(Class clazz, String field) {
         String simple = "get" + field;
@@ -1432,10 +1430,12 @@ public class Reflects {
             if (methodName.startsWith("is")) {
                 fieldName = methodName.substring(2);
             }
-            if(Objs.isEmpty(fieldName)){
+            if (Objs.isEmpty(fieldName)) {
                 fieldName = methodName;
             }
-            return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length() > 1 ? fieldName.substring(1) : "");
+            if (fieldName.length()>=1) {
+                return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length() > 1 ? fieldName.substring(1) : "");
+            }
         }
         return null;
     }
@@ -1489,8 +1489,9 @@ public class Reflects {
         if (Strings.isEmpty(fieldName)) {
             return false;
         }
-        fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
-
+        if(fieldName.length()>=1) {
+            fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
+        }
         if (Strings.isEmpty(fieldName)) {
             return false;
         }
@@ -1701,7 +1702,7 @@ public class Reflects {
         return clazz.getComponentType();
     }
 
-    private Reflects(){
+    private Reflects() {
 
     }
 }
