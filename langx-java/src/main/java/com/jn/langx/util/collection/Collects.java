@@ -21,7 +21,6 @@ import com.jn.langx.util.concurrent.ConcurrentHashSet;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
 import com.jn.langx.util.random.IRandom;
-import com.jn.langx.util.random.RandomProxy;
 import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;

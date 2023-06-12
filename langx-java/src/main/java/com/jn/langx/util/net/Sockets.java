@@ -2,12 +2,13 @@ package com.jn.langx.util.net;
 
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.Randoms;
 
 import javax.net.ServerSocketFactory;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.util.Random;
 import java.util.SortedSet;
 
 public class Sockets {
@@ -24,7 +25,7 @@ public class Sockets {
     public static final int PORT_RANGE_MAX = 65535;
 
 
-    private static final Random random = new Random(System.currentTimeMillis());
+    private static final IRandom random = Randoms.ofSecure();
 
     /**
      * Find an available TCP port randomly selected from the range

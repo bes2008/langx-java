@@ -1,11 +1,12 @@
 package com.jn.langx.util.concurrent.longaddr;
 
 
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.Randoms;
 import com.jn.langx.util.reflect.Reflects;
 import com.jn.langx.util.unsafe.UnsafeProxy;
 import com.jn.langx.util.unsafe.Unsafes;
 
-import java.util.Random;
 
 /**
  * A package-local class holding common representation and mechanics
@@ -123,7 +124,7 @@ abstract class Striped64 extends Number {
     /**
      * Generator of new random hash codes
      */
-    static final Random rng = new Random();
+    static final IRandom rng = Randoms.ofSecure();
 
     /** Number of CPUS, to place bound on table size */
     static final int NCPU = Runtime.getRuntime().availableProcessors();

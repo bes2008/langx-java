@@ -5,12 +5,13 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.TimeoutRunnable;
 import com.jn.langx.util.hash.Hashs;
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.Randoms;
 import com.jn.langx.util.struct.counter.AtomicLongCounter;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -38,7 +39,7 @@ public final class StripedExecutor implements Executor {
     private final int size;
     private final Logger logger;
     private final Worker[] workers;
-    private final Random rand = new Random();
+    private final IRandom rand = Randoms.ofSecure();
     private volatile boolean live = true;
 
     public StripedExecutor(Logger logger,

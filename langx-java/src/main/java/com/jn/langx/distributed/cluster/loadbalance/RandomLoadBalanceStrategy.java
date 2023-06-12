@@ -1,6 +1,6 @@
 package com.jn.langx.distributed.cluster.loadbalance;
 
-import com.jn.langx.util.random.ThreadLocalRandom;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class RandomLoadBalanceStrategy<NODE extends Node, INVOCATION> extends Ab
         }
         if (totalWeight > 0 && !sameWeight) {
             // If (not every node has the same weight & at least one node's weight>0), select randomly based on totalWeight.
-            int offset = ThreadLocalRandom.current().nextInt(totalWeight);
+            int offset = GlobalThreadLocalMap.getRandom().nextInt(totalWeight);
             // Return a node based on the random value.
             for (int i = 0; i < length; i++) {
                 if (offset < weights[i]) {
@@ -40,6 +40,6 @@ public class RandomLoadBalanceStrategy<NODE extends Node, INVOCATION> extends Ab
             }
         }
         // If all invokers have the same weight value or totalWeight=0, return evenly.
-        return aliveNodes.get(ThreadLocalRandom.current().nextInt(length));
+        return aliveNodes.get(GlobalThreadLocalMap.getRandom().nextInt(length));
     }
 }

@@ -35,6 +35,8 @@
 
 package com.jn.langx.util.concurrent.forkjoin;
 
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.Randoms;
 import com.jn.langx.util.unsafe.UnsafeProxy;
 import com.jn.langx.util.unsafe.Unsafes;
 
@@ -420,7 +422,7 @@ public class ForkJoinPool extends AbstractExecutorService {
      * don't expect much contention on seedGenerator, so just use a
      * plain Random.
      */
-    static final Random workerSeedGenerator;
+    static final IRandom workerSeedGenerator;
 
     /**
      * Array holding all worker threads in the pool.  Initialized upon
@@ -2190,7 +2192,7 @@ public class ForkJoinPool extends AbstractExecutorService {
 
     static {
         poolNumberGenerator = new AtomicInteger();
-        workerSeedGenerator = new Random();
+        workerSeedGenerator = Randoms.ofSecure();
         modifyThreadPermission = new RuntimePermission("modifyThread");
         defaultForkJoinWorkerThreadFactory =
                 new DefaultForkJoinWorkerThreadFactory();

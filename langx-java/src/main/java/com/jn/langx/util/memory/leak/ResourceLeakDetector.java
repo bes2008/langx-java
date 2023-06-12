@@ -4,8 +4,8 @@ import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.text.properties.PropertiesAccessor;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.logging.Loggers;
-import com.jn.langx.util.random.ThreadLocalRandom;
 import com.jn.langx.util.reflect.Reflects;
 import org.slf4j.Logger;
 
@@ -175,7 +175,7 @@ public class ResourceLeakDetector<T> {
         }
 
         if (level.ordinal() < Level.PARANOID.ordinal()) {
-            if ((ThreadLocalRandom.current().nextInt(samplingInterval)) == 0) {
+            if ((GlobalThreadLocalMap.getRandom().nextInt(samplingInterval)) == 0) {
                 reportLeak();
                 return new DefaultResourceLeak(obj, refQueue, allLeaks);
             }
@@ -337,7 +337,7 @@ public class ResourceLeakDetector<T> {
                     final int numElements = oldHead.pos + 1;
                     if (numElements >= TARGET_RECORDS) {
                         final int backOffFactor = Math.min(numElements - TARGET_RECORDS, 30);
-                        dropped = ThreadLocalRandom.current().nextInt(1 << backOffFactor) != 0;
+                        dropped = GlobalThreadLocalMap.getRandom().nextInt(1 << backOffFactor) != 0;
                         if (dropped) {
                             prevHead = oldHead.next;
                         }

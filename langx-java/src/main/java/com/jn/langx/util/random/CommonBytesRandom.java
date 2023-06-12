@@ -3,8 +3,6 @@ package com.jn.langx.util.random;
 import com.jn.langx.Delegatable;
 import com.jn.langx.util.Preconditions;
 
-import java.util.Random;
-
 /**
  * @since 4.4.7
  */

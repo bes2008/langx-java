@@ -3,6 +3,8 @@ package com.jn.langx.util.bloom;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.hash.StreamingHasher;
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.Randoms;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -42,7 +44,7 @@ public final class RetouchedBloomFilter extends BloomFilter
      */
     double[] ratio;
 
-    private Random rand;
+    private IRandom rand;
 
     /**
      * Default constructor - use with readFields
@@ -180,7 +182,7 @@ public final class RetouchedBloomFilter extends BloomFilter
 
     private int randomRemove() {
         if (rand == null) {
-            rand = new Random();
+            rand = Randoms.ofSecure();
         }
 
         return rand.nextInt(nbHash);

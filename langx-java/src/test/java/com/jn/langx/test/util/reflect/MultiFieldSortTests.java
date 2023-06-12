@@ -6,7 +6,9 @@ import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.comparator.ParallelingComparator;
 import com.jn.langx.util.comparator.ReverseComparator;
 import com.jn.langx.util.comparator.StringComparator;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.random.IRandom;
 import com.jn.langx.util.reflect.FieldComparator;
 import org.junit.Test;
 
@@ -17,7 +19,7 @@ public class MultiFieldSortTests {
     @Test
     public void test0() {
         List<Person> persons;
-        Random random = new Random(10000);
+        IRandom random = GlobalThreadLocalMap.getRandom();
 
         persons = new LinkedList<Person>();
         for (int i = 0; i < 100; i++) {
@@ -49,7 +51,7 @@ public class MultiFieldSortTests {
     public void test2() {
         System.out.println("===================test2==================");
         List<Person> persons;
-        Random random = new Random(10);
+        IRandom random = GlobalThreadLocalMap.getRandom();
 
         persons = new LinkedList<Person>();
         for (int i = 0; i < 100; i++) {
@@ -80,7 +82,7 @@ public class MultiFieldSortTests {
     public void test3() {
         System.out.println("===================test3==================");
         List<Person> persons;
-        Random random = new Random(10);
+        IRandom random = GlobalThreadLocalMap.getRandom();
 
         persons = new LinkedList<Person>();
         for (int i = 0; i < 100; i++) {
@@ -111,7 +113,7 @@ public class MultiFieldSortTests {
     public void test4() {
         System.out.println("===================test4==================");
         List<Person> persons;
-        Random random = new Random(10);
+        IRandom random = GlobalThreadLocalMap.getRandom();
 
         persons = new LinkedList<Person>();
         for (int i = 0; i < 100; i++) {

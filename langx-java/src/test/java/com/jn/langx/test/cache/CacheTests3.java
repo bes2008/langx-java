@@ -4,7 +4,7 @@ import com.jn.langx.cache.*;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.concurrent.CommonThreadFactory;
-import com.jn.langx.util.random.ThreadLocalRandom;
+import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.timing.timer.DistinctHashedWheelTimeoutFactory;
 import com.jn.langx.util.timing.timer.HashedWheelTimer;
 import com.jn.langx.util.timing.timer.Timer;
@@ -52,7 +52,7 @@ public class CacheTests3 {
                     public String load(String key) {
                         try {
                             Thread.sleep(10000L);
-                            String newValue= ThreadLocalRandom.current().nextInt() + "";
+                            String newValue= GlobalThreadLocalMap.getRandom().nextInt() + "";
                             System.out.println("Refresh Value: "+ newValue);
                             return newValue;
                         }catch (Throwable ex){
