@@ -4,6 +4,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -185,7 +186,8 @@ public class OpenSSLDSATest2 {
         return false;
     }
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
         // 初始化密钥
         // 生成密钥对
         Map<String, Object> keyMap;

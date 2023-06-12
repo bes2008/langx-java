@@ -10,6 +10,7 @@ import com.jn.langx.text.xml.errorhandler.LogErrorHandler;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.io.IOs;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -18,7 +19,8 @@ import java.io.InputStream;
 import java.util.List;
 
 public class XmlParserTests {
-    public static void main(String[] args) throws Throwable {
+    @Test
+    public void test() throws Throwable {
         List<String> poms = Collects.newArrayList(
                 // "/xmls/asm-parent-3.3.1.pom",
                 // "/xmls/antlr-2.7.7.pom",

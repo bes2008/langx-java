@@ -12,8 +12,8 @@ import com.jn.langx.util.spi.CommonServiceProvider;
 public class Maskings {
 
     public static final class Strategy {
-        public static String PHONE = "phone";
-        public static String STAR_6 = "STAR_6";
+        public static final String PHONE = "phone";
+        public static final String STAR_6 = "STAR_6";
 
         private Strategy(){
 

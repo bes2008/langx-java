@@ -3,6 +3,7 @@ package com.jn.langx.test.security.messagedigest;
 import com.jn.langx.io.stream.obj.SecureObjectInputStream;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import org.junit.Test;
 
 import java.io.*;
 import java.security.MessageDigest;
@@ -15,7 +16,8 @@ public class XYZMessageDigestTest {
         Security.addProvider(new XYZProvider());
     }
 
-    public static void main(String[] args) throws Exception {
+    @Test
+    public void test() throws Exception {
         XYZMessageDigestTest test = new XYZMessageDigestTest();
         test.writeMessage();
         test.readMessage();
