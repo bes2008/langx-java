@@ -56,7 +56,6 @@ public class Xmls {
         }
     }
 
-
     public static Document getXmlDoc(
             EntityResolver entityResolver,
             ErrorHandler errorHandler,
@@ -64,6 +63,21 @@ public class Xmls {
             boolean ignoreComments,
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware
+    ) throws Exception {
+        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, null);
+    }
+
+    /**
+     * @since 5.2.9
+     */
+    public static Document getXmlDoc(
+            EntityResolver entityResolver,
+            ErrorHandler errorHandler,
+            final InputStream xml,
+            boolean ignoreComments,
+            boolean ignoringElementContentWhitespace,
+            boolean namespaceAware,
+            DocumentBuilderFactoryCustomizer customizer
     ) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
@@ -83,6 +97,11 @@ public class Xmls {
         if (entityResolver != null) {
             factory.setValidating(true);
         }
+
+        if (customizer != null) {
+            customizer.customize(factory);
+        }
+
         final DocumentBuilder builder = factory.newDocumentBuilder();
         entityResolver = ((entityResolver == null) ? new NullEntityResolver() : entityResolver);
         builder.setEntityResolver(entityResolver);
