@@ -59,7 +59,7 @@ public class Files {
 
     public static File newFile(String path) {
         if (Strings.isNotEmpty(path)) {
-            Preconditions.checkArgument(Filenames.checkFilePath(path), "path");
+            Preconditions.checkArgument(Filenames.checkFilePath(path), "illegal filepath: {}", path);
             return new File(path);
         }
         return new File("");
@@ -73,7 +73,7 @@ public class Files {
         if (file == null) {
             return null;
         }
-        Preconditions.checkArgument(Filenames.checkFilePath(subpath), "path");
+        Preconditions.checkArgument(Filenames.checkFilePath(subpath), "illegal filepath: {}", subpath);
         return new File(file, subpath);
     }
 
