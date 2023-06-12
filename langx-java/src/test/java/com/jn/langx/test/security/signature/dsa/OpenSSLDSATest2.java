@@ -3,15 +3,12 @@ package com.jn.langx.test.security.signature.dsa;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.io.resource.Resources;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
+import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
@@ -79,8 +76,13 @@ public class OpenSSLDSATest2 {
      * 读取私钥
      */
     private static void initPrivateKey() {
+        InputStream in = null;
+        InputStreamReader ir = null;
+        BufferedReader br = null;
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_private_key_pkcs8.pem").getInputStream(), Charsets.UTF_8));
+            in = Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_private_key_pkcs8.pem").getInputStream();
+            ir = new InputStreamReader(in, Charsets.UTF_8);
+            br = new BufferedReader(ir);
             String s = br.readLine();
             StringBuilder privatekey = new StringBuilder();
             s = br.readLine();
@@ -98,17 +100,24 @@ public class OpenSSLDSATest2 {
             privateKey = kf.generatePrivate(keySpec);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            IOs.close(br);
+            IOs.close(ir);
+            IOs.close(in);
         }
-
     }
 
     /**
      * 读取公钥
      */
     private static void initPublicKey() {
+        InputStream inputStream = null;
+        InputStreamReader ir = null;
+        BufferedReader br = null;
         try {
-            InputStream inputStream = Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_public_key.pem").getInputStream();
-            BufferedReader br = new BufferedReader( new InputStreamReader(inputStream, Charsets.UTF_8));
+            inputStream = Resources.loadClassPathResource("/security/dsa/data/openssl/dsa_public_key.pem").getInputStream();
+            ir = new InputStreamReader(inputStream, Charsets.UTF_8);
+            br = new BufferedReader(ir);
             String s = br.readLine();
             StringBuilder publickey = new StringBuilder();
             s = br.readLine();
@@ -128,6 +137,10 @@ public class OpenSSLDSATest2 {
             publicKey = kf.generatePublic(keySpec);
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            IOs.close(br);
+            IOs.close(ir);
+            IOs.close(inputStream);
         }
     }
 
