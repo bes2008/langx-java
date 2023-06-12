@@ -1,9 +1,11 @@
 package com.jn.langx.io.stream;
 
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Unsigneds;
 import com.jn.langx.util.function.Consumer4;
+import com.jn.langx.util.io.IOs;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -48,13 +50,14 @@ public class WrappedInputStream extends FilterInputStream {
 
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
+        int l = Maths.min(len, IOs.DEFAULT_BUFFER_SIZE);
         if (Objs.isNotNull(this.pipeline)) {
-            this.pipeline.beforeRead(this, b, off, len);
+            this.pipeline.beforeRead(this, b, off, l);
         }
-        int length = super.read(b, off, len);
+        int length = super.read(b, off, l);
 
         if (Objs.isNotNull(this.pipeline) && length > 0) {
-            this.pipeline.afterRead(this, b, off, len);
+            this.pipeline.afterRead(this, b, off, length);
         }
         return length;
     }

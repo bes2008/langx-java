@@ -13,6 +13,8 @@ import javax.security.sasl.SaslClient;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Maths;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.unicode.Utf8s;
 
 import static com.jn.langx.asn1.spec.ASN1Messages.*;
@@ -1017,28 +1019,27 @@ public final class ASN1StreamReader implements Closeable {
      * was reached.
      * @throws IOException If a problem occurs while reading data.
      */
-    private int read(@NonNull final byte[] buffer, final int offset,
-                     final int length)
-            throws IOException {
+    private int read(@NonNull final byte[] buffer, final int offset, final int length) throws IOException {
+        int len = Maths.min(length, IOs.DEFAULT_BUFFER_SIZE);
         if (saslClient != null) {
             if (saslInputStream != null) {
-                final int bytesRead = saslInputStream.read(buffer, offset, length);
+                final int bytesRead = saslInputStream.read(buffer, offset, len);
                 if (bytesRead > 0) {
                     return bytesRead;
                 }
             }
 
             readAndDecodeSASLData(-1);
-            return saslInputStream.read(buffer, offset, length);
+            return saslInputStream.read(buffer, offset, len);
         }
 
         try {
-            return inputStream.read(buffer, offset, length);
+            return inputStream.read(buffer, offset, len);
         } catch (final SocketTimeoutException ste) {
             if (ignoreSubsequentSocketTimeout) {
                 while (true) {
                     try {
-                        return inputStream.read(buffer, offset, length);
+                        return inputStream.read(buffer, offset, len);
                     } catch (final SocketTimeoutException ste2) {
                     }
                 }

@@ -1,5 +1,7 @@
 package com.jn.langx.io.stream;
 
+import com.jn.langx.util.Maths;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.unicode.BOM;
 
 import java.io.IOException;
@@ -126,7 +128,7 @@ public class UnicodeInputStream extends InputStream {
      * @see #in
      */
     public int read(byte b[], int off, int len) throws IOException {
-        return in.read(b, off, len);
+        return in.read(b, off, Maths.min(len, IOs.DEFAULT_BUFFER_SIZE));
     }
 
     /**

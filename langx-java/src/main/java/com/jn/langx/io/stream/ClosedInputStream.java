@@ -35,6 +35,6 @@ public class ClosedInputStream extends InputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        return super.read(b, off, len);
+        return IOs.EOF;
     }
 }

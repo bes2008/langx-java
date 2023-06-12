@@ -6,6 +6,8 @@ import com.jn.langx.annotation.NotMutable;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.asn1.bytestring.ByteStringBuffer;
 import com.jn.langx.codec.hex.Hex;
+import com.jn.langx.util.Maths;
+import com.jn.langx.util.io.IOs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -680,7 +682,7 @@ public class ASN1Element
         int bytesRemaining = length;
         final byte[] value = new byte[length];
         while (totalBytesRead < length) {
-            final int bytesRead = inputStream.read(value, totalBytesRead, bytesRemaining);
+            final int bytesRead = inputStream.read(value, totalBytesRead, Maths.min(bytesRemaining, IOs.DEFAULT_BUFFER_SIZE));
             if (bytesRead < 0) {
                 throw new ASN1Exception(ERR_READ_END_BEFORE_VALUE_END.get());
             }

@@ -1,5 +1,8 @@
 package com.jn.langx.util.jar.multiplelevel;
 
+import com.jn.langx.util.Maths;
+import com.jn.langx.util.io.IOs;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +34,7 @@ class ZipInflaterInputStream extends InflaterInputStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
-        int result = super.read(b, off, len);
+        int result = super.read(b, off, Maths.min(len, IOs.DEFAULT_BUFFER_SIZE));
         if (result != -1) {
             this.available -= result;
         }
