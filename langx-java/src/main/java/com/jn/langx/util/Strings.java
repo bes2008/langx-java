@@ -428,9 +428,9 @@ public class Strings {
             @Override
             public String apply(String input) {
                 if (doTrim) {
-                    return input.toString().trim();
+                    return Strings.trim(input);
                 } else {
-                    return input.toString();
+                    return input;
                 }
             }
         }).filter(new Predicate<String>() {

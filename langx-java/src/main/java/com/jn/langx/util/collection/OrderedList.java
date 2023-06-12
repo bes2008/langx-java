@@ -1,10 +1,7 @@
 package com.jn.langx.util.collection;
 
 import com.jn.langx.Ordered;
-import com.jn.langx.util.Maths;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.multivalue.CommonMultiValueMap;
 import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.function.*;
@@ -409,14 +406,11 @@ public class OrderedList<E extends Ordered> extends AbstractList<E> implements C
 
     @Override
     public Object clone() {
-        final OrderedList<E> other = new OrderedList<E>();
-        Collects.forEach(this.map.entrySet(), new Consumer2<Integer, Collection<E>>() {
-            @Override
-            public void accept(Integer order, Collection<E> values) {
-                other.addAll(values);
-            }
-        });
-        return other;
+        try {
+            return super.clone();
+        }catch (Throwable e){
+            throw Throwables.wrapAsRuntimeException(e);
+        }
     }
 
     @Override

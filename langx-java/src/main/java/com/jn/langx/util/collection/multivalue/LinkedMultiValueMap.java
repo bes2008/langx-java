@@ -3,6 +3,7 @@ package com.jn.langx.util.collection.multivalue;
 
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.function.Predicate2;
@@ -113,7 +114,11 @@ public class LinkedMultiValueMap<K, V> extends CommonMultiValueMap<K, V> impleme
      */
     @Override
     public LinkedMultiValueMap<K, V> clone() {
-        return deepCopy();
+        try {
+            return (LinkedMultiValueMap)super.clone();
+        }catch (Throwable e){
+            throw Throwables.wrapAsRuntimeException(e);
+        }
     }
 
     @Override
