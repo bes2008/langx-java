@@ -227,7 +227,11 @@ public class Nets {
 
         if (loopbackIface != null) {
             // Found the loopback interface with an INET address.
-            logger.debug("Loopback interface: {} ({}, {})", Objs.useValueIfNull(loopbackIface.getName(),""), Objs.useValueIfNull(loopbackIface.getDisplayName(),""), Objs.useValueIfNull(loopbackAddr.getHostAddress(),""));
+            logger.debug("Loopback interface: {} ({}, {})",
+                    loopbackIface.getName(),
+                    loopbackIface.getDisplayName(),
+                    loopbackAddr == null ? "" : loopbackAddr.getHostAddress()
+            );
         } else {
             // Could not find the loopback interface, but we can't leave LOCALHOST as null.
             // Use LOCALHOST6 or LOCALHOST4, preferably the IPv6 one.
@@ -310,7 +314,7 @@ public class Nets {
         });
     }
 
-    private Nets(){
+    private Nets() {
 
     }
 
@@ -476,7 +480,7 @@ public class Nets {
         return isValidDomainAddress(domain, EMAIL_DOMAIN_PATTERN);
     }
 
-    public static boolean isValidHostAddress(String str){
+    public static boolean isValidHostAddress(String str) {
         return isValidDomainAddress(str) || isValidIpV6Address(str) || isValidIpV4Address(str);
     }
 
@@ -1439,7 +1443,7 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </ul>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
