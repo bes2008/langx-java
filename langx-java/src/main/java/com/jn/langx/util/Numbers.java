@@ -286,10 +286,10 @@ public class Numbers {
             return number.longValue() == 0L;
         }
         if (number instanceof Float) {
-            return number.floatValue() == 0F;
+            return ((Float)number).floatValue() == 0F;
         }
         if (number instanceof Double) {
-            return number.doubleValue() == 0D;
+            return ((Double)number).doubleValue() == 0D;
         }
         if (number instanceof AtomicInteger) {
             return ((AtomicInteger) number).get() == 0;
