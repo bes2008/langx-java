@@ -148,7 +148,7 @@ public class MessageDigestTest {
             Object o = ois.readObject();    // original message
             if (!(o instanceof String)) {
                 System.out.println("Unexpected data in file");
-                System.exit(-1);
+                return;
             }
             String data = (String) o;
             System.out.println("Got message : " + data);
@@ -156,12 +156,12 @@ public class MessageDigestTest {
             o = ois.readObject(); // digest
             if (!(o instanceof byte[])) {
                 System.out.println("Unexpected data in file");
-                System.exit(-1);
+                return;
             }
             byte origDigest[] = (byte[]) o;
-            if (MessageDigest.isEqual(md.digest(), origDigest))
+            if (MessageDigest.isEqual(md.digest(), origDigest)) {
                 System.out.println("Message is valid");
-            else System.out.println("Message was corrupted");
+            } else System.out.println("Message was corrupted");
 
         } catch (Exception e) {
             System.out.println(e);
