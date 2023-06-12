@@ -1,8 +1,8 @@
 package com.jn.langx.commandline;
 
+import com.jn.langx.commandline.launcher.AbstractLocalCommandLauncher;
 import com.jn.langx.commandline.launcher.CommandLauncher;
 import com.jn.langx.commandline.launcher.CommandLauncherFactory;
-import com.jn.langx.commandline.launcher.AbstractLocalCommandLauncher;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.concurrent.completion.CompletableFuture;
@@ -316,9 +316,9 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
      * @param process the <CODE>Process</CODE>.
      */
     private void closeProcessStreams(final InstructionSequence process) {
-        IOs.close( process.getInputStream());
-        IOs.close( process.getOutputStream());
-        IOs.close( process.getErrorStream());
+        IOs.close(process.getInputStream());
+        IOs.close(process.getOutputStream());
+        IOs.close(process.getErrorStream());
     }
 
     /**
@@ -338,13 +338,19 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
         final InstructionSequence process = this.launch(command, environment, dir);
 
+        boolean setStreamsSuccess = true;
         try {
             streamHandler.setSubProcessInputStream(process.getOutputStream());
             streamHandler.setSubProcessOutputStream(process.getInputStream());
             streamHandler.setSubProcessErrorStream(process.getErrorStream());
         } catch (final IOException e) {
+            setStreamsSuccess = false;
             process.destroy();
             throw e;
+        } finally {
+            if(!setStreamsSuccess){
+                closeProcessStreams(process);
+            }
         }
 
         streamHandler.start();
