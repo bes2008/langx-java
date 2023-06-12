@@ -113,6 +113,7 @@ public final class DirectoryLock implements Closeable {
             throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
         } finally {
             if (channel == null) {
+                IOs.close(channel);
                 IOs.close(arf);
             }
         }
@@ -137,8 +138,10 @@ public final class DirectoryLock implements Closeable {
         } catch (IOException e) {
             throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
         } finally {
-            IOs.close(channel);
-            IOs.close(raf);
+            if (channel == null) {
+                IOs.close(channel);
+                IOs.close(raf);
+            }
         }
     }
 
