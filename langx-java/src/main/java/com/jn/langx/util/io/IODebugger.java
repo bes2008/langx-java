@@ -56,14 +56,13 @@ public class IODebugger {
                 try {
                     inputStream.reset();
                 } catch (IOException ex) {
-                    throw Throwables.wrapAsRuntimeIOException(ex);
                 }
             }
         }
         return "";
     }
 
-    private IODebugger(){
+    private IODebugger() {
 
     }
 }

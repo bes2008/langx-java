@@ -60,10 +60,13 @@ public final class ASN1Writer {
         try {
             buffer.write(outputStream);
         } finally {
-            if (buffer.capacity() > MAX_BUFFER_LENGTH) {
-                buffer.setCapacity(MAX_BUFFER_LENGTH);
+            try {
+                if (buffer.capacity() > MAX_BUFFER_LENGTH) {
+                    buffer.setCapacity(MAX_BUFFER_LENGTH);
+                }
+            } finally {
+                buffer.clear();
             }
-            buffer.clear();
         }
     }
 
@@ -101,10 +104,13 @@ public final class ASN1Writer {
             buffer.limit(buffer.position());
             buffer.position(pos);
         } finally {
-            if (b.capacity() > MAX_BUFFER_LENGTH) {
-                b.setCapacity(MAX_BUFFER_LENGTH);
+            try {
+                if (b.capacity() > MAX_BUFFER_LENGTH) {
+                    b.setCapacity(MAX_BUFFER_LENGTH);
+                }
+            } finally {
+                b.clear();
             }
-            b.clear();
         }
     }
 }
