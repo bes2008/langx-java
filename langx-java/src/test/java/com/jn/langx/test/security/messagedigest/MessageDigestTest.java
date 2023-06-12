@@ -4,6 +4,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
 import org.junit.Test;
 
 import java.io.*;
@@ -13,18 +14,20 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MessageDigestTest {
-    private String filename="MessageDigestTest.txt";
-    private final static String SHA="SHA";
+    private String filename = "MessageDigestTest.txt";
+    private final static String SHA = "SHA";
 
     //	@Test
-    public void saveDigestToFile(){
+    public void saveDigestToFile() {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
         try {
-            File file=new File(filename);
+            File file = new File(filename);
             file.deleteOnExit();
             file.createNewFile();
-            FileOutputStream fos = new FileOutputStream(file);
+            fos = new FileOutputStream(file);
             MessageDigest md = MessageDigest.getInstance(SHA);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos = new ObjectOutputStream(fos);
             String data = "This have I thought good to deliver thee, that thou mightst not lose the dues of rejoicing " +
                     "by being ignorant of what greatness is promised thee.";
             byte[] buf = data.getBytes(Charsets.UTF_8);
@@ -36,10 +39,13 @@ public class MessageDigestTest {
             validDigestFromFile();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            IOs.close(fos);
+            IOs.close(oos);
         }
     }
 
-    private void validDigestFromFile(){
+    private void validDigestFromFile() {
         try {
             FileInputStream fis = new FileInputStream(filename);
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -55,7 +61,7 @@ public class MessageDigestTest {
                 System.out.println("Unexpected data in file");
                 System.exit(-1);
             }
-            byte[] origDigest = (byte []) o;
+            byte[] origDigest = (byte[]) o;
             MessageDigest md = MessageDigest.getInstance("SHA");
             md.update(data.getBytes(Charsets.UTF_8));
             if (MessageDigest.isEqual(md.digest(), origDigest))
@@ -69,7 +75,7 @@ public class MessageDigestTest {
     }
 
     //	@Test
-    public void md5Test(){
+    public void md5Test() {
         System.out.println(MessageDigests.md5("hello"));
     }
 
@@ -95,19 +101,19 @@ public class MessageDigestTest {
     }
 
     @Test
-    public void saveWithDigestStream(){
+    public void saveWithDigestStream() {
         try {
-            File file=new File(filename);
+            File file = new File(filename);
             file.deleteOnExit();
             file.createNewFile();
             FileOutputStream fos = new FileOutputStream(file);
             MessageDigest md = MessageDigest.getInstance("SHA");
             DigestOutputStream dos = new DigestOutputStream(fos, md);
             ObjectOutputStream oos = new ObjectOutputStream(dos);
-            String data = "This have I thought good to deliver thee, "+
+            String data = "This have I thought good to deliver thee, " +
                     "that thou mightst not lose the dues of rejoicing " +
                     "by being ignorant of what greatness is promised thee.";
-            oos.writeObject(data);	// original message
+            oos.writeObject(data);    // original message
             dos.on(false);
             oos.writeObject(md.digest()); // digest
 
@@ -119,14 +125,14 @@ public class MessageDigestTest {
         }
     }
 
-    private void readWithDigestStream(){
+    private void readWithDigestStream() {
         try {
-            File file=new File(filename);
+            File file = new File(filename);
             FileInputStream fis = new FileInputStream(file);
             MessageDigest md = MessageDigest.getInstance("SHA");
             DigestInputStream dis = new DigestInputStream(fis, md);
             ObjectInputStream ois = new ObjectInputStream(dis);
-            Object o = ois.readObject();	// original message
+            Object o = ois.readObject();    // original message
             if (!(o instanceof String)) {
                 System.out.println("Unexpected data in file");
                 System.exit(-1);
@@ -139,7 +145,7 @@ public class MessageDigestTest {
                 System.out.println("Unexpected data in file");
                 System.exit(-1);
             }
-            byte origDigest[] = (byte []) o;
+            byte origDigest[] = (byte[]) o;
             if (MessageDigest.isEqual(md.digest(), origDigest))
                 System.out.println("Message is valid");
             else System.out.println("Message was corrupted");
@@ -151,7 +157,7 @@ public class MessageDigestTest {
     }
 
     @Test
-    public void testSha256(){
-        System.out.println(Base64.encodeBase64String(MessageDigests.digest(JCAEStandardName.SHA_256.getName(),"123456")));
+    public void testSha256() {
+        System.out.println(Base64.encodeBase64String(MessageDigests.digest(JCAEStandardName.SHA_256.getName(), "123456")));
     }
 }
