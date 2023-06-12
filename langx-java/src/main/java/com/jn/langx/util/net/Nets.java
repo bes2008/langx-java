@@ -230,7 +230,7 @@ public class Nets {
             logger.debug("Loopback interface: {} ({}, {})",
                     loopbackIface.getName(),
                     loopbackIface.getDisplayName(),
-                    loopbackAddr == null ? "" : loopbackAddr.getHostAddress()
+                    loopbackAddr == null ? null : loopbackAddr.getHostAddress()
             );
         } else {
             // Could not find the loopback interface, but we can't leave LOCALHOST as null.
