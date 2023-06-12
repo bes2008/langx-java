@@ -16,6 +16,8 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
@@ -2534,11 +2536,11 @@ public enum LanguageCode {
 
         for (int i = 0; i < legacy.length; ++i) {
             if (caseSensitive) {
-                if (code.equals(legacy[i])) {
+                if (Objs.equals(code,legacy[i])) {
                     return official[i];
                 }
             } else {
-                if (code.equalsIgnoreCase(legacy[i])) {
+                if (Strings.equalsIgnoreCase(code,legacy[i])) {
                     return official[i];
                 }
             }
@@ -2547,7 +2549,7 @@ public enum LanguageCode {
         if (caseSensitive) {
             return code;
         } else {
-            return code.toLowerCase();
+            return Strings.lowerCase(code);
         }
     }
 

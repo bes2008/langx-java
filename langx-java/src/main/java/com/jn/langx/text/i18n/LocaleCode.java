@@ -16,6 +16,7 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.reflect.Reflects;
 
@@ -1300,7 +1301,7 @@ public enum LocaleCode {
         // Canonicalize the given country code.
         country = CountryCode.canonicalize(country, caseSensitive);
 
-        if ("undefined".equals(Strings.lowerCase(language)) && (country == null || "UNDEFINED".equals(Strings.upperCase(country)))) {
+        if (Objs.equals("undefined",Strings.lowerCase(language)) && (country == null || Objs.equals("UNDEFINED",Strings.upperCase(country)))) {
             return LocaleCode.undefined;
         }
 
