@@ -74,7 +74,7 @@ public class MessageDigestTest {
             System.out.println(e);
         } finally {
             IOs.close(fis);
-            IOs.close(fis);
+            IOs.close(ois);
         }
     }
 
@@ -166,9 +166,9 @@ public class MessageDigestTest {
         } catch (Exception e) {
             System.out.println(e);
         } finally {
-            IOs.close(fis);
-            IOs.close(dis);
             IOs.close(ois);
+            IOs.close(dis);
+            IOs.close(fis);
         }
     }
 

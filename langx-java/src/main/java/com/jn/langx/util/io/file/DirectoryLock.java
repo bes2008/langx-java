@@ -111,11 +111,15 @@ public final class DirectoryLock implements Closeable {
             channel = arf.getChannel();
         } catch (IOException e) {
             throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
+        } finally {
+            if (channel == null) {
+                IOs.close(arf);
+            }
         }
         if (channel == null) {
-            IOs.close(arf);
             return null;
         }
+
         FileLock lock = acquireLock(lockFile, channel);
         if (logger.isInfoEnabled()) {
             logger.info("Acquired lock on " + Files.getCanonicalPath(lockFile));

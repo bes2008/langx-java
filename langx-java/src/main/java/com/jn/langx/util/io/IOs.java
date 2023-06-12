@@ -73,7 +73,7 @@ public class IOs {
         }
         try {
             target.close();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             Loggers.getLogger(ObjectCloser.class).warn("close fail: {}", target);
         }
     }
