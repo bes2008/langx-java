@@ -46,9 +46,11 @@ public class MessageDigestTest {
     }
 
     private void validDigestFromFile() {
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
         try {
-            FileInputStream fis = new FileInputStream(filename);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+            fis = new FileInputStream(filename);
+            ois = new ObjectInputStream(fis);
             Object o = ois.readObject(); // String data: original message
             if (!(o instanceof String)) {
                 System.out.println("Unexpected data in file");
@@ -68,9 +70,11 @@ public class MessageDigestTest {
                 System.out.println("Message is valid");
             else System.out.println("Message was corrupted");
 
-            ois.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            IOs.close(fis);
+            IOs.close(fis);
         }
     }
 
@@ -102,14 +106,17 @@ public class MessageDigestTest {
 
     @Test
     public void saveWithDigestStream() {
+        FileOutputStream fos = null;
+        DigestOutputStream dos = null;
+        ObjectOutputStream oos = null;
         try {
             File file = new File(filename);
             file.deleteOnExit();
             file.createNewFile();
-            FileOutputStream fos = new FileOutputStream(file);
+            fos = new FileOutputStream(file);
             MessageDigest md = MessageDigest.getInstance("SHA");
-            DigestOutputStream dos = new DigestOutputStream(fos, md);
-            ObjectOutputStream oos = new ObjectOutputStream(dos);
+            dos = new DigestOutputStream(fos, md);
+            oos = new ObjectOutputStream(dos);
             String data = "This have I thought good to deliver thee, " +
                     "that thou mightst not lose the dues of rejoicing " +
                     "by being ignorant of what greatness is promised thee.";
@@ -117,21 +124,27 @@ public class MessageDigestTest {
             dos.on(false);
             oos.writeObject(md.digest()); // digest
 
-            oos.close();
 
             readWithDigestStream();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            IOs.close(fos);
+            IOs.close(dos);
+            IOs.close(oos);
         }
     }
 
     private void readWithDigestStream() {
+        FileInputStream fis = null;
+        DigestInputStream dis = null;
+        ObjectInputStream ois = null;
         try {
             File file = new File(filename);
-            FileInputStream fis = new FileInputStream(file);
+            fis = new FileInputStream(file);
             MessageDigest md = MessageDigest.getInstance("SHA");
-            DigestInputStream dis = new DigestInputStream(fis, md);
-            ObjectInputStream ois = new ObjectInputStream(dis);
+            dis = new DigestInputStream(fis, md);
+            ois = new ObjectInputStream(dis);
             Object o = ois.readObject();    // original message
             if (!(o instanceof String)) {
                 System.out.println("Unexpected data in file");
@@ -150,9 +163,12 @@ public class MessageDigestTest {
                 System.out.println("Message is valid");
             else System.out.println("Message was corrupted");
 
-            ois.close();
         } catch (Exception e) {
             System.out.println(e);
+        } finally {
+            IOs.close(fis);
+            IOs.close(dis);
+            IOs.close(ois);
         }
     }
 
