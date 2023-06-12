@@ -54,21 +54,23 @@ public class MessageDigestTest {
             Object o = ois.readObject(); // String data: original message
             if (!(o instanceof String)) {
                 System.out.println("Unexpected data in file");
-                System.exit(-1);
+                return;
             }
             String data = (String) o;
             System.out.println("Got message : " + data);
             o = ois.readObject();   // byte[] : digest
             if (!(o instanceof byte[])) {
                 System.out.println("Unexpected data in file");
-                System.exit(-1);
+                return;
             }
             byte[] origDigest = (byte[]) o;
             MessageDigest md = MessageDigest.getInstance("SHA");
             md.update(data.getBytes(Charsets.UTF_8));
-            if (MessageDigest.isEqual(md.digest(), origDigest))
+            if (MessageDigest.isEqual(md.digest(), origDigest)) {
                 System.out.println("Message is valid");
-            else System.out.println("Message was corrupted");
+            } else {
+                System.out.println("Message was corrupted");
+            }
 
         } catch (Exception e) {
             System.out.println(e);

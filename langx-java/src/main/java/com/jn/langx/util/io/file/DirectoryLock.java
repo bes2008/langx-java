@@ -128,10 +128,17 @@ public final class DirectoryLock implements Closeable {
     }
 
     private static FileChannel openChannel(File lockFile) {
+        RandomAccessFile raf = null;
+        FileChannel channel = null;
         try {
-            return new RandomAccessFile(lockFile, "rw").getChannel();
+            raf = Files.newRandomAccessFile(lockFile, FileIOMode.READ_WRITE);
+            channel = raf.getChannel();
+            return channel;
         } catch (IOException e) {
             throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
+        } finally {
+            IOs.close(channel);
+            IOs.close(raf);
         }
     }
 

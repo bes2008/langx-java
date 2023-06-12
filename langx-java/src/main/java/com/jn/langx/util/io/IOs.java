@@ -45,7 +45,7 @@ public class IOs {
      * The default buffer size ({@value}) to use for
      * {@link #copyLarge(InputStream, OutputStream)}
      */
-    public static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+    public static final int DEFAULT_BUFFER_SIZE = 1024 * 8;
 
     /**
      * The default buffer size to use for the skip() methods.
