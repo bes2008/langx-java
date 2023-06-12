@@ -93,15 +93,18 @@ public class GrokTest {
             @Override
             public void accept(String messagePath) {
                 ClassPathResource resource = Resources.loadClassPathResource(messagePath, GrokTest.class);
+                InputStream in = null;
                 try {
-                    InputStream in = resource.getInputStream();
+                    in = resource.getInputStream();
                     String message = IOs.readAsString(in);
-                    IOs.close(in);
+
                     // message = Strings.replace(Strings.replace(message,"\n", "\\n"),"\t","\\t");
                     Map<String, Object> result = template.extract(message);
                     System.out.println(result);
                 } catch (IOException ex) {
                     ex.fillInStackTrace();
+                }finally {
+                    IOs.close(in);
                 }
             }
         });
