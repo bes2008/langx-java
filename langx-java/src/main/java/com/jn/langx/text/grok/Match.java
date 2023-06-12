@@ -3,6 +3,7 @@ package com.jn.langx.text.grok;
 
 import com.jn.langx.Converter;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -122,7 +123,7 @@ class Match {
                     key = id;
                 }
 
-                if ("UNWANTED".equals(key)) {
+                if (Strings.equals("UNWANTED", key)) {
                     return;
                 }
 

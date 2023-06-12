@@ -4,6 +4,7 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
@@ -432,7 +433,7 @@ public class PEMs extends Securitys {
         }
         if ("DES-CBC".equals(algorithm)) {
             byte[] key = generateOpenSslKey(password, iv, 8);
-            encryptionKey = new SecretKeySpec(key, "DES");
+            encryptionKey = new SecretKeySpec(key, JCAEStandardName.DES.getName());
         } else if ("DES-EDE3-CBC".equals(algorithm)) {
             byte[] key = generateOpenSslKey(password, iv, 24);
             encryptionKey = new SecretKeySpec(key, "DESede");
