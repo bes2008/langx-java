@@ -1,4 +1,4 @@
-package com.jn.langx.text.xml;
+package com.jn.langx.text.xml.cutomizer;
 
 import com.jn.langx.Customizer;
 

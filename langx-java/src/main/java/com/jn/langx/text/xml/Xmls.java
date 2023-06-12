@@ -1,5 +1,7 @@
 package com.jn.langx.text.xml;
 
+import com.jn.langx.text.xml.cutomizer.DocumentBuilderFactoryCustomizer;
+import com.jn.langx.text.xml.cutomizer.secure.SecureDocumentBuilderFactoryCustomizer;
 import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
 import com.jn.langx.text.xml.resolver.DTDEntityResolver;
 import com.jn.langx.text.xml.resolver.NullEntityResolver;
@@ -16,9 +18,12 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
@@ -45,16 +50,7 @@ public class Xmls {
         return getXmlDoc(entityResolver, errorHandler, xml, false, false, namespaceAware);
     }
 
-    /**
-     * @since 5.2.7
-     */
-    public static void setFeature(DocumentBuilderFactory factory, String feature, boolean enabled) {
-        try {
-            factory.setFeature(feature, enabled);
-        } catch (ParserConfigurationException e) {
-            // ignore it
-        }
-    }
+
 
     public static Document getXmlDoc(
             EntityResolver entityResolver,
@@ -64,7 +60,7 @@ public class Xmls {
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware
     ) throws Exception {
-        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, null);
+        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, SecureDocumentBuilderFactoryCustomizer.DEFAULT);
     }
 
     /**
@@ -81,17 +77,6 @@ public class Xmls {
     ) throws Exception {
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setIgnoringComments(ignoreComments);
-
-        setFeature(factory, "http://xml.org/sax/features/external-general-entities", false); // 不包括外部一般实体。
-        setFeature(factory, "http://xml.org/sax/features/external-parameter-entities", false); // 不包含外部参数实体或外部DTD子集。
-        setFeature(factory, "http://apache.org/xml/features/nonvalidating/load-external-dtd", false); // 忽略外部DTD
-        setFeature(factory, XMLConstants.ACCESS_EXTERNAL_DTD, false); // 不访问外部 dtd
-        setFeature(factory, XMLConstants.ACCESS_EXTERNAL_SCHEMA, false); // 不访问外部 schema
-        setFeature(factory, "http://javax.xml.XMLConstants/feature/secure-processing", true);
-
-        // 设置 XInclude 处理的状态为false,禁止实体扩展引用
-        factory.setXIncludeAware(false);
-        factory.setExpandEntityReferences(false);
         factory.setIgnoringElementContentWhitespace(ignoringElementContentWhitespace);
         factory.setNamespaceAware(namespaceAware);
         if (entityResolver != null) {
@@ -178,6 +163,77 @@ public class Xmls {
     public static Element findElement(Document doc, String xpath) throws XPathExpressionException {
         Element element = new XmlAccessor(Namespaces.hasCustomNamespace(doc) ? "x" : null).getElement(doc, XPathFactory.newInstance(), xpath);
         return element;
+    }
+    /**
+     * @since 5.2.7
+     */
+    public static void setFeature(DocumentBuilderFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setFeature(feature, enabled);
+        } catch (ParserConfigurationException e) {
+            // ignore it
+        }
+    }
+
+    /**
+     * @since 5.2.9
+     */
+    public static void setFeature(SAXParserFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setFeature(feature, enabled);
+        } catch (org.xml.sax.SAXNotRecognizedException e) {
+            // ignore it
+        } catch (org.xml.sax.SAXNotSupportedException e) {
+            // ignore it
+        } catch (javax.xml.parsers.ParserConfigurationException e) {
+            // ignore it
+        }
+    }
+
+    public static void setProperty(XMLInputFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setProperty(feature, enabled);
+        } catch (IllegalArgumentException e) {
+            // ignore it
+        }
+    }
+
+    public static void setAttribute(TransformerFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setAttribute(feature, enabled);
+        } catch (IllegalArgumentException e) {
+            // ignore it
+        }
+    }
+
+    public static void setFeature(TransformerFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setFeature(feature, enabled);
+        } catch (javax.xml.transform.TransformerConfigurationException e) {
+            // ignore it
+        }
+    }
+
+    public static void setProperty(SchemaFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setProperty(feature, enabled);
+        } catch (IllegalArgumentException e) {
+            // ignore it
+        } catch (org.xml.sax.SAXNotRecognizedException e) {
+            // ignore it
+        } catch (org.xml.sax.SAXNotSupportedException e) {
+            // ignore it
+        }
+    }
+
+    public static void setFeature(SchemaFactory factory, String feature, boolean enabled) {
+        try {
+            factory.setFeature(feature, enabled);
+        } catch (org.xml.sax.SAXNotSupportedException e) {
+            // ignore it
+        } catch (org.xml.sax.SAXNotRecognizedException e) {
+            // ignore it
+        }
     }
 
 }

@@ -24,7 +24,7 @@ import static com.jn.langx.text.csv.CsvConstants.*;
  * <p>
  * <p>The printer also supports appending a complete record at once by calling {@link #printRecord(Object...)}
  * or {@link #printRecord(Iterable)}.
- * Furthermore {@link #printRecords(Object...)}, {@link #printRecords(Iterable)} and {@link #printRecords(ResultSet)}
+ * Furthermore {@link #printRecords(Object...)}, {@link #printRecords(Iterable)}
  * methods can be used to print several records at once.
  * </p>
  * <p>
