@@ -1,5 +1,6 @@
 package com.jn.langx.test.security.key;
 
+import com.jn.langx.io.stream.obj.SecureObjectInputStream;
 import com.jn.langx.util.io.IOs;
 import org.junit.Test;
 
@@ -48,10 +49,10 @@ public class KeyFactoryTest {
     private void readKeySpec() throws Exception {
         KeyFactory factory = KeyFactory.getInstance(DSA);
         FileInputStream fis = null;
-        ObjectInputStream ois = null;
+        SecureObjectInputStream ois = null;
         try {
             fis = new FileInputStream(keyspecFile);
-            ois = new ObjectInputStream(fis);
+            ois = new SecureObjectInputStream(fis);
             DSAPublicKeySpec keySpec = new DSAPublicKeySpec(
                     (BigInteger) ois.readObject(),
                     (BigInteger) ois.readObject(),

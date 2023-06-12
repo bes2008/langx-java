@@ -1,5 +1,6 @@
 package com.jn.langx.test.security.messagedigest;
 
+import com.jn.langx.io.stream.obj.SecureObjectInputStream;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 
@@ -46,10 +47,10 @@ public class XYZMessageDigestTest {
     public void readMessage() throws Exception {
         File file = new File(filename);
         FileInputStream fis = null;
-        ObjectInputStream ois = null;
+        SecureObjectInputStream ois = null;
         try {
             fis = new FileInputStream(file);
-            ois = new ObjectInputStream(fis);
+            ois = new SecureObjectInputStream(fis);
 
             Object o = ois.readObject(); // String data: original message
             if (!(o instanceof String)) {

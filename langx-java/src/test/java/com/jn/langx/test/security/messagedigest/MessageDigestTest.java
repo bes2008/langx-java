@@ -1,6 +1,7 @@
 package com.jn.langx.test.security.messagedigest;
 
 import com.jn.langx.codec.base64.Base64;
+import com.jn.langx.io.stream.obj.SecureObjectInputStream;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.util.io.Charsets;
@@ -47,10 +48,10 @@ public class MessageDigestTest {
 
     private void validDigestFromFile() {
         FileInputStream fis = null;
-        ObjectInputStream ois = null;
+        SecureObjectInputStream ois = null;
         try {
             fis = new FileInputStream(filename);
-            ois = new ObjectInputStream(fis);
+            ois = new SecureObjectInputStream(fis);
             Object o = ois.readObject(); // String data: original message
             if (!(o instanceof String)) {
                 System.out.println("Unexpected data in file");
@@ -140,13 +141,13 @@ public class MessageDigestTest {
     private void readWithDigestStream() {
         FileInputStream fis = null;
         DigestInputStream dis = null;
-        ObjectInputStream ois = null;
+        SecureObjectInputStream ois = null;
         try {
             File file = new File(filename);
             fis = new FileInputStream(file);
             MessageDigest md = MessageDigest.getInstance("SHA");
             dis = new DigestInputStream(fis, md);
-            ois = new ObjectInputStream(dis);
+            ois = new SecureObjectInputStream(dis);
             Object o = ois.readObject();    // original message
             if (!(o instanceof String)) {
                 System.out.println("Unexpected data in file");
@@ -163,7 +164,9 @@ public class MessageDigestTest {
             byte origDigest[] = (byte[]) o;
             if (MessageDigest.isEqual(md.digest(), origDigest)) {
                 System.out.println("Message is valid");
-            } else System.out.println("Message was corrupted");
+            } else {
+                System.out.println("Message was corrupted");
+            }
 
         } catch (Exception e) {
             System.out.println(e);
