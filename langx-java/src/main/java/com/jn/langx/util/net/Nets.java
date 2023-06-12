@@ -12,6 +12,7 @@ import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
 import com.jn.langx.util.reflect.Reflects;
@@ -416,24 +417,26 @@ public class Nets {
      */
     private static Integer sysctlGetInt(String sysctlKey) throws IOException {
         Process process = new ProcessBuilder("sysctl", sysctlKey).start();
+        InputStream is = null;
+        InputStreamReader isr = null;
+        BufferedReader br = null;
         try {
-            InputStream is = process.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is, Charsets.UTF_8);
-            BufferedReader br = new BufferedReader(isr);
-            try {
-                String line = br.readLine();
-                if (line.startsWith(sysctlKey)) {
-                    for (int i = line.length() - 1; i > sysctlKey.length(); --i) {
-                        if (!Character.isDigit(line.charAt(i))) {
-                            return Numbers.createInteger(line.substring(i + 1));
-                        }
+            is = process.getInputStream();
+            isr = new InputStreamReader(is, Charsets.UTF_8);
+            br = new BufferedReader(isr);
+            String line = br.readLine();
+            if (line.startsWith(sysctlKey)) {
+                for (int i = line.length() - 1; i > sysctlKey.length(); --i) {
+                    if (!Character.isDigit(line.charAt(i))) {
+                        return Numbers.createInteger(line.substring(i + 1));
                     }
                 }
-                return null;
-            } finally {
-                br.close();
             }
+            return null;
         } finally {
+            IOs.close(br);
+            IOs.close(isr);
+            IOs.close(is);
             process.destroy();
         }
     }
@@ -1443,7 +1446,7 @@ public class Nets {
      *
      * @param ip         {@link InetAddress} to be converted to an address string
      * @param ipv4Mapped <ul>
-     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </ul>
+     *                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </ul>
      * @return {@code String} containing the text-formatted IP address
      */
     public static String toAddressString(InetAddress ip, boolean ipv4Mapped) {
