@@ -8,7 +8,10 @@ import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.security.DigestInputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
@@ -16,7 +19,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class MessageDigestTest {
     private String filename = "MessageDigestTest.txt";
-    private final static String SHA = "SHA";
+    private final static String SHA = JCAEStandardName.SHA_1.getName();
 
     //	@Test
     public void saveDigestToFile() {
@@ -88,7 +91,7 @@ public class MessageDigestTest {
 
     //	@Test
     public void updateMeger() throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA");
+        MessageDigest md = MessageDigest.getInstance(SHA);
         String data = "This have I thought good to deliver thee, that thou mightst not lose the dues of rejoicing " +
                 "by being ignorant of what greatness is promised thee.";
         String passphrase = "Sleep no more";
@@ -117,7 +120,7 @@ public class MessageDigestTest {
             file.deleteOnExit();
             file.createNewFile();
             fos = new FileOutputStream(file);
-            MessageDigest md = MessageDigest.getInstance("SHA");
+            MessageDigest md = MessageDigest.getInstance(SHA);
             dos = new DigestOutputStream(fos, md);
             oos = new ObjectOutputStream(dos);
             String data = "This have I thought good to deliver thee, " +
@@ -145,7 +148,7 @@ public class MessageDigestTest {
         try {
             File file = new File(filename);
             fis = new FileInputStream(file);
-            MessageDigest md = MessageDigest.getInstance("SHA");
+            MessageDigest md = MessageDigest.getInstance(SHA);
             dis = new DigestInputStream(fis, md);
             ois = new SecureObjectInputStream(dis);
             Object o = ois.readObject();    // original message

@@ -97,7 +97,7 @@ public class MessageDigests extends Securitys {
     public static MessageDigest newDigest(String algorithm) {
         try {
             if (algorithm == null) {
-                algorithm = "MD5";
+                algorithm = JCAEStandardName.MD5.getName();
             }
             Securitys.setup();
             return MessageDigest.getInstance(algorithm);
