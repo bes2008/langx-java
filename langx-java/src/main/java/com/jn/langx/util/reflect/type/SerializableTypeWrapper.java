@@ -220,18 +220,16 @@ public abstract class SerializableTypeWrapper {
             if (Type.class == method.getReturnType() && args == null) {
                 return forTypeProvider(new MethodInvokeTypeProvider(this.provider, method, -1));
             } else if (Type[].class == method.getReturnType() && args == null) {
-                Type[] result = new Type[((Type[]) method.invoke(this.provider.getType(), args)).length];
+                Object obj = this.provider.getType();
+                Type[] types = Reflects.<Type[]>invokeMethod(method, obj, args);
+                Type[] result = new Type[types.length];
                 for (int i = 0; i < result.length; i++) {
                     result[i] = forTypeProvider(new MethodInvokeTypeProvider(this.provider, method, i));
                 }
                 return result;
             }
 
-            try {
-                return method.invoke(this.provider.getType(), args);
-            } catch (InvocationTargetException ex) {
-                throw ex.getTargetException();
-            }
+            return Reflects.invokeMethod(method, this.provider.getType(), args);
         }
     }
 

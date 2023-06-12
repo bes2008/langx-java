@@ -1104,6 +1104,10 @@ public class Reflects {
         }
     }
 
+    public static <V> V invokeMethod(@NonNull Method method, @Nullable Object object, @Nullable Object... parameters){
+        return invoke(method, object, parameters, true, true);
+    }
+
     public static <V> V invoke(@NonNull Method method, @Nullable Object object, @Nullable Object[] parameters, boolean force, boolean throwException) {
         try {
             if (!force && !method.isAccessible()) {
