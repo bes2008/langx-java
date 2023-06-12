@@ -659,7 +659,7 @@ public class Reflects {
             }
 
             // unaccessible && force
-            field.setAccessible(true);
+            makeAccessible(field);
             try {
                 return (V) field.get(object);
             } catch (IllegalArgumentException ex) {
@@ -700,7 +700,7 @@ public class Reflects {
                     return;
                 }
 
-                field.setAccessible(true);
+                makeAccessible(field);
                 try {
                     field.set(target, value);
                 } catch (Throwable ex) {
@@ -1118,7 +1118,7 @@ public class Reflects {
             }
 
             // force && unaccessible
-            method.setAccessible(true);
+            makeAccessible(method);
             return invokeMethodOrNull(method, object, parameters, throwException);
         } catch (Throwable ex) {
             throw Throwables.wrapAsRuntimeException(ex);
@@ -1504,11 +1504,15 @@ public class Reflects {
     }
 
     public static boolean makeAccessible(@NonNull Field field) {
-        try {
-            field.setAccessible(true);
+        if ((!Modifiers.isPublic(field) || !Modifiers.isPublic(field.getDeclaringClass()) || Modifiers.isFinal(field)) && !field.isAccessible()) {
+            try {
+                field.setAccessible(true);
+                return true;
+            } catch (SecurityException ex) {
+                return false;
+            }
+        } else {
             return true;
-        } catch (SecurityException ex) {
-            return false;
         }
     }
 
@@ -1516,11 +1520,15 @@ public class Reflects {
      * @since 4.3.7
      */
     public static boolean makeAccessible(@NonNull Method m) {
-        try {
-            m.setAccessible(true);
+        if ((!Modifiers.isPublic(m) || !Modifiers.isPublic(m.getDeclaringClass())) && !m.isAccessible()) {
+            try {
+                m.setAccessible(true);
+                return true;
+            } catch (SecurityException ex) {
+                return false;
+            }
+        } else {
             return true;
-        } catch (SecurityException ex) {
-            return false;
         }
     }
 
@@ -1528,11 +1536,15 @@ public class Reflects {
      * @since 4.3.7
      */
     public static boolean makeAccessible(@NonNull Constructor c) {
-        try {
-            c.setAccessible(true);
+        if ((!Modifiers.isPublic(c) || !Modifiers.isPublic(c.getDeclaringClass())) && !c.isAccessible()) {
+            try {
+                c.setAccessible(true);
+                return true;
+            } catch (SecurityException ex) {
+                return false;
+            }
+        } else {
             return true;
-        } catch (SecurityException ex) {
-            return false;
         }
     }
 
