@@ -6,6 +6,9 @@ import com.jn.langx.text.xml.cutomizer.SchemaFactoryCustomizer;
 import javax.xml.XMLConstants;
 import javax.xml.validation.SchemaFactory;
 
+/**
+ * @since 5.2.9
+ */
 public class SecureSchemaFactoryCustomizer implements SchemaFactoryCustomizer {
     public static final SecureSchemaFactoryCustomizer DEFAULT = new SecureSchemaFactoryCustomizer();
 

@@ -5,6 +5,9 @@ import com.jn.langx.text.xml.cutomizer.DocumentBuilderFactoryCustomizer;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+/**
+ * @since 5.2.9
+ */
 public class SecureDocumentBuilderFactoryCustomizer implements DocumentBuilderFactoryCustomizer {
     public static final SecureDocumentBuilderFactoryCustomizer DEFAULT = new SecureDocumentBuilderFactoryCustomizer();
 

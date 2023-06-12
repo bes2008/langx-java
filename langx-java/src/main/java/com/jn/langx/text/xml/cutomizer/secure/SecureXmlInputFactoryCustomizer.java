@@ -6,6 +6,9 @@ import com.jn.langx.text.xml.cutomizer.XMLInputFactoryCustomizer;
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLInputFactory;
 
+/**
+ * @since 5.2.9
+ */
 public class SecureXmlInputFactoryCustomizer implements XMLInputFactoryCustomizer {
     public static final SecureXmlInputFactoryCustomizer DEFAULT = new SecureXmlInputFactoryCustomizer();
 
