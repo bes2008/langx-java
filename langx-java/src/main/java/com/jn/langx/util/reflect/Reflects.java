@@ -1433,7 +1433,7 @@ public class Reflects {
             if (Objs.isEmpty(fieldName)) {
                 fieldName = methodName;
             }
-            if (fieldName.length()>=1) {
+            if (Objs.length(fieldName) >= 1) {
                 return Chars.toLowerCase(fieldName.charAt(0)) + (fieldName.length() > 1 ? fieldName.substring(1) : "");
             }
         }
@@ -1489,7 +1489,7 @@ public class Reflects {
         if (Strings.isEmpty(fieldName)) {
             return false;
         }
-        if(fieldName.length()>=1) {
+        if (Objs.length(fieldName) >= 1) {
             fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
         }
         if (Strings.isEmpty(fieldName)) {
