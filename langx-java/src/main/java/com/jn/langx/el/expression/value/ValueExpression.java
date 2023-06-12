@@ -3,7 +3,7 @@ package com.jn.langx.el.expression.value;
 
 import com.jn.langx.el.expression.BaseExpression;
 import com.jn.langx.el.expression.Expression;
-import com.jn.langx.util.hash.HashCodeBuilder;
+import com.jn.langx.util.Objs;
 
 public class ValueExpression<E> extends BaseExpression<E> implements Expression<E> {
     private E value;
@@ -35,6 +35,18 @@ public class ValueExpression<E> extends BaseExpression<E> implements Expression<
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().with(value).build();
+        return Objs.hash(value);
     }
+
+    public boolean equals(Object obj){
+        if(!(obj instanceof ValueExpression)){
+            return false;
+        }
+        if(this.getClass()!=obj.getClass()){
+            return false;
+        }
+        Object that = ((ValueExpression<?>) obj).value;
+        return Objs.equals(this.value, that);
+    }
+
 }
