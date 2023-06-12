@@ -3328,9 +3328,9 @@ class ConcurrentHashMapV8<K, V> extends AbstractMap<K, V> implements ConcurrentM
 
     static final class KeyIterator<K, V> extends BaseIterator<K, V>
             implements Iterator<K>, Enumeration<K> {
-        KeyIterator(Node<K, V>[] tab, int index, int size, int limit,
+        KeyIterator(Node<K, V>[] tab, int size, int index, int limit,
                     ConcurrentHashMapV8<K, V> map) {
-            super(tab, index, size, limit, map);
+            super(tab, size, index, limit, map);
         }
 
         @Override

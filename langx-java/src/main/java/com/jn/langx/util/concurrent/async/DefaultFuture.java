@@ -138,8 +138,6 @@ public class DefaultFuture<V> extends AbstractFuture<V> implements Callable<V>, 
                 } catch (InterruptedException ite) {
                     if (uninterruptible) {
                         throw ite;
-                    } else {
-                        // ignore
                     }
                 }
             }

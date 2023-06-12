@@ -32,8 +32,6 @@ public abstract class DistributedLock extends AbstractDLock {
                 } catch (InterruptedException ex) {
                     if (interruptibly) {
                         throw ex;
-                    } else {
-                        // ignore it
                     }
                 }
             }
