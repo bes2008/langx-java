@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @since 4.1.0
  */
-public final class CidrAddressTable<T> implements Iterable<CidrAddressTable.Mapping<T>> {
+public final class CidrAddressTable<T> implements Iterable<CidrAddressTable.Mapping<T>>, Cloneable {
 
     @SuppressWarnings("rawtypes")
     private static final Mapping[] NO_MAPPINGS = new Mapping[0];
