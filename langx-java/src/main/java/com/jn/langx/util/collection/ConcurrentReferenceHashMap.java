@@ -1206,20 +1206,16 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
                 return false;
             }
         }
+        boolean found = false;
         // Resort to locking all segments
         for (Segment<K, V> segment : segments) {
             segment.lock();
-        }
-        boolean found = false;
-        try {
-            for (Segment<K, V> segment : segments) {
+            try {
                 if (segment.containsValue(value)) {
                     found = true;
                     break;
                 }
-            }
-        } finally {
-            for (Segment<K, V> segment : segments) {
+            } finally {
                 segment.unlock();
             }
         }
