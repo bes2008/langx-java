@@ -849,7 +849,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
     public ConcurrentReferenceHashMap(
             int initialCapacity,
             float loadFactor, int concurrencyLevel,
-            ReferenceType keyType, ReferenceType valueType){
+            ReferenceType keyType, ReferenceType valueType) {
         this(initialCapacity, loadFactor, concurrencyLevel, keyType, valueType, null);
     }
 
@@ -1106,13 +1106,13 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
         if (check != sum) { // Resort to locking all segments
             sum = 0;
             for (Segment<K, V> segment : segments) {
+
                 segment.lock();
-            }
-            for (Segment<K, V> kvSegment : segments) {
-                sum += kvSegment.count;
-            }
-            for (Segment<K, V> segment : segments) {
-                segment.unlock();
+                try {
+                    sum += segment.count;
+                } finally {
+                    segment.unlock();
+                }
             }
         }
         if (sum > Integer.MAX_VALUE) {
