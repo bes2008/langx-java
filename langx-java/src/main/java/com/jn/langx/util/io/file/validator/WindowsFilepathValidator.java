@@ -10,7 +10,6 @@ import com.jn.langx.util.regexp.Regexps;
 public class WindowsFilepathValidator extends AbstractFilepathValidator {
 
 
-
     private static final Regexp PARTITION = Regexps.compile("[A-Za-z]((\\w|\\$)+)?");
 
 
@@ -53,6 +52,9 @@ public class WindowsFilepathValidator extends AbstractFilepathValidator {
             if (partition.length() > 32) {
                 return false;
             }
+            if (Strings.startsWith(partition, "/")) {
+                partition = Strings.substring(partition, 1);
+            }
             if (!isLegalFilename(partition)) {
                 return false;
             }
@@ -60,7 +62,7 @@ public class WindowsFilepathValidator extends AbstractFilepathValidator {
                 return false;
             }
 
-            if(!Regexps.match(PARTITION, partition)){
+            if (!Regexps.match(PARTITION, partition)) {
                 return false;
             }
         }
