@@ -271,7 +271,7 @@ public final class NativeLibraryLoader {
                     // Invoke the helper to load the native library, if succeed, then the native
                     // library belong to the specified ClassLoader.
                     Method method = helper.getMethod("loadLibrary", String.class, boolean.class);
-                    method.setAccessible(true);
+                    Reflects.makeAccessible(method);
                     return method.invoke(null, name, absolute);
                 } catch (Exception e) {
                     return e;
@@ -315,7 +315,7 @@ public final class NativeLibraryLoader {
                         //  then we can call the helper to load the native library.
                         Method defineClass = Reflects.getDeclaredMethod(ClassLoader.class, "defineClass", String.class,
                                 byte[].class, int.class, int.class);
-                        defineClass.setAccessible(true);
+                        Reflects.makeAccessible(defineClass);
                         return (Class<?>) defineClass.invoke(loader, helper.getName(), classBinary, 0,
                                 classBinary.length);
                     } catch (Exception e) {

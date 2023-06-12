@@ -350,7 +350,7 @@ public class ClassLoaders {
 
             Method addURLMethod = Reflects.getAnyMethod(urlClassLoaderClass, "addURL", URL.class);
             if (addURLMethod != null) {
-                addURLMethod.setAccessible(true);
+                Reflects.makeAccessible(addURLMethod);
             }
             return addURLMethod;
         }

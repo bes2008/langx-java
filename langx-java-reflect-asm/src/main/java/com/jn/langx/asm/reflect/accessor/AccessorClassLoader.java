@@ -110,7 +110,7 @@ class AccessorClassLoader extends ClassLoader {
                     defineClassMethod = Reflects.getDeclaredMethod( ClassLoader.class,"defineClass",
                             new Class[]{String.class, byte[].class, int.class, int.class, ProtectionDomain.class});
                     try {
-                        defineClassMethod.setAccessible(true);
+                        Reflects.makeAccessible(defineClassMethod);
                     } catch (Exception ignored) {
                     }
                 }

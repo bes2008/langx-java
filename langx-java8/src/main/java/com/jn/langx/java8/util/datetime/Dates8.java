@@ -33,7 +33,7 @@ public class Dates8 {
             Holder<TemporalQuery<?>> holder = new Holder<>();
             Method method = Reflects.getDeclaredMethod(tClass, "from", TemporalAccessor.class);
             if (method != null) {
-                method.setAccessible(true);
+                Reflects.makeAccessible(method);
                 TemporalQuery<?> query = new TemporalQuery<Object>() {
                     @Override
                     public Object queryFrom(TemporalAccessor temporal) {

@@ -28,7 +28,6 @@ import java.util.*;
  * this fact and will report incorrect sizes, as it will presume the default JVM
  * behavior.
  *
- * @author Attila Szegedi
  */
 public class ObjectSizeCalculator {
 
@@ -227,7 +226,7 @@ public class ObjectSizeCalculator {
                 if (type.isPrimitive()) {
                     fieldsSize += getPrimitiveFieldSize(type);
                 } else {
-                    f.setAccessible(true);
+                    Reflects.makeAccessible(f);
                     referenceFields.add(f);
                     fieldsSize += referenceSize;
                 }

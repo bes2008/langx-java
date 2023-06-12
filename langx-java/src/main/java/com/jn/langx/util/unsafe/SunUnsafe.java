@@ -18,7 +18,7 @@ public class SunUnsafe extends AbstractUnsafeProxy {
     private static Unsafe reflectGetUnsafe() {
         try {
             Field field = Reflects.getDeclaredField(Unsafe.class,"theUnsafe");
-            field.setAccessible(true);
+            Reflects.makeAccessible(field);
             return (Unsafe) field.get(null);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

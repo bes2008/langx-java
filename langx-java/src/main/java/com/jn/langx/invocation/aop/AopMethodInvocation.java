@@ -2,6 +2,7 @@ package com.jn.langx.invocation.aop;
 
 import com.jn.langx.invocation.GenericMethodInvocation;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.reflect.Reflects;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -35,7 +36,7 @@ public class AopMethodInvocation extends GenericMethodInvocation {
     protected Object doProceed() {
         try {
             Method method = getJoinPoint();
-            method.setAccessible(true);
+            Reflects.makeAccessible(method);
             return method.invoke(this.getThis(), getArguments());
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
