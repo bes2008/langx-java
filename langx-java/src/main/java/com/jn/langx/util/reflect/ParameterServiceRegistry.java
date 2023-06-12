@@ -18,7 +18,7 @@ import java.util.ServiceLoader;
 
 @Singleton
 public class ParameterServiceRegistry implements Registry<String, ParameterSupplier> {
-    private static ParameterServiceRegistry INSTANCE;
+    private volatile static ParameterServiceRegistry INSTANCE;
     private static final MethodParameterSupplier methodParameterSupplier;
     private static final ConstructorParameterSupplier constructorParameterSupplier;
     private static final Map<String, MethodParameterSupplier> methodParameterSupplierRegistry = new HashMap<String, MethodParameterSupplier>();

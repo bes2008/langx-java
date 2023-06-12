@@ -22,7 +22,7 @@ public class DateTimeFormatterFactoryRegistry implements Registry<Class, DateTim
         init();
     }
 
-    private static DateTimeFormatterFactoryRegistry INSTANCE;
+    private volatile static DateTimeFormatterFactoryRegistry INSTANCE;
 
     public static DateTimeFormatterFactoryRegistry getInstance() {
         if (INSTANCE == null) {

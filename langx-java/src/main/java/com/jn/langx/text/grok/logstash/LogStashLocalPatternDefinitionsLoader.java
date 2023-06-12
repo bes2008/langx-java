@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LogStashLocalPatternDefinitionsLoader extends AbstractConfigurationLoader<PatternDefinition> implements PatternDefinitionLoader {
-    private List<Resource> basedirs = Collects.emptyArrayList();
+    private final List<Resource> basedirs = Collects.emptyArrayList();
     private EcsCompatibility ecsCompatibility = EcsCompatibility.disabled;
     private Map<File, Long> lastModifiedMap = new HashMap<File, Long>();
     private Map<String, PatternDefinition> cache = new HashMap<String, PatternDefinition>();

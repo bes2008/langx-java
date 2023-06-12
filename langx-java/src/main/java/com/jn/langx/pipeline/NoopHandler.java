@@ -5,7 +5,7 @@ import com.jn.langx.annotation.Singleton;
 @Singleton
 public class NoopHandler extends AbstractHandler {
 
-    private static NoopHandler instance;
+    private volatile static NoopHandler instance;
 
     private NoopHandler() {
     }

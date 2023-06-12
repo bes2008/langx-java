@@ -11,7 +11,7 @@ import java.security.*;
  */
 @Singleton
 public class DefaultAlgorithmParameterSupplier implements AlgorithmParameterSupplier {
-    private static DefaultAlgorithmParameterSupplier INSTANCE;
+    private volatile static DefaultAlgorithmParameterSupplier INSTANCE;
 
     private DefaultAlgorithmParameterSupplier() {
 
