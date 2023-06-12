@@ -17,6 +17,11 @@ public class UnixFilepathValidator extends AbstractFilepathValidator {
         if (Strings.isEmpty(path)) {
             return false;
         }
+
+        while (Strings.startsWith(path, "/")) {
+            path = Strings.substring(path, 1);
+        }
+
         String[] segments = Strings.split(path, "/", false, false);
         boolean matched = Collects.<String>allMatch(new Predicate<String>() {
             @Override

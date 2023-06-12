@@ -49,7 +49,7 @@ public class WindowsFilepathValidator extends AbstractFilepathValidator {
 
 总之，在Windows中，分区名称必须符合上述要求，否则会导致无法创建分区或者无法访问分区。
              */
-            if (Strings.startsWith(partition, "/")) {
+            while (Strings.startsWith(partition, "/")) {
                 partition = Strings.substring(partition, 1);
             }
 
