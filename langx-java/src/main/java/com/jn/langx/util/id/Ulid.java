@@ -2,10 +2,11 @@ package com.jn.langx.util.id;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.Randoms;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
-import java.util.Random;
 
 /**
  * https://github.com/ulid/spec
@@ -61,7 +62,7 @@ public class Ulid {
     private static final long TIMESTAMP_MSB_MASK = 0xFFFFFFFFFFFF0000L;
     private static final long RANDOM_MSB_MASK = 0xFFFFL;
 
-    private final SecureRandom random;
+    private final IRandom random;
 
     public Ulid() {
         this(Securitys.getSecureRandom());
@@ -69,7 +70,7 @@ public class Ulid {
 
     public Ulid(SecureRandom random) {
         Objs.requireNonNull(random, "random must not be null!");
-        this.random = random;
+        this.random = Randoms.of(random);
     }
 
     public void appendULID(StringBuilder stringBuilder) {
@@ -337,7 +338,7 @@ public class Ulid {
         }
     }
 
-    static String internalUIDString(long timestamp, Random random) {
+    static String internalUIDString(long timestamp, IRandom random) {
         checkTimestamp(timestamp);
 
         char[] buffer = new char[26];
@@ -350,7 +351,7 @@ public class Ulid {
         return new String(buffer);
     }
 
-    static void internalAppendULID(StringBuilder builder, long timestamp, Random random) {
+    static void internalAppendULID(StringBuilder builder, long timestamp, IRandom random) {
         checkTimestamp(timestamp);
 
         internalAppendCrockford(builder, timestamp, 10);
@@ -359,7 +360,7 @@ public class Ulid {
         internalAppendCrockford(builder, random.nextLong(), 8);
     }
 
-    static Ulid.Value internalNextValue(long timestamp, Random random) {
+    static Ulid.Value internalNextValue(long timestamp, IRandom random) {
         checkTimestamp(timestamp);
         // could use nextBytes(byte[] bytes) instead
         long mostSignificantBits = random.nextLong();
