@@ -4,6 +4,7 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Objs;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -60,13 +61,13 @@ public class Ulid {
     private static final long TIMESTAMP_MSB_MASK = 0xFFFFFFFFFFFF0000L;
     private static final long RANDOM_MSB_MASK = 0xFFFFL;
 
-    private final Random random;
+    private final SecureRandom random;
 
     public Ulid() {
         this(Securitys.getSecureRandom());
     }
 
-    public Ulid(Random random) {
+    public Ulid(SecureRandom random) {
         Objs.requireNonNull(random, "random must not be null!");
         this.random = random;
     }

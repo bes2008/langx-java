@@ -6,6 +6,8 @@ import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.RandomProxy;
 
 import java.util.*;
 
@@ -307,7 +309,7 @@ public class Pipeline<E> {
         return shuffle(GlobalThreadLocalMap.getRandom());
     }
 
-    public Pipeline<E> shuffle(Random random) {
+    public Pipeline<E> shuffle(IRandom random) {
         List<E> list = asList();
         Collects.shuffle(list, random);
         return new Pipeline<E>(list);

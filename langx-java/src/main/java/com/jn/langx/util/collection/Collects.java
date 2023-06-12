@@ -20,6 +20,8 @@ import com.jn.langx.util.comparator.Comparators;
 import com.jn.langx.util.concurrent.ConcurrentHashSet;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
 import com.jn.langx.util.function.*;
+import com.jn.langx.util.random.IRandom;
+import com.jn.langx.util.random.RandomProxy;
 import com.jn.langx.util.reflect.type.Primitives;
 import com.jn.langx.util.struct.Holder;
 import com.jn.langx.util.struct.Pair;
@@ -2618,7 +2620,7 @@ public class Collects {
      * @throws UnsupportedOperationException if the specified list or its
      *                                       list-iterator does not support the <tt>set</tt> operation.
      */
-    public static <E> void shuffle(@NonNull List<E> list, @NonNull Random rnd) {
+    public static <E> void shuffle(@NonNull List<E> list, @NonNull IRandom rnd) {
         int size = list.size();
         if (size < 5 || list instanceof RandomAccess) {
             for (int i = size; i > 1; i--) {

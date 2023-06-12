@@ -7,7 +7,9 @@ import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.datetime.DateFormatCacheKey;
 import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.io.Charsets;
+import com.jn.langx.util.random.IRandom;
 import com.jn.langx.util.random.PooledBytesRandom;
+import com.jn.langx.util.random.RandomProxy;
 import com.jn.langx.util.random.ThreadLocalRandom;
 
 import java.nio.charset.Charset;
@@ -108,8 +110,8 @@ public class GlobalThreadLocalMap {
         CACHE.remove();
     }
 
-    public static Random getRandom() {
-        return ThreadLocalRandom.current();
+    public static IRandom getRandom() {
+        return new RandomProxy(ThreadLocalRandom.current());
     }
 
     private static final PooledBytesRandom pooledBytesRandom = new PooledBytesRandom();

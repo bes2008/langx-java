@@ -8,17 +8,17 @@ import java.util.Random;
 /**
  * @since 4.4.7
  */
-public class CommonBytesRandom implements BytesRandom, Delegatable<Random> {
-    private Random delegate;
+public class CommonBytesRandom implements BytesRandom, Delegatable<IRandom> {
+    private IRandom delegate;
     private int multiplier = 1;
 
     @Override
-    public Random getDelegate() {
+    public IRandom getDelegate() {
         return delegate;
     }
 
     @Override
-    public void setDelegate(Random delegate) {
+    public void setDelegate(IRandom delegate) {
         this.delegate = delegate;
     }
 
