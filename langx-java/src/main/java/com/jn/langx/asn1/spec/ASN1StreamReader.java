@@ -1111,8 +1111,7 @@ public final class ASN1StreamReader implements Closeable {
         int wrappedDataPos = 0;
         final byte[] wrappedData = new byte[numWrappedBytes];
         while (true) {
-            final int numBytesRead = inputStream.read(wrappedData, wrappedDataPos,
-                    (numWrappedBytes - wrappedDataPos));
+            final int numBytesRead = inputStream.read(wrappedData, wrappedDataPos, Maths.min(numWrappedBytes - wrappedDataPos, IOs.DEFAULT_BUFFER_SIZE));
             if (numBytesRead < 0) {
                 throw new IOException(ERR_STREAM_READER_EOS_READING_SASL_DATA.get(
                         wrappedDataPos, numWrappedBytes));
