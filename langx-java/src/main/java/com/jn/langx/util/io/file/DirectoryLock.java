@@ -91,7 +91,7 @@ public final class DirectoryLock implements Closeable {
     }
 
     private File lockFile() {
-        return new File(dir, FILE_NAME);
+        return Files.newFile(dir, FILE_NAME);
     }
 
     /**
