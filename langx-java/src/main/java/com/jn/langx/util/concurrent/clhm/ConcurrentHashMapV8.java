@@ -2166,8 +2166,8 @@ class ConcurrentHashMapV8<K, V> extends AbstractMap<K, V> implements ConcurrentM
      */
     public Enumeration<V> elements() {
         Node<K, V>[] t;
-        int f = (t = table) == null ? 0 : t.length;
-        return new ValueIterator<K, V>(t, f, 0, f, this);
+        int size = (t = table) == null ? 0 : t.length;
+        return new ValueIterator<K, V>(t, size, 0, size, this);
     }
 
     // ConcurrentHashMapV8-only methods
@@ -3352,9 +3352,9 @@ class ConcurrentHashMapV8<K, V> extends AbstractMap<K, V> implements ConcurrentM
 
     static final class ValueIterator<K, V> extends BaseIterator<K, V>
             implements Iterator<V>, Enumeration<V> {
-        ValueIterator(Node<K, V>[] tab, int index, int size, int limit,
+        ValueIterator(Node<K, V>[] tab, int size, int index,  int limit,
                       ConcurrentHashMapV8<K, V> map) {
-            super(tab, index, size, limit, map);
+            super(tab, size, index, limit, map);
         }
 
         @Override
@@ -3376,9 +3376,9 @@ class ConcurrentHashMapV8<K, V> extends AbstractMap<K, V> implements ConcurrentM
 
     static final class EntryIterator<K, V> extends BaseIterator<K, V>
             implements Iterator<Map.Entry<K, V>> {
-        EntryIterator(Node<K, V>[] tab, int index, int size, int limit,
+        EntryIterator(Node<K, V>[] tab, int size, int index, int limit,
                       ConcurrentHashMapV8<K, V> map) {
-            super(tab, index, size, limit, map);
+            super(tab, size, index,  limit, map);
         }
 
         @Override
