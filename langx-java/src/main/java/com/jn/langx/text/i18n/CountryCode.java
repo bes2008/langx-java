@@ -16,6 +16,7 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
@@ -2525,30 +2526,30 @@ public enum CountryCode {
         if (code == null) {
             return null;
         }
-
+        CountryCode c = null;
         switch (code.length()) {
             case 2:
                 code = canonicalize(code, caseSensitive);
-                return getByAlpha2Code(code);
-
+                c = getByAlpha2Code(code);
+                break;
             case 3:
                 code = canonicalize(code, caseSensitive);
-                return getByAlpha3Code(code);
-
+                c= getByAlpha3Code(code);
+                break;
             case 4:
                 code = canonicalize(code, caseSensitive);
-                return getByAlpha4Code(code);
-
+                c = getByAlpha4Code(code);
+                break;
             case 9:
                 code = canonicalize(code, caseSensitive);
-                if ("UNDEFINED".equals(code)) {
-                    return CountryCode.UNDEFINED;
+                if ("UNDEFINED".equals(Strings.upperCase(code))) {
+                    c= CountryCode.UNDEFINED;
                 }
-                // FALLTHROUGH
-
+                break;
             default:
-                return null;
+                break;
         }
+        return c;
     }
 
 

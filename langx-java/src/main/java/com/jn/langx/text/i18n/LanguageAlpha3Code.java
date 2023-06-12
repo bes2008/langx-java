@@ -16,6 +16,7 @@
 package com.jn.langx.text.i18n;
 
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
 
@@ -5779,7 +5780,7 @@ public enum LanguageAlpha3Code {
         }
 
         // A special case for Newari.
-        if ("new".equals(code)) {
+        if (Strings.equals("new", Strings.lowerCase(code))) {
             code = "New";
         }
 
