@@ -141,6 +141,7 @@ public class Filenames {
      * @param fileName the fileName to normalize, null returns null
      * @return the normalized fileName, or null if invalid
      * @throws IllegalArgumentException if the fileName contains the null character ({@code U+0000})
+     * @since 5.2.9
      */
     public static String normalize(final String fileName) {
         return doNormalize(fileName, File.separatorChar, true);

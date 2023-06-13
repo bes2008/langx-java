@@ -84,10 +84,16 @@ public class Files {
         return file;
     }
 
+    /**
+     * @since 5.2.9
+     */
     public static RandomAccessFile newRandomAccessFile(File file, FileIOMode mode) throws FileNotFoundException {
         return new RandomAccessFile(file, mode.getIdentifier());
     }
 
+    /**
+     * @since 5.2.9
+     */
     public static RandomAccessFile newRandomAccessFile(String filepath, FileIOMode mode) throws FileNotFoundException {
         Preconditions.checkArgument(Filenames.checkFilePath(filepath), "filepath");
         return new RandomAccessFile(filepath, mode.getIdentifier());
