@@ -27,10 +27,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 import java.util.zip.Checksum;
@@ -57,24 +54,34 @@ public class Files {
 
     private static final Logger logger = Loggers.getLogger(Files.class);
 
-    public static File newFile(String path) {
-        if (Strings.isNotEmpty(path)) {
-            Preconditions.checkArgument(Filenames.checkFilePath(path), "illegal filepath: {}", path);
-            return new File(path);
+    /**
+     * Constructs a file from the set of name elements.
+     *
+     * @since 5.2.9
+     */
+    public static File newFile(final File directory, final String... names) {
+        File file = directory;
+        for (final String name : names) {
+            file = new File(file, name);
         }
-        return new File("");
+        return file;
     }
 
-    public static File newFile(String dir, String subpath) {
-        return newFile(newFile(dir), subpath);
-    }
-
-    public static File newFile(File file, String subpath) {
-        if (file == null) {
-            return null;
+    /**
+     * Constructs a file from the set of name elements.
+     *
+     * @since 5.2.9
+     */
+    public static File newFile(final String... names) {
+        File file = null;
+        for (final String name : names) {
+            if (file == null) {
+                file = new File(name);
+            } else {
+                file = new File(file, name);
+            }
         }
-        Preconditions.checkArgument(Filenames.checkFilePath(subpath), "illegal filepath: {}", subpath);
-        return new File(file, subpath);
+        return file;
     }
 
     public static RandomAccessFile newRandomAccessFile(File file, FileIOMode mode) throws FileNotFoundException {
