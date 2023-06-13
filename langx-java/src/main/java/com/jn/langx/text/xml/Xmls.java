@@ -1,13 +1,17 @@
 package com.jn.langx.text.xml;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.xml.cutomizer.DocumentBuilderFactoryCustomizer;
+import com.jn.langx.text.xml.cutomizer.TransformerFactoryCustomizer;
 import com.jn.langx.text.xml.cutomizer.secure.SecureDocumentBuilderFactoryCustomizer;
+import com.jn.langx.text.xml.cutomizer.secure.SecureTransformerFactoryCustomizer;
 import com.jn.langx.text.xml.errorhandler.RaiseErrorHandler;
 import com.jn.langx.text.xml.resolver.DTDEntityResolver;
 import com.jn.langx.text.xml.resolver.NullEntityResolver;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
+import com.jn.langx.util.io.file.Files;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -16,7 +20,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -106,11 +109,11 @@ public class Xmls {
     public static Document getXmlDoc(final InputStream dtdInputStream, final String xmlfilepathOrURI) throws Exception {
         final File file = new File(xmlfilepathOrURI);
         if (!file.exists()) {
-            throw new FileNotFoundException("File '" + xmlfilepathOrURI + "' does not exist .");
+            throw new FileNotFoundException(StringTemplates.formatWithPlaceholder("File '{}' does not exist .", xmlfilepathOrURI));
         }
         FileInputStream fis = null;
         try {
-            fis = new FileInputStream(file);
+            fis = Files.openInputStream(file);
             return getXmlDoc(new DTDEntityResolver(dtdInputStream), fis);
         } finally {
             IOs.close(fis);
@@ -122,20 +125,27 @@ public class Xmls {
         transformer.transform(new DOMSource(doc), new StreamResult(out));
     }
 
-    private static final String FEATURE_SECURE_PROCESSING = "http://javax.xml.XMLConstants/feature/secure-processing";
 
     public static void writeDocToFile(final Document doc, final File file) throws TransformerFactoryConfigurationError, TransformerException {
         Transformer transformer = newTransformer();
         transformer.transform(new DOMSource(doc), new StreamResult(file));
     }
 
-    public static Transformer newTransformer() throws TransformerConfigurationException {
+    /**
+     * @since 5.2.9
+     */
+    public static Transformer newTransformer(TransformerFactoryCustomizer customizer) throws TransformerConfigurationException {
         TransformerFactory factory = TransformerFactory.newInstance();
-        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, factory);
-        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, false);
-        factory.setAttribute(FEATURE_SECURE_PROCESSING, true);
+        if (customizer == null) {
+            customizer = SecureTransformerFactoryCustomizer.DEFAULT;
+        }
+        customizer.customize(factory);
         final Transformer trans = factory.newTransformer();
         return trans;
+    }
+
+    public static Transformer newTransformer() throws TransformerConfigurationException {
+        return newTransformer(null);
     }
 
     public static <T> T handleXml(final String xmlpath, final XmlDocumentHandler<T> handler) {
