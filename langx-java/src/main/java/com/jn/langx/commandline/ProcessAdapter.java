@@ -38,4 +38,8 @@ public class ProcessAdapter implements InstructionSequence {
     public int exitValue() {
         return process.exitValue();
     }
+
+    public static ProcessAdapter of(Process process){
+        return new ProcessAdapter(process);
+    }
 }

@@ -16,6 +16,6 @@ public class Java1_5CommandLauncher extends AbstractLocalCommandLauncher {
     @Override
     public ProcessAdapter exec(CommandLine cmd, Map<String, String> env, File workingDir) throws IOException {
         final String[] envVars = EnvironmentUtils.toStrings(env);
-        return Reflects.invoke(RUNTIME_EXEC, Runtime.getRuntime(), new Object[]{cmd.toStrings(), envVars, workingDir}, true, true);
+        return ProcessAdapter.of((Process) Reflects.invoke(RUNTIME_EXEC, Runtime.getRuntime(), new Object[]{cmd.toStrings(), envVars, workingDir}, true, true));
     }
 }
