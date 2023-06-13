@@ -3,7 +3,6 @@ package com.jn.langx.util.io.file;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.FileExistsException;
-import com.jn.langx.io.stream.NullOutputStream;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
@@ -28,9 +27,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.zip.CRC32;
-import java.util.zip.CheckedInputStream;
-import java.util.zip.Checksum;
 
 import static com.jn.langx.util.DataSizes.ONE_MB;
 
@@ -1560,51 +1556,6 @@ public class Files {
         return file.exists() && file.lastModified() < timeMillis;
     }
 
-    /**
-     * Computes the checksum of a file using the CRC32 checksum routine.
-     * The value of the checksum is returned.
-     *
-     * @param file the file to checksum, must not be {@code null}
-     * @return the checksum value
-     * @throws NullPointerException     if the file or checksum is {@code null}
-     * @throws IllegalArgumentException if the file is a directory
-     * @throws IOException              if an IO error occurs reading the file
-     */
-    public static long checksumCRC32(final File file) throws IOException {
-        final CRC32 crc = new CRC32();
-        checksum(file, crc);
-        return crc.getValue();
-    }
-
-    /**
-     * Computes the checksum of a file using the specified checksum object.
-     * Multiple files may be checked using one <code>Checksum</code> instance
-     * if desired simply by reusing the same checksum object.
-     * For example:
-     * <pre>
-     *   long csum = FileUtils.checksum(file, new CRC32()).getValue();
-     * </pre>
-     *
-     * @param file     the file to checksum, must not be {@code null}
-     * @param checksum the checksum object to be used, must not be {@code null}
-     * @return the checksum specified, updated with the content of the file
-     * @throws NullPointerException     if the file or checksum is {@code null}
-     * @throws IllegalArgumentException if the file is a directory
-     * @throws IOException              if an IO error occurs reading the file
-     */
-    public static Checksum checksum(final File file, final Checksum checksum) throws IOException {
-        if (file.isDirectory()) {
-            throw new IllegalArgumentException("Checksums can't be computed on directories");
-        }
-        InputStream in = null;
-        try {
-            in = new CheckedInputStream(new FileInputStream(file), checksum);
-            IOs.copy(in, NullOutputStream.NULL_OUTPUT_STREAM);
-        } finally {
-            IOs.close(in);
-        }
-        return checksum;
-    }
 
     /**
      * Moves a directory.
