@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
@@ -312,13 +314,11 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
     /**
      * Close the streams belonging to the given Process.
-     *
-     * @param process the <CODE>Process</CODE>.
      */
-    private void closeProcessStreams(final InstructionSequence process) {
-        IOs.close(process.getInputStream());
-        IOs.close(process.getOutputStream());
-        IOs.close(process.getErrorStream());
+    private void closeProcessStreams(OutputStream processStdInput, InputStream processStdOutput, InputStream processStdError) {
+        IOs.close(processStdInput);
+        IOs.close(processStdOutput);
+        IOs.close(processStdError);
     }
 
     /**
@@ -339,17 +339,25 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
         final InstructionSequence process = this.launch(command, environment, dir);
 
         boolean setStreamsSuccess = true;
+        InputStream subProcessStdOutput = null;
+        InputStream subProcessStdError = null;
+        OutputStream subProcessStdInput = null;
         try {
-            streamHandler.setSubProcessInputStream(process.getOutputStream());
-            streamHandler.setSubProcessOutputStream(process.getInputStream());
-            streamHandler.setSubProcessErrorStream(process.getErrorStream());
+
+            subProcessStdOutput = process.getInputStream();
+            subProcessStdError = process.getErrorStream();
+            subProcessStdInput = process.getOutputStream();
+
+            streamHandler.setSubProcessInputStream(subProcessStdInput);
+            streamHandler.setSubProcessOutputStream(subProcessStdOutput);
+            streamHandler.setSubProcessErrorStream(subProcessStdError);
         } catch (final IOException e) {
             setStreamsSuccess = false;
             process.destroy();
             throw e;
         } finally {
-            if(!setStreamsSuccess){
-                closeProcessStreams(process);
+            if (!setStreamsSuccess) {
+                closeProcessStreams(subProcessStdInput, subProcessStdOutput, subProcessStdError);
             }
         }
 
@@ -414,7 +422,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
             return exitValue;
         } finally {
-            closeProcessStreams(process);
+            closeProcessStreams(subProcessStdInput,subProcessStdOutput, subProcessStdError);
             Logger logger = Loggers.getLogger(getClass());
             // remove the process to the list of those to destroy if the VM exits
             if (this.getProcessDestroyer() != null) {
