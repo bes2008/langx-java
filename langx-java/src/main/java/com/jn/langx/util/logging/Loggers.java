@@ -258,6 +258,8 @@ public class Loggers {
                 enabled = logger.isWarnEnabled();
                 break;
             case ERROR:
+                enabled = logger.isErrorEnabled();
+                break;
             default:
                 enabled = logger.isErrorEnabled();
                 break;

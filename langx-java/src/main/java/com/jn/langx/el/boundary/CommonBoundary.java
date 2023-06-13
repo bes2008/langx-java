@@ -37,6 +37,8 @@ public class CommonBoundary implements Boundary {
                 ret = Functions.anyPredicate(predicates).test(value);
                 break;
             case NOT:
+                ret = Functions.nonePredicate(predicates).test(value);
+                break;
             default:
                 ret = Functions.nonePredicate(predicates).test(value);
                 break;

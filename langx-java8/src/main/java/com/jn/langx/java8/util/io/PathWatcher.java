@@ -784,6 +784,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
                             registerDir(p, config);
                             break;
                         case IGNORE:
+                            break;
                         default:
                             break;
                     }
@@ -947,6 +948,7 @@ public class PathWatcher extends AbstractStatefulLifecycle implements Runnable {
                             registerDir(path, config);
                             break;
                         case IGNORE:
+                            break;
                         default:
                             break;
                     }
