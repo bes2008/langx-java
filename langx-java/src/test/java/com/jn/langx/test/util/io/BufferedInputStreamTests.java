@@ -186,7 +186,10 @@ public class BufferedInputStreamTests {
 
     @Test
     public void test001() {
-        Resource res = Resources.loadClassPathResource("00DE8E3E-95E3-4885-A760-A269A6836AE2.txt", BufferedInputStreamTests.class);
+        String workDir = SystemPropertys.getUserWorkDir();
+        System.out.println(workDir);
+        String path = workDir + "/src/test/java/" + Reflects.getPackageName(BufferedInputStreamTests.class).replaceAll("\\.", "/")+"/00DE8E3E-95E3-4885-A760-A269A6836AE2.txt";
+        Resource res = Resources.loadFileResource(path);
         Resources.readLines(res, Charsets.UTF_8, new Consumer<String>() {
             @Override
             public void accept(String line) {

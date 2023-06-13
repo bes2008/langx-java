@@ -20,13 +20,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.List;
 
 public class Resources {
-    private Resources(){
+    private Resources() {
 
     }
+
     public static <V extends Resource> V loadResource(@NonNull Location location) {
         return Locations.newResource(location.toString());
     }
@@ -120,7 +122,6 @@ public class Resources {
     }
 
     /**
-     *
      * @param resource the resource
      * @return the input stream
      * @since 3.4.2
@@ -160,14 +161,14 @@ public class Resources {
     }
 
     public static void readUsingDelimiter(Resource resource, @NonNull String delimiter, @NonNull final Charset charset, @Nullable Predicate2<Integer, String> consumePredicate, @NonNull final Consumer2<Integer, String> consumer, @Nullable Predicate2<Integer, String> breakPredicate) {
-        InputStream inputStream = null;
+        ReadableByteChannel channel = null;
         try {
-            inputStream = resource.getInputStream();
-            Channels.readUsingDelimiter(inputStream, delimiter, charset, consumePredicate, consumer, breakPredicate);
+            channel = resource.readableChannel();
+            Channels.readUsingDelimiter(channel, delimiter, charset, consumePredicate, consumer, breakPredicate);
         } catch (IOException ex) {
             throw Throwables.wrapAsRuntimeException(ex);
         } finally {
-            IOs.close(inputStream);
+            IOs.close(channel);
         }
     }
 
