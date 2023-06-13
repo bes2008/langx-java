@@ -31,6 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathFactoryConfigurationException;
 import java.io.*;
 
 public class Xmls {
@@ -277,6 +278,17 @@ public class Xmls {
         } catch (SAXNotSupportedException e) {
             // ignore it
         } catch (SAXNotRecognizedException e) {
+            // ignore it
+        }
+    }
+
+    /**
+     * @since 5.2.9
+     */
+    public static void setFeature(XPathFactory xpathFactory, String feature, boolean enabled) {
+        try {
+            xpathFactory.setFeature(feature, enabled);
+        } catch (XPathFactoryConfigurationException e) {
             // ignore it
         }
     }
