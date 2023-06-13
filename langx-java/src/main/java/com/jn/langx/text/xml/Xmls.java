@@ -13,6 +13,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -51,7 +53,6 @@ public class Xmls {
     }
 
 
-
     public static Document getXmlDoc(
             EntityResolver entityResolver,
             ErrorHandler errorHandler,
@@ -84,7 +85,7 @@ public class Xmls {
         }
 
         if (customizer == null) {
-           customizer = SecureDocumentBuilderFactoryCustomizer.DEFAULT;
+            customizer = SecureDocumentBuilderFactoryCustomizer.DEFAULT;
         }
         customizer.customize(factory);
 
@@ -155,16 +156,22 @@ public class Xmls {
         }
     }
 
-
+    /**
+     * @since 5.2.9
+     */
     public static NodeList findNodeList(Document doc, String xpath) throws XPathExpressionException {
         NodeList nodes = new XmlAccessor(Namespaces.hasCustomNamespace(doc) ? "x" : null).getNodeList(doc, XPathFactory.newInstance(), xpath);
         return nodes;
     }
 
+    /**
+     * @since 5.2.9
+     */
     public static Element findElement(Document doc, String xpath) throws XPathExpressionException {
         Element element = new XmlAccessor(Namespaces.hasCustomNamespace(doc) ? "x" : null).getElement(doc, XPathFactory.newInstance(), xpath);
         return element;
     }
+
     /**
      * @since 5.2.7
      */
@@ -179,60 +186,87 @@ public class Xmls {
     /**
      * @since 5.2.9
      */
+    public static void setAttribute(DocumentBuilderFactory factory, String attribute, Object value) {
+        try {
+            factory.setAttribute(attribute, value);
+        } catch (IllegalArgumentException e) {
+            // ignore it
+        }
+    }
+
+
+    /**
+     * @since 5.2.9
+     */
     public static void setFeature(SAXParserFactory factory, String feature, boolean enabled) {
         try {
             factory.setFeature(feature, enabled);
-        } catch (org.xml.sax.SAXNotRecognizedException e) {
+        } catch (SAXNotRecognizedException e) {
             // ignore it
-        } catch (org.xml.sax.SAXNotSupportedException e) {
+        } catch (SAXNotSupportedException e) {
             // ignore it
-        } catch (javax.xml.parsers.ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             // ignore it
         }
     }
 
-    public static void setProperty(XMLInputFactory factory, String feature, boolean enabled) {
+    /**
+     * @since 5.2.9
+     */
+    public static void setProperty(XMLInputFactory factory, String feature, Object value) {
         try {
-            factory.setProperty(feature, enabled);
+            factory.setProperty(feature, value);
         } catch (IllegalArgumentException e) {
             // ignore it
         }
     }
 
-    public static void setAttribute(TransformerFactory factory, String feature, boolean enabled) {
+    /**
+     * @since 5.2.9
+     */
+    public static void setAttribute(TransformerFactory factory, String feature, Object value) {
         try {
-            factory.setAttribute(feature, enabled);
+            factory.setAttribute(feature, value);
         } catch (IllegalArgumentException e) {
             // ignore it
         }
     }
 
+    /**
+     * @since 5.2.9
+     */
     public static void setFeature(TransformerFactory factory, String feature, boolean enabled) {
         try {
             factory.setFeature(feature, enabled);
-        } catch (javax.xml.transform.TransformerConfigurationException e) {
+        } catch (TransformerConfigurationException e) {
             // ignore it
         }
     }
 
-    public static void setProperty(SchemaFactory factory, String feature, boolean enabled) {
+    /**
+     * @since 5.2.9
+     */
+    public static void setProperty(SchemaFactory factory, String feature, Object value) {
         try {
-            factory.setProperty(feature, enabled);
+            factory.setProperty(feature, value);
         } catch (IllegalArgumentException e) {
             // ignore it
-        } catch (org.xml.sax.SAXNotRecognizedException e) {
+        } catch (SAXNotRecognizedException e) {
             // ignore it
-        } catch (org.xml.sax.SAXNotSupportedException e) {
+        } catch (SAXNotSupportedException e) {
             // ignore it
         }
     }
 
+    /**
+     * @since 5.2.9
+     */
     public static void setFeature(SchemaFactory factory, String feature, boolean enabled) {
         try {
             factory.setFeature(feature, enabled);
-        } catch (org.xml.sax.SAXNotSupportedException e) {
+        } catch (SAXNotSupportedException e) {
             // ignore it
-        } catch (org.xml.sax.SAXNotRecognizedException e) {
+        } catch (SAXNotRecognizedException e) {
             // ignore it
         }
     }
