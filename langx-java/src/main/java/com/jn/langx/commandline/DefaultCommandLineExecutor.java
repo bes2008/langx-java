@@ -241,7 +241,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
     private int doExecute(final CommandLine command, final Map<String, String> environment, File workingDir, ExecuteStreamHandler executeStreamHandler, final ExecuteResultHandler resultHandler) {
         int exitValue = CommandLineExecutor.INVALID_EXITVALUE;
         try {
-            exitValue = executeInternal(command, environment, workingDirectory, streamHandler);
+            exitValue = executeInternal(command, environment, workingDir, executeStreamHandler);
             resultHandler.onProcessComplete(exitValue);
         } catch (final ExecuteException e) {
             resultHandler.onProcessFailed(e);
@@ -338,12 +338,11 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
         final InstructionSequence process = this.launch(command, environment, dir);
 
-        boolean setStreamsSuccess = true;
         InputStream subProcessStdOutput = null;
         InputStream subProcessStdError = null;
         OutputStream subProcessStdInput = null;
-        try {
 
+        try {
             subProcessStdOutput = process.getInputStream();
             subProcessStdError = process.getErrorStream();
             subProcessStdInput = process.getOutputStream();
@@ -351,19 +350,8 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
             streamHandler.setSubProcessInputStream(subProcessStdInput);
             streamHandler.setSubProcessOutputStream(subProcessStdOutput);
             streamHandler.setSubProcessErrorStream(subProcessStdError);
-        } catch (final IOException e) {
-            setStreamsSuccess = false;
-            process.destroy();
-            throw e;
-        } finally {
-            if (!setStreamsSuccess) {
-                closeProcessStreams(subProcessStdInput, subProcessStdOutput, subProcessStdError);
-            }
-        }
 
-        streamHandler.start();
-
-        try {
+            streamHandler.start();
 
             // add the process to the list of those to destroy if the VM exits
             if (this.getProcessDestroyer() != null) {
@@ -438,12 +426,11 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
                 } catch (Throwable ex) {
                     logger.error(ex.getMessage(), ex);
                 }
-            } else {
-                try {
-                    process.destroy();
-                } catch (Throwable ex) {
-                    logger.error(ex.getMessage(), ex);
-                }
+            }
+            try {
+                process.destroy();
+            } catch (Throwable ex) {
+                logger.error(ex.getMessage(), ex);
             }
         }
     }
