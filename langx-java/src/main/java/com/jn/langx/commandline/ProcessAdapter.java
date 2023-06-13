@@ -1,5 +1,7 @@
 package com.jn.langx.commandline;
 
+import com.jn.langx.util.io.IOs;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -26,6 +28,9 @@ public class ProcessAdapter implements InstructionSequence {
     }
 
     public void destroy() {
+        IOs.close(process.getOutputStream());
+        IOs.close(process.getInputStream());
+        IOs.close(process.getErrorStream());
         process.destroy();
     }
 
