@@ -16,6 +16,7 @@
 package com.jn.langx.util.io.file;
 
 import com.jn.langx.exception.RuntimeIOException;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.io.IOs;
 import org.slf4j.Logger;
 
@@ -110,12 +111,9 @@ public final class DirectoryLock implements Closeable {
             arf = Files.newRandomAccessFile(lockFile, FileIOMode.READ_WRITE);
             channel = arf.getChannel();
         } catch (IOException e) {
-            throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
+            throw new RuntimeIOException(StringTemplates.formatWithPlaceholder("Cannot create lock file {}", Files.getCanonicalPath(lockFile)), e);
         } finally {
-            if (channel == null) {
-                IOs.close(channel);
-                IOs.close(arf);
-            }
+            IOs.close(arf);
         }
         if (channel == null) {
             return null;
@@ -123,7 +121,7 @@ public final class DirectoryLock implements Closeable {
 
         FileLock lock = acquireLock(lockFile, channel);
         if (logger.isInfoEnabled()) {
-            logger.info("Acquired lock on " + Files.getCanonicalPath(lockFile));
+            logger.info(StringTemplates.formatWithPlaceholder("Acquired lock on {}", Files.getCanonicalPath(lockFile)));
         }
         return new DirectoryLock(dir, channel, lock, logger);
     }
@@ -136,12 +134,12 @@ public final class DirectoryLock implements Closeable {
             channel = raf.getChannel();
             return channel;
         } catch (IOException e) {
-            throw new RuntimeIOException("Cannot create lock file " + Files.getCanonicalPath(lockFile), e);
+            throw new RuntimeIOException(StringTemplates.formatWithPlaceholder("Cannot create lock file {}", Files.getCanonicalPath(lockFile)), e);
         } finally {
             if (channel == null) {
                 IOs.close(channel);
-                IOs.close(raf);
             }
+            IOs.close(raf);
         }
     }
 
@@ -150,15 +148,13 @@ public final class DirectoryLock implements Closeable {
         try {
             fileLock = channel.tryLock();
             if (fileLock == null) {
-                throw new RuntimeIOException("Cannot acquire lock on " + Files.getCanonicalPath(lockFile)
-                        + ". Directory is already being used by another member.");
+                throw new RuntimeIOException(StringTemplates.formatWithPlaceholder("Cannot acquire lock on {}. Directory is already being used by another member.", Files.getCanonicalPath(lockFile)));
             }
             return fileLock;
         } catch (OverlappingFileLockException e) {
-            throw new RuntimeException("Cannot acquire lock on " + Files.getCanonicalPath(lockFile)
-                    + ". Directory is already being used by another member.", e);
+            throw new RuntimeException(StringTemplates.formatWithPlaceholder("Cannot acquire lock on {}. Directory is already being used by another member.", Files.getCanonicalPath(lockFile)), e);
         } catch (IOException e) {
-            throw new RuntimeIOException("Unknown failure while acquiring lock on " + Files.getCanonicalPath(lockFile), e);
+            throw new RuntimeIOException(StringTemplates.formatWithPlaceholder("Unknown failure while acquiring lock on {}", Files.getCanonicalPath(lockFile)), e);
         } finally {
             if (fileLock == null) {
                 IOs.close(channel);
