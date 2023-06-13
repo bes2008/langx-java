@@ -314,7 +314,7 @@ public class Filenames {
      *                      be used or {@code false} if a Windows separator should be used.
      * @return the normalized fileName, or null if invalid
      * @throws IllegalArgumentException if the fileName contains the null character ({@code U+0000})
-     * @since 2.0
+     * @since 5.2.9
      */
     public static String normalize(final String fileName, final boolean unixSeparator) {
         return doNormalize(fileName, toSeparator(unixSeparator), true);
@@ -325,6 +325,7 @@ public class Filenames {
      *
      * @param unixSeparator which separator to return.
      * @return '/' if given true, '\\' otherwise.
+     * @since 5.2.9
      */
     private static char toSeparator(final boolean unixSeparator) {
         return unixSeparator ? UNIX_NAME_SEPARATOR : WINDOWS_NAME_SEPARATOR;
@@ -361,6 +362,7 @@ public class Filenames {
      * @param fileName the fileName to query, null returns null
      * @return the prefix of the file, null if invalid
      * @throws IllegalArgumentException if the result contains the null character ({@code U+0000})
+     * @since 5.2.9
      */
     public static String getPrefix(final String fileName) {
         if (fileName == null) {
@@ -385,6 +387,7 @@ public class Filenames {
      * @param path the path to check
      * @return The input
      * @throws IllegalArgumentException if path contains the null character ({@code U+0000})
+     * @since 5.2.9
      */
     private static String requireNonNullChars(final String path) {
         if (path.indexOf(0) >= 0) {
