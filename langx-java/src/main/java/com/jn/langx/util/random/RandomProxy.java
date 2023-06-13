@@ -1,5 +1,7 @@
 package com.jn.langx.util.random;
 
+import com.jn.langx.util.Preconditions;
+
 import java.util.Random;
 
 public class RandomProxy<R extends Random> implements IRandom {
@@ -47,5 +49,10 @@ public class RandomProxy<R extends Random> implements IRandom {
     @Override
     public void nextBytes(byte[] dest) {
         random.nextBytes(dest);
+    }
+
+    public static final <R extends Random> RandomProxy<R> of(R r){
+        Preconditions.checkNotNull(r);
+        return new RandomProxy<R>(r);
     }
 }
