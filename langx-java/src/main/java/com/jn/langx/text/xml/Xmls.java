@@ -60,7 +60,7 @@ public class Xmls {
             boolean ignoringElementContentWhitespace,
             boolean namespaceAware
     ) throws Exception {
-        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, SecureDocumentBuilderFactoryCustomizer.DEFAULT);
+        return Xmls.getXmlDoc(entityResolver, errorHandler, xml, ignoreComments, ignoringElementContentWhitespace, namespaceAware, null);
     }
 
     /**
@@ -83,9 +83,10 @@ public class Xmls {
             factory.setValidating(true);
         }
 
-        if (customizer != null) {
-            customizer.customize(factory);
+        if (customizer == null) {
+           customizer = SecureDocumentBuilderFactoryCustomizer.DEFAULT;
         }
+        customizer.customize(factory);
 
         final DocumentBuilder builder = factory.newDocumentBuilder();
         entityResolver = ((entityResolver == null) ? new NullEntityResolver() : entityResolver);
