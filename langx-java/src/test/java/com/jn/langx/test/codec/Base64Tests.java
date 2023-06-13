@@ -7,7 +7,9 @@ import org.junit.Test;
 public class Base64Tests {
     @Test
     public void test(){
-        System.out.println(Base64.encodeBase64String("1".getBytes(Charsets.UTF_8)));
-        System.out.println(Base64.encodeBase64ToString("1".getBytes(Charsets.UTF_8)));
+        String b64 = Base64.encodeBase64String("1".getBytes(Charsets.UTF_8));
+        System.out.println(b64);
+        String raw = Base64.decodeBase64ToString(b64);
+        System.out.println(raw);
     }
 }

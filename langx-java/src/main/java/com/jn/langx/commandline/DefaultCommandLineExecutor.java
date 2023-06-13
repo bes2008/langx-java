@@ -422,7 +422,7 @@ public class DefaultCommandLineExecutor implements CommandLineExecutor {
 
             return exitValue;
         } finally {
-            closeProcessStreams(subProcessStdInput,subProcessStdOutput, subProcessStdError);
+            closeProcessStreams(subProcessStdInput, subProcessStdOutput, subProcessStdError);
             Logger logger = Loggers.getLogger(getClass());
             // remove the process to the list of those to destroy if the VM exits
             if (this.getProcessDestroyer() != null) {
