@@ -4,7 +4,10 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.*;
+import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
@@ -26,7 +29,10 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static com.jn.langx.util.DataSizes.ONE_MB;
 
@@ -58,11 +64,7 @@ public class Files {
     public static File newFile(@Nullable final File directory, final String... names) {
         File file = directory;
         for (final String name : names) {
-            if (file == null) {
-                file = new File(name);
-            } else {
-                file = new File(file, name);
-            }
+            file = file == null ? new File(name) : new File(file, name);
         }
         return file;
     }
