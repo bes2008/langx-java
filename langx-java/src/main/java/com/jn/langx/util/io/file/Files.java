@@ -55,10 +55,14 @@ public class Files {
      *
      * @since 5.2.9
      */
-    public static File newFile(final File directory, final String... names) {
+    public static File newFile(@Nullable final File directory, final String... names) {
         File file = directory;
         for (final String name : names) {
-            file = new File(file, name);
+            if (file == null) {
+                file = new File(name);
+            } else {
+                file = new File(file, name);
+            }
         }
         return file;
     }
@@ -69,15 +73,7 @@ public class Files {
      * @since 5.2.9
      */
     public static File newFile(final String... names) {
-        File file = null;
-        for (final String name : names) {
-            if (file == null) {
-                file = new File(name);
-            } else {
-                file = new File(file, name);
-            }
-        }
-        return file;
+        return newFile(null, names);
     }
 
     /**
