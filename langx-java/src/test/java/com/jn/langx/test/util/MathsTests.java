@@ -32,7 +32,7 @@ public class MathsTests {
     public void testIsPrime() {
         long startTime = Dates.now().getTime();
         List<Integer> primes = Lists.newArrayList();
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 0; i <= 100; i++) {
             boolean isPrime = Maths.isPrimeNumber(i);
             if (isPrime) {
                 primes.add(i);
@@ -40,7 +40,7 @@ public class MathsTests {
         }
         long endTime = Dates.now().getTime();
         System.out.println(primes);
-        System.out.println(StringTemplates.formatWithPlaceholder("cost: {} ms", endTime - startTime));
+        System.out.println(StringTemplates.formatWithPlaceholder("testIsPrime cost: {} ms", endTime - startTime));
     }
 
     @Test
@@ -49,6 +49,6 @@ public class MathsTests {
         List<Integer> primes = Maths.findPrimes(0, 101);
         long endTime = Dates.now().getTime();
         System.out.println(primes);
-        System.out.println(StringTemplates.formatWithPlaceholder("cost: {} ms", endTime - startTime));
+        System.out.println(StringTemplates.formatWithPlaceholder("testFindPrimes cost: {} ms", endTime - startTime));
     }
 }
