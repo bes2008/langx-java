@@ -64,6 +64,11 @@ public class MathsTests {
 
     @Test
     public void testPrimes() {
+        printPrimes(0, 2);
+        printPrimes(0, 3);
+        printPrimes(0, 10);
+        printPrimes(2, 10);
+        printPrimes(3, 10);
         printPrimes(0, 101);
         printPrimes(50, 101);
         printPrimes(101, 1001);

@@ -966,7 +966,7 @@ public class Maths {
         List<Integer> ret = Lists.newArrayList();
         int prime = -1;
         // 找到第一个prime
-        while (prime < 2 && start < end) {
+        while (start < end) {
             if (isPrimeNumber(start)) {
                 prime = start;
                 ret.add(prime);
@@ -975,7 +975,8 @@ public class Maths {
                 start++;
             }
         }
-        if (prime < 2 || start >= end) {
+        // 还没有找到第一个 prime，直接结束
+        if (prime < 2) {
             return ret;
         }
         if (prime == 2 && end > 3) {
