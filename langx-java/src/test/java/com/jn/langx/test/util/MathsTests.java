@@ -51,4 +51,22 @@ public class MathsTests {
         System.out.println(primes);
         System.out.println(StringTemplates.formatWithPlaceholder("testFindPrimes cost: {} ms", endTime - startTime));
     }
+
+    private void printPrimes(int start, int end) {
+        List<Integer> primes = Maths.findPrimes(start, end);
+        System.out.println(StringTemplates.formatWithPlaceholder("[{}, {}): {}", start, end, primes));
+    }
+
+    @Test
+    public void testPrime0(){
+        System.out.println(Maths.isPrimeNumber(121));
+    }
+
+    @Test
+    public void testPrimes() {
+        printPrimes(0, 101);
+        printPrimes(50, 101);
+        printPrimes(101, 1001);
+        printPrimes(1001, 10001);
+    }
 }

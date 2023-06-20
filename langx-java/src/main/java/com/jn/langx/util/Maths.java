@@ -937,19 +937,16 @@ public class Maths {
         if (num < 2) {
             return false;
         }
-        if (num > 7) {
-            // 能够被 2,3,5,7 中任何一个整除的数，一定不是质数
-            // 不能够被 2,3,5,7 中任何一个整除的数，一定是质数
-            for (Integer p : primes) {
-                if (num % p == 0) {
-                    return false;
-                }
+
+        int thesqrt = (int) Math.sqrt(num);
+        for (int i = 2; i <= thesqrt; i++) {
+            if (num % i == 0) {
+                return false;
             }
-        } else {
-            return primes.contains(num);
         }
         return true;
     }
+
 
     /**
      * 找出指定范围内的所有质数 [start, end)
@@ -986,17 +983,12 @@ public class Maths {
             ret.add(prime);
         }
         int next = prime;
-        out:
         while (next < end) {
-            for (int i = 2; i <= 7; i++) {
-                int candidate = next + i;
-                if (candidate < end && isPrimeNumber(candidate)) {
-                    next = candidate;
-                    ret.add(next);
-                    continue out;
-                }
+            int candidate = next + 2;
+            if (candidate < end && isPrimeNumber(candidate)) {
+                ret.add(candidate);
             }
-            next = next + 2;
+            next = candidate;
         }
         return ret;
     }
