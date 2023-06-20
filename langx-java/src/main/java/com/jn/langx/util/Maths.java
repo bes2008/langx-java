@@ -963,29 +963,16 @@ public class Maths {
             end = tmp;
         }
         List<Integer> ret = Lists.newArrayList();
-        int prime = -1;
-        // 找到第一个prime
-        while (start < end) {
-            if (isPrimeNumber(start)) {
-                prime = start;
-                ret.add(prime);
-                break;
-            } else {
-                start++;
-                if (start % 2 == 0) {
-                    start++;
-                }
+        if (start == 2) {
+            if(start<end) {
+                ret.add(2);
             }
+            start++;
+        } else if (start % 2 == 0) {
+            start++;
         }
-        // 还没有找到第一个 prime，直接结束
-        if (prime < 2) {
-            return ret;
-        }
-        if (prime == 2 && end > 3) {
-            prime = 3;
-            ret.add(prime);
-        }
-        int candidate = prime + 2;
+
+        int candidate = start;
         while (candidate < end) {
             if (isPrimeNumber(candidate)) {
                 ret.add(candidate);
