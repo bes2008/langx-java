@@ -32,23 +32,23 @@ public class MathsTests {
     public void testIsPrime() {
         long startTime = Dates.now().getTime();
         List<Integer> primes = Lists.newArrayList();
-        for (int i = 0; i <= 100; i++) {
+        for (int i = 0; i <= 1000000; i++) {
             boolean isPrime = Maths.isPrimeNumber(i);
             if (isPrime) {
                 primes.add(i);
             }
         }
         long endTime = Dates.now().getTime();
-        System.out.println(primes);
+    //    System.out.println(primes);
         System.out.println(StringTemplates.formatWithPlaceholder("testIsPrime cost: {} ms", endTime - startTime));
     }
 
     @Test
     public void testFindPrimes() {
         long startTime = Dates.now().getTime();
-        List<Integer> primes = Maths.findPrimes(0, 101);
+        List<Integer> primes = Maths.findPrimes(0, 1000000);
         long endTime = Dates.now().getTime();
-        System.out.println(primes);
+    //    System.out.println(primes);
         System.out.println(StringTemplates.formatWithPlaceholder("testFindPrimes cost: {} ms", endTime - startTime));
     }
 
