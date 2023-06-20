@@ -926,7 +926,6 @@ public class Maths {
         return v1.divide(v2, scale, roundingMode);
     }
 
-    private final static List<Integer> primes = Lists.newArrayList(2, 3, 5, 7);
 
     /**
      * 判断一个数是不为 质数
