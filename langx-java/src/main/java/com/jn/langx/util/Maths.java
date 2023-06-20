@@ -972,6 +972,9 @@ public class Maths {
                 break;
             } else {
                 start++;
+                if (start % 2 == 0) {
+                    start++;
+                }
             }
         }
         // 还没有找到第一个 prime，直接结束
