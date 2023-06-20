@@ -982,13 +982,12 @@ public class Maths {
             prime = 3;
             ret.add(prime);
         }
-        int next = prime;
-        while (next < end) {
-            int candidate = next + 2;
-            if (candidate < end && isPrimeNumber(candidate)) {
+        int candidate = prime + 2;
+        while (candidate < end) {
+            if (isPrimeNumber(candidate)) {
                 ret.add(candidate);
             }
-            next = candidate;
+            candidate = candidate + 2;
         }
         return ret;
     }
