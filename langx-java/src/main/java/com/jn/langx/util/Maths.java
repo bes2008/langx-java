@@ -6,6 +6,7 @@ import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -936,7 +937,7 @@ public class Maths {
         if (num < 2) {
             return false;
         }
-        if (num == 2) {
+        if (num == 2 || num == 3) {
             return true;
         }
         if (num % 2 == 0 || num % 3 == 0) {
@@ -967,11 +968,32 @@ public class Maths {
         return true;
     }
 
+    public static int countPrimes(int start, int end) {
+        final SimpleIntegerCounter counter = new SimpleIntegerCounter(0);
+        findPrimes(start, end, new Consumer<Integer>() {
+            @Override
+            public void accept(Integer prime) {
+                counter.increment();
+            }
+        });
+        return counter.get();
+    }
+
+    public static List<Integer> findPrimes(int start, int end) {
+        final List<Integer> list = Lists.newArrayList();
+        findPrimes(start, end, new Consumer<Integer>() {
+            @Override
+            public void accept(Integer prime) {
+                list.add(prime);
+            }
+        });
+        return list;
+    }
 
     /**
      * 找出指定范围内的所有质数 [start, end)
      */
-    public static List<Integer> findPrimes(int start, int end) {
+    public static void findPrimes(int start, int end, Consumer<Integer> consumer) {
         if (start < 2) {
             start = 2;
         }
@@ -983,11 +1005,11 @@ public class Maths {
             start = end;
             end = tmp;
         }
-        List<Integer> ret = Lists.newArrayList();
+
         int candidate = start;
         if (candidate == 2) {
             if (candidate < end) {
-                ret.add(candidate);
+                consumer.accept(candidate);
             }
             candidate++;
         } else if (candidate % 2 == 0) {
@@ -996,10 +1018,9 @@ public class Maths {
 
         while (candidate < end) {
             if (isPrimeNumber(candidate)) {
-                ret.add(candidate);
+                consumer.accept(candidate);
             }
             candidate = candidate + 2;
         }
-        return ret;
     }
 }
