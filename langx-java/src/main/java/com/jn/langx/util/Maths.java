@@ -936,12 +936,19 @@ public class Maths {
         if (num < 2) {
             return false;
         }
+        if (num == 2) {
+            return true;
+        }
+        if (num % 2 == 0) {
+            return false;
+        }
 
         int thesqrt = (int) Math.sqrt(num);
-        for (int i = 2; i <= thesqrt; i++) {
+        for (int i = 3; i <= thesqrt; ) {
             if (num % i == 0) {
                 return false;
             }
+            i = i + 2;
         }
         return true;
     }
@@ -963,16 +970,16 @@ public class Maths {
             end = tmp;
         }
         List<Integer> ret = Lists.newArrayList();
-        if (start == 2) {
-            if(start<end) {
-                ret.add(2);
+        int candidate = start;
+        if (candidate == 2) {
+            if (candidate < end) {
+                ret.add(candidate);
             }
-            start++;
-        } else if (start % 2 == 0) {
-            start++;
+            candidate++;
+        } else if (candidate % 2 == 0) {
+            candidate++;
         }
 
-        int candidate = start;
         while (candidate < end) {
             if (isPrimeNumber(candidate)) {
                 ret.add(candidate);
