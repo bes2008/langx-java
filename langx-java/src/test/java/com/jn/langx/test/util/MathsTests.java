@@ -46,9 +46,9 @@ public class MathsTests {
     @Test
     public void testFindPrimes() {
         long startTime = Dates.now().getTime();
-       Maths.countPrimes(0, 100000000);
+        int count = Maths.countPrimes(0, 100000000);
         long endTime = Dates.now().getTime();
-    //    System.out.println(primes);
+        System.out.println(count);
         System.out.println(StringTemplates.formatWithPlaceholder("testFindPrimes cost: {} ms", endTime - startTime));
     }
 
