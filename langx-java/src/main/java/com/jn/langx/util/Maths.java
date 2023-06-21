@@ -939,16 +939,30 @@ public class Maths {
         if (num == 2) {
             return true;
         }
-        if (num % 2 == 0) {
+        if (num % 2 == 0 || num % 3 == 0) {
             return false;
         }
 
         int thesqrt = (int) Math.sqrt(num);
-        for (int i = 3; i <= thesqrt; ) {
-            if (num % i == 0) {
+
+        /*
+         *  i 判定次数
+         *  j 判定是否可以被整除
+         *  因为前面已判定过 2,3 了，所以接下来是从 5 开始判定。
+         *  另外 2的位数，3的倍数直接不用再去判定了
+         *
+         *  i: 1    2   3   4   5   6   7
+         *  j: 5    7   11  13  17  19  23
+         *
+         *  通过上述分析， j = 3 * i + (i % 2 == 0 ? 1 : 2)
+         */
+        int i = 1;
+        int j;
+        while ((j = 3 * i + (i % 2 == 0 ? 1 : 2)) <= thesqrt) {
+            if (num % j == 0) {
                 return false;
             }
-            i = i + 2;
+            i++;
         }
         return true;
     }
