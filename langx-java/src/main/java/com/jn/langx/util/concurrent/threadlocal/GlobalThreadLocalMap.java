@@ -2,6 +2,7 @@ package com.jn.langx.util.concurrent.threadlocal;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.NonAbsentHashMap;
 import com.jn.langx.util.collection.WrappedNonAbsentMap;
 import com.jn.langx.util.datetime.DateFormatCacheKey;
@@ -65,7 +66,9 @@ public class GlobalThreadLocalMap {
         @Override
         public SimpleDateFormat get(DateFormatCacheKey key) {
             SimpleDateFormat df = new SimpleDateFormat(key.pattern, key.locale);
-            df.setTimeZone(TimeZone.getTimeZone(key.timeZoneId));
+            if(Strings.isNotEmpty(key.timeZoneId)) {
+                df.setTimeZone(TimeZone.getTimeZone(key.timeZoneId));
+            }
             return df;
         }
     });
