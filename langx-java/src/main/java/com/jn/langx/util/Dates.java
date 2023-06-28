@@ -231,12 +231,23 @@ public class Dates {
      * @since 5.0.1
      */
     public static DateTimeParsedResult parseDateTime(boolean autoInferTimeZone, final String dateString, List<TimeZone> candidateTZs, List<Locale> candidateLocals, List<String> candidatePatterns) {
+        return parseDateTime(autoInferTimeZone, null, dateString, candidateTZs, candidateLocals, candidatePatterns);
+    }
+
+    /**
+     * @since 5.2.10
+     */
+    public static DateTimeParsedResult parseDateTime(boolean autoInferTimeZone, @Nullable CandidateDateTimeParseService parseService, final String dateString, List<TimeZone> candidateTZs, List<Locale> candidateLocals, List<String> candidatePatterns) {
+        CandidateDateTimeParseService parser = parseService;
+        if (parser == null) {
+            parser = getCandidateDateTimeParseServiceForParse(dateString);
+        }
         if (!autoInferTimeZone) {
-            return getCandidateDateTimeParseServiceForParse(dateString).parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
+            return parser.parse(dateString, candidatePatterns, candidateTZs, candidateLocals);
         }
 
         final List<String> ps = Collects.newArrayList();
-        final CandidateDateTimeParseService dateTimeParseService = getCandidateDateTimeParseServiceForParse(dateString);
+        final CandidateDateTimeParseService dateTimeParseService = parser;
         Collects.forEach(candidatePatterns, new Consumer<String>() {
             @Override
             public void accept(final String pattern) {
@@ -251,9 +262,9 @@ public class Dates {
         });
 
         // java 6 SimpleDateFormat , java8 DateTimeFormatter 都支持自动推断时区的
-        // getSimpleCandidateDateTimeParseService().parse(dateString, ps, candidateTZs, candidateLocals);
         return dateTimeParseService.parse(dateString, ps, candidateTZs, candidateLocals);
     }
+
 
     public static CandidateDateTimeParseService getCandidateDateTimeParseServiceForParse(String datetime) {
         // jdk 8 上 在pattern 中使用 O 时解析 GMT 时间时是有问题的， jdk 9 中修复了
