@@ -46,6 +46,7 @@ import static com.jn.langx.util.datetime.DateField.*;
  * Pattern 涉及的符号：https://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html
  * </pre>
  */
+@SuppressWarnings({"unused", "unchecked", "rawtypes"})
 public class Dates {
     public static final int MINUTES_TO_SECONDS = 60;
     public static final int HOURS_TO_SECONDS = 60 * MINUTES_TO_SECONDS;
