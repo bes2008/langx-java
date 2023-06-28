@@ -56,7 +56,7 @@ public final class NativeLibraryLoader {
     private static File tmpdir() {
         File f;
         try {
-            f = toDirectory(SystemPropertys.get("java.io.tmpdir"));
+            f = toDirectory(SystemPropertys.getJavaIOTmpDir());
             if (f != null) {
                 return f;
             }
