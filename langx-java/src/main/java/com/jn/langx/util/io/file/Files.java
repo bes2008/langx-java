@@ -330,7 +330,6 @@ public class Files {
                             bytes.put(octet);
                             i += 3;
                         } while (i < n && url.charAt(i) == '%');
-                        continue;
                     } catch (final RuntimeException e) {
                         // malformed percent-encoded octet, fall through and
                         // append characters literally
@@ -544,9 +543,9 @@ public class Files {
         if (destFile.exists() && destFile.isDirectory()) {
             throw new IOException("Destination '" + destFile + "' exists but is a directory");
         }
-        FileInputStream fis;
+        FileInputStream fis = null;
         FileChannel input = null;
-        FileOutputStream fos;
+        FileOutputStream fos = null;
         FileChannel output = null;
         try {
             fis = new FileInputStream(srcFile);
@@ -568,6 +567,8 @@ public class Files {
         } finally {
             IOs.close(output);
             IOs.close(input);
+            IOs.close(fis);
+            IOs.close(fos);
         }
 
         final long srcLen = srcFile.length();
