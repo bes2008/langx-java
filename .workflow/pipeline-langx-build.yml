@@ -1,6 +1,6 @@
 version: '1.0'
 name: pipeline-langx-build
-displayName: pipeline-langx-build
+displayName: pipeline-langx-build-scan
 triggers:
   trigger: auto
   push:
@@ -46,7 +46,7 @@ stages:
         strategy:
           retry: '0'
   - name: stage-605a597a
-    displayName: scan
+    displayName: scan-dependencies
     strategy: naturally
     trigger: auto
     executor: []
