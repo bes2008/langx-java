@@ -194,7 +194,7 @@ public final class NativeLibraryLoader {
         File tmpFile = null;
         Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
         try {
-            tmpFile = File.createTempFile(prefix, suffix, WORKDIR);
+            tmpFile = Files.createTempFile(WORKDIR, prefix, suffix);
             in = url.openStream();
             out = new FileOutputStream(tmpFile);
 
@@ -226,7 +226,7 @@ public final class NativeLibraryLoader {
             // Re-throw to fail the load
             throw e;
         } catch (Exception e) {
-            throw (UnsatisfiedLinkError) new UnsatisfiedLinkError( "could not load a native library: " + name).initCause(e);
+            throw (UnsatisfiedLinkError) new UnsatisfiedLinkError("could not load a native library: " + name).initCause(e);
         } finally {
             IOs.close(in);
             IOs.close(out);
