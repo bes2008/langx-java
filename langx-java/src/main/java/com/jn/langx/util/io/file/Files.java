@@ -3,14 +3,14 @@ package com.jn.langx.util.io.file;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.FileExistsException;
+import com.jn.langx.security.Securitys;
+import com.jn.langx.security.privileged.CommonPrivilegedAction;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Maths;
-import com.jn.langx.util.Objs;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Throwables;
+import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
+import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.LineDelimiter;
@@ -29,6 +29,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.file.InvalidPathException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -1931,5 +1933,75 @@ public class Files {
 
     private Files() {
 
+    }
+
+    // temporary directory location
+    private static final File tmpdir = CommonPrivilegedAction.doPrivileged(new Supplier0<File>() {
+        @Override
+        public File get() {
+            return Files.newFile(SystemPropertys.getJavaIOTmpDir());
+        }
+    });
+
+
+    // file name generation, same as java.io.File for now
+    private static final SecureRandom random = Securitys.getSecureRandom();
+
+    private static File generateTempPath(@Nullable String prefix, @Nullable String suffix, @Nullable File dir) {
+        long n = random.nextLong();
+        n = (n == Long.MIN_VALUE) ? 0 : Math.abs(n);
+        File f = new File(dir, prefix + ("" + n) + suffix);
+        return f;
+    }
+
+
+    /**
+     * Creates a file or directory in in the given given directory (or in the
+     * temporary directory if dir is {@code null}).
+     */
+    private static File create(File dir, String prefix, String suffix, boolean createDirectory) throws IOException {
+        if (prefix == null)
+            prefix = "";
+        if (suffix == null)
+            suffix = (createDirectory) ? "" : ".tmp";
+        if (dir == null) {
+            dir = tmpdir;
+        }
+        File f;
+        try {
+            f = generateTempPath(prefix, suffix, dir);
+            while (f.exists()) {
+                f = generateTempPath(prefix, suffix, dir);
+            }
+        } catch (InvalidPathException e) {
+            throw e;
+        }
+        try {
+            if (createDirectory) {
+                Files.forceMkdir(f);
+                return f;
+            } else {
+                Files.makeFile(f);
+                return f;
+            }
+        } catch (SecurityException e) {
+            throw e;
+        }
+    }
+
+    /**
+     * Creates a temporary file in the given directory, or in in the
+     * temporary directory if dir is {@code null}.
+     */
+    public static File createTempFile(@Nullable File dir, @Nullable String prefix, @Nullable String suffix) throws IOException {
+        return create(dir, prefix, suffix, false);
+    }
+
+    /**
+     * Creates a temporary directory in the given directory, or in in the
+     * temporary directory if dir is {@code null}.
+     */
+    public static File createTempDirectory(@Nullable File dir, @Nullable String prefix) throws IOException {
+        return create(dir, prefix, null, true);
     }
 }
