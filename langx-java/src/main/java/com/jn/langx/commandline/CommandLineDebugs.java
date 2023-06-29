@@ -1,10 +1,14 @@
 package com.jn.langx.commandline;
 
+import com.jn.langx.util.logging.Loggers;
+import org.slf4j.Logger;
+
 /**
  * Provides debugging support.
  *
  */
 class CommandLineDebugs {
+    private static final Logger logger = Loggers.getLogger(CommandLineDebugs.class);
     private CommandLineDebugs(){
 
     }
@@ -32,8 +36,7 @@ class CommandLineDebugs {
     public static void handleException(final String msg, final Exception e) {
 
         if (isDebugEnabled()) {
-            System.err.println(msg);
-            e.printStackTrace();
+            logger.error("error: {}", msg, e);
         }
 
         if (!isLenientEnabled()) {
