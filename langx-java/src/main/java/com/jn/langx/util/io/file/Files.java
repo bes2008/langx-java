@@ -1950,7 +1950,7 @@ public class Files {
     private static File generateTempPath(@Nullable String prefix, @Nullable String suffix, @Nullable File dir) {
         long n = random.nextLong();
         n = (n == Long.MIN_VALUE) ? 0 : Math.abs(n);
-        File f = new File(dir, prefix + ("" + n) + suffix);
+        File f = Files.newFile(dir, prefix + ("" + n) + suffix);
         return f;
     }
 
