@@ -1959,7 +1959,7 @@ public class Files {
      * Creates a file or directory in in the given given directory (or in the
      * temporary directory if dir is {@code null}).
      */
-    private static File create(File dir, String prefix, String suffix, boolean createDirectory) throws IOException {
+    private static File createTemp(File dir, String prefix, String suffix, boolean createDirectory) throws IOException {
         if (prefix == null)
             prefix = "";
         if (suffix == null)
@@ -1994,14 +1994,14 @@ public class Files {
      * temporary directory if dir is {@code null}.
      */
     public static File createTempFile(@Nullable File dir, @Nullable String prefix, @Nullable String suffix) throws IOException {
-        return create(dir, prefix, suffix, false);
+        return createTemp(dir, prefix, suffix, false);
     }
 
     /**
      * Creates a temporary directory in the given directory, or in in the
      * temporary directory if dir is {@code null}.
      */
-    public static File createTempDirectory(@Nullable File dir, @Nullable String prefix) throws IOException {
-        return create(dir, prefix, null, true);
+    public static File createTempDirectory(@Nullable File dir, @Nullable String prefix, @Nullable String suffix) throws IOException {
+        return createTemp(dir, prefix, suffix, true);
     }
 }
