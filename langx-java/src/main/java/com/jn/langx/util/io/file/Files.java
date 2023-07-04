@@ -6,7 +6,10 @@ import com.jn.langx.exception.FileExistsException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.privileged.CommonPrivilegedAction;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.*;
+import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
@@ -19,6 +22,7 @@ import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.net.URLs;
+import com.jn.langx.util.os.Platform;
 import org.slf4j.Logger;
 
 import java.io.FilenameFilter;
@@ -66,7 +70,12 @@ public class Files {
     public static File newFile(@Nullable final File directory, final String... names) {
         File file = directory;
         for (final String name : names) {
-            file = file == null ? new File(name) : new File(file, name);
+            if (file == null) {
+                String cleanedPath = Filenames.getFullDirectory(name) + Filenames.getFileName(name);
+                file = new File(cleanedPath);
+            } else {
+                file = new File(file, name);
+            }
         }
         return file;
     }
@@ -1939,7 +1948,7 @@ public class Files {
     private static final File tmpdir = CommonPrivilegedAction.doPrivileged(new Supplier0<File>() {
         @Override
         public File get() {
-            return Files.newFile(SystemPropertys.getJavaIOTmpDir());
+            return Platform.getTempDirectory();
         }
     });
 
