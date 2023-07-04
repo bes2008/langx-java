@@ -102,7 +102,6 @@ public final class NativeLibraryLoader {
         return f;
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static File toDirectory(String path) {
         if (path == null) {
             return null;
@@ -110,9 +109,10 @@ public final class NativeLibraryLoader {
         File f = null;
         try {
             f = Files.newFile(path);
-            f.mkdirs();
-
-            if (!f.isDirectory()) {
+            if(!f.exists()) {
+                f.mkdirs();
+            }
+            if (!f.exists() || !f.isDirectory()) {
                 return null;
             }
             return f.getAbsoluteFile();
