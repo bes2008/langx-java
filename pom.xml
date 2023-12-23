@@ -18,6 +18,7 @@
     <properties>
         <slf4j.version>1.7.0</slf4j.version>
         <jmh.version>1.23</jmh.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <url>https://github.com/bes2008/langx-java</url>
@@ -58,9 +59,6 @@
         <module>langx-java-reflect-asm</module>
         <module>langx-java-security-gm</module>
         <module>langx-java-regexp-joni</module>
-        <!--
-        <module>langx-java-security-pam</module>
-        -->
         <module>langx-java-fastdateformat</module>
     </modules>
     <dependencyManagement>
@@ -120,9 +118,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.0</version>
+            <version>${slf4j.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -135,12 +139,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
