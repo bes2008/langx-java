@@ -4,6 +4,7 @@ package com.jn.langx.regexp.joni;
 import com.jn.langx.exception.ParseException;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.io.Charsets;
@@ -35,7 +36,7 @@ public class JoniRegexp implements Regexp {
     }
 
     public JoniRegexp(String pattern, Option option) {
-        this.pattern = pattern.length() == 0 ? "(?:)" : pattern;
+        this.pattern = Strings.isEmpty(pattern) ? "(?:)" : pattern;
         this.option = option;
 
         try {
@@ -147,7 +148,7 @@ public class JoniRegexp implements Regexp {
         // Construct result
         int resultSize = matchList.size();
         if (limit == 0)
-            while (resultSize > 0 && matchList.get(resultSize - 1).equals(""))
+            while (resultSize > 0 && "".equals(matchList.get(resultSize - 1)))
                 resultSize--;
         String[] result = new String[resultSize];
         return matchList.subList(0, resultSize).toArray(result);
