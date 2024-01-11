@@ -21,17 +21,6 @@ public interface I18nMessageStorage {
 
     String getMessage(@Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
 
-
-    String getMessage(@Nullable LanguageCode languageCode, @NonNull String key, @Nullable Object... args);
-
-    String getMessage(@Nullable LanguageCode languageCode, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
-
-
-    String getMessage(@Nullable LocaleCode localeCode, @NonNull String key, @Nullable Object... args);
-
-    String getMessage(@Nullable LocaleCode localeCode, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);
-
-
     String getMessage(@Nullable Locale locale, @NonNull String key, @Nullable Object... args);
 
     String getMessage(@Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args);

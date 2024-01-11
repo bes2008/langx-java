@@ -42,26 +42,6 @@ public abstract class AbstractI18nMessageStorage implements HierarchicalI18nMess
     }
 
     @Override
-    public String getMessage(@Nullable LanguageCode languageCode, @NonNull String key, @Nullable Object... args) {
-        return getMessage(languageCode, getClassLoader(null), key, args);
-    }
-
-    @Override
-    public String getMessage(@Nullable LanguageCode languageCode, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args) {
-        return getMessage(toLocale(languageCode), getClassLoader(classLoader), key, args);
-    }
-
-    @Override
-    public String getMessage(@Nullable LocaleCode localeCode, @NonNull String key, @Nullable Object... args) {
-        return getMessage(localeCode, getClassLoader(null), key, args);
-    }
-
-    @Override
-    public String getMessage(@Nullable LocaleCode localeCode, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args) {
-        return getMessage(toLocale(localeCode), getClassLoader(classLoader), key, args);
-    }
-
-    @Override
     public String getMessage(@Nullable Locale locale, @NonNull String key, @Nullable Object... args) {
         return getMessageInternal(locale, getClassLoader(null), key, args);
     }
@@ -73,22 +53,6 @@ public abstract class AbstractI18nMessageStorage implements HierarchicalI18nMess
 
     protected abstract String getMessageInternal(@NonNull Locale locale, @NonNull ClassLoader classLoader, @NonNull String key, Object... args);
 
-
-    protected Locale toLocale(Object locale) {
-        if (locale == null) {
-            return getLocale();
-        }
-        if (locale instanceof Locale) {
-            return (Locale) locale;
-        }
-        if (locale instanceof LocaleCode) {
-            return ((LocaleCode) locale).toLocale();
-        }
-        if (locale instanceof LanguageCode) {
-            return ((LanguageCode) locale).toLocale();
-        }
-        return getLocale();
-    }
 
     protected ClassLoader getClassLoader(ClassLoader classLoader) {
         if (classLoader == null) {
