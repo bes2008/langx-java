@@ -80,10 +80,28 @@ public class NetworkAddress implements Comparable<NetworkAddress> {
     @Override
     public String toString() {
         // return port > 0 ? (host + ":" + port) : host;
-        return show();
+        return show(ShowStyle.BSON);
     }
 
     public String show(){
-        return StringTemplates.formatWithPlaceholder( "{host: {}, port:{}, addrMode: {}}", host, port, addrMode);
+        return show(ShowStyle.BSON);
     }
+
+    public String show(ShowStyle style){
+        style = Objs.useValueIfEmpty(style, ShowStyle.BSON);
+        switch (style){
+            case URL:
+                return port > 0 ? (host + ":" + port) : host;
+            case BSON:
+            default:
+               return StringTemplates.formatWithPlaceholder( "{host: {}, port:{}, addrMode: {}}", host, port, addrMode);
+        }
+    }
+
+
+    public static enum ShowStyle{
+        URL,
+        BSON
+    }
+
 }
