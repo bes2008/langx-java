@@ -61,6 +61,7 @@
         <module>langx-java-regexp-joni</module>
         <module>langx-java-fastdateformat</module>
         <module>langx-java-pinyin</module>
+        <module>langx-java-el</module>
     </modules>
     <dependencyManagement>
         <dependencies>
