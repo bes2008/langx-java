@@ -60,6 +60,7 @@
         <module>langx-java-security-gm</module>
         <module>langx-java-regexp-joni</module>
         <module>langx-java-fastdateformat</module>
+        <module>langx-java-pinyin</module>
     </modules>
     <dependencyManagement>
         <dependencies>
