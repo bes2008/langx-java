@@ -1,4 +1,4 @@
-package com.jn.langx.util.os.hardware.cpu;
+package com.jn.langx.test.util.os.hardware.cpu;
 
 import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.DefaultCommandLineExecutor;

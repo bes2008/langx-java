@@ -1,4 +1,4 @@
-package com.jn.langx.util.os.virtualization;
+package com.jn.langx.test.util.os.virtualization;
 
 import com.jn.langx.commandline.CommandLine;
 import com.jn.langx.commandline.DefaultCommandLineExecutor;
