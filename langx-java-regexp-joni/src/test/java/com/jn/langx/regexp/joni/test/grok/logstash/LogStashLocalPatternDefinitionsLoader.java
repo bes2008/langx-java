@@ -1,4 +1,4 @@
-package com.jn.langx.test.text.grok.logstash;
+package com.jn.langx.regexp.joni.test.grok.logstash;
 
 import com.jn.langx.configuration.AbstractConfigurationLoader;
 import com.jn.langx.io.resource.ClassPathResource;
