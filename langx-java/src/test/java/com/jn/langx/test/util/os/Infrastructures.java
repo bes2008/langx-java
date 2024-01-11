@@ -1,4 +1,4 @@
-package com.jn.langx.util.os;
+package com.jn.langx.test.util.os;
 
 import com.jn.langx.util.os.hardware.cpu.CPUs;
 
