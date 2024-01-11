@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.2.9</version>
+    <version>5.2.10</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -60,6 +60,11 @@
         <module>langx-java-security-gm</module>
         <module>langx-java-regexp-joni</module>
         <module>langx-java-fastdateformat</module>
+        <module>langx-java-pinyin</module>
+        <module>langx-java-el</module>
+        <module>langx-java-asn1</module>
+        <module>langx-java-distributed</module>
+        <module>langx-java-cmd</module>
     </modules>
     <dependencyManagement>
         <dependencies>

@@ -16,7 +16,7 @@ import java.util.*;
 
 public abstract class AbstractSpecifiedOptionService extends BaseService {
 
-    protected Map<String, Map<String, Object>> queryMBeanAttrs(final String specifiedOption, final Hashtable<String, String> options, final Collection<String> attributeNames) {
+    protected Map<String, Map<String, Object>> queryMBeanAttrs(final String specifiedOption, final Map<String, String> options, final Collection<String> attributeNames) {
         Preconditions.checkNotNull(specifiedOption, "specialOption is null. ");
         final ObjectName queryOname = this.createObjectName(options);
         final Set<ObjectInstance> instances = this.conn.queryMBeans(queryOname, null);
@@ -64,7 +64,7 @@ public abstract class AbstractSpecifiedOptionService extends BaseService {
             objectNames.addAll(allValue);
         } else {
             for (final String optionValue : optionValues) {
-                final Hashtable<String, String> options = new Hashtable<String, String>();
+                final Map<String, String> options = new HashMap<String, String>();
                 options.put(specifiedOption, optionValue);
                 final ObjectName oname2 = this.createObjectName(options);
                 objectNames.add(oname2);

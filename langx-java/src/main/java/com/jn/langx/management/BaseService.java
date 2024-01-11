@@ -6,24 +6,21 @@ import com.jn.langx.util.struct.Entry;
 
 import javax.management.Attribute;
 import javax.management.ObjectName;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public abstract class BaseService implements MBeanService {
-    protected Hashtable<String, String> defaultOptions;
+    protected Map<String, String> defaultOptions;
     protected String domain;
     protected JMXConnection conn;
 
     protected BaseService() {
-        this.defaultOptions = new Hashtable<String, String>();
+        this.defaultOptions = new HashMap<String, String>();
         this.init();
     }
 
     protected abstract void init();
 
-    protected ObjectName createObjectName(final Hashtable<String, String> table) {
+    protected ObjectName createObjectName(final Map<String, String> table) {
         final Hashtable<String, String> options = new Hashtable<String, String>(this.defaultOptions);
         if (table != null) {
             options.putAll(table);

@@ -1,5 +1,6 @@
 package com.jn.langx.util.datetime.formatter;
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.concurrent.threadlocal.GlobalThreadLocalMap;
@@ -24,7 +25,7 @@ public class DateFormatter extends AbstractUtcTimestampFormatter<Date> {
     @Override
     public String format(Date date) {
         Preconditions.checkNotNullArgument(date, "date");
-        SimpleDateFormat simpleDateFormat = GlobalThreadLocalMap.getSimpleDateFormat(this.getPattern(), this.getTimeZone(), this.getLocale());
+        SimpleDateFormat simpleDateFormat = GlobalThreadLocalMap.getSimpleDateFormat(this.getPattern(), Objs.useValueIfNull(this.getTimeZone(), TimeZone.getDefault()), this.getLocale());
         return simpleDateFormat.format(date);
     }
 

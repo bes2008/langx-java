@@ -2,6 +2,7 @@ package com.jn.langx.util.jni;
 
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.SystemPropertys;
+import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.file.Files;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.os.Platform;
@@ -56,7 +57,7 @@ public final class NativeLibraryLoader {
     private static File tmpdir() {
         File f;
         try {
-            f = toDirectory(SystemPropertys.get("java.io.tmpdir"));
+            f = toDirectory(SystemPropertys.getJavaIOTmpDir());
             if (f != null) {
                 return f;
             }
@@ -101,7 +102,6 @@ public final class NativeLibraryLoader {
         return f;
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static File toDirectory(String path) {
         if (path == null) {
             return null;
@@ -109,9 +109,10 @@ public final class NativeLibraryLoader {
         File f = null;
         try {
             f = Files.newFile(path);
-            f.mkdirs();
-
-            if (!f.isDirectory()) {
+            if(!f.exists()) {
+                f.mkdirs();
+            }
+            if (!f.exists() || !f.isDirectory()) {
                 return null;
             }
             return f.getAbsoluteFile();
@@ -152,9 +153,7 @@ public final class NativeLibraryLoader {
         // Use ! instead of . to avoid shading utilities from modifying the string
         String expected = NativeLibraryLoader.class.getName();
         if (!maybeShaded.endsWith(expected)) {
-            throw new UnsatisfiedLinkError(String.format(
-                    "Could not find prefix added to %s to get %s. When shading, only adding a "
-                            + "package prefix is supported", expected, maybeShaded));
+            throw new UnsatisfiedLinkError(String.format("Could not find prefix added to %s to get %s. When shading, only adding a package prefix is supported", expected, maybeShaded));
         }
         return maybeShaded.substring(0, maybeShaded.length() - expected.length());
     }
@@ -195,7 +194,7 @@ public final class NativeLibraryLoader {
         File tmpFile = null;
         Logger logger = Loggers.getLogger(NativeLibraryLoader.class);
         try {
-            tmpFile = File.createTempFile(prefix, suffix, WORKDIR);
+            tmpFile = Files.createTempFile(WORKDIR, prefix, suffix);
             in = url.openStream();
             out = new FileOutputStream(tmpFile);
 
@@ -208,7 +207,7 @@ public final class NativeLibraryLoader {
 
             // Close the output stream before loading the unpacked library,
             // because otherwise Windows will refuse to load it when it's in use by other process.
-            closeQuietly(out);
+            IOs.close(out);
             out = null;
 
             loadLibrary(loader, tmpFile.getPath(), true);
@@ -227,10 +226,10 @@ public final class NativeLibraryLoader {
             // Re-throw to fail the load
             throw e;
         } catch (Exception e) {
-            throw (UnsatisfiedLinkError) new UnsatisfiedLinkError( "could not load a native library: " + name).initCause(e);
+            throw (UnsatisfiedLinkError) new UnsatisfiedLinkError("could not load a native library: " + name).initCause(e);
         } finally {
-            closeQuietly(in);
-            closeQuietly(out);
+            IOs.close(in);
+            IOs.close(out);
             // After we load the library it is safe to delete the file.
             // We delete the file immediately to free up resources as soon as possible,
             // and if this fails fallback to deleting on JVM exit.
@@ -355,20 +354,11 @@ public final class NativeLibraryLoader {
         } catch (IOException ex) {
             throw new ClassNotFoundException(clazz.getName(), ex);
         } finally {
-            closeQuietly(in);
-            closeQuietly(out);
+            IOs.close(in);
+            IOs.close(out);
         }
     }
 
-    private static void closeQuietly(Closeable c) {
-        if (c != null) {
-            try {
-                c.close();
-            } catch (IOException ignore) {
-                // ignore
-            }
-        }
-    }
 
     private NativeLibraryLoader() {
         // Utility

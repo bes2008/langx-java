@@ -1,17 +1,20 @@
 package com.jn.langx.util.datetime;
 
 import com.jn.langx.annotation.NonNull;
+import com.jn.langx.annotation.NotEmpty;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
 
 import java.util.Locale;
 import java.util.TimeZone;
 
 public class DateFormatCacheKey {
+    @NotEmpty
     public String pattern;
+    @Nullable
     public String timeZoneId;
+    @Nullable
     public Locale locale;
 
     public DateFormatCacheKey(@NonNull String pattern) {
@@ -37,7 +40,7 @@ public class DateFormatCacheKey {
     public DateFormatCacheKey(@NonNull String pattern, @Nullable String timeZoneId, @Nullable Locale locale) {
         Preconditions.checkNotNull(pattern);
         this.locale = locale == null ? Locale.getDefault() : locale;
-        this.timeZoneId = Strings.isEmpty(timeZoneId) ? TimeZone.getDefault().getID() : timeZoneId;
+        this.timeZoneId = timeZoneId;
         this.pattern = pattern;
     }
 

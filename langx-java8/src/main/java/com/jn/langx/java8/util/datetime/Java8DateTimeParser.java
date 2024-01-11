@@ -10,12 +10,16 @@ import com.jn.langx.util.datetime.DateTimeParser;
 import com.jn.langx.util.datetime.parser.DateParsedResult;
 import com.jn.langx.util.os.Platform;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQuery;
+import java.time.zone.ZoneRules;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static java.time.temporal.ChronoField.*;
 
 public class Java8DateTimeParser implements DateTimeParser {
     private String pattern;
@@ -44,12 +48,18 @@ public class Java8DateTimeParser implements DateTimeParser {
         DateTimeFormatter formatter;
         // jdk 8 上 在pattern 中使用 O 时解析 GMT 时间时是有问题的， jdk 9 中修复了，所以解析GMT时，不会走这里
         if (!Platform.is9VMOrGreater() && datetimeString.contains("GMT")) {
-            return Dates.getSimpleCandidateDateTimeParseService().parse(datetimeString, Lists.newArrayList(pattern), timeZone==null? null: Lists.newArrayList(timeZone), Lists.newArrayList(locale));
+            return Dates.getSimpleCandidateDateTimeParseService().parse(datetimeString, Lists.newArrayList(pattern), timeZone == null ? null : Lists.newArrayList(timeZone), Lists.newArrayList(locale));
         }
 
         try {
             formatter = Java8GlobalThreadLocalMap.getDateTimeFormatter(this.pattern, this.timeZone, this.locale);
+
+            /*
+             * 使用Java 8 的 formatter 解析完毕之后，再使用ZonedDateTime.from 转换为ZonedDateTime的过程中，
+             * 取值时区时，会先取 formatter 中的zone，如果为 null，则看看是否解析出了时区，如果解析出了时区，则使用解析出来的时区
+             */
             ZonedDateTime zonedDateTime = ZonedDateTime.parse(datetimeString, formatter);
+            //parseZonedDateTime(formatter,datetimeString);
 
             long timestamp = zonedDateTime.toInstant().toEpochMilli();
             ZoneId zoneId = zonedDateTime.getZone();
@@ -70,5 +80,54 @@ public class Java8DateTimeParser implements DateTimeParser {
         } catch (Throwable ex) {
             return null;
         }
+    }
+
+    /*
+     * 使用Java 8 的 formatter 解析完毕之后，再使用ZonedDateTime.from 转换为ZonedDateTime的过程中，
+     * 取值时区时，会先取 formatter 中的zone，如果为 null，则看看是否解析出了时区，如果解析出了时区，则使用解析出来的时区
+     */
+    private ZonedDateTime parseZonedDateTime(DateTimeFormatter formatter, String datetimeString) {
+        TemporalAccessor temporal = formatter.parse(datetimeString);
+        if (temporal instanceof ZonedDateTime) {
+            return (ZonedDateTime) temporal;
+        }
+        try {
+            ZoneId zone = queryZoneId(temporal);
+            if (temporal.isSupported(INSTANT_SECONDS)) {
+                long epochSecond = temporal.getLong(INSTANT_SECONDS);
+                int nanoOfSecond = temporal.get(NANO_OF_SECOND);
+                return create(epochSecond, nanoOfSecond, zone);
+            } else {
+                LocalDate date = LocalDate.from(temporal);
+                LocalTime time = LocalTime.from(temporal);
+                return ZonedDateTime.of(date, time, zone);
+            }
+        } catch (DateTimeException ex) {
+            throw new DateTimeException("Unable to obtain ZonedDateTime from TemporalAccessor: " +
+                    temporal + " of type " + temporal.getClass().getName(), ex);
+        }
+    }
+
+    private ZoneId queryZoneId(TemporalAccessor temporal) {
+        return temporal.query(new TemporalQuery<ZoneId>() {
+            @Override
+            public ZoneId queryFrom(TemporalAccessor temporal) {
+                if (temporal.isSupported(OFFSET_SECONDS)) {
+                    return ZoneOffset.ofTotalSeconds(temporal.get(OFFSET_SECONDS));
+                }
+                return ZoneId.from(temporal);
+            }
+        });
+    }
+
+    /**
+     * 等同于 ZonedDateTime.create
+     */
+    private static ZonedDateTime create(long epochSecond, int nanoOfSecond, ZoneId zone) {
+        ZoneRules rules = zone.getRules();
+        Instant instant = Instant.ofEpochSecond(epochSecond, nanoOfSecond);
+        ZoneOffset offset = rules.getOffset(instant);
+        LocalDateTime ldt = LocalDateTime.ofEpochSecond(epochSecond, nanoOfSecond, offset);
+        return ZonedDateTime.ofLocal(ldt, zone, offset);
     }
 }

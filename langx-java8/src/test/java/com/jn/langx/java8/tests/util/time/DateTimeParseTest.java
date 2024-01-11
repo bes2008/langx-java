@@ -11,14 +11,14 @@ public class DateTimeParseTest {
 
     @Test
     public void test() {
-        //    testParse("2018-01-01T17:09:09.123456789");
+        testParse("2018-01-01T17:09:09.123456789");
         testParse("2018-01-01T17:09:09.123Z");
     }
 
     private void testParse(String dt){
         List<String> patterns = Collects.newArrayList(
 
-                //   "yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn",
+                   "yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnn",
                 "yyyy-MM-dd'T'HH:mm:ss.SSS",
                 "yyyy-MM-dd'T'HH:mm:ss"
         );

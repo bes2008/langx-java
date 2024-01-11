@@ -4,10 +4,11 @@ import com.jn.langx.cache.Cache;
 import com.jn.langx.cache.CacheBuilder;
 import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Resources;
+import com.jn.langx.test.text.grok.logstash.EcsCompatibility;
+import com.jn.langx.test.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
 import com.jn.langx.text.grok.GrokCompiler;
 import com.jn.langx.text.grok.GrokTemplate;
-import com.jn.langx.text.grok.logstash.EcsCompatibility;
-import com.jn.langx.text.grok.logstash.LogStashLocalPatternDefinitionsLoader;
+
 import com.jn.langx.text.grok.pattern.DefaultPatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.MultipleLevelPatternDefinitionRepository;
 import com.jn.langx.text.grok.pattern.PatternDefinition;

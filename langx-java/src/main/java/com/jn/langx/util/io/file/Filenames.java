@@ -9,6 +9,7 @@ import com.jn.langx.util.net.Nets;
 import java.io.File;
 import java.util.LinkedList;
 
+
 public class Filenames {
     public static boolean checkFileSegment(String filename) {
         return FilepathValidators.validateName(filename);
@@ -17,6 +18,11 @@ public class Filenames {
     public static boolean checkFilePath(String filePath) {
         return FilepathValidators.validatePath(filePath);
     }
+
+    /**
+     * The Unix separator character.
+     */
+    private static final char UNIX_SEPARATOR = '/';
 
     private static final String FOLDER_SEPARATOR = "/";
 
@@ -525,6 +531,164 @@ public class Filenames {
     public static String asUnixFilePath(String filePath) {
         Preconditions.checkNotNull(filePath);
         return filePath.trim().replaceAll("\\\\", "/").replaceAll("/+", "/");
+    }
+
+
+    /**
+     * Gets the full path from a full filename, which is the prefix + path.
+     * <p>
+     * This method will handle a file in either Unix or Windows format.
+     * The method is entirely text based, and returns the text before and
+     * including the last forward or backslash.
+     * <pre>
+     * C:\a\b\c.txt --&gt; C:\a\b\
+     * ~/a/b/c.txt  --&gt; ~/a/b/
+     * a.txt        --&gt; ""
+     * a/b/c        --&gt; a/b/
+     * a/b/c/       --&gt; a/b/c/
+     * C:           --&gt; C:
+     * C:\          --&gt; C:\
+     * ~            --&gt; ~/
+     * ~/           --&gt; ~/
+     * ~user        --&gt; ~user/
+     * ~user/       --&gt; ~user/
+     * </pre>
+     * <p>
+     * The output will be the same irrespective of the machine that the code is running on.
+     *
+     * @param filename  the filename to query, null returns null
+     * @return the path of the file, an empty string if none exists, null if invalid
+     */
+    public static String getFullDirectory(final String filename) {
+        return doGetFullPath(filename, true);
+    }
+
+    /**
+     * Gets the full path from a full filename, which is the prefix + path,
+     * and also excluding the final directory separator.
+     * <p>
+     * This method will handle a file in either Unix or Windows format.
+     * The method is entirely text based, and returns the text before the
+     * last forward or backslash.
+     * <pre>
+     * C:\a\b\c.txt --&gt; C:\a\b
+     * ~/a/b/c.txt  --&gt; ~/a/b
+     * a.txt        --&gt; ""
+     * a/b/c        --&gt; a/b
+     * a/b/c/       --&gt; a/b/c
+     * C:           --&gt; C:
+     * C:\          --&gt; C:\
+     * ~            --&gt; ~
+     * ~/           --&gt; ~
+     * ~user        --&gt; ~user
+     * ~user/       --&gt; ~user
+     * </pre>
+     * <p>
+     * The output will be the same irrespective of the machine that the code is running on.
+     *
+     * @param filename  the filename to query, null returns null
+     * @return the path of the file, an empty string if none exists, null if invalid
+     */
+    public static String getFullPathNoEndSeparator(final String filename) {
+        return doGetFullPath(filename, false);
+    }
+
+    /**
+     * Does the work of getting the path.
+     *
+     * @param filename  the filename
+     * @param includeSeparator  true to include the end separator
+     * @return the path
+     */
+    private static String doGetFullPath(final String filename, final boolean includeSeparator) {
+        if (filename == null) {
+            return null;
+        }
+        final int prefix = getPrefixLength(filename);
+        if (prefix < 0) {
+            return null;
+        }
+        if (prefix >= filename.length()) {
+            if (includeSeparator) {
+                return getPrefix(filename);  // add end slash if necessary
+            } else {
+                return filename;
+            }
+        }
+        final int index = indexOfLastSeparator(filename);
+        if (index < 0) {
+            return filename.substring(0, prefix);
+        }
+        int end = index + (includeSeparator ?  1 : 0);
+        if (end == 0) {
+            end++;
+        }
+        return filename.substring(0, end);
+    }
+
+    /**
+     * Returns the index of the last directory separator character.
+     * <p>
+     * This method will handle a file in either Unix or Windows format.
+     * The position of the last forward or backslash is returned.
+     * <p>
+     * The output will be the same irrespective of the machine that the code is running on.
+     *
+     * @param filename  the filename to find the last path separator in, null returns -1
+     * @return the index of the last separator character, or -1 if there
+     * is no such character
+     */
+    public static int indexOfLastSeparator(final String filename) {
+        if (filename == null) {
+            return NOT_FOUND;
+        }
+        final int lastUnixPos = filename.lastIndexOf(UNIX_SEPARATOR);
+        final int lastWindowsPos = filename.lastIndexOf(WINDOWS_FOLDER_SEPARATOR);
+        return Math.max(lastUnixPos, lastWindowsPos);
+    }
+
+
+    /**
+     * Gets the name minus the path from a full filename.
+     * <p>
+     * This method will handle a file in either Unix or Windows format.
+     * The text after the last forward or backslash is returned.
+     * <pre>
+     * a/b/c.txt --&gt; c.txt
+     * a.txt     --&gt; a.txt
+     * a/b/c     --&gt; c
+     * a/b/c/    --&gt; ""
+     * </pre>
+     * <p>
+     * The output will be the same irrespective of the machine that the code is running on.
+     *
+     * @param filename  the filename to query, null returns null
+     * @return the name of the file without the path, or an empty string if none exists.
+     * Null bytes inside string will be removed
+     */
+    public static String getFileName(final String filename) {
+        if (filename == null) {
+            return null;
+        }
+        failIfNullBytePresent(filename);
+        final int index = indexOfLastSeparator(filename);
+        return filename.substring(index + 1);
+    }
+
+    /**
+     * Check the input for null bytes, a sign of unsanitized data being passed to to file level functions.
+     *
+     * This may be used for poison byte attacks.
+     * @param path the path to check
+     */
+    private static void failIfNullBytePresent(final String path) {
+        final int len = path.length();
+        for (int i = 0; i < len; i++) {
+            if (path.charAt(i) == 0) {
+                throw new IllegalArgumentException("Null byte present in file/path name. There are no " +
+                        "known legitimate use cases for such data, but several injection attacks may use it");
+            }
+        }
     }
 
     public static String getParentPath(String filepath) {

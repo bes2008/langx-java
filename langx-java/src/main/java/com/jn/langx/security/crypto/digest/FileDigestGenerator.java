@@ -142,7 +142,7 @@ public class FileDigestGenerator {
     }
 
 
-    public static abstract class FileReader<INPUT extends Closeable> implements Iterator<byte[]>, Iterable<byte[]> {
+    public static abstract class FileReader<INPUT extends Closeable> implements Iterator<byte[]>, Iterable<byte[]>, Closeable {
         protected INPUT input;
         protected long fileLength;
         protected long readedLength = 0L;
@@ -152,7 +152,11 @@ public class FileDigestGenerator {
         }
 
         public final boolean hasNext() {
-            return input != null && readedLength < fileLength;
+            boolean hasNext = input != null && readedLength < fileLength;
+            if (!hasNext) {
+                close();
+            }
+            return hasNext;
         }
 
         public final void close() {
@@ -180,6 +184,7 @@ public class FileDigestGenerator {
             if (fileInput != null) {
                 input = new BufferedInputStream(fileInput);
             }
+            super.setFile(file);
         }
 
         @Override

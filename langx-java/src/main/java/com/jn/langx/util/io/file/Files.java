@@ -3,11 +3,17 @@ package com.jn.langx.util.io.file;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.exception.FileExistsException;
+import com.jn.langx.security.Securitys;
+import com.jn.langx.security.privileged.CommonPrivilegedAction;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.*;
+import com.jn.langx.util.Maths;
+import com.jn.langx.util.Objs;
+import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate2;
+import com.jn.langx.util.function.Supplier0;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.io.IOs;
 import com.jn.langx.util.io.LineDelimiter;
@@ -16,6 +22,7 @@ import com.jn.langx.util.io.file.filter.IsDirectoryFileFilter;
 import com.jn.langx.util.io.file.filter.IsFileFilter;
 import com.jn.langx.util.logging.Loggers;
 import com.jn.langx.util.net.URLs;
+import com.jn.langx.util.os.Platform;
 import org.slf4j.Logger;
 
 import java.io.FilenameFilter;
@@ -26,7 +33,12 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.nio.file.InvalidPathException;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static com.jn.langx.util.DataSizes.ONE_MB;
 
@@ -55,10 +67,15 @@ public class Files {
      *
      * @since 5.2.9
      */
-    public static File newFile(final File directory, final String... names) {
+    public static File newFile(@Nullable final File directory, final String... names) {
         File file = directory;
         for (final String name : names) {
-            file = new File(file, name);
+            if (file == null) {
+                String cleanedPath = Filenames.getFullDirectory(name) + Filenames.getFileName(name);
+                file = new File(cleanedPath);
+            } else {
+                file = new File(file, name);
+            }
         }
         return file;
     }
@@ -69,15 +86,7 @@ public class Files {
      * @since 5.2.9
      */
     public static File newFile(final String... names) {
-        File file = null;
-        for (final String name : names) {
-            if (file == null) {
-                file = new File(name);
-            } else {
-                file = new File(file, name);
-            }
-        }
-        return file;
+        return newFile(null, names);
     }
 
     /**
@@ -332,7 +341,6 @@ public class Files {
                             bytes.put(octet);
                             i += 3;
                         } while (i < n && url.charAt(i) == '%');
-                        continue;
                     } catch (final RuntimeException e) {
                         // malformed percent-encoded octet, fall through and
                         // append characters literally
@@ -546,9 +554,9 @@ public class Files {
         if (destFile.exists() && destFile.isDirectory()) {
             throw new IOException("Destination '" + destFile + "' exists but is a directory");
         }
-        FileInputStream fis;
+        FileInputStream fis = null;
         FileChannel input = null;
-        FileOutputStream fos;
+        FileOutputStream fos = null;
         FileChannel output = null;
         try {
             fis = new FileInputStream(srcFile);
@@ -570,6 +578,8 @@ public class Files {
         } finally {
             IOs.close(output);
             IOs.close(input);
+            IOs.close(fis);
+            IOs.close(fos);
         }
 
         final long srcLen = srcFile.length();
@@ -1932,5 +1942,75 @@ public class Files {
 
     private Files() {
 
+    }
+
+    // temporary directory location
+    private static final File tmpdir = CommonPrivilegedAction.doPrivileged(new Supplier0<File>() {
+        @Override
+        public File get() {
+            return Platform.getTempDirectory();
+        }
+    });
+
+
+    // file name generation, same as java.io.File for now
+    private static final SecureRandom random = Securitys.getSecureRandom();
+
+    private static File generateTempPath(@Nullable String prefix, @Nullable String suffix, @Nullable File dir) {
+        long n = random.nextLong();
+        n = (n == Long.MIN_VALUE) ? 0 : Math.abs(n);
+        File f = Files.newFile(dir, prefix + ("" + n) + suffix);
+        return f;
+    }
+
+
+    /**
+     * Creates a file or directory in in the given given directory (or in the
+     * temporary directory if dir is {@code null}).
+     */
+    private static File createTemp(File dir, String prefix, String suffix, boolean createDirectory) throws IOException {
+        if (prefix == null)
+            prefix = "";
+        if (suffix == null)
+            suffix = (createDirectory) ? "" : ".tmp";
+        if (dir == null) {
+            dir = tmpdir;
+        }
+        File f;
+        try {
+            f = generateTempPath(prefix, suffix, dir);
+            while (f.exists()) {
+                f = generateTempPath(prefix, suffix, dir);
+            }
+        } catch (InvalidPathException e) {
+            throw e;
+        }
+        try {
+            if (createDirectory) {
+                Files.forceMkdir(f);
+                return f;
+            } else {
+                Files.makeFile(f);
+                return f;
+            }
+        } catch (SecurityException e) {
+            throw e;
+        }
+    }
+
+    /**
+     * Creates a temporary file in the given directory, or in in the
+     * temporary directory if dir is {@code null}.
+     */
+    public static File createTempFile(@Nullable File dir, @Nullable String prefix, @Nullable String suffix) throws IOException {
+        return createTemp(dir, prefix, suffix, false);
+    }
+
+    /**
+     * Creates a temporary directory in the given directory, or in in the
+     * temporary directory if dir is {@code null}.
+     */
+    public static File createTempDirectory(@Nullable File dir, @Nullable String prefix, @Nullable String suffix) throws IOException {
+        return createTemp(dir, prefix, suffix, true);
     }
 }

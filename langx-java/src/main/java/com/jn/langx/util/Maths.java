@@ -2,19 +2,23 @@ package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.comparator.ComparableComparator;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 public class Maths {
-    private Maths(){
+    private Maths() {
 
     }
+
     /**
      * 求最大值
      */
@@ -210,7 +214,6 @@ public class Maths {
 
     /**
      * 判断是否为 2的 power 值
-     *
      */
     public static boolean isPower2(int value) {
         return value >= 1 && ((value & (value - 1)) == 0);
@@ -445,28 +448,28 @@ public class Maths {
         }
     }
 
-    public static int clz32(int a){
+    public static int clz32(int a) {
         return clzN(a, 32);
     }
 
-    public static int clzN(int a, int n){
-        String binaryText =Radixs.toBinary(a);
+    public static int clzN(int a, int n) {
+        String binaryText = Radixs.toBinary(a);
         int clz = 0;
-        if(binaryText.length()<n){
+        if (binaryText.length() < n) {
             clz = n - binaryText.length();
             clz = Maths.max(0, clz);
         }
-        char[] cs=binaryText.toCharArray();
+        char[] cs = binaryText.toCharArray();
         int delta = 0;
-        for (int i = 0; i < cs.length; i++){
+        for (int i = 0; i < cs.length; i++) {
             char c = cs[i];
-            if(c != '0'){
+            if (c != '0') {
                 break;
-            }else{
-                delta = i+1;
+            } else {
+                delta = i + 1;
             }
         }
-        return clz+delta;
+        return clz + delta;
     }
 
     /**
@@ -475,7 +478,6 @@ public class Maths {
      * @param v1 被乘数
      * @param v2 乘数
      * @return 积
-     *
      * @since 4.6.13
      */
     public static double mul(float v1, float v2) {
@@ -488,9 +490,7 @@ public class Maths {
      * @param v1 被乘数
      * @param v2 乘数
      * @return 积
-     *
      * @since 4.6.13
-     *
      */
     public static double mul(float v1, double v2) {
         return mul(Float.toString(v1), Double.toString(v2)).doubleValue();
@@ -502,7 +502,6 @@ public class Maths {
      * @param v1 被乘数
      * @param v2 乘数
      * @return 积
-     *
      * @since 4.6.13
      */
     public static double mul(double v1, float v2) {
@@ -515,7 +514,6 @@ public class Maths {
      * @param v1 被乘数
      * @param v2 乘数
      * @return 积
-     *
      * @since 4.6.13
      */
     public static double mul(double v1, double v2) {
@@ -529,7 +527,6 @@ public class Maths {
      * @param v1 被乘数
      * @param v2 乘数
      * @return 积
-     *
      * @since 4.6.13
      */
     public static double mul(Double v1, Double v2) {
@@ -544,7 +541,6 @@ public class Maths {
      * @param v1 被乘数
      * @param v2 乘数
      * @return 积
-     *
      * @since 4.6.13
      */
     public static BigDecimal mul(Number v1, Number v2) {
@@ -579,7 +575,6 @@ public class Maths {
      * @param v1 被乘数
      * @param v2 乘数
      * @return 积
-     *
      * @since 4.6.13
      */
     public static BigDecimal mul(String v1, String v2) {
@@ -592,7 +587,6 @@ public class Maths {
      *
      * @param values 多个被乘值
      * @return 积
-     *
      * @since 4.6.13
      */
     public static BigDecimal mul(String... values) {
@@ -614,7 +608,6 @@ public class Maths {
      *
      * @param values 多个被乘值
      * @return 积
-     *
      * @since 4.6.13
      */
     public static BigDecimal mul(BigDecimal... values) {
@@ -631,6 +624,7 @@ public class Maths {
 
     /**
      * 默认除法运算精度
+     *
      * @since 4.6.13
      */
     private static final int DEFAULT_DIV_SCALE = 10;
@@ -641,7 +635,6 @@ public class Maths {
      * @param v1 被除数
      * @param v2 除数
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(float v1, float v2) {
@@ -654,7 +647,6 @@ public class Maths {
      * @param v1 被除数
      * @param v2 除数
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(float v1, double v2) {
@@ -667,7 +659,6 @@ public class Maths {
      * @param v1 被除数
      * @param v2 除数
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(double v1, float v2) {
@@ -680,7 +671,6 @@ public class Maths {
      * @param v1 被除数
      * @param v2 除数
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(double v1, double v2) {
@@ -693,7 +683,6 @@ public class Maths {
      * @param v1 被除数
      * @param v2 除数
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(Double v1, Double v2) {
@@ -706,8 +695,6 @@ public class Maths {
      * @param v1 被除数
      * @param v2 除数
      * @return 两个参数的商
-     *
-     *
      * @since 4.6.13
      */
     public static BigDecimal div(Number v1, Number v2) {
@@ -720,7 +707,6 @@ public class Maths {
      * @param v1 被除数
      * @param v2 除数
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static BigDecimal div(String v1, String v2) {
@@ -734,7 +720,6 @@ public class Maths {
      * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(float v1, float v2, int scale) {
@@ -748,7 +733,6 @@ public class Maths {
      * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(float v1, double v2, int scale) {
@@ -762,7 +746,6 @@ public class Maths {
      * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(double v1, float v2, int scale) {
@@ -776,7 +759,6 @@ public class Maths {
      * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(double v1, double v2, int scale) {
@@ -790,7 +772,6 @@ public class Maths {
      * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(Double v1, Double v2, int scale) {
@@ -804,7 +785,6 @@ public class Maths {
      * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static BigDecimal div(Number v1, Number v2, int scale) {
@@ -818,7 +798,6 @@ public class Maths {
      * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static BigDecimal div(String v1, String v2, int scale) {
@@ -833,7 +812,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(float v1, float v2, int scale, RoundingMode roundingMode) {
@@ -848,7 +826,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(float v1, double v2, int scale, RoundingMode roundingMode) {
@@ -863,7 +840,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(double v1, float v2, int scale, RoundingMode roundingMode) {
@@ -878,7 +854,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(double v1, double v2, int scale, RoundingMode roundingMode) {
@@ -893,7 +868,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static double div(Double v1, Double v2, int scale, RoundingMode roundingMode) {
@@ -909,7 +883,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static BigDecimal div(Number v1, Number v2, int scale, RoundingMode roundingMode) {
@@ -927,7 +900,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
      * @since 4.6.13
      */
     public static BigDecimal div(String v1, String v2, int scale, RoundingMode roundingMode) {
@@ -942,8 +914,6 @@ public class Maths {
      * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
-     *
-     *
      * @since 4.6.13
      */
     public static BigDecimal div(BigDecimal v1, BigDecimal v2, int scale, RoundingMode roundingMode) {
@@ -955,5 +925,104 @@ public class Maths {
             scale = -scale;
         }
         return v1.divide(v2, scale, roundingMode);
+    }
+
+
+    /**
+     * 判断一个数是不为 质数
+     * <p>
+     * 不，1不是质数。质数是指大于1且只能被1和本身整除的自然数。而1只能被1整除，不能被其他任何自然数整除，因此不符合质数的定义。按照常规的定义，质数应该是大于1的自然数。
+     */
+    public static boolean isPrimeNumber(int num) {
+        if (num < 2) {
+            return false;
+        }
+        if (num == 2 || num == 3) {
+            return true;
+        }
+        if (num % 2 == 0 || num % 3 == 0) {
+            return false;
+        }
+
+        int thesqrt = (int) Math.sqrt(num);
+
+        /*
+         *  i 判定次数
+         *  j 判定是否可以被整除
+         *  因为前面已判定过 2,3 了，
+         *  那么 2的位数，3的倍数直接不用再去判定了，相当于 2/3 的除数不用去判定了，
+         *  所以接下来是从 5 开始判定。
+         *
+         *
+         *  i:  1   2   3   4   5   6   7   8   9   10  11  12  13
+         *  j:  5   7   11  13  17  19  23  25  29  31  35  37  41
+         *
+         *  通过上述分析， j = 3 * i + (i % 2 == 0 ? 1 : 2)
+         */
+        int i = 1;
+        int j;
+        while ((j = 3 * i + (i % 2 == 0 ? 1 : 2)) <= thesqrt) {
+            if (num % j == 0) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    public static int countPrimes(int start, int end) {
+        final SimpleIntegerCounter counter = new SimpleIntegerCounter(0);
+        findPrimes(start, end, new Consumer<Integer>() {
+            @Override
+            public void accept(Integer prime) {
+                counter.increment();
+            }
+        });
+        return counter.get();
+    }
+
+    public static List<Integer> findPrimes(int start, int end) {
+        final List<Integer> list = Lists.newArrayList();
+        findPrimes(start, end, new Consumer<Integer>() {
+            @Override
+            public void accept(Integer prime) {
+                list.add(prime);
+            }
+        });
+        return list;
+    }
+
+    /**
+     * 找出指定范围内的所有质数 [start, end)
+     */
+    public static void findPrimes(int start, int end, Consumer<Integer> consumer) {
+        if (start < 2) {
+            start = 2;
+        }
+        if (end < 2) {
+            end = 2;
+        }
+        if (start > end) {
+            int tmp = start;
+            start = end;
+            end = tmp;
+        }
+
+        int candidate = start;
+        if (candidate == 2) {
+            if (candidate < end) {
+                consumer.accept(candidate);
+            }
+            candidate++;
+        } else if (candidate % 2 == 0) {
+            candidate++;
+        }
+
+        while (candidate < end) {
+            if (isPrimeNumber(candidate)) {
+                consumer.accept(candidate);
+            }
+            candidate = candidate + 2;
+        }
     }
 }

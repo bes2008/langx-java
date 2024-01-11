@@ -25,6 +25,8 @@ public class Java8GlobalThreadLocalMap extends GlobalThreadLocalMap {
             }
             if (Strings.isNotEmpty(key.timeZoneId)) {
                 df = df.withZone(ZoneId.of(key.timeZoneId));
+            }else {
+                df.withZone(null);
             }
             return df;
         }

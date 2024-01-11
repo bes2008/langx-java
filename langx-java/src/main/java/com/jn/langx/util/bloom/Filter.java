@@ -127,7 +127,7 @@ public abstract class Filter implements Writable {
         for (Key key : keys) {
             add(key);
         }
-    }//end add()
+    }
 
     /**
      * Adds a collection of keys to <i>this</i> filter.
@@ -141,7 +141,7 @@ public abstract class Filter implements Writable {
         for (Key key : keys) {
             add(key);
         }
-    }//end add()
+    }
 
     /**
      * Adds an array of keys to <i>this</i> filter.
@@ -155,9 +155,8 @@ public abstract class Filter implements Writable {
         for (Key key : keys) {
             add(key);
         }
-    }//end add()
+    }
 
-    // Writable interface
 
     @Override
     public void write(DataOutput out) throws IOException {
@@ -175,4 +174,4 @@ public abstract class Filter implements Writable {
         this.vectorSize = in.readInt();
         this.hash = new HashFunction(this.vectorSize, this.nbHash, this.hasherName);
     }
-}//end class
+}
