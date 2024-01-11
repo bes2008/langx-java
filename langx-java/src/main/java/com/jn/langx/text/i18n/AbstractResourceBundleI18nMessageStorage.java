@@ -3,6 +3,7 @@ package com.jn.langx.text.i18n;
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
 import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Objs;
 
 import java.util.Locale;
 
@@ -24,7 +25,7 @@ public abstract class AbstractResourceBundleI18nMessageStorage extends AbstractI
     }
 
     public String getMessage(@Nullable String basename, @Nullable Locale locale, @Nullable ClassLoader classLoader, @NonNull String key, @Nullable Object... args) {
-        return getMessageInternal(getBundleBaseName(basename), toLocale(locale), getClassLoader(classLoader), key, args);
+        return getMessageInternal(getBundleBaseName(basename), Objs.useValueIfEmpty(locale,getLocale()), getClassLoader(classLoader), key, args);
     }
 
     protected String getMessageInternal(@NonNull Locale locale, @NonNull ClassLoader classLoader, @NonNull String key, Object... args) {
