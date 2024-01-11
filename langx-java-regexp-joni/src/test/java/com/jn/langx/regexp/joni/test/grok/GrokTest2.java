@@ -1,4 +1,4 @@
-package com.jn.langx.langx.regexp.joni.test.grok;
+package com.jn.langx.regexp.joni.test.grok;
 
 import com.jn.langx.io.resource.ClassPathResource;
 import com.jn.langx.io.resource.Resources;
