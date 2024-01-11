@@ -1,6 +1,5 @@
-package com.jn.langx.util.concurrent.lock;
+package com.jn.langx.distributed.locks;
 
-import com.jn.langx.distributed.locks.AbstractDLock;
 import com.jn.langx.util.Dates;
 import com.jn.langx.util.logging.Loggers;
 
