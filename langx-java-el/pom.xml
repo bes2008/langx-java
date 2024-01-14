@@ -6,14 +6,15 @@
     <parent>
         <groupId>io.github.bes2008.solution.langx</groupId>
         <artifactId>langx</artifactId>
-        <version>5.2.10</version>
+        <version>5.3.0</version>
     </parent>
 
     <artifactId>langx-java-el</artifactId>
+    <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>6</maven.compiler.source>
+        <maven.compiler.target>6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
