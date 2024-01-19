@@ -308,6 +308,8 @@
                             <stagingProgressPauseDurationSeconds>5</stagingProgressPauseDurationSeconds>
                             <stagingProgressTimeoutMinutes>5</stagingProgressTimeoutMinutes>
                             <detectBuildFailures>false</detectBuildFailures>
+                            <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+                            <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
                         </configuration>
                     </plugin>
                     <plugin>
