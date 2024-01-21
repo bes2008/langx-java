@@ -64,7 +64,6 @@
         <module>langx-java-el</module>
         <module>langx-java-asn1</module>
         <module>langx-java-distributed</module>
-        <module>langx-java-cmd</module>
     </modules>
     <dependencyManagement>
         <dependencies>
