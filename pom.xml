@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.3.0</version>
+    <version>5.3.2</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -64,7 +64,6 @@
         <module>langx-java-el</module>
         <module>langx-java-asn1</module>
         <module>langx-java-distributed</module>
-        <module>langx-java-cmd</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -308,6 +307,8 @@
                             <stagingProgressPauseDurationSeconds>5</stagingProgressPauseDurationSeconds>
                             <stagingProgressTimeoutMinutes>5</stagingProgressTimeoutMinutes>
                             <detectBuildFailures>false</detectBuildFailures>
+                            <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+                            <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
                         </configuration>
                     </plugin>
                     <plugin>

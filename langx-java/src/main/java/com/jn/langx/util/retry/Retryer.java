@@ -38,19 +38,28 @@ public class Retryer<CTX> {
 
     public static <CTX, R> R execute(Predicate2<CTX, Throwable> retryPredicate, RetryConfig retryConfig, Consumer3<RetryInfo, CTX, Throwable> errorListener, Executable<R> executable, Object parameters) throws Exception {
         Retryer<CTX> retryer = new Retryer<CTX>(retryPredicate, retryConfig, errorListener);
-        return retryer.executeWithRetry(executable, 1, parameters);
+        return retryer.executeWithRetry(executable, null, parameters);
     }
 
     /**
      * 递归调用 retry
      */
-    public <R> R executeWithRetry(final Executable<R> executable, final int attempt, final Object... parameters) throws Exception {
+    public <R> R executeWithRetry(final Executable<R> executable, RetryInfo retryInfo, final Object... parameters) throws Exception {
+        if (retryInfo==null || retryInfo.getAttempts()<1){
+            retryInfo = new RetryInfo(1, this.config.getMaxAttempts(), System.currentTimeMillis(), this.config.getTimeUnit().toMillis(this.config.getTimeout()));
+        }
         try {
+            if(retryInfo.isFirstAttempts()){
+                if(this.config.getDelay()>0){
+                    this.config.getTimeUnit().sleep(this.config.getDelay());
+                }
+            }
+
             R r = executable.execute(parameters);
             return r;
         } catch (Throwable e) {
-            if (waitAndJudgeRetry(attempt, e)) {
-                return executeWithRetry(executable, attempt + 1, parameters);
+            if (waitAndJudgeRetry(retryInfo, e)) {
+                return executeWithRetry(executable, retryInfo.nextAttempts(), parameters);
             } else {
                 if (e instanceof Error) {
                     throw new RuntimeException(e);
@@ -60,23 +69,25 @@ public class Retryer<CTX> {
         }
     }
 
-    private boolean waitAndJudgeRetry(int attempt, Throwable e) {
-        return waitAndJudgeRetry(attempt, this.config, retryPredicate, errorListener, null, e);
+    private boolean waitAndJudgeRetry(RetryInfo retryInfo, Throwable e) {
+        return waitAndJudgeRetry(retryInfo, this.config, retryPredicate, errorListener, null, e);
     }
 
     /**
      * @return 返回是否需要retry
      */
-    public static <CTX> boolean waitAndJudgeRetry(int attempt, RetryConfig retryConfig, @Nullable Predicate2<CTX, Throwable> retryPredicate, @Nullable Consumer3<RetryInfo, CTX, Throwable> errorListener, @Nullable CTX ctx, Throwable error) {
+    private static <CTX> boolean waitAndJudgeRetry(RetryInfo retryInfo, RetryConfig retryConfig, @Nullable Predicate2<CTX, Throwable> retryPredicate, @Nullable Consumer3<RetryInfo, CTX, Throwable> errorListener, @Nullable CTX ctx, Throwable error) {
 
-        if (!isExhausted(attempt, retryConfig.getMaxAttempts()) && (retryPredicate != null && retryPredicate.test(ctx, error))) {
-            long backoffMillis = retryConfig.getBackoffPolicy().getBackoffTime(retryConfig, attempt);
+        if (!isExhausted(retryInfo.getAttempts(), retryConfig.getMaxAttempts())
+                && !isExhaustedTimeout(retryInfo.getStartTime(), retryInfo.getTimeout())
+                && (retryPredicate != null && retryPredicate.test(ctx, error))) {
+            long backoffMillis = retryConfig.getBackoffPolicy().getBackoffTime(retryConfig, retryInfo.getAttempts());
             if (backoffMillis < 0) {
                 throw new RuntimeException(StringTemplates.formatWithPlaceholder("invalid retry backoff: {}", backoffMillis));
             }
 
             if (errorListener != null) {
-                RetryInfo retryInfo = new RetryInfo(attempt, retryConfig.getMaxAttempts(), backoffMillis);
+                retryInfo.setBackoff(backoffMillis);
                 errorListener.accept(retryInfo, ctx, error);
             }
             try {
@@ -95,12 +106,23 @@ public class Retryer<CTX> {
         }
     }
 
-    public static boolean isExhausted(int attempt, int maxAttempts) {
+    private static boolean isExhausted(int attempts, int maxAttempts) {
         if (maxAttempts <= 0) {
             // 无次数限制
             return false;
         }
-        return attempt >= maxAttempts;
+        return attempts >= maxAttempts;
+    }
+
+    private static boolean isExhaustedTimeout(long startTime, long timeout) {
+        if(timeout<=0){
+            // 无时间限制
+            return false;
+        }
+        if(startTime<=0){
+            throw new RuntimeException("Illegal args, startTime: "+startTime);
+        }
+        return System.currentTimeMillis() > (startTime + timeout);
     }
 }
 

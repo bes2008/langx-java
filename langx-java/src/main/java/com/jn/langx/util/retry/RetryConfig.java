@@ -1,5 +1,7 @@
 package com.jn.langx.util.retry;
 
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Maths;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.retry.backoff.ExponentialBackoffPolicy;
 
@@ -7,10 +9,18 @@ import java.util.concurrent.TimeUnit;
 
 public class RetryConfig {
     /**
-     * 最大尝试次数，正整数。如果 <=0 则代表无限次数
+     * 最大尝试次数，正整数。如果 <=0 则代表次数限制
      */
     private int maxAttempts;
+
+    // 最大时间。如果 <=0 ，则代表无时间限制
+    private int timeout;
+
+    // 首次开始之前的延迟
+    private int delay;
+
     private long sleepInterval;
+    // 单次等待的最大时间，它的值通常要大于sleepInterval
     private long maxSleepTime;
     private TimeUnit timeUnit;
     private BackoffPolicy backoffPolicy;
@@ -26,11 +36,26 @@ public class RetryConfig {
                        long maxSleepTime,
                        TimeUnit timeUnit,
                        BackoffPolicy backoffPolicy) {
-        this.maxAttempts = maxAttempts;
+        this(maxAttempts, -1, 0, sleepInterval, maxSleepTime, timeUnit, backoffPolicy);
+    }
+
+    public RetryConfig(int maxAttempts,
+                       int timeout,
+                       int delay,
+                       long sleepInterval,
+                       long maxSleepTime,
+                       TimeUnit timeUnit,
+                       BackoffPolicy backoffPolicy) {
+        this.maxAttempts = maxAttempts<0 ? -1 : Maths.max(1,maxAttempts);
+        this.timeout=Maths.max(0,timeout);
+        this.delay= Maths.max(0,delay);
         this.timeUnit = timeUnit == null ? TimeUnit.MILLISECONDS : timeUnit;
         this.sleepInterval = sleepInterval;
         this.maxSleepTime = maxSleepTime;
         this.backoffPolicy = backoffPolicy == null ? ExponentialBackoffPolicy.INSTANCE : backoffPolicy;
+        if (this.timeout>0){
+            Preconditions.checkArgument(this.timeout>this.delay, StringTemplates.formatWithPlaceholder("illegal args, timeout: {}, delay: {}", this.timeout, this.delay));
+        }
     }
 
     public RetryConfig setBackoffPolicy(BackoffPolicy backoffPolicy) {
@@ -87,6 +112,22 @@ public class RetryConfig {
 
     public BackoffPolicy getBackoffPolicy() {
         return backoffPolicy;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
     }
 
     public static RetryConfig noneRetryConfig() {
