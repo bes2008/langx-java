@@ -31,12 +31,7 @@ public class Retryer<R> {
     public Retryer(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig config, Consumer<RetryInfo<R>> attemptsListener) {
         this.errorRetryPredicate = errorRetryPredicate == null ? Functions.<Throwable>truePredicate() : errorRetryPredicate;
         this.resultRetryPredicate = resultRetryPredicate == null ? Functions.<R>falsePredicate() : resultRetryPredicate;
-        this.attemptsListener = attemptsListener == null ? new Consumer<RetryInfo<R>>() {
-            @Override
-            public void accept(RetryInfo<R> retryInfo) {
-                // noop
-            }
-        } : attemptsListener;
+        this.attemptsListener = attemptsListener == null ? Functions.<RetryInfo<R>>noopConsumer() : attemptsListener;
         this.config = config;
     }
 
