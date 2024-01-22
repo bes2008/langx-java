@@ -29,7 +29,7 @@ public class RetryInfo<R> {
         this.setBackoff(backoff);
     }
 
-    public void setBackoff(long backoff) {
+    void setBackoff(long backoff) {
         this.backoff = backoff;
     }
 
@@ -94,7 +94,7 @@ public class RetryInfo<R> {
         return error;
     }
 
-    public void setError(Throwable error) {
+    void setError(Throwable error) {
         this.error = error;
         this.result=null;
     }
@@ -103,7 +103,7 @@ public class RetryInfo<R> {
         return result;
     }
 
-    public void setResult(R result) {
+    void setResult(R result) {
         this.result = result;
         this.error=null;
     }
