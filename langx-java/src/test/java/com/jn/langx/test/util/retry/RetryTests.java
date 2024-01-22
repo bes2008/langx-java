@@ -8,16 +8,17 @@ import com.jn.langx.util.struct.counter.IntegerCounter;
 import com.jn.langx.util.struct.counter.SimpleIntegerCounter;
 import org.junit.Test;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 public class RetryTests {
     @Test
     public void test() throws Exception{
         final IntegerCounter counter = new SimpleIntegerCounter(0);
-        Executable<Object> task=new Executable<Object>() {
+        Callable<Object> task=new Callable<Object>() {
 
             @Override
-            public Object execute(Object... parameters) throws Exception {
+            public Object call() throws Exception {
                 System.out.println("execute some statements: "+counter.increment());
                 throw new Exception("mock an error");
             }
@@ -53,9 +54,9 @@ public class RetryTests {
 
     }
 
-    void retryWithIgnoreError( RetryConfig config,Executable<Object> task ) {
+    void retryWithIgnoreError( RetryConfig config,Callable<Object> task ) {
         try {
-            Retryer.execute(null, config, null, task, null);
+            Retryer.execute(null,null, config, null, task);
         }catch (Exception exception){
             // ignore it
         }

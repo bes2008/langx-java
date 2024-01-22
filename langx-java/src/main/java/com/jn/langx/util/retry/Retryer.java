@@ -1,109 +1,118 @@
 package com.jn.langx.util.retry;
 
 import com.jn.langx.annotation.NonNull;
-import com.jn.langx.annotation.Nullable;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.concurrent.Executable;
-import com.jn.langx.util.function.Consumer3;
-import com.jn.langx.util.function.Functions;
-import com.jn.langx.util.function.Predicate2;
+import com.jn.langx.util.function.*;
 
-public class Retryer<CTX> {
+import java.util.concurrent.Callable;
+
+public class Retryer<R> {
     @NonNull
     private RetryConfig config;
+
+    // 一次执行完毕，拿到结果后，根据结果判断是否要retry
     @NonNull
-    private Predicate2<CTX, Throwable> retryPredicate;
+    private Predicate<R> resultRetryPredicate;
+    // 一次执行过程中，发生了error，根据error判断是否要retry
     @NonNull
-    private Consumer3<RetryInfo, CTX, Throwable> errorListener;
+    private Predicate<Throwable> errorRetryPredicate;
+    @NonNull
+    private Consumer<RetryInfo<R>> attemptsListener;
 
 
     public Retryer(RetryConfig config) {
         this(null, config);
     }
 
-    public Retryer(Predicate2<CTX, Throwable> retryPredicate, RetryConfig config) {
-        this(retryPredicate, config, null);
+    public Retryer(Predicate<Throwable> retryPredicate, RetryConfig config) {
+        this(retryPredicate, null, config, null);
     }
 
-    public Retryer(Predicate2<CTX, Throwable> retryPredicate, RetryConfig config, Consumer3<RetryInfo, CTX, Throwable> errorListener) {
-        this.retryPredicate = retryPredicate == null ? Functions.<CTX, Throwable>truePredicate2() : retryPredicate;
-        this.errorListener = errorListener == null ? new Consumer3<RetryInfo, CTX, Throwable>() {
+    public Retryer(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig config, Consumer<RetryInfo<R>> attemptsListener) {
+        this.errorRetryPredicate = errorRetryPredicate == null ? Functions.<Throwable>truePredicate() : errorRetryPredicate;
+        this.resultRetryPredicate = resultRetryPredicate == null ? Functions.<R>falsePredicate() : resultRetryPredicate;
+        this.attemptsListener = attemptsListener == null ? new Consumer<RetryInfo<R>>() {
             @Override
-            public void accept(RetryInfo retryInfo, CTX ctx, Throwable throwable) {
+            public void accept(RetryInfo<R> retryInfo) {
                 // noop
             }
-        } : errorListener;
+        } : attemptsListener;
         this.config = config;
     }
 
-    public static <CTX, R> R execute(Predicate2<CTX, Throwable> retryPredicate, RetryConfig retryConfig, Consumer3<RetryInfo, CTX, Throwable> errorListener, Executable<R> executable, Object parameters) throws Exception {
-        Retryer<CTX> retryer = new Retryer<CTX>(retryPredicate, retryConfig, errorListener);
-        return retryer.executeWithRetry(executable, null, parameters);
+    public static <R> R execute(Predicate<Throwable> errorRetryPredicate, Predicate<R> resultRetryPredicate, RetryConfig retryConfig, Consumer<RetryInfo<R>> attemptsListener, Callable<R> task) throws Exception {
+        Retryer<R> retryer = new Retryer<R>(errorRetryPredicate, resultRetryPredicate, retryConfig, attemptsListener);
+        return retryer.executeWithRetry(null, task);
+    }
+
+    public R execute(Callable<R> task) {
+        return executeWithRetry(null, task);
     }
 
     /**
      * 递归调用 retry
      */
-    public <R> R executeWithRetry(final Executable<R> executable, RetryInfo retryInfo, final Object... parameters) throws Exception {
-        if (retryInfo==null || retryInfo.getAttempts()<1){
-            retryInfo = new RetryInfo(1, this.config.getMaxAttempts(), System.currentTimeMillis(), this.config.getTimeUnit().toMillis(this.config.getTimeout()));
+    private R executeWithRetry(RetryInfo<R> retryInfo, final Callable<R> task) {
+        if (retryInfo == null || retryInfo.getAttempts() < 1) {
+            retryInfo = new RetryInfo<R>(1, this.config.getMaxAttempts(), System.currentTimeMillis(), this.config.getTimeUnit().toMillis(this.config.getTimeout()));
         }
         try {
-            if(retryInfo.isFirstAttempts()){
-                if(this.config.getDelay()>0){
+            if (retryInfo.isFirstAttempts()) {
+                if (this.config.getDelay() > 0) {
                     this.config.getTimeUnit().sleep(this.config.getDelay());
                 }
             }
-
-            R r = executable.execute(parameters);
-            return r;
+            R r = task.call();
+            retryInfo.setResult(r);
         } catch (Throwable e) {
-            if (waitAndJudgeRetry(retryInfo, e)) {
-                return executeWithRetry(executable, retryInfo.nextAttempts(), parameters);
-            } else {
-                if (e instanceof Error) {
-                    throw new RuntimeException(e);
-                }
-                throw (Exception) e;
-            }
+            retryInfo.setError(e);
         }
-    }
 
-    private boolean waitAndJudgeRetry(RetryInfo retryInfo, Throwable e) {
-        return waitAndJudgeRetry(retryInfo, this.config, retryPredicate, errorListener, null, e);
+        if (!judgeRetryAndWait(retryInfo)) {
+            if(retryInfo.hasError()){
+                throw new RuntimeException(retryInfo.getError());
+            }
+            return retryInfo.getResult();
+        }
+        else{
+           return executeWithRetry(retryInfo.nextAttempts(),task);
+        }
     }
 
     /**
      * @return 返回是否需要retry
      */
-    private static <CTX> boolean waitAndJudgeRetry(RetryInfo retryInfo, RetryConfig retryConfig, @Nullable Predicate2<CTX, Throwable> retryPredicate, @Nullable Consumer3<RetryInfo, CTX, Throwable> errorListener, @Nullable CTX ctx, Throwable error) {
-
-        if (!isExhausted(retryInfo.getAttempts(), retryConfig.getMaxAttempts())
+    private boolean judgeRetryAndWait(RetryInfo<R> retryInfo) {
+        boolean needRetry=!isExhausted(retryInfo.getAttempts(), this.config.getMaxAttempts())
                 && !isExhaustedTimeout(retryInfo.getStartTime(), retryInfo.getTimeout())
-                && (retryPredicate != null && retryPredicate.test(ctx, error))) {
-            long backoffMillis = retryConfig.getBackoffPolicy().getBackoffTime(retryConfig, retryInfo.getAttempts());
+                && retryInfo.hasError() ? this.errorRetryPredicate.test(retryInfo.getError()) : this.resultRetryPredicate.test(retryInfo.getResult());
+
+        if (needRetry) {
+            long backoffMillis = this.config.getBackoffPolicy().getBackoffTime(this.config, retryInfo.getAttempts());
             if (backoffMillis < 0) {
                 throw new RuntimeException(StringTemplates.formatWithPlaceholder("invalid retry backoff: {}", backoffMillis));
             }
+            retryInfo.setBackoff(backoffMillis);
+        }
 
-            if (errorListener != null) {
-                retryInfo.setBackoff(backoffMillis);
-                errorListener.accept(retryInfo, ctx, error);
-            }
+        attemptsListener.accept(retryInfo);
+
+        if(needRetry){
             try {
-                if (backoffMillis > 0) {
-                    retryConfig.getTimeUnit().sleep(backoffMillis);
+                if (retryInfo.getBackoff() > 0) {
+                   Thread.sleep(retryInfo.getBackoff());
                 } else {
                     return false;
                 }
 
             } catch (InterruptedException interruptedException) {
-                throw new RuntimeException(error);
+                Thread.currentThread().interrupt();
+                if(retryInfo.hasError()){
+                    throw new RuntimeException(retryInfo.getError());
+                }
             }
-            return true;
-        } else {
-            return false;
         }
+        return needRetry;
     }
 
     private static boolean isExhausted(int attempts, int maxAttempts) {
@@ -115,14 +124,15 @@ public class Retryer<CTX> {
     }
 
     private static boolean isExhaustedTimeout(long startTime, long timeout) {
-        if(timeout<=0){
+        if (timeout <= 0) {
             // 无时间限制
             return false;
         }
-        if(startTime<=0){
-            throw new RuntimeException("Illegal args, startTime: "+startTime);
+        if (startTime <= 0) {
+            throw new RuntimeException("Illegal args, startTime: " + startTime);
         }
         return System.currentTimeMillis() > (startTime + timeout);
     }
+
 }
 
