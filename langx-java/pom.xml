@@ -18,7 +18,9 @@
         Java lang extensions for java6+, a supplement to , replacement of a Guava, apache commons, hutool.
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
-
+    <properties>
+        <maven.compiler.target>6</maven.compiler.target>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.openjdk.jmh</groupId>

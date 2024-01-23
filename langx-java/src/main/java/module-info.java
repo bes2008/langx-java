@@ -226,5 +226,7 @@ open module com.jn.langx.java {
     exports com.jn.langx.util.transformer;
     exports com.jn.langx.util.unsafe;
     exports com.jn.langx.util.valuegetter;
+
+    requires unnamed;
 }
 

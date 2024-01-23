@@ -12,10 +12,12 @@
     <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
 
     <properties>
-        <maven.compiler.source>6</maven.compiler.source>
         <maven.compiler.target>6</maven.compiler.target>
     </properties>
+
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
+
+
     <dependencies>
         <dependency>
             <groupId>org.bouncycastle</groupId>

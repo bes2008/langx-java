@@ -12,9 +12,7 @@
     <artifactId>langx-java-asn1</artifactId>
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
     <properties>
-        <maven.compiler.source>6</maven.compiler.source>
         <maven.compiler.target>6</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
