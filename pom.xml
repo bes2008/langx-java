@@ -19,6 +19,10 @@
         <slf4j.version>1.7.0</slf4j.version>
         <jmh.version>1.23</jmh.version>
         <junit.version>4.13.1</junit.version>
+
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>6</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <url>https://github.com/bes2008/langx-java</url>
@@ -212,17 +216,6 @@
                 <version>3.1.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <encoding>UTF-8</encoding>
-                    <debug>true</debug>
                 </configuration>
             </plugin>
             <plugin>
