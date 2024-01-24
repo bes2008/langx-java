@@ -19,7 +19,7 @@
         Core utilities, Collection utilities, IO utilities, Cache, Configuration library ...
     </description>
     <properties>
-        <maven.compiler.target>6</maven.compiler.target>
+        <maven.compiler.target>1.6</maven.compiler.target>
         <Automatic-Module-Name>com.jn.langx.base</Automatic-Module-Name>
     </properties>
     <dependencies>
