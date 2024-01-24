@@ -13,6 +13,7 @@
 
     <properties>
         <maven.compiler.target>6</maven.compiler.target>
+        <Automatic-Module-Name>com.jn.langx.security.gm.jca.bouncycastle</Automatic-Module-Name>
     </properties>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>

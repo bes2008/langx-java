@@ -14,6 +14,7 @@
     <properties>
         <aspectj.version>1.6.0</aspectj.version>
         <maven.compiler.target>6</maven.compiler.target>
+        <Automatic-Module-Name>com.jn.langx.reflect.aspectj</Automatic-Module-Name>
     </properties>
 
     <dependencies>

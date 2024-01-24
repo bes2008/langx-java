@@ -14,6 +14,7 @@
 
     <properties>
         <maven.compiler.target>6</maven.compiler.target>
+        <Automatic-Module-Name>com.jn.langx.el</Automatic-Module-Name>
     </properties>
     <dependencies>
         <dependency>

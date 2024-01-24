@@ -13,6 +13,7 @@
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
     <properties>
         <maven.compiler.target>6</maven.compiler.target>
+        <Automatic-Module-Name>com.jn.langx.fastdateformat</Automatic-Module-Name>
     </properties>
     <dependencies>
         <dependency>
