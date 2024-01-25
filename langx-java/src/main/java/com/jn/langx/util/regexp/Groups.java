@@ -1,9 +1,5 @@
-package com.jn.langx.util.regexp.named;
+package com.jn.langx.util.regexp;
 
-
-import com.jn.langx.util.regexp.Regexp;
-import com.jn.langx.util.regexp.RegexpMatcher;
-import com.jn.langx.util.regexp.Regexps;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +10,7 @@ import java.util.Map;
 /**
  * @since 4.5.0
  */
-class Groups {
+public class Groups {
     private Groups(){
 
     }
@@ -52,8 +48,8 @@ class Groups {
 
         private static final long serialVersionUID = 1L;
 
-        private int pos;
-        private int groupIndex;
+        private final int pos;
+        private final int groupIndex;
 
         /**
          * Constructs a {@code GroupInfo} with a group index and string
@@ -164,7 +160,7 @@ class Groups {
      * Parses info on named capture groups from a pattern
      *
      * @param namedPattern regex the regular expression pattern to parse
-     * @return list of group info for all named groups
+     * @return return a list of group info for all named groups
      */
     public static Map<String, List<GroupCoordinate>> extractGroupInfo(String namedPattern) {
         Map<String, List<GroupCoordinate>> groupInfo = new LinkedHashMap<String, List<GroupCoordinate>>();

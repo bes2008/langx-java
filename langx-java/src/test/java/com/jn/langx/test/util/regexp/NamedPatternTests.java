@@ -3,6 +3,7 @@ package com.jn.langx.test.util.regexp;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.MapAccessor;
 import com.jn.langx.util.function.Consumer;
+import com.jn.langx.util.regexp.Regexps;
 import org.junit.Test;
 
 public class NamedPatternTests {

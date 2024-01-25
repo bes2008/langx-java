@@ -1,10 +1,12 @@
 package com.jn.langx.util.regexp.named;
 
 
+import com.jn.langx.util.collection.Lists;
+import com.jn.langx.util.regexp.Groups;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
-import static com.jn.langx.util.regexp.named.Groups.*;
+import static com.jn.langx.util.regexp.Groups.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -187,7 +189,7 @@ public class NamedRegexp implements Regexp, Serializable {
      */
     public List<String> getNamedGroups() {
         if (groupNames == null) {
-            groupNames = new ArrayList<String>(groupInfo.keySet());
+            groupNames = Lists.newArrayList(groupInfo.keySet());
         }
         return Collections.unmodifiableList(groupNames);
     }
