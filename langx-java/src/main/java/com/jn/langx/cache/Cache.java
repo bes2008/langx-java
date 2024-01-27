@@ -22,7 +22,7 @@ public interface Cache<K, V> {
      * set a key-value to cache, with the specified expire time
      * @param key the key
      * @param value the value
-     * @param expireTime the expire time
+     * @param expireTime the expiry time
      */
     void set(@NonNull K key, @Nullable V value, long expireTime);
 
