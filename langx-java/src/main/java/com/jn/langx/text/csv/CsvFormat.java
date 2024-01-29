@@ -1154,9 +1154,9 @@ public final class CsvFormat implements Serializable {
         } else if (isEscapeCharacterSet()) {
             printWithEscapes(reader, out);
         } else if (out instanceof Writer) {
-            CsvIOs.copyLarge(reader, (Writer) out);
+            IOs.copyLarge(reader, (Writer) out);
         } else {
-            CsvIOs.copy(reader, out);
+            IOs.copy(reader, out);
         }
 
     }
@@ -1258,7 +1258,7 @@ public final class CsvFormat implements Serializable {
 
         final char delim = getDelimiter();
         final char escape = getEscapeCharacter();
-        final StringBuilder builder = new StringBuilder(CsvIOs.DEFAULT_BUFFER_SIZE);
+        final StringBuilder builder = new StringBuilder(IOs.DEFAULT_BUFFER_SIZE);
 
         int c;
         while (-1 != (c = reader.read())) {
@@ -1413,7 +1413,7 @@ public final class CsvFormat implements Serializable {
         int pos = 0;
 
         final char quote = getQuoteCharacter();
-        final StringBuilder builder = new StringBuilder(CsvIOs.DEFAULT_BUFFER_SIZE);
+        final StringBuilder builder = new StringBuilder(IOs.DEFAULT_BUFFER_SIZE);
 
         out.append(quote);
 

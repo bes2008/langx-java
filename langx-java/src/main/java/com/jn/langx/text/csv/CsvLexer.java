@@ -12,9 +12,6 @@ import static com.jn.langx.text.csv.CsvConstants.*;
  */
 final class CsvLexer implements Closeable {
 
-    private static final String CR_STRING = Character.toString(Strings.CR);
-    private static final String LF_STRING = Character.toString(Strings.LF);
-
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
      * won't be confused with an EOF signal (-1), and because the Unicode value {@code FFFE} would be encoded as two
@@ -357,9 +354,9 @@ final class CsvLexer implements Closeable {
         // save EOL state here.
         if (firstEol == null) {
             if (ch == Strings.LF) {
-                this.firstEol = LF_STRING;
+                this.firstEol = Strings.LF_STRING;
             } else if (ch == Strings.CR) {
-                this.firstEol = CR_STRING;
+                this.firstEol = Strings.CR_STRING;
             }
         }
 

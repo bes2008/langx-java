@@ -74,11 +74,15 @@ public class Strings {
     public static final char TAB = '\t';
     public static final char PIPE = '|';
 
+    public static final String CR_STRING = charToString(Strings.CR);
+    public static final String LF_STRING = charToString(Strings.LF);
+
     public static final boolean isTextLineBreak(char c){
         return c == LF || c == CR;
     }
     public static final String charToString(char c){
-        return ""+c;
+        return Character.toString(c);
+
     }
 
     public static final List<String> WHITESPACE_CHAR = Collects.immutableArrayList(
