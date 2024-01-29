@@ -8,12 +8,6 @@ final class CsvConstants {
 
     }
 
-
-
-    /**
-     * The end of stream symbol
-     */
-    static final int END_OF_STREAM = -1;
     /**
      * Undefined state for the lookahead char
      */

@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import com.jn.langx.util.io.IOs;
-import static com.jn.langx.text.csv.CsvConstants.*;
 
 /**
  * A special buffered reader which supports sophisticated read access.
@@ -16,6 +15,10 @@ import static com.jn.langx.text.csv.CsvConstants.*;
  * </p>
  */
 final class ExtendedBufferedReader extends BufferedReader {
+    /**
+     * Undefined state for the lookahead char
+     */
+    static final int UNDEFINED = -2;
 
     /**
      * The last char returned
@@ -55,7 +58,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     /**
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
      * any of the read methods. This will not include a character read using the {@link #lookAhead()} method. If no
-     * character has been read then this will return {@link CsvConstants#UNDEFINED}. If the end of the stream was reached
+     * character has been read then this will return {@link #UNDEFINED}. If the end of the stream was reached
      * on the last read then this will return {@link IOs#EOF}.
      *
      * @return the last character that was read

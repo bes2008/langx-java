@@ -5,7 +5,6 @@ import com.jn.langx.util.Strings;
 import java.io.Closeable;
 import java.io.IOException;
 import com.jn.langx.util.io.IOs;
-import static com.jn.langx.text.csv.CsvConstants.*;
 
 /**
  * Lexical analyzer.
@@ -18,7 +17,10 @@ final class CsvLexer implements Closeable {
      * chars (using surrogates) and thus there should never be a collision with a real text char.
      */
     private static final char DISABLED = '\ufffe';
-
+    /**
+     * Undefined state for the lookahead char
+     */
+    private static final int UNDEFINED = -2;
     private final char delimiter;
     private final char escape;
     private final char quoteChar;
