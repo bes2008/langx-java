@@ -18,7 +18,6 @@ final class CsvConstants {
      */
     static final char COMMENT = '#';
 
-    static final char CR = '\r';
 
     /**
      * RFC 4180 defines line breaks as CRLF
@@ -33,10 +32,6 @@ final class CsvConstants {
      * The end of stream symbol
      */
     static final int END_OF_STREAM = -1;
-
-    static final char FF = '\f';
-
-    static final char LF = '\n';
 
     /**
      * Unicode line separator.
@@ -59,10 +54,6 @@ final class CsvConstants {
      * ASCII record separator
      */
     static final char RS = 30;
-
-    static final char SP = ' ';
-
-    static final char TAB = '\t';
 
     /**
      * Undefined state for the lookahead char

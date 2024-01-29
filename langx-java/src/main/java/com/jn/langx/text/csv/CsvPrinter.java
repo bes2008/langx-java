@@ -1,16 +1,12 @@
 package com.jn.langx.text.csv;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
-import java.sql.Clob;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
-
-import static com.jn.langx.text.csv.CsvConstants.*;
 
 /**
  * Prints values in a {@link CsvFormat CSV format}.
@@ -177,18 +173,18 @@ public final class CsvPrinter implements Flushable, Closeable {
             println();
         }
         out.append(format.getCommentMarker());
-        out.append(SP);
+        out.append(Strings.SP);
         for (int i = 0; i < comment.length(); i++) {
             final char c = comment.charAt(i);
             switch (c) {
-                case CR:
-                    if (i + 1 < comment.length() && comment.charAt(i + 1) == LF) {
+                case Strings.CR:
+                    if (i + 1 < comment.length() && comment.charAt(i + 1) == Strings.LF) {
                         i++;
                     }
-                case LF:
+                case Strings.LF:
                     println();
                     out.append(format.getCommentMarker());
-                    out.append(SP);
+                    out.append(Strings.SP);
                     break;
                 default:
                     out.append(c);

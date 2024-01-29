@@ -1,5 +1,7 @@
 package com.jn.langx.text.csv;
 
+import com.jn.langx.util.Strings;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -42,7 +44,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     @Override
     public int read() throws IOException {
         final int current = super.read();
-        if (current == CR || current == LF && lastChar != CR) {
+        if (current == Strings.CR || current == Strings.LF && lastChar != Strings.CR) {
             eolCounter++;
         }
         lastChar = current;
@@ -74,11 +76,11 @@ final class ExtendedBufferedReader extends BufferedReader {
 
             for (int i = offset; i < offset + len; i++) {
                 final char ch = buf[i];
-                if (ch == LF) {
-                    if (CR != (i > 0 ? buf[i - 1] : lastChar)) {
+                if (ch == Strings.LF) {
+                    if (Strings.CR != (i > 0 ? buf[i - 1] : lastChar)) {
                         eolCounter++;
                     }
-                } else if (ch == CR) {
+                } else if (ch == Strings.CR) {
                     eolCounter++;
                 }
             }
@@ -108,7 +110,7 @@ final class ExtendedBufferedReader extends BufferedReader {
         final String line = super.readLine();
 
         if (line != null) {
-            lastChar = LF; // needed for detecting start of line
+            lastChar = Strings.LF; // needed for detecting start of line
             eolCounter++;
         } else {
             lastChar = END_OF_STREAM;
@@ -139,7 +141,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      */
     long getCurrentLineNumber() {
         // Check if we are at EOL or EOF or just starting
-        if (lastChar == CR || lastChar == LF || lastChar == UNDEFINED || lastChar == END_OF_STREAM) {
+        if (lastChar == Strings.CR || lastChar == Strings.LF || lastChar == UNDEFINED || lastChar == END_OF_STREAM) {
             return eolCounter; // counter is accurate
         }
         return eolCounter + 1; // Allow for counter being incremented only at EOL

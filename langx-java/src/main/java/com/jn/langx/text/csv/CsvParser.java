@@ -1,6 +1,7 @@
 package com.jn.langx.text.csv;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Maps;
 
 import java.io.*;
@@ -597,7 +598,7 @@ public final class CsvParser implements Iterable<CsvRecord>, Closeable {
                     if (sb == null) { // first comment for this record
                         sb = new StringBuilder();
                     } else {
-                        sb.append(CsvConstants.LF);
+                        sb.append(Strings.LF);
                     }
                     sb.append(this.reusableToken.content);
                     this.reusableToken.type = Token.CsvTokenType.TOKEN; // Read another token

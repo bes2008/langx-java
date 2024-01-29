@@ -1,5 +1,7 @@
 package com.jn.langx.text.csv;
 
+import com.jn.langx.util.Strings;
+
 import java.io.Closeable;
 import java.io.IOException;
 
@@ -10,8 +12,8 @@ import static com.jn.langx.text.csv.CsvConstants.*;
  */
 final class CsvLexer implements Closeable {
 
-    private static final String CR_STRING = Character.toString(CR);
-    private static final String LF_STRING = Character.toString(LF);
+    private static final String CR_STRING = Character.toString(Strings.CR);
+    private static final String LF_STRING = Character.toString(Strings.LF);
 
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
@@ -300,19 +302,19 @@ final class CsvLexer implements Closeable {
         final int ch = reader.read();
         switch (ch) {
             case 'r':
-                return CR;
+                return Strings.CR;
             case 'n':
-                return LF;
+                return Strings.LF;
             case 't':
-                return TAB;
+                return Strings.TAB;
             case 'b':
                 return BACKSPACE;
             case 'f':
-                return FF;
-            case CR:
-            case LF:
-            case FF:
-            case TAB:
+                return Strings.FF;
+            case Strings.CR:
+            case Strings.LF:
+            case Strings.FF:
+            case Strings.TAB:
             case BACKSPACE:
                 return ch;
             case END_OF_STREAM:
@@ -344,7 +346,7 @@ final class CsvLexer implements Closeable {
      */
     boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
-        if (ch == CR && reader.lookAhead() == LF) {
+        if (ch == Strings.CR && reader.lookAhead() == Strings.LF) {
             // note: does not change ch outside of this method!
             ch = reader.read();
             // Save the EOL state
@@ -354,14 +356,14 @@ final class CsvLexer implements Closeable {
         }
         // save EOL state here.
         if (firstEol == null) {
-            if (ch == LF) {
+            if (ch == Strings.LF) {
                 this.firstEol = LF_STRING;
-            } else if (ch == CR) {
+            } else if (ch == Strings.CR) {
                 this.firstEol = CR_STRING;
             }
         }
 
-        return ch == LF || ch == CR;
+        return ch == Strings.LF || ch == Strings.CR;
     }
 
     boolean isClosed() {
@@ -382,7 +384,7 @@ final class CsvLexer implements Closeable {
      * @return true if the character is at the start of a line.
      */
     boolean isStartOfLine(final int ch) {
-        return ch == LF || ch == CR || ch == UNDEFINED;
+        return ch == Strings.LF || ch == Strings.CR || ch == UNDEFINED;
     }
 
     /**

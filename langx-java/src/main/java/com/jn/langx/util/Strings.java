@@ -43,11 +43,12 @@ public class Strings {
 
     private static final int PAD_LIMIT = 8192;
 
-    public static final List<String> WHITESPACE_CHAR = Collects.immutableArrayList(" ", "\n", "\t", "\r", "\f");
-    public static final String WHITESPACE = join("", WHITESPACE_CHAR);
+
+
     /**
      * 空格
      */
+    public static final char SP = ' ';
     public static final String SPACE = " ";
     /**
      * 空字符串 {@code ""}.
@@ -58,7 +59,29 @@ public class Strings {
     public static final String DOUBLE_QUOTE = "\"";
     public static final char SLASH_CHAR = '/';
     public static final char BACKSLASH_CHAR = '\\';
+    public static final char LF = '\n';
+    public static final char CR = '\r';
+    public static final char FF = '\f';
+    public static final String CRLF = "\r\n";
+    public static final char TAB = '\t';
+    public static final char PIPE = '|';
 
+    public static final boolean isTextLineBreak(char c){
+        return c == LF || c == CR;
+    }
+    public static final String charToString(char c){
+        return ""+c;
+    }
+
+    public static final List<String> WHITESPACE_CHAR = Collects.immutableArrayList(
+            SPACE,
+            charToString(LF),
+            charToString(TAB),
+            charToString(CR),
+            charToString(FF)
+    );
+
+    public static final String WHITESPACE = join("", WHITESPACE_CHAR);
     /**
      * judge a string is null or ""
      *
