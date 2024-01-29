@@ -22,9 +22,9 @@ import java.io.Writer;
 public final class CsvTranslators {
 
     /** Comma character. */
-    private static final char CSV_DELIMITER = ',';
+    private static final char CSV_DELIMITER = Strings.COMMA;
     /** Quote character. */
-    private static final char CSV_QUOTE = '"';
+    private static final char CSV_QUOTE = Strings.DOUBLE_QUOTE_CHAR;
     /** Quote character converted to string. */
     private static final String CSV_QUOTE_STR = String.valueOf(CSV_QUOTE);
     /** Escaped quote string. */
