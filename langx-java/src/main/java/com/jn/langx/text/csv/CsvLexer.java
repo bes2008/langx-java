@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.IOException;
 
 import static com.jn.langx.text.csv.CsvConstants.*;
-import static com.jn.langx.text.csv.Token.Type.*;
 
 /**
  * Lexical analyzer.
@@ -81,7 +80,7 @@ final class CsvLexer implements Closeable {
                 eol = readEndOfLine(c);
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
-                    token.type = EOF;
+                    token.type = Token.CsvTokenType.EOF;
                     // don't set token.isReady here because no content
                     return token;
                 }
@@ -90,7 +89,7 @@ final class CsvLexer implements Closeable {
 
         // did we reach eof during the last iteration already ? EOF
         if (isEndOfFile(lastChar) || !isDelimiter(lastChar) && isEndOfFile(c)) {
-            token.type = EOF;
+            token.type = Token.CsvTokenType.EOF;
             // don't set token.isReady here because no content
             return token;
         }
@@ -98,18 +97,18 @@ final class CsvLexer implements Closeable {
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
             final String line = reader.readLine();
             if (line == null) {
-                token.type = EOF;
+                token.type = Token.CsvTokenType.EOF;
                 // don't set token.isReady here because no content
                 return token;
             }
             final String comment = line.trim();
             token.content.append(comment);
-            token.type = Token.Type.COMMENT;
+            token.type =Token.CsvTokenType.COMMENT;
             return token;
         }
 
         // important: make sure a new char gets consumed in each iteration
-        while (token.type == INVALID) {
+        while (token.type == Token.CsvTokenType.INVALID) {
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
                 while (isWhitespace(c) && !eol) {
@@ -121,18 +120,18 @@ final class CsvLexer implements Closeable {
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
-                token.type = TOKEN;
+                token.type = Token.CsvTokenType.TOKEN;
             } else if (eol) {
                 // empty token return EORECORD("")
                 // noop: token.content.append("");
-                token.type = EORECORD;
+                token.type = Token.CsvTokenType.EORECORD;
             } else if (isQuoteChar(c)) {
                 // consume encapsulated token
                 parseEncapsulatedToken(token);
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 // noop: token.content.append("");
-                token.type = EOF;
+                token.type = Token.CsvTokenType.EOF;
                 token.isReady = true; // there is data at EOF
             } else {
                 // next token must be a simple token
@@ -163,14 +162,14 @@ final class CsvLexer implements Closeable {
         // Faster to use while(true)+break than while(token.type == INVALID)
         while (true) {
             if (readEndOfLine(ch)) {
-                token.type = EORECORD;
+                token.type = Token.CsvTokenType.EORECORD;
                 break;
             } else if (isEndOfFile(ch)) {
-                token.type = EOF;
+                token.type = Token.CsvTokenType.EOF;
                 token.isReady = true; // There is data at EOF
                 break;
             } else if (isDelimiter(ch)) {
-                token.type = TOKEN;
+                token.type = Token.CsvTokenType.TOKEN;
                 break;
             } else if (isEscape(ch)) {
                 final int unescaped = readEscape();
@@ -235,14 +234,14 @@ final class CsvLexer implements Closeable {
                     while (true) {
                         c = reader.read();
                         if (isDelimiter(c)) {
-                            token.type = TOKEN;
+                            token.type = Token.CsvTokenType.TOKEN;
                             return token;
                         } else if (isEndOfFile(c)) {
-                            token.type = EOF;
+                            token.type = Token.CsvTokenType.EOF;
                             token.isReady = true; // There is data at EOF
                             return token;
                         } else if (readEndOfLine(c)) {
-                            token.type = EORECORD;
+                            token.type = Token.CsvTokenType.EORECORD;
                             return token;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter

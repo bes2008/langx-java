@@ -1,6 +1,7 @@
 package com.jn.langx.text.csv;
 
-import static com.jn.langx.text.csv.Token.Type.INVALID;
+import com.jn.langx.text.lexer.TokenType;
+
 
 /**
  * Internal token representation.
@@ -14,7 +15,7 @@ final class Token {
      */
     private static final int INITIAL_TOKEN_LENGTH = 50;
 
-    enum Type {
+    enum CsvTokenType implements TokenType {
         /**
          * Token has no valid content, i.e. is in its initialized state.
          */
@@ -44,7 +45,7 @@ final class Token {
     /**
      * Token type
      */
-    Token.Type type = INVALID;
+    Token.CsvTokenType type = CsvTokenType.INVALID;
 
     /**
      * The content buffer.
@@ -58,7 +59,7 @@ final class Token {
 
     void reset() {
         content.setLength(0);
-        type = INVALID;
+        type = CsvTokenType.INVALID;
         isReady = false;
     }
 

@@ -8,7 +8,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import static com.jn.langx.text.csv.Token.Type.TOKEN;
 
 /**
  * Parses CSV files according to the specified format.
@@ -601,12 +600,12 @@ public final class CsvParser implements Iterable<CsvRecord>, Closeable {
                         sb.append(CsvConstants.LF);
                     }
                     sb.append(this.reusableToken.content);
-                    this.reusableToken.type = TOKEN; // Read another token
+                    this.reusableToken.type = Token.CsvTokenType.TOKEN; // Read another token
                     break;
                 default:
                     throw new IllegalStateException("Unexpected Token type: " + this.reusableToken.type);
             }
-        } while (this.reusableToken.type == TOKEN);
+        } while (this.reusableToken.type == Token.CsvTokenType.TOKEN);
 
         if (!this.recordList.isEmpty()) {
             this.recordNumber++;
