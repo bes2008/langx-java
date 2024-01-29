@@ -127,7 +127,10 @@ import static com.jn.langx.text.csv.CsvConstants.*;
  * </p>
  */
 public final class CsvFormat implements Serializable {
-
+    /**
+     * Starts a comment, the remainder of the line is the comment.
+     */
+    static final char COMMENT = '#';
     /**
      * Predefines formats.
      *

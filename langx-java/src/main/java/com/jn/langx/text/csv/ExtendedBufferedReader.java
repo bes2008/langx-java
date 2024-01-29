@@ -5,7 +5,7 @@ import com.jn.langx.util.Strings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-
+import com.jn.langx.util.io.IOs;
 import static com.jn.langx.text.csv.CsvConstants.*;
 
 /**
@@ -56,7 +56,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * Returns the last character that was read as an integer (0 to 65535). This will be the last character returned by
      * any of the read methods. This will not include a character read using the {@link #lookAhead()} method. If no
      * character has been read then this will return {@link CsvConstants#UNDEFINED}. If the end of the stream was reached
-     * on the last read then this will return {@link CsvConstants#END_OF_STREAM}.
+     * on the last read then this will return {@link IOs#EOF}.
      *
      * @return the last character that was read
      */
@@ -88,7 +88,7 @@ final class ExtendedBufferedReader extends BufferedReader {
             lastChar = buf[offset + len - 1];
 
         } else if (len == -1) {
-            lastChar = END_OF_STREAM;
+            lastChar = IOs.EOF;
         }
 
         position += len;
@@ -101,7 +101,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      * <p>
      * Increments {@link #eolCounter}
      * <p>
-     * Sets {@link #lastChar} to {@link CsvConstants#END_OF_STREAM} at EOF, otherwise to LF
+     * Sets {@link #lastChar} to {@link IOs#EOF} at EOF, otherwise to LF
      *
      * @return the line that was read, or null if reached EOF.
      */
@@ -113,7 +113,7 @@ final class ExtendedBufferedReader extends BufferedReader {
             lastChar = Strings.LF; // needed for detecting start of line
             eolCounter++;
         } else {
-            lastChar = END_OF_STREAM;
+            lastChar = IOs.EOF;
         }
 
         return line;
@@ -141,7 +141,7 @@ final class ExtendedBufferedReader extends BufferedReader {
      */
     long getCurrentLineNumber() {
         // Check if we are at EOL or EOF or just starting
-        if (lastChar == Strings.CR || lastChar == Strings.LF || lastChar == UNDEFINED || lastChar == END_OF_STREAM) {
+        if (lastChar == Strings.CR || lastChar == Strings.LF || lastChar == UNDEFINED || lastChar == IOs.EOF) {
             return eolCounter; // counter is accurate
         }
         return eolCounter + 1; // Allow for counter being incremented only at EOL
@@ -169,7 +169,7 @@ final class ExtendedBufferedReader extends BufferedReader {
     public void close() throws IOException {
         // Set ivars before calling super close() in case close() throws an IOException.
         closed = true;
-        lastChar = END_OF_STREAM;
+        lastChar = IOs.EOF;
         super.close();
     }
 

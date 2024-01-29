@@ -4,7 +4,7 @@ import com.jn.langx.util.Strings;
 
 import java.io.Closeable;
 import java.io.IOException;
-
+import com.jn.langx.util.io.IOs;
 import static com.jn.langx.text.csv.CsvConstants.*;
 
 /**
@@ -172,7 +172,7 @@ final class CsvLexer implements Closeable {
                 break;
             } else if (isEscape(ch)) {
                 final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == IOs.EOF) { // unexpected char after escape
                     token.content.append((char) ch).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
@@ -218,7 +218,7 @@ final class CsvLexer implements Closeable {
 
             if (isEscape(c)) {
                 final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == IOs.EOF) { // unexpected char after escape
                     token.content.append((char) c).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
@@ -289,7 +289,7 @@ final class CsvLexer implements Closeable {
      * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
      * on the input stream.
      *
-     * @return the unescaped character (as an int) or {@link CsvConstants#END_OF_STREAM} if char following the escape is
+     * @return the unescaped character (as an int) or {@link IOs#EOF} if char following the escape is
      * invalid.
      * @throws IOException if there is a problem reading the stream or the end of stream is detected:
      *                     the escape character is not allowed at end of stream
@@ -314,7 +314,7 @@ final class CsvLexer implements Closeable {
             case Strings.TAB:
             case Strings.BACKSPACE:
                 return ch;
-            case END_OF_STREAM:
+            case IOs.EOF:
                 throw new IOException("EOF whilst processing escape sequence");
             default:
                 // Now check for meta-characters
@@ -322,7 +322,7 @@ final class CsvLexer implements Closeable {
                     return ch;
                 }
                 // indicate unexpected char - available from in.getLastChar()
-                return END_OF_STREAM;
+                return IOs.EOF;
         }
     }
 
@@ -388,7 +388,7 @@ final class CsvLexer implements Closeable {
      * @return true if the given character indicates end of file
      */
     boolean isEndOfFile(final int ch) {
-        return ch == END_OF_STREAM;
+        return ch == IOs.EOF;
     }
 
     boolean isDelimiter(final int ch) {

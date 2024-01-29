@@ -8,10 +8,7 @@ final class CsvConstants {
 
     }
 
-    /**
-     * Starts a comment, the remainder of the line is the comment.
-     */
-    static final char COMMENT = '#';
+
 
     /**
      * The end of stream symbol
