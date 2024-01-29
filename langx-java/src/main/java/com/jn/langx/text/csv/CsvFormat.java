@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.jn.langx.text.csv.CsvConstants.*;
 
 /**
  * Specifies the format of a CSV file and parses input.
