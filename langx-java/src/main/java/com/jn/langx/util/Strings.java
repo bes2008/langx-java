@@ -56,9 +56,17 @@ public class Strings {
     public static final String EMPTY = "";
 
     public static final String SINGLE_QUOTE = "'";
+    public static final char DOUBLE_QUOTE_CHAR = '"';
     public static final String DOUBLE_QUOTE = "\"";
     public static final char SLASH_CHAR = '/';
     public static final char BACKSLASH_CHAR = '\\';
+
+    public static final char BACKSLASH = '\\';
+
+    public static final char BACKSPACE = '\b';
+
+    public static final char COMMA = ',';
+
     public static final char LF = '\n';
     public static final char CR = '\r';
     public static final char FF = '\f';

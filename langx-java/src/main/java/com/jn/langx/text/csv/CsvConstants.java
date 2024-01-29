@@ -7,26 +7,12 @@ final class CsvConstants {
     private CsvConstants(){
 
     }
-    static final char BACKSLASH = '\\';
-
-    static final char BACKSPACE = '\b';
-
-    static final char COMMA = ',';
 
     /**
      * Starts a comment, the remainder of the line is the comment.
      */
     static final char COMMENT = '#';
 
-
-    /**
-     * RFC 4180 defines line breaks as CRLF
-     */
-    static final String CRLF = "\r\n";
-
-    static final Character DOUBLE_QUOTE_CHAR = '"';
-
-    static final String EMPTY = "";
 
     /**
      * The end of stream symbol

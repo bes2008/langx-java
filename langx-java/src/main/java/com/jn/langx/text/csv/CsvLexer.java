@@ -308,14 +308,14 @@ final class CsvLexer implements Closeable {
             case 't':
                 return Strings.TAB;
             case 'b':
-                return BACKSPACE;
+                return Strings.BACKSPACE;
             case 'f':
                 return Strings.FF;
             case Strings.CR:
             case Strings.LF:
             case Strings.FF:
             case Strings.TAB:
-            case BACKSPACE:
+            case Strings.BACKSPACE:
                 return ch;
             case END_OF_STREAM:
                 throw new IOException("EOF whilst processing escape sequence");
@@ -351,7 +351,7 @@ final class CsvLexer implements Closeable {
             ch = reader.read();
             // Save the EOL state
             if (firstEol == null) {
-                this.firstEol = CRLF;
+                this.firstEol = Strings.CRLF;
             }
         }
         // save EOL state here.

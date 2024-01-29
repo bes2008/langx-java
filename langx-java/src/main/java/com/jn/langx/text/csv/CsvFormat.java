@@ -232,7 +232,7 @@ public final class CsvFormat implements Serializable {
      *
      * @see Predefined#Default
      */
-    public static final CsvFormat DEFAULT = new CsvFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF,
+    public static final CsvFormat DEFAULT = new CsvFormat(Strings.COMMA, Strings.DOUBLE_QUOTE_CHAR, null, null, null, false, true, Strings.CRLF,
             null, null, null, false, false, false, false, false, false, true);
 
     /**
@@ -298,8 +298,8 @@ public final class CsvFormat implements Serializable {
     // @formatter:off
     public static final CsvFormat INFORMIX_UNLOAD = DEFAULT
             .withDelimiter(PIPE)
-            .withEscape(BACKSLASH)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withEscape(Strings.BACKSLASH)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(Strings.LF);
     // @formatter:on
 
@@ -328,8 +328,8 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat INFORMIX_UNLOAD_CSV = DEFAULT
-            .withDelimiter(COMMA)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withDelimiter(Strings.COMMA)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(Strings.LF);
     // @formatter:on
 
@@ -362,9 +362,9 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat MONGODB_CSV = DEFAULT
-            .withDelimiter(COMMA)
-            .withEscape(DOUBLE_QUOTE_CHAR)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withDelimiter(Strings.COMMA)
+            .withEscape(Strings.DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withQuoteMode(QuoteMode.MINIMAL)
             .withSkipHeaderRecord(false);
     // @formatter:off
@@ -399,8 +399,8 @@ public final class CsvFormat implements Serializable {
     // @formatter:off
     public static final CsvFormat MONGODB_TSV = DEFAULT
             .withDelimiter(Strings.TAB)
-            .withEscape(DOUBLE_QUOTE_CHAR)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withEscape(Strings.DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withQuoteMode(QuoteMode.MINIMAL)
             .withSkipHeaderRecord(false);
     // @formatter:off
@@ -433,7 +433,7 @@ public final class CsvFormat implements Serializable {
     // @formatter:off
     public static final CsvFormat MYSQL = DEFAULT
             .withDelimiter(Strings.TAB)
-            .withEscape(BACKSLASH)
+            .withEscape(Strings.BACKSLASH)
             .withIgnoreEmptyLines(false)
             .withQuote(null)
             .withRecordSeparator(Strings.LF)
@@ -470,10 +470,10 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat ORACLE = DEFAULT
-            .withDelimiter(COMMA)
-            .withEscape(BACKSLASH)
+            .withDelimiter(Strings.COMMA)
+            .withEscape(Strings.BACKSLASH)
             .withIgnoreEmptyLines(false)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withNullString("\\N")
             .withTrim()
             .withSystemRecordSeparator()
@@ -508,12 +508,12 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat POSTGRESQL_CSV = DEFAULT
-            .withDelimiter(COMMA)
-            .withEscape(DOUBLE_QUOTE_CHAR)
+            .withDelimiter(Strings.COMMA)
+            .withEscape(Strings.DOUBLE_QUOTE_CHAR)
             .withIgnoreEmptyLines(false)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(Strings.LF)
-            .withNullString(EMPTY)
+            .withNullString(Strings.EMPTY)
             .withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
 
@@ -546,9 +546,9 @@ public final class CsvFormat implements Serializable {
     // @formatter:off
     public static final CsvFormat POSTGRESQL_TEXT = DEFAULT
             .withDelimiter(Strings.TAB)
-            .withEscape(BACKSLASH)
+            .withEscape(Strings.BACKSLASH)
             .withIgnoreEmptyLines(false)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(Strings.LF)
             .withNullString("\\N")
             .withQuoteMode(QuoteMode.ALL_NON_NULL);
@@ -1102,7 +1102,7 @@ public final class CsvFormat implements Serializable {
         if (value == null) {
             // https://issues.apache.org/jira/browse/CSV-203
             if (null == nullString) {
-                charSequence = EMPTY;
+                charSequence = Strings.EMPTY;
             } else {
                 if (QuoteMode.ALL == quoteMode) {
                     charSequence = quotedNullString;
