@@ -297,7 +297,7 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat INFORMIX_UNLOAD = DEFAULT
-            .withDelimiter(PIPE)
+            .withDelimiter(Strings.PIPE)
             .withEscape(Strings.BACKSLASH)
             .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withRecordSeparator(Strings.LF);
