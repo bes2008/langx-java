@@ -5,13 +5,18 @@
     <parent>
         <groupId>io.github.bes2008.solution.langx</groupId>
         <artifactId>langx</artifactId>
-        <version>5.3.2</version>
+        <version>5.3.4</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>langx-java-regexp-joni</artifactId>
     <description>joni regexp</description>
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
+    <properties>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <Automatic-Module-Name>com.jn.langx.regexp.joni</Automatic-Module-Name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.bes2008.solution.langx</groupId>

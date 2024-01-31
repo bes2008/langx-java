@@ -19,7 +19,7 @@ public class RetryConfig {
     // 首次开始之前的延迟
     private int delay;
 
-    private long sleepInterval;
+    private long interval;
     // 单次等待的最大时间，它的值通常要大于sleepInterval
     private long maxSleepTime;
     private TimeUnit timeUnit;
@@ -42,7 +42,7 @@ public class RetryConfig {
     public RetryConfig(int maxAttempts,
                        int timeout,
                        int delay,
-                       long sleepInterval,
+                       long interval,
                        long maxSleepTime,
                        TimeUnit timeUnit,
                        BackoffPolicy backoffPolicy) {
@@ -50,7 +50,7 @@ public class RetryConfig {
         this.timeout=Maths.max(0,timeout);
         this.delay= Maths.max(0,delay);
         this.timeUnit = timeUnit == null ? TimeUnit.MILLISECONDS : timeUnit;
-        this.sleepInterval = sleepInterval;
+        this.interval = interval;
         this.maxSleepTime = maxSleepTime;
         this.backoffPolicy = backoffPolicy == null ? ExponentialBackoffPolicy.INSTANCE : backoffPolicy;
         if (this.timeout>0){
@@ -74,7 +74,7 @@ public class RetryConfig {
     }
 
     public RetryConfig setSleepInterval(long sleepInterval) {
-        this.sleepInterval = sleepInterval;
+        this.interval = sleepInterval;
         return this;
     }
 
@@ -99,7 +99,7 @@ public class RetryConfig {
     }
 
     public long getSleepInterval() {
-        return sleepInterval;
+        return interval;
     }
 
     public TimeUnit getTimeUnit() {

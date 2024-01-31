@@ -1,6 +1,9 @@
 package com.jn.langx.util.retry;
 
-public class RetryInfo {
+/**
+ * 代表了单次尝试情况
+ */
+public class RetryInfo<R> {
 
     private int attempts;
     private final int maxAttempts;
@@ -11,6 +14,9 @@ public class RetryInfo {
 
     // 当次try的backoff，-1代表还没有设置
     private long backoff=-1; // mills
+
+    private Throwable error;
+    private R result;
 
     public RetryInfo(int attempts, int maxAttempts, long startTime, long timeout) {
         this.attempts = attempts;
@@ -23,7 +29,7 @@ public class RetryInfo {
         this.setBackoff(backoff);
     }
 
-    public void setBackoff(long backoff) {
+    void setBackoff(long backoff) {
         this.backoff = backoff;
     }
 
@@ -68,9 +74,11 @@ public class RetryInfo {
         return attempts == 1;
     }
 
-    public RetryInfo nextAttempts(){
+    public RetryInfo<R> nextAttempts(){
         this.attempts++;
         this.backoff=-1;
+        this.error=null;
+        this.result=null;
         return this;
     }
 
@@ -80,5 +88,27 @@ public class RetryInfo {
 
     public long getTimeout() {
         return timeout;
+    }
+
+    public Throwable getError() {
+        return error;
+    }
+
+    void setError(Throwable error) {
+        this.error = error;
+        this.result=null;
+    }
+
+    public R getResult() {
+        return result;
+    }
+
+    void setResult(R result) {
+        this.result = result;
+        this.error=null;
+    }
+
+    public boolean hasError(){
+        return this.error!=null;
     }
 }

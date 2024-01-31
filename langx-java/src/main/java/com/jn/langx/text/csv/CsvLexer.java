@@ -1,18 +1,15 @@
 package com.jn.langx.text.csv;
 
+import com.jn.langx.util.Strings;
+
 import java.io.Closeable;
 import java.io.IOException;
-
-import static com.jn.langx.text.csv.CsvConstants.*;
-import static com.jn.langx.text.csv.Token.Type.*;
+import com.jn.langx.util.io.IOs;
 
 /**
  * Lexical analyzer.
  */
 final class CsvLexer implements Closeable {
-
-    private static final String CR_STRING = Character.toString(CR);
-    private static final String LF_STRING = Character.toString(LF);
 
     /**
      * Constant char to use for disabling comments, escapes and encapsulation. The value -2 is used because it
@@ -20,7 +17,10 @@ final class CsvLexer implements Closeable {
      * chars (using surrogates) and thus there should never be a collision with a real text char.
      */
     private static final char DISABLED = '\ufffe';
-
+    /**
+     * Undefined state for the lookahead char
+     */
+    private static final int UNDEFINED = -2;
     private final char delimiter;
     private final char escape;
     private final char quoteChar;
@@ -81,7 +81,7 @@ final class CsvLexer implements Closeable {
                 eol = readEndOfLine(c);
                 // reached end of file without any content (empty line at the end)
                 if (isEndOfFile(c)) {
-                    token.type = EOF;
+                    token.type = Token.CsvTokenType.EOF;
                     // don't set token.isReady here because no content
                     return token;
                 }
@@ -90,7 +90,7 @@ final class CsvLexer implements Closeable {
 
         // did we reach eof during the last iteration already ? EOF
         if (isEndOfFile(lastChar) || !isDelimiter(lastChar) && isEndOfFile(c)) {
-            token.type = EOF;
+            token.type = Token.CsvTokenType.EOF;
             // don't set token.isReady here because no content
             return token;
         }
@@ -98,18 +98,18 @@ final class CsvLexer implements Closeable {
         if (isStartOfLine(lastChar) && isCommentStart(c)) {
             final String line = reader.readLine();
             if (line == null) {
-                token.type = EOF;
+                token.type = Token.CsvTokenType.EOF;
                 // don't set token.isReady here because no content
                 return token;
             }
             final String comment = line.trim();
             token.content.append(comment);
-            token.type = Token.Type.COMMENT;
+            token.type =Token.CsvTokenType.COMMENT;
             return token;
         }
 
         // important: make sure a new char gets consumed in each iteration
-        while (token.type == INVALID) {
+        while (token.type == Token.CsvTokenType.INVALID) {
             // ignore whitespaces at beginning of a token
             if (ignoreSurroundingSpaces) {
                 while (isWhitespace(c) && !eol) {
@@ -121,18 +121,18 @@ final class CsvLexer implements Closeable {
             // ok, start of token reached: encapsulated, or token
             if (isDelimiter(c)) {
                 // empty token return TOKEN("")
-                token.type = TOKEN;
+                token.type = Token.CsvTokenType.TOKEN;
             } else if (eol) {
                 // empty token return EORECORD("")
                 // noop: token.content.append("");
-                token.type = EORECORD;
+                token.type = Token.CsvTokenType.EORECORD;
             } else if (isQuoteChar(c)) {
                 // consume encapsulated token
                 parseEncapsulatedToken(token);
             } else if (isEndOfFile(c)) {
                 // end of file return EOF()
                 // noop: token.content.append("");
-                token.type = EOF;
+                token.type = Token.CsvTokenType.EOF;
                 token.isReady = true; // there is data at EOF
             } else {
                 // next token must be a simple token
@@ -163,18 +163,18 @@ final class CsvLexer implements Closeable {
         // Faster to use while(true)+break than while(token.type == INVALID)
         while (true) {
             if (readEndOfLine(ch)) {
-                token.type = EORECORD;
+                token.type = Token.CsvTokenType.EORECORD;
                 break;
             } else if (isEndOfFile(ch)) {
-                token.type = EOF;
+                token.type = Token.CsvTokenType.EOF;
                 token.isReady = true; // There is data at EOF
                 break;
             } else if (isDelimiter(ch)) {
-                token.type = TOKEN;
+                token.type = Token.CsvTokenType.TOKEN;
                 break;
             } else if (isEscape(ch)) {
                 final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == IOs.EOF) { // unexpected char after escape
                     token.content.append((char) ch).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
@@ -220,7 +220,7 @@ final class CsvLexer implements Closeable {
 
             if (isEscape(c)) {
                 final int unescaped = readEscape();
-                if (unescaped == END_OF_STREAM) { // unexpected char after escape
+                if (unescaped == IOs.EOF) { // unexpected char after escape
                     token.content.append((char) c).append((char) reader.getLastChar());
                 } else {
                     token.content.append((char) unescaped);
@@ -235,14 +235,14 @@ final class CsvLexer implements Closeable {
                     while (true) {
                         c = reader.read();
                         if (isDelimiter(c)) {
-                            token.type = TOKEN;
+                            token.type = Token.CsvTokenType.TOKEN;
                             return token;
                         } else if (isEndOfFile(c)) {
-                            token.type = EOF;
+                            token.type = Token.CsvTokenType.EOF;
                             token.isReady = true; // There is data at EOF
                             return token;
                         } else if (readEndOfLine(c)) {
-                            token.type = EORECORD;
+                            token.type = Token.CsvTokenType.EORECORD;
                             return token;
                         } else if (!isWhitespace(c)) {
                             // error invalid char between token and next delimiter
@@ -291,7 +291,7 @@ final class CsvLexer implements Closeable {
      * On return, the next character is available by calling {@link ExtendedBufferedReader#getLastChar()}
      * on the input stream.
      *
-     * @return the unescaped character (as an int) or {@link CsvConstants#END_OF_STREAM} if char following the escape is
+     * @return the unescaped character (as an int) or {@link IOs#EOF} if char following the escape is
      * invalid.
      * @throws IOException if there is a problem reading the stream or the end of stream is detected:
      *                     the escape character is not allowed at end of stream
@@ -301,22 +301,22 @@ final class CsvLexer implements Closeable {
         final int ch = reader.read();
         switch (ch) {
             case 'r':
-                return CR;
+                return Strings.CR;
             case 'n':
-                return LF;
+                return Strings.LF;
             case 't':
-                return TAB;
+                return Strings.TAB;
             case 'b':
-                return BACKSPACE;
+                return Strings.BACKSPACE;
             case 'f':
-                return FF;
-            case CR:
-            case LF:
-            case FF:
-            case TAB:
-            case BACKSPACE:
+                return Strings.FF;
+            case Strings.CR:
+            case Strings.LF:
+            case Strings.FF:
+            case Strings.TAB:
+            case Strings.BACKSPACE:
                 return ch;
-            case END_OF_STREAM:
+            case IOs.EOF:
                 throw new IOException("EOF whilst processing escape sequence");
             default:
                 // Now check for meta-characters
@@ -324,7 +324,7 @@ final class CsvLexer implements Closeable {
                     return ch;
                 }
                 // indicate unexpected char - available from in.getLastChar()
-                return END_OF_STREAM;
+                return IOs.EOF;
         }
     }
 
@@ -345,24 +345,24 @@ final class CsvLexer implements Closeable {
      */
     boolean readEndOfLine(int ch) throws IOException {
         // check if we have \r\n...
-        if (ch == CR && reader.lookAhead() == LF) {
+        if (ch == Strings.CR && reader.lookAhead() == Strings.LF) {
             // note: does not change ch outside of this method!
             ch = reader.read();
             // Save the EOL state
             if (firstEol == null) {
-                this.firstEol = CRLF;
+                this.firstEol = Strings.CRLF;
             }
         }
         // save EOL state here.
         if (firstEol == null) {
-            if (ch == LF) {
-                this.firstEol = LF_STRING;
-            } else if (ch == CR) {
-                this.firstEol = CR_STRING;
+            if (ch == Strings.LF) {
+                this.firstEol = Strings.LF_STRING;
+            } else if (ch == Strings.CR) {
+                this.firstEol = Strings.CR_STRING;
             }
         }
 
-        return ch == LF || ch == CR;
+        return ch == Strings.LF || ch == Strings.CR;
     }
 
     boolean isClosed() {
@@ -383,14 +383,14 @@ final class CsvLexer implements Closeable {
      * @return true if the character is at the start of a line.
      */
     boolean isStartOfLine(final int ch) {
-        return ch == LF || ch == CR || ch == UNDEFINED;
+        return ch == Strings.LF || ch == Strings.CR || ch == UNDEFINED;
     }
 
     /**
      * @return true if the given character indicates end of file
      */
     boolean isEndOfFile(final int ch) {
-        return ch == END_OF_STREAM;
+        return ch == IOs.EOF;
     }
 
     boolean isDelimiter(final int ch) {

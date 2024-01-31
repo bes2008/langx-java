@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.3.2</version>
+    <version>5.3.4</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -19,6 +19,12 @@
         <slf4j.version>1.7.0</slf4j.version>
         <jmh.version>1.23</jmh.version>
         <junit.version>4.13.1</junit.version>
+
+        <Automatic-Module-Name>com.jn.langx</Automatic-Module-Name>
+
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <url>https://github.com/bes2008/langx-java</url>
@@ -216,13 +222,17 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <encoding>UTF-8</encoding>
-                    <debug>true</debug>
+                    <archive>
+                        <manifest>
+                            <addClasspath>false</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Automatic-Module-Name>${Automatic-Module-Name}</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -238,9 +248,7 @@
         </plugins>
     </build>
 
-
     <profiles>
-
         <profile>
             <id>envHome</id>
             <properties>

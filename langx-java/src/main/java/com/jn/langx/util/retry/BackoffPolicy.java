@@ -8,11 +8,11 @@ public abstract class BackoffPolicy {
     public final long getBackoffTime(RetryConfig config, int attempts) {
         long backoffTime = getBackoffTimeInternal(config, attempts);
         Preconditions.checkTrue(backoffTime >= 0L, "invalid backoff");
-        backoffTime = config.getTimeUnit().toMillis(backoffTime);
-        backoffTime = addJitter(backoffTime, config.getJitter());
-        long maxSleepTime = config.getMaxSleepTime() > 0 ? config.getTimeUnit().toMillis(config.getMaxSleepTime()) : -1L;
-        backoffTime = maxSleepTime > 0 ? Math.min(backoffTime, config.getMaxSleepTime()) : backoffTime;
-        return backoffTime;
+        long backoffTimeMils = config.getTimeUnit().toMillis(backoffTime);
+        backoffTimeMils = addJitter(backoffTimeMils, config.getJitter());
+        long maxSleepTimeMils = config.getMaxSleepTime() > 0 ? config.getTimeUnit().toMillis(config.getMaxSleepTime()) : -1L;
+        backoffTimeMils = maxSleepTimeMils > 0 ? Math.min(backoffTimeMils, maxSleepTimeMils) : backoffTimeMils;
+        return backoffTimeMils;
     }
 
     protected long getBackoffTimeInternal(RetryConfig config, int attempts) {

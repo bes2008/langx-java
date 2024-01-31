@@ -1,6 +1,7 @@
 package com.jn.langx.text.csv;
 
 import com.jn.langx.util.Preconditions;
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Maps;
 
 import java.io.*;
@@ -8,7 +9,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import static com.jn.langx.text.csv.Token.Type.TOKEN;
 
 /**
  * Parses CSV files according to the specified format.
@@ -598,15 +598,15 @@ public final class CsvParser implements Iterable<CsvRecord>, Closeable {
                     if (sb == null) { // first comment for this record
                         sb = new StringBuilder();
                     } else {
-                        sb.append(CsvConstants.LF);
+                        sb.append(Strings.LF);
                     }
                     sb.append(this.reusableToken.content);
-                    this.reusableToken.type = TOKEN; // Read another token
+                    this.reusableToken.type = Token.CsvTokenType.TOKEN; // Read another token
                     break;
                 default:
                     throw new IllegalStateException("Unexpected Token type: " + this.reusableToken.type);
             }
-        } while (this.reusableToken.type == TOKEN);
+        } while (this.reusableToken.type == Token.CsvTokenType.TOKEN);
 
         if (!this.recordList.isEmpty()) {
             this.recordNumber++;

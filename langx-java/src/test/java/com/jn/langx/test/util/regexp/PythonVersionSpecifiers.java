@@ -2,6 +2,7 @@ package com.jn.langx.test.util.regexp;
 
 import com.jn.langx.util.collection.MapAccessor;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.collection.Sets;
 import com.jn.langx.util.function.Consumer;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.RegexpMatcher;
@@ -37,17 +38,7 @@ public class PythonVersionSpecifiers {
     public static MapAccessor extractVersionSegments(String version) {
         final RegexpMatcher matcher = VERSION_PATTERN_NAMED.matcher(version);
         matcher.matches();
-      //  if (matcher.matches()) {
-            final Map<String, Object> map = new HashMap<String, Object>();
-            Pipeline.of("epoch", "release", "pre", "preLabel", "preN", "post", "postLabel", "postN", "dev", "devN", "local")
-                    .forEach(new Consumer<String>() {
-                        @Override
-                        public void accept(String groupName) {
-                            map.put(groupName, matcher.group(groupName));
-                        }
-                    });
-            return new MapAccessor(map);
-      //  }
-      //  return null;
+        Map<String, String> groupToValueMap=Regexps.namedGroups(matcher, Sets.immutableSet(matcher.names()));
+        return new MapAccessor(groupToValueMap);
     }
 }

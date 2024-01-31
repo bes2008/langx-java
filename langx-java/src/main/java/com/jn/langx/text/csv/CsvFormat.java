@@ -1,5 +1,6 @@
 package com.jn.langx.text.csv;
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.IOs;
 
 import java.io.*;
@@ -11,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.jn.langx.text.csv.CsvConstants.*;
 
 /**
  * Specifies the format of a CSV file and parses input.
@@ -126,7 +126,10 @@ import static com.jn.langx.text.csv.CsvConstants.*;
  * </p>
  */
 public final class CsvFormat implements Serializable {
-
+    /**
+     * Starts a comment, the remainder of the line is the comment.
+     */
+    static final char COMMENT = '#';
     /**
      * Predefines formats.
      *
@@ -231,7 +234,7 @@ public final class CsvFormat implements Serializable {
      *
      * @see Predefined#Default
      */
-    public static final CsvFormat DEFAULT = new CsvFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF,
+    public static final CsvFormat DEFAULT = new CsvFormat(Strings.COMMA, Strings.DOUBLE_QUOTE_CHAR, null, null, null, false, true, Strings.CRLF,
             null, null, null, false, false, false, false, false, false, true);
 
     /**
@@ -296,10 +299,10 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat INFORMIX_UNLOAD = DEFAULT
-            .withDelimiter(PIPE)
-            .withEscape(BACKSLASH)
-            .withQuote(DOUBLE_QUOTE_CHAR)
-            .withRecordSeparator(LF);
+            .withDelimiter(Strings.PIPE)
+            .withEscape(Strings.BACKSLASH)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
+            .withRecordSeparator(Strings.LF);
     // @formatter:on
 
     /**
@@ -327,9 +330,9 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat INFORMIX_UNLOAD_CSV = DEFAULT
-            .withDelimiter(COMMA)
-            .withQuote(DOUBLE_QUOTE_CHAR)
-            .withRecordSeparator(LF);
+            .withDelimiter(Strings.COMMA)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
+            .withRecordSeparator(Strings.LF);
     // @formatter:on
 
     /**
@@ -361,9 +364,9 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat MONGODB_CSV = DEFAULT
-            .withDelimiter(COMMA)
-            .withEscape(DOUBLE_QUOTE_CHAR)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withDelimiter(Strings.COMMA)
+            .withEscape(Strings.DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withQuoteMode(QuoteMode.MINIMAL)
             .withSkipHeaderRecord(false);
     // @formatter:off
@@ -397,9 +400,9 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat MONGODB_TSV = DEFAULT
-            .withDelimiter(TAB)
-            .withEscape(DOUBLE_QUOTE_CHAR)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withDelimiter(Strings.TAB)
+            .withEscape(Strings.DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withQuoteMode(QuoteMode.MINIMAL)
             .withSkipHeaderRecord(false);
     // @formatter:off
@@ -431,11 +434,11 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat MYSQL = DEFAULT
-            .withDelimiter(TAB)
-            .withEscape(BACKSLASH)
+            .withDelimiter(Strings.TAB)
+            .withEscape(Strings.BACKSLASH)
             .withIgnoreEmptyLines(false)
             .withQuote(null)
-            .withRecordSeparator(LF)
+            .withRecordSeparator(Strings.LF)
             .withNullString("\\N")
             .withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
@@ -469,10 +472,10 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat ORACLE = DEFAULT
-            .withDelimiter(COMMA)
-            .withEscape(BACKSLASH)
+            .withDelimiter(Strings.COMMA)
+            .withEscape(Strings.BACKSLASH)
             .withIgnoreEmptyLines(false)
-            .withQuote(DOUBLE_QUOTE_CHAR)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
             .withNullString("\\N")
             .withTrim()
             .withSystemRecordSeparator()
@@ -507,12 +510,12 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat POSTGRESQL_CSV = DEFAULT
-            .withDelimiter(COMMA)
-            .withEscape(DOUBLE_QUOTE_CHAR)
+            .withDelimiter(Strings.COMMA)
+            .withEscape(Strings.DOUBLE_QUOTE_CHAR)
             .withIgnoreEmptyLines(false)
-            .withQuote(DOUBLE_QUOTE_CHAR)
-            .withRecordSeparator(LF)
-            .withNullString(EMPTY)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
+            .withRecordSeparator(Strings.LF)
+            .withNullString(Strings.EMPTY)
             .withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
 
@@ -544,11 +547,11 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat POSTGRESQL_TEXT = DEFAULT
-            .withDelimiter(TAB)
-            .withEscape(BACKSLASH)
+            .withDelimiter(Strings.TAB)
+            .withEscape(Strings.BACKSLASH)
             .withIgnoreEmptyLines(false)
-            .withQuote(DOUBLE_QUOTE_CHAR)
-            .withRecordSeparator(LF)
+            .withQuote(Strings.DOUBLE_QUOTE_CHAR)
+            .withRecordSeparator(Strings.LF)
             .withNullString("\\N")
             .withQuoteMode(QuoteMode.ALL_NON_NULL);
     // @formatter:off
@@ -589,19 +592,10 @@ public final class CsvFormat implements Serializable {
      */
     // @formatter:off
     public static final CsvFormat TDF = DEFAULT
-            .withDelimiter(TAB)
+            .withDelimiter(Strings.TAB)
             .withIgnoreSurroundingSpaces();
     // @formatter:on
 
-    /**
-     * Returns true if the given character is a line break character.
-     *
-     * @param c the character to check
-     * @return true if <code>c</code> is a line break character
-     */
-    private static boolean isLineBreak(final char c) {
-        return c == LF || c == CR;
-    }
 
     /**
      * Returns true if the given character is a line break character.
@@ -1110,7 +1104,7 @@ public final class CsvFormat implements Serializable {
         if (value == null) {
             // https://issues.apache.org/jira/browse/CSV-203
             if (null == nullString) {
-                charSequence = EMPTY;
+                charSequence = Strings.EMPTY;
             } else {
                 if (QuoteMode.ALL == quoteMode) {
                     charSequence = quotedNullString;
@@ -1162,9 +1156,9 @@ public final class CsvFormat implements Serializable {
         } else if (isEscapeCharacterSet()) {
             printWithEscapes(reader, out);
         } else if (out instanceof Writer) {
-            CsvIOs.copyLarge(reader, (Writer) out);
+            IOs.copyLarge(reader, (Writer) out);
         } else {
-            CsvIOs.copy(reader, out);
+            IOs.copy(reader, out);
         }
 
     }
@@ -1235,14 +1229,14 @@ public final class CsvFormat implements Serializable {
 
         while (pos < end) {
             char c = value.charAt(pos);
-            if (c == CR || c == LF || c == delim || c == escape) {
+            if (c == Strings.CR || c == Strings.LF || c == delim || c == escape) {
                 // write out segment up until this char
                 if (pos > start) {
                     out.append(value, start, pos);
                 }
-                if (c == LF) {
+                if (c == Strings.LF) {
                     c = 'n';
-                } else if (c == CR) {
+                } else if (c == Strings.CR) {
                     c = 'r';
                 }
 
@@ -1266,20 +1260,20 @@ public final class CsvFormat implements Serializable {
 
         final char delim = getDelimiter();
         final char escape = getEscapeCharacter();
-        final StringBuilder builder = new StringBuilder(CsvIOs.DEFAULT_BUFFER_SIZE);
+        final StringBuilder builder = new StringBuilder(IOs.DEFAULT_BUFFER_SIZE);
 
         int c;
         while (-1 != (c = reader.read())) {
             builder.append((char) c);
-            if (c == CR || c == LF || c == delim || c == escape) {
+            if (c == Strings.CR || c == Strings.LF || c == delim || c == escape) {
                 // write out segment up until this char
                 if (pos > start) {
                     out.append(builder.substring(start, pos));
                     builder.setLength(0);
                 }
-                if (c == LF) {
+                if (c == Strings.LF) {
                     c = 'n';
-                } else if (c == CR) {
+                } else if (c == Strings.CR) {
                     c = 'r';
                 }
 
@@ -1348,7 +1342,7 @@ public final class CsvFormat implements Serializable {
                     } else {
                         while (pos < end) {
                             c = value.charAt(pos);
-                            if (c == LF || c == CR || c == quoteChar || c == delimChar) {
+                            if (c == Strings.LF || c == Strings.CR || c == quoteChar || c == delimChar) {
                                 quote = true;
                                 break;
                             }
@@ -1360,7 +1354,7 @@ public final class CsvFormat implements Serializable {
                             c = value.charAt(pos);
                             // Some other chars at the end caused the parser to fail, so for now
                             // encapsulate if we end in anything less than ' '
-                            if (c <= SP) {
+                            if (c <= Strings.SP) {
                                 quote = true;
                             }
                         }
@@ -1421,7 +1415,7 @@ public final class CsvFormat implements Serializable {
         int pos = 0;
 
         final char quote = getQuoteCharacter();
-        final StringBuilder builder = new StringBuilder(CsvIOs.DEFAULT_BUFFER_SIZE);
+        final StringBuilder builder = new StringBuilder(IOs.DEFAULT_BUFFER_SIZE);
 
         out.append(quote);
 
@@ -1515,10 +1509,10 @@ public final class CsvFormat implements Serializable {
         int len = count;
         int pos = 0;
 
-        while (pos < len && charSequence.charAt(pos) <= SP) {
+        while (pos < len && charSequence.charAt(pos) <= Strings.SP) {
             pos++;
         }
-        while (pos < len && charSequence.charAt(len - 1) <= SP) {
+        while (pos < len && charSequence.charAt(len - 1) <= Strings.SP) {
             len--;
         }
         return pos > 0 || len < count ? charSequence.subSequence(pos, len) : charSequence;
