@@ -98,6 +98,15 @@
                                     <exclude>org.jruby.*:*</exclude>
                                 </excludes>
                             </artifactSet>
+
+                            <filters>
+                                <filter>
+                                    <artifact>io.github.bes2008.solution.langx*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/maven/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
