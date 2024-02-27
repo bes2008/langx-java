@@ -117,11 +117,10 @@
                             <useBaseVersion>true</useBaseVersion>
                             <shadedArtifactAttached>false</shadedArtifactAttached>
                             <artifactSet>
-                                <excludes>
-                                    <exclude>org.apache.commons:commons-lang3</exclude>
-                                    <exclude>org.bouncycastle</exclude>
-                                    <exclude>org.jruby.*:*</exclude>
-                                </excludes>
+                                <includes>
+                                    <include>io.github.bes2008.solution.langx</include>
+                                    <include>io.github.bes2008.solution.langx.*</include>
+                                </includes>
                             </artifactSet>
 
                             <filters>
