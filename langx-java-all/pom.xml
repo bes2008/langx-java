@@ -70,6 +70,19 @@
             <groupId>io.github.bes2008.solution.langx.security</groupId>
             <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${apache.commons-lang3.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

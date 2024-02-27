@@ -16,15 +16,21 @@
     </description>
 
     <properties>
-        <slf4j.version>1.7.0</slf4j.version>
-        <jmh.version>1.23</jmh.version>
-        <junit.version>4.13.1</junit.version>
-
-        <Automatic-Module-Name>com.jn.langx</Automatic-Module-Name>
-
+        <!--maven build properties-->
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!--custom build properties-->
+        <Automatic-Module-Name>com.jn.langx</Automatic-Module-Name>
+
+        <!-- dependency versions -->
+        <asm.version>5.0</asm.version>
+        <slf4j.version>1.7.0</slf4j.version>
+        <apache.commons-lang3.version>3.12.0</apache.commons-lang3.version>
+        <jmh.version>1.23</jmh.version>
+        <junit.version>4.13.1</junit.version>
+
     </properties>
 
     <url>https://github.com/bes2008/langx-java</url>

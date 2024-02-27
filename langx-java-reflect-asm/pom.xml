@@ -24,8 +24,7 @@
         <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>5.0</version>
-            <scope>provided</scope>
+            <version>${asm.version}</version>
         </dependency>
     </dependencies>
 
