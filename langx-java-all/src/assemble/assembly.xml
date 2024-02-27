@@ -1,0 +1,42 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>dist</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <containerDescriptorHandlers>
+        <containerDescriptorHandler>
+            <!-- merge all the same META-INF/services/ files what in different module to single -->
+            <handlerName>metaInf-services</handlerName>
+        </containerDescriptorHandler>
+    </containerDescriptorHandlers>
+    <fileSets>
+
+        <fileSet>
+            <directory>${project.parent.basedir}/langx-java/src/main/resources/META-INF/services</directory>
+            <outputDirectory>META-INF/services/langx-java</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/langx-java8/src/main/resources/META-INF/services</directory>
+            <outputDirectory>META-INF/services/langx-java8</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/langx-java-fastdateformat/src/main/resources/META-INF/services</directory>
+            <outputDirectory>META-INF/services/langx-java-fastdateformat</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/langx-java-reflect-aspectj/src/main/resources/META-INF/services</directory>
+            <outputDirectory>META-INF/services/langx-java-reflect-aspectj</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/langx-java-regexp-joni/src/main/resources/META-INF/services</directory>
+            <outputDirectory>META-INF/services/langx-java-regexp-joni</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.parent.basedir}/langx-java-security-gm/langx-java-security-gm-jca-bouncycastle/src/main/resources/META-INF/services</directory>
+            <outputDirectory>META-INF/services/langx-java-security-gm-jca-bouncycastle</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

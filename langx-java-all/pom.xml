@@ -95,10 +95,37 @@
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>src/assemble/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -130,6 +157,54 @@
                                         <exclude>META-INF/maven/**</exclude>
                                     </excludes>
                                 </filter>
+                                <filter>
+                                    <artifact>io.github.bes2008.solution.langx*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/*</exclude>
+                                    </excludes>
+                                </filter>
+                                <!--
+                                <filter>
+                                    <artifact>io.github.bes2008.solution.langx:langx-java</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/com/jn/langx/util/datetime/DateTimeFormatterFactory</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/parser/CandidateDateTimeParseService</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/io/Closer</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/reflect/parameter/ConstructorParameterSupplier</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/reflect/parameter/MethodParameterSupplier</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/regexp/RegexpEngine</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>io.github.bes2008.solution.langx:langx-java8</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/com/jn/langx/util/datetime/DateTimeFormatterFactory</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/parser/CandidateDateTimeParseService</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/io/Closer</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/reflect/parameter/ConstructorParameterSupplier</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/reflect/parameter/MethodParameterSupplier</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>io.github.bes2008.solution.langx:langx-java-reflect-aspectj</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/com/jn/langx/util/reflect/parameter/ConstructorParameterSupplier</exclude>
+                                        <exclude>META-INF/services/com/jn/langx/util/reflect/parameter/MethodParameterSupplier</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>io.github.bes2008.solution.langx:langx-java-regexp-joni</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/com/jn/langx/util/regexp/RegexpEngine</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>io.github.bes2008.solution.langx:langx-java-regexp-joni</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/services/com/jn/langx/util/regexp/RegexpEngine</exclude>
+                                    </excludes>
+                                </filter>
+                                -->
                             </filters>
                         </configuration>
                     </execution>
