@@ -19,7 +19,6 @@
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
 
-        <bouncycastle.version>1.70</bouncycastle.version>
 
     </properties>
 
