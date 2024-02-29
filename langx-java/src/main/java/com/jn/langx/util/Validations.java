@@ -63,7 +63,7 @@ public class Validations {
     }
 
     public static boolean isValidPort(int port){
-        return isValidInt(port,1,65536);
+        return isValidInt(port,0,65536);
     }
 
     public static boolean isValidInt(int num, int start, int end){
