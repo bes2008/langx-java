@@ -8,6 +8,7 @@ public class ValidationTests {
     @Test
     public void testHostname(){
         String[] hostnames=new String[]{
+                "hello.world/213/-com",
                 "hello.world.213.com",
                 "hello-world.213.com",
                 "hello.world-.213.com",
