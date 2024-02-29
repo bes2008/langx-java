@@ -1,6 +1,6 @@
 package com.jn.langx.security.crypto.cipher;
 
-import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 
 import java.security.Provider;
 import java.security.SecureRandom;
@@ -18,7 +18,7 @@ public class Symmetrics extends Ciphers {
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] secretKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return encrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
+        return encrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier());
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] secretKey, String algorithm) {
@@ -30,7 +30,7 @@ public class Symmetrics extends Ciphers {
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] secretKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return decrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
+        return decrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier());
     }
 
     public enum MODE {

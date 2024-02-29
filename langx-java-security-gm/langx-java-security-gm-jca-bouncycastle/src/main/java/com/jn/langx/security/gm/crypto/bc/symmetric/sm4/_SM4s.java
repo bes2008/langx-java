@@ -3,7 +3,7 @@ package com.jn.langx.security.gm.crypto.bc.symmetric.sm4;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
-import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
@@ -36,7 +36,7 @@ class _SM4s extends Symmetrics {
             byte[] iv = PKIs.createSecretKey("SM4", provider == null ? null : provider.getName(), 128, secureRandom).getEncoded();
             ivParameterSpec = new IvParameterSpec(iv);
         }
-        return encrypt(bytes, symmetricKey, "SM4", algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier(), ivParameterSpec);
+        return encrypt(bytes, symmetricKey, "SM4", algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivParameterSpec);
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] symmetricKey, Provider provider, SecureRandom secureRandom) {
@@ -57,6 +57,6 @@ class _SM4s extends Symmetrics {
             byte[] iv = PKIs.createSecretKey("SM4", provider == null ? null : provider.getName(), 128, secureRandom).getEncoded();
             ivParameterSpec = new IvParameterSpec(iv);
         }
-        return decrypt(bytes, symmetricKey, "SM4", algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier(), ivParameterSpec);
+        return decrypt(bytes, symmetricKey, "SM4", algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivParameterSpec);
     }
 }

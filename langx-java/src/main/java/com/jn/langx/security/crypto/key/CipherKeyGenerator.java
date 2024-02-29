@@ -1,17 +1,17 @@
-package com.jn.langx.security.crypto.key.spi;
+package com.jn.langx.security.crypto.key;
 
 import java.security.SecureRandom;
 
-public class CipherKeyGeneratorEngine {
+public class CipherKeyGenerator {
     protected SecureRandom random;
-    protected int strength;
+    protected int bytesLength;
 
     /**
      * initialise the key generator.
      */
-    public void init(int strength, SecureRandom random) {
+    public void init(int bytesLength, SecureRandom random) {
         this.random = random;
-        this.strength = (strength + 7) / 8;
+        this.bytesLength = (bytesLength + 7) / 8;
     }
 
     /**
@@ -20,7 +20,7 @@ public class CipherKeyGeneratorEngine {
      * @return a byte array containing the key value.
      */
     public byte[] generateKey() {
-        byte[] key = new byte[strength];
+        byte[] key = new byte[bytesLength];
         random.nextBytes(key);
         return key;
     }

@@ -4,7 +4,7 @@ import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.digest.MessageDigests;
-import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
 import com.jn.langx.security.crypto.signature.Signatures;
@@ -79,7 +79,7 @@ public class BcGmService extends AbstractGmService {
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        return Symmetrics.encrypt(data, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+        return Symmetrics.encrypt(data, secretKey, "SM4", transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
 
 
@@ -101,6 +101,6 @@ public class BcGmService extends AbstractGmService {
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        return Symmetrics.decrypt(encryptedBytes, secretKey, "SM4", transformation, null, null, new ByteBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+        return Symmetrics.decrypt(encryptedBytes, secretKey, "SM4", transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
 }

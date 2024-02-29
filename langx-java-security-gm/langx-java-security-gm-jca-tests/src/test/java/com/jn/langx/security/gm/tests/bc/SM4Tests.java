@@ -2,7 +2,7 @@ package com.jn.langx.security.gm.tests.bc;
 
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
-import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 import com.jn.langx.security.gm.crypto.bc.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class SM4Tests {
                 "SM4/ECB/PKCS5Padding",
                 (Provider) null,
                 (SecureRandom) null,
-                new ByteBasedSecretKeySupplier(),
+                new BytesBasedSecretKeySupplier(),
                 new SM4AlgorithmSpecSupplier()
         );
 
@@ -36,7 +36,7 @@ public class SM4Tests {
                 "SM4",
                 "SM4/ECB/PKCS5Padding",
                 null, null,
-                new ByteBasedSecretKeySupplier(),
+                new BytesBasedSecretKeySupplier(),
                 new SM4AlgorithmSpecSupplier()
         );
         System.out.println(new String(decryptedBytes));

@@ -1,6 +1,7 @@
 package com.jn.langx.security.crypto.key.spi;
 
 
+import com.jn.langx.security.crypto.key.CipherKeyGenerator;
 import com.jn.langx.security.crypto.key.SecureRandoms;
 
 import javax.crypto.KeyGeneratorSpi;
@@ -14,23 +15,23 @@ import java.security.spec.AlgorithmParameterSpec;
 public class BaseKeyGeneratorSpi extends KeyGeneratorSpi {
     protected String algorithm;
     /**
-     * unit in bytes
+     * bit length
      */
     protected int keySize;
 
     /**
-     * unit in bytes
+     * bit length
      */
     protected int defaultKeySize;
-    protected CipherKeyGeneratorEngine engine;
+    protected CipherKeyGenerator engine;
 
     protected boolean initialed = false;
 
     public BaseKeyGeneratorSpi(String algorithm, int defaultKeySize) {
-        this(algorithm, defaultKeySize, new CipherKeyGeneratorEngine());
+        this(algorithm, defaultKeySize, new CipherKeyGenerator());
     }
 
-    public BaseKeyGeneratorSpi(String algorithm, int defaultKeySize, CipherKeyGeneratorEngine engine) {
+    public BaseKeyGeneratorSpi(String algorithm, int defaultKeySize, CipherKeyGenerator engine) {
         this.algorithm = algorithm;
         this.keySize = this.defaultKeySize = defaultKeySize;
         this.engine = engine;
