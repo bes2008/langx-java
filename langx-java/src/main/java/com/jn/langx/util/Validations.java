@@ -8,7 +8,7 @@ public class Validations {
     private Validations(){}
     /**
      * hostname 被分为两大部分标签与顶级域名:
-     * <pre>label1.label2....lableN.top_domain</pre>
+     * <pre>label1.label2....labelN.top_domain</pre>
      *
      * 要求：
      * <pre>
@@ -17,7 +17,7 @@ public class Validations {
      *
      */
     public static boolean isValidRFC1123Hostname(String hostname){
-        if(Strings.isEmpty(hostname) || Objs.length(hostname)>255){
+        if(!lengthInRange(hostname,1,256)){
             return false;
         }
         String[] labels=Strings.split(hostname,".",false,false);
@@ -40,10 +40,7 @@ public class Validations {
      * </pre>
      */
     private static boolean isValidRFC1123Label(String label){
-        if(Strings.isEmpty(label)){
-            return false;
-        }
-        if(label.length()>63){
+        if(!lengthInRange(label,1,64)){
             return false;
         }
         for (int i = 0; i < label.length(); i++) {
@@ -62,11 +59,16 @@ public class Validations {
         return true;
     }
 
-    public static boolean isValidPort(int port){
-        return isValidInt(port,0,65536);
+    public static boolean lengthInRange(Object value, int start, int end){
+        int length = Objs.length(value);
+        return inRange(length, start, end);
     }
 
-    public static boolean isValidInt(int num, int start, int end){
+    public static boolean isValidPort(int port){
+        return inRange(port,0,65536);
+    }
+
+    public static boolean inRange(int num, int start, int end){
         return new IntRange(start,end).contains(num);
     }
 }

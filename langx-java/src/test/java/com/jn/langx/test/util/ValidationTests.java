@@ -5,6 +5,10 @@ import org.junit.Test;
 
 public class ValidationTests {
 
+    public void testHostname(){
+
+    }
+
     @Test
     public void testPort(){
         System.out.println(Validations.isValidPort(-1));

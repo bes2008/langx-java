@@ -1509,7 +1509,7 @@ public class Nets {
         } else { // General case that can handle compressing (and not compressing)
             // Loop unroll the first index (so we don't constantly check i==0 cases in loop)
             final boolean isIpv4Mapped;
-            if (Validations.isValidInt(0, shortestStart, shortestEnd)) {
+            if (Validations.inRange(0, shortestStart, shortestEnd)) {
                 b.append("::");
                 isIpv4Mapped = ipv4Mapped && (shortestEnd == 5 && words[5] == 0xffff);
             } else {
@@ -1517,8 +1517,8 @@ public class Nets {
                 isIpv4Mapped = false;
             }
             for (i = 1; i < words.length; ++i) {
-                if (!Validations.isValidInt(i, shortestStart, shortestEnd)) {
-                    if (!Validations.isValidInt(i - 1, shortestStart, shortestEnd)) {
+                if (!Validations.inRange(i, shortestStart, shortestEnd)) {
+                    if (!Validations.inRange(i - 1, shortestStart, shortestEnd)) {
                         // If the last index was not part of the shortened sequence
                         if (!isIpv4Mapped || i == 6) {
                             b.append(':');
@@ -1533,7 +1533,7 @@ public class Nets {
                     } else {
                         b.append(Integer.toHexString(words[i]));
                     }
-                } else if (!Validations.isValidInt(i - 1, shortestStart, shortestEnd)) {
+                } else if (!Validations.inRange(i - 1, shortestStart, shortestEnd)) {
                     // If we are in the shortened sequence and the last index was not
                     b.append("::");
                 }
