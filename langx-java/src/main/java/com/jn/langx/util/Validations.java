@@ -2,6 +2,7 @@ package com.jn.langx.util;
 
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Predicate;
+import com.jn.langx.util.ranges.IntRange;
 
 public class Validations {
     private Validations(){}
@@ -59,5 +60,13 @@ public class Validations {
             }
         }
         return true;
+    }
+
+    public static boolean isValidPort(int port){
+        return isValidInt(port,1,65536);
+    }
+
+    public static boolean isValidInt(int num, int start, int end){
+        return new IntRange(start,end).contains(num);
     }
 }
