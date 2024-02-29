@@ -656,15 +656,11 @@ public class Nets {
                     (c0 <= '1' && c1 <= '9' && c2 <= '9' ||
                             c0 == '2' && c1 <= '5' && (c2 <= '5' || c1 < '5' && c2 <= '9'));
         }
-        return c0 <= '9' && (len == 1 || isValidNumericChar(word.charAt(from + 1)));
+        return c0 <= '9' && (len == 1 || Chars.isNumber(word.charAt(from + 1)));
     }
 
     private static boolean isValidHexChar(char c) {
-        return c >= '0' && c <= '9' || c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f';
-    }
-
-    private static boolean isValidNumericChar(char c) {
-        return c >= '0' && c <= '9';
+        return Chars.isNumber(c) || Chars.isLowOrUpperCase(c);
     }
 
     private static boolean isValidIPv4MappedChar(char c) {
@@ -846,7 +842,7 @@ public class Nets {
 
 
     public static boolean isValidPort(int port) {
-        return port >= 0 && port <= 0xFFFF;
+        return Validations.isValidPort(port);
     }
 
     /**
@@ -990,12 +986,12 @@ public class Nets {
                             // We also parse pure IPv4 addresses as IPv4-Mapped for ease of use.
                             ((!ipv4Mapped || currentIndex != 0 && !isValidIPv4Mapped(bytes, currentIndex,
                                     compressBegin, compressLength)) ||
-                                    (tmp == 3 && (!isValidNumericChar(ip.charAt(i - 1)) ||
-                                            !isValidNumericChar(ip.charAt(i - 2)) ||
-                                            !isValidNumericChar(ip.charAt(i - 3))) ||
-                                            tmp == 2 && (!isValidNumericChar(ip.charAt(i - 1)) ||
-                                                    !isValidNumericChar(ip.charAt(i - 2))) ||
-                                            tmp == 1 && !isValidNumericChar(ip.charAt(i - 1))))) {
+                                    (tmp == 3 && (!Chars.isNumber(ip.charAt(i - 1)) ||
+                                            !Chars.isNumber(ip.charAt(i - 2)) ||
+                                            !Chars.isNumber(ip.charAt(i - 3))) ||
+                                            tmp == 2 && (!Chars.isNumber(ip.charAt(i - 1)) ||
+                                                    !Chars.isNumber(ip.charAt(i - 2))) ||
+                                            tmp == 1 && !Chars.isNumber(ip.charAt(i - 1))))) {
                         return null;
                     }
                     value <<= (IPV4_MAX_CHAR_BETWEEN_SEPARATOR - tmp) << 2;
@@ -1012,7 +1008,7 @@ public class Nets {
                     begin = -1;
                     break;
                 default:
-                    if (!isValidHexChar(c) || (ipv4Separators > 0 && !isValidNumericChar(c))) {
+                    if (!isValidHexChar(c) || (ipv4Separators > 0 && !Chars.isNumber(c))) {
                         return null;
                     }
                     if (begin < 0) {
@@ -1513,7 +1509,7 @@ public class Nets {
         } else { // General case that can handle compressing (and not compressing)
             // Loop unroll the first index (so we don't constantly check i==0 cases in loop)
             final boolean isIpv4Mapped;
-            if (inRangeEndExclusive(0, shortestStart, shortestEnd)) {
+            if (Validations.isValidInt(0, shortestStart, shortestEnd)) {
                 b.append("::");
                 isIpv4Mapped = ipv4Mapped && (shortestEnd == 5 && words[5] == 0xffff);
             } else {
@@ -1521,8 +1517,8 @@ public class Nets {
                 isIpv4Mapped = false;
             }
             for (i = 1; i < words.length; ++i) {
-                if (!inRangeEndExclusive(i, shortestStart, shortestEnd)) {
-                    if (!inRangeEndExclusive(i - 1, shortestStart, shortestEnd)) {
+                if (!Validations.isValidInt(i, shortestStart, shortestEnd)) {
+                    if (!Validations.isValidInt(i - 1, shortestStart, shortestEnd)) {
                         // If the last index was not part of the shortened sequence
                         if (!isIpv4Mapped || i == 6) {
                             b.append(':');
@@ -1537,7 +1533,7 @@ public class Nets {
                     } else {
                         b.append(Integer.toHexString(words[i]));
                     }
-                } else if (!inRangeEndExclusive(i - 1, shortestStart, shortestEnd)) {
+                } else if (!Validations.isValidInt(i - 1, shortestStart, shortestEnd)) {
                     // If we are in the shortened sequence and the last index was not
                     b.append("::");
                 }
@@ -1568,20 +1564,6 @@ public class Nets {
         }
     }
 
-    /**
-     * Does a range check on {@code value} if is within {@code start} (inclusive) and {@code end} (exclusive).
-     *
-     * @param value The value to checked if is within {@code start} (inclusive) and {@code end} (exclusive)
-     * @param start The start of the range (inclusive)
-     * @param end   The end of the range (exclusive)
-     * @return <ul>
-     * <li>{@code true} if {@code value} if is within {@code start} (inclusive) and {@code end} (exclusive)</li>
-     * <li>{@code false} otherwise</li>
-     * </ul>
-     */
-    private static boolean inRangeEndExclusive(int value, int start, int end) {
-        return value >= start && value < end;
-    }
 
 
     public static Enumeration<InetAddress> addressesFromNetworkInterface(final NetworkInterface intf) {
