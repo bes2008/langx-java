@@ -7,15 +7,15 @@ import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.CryptoException;
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedKeySupplier;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
+import com.jn.langx.util.*;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.logging.Loggers;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
@@ -350,5 +350,27 @@ public class Ciphers extends Securitys {
 
     public static CipherAlgorithmSuiteRegistry getAlgorithmSuiteRegistry() {
         return ALGORITHM_SUITE_REGISTRY;
+    }
+
+    public static IvParameterSpec createIvParameterSpec( int ivBitLength){
+        return createIvParameterSpec(null, ivBitLength);
+    }
+    public static IvParameterSpec createIvParameterSpec(byte[] seed, int ivBitLength){
+        return createIvParameterSpec(null, seed, ivBitLength);
+    }
+    public static IvParameterSpec createIvParameterSpec(SecureRandom secureRandom, byte[] seed, int ivBitLength){
+        if (secureRandom == null) {
+            try {
+                secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
+            } catch (Throwable ex) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }
+        }
+        if(Objs.isNotEmpty(seed)) {
+            secureRandom.setSeed(seed);
+        }
+        byte[] ivBytes = new byte[ivBitLength];
+        secureRandom.nextBytes(ivBytes);
+        return new IvParameterSpec(ivBytes);
     }
 }

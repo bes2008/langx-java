@@ -1,9 +1,12 @@
 package com.jn.langx.security.gm.crypto.bc.symmetric.sm4;
 
 import com.jn.langx.security.crypto.JCAEStandardName;
+import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
+import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
@@ -22,18 +25,20 @@ class _SM4s extends Symmetrics {
         return encrypt(bytes, symmetricKey, "SM4", null, provider, secureRandom);
     }
 
-    public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
+    public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom){
+        return encrypt(bytes, symmetricKey, algorithmTransformation, provider, secureRandom, symmetricKey);
+    }
+
+    public static byte[] encrypt(byte[] bytes, byte[] symmetricKey, String algorithmTransformation, Provider provider, SecureRandom secureRandom, byte[] iv) {
         IvParameterSpec ivParameterSpec = null;
-        if (secureRandom == null) {
-            try {
-                secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
-                secureRandom.setSeed(SECURE_RANDOM_SEED_DEFAULT);
-            } catch (Throwable ex) {
-                throw Throwables.wrapAsRuntimeException(ex);
-            }
+        Symmetrics.MODE mode = Ciphers.extractSymmetricMode(algorithmTransformation);
+        if(mode==null){
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("illegal algorithm transformation: {}", algorithmTransformation));
         }
-        if (Strings.contains(algorithmTransformation, "CBC")) {
-            byte[] iv = PKIs.createSecretKey("SM4", provider == null ? null : provider.getName(), 128, secureRandom).getEncoded();
+        if (mode.hasIV()) {
+            if(Objs.isEmpty(iv)) {
+                iv = Ciphers.createIvParameterSpec(secureRandom, SECURE_RANDOM_SEED_DEFAULT, 128).getIV();
+            }
             ivParameterSpec = new IvParameterSpec(iv);
         }
         return encrypt(bytes, symmetricKey, "SM4", algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), ivParameterSpec);

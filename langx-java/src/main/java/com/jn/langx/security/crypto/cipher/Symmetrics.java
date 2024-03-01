@@ -34,16 +34,26 @@ public class Symmetrics extends Ciphers {
     }
 
     public enum MODE {
-        ECB(CipherAlgorithmMode.ECB),
-        CBC(CipherAlgorithmMode.CBC),
-        CFB(CipherAlgorithmMode.CFB),
-        OFB(CipherAlgorithmMode.OFB),
-        CTR(CipherAlgorithmMode.CTR);
+        ECB(CipherAlgorithmMode.ECB, false),
+        CBC(CipherAlgorithmMode.CBC, true),
+        CFB(CipherAlgorithmMode.CFB, true),
+        OFB(CipherAlgorithmMode.OFB, true),
+        CTR(CipherAlgorithmMode.CTR, true);
 
         private CipherAlgorithmMode ref;
+        private boolean hasIV;
 
         MODE(CipherAlgorithmMode ref) {
+            this(ref, true);
+        }
+
+        MODE(CipherAlgorithmMode ref, boolean hasIV) {
             this.ref = ref;
+            this.hasIV = hasIV;
+        }
+
+        public boolean hasIV() {
+            return hasIV;
         }
 
         @Override

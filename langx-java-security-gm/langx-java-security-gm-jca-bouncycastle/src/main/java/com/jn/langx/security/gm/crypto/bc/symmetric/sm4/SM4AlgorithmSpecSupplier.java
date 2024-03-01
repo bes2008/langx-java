@@ -1,12 +1,9 @@
 package com.jn.langx.security.gm.crypto.bc.symmetric.sm4;
 
-import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.AlgorithmParameterSupplier;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
-import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Throwables;
 import com.jn.langx.util.io.Charsets;
 import com.jn.langx.util.reflect.Reflects;
 
@@ -16,7 +13,7 @@ import java.security.Provider;
 import java.security.SecureRandom;
 
 /**
- * SM4 在 CBC 模式下，必须要用到的。
+ * SM4 在 非ECB 模式下，必须要用到的。
  */
 public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
     private static final byte[] SECURE_RANDOM_SEED_DEFAULT = Reflects.getFQNClassName(SM4AlgorithmSpecSupplier.class).getBytes(Charsets.UTF_8);
@@ -37,27 +34,16 @@ public class SM4AlgorithmSpecSupplier implements AlgorithmParameterSupplier {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        if (mode == Symmetrics.MODE.ECB) {
+        if (!mode.hasIV()) {
             return null;
         }
 
         if (Emptys.isNotEmpty(iv)) {
             return new IvParameterSpec(iv);
         }
-        IvParameterSpec ivParameterSpec;
-        if (secureRandom == null) {
-            try {
-                secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
-                secureRandom.setSeed(SECURE_RANDOM_SEED_DEFAULT);
-            } catch (Exception ex) {
-                throw Throwables.wrapAsRuntimeException(ex);
-            }
-        }
 
-        byte[] iv = PKIs.createSecretKey("SM4", provider == null ? null : provider.getName(), 128, secureRandom).getEncoded();
-        ivParameterSpec = new IvParameterSpec(iv);
-
-        return ivParameterSpec;
+        // 生成 IV,因为 SM4的 iv 长度与 sm4的 iv 长度是一致的，都是128 bit的随机数，所以可以利用下面的方式生成 iv
+        return Ciphers.createIvParameterSpec(null, SECURE_RANDOM_SEED_DEFAULT, 128);
     }
 
 }
