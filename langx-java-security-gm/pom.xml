@@ -43,9 +43,6 @@
     </dependencyManagement>
 
     <modules>
-        <!--
-        <module>langx-java-security-gm-jca-gmsslorg</module>
-        -->
         <module>langx-java-security-gm-jca-bouncycastle</module>
         <module>langx-java-security-gm-jca-tests</module>
     </modules>
