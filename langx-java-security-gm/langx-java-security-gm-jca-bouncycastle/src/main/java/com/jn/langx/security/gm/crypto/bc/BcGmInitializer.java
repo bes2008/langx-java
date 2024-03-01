@@ -47,6 +47,7 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
         map.put("Alg.Alias.MessageDigest.1.2.156.197.1.401", "SM3");
 
         // sm4
+        // 配置 SM4 算法： org.bouncycastle.jcajce.provider.symmetric.SM4.Mappings
         map.put("AlgorithmParameters.SM4", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.symmetric.SM4.AlgParams.class));
         map.put("AlgorithmParameterGenerator.SM4", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.symmetric.SM4.AlgParamGen.class));
         map.put("Cipher.SM4", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.symmetric.SM4.ECB.class));
