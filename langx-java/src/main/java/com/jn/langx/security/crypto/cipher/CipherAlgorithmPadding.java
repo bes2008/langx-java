@@ -1,5 +1,8 @@
 package com.jn.langx.security.crypto.cipher;
 
+/**
+ * @since 5.3.6
+ */
 public enum CipherAlgorithmPadding {
     NoPadding,
     ZeroPadding,
