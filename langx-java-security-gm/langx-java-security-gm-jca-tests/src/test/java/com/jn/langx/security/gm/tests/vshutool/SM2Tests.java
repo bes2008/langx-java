@@ -34,7 +34,7 @@ public class SM2Tests {
         System.out.println("public key:");
         System.out.println(Base64.encodeBase64String(keyPair.getPublic().getEncoded()));
 
-        System.out.println("===================================");
+        System.out.println("================test-hutool-01===================");
         // 使用 hutool 加密
         // 默认使用的是 C1C3C2模式
         SM2 hutoolSm2 = SmUtil.sm2(keyPair.getPrivate(),keyPair.getPublic());
@@ -46,11 +46,34 @@ public class SM2Tests {
         String decryptedTextByHutool= new String( hutoolSm2.decrypt(Base64.decodeBase64(cipherTextByHutool)),Charsets.UTF_8);
         System.out.println(Objs.equals(decryptedTextByHutool, content));
 
-
-        // 默认使用的是 C1C2C3模式
+        System.out.println("================test-langx-01===================");
+        // 使用 langx-java 加密
         String cipherTextByLangx = Base64.encodeBase64String(Asymmetrics.encrypt(contentBytes, keyPair.getPublic().getEncoded(), JCAEStandardName.SM2.getName(),null ));
         System.out.println(cipherTextByLangx);
         System.out.println(Objs.equals(cipherTextByHutool, cipherTextByLangx));
+
+        // 使用 langx-java 解密
+        String decryptedTextByLangx= new String( Asymmetrics.decrypt(Base64.decodeBase64(cipherTextByLangx), keyPair.getPrivate().getEncoded(), JCAEStandardName.SM2.getName(), null ),Charsets.UTF_8);
+        System.out.println(decryptedTextByLangx);
+        System.out.println(Objs.equals(decryptedTextByLangx, content));
+
+
+        System.out.println("================test-langx-02===================");
+
+        String cipherTextByLangx2 = Base64.encodeBase64String(Asymmetrics.encrypt(contentBytes, keyPair.getPublic().getEncoded(), JCAEStandardName.SM2.getName(),null ));
+        System.out.println(cipherTextByLangx2);
+        System.out.println(Objs.equals(cipherTextByLangx2, cipherTextByLangx));
+
+        // 使用 langx-java 解密
+        String decryptedTextByLangx2= new String( Asymmetrics.decrypt(Base64.decodeBase64(cipherTextByLangx2), keyPair.getPrivate().getEncoded(), JCAEStandardName.SM2.getName(), null ),Charsets.UTF_8);
+        System.out.println(decryptedTextByLangx2);
+        System.out.println(Objs.equals(decryptedTextByLangx2, content));
+
+        // 从验证的结果来看：
+        // 1) Hutool, langx-java各自加密、并解密是可以成功的。
+        // 2）同样的keypair, 同样的内容，加密出来的结果 是不一样的。
+        // 3）即便是使用同样的库，同样的 keypair,对同样的内容加密，每一次加密结果也是不一样的，因为在加密过程中使用的随机数每次都是不一样的。
+
     }
 
 
