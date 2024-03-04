@@ -10,6 +10,8 @@ public enum CipherAlgorithmPadding {
     OAEPPadding,
     PKCS1Padding,
     PKCS5Padding,
+
+    PKCS7Padding,
     SSL3Padding;
 
 }

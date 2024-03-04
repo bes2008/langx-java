@@ -2,6 +2,7 @@ package com.jn.langx.security.gm.crypto.bc;
 
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.Asymmetrics;
+import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.digest.MessageDigests;
@@ -72,11 +73,15 @@ public class BcGmService extends AbstractGmService {
     }
 
     @Override
-    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
+    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode,  byte[] secretKey, byte[] iv) {
+        return sm4Encrypt(data, mode, CipherAlgorithmPadding.PKCS7Padding, secretKey,iv);
+    }
+    @Override
+    public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv) {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), "PKCS7Padding");
+        String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), padding);
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
@@ -95,10 +100,14 @@ public class BcGmService extends AbstractGmService {
 
     @Override
     public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
+        return sm4Decrypt(encryptedBytes, mode, CipherAlgorithmPadding.PKCS7Padding,secretKey, iv);
+    }
+
+    public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv) {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), "PKCS7Padding");
+        String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), padding);
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }

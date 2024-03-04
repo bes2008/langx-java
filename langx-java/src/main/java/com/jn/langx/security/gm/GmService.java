@@ -1,6 +1,7 @@
 package com.jn.langx.security.gm;
 
 import com.jn.langx.Named;
+import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 
 public interface GmService extends Named {
@@ -29,9 +30,13 @@ public interface GmService extends Named {
 
     byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, byte[] secretKey, byte[] iv);
 
+    byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv);
+
     byte[] sm4Decrypt(byte[] encryptedBytes, byte[] secretKey);
 
     byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey);
 
     byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv);
+
+    byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv);
 }
