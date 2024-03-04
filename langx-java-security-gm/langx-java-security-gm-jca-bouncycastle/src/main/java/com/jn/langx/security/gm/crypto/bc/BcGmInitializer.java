@@ -8,7 +8,7 @@ import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyPairGeneratorSpi;
+import org.bouncycastle.jcajce.provider.asymmetric.ec.GMCipherSpi;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.Serializable;
@@ -32,7 +32,8 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
         // sm2
         map.put("Signature.SM3WithSM2", Reflects.getFQNClassName(SM2SignatureSpi.SM3WithSM2.class));
         map.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM2SignatureSpi.SM3WithSM2.class));
-        map.put("Cipher.SM2", Reflects.getFQNClassName(SM2CipherSpi.class));
+        map.put("Cipher.SM2", Reflects.getFQNClassName(GMCipherSpi.SM2.class));
+        map.put("Alg.Alias.Cipher.1.2.156.197.1.301.3.2.1", "SM2");
         map.put("AlgorithmParameters.SM2", Reflects.getFQNClassName(SM2AlgorithmParametersSpi.class));
         map.put("KeyFactory.SM2", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
         map.put("KeyFactory.1.2.840.10045.2.1", Reflects.getFQNClassName(SM2KeyFactorySpi.class));

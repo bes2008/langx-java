@@ -79,10 +79,19 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
-            if (secureRandom == null) {
-                cipher.init(operateMode, key, parameterSpec);
-            } else {
-                cipher.init(operateMode, key, parameterSpec, secureRandom);
+            if(secureRandom!=null) {
+                if (parameterSpec != null){
+                    cipher.init(operateMode, key, parameterSpec, secureRandom);
+                }else{
+                    cipher.init(operateMode, key, secureRandom);
+                }
+            }
+            else {
+                if(parameterSpec!=null){
+                    cipher.init(operateMode,key,parameterSpec);
+                }else{
+                    cipher.init(operateMode,key);
+                }
             }
             return cipher;
         } catch (Throwable ex) {
@@ -99,17 +108,18 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
-            if (secureRandom == null) {
-                if (parameters != null) {
-                    cipher.init(operateMode, key, parameters);
-                } else {
-                    cipher.init(operateMode, key);
-                }
-            } else {
-                if (parameters != null) {
+            if(secureRandom!=null) {
+                if (parameters != null){
                     cipher.init(operateMode, key, parameters, secureRandom);
-                } else {
+                }else{
                     cipher.init(operateMode, key, secureRandom);
+                }
+            }
+            else {
+                if(parameters!=null){
+                    cipher.init(operateMode,key,parameters);
+                }else{
+                    cipher.init(operateMode,key);
                 }
             }
             return cipher;

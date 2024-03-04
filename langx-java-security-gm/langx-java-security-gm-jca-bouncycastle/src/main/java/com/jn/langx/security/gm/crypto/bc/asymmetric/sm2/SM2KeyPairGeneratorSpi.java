@@ -9,7 +9,7 @@ import java.security.spec.ECGenParameterSpec;
  */
 public class SM2KeyPairGeneratorSpi extends KeyPairGeneratorSpi.EC {
 
-    SM2KeyPairGeneratorSpi(){
+    public SM2KeyPairGeneratorSpi(){
         super();
         try {
             initialize(new ECGenParameterSpec("sm2p256v1"));
