@@ -4,10 +4,7 @@ import com.jn.langx.lifecycle.AbstractInitializable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.gm.GmInitializer;
-import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2AlgorithmParametersSpi;
-import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2CipherSpi;
-import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2KeyFactorySpi;
-import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2SignatureSpi;
+import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;
@@ -39,7 +36,7 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
         map.put("AlgorithmParameters.SM2", Reflects.getFQNClassName(SM2AlgorithmParametersSpi.class));
         map.put("KeyFactory.SM2", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
         map.put("KeyFactory.1.2.840.10045.2.1", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
-        map.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(KeyPairGeneratorSpi.EC.class));
+        map.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(SM2KeyPairGeneratorSpi.class));
 
         // sm3
         map.put("MessageDigest.SM3", Reflects.getFQNClassName(org.bouncycastle.jcajce.provider.digest.SM3.Digest.class));

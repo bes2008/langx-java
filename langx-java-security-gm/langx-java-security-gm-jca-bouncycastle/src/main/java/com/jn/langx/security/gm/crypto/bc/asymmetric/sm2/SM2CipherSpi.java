@@ -17,9 +17,6 @@ import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 
 public class SM2CipherSpi extends BaseCipherSpi {
-    private int opmode = -1;
-    private Key key;
-    private SecureRandom random;
     private SM2Engine engine;
 
     public SM2CipherSpi() {
@@ -67,12 +64,10 @@ public class SM2CipherSpi extends BaseCipherSpi {
         throw new UnsupportedOperationException();
     }
 
-    @Override
     protected void engineUpdateAAD(byte[] bytes, int i, int i1) {
         throw new UnsupportedOperationException();
     }
 
-    @Override
     protected void engineUpdateAAD(ByteBuffer byteBuffer) {
         throw new UnsupportedOperationException();
     }
@@ -94,15 +89,12 @@ public class SM2CipherSpi extends BaseCipherSpi {
         if (opmode == 2 && !(key instanceof ECPrivateKey)) {
             throw new InvalidKeyException("SM2 decryption can use ec private only");
         }
-        this.opmode = opmode;
         if (opmode == 1) {
-            this.engine.init(true, new ParametersWithRandom( ECUtil.generatePublicKeyParameter((ECPublicKey) key)));
+            this.engine.init(true, new ParametersWithRandom( ECUtil.generatePublicKeyParameter((ECPublicKey) key),secureRandom));
         } else {
             this.engine.init(false, ECUtil.generatePrivateKeyParameter((ECPrivateKey) key));
         }
-        this.random = secureRandom;
 
-        this.key = key;
     }
 
     @Override
