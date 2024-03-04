@@ -1,5 +1,6 @@
 package com.jn.langx.security.gm.crypto.bc;
 
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
@@ -24,18 +25,18 @@ public class BcGmService extends AbstractGmService {
 
     @Override
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey) {
-        return Asymmetrics.encrypt(data, publicKey, "SM2", null, null, null, new BytesBasedPublicKeySupplier());
+        return Asymmetrics.encrypt(data, publicKey, JCAEStandardName.SM2.getName(), null, null, null, new BytesBasedPublicKeySupplier());
     }
 
     @Override
     public byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey) {
-        return Asymmetrics.decrypt(encryptedBytes, privateKey, "SM2", null, null, null, new BytesBasedPrivateKeySupplier());
+        return Asymmetrics.decrypt(encryptedBytes, privateKey, JCAEStandardName.SM2.getName(), null, null, null, new BytesBasedPrivateKeySupplier());
     }
 
     @Override
     public byte[] sm2Sign(byte[] data, byte[] privateKey) {
         SM2ParameterSpec parameterSpec = new SM2ParameterSpec();
-        return Signatures.sign(data, privateKey, "SM3WithSM2", null, null, parameterSpec);
+        return Signatures.sign(data, privateKey, JCAEStandardName.SM2.getName(), null, null, parameterSpec);
     }
 
     @Override
@@ -75,11 +76,11 @@ public class BcGmService extends AbstractGmService {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
+        String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), "PKCS7Padding");
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        return Symmetrics.encrypt(data, secretKey, "SM4", transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+        return Symmetrics.encrypt(data, secretKey, JCAEStandardName.SM4.getName(), transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
 
 
@@ -97,10 +98,10 @@ public class BcGmService extends AbstractGmService {
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
         }
-        String transformation = Ciphers.createAlgorithmTransformation("SM4", mode.name(), "PKCS7Padding");
+        String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), "PKCS7Padding");
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        return Symmetrics.decrypt(encryptedBytes, secretKey, "SM4", transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+        return Symmetrics.decrypt(encryptedBytes, secretKey, JCAEStandardName.SM4.getName(), transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
     }
 }

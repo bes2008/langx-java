@@ -294,12 +294,18 @@ public class Ciphers extends Securitys {
         return createAlgorithmTransformation(components[0], components[1], components[2]);
     }
 
+
+
     public static String createAlgorithmTransformation(@NotEmpty String algorithm, @NotEmpty String mode, @NotEmpty String padding) {
+        return createAlgorithmTransformation(algorithm, mode, Enums.ofName(CipherAlgorithmPadding.class, padding));
+    }
+
+    public static String createAlgorithmTransformation(@NotEmpty String algorithm, @NotEmpty String mode, @NotEmpty CipherAlgorithmPadding padding) {
         Preconditions.checkNotEmpty(algorithm, "the algorithm is null or empty");
         Preconditions.checkNotEmpty(mode, "the mode is null or empty");
         Preconditions.checkNotEmpty(padding, "the padding is null or empty");
 
-        return StringTemplates.formatWithPlaceholder("{}/{}/{}", algorithm, mode, padding);
+        return StringTemplates.formatWithPlaceholder("{}/{}/{}", algorithm, mode, padding.name());
     }
 
     public static String extractAlgorithm(String transformation) {
