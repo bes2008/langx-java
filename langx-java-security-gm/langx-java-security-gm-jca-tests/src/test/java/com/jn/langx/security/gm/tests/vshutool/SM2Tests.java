@@ -9,6 +9,8 @@ import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.io.Charsets;
+import org.bouncycastle.asn1.x9.X9ECParameters;
+import org.bouncycastle.crypto.params.ECDomainParameters;
 import org.junit.Test;
 
 import java.security.KeyPair;
@@ -23,8 +25,10 @@ public class SM2Tests {
 
 
         // 使用 hutool 加密
+        // 默认使用的是 C1C3C2模式
         SM2 hutoolSm2 = SmUtil.sm2(keyPair.getPrivate(),keyPair.getPublic());
-        String cipherTextByHutool= Base64.encodeBase64String(hutoolSm2.encrypt(contentBytes));
+
+        String cipherTextByHutool = Base64.encodeBase64String(SmUtil.changeC1C3C2ToC1C2C3(hutoolSm2.encrypt(contentBytes), null));
         System.out.println(cipherTextByHutool);
 
         // 使用hutool解密
@@ -32,7 +36,7 @@ public class SM2Tests {
         System.out.println(Objs.equals(decryptedTextByHutool, content));
 
 
-        // 使用 java security api 进行加密
+        // 默认使用的是 C1C2C3模式
         String cipherTextByLangx = Base64.encodeBase64String(Asymmetrics.encrypt(contentBytes, keyPair.getPublic().getEncoded(), JCAEStandardName.SM2.getName(),null ));
         System.out.println(cipherTextByLangx);
         System.out.println(Objs.equals(cipherTextByHutool, cipherTextByLangx));
