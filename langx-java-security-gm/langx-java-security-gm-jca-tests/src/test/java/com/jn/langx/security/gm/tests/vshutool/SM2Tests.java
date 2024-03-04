@@ -8,9 +8,8 @@ import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.io.Charsets;
-import org.bouncycastle.asn1.x9.X9ECParameters;
-import org.bouncycastle.crypto.params.ECDomainParameters;
 import org.junit.Test;
 
 import java.security.KeyPair;
@@ -19,6 +18,12 @@ public class SM2Tests {
 
     @Test
     public void encryptTest(){
+        encryptTest(true);
+    }
+    public void encryptTest(boolean c1c3c2Enabled){
+        if(c1c3c2Enabled){
+            SystemPropertys.setProperty("langx.security.gm.SM2.defaultMode.c1c3c2.enabled","true");
+        }
         String content ="hello, 对比 langx-java 的 sm2 加密, 与 hutool 的SM2结果是否一致";
         byte[] contentBytes = content.getBytes(Charsets.UTF_8);
         KeyPair keyPair = PKIs.createKeyPair(JCAEStandardName.SM2.getName());
@@ -28,7 +33,7 @@ public class SM2Tests {
         // 默认使用的是 C1C3C2模式
         SM2 hutoolSm2 = SmUtil.sm2(keyPair.getPrivate(),keyPair.getPublic());
 
-        String cipherTextByHutool = Base64.encodeBase64String(SmUtil.changeC1C3C2ToC1C2C3(hutoolSm2.encrypt(contentBytes), null));
+        String cipherTextByHutool = Base64.encodeBase64String(hutoolSm2.encrypt(contentBytes));
         System.out.println(cipherTextByHutool);
 
         // 使用hutool解密
