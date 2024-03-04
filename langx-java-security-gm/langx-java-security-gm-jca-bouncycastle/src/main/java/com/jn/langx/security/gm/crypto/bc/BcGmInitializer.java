@@ -6,12 +6,10 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.security.gm.GmInitializer;
 import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.*;
 import com.jn.langx.text.properties.PropertiesAccessor;
-import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Consumer2;
 import com.jn.langx.util.reflect.Reflects;
 import org.bouncycastle.asn1.gm.GMObjectIdentifiers;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.GMCipherSpi;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.Serializable;
@@ -43,7 +41,6 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
 
         boolean sm2DefaultC1C3C2ModeEnabled= new PropertiesAccessor(System.getProperties()).getBoolean("langx.security.gm.SM2.defaultMode.c1c3c2.enabled",false);
         if(sm2DefaultC1C3C2ModeEnabled){
-            String PREFIX= Reflects.getFQNClassName(SM2xCipherSpi.class);
             overwriteMap.put("Cipher.SM2", Reflects.getFQNClassName(SM2xCipherSpi.SM2withSm3.class));
             overwriteMap.put("Alg.Alias.Cipher.SM2WITHSM3", "SM2");
             overwriteMap.put("Alg.Alias.Cipher." + GMObjectIdentifiers.sm2encrypt_with_sm3, "SM2");
