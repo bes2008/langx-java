@@ -20,8 +20,12 @@ public class SM2CipherSpi extends BaseCipherSpi {
     private SM2Engine engine;
 
     public SM2CipherSpi() {
+        this(new SM2Engine(SM2Engine.Mode.C1C3C2));
+    }
+
+    public SM2CipherSpi(SM2Engine engine){
         super();
-        this.engine = new SM2Engine();
+        this.engine= engine;
     }
 
     @Override
