@@ -28,7 +28,13 @@ public class SM2Tests {
         byte[] contentBytes = content.getBytes(Charsets.UTF_8);
         KeyPair keyPair = PKIs.createKeyPair(JCAEStandardName.SM2.getName());
 
+        System.out.println("private key:");
+        System.out.println(Base64.encodeBase64String(keyPair.getPrivate().getEncoded()));
 
+        System.out.println("public key:");
+        System.out.println(Base64.encodeBase64String(keyPair.getPublic().getEncoded()));
+
+        System.out.println("===================================");
         // 使用 hutool 加密
         // 默认使用的是 C1C3C2模式
         SM2 hutoolSm2 = SmUtil.sm2(keyPair.getPrivate(),keyPair.getPublic());
