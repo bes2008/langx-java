@@ -8,18 +8,23 @@ public interface GmService extends Named {
     String getName();
 
     byte[] sm2Encrypt(byte[] data, byte[] publicKey);
+
     byte[] sm2Encrypt(byte[] data, byte[] publicKey, SM2Mode mode);
 
     byte[] sm2Encrypt(byte[] data, byte[] publicKey, String algorithm, SM2Mode mode);
 
     byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey);
+
     byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey, SM2Mode mode);
+
     byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey, String algorithm, SM2Mode mode);
 
     byte[] sm2Sign(byte[] data, byte[] privateKey);
+
     byte[] sm2Sign(byte[] data, byte[] privateKey, byte[] userId);
 
     boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature);
+
     boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature, byte[] userId);
 
     byte[] sm3(byte[] data);
@@ -48,6 +53,7 @@ public interface GmService extends Named {
     byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv);
 
     byte[] createSM4IV(int ivBitLength);
+
     byte[] createSM4IV();
 
     boolean supportedSM4Transformation(Symmetrics.MODE mode, CipherAlgorithmPadding padding);

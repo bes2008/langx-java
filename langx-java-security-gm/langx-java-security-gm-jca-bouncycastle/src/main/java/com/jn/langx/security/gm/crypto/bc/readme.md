@@ -20,7 +20,7 @@ https://www.gmssl.cn/gmssl/index.jsp?go=gmsdk
 6) SM2 加密解密时，使用的Cipher默认为 SM2WithSM3
 7) SM2 签名、验证时，使用的 Signature 算法默认为 SM3WithSM2
 8) SM4 密钥长度为 128，目前规范中只有这一种长度
-
+9) SM4 在国内通常使用 PKCS7Padding, 建议使用 CBC mode
 
 
 # 常见问题解决
