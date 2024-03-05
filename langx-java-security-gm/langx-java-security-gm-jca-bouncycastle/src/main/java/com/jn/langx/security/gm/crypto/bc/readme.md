@@ -16,6 +16,10 @@ https://www.gmssl.cn/gmssl/index.jsp?go=gmsdk
 
 3) 如果只使用SM3，不需要引入该包。因为在 langx-java 中已加入 SM3的基本实现
 4) src/test/java 目录下，有针对 SM2, SM3, SM4的测试用例
+5) SM2 加密解密时，使用的KeyPair 的算法名称为 SM2 （其本质也是一种EC） 。
+6) SM2 加密解密时，使用的Cipher默认为 SM2WithSM3
+7) 
+
 
 
 # 常见问题解决

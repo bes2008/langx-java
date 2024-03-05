@@ -17,8 +17,10 @@ public interface GmService extends Named {
     byte[] sm2Decrypt(byte[] encryptedBytes, byte[] privateKey, String algorithm, SM2Mode mode);
 
     byte[] sm2Sign(byte[] data, byte[] privateKey);
+    byte[] sm2Sign(byte[] data, byte[] privateKey, byte[] userId);
 
     boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature);
+    boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature, byte[] userId);
 
     byte[] sm3(byte[] data);
 

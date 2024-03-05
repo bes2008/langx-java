@@ -3,6 +3,7 @@ package com.jn.langx.security.gm.crypto.bc.asymmetric.sm2;
 import com.jn.langx.util.reflect.Reflects;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.CryptoException;
+import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.params.ParametersWithID;
 import org.bouncycastle.crypto.params.ParametersWithRandom;
 import org.bouncycastle.crypto.signers.SM2Signer;
@@ -13,6 +14,7 @@ import org.bouncycastle.jcajce.util.JcaJceHelper;
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 
+// ref: org.bouncycastle.jcajce.provider.asymmetric.ec.GMSignatureSpi
 public class SM2SignatureSpi extends java.security.SignatureSpi {
     private final JcaJceHelper helper = new BCJcaJceHelper();
 
@@ -91,7 +93,7 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
 
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params) throws InvalidAlgorithmParameterException {
-        if (params instanceof SM2ParameterSpec) {
+        if (params instanceof SM2SignParameterSpec) {
             paramSpec = params;
         } else if (params instanceof IDGetter) {
             paramSpec = params;
@@ -127,6 +129,13 @@ public class SM2SignatureSpi extends java.security.SignatureSpi {
     public static class SM3WithSM2 extends SM2SignatureSpi {
         public SM3WithSM2() {
             super(new SM2Signer());
+        }
+    }
+
+    public class Sha256WithSM2 extends SM2SignatureSpi{
+        public Sha256WithSM2()
+        {
+            super(new SM2Signer(new SHA256Digest()));
         }
     }
 }

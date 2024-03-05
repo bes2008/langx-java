@@ -11,7 +11,7 @@ import com.jn.langx.security.gm.AbstractGmService;
 import com.jn.langx.security.gm.GMs;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.security.gm.SM2Mode;
-import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2ParameterSpec;
+import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2SignParameterSpec;
 import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2xCipherSpi;
 import com.jn.langx.security.gm.crypto.bc.symmetric.sm4.SM4AlgorithmSpecSupplier;
 import com.jn.langx.util.Emptys;
@@ -30,7 +30,7 @@ public class BcGmService extends AbstractGmService {
     public static final String NAME = "BC-GmService";
 
     private static Map<String,Class> sm2xCiphersMap = new LinkedCaseInsensitiveMap<Class>();
-
+    private static final String PROVIDER_NAME="BC";
     static {
         Map<String, Class> sm2Map= Maps.newMap();
         sm2Map.put("SM2withSm3", SM2xCipherSpi.SM2withSm3.class);
@@ -122,14 +122,22 @@ public class BcGmService extends AbstractGmService {
 
     @Override
     public byte[] sm2Sign(byte[] data, byte[] privateKey) {
-        SM2ParameterSpec parameterSpec = new SM2ParameterSpec();
-        return Signatures.sign(data, privateKey, JCAEStandardName.SM2.getName(), null, null, parameterSpec);
+        return sm2Sign(data,privateKey,null);
+    }
+
+    @Override
+    public byte[] sm2Sign(byte[] data, byte[] privateKey, byte[] userId) {
+        return Signatures.sign(data, privateKey, "SM3WithSM2", PROVIDER_NAME, null, new SM2SignParameterSpec(userId));
     }
 
     @Override
     public boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature) {
-        SM2ParameterSpec parameterSpec = new SM2ParameterSpec();
-        boolean verified = Signatures.verify(data, signature, publicKey, "SM3WithSM2", null, parameterSpec);
+        return sm2Verify(data,publicKey,signature,null);
+    }
+
+    @Override
+    public boolean sm2Verify(byte[] data, byte[] publicKey, byte[] signature, byte[] userId) {
+        boolean verified = Signatures.verify(data, signature, publicKey, "SM3WithSM2", PROVIDER_NAME, new SM2SignParameterSpec(userId));
         return verified;
     }
 

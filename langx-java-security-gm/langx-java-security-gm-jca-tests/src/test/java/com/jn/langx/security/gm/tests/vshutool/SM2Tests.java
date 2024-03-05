@@ -5,12 +5,12 @@ import cn.hutool.crypto.asymmetric.SM2;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.crypto.signature.Signatures;
 import com.jn.langx.security.gm.GMs;
 import com.jn.langx.security.gm.GmService;
 import com.jn.langx.security.gm.SM2Mode;
-import com.jn.langx.security.gm.crypto.bc.BcGmService;
+import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2SignParameterSpec;
 import com.jn.langx.util.Objs;
-import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
@@ -180,4 +180,28 @@ public class SM2Tests {
 
     }
 
+    @Test
+    public void test4_langx_sign_01(){
+        String content ="使用 java signature api 来测试 SM2的签名";
+        byte[] contentBytes=content.getBytes(Charsets.UTF_8);
+        KeyPair keyPair = PKIs.createKeyPair("SM2");
+
+        SM2SignParameterSpec parameterSpec = new SM2SignParameterSpec();
+
+        byte[] digitSignature = Signatures.sign(contentBytes, keyPair.getPrivate().getEncoded(), "SM3WithSM2", null, null, parameterSpec);
+        boolean verified = Signatures.verify(contentBytes, digitSignature, keyPair.getPublic().getEncoded(), "SM3WithSM2", null, parameterSpec);
+        System.out.println("verified: " + verified);
+    }
+
+    @Test
+    public void test4_langx_sign_02(){
+        String content ="使用 gm service 来测试 SM2的签名";
+        byte[] contentBytes=content.getBytes(Charsets.UTF_8);
+        KeyPair keyPair = PKIs.createKeyPair("SM2");
+        GmService gmService = GMs.getGMs().getDefault();
+
+        byte[] digitSignature = gmService.sm2Sign(contentBytes, keyPair.getPrivate().getEncoded());
+        boolean verified = gmService.sm2Verify(contentBytes,keyPair.getPublic().getEncoded(), digitSignature );
+        System.out.println("verified: " + verified);
+    }
 }
