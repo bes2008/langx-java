@@ -3,6 +3,7 @@ package com.jn.langx.security.gm.crypto.bc;
 import com.jn.langx.lifecycle.AbstractInitializable;
 import com.jn.langx.lifecycle.InitializationException;
 import com.jn.langx.security.Securitys;
+import com.jn.langx.security.gm.GMs;
 import com.jn.langx.security.gm.GmInitializer;
 import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.*;
 import com.jn.langx.text.properties.PropertiesAccessor;
@@ -39,7 +40,7 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
         absentMap.put("KeyFactory.1.2.840.10045.2.1", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
         absentMap.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(SM2KeyPairGeneratorSpi.class));
 
-        boolean sm2DefaultC1C3C2ModeEnabled= new PropertiesAccessor(System.getProperties()).getBoolean("langx.security.gm.SM2.defaultMode.c1c3c2.enabled",false);
+        boolean sm2DefaultC1C3C2ModeEnabled= GMs.sm2DefaultC1C3C2ModeEnabled();
         if(sm2DefaultC1C3C2ModeEnabled){
             overwriteMap.put("Cipher.SM2", Reflects.getFQNClassName(SM2xCipherSpi.SM2withSm3.class));
             overwriteMap.put("Alg.Alias.Cipher.SM2WITHSM3", "SM2");

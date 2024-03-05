@@ -59,6 +59,16 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
+            cipher=initCipher(cipher, operateMode, key, secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Key key, SecureRandom secureRandom) {
+        Preconditions.checkNotNull(cipher);
+        try {
             if (secureRandom == null) {
                 cipher.init(operateMode, key);
             } else {
@@ -70,6 +80,7 @@ public class Ciphers extends Securitys {
         }
     }
 
+
     /**
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
@@ -79,7 +90,17 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
-            if(secureRandom!=null) {
+            cipher= initCipher(cipher,operateMode,key,parameterSpec,secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom){
+        Preconditions.checkNotNull(cipher);
+        try {
+            if(secureRandom != null) {
                 if (parameterSpec != null){
                     cipher.init(operateMode, key, parameterSpec, secureRandom);
                 }else{
@@ -108,6 +129,16 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
+            cipher=initCipher(cipher,operateMode,key,parameters,secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom){
+        Preconditions.checkNotNull(cipher);
+        try {
             if(secureRandom!=null) {
                 if (parameters != null){
                     cipher.init(operateMode, key, parameters, secureRandom);
@@ -131,6 +162,16 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Certificate certificate, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
+            cipher=initCipher(cipher, operateMode,certificate,secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Certificate certificate, SecureRandom secureRandom) {
+        Preconditions.checkNotNull(cipher);
+        try {
             if (secureRandom == null) {
                 cipher.init(operateMode, certificate);
             } else {
