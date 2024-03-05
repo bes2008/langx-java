@@ -14,11 +14,15 @@ import com.jn.langx.security.gm.SM2Mode;
 import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2SignParameterSpec;
 import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2xCipherSpi;
 import com.jn.langx.security.gm.crypto.bc.symmetric.sm4.SM4AlgorithmSpecSupplier;
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Maps;
+import com.jn.langx.util.collection.multivalue.CommonMultiValueMap;
+import com.jn.langx.util.collection.multivalue.MultiValueMap;
 import com.jn.langx.util.reflect.Reflects;
 
 import javax.crypto.Cipher;
@@ -31,6 +35,9 @@ public class BcGmService extends AbstractGmService {
 
     private static Map<String,Class> sm2xCiphersMap = new LinkedCaseInsensitiveMap<Class>();
     private static final String PROVIDER_NAME="BC";
+
+    private static final MultiValueMap<Symmetrics.MODE,CipherAlgorithmPadding> sm4SupportedTransformation;
+
     static {
         Map<String, Class> sm2Map= Maps.newMap();
         sm2Map.put("SM2withSm3", SM2xCipherSpi.SM2withSm3.class);
@@ -45,6 +52,33 @@ public class BcGmService extends AbstractGmService {
         sm2Map.put("SM2withSha384", SM2xCipherSpi.SM2withSha384.class);
         sm2Map.put("SM2withSha512", SM2xCipherSpi.SM2withSha512.class);
         sm2xCiphersMap.putAll(sm2Map);
+
+        MultiValueMap<Symmetrics.MODE, CipherAlgorithmPadding> sm4Supported=new CommonMultiValueMap<Symmetrics.MODE, CipherAlgorithmPadding>();
+        sm4Supported.addAll(Symmetrics.MODE.ECB, Lists.newArrayList(
+                CipherAlgorithmPadding.ISO10126Padding,
+                CipherAlgorithmPadding.PKCS5Padding,
+                CipherAlgorithmPadding.PKCS7Padding));
+        sm4Supported.addAll(Symmetrics.MODE.CBC, Lists.newArrayList(
+                CipherAlgorithmPadding.ISO10126Padding,
+                CipherAlgorithmPadding.PKCS5Padding,
+                CipherAlgorithmPadding.PKCS7Padding));
+        sm4Supported.addAll(Symmetrics.MODE.CFB, Lists.newArrayList(
+                CipherAlgorithmPadding.NoPadding,
+                CipherAlgorithmPadding.ISO10126Padding,
+                CipherAlgorithmPadding.PKCS5Padding,
+                CipherAlgorithmPadding.PKCS7Padding));
+        sm4Supported.addAll(Symmetrics.MODE.OFB, Lists.newArrayList(
+                CipherAlgorithmPadding.NoPadding,
+                CipherAlgorithmPadding.ISO10126Padding,
+                CipherAlgorithmPadding.PKCS5Padding,
+                CipherAlgorithmPadding.PKCS7Padding));
+        sm4Supported.addAll(Symmetrics.MODE.CTR, Lists.newArrayList(
+                CipherAlgorithmPadding.NoPadding,
+                CipherAlgorithmPadding.ISO10126Padding,
+                CipherAlgorithmPadding.PKCS5Padding,
+                CipherAlgorithmPadding.PKCS7Padding));
+
+        sm4SupportedTransformation=sm4Supported;
     }
     @Override
     public String getName() {
@@ -168,18 +202,11 @@ public class BcGmService extends AbstractGmService {
 
     @Override
     public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode,  byte[] secretKey, byte[] iv) {
-        return sm4Encrypt(data, mode, CipherAlgorithmPadding.PKCS7Padding, secretKey,iv);
+        return sm4Encrypt(data, mode,null, secretKey,iv);
     }
     @Override
     public byte[] sm4Encrypt(byte[] data, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv) {
-        if (mode == null) {
-            mode = Symmetrics.MODE.CBC;
-        }
-        String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), padding);
-        if (Emptys.isEmpty(iv)) {
-            iv = GmService.SM4_IV_DEFAULT;
-        }
-        return Symmetrics.encrypt(data, secretKey, JCAEStandardName.SM4.getName(), transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+        return sm4EncryptOrDecrypt(true,data, mode,padding,secretKey,iv);
     }
 
 
@@ -194,17 +221,36 @@ public class BcGmService extends AbstractGmService {
 
     @Override
     public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv) {
-        return sm4Decrypt(encryptedBytes, mode, CipherAlgorithmPadding.PKCS7Padding,secretKey, iv);
+        return sm4Decrypt(encryptedBytes, mode, null,secretKey, iv);
     }
 
     public byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv) {
+        return sm4EncryptOrDecrypt(false, encryptedBytes, mode, padding, secretKey, iv);
+    }
+
+    private byte[] sm4EncryptOrDecrypt(boolean encrypt, byte[] data, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv){
         if (mode == null) {
             mode = Symmetrics.MODE.CBC;
+        }
+        if(padding==null){
+            padding=CipherAlgorithmPadding.PKCS7Padding;
         }
         String transformation = Ciphers.createAlgorithmTransformation(JCAEStandardName.SM4.getName(), mode.name(), padding);
         if (Emptys.isEmpty(iv)) {
             iv = GmService.SM4_IV_DEFAULT;
         }
-        return Symmetrics.decrypt(encryptedBytes, secretKey, JCAEStandardName.SM4.getName(), transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+
+        if(!supportedSM4Transformation(mode, padding)){
+            throw new IllegalArgumentException(StringTemplates.formatWithPlaceholder("unsupported sm4 transformation: SM4/{}/{}", mode.name(), padding.name()));
+        }
+        if (encrypt) {
+            return Symmetrics.encrypt(data, secretKey, JCAEStandardName.SM4.getName(), transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+        }else {
+            return Symmetrics.decrypt(data, secretKey, JCAEStandardName.SM4.getName(), transformation, null, null, new BytesBasedSecretKeySupplier(), new SM4AlgorithmSpecSupplier(iv));
+        }
+    }
+
+    public boolean supportedSM4Transformation( Symmetrics.MODE mode, CipherAlgorithmPadding padding){
+        return sm4SupportedTransformation.containsKey(mode) && sm4SupportedTransformation.get(mode).contains(padding);
     }
 }

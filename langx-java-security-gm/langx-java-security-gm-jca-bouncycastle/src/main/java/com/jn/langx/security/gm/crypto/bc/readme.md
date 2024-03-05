@@ -19,6 +19,7 @@ https://www.gmssl.cn/gmssl/index.jsp?go=gmsdk
 5) SM2 加密解密时，使用的KeyPair 的算法名称为 SM2 （其本质也是一种EC） 。
 6) SM2 加密解密时，使用的Cipher默认为 SM2WithSM3
 7) SM2 签名、验证时，使用的 Signature 算法默认为 SM3WithSM2
+8) SM4 密钥长度为 128，目前规范中只有这一种长度
 
 
 

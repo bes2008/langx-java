@@ -426,7 +426,9 @@ public class Ciphers extends Securitys {
         if(Objs.isNotEmpty(seed)) {
             secureRandom.setSeed(seed);
         }
-        byte[] ivBytes = new byte[ivBitLength];
+
+        int byteLength = (ivBitLength+7)/8;
+        byte[] ivBytes = new byte[byteLength];
         secureRandom.nextBytes(ivBytes);
         return new IvParameterSpec(ivBytes);
     }

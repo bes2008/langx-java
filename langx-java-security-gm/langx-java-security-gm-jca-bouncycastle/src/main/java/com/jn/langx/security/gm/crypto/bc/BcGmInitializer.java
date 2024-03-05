@@ -33,8 +33,6 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
         Map<String, String> overwriteMap = new HashMap<String, String>();
 
         // sm2
-       // absentMap.put("Signature.SM3WithSM2", Reflects.getFQNClassName(SM2SignatureSpi.SM3WithSM2.class));
-       // absentMap.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM2SignatureSpi.SM3WithSM2.class));
         absentMap.put("AlgorithmParameters.SM2", Reflects.getFQNClassName(SM2AlgorithmParametersSpi.class));
         absentMap.put("KeyFactory.SM2", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
         absentMap.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(SM2KeyPairGeneratorSpi.class));
