@@ -4,8 +4,9 @@ import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.SM2;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.crypto.JCAEStandardName;
-import com.jn.langx.security.crypto.cipher.Asymmetrics;
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.security.gm.GmService;
+import com.jn.langx.security.gm.crypto.bc.BcGmService;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.SystemPropertys;
 import com.jn.langx.util.io.Charsets;
@@ -38,6 +39,8 @@ public class SM2Tests {
         // 默认使用的是 C1C3C2模式
         SM2 hutoolSm2 = SmUtil.sm2(keyPair.getPrivate(),keyPair.getPublic());
 
+        GmService gmService = new BcGmService();
+
         String cipherTextByHutool = Base64.encodeBase64String(hutoolSm2.encrypt(contentBytes));
         System.out.println(cipherTextByHutool);
 
@@ -47,24 +50,24 @@ public class SM2Tests {
 
         System.out.println("================test-langx-01===================");
         // 使用 langx-java 加密
-        String cipherTextByLangx = Base64.encodeBase64String(Asymmetrics.encrypt(contentBytes, keyPair.getPublic().getEncoded(), JCAEStandardName.SM2.getName(),null ));
+        String cipherTextByLangx = Base64.encodeBase64String(gmService.sm2Encrypt(contentBytes, keyPair.getPublic().getEncoded()));
         System.out.println(cipherTextByLangx);
         System.out.println(Objs.equals(cipherTextByHutool, cipherTextByLangx));
 
         // 使用 langx-java 解密
-        String decryptedTextByLangx= new String( Asymmetrics.decrypt(Base64.decodeBase64(cipherTextByLangx), keyPair.getPrivate().getEncoded(), JCAEStandardName.SM2.getName(), null ),Charsets.UTF_8);
+        String decryptedTextByLangx= new String( gmService.sm2Decrypt(Base64.decodeBase64(cipherTextByLangx), keyPair.getPrivate().getEncoded() ),Charsets.UTF_8);
         System.out.println(decryptedTextByLangx);
         System.out.println(Objs.equals(decryptedTextByLangx, content));
 
 
         System.out.println("================test-langx-02===================");
 
-        String cipherTextByLangx2 = Base64.encodeBase64String(Asymmetrics.encrypt(contentBytes, keyPair.getPublic().getEncoded(), JCAEStandardName.SM2.getName(),null ));
+        String cipherTextByLangx2 = Base64.encodeBase64String(gmService.sm2Encrypt(contentBytes, keyPair.getPublic().getEncoded()));
         System.out.println(cipherTextByLangx2);
         System.out.println(Objs.equals(cipherTextByLangx2, cipherTextByLangx));
 
         // 使用 langx-java 解密
-        String decryptedTextByLangx2= new String( Asymmetrics.decrypt(Base64.decodeBase64(cipherTextByLangx2), keyPair.getPrivate().getEncoded(), JCAEStandardName.SM2.getName(), null ),Charsets.UTF_8);
+        String decryptedTextByLangx2= new String( gmService.sm2Decrypt(Base64.decodeBase64(cipherTextByLangx2), keyPair.getPrivate().getEncoded() ),Charsets.UTF_8);
         System.out.println(decryptedTextByLangx2);
         System.out.println(Objs.equals(decryptedTextByLangx2, content));
 
@@ -99,11 +102,13 @@ public class SM2Tests {
 
         SM2 hutoolSm2 = SmUtil.sm2(keyPair.getPrivate(),keyPair.getPublic());
 
+        GmService gmService= new BcGmService();
+
 
         System.out.println("================test-01 langx加密、hutool解密===================");
         // 使用 langx-java 加密
         //String cipherTextByLangx = Base64.encodeBase64String(Asymmetrics.encrypt(contentBytes, keyPair.getPublic().getEncoded(), JCAEStandardName.SM2.getName(),null ));
-        String cipherTextByLangx = Base64.encodeBase64String(Asymmetrics.encrypt(contentBytes, keyPair.getPublic().getEncoded(), JCAEStandardName.SM2.getName(),null ));
+        String cipherTextByLangx = Base64.encodeBase64String(gmService.sm2Encrypt(contentBytes, keyPair.getPublic().getEncoded()));
         System.out.println(cipherTextByLangx);
         // 使用hutool解密
         String decryptedTextByHutool= new String( hutoolSm2.decrypt(Base64.decodeBase64(cipherTextByLangx)),Charsets.UTF_8);
@@ -119,7 +124,7 @@ public class SM2Tests {
         System.out.println(cipherTextByHutool);
 
         // 使用 langx-java 解密
-        String decryptedTextByLangx2= new String( Asymmetrics.decrypt(Base64.decodeBase64(cipherTextByHutool), keyPair.getPrivate().getEncoded(), JCAEStandardName.SM2.getName(), null ),Charsets.UTF_8);
+        String decryptedTextByLangx2= new String( gmService.sm2Decrypt(Base64.decodeBase64(cipherTextByHutool), keyPair.getPrivate().getEncoded() ),Charsets.UTF_8);
         System.out.println(decryptedTextByLangx2);
         System.out.println(Objs.equals(decryptedTextByLangx2, content));
 
