@@ -19,9 +19,7 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.LinkedCaseInsensitiveMap;
 import com.jn.langx.util.collection.Maps;
-import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.reflect.Reflects;
-import org.bouncycastle.crypto.engines.SM2Engine;
 
 import javax.crypto.Cipher;
 import java.security.PrivateKey;
@@ -77,8 +75,7 @@ public class BcGmService extends AbstractGmService {
                     algorithm = "sm2withsm3";
                 }
                 Class cipherClass = sm2xCiphersMap.get(algorithm);
-                SM2Engine.Mode bcSm2Mode = Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class);
-                SM2xCipherSpi cipher = Reflects.<SM2xCipherSpi>newInstance(cipherClass, new Class[]{SM2Engine.Mode.class}, bcSm2Mode);
+                SM2xCipherSpi cipher = Reflects.<SM2xCipherSpi>newInstance(cipherClass, new Class[]{SM2Mode.class}, mode);
                 PublicKey key = new BytesBasedPublicKeySupplier().get(publicKey, algorithm, null);
                 cipher.engineInit(Cipher.ENCRYPT_MODE, key, null);
                 return cipher.engineDoFinal(data, 0, data.length);
@@ -114,8 +111,7 @@ public class BcGmService extends AbstractGmService {
                     algorithm = "sm2withsm3";
                 }
                 Class cipherClass = sm2xCiphersMap.get(algorithm);
-                SM2Engine.Mode bcSm2Mode = Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class);
-                SM2xCipherSpi cipher = Reflects.<SM2xCipherSpi>newInstance(cipherClass, new Class[]{SM2Engine.Mode.class}, bcSm2Mode);
+                SM2xCipherSpi cipher = Reflects.<SM2xCipherSpi>newInstance(cipherClass, new Class[]{SM2Mode.class}, mode);
                 PrivateKey key = new BytesBasedPrivateKeySupplier().get(privateKey, algorithm, null);
                 cipher.engineInit(Cipher.DECRYPT_MODE, key, null);
                 return cipher.engineDoFinal(encryptedBytes, 0, encryptedBytes.length);

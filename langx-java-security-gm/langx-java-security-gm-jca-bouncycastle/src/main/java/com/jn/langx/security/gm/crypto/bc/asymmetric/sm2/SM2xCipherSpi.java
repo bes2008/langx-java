@@ -1,5 +1,7 @@
 package com.jn.langx.security.gm.crypto.bc.asymmetric.sm2;
 
+import com.jn.langx.security.gm.SM2Mode;
+import com.jn.langx.util.enums.Enums;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.*;
 import org.bouncycastle.crypto.engines.SM2Engine;
@@ -23,8 +25,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new SM3Digest());
         }
 
-        public SM2withSm3(SM2Engine.Mode mode){
-            super(new SM2Engine(new SM3Digest(), mode));
+        public SM2withSm3(SM2Mode mode){
+            super(new SM2Engine(new SM3Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -33,8 +35,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new Blake2bDigest(512));
         }
 
-        public SM2withBlake2b(SM2Engine.Mode mode){
-            super(new SM2Engine(new Blake2bDigest(512), mode));
+        public SM2withBlake2b(SM2Mode mode){
+            super(new SM2Engine(new Blake2bDigest(512), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -43,8 +45,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new Blake2sDigest(256));
         }
 
-        public SM2withBlake2s(SM2Engine.Mode mode){
-            super(new SM2Engine(new Blake2sDigest(256), mode));
+        public SM2withBlake2s(SM2Mode mode){
+            super(new SM2Engine(new Blake2sDigest(256), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -53,8 +55,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new WhirlpoolDigest());
         }
 
-        public SM2withWhirlpool(SM2Engine.Mode mode){
-            super(new SM2Engine(new WhirlpoolDigest(), mode));
+        public SM2withWhirlpool(SM2Mode mode){
+            super(new SM2Engine(new WhirlpoolDigest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -63,8 +65,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new MD5Digest());
         }
 
-        public SM2withMD5(SM2Engine.Mode mode){
-            super(new SM2Engine(new MD5Digest(), mode));
+        public SM2withMD5(SM2Mode mode){
+            super(new SM2Engine(new MD5Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -73,8 +75,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new RIPEMD160Digest());
         }
 
-        public SM2withRMD(SM2Engine.Mode mode){
-            super(new SM2Engine(new RIPEMD160Digest(), mode));
+        public SM2withRMD(SM2Mode mode){
+            super(new SM2Engine(new RIPEMD160Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -83,8 +85,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new SHA1Digest());
         }
 
-        public SM2withSha1(SM2Engine.Mode mode){
-            super(new SM2Engine(new SHA1Digest(), mode));
+        public SM2withSha1(SM2Mode mode){
+            super(new SM2Engine(new SHA1Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -93,8 +95,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new SHA224Digest());
         }
 
-        public SM2withSha224(SM2Engine.Mode mode){
-            super(new SM2Engine(new SHA224Digest(), mode));
+        public SM2withSha224(SM2Mode mode){
+            super(new SM2Engine(new SHA224Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -103,8 +105,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new SHA256Digest());
         }
 
-        public SM2withSha256(SM2Engine.Mode mode){
-            super(new SM2Engine(new SHA256Digest(), mode));
+        public SM2withSha256(SM2Mode mode){
+            super(new SM2Engine(new SHA256Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -113,8 +115,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new SHA384Digest());
         }
 
-        public SM2withSha384(SM2Engine.Mode mode){
-            super(new SM2Engine(new SHA384Digest(), mode));
+        public SM2withSha384(SM2Mode mode){
+            super(new SM2Engine(new SHA384Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
@@ -123,8 +125,8 @@ public class SM2xCipherSpi extends GMCipherSpi {
             super(new SHA512Digest());
         }
 
-        public SM2withSha512(SM2Engine.Mode mode){
-            super(new SM2Engine(new SHA512Digest(), mode));
+        public SM2withSha512(SM2Mode mode){
+            super(new SM2Engine(new SHA512Digest(), Enums.ofValue(mode.ordinal(), SM2Engine.Mode.class)));
         }
     }
 
