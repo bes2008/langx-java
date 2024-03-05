@@ -1,7 +1,7 @@
 参考：国密实验室地址：
 https://www.gmssl.cn/gmssl/index.jsp?go=gmsdk
 
-# 要通过 JCA, JCE 的 API来使用该包 ，不建议直接使用该包下的类
+# 要通过 JCA, JCE 的 API来使用该包 ，或者通过 GmService 接口来使用。不建议直接使用该包下的类
 
 
 # 国密算法实现
