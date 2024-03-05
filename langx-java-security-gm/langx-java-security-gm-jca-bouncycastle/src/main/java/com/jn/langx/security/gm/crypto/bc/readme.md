@@ -18,7 +18,7 @@ https://www.gmssl.cn/gmssl/index.jsp?go=gmsdk
 4) src/test/java 目录下，有针对 SM2, SM3, SM4的测试用例
 5) SM2 加密解密时，使用的KeyPair 的算法名称为 SM2 （其本质也是一种EC） 。
 6) SM2 加密解密时，使用的Cipher默认为 SM2WithSM3
-7) 
+7) SM2 签名、验证时，使用的 Signature 算法默认为 SM3WithSM2
 
 
 
