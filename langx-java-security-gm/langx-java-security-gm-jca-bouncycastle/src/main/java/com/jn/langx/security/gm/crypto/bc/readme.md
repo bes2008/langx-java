@@ -15,12 +15,13 @@ https://www.gmssl.cn/gmssl/index.jsp?go=gmsdk
    推荐项目中直接使用API： Ciphers, PKIs, Signatures, MessageDigests
 
 3) 如果只使用SM3，不需要引入该包。因为在 langx-java 中已加入 SM3的基本实现
-4) src/test/java 目录下，有针对 SM2, SM3, SM4的测试用例
-5) SM2 加密解密时，使用的KeyPair 的算法名称为 SM2 （其本质也是一种EC） 。
-6) SM2 加密解密时，使用的Cipher默认为 SM2WithSM3
-7) SM2 签名、验证时，使用的 Signature 算法默认为 SM3WithSM2
-8) SM4 密钥长度为 128，目前规范中只有这一种长度
-9) SM4 在国内通常使用 PKCS7Padding, 建议使用 CBC mode
+4) SM3 就是国密中的 message digest 算法
+5) src/test/java 目录下，有针对 SM2, SM3, SM4的测试用例
+6) SM2 加密解密时，使用的KeyPair 的算法名称为 SM2 （其本质也是一种EC） 。
+7) SM2 加密解密时，使用的Cipher默认为 SM2WithSM3
+8) SM2 签名、验证时，使用的 Signature 算法默认为 SM3WithSM2
+9) SM4 密钥长度为 128，目前规范中只有这一种长度
+10) SM4 在国内通常使用 PKCS7Padding, 建议使用 CBC mode
 
 
 # 常见问题解决
