@@ -37,7 +37,6 @@ public class BcGmInitializer extends AbstractInitializable implements GmInitiali
         absentMap.put("Signature.1.2.156.10197.1.501", Reflects.getFQNClassName(SM2SignatureSpi.SM3WithSM2.class));
         absentMap.put("AlgorithmParameters.SM2", Reflects.getFQNClassName(SM2AlgorithmParametersSpi.class));
         absentMap.put("KeyFactory.SM2", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
-        absentMap.put("KeyFactory.1.2.840.10045.2.1", Reflects.getFQNClassName(SM2KeyFactorySpi.class));
         absentMap.put("KeyPairGenerator.SM2", Reflects.getFQNClassName(SM2KeyPairGeneratorSpi.class));
 
         boolean sm2DefaultC1C3C2ModeEnabled= GMs.sm2DefaultC1C3C2ModeEnabled();
