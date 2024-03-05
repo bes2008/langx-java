@@ -21,6 +21,11 @@ public class GMs extends AbstractInitializable {
         init();
     }
 
+    private static final String SM2_C1C3C2_MODE_ENABLE_KEY="langx.security.gm.SM2.defaultMode.c1c3c2.enabled";
+    public static final void enableGlobalSM2_C1C3C2(){
+        System.setProperty(SM2_C1C3C2_MODE_ENABLE_KEY,"true");
+    }
+
     public static GMs getGMs() {
         if (INSTANCE == null) {
             synchronized (GMs.class) {
@@ -41,7 +46,7 @@ public class GMs extends AbstractInitializable {
     }
 
     public static boolean sm2DefaultC1C3C2ModeEnabled(){
-        boolean sm2DefaultC1C3C2ModeEnabled= new PropertiesAccessor(System.getProperties()).getBoolean("langx.security.gm.SM2.defaultMode.c1c3c2.enabled",false);
+        boolean sm2DefaultC1C3C2ModeEnabled= new PropertiesAccessor(System.getProperties()).getBoolean(SM2_C1C3C2_MODE_ENABLE_KEY,false);
         return sm2DefaultC1C3C2ModeEnabled;
     }
 

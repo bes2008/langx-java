@@ -58,8 +58,6 @@ public class BcGmService extends AbstractGmService {
         return sm2Encrypt(data, publicKey, JCAEStandardName.SM2.getName(),mode);
     }
 
-
-
     public byte[] sm2Encrypt(byte[] data, byte[] publicKey, String algorithm, SM2Mode mode) {
         boolean globalScopeC1c3c2ModeEnabled= GMs.sm2DefaultC1C3C2ModeEnabled();
         SM2Mode defaultMode= globalScopeC1c3c2ModeEnabled? SM2Mode.C1C3C2:SM2Mode.C1C2C3;
@@ -71,12 +69,12 @@ public class BcGmService extends AbstractGmService {
         }
         else{
             try {
-                if (Strings.equalsAnyIgnoreCase(algorithm, "sm2")) {
+                if (Strings.equalsAnyIgnoreCase(algorithm, "SM2")) {
                     algorithm = "sm2withsm3";
                 }
                 Class cipherClass = sm2xCiphersMap.get(algorithm);
                 SM2xCipherSpi cipher = Reflects.<SM2xCipherSpi>newInstance(cipherClass, new Class[]{SM2Mode.class}, mode);
-                PublicKey key = new BytesBasedPublicKeySupplier().get(publicKey, algorithm, null);
+                PublicKey key = new BytesBasedPublicKeySupplier().get(publicKey, "SM2", null);
                 cipher.engineInit(Cipher.ENCRYPT_MODE, key, null);
                 return cipher.engineDoFinal(data, 0, data.length);
             }catch (Throwable e){
@@ -107,12 +105,12 @@ public class BcGmService extends AbstractGmService {
         }
         else{
             try {
-                if (Strings.equalsAnyIgnoreCase(algorithm, "sm2")) {
+                if (Strings.equalsAnyIgnoreCase(algorithm, "SM2")) {
                     algorithm = "sm2withsm3";
                 }
                 Class cipherClass = sm2xCiphersMap.get(algorithm);
                 SM2xCipherSpi cipher = Reflects.<SM2xCipherSpi>newInstance(cipherClass, new Class[]{SM2Mode.class}, mode);
-                PrivateKey key = new BytesBasedPrivateKeySupplier().get(privateKey, algorithm, null);
+                PrivateKey key = new BytesBasedPrivateKeySupplier().get(privateKey, "SM2", null);
                 cipher.engineInit(Cipher.DECRYPT_MODE, key, null);
                 return cipher.engineDoFinal(encryptedBytes, 0, encryptedBytes.length);
             }catch (Throwable e){
