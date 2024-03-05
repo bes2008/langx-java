@@ -204,4 +204,28 @@ public class SM2Tests {
         boolean verified = gmService.sm2Verify(contentBytes,keyPair.getPublic().getEncoded(), digitSignature );
         System.out.println("verified: " + verified);
     }
+
+    @Test
+    public void test4_langx_sign_03(){
+        String content ="使用 gm service 来 签名， hutool 来验签";
+        byte[] contentBytes=content.getBytes(Charsets.UTF_8);
+        KeyPair keyPair = PKIs.createKeyPair("SM2");
+        GmService gmService = GMs.getGMs().getDefault();
+
+        byte[] digitSignature = gmService.sm2Sign(contentBytes, keyPair.getPrivate().getEncoded());
+
+        SM2 hutoolSm2 = SmUtil.sm2(keyPair.getPrivate(),keyPair.getPublic());
+        boolean verified =hutoolSm2.verify(contentBytes, digitSignature);
+        System.out.println("verified: " + verified);
+
+        System.out.println("==============================================");
+
+        content ="使用 hutool 来 签名， gm service 来验签";
+        contentBytes=content.getBytes(Charsets.UTF_8);
+
+        digitSignature =hutoolSm2.sign(contentBytes);
+
+        verified =gmService.sm2Verify(contentBytes, keyPair.getPublic().getEncoded(), digitSignature );
+        System.out.println("verified: " + verified);
+    }
 }
