@@ -51,6 +51,9 @@ public interface GmService extends Named {
     byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, byte[] secretKey, byte[] iv);
 
     byte[] sm4Decrypt(byte[] encryptedBytes, Symmetrics.MODE mode, CipherAlgorithmPadding padding, byte[] secretKey, byte[] iv);
+    byte[] createSM4Key(int ivBitLength);
+
+    byte[] createSM4Key();
 
     byte[] createSM4IV(int ivBitLength);
 
