@@ -2,6 +2,7 @@ package com.jn.langx.environment;
 
 import com.jn.langx.util.Preconditions;
 
+@Deprecated
 public class SystemEnvironment implements Environment {
     @Override
     public String getProperty(String key) {
