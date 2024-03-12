@@ -3,6 +3,7 @@ package com.jn.langx.security.crypto.key;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
+import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 
 import java.security.SecureRandom;
@@ -55,4 +56,13 @@ public class SecureRandoms extends Securitys {
             throw new SecurityException(ex.getMessage(), ex);
         }
     }
+
+    public static byte[] randomBytes(int bitLength){
+        Preconditions.checkArgument(bitLength>0);
+        int bytesLength=(bitLength+7)/8;
+        byte[] bytes=new byte[bytesLength];
+        getDefault().nextBytes(bytes);
+        return bytes;
+    }
+
 }

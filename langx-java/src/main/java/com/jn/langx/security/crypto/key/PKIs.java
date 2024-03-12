@@ -198,6 +198,10 @@ public class PKIs extends KeyStores {
         return keyGenerator.generateKey();
     }
 
+    public static byte[] createSecretKeyBytes(int bitLength){
+        return SecureRandoms.randomBytes(bitLength);
+    }
+
     public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {
         try {
             return getSecretKeyFactory(algorithm, provider).generateSecret(keySpec);
