@@ -113,4 +113,10 @@ public class ClusterAddressParserTests {
         System.out.println("0000:0000:0000:0000:0000:FFFF".matches(regexp));
     }
 
+    @Test
+    public void pingHostLabels(){
+        List<NetworkAddress> addresses = parser.parse("host1-2.baidu.com,host2.baidu.com,host3.alipay.org");
+        System.out.println(addresses);
+    }
+
 }
