@@ -27,6 +27,10 @@ public class ClusterAddressParserTests {
     public void testIpv4Port() {
         System.out.println("=======================Test IP V4 start====================");
         List<NetworkAddress> addresses;
+        addresses = parser.parse("host1.baidu.com");
+        System.out.println(addresses);
+        addresses = parser.parse("host1.baidu.com:9092");
+        System.out.println(addresses);
         addresses = parser.parse("host1:9092,host2:2181,host3:8080");
         System.out.println(addresses);
 
@@ -34,6 +38,8 @@ public class ClusterAddressParserTests {
         System.out.println(addresses);
 
         addresses = parser.parse("host1,host2,host3");
+        System.out.println(addresses);
+        addresses = parser.parse("host1,host2.baidu.com,host3.alipay.org");
         System.out.println(addresses);
 
         addresses = parser.parse("host1");
