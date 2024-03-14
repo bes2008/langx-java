@@ -22,7 +22,7 @@ public class Classpaths {
     }
 
     public static String getCanonicalFilePath(String path) {
-        return Filenames.cleanPath(path);
+        return Filenames.cleanAsUnixPath(path);
     }
 
 }
