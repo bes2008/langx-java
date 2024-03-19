@@ -1,8 +1,8 @@
-package com.jn.langx.environment;
+package com.jn.langx.propertyset;
 
 import java.util.Map;
 
-public class MapPropertySet extends AbstractPropertySet<Map<String,?>>{
+public class MapPropertySet extends AbstractPropertySet<Map<String,?>> {
     public MapPropertySet(String name) {
         super(name);
     }
@@ -17,7 +17,7 @@ public class MapPropertySet extends AbstractPropertySet<Map<String,?>>{
     }
 
     @Override
-    public boolean hasProperty(String key) {
+    public boolean containsProperty(String key) {
         return getSource().containsKey(key);
     }
 }

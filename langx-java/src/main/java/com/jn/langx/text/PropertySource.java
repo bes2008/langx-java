@@ -15,5 +15,5 @@ public interface PropertySource extends Nameable {
      * @param name the property name
      * @return null if not contains the specified name
      */
-    String getProperty(String name);
+    Object getProperty(String name);
 }

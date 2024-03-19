@@ -1,6 +1,7 @@
 package com.jn.langx.text;
 
 import com.jn.langx.util.BasedStringAccessor;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 
 public class PropertySourceAccessor extends BasedStringAccessor<String, PropertySource> {
@@ -14,7 +15,7 @@ public class PropertySourceAccessor extends BasedStringAccessor<String, Property
         Preconditions.checkNotEmpty(key, "the property name is null or empty");
         PropertySource propertySource = getTarget();
         if (propertySource.containsProperty(key)) {
-            return propertySource.getProperty(key);
+            return Objs.toStringOrNull(propertySource.getProperty(key));
         }
         return defaultValue;
     }

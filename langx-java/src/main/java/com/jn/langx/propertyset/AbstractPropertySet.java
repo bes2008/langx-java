@@ -1,23 +1,20 @@
-package com.jn.langx.environment;
+package com.jn.langx.propertyset;
 
+import com.jn.langx.AbstractNameable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
 
-public abstract class AbstractPropertySet<SRC> implements PropertySet<SRC> {
-    private String name;
+public abstract class AbstractPropertySet<SRC> extends AbstractNameable implements PropertySet<SRC> {
     private SRC source;
     public AbstractPropertySet(String name){
         this(name, (SRC) Emptys.EMPTY_OBJECTS);
     }
     public AbstractPropertySet(String name, SRC source){
-        this.name=name;
+        this.setName(name);
         this.source=source;
     }
 
-    public String getName() {
-        return name;
-    }
-
+    @Override
     public SRC getSource() {
         return source;
     }
@@ -42,7 +39,7 @@ public abstract class AbstractPropertySet<SRC> implements PropertySet<SRC> {
         return Objs.hash(this.name);
     }
 
-    public boolean hasProperty(String key){
-        return getProperty(key)!=null;
+    public boolean containsProperty(String key){
+        return getProperty(key) != null;
     }
 }

@@ -1,6 +1,8 @@
-package com.jn.langx.environment;
+package com.jn.langx.propertyset;
 
-public class EnvironmentVariablesPropertySource extends MapPropertySet{
+import com.jn.langx.propertyset.MapPropertySet;
+
+public class EnvironmentVariablesPropertySource extends MapPropertySet {
     public EnvironmentVariablesPropertySource() {
         super("envVars");
     }

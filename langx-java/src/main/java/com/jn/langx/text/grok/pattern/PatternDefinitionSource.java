@@ -1,5 +1,6 @@
 package com.jn.langx.text.grok.pattern;
 
+
 import com.jn.langx.text.PropertySource;
 
 /**
@@ -32,7 +33,7 @@ public class PatternDefinitionSource implements PropertySource {
     }
 
     @Override
-    public String getProperty(String name) {
+    public Object getProperty(String name) {
         PatternDefinition definition = repository.getById(name);
         if (definition != null) {
             return definition.getExpr();

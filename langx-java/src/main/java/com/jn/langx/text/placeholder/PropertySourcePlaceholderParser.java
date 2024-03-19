@@ -1,6 +1,7 @@
 package com.jn.langx.text.placeholder;
 
 import com.jn.langx.text.PropertySource;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 
 public class PropertySourcePlaceholderParser implements PlaceholderParser {
@@ -25,6 +26,6 @@ public class PropertySourcePlaceholderParser implements PlaceholderParser {
 
     @Override
     public String parse(String variable) {
-        return propertySource.getProperty(variable);
+        return Objs.toStringOrNull(propertySource.getProperty(variable));
     }
 }
