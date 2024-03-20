@@ -6,6 +6,9 @@ import com.jn.langx.util.Objs;
 
 import java.util.List;
 
+/**
+ * @since 5.3.8
+ */
 public class MultiplePropertySetEnvironment implements Environment {
     private MultiplePropertySet propertySet;
 

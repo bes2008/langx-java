@@ -3,7 +3,9 @@ package com.jn.langx.propertyset;
 import com.jn.langx.AbstractNameable;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
-
+/**
+ * @since 5.3.8
+ */
 public abstract class AbstractPropertySet<SRC> extends AbstractNameable implements PropertySet<SRC> {
     private SRC source;
     public AbstractPropertySet(String name){

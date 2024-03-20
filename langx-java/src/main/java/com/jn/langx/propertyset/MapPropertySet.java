@@ -1,7 +1,9 @@
 package com.jn.langx.propertyset;
 
 import java.util.Map;
-
+/**
+ * @since 5.3.8
+ */
 public class MapPropertySet extends AbstractPropertySet<Map<String,?>> {
     public MapPropertySet(String name) {
         super(name);

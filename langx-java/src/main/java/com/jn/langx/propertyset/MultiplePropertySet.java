@@ -11,7 +11,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
+/**
+ * @since 5.3.8
+ */
 public class MultiplePropertySet extends AbstractPropertySet implements Listable<PropertySet> {
 
     private final List<PropertySet> propertySets = new CopyOnWriteArrayList<PropertySet>();
