@@ -1,10 +1,10 @@
-package com.jn.langx.text;
+package com.jn.langx.propertyset;
 
 import com.jn.langx.util.BasedStringAccessor;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 
-public class PropertySourceAccessor extends BasedStringAccessor<String, PropertySource> {
+public class PropertySetAccessor extends BasedStringAccessor<String, PropertySet> {
     @Override
     public Object get(String key) {
         return this.getString(key, (String) null);
@@ -13,7 +13,7 @@ public class PropertySourceAccessor extends BasedStringAccessor<String, Property
     @Override
     public String getString(String key, String defaultValue) {
         Preconditions.checkNotEmpty(key, "the property name is null or empty");
-        PropertySource propertySource = getTarget();
+        PropertySet propertySource = getTarget();
         if (propertySource.containsProperty(key)) {
             return Objs.toStringOrNull(propertySource.getProperty(key));
         }

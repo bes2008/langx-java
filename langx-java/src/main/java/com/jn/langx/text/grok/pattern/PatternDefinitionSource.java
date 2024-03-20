@@ -1,13 +1,18 @@
 package com.jn.langx.text.grok.pattern;
 
 
-import com.jn.langx.text.PropertySource;
+import com.jn.langx.propertyset.PropertySet;
 
 /**
  * @since 4.5.0
  */
-public class PatternDefinitionSource implements PropertySource {
+public class PatternDefinitionSource implements PropertySet {
     private PatternDefinitionRepository repository;
+
+    @Override
+    public Object getSource() {
+        return repository;
+    }
 
     @Override
     public void setName(String name) {

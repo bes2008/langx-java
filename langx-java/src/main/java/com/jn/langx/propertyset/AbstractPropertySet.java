@@ -41,6 +41,7 @@ public abstract class AbstractPropertySet<SRC> extends AbstractNameable implemen
         return Objs.hash(this.name);
     }
 
+    @Override
     public boolean containsProperty(String key){
         return getProperty(key) != null;
     }
