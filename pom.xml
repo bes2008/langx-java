@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.3.4</version>
+    <version>5.3.8</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -16,15 +16,23 @@
     </description>
 
     <properties>
-        <slf4j.version>1.7.0</slf4j.version>
-        <jmh.version>1.23</jmh.version>
-        <junit.version>4.13.1</junit.version>
-
-        <Automatic-Module-Name>com.jn.langx</Automatic-Module-Name>
-
+        <!--maven build properties-->
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--custom build properties-->
+        <Automatic-Module-Name>com.jn.langx</Automatic-Module-Name>
+
+        <!-- dependency versions -->
+        <aspectj.version>1.6.0</aspectj.version>
+        <asm.version>5.0</asm.version>
+        <slf4j.version>1.7.0</slf4j.version>
+        <apache.commons-lang3.version>3.12.0</apache.commons-lang3.version>
+        <bouncycastle.version>1.70</bouncycastle.version>
+        <jmh.version>1.23</jmh.version>
+        <junit.version>4.13.1</junit.version>
+
     </properties>
 
     <url>https://github.com/bes2008/langx-java</url>
@@ -70,6 +78,7 @@
         <module>langx-java-el</module>
         <module>langx-java-asn1</module>
         <module>langx-java-distributed</module>
+        <module>langx-java-all</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -91,6 +100,36 @@
             <dependency>
                 <groupId>io.github.bes2008.solution.langx</groupId>
                 <artifactId>langx-java-reflect-asm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bes2008.solution.langx</groupId>
+                <artifactId>langx-java-asn1</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bes2008.solution.langx</groupId>
+                <artifactId>langx-java-distributed</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bes2008.solution.langx</groupId>
+                <artifactId>langx-java-el</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bes2008.solution.langx</groupId>
+                <artifactId>langx-java-fastdateformat</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bes2008.solution.langx</groupId>
+                <artifactId>langx-java-pinyin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.bes2008.solution.langx</groupId>
+                <artifactId>langx-java-regexp-joni</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -191,6 +230,14 @@
                 <includes>
                     <include>**/*</include>
                 </includes>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/java</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                    <exclude>**/*.md</exclude>
+                    <exclude>**/*.png</exclude>
+                </excludes>
             </resource>
         </resources>
 
@@ -367,6 +414,7 @@
                             <encoding>UTF-8</encoding>
                             <docencoding>UTF-8</docencoding>
                             <additionalparam>-Xdoclint:none</additionalparam>
+                            <failOnError>false</failOnError>
                         </configuration>
                         <executions>
                             <execution>

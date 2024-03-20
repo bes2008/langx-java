@@ -119,6 +119,14 @@ public class PKIs extends KeyStores {
         }
     }
 
+    public static KeyPair createKeyPair(String algorithm){
+        return createKeyPair(algorithm,null);
+    }
+
+    public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider){
+        return createKeyPair(algorithm, provider,-1, null);
+    }
+
     public static KeyPair createKeyPair(@NotEmpty String algorithm, @Nullable String provider, @NonNull int keySize, @Nullable SecureRandom secureRandom) {
         try {
             KeyPairGenerator keyPairGenerator = getKeyPairGenerator(algorithm, provider);
@@ -128,11 +136,12 @@ public class PKIs extends KeyStores {
                     keySize = suite.getKeySize();
                 }
             }
-            Preconditions.checkTrue(keySize > 0);
-            if (secureRandom == null) {
-                keyPairGenerator.initialize(keySize);
-            } else {
-                keyPairGenerator.initialize(keySize, secureRandom);
+            if(keySize>0) {
+                if (secureRandom == null) {
+                    keyPairGenerator.initialize(keySize);
+                } else {
+                    keyPairGenerator.initialize(keySize, secureRandom);
+                }
             }
             return keyPairGenerator.generateKeyPair();
         } catch (Throwable ex) {
@@ -187,6 +196,10 @@ public class PKIs extends KeyStores {
     public static SecretKey createSecretKey(String algorithm) {
         KeyGenerator keyGenerator = getKeyGenerator(algorithm, null);
         return keyGenerator.generateKey();
+    }
+
+    public static byte[] createSecretKeyBytes(int bitLength){
+        return SecureRandoms.randomBytes(bitLength);
     }
 
     public static SecretKey createSecretKey(@NotEmpty String algorithm, @Nullable String provider, @NonNull KeySpec keySpec) {

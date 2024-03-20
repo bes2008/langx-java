@@ -85,7 +85,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
 
         path = path.substring(PREFIX.length());
 
-        String pathToUse = Filenames.cleanPath(path);
+        String pathToUse = Filenames.cleanAsUnixPath(path);
         if (pathToUse.startsWith("/")) {
             pathToUse = pathToUse.substring(1);
         }
@@ -142,7 +142,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
         Preconditions.checkTrue(path.startsWith(PREFIX), "not a classpath resource");
 
         path = path.substring(PREFIX.length());
-        String pathToUse = Filenames.cleanPath(path);
+        String pathToUse = Filenames.cleanAsUnixPath(path);
         if (pathToUse.startsWith("/")) {
             pathToUse = pathToUse.substring(1);
         }

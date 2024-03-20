@@ -1,6 +1,6 @@
 package com.jn.langx.security.crypto.cipher;
 
-import com.jn.langx.security.crypto.key.supplier.bytesbased.ByteBasedSecretKeySupplier;
+import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 
 import java.security.Provider;
 import java.security.SecureRandom;
@@ -18,7 +18,7 @@ public class Symmetrics extends Ciphers {
     }
 
     public static byte[] encrypt(byte[] bytes, byte[] secretKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return encrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
+        return encrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier());
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] secretKey, String algorithm) {
@@ -30,20 +30,30 @@ public class Symmetrics extends Ciphers {
     }
 
     public static byte[] decrypt(byte[] bytes, byte[] secretKey, String algorithm, String algorithmTransformation, Provider provider, SecureRandom secureRandom) {
-        return decrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new ByteBasedSecretKeySupplier());
+        return decrypt(bytes, secretKey, algorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier());
     }
 
     public enum MODE {
-        ECB(CipherAlgorithmMode.ECB),
-        CBC(CipherAlgorithmMode.CBC),
-        CFB(CipherAlgorithmMode.CFB),
-        OFB(CipherAlgorithmMode.OFB),
-        CTR(CipherAlgorithmMode.CTR);
+        ECB(CipherAlgorithmMode.ECB, false),
+        CBC(CipherAlgorithmMode.CBC, true),
+        CFB(CipherAlgorithmMode.CFB, true),
+        OFB(CipherAlgorithmMode.OFB, true),
+        CTR(CipherAlgorithmMode.CTR, true);
 
         private CipherAlgorithmMode ref;
+        private boolean hasIV;
 
         MODE(CipherAlgorithmMode ref) {
+            this(ref, true);
+        }
+
+        MODE(CipherAlgorithmMode ref, boolean hasIV) {
             this.ref = ref;
+            this.hasIV = hasIV;
+        }
+
+        public boolean hasIV() {
+            return hasIV;
         }
 
         @Override

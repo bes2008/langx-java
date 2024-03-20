@@ -7,15 +7,15 @@ import com.jn.langx.exception.IllegalParameterException;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.CryptoException;
+import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedKeySupplier;
 import com.jn.langx.text.StringTemplates;
-import com.jn.langx.util.Emptys;
-import com.jn.langx.util.Preconditions;
-import com.jn.langx.util.Strings;
+import com.jn.langx.util.*;
 import com.jn.langx.util.enums.Enums;
 import com.jn.langx.util.logging.Loggers;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.spec.AlgorithmParameterSpec;
@@ -59,6 +59,16 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
+            cipher = initCipher(cipher, operateMode, key, secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Key key, SecureRandom secureRandom) {
+        Preconditions.checkNotNull(cipher);
+        try {
             if (secureRandom == null) {
                 cipher.init(operateMode, key);
             } else {
@@ -70,6 +80,7 @@ public class Ciphers extends Securitys {
         }
     }
 
+
     /**
      * 如果在初始化 Cipher过程中，出现了java.security.InvalidKeyException: Illegal key size
      * 可以找到 ${JDK_HOME}/jre/lib/security/java.security, 将 crypto.policy 设置为 unlimited
@@ -79,10 +90,28 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
-            if (secureRandom == null) {
-                cipher.init(operateMode, key, parameterSpec);
+            cipher = initCipher(cipher, operateMode, key, parameterSpec, secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Key key, @Nullable AlgorithmParameterSpec parameterSpec, SecureRandom secureRandom) {
+        Preconditions.checkNotNull(cipher);
+        try {
+            if (secureRandom != null) {
+                if (parameterSpec != null) {
+                    cipher.init(operateMode, key, parameterSpec, secureRandom);
+                } else {
+                    cipher.init(operateMode, key, secureRandom);
+                }
             } else {
-                cipher.init(operateMode, key, parameterSpec, secureRandom);
+                if (parameterSpec != null) {
+                    cipher.init(operateMode, key, parameterSpec);
+                } else {
+                    cipher.init(operateMode, key);
+                }
             }
             return cipher;
         } catch (Throwable ex) {
@@ -99,17 +128,27 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
-            if (secureRandom == null) {
-                if (parameters != null) {
-                    cipher.init(operateMode, key, parameters);
-                } else {
-                    cipher.init(operateMode, key);
-                }
-            } else {
+            cipher = initCipher(cipher, operateMode, key, parameters, secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Key key, @Nullable AlgorithmParameters parameters, SecureRandom secureRandom) {
+        Preconditions.checkNotNull(cipher);
+        try {
+            if (secureRandom != null) {
                 if (parameters != null) {
                     cipher.init(operateMode, key, parameters, secureRandom);
                 } else {
                     cipher.init(operateMode, key, secureRandom);
+                }
+            } else {
+                if (parameters != null) {
+                    cipher.init(operateMode, key, parameters);
+                } else {
+                    cipher.init(operateMode, key);
                 }
             }
             return cipher;
@@ -121,6 +160,16 @@ public class Ciphers extends Securitys {
     public static Cipher createCipher(@NonNull String algorithmTransformation, @Nullable Provider provider, int operateMode, Certificate certificate, SecureRandom secureRandom) {
         try {
             Cipher cipher = createEmptyCipher(algorithmTransformation, provider);
+            cipher = initCipher(cipher, operateMode, certificate, secureRandom);
+            return cipher;
+        } catch (Throwable ex) {
+            throw new SecurityException(ex.getMessage(), ex);
+        }
+    }
+
+    public static Cipher initCipher(Cipher cipher, int operateMode, Certificate certificate, SecureRandom secureRandom) {
+        Preconditions.checkNotNull(cipher);
+        try {
             if (secureRandom == null) {
                 cipher.init(operateMode, certificate);
             } else {
@@ -233,7 +282,7 @@ public class Ciphers extends Securitys {
         // 获取全局默认的 parameter supplier, 这部分也是人为定义的，但又没有加入到 Provider中的
         if (parameterSupplier == null && suite != null) {
             parameterSupplier = suite.getParameterSupplier();
-            if(parameterSupplier==null && Strings.equalsIgnoreCase("SM4",algorithm)){
+            if (parameterSupplier == null && Strings.equalsIgnoreCase("SM4", algorithm)) {
                 Loggers.getLogger(Ciphers.class).warn("check whether the langx-java-security-gm-jca-bouncycastle.jar (version >= 4.2.7) in the classpath or not");
             }
         }
@@ -294,12 +343,17 @@ public class Ciphers extends Securitys {
         return createAlgorithmTransformation(components[0], components[1], components[2]);
     }
 
+
     public static String createAlgorithmTransformation(@NotEmpty String algorithm, @NotEmpty String mode, @NotEmpty String padding) {
+        return createAlgorithmTransformation(algorithm, mode, Enums.ofName(CipherAlgorithmPadding.class, padding));
+    }
+
+    public static String createAlgorithmTransformation(@NotEmpty String algorithm, @NotEmpty String mode, @NotEmpty CipherAlgorithmPadding padding) {
         Preconditions.checkNotEmpty(algorithm, "the algorithm is null or empty");
         Preconditions.checkNotEmpty(mode, "the mode is null or empty");
         Preconditions.checkNotEmpty(padding, "the padding is null or empty");
 
-        return StringTemplates.formatWithPlaceholder("{}/{}/{}", algorithm, mode, padding);
+        return StringTemplates.formatWithPlaceholder("{}/{}/{}", algorithm, mode, padding.name());
     }
 
     public static String extractAlgorithm(String transformation) {
@@ -350,5 +404,31 @@ public class Ciphers extends Securitys {
 
     public static CipherAlgorithmSuiteRegistry getAlgorithmSuiteRegistry() {
         return ALGORITHM_SUITE_REGISTRY;
+    }
+
+    public static IvParameterSpec createIvParameterSpec(int ivBitLength) {
+        return createIvParameterSpec(null, ivBitLength);
+    }
+
+    public static IvParameterSpec createIvParameterSpec(byte[] seed, int ivBitLength) {
+        return createIvParameterSpec(null, seed, ivBitLength);
+    }
+
+    public static IvParameterSpec createIvParameterSpec(SecureRandom secureRandom, byte[] seed, int ivBitLength) {
+        if (secureRandom == null) {
+            try {
+                secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
+            } catch (Throwable ex) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }
+        }
+        if (Objs.isNotEmpty(seed)) {
+            secureRandom.setSeed(seed);
+        }
+
+        int byteLength = (ivBitLength + 7) / 8;
+        byte[] ivBytes = new byte[byteLength];
+        secureRandom.nextBytes(ivBytes);
+        return new IvParameterSpec(ivBytes);
     }
 }

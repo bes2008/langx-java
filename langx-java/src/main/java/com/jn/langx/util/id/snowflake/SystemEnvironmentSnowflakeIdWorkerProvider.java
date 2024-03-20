@@ -1,11 +1,8 @@
 package com.jn.langx.util.id.snowflake;
 
-import com.jn.langx.environment.Environment;
-import com.jn.langx.environment.EnvironmentAccessor;
-import com.jn.langx.environment.SystemEnvironment;
+import com.jn.langx.util.SystemPropertys;
 
 public final class SystemEnvironmentSnowflakeIdWorkerProvider implements SnowflakeIdWorkerProvider {
-    private Environment env = new SystemEnvironment();
 
     public static final String SYSTEM_ENVIRONMENT_SNOWFLAKE = "SYSTEM_ENVIRONMENT_SNOWFLAKE";
 
@@ -16,10 +13,8 @@ public final class SystemEnvironmentSnowflakeIdWorkerProvider implements Snowfla
         if (worker == null) {
             synchronized (SystemEnvironmentSnowflakeIdWorkerProvider.class) {
                 if (worker == null) {
-                    EnvironmentAccessor environmentAccessor = new EnvironmentAccessor();
-                    environmentAccessor.setTarget(env);
-                    long workId = environmentAccessor.getLong("idgen.snowflake.workerId", 0L);
-                    long dataCenterId = environmentAccessor.getLong("idgen.snowflake.dataCenterId", 0L);
+                    long workId = SystemPropertys.getAccessor().getLong("idgen.snowflake.workerId", 0L);
+                    long dataCenterId = SystemPropertys.getAccessor().getLong("idgen.snowflake.dataCenterId", 0L);
 
                     worker = new CnblogsSnowflakeIdWorker(workId, dataCenterId);
                     return worker;

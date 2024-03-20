@@ -119,6 +119,7 @@ public class Chars {
         return value >= 'A' && value <= 'Z';
     }
 
+    // 等价于判断一个 数字是否为一个字符。
     public static boolean isDigit(int ch) {
         return ((ch - '0') | ('9' - ch)) >= 0;
     }

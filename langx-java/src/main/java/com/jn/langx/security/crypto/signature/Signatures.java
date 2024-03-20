@@ -78,6 +78,15 @@ public class Signatures extends Securitys {
         }
     }
 
+    public static Signature createSignature(@NonNull String algorithm, @Nullable String provider, @NonNull PublicKey publicKey, final AlgorithmParameterSpec algorithmParameterSpec) {
+        return createSignature(algorithm, provider, publicKey, new AlgorithmParameterSupplier() {
+            @Override
+            public Object get(Key key, String algorithm, String transform, Provider provider, SecureRandom secureRandom) {
+                return algorithmParameterSpec;
+            }
+        });
+    }
+
     public static Signature createSignature(@NonNull String algorithm, @Nullable String provider, @NonNull PublicKey publicKey, AlgorithmParameterSupplier cipherAlgoParameterSupplier) {
         AlgorithmParameterSpec parameterSpec = null;
         if (cipherAlgoParameterSupplier != null) {

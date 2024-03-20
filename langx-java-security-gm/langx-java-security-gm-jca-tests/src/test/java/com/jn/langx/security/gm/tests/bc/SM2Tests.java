@@ -5,7 +5,7 @@ import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPrivateKeySupplier;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedPublicKeySupplier;
 import com.jn.langx.security.crypto.signature.Signatures;
-import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2ParameterSpec;
+import com.jn.langx.security.gm.crypto.bc.asymmetric.sm2.SM2SignParameterSpec;
 import com.jn.langx.util.io.Charsets;
 import org.junit.Test;
 
@@ -28,8 +28,8 @@ public class SM2Tests {
 
     @Test
     public void test_sign_verify() {
-        KeyPair keyPair = PKIs.createKeyPair("SM2", null, 256, null);
-        SM2ParameterSpec parameterSpec = new SM2ParameterSpec();
+        KeyPair keyPair = PKIs.createKeyPair("SM2");
+        SM2SignParameterSpec parameterSpec = new SM2SignParameterSpec();
         byte[] digitSignature = Signatures.sign(string.getBytes(Charsets.UTF_8), keyPair.getPrivate().getEncoded(), "SM3WithSM2", null, null, parameterSpec);
         boolean verified = Signatures.verify(string.getBytes(Charsets.UTF_8), digitSignature, keyPair.getPublic().getEncoded(), "SM3WithSM2", null, parameterSpec);
         System.out.println("verified: " + verified);

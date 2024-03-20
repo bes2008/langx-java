@@ -2,5 +2,5 @@
 .idea/
 *.iml
 target/
-
+dependency-reduced-pom.xml
 .gitignore

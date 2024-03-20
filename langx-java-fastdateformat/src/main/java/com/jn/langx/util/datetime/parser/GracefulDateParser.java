@@ -1,8 +1,6 @@
-package com.jn.langx.langx.util.datetime.parser;
+package com.jn.langx.util.datetime.parser;
 
 import com.jn.langx.util.datetime.DateTimeParsedResult;
-import com.jn.langx.util.datetime.parser.DateParsedResult;
-import com.jn.langx.util.datetime.parser.SimpleDateParser;
 import com.jn.langx.util.logging.Loggers;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
