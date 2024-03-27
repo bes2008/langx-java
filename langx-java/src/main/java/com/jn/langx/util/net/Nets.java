@@ -9,6 +9,7 @@ import com.jn.langx.text.properties.PropertiesAccessor;
 import com.jn.langx.util.*;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
+import com.jn.langx.util.function.Function;
 import com.jn.langx.util.function.Functions;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.io.Charsets;
@@ -2078,5 +2079,86 @@ public class Nets {
             return false;
         }
     }
+
+    public static String getIpv4SubnetMask(int prefixLength) {
+        Preconditions.checkArgument(isValidIpv4SubnetMask(prefixLength), "invalid ipv4 netmask prefix: {}", prefixLength);
+        String prefixBitsString = Strings.repeat("1", prefixLength);
+        String suffixBitsString = Strings.repeat("0", 32 - prefixLength);
+        String subnetMaskBitsString = prefixBitsString + suffixBitsString;
+        String[] segments = Strings.splitByFixedLength(subnetMaskBitsString, 8);
+        String subnetMask = Pipeline.of(segments).map(new Function<String, String>() {
+            @Override
+            public String apply(String segment) {
+                return Radixs.binaryToDecimal(segment) + "";
+            }
+        }).join(".");
+        return subnetMask;
+    }
+
+    public static boolean isValidIpv4SubnetMask(int prefix){
+        return prefix>=1 && prefix<=32;
+    }
+
+    public static boolean isValidIpv4SubnetMask(String subnetMask){
+        int prefix = getIpv4SubnetMaskPrefixLength(subnetMask);
+        return isValidIpv4SubnetMask(prefix);
+    }
+
+    /**
+     * 获取 子网掩码的 前缀，如果是不合法的 Ipv4 子网掩码，则返回 -1
+     * @param subnetMask 子网掩码
+     * @return 前缀数
+     */
+    public static int getIpv4SubnetMaskPrefixLength(String subnetMask){
+        if(!isValidIpV4Address(subnetMask)){
+            return -1;
+        }
+        String[] segments = Strings.split(subnetMask, false, ".", true, true);
+        List<String> bitsList= Pipeline.of(segments)
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String segment) {
+                        String binary= Radixs.toBinary(Numbers.createInteger(segment));
+                        if(binary.length()<8){
+                            binary= binary+Strings.repeat("0",8-binary.length());
+                        }
+                        return binary;
+                    }
+                }).asList();
+        // 前面是 1 是连续的，有0之后，不能再有 1
+        String subnetMaskBitsString = Strings.join("", bitsList);
+        if(subnetMaskBitsString.length()!=32){
+            return -1;
+        }
+
+        int prefix=-1;
+        int maxCount=subnetMaskBitsString.length();
+        // 首次遇到 0，就停止遍历
+        for(int i=0; i<subnetMaskBitsString.length();i++){
+            char c= subnetMaskBitsString.charAt(i);
+            if(c=='0'){
+                prefix=i;
+                break;
+            }
+        }
+        // 没有遇到0，说明 全是1
+        if(prefix==-1){
+            prefix=maxCount;
+        }
+
+        // 在首个0之后，如果还有 1，那肯定 是无效的
+        if(prefix<maxCount){
+            for(int i=prefix+1; i< maxCount; i++){
+                char c= subnetMaskBitsString.charAt(i);
+                if(c=='1'){
+                    prefix=-1;
+                    break;
+                }
+            }
+        }
+
+        return prefix;
+    }
+
 
 }

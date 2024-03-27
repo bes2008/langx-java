@@ -10,6 +10,7 @@ import com.jn.langx.text.StringJoiner;
 import com.jn.langx.text.StringTemplates;
 import com.jn.langx.text.placeholder.PlaceholderParser;
 import com.jn.langx.util.collection.Collects;
+import com.jn.langx.util.collection.Lists;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.collection.PrimitiveArrays;
 import com.jn.langx.util.enums.Enums;
@@ -480,6 +481,26 @@ public class Strings {
         }).toArray(String[].class);
     }
 
+    public static String[] splitByFixedLength(String str, int substringLength){
+        if(isEmpty(str)){
+            return Emptys.EMPTY_STRINGS;
+        }
+        if(str.length()<=substringLength){
+            return new String[]{str};
+        }
+
+        List<String> substrings = Lists.newArrayList();
+
+        int startOffset=0;
+        while(startOffset<str.length()){
+            int endOffsetExclude= Maths.min(startOffset+substringLength, str.length());
+            if(endOffsetExclude>startOffset){
+                substrings.add(str.substring(startOffset, endOffsetExclude));
+            }
+            startOffset=endOffsetExclude;
+        }
+        return Collects.toArray(substrings, String[].class);
+    }
 
     /**
      * Helper to decode half of a hexadecimal number from a string.

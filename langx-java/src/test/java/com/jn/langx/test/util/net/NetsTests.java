@@ -1,5 +1,6 @@
 package com.jn.langx.test.util.net;
 
+import com.jn.langx.text.StringTemplates;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Pipeline;
 import com.jn.langx.util.function.Consumer;
@@ -93,5 +94,21 @@ public class NetsTests {
 
         System.out.println(Nets.ipv4MappingToIpv6("127.0.0.1"));
         System.out.println(Nets.ipv4MappingToIpv6("127.0.0.1", true));
+    }
+
+    @Test
+    public void testSubnetMask(){
+        for (int i=1; i<=32;i++){
+            String subnetMask=Nets.getIpv4SubnetMask(i);
+            System.out.println(StringTemplates.formatWithPlaceholder("prefix: {}, netmask: {}, isValid: {}",i,subnetMask, Nets.isValidIpv4SubnetMask(subnetMask )));
+        }
+    }
+    @Test
+    public void testSubnetMask2(){
+        for (int i=1; i<=32;i++){
+            String subnetMask=Nets.getIpv4SubnetMask(i);
+            subnetMask=subnetMask.substring(0,subnetMask.length()-1)+"2";
+            System.out.println(StringTemplates.formatWithPlaceholder("netmask: {}, isValid: {}", subnetMask, Nets.isValidIpv4SubnetMask(subnetMask )));
+        }
     }
 }
