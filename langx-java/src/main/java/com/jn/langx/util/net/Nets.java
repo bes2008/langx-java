@@ -2085,7 +2085,7 @@ public class Nets {
         String prefixBitsString = Strings.repeat("1", prefixLength);
         String suffixBitsString = Strings.repeat("0", 32 - prefixLength);
         String subnetMaskBitsString = prefixBitsString + suffixBitsString;
-        String[] segments = Strings.splitByFixedLength(subnetMaskBitsString, 8);
+        String[] segments = Strings.slice(subnetMaskBitsString, 8);
         String subnetMask = Pipeline.of(segments).map(new Function<String, String>() {
             @Override
             public String apply(String segment) {

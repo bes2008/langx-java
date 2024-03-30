@@ -481,7 +481,7 @@ public class Strings {
         }).toArray(String[].class);
     }
 
-    public static String[] splitByFixedLength(String str, int substringLength){
+    public static String[] slice(String str, int substringLength){
         if(isEmpty(str)){
             return Emptys.EMPTY_STRINGS;
         }
