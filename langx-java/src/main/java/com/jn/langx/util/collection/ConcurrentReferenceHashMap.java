@@ -1,6 +1,7 @@
 package com.jn.langx.util.collection;
 
 
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.reflect.reference.ReferenceType;
 
@@ -228,8 +229,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
     private int hashOf(Object key) {
         return hash(
-                identityComparisons ?
-                        System.identityHashCode(key) : key.hashCode()
+                identityComparisons ? Objs.id(key) : key.hashCode()
         );
     }
 

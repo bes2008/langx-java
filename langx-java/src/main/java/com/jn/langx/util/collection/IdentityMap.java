@@ -1,6 +1,8 @@
 package com.jn.langx.util.collection;
 
 
+import com.jn.langx.util.Objs;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -192,7 +194,7 @@ public final class IdentityMap<K, V> implements Map<K, V> {
     }
 
     /**
-     * We need to base the identity on {@link System#identityHashCode(Object)} but
+     * We need to base the identity on {@link com.jn.langx.util.Objs#id(Object)} but
      * attempt to lazily initialize and cache this value: being a native invocation
      * it is an expensive value to retrieve.
      */
@@ -218,7 +220,7 @@ public final class IdentityMap<K, V> implements Map<K, V> {
         public int hashCode() {
             if (this.hash == 0) {
                 //We consider "zero" as non-initialized value
-                final int newHash = System.identityHashCode(key);
+                final int newHash = Objs.id(key);
                 if (newHash == 0) {
                     //So make sure we don't store zeros as it would trigger initialization again:
                     //any value is fine as long as we're deterministic.

@@ -426,4 +426,8 @@ public abstract class Objs{
     public static <T> T cast(Object o) {
         return (T)o;
     }
+
+    public static int id(Object o){
+        return System.identityHashCode(o);
+    }
 }
