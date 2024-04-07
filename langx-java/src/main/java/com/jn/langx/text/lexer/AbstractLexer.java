@@ -31,6 +31,10 @@ public abstract class AbstractLexer implements Lexer {
         return new LexerPositionImpl(offset, intState);
     }
 
+    /**
+     * 从指定位置开始处理
+     * @param position 指定的位置
+     */
     public void restore(@NonNull LexerPosition position) {
         Preconditions.checkNotNullArgument(position, "position");
         startInternal(getBufferSequence(), position.getOffset(), getBufferEnd(), position.getState());

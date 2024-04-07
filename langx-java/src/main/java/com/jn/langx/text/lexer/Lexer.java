@@ -10,6 +10,9 @@ interface Lexer {
 
     void start(@NonNull CharSequence buf);
 
+    /**
+     * @return 获取当前 token 的文本
+     */
     @NonNull
     String getTokenText();
 
@@ -18,8 +21,14 @@ interface Lexer {
     @Nullable
     TokenType getTokenType();
 
+    /**
+     * @return 获取当前token的开始 offset,包含
+     */
     int getTokenStart();
 
+    /**
+     *  @return 获取当前token的结束位置 ,不包含
+     */
     int getTokenEnd();
 
     /**
