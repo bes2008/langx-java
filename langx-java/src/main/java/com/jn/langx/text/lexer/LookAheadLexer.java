@@ -17,14 +17,15 @@ public abstract class LookAheadLexer extends AbstractLexer {
 
     private final MutableRandomAccessQueue<Integer> myEndOffsetCache;
 
-    protected LookAheadLexer(@NonNull AbstractLexer delegate, int capacity) {
+    public LookAheadLexer(@NonNull AbstractLexer delegate, int capacity) {
+        Preconditions.checkNotNullArgument(delegate, "delegate");
         this.delegate = delegate;
         this.myTypeCache = new MutableRandomAccessQueue<TokenType>(capacity);
         this.myEndOffsetCache = new MutableRandomAccessQueue<Integer>(capacity);
     }
 
-    protected LookAheadLexer(@NonNull AbstractLexer baseLexer) {
-        this(baseLexer, 64);
+    public LookAheadLexer(@NonNull AbstractLexer delegate) {
+        this(delegate, 64);
     }
 
     public void next() {
@@ -40,28 +41,9 @@ public abstract class LookAheadLexer extends AbstractLexer {
     private void doLookAhead() {
         this.myLastOffset = this.myTokenStart;
         this.myLastState = this.delegate.getState();
-        lookAhead(this.delegate);
+        addToken(this.delegate.getTokenType());
+        this.delegate.next();
         assert !this.myTypeCache.isEmpty();
-    }
-
-    protected void lookAhead(@NonNull Lexer lexer) {
-        Preconditions.checkNotNullArgument(lexer, "delegate");
-        advanceLexer(lexer);
-    }
-
-    /**
-     * 前进
-     * @param lexer
-     */
-    protected final void advanceLexer(@NonNull Lexer lexer) {
-        Preconditions.checkNotNullArgument(lexer, "delegate");
-        advanceAs(lexer, lexer.getTokenType());
-    }
-
-    protected final void advanceAs(@NonNull Lexer lexer, TokenType type) {
-        Preconditions.checkNotNullArgument(lexer, "lexer");
-        addToken(type);
-        lexer.next();
     }
 
     protected void addToken(TokenType type) {
