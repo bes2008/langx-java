@@ -5,13 +5,12 @@ import com.jn.langx.annotation.NonNull;
 import com.jn.langx.util.Preconditions;
 
 public abstract class LookAheadLexer extends AbstractLexer {
+    private int myTokenStart;
     private int myLastOffset;
 
     private int myLastState;
 
     private final AbstractLexer delegate;
-
-    private int myTokenStart;
 
     private final MutableRandomAccessQueue<TokenType> myTypeCache;
 
@@ -133,7 +132,7 @@ public abstract class LookAheadLexer extends AbstractLexer {
         this.myTokenStart = startOffset;
         this.myTypeCache.clear();
         this.myEndOffsetCache.clear();
-        doLookAhead();
+        next();
     }
 
     protected static class LookAheadLexerPosition implements LexerPosition {

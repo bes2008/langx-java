@@ -6,6 +6,11 @@ import com.jn.langx.annotation.Nullable;
 
 interface Lexer {
 
+    /**
+     * 前进
+     */
+    void next();
+
     void start(@NonNull CharSequence buf, int start, int end);
 
     void start(@NonNull CharSequence buf);
@@ -31,10 +36,6 @@ interface Lexer {
      */
     int getTokenEnd();
 
-    /**
-     * 前进
-     */
-    void next();
 
     @NonNull
     LexerPosition getCurrentPosition();
