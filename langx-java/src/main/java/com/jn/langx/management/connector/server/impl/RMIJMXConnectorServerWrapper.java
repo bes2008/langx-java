@@ -179,6 +179,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
                     theEnv, theMBeanServer);
             cs.start();
         } catch (IOException e) {
+            // ignore it
         }
         return cs;
     }
@@ -188,6 +189,7 @@ public class RMIJMXConnectorServerWrapper implements JMXConnectorServerWrapper {
             try {
                 theConnectorServer.stop();
             } catch (IOException e) {
+                // ignore it
             }
         }
     }

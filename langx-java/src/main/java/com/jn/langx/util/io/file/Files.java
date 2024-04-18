@@ -1977,13 +1977,9 @@ public class Files {
             dir = tmpdir;
         }
         File f;
-        try {
+        f = generateTempPath(prefix, suffix, dir);
+        while (f.exists()) {
             f = generateTempPath(prefix, suffix, dir);
-            while (f.exists()) {
-                f = generateTempPath(prefix, suffix, dir);
-            }
-        } catch (InvalidPathException e) {
-            throw e;
         }
         try {
             if (createDirectory) {

@@ -184,6 +184,7 @@ public class PKIs extends KeyStores {
                                 return generator;
                             }
                         } catch (Throwable ex2) {
+                            // ignore it
                         }
                     }
                 }

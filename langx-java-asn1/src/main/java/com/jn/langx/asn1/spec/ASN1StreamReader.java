@@ -998,6 +998,7 @@ public final class ASN1StreamReader implements Closeable {
                     try {
                         return inputStream.read();
                     } catch (final SocketTimeoutException ste2) {
+                        // ignore it
                     }
                 }
             } else {
@@ -1041,6 +1042,7 @@ public final class ASN1StreamReader implements Closeable {
                     try {
                         return inputStream.read(buffer, offset, len);
                     } catch (final SocketTimeoutException ste2) {
+                        // ignore it
                     }
                 }
             } else {

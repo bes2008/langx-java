@@ -216,6 +216,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
         try {
             unsafeClass = ClassLoaders.loadClass("sun.misc.Unsafe");
         } catch (ClassNotFoundException ex) {
+            // ignore it
         }
         if (unsafeClass != null) {
             data = new ConcurrentHashMapV8<K, Node<K, V>>(builder.initialCapacity, 0.75f, concurrencyLevel);

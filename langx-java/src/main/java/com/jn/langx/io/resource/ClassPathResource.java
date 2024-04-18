@@ -158,7 +158,7 @@ public class ClassPathResource extends AbstractLocatableResource<URL> {
             try {
                 file = new File(url.toURI());
             } catch (Exception ex) {
-
+                // ignore it
             }
         }
         if (file != null) {

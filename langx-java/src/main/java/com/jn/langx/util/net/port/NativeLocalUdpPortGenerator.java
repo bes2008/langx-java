@@ -14,7 +14,7 @@ public class NativeLocalUdpPortGenerator implements LocalPortGenerator {
             socket = new DatagramSocket();
             port = socket.getLocalPort();
         } catch (IOException ex) {
-
+            // ignore it
         } finally {
             IOs.close(socket);
         }

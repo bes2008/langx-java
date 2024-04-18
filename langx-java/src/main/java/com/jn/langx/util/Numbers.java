@@ -546,10 +546,12 @@ public class Numbers {
                             break;
                         }
                     } catch (NumberFormatException nfe) {
+                        // ignore it
                     }
                     try {
                         number = createBigDecimal(numeric);
                     } catch (NumberFormatException e) {
+                        // ignore it
                     }
                     break;
                 default:

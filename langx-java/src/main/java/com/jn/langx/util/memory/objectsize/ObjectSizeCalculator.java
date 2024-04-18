@@ -253,7 +253,6 @@ public class ObjectSizeCalculator {
                     calc.enqueue(f.get(obj));
                 } catch (IllegalAccessException e) {
                     final AssertionError ae = new AssertionError("Unexpected denial of access to " + f);
-                    ae.initCause(e);
                     throw ae;
                 }
             }
