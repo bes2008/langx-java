@@ -43,9 +43,8 @@ public class DTDEntityResolver implements EntityResolver {
     }
 
     void setDtdInputStream(final InputStream dtdInputStream) {
-        String content = null;
         try {
-            content = IOs.readAsString(dtdInputStream);
+            String content = IOs.readAsString(dtdInputStream);
             StringReader reader = new StringReader(content);
             this.dtdReader = reader;
         } catch (Throwable e) {
