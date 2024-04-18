@@ -1,6 +1,7 @@
 package com.jn.langx.util.os;
 
 import com.jn.langx.util.logging.Loggers;
+import com.jn.langx.util.reflect.Reflects;
 
 import java.lang.reflect.Method;
 
@@ -24,7 +25,7 @@ public class Uptime {
                 final Class<?> mgmtFactory = Class.forName("java.lang.management.ManagementFactory", true, cl);
                 final Class<?> runtimeClass = Class.forName("java.lang.management.RuntimeMXBean", true, cl);
                 final Class<?>[] noParams = new Class<?>[0];
-                final Method mxBeanMethod = mgmtFactory.getMethod("getRuntimeMXBean", noParams);
+                final Method mxBeanMethod = Reflects.getAnyMethod(mgmtFactory, "getRuntimeMXBean", noParams);
                 if (mxBeanMethod == null) {
                     throw new UnsupportedOperationException("method getRuntimeMXBean() not found");
                 }
@@ -32,7 +33,7 @@ public class Uptime {
                 if (mxBean == null) {
                     throw new UnsupportedOperationException("getRuntimeMXBean() method returned null");
                 }
-                uptimeMethod = runtimeClass.getMethod("getUptime", noParams);
+                uptimeMethod = Reflects.getAnyMethod(runtimeClass,"getUptime", noParams);
                 if (uptimeMethod == null) {
                     throw new UnsupportedOperationException("method getUptime() not found");
                 }

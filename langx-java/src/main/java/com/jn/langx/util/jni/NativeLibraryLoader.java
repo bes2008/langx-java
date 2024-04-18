@@ -152,9 +152,6 @@ public final class NativeLibraryLoader {
         String maybeShaded = NativeLibraryLoader.class.getName();
         // Use ! instead of . to avoid shading utilities from modifying the string
         String expected = NativeLibraryLoader.class.getName();
-        if (!maybeShaded.endsWith(expected)) {
-            throw new UnsatisfiedLinkError(String.format("Could not find prefix added to %s to get %s. When shading, only adding a package prefix is supported", expected, maybeShaded));
-        }
         return maybeShaded.substring(0, maybeShaded.length() - expected.length());
     }
 

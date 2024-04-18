@@ -1491,7 +1491,7 @@ public class Reflects {
         if (Strings.isEmpty(fieldName)) {
             return false;
         }
-        if (fieldName != null && Objs.length(fieldName) >= 1) {
+        if (Objs.length(fieldName) >= 1) {
             fieldName = fieldName.substring(0, 1).toLowerCase() + (fieldName.length() <= 1 ? "" : fieldName.substring(1));
         }
         if (Strings.isEmpty(fieldName)) {

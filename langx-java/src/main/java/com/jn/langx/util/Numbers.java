@@ -697,7 +697,7 @@ public class Numbers {
             } catch (ParseException ex) {
                 throw new IllegalArgumentException("Could not parse number: " + ex.getMessage());
             } finally {
-                if (resetBigDecimal && decimalFormat != null) {
+                if (resetBigDecimal) {
                     decimalFormat.setParseBigDecimal(false);
                 }
             }
