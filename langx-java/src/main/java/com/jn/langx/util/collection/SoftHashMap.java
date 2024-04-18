@@ -191,7 +191,7 @@ public class SoftHashMap<K, V> implements Map<K, V> {
     public boolean containsValue(Object value) {
         processQueue();
         Collection values = values();
-        return values != null && values.contains(value);
+        return values.contains(value);
     }
 
     public void putAll(Map<? extends K, ? extends V> m) {

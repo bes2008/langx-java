@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Serializable {
-    public static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
 
     @SuppressWarnings({"unchecked", "rawtypes"}) // to avoid Comparable<Comparable<Comparable<...>>>

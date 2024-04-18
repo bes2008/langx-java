@@ -1396,7 +1396,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * An entry that allows updates to write through to the map.
      */
     final class WriteThroughEntry extends SimpleEntry<K, V> {
-        static final long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
 
         WriteThroughEntry(Node<K, V> node) {
             super(node.key, node.getValue());
@@ -1417,7 +1417,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
      * A weigher that enforces that the weight falls within a valid range.
      */
     static final class BoundedEntryWeigher<K, V> implements EntryWeigher<K, V>, Serializable {
-        static final long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
         final transient EntryWeigher<? super K, ? super V> weigher;
 
         BoundedEntryWeigher(EntryWeigher<? super K, ? super V> weigher) {
@@ -1485,7 +1485,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
 
     /* ---------------- Serialization Support -------------- */
 
-    static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 1;
 
     Object writeReplace() {
         return new SerializationProxy<K, V>(this);
@@ -1528,7 +1528,7 @@ public final class ConcurrentLinkedHashMap<K, V> extends AbstractMap<K, V>
             return map;
         }
 
-        static final long serialVersionUID = 1;
+        private static final long serialVersionUID = 1;
     }
 
     /* ---------------- Builder -------------- */
