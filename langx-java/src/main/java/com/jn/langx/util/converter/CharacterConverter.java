@@ -2,6 +2,7 @@ package com.jn.langx.util.converter;
 
 import com.jn.langx.Converter;
 import com.jn.langx.util.Chars;
+import com.jn.langx.util.reflect.type.Primitives;
 
 public class CharacterConverter implements Converter<Object, Character> {
 
@@ -17,7 +18,7 @@ public class CharacterConverter implements Converter<Object, Character> {
         if (value == null) {
             return null;
         }
-        if (Character.TYPE == value.getClass() || Character.class == value.getClass()) {
+        if (Primitives.isChar(value.getClass())) {
             return (Character) value;
         }
         if (Integer.class == value.getClass()) {

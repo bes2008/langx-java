@@ -28,7 +28,7 @@ public class Caesar {
         char c;
         for (int i = 0; i < len; i++) {
             c = message.charAt(i);
-            if (false == Character.isLetter(c)) {
+            if (!Character.isLetter(c)) {
                 continue;
             }
             plain[i] = encodeChar(c, offset);
@@ -50,7 +50,7 @@ public class Caesar {
         char c;
         for (int i = 0; i < len; i++) {
             c = cipherText.charAt(i);
-            if (false == Character.isLetter(c)) {
+            if (!Character.isLetter(c)) {
                 continue;
             }
             plain[i] = decodeChar(c, offset);
