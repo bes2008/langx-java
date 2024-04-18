@@ -217,9 +217,7 @@ ROLL 23 :  ((x << 23) | (x >>> (32-23)))
 
 
     protected void processBlock() {
-        for (int j = 0; j < 16; ++j) {
-            this.W[j] = this.inwords[j];
-        }
+        System.arraycopy(this.inwords, 0, this.W, 0, 16);
         for (int j = 16; j < 68; ++j) {
             int wj3 = this.W[j - 3];
             int r15 = ((wj3 << 15) | (wj3 >>> (32 - 15)));
