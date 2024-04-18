@@ -776,7 +776,7 @@ public class Nets {
 
     public static byte[] ipv4MappingToIpv6Bytes(byte[] ipv4Bytes) {
         if (ipv4Bytes == null || ipv4Bytes.length != IPV4_PART_COUNT) {
-            throw new IllegalParameterException(StringTemplates.formatWithPlaceholder("illegal ipv4 address: {}", ipv4Bytes));
+            throw new IllegalParameterException(StringTemplates.formatWithPlaceholder("illegal ipv4 address: {}", Objs.isEmpty(ipv4Bytes)?"":new String(ipv4Bytes,Charsets.UTF_8)));
         }
         byte[] ipv6Bytes = new byte[16];
         for (int i = 0; i < 10; i++) {

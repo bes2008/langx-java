@@ -72,6 +72,9 @@ public abstract class AbstractListDecorator<E> extends AbstractCollectionDecorat
 
     @Override
     public boolean equals(final Object object) {
+        if (!(object instanceof AbstractListDecorator)){
+            return false;
+        }
         return object == this || Objs.equals(decorated(), object);
     }
 

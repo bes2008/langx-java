@@ -201,6 +201,9 @@ public class LinkedCaseInsensitiveMap<V> implements Map<String, V>, Serializable
 
     @Override
     public boolean equals(Object obj) {
+        if(!(obj instanceof LinkedCaseInsensitiveMap)){
+            return false;
+        }
         return Objs.equals(this.targetMap,obj);
     }
 

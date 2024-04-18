@@ -123,6 +123,9 @@ public class LinkedMultiValueMap<K, V> extends CommonMultiValueMap<K, V> impleme
 
     @Override
     public boolean equals(@Nullable Object obj) {
+        if(!(obj instanceof LinkedMultiValueMap)){
+            return false;
+        }
         return Objs.equals(this.targetMap,obj);
     }
 

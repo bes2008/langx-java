@@ -108,6 +108,9 @@ public class IterableSequence<E> implements Sequence<E> {
 
     @Override
     public boolean equals(Object o) {
+        if(!(o instanceof IterableSequence)){
+            return false;
+        }
         return Objs.equals(delegate,o);
     }
 
