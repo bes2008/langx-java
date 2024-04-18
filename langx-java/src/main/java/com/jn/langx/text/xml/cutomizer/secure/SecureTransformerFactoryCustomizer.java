@@ -9,7 +9,7 @@ import javax.xml.transform.TransformerFactory;
  * @since 5.2.9
  */
 public class SecureTransformerFactoryCustomizer implements TransformerFactoryCustomizer {
-    public static SecureTransformerFactoryCustomizer DEFAULT = new SecureTransformerFactoryCustomizer();
+    public static final SecureTransformerFactoryCustomizer DEFAULT = new SecureTransformerFactoryCustomizer();
 
     @Override
     public void customize(TransformerFactory factory) {
