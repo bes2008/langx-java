@@ -120,9 +120,12 @@ public class DirectoryBasedFileConfigurationWriter<T extends Configuration> impl
     @Override
     public void remove(String id) {
         String filePath = getConfigurationFilePath(id);
-        File file= new File(filePath);
+        File file = new File(filePath);
         if(file.exists()){
-            file.delete();
+            boolean deleted = file.delete();
+            if(!deleted){
+                Loggers.getLogger(this.getClass()).error("delete file failed: {}", filePath);
+            }
         }
     }
 

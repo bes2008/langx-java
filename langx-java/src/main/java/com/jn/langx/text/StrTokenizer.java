@@ -85,6 +85,7 @@ public class StrTokenizer extends CommonTokenizer<String> {
             if (delimiter != null) {
                 if (lastDelimiterStartPosition == position) {
                     // 本次为 获取 delimiter
+                    // ignore it
                 } else {
                     // foundDelimiterCount++;
                     lastDelimiterStartPosition = position;

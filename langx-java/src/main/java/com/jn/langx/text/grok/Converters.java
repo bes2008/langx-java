@@ -124,7 +124,7 @@ public class Converters {
                         Converter converter = getType(list[1]).converter;
                         if (list.length == 3) {
                             // 先不支持
-                            //    converter = converter.newConverter(list[2], params);
+                            // ignore it
                         }
                         return converter;
                     }
