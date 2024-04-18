@@ -108,7 +108,7 @@ public class _SHA224Digest extends GeneralDigest {
         }
 
         X[14] = (int) (bitLength >>> 32);
-        X[15] = (int) (bitLength & 0xffffffff);
+        X[15] = (int) (bitLength & 0xffffffffL);
     }
 
     public int doFinal(

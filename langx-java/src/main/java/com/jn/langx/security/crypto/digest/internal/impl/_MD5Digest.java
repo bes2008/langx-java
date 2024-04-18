@@ -84,7 +84,7 @@ public class _MD5Digest extends GeneralDigest {
             processBlock();
         }
 
-        X[14] = (int) (bitLength & 0xffffffff);
+        X[14] = (int) (bitLength & 0xffffffffL);
         X[15] = (int) (bitLength >>> 32);
     }
 

@@ -109,7 +109,7 @@ public class _SHA256Digest extends GeneralDigest {
         }
 
         X[14] = (int) (bitLength >>> 32);
-        X[15] = (int) (bitLength & 0xffffffff);
+        X[15] = (int) (bitLength & 0xffffffffL);
     }
 
     public int doFinal(byte[] out, int outOff) {

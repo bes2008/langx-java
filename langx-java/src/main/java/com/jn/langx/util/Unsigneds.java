@@ -62,7 +62,7 @@ public class Unsigneds {
     public static int toSignedInt(long b) {
         Preconditions.checkTrue(b >= 0, "not a signed int: {}", b);
         long r = b;
-        if (b >= 0x80000000) {
+        if (b >= 0x80000000L) {
             r = b - 1 - 0xFFFFFFFFL;
 
         }

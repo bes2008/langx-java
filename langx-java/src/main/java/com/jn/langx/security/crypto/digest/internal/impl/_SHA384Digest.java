@@ -62,14 +62,14 @@ public class _SHA384Digest extends _AbstractLongDigest {
          * The first 64 bits of the fractional parts of the square roots
          * of the 9th through 16th prime numbers
          */
-        H1 = 0xcbbb9d5dc1059ed8l;
-        H2 = 0x629a292a367cd507l;
-        H3 = 0x9159015a3070dd17l;
-        H4 = 0x152fecd8f70e5939l;
-        H5 = 0x67332667ffc00b31l;
-        H6 = 0x8eb44a8768581511l;
-        H7 = 0xdb0c2e0d64f98fa7l;
-        H8 = 0x47b5481dbefa4fa4l;
+        H1 = 0xcbbb9d5dc1059ed8L;
+        H2 = 0x629a292a367cd507L;
+        H3 = 0x9159015a3070dd17L;
+        H4 = 0x152fecd8f70e5939L;
+        H5 = 0x67332667ffc00b31L;
+        H6 = 0x8eb44a8768581511L;
+        H7 = 0xdb0c2e0d64f98fa7L;
+        H8 = 0x47b5481dbefa4fa4L;
     }
 
     public Memoable copy() {
