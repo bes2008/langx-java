@@ -256,12 +256,12 @@ public class CalendaristConstants {
     /**
      * 生肖
      */
-    protected static final String[] ZODIAC_INFO = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
+    static final String[] ZODIAC_INFO = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
 
     /**
      * 24节气
      */
-    protected static final long[] SOLAR_TERM_INFO = new long[]{
+    static final long[] SOLAR_TERM_INFO = new long[]{
             0, 21208, 42467, 63836, 85337, 107014, 128867, 150921,
             173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033,
             353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758

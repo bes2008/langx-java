@@ -2275,7 +2275,7 @@ public class Strings {
         }
 
         if (Reflects.isSubClassOrEquals(Character.class, targetClass)) {
-            return (T) new Character(Preconditions.checkNotEmpty(str).charAt(0));
+            return (T) Character.valueOf(Preconditions.checkNotEmpty(str).charAt(0));
         }
         return null;
     }

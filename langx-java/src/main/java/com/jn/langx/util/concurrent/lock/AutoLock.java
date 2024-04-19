@@ -74,6 +74,8 @@ public class AutoLock implements Closeable, Serializable {
      * }
      * </pre>
      */
+
+    /*
     public static class WithCondition extends AutoLock {
         private final transient Condition _condition = newCondition();
 
@@ -82,37 +84,22 @@ public class AutoLock implements Closeable, Serializable {
             return (WithCondition) super.lock();
         }
 
-        /**
-         * @see Condition#signal()
-         */
         public void signal() {
             _condition.signal();
         }
 
-        /**
-         * @see Condition#signalAll()
-         */
         public void signalAll() {
             _condition.signalAll();
         }
 
-        /**
-         * @throws InterruptedException if the current thread is interrupted
-         * @see Condition#await()
-         */
         public void await() throws InterruptedException {
             _condition.await();
         }
 
-        /**
-         * @param time the time to wait
-         * @param unit the time unit
-         * @return false if the waiting time elapsed
-         * @throws InterruptedException if the current thread is interrupted
-         * @see Condition#await(long, TimeUnit)
-         */
         public boolean await(long time, TimeUnit unit) throws InterruptedException {
             return _condition.await(time, unit);
         }
     }
+
+     */
 }
