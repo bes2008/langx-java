@@ -55,7 +55,7 @@ public class CryptoJS {
 
     public static class AESConfig extends SymmetricConfig{
         public AESConfig(){
-            this(64, 256, 128, JCAEStandardName.SHA_256.getName(), 1, EvpKDF.class, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding);
+            this(64, 256, 128, JCAEStandardName.MD5.getName(), 1, EvpKDF.class, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding);
         }
         public AESConfig(int saltBitSize,
                          int keyBitSize,

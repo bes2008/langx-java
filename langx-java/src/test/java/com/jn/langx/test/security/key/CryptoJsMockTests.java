@@ -13,7 +13,12 @@ public class CryptoJsMockTests {
         System.out.println(encryptedText);
 
 
-        String decryptedText= CryptoJS.AES.decrypt(encryptedText, passphrase,null);
+        String decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,null);
+        System.out.println(decryptedText);
+        System.out.println(Objs.equals(message,decryptedText));
+
+        encryptedText="U2FsdGVkX18vE/xKFEjExOkwa5LGi23wj5ZXXR5zNJs=";
+        decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,null);
         System.out.println(decryptedText);
         System.out.println(Objs.equals(message,decryptedText));
     }
