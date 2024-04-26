@@ -30,5 +30,19 @@ public class CryptoJsMockTests {
             System.out.println(decryptedText);
             System.out.println(Objs.equals(message,decryptedText));
         }
+
+        System.out.println("==========接下来的测试是用 linux openssl 生成的加密数据 ==========");
+        encryptedTexts= Lists.newArrayList(
+                "U2FsdGVkX19aeyNUsfL0+mpdW0cdWrU/lOwZa2jOf60=",
+                "U2FsdGVkX1/F8ZZaOsRHo9buLUkyHrHxI5MrjaPB9X4="
+
+        );
+        for (String cipherText: encryptedTexts ){
+            decryptedText = CryptoJS.AES.decrypt(encryptedText, passphrase,null);
+            System.out.println(decryptedText);
+            System.out.println(Objs.equals(message,decryptedText));
+        }
+
+
     }
 }
