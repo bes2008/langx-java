@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.key.kdf;
+package com.jn.langx.security.crypto.key.pb;
 
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.io.Charsets;

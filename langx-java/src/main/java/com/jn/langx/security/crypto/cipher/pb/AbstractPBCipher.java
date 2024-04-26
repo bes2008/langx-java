@@ -2,8 +2,8 @@ package com.jn.langx.security.crypto.cipher.pb;
 
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
-import com.jn.langx.security.crypto.key.kdf.DerivedKey;
-import com.jn.langx.security.crypto.key.kdf.KDF;
+import com.jn.langx.security.crypto.key.pb.DerivedKey;
+import com.jn.langx.security.crypto.key.pb.KDF;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
