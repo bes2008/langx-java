@@ -158,6 +158,10 @@ public class Maps {
         return Collects.newHashMap();
     }
 
+    public static <K,V> Map<K,V> newImmutableMap(){
+        return Collects.immutableMap();
+    }
+
     public static <K, V> HashMap<K, V> newHashMap(Map<K, V> map) {
         return Collects.newHashMap(map);
     }

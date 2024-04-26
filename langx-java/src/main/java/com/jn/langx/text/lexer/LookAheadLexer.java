@@ -12,14 +12,14 @@ public abstract class LookAheadLexer extends AbstractLexer {
 
     private final AbstractLexer delegate;
 
-    private final MutableRandomAccessQueue<TokenType> myTypeCache;
+    private final MutableRandomAccessQueue<Integer> myTypeCache;
 
     private final MutableRandomAccessQueue<Integer> myEndOffsetCache;
 
     public LookAheadLexer(@NonNull AbstractLexer delegate, int capacity) {
         Preconditions.checkNotNullArgument(delegate, "delegate");
         this.delegate = delegate;
-        this.myTypeCache = new MutableRandomAccessQueue<TokenType>(capacity);
+        this.myTypeCache = new MutableRandomAccessQueue<Integer>(capacity);
         this.myEndOffsetCache = new MutableRandomAccessQueue<Integer>(capacity);
     }
 
@@ -45,11 +45,11 @@ public abstract class LookAheadLexer extends AbstractLexer {
         assert !this.myTypeCache.isEmpty();
     }
 
-    protected void addToken(TokenType type) {
+    protected void addToken(int type) {
         addToken(this.delegate.getTokenEnd(), type);
     }
 
-    protected void addToken(int endOffset, TokenType type) {
+    protected void addToken(int endOffset, int type) {
         this.myTypeCache.addLast(type);
         this.myEndOffsetCache.addLast(endOffset);
     }
@@ -77,11 +77,11 @@ public abstract class LookAheadLexer extends AbstractLexer {
         }
     }
 
-    public TokenType replaceCachedType(int index, TokenType token) {
-        return this.myTypeCache.set(index, token);
+    public int replaceCachedType(int index, int type) {
+        return this.myTypeCache.set(index, type);
     }
 
-    protected final TokenType getCachedType(int index) {
+    protected final int getCachedType(int index) {
         return this.myTypeCache.get(index);
     }
 
@@ -122,7 +122,7 @@ public abstract class LookAheadLexer extends AbstractLexer {
         }
     }
 
-    public TokenType getTokenType() {
+    public int getTokenType() {
         return this.myTypeCache.peekFirst();
     }
 
@@ -171,4 +171,8 @@ public abstract class LookAheadLexer extends AbstractLexer {
     }
 
 
+    @Override
+    public Token getToken() {
+        return delegate.getToken();
+    }
 }

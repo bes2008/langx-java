@@ -19,6 +19,10 @@ public abstract class AbstractLexer implements Lexer {
         startInternal(buf, 0, buf.length(), 0);
     }
 
+    public Token getToken(){
+        return new BaseToken(getTokenType(), getTokenStart(), getTokenEnd(), getTokenText());
+    }
+
     @NonNull
     public String getTokenText() {
         return getBufferSequence().subSequence(getTokenStart(), getTokenEnd()).toString();

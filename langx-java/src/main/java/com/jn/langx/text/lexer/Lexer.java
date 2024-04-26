@@ -24,7 +24,7 @@ interface Lexer {
     int getState();
 
     @Nullable
-    TokenType getTokenType();
+    int getTokenType();
 
     /**
      * @return 获取当前token的开始 offset,包含

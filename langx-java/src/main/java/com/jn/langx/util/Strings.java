@@ -95,6 +95,17 @@ public class Strings {
     );
 
     public static final String WHITESPACE = join("", WHITESPACE_CHAR);
+
+    public static final boolean isWhitespace(String str){
+        for (int i =0; i< str.length(); i++){
+            char c = str.charAt(i);
+            if(!WHITESPACE.contains(""+c)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * judge a string is null or ""
      *

@@ -15,7 +15,7 @@ final class Token {
      */
     private static final int INITIAL_TOKEN_LENGTH = 50;
 
-    enum CsvTokenType implements TokenType {
+    enum CsvTokenType {
         /**
          * Token has no valid content, i.e. is in its initialized state.
          */

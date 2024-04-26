@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.cipher;
+package com.jn.langx.security.crypto.key.kdf;
 
 
 import java.io.UnsupportedEncodingException;

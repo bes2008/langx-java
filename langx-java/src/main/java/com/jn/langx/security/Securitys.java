@@ -1,8 +1,12 @@
 package com.jn.langx.security;
 
+import com.jn.langx.security.crypto.JCAEStandardName;
+import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.provider.LangxSecurityProvider;
 import com.jn.langx.security.gm.GmInitializer;
+import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
+import com.jn.langx.util.Throwables;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.function.Predicate;
 import com.jn.langx.util.struct.Holder;
@@ -122,5 +126,39 @@ public class Securitys {
 
     public static SecureRandom getSecureRandom() {
         return SECURE_RANDOM;
+    }
+
+
+    public static int getBytesLength(int bitLength){
+        if(bitLength<0){
+            return -1;
+        }
+        return (bitLength + 7) / 8;
+    }
+
+
+    public static byte[] randomBytes(int bitLength){
+        return randomBytes(null,bitLength);
+    }
+    public static byte[] randomBytes(SecureRandom secureRandom, int bitLength){
+        return randomBytes(secureRandom,null, bitLength);
+    }
+
+    public static byte[] randomBytes(SecureRandom secureRandom, byte[] seed,int bitLength){
+        if (secureRandom == null) {
+            try {
+                secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
+            } catch (Throwable ex) {
+                throw Throwables.wrapAsRuntimeException(ex);
+            }
+        }
+        if (Objs.isNotEmpty(seed)) {
+            secureRandom.setSeed(seed);
+        }
+
+        int byteLength = PKIs.getBytesLength(bitLength);
+        byte[] bytes = new byte[byteLength];
+        secureRandom.nextBytes(bytes);
+        return bytes;
     }
 }
