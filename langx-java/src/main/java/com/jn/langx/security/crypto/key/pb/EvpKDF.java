@@ -47,11 +47,6 @@ public class EvpKDF implements KDF{
         System.arraycopy(derivedBytes, 0, key, 0, keySizeInWord * 4);
         System.arraycopy(derivedBytes, keySizeInWord * 4, iv, 0, ivSizeInWord * 4);
 
-        DerivedKey result= new DerivedKey();
-        result.setSalt(saltBytes);
-        result.setSecretKey(key);
-        result.setIv(iv);
-        result.setDerivedBytes(derivedBytes);
-        return result;
+        return new DerivedKey(saltBytes, key, iv, derivedBytes);
     }
 }

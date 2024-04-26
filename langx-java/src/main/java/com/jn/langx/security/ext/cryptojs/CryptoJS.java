@@ -5,7 +5,7 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
-import com.jn.langx.security.crypto.cipher.pb.SymmetricPBCipher;
+import com.jn.langx.security.crypto.cipher.pb.SymmetricPBKDFCipher;
 import com.jn.langx.security.crypto.key.pb.EvpKDF;
 import com.jn.langx.security.crypto.key.pb.KDF;
 import com.jn.langx.util.Emptys;
@@ -75,7 +75,7 @@ public class CryptoJS {
             if (cfg==null){
                 cfg= new CryptoJS.AESConfig();
             }
-            SymmetricPBCipher cipher = new SymmetricPBCipher(
+            SymmetricPBKDFCipher cipher = new SymmetricPBKDFCipher(
                     passphrase,
                     cfg.saltBitSize,
                     cfg.keyBitSize,
@@ -133,7 +133,7 @@ public class CryptoJS {
                 System.arraycopy(saltAndEncryptedBytes, startOffsetOfEncryptedBytes, encryptedBytes, 0, encryptedBytesLength);
             }
 
-            SymmetricPBCipher cipher = new SymmetricPBCipher(
+            SymmetricPBKDFCipher cipher = new SymmetricPBKDFCipher(
                     passphrase,
                     cfg.saltBitSize,
                     cfg.keyBitSize,

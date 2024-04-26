@@ -18,7 +18,7 @@ public class DerivedKey {
      * 生成的指定长度的key，这个代表了实际的key
      */
     @NonNull
-    private byte[] secretKey;
+    private byte[] key;
     /**
      * 生成的指定长度在 IV
      */
@@ -30,6 +30,22 @@ public class DerivedKey {
      */
     private byte[] derivedBytes;
 
+    public DerivedKey(){}
+
+    public DerivedKey(byte[] salt, byte[] key){
+        this(salt,key,null,null);
+    }
+
+    public DerivedKey(byte[] salt, byte[] key,  byte[] derivedBytes){
+        this(salt,key,null,derivedBytes);
+    }
+    public DerivedKey(byte[] salt, byte[] key, byte[] iv, byte[] derivedBytes){
+        this.salt=salt;
+        this.key=key;
+        this.iv=iv;
+        this.derivedBytes=derivedBytes;
+    }
+
     public byte[] getSalt() {
         return salt;
     }
@@ -38,12 +54,12 @@ public class DerivedKey {
         this.salt = salt;
     }
 
-    public byte[] getSecretKey() {
-        return secretKey;
+    public byte[] getKey() {
+        return key;
     }
 
-    public void setSecretKey(byte[] secretKey) {
-        this.secretKey = secretKey;
+    public void setKey(byte[] key) {
+        this.key = key;
     }
 
     public byte[] getIv() {
@@ -64,6 +80,6 @@ public class DerivedKey {
 
     @Override
     public String toString() {
-        return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(salt), Hex.encodeHexString(secretKey), iv==null?"":Hex.encodeHexString(iv));
+        return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(salt), Hex.encodeHexString(key), iv==null?"":Hex.encodeHexString(iv));
     }
 }

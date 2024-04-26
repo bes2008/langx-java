@@ -7,7 +7,7 @@ import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeyS
 
 import javax.crypto.spec.IvParameterSpec;
 
-public class SymmetricPBCipher extends AbstractPBCipher {
+public class SymmetricPBKDFCipher extends AbstractPBDKFCipher {
     @NonNull
     private String cryptoAlgorithm;
     @NonNull
@@ -15,7 +15,7 @@ public class SymmetricPBCipher extends AbstractPBCipher {
     @NonNull
     private CipherAlgorithmPadding padding;
 
-    public SymmetricPBCipher(
+    public SymmetricPBKDFCipher(
             String password,
             int saltBitLength,
             int keyBitSize,
@@ -36,7 +36,7 @@ public class SymmetricPBCipher extends AbstractPBCipher {
     protected byte[] enc(byte[] message, DerivedKey derivedKey) {
         byte[] encryptedBytes = Symmetrics.encrypt(
                 message,
-                derivedKey.getSecretKey(),
+                derivedKey.getKey(),
                 this.cryptoAlgorithm,
                 Ciphers.createAlgorithmTransformation(this.cryptoAlgorithm, mode.name(), padding),
                 null,
@@ -51,7 +51,7 @@ public class SymmetricPBCipher extends AbstractPBCipher {
     protected byte[] dec(byte[] message, DerivedKey derivedKey) {
         byte[] decryptedBytes = Symmetrics.decrypt(
                 message,
-                derivedKey.getSecretKey(),
+                derivedKey.getKey(),
                 this.cryptoAlgorithm,
                 Ciphers.createAlgorithmTransformation(this.cryptoAlgorithm, mode.name(), padding),
                 null,

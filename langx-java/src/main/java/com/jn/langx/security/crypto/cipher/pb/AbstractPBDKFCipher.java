@@ -11,7 +11,7 @@ import com.jn.langx.util.Preconditions;
 /**
  * Password Based Cipher
  */
-public abstract class AbstractPBCipher implements PBCipher {
+public abstract class AbstractPBDKFCipher implements PBKDFCipher {
     /*******************************************************
      * KDF 相关属性算法、属性
      *******************************************************/
@@ -34,7 +34,7 @@ public abstract class AbstractPBCipher implements PBCipher {
      * @param hashAlgorithm
      * @param iterations
      */
-    public AbstractPBCipher(String password, int saltBitLength, int keyBitSize, int ivBitSize, String hashAlgorithm, int iterations){
+    public AbstractPBDKFCipher(String password, int saltBitLength, int keyBitSize, int ivBitSize, String hashAlgorithm, int iterations){
 
         this.password = password;
         this.saltBitLength = saltBitLength;
