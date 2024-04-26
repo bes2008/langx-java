@@ -1,7 +1,6 @@
 package com.jn.langx.security.crypto.cipher.pb;
 
 import com.jn.langx.security.SecurityException;
-import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.pb.DerivedKey;
 import com.jn.langx.security.crypto.key.pb.KDF;
 import com.jn.langx.util.Emptys;
@@ -60,7 +59,7 @@ public abstract class AbstractPBDKFCipher implements PBKDFCipher {
     @Override
     public byte[] encrypt(byte[] message) {
         if( Objs.isEmpty(this.saltBytes)){
-            this.saltBytes = Securitys.randomBytes(this.saltBitLength);
+            this.saltBytes = kdf.genSalt(this.saltBitLength, this.iterations);
         }
         try {
             DerivedKey derivedKey = kdf.generate(password, this.saltBytes, this.keyBitSize, this.ivBitSize, this.iterations, this.hashAlgorithm);

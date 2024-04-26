@@ -1,5 +1,6 @@
 package com.jn.langx.security.crypto.key.pb;
 
+import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.io.Charsets;
 
@@ -7,6 +8,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class EvpKDF implements KDF{
+    @Override
+    public byte[] genSalt(int saltBitSize, int round) {
+        return Securitys.randomBytes(saltBitSize);
+    }
+
     @Override
     public DerivedKey generate(String passphrase, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String messageDigestAlgorithm) throws NoSuchAlgorithmException {
         int keyBytesLength= PKIs.getBytesLength(keyBitSize);
