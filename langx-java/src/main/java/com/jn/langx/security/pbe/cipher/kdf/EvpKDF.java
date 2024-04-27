@@ -8,14 +8,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class EvpKDF implements PBKDF {
+class EvpKDF implements PBKDF {
     @Override
     public byte[] genSalt(SecureRandom secureRandom, int saltBitSize, int round) {
         return Securitys.randomBytes(secureRandom, saltBitSize);
     }
 
     @Override
-    public DerivedKey generate(String passphrase, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String messageDigestAlgorithm) throws NoSuchAlgorithmException {
+    public DerivedKey transform(String passphrase, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String messageDigestAlgorithm) throws NoSuchAlgorithmException {
         int keyBytesLength= PKIs.getBytesLength(keyBitSize);
         int ivBytesLength=PKIs.getBytesLength(ivBitSize);
         byte[] key=new byte[keyBytesLength];
@@ -54,6 +54,8 @@ public class EvpKDF implements PBKDF {
         System.arraycopy(derivedBytes, 0, key, 0, keySizeInWord * 4);
         System.arraycopy(derivedBytes, keySizeInWord * 4, iv, 0, ivSizeInWord * 4);
 
-        return new DerivedKey(saltBytes, key, iv, derivedBytes);
+        DerivedKey derivedKey = new DerivedKey(saltBytes, key, iv, derivedBytes);
+        derivedKey.setHashAlgorithm(messageDigestAlgorithm);
+        return derivedKey;
     }
 }

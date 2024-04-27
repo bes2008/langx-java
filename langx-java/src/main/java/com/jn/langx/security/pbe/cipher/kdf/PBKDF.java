@@ -8,5 +8,5 @@ import java.security.SecureRandom;
  */
 public interface PBKDF {
     byte[] genSalt(SecureRandom secureRandom, int saltBitSize, int round);
-    DerivedKey generate(String password, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String hashAlgorithm) throws NoSuchAlgorithmException;
+    DerivedKey transform(String password, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String hashAlgorithm) throws NoSuchAlgorithmException;
 }

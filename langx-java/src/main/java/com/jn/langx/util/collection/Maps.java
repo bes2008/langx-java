@@ -190,6 +190,11 @@ public class Maps {
         return Collects.newConcurrentMap();
     }
 
+    public static <K, V> ConcurrentMap<K, V> newConcurrentMap(Map<K,V> map) {
+        return Collects.newConcurrentMap(map);
+    }
+
+
     public static <K, V> TreeMap<K, V> newTreeMap() {
         return Collects.newTreeMap();
     }

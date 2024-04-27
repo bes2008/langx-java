@@ -4,15 +4,14 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
+import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
-import com.jn.langx.security.pbe.cipher.SymmetricPBKDFCipher;
-import com.jn.langx.security.pbe.cipher.kdf.EvpKDF;
-import com.jn.langx.security.pbe.cipher.kdf.PBKDF;
+import com.jn.langx.security.pbe.PBEs;
+import com.jn.langx.security.pbe.cipher.kdf.PBKDFKeySpec;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.io.Charsets;
-import com.jn.langx.util.reflect.Reflects;
 
 public class CryptoJS {
 
@@ -21,51 +20,64 @@ public class CryptoJS {
         public int keyBitSize;
         public int ivBitSize;
         public int saltBitSize;
-        public String hashAlgorithm;
         public int iterations;
-        public Class kdfClass;
 
-
-        public String cryptAlgorithm;
+        public String cipherAlgorithm;
         public Symmetrics.MODE mode;
         public CipherAlgorithmPadding padding;
 
         public SymmetricConfig(int saltBitSize,
                                int keyBitSize,
                                int ivBitSize,
-                               String hashAlgorithm,
                                int iterations,
-                               Class<? extends PBKDF> kdfClass,
-                               String cryptoAlgorithm,
+                               String cipherAlgorithm,
                                Symmetrics.MODE mode,
                                CipherAlgorithmPadding padding){
             this.saltBitSize= saltBitSize;
             this.keyBitSize=keyBitSize;
             this.ivBitSize=ivBitSize;
-            this.hashAlgorithm=hashAlgorithm;
             this.iterations=iterations;
-            this.kdfClass=kdfClass;
 
-            this.cryptAlgorithm= cryptoAlgorithm;
+            this.cipherAlgorithm= cipherAlgorithm;
             this.mode=mode;
             this.padding=padding;
 
         }
     }
+    public static class PBEConfig extends SymmetricConfig{
+        public String hashAlgorithm;
+        public String pbeAlgorithm;
 
-    public static class AESConfig extends SymmetricConfig{
-        public AESConfig(){
-            this(64, 256, 128, JCAEStandardName.MD5.getName(), 1, EvpKDF.class, Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding);
+        public PBEConfig(
+                int saltBitSize,
+                int keyBitSize,
+                int ivBitSize,
+                int iterations,
+                String cipherAlgorithm,
+                Symmetrics.MODE mode,
+                CipherAlgorithmPadding padding,
+                String hashAlgorithm,
+                String pbeAlgorithm){
+            super(saltBitSize,keyBitSize,ivBitSize,iterations, cipherAlgorithm, mode, padding);
+            this.hashAlgorithm=hashAlgorithm;
+            this.pbeAlgorithm=pbeAlgorithm;
         }
-        public AESConfig(int saltBitSize,
-                         int keyBitSize,
-                         int ivBitSize,
-                         String hashAlgorithm,
-                         int iterations,
-                         Class<? extends PBKDF> kdfClass,
-                         Symmetrics.MODE mode,
-                         CipherAlgorithmPadding padding){
-            super(saltBitSize,keyBitSize,ivBitSize,hashAlgorithm,iterations,kdfClass, JCAEStandardName.AES.getName(), mode, padding);
+    }
+    public static class AESConfig extends PBEConfig{
+        public AESConfig(){
+            this(64, 256, 128, 1,  JCAEStandardName.AES.getName(),  Symmetrics.MODE.CBC, CipherAlgorithmPadding.PKCS5Padding,  JCAEStandardName.MD5.getName(),"PBEWithMD5AndAES-OPENSSL_EVP");
+        }
+        public AESConfig(
+                int saltBitSize,
+                int keyBitSize,
+                int ivBitSize,
+                int iterations,
+                String cipherAlgorithm,
+                Symmetrics.MODE mode,
+                CipherAlgorithmPadding padding,
+                String hashAlgorithm,
+                String pbeAlgorithm){
+            super(saltBitSize, keyBitSize, ivBitSize, iterations, cipherAlgorithm, mode, padding, hashAlgorithm, pbeAlgorithm);
         }
     }
 
@@ -75,20 +87,19 @@ public class CryptoJS {
             if (cfg==null){
                 cfg= new CryptoJS.AESConfig();
             }
-            SymmetricPBKDFCipher cipher = new SymmetricPBKDFCipher(
-                    passphrase,
-                    cfg.saltBitSize,
-                    cfg.keyBitSize,
-                    cfg.ivBitSize,
-                    cfg.hashAlgorithm,
-                    cfg.iterations,
-                    cfg.cryptAlgorithm,
-                    cfg.mode,
-                    cfg.padding);
-            PBKDF kdf = Reflects.<PBKDF>newInstance(cfg.kdfClass);
-            cipher.setKdf(kdf);
-            byte[] encryptedBytes= cipher.encrypt(Strings.getBytesUtf8(message));
-            byte[] salt = cipher.getSalt();
+
+            byte[] salt =  Securitys.randomBytes(cfg.saltBitSize);
+            PBKDFKeySpec pbeKeySpec = new PBKDFKeySpec(passphrase.toCharArray(), salt, cfg.keyBitSize,cfg.ivBitSize, cfg.iterations,cfg.hashAlgorithm );
+            String transformation= Ciphers.createAlgorithmTransformation(cfg.cipherAlgorithm, cfg.mode.name(),cfg.padding);
+
+            byte[] encryptedBytes= PBEs.encrypt(
+                        Strings.getBytesUtf8(message),
+                        cfg.pbeAlgorithm,
+                        pbeKeySpec,
+                        transformation,
+                        null,null
+                    );
+
 
             byte[] resultBytes;
             if(Objs.isNull(salt)){
@@ -133,6 +144,7 @@ public class CryptoJS {
                 System.arraycopy(saltAndEncryptedBytes, startOffsetOfEncryptedBytes, encryptedBytes, 0, encryptedBytesLength);
             }
 
+            /*
             SymmetricPBKDFCipher cipher = new SymmetricPBKDFCipher(
                     passphrase,
                     cfg.saltBitSize,
@@ -147,7 +159,19 @@ public class CryptoJS {
             cipher.setKdf(kdf);
             cipher.setSalt(salt);
 
-            String result = new String(cipher.decrypt(encryptedBytes), Charsets.UTF_8) ;
+             */
+            PBKDFKeySpec pbeKeySpec = new PBKDFKeySpec(passphrase.toCharArray(), salt, cfg.keyBitSize,cfg.ivBitSize, cfg.iterations,cfg.hashAlgorithm );
+            String transformation= Ciphers.createAlgorithmTransformation(cfg.cipherAlgorithm, cfg.mode.name(),cfg.padding);
+
+            byte[] rawBytes = PBEs.decrypt(
+                    encryptedBytes,
+                    cfg.pbeAlgorithm,
+                    pbeKeySpec,
+                    transformation,
+                    null,null
+            );
+
+            String result = new String(rawBytes, Charsets.UTF_8) ;
             return result;
         }
 

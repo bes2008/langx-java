@@ -2,7 +2,9 @@ package com.jn.langx.security.pbe.cipher.kdf;
 
 import com.jn.langx.security.crypto.JCAEStandardName;
 
-public class PBKDFAlgorithmParameterSpec {
+import java.security.spec.AlgorithmParameterSpec;
+
+public class PBKDFAlgorithmParameterSpec implements AlgorithmParameterSpec {
     private String pswd;
     private byte[] salt;
 

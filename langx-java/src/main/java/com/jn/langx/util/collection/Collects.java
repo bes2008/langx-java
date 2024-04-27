@@ -666,6 +666,13 @@ public class Collects {
         return new ConcurrentHashMap<K, V>();
     }
 
+    public static <K, V> ConcurrentMap<K, V> newConcurrentMap(Map<K,V> map) {
+        if(map==null){
+            return newConcurrentMap();
+        }
+        return new ConcurrentHashMap<K, V>(map);
+    }
+
     public static <K, V> TreeMap<K, V> newTreeMap() {
         return Collects.emptyTreeMap();
     }

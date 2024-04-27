@@ -6,14 +6,30 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.text.StringTemplates;
 
-import javax.crypto.SecretKey;
+import javax.crypto.interfaces.PBEKey;
+import javax.crypto.spec.IvParameterSpec;
 
 /**
- * 代表派生出来的key 封装
+ * 代表派生出来的key
+ *
+ *
+ * 例子：
+ * pbeAlgorithm：PBEWithMD5AndAES
+ * cipherAlgorithm: AES
+ * hashAlgorithm: MD5
  */
-public class DerivedKey implements SecretKey {
+public class DerivedKey extends IvParameterSpec implements PBEKey, Cloneable {
     @Nullable
-    private String algorithm;
+    private String pbeAlgorithm;
+
+    private String cipherAlgorithm;
+
+    private String hashAlgorithm;
+
+    private char[] password;
+
+    private int iterationCount;
+
 
     /**
      * 生成的 salt
@@ -25,18 +41,11 @@ public class DerivedKey implements SecretKey {
      */
     @NonNull
     private byte[] key;
-    /**
-     * 生成的指定长度在 IV
-     */
-    @Nullable
-    private byte[] iv;
 
     /**
      * 生成过程中产生的一个临时key
      */
     private byte[] derivedBytes;
-
-    public DerivedKey(){}
 
     public DerivedKey(byte[] salt, byte[] key){
         this(salt,key,null,null);
@@ -46,9 +55,9 @@ public class DerivedKey implements SecretKey {
         this(salt,key,null,derivedBytes);
     }
     public DerivedKey(byte[] salt, byte[] key, byte[] iv, byte[] derivedBytes){
+        super(iv);
         this.salt=salt;
         this.key=key;
-        this.iv=iv;
         this.derivedBytes=derivedBytes;
     }
 
@@ -68,14 +77,6 @@ public class DerivedKey implements SecretKey {
         this.key = key;
     }
 
-    public byte[] getIv() {
-        return iv;
-    }
-
-    public void setIv(byte[] iv) {
-        this.iv = iv;
-    }
-
     public byte[] getDerivedBytes() {
         return derivedBytes;
     }
@@ -86,7 +87,7 @@ public class DerivedKey implements SecretKey {
 
     @Override
     public String toString() {
-        return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(salt), Hex.encodeHexString(key), iv==null?"":Hex.encodeHexString(iv));
+        return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(salt), Hex.encodeHexString(key), getIV()==null?"":Hex.encodeHexString(getIV()));
     }
 
     @Override
@@ -99,8 +100,51 @@ public class DerivedKey implements SecretKey {
         return Base64.encodeBase64String(this.key);
     }
 
+    public void setAlgorithm(String algorithm) {
+        this.pbeAlgorithm = algorithm;
+    }
+
+    public String getHashAlgorithm() {
+        return hashAlgorithm;
+    }
+
+    public void setHashAlgorithm(String hashAlgorithm) {
+        this.hashAlgorithm = hashAlgorithm;
+    }
+
     @Override
     public String getAlgorithm() {
-        return this.algorithm;
+        return this.pbeAlgorithm;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public char[] getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public int getIterationCount() {
+        return this.iterationCount;
+    }
+
+    public void setPassword(char[] password) {
+        this.password = password;
+    }
+
+    public String getCipherAlgorithm() {
+        return cipherAlgorithm;
+    }
+
+    public void setCipherAlgorithm(String cipherAlgorithm) {
+        this.cipherAlgorithm = cipherAlgorithm;
+    }
+
+    public void setIterationCount(int iterationCount) {
+        this.iterationCount = iterationCount;
     }
 }

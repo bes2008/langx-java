@@ -1,4 +1,4 @@
-package com.jn.langx.test.security.key;
+package com.jn.langx.test.security.pbe;
 
 import com.jn.langx.security.ext.cryptojs.CryptoJS;
 import com.jn.langx.util.Objs;

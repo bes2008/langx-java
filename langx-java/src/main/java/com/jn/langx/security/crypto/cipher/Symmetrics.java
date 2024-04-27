@@ -2,6 +2,8 @@ package com.jn.langx.security.crypto.cipher;
 
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
 
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import java.security.Provider;
 import java.security.SecureRandom;
 
