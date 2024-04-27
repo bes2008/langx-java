@@ -5,9 +5,9 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
 import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
-import com.jn.langx.security.crypto.cipher.pb.SymmetricPBKDFCipher;
-import com.jn.langx.security.crypto.key.pb.EvpKDF;
-import com.jn.langx.security.crypto.key.pb.KDF;
+import com.jn.langx.security.pbe.cipher.SymmetricPBKDFCipher;
+import com.jn.langx.security.pbe.cipher.kdf.EvpKDF;
+import com.jn.langx.security.pbe.cipher.kdf.PBKDF;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
@@ -35,7 +35,7 @@ public class CryptoJS {
                                int ivBitSize,
                                String hashAlgorithm,
                                int iterations,
-                               Class<? extends KDF> kdfClass,
+                               Class<? extends PBKDF> kdfClass,
                                String cryptoAlgorithm,
                                Symmetrics.MODE mode,
                                CipherAlgorithmPadding padding){
@@ -62,7 +62,7 @@ public class CryptoJS {
                          int ivBitSize,
                          String hashAlgorithm,
                          int iterations,
-                         Class<? extends KDF> kdfClass,
+                         Class<? extends PBKDF> kdfClass,
                          Symmetrics.MODE mode,
                          CipherAlgorithmPadding padding){
             super(saltBitSize,keyBitSize,ivBitSize,hashAlgorithm,iterations,kdfClass, JCAEStandardName.AES.getName(), mode, padding);
@@ -85,7 +85,7 @@ public class CryptoJS {
                     cfg.cryptAlgorithm,
                     cfg.mode,
                     cfg.padding);
-            KDF kdf = Reflects.<KDF>newInstance(cfg.kdfClass);
+            PBKDF kdf = Reflects.<PBKDF>newInstance(cfg.kdfClass);
             cipher.setKdf(kdf);
             byte[] encryptedBytes= cipher.encrypt(Strings.getBytesUtf8(message));
             byte[] salt = cipher.getSalt();
@@ -143,7 +143,7 @@ public class CryptoJS {
                     cfg.cryptAlgorithm,
                     cfg.mode,
                     cfg.padding);
-            KDF kdf = Reflects.<KDF>newInstance(cfg.kdfClass);
+            PBKDF kdf = Reflects.<PBKDF>newInstance(cfg.kdfClass);
             cipher.setKdf(kdf);
             cipher.setSalt(salt);
 

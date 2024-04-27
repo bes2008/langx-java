@@ -1,14 +1,20 @@
-package com.jn.langx.security.crypto.key.pb;
+package com.jn.langx.security.pbe.cipher.kdf;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
+import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.text.StringTemplates;
+
+import javax.crypto.SecretKey;
 
 /**
  * 代表派生出来的key 封装
  */
-public class DerivedKey {
+public class DerivedKey implements SecretKey {
+    @Nullable
+    private String algorithm;
+
     /**
      * 生成的 salt
      */
@@ -81,5 +87,20 @@ public class DerivedKey {
     @Override
     public String toString() {
         return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(salt), Hex.encodeHexString(key), iv==null?"":Hex.encodeHexString(iv));
+    }
+
+    @Override
+    public byte[] getEncoded() {
+        return this.key;
+    }
+
+    @Override
+    public String getFormat() {
+        return Base64.encodeBase64String(this.key);
+    }
+
+    @Override
+    public String getAlgorithm() {
+        return this.algorithm;
     }
 }

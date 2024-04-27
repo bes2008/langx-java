@@ -1,6 +1,6 @@
 package com.jn.langx.util.hash.nostreaming;
 
-import com.jn.langx.security.crypto.key.pb.BCrypt;
+import com.jn.langx.security.pbe.pswdenc.BCrypt;
 import com.jn.langx.util.Numbers;
 import com.jn.langx.util.hash.AbstractHasher;
 import com.jn.langx.util.io.Charsets;

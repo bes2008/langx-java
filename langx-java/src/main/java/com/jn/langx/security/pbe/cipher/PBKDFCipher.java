@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.cipher.pb;
+package com.jn.langx.security.pbe.cipher;
 
 import com.jn.langx.security.crypto.cipher.BytesCipher;
 

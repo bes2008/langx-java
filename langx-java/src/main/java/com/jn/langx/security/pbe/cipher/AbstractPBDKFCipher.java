@@ -1,8 +1,8 @@
-package com.jn.langx.security.crypto.cipher.pb;
+package com.jn.langx.security.pbe.cipher;
 
 import com.jn.langx.security.SecurityException;
-import com.jn.langx.security.crypto.key.pb.DerivedKey;
-import com.jn.langx.security.crypto.key.pb.KDF;
+import com.jn.langx.security.pbe.cipher.kdf.DerivedKey;
+import com.jn.langx.security.pbe.cipher.kdf.PBKDF;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
@@ -14,7 +14,7 @@ public abstract class AbstractPBDKFCipher implements PBKDFCipher {
     /*******************************************************
      * KDF 相关属性算法、属性
      *******************************************************/
-    private KDF kdf;
+    private PBKDF kdf;
     private byte[] saltBytes;
 
     private int saltBitLength;
@@ -44,7 +44,7 @@ public abstract class AbstractPBDKFCipher implements PBKDFCipher {
 
     }
 
-    public void setKdf(KDF kdf) {
+    public void setKdf(PBKDF kdf) {
         this.kdf = kdf;
     }
 
@@ -59,7 +59,7 @@ public abstract class AbstractPBDKFCipher implements PBKDFCipher {
     @Override
     public byte[] encrypt(byte[] message) {
         if( Objs.isEmpty(this.saltBytes)){
-            this.saltBytes = kdf.genSalt(this.saltBitLength, this.iterations);
+            this.saltBytes = kdf.genSalt(null, this.saltBitLength, this.iterations);
         }
         try {
             DerivedKey derivedKey = kdf.generate(password, this.saltBytes, this.keyBitSize, this.ivBitSize, this.iterations, this.hashAlgorithm);

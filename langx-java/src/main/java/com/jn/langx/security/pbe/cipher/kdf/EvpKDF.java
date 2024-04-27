@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.key.pb;
+package com.jn.langx.security.pbe.cipher.kdf;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
@@ -6,11 +6,12 @@ import com.jn.langx.util.io.Charsets;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
-public class EvpKDF implements KDF{
+public class EvpKDF implements PBKDF {
     @Override
-    public byte[] genSalt(int saltBitSize, int round) {
-        return Securitys.randomBytes(saltBitSize);
+    public byte[] genSalt(SecureRandom secureRandom, int saltBitSize, int round) {
+        return Securitys.randomBytes(secureRandom, saltBitSize);
     }
 
     @Override

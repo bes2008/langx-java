@@ -31,16 +31,6 @@
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-generator-annprocess</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.whaleal.icefrog</groupId>
-            <artifactId>icefrog-dfa</artifactId>
-            <version>1.1.71</version>
-        </dependency>
-        <dependency>
-            <groupId>top.redscorpion.means</groupId>
-            <artifactId>redscorpion-means-dfa</artifactId>
-            <version>0.1.0</version>
-        </dependency>
     </dependencies>
 
     <build>

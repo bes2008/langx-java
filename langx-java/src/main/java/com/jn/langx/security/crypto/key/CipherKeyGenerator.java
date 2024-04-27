@@ -9,9 +9,9 @@ public class CipherKeyGenerator {
     /**
      * initialise the key generator.
      */
-    public void init(int bytesLength, SecureRandom random) {
+    public void init(int bitLength, SecureRandom random) {
         this.random = random;
-        this.bytesLength = (bytesLength + 7) / 8;
+        this.bytesLength = (bitLength + 7) / 8;
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.jn.langx.security.crypto.key.pb;
+package com.jn.langx.security.pbe.pswdenc;
 
 
 import java.io.UnsupportedEncodingException;
