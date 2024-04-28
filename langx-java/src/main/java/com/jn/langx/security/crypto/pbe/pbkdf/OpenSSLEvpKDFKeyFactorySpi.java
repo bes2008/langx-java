@@ -1,4 +1,4 @@
-package com.jn.langx.security.pbe.pbkdf;
+package com.jn.langx.security.crypto.pbe.pbkdf;
 
 /**
  * @since 5.3.9

@@ -1,4 +1,4 @@
-package com.jn.langx.security.pbe.pbkdf;
+package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.util.Throwables;

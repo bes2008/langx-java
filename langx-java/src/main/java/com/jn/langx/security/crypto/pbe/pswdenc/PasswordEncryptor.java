@@ -1,4 +1,4 @@
-package com.jn.langx.security.pbe.pswdenc;
+package com.jn.langx.security.crypto.pbe.pswdenc;
 
 /**
  * @since 5.3.9

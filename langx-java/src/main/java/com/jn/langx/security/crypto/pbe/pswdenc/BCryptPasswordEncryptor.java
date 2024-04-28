@@ -1,4 +1,4 @@
-package com.jn.langx.security.pbe.pswdenc;
+package com.jn.langx.security.crypto.pbe.pswdenc;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.util.Maths;
@@ -6,6 +6,9 @@ import com.jn.langx.util.Objs;
 
 import java.security.SecureRandom;
 
+/**
+ * @since 5.3.9
+ */
 public class BCryptPasswordEncryptor implements PasswordEncryptor{
     private SecureRandom secureRandom;
     private int logRound;

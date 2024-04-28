@@ -3,21 +3,24 @@ package com.jn.langx.codec;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.util.Objs;
+import com.jn.langx.util.io.Charsets;
 
 /**
  * @since 5.3.9
  */
 public class Stringifys {
-    public static String stringify(byte[] bytes, StringifyFormat format){
-        format= Objs.useValueIfEmpty(format, StringifyFormat.BASE64);
+    public static String stringify(byte[] bytes, StringifyFormat format) {
+        format = Objs.useValueIfEmpty(format, StringifyFormat.PLAINTEXT);
         String str;
-        switch (format){
+        switch (format) {
             case HEX:
-                str= Hex.encodeHexString(bytes);
+                str = Hex.encodeHexString(bytes);
                 break;
             case BASE64:
+                str = Base64.encodeBase64String(bytes);
+                break;
             default:
-                str= Base64.encodeBase64String(bytes);
+                str = new String(bytes, Charsets.UTF_8);
                 break;
         }
         return str;
