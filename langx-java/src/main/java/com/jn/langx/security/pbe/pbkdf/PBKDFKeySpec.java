@@ -8,10 +8,6 @@ public class PBKDFKeySpec extends PBEKeySpec {
     private int ivBitSize;
     private String hashAlgorithm;
 
-    /**
-     * 这里不是 pbe algorithm，是对称加密算法的名字
-     */
-    private String cipherAlgorithm;
 
     public PBKDFKeySpec(char[] password, byte[] salt,  int keyBitSize){
         this(password, salt, keyBitSize, 16*8, 1);
@@ -30,7 +26,6 @@ public class PBKDFKeySpec extends PBEKeySpec {
         setHashAlgorithm(hashAlgorithm);
         setIvBitSize(ivBitSize);
     }
-
 
 
     public int getIvBitSize() {
