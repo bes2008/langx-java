@@ -1,12 +1,12 @@
 package com.jn.langx.security.pbe.pbkdf;
 
-import java.security.NoSuchAlgorithmException;
+import com.jn.langx.util.function.Function3;
+
 import java.security.SecureRandom;
 
 /**
  * 基于一个 password 来生成 secret key
  */
-public interface PBKDF {
-    byte[] genSalt(SecureRandom secureRandom, int saltBitSize, int round);
-    DerivedPBEKey transform(String password, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String hashAlgorithm) throws NoSuchAlgorithmException;
+public interface PBKDF extends Function3<String, PBKDFKeySpec, SecureRandom, DerivedPBEKey> {
+    DerivedPBEKey apply(String pbeAlgorithm, PBKDFKeySpec keySpec, SecureRandom secureRandom);
 }

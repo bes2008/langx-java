@@ -1,5 +1,6 @@
 package com.jn.langx.security.pbe;
 
+import com.jn.langx.annotation.Nullable;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.UnsupportedCipherAlgorithmException;
 import com.jn.langx.security.crypto.cipher.Ciphers;
@@ -15,7 +16,7 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.function.Predicate2;
-import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.function.Supplier2;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
@@ -36,21 +37,21 @@ public class PBEs {
      * key: pbe algorithm regex
      * value: secret key factory
      */
-    private static Map<String, Supplier<String, PBKDFKeyFactorySpi>> PBE_DEFAULT_KEY_FACTORY_REGISTRY;
+    private static Map<String, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>> PBE_DEFAULT_KEY_FACTORY_REGISTRY;
     static {
-        Map<String, Supplier<String, PBKDFKeyFactorySpi>> map = Maps.newLinkedHashMap();
+        Map<String, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>> map = Maps.newLinkedHashMap();
 
-        map.put("PBEWith.*And.*OPENSSL_EVP", new Supplier<String,PBKDFKeyFactorySpi>(){
+        map.put("PBEWith.*And.*OPENSSL_EVP", new Supplier2<String, SecureRandom,PBKDFKeyFactorySpi>(){
             @Override
-            public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
-                return new OpenSSLEvpKDFKeyFactorySpi(pbeAlgorithm);
+            public PBKDFKeyFactorySpi get(String pbeAlgorithm, SecureRandom secureRandom) {
+                return new OpenSSLEvpKDFKeyFactorySpi(pbeAlgorithm, secureRandom);
             }
         });
 
         PBE_DEFAULT_KEY_FACTORY_REGISTRY = map;
 
     }
-    public static SecretKeyFactory getLangxPBEKeyFactory(final String pbeAlgorithm){
+    public static SecretKeyFactory getLangxPBEKeyFactory(final String pbeAlgorithm, SecureRandom secureRandom){
         SecretKeyFactory secretKeyFactory = null;
 
         // 从 langx pbe包下获取
@@ -59,26 +60,27 @@ public class PBEs {
             throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: "+pbeAlgorithm);
         }
 
-        Supplier<String, PBKDFKeyFactorySpi> supplier =PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
+        Supplier2<String, SecureRandom, PBKDFKeyFactorySpi> supplier =PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
 
         if(supplier==null) {
-            Map.Entry supplierEntry = Collects.findFirst(PBE_DEFAULT_KEY_FACTORY_REGISTRY, new Predicate2<String, Supplier<String, PBKDFKeyFactorySpi>>() {
+            Map.Entry supplierEntry = Collects.findFirst(PBE_DEFAULT_KEY_FACTORY_REGISTRY, new Predicate2<String, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>>() {
                 @Override
-                public boolean test(String key, Supplier<String, PBKDFKeyFactorySpi> supplier) {
+                public boolean test(String key, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi> supplier) {
                     return Regexps.match(key, pbeAlgorithm);
                 }
             });
 
             if (supplierEntry != null) {
-                supplier = (Supplier<String, PBKDFKeyFactorySpi>) supplierEntry.getValue();
+                supplier = (Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>) supplierEntry.getValue();
             }
         }
         if(supplier==null){
             throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: "+pbeAlgorithm);
         }
 
-        PBKDFKeyFactorySpi secretKeyFactorySpi=supplier.get(pbeAlgorithm);
-        return new LangxSecretKeyFactory(secretKeyFactorySpi, Securitys.getLangxSecurityProvider(),pbeAlgorithm);
+        PBKDFKeyFactorySpi secretKeyFactorySpi=supplier.get(pbeAlgorithm, secureRandom);
+        secretKeyFactory = new LangxSecretKeyFactory(secretKeyFactorySpi, Securitys.getLangxSecurityProvider(),pbeAlgorithm);
+        return secretKeyFactory;
     }
 
     public static SecretKeyFactory getPBEKeyFactoryFromProvider(final String pbeAlgorithm, Provider provider){
@@ -92,11 +94,12 @@ public class PBEs {
         return secretKeyFactory;
     }
 
-    public static SecretKeyFactory getPBEKeyFactory(final String pbeAlgorithm, Provider provider){
+    public static SecretKeyFactory getPBEKeyFactory(final String pbeAlgorithm, Provider provider, @Nullable SecureRandom secureRandom){
+        secureRandom = Objs.useValueIfEmpty(secureRandom, Securitys.getSecureRandom());
         // 从 providers 中 获取 key factory
         SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm,provider);
         if(secretKeyFactory==null) {
-            secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm);
+            secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm, secureRandom);
         }
         return secretKeyFactory;
     }
@@ -106,7 +109,7 @@ public class PBEs {
             boolean isLangxSecretKeyFactory = false;
             SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm, provider);
             if (secretKeyFactory == null) {
-                secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm);
+                secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm, secureRandom);
                     isLangxSecretKeyFactory=true;
             }
             SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
@@ -138,7 +141,7 @@ public class PBEs {
             boolean isLangxSecretKeyFactory = false;
             SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm, provider);
             if (secretKeyFactory == null) {
-                secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm);
+                secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm, secureRandom);
                 isLangxSecretKeyFactory=true;
             }
             SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);

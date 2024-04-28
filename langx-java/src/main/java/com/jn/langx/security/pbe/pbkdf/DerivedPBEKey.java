@@ -5,6 +5,8 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.text.StringTemplates;
+import com.jn.langx.util.Emptys;
+import com.jn.langx.util.Objs;
 
 import javax.crypto.interfaces.PBEKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -19,75 +21,39 @@ import javax.crypto.spec.IvParameterSpec;
  * hashAlgorithm: MD5
  */
 public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable {
-    @Nullable
+
+    @NonNull
+    private PBKDFKeySpec keySpec;
+
+    @NonNull
     private String pbeAlgorithm;
 
+    @Nullable
     private String cipherAlgorithm;
 
-    private String hashAlgorithm;
-
-    private char[] password;
-
-    private int iterationCount;
-
-
-    /**
-     * 生成的 salt
-     */
-    @NonNull
-    private byte[] salt;
     /**
      * 生成的指定长度的key，这个代表了实际的key
      */
     @NonNull
     private byte[] key;
 
-    /**
-     * 生成过程中产生的一个临时key
-     */
-    private byte[] derivedBytes;
-
-    public DerivedPBEKey(byte[] salt, byte[] key){
-        this(salt,key,null,null);
+    public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv){
+        this(pbeAlgorithm, null, keySpec, key, iv);
     }
 
-    public DerivedPBEKey(byte[] salt, byte[] key, byte[] derivedBytes){
-        this(salt,key,null,derivedBytes);
-    }
-    public DerivedPBEKey(byte[] salt, byte[] key, byte[] iv, byte[] derivedBytes){
-        super(iv);
-        this.salt=salt;
+    public DerivedPBEKey(String pbeAlgorithm, String cipherAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv){
+        super(Objs.useValueIfEmpty(iv, Emptys.EMPTY_BYTES));
         this.key=key;
-        this.derivedBytes=derivedBytes;
+        this.pbeAlgorithm=pbeAlgorithm;
+        this.cipherAlgorithm=cipherAlgorithm;
+        this.keySpec=keySpec;
     }
 
-    public byte[] getSalt() {
-        return salt;
-    }
 
-    public void setSalt(byte[] salt) {
-        this.salt = salt;
-    }
-
-    public byte[] getKey() {
-        return key;
-    }
-
-    public void setKey(byte[] key) {
-        this.key = key;
-    }
-
-    public byte[] getDerivedBytes() {
-        return derivedBytes;
-    }
-
-    public void setDerivedBytes(byte[] derivedBytes) {
-        this.derivedBytes = derivedBytes;
-    }
 
     @Override
     public String toString() {
-        return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(salt), Hex.encodeHexString(key), getIV()==null?"":Hex.encodeHexString(getIV()));
+        return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(keySpec.getSalt()), Hex.encodeHexString(key), getIV()==null?"":Hex.encodeHexString(getIV()));
     }
 
     @Override
@@ -100,22 +66,7 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
         return Base64.encodeBase64String(this.key);
     }
 
-    public void setAlgorithm(String algorithm) {
-        this.pbeAlgorithm = algorithm;
-    }
 
-    public String getHashAlgorithm() {
-        return hashAlgorithm;
-    }
-
-    public void setHashAlgorithm(String hashAlgorithm) {
-        this.hashAlgorithm = hashAlgorithm;
-    }
-
-    @Override
-    public String getAlgorithm() {
-        return this.pbeAlgorithm;
-    }
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
@@ -124,27 +75,37 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
 
     @Override
     public char[] getPassword() {
-        return this.password;
+        return this.keySpec.getPassword();
+    }
+
+    @Override
+    public byte[] getSalt() {
+        return this.keySpec.getSalt();
     }
 
     @Override
     public int getIterationCount() {
-        return this.iterationCount;
+        return this.keySpec.getIterationCount();
     }
 
-    public void setPassword(char[] password) {
-        this.password = password;
+    public int getKeyBitSize(){
+        return this.keySpec.getKeyLength();
     }
 
-    public String getCipherAlgorithm() {
+    public int getIVBitSize(){
+        return this.keySpec.getIvBitSize();
+    }
+
+    @Override
+    public String getAlgorithm() {
+        return this.pbeAlgorithm;
+    }
+
+    public String getCipherAlgorithm(){
         return cipherAlgorithm;
     }
-
-    public void setCipherAlgorithm(String cipherAlgorithm) {
-        this.cipherAlgorithm = cipherAlgorithm;
+    public String getHashAlgorithm(){
+        return this.keySpec.getHashAlgorithm();
     }
 
-    public void setIterationCount(int iterationCount) {
-        this.iterationCount = iterationCount;
-    }
 }

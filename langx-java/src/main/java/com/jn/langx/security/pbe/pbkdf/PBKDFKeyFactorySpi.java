@@ -7,16 +7,18 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactorySpi;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
 public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
     private PBKDF pbkdf;
-    private String algorithm;
+    private String pbeAlgorithm;
+    private SecureRandom secureRandom;
 
-
-    public PBKDFKeyFactorySpi( String algorithm, PBKDF pbkdf){
-        this.algorithm =algorithm;
+    public PBKDFKeyFactorySpi(String pbeAlgorithm, SecureRandom secureRandom, PBKDF pbkdf){
+        this.pbeAlgorithm = pbeAlgorithm;
+        this.secureRandom = secureRandom;
         this.pbkdf = pbkdf;
     }
 
@@ -24,18 +26,12 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
     @Override
     protected SecretKey engineGenerateSecret(KeySpec keySpec) throws InvalidKeySpecException {
         if (keySpec instanceof SecretKey){
-            return new SecretKeySpec(((SecretKeySpec)keySpec).getEncoded(), algorithm);
+            return new SecretKeySpec(((SecretKeySpec)keySpec).getEncoded(), pbeAlgorithm);
         }
         if(keySpec instanceof PBKDFKeySpec){
-            PBKDFKeySpec pbeKey=(PBKDFKeySpec)keySpec;
+            PBKDFKeySpec pbeKeySpec=(PBKDFKeySpec)keySpec;
             try {
-                DerivedPBEKey derivedKey = derivedKey= pbkdf.transform(
-                        new String(pbeKey.getPassword()),
-                        pbeKey.getSalt(),
-                        pbeKey.getKeyLength(),
-                        pbeKey.getIvBitSize(),
-                        pbeKey.getIterationCount(),
-                        pbeKey.getHashAlgorithm());
+                DerivedPBEKey derivedKey = pbkdf.apply(pbeAlgorithm, pbeKeySpec, secureRandom);
                 return derivedKey;
             }catch (Throwable e){
                 throw new SecurityException(e);
@@ -57,7 +53,7 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
 
         if (SecretKeySpec.class.isAssignableFrom(keySpec))
         {
-            return new SecretKeySpec(key.getEncoded(), algorithm);
+            return new SecretKeySpec(key.getEncoded(), this.pbeAlgorithm);
         }
         return null;
     }
@@ -69,9 +65,9 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
             throw new InvalidKeyException("key parameter is null");
         }
 
-        if (!key.getAlgorithm().equalsIgnoreCase(algorithm))
+        if (!key.getAlgorithm().equalsIgnoreCase(this.pbeAlgorithm))
         {
-            throw new InvalidKeyException("Key not of type " + algorithm + ".");
+            throw new InvalidKeyException("Key not of type " + this.pbeAlgorithm + ".");
         }
 
         if(key instanceof DerivedPBEKey){
@@ -82,6 +78,6 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
             }
         }
 
-        return new SecretKeySpec(key.getEncoded(), algorithm);
+        return new SecretKeySpec(key.getEncoded(), this.pbeAlgorithm);
     }
 }
