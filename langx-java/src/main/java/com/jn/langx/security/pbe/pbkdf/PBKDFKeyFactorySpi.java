@@ -8,10 +8,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactorySpi;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 
+/**
+ * @since 5.3.9
+ */
 public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
     private PBKDF pbkdf;
     private String pbeAlgorithm;

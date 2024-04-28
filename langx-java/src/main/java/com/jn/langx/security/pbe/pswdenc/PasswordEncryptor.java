@@ -1,5 +1,8 @@
 package com.jn.langx.security.pbe.pswdenc;
 
+/**
+ * @since 5.3.9
+ */
 public interface PasswordEncryptor {
     /**
      * Encrypts (digests) a password.
@@ -7,7 +10,7 @@ public interface PasswordEncryptor {
      * @param password the password to be encrypted.
      * @return the resulting digest.
      */
-    public String encrypt(String password);
+    String encrypt(String password);
 
 
     /**
@@ -18,5 +21,5 @@ public interface PasswordEncryptor {
      * @param encryptedPassword the digest against which to check the password.
      * @return true if passwords match, false if not.
      */
-    public boolean check(String plainPassword, String encryptedPassword);
+    boolean check(String plainPassword, String encryptedPassword);
 }

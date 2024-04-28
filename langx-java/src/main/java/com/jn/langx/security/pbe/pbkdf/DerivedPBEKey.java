@@ -14,11 +14,13 @@ import javax.crypto.spec.IvParameterSpec;
 /**
  * 代表派生出来的key
  *
- *
  * 例子：
  * pbeAlgorithm：PBEWithMD5AndAES
  * cipherAlgorithm: AES
  * hashAlgorithm: MD5
+ *
+ *
+ * @since 5.3.9
  */
 public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable {
 

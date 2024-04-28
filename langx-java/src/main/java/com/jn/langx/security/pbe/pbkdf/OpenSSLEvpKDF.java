@@ -6,6 +6,9 @@ import com.jn.langx.util.io.Charsets;
 
 import java.security.MessageDigest;
 
+/**
+ * @since 5.3.9
+ */
 class OpenSSLEvpKDF implements PBKDF {
 
     @Override

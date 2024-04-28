@@ -4,6 +4,9 @@ import com.jn.langx.security.crypto.JCAEStandardName;
 
 import javax.crypto.spec.PBEKeySpec;
 
+/**
+ * @since 5.3.9
+ */
 public class PBKDFKeySpec extends PBEKeySpec {
     private int ivBitSize;
     private String hashAlgorithm;
