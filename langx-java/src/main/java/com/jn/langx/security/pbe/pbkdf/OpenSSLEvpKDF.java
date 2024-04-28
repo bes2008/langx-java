@@ -1,4 +1,4 @@
-package com.jn.langx.security.pbe.cipher.kdf;
+package com.jn.langx.security.pbe.pbkdf;
 
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.key.PKIs;
@@ -8,14 +8,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-class EvpKDF implements PBKDF {
+class OpenSSLEvpKDF implements PBKDF {
     @Override
     public byte[] genSalt(SecureRandom secureRandom, int saltBitSize, int round) {
         return Securitys.randomBytes(secureRandom, saltBitSize);
     }
 
     @Override
-    public DerivedKey transform(String passphrase, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String messageDigestAlgorithm) throws NoSuchAlgorithmException {
+    public DerivedPBEKey transform(String passphrase, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String messageDigestAlgorithm) throws NoSuchAlgorithmException {
         int keyBytesLength= PKIs.getBytesLength(keyBitSize);
         int ivBytesLength=PKIs.getBytesLength(ivBitSize);
         byte[] key=new byte[keyBytesLength];
@@ -54,7 +54,7 @@ class EvpKDF implements PBKDF {
         System.arraycopy(derivedBytes, 0, key, 0, keySizeInWord * 4);
         System.arraycopy(derivedBytes, keySizeInWord * 4, iv, 0, ivSizeInWord * 4);
 
-        DerivedKey derivedKey = new DerivedKey(saltBytes, key, iv, derivedBytes);
+        DerivedPBEKey derivedKey = new DerivedPBEKey(saltBytes, key, iv, derivedBytes);
         derivedKey.setHashAlgorithm(messageDigestAlgorithm);
         return derivedKey;
     }

@@ -1,6 +1,5 @@
-package com.jn.langx.security.pbe.cipher.kdf;
+package com.jn.langx.security.pbe.pbkdf;
 
-import com.jn.langx.Named;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.util.Throwables;
 
@@ -30,7 +29,7 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
         if(keySpec instanceof PBKDFKeySpec){
             PBKDFKeySpec pbeKey=(PBKDFKeySpec)keySpec;
             try {
-                DerivedKey derivedKey = derivedKey= pbkdf.transform(
+                DerivedPBEKey derivedKey = derivedKey= pbkdf.transform(
                         new String(pbeKey.getPassword()),
                         pbeKey.getSalt(),
                         pbeKey.getKeyLength(),
@@ -75,9 +74,9 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
             throw new InvalidKeyException("Key not of type " + algorithm + ".");
         }
 
-        if(key instanceof DerivedKey){
+        if(key instanceof DerivedPBEKey){
             try {
-                return (SecretKey) ((DerivedKey) key).clone();
+                return (SecretKey) ((DerivedPBEKey) key).clone();
             }catch (Throwable e ){
                 throw Throwables.wrapAsRuntimeException(e);
             }

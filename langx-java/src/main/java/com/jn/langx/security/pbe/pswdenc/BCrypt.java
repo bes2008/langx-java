@@ -46,7 +46,7 @@ import java.security.SecureRandom;
  *
  * @since 4.5.3
  */
-class BCrypt {
+public class BCrypt {
     // BCrypt parameters
     public static final int GENSALT_DEFAULT_LOG2_ROUNDS = 10;
     private static final int BCRYPT_SALT_LEN = 16;

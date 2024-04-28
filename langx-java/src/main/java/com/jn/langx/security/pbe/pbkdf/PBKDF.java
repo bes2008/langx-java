@@ -1,4 +1,4 @@
-package com.jn.langx.security.pbe.cipher.kdf;
+package com.jn.langx.security.pbe.pbkdf;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -8,5 +8,5 @@ import java.security.SecureRandom;
  */
 public interface PBKDF {
     byte[] genSalt(SecureRandom secureRandom, int saltBitSize, int round);
-    DerivedKey transform(String password, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String hashAlgorithm) throws NoSuchAlgorithmException;
+    DerivedPBEKey transform(String password, byte[] saltBytes, int keyBitSize, int ivBitSize, int iterations, String hashAlgorithm) throws NoSuchAlgorithmException;
 }

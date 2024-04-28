@@ -7,7 +7,7 @@ import com.jn.langx.security.crypto.cipher.CipherAlgorithmPadding;
 import com.jn.langx.security.crypto.cipher.Ciphers;
 import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.pbe.PBEs;
-import com.jn.langx.security.pbe.cipher.kdf.PBKDFKeySpec;
+import com.jn.langx.security.pbe.pbkdf.PBKDFKeySpec;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;

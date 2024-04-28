@@ -1,4 +1,4 @@
-package com.jn.langx.security.pbe.cipher.kdf;
+package com.jn.langx.security.pbe.pbkdf;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
@@ -18,7 +18,7 @@ import javax.crypto.spec.IvParameterSpec;
  * cipherAlgorithm: AES
  * hashAlgorithm: MD5
  */
-public class DerivedKey extends IvParameterSpec implements PBEKey, Cloneable {
+public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable {
     @Nullable
     private String pbeAlgorithm;
 
@@ -47,14 +47,14 @@ public class DerivedKey extends IvParameterSpec implements PBEKey, Cloneable {
      */
     private byte[] derivedBytes;
 
-    public DerivedKey(byte[] salt, byte[] key){
+    public DerivedPBEKey(byte[] salt, byte[] key){
         this(salt,key,null,null);
     }
 
-    public DerivedKey(byte[] salt, byte[] key,  byte[] derivedBytes){
+    public DerivedPBEKey(byte[] salt, byte[] key, byte[] derivedBytes){
         this(salt,key,null,derivedBytes);
     }
-    public DerivedKey(byte[] salt, byte[] key, byte[] iv, byte[] derivedBytes){
+    public DerivedPBEKey(byte[] salt, byte[] key, byte[] iv, byte[] derivedBytes){
         super(iv);
         this.salt=salt;
         this.key=key;

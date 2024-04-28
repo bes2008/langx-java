@@ -7,9 +7,9 @@ import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.LangxSecretKeyFactory;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
-import com.jn.langx.security.pbe.cipher.kdf.DerivedKey;
-import com.jn.langx.security.pbe.cipher.kdf.OpenSSLEvpKDFKeyFactorySpi;
-import com.jn.langx.security.pbe.cipher.kdf.PBKDFKeyFactorySpi;
+import com.jn.langx.security.pbe.pbkdf.DerivedPBEKey;
+import com.jn.langx.security.pbe.pbkdf.OpenSSLEvpKDFKeyFactorySpi;
+import com.jn.langx.security.pbe.pbkdf.PBKDFKeyFactorySpi;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
@@ -116,7 +116,7 @@ public class PBEs {
                 PBEParameterSpec parameterSpec = new PBEParameterSpec(pbeKey.getSalt(), pbeKey.getIterationCount());
                 return Symmetrics.encrypt(bytes, pbeKey.getEncoded(), pbeAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), parameterSpec);
             } else {
-                DerivedKey derivedKey = (DerivedKey) pbeKey;
+                DerivedPBEKey derivedKey = (DerivedPBEKey) pbeKey;
                 String cipherAlgorithm = derivedKey.getCipherAlgorithm();
 
                 if (Objs.isEmpty(cipherAlgorithm) && Objs.isNotEmpty(algorithmTransformation)) {
@@ -148,7 +148,7 @@ public class PBEs {
                 PBEParameterSpec parameterSpec = new PBEParameterSpec(pbeKey.getSalt(), pbeKey.getIterationCount());
                 return Symmetrics.decrypt(bytes, pbeKey.getEncoded(), pbeAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), parameterSpec);
             } else {
-                DerivedKey derivedKey = (DerivedKey) pbeKey;
+                DerivedPBEKey derivedKey = (DerivedPBEKey) pbeKey;
                 String cipherAlgorithm = derivedKey.getCipherAlgorithm();
 
                 if (Objs.isEmpty(cipherAlgorithm) && Objs.isNotEmpty(algorithmTransformation)) {

@@ -1,7 +1,7 @@
-package com.jn.langx.security.pbe.cipher.kdf;
+package com.jn.langx.security.pbe.pbkdf;
 
 public class OpenSSLEvpKDFKeyFactorySpi extends PBKDFKeyFactorySpi {
     public OpenSSLEvpKDFKeyFactorySpi(String algorithm){
-        super(algorithm, new EvpKDF());
+        super(algorithm, new OpenSSLEvpKDF());
     }
 }
