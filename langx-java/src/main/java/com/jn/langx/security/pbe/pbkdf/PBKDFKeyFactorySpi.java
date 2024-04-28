@@ -2,6 +2,7 @@ package com.jn.langx.security.pbe.pbkdf;
 
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.util.Throwables;
+import com.jn.langx.util.reflect.Reflects;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactorySpi;
@@ -42,17 +43,19 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
 
     @Override
     protected KeySpec engineGetKeySpec(SecretKey key, Class<?> keySpec) throws InvalidKeySpecException {
-        if (keySpec == null)
-        {
+        if (keySpec == null) {
             throw new InvalidKeySpecException("keySpec parameter is null");
         }
-        if (key == null)
-        {
+        if (key == null) {
             throw new InvalidKeySpecException("key parameter is null");
         }
 
-        if (SecretKeySpec.class.isAssignableFrom(keySpec))
-        {
+        if(Reflects.isSubClassOrEquals(DerivedPBEKey.class, keySpec)){
+            DerivedPBEKey pbeKey = (DerivedPBEKey)key;
+            return new PBKDFKeySpec(pbeKey.getPassword(), pbeKey.getSalt(), pbeKey.getKeyBitSize(), pbeKey.getIVBitSize(), pbeKey.getIterationCount(), pbeKey.getHashAlgorithm());
+        }
+
+        if (SecretKeySpec.class.isAssignableFrom(keySpec)) {
             return new SecretKeySpec(key.getEncoded(), this.pbeAlgorithm);
         }
         return null;
@@ -60,13 +63,11 @@ public class PBKDFKeyFactorySpi extends SecretKeyFactorySpi {
 
     @Override
     protected SecretKey engineTranslateKey(SecretKey key) throws InvalidKeyException {
-        if (key == null)
-        {
+        if (key == null){
             throw new InvalidKeyException("key parameter is null");
         }
 
-        if (!key.getAlgorithm().equalsIgnoreCase(this.pbeAlgorithm))
-        {
+        if (!key.getAlgorithm().equalsIgnoreCase(this.pbeAlgorithm)){
             throw new InvalidKeyException("Key not of type " + this.pbeAlgorithm + ".");
         }
 
