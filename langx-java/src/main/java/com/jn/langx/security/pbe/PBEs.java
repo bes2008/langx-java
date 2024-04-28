@@ -1,10 +1,8 @@
 package com.jn.langx.security.pbe;
 
-import com.jn.langx.annotation.Nullable;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.UnsupportedCipherAlgorithmException;
 import com.jn.langx.security.crypto.cipher.Ciphers;
-import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.key.LangxSecretKeyFactory;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.supplier.bytesbased.BytesBasedSecretKeySupplier;
@@ -16,7 +14,7 @@ import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Collects;
 import com.jn.langx.util.collection.Maps;
 import com.jn.langx.util.function.Predicate2;
-import com.jn.langx.util.function.Supplier2;
+import com.jn.langx.util.function.Supplier;
 import com.jn.langx.util.regexp.Option;
 import com.jn.langx.util.regexp.Regexp;
 import com.jn.langx.util.regexp.Regexps;
@@ -37,21 +35,21 @@ public class PBEs {
      * key: pbe algorithm regex
      * value: secret key factory
      */
-    private static Map<String, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>> PBE_DEFAULT_KEY_FACTORY_REGISTRY;
+    private static Map<String, Supplier<String, PBKDFKeyFactorySpi>> PBE_DEFAULT_KEY_FACTORY_REGISTRY;
     static {
-        Map<String, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>> map = Maps.newLinkedHashMap();
+        Map<String, Supplier<String, PBKDFKeyFactorySpi>> map = Maps.newLinkedHashMap();
 
-        map.put("PBEWith.*And.*OPENSSL_EVP", new Supplier2<String, SecureRandom,PBKDFKeyFactorySpi>(){
+        map.put("PBEWith.*And.*OPENSSL_EVP", new Supplier<String, PBKDFKeyFactorySpi>(){
             @Override
-            public PBKDFKeyFactorySpi get(String pbeAlgorithm, SecureRandom secureRandom) {
-                return new OpenSSLEvpKDFKeyFactorySpi(pbeAlgorithm, secureRandom);
+            public PBKDFKeyFactorySpi get(String pbeAlgorithm) {
+                return new OpenSSLEvpKDFKeyFactorySpi(pbeAlgorithm);
             }
         });
 
         PBE_DEFAULT_KEY_FACTORY_REGISTRY = map;
 
     }
-    public static SecretKeyFactory getLangxPBEKeyFactory(final String pbeAlgorithm, SecureRandom secureRandom){
+    public static SecretKeyFactory getLangxPBEKeyFactory(final String pbeAlgorithm){
         SecretKeyFactory secretKeyFactory = null;
 
         // 从 langx pbe包下获取
@@ -60,25 +58,25 @@ public class PBEs {
             throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: "+pbeAlgorithm);
         }
 
-        Supplier2<String, SecureRandom, PBKDFKeyFactorySpi> supplier =PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
+        Supplier<String, PBKDFKeyFactorySpi> supplier =PBE_DEFAULT_KEY_FACTORY_REGISTRY.get(pbeAlgorithm);
 
         if(supplier==null) {
-            Map.Entry supplierEntry = Collects.findFirst(PBE_DEFAULT_KEY_FACTORY_REGISTRY, new Predicate2<String, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>>() {
+            Map.Entry supplierEntry = Collects.findFirst(PBE_DEFAULT_KEY_FACTORY_REGISTRY, new Predicate2<String, Supplier<String, PBKDFKeyFactorySpi>>() {
                 @Override
-                public boolean test(String key, Supplier2<String, SecureRandom, PBKDFKeyFactorySpi> supplier) {
+                public boolean test(String key, Supplier<String, PBKDFKeyFactorySpi> supplier) {
                     return Regexps.match(key, pbeAlgorithm);
                 }
             });
 
             if (supplierEntry != null) {
-                supplier = (Supplier2<String, SecureRandom, PBKDFKeyFactorySpi>) supplierEntry.getValue();
+                supplier = (Supplier<String, PBKDFKeyFactorySpi>) supplierEntry.getValue();
             }
         }
         if(supplier==null){
             throw new UnsupportedCipherAlgorithmException("unsupported PBE cipher algorithm: "+pbeAlgorithm);
         }
 
-        PBKDFKeyFactorySpi secretKeyFactorySpi=supplier.get(pbeAlgorithm, secureRandom);
+        PBKDFKeyFactorySpi secretKeyFactorySpi=supplier.get(pbeAlgorithm);
         secretKeyFactory = new LangxSecretKeyFactory(secretKeyFactorySpi, Securitys.getLangxSecurityProvider(),pbeAlgorithm);
         return secretKeyFactory;
     }
@@ -94,54 +92,21 @@ public class PBEs {
         return secretKeyFactory;
     }
 
-    public static SecretKeyFactory getPBEKeyFactory(final String pbeAlgorithm, Provider provider, @Nullable SecureRandom secureRandom){
-        secureRandom = Objs.useValueIfEmpty(secureRandom, Securitys.getSecureRandom());
+    public static SecretKeyFactory getPBEKeyFactory(final String pbeAlgorithm, Provider provider){
         // 从 providers 中 获取 key factory
         SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm,provider);
         if(secretKeyFactory==null) {
-            secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm, secureRandom);
+            secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm);
         }
         return secretKeyFactory;
     }
 
-    public static byte[] encrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom){
+    private static byte[] doEncryptOrDecrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom, boolean encrypt){
         try {
             boolean isLangxSecretKeyFactory = false;
             SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm, provider);
             if (secretKeyFactory == null) {
-                secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm, secureRandom);
-                    isLangxSecretKeyFactory=true;
-            }
-            SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
-            PBEKey pbeKey = (PBEKey) secretKey;
-
-            if (!isLangxSecretKeyFactory) {
-                PBEParameterSpec parameterSpec = new PBEParameterSpec(pbeKey.getSalt(), pbeKey.getIterationCount());
-                return Symmetrics.encrypt(bytes, pbeKey.getEncoded(), pbeAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), parameterSpec);
-            } else {
-                DerivedPBEKey derivedKey = (DerivedPBEKey) pbeKey;
-                String cipherAlgorithm = derivedKey.getCipherAlgorithm();
-
-                if (Objs.isEmpty(cipherAlgorithm) && Objs.isNotEmpty(algorithmTransformation)) {
-                    cipherAlgorithm = Ciphers.extractAlgorithm(algorithmTransformation);
-                }
-                if (Objs.isEmpty(cipherAlgorithm)) {
-                    cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
-                }
-
-                return Symmetrics.encrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), derivedKey);
-            }
-        }catch (Throwable e){
-            throw new SecurityException(e);
-        }
-    }
-
-    public static byte[] decrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom){
-        try {
-            boolean isLangxSecretKeyFactory = false;
-            SecretKeyFactory secretKeyFactory = getPBEKeyFactoryFromProvider(pbeAlgorithm, provider);
-            if (secretKeyFactory == null) {
-                secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm, secureRandom);
+                secretKeyFactory = getLangxPBEKeyFactory(pbeAlgorithm);
                 isLangxSecretKeyFactory=true;
             }
             SecretKey secretKey = secretKeyFactory.generateSecret(keySpec);
@@ -149,7 +114,7 @@ public class PBEs {
 
             if (!isLangxSecretKeyFactory) {
                 PBEParameterSpec parameterSpec = new PBEParameterSpec(pbeKey.getSalt(), pbeKey.getIterationCount());
-                return Symmetrics.decrypt(bytes, pbeKey.getEncoded(), pbeAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), parameterSpec);
+                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), pbeAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), parameterSpec, encrypt);
             } else {
                 DerivedPBEKey derivedKey = (DerivedPBEKey) pbeKey;
                 String cipherAlgorithm = derivedKey.getCipherAlgorithm();
@@ -161,11 +126,19 @@ public class PBEs {
                     cipherAlgorithm = PBEs.extractCipherAlgorithm(pbeAlgorithm);
                 }
 
-                return Symmetrics.decrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), derivedKey);
+                return Ciphers.doEncryptOrDecrypt(bytes, pbeKey.getEncoded(), cipherAlgorithm, algorithmTransformation, provider, secureRandom, new BytesBasedSecretKeySupplier(), derivedKey, encrypt);
             }
         }catch (Throwable e){
             throw new SecurityException(e);
         }
+    }
+
+    public static byte[] encrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom){
+        return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,true);
+    }
+
+    public static byte[] decrypt(byte[] bytes, String pbeAlgorithm, PBEKeySpec keySpec, String algorithmTransformation, Provider provider, SecureRandom secureRandom){
+        return doEncryptOrDecrypt(bytes,pbeAlgorithm,keySpec,algorithmTransformation,provider,secureRandom,false);
     }
     private static final Regexp PBE_ALGORITHM_REGEXP=Regexps.createRegexp("PBEWith(?<HASH>:.*)And(?<CIPHER>.*)(\\-.*)*", Option.fromJavaScriptFlags("ig"));
     public static String extractHashAlgorithm(String pbeAlgorithm){

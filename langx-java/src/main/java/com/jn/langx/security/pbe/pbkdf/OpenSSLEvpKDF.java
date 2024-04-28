@@ -5,12 +5,11 @@ import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.util.io.Charsets;
 
 import java.security.MessageDigest;
-import java.security.SecureRandom;
 
 class OpenSSLEvpKDF implements PBKDF {
 
     @Override
-    public DerivedPBEKey apply(String pbeAlgorithm, PBKDFKeySpec keySpec, SecureRandom secureRandom){
+    public DerivedPBEKey apply(String pbeAlgorithm, PBKDFKeySpec keySpec){
         try {
             int keyBytesLength = PKIs.getBytesLength(keySpec.getKeyLength());
             int ivBytesLength = PKIs.getBytesLength(keySpec.getIvBitSize());
