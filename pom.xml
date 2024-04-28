@@ -7,7 +7,7 @@
     <groupId>io.github.bes2008.solution.langx</groupId>
     <artifactId>langx</artifactId>
     <packaging>pom</packaging>
-    <version>5.3.8</version>
+    <version>5.3.9</version>
 
     <name>${project.groupId}:${project.artifactId}:${project.version}</name>
 
@@ -137,13 +137,6 @@
                 <artifactId>langx-java-security-gm-jca-bouncycastle</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <!--
-            <dependency>
-                <groupId>io.github.bes2008.solution.langx.security</groupId>
-                <artifactId>langx-java-security-gm-jca-gmsslorg</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            -->
             <dependency>
                 <groupId>io.github.bes2008.solution.langx.security</groupId>
                 <artifactId>langx-java-security-gm-jca-jsse</artifactId>
