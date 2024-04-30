@@ -11,7 +11,7 @@ public abstract class AbstractGmService implements GmService {
 
     @Override
     public byte[] createSM4Key() {
-        return createSM4IV(128);
+        return PKIs.createSecretKeyBytes(128);
     }
 
     @Override

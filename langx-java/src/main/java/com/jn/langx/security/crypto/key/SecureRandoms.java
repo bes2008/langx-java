@@ -57,10 +57,10 @@ public class SecureRandoms extends Securitys {
         }
     }
 
-    public static byte[] randomBytes(int bitLength){
-        Preconditions.checkArgument(bitLength>0);
-        int bytesLength=(bitLength+7)/8;
-        byte[] bytes=new byte[bytesLength];
+    public static byte[] randomBytes(int bitLength) {
+        Preconditions.checkArgument(bitLength > 0);
+        int bytesLength = (bitLength + 7) / 8;
+        byte[] bytes = new byte[bytesLength];
         getDefault().nextBytes(bytes);
         return bytes;
     }
