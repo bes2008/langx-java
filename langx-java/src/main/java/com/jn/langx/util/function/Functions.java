@@ -387,6 +387,15 @@ public class Functions {
         };
     }
 
+    public static <E> Predicate<E> notEqualsPredicate(final E obj) {
+        return new Predicate<E>() {
+            @Override
+            public boolean test(E value) {
+                return !Objs.equals(obj, value);
+            }
+        };
+    }
+
     public static <E1, E2> Predicate2<E1, E2> equalsPredicate() {
         return new Predicate2<E1, E2>() {
             @Override

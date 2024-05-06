@@ -297,6 +297,14 @@ public abstract class Objs{
         return value;
     }
 
+    public static <T> T useValueIfNotEquals(T value, T expectValue, T defaultValue) {
+        return useValueIfMatch(value,Functions.notEqualsPredicate(expectValue), defaultValue);
+    }
+
+    public static <T> T useValueIfEquals(T value, T expectValue, T defaultValue) {
+        return useValueIfMatch(value,Functions.equalsPredicate(expectValue), defaultValue);
+    }
+
     public static <T> T useValueIfNotMatch(T value, Predicate<T> predicate, T defaultValue) {
         if (!predicate.test(value)) {
             return defaultValue;
