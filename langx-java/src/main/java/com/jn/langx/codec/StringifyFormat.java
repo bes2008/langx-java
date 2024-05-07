@@ -6,5 +6,5 @@ package com.jn.langx.codec;
 public enum StringifyFormat {
     HEX,
     BASE64,
-    PLAINTEXT;
+    UTF8;
 }

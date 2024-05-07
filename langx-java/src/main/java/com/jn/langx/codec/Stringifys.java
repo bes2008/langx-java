@@ -10,7 +10,7 @@ import com.jn.langx.util.io.Charsets;
  */
 public class Stringifys {
     public static String stringify(byte[] bytes, StringifyFormat format) {
-        format = Objs.useValueIfEmpty(format, StringifyFormat.PLAINTEXT);
+        format = Objs.useValueIfEmpty(format, StringifyFormat.UTF8);
         String str;
         switch (format) {
             case HEX:
