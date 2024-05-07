@@ -5,6 +5,7 @@ import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.collection.PrimitiveArrays;
+import com.jn.langx.util.id.Nanoids;
 import com.jn.langx.util.random.Randoms;
 
 /**
@@ -21,7 +22,7 @@ import com.jn.langx.util.random.Randoms;
  * </pre>
  */
 public class DjangoCsrfTokenEncryptor implements PasswordEncryptor {
-    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String ALPHABET = Nanoids.DEFAULT_ALPHABET;
     private int secretLength = 32;
 
     /**
