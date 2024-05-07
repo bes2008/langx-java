@@ -7,8 +7,7 @@ import org.junit.Test;
 public class DjangoCsrfTokenTests {
     @Test
     public void test(){
-       DjangoCsrfTokenEncryptor encryptor= new DjangoCsrfTokenEncryptor();
-       Assert.assertTrue(encryptor.check("EaOKub9Cbshwpsi8OwWFaWCRumqDuh2bU7NrCJqUPc60psgBi9fbuev6s4ZyY2EN",
+       Assert.assertTrue(DjangoCsrfTokenEncryptor.checkToken("EaOKub9Cbshwpsi8OwWFaWCRumqDuh2bU7NrCJqUPc60psgBi9fbuev6s4ZyY2EN",
                "LGilu6JUAYPsB3KZw1KwODQIehJcoH5M1Dh2CE0ceIEWB3Is0E328VJXcZi7SsHo"));
     }
 }
