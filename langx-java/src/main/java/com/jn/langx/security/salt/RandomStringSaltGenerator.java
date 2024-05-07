@@ -13,7 +13,7 @@ public class RandomStringSaltGenerator implements StringSaltGenerator {
     }
 
     @Override
-    public String get(Integer bytesLength) {
-        return Randoms.randomString(alphabet,(bytesLength+1)/2);
+    public String get(Integer charsLength) {
+        return Randoms.randomString(alphabet,charsLength);
     }
 }

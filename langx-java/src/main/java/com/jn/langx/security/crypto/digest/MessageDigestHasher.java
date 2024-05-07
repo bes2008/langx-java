@@ -2,8 +2,8 @@ package com.jn.langx.security.crypto.digest;
 
 import com.jn.langx.annotation.NonNull;
 import com.jn.langx.annotation.Nullable;
-import com.jn.langx.codec.base64.Base64;
-import com.jn.langx.codec.hex.Hex;
+import com.jn.langx.codec.StringifyFormat;
+import com.jn.langx.codec.Stringifys;
 import com.jn.langx.security.crypto.AlgorithmUnregisteredException;
 import com.jn.langx.security.salt.BytesSaltGenerator;
 import com.jn.langx.security.salt.EmptySaltGenerator;
@@ -65,8 +65,6 @@ public class MessageDigestHasher {
         }
     }
 
-
-
     public MessageDigestHasher(@NonNull String algorithmName) {
         this(algorithmName, null);
     }
@@ -96,16 +94,10 @@ public class MessageDigestHasher {
         return doHash(source, salt, iterations);
     }
 
-    public String hashToHexString(byte[] source, boolean lowerCase) {
+    public String hash(byte[] source, StringifyFormat outputFormat){
         byte[] hashed = hash(source);
-        return Hex.encodeHexString(hashed, lowerCase);
+        return Stringifys.stringify(hashed, outputFormat);
     }
-
-    public String hashToBase64String(byte[] source) {
-        byte[] hashed = hash(source);
-        return Base64.encodeBase64String(hashed);
-    }
-
 
     /**
      * Hashes the specified byte array using the given {@code salt} for the specified number of iterations.
