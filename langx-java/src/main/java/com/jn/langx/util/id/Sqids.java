@@ -1,5 +1,6 @@
 package com.jn.langx.util.id;
 
+import com.jn.langx.util.Strings;
 import com.jn.langx.util.collection.Sets;
 
 import java.util.ArrayList;
@@ -242,7 +243,7 @@ public class Sqids {
     }
 
     private boolean isBlockedId(final String id) {
-        final String lowercaseId = id.toLowerCase();
+        final String lowercaseId = Strings.lowerCase(id);
         final int lowercaseIdLength = lowercaseId.length();
         for (String word : this.blockList) {
             if (word.length() <= lowercaseIdLength) {
