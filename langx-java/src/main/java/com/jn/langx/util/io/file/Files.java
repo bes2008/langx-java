@@ -73,7 +73,6 @@ public class Files {
             if (file == null) {
                 String cleanedPath = Filenames.getFullDirectory(name) + Filenames.getFileName(name);
                 file = new File(Filenames.normalize(cleanedPath, true));
-                // file = new File(cleanedPath);
             } else {
                 file = new File(file, name);
             }
