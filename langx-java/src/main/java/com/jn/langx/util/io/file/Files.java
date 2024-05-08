@@ -70,12 +70,7 @@ public class Files {
     public static File newFile(@Nullable final File directory, final String... names) {
         File file = directory;
         for (final String name : names) {
-            if (file == null) {
-                String cleanedPath = Filenames.getFullDirectory(name) + Filenames.getFileName(name);
-                file = new File(Filenames.normalize(cleanedPath, true));
-            } else {
-                file = new File(file, name);
-            }
+            file = file==null || file.isDirectory() ? new File(name):new File(file, name);
         }
         return file;
     }
