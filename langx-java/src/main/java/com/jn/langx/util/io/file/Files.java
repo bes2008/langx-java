@@ -69,8 +69,9 @@ public class Files {
      */
     public static File newFile(@Nullable final File directory, final String... names) {
         File file = directory;
-        for (final String name : names) {
-            file = file==null || file.isDirectory() ? new File(name):new File(file, name);
+        for (String name : names) {
+            name = Filenames.normalize(name, true);
+            file = file==null ? new File(name) : new File(file, name);
         }
         return file;
     }
