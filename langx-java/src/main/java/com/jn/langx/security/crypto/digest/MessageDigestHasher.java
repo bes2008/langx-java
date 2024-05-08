@@ -5,9 +5,9 @@ import com.jn.langx.annotation.Nullable;
 import com.jn.langx.codec.StringifyFormat;
 import com.jn.langx.codec.Stringifys;
 import com.jn.langx.security.crypto.AlgorithmUnregisteredException;
-import com.jn.langx.security.salt.BytesSaltGenerator;
-import com.jn.langx.security.salt.EmptySaltGenerator;
-import com.jn.langx.security.salt.FixedBytesSaltGenerator;
+import com.jn.langx.security.crypto.salt.BytesSaltGenerator;
+import com.jn.langx.security.crypto.salt.EmptySaltGenerator;
+import com.jn.langx.security.crypto.salt.FixedBytesSaltGenerator;
 import com.jn.langx.util.Emptys;
 import com.jn.langx.util.Maths;
 

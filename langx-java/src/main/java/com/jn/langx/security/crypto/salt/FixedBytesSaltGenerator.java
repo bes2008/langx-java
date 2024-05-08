@@ -1,4 +1,4 @@
-package com.jn.langx.security.salt;
+package com.jn.langx.security.crypto.salt;
 
 public class FixedBytesSaltGenerator implements BytesSaltGenerator {
     private byte[] salt;
