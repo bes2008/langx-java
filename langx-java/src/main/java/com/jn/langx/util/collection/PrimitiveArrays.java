@@ -5,6 +5,7 @@ import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.collection.sort.DualPivotQuicksort;
 import com.jn.langx.util.function.Supplier;
+import com.jn.langx.util.io.bytes.Bytes;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -461,7 +462,7 @@ public class PrimitiveArrays {
      * @return <tt>true</tt> if the two arrays are equal
      */
     public static boolean equals(byte[] a, byte[] a2) {
-        return Arrays.equals(a, a2);
+        return Bytes.arrayEquals(a,a2);
     }
 
     public static boolean equals(byte[] a, Byte[] a2) {

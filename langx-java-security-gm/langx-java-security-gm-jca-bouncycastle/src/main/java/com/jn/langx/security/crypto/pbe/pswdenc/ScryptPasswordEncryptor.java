@@ -6,6 +6,7 @@ import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.pbe.pbkdf.DerivedPBEKey;
 import com.jn.langx.security.crypto.pbe.pbkdf.ScryptPBKDF;
 import com.jn.langx.security.crypto.salt.RandomBytesSaltGenerator;
+import com.jn.langx.util.Objs;
 
 import java.security.MessageDigest;
 
@@ -19,6 +20,10 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor{
     private int keyBitLength;
 
     private int saltBitLength;
+
+    public ScryptPasswordEncryptor(){
+        this(65536, 8, 1, 32*8,16*6);
+    }
 
     public ScryptPasswordEncryptor(int cpuCost, int memoryCost, int parallelization, int keyBitLength, int saltBitLength) {
         this.cpuCost=cpuCost;
@@ -58,7 +63,7 @@ public class ScryptPasswordEncryptor implements PasswordEncryptor{
             int parallelization = (int)params & 255;
 
             DerivedPBEKey pbeKey = ScryptPBKDF.generateSecretKey("scrypt", plainPassword, salt, cpuCost, memoryCost, parallelization, keyBitLength);
-            return MessageDigest.isEqual(secretKey, pbeKey.getEncoded());
+            return Objs.deepEquals(secretKey, pbeKey.getEncoded());
         }
     }
 

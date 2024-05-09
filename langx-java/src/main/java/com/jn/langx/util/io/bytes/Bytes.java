@@ -567,5 +567,30 @@ public class Bytes {
         return buffer.array();
     }
 
+    public static boolean arrayEquals(byte[] expected, byte[] actual) {
+        if (expected == actual) {
+            return true;
+        }
+        if (expected == null || actual == null) {
+            return false;
+        }
+
+        int lenA = expected.length;
+        int lenB = actual.length;
+
+        if (expected.length != actual.length) {
+            return false;
+        }
+        int result = 0;
+        result |= lenA - lenB;
+
+        // time-constant comparison
+        for (int i = 0; i < lenA; i++) {
+            // If i >= lenB, indexB is 0; otherwise, i.
+            int indexB = ((i - lenB) >>> 31) * i;
+            result |= expected[i] ^ actual[indexB];
+        }
+        return result == 0;
+    }
 
 }
