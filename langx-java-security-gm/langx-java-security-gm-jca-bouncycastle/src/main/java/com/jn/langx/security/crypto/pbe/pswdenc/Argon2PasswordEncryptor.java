@@ -37,8 +37,8 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
 
     @Override
     public String encrypt(String rawPassword) {
-        byte[] salt = new RandomBytesSaltGenerator().get(saltBitLength);
-        byte[] hash = new byte[Securitys.getBytesLength(this.hashBitLength)];
+        byte[] salt = new RandomBytesSaltGenerator().get(Securitys.getBytesLength(this.saltBitLength));
+        byte[] hash = new byte[Securitys.getBytesLength(Securitys.getBytesLength(this.hashBitLength))];
         // @formatter:off
         Argon2Parameters params = new Argon2Parameters
                 .Builder(Argon2Parameters.ARGON2_id)
@@ -136,6 +136,6 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
         Argon2BytesGenerator generator = new Argon2BytesGenerator();
         generator.init(parameters);
         generator.generateBytes(rawPassword.toCharArray(), expectedHash);
-        return Objs.deepEquals(encryptedPassword, actualHash);
+        return Objs.deepEquals(expectedHash, actualHash);
     }
 }

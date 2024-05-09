@@ -117,4 +117,16 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
     public PBKDFKeySpec getKeySpec() {
         return keySpec;
     }
+
+    public int getKeyBitSize(){
+        return this.keySpec.getKeyLength();
+    }
+
+    public int getIVBitSize(){
+        return this.keySpec.getIvBitSize();
+    }
+
+    public String getHashAlgorithm(){
+        return this.keySpec.getHashAlgorithm();
+    }
 }
