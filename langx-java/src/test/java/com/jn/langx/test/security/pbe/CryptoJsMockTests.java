@@ -1,6 +1,6 @@
 package com.jn.langx.test.security.pbe;
 
-import com.jn.langx.security.ext.cryptojs.CryptoJS;
+import com.jn.langx.security.ext.js.cryptojs.CryptoJS;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.collection.Lists;
 import org.junit.Test;

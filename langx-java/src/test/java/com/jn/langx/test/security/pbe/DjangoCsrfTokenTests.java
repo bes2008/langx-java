@@ -1,6 +1,6 @@
 package com.jn.langx.test.security.pbe;
 
-import com.jn.langx.security.crypto.pbe.pswdenc.DjangoCsrfTokenEncryptor;
+import com.jn.langx.security.ext.py.DjangoCsrfTokenEncryptor;
 import org.junit.Assert;
 import org.junit.Test;
 

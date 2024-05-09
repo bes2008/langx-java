@@ -1,4 +1,4 @@
-package com.jn.langx.security.ext.cryptojs;
+package com.jn.langx.security.ext.js.cryptojs;
 
 import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.security.Securitys;

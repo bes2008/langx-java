@@ -1,5 +1,6 @@
-package com.jn.langx.security.crypto.pbe.pswdenc;
+package com.jn.langx.security.ext.py;
 
+import com.jn.langx.security.crypto.pbe.pswdenc.PasswordEncryptor;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Preconditions;
 import com.jn.langx.util.Strings;
