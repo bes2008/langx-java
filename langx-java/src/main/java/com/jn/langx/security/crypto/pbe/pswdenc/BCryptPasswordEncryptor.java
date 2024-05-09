@@ -1,17 +1,12 @@
 package com.jn.langx.security.crypto.pbe.pswdenc;
 
-import com.jn.langx.security.Securitys;
-import com.jn.langx.util.Maths;
-import com.jn.langx.util.Objs;
-
 import java.security.SecureRandom;
 
 /**
  * @since 5.3.9
  */
 public class BCryptPasswordEncryptor implements PasswordEncryptor{
-    private SecureRandom secureRandom;
-    private int logRound;
+    private BlowfishSaltGenerator saltGenerator;
 
     public BCryptPasswordEncryptor(){
         this(10);
@@ -20,12 +15,11 @@ public class BCryptPasswordEncryptor implements PasswordEncryptor{
         this(log_round, null);
     }
     public BCryptPasswordEncryptor(int log_round, SecureRandom secureRandom){
-        this.logRound=Maths.max(1, log_round);
-        this.secureRandom= Objs.useValueIfEmpty(secureRandom, Securitys.getSecureRandom());
+        this.saltGenerator = new BlowfishSaltGenerator(log_round, secureRandom);
     }
     @Override
     public String encrypt(String password) {
-        String salt= BCrypt.gensalt(this.logRound, this.secureRandom);
+        String salt = saltGenerator.get(16);
         return BCrypt.hashpw(password,salt);
     }
 

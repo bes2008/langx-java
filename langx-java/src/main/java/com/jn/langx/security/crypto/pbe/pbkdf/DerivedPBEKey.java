@@ -39,23 +39,39 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
     @NonNull
     private byte[] key;
 
+    @Nullable
+    private byte[] iv;
+
+    public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key){
+        this(pbeAlgorithm, null, keySpec, key, null);
+    }
+
+
     public DerivedPBEKey(String pbeAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv){
         this(pbeAlgorithm, null, keySpec, key, iv);
     }
 
     public DerivedPBEKey(String pbeAlgorithm, String cipherAlgorithm, PBKDFKeySpec keySpec, byte[] key, byte[] iv){
         super(Objs.useValueIfEmpty(iv, Emptys.EMPTY_BYTES));
+        setIV(super.getIV());
         this.key=key;
         this.pbeAlgorithm=pbeAlgorithm;
         this.cipherAlgorithm=cipherAlgorithm;
         this.keySpec=keySpec;
     }
 
-
-
     @Override
     public String toString() {
         return StringTemplates.formatWithPlaceholder( "salt: {}\nkey: {}\niv: {}", Hex.encodeHexString(keySpec.getSalt()), Hex.encodeHexString(key), getIV()==null?"":Hex.encodeHexString(getIV()));
+    }
+
+    public void setIV(byte[] iv) {
+        this.iv = iv;
+    }
+
+    @Override
+    public byte[] getIV() {
+        return this.iv;
     }
 
     @Override
@@ -90,14 +106,6 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
         return this.keySpec.getIterationCount();
     }
 
-    public int getKeyBitSize(){
-        return this.keySpec.getKeyLength();
-    }
-
-    public int getIVBitSize(){
-        return this.keySpec.getIvBitSize();
-    }
-
     @Override
     public String getAlgorithm() {
         return this.pbeAlgorithm;
@@ -106,8 +114,7 @@ public class DerivedPBEKey extends IvParameterSpec implements PBEKey, Cloneable 
     public String getCipherAlgorithm(){
         return cipherAlgorithm;
     }
-    public String getHashAlgorithm(){
-        return this.keySpec.getHashAlgorithm();
+    public PBKDFKeySpec getKeySpec() {
+        return keySpec;
     }
-
 }

@@ -11,7 +11,6 @@ public class PBKDFKeySpec extends PBEKeySpec {
     private int ivBitSize;
     private String hashAlgorithm;
 
-
     public PBKDFKeySpec(char[] password, byte[] salt,  int keyBitSize){
         this(password, salt, keyBitSize, 16*8, 1);
     }
@@ -29,7 +28,6 @@ public class PBKDFKeySpec extends PBEKeySpec {
         setHashAlgorithm(hashAlgorithm);
         setIvBitSize(ivBitSize);
     }
-
 
     public int getIvBitSize() {
         return ivBitSize;
