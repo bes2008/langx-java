@@ -23,6 +23,18 @@ public class Argon2PasswordEncryptor implements PasswordEncryptor{
 
     private int iterations;
 
+    public Argon2PasswordEncryptor(){
+        this(16*8, 32*8, 1, 1<<14, 2);
+    }
+
+    public Argon2PasswordEncryptor(int saltBitLength, int hashBitLength, int parallelism, int memory, int iterations) {
+        this.saltBitLength=saltBitLength;
+        this.hashBitLength=hashBitLength;
+        this.parallelism=parallelism;
+        this.memory=memory;
+        this.iterations =iterations;
+    }
+
     @Override
     public String encrypt(String rawPassword) {
         byte[] salt = new RandomBytesSaltGenerator().get(saltBitLength);
