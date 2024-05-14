@@ -10,6 +10,10 @@ public class HMacPasswordEncryptor extends CheckByEncryptEncryptor{
     private byte[] secretKey;
 
     private StringifyFormat format;
+
+    public HMacPasswordEncryptor(String hmacAlgorithm, byte[] secretKey){
+        this(hmacAlgorithm, secretKey, StringifyFormat.BASE64);
+    }
     public HMacPasswordEncryptor(String hmacAlgorithm, byte[] secretKey, StringifyFormat format){
         this.hmacAlgorithm=hmacAlgorithm;
         this.secretKey = secretKey;

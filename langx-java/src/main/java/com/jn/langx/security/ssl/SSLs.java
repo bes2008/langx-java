@@ -13,7 +13,7 @@ public class SSLs {
     private SSLs() {
     }
 
-    public static final String TLS = "TLS";
+    public static final String TLS = SSLProtocolVersion.TLSv12.getName();
 
     public static X509TrustManager noopX509TrustManager() {
         return new NoopTrustManager();
