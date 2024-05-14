@@ -4,7 +4,6 @@ import com.jn.langx.codec.base64.Base64;
 import com.jn.langx.codec.hex.Hex;
 import com.jn.langx.util.Objs;
 import com.jn.langx.util.Strings;
-import com.jn.langx.util.io.Charsets;
 
 /**
  * @since 5.3.9
@@ -12,19 +11,14 @@ import com.jn.langx.util.io.Charsets;
 public class Stringifys {
     public static String stringify(byte[] bytes, StringifyFormat format) {
         format = Objs.useValueIfEmpty(format, StringifyFormat.UTF8);
-        String str;
         switch (format) {
             case HEX:
-                str = Hex.encodeHexString(bytes);
-                break;
+                return Hex.encodeHexString(bytes);
             case BASE64:
-                str = Base64.encodeBase64ToString(bytes);
-                break;
+                return Base64.encodeBase64ToString(bytes);
             default:
-                str = new String(bytes, Charsets.UTF_8);
-                break;
+                return Strings.newStringUtf8(bytes);
         }
-        return str;
     }
 
     public static byte[] toBytes(String text, StringifyFormat format ){

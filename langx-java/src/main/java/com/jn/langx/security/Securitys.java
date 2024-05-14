@@ -141,19 +141,12 @@ public class Securitys {
         return randomBytes(null,bitLength);
     }
     public static byte[] randomBytes(SecureRandom secureRandom, int bitLength){
-        return randomBytes(secureRandom,null, bitLength);
-    }
-
-    public static byte[] randomBytes(SecureRandom secureRandom, byte[] seed,int bitLength){
         if (secureRandom == null) {
             try {
                 secureRandom = SecureRandom.getInstance(JCAEStandardName.SHA1PRNG.getName());
             } catch (Throwable ex) {
                 throw Throwables.wrapAsRuntimeException(ex);
             }
-        }
-        if (Objs.isNotEmpty(seed)) {
-            secureRandom.setSeed(seed);
         }
 
         int byteLength = PKIs.getBytesLength(bitLength);

@@ -2,9 +2,11 @@ package com.jn.langx.security.crypto.pbe.pbkdf;
 
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.crypto.key.PKIs;
+import com.jn.langx.util.collection.Arrs;
 import com.jn.langx.util.io.Charsets;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
 
 /**
  * @since 5.3.9
@@ -27,7 +29,11 @@ class OpenSSLEvpKDF implements PBKDF {
             byte[] derivedBytes = new byte[targetKeySizeInWorld * 4];
             int numberOfDerivedWords = 0;
             byte[] block = null;
-            byte[] passphraseBytes = new String(keySpec.getPassword()).getBytes(Charsets.UTF_8);
+
+            char[] pswd = Arrs.copy(keySpec.getPassword());
+            byte[] passphraseBytes = new String(pswd).getBytes(Charsets.UTF_8);
+            // 为了安全考虑：避免从heap dump 中查看到密码
+            Arrays.fill(pswd,'0');
             MessageDigest hasher = MessageDigest.getInstance(keySpec.getHashAlgorithm());
             while (numberOfDerivedWords < targetKeySizeInWorld) {
                 if (block != null) {

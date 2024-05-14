@@ -5,6 +5,8 @@ import com.jn.langx.registry.GenericRegistry;
 import com.jn.langx.security.SecurityException;
 import com.jn.langx.security.Securitys;
 import com.jn.langx.security.crypto.JCAEStandardName;
+import com.jn.langx.security.crypto.cipher.Ciphers;
+import com.jn.langx.security.crypto.cipher.Symmetrics;
 import com.jn.langx.security.crypto.digest.MessageDigests;
 import com.jn.langx.security.crypto.key.PKIs;
 import com.jn.langx.security.crypto.key.spec.KeyFileFormatException;
@@ -455,7 +457,7 @@ public class PEMs extends Securitys {
         } else {
             throw new GeneralSecurityException("Private Key encrypted with unsupported algorithm [" + algorithm + "]");
         }
-        String transformation = encryptionKey.getAlgorithm() + "/" + "CBC" + "/" + padding;
+        String transformation = Ciphers.createAlgorithmTransformation(encryptionKey.getAlgorithm(), Symmetrics.MODE.CBC.name(), padding);
         Cipher cipher = Cipher.getInstance(transformation);
         cipher.init(Cipher.DECRYPT_MODE, encryptionKey, new IvParameterSpec(iv));
         return cipher;

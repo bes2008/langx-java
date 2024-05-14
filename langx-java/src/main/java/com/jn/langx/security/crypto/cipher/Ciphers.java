@@ -409,12 +409,8 @@ public class Ciphers extends Securitys {
         return createIvParameterSpec(null, ivBitLength);
     }
 
-    public static IvParameterSpec createIvParameterSpec(byte[] seed, int ivBitLength) {
-        return createIvParameterSpec(null, seed, ivBitLength);
-    }
-
-    public static IvParameterSpec createIvParameterSpec(SecureRandom secureRandom, byte[] seed, int ivBitLength) {
-        byte[] ivBytes = randomBytes(secureRandom, seed, ivBitLength);
+    public static IvParameterSpec createIvParameterSpec(SecureRandom secureRandom, int ivBitLength) {
+        byte[] ivBytes = randomBytes(secureRandom, ivBitLength);
         return new IvParameterSpec(ivBytes);
     }
 

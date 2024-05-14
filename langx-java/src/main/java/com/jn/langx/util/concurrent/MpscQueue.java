@@ -319,8 +319,8 @@ public class MpscQueue<E> extends AbstractQueue<E>
         int c = -1;
         final ReentrantLock putLock = this.putLock;
         final AtomicInteger count = this.count;
-        putLock.lockInterruptibly();
         try {
+            putLock.lockInterruptibly();
             /*
              * Note that count is used in wait guard even though it is
              * not protected by lock. This works because count can
@@ -366,8 +366,8 @@ public class MpscQueue<E> extends AbstractQueue<E>
         int c = -1;
         final ReentrantLock putLock = this.putLock;
         final AtomicInteger count = this.count;
-        putLock.lockInterruptibly();
         try {
+            putLock.lockInterruptibly();
             while (count.get() == capacity) {
 
                 if (nanos <= 0) {
@@ -435,8 +435,8 @@ public class MpscQueue<E> extends AbstractQueue<E>
         int c = -1;
         final AtomicInteger count = this.count;
         final ReentrantLock takeLock = this.takeLock;
-        takeLock.lockInterruptibly();
         try {
+            takeLock.lockInterruptibly();
             while (count.get() == 0) {
                 notEmpty.await();
             }
@@ -461,8 +461,8 @@ public class MpscQueue<E> extends AbstractQueue<E>
         long nanos = unit.toNanos(timeout);
         final AtomicInteger count = this.count;
         final ReentrantLock takeLock = this.takeLock;
-        takeLock.lockInterruptibly();
         try {
+            takeLock.lockInterruptibly();
             while (count.get() == 0) {
                 if (nanos <= 0) {
                     return null;

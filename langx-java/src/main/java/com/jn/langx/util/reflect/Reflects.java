@@ -1506,41 +1506,30 @@ public class Reflects {
     }
 
     public static boolean makeAccessible(@NonNull Field field) {
-        if ((!Modifiers.isPublic(field) || !Modifiers.isPublic(field.getDeclaringClass()) || Modifiers.isFinal(field)) && !field.isAccessible()) {
-            try {
-                field.setAccessible(true);
-                return true;
-            } catch (SecurityException ex) {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return makeAccessibleMember(field);
     }
 
     /**
      * @since 4.3.7
      */
     public static boolean makeAccessible(@NonNull Method m) {
-        if ((!Modifiers.isPublic(m) || !Modifiers.isPublic(m.getDeclaringClass())) && !m.isAccessible()) {
-            try {
-                m.setAccessible(true);
-                return true;
-            } catch (SecurityException ex) {
-                return false;
-            }
-        } else {
-            return true;
-        }
+        return makeAccessibleMember(m);
     }
 
     /**
      * @since 4.3.7
      */
     public static boolean makeAccessible(@NonNull Constructor c) {
-        if ((!Modifiers.isPublic(c) || !Modifiers.isPublic(c.getDeclaringClass())) && !c.isAccessible()) {
+        return makeAccessibleMember(c);
+    }
+
+    /**
+     * @since 5.3.9
+     */
+    public static boolean makeAccessibleMember(@NonNull Member c) {
+        if ((!Modifiers.isPublic(c) || !Modifiers.isPublic(c.getDeclaringClass()) || !Modifiers.isFinal(c)) && (c instanceof AccessibleObject) &&!((AccessibleObject)c).isAccessible()) {
             try {
-                c.setAccessible(true);
+                ((AccessibleObject)c).setAccessible(true);
                 return true;
             } catch (SecurityException ex) {
                 return false;
