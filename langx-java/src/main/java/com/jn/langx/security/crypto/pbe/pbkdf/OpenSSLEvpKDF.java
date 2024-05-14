@@ -33,7 +33,7 @@ class OpenSSLEvpKDF implements PBKDF {
             char[] pswd = Arrs.copy(keySpec.getPassword());
             byte[] passphraseBytes = new String(pswd).getBytes(Charsets.UTF_8);
             // 为了安全考虑：避免从heap dump 中查看到密码
-            Arrays.fill(pswd,'0');
+            Arrays.fill(pswd,'\u0000');
             MessageDigest hasher = MessageDigest.getInstance(keySpec.getHashAlgorithm());
             while (numberOfDerivedWords < targetKeySizeInWorld) {
                 if (block != null) {

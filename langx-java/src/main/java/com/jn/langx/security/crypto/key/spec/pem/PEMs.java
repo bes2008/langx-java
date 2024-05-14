@@ -372,6 +372,7 @@ public class PEMs extends Securitys {
         EncryptedPrivateKeyInfo encryptedPrivateKeyInfo = new EncryptedPrivateKeyInfo(keyBytes);
         SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(encryptedPrivateKeyInfo.getAlgName());
         SecretKey secretKey = secretKeyFactory.generateSecret(new PBEKeySpec(keyPassword));
+        // 避免 heap dump 中查看到密码
         Arrays.fill(keyPassword, '\u0000');
         Cipher cipher = Cipher.getInstance(encryptedPrivateKeyInfo.getAlgName());
         cipher.init(Cipher.DECRYPT_MODE, secretKey, encryptedPrivateKeyInfo.getAlgParameters());

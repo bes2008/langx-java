@@ -23,8 +23,8 @@ import java.util.*;
  */
 public final class HostsFileParser {
 
-    private static final String WINDOWS_DEFAULT_SYSTEM_ROOT = "C:\\Windows";
-    private static final String WINDOWS_HOSTS_FILE_RELATIVE_PATH = "\\system32\\drivers\\etc\\hosts";
+    private static final String WINDOWS_DEFAULT_SYSTEM_ROOT = "C:/Windows";
+    private static final String WINDOWS_HOSTS_FILE_RELATIVE_PATH = "/system32/drivers/etc/hosts";
     private static final String X_PLATFORMS_HOSTS_FILE_PATH = "/etc/hosts";
 
     private static final Regexp WHITESPACES = Regexps.compile("[ \t]+");

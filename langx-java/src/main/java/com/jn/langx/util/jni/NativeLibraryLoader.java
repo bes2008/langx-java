@@ -71,12 +71,12 @@ public final class NativeLibraryLoader {
 
                 String userprofile = System.getenv("USERPROFILE");
                 if (userprofile != null) {
-                    f = toDirectory(userprofile + "\\AppData\\Local\\Temp");
+                    f = toDirectory(userprofile + "/AppData/Local/Temp");
                     if (f != null) {
                         return f;
                     }
 
-                    f = toDirectory(userprofile + "\\Local Settings\\Temp");
+                    f = toDirectory(userprofile + "/Local Settings/Temp");
                     if (f != null) {
                         return f;
                     }
@@ -93,7 +93,7 @@ public final class NativeLibraryLoader {
 
         // Last resort.
         if (Platform.isWindows) {
-            f = new File("C:\\Windows\\Temp");
+            f = new File("C:/Windows/Temp");
         } else {
             f = new File("/tmp");
         }
